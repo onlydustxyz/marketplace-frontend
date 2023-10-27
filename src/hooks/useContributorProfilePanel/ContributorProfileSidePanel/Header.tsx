@@ -1,6 +1,6 @@
 import { cn } from "src/utils/cn";
 import { useRef, useState } from "react";
-import { ProfileCover, UserProfileFragment } from "src/__generated/graphql";
+import { ProfileCover } from "src/__generated/graphql";
 import PencilLine from "src/icons/PencilLine";
 import HeaderCoverButton from "./EditView/HeaderCoverButton";
 import FileInput from "./EditView/FileInput";
@@ -9,9 +9,10 @@ import { useApolloClient } from "@apollo/client";
 import Loader from "src/assets/icons/Loader";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
+import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 type Props = {
-  profile: UserProfileFragment;
+  profile: Profile;
   editable?: boolean;
   onChange?: (value: ProfileCover) => void;
   rounded?: boolean;

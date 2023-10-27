@@ -21,7 +21,7 @@ export default function useInfiniteContributorList({
   const options = useHttpOptions("GET");
 
   return useInfiniteQuery({
-    queryKey: ["contributors", queryParams],
+    queryKey: ["contributors", projectId, queryParams],
     queryFn: ({ pageParam }) =>
       fetch(
         getEndpointUrl({
