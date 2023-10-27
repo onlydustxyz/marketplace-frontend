@@ -1,27 +1,26 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { generatePath, Link } from "react-router-dom";
+import { components } from "src/__generated/api";
 import { RoutePaths } from "src/App";
-import { cn } from "src/utils/cn";
 import Card, { CardBorder } from "src/components/Card";
+import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import Tag, { TagSize } from "src/components/Tag";
+import { TooltipPosition, withTooltip } from "src/components/Tooltip";
+import config, { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
-import { buildLanguageString } from "src/utils/languages";
-import User3Line from "src/icons/User3Line";
-import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import ProjectTitle from "./ProjectTitle";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Tag, { TagSize } from "src/components/Tag";
-import { Project } from "src/types";
 import RecordCircleLine from "src/icons/RecordCircleLine";
-import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
-import config from "src/config";
-import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
+import User3Line from "src/icons/User3Line";
+import { cn } from "src/utils/cn";
+import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
+import { useMediaQuery } from "usehooks-ts";
+import ProjectTitle from "./ProjectTitle";
 
 type ProjectCardProps = {
-  project: Project;
+  project: components["schemas"]["ProjectListItemResponse"];
   className?: string;
 };
 

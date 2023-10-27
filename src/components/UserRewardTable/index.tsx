@@ -44,10 +44,10 @@ const UserRewardTable: React.FC<PropsType> = ({
           <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
             {rewards.map(p => (
               <RewardLine
-                key={p.id}
+                key={p?.id}
                 reward={p}
                 onClick={() => onRewardClick(p)}
-                selected={p.id === selectedReward?.id}
+                selected={p?.id === selectedReward?.id}
               />
             ))}
           </Table>

@@ -28,7 +28,7 @@ export function useRestfulData<R = unknown>({
 
   const options = useHttpOptions(method);
 
-  const { isLoading, isError, data } = useQuery<T>({
+  const { isLoading, isError, data } = useQuery<R>({
     queryKey: [resourcePath, pathParam, queryParams, method, isLoggedIn],
     queryFn: () =>
       fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)

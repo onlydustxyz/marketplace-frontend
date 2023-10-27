@@ -1,17 +1,15 @@
-import { MyRewardType } from "src/components/UserRewardTable/Line";
-import { useIntl } from "src/hooks/useIntl";
 import {
   MarkInvoiceAsReceivedMutationVariables,
-  UserPayoutSettingsFragment,
   useMarkInvoiceAsReceivedMutation,
-} from "src/__generated/graphql";
+} from "src/../e2e/playwright/__generated/graphql";
+import { components } from "src/__generated/api";
+import Skeleton from "src/components/Skeleton";
+import { useAuth } from "src/hooks/useAuth";
+import { useIntl } from "src/hooks/useIntl";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 import View from "./View";
-import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { components } from "src/__generated/api";
-import { useAuth } from "src/hooks/useAuth";
-import Skeleton from "src/components/Skeleton";
 
 export type MyPayoutInfoType = components["schemas"]["UserPayoutInformationResponse"];
 export type MyRewardsPendingInvoiceType = components["schemas"]["MyRewardsListResponse"];

@@ -1,14 +1,14 @@
+import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
-import { formatMoneyAmount } from "src/utils/money";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import Medal2Fill from "src/icons/Medal2Fill";
-import StackLine from "src/icons/StackLine";
-import { ContributorT } from "src/types";
 import { ShowMore } from "src/components/Table/ShowMore";
+import Medal2Fill from "src/icons/Medal2Fill";
+import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
+import StackLine from "src/icons/StackLine";
+import { formatMoneyAmount } from "src/utils/money";
 
 type ViewMobileProps = {
-  contributors: ContributorT[];
+  contributors: components["schemas"]["ContributorPageItemResponse"][];
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -49,7 +49,7 @@ export function ViewMobile({
                       </div>
                       <div className="flex items-center gap-1 text-sm">
                         <MoneyDollarCircleLine className="text-base font-medium text-spaceBlue-200" />
-                        {`${earned ? formatMoneyAmount({ amount: earned }) : "-"}`}
+                        {`${earned?.totalAmount ? formatMoneyAmount({ amount: earned.totalAmount }) : "-"}`}
                       </div>
                     </>
                   ) : null}

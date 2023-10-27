@@ -1,29 +1,28 @@
-import { useIntl } from "src/hooks/useIntl";
-import Line from "src/components/Table/Line";
-import Cell, { CellHeight } from "src/components/Table/Cell";
-import { withTooltip } from "src/components/Tooltip";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import SendPlane2Line from "src/icons/SendPlane2Line";
-import Contributor from "src/components/Contributor";
-import StackLine from "src/icons/StackLine";
-import { ContributorT, Currency } from "src/types";
-import { AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
-import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import { useMemo } from "react";
+import { components } from "src/__generated/api";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Contributor from "src/components/Contributor";
+import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
+import Cell, { CellHeight } from "src/components/Table/Cell";
+import Line from "src/components/Table/Line";
+import { withTooltip } from "src/components/Tooltip";
+import { useIntl } from "src/hooks/useIntl";
+import SendPlane2Line from "src/icons/SendPlane2Line";
+import StackLine from "src/icons/StackLine";
 
-type Props = {
-  contributor: ContributorT;
+type Props<C> = {
+  contributor: C;
   isProjectLeader: boolean;
   isGivingRewardDisabled: boolean;
-  onRewardGranted: (contributor: ContributorT) => void;
+  onRewardGranted: (contributor: C) => void;
 };
 
-export default function ContributorLine({
+export default function ContributorLine<C extends components["schemas"]["ContributorPageItemResponse"]>({
   contributor,
   isProjectLeader,
   isGivingRewardDisabled,
   onRewardGranted,
-}: Props) {
+}: Props<C>) {
   const { T } = useIntl();
 
   const currencies: AvailableConversionCurrency[] = useMemo(

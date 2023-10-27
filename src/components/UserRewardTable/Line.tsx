@@ -22,7 +22,7 @@ export default function RewardLine({ reward, onClick, selected }: Props) {
 
   return (
     <Line onClick={onClick} selected={selected}>
-      <Cell>{displayRelativeDate(new Date(reward.requestedAt))}</Cell>
+      <Cell>{displayRelativeDate(new Date(reward?.requestedAt))}</Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage
           src={reward?.rewardedOnProjectLogoUrl || onlyDustLogo}
@@ -31,16 +31,16 @@ export default function RewardLine({ reward, onClick, selected }: Props) {
         <div className="flex flex-col justify-center truncate">
           <div className="font-belwe text-base font-normal">{reward?.rewardedOnProjectName}</div>
           <div className="text-spaceBlue-200">
-            {T("reward.table.reward", { id: pretty(reward.id), count: reward?.numberOfRewardedContributions })}
+            {T("reward.table.reward", { id: pretty(reward?.id), count: reward?.numberOfRewardedContributions })}
           </div>
         </div>
       </Cell>
-      <Cell>{formatMoneyAmount({ amount: reward.amount.total, currency: reward?.amount?.currency })}</Cell>
+      <Cell>{formatMoneyAmount({ amount: reward?.amount.total, currency: reward?.amount?.currency })}</Cell>
       <Cell>
         <PayoutStatus
           {...{
-            id: `payout-status-${reward.id}`,
-            status: reward.status,
+            id: `payout-status-${reward?.id}`,
+            status: reward?.status,
           }}
         />
       </Cell>

@@ -1,14 +1,14 @@
-import ProjectsSidebar from "./Sidebar";
-import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import { Outlet } from "react-router-dom";
 import { Suspense } from "react";
+import { Outlet } from "react-router-dom";
+import { components } from "src/__generated/api";
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Loader from "src/components/Loader";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { Project } from "src/types";
+import ProjectsSidebar from "./Sidebar";
 
 interface Props {
-  project: Project;
+  project: components["schemas"]["ProjectResponse"];
   loading: boolean | undefined;
   error: null | unknown;
 }

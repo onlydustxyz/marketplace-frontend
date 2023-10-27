@@ -1,17 +1,16 @@
+import { useMemo, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import Card from "src/components/Card";
-import UserRewardTable from "src/components/UserRewardTable";
-import { useAuth } from "src/hooks/useAuth";
-import { useT } from "talkr";
-import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import SEO from "src/components/SEO";
-import { useMemo, useState } from "react";
-import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfiniteMyRewardList";
-import Skeleton from "src/components/Skeleton";
 import ErrorFallback from "src/ErrorFallback";
-import InvoiceSubmission from "./InvoiceSubmission";
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
+import Card from "src/components/Card";
+import SEO from "src/components/SEO";
+import Skeleton from "src/components/Skeleton";
+import UserRewardTable from "src/components/UserRewardTable";
+import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfiniteMyRewardList";
+import { useT } from "talkr";
 import { EarningWrapper } from "./Earning/EarningWrapper";
+import InvoiceSubmission from "./InvoiceSubmission";
 
 export enum Field {
   Date = "REQUESTED_AT",

@@ -1,16 +1,13 @@
-import { describe, expect, it, vi } from "vitest";
 import matchers from "@testing-library/jest-dom/matchers";
 import { Route, Routes } from "react-router-dom";
+import { describe, expect, it, vi } from "vitest";
 
-import Login, { AUTH_CODE_QUERY_KEY } from ".";
-import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
-import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
+import { MockedResponse } from "@apollo/client/testing";
+import { screen } from "@testing-library/react";
+import { GetPaymentRequestsDocument, GetPaymentRequestsQueryResult } from "e2e/playwright/__generated/graphql";
 import { generatePath } from "react-router-dom";
+import { RoutePaths } from "src/App";
 import {
-  GetPaymentRequestsDocument,
-  GetPaymentRequestsQueryResult,
   GetUserPayoutSettingsDocument,
   GetUserPayoutSettingsQueryResult,
   PendingProjectLeaderInvitationsDocument,
@@ -20,9 +17,11 @@ import {
   UserPayoutSettingsFragment,
   WorkItemType,
 } from "src/__generated/graphql";
-import { RoutePaths } from "src/App";
-import { MockedResponse } from "@apollo/client/testing";
-import { screen } from "@testing-library/react";
+import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
+import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
+import Login, { AUTH_CODE_QUERY_KEY } from ".";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const TEST_USER_ID = "test-user-id";
