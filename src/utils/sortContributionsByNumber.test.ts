@@ -184,6 +184,9 @@ const mockContributions: QueryContribution[] = [
     rewardItems: [
       {
         paymentId: "05413939-dc82-4d55-8804-b5df29630bec",
+        paymentRequest: {
+          recipientId: 43467246,
+        },
       },
     ],
     githubCodeReview: null,

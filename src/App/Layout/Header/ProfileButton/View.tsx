@@ -7,7 +7,7 @@ import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
+import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import User3Line from "src/icons/User3Line";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -17,12 +17,12 @@ type Props = {
   avatarUrl: string | null;
   login: string;
   logout: () => void;
-  showMissingPayoutSettingsState: boolean;
+  isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
 };
 
-const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSettingsState, hideProfileItems }: Props) => {
+const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
   const { T } = useIntl();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
@@ -43,18 +43,18 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
             className={cn(
               "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
               {
-                "outline-greyscale-50/12": !showMissingPayoutSettingsState,
-                "outline-orange-500": showMissingPayoutSettingsState,
+                "outline-greyscale-50/12": !isMissingPayoutSettingsInfo,
+                "outline-orange-500": isMissingPayoutSettingsInfo,
               }
             )}
             data-testid="profile-button"
             {...withTooltip(T("profile.button.payoutSettingsInvalidTooltip"), {
-              visible: showMissingPayoutSettingsState && tooltipVisible && !menuItemsVisible,
+              visible: isMissingPayoutSettingsInfo && tooltipVisible && !menuItemsVisible,
             })}
           >
             {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} />}
-            <div className={cn({ "mr-1": !showMissingPayoutSettingsState })}>{login}</div>
-            {showMissingPayoutSettingsState && <ErrorWarningLine className="text-xl text-orange-500" />}
+            <div className={cn({ "mr-1": !isMissingPayoutSettingsInfo })}>{login}</div>
+            {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
         </div>
         <Transition
@@ -85,11 +85,10 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
                 <MenuItem onClick={() => setPayoutInfoSidePanelOpen(true)}>
                   <MoneyDollarCircleLine className="text-xl" />
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
-                  {showMissingPayoutSettingsState && <Dot className="w-1.5 fill-orange-500" />}
+                  {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </MenuItem>
               </div>
             )}
-
             <MenuItem secondary disabled>
               <div className="flex w-full flex-row items-center justify-between py-1">
                 <div className="flex flex-row gap-1 font-walsheim text-sm font-normal text-spaceBlue-200">
@@ -110,11 +109,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
           </Menu.Items>
         </Transition>
       </Menu>
-      <PayoutInfoSidePanel
-        githubUserId={githubUserId}
-        open={payoutInfoSidePanelOpen}
-        setOpen={setPayoutInfoSidePanelOpen}
-      />
+      <PayoutInfoSidePanel open={payoutInfoSidePanelOpen} setOpen={setPayoutInfoSidePanelOpen} />
     </div>
   );
 };

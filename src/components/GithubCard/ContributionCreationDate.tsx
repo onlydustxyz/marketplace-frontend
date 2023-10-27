@@ -50,7 +50,7 @@ export function ContributionCreationDate({
   return (
     <>
       <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} {...rest}>
-        <div className={cn("flex items-center gap-2 px-1 py-2", className)}>
+        <div className={cn("flex items-center gap-2", className)}>
           <ContributionIcon type={type} status={iconsStatus[type]} />
           <p>{creationDate}</p>
         </div>

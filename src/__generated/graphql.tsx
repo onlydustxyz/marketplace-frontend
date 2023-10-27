@@ -18347,7 +18347,7 @@ export type UserIdFragment = { __typename?: 'RegisteredUsers', id: any | null };
 
 export type ProjectLeadFragment = { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null };
 
-export type UserPayoutSettingsFragment = { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, ethWallet: string | null, bic: string | null, iban: string | null, arePayoutSettingsValid: boolean | null };
+export type UserPayoutSettingsFragment = { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, arePayoutSettingsValid: boolean | null, bic: string | null, iban: string | null, ethWallet: string | null, aptosWallet: string | null, optimismWallet: string | null, starknetWallet: string | null };
 
 export type UserProfileIdFragment = { __typename?: 'UserProfiles', githubUserId: any | null };
 
@@ -18440,7 +18440,7 @@ export type GetUserPayoutSettingsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, ethWallet: string | null, bic: string | null, iban: string | null, arePayoutSettingsValid: boolean | null } | null }> };
+export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, arePayoutSettingsValid: boolean | null, bic: string | null, iban: string | null, ethWallet: string | null, aptosWallet: string | null, optimismWallet: string | null, starknetWallet: string | null } | null }> };
 
 export type UpdatePayoutSettingsMutationVariables = Exact<{
   identity: InputMaybe<Identity>;
@@ -18473,22 +18473,30 @@ export type GetAllContributionsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null }> }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
+export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null, paymentRequest: { __typename?: 'PaymentRequests', recipientId: any | null } | null }> }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
 
-export type GetContributionRewardsQueryVariables = Exact<{
+export type GetContributionDetailsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
   contributionId: Scalars['String'];
+  projectId: Scalars['uuid'];
 }>;
 
 
-export type GetContributionRewardsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null, paymentRequest: { __typename?: 'PaymentRequests', amount: any | null, hoursWorked: number | null, invoiceReceivedAt: any | null, recipientId: any | null, requestedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'RegisteredUsers', avatarUrl: string | null, githubUserId: any | null, htmlUrl: string | null, login: string | null } | null } | null }> }> };
+export type GetContributionDetailsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null, paymentRequest: { __typename?: 'PaymentRequests', amount: any | null, hoursWorked: number | null, invoiceReceivedAt: any | null, recipientId: any | null, requestedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'RegisteredUsers', avatarUrl: string | null, githubUserId: any | null, htmlUrl: string | null, login: string | null } | null } | null }> }> };
 
-export type GetContributionProjectsAndReposQueryVariables = Exact<{
+export type GetContributionProjectsQueryVariables = Exact<{
   where: InputMaybe<ContributionsBoolExp>;
 }>;
 
 
-export type GetContributionProjectsAndReposQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null } | null, githubRepo: { __typename?: 'GithubRepos', id: any | null, name: string | null } | null }> };
+export type GetContributionProjectsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null } | null }> };
+
+export type GetContributionReposQueryVariables = Exact<{
+  where: InputMaybe<ContributionsBoolExp>;
+}>;
+
+
+export type GetContributionReposQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', githubRepo: { __typename?: 'GithubRepos', id: any | null, name: string | null } | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -19119,10 +19127,13 @@ export const UserPayoutSettingsFragmentDoc = gql`
   companyName
   companyIdentificationNumber
   usdPreferredMethod
-  ethWallet
+  arePayoutSettingsValid
   bic
   iban
-  arePayoutSettingsValid
+  ethWallet
+  aptosWallet
+  optimismWallet
+  starknetWallet
 }
     `;
 export const OwnUserProfileDetailsFragmentDoc = gql`
@@ -20331,6 +20342,9 @@ export const GetAllContributionsDocument = gql`
     type
     rewardItems {
       paymentId
+      paymentRequest {
+        recipientId
+      }
     }
   }
   githubRepos(orderBy: {indexedAt: ASC}, limit: 1) {
@@ -20369,10 +20383,10 @@ export function useGetAllContributionsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetAllContributionsQueryHookResult = ReturnType<typeof useGetAllContributionsQuery>;
 export type GetAllContributionsLazyQueryHookResult = ReturnType<typeof useGetAllContributionsLazyQuery>;
 export type GetAllContributionsQueryResult = Apollo.QueryResult<GetAllContributionsQuery, GetAllContributionsQueryVariables>;
-export const GetContributionRewardsDocument = gql`
-    query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {
+export const GetContributionDetailsDocument = gql`
+    query GetContributionDetails($githubUserId: bigint!, $contributionId: String!, $projectId: uuid!) {
   contributions(
-    where: {githubUserId: {_eq: $githubUserId}, id: {_eq: $contributionId}}
+    where: {githubUserId: {_eq: $githubUserId}, id: {_eq: $contributionId}, projectId: {_eq: $projectId}}
   ) {
     closedAt
     createdAt
@@ -20448,41 +20462,76 @@ ${ContributionGithubIssueFragmentDoc}
 ${ContributionGithubCodeReviewFragmentDoc}`;
 
 /**
- * __useGetContributionRewardsQuery__
+ * __useGetContributionDetailsQuery__
  *
- * To run a query within a React component, call `useGetContributionRewardsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetContributionRewardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetContributionDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContributionDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetContributionRewardsQuery({
+ * const { data, loading, error } = useGetContributionDetailsQuery({
  *   variables: {
  *      githubUserId: // value for 'githubUserId'
  *      contributionId: // value for 'contributionId'
+ *      projectId: // value for 'projectId'
  *   },
  * });
  */
-export function useGetContributionRewardsQuery(baseOptions: Apollo.QueryHookOptions<GetContributionRewardsQuery, GetContributionRewardsQueryVariables>) {
+export function useGetContributionDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetContributionDetailsQuery, GetContributionDetailsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetContributionRewardsQuery, GetContributionRewardsQueryVariables>(GetContributionRewardsDocument, options);
+        return Apollo.useQuery<GetContributionDetailsQuery, GetContributionDetailsQueryVariables>(GetContributionDetailsDocument, options);
       }
-export function useGetContributionRewardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributionRewardsQuery, GetContributionRewardsQueryVariables>) {
+export function useGetContributionDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributionDetailsQuery, GetContributionDetailsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetContributionRewardsQuery, GetContributionRewardsQueryVariables>(GetContributionRewardsDocument, options);
+          return Apollo.useLazyQuery<GetContributionDetailsQuery, GetContributionDetailsQueryVariables>(GetContributionDetailsDocument, options);
         }
-export type GetContributionRewardsQueryHookResult = ReturnType<typeof useGetContributionRewardsQuery>;
-export type GetContributionRewardsLazyQueryHookResult = ReturnType<typeof useGetContributionRewardsLazyQuery>;
-export type GetContributionRewardsQueryResult = Apollo.QueryResult<GetContributionRewardsQuery, GetContributionRewardsQueryVariables>;
-export const GetContributionProjectsAndReposDocument = gql`
-    query GetContributionProjectsAndRepos($where: ContributionsBoolExp) {
-  contributions(where: $where) {
+export type GetContributionDetailsQueryHookResult = ReturnType<typeof useGetContributionDetailsQuery>;
+export type GetContributionDetailsLazyQueryHookResult = ReturnType<typeof useGetContributionDetailsLazyQuery>;
+export type GetContributionDetailsQueryResult = Apollo.QueryResult<GetContributionDetailsQuery, GetContributionDetailsQueryVariables>;
+export const GetContributionProjectsDocument = gql`
+    query GetContributionProjects($where: ContributionsBoolExp) {
+  contributions(where: $where, distinctOn: [projectId]) {
     project {
       name
       logoUrl
       id
     }
+  }
+}
+    `;
+
+/**
+ * __useGetContributionProjectsQuery__
+ *
+ * To run a query within a React component, call `useGetContributionProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContributionProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContributionProjectsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetContributionProjectsQuery(baseOptions?: Apollo.QueryHookOptions<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>(GetContributionProjectsDocument, options);
+      }
+export function useGetContributionProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>(GetContributionProjectsDocument, options);
+        }
+export type GetContributionProjectsQueryHookResult = ReturnType<typeof useGetContributionProjectsQuery>;
+export type GetContributionProjectsLazyQueryHookResult = ReturnType<typeof useGetContributionProjectsLazyQuery>;
+export type GetContributionProjectsQueryResult = Apollo.QueryResult<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>;
+export const GetContributionReposDocument = gql`
+    query GetContributionRepos($where: ContributionsBoolExp) {
+  contributions(where: $where, distinctOn: [repoId]) {
     githubRepo {
       id
       name
@@ -20492,32 +20541,32 @@ export const GetContributionProjectsAndReposDocument = gql`
     `;
 
 /**
- * __useGetContributionProjectsAndReposQuery__
+ * __useGetContributionReposQuery__
  *
- * To run a query within a React component, call `useGetContributionProjectsAndReposQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetContributionProjectsAndReposQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetContributionReposQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContributionReposQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetContributionProjectsAndReposQuery({
+ * const { data, loading, error } = useGetContributionReposQuery({
  *   variables: {
  *      where: // value for 'where'
  *   },
  * });
  */
-export function useGetContributionProjectsAndReposQuery(baseOptions?: Apollo.QueryHookOptions<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>) {
+export function useGetContributionReposQuery(baseOptions?: Apollo.QueryHookOptions<GetContributionReposQuery, GetContributionReposQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>(GetContributionProjectsAndReposDocument, options);
+        return Apollo.useQuery<GetContributionReposQuery, GetContributionReposQueryVariables>(GetContributionReposDocument, options);
       }
-export function useGetContributionProjectsAndReposLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>) {
+export function useGetContributionReposLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributionReposQuery, GetContributionReposQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>(GetContributionProjectsAndReposDocument, options);
+          return Apollo.useLazyQuery<GetContributionReposQuery, GetContributionReposQueryVariables>(GetContributionReposDocument, options);
         }
-export type GetContributionProjectsAndReposQueryHookResult = ReturnType<typeof useGetContributionProjectsAndReposQuery>;
-export type GetContributionProjectsAndReposLazyQueryHookResult = ReturnType<typeof useGetContributionProjectsAndReposLazyQuery>;
-export type GetContributionProjectsAndReposQueryResult = Apollo.QueryResult<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>;
+export type GetContributionReposQueryHookResult = ReturnType<typeof useGetContributionReposQuery>;
+export type GetContributionReposLazyQueryHookResult = ReturnType<typeof useGetContributionReposLazyQuery>;
+export type GetContributionReposQueryResult = Apollo.QueryResult<GetContributionReposQuery, GetContributionReposQueryVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
     query PendingProjectLeaderInvitations($githubUserId: bigint) {
   pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {

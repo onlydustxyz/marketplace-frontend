@@ -1,7 +1,6 @@
-import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 import { Outlet, useOutletContext } from "react-router-dom";
-import { GetPaymentRequestsForProjectDocument, GetPaymentRequestsForProjectQuery } from "src/__generated/graphql";
-import { useOnProjectChange } from "src/providers/Commands";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+
 import { Project } from "src/types";
 
 type OutletContext = {
@@ -12,20 +11,16 @@ export default function Rewards() {
   const { project } = useOutletContext<OutletContext>();
   const { id: projectId, slug: projectKey } = project;
 
-  const { data, refetch } = useSuspenseQuery<GetPaymentRequestsForProjectQuery>(GetPaymentRequestsForProjectDocument, {
-    variables: { projectId },
+  const { data: projectBudget, isLoading: isBudgetLoading } = useRestfulData({
+    resourcePath: `/api/v1/projects/${projectId}/budgets`,
+    method: "GET",
   });
-
-  useOnProjectChange(projectId, refetch);
 
   return (
     <Outlet
       context={{
-        rewards: data.paymentRequests || [],
-        budget: {
-          initialAmount: data.projects.at(0)?.usdBudget?.initialAmount,
-          remainingAmount: data.projects.at(0)?.usdBudget?.remainingAmount,
-        },
+        isBudgetLoading,
+        projectBudget,
         projectId,
         projectKey,
       }}

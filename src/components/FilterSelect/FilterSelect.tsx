@@ -1,6 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-import { ReactElement } from "react";
+import { ReactElement, useCallback } from "react";
 import { FilterField } from "src/components/FilterField/FilterField";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
@@ -35,13 +35,17 @@ export function FilterSelect<T extends Item>({
 }) {
   const { T } = useIntl();
 
-  function renderToken() {
+  const renderToken = useCallback(() => {
     if (Array.isArray(selected)) {
-      return selected?.length ? T(tokens.other, { count: selected.length }) : T(tokens.zero);
+      // Sometimes we have more items selected than items available in the list.
+      // We need to filter to avoid showing "2 x selected" when there's only 1 item in the list for example.
+      const filteredSelected = selected.filter(({ id }) => items.map(({ id }) => id).includes(id));
+
+      return filteredSelected.length ? T(tokens.other, { count: filteredSelected.length }) : T(tokens.zero);
     }
 
     return selected?.label ?? T(tokens.zero);
-  }
+  }, [selected, items, tokens, T]);
 
   return (
     <FilterField label={label}>

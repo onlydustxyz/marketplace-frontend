@@ -17,13 +17,13 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
 import { parseFlag } from "src/utils/parseFlag";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
+import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 
 type Props = {
   avatarUrl: string | null;
   login: string;
   logout: () => void;
-  showMissingPayoutSettingsState: boolean;
+  isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
 };
@@ -31,7 +31,7 @@ type Props = {
 export default function ViewMobile({
   avatarUrl,
   logout,
-  showMissingPayoutSettingsState,
+  isMissingPayoutSettingsInfo,
   githubUserId,
   hideProfileItems,
 }: Props) {
@@ -56,13 +56,13 @@ export default function ViewMobile({
         className={cn(
           "border-1 flex items-center justify-center gap-2 rounded-full border px-2 py-1.5 font-walsheim text-sm",
           {
-            "border-greyscale-50/12": !showMissingPayoutSettingsState,
-            "border-orange-500": showMissingPayoutSettingsState,
+            "border-greyscale-50/12": !isMissingPayoutSettingsInfo,
+            "border-orange-500": isMissingPayoutSettingsInfo,
           }
         )}
       >
         {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} />}
-        {showMissingPayoutSettingsState && <ErrorWarningLine className="text-xl text-orange-500" />}
+        {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
       </button>
       <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom">
         <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
@@ -117,7 +117,7 @@ export default function ViewMobile({
                 )}
                 <button className="flex items-center gap-3 p-4" onClick={() => setPayoutInfoSidePanelOpen(true)}>
                   <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
-                  {showMissingPayoutSettingsState && <Dot className="w-1.5 fill-orange-500" />}
+                  {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </button>
               </>
             </>

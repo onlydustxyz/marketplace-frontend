@@ -1,12 +1,21 @@
+import { components } from "src/__generated/api";
 import { Currency } from "src/types";
+
+export type BudgetCurrencyType = components["schemas"]["BudgetResponse"]["currency"];
 
 type Params = {
   amount: number;
-  currency?: Currency;
+  currency?: BudgetCurrencyType;
   notation?: "standard" | "scientific" | "engineering" | "compact";
+  showCurrency?: boolean;
 };
 
-export const formatMoneyAmount = ({ amount, currency = Currency.USD, notation = "standard" }: Params) => {
+export const formatMoneyAmount = ({
+  amount,
+  currency = Currency.USD,
+  notation = "standard",
+  showCurrency = true,
+}: Params) => {
   switch (currency) {
     case Currency.USD:
       return Intl.NumberFormat("en-US", {
@@ -17,14 +26,13 @@ export const formatMoneyAmount = ({ amount, currency = Currency.USD, notation = 
       })
         .format(amount)
         .replace("K", "k");
-    case Currency.USDC:
-    case Currency.ETH:
-      return `${currency} ${Intl.NumberFormat("en-US", {
+    default:
+      return `${Intl.NumberFormat("en-US", {
         maximumFractionDigits: maximumFractionDigits({ amount, notation }),
         notation,
       })
         .format(amount)
-        .replace("K", "k")}`;
+        .replace("K", "k")}${showCurrency ? ` ${currency}` : ""}`;
   }
 };
 
@@ -45,3 +53,16 @@ const maximumFractionDigits = ({ amount, notation }: Params) => {
       return 0;
   }
 };
+
+// TODO check with Grégoire
+const networkDict: Record<BudgetCurrencyType, string> = {
+  APT: "Aptos",
+  ETH: "Ethereum",
+  OP: "Optimism",
+  STARK: "Stark chain",
+  USD: "IBAN/BIC",
+};
+
+export function currencyToNetwork(currency: BudgetCurrencyType) {
+  return networkDict[currency];
+}

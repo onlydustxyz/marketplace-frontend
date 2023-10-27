@@ -4,7 +4,6 @@ default_swagger_doc_url="https://develop-api.onlydust.com/v3/api-docs"
 staging_swagger_doc_url="https://staging-api.onlydust.com/v3/api-docs"
 production_swagger_doc_url="https://api.onlydust.com/v3/api-docs"
 
-
 function generate_code_from_swagger_doc_url() {
     echo "⚙️  Genereting types using default API BASEPATH = ${1}"
     yarn openapi-typescript $1 --output ./src/__generated/api.d.ts
@@ -21,4 +20,3 @@ else
         generate_code_from_swagger_doc_url $default_swagger_doc_url
     fi
 fi
-

@@ -25,6 +25,5 @@ const customTwMerge = extendTailwindMerge({
 
 /* classNames featuring tailwind-merge features */
 export function cn(...args: ArgumentArray) {
-  // console.log(config.toString());
   return customTwMerge(classNames(args));
 }

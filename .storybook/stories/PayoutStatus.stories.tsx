@@ -1,5 +1,5 @@
 import { PaymentStatus } from "src/types";
-import PayoutStatus from "src/components/PayoutStatus";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 
 export default {
   title: "PayoutStatus",
@@ -8,28 +8,22 @@ export default {
       control: {
         type: "select",
       },
-      options: [PaymentStatus.WAITING_PAYMENT, PaymentStatus.ACCEPTED],
+      options: [
+        PaymentStatus.COMPLETE,
+        PaymentStatus.PENDING_INVOICE,
+        PaymentStatus.PENDING_SIGNUP,
+        PaymentStatus.PROCESSING,
+      ],
     },
-    payoutInfoMissing: { control: { type: "boolean" } },
-    invoiceNeeded: { control: { type: "boolean" } },
-    isProjectLeaderView: { control: { type: "boolean" } },
   },
 };
 
 type Props = {
-  id: string;
   status: PaymentStatus;
-  payoutInfoMissing: boolean;
-  invoiceNeeded: boolean;
-  isProjectLeaderView: boolean;
 };
 
 const props = {
-  id: "status-id",
-  status: PaymentStatus.WAITING_PAYMENT,
-  payoutInfoMissing: false,
-  invoiceNeeded: false,
-  isProjectLeaderView: false,
+  status: PaymentStatus.COMPLETE,
 };
 
 export const Default = {
@@ -39,15 +33,22 @@ export const Default = {
   },
 };
 
-export const PayoutInfoMissing = {
-  render: (args: Props) => <PayoutStatus {...props} {...{ payoutInfoMissing: true }} {...args} />,
+export const PendingSignup = {
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PENDING_SIGNUP }} {...args} />,
+  parameters: {
+    backgrounds: { default: "space" },
+  },
+};
+
+export const Processing = {
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PROCESSING }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },
   },
 };
 
 export const PendingInvoice = {
-  render: (args: Props) => <PayoutStatus {...props} {...{ invoiceNeeded: true }} {...args} />,
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PENDING_INVOICE }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },
   },

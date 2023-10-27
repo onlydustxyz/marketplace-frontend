@@ -85,7 +85,6 @@ export default function GithubPullRequest({
               tooltipProps={{
                 variant: Variant.Default,
                 position: TooltipPosition.Bottom,
-                className: "p-0",
               }}
             />
           </div>
@@ -98,7 +97,6 @@ export default function GithubPullRequest({
               tooltipProps={{
                 variant: Variant.Default,
                 position: TooltipPosition.Bottom,
-                className: "p-0",
               }}
               withIcon
             />

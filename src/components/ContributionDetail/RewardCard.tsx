@@ -1,22 +1,20 @@
 import { Dollar } from "src/assets/icons/Dollar";
-import PayoutStatus from "src/components/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { usePayoutStatus } from "src/hooks/usePayoutStatus";
-import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import { useRewardTimeWorked } from "src/hooks/useRewardTimeWorked";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import TimeLine from "src/icons/TimeLine";
 import { Reward } from "src/types";
+import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
-export function RewardCard({ reward }: { reward: Reward }) {
+export function RewardCard({ reward, onClick }: { reward: Reward; onClick?: () => void }) {
   const { T } = useIntl();
 
-  const { close: closeRewardPanel } = useRewardDetailPanel();
   const { open: openProfilePanel } = useContributorProfilePanel();
 
   const {
@@ -28,44 +26,45 @@ export function RewardCard({ reward }: { reward: Reward }) {
 
   const timeWorked = useRewardTimeWorked(hoursWorked);
 
-  const { status: payoutStatus, invoiceNeeded, payoutInfoMissing } = usePayoutStatus(reward);
+  const { status: payoutStatus } = usePayoutStatus(reward);
 
   return (
-    <article className="flex flex-col gap-3 rounded-xl border border-greyscale-50/8 bg-white/2 p-4 font-walsheim shadow-lg">
+    <article
+      className={cn(
+        "flex flex-col gap-3 rounded-xl border border-greyscale-50/8 bg-white/2 p-4 font-walsheim shadow-lg",
+        onClick ? "cursor-pointer hover:bg-white/5" : ""
+      )}
+      onClick={onClick}
+    >
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1 text-xs leading-none text-greyscale-300">
             <TimeLine className="text-base leading-none" />
-            <span>{displayRelativeDate(requestedAt)}</span>
+            <span className="first-letter:uppercase">{displayRelativeDate(requestedAt)}</span>
             {processedAt ? (
               <>
                 &nbsp;&bull;&nbsp;
-                <span>{T("rewards.panel.rewards.processedAt", { date: displayRelativeDate(processedAt) })}</span>
+                <span>{T("contributions.panel.rewards.processedAt", { date: displayRelativeDate(processedAt) })}</span>
               </>
             ) : null}
           </div>
           <p className="text-base font-semibold leading-none text-greyscale-50">
-            {T("rewards.panel.rewards.id", { id: formatPaymentId(paymentId) })}
+            {T("contributions.panel.rewards.id", { id: formatPaymentId(paymentId) })}
           </p>
         </div>
 
-        <PayoutStatus
-          id={`payment-status-${paymentId}`}
-          status={payoutStatus}
-          invoiceNeeded={invoiceNeeded}
-          payoutInfoMissing={payoutInfoMissing}
-        />
+        <PayoutStatus status={payoutStatus} />
       </div>
 
       <div className="flex items-center gap-2">
         <RoundedImage src={requestor.avatarUrl} alt={requestor.login} rounding={Rounding.Circle} size={ImageSize.Xxs} />
         <p className="text-sm leading-none text-greyscale-300">
-          {T("rewards.panel.rewards.fromUser")}&nbsp;
+          {T("contributions.panel.rewards.fromUser")}&nbsp;
           <button
             type="button"
             className="text-spacePurple-300 hover:text-spacePurple-200"
-            onClick={() => {
-              closeRewardPanel();
+            onClick={e => {
+              e.stopPropagation();
               openProfilePanel(requestor.githubUserId);
             }}
           >

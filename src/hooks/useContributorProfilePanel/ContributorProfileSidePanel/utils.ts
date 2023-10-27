@@ -1,6 +1,6 @@
 import { Maybe, ProfileCover } from "src/__generated/graphql";
 
-export const parseWebsite = (website: Maybe<string>) => {
+export const parseWebsite = (website: string | undefined) => {
   try {
     const url = new URL(website || "");
     return {
