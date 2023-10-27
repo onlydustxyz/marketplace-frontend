@@ -1,3 +1,4 @@
+import { UseMutateFunction } from "@tanstack/react-query";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -6,6 +7,7 @@ import { GithubUserFragment } from "src/__generated/graphql";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
+import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import ExternalLink from "src/components/ExternalLink";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -35,7 +37,6 @@ import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
-import { UseMutateFunction } from "@tanstack/react-query";
 
 enum Align {
   Top = "top",
@@ -74,17 +75,7 @@ export default function View({
     method: "GET",
   });
 
-  const infiniteOptions = isMine
-    ? {
-        rewardId,
-        enabled: Boolean(data),
-        isMine,
-      }
-    : {
-        projectId,
-        rewardId,
-        enabled: Boolean(data),
-      };
+  const infiniteOptions = isMine ? { isMine } : { projectId };
 
   const {
     data: rewardItemsData,
@@ -93,7 +84,7 @@ export default function View({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteRewardItems(infiniteOptions);
+  } = useInfiniteRewardItems({ rewardId, enabled: Boolean(data), ...infiniteOptions });
 
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
@@ -188,10 +179,12 @@ export default function View({
               </div>
               <div className="flex items-baseline gap-2">
                 <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
-                  {/* TODO add CurrencyIcon */}
-                  <span>
-                    {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
-                  </span>
+                  <div className="flex items-center gap-1">
+                    <CurrencyIcons currency={data.currency} className="h-8 w-8" />
+                    <span>
+                      {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
+                    </span>
+                  </div>
                   {!isCurrencyUSD ? <span className="text-3xl">{data.currency}</span> : null}
                 </div>
                 {!isCurrencyUSD && data.dollarsEquivalent ? (
