@@ -98,7 +98,6 @@ function App() {
       path: RoutePaths.PublicProfile,
       element: <PublicProfilePage />,
     },
-
     {
       element: <Layout />,
       children: [
