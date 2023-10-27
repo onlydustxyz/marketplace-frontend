@@ -36,7 +36,17 @@ export default function useInfiniteMyRewardList({
           queryParams,
         }),
         options
-      ).then(res => res.json()),
+      )
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+
+          throw new Error(res.statusText);
+        })
+        .catch(e => {
+          throw new Error(e);
+        }),
     initialPageParam: 0,
     getNextPageParam: lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
   });

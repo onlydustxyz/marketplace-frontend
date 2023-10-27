@@ -59,7 +59,11 @@ export default function Rewards() {
   });
 
   if (error) {
-    return <ErrorFallback />;
+    return (
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
+        <ErrorFallback />
+      </div>
+    );
   }
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
