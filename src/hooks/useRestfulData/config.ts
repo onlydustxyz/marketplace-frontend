@@ -1,4 +1,5 @@
 export enum ApiResourcePaths {
+  GET_USER = "/api/v1/me",
   GET_ALL_PROJECTS = "/api/v1/projects",
   GET_PROJECT_DETAILS = "/api/v1/projects/{{id}}",
   GET_PROJECT_DETAILS_SLUG = "/api/v1/projects/slug/{{id}}",
