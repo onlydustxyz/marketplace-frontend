@@ -29,13 +29,15 @@ import { useState } from "react";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "src/utils/cn";
+import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 type Props = {
-  profile: UserProfileFragment & OwnUserProfileDetailsFragment;
+  profile: UserProfileFragment & OwnUserProfileDetailsFragment; // we don't want to revamp the edit mode for now
+  restFulProfile: Profile; // we don't want to revamp the edit mode for now
   setEditMode: (value: boolean) => void;
 };
 
-export default function EditView({ profile, setEditMode }: Props) {
+export default function EditView({ profile, setEditMode, restFulProfile }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -103,7 +105,7 @@ export default function EditView({ profile, setEditMode }: Props) {
               name="cover"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <Header editable profile={{ ...profile, cover: value }} onChange={onChange} />
+                <Header editable profile={restFulProfile} onChange={onChange} />
               )}
             />
 

@@ -76,7 +76,7 @@ export default function SidePanel({
           <Dialog.Panel
             className={cn(
               {
-                "inset-y-0 right-0 h-[calc(100dvh)] lg:w-2/5 2xl:w-[600px]": placement === "right",
+                "inset-y-0 right-0 h-[calc(100dvh)] lg:w-[680px] lg:max-w-[80%]": placement === "right",
                 "-translate-x-10 cursor-pointer blur-sm transition duration-300":
                   isCoveredPanel && placement === "right",
                 "inset-x-0 bottom-0 max-h-[calc(100dvh)] overflow-y-auto rounded-t-2xl": placement === "bottom",
