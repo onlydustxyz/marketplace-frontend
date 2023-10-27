@@ -48,7 +48,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
   };
 
   if (isError) {
-    return <ErrorFallback />;
+    return <ErrorFallback isFixed />;
   }
 
   return (
