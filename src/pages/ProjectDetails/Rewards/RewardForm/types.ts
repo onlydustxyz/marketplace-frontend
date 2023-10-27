@@ -1,5 +1,6 @@
 import { WorkItem } from "src/__generated/graphql";
-import { Contributor as ContributorBase, Currency } from "src/types";
+import { Contributor as ContributorBase } from "src/types";
+import { BudgetCurrencyType } from "src/utils/money";
 
 export type Contributor = ContributorBase & {
   unpaidCompletedContributions: number;
@@ -14,6 +15,6 @@ export type Inputs = {
   contributor: Contributor;
   memo: string;
   remainingBudget: number;
-  currency: Currency;
+  currency: BudgetCurrencyType;
   amountToWire: number;
 };

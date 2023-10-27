@@ -107,8 +107,7 @@ export const getReducer = (budget: Budget) => (state: State, action: Action) => 
 };
 
 export const useWorkEstimation = (
-  onChange: (amountToPay: number, hoursWorked: number) => void,
-  // budget: { initialAmount: number; remainingAmount: number }
+  onChange: (amountToPay: number, currency: BudgetCurrencyType) => void,
   budget: {
     currency: BudgetCurrencyType;
     initialAmount: number;
@@ -126,7 +125,7 @@ export const useWorkEstimation = (
   const hoursWorked = useMemo(() => Math.ceil(stepNumber * hours[steps]), [stepNumber, steps]);
 
   useEffect(() => {
-    onChange(amountToPay, hoursWorked);
+    onChange(amountToPay, budget.currency);
   }, [amountToPay, hoursWorked]);
 
   const canDecrease = useMemo(() => steps === Steps.Days || stepNumber > 1, [steps, stepNumber]);

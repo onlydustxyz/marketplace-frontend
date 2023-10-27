@@ -13,7 +13,7 @@ import Add from "src/icons/Add";
 import CloseLine from "src/icons/CloseLine";
 import { contributionToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import Title from "src/pages/ProjectDetails/Title";
-import { Currency, GithubContributionType } from "src/types";
+import { GithubContributionType } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
 import { AutoAdd } from "./AutoAdd/AutoAdd";
 import { WorkItem } from "./WorkItem";
@@ -23,11 +23,13 @@ import useWorkItems from "./useWorkItems";
 import { filterUnpaidContributionsByType } from "./utils";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import WorkEstimation from "./WorkEstimation";
+import { BudgetCurrencyType } from "src/utils/money";
 
 interface Props {
   projectId: string;
   budget: ProjectBudgetType;
-  onWorkEstimationChange: (amountToPay: number, currency: Currency) => void;
+  preferredCurrency: BudgetCurrencyType | null;
+  onWorkEstimationChange: (amountToPay: number, currency: BudgetCurrencyType) => void;
   onWorkItemsChange: (workItems: WorkItemFragment[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
@@ -58,6 +60,7 @@ const View: React.FC<Props> = ({
   setContributor,
   unpaidContributions,
   requestNewPaymentMutationLoading,
+  preferredCurrency,
 }) => {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -208,6 +211,7 @@ const View: React.FC<Props> = ({
               onChange={onWorkEstimationChange}
               budget={budget}
               requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
+              preferredCurrency={preferredCurrency}
             />
           )}
         </div>

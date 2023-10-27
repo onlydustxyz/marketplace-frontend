@@ -11,9 +11,9 @@ import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBud
 import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import Loader from "src/components/Loader";
-import { Currency } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
 import { reorderBudgets } from "./utils";
+import { BudgetCurrencyType } from "src/utils/money";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -45,6 +45,11 @@ const RewardForm: React.FC = () => {
     },
   });
 
+  const [preferredCurrency, setPreferredCurrency] = useLocalStorage<BudgetCurrencyType | null>(
+    `preferredCurrency-${projectId}`,
+    null
+  );
+
   const formMethods = useForm<Inputs>({
     defaultValues: {
       remainingBudget: projectBudget?.remainingDollarsEquivalent,
@@ -54,7 +59,6 @@ const RewardForm: React.FC = () => {
   });
 
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
-  const [preferredCurrency, setPreferredCurrency] = useLocalStorage<Currency | null>("preferredCurrency", null);
 
   const { data } = useUnrewardedContributionsQuery({
     variables: {
@@ -77,10 +81,10 @@ const RewardForm: React.FC = () => {
   );
 
   const onWorkEstimationChange = useCallback(
-    (amountToPay: number, currency?: Currency) => {
+    (amountToPay: number, currency: BudgetCurrencyType) => {
       formMethods.setValue("amountToWire", amountToPay);
-      formMethods.setValue("currency", currency || Currency.USD);
-      setPreferredCurrency(currency as Currency);
+      formMethods.setValue("currency", currency);
+      setPreferredCurrency(currency);
     },
     [formMethods]
   );
@@ -118,7 +122,8 @@ const RewardForm: React.FC = () => {
         >
           {!isBudgetLoading && projectBudget?.remainingDollarsEquivalent && projectBudget?.initialDollarsEquivalent ? (
             <View
-              budget={reorderBudgets(projectBudget as ProjectBudgetType)}
+              budget={reorderBudgets(projectBudget)}
+              preferredCurrency={preferredCurrency}
               projectId={projectId}
               onWorkEstimationChange={onWorkEstimationChange}
               onWorkItemsChange={onWorkItemsChange}
@@ -139,7 +144,7 @@ const RewardForm: React.FC = () => {
 const mapFormDataToVariables = ({ workItems, amountToWire, currency, contributor }: Inputs) => {
   return {
     amount: amountToWire,
-    currency: "USD",
+    currency,
     recipientId: contributor.githubUserId,
     items: workItems,
   };
