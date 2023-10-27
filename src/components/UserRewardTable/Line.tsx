@@ -1,13 +1,13 @@
-import Line from "src/components/Table/Line";
-import Cell from "src/components/Table/Cell";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-import RoundedImage from "src/components/RoundedImage";
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
-import { formatMoneyAmount } from "src/utils/money";
-import displayRelativeDate from "src/utils/displayRelativeDate";
-import { useIntl } from "src/hooks/useIntl";
-import { pretty } from "src/utils/id";
 import { components } from "src/__generated/api";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
+import RoundedImage from "src/components/RoundedImage";
+import Cell from "src/components/Table/Cell";
+import Line from "src/components/Table/Line";
+import { useIntl } from "src/hooks/useIntl";
+import displayRelativeDate from "src/utils/displayRelativeDate";
+import { pretty } from "src/utils/id";
 
 export type MyRewardType = components["schemas"]["MyRewardPageItemResponse"];
 
@@ -35,7 +35,23 @@ export default function RewardLine({ reward, onClick, selected }: Props) {
           </div>
         </div>
       </Cell>
-      <Cell>{formatMoneyAmount({ amount: reward?.amount.total, currency: reward?.amount?.currency })}</Cell>
+      <Cell>
+        {reward?.amount.total ? (
+          <div className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]">
+            <AvailableConversion
+              tooltipId={`${reward?.id}-contributors-earned-details`}
+              totalAmount={reward?.amount?.total}
+              currency={{
+                currency: reward?.amount?.currency,
+                amount: reward?.amount?.total,
+                dollar: reward?.amount?.dollarsEquivalent,
+              }}
+            />
+          </div>
+        ) : (
+          "-"
+        )}
+      </Cell>
       <Cell>
         <PayoutStatus
           {...{
