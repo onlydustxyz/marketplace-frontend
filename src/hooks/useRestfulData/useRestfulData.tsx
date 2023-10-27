@@ -27,7 +27,18 @@ export function useRestfulData({
 
   const { isLoading, isError, data } = useQuery({
     queryKey: [resourcePath, pathParam, queryParams, method, isLoggedIn],
-    queryFn: () => fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options).then(res => res.json()),
+    queryFn: () =>
+      fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+
+          throw new Error(res.statusText);
+        })
+        .catch(e => {
+          throw new Error(e);
+        }),
     staleTime: 0,
     gcTime: 0,
   });
@@ -35,7 +46,7 @@ export function useRestfulData({
   return { data, isLoading, isError };
 }
 
-export function useMutationRestfulData({
+export function useMutationRestfulData<Payload = unknown, Response = unknown>({
   resourcePath,
   pathParam = "",
   queryParams = [],
@@ -45,11 +56,21 @@ export function useMutationRestfulData({
 }: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void }) {
   const options = useHttpOptions(method);
   const { mutate, isPending, error } = useMutation({
-    mutationFn: (data: unknown): Promise<unknown> => {
+    mutationFn: (data: Payload): Promise<Response> => {
       return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
         ...options,
         body: JSON.stringify(data),
-      }).then(res => res.json());
+      })
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+
+          throw new Error(res.statusText);
+        })
+        .catch(e => {
+          throw new Error(e);
+        });
     },
     onSuccess,
     onError,
