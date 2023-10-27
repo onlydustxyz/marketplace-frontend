@@ -1,7 +1,8 @@
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { GithubUserFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import { components } from "src/__generated/api";
+import { GithubUserFragment } from "src/__generated/graphql";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -44,24 +45,13 @@ export type Props = {
   rewardId: string;
   projectLeaderView?: boolean;
   onRewardCancel?: () => void;
-
-  // TODO remove
-  payments?: PaymentRequestDetailsFragment["payments"];
 };
 
-export default function View({
-  projectId,
-  rewardId,
-  onRewardCancel,
-  projectLeaderView,
-
-  // TODO remove
-  payments,
-}: Props) {
+export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView }: Props) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
 
-  const { data, isLoading: loading } = useRestfulData({
+  const { data, isLoading: loading } = useRestfulData<components["schemas"]["RewardResponse"]>({
     resourcePath: ApiResourcePaths.GET_PROJECT_REWARD,
     pathParam: { projectId, rewardId },
     method: "GET",
@@ -81,11 +71,11 @@ export default function View({
     // queryParams: {
     //   pageIndex: 1,
     // },
+    enabled: Boolean(data),
   });
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
-  // TODO get from response
-  const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
+  const formattedReceipt = formatReceipt(data?.receipt);
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
 
@@ -123,7 +113,7 @@ export default function View({
                     <GithubPullRequest
                       key={item.id}
                       pullRequest={formatRewardItemToGithubPullRequest(item)}
-                      contributor={data.to as GithubUserFragment}
+                      contributor={data?.to as GithubUserFragment}
                     />
                   );
                 }
@@ -241,46 +231,42 @@ export default function View({
                       T("reward.table.detailsPanel.processedAt", {
                         processedAt: formatDateTime(new Date(data.processedAt)),
                       }),
-                      formattedReceipt &&
-                        T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
-                          recipient: formattedReceipt?.shortDetails,
-                        }),
+                      formattedReceipt
+                        ? T(`reward.table.detailsPanel.processedVia.${formattedReceipt.type}`, {
+                            recipient: formattedReceipt.shortDetails,
+                          })
+                        : null,
                     ]
                       .filter(isDefined)
                       .join("\n")}
                   </ReactMarkdown>
-                  {
-                    // TODO
-                    formattedReceipt && (
-                      <Tooltip anchorSelect=".payment-receipt" clickable>
-                        <div className="flex flex-col items-start">
+
+                  {formattedReceipt ? (
+                    <Tooltip anchorSelect=".payment-receipt" clickable>
+                      <div className="flex flex-col items-start">
+                        <div>
+                          {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.recipient`, {
+                            recipient: formattedReceipt.fullDetails,
+                          })}
+                        </div>
+
+                        {formattedReceipt.type === "crypto" ? (
+                          <ExternalLink
+                            url={`https://etherscan.io/tx/${formattedReceipt.reference}`}
+                            text={T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.reference`, {
+                              reference: formattedReceipt.reference,
+                            })}
+                          />
+                        ) : (
                           <div>
-                            {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
-                              recipient: formattedReceipt?.fullDetails,
+                            {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.reference`, {
+                              reference: formattedReceipt.reference,
                             })}
                           </div>
-
-                          {formattedReceipt?.type === "crypto" ? (
-                            <ExternalLink
-                              url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
-                              text={T(
-                                `reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`,
-                                {
-                                  reference: formattedReceipt?.reference,
-                                }
-                              )}
-                            />
-                          ) : (
-                            <div>
-                              {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                                reference: formattedReceipt?.reference,
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      </Tooltip>
-                    )
-                  }
+                        )}
+                      </div>
+                    </Tooltip>
+                  ) : null}
                 </Details>
               ) : null}
             </div>
@@ -303,11 +289,6 @@ const Details = ({ align = Align.Center, children }: PropsWithChildren & { align
   </div>
 );
 
-type Receipt = {
-  OnChainPayment?: { recipient_address: string; recipient_ens?: string; transaction_hash: string };
-  FiatPayment?: { recipient_iban: string; transaction_reference: string };
-};
-
 type FormattedReceipt = {
   type: "crypto" | "fiat";
   shortDetails: string;
@@ -315,24 +296,26 @@ type FormattedReceipt = {
   reference: string;
 };
 
-const formatReceipt = (receipt?: Receipt): FormattedReceipt | undefined => {
-  if (receipt?.OnChainPayment) {
-    const address = receipt?.OnChainPayment.recipient_address;
-    const ens = receipt?.OnChainPayment.recipient_ens;
+const formatReceipt = (receipt?: components["schemas"]["ReceiptResponse"]): FormattedReceipt | undefined => {
+  if (receipt?.type === "CRYPTO") {
+    const { ens, walletAddress: address = "", transactionReference: reference } = receipt;
 
     return {
       type: "crypto",
       shortDetails: ens ?? `0x...${address.substring(address.length - 5)}`,
       fullDetails: address,
-      reference: receipt?.OnChainPayment.transaction_hash,
+      reference,
     };
-  } else if (receipt?.FiatPayment) {
-    const iban = receipt?.FiatPayment.recipient_iban;
+  }
+
+  if (receipt?.type === "FIAT") {
+    const { iban = "", transactionReference: reference } = receipt;
+
     return {
       type: "fiat",
       shortDetails: `**** ${iban.substring(iban.length - 3)}`,
       fullDetails: IBAN.printFormat(iban),
-      reference: receipt?.FiatPayment.transaction_reference,
+      reference,
     };
   }
 };

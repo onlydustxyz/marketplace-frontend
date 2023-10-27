@@ -12,12 +12,14 @@ type Props = {
   projectId: string;
   rewardId: string;
   queryParams?: QueryParam[];
+  enabled?: boolean;
 };
 
 export default function useInfiniteProjectRewardItems({
   projectId,
   rewardId,
   queryParams,
+  enabled = true,
 }: Props): UseInfiniteQueryResult<RewardsPagesData, unknown> {
   const options = useHttpOptions("GET");
 
@@ -46,5 +48,6 @@ export default function useInfiniteProjectRewardItems({
         }),
     initialPageParam: 0,
     getNextPageParam: lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
+    enabled,
   });
 }
