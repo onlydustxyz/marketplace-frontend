@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { QueryParam } from "src/utils/getEndpointUrl";
 
 export default function useQueryParamsSorting({ field, isAscending }: { field?: string; isAscending?: boolean }) {
   const [sorting, setSorting] = useState({ field, isAscending });
@@ -15,7 +16,7 @@ export default function useQueryParamsSorting({ field, isAscending }: { field?: 
         : []),
     ],
     [sorting]
-  );
+  ) as QueryParam[];
 
   return { sorting, sortField, queryParams };
 }

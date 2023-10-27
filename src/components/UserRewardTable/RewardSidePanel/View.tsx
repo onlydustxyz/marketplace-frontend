@@ -13,9 +13,10 @@ import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/Githu
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import { ShowMore } from "src/components/Table/ShowMore";
 import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
-import useInfiniteProjectRewardItems from "src/hooks/useInfiniteProjectRewardItems";
+import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
@@ -34,7 +35,6 @@ import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
-import { ShowMore } from "src/components/Table/ShowMore";
 
 enum Align {
   Top = "top",
@@ -42,21 +42,48 @@ enum Align {
 }
 
 export type Props = {
-  projectId: string;
   rewardId: string;
   projectLeaderView?: boolean;
   onRewardCancel?: () => void;
 };
 
-export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView }: Props) {
+type ProjectProps = {
+  projectId: string;
+  isMine?: never;
+} & Props;
+
+type MyProps = {
+  projectId?: never;
+  isMine: true;
+} & Props;
+
+export default function View({
+  projectId,
+  rewardId,
+  onRewardCancel,
+  projectLeaderView,
+  isMine,
+}: ProjectProps | MyProps) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
 
   const { data, isLoading: loading } = useRestfulData<components["schemas"]["RewardResponse"]>({
-    resourcePath: ApiResourcePaths.GET_PROJECT_REWARD,
-    pathParam: { projectId, rewardId },
+    resourcePath: isMine ? ApiResourcePaths.GET_MY_REWARD_BY_ID : ApiResourcePaths.GET_PROJECT_REWARD,
+    pathParam: isMine ? rewardId : { projectId, rewardId },
     method: "GET",
   });
+
+  const infiniteOptions = isMine
+    ? {
+        rewardId,
+        enabled: Boolean(data),
+        isMine,
+      }
+    : {
+        projectId,
+        rewardId,
+        enabled: Boolean(data),
+      };
 
   const {
     data: rewardItemsData,
@@ -65,11 +92,8 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteProjectRewardItems({
-    projectId,
-    rewardId,
-    enabled: Boolean(data),
-  });
+  } = useInfiniteRewardItems(infiniteOptions);
+
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
   const formattedReceipt = formatReceipt(data?.receipt);

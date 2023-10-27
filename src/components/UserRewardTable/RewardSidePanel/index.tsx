@@ -10,8 +10,11 @@ export default function RewardSidePanel({
   rewardId,
   onRewardCancel,
   projectLeaderView,
+  isMine,
 }: ComponentProps<typeof View>) {
-  return (
+  return isMine ? (
+    <View rewardId={rewardId} onRewardCancel={onRewardCancel} projectLeaderView={projectLeaderView} isMine={isMine} />
+  ) : (
     <View
       projectId={projectId}
       rewardId={rewardId}

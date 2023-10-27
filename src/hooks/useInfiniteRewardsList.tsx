@@ -1,7 +1,7 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useHttpOptions } from "./useHttpOptions";
-import { getEndpointUrl, QueryParam } from "src/utils/getEndpointsUrl";
+import { getEndpointUrl, QueryParam } from "src/utils/getEndpointUrl";
 import { components } from "src/__generated/api";
 import { PageData, PagesData } from "src/types";
 
