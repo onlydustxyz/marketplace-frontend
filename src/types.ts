@@ -299,7 +299,7 @@ export type ContributorT = {
       currency: "APT" | "ETH" | "OP" | "STARK" | "USD";
       totalAmount: number;
       totalDollarsEquivalent?: number;
-    };
+    }[];
     totalAmount?: number;
   };
   githubUserId: number;

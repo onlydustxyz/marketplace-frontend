@@ -37,16 +37,14 @@ export function RewardLine({ reward, onClick, selected }: Props) {
           </div>
         </Cell>
         <Cell height={CellHeight.Medium}>
-          <div
-            className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]"
-            data-tooltip-id={`${reward.id}-reward-conversion`}
-          >
+          <div className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]">
             <AvailableConversion
               tooltipId={`${reward.id}-reward-conversion`}
-              type="full"
-              dollar={amount.dollarsEquivalent}
-              totalAmount={amount.total}
-              currency={amount.currency}
+              currency={{
+                currency: amount.currency,
+                amount: amount.total,
+                dollar: amount.dollarsEquivalent,
+              }}
             />
           </div>
         </Cell>
