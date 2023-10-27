@@ -655,6 +655,7 @@
       "send": "Save payout info",
       "done": "Done",
       "success": "Changes saved",
+      "disabledEther": "Edit the address above if you want to perform changes",
       "technologies": {
         "supportedTooltip": "Increase your chance of matching a project by choosing featured technologies.",
         "suggestion": {

@@ -13,6 +13,8 @@ export function useHttpOptions(method: "GET" | "POST" | "PUT" | "DELETE"): {
     method,
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      "Content-Type": "application/json",
+      accept: "application/json",
     },
   };
 
