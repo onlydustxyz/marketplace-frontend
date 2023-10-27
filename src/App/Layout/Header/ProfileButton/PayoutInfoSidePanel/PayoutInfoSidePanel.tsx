@@ -1,7 +1,6 @@
 import IBANParser from "iban";
 import { useEffect } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import ErrorFallback from "src/ErrorFallback";
 import { components } from "src/__generated/api";
 import { PreferredMethod } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
@@ -21,7 +20,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
   const { T } = useIntl();
   const showToaster = useShowToaster();
 
-  const { data: user, isError } = useRestfulData({
+  const { data: user } = useRestfulData<UserPayoutType>({
     resourcePath: ApiResourcePaths.GET_PAYOUT_INFO,
     method: "GET",
   });
@@ -46,10 +45,6 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     // optimisticly set form's defaultValues to submitted form data to avoid flickering related to isDirty
     reset(formData);
   };
-
-  if (isError) {
-    return <ErrorFallback />;
-  }
 
   return (
     <SidePanel open={open} setOpen={setOpen}>
@@ -142,7 +137,7 @@ type FormDataType = {
   hasValidPayoutSettings: boolean;
 };
 
-const decodeQuery = (user: UserPayoutType): FormDataType => {
+const decodeQuery = (user?: UserPayoutType): FormDataType => {
   const { location, person, payoutSettings, company, hasValidContactInfo } = user || {};
   return {
     firstname: (person?.firstname || company?.owner?.firstname) ?? "",
