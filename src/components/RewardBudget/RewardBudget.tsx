@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { RewardBudgetSelect } from "./RewardBudgetSelect/RewardBudgetSelect";
 import { RewardBudgetProps, WorkEstimationBudgetDetails } from "./RewardBudget.type";
 import { FieldInput } from "src/components/New/Field/Input";
@@ -26,6 +26,15 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   const [selectedBudget, setSelectedBudget] = useState<WorkEstimationBudgetDetails>(props.budgets[0]);
   const [amount, setAmount] = useState<number>(0);
 
+  useEffect(() => {
+    if (props.preferedCurrency) {
+      const find = props.budgets.find(b => b.currency === props.preferedCurrency);
+      if (find) {
+        setSelectedBudget(find);
+      }
+    }
+  }, [props.preferedCurrency, selectedBudget]);
+
   const onSelectedBudgetChange = (newBudget: WorkEstimationBudgetDetails) => {
     setSelectedBudget(newBudget);
     setAmount(0);
@@ -35,6 +44,15 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     const value = parseInt(e.target.value);
     if (!isNaN(value)) {
       setAmount(value);
+    }
+  };
+
+  const handleSave = () => {
+    if (props.onChange) {
+      props.onChange({
+        amount: amount,
+        currency: selectedBudget.currency,
+      });
     }
   };
 
@@ -70,7 +88,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
         />
       </div>
       <div className="flex w-full flex-col px-6 pb-6 pt-4">
-        <Button width={Width.Full} disabled={disabledButton}>
+        <Button width={Width.Full} disabled={disabledButton} onClick={handleSave}>
           <CheckLine />
           {T("rewardBudget.submit")}
         </Button>

@@ -49,3 +49,12 @@ export const Default = {
     </div>
   ),
 };
+
+export const Default2 = {
+  render: (args: ComponentProps<typeof RewardBudget>) => (
+    <div style={{ width: 384 }}>
+      <RewardBudget {...defaultProps} {...args} onChange={d => console.log("save", d)} preferedCurrency="ETH" />
+      <Tooltip />
+    </div>
+  ),
+};
