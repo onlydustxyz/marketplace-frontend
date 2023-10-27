@@ -1,53 +1,53 @@
-import { useIntl } from "src/hooks/useIntl";
-import OverviewPanel from "./OverviewPanel";
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
+import { sortBy } from "lodash";
+import { Dispatch, useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
+import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
+import { components } from "src/__generated/api";
 import {
   OwnUserProfileDetailsFragment,
   OwnUserProfileDocument,
   UserProfileFragment,
   useUpdateUserProfileMutation,
 } from "src/__generated/graphql";
-import Card from "src/components/Card";
-import GithubRepoDetails from "./GithubRepoDetails";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import Badge, { BadgeSize } from "src/components/Badge";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Title from "src/pages/ProjectDetails/Title";
-import MarkdownPreview from "src/components/MarkdownPreview";
-import { sortBy } from "lodash";
-import { buildLanguageString } from "src/utils/languages";
-import Tag, { TagSize } from "src/components/Tag";
-import CodeSSlashLine from "src/icons/CodeSSlashLine";
-import Callout from "src/components/Callout";
-import RecordCircleLine from "src/icons/RecordCircleLine";
 import Button, { ButtonSize, Width } from "src/components/Button";
-import { useAuth } from "src/hooks/useAuth";
-import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
-import { Action, SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
-import { withTooltip } from "src/components/Tooltip";
-import useApplications from "./useApplications";
-import LockFill from "src/icons/LockFill";
-import useProjectVisibility from "src/hooks/useProjectVisibility";
-import { Dispatch, useEffect, useState } from "react";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { useMediaQuery } from "usehooks-ts";
-import { viewportConfig } from "src/config";
+import Callout from "src/components/Callout";
+import Card from "src/components/Card";
 import ContactInformations from "src/components/ContactInformations";
-import { FormProvider, useForm } from "react-hook-form";
+import MarkdownPreview from "src/components/MarkdownPreview";
+import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
+import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
+import Tag, { TagSize } from "src/components/Tag";
+import { withTooltip } from "src/components/Tooltip";
+import { viewportConfig } from "src/config";
+import { useAuth } from "src/hooks/useAuth";
 import {
   UserProfileInfo,
   fromFragment,
   toVariables,
 } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
-import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
-import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
+import { useIntl } from "src/hooks/useIntl";
+import useProjectVisibility from "src/hooks/useProjectVisibility";
+import { Action, SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import { rates } from "src/hooks/useWorkEstimation";
-import { Project, Repo } from "src/types";
+import CodeSSlashLine from "src/icons/CodeSSlashLine";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import LockFill from "src/icons/LockFill";
+import RecordCircleLine from "src/icons/RecordCircleLine";
+import Title from "src/pages/ProjectDetails/Title";
+import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
+import { useMediaQuery } from "usehooks-ts";
+import GithubRepoDetails from "./GithubRepoDetails";
+import OverviewPanel from "./OverviewPanel";
+import useApplications from "./useApplications";
 
 type OutletContext = {
-  project: Project;
+  project: components["schemas"]["ProjectResponse"];
 };
 
 export default function Overview() {
@@ -74,7 +74,6 @@ export default function Overview() {
   const leads = project?.leaders;
   const languages = getTopTechnologies(project?.technologies);
   const hiring = project?.hiring;
-  const isInvitedAsProjectLead = project?.isInvitedAsProjectLead;
   const isProjectLeader = ledProjectIds.includes(projectId);
 
   const { alreadyApplied, applyToProject } = useApplications(projectId);
@@ -84,10 +83,7 @@ export default function Overview() {
   const profile = userProfileData?.profile;
 
   useEffect(() => {
-    if (
-      projectId &&
-      ((projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) || !isInvitedAsProjectLead)
-    ) {
+    if (projectId && projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) {
       dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: projectId });
     }
   }, [projectId, ledProjectIds]);
@@ -229,7 +225,7 @@ function ProjectDescriptionCard({
 }
 
 interface GithubRepositoriesCardProps {
-  githubRepos: Repo[];
+  githubRepos: components["schemas"]["GithubRepoResponse"][];
 }
 
 function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {

@@ -56,12 +56,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
 
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
         {selectedReward && (
-          <RewardSidePanelAsLeader
-            projectId={projectId}
-            rewardId={selectedReward.id}
-            setOpen={setSidePanelOpen}
-            recipientId={selectedReward.id as unknown as number}
-          />
+          <RewardSidePanelAsLeader projectId={projectId} rewardId={selectedReward.id} setOpen={setSidePanelOpen} />
         )}
       </SidePanel>
     </>

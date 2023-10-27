@@ -2,7 +2,6 @@ import { SliderButton } from "@typeform/embed-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
-import { MyRewardType } from "src/components/UserRewardTable/Line";
 import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import Attachment2 from "src/icons/Attachment2";
@@ -10,7 +9,6 @@ import { formatDate } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
-import { UserPayoutSettingsFragment } from "src/__generated/graphql";
 import { MyPayoutInfoType, MyRewardsPendingInvoiceType } from ".";
 
 type Props = {

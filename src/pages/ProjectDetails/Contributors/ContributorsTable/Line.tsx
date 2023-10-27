@@ -35,6 +35,8 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
     [contributor]
   );
 
+  console.log({ currencies });
+
   return (
     <Line key={contributor.login} className="group h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">

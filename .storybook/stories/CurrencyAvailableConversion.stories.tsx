@@ -87,7 +87,7 @@ export const OneCurrency = {
         dollar={1200}
         totalAmount={1200}
         tooltipId="availableConversion-stories"
-        numberCurencyToShow={1}
+        numberCurrencyToShow={1}
         currencies={[
           {
             amount: 1200,

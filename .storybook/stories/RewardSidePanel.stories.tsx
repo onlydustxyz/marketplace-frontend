@@ -13,43 +13,25 @@ import withAuthProvider from "../decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
 
+// TODO this story is obsolete, needs work after multitoken
+
 const statuses = {
-  payoutInfoMissingAsLeader: {
-    payoutInfoMissing: true,
-    projectLeaderView: true,
-    status: PaymentStatus.WAITING_PAYMENT,
-  },
-  payoutInfoMissing: { payoutInfoMissing: true, status: PaymentStatus.WAITING_PAYMENT },
-  pendingInvoice: { payoutInfoMissing: false, invoiceNeeded: true, status: PaymentStatus.WAITING_PAYMENT },
-  processing: { payoutInfoMissing: false, status: PaymentStatus.WAITING_PAYMENT },
-  complete: { payoutInfoMissing: false, status: PaymentStatus.ACCEPTED },
+  //TODO: uncomment this when API is ready
+  //   payoutInfoMissingAsLeader: {
+  //     payoutInfoMissing: true,
+  //     projectLeaderView: true,
+  //     status: PaymentStatus.PAYMENT_INFO_MISSING,
+  //   },
+  //   payoutInfoMissing: { payoutInfoMissing: true, status: PaymentStatus.PAYMENT_INFO_MISSING },
+  pendingInvoice: { payoutInfoMissing: false, invoiceNeeded: true, status: PaymentStatus.PENDING_INVOICE },
+  processing: { payoutInfoMissing: false, status: PaymentStatus.PROCESSING },
+  complete: { payoutInfoMissing: false, status: PaymentStatus.COMPLETE },
 };
 
 export default {
   title: "RewardSidePanel",
   component: View,
   decorators: [withSidePanelStackProvider, withContributorProfilePanelProvider, withAuthProvider],
-  argTypes: {
-    payoutStatus: {
-      options: Object.keys(statuses),
-      mapping: statuses,
-      control: {
-        type: "select",
-        labels: {
-          payoutInfoMissingAsLeader: "Payout Info Missing (as project lead)",
-          payoutInfoMissing: "Payout Info Missing",
-          pendingInvoice: "Pending Invoice",
-          processing: "Processing",
-          complete: "Complete",
-        },
-      },
-    },
-    requestorIsYou: { type: "boolean" },
-    recipientIsYou: { type: "boolean" },
-    workItemsCount: {
-      control: { type: "range", min: 1, max: 50 },
-    },
-  },
 };
 
 const issues: GithubIssueFragment[] = range(1, 50).map(id => ({
@@ -116,7 +98,7 @@ const payment: PaymentRequestDetailsFragment = {
 const args = {
   workItemsCount: 2,
   ...payment,
-  ...statuses.payoutInfoMissing,
+  //   ...statuses.payoutInfoMissing,
 };
 
 type CustomArgs = {
@@ -136,7 +118,7 @@ export const Default = {
         return;
       }}
     >
-      <View {...args} {...props} {...props.payoutStatus} workItems={payment.workItems.slice(0, props.workItemsCount)} />
+      <View {...args} {...props} {...props.payoutStatus} />
     </SidePanel>
   ),
 };

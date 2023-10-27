@@ -1,10 +1,8 @@
 import { Dollar } from "src/assets/icons/Dollar";
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
-import { usePayoutStatus } from "src/hooks/usePayoutStatus";
 import { useRewardTimeWorked } from "src/hooks/useRewardTimeWorked";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import TimeLine from "src/icons/TimeLine";
@@ -26,8 +24,6 @@ export function RewardCard({ reward, onClick }: { reward: Reward; onClick?: () =
   const processedAt = payments.length ? payments[0].processedAt : null;
 
   const timeWorked = useRewardTimeWorked(hoursWorked);
-
-  const { status: payoutStatus } = usePayoutStatus(reward);
 
   return (
     <article
@@ -54,7 +50,10 @@ export function RewardCard({ reward, onClick }: { reward: Reward; onClick?: () =
           </p>
         </div>
 
-        <PayoutStatus status={payoutStatus} />
+        {
+          // TODO use REST call
+          /* <PayoutStatus status={payoutStatus} /> */
+        }
       </div>
 
       <div className="flex items-center gap-2">

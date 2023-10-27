@@ -1,10 +1,10 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Currency, PaymentStatus } from "src/types";
 
 import UserRewardTable from "src/components/UserRewardTable";
-import { Reward } from "src/components/UserRewardTable/Line";
+import { MyRewardType as Reward } from "src/components/UserRewardTable/Line";
+import { Field } from "src/pages/Rewards";
 import { daysFromNow } from "src/utils/date";
-import { WorkItemType } from "src/__generated/graphql";
 
 export default {
   title: "UserRewardTable",
@@ -13,68 +13,45 @@ export default {
 
 const mockPayments: Reward[] = [
   {
-    amount: { value: 200, currency: Currency.ETH },
     id: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
-    recipientId: 123,
-    requestedAt: daysFromNow(700),
-    project: {
-      id: "a4441ead-737a-4feb-8700-60f0721776ff",
-      title: "Awesome Project",
-      logoUrl: "https://avatars.githubusercontent.com/u/25772758?v=4",
+    amount: {
+      total: 2000,
+      currency: Currency.USD,
     },
-    status: PaymentStatus.ACCEPTED,
-    workItems: [
-      {
-        id: "1",
-        type: WorkItemType.Issue,
-        githubIssue: null,
-        githubPullRequest: null,
-        githubCodeReview: null,
-      },
-      {
-        id: "2",
-        type: WorkItemType.Issue,
-        githubIssue: null,
-        githubPullRequest: null,
-        githubCodeReview: null,
-      },
-    ],
-    invoiceReceived: false,
+    numberOfRewardedContributions: 2,
+    projectId: "1ac6c2ce-cba0-4e14-837c-facf9c1f0258",
+    requestedAt: daysFromNow(700).toISOString(),
+    rewardedOnProjectLogoUrl: "",
+    rewardedOnProjectName: "Project 1",
+    status: PaymentStatus.COMPLETE,
   },
   {
-    amount: { value: 100, currency: Currency.USD },
     id: "6397226d-0461-4451-962c-a61e36fd324b",
-    recipientId: 123,
-    requestedAt: daysFromNow(1500),
-    project: {
-      id: "fea3c754-bf35-4f2b-aabc-ff345105322e",
-      title: "Good Project",
+    amount: {
+      total: 3000,
+      currency: Currency.ETH,
     },
-    workItems: [
-      {
-        id: "1",
-        type: WorkItemType.Issue,
-        githubIssue: null,
-        githubPullRequest: null,
-        githubCodeReview: null,
-      },
-    ],
-    status: PaymentStatus.WAITING_PAYMENT,
-    invoiceReceived: true,
+    numberOfRewardedContributions: 3,
+    projectId: "1ac6c2ce-cba0-4e14-837c-facf9c1f0258",
+    requestedAt: daysFromNow(200).toISOString(),
+    rewardedOnProjectLogoUrl: "",
+    rewardedOnProjectName: "Project 2",
+    status: PaymentStatus.PENDING_INVOICE,
   },
 ];
 
 const Template: ComponentStory<typeof UserRewardTable> = args => (
   <UserRewardTable
     rewards={mockPayments}
-    payoutInfoMissing={args.payoutInfoMissing}
-    invoiceNeeded={args.invoiceNeeded}
+    fetchNextPage={() => {}}
+    hasNextPage={false}
+    isFetchingNextPage={false}
+    sorting={{
+      field: Field.Date,
+      ascending: false,
+    }}
+    applySorting={() => {}}
   />
 );
 
 export const Default = Template.bind({});
-
-Default.args = {
-  payoutInfoMissing: false,
-  invoiceNeeded: false,
-};

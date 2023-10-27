@@ -1,8 +1,8 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { ComponentProps } from "react";
+import { Field } from "src/pages/ProjectDetails/Contributors";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable/View";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
-import { ContributorT } from "src/types";
-import { Field } from "src/pages/ProjectDetails/Contributors";
 
 export default {
   title: "ContributorsTable",
@@ -10,19 +10,44 @@ export default {
   decorators: [withContributorProfilePanelProvider],
 } as ComponentMeta<typeof ContributorsTable>;
 
-const mockContributors: ContributorT[] = [
+const mockContributors: ComponentProps<typeof ContributorsTable>["contributors"] = [
+  {
+    githubUserId: 43467246,
+    login: "AnthonyBuisset",
+    avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+    contributionCount: 861,
+    rewardCount: 2,
+    earned: {
+      totalAmount: 2000,
+      details: [
+        {
+          totalAmount: 2000,
+          totalDollarsEquivalent: 2000,
+          currency: "USD",
+        },
+      ],
+    },
+    contributionToRewardCount: 857,
+    pullRequestToReward: 487,
+    issueToReward: 11,
+    codeReviewToReward: 359,
+    isRegistered: true,
+  },
   {
     githubUserId: 33089347,
     login: "97joseph",
     avatarUrl: "https://avatars.githubusercontent.com/u/33089347?v=4",
     contributionCount: 1,
     rewardCount: 0,
-    earned: null,
-    contributionToRewardCount: null,
-    pullRequestToReward: null,
-    issueToReward: null,
-    codeReviewToReward: null,
-    isRegistered: false
+    earned: {
+      details: undefined,
+      totalAmount: undefined,
+    },
+    contributionToRewardCount: undefined,
+    pullRequestToReward: undefined,
+    issueToReward: undefined,
+    codeReviewToReward: undefined,
+    isRegistered: false,
   },
   {
     githubUserId: 786640,
@@ -30,12 +55,15 @@ const mockContributors: ContributorT[] = [
     avatarUrl: "https://avatars.githubusercontent.com/u/786640?v=4",
     contributionCount: 1,
     rewardCount: 0,
-    earned: 456,
+    earned: {
+      details: undefined,
+      totalAmount: 456,
+    },
     contributionToRewardCount: 21,
     pullRequestToReward: 10,
     issueToReward: 3,
     codeReviewToReward: 8,
-    isRegistered: true
+    isRegistered: true,
   },
   {
     githubUserId: 4391003,
@@ -43,12 +71,15 @@ const mockContributors: ContributorT[] = [
     avatarUrl: "https://avatars.githubusercontent.com/u/4391003?v=4",
     contributionCount: 1,
     rewardCount: 0,
-    earned: 30,
-    contributionToRewardCount: null,
-    pullRequestToReward: null,
-    issueToReward: null,
-    codeReviewToReward: null,
-    isRegistered: true
+    earned: {
+      details: undefined,
+      totalAmount: 30,
+    },
+    contributionToRewardCount: undefined,
+    pullRequestToReward: undefined,
+    issueToReward: undefined,
+    codeReviewToReward: undefined,
+    isRegistered: true,
   },
 ];
 
