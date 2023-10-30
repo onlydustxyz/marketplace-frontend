@@ -8,11 +8,6 @@ export enum Steps {
   Hours = "hours",
 }
 
-// export type Budget = {
-//   initialAmount: number;
-//   remainingAmount: number;
-// };
-
 export type Budget = {
   currency: BudgetCurrencyType;
   initialAmount: number;

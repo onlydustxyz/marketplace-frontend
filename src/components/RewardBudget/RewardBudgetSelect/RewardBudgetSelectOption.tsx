@@ -23,11 +23,10 @@ export const RewardBudgetSelectOption = ({ budget, last }: RewardBudgetSelectOpt
       key={budget.currency}
       disabled={isDisabled}
       value={budget}
-      className={cn(
-        "cursor-pointer border-b-[1px] border-greyscale-50/12 px-4 py-2 hover:bg-greyscale-50/20",
-        last && "border-b-0",
-        isDisabled && "pointer-events-none"
-      )}
+      className={cn("cursor-pointer border-b border-greyscale-50/12 px-4 py-2 hover:bg-greyscale-50/20", {
+        "border-b-0": last,
+        "pointer-events-none": isDisabled,
+      })}
     >
       <div className="flex w-full flex-row items-center justify-between gap-2">
         <div className="flex flex-row items-center justify-start gap-3">
@@ -50,16 +49,14 @@ export const RewardBudgetSelectOption = ({ budget, last }: RewardBudgetSelectOpt
           </p>
         </div>
         {budget.currency !== Currency.USD && (
-          <>
-            <p className={cn("font-walsheim text-sm font-normal", isDisabled && "text-greyscale-500")}>
-              {budget.remainingDollarsEquivalent
-                ? `(${formatMoneyAmount({
-                    amount: budget.remainingDollarsEquivalent,
-                    currency: Currency.USD,
-                  })})`
-                : T("availableConversion.tooltip.na")}
-            </p>
-          </>
+          <p className={cn("font-walsheim text-sm font-normal", isDisabled && "text-greyscale-500")}>
+            {budget.remainingDollarsEquivalent
+              ? `(${formatMoneyAmount({
+                  amount: budget.remainingDollarsEquivalent,
+                  currency: Currency.USD,
+                })})`
+              : T("availableConversion.tooltip.na")}
+          </p>
         )}
       </div>
     </Listbox.Option>

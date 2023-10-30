@@ -15,12 +15,12 @@ export const RewardBudgetSelectValue = ({ value, disabled }: RewardBudgetSelectV
   const { T } = useIntl();
 
   return (
-    <Listbox.Button className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-greyscale-50/8 bg-white/5 px-4 py-[12px] shadow-light">
+    <Listbox.Button className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-greyscale-50/8 bg-white/5 px-4 py-3 shadow-light">
       <div className="flex flex-row items-center justify-start gap-2">
         <Chip solid>
           <CurrencyIcons currency={value.currency} className="h-4 w-4" />
         </Chip>
-        <label className="font-walsheim text-base font-bold leading-[16px]">
+        <label className="font-walsheim text-base font-bold leading-4">
           {T(`currencies.currency.${value.currency}`)}
         </label>
       </div>

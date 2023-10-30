@@ -35,8 +35,6 @@ export default function WorkEstimation({
   const { T } = useT();
   const isRewardDisbled = budget.remainingDollarsEquivalent === 0;
 
-  console.log("@", budget);
-
   return (
     <Card padded={false}>
       <div className="divide-y divide-greyscale-50/8 rounded-2xl bg-space-card bg-cover bg-top bg-no-repeat">

@@ -34,10 +34,11 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   };
 
   const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
+    const fieldValue = e.target.value;
+    if (fieldValue === "") {
       setAmount(undefined);
     }
-    const value = parseInt(e.target.value);
+    const value = parseInt(fieldValue);
     if (value < 0) {
       setAmount(0);
     } else if (!isNaN(value)) {
@@ -96,7 +97,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           remaining={selectedBudget.remaining || 0}
         />
       </div>
-      <div className="flex w-full flex-col border-b-[1px] border-greyscale-50/8 px-8 pb-6 pt-3">
+      <div className="flex w-full flex-col border-b border-greyscale-50/8 px-8 pb-6 pt-3">
         <RewardBudgetDetails
           amount={withDefaultAmount}
           budget={selectedBudget}
