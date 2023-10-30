@@ -18,6 +18,7 @@ import { ContributionTable, TableColumns, type TableSort } from "src/components/
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
+import useInfiniteMyContributions from "src/hooks/useInfiniteMyContributions";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
@@ -106,6 +107,15 @@ export default function Contributions() {
       projectId: { _in: projectIds.length ? projectIds : undefined },
     };
   }
+
+  //   const {
+  //     data: inProgressData,
+  //     isLoading: inProgressLoading,
+  //     isError: inProgressError,
+  //   } = useInfiniteMyContributions({
+  //     queryParams: [],
+  //     enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress))),
+  //   });
 
   const {
     data: inProgressData,
