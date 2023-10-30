@@ -57,7 +57,8 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
   method = "PUT",
   onSuccess,
   onError,
-}: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void }) {
+  onSettled,
+}: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void; onSettled?: () => void }) {
   const options = useHttpOptions(method);
   const { mutate, isPending, error } = useMutation({
     mutationFn: (data: Payload): Promise<Response> => {
@@ -65,19 +66,26 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
         ...options,
         body: JSON.stringify(data),
       })
-        .then(res => {
+        .then(async res => {
           if (res.ok) {
-            return res.json();
-          }
+            try {
+              const text = await res.text();
+              const data = text ? JSON.parse(text) : {}; // Try to parse the response as JSON
 
-          throw new Error(res.statusText);
+              return data;
+            } catch (err: unknown) {
+              console.log("ERROR", err);
+            }
+          }
         })
         .catch(e => {
+          console.log("Error!!", e);
           throw new Error(e);
         });
     },
     onSuccess,
     onError,
+    onSettled,
   });
 
   return { mutate, isPending, error };
