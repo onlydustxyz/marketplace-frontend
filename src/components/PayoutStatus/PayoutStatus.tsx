@@ -11,6 +11,10 @@ type Props = {
   status: PaymentStatusUnion;
 };
 
+interface PayoutInfoMissingTagProps {
+  isProjectLeaderView?: boolean;
+}
+
 export type PaymentStatusType = components["schemas"]["RewardPageItemResponse"]["status"];
 type PaymentStatusUnion = `${PaymentStatus}`;
 
@@ -73,7 +77,7 @@ const InvoiceNeededTag = () => {
   );
 };
 
-const PayoutInfoMissingTag = (isProjectLeaderView: boolean) => {
+const PayoutInfoMissingTag: React.FC<PayoutInfoMissingTagProps> = ({ isProjectLeaderView = false }) => {
   const { T } = useIntl();
 
   return (
