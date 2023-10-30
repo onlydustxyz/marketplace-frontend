@@ -10,4 +10,5 @@ export type MultiStepsFormProps = {
   next?: string;
   submit?: boolean;
   submitDisabled?: boolean;
+  footerRightElement?: React.ReactNode;
 } & PropsWithChildren;

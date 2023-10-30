@@ -30,7 +30,7 @@ export const Flex: FC<FlexProps> = ({
         "flex",
         `flex-${direction}`,
         `justify-${justify}`,
-        `item-${item}`,
+        `items-${item}`,
         `flex-${wrap}`,
         `gap-${gap}`,
         className

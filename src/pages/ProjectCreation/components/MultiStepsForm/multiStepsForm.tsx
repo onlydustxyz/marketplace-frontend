@@ -6,12 +6,14 @@ import Button, { ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CheckLine from "src/icons/CheckLine";
+import { Flex } from "src/components/New/Layout/Flex";
 
 export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   step,
   stepCount,
   title,
   description,
+  footerRightElement,
   prev,
   next,
   submit,
@@ -35,29 +37,39 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
           </div>
           <div className="flex h-full flex-col gap-6">{children}</div>
         </div>
-        <div className="fixed inset-x-0 bottom-0 z-10 flex w-full flex-row items-center justify-end gap-6 bg-whiteFakeOpacity-2 p-6 xl:relative xl:rounded-b-2xl xl:bg-white/2">
-          {prev && (
-            <Link to={prev}>
-              <Button type={ButtonType.Secondary}>
-                <ArrowLeftSLine className="-ml-2 text-2xl" />
-                Back
+        <Flex
+          justify="between"
+          item="center"
+          gap={4}
+          className="fixed inset-x-0 bottom-0 z-10 flex w-full border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:relative xl:rounded-b-2xl"
+        >
+          <Flex justify="start" item="center">
+            {footerRightElement && footerRightElement}
+          </Flex>
+          <Flex justify="end" item="center" gap={6}>
+            {prev && (
+              <Link to={prev}>
+                <Button type={ButtonType.Secondary}>
+                  <ArrowLeftSLine className="-ml-2 text-2xl" />
+                  Back
+                </Button>
+              </Link>
+            )}
+            {next && (
+              <Link to={next}>
+                <Button>
+                  Next
+                  <ArrowRightSLine className="-mr-2 text-2xl" />
+                </Button>
+              </Link>
+            )}
+            {submit && (
+              <Button htmlType="submit" disabled={submitDisabled}>
+                <CheckLine className="-ml-1 text-2xl" /> Publish
               </Button>
-            </Link>
-          )}
-          {next && (
-            <Link to={next}>
-              <Button>
-                Next
-                <ArrowRightSLine className="-mr-2 text-2xl" />
-              </Button>
-            </Link>
-          )}
-          {submit && (
-            <Button htmlType="submit" disabled={submitDisabled}>
-              <CheckLine className="-ml-1 text-2xl" /> Publish
-            </Button>
-          )}
-        </div>
+            )}
+          </Flex>
+        </Flex>
       </Card>
     </div>
   );
