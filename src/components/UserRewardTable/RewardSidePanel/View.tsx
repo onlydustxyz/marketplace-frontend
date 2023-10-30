@@ -88,7 +88,7 @@ export default function View({
 
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
-  const formattedReceipt = formatReceipt(data?.receipt);
+  const formattedReceipt = isMine ? formatReceipt(data?.receipt) : null;
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
 
