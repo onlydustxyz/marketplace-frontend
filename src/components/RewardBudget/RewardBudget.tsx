@@ -101,7 +101,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
         />
       </div>
       <div className="flex w-full flex-col px-6 pb-6 pt-4">
-        <Button width={Width.Full} disabled={!canRewards} onClick={handleSave}>
+        <Button width={Width.Full} disabled={!canRewards || props.loading} onClick={handleSave}>
           <CheckLine />
           {T("rewardBudget.submit")}
         </Button>

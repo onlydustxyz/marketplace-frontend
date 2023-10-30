@@ -11,4 +11,5 @@ export interface RewardBudgetProps {
   budgets: WorkEstimationBudgetDetails[];
   preferedCurrency?: WorkEstimationBudgetDetails["currency"] | undefined;
   onChange?: (props: RewardBudgetChangeProps) => void;
+  loading?: boolean;
 }
