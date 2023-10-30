@@ -143,12 +143,8 @@ export default function View({
                 }
               }
             })}
+            {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
           </div>
-          {hasNextPage ? (
-            <div className="pt-6">
-              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
-            </div>
-          ) : null}
         </div>
       );
     }
