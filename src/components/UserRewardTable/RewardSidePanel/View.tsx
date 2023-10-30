@@ -13,7 +13,6 @@ import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubC
 import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
-import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ShowMore } from "src/components/Table/ShowMore";
 import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
@@ -37,6 +36,8 @@ import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
+import { SkeletonDetail } from "./SkeletonDetail";
+import { SkeletonItems } from "./SkeletonItems";
 
 enum Align {
   Top = "top",
@@ -69,7 +70,11 @@ export default function View({
   const { T } = useIntl();
   const { githubUserId } = useAuth();
 
-  const { data, isLoading: loading } = useRestfulData<components["schemas"]["RewardResponse"]>({
+  const {
+    data,
+    isLoading: loading,
+    isError,
+  } = useRestfulData<components["schemas"]["RewardResponse"]>({
     resourcePath: isMine ? ApiResourcePaths.GET_MY_REWARD_BY_ID : ApiResourcePaths.PROJECT_REWARD,
     pathParam: isMine ? rewardId : { projectId, rewardId },
     method: "GET",
@@ -94,7 +99,11 @@ export default function View({
 
   function renderRewardItems() {
     if (rewardItemsLoading) {
-      return null;
+      return (
+        <div className="py-8">
+          <SkeletonItems />
+        </div>
+      );
     }
 
     if (rewardItemsError) {
@@ -147,9 +156,27 @@ export default function View({
     return null;
   }
 
-  return (
-    <QueryWrapper query={{ loading, data }}>
-      {data ? (
+  function renderDetail() {
+    if (loading) {
+      return (
+        <div className="px-6 py-8">
+          <SkeletonDetail />
+        </div>
+      );
+    }
+
+    if (isError) {
+      return (
+        <div className="flex h-full items-center justify-center px-6">
+          <p className="whitespace-pre-line text-center font-walsheim text-greyscale-50">
+            {T("reward.table.detailsPanel.error")}
+          </p>
+        </div>
+      );
+    }
+
+    if (data) {
+      return (
         <div className="flex h-full flex-col gap-8 px-6">
           <div className="flex flex-wrap items-center gap-3 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.title", { id: pretty(data.id) })}
@@ -286,9 +313,19 @@ export default function View({
             {renderRewardItems()}
           </div>
         </div>
-      ) : null}
-    </QueryWrapper>
-  );
+      );
+    }
+
+    return (
+      <div className="flex h-full items-center justify-center px-6">
+        <p className="whitespace-pre-line text-center font-walsheim text-greyscale-50">
+          {T("reward.table.detailsPanel.empty")}
+        </p>
+      </div>
+    );
+  }
+
+  return renderDetail();
 }
 
 const Details = ({ align = Align.Center, children }: PropsWithChildren & { align?: Align }) => (
