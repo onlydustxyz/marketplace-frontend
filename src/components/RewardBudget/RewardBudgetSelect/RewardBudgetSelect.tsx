@@ -23,10 +23,12 @@ export const RewardBudgetSelect: FC<RewardBudgetSelectProps> = ({ budgets, onCha
       {({ value }) => (
         <div className="relative flex-1">
           <RewardBudgetSelectValue value={value} disabled={disabled} />
-          <Listbox.Options className="absolute left-0 top-full max-h-[144px] w-full translate-y-[4px] overflow-auto rounded-2xl border border-greyscale-50/12 bg-greyscale-900 shadow-heavy">
-            {budgets.map((budget, i) => (
-              <RewardBudgetSelectOption key={budget.currency} budget={budget} last={i === budgets.length} />
-            ))}
+          <Listbox.Options className="absolute left-0 top-full  w-full translate-y-[4px] overflow-hidden rounded-2xl border border-greyscale-50/12 bg-greyscale-900 shadow-heavy">
+            <div className="max-h-[144px] w-full overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+              {budgets.map((budget, i) => (
+                <RewardBudgetSelectOption key={budget.currency} budget={budget} last={i === budgets.length - 1} />
+              ))}
+            </div>
           </Listbox.Options>
         </div>
       )}
