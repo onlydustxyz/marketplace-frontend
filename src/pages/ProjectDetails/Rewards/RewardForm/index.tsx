@@ -14,6 +14,7 @@ import Loader from "src/components/Loader";
 import { useLocalStorage } from "usehooks-ts";
 import { reorderBudgets } from "./utils";
 import { BudgetCurrencyType } from "src/utils/money";
+import ErrorFallback from "src/ErrorFallback";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -27,6 +28,7 @@ const RewardForm: React.FC = () => {
   const {
     data: projectBudget,
     isLoading: isBudgetLoading,
+    isError: isBudgetError,
     refetch,
   } = useRestfulData<ProjectBudgetType>({
     resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
@@ -102,6 +104,10 @@ const RewardForm: React.FC = () => {
       ),
     [formMethods]
   );
+
+  if (isBudgetError) {
+    return <ErrorFallback />;
+  }
 
   return (
     <>
