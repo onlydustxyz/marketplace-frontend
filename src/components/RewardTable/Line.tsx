@@ -12,9 +12,10 @@ type Props = {
   reward: RewardPageItemType;
   onClick: () => void;
   selected: boolean;
+  isProjectLeader: boolean;
 };
 
-export function RewardLine({ reward, onClick, selected }: Props) {
+export function RewardLine({ reward, onClick, selected, isProjectLeader }: Props) {
   const { T } = useIntl();
 
   const { id, amount, numberOfRewardedContributions, requestedAt, rewardedUserAvatar, rewardedUserLogin, status } =
@@ -49,7 +50,7 @@ export function RewardLine({ reward, onClick, selected }: Props) {
           </div>
         </Cell>
         <Cell height={CellHeight.Medium}>
-          <PayoutStatus status={status} />
+          <PayoutStatus status={status} isProjectLeaderView={isProjectLeader} />
         </Cell>
       </Line>
     </>

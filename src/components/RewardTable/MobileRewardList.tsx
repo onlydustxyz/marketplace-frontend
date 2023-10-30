@@ -11,22 +11,30 @@ import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 export default function MobileRewardList({
   rewards,
   onRewardClick,
+  isProjectLeader,
 }: {
   rewards: RewardPageItemType[];
   onRewardClick: (reward: RewardPageItemType) => void;
+  isProjectLeader: boolean;
 }) {
   return (
     <div className="flex flex-col gap-4">
       {rewards.map(reward => (
         <button onClick={() => onRewardClick(reward)} key={reward.id}>
-          <MobileRewardItemContainer reward={reward} />
+          <MobileRewardItemContainer reward={reward} isProjectLeader={isProjectLeader} />
         </button>
       ))}
     </div>
   );
 }
 
-function MobileRewardItemContainer({ reward }: { reward: RewardPageItemType }) {
+function MobileRewardItemContainer({
+  reward,
+  isProjectLeader,
+}: {
+  reward: RewardPageItemType;
+  isProjectLeader: boolean;
+}) {
   const { T } = useIntl();
 
   return (
@@ -39,7 +47,7 @@ function MobileRewardItemContainer({ reward }: { reward: RewardPageItemType }) {
       })}
       amount={formatMoneyAmount({ amount: reward.amount.total })}
       date={new Date(reward.requestedAt)}
-      payoutStatus={<PayoutStatus status={PaymentStatus[reward.status]} />}
+      payoutStatus={<PayoutStatus status={PaymentStatus[reward.status]} isProjectLeaderView={isProjectLeader} />}
     />
   );
 }

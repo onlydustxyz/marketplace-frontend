@@ -6,9 +6,11 @@ import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
 import { withTooltip } from "src/components/Tooltip";
 import { components } from "src/__generated/api";
+import QuestionMarkLine from "src/icons/QuestionMarkLine";
 
 type Props = {
   status: PaymentStatusUnion;
+  isProjectLeaderView?: boolean;
 };
 
 interface PayoutInfoMissingTagProps {
@@ -18,13 +20,13 @@ interface PayoutInfoMissingTagProps {
 export type PaymentStatusType = components["schemas"]["RewardPageItemResponse"]["status"];
 type PaymentStatusUnion = `${PaymentStatus}`;
 
-export default function PayoutStatus({ status }: Props) {
+export default function PayoutStatus({ status, isProjectLeaderView }: Props) {
   const statuses: Record<PaymentStatusUnion, JSX.Element> = {
     [PaymentStatus.COMPLETE]: <CompleteTag />,
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
     [PaymentStatus.PENDING_SIGNUP]: <PendingSignup />,
     [PaymentStatus.PROCESSING]: <ProcessingTag />,
-    [PaymentStatus.MISSING_PAYOUT_INFO]: <PayoutInfoMissingTag />,
+    [PaymentStatus.MISSING_PAYOUT_INFO]: <PayoutInfoMissingTag isProjectLeaderView={isProjectLeaderView} />,
   };
   return statuses[status];
 }
@@ -85,14 +87,18 @@ const PayoutInfoMissingTag: React.FC<PayoutInfoMissingTagProps> = ({ isProjectLe
       size={TagSize.Medium}
       borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
       {...withTooltip(
-        isProjectLeaderView ? T("reward.status.tooltip.pending") : T("reward.status.tooltip.payoutInfoMissing"),
+        isProjectLeaderView
+          ? T("reward.status.tooltip.payoutInfoMissingAsLeader")
+          : T("reward.status.tooltip.payoutInfoMissingAsContributor"),
         { className: "w-52" }
       )}
     >
-      <ErrorWarningLine className="text-pink-500" />
-      <span className="whitespace-nowrap font-normal text-greyscale-50">
-        {isProjectLeaderView ? T("reward.status.pending") : T("reward.status.payoutInfoMissing")}
-      </span>
+      {isProjectLeaderView ? (
+        <QuestionMarkLine className="text-orange-500" />
+      ) : (
+        <ErrorWarningLine className="text-pink-500" />
+      )}
+      <span className="whitespace-nowrap font-normal text-greyscale-50">{T("reward.status.payoutInfoMissing")}</span>
     </Tag>
   );
 };

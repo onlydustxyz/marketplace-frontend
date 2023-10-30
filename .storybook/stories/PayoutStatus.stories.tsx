@@ -13,6 +13,7 @@ export default {
         PaymentStatus.PENDING_INVOICE,
         PaymentStatus.PENDING_SIGNUP,
         PaymentStatus.PROCESSING,
+        PaymentStatus.MISSING_PAYOUT_INFO,
       ],
     },
   },
@@ -49,6 +50,20 @@ export const Processing = {
 
 export const PendingInvoice = {
   render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PENDING_INVOICE }} {...args} />,
+  parameters: {
+    backgrounds: { default: "space" },
+  },
+};
+
+export const MissingPayoutInfoAsLeader = {
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.MISSING_PAYOUT_INFO }} {...args} isProjectLeaderView={true} />,
+  parameters: {
+    backgrounds: { default: "space" },
+  },
+};
+
+export const MissingPayoutInfoAsContributor = {
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.MISSING_PAYOUT_INFO }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },
   },
