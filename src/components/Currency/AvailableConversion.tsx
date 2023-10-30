@@ -26,14 +26,14 @@ export type AvailableConversion = {
   numberCurencyToShow?: number;
 };
 
-const ConversionAmount = ({ amount }: { amount: number | undefined }) => {
+const ConversionAmount = ({ amount, currency }: { amount: number | undefined; currency?: BudgetCurrencyType }) => {
   if (!amount) {
     return null;
   }
 
   return (
     <p className="font-walsheim text-sm font-bold leading-[14px]">
-      {formatMoneyAmount({ amount: amount, currency: Currency.USD })}
+      {formatMoneyAmount({ amount: amount, currency: currency || Currency.USD })}
     </p>
   );
 };
@@ -111,11 +111,11 @@ export const AvailableConversion: FC<AvailableConversion> = ({
 
     /** if we have only one currency and the she is USD don't show the tooltips */
     if (!currencies && currency) {
-      props["data-tooltip-hidden"] = currency.currency === Currency.USD;
+      props["data-tooltip-hidden"] = currency.currency === Currency.USD || !currency.dollar;
     }
 
     return props;
-  }, []);
+  }, [currency]);
 
   const currencyArray = useMemo(() => {
     if (currencies) return currencies;
@@ -139,7 +139,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
             </div>
           ))}
         </Chips>
-        <ConversionAmount amount={totalAmount || currency?.amount} />
+        <ConversionAmount amount={totalAmount || currency?.amount} currency={currency?.currency} />
         <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
       </div>
       <ConversionTooltip tooltipId={tooltipId} currencies={currencies} />
