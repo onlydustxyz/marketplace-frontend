@@ -27,7 +27,7 @@ export default function useInfiniteRewardsList({
     queryFn: ({ pageParam }) =>
       fetch(
         getEndpointUrl({
-          resourcePath: ApiResourcePaths.GET_PROJECT_REWARDS_LIST,
+          resourcePath: ApiResourcePaths.PROJECT_REWARDS,
           pageParam,
           pageSize: 9,
           pathParam: projectId,

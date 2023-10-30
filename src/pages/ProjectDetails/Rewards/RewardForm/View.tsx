@@ -1,8 +1,6 @@
 import Card from "src/components/Card";
 import { useIntl } from "src/hooks/useIntl";
-import { Budget } from "src/hooks/useWorkEstimation";
 import ContributorSelect from "src/pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
-import WorkEstimation from "./WorkEstimation";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContributionFragment, WorkItemFragment } from "src/__generated/graphql";
@@ -23,16 +21,21 @@ import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
 import { filterUnpaidContributionsByType } from "./utils";
+import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import { BudgetCurrencyType } from "src/utils/money";
+import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
+import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
+import { Controller, useFormContext } from "react-hook-form";
 
 interface Props {
   projectId: string;
-  budget: Budget;
-  onWorkEstimationChange: (amountToPay: number, hoursWorked: number) => void;
+  projectBudget: ProjectBudgetType;
+  preferredCurrency?: BudgetCurrencyType;
   onWorkItemsChange: (workItems: WorkItemFragment[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
   unpaidContributions: ContributionFragment[] | null | undefined;
-  requestNewPaymentMutationLoading: boolean;
+  isCreateProjectRewardLoading?: boolean;
 }
 
 type TitleProps = {
@@ -50,15 +53,16 @@ function SectionTitle({ title, rightAction }: TitleProps) {
 }
 
 const View: React.FC<Props> = ({
-  budget,
-  onWorkEstimationChange,
+  projectBudget,
   onWorkItemsChange,
   projectId,
   contributor,
   setContributor,
   unpaidContributions,
-  requestNewPaymentMutationLoading,
+  isCreateProjectRewardLoading,
+  preferredCurrency,
 }) => {
+  const { control, setValue } = useFormContext();
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
@@ -203,11 +207,21 @@ const View: React.FC<Props> = ({
               imageElement={<img width={165} src={addContributionImg} className="absolute bottom-0 right-0" />}
             />
           )}
-          {contributor && workItems.length > 0 && (
-            <WorkEstimation
-              onChange={onWorkEstimationChange}
-              budget={budget}
-              requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
+          {contributor && workItems.length > 0 && projectBudget?.budgets && (
+            <Controller
+              name="rewardBudget"
+              control={control}
+              render={() => (
+                <RewardBudget
+                  budgets={projectBudget.budgets}
+                  preferedCurrency={preferredCurrency}
+                  onChange={({ amount, currency }: RewardBudgetChangeProps) => {
+                    setValue("amountToWire", amount);
+                    setValue("currency", currency);
+                  }}
+                  loading={isCreateProjectRewardLoading}
+                />
+              )}
             />
           )}
         </div>

@@ -1,15 +1,27 @@
 import { useWorkEstimation } from "src/hooks/useWorkEstimation";
 import View from "./View";
+import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import { BudgetCurrencyType } from "src/utils/money";
 
 interface Props {
-  onChange: (amountToPay: number, hoursWorked: number) => void;
-  budget: { initialAmount: number; remainingAmount: number };
+  onChange: (amountToPay: number, currency: BudgetCurrencyType) => void;
+  budget: ProjectBudgetType;
   requestNewPaymentMutationLoading: boolean;
+  preferredCurrency: BudgetCurrencyType | null;
 }
 
-export default function WorkEstimation({ onChange, budget, requestNewPaymentMutationLoading }: Props) {
+export default function WorkEstimation({
+  onChange,
+  budget,
+  requestNewPaymentMutationLoading,
+  preferredCurrency,
+}: Props) {
+  const [selectedBudget] = preferredCurrency
+    ? budget.budgets.filter(b => b.currency === preferredCurrency)
+    : budget.budgets;
+
   const { amountToPay, stepNumber, steps, tryDecreaseNumberOfDays, tryIncreaseNumberOfDays, canDecrease, canIncrease } =
-    useWorkEstimation(onChange, budget);
+    useWorkEstimation(onChange, selectedBudget);
 
   return (
     <View
@@ -21,7 +33,7 @@ export default function WorkEstimation({ onChange, budget, requestNewPaymentMuta
         steps,
         tryDecreaseNumberOfDays,
         tryIncreaseNumberOfDays,
-        budget,
+        budget: selectedBudget,
         requestNewPaymentMutationLoading,
       }}
     />

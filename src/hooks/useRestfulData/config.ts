@@ -17,4 +17,6 @@ export enum ApiResourcePaths {
   GET_PUBLIC_USER_PROFILE_BY_LOGIN = "/api/v1/users/login/{{id}}",
   GET_USER_PROFILE = "/api/v1/me",
   GET_PROJECT_REWARD_ITEMS = "/api/v1/projects/{{projectId}}/rewards/{{rewardId}}/reward-items",
+  GET_PROJECT_BUDGETS = "/api/v1/projects/{{projectId}}/budgets",
+  PROJECT_REWARDS = "/api/v1/projects/{{id}}/rewards",
 }

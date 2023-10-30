@@ -11,6 +11,35 @@ import {
 import withSuspense from "../decorators/withSuspense";
 import withCommandProvider from "../decorators/withCommandProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
+import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+
+const mockBudgets: ProjectBudgetType = {
+  initialDollarsEquivalent: 120000,
+  remainingDollarsEquivalent: 86000,
+  budgets: [
+    {
+      currency: "USD",
+      initialAmount: 1200,
+      remaining: 860,
+      remainingDollarsEquivalent: 5007500,
+      initialDollarsEquivalent: 10000000,
+    },
+    {
+      currency: "STARK",
+      initialAmount: 100,
+      remaining: 72,
+      remainingDollarsEquivalent: 9987500,
+      initialDollarsEquivalent: 10000000,
+    },
+    {
+      currency: "OP",
+      initialAmount: 120000,
+      remaining: 86000,
+      remainingDollarsEquivalent: 86000,
+      initialDollarsEquivalent: 10000,
+    },
+  ],
+};
 
 const projectId = "yolo";
 const BERNARDSTANISLAS: ContributorFragment = {
@@ -124,7 +153,7 @@ const mocks = [
 ];
 
 const args = {
-  budget: { initialAmount: 5000, remainingAmount: 3000 },
+  budget: mockBudgets,
   onWorkEstimationChange: () => {
     return;
   },
@@ -155,7 +184,7 @@ export default {
     withMockedProvider(mocks),
     withFormProvider({
       defaultValues: {
-        remainingBudget: args.budget.remainingAmount,
+        remainingBudget: args.budget.remainingDollarsEquivalent,
       },
     }),
     withSuspense,
@@ -167,7 +196,7 @@ export default {
 export const Default = {
   render: () => (
     <div className="flex flex-col gap-6">
-      <RewardForm {...args} />
+      <RewardForm projectBudget={mockBudgets} {...args} />
     </div>
   ),
 
