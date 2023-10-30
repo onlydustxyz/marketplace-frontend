@@ -35,6 +35,7 @@ import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
+import { UseMutateFunction } from "@tanstack/react-query";
 
 enum Align {
   Top = "top",
@@ -44,7 +45,7 @@ enum Align {
 export type Props = {
   rewardId: string;
   projectLeaderView?: boolean;
-  onRewardCancel?: () => void;
+  onRewardCancel?: UseMutateFunction<unknown, Error, unknown, unknown>;
 };
 
 type ProjectProps = {
@@ -68,7 +69,7 @@ export default function View({
   const { githubUserId } = useAuth();
 
   const { data, isLoading: loading } = useRestfulData<components["schemas"]["RewardResponse"]>({
-    resourcePath: isMine ? ApiResourcePaths.GET_MY_REWARD_BY_ID : ApiResourcePaths.GET_PROJECT_REWARD,
+    resourcePath: isMine ? ApiResourcePaths.GET_MY_REWARD_BY_ID : ApiResourcePaths.PROJECT_REWARD,
     pathParam: isMine ? rewardId : { projectId, rewardId },
     method: "GET",
   });
@@ -347,7 +348,7 @@ const formatReceipt = (receipt?: components["schemas"]["ReceiptResponse"]): Form
 };
 
 type CancelRewardButtonProps = {
-  onRewardCancel: () => void;
+  onRewardCancel: UseMutateFunction<unknown, Error, unknown, unknown>;
 };
 
 function CancelRewardButton({ onRewardCancel }: CancelRewardButtonProps) {
@@ -372,7 +373,7 @@ function CancelRewardButton({ onRewardCancel }: CancelRewardButtonProps) {
         <ConfirmationModal
           onClose={closeModal}
           onConfirm={() => {
-            onRewardCancel();
+            onRewardCancel({});
             closeModal();
           }}
         />

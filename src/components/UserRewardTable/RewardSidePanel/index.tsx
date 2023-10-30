@@ -1,9 +1,9 @@
 import { ComponentProps } from "react";
-import { useCancelPaymentRequestMutation } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-import { useCommands } from "src/providers/Commands";
 import View from "./View";
+import { useMutationRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 
 export default function RewardSidePanel({
   projectId,
@@ -35,24 +35,16 @@ export function RewardSidePanelAsLeader({
 }) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
-  const { notify } = useCommands();
 
-  const [cancelPaymentRequest] = useCancelPaymentRequestMutation({
-    variables: { paymentId: rewardId },
-    context: { graphqlErrorDisplay: "toaster" },
-    onCompleted: () => {
-      notify(projectId);
+  const { mutate: mutateReward } = useMutationRestfulData({
+    resourcePath: ApiResourcePaths.PROJECT_REWARD,
+    pathParam: { projectId, rewardId },
+    method: "DELETE",
+    onSuccess: async () => {
       setOpen(false);
       showToaster(T("reward.form.cancelled"));
     },
   });
 
-  return (
-    <RewardSidePanel
-      projectId={projectId}
-      rewardId={rewardId}
-      onRewardCancel={cancelPaymentRequest}
-      projectLeaderView
-    />
-  );
+  return <RewardSidePanel projectId={projectId} rewardId={rewardId} onRewardCancel={mutateReward} projectLeaderView />;
 }
