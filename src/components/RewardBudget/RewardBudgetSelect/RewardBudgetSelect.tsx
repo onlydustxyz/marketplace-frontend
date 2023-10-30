@@ -17,7 +17,6 @@ export const RewardBudgetSelect: FC<RewardBudgetSelectProps> = ({ budgets, onCha
     onChange(value);
   };
 
-  // TODO : http://localhost:5173/p/onlydust/rewards/new search bar for le scroll
   return (
     <Listbox value={value} onChange={handleSelectChange} disabled={disabled}>
       {({ value }) => (
