@@ -5,6 +5,7 @@ import UserRewardTable from "src/components/UserRewardTable";
 import { MyRewardType as Reward } from "src/components/UserRewardTable/Line";
 import { Field } from "src/pages/Rewards";
 import { daysFromNow } from "src/utils/date";
+import { AuthProvider } from "src/hooks/useAuth";
 
 export default {
   title: "UserRewardTable",
@@ -41,17 +42,19 @@ const mockPayments: Reward[] = [
 ];
 
 const Template: ComponentStory<typeof UserRewardTable> = args => (
-  <UserRewardTable
-    rewards={mockPayments}
-    fetchNextPage={() => {}}
-    hasNextPage={false}
-    isFetchingNextPage={false}
-    sorting={{
-      field: Field.Date,
-      ascending: false,
-    }}
-    applySorting={() => {}}
-  />
+  <AuthProvider>
+    <UserRewardTable
+      rewards={mockPayments}
+      fetchNextPage={() => {}}
+      hasNextPage={false}
+      isFetchingNextPage={false}
+      sorting={{
+        field: Field.Date,
+        ascending: false,
+      }}
+      applySorting={() => {}}
+    />
+  </AuthProvider>
 );
 
 export const Default = Template.bind({});

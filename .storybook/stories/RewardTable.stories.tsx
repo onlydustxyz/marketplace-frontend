@@ -10,8 +10,10 @@ import RewardTable from "src/components/RewardTable/RewardTable";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { PaymentStatus } from "src/types";
 import withMockedProvider from "../decorators/withMockedProvider";
+import withAuthProvider from "../decorators/withAuthProvider";
 
 const GITHUB_USER_ID2 = 1321654;
+const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
 const yearsFromNow = (years: number) => new Date(Date.now() - years * 365 * 24 * 3600 * 1000);
 
@@ -85,7 +87,7 @@ const mocks = [
 export default {
   title: "RewardTable",
   component: RewardTable,
-  decorators: [withMockedProvider(mocks)],
+  decorators: [withMockedProvider(mocks), withAuthProvider({ userId: USER_ID }),],
 };
 
 export const Default = {
