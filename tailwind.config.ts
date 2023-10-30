@@ -105,6 +105,7 @@ const config: Config = {
         snow: "#F4F4F4",
         card: {
           background: {
+            base: "#0E0D2E",
             light: "#FFFFFF05",
             medium: "#FFFFFF0D",
             heavy: "#FFFFFF14",

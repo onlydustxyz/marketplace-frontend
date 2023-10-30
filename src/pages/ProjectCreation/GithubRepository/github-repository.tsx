@@ -62,6 +62,7 @@ export const GithubRepositoryPage = () => {
   const {
     control,
     handleSubmit,
+    watch,
     setValue,
     formState: { isValid },
   } = useForm<createProjectInformation>({
@@ -72,6 +73,8 @@ export const GithubRepositoryPage = () => {
   const onSubmit = (formData: createProjectInformation) => {
     console.log("formData", formData);
   };
+
+  console.log("WATCH", watch("githubRepoIds"));
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>

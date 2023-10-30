@@ -22,7 +22,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
     <div className="relative max-w-[688px] overflow-hidden rounded-2xl">
       <div className="absolute z-10 h-1.5 w-full bg-mosaic bg-cover" />
       <Card
-        className="flex flex-1 flex-col justify-between gap-12 divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-2"
+        className="flex flex-1 flex-col justify-between gap-12 divide-y divide-greyscale-50/8 bg-card-background-base"
         padded={false}
       >
         <div className="flex flex-col gap-8 px-8 pb-28 pt-16 xl:px-12 xl:pb-0">
