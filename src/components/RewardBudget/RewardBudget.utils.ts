@@ -16,7 +16,7 @@ export namespace RewardBudgetUtils {
       return false;
     }
 
-    if (remaining - amount <= 0) {
+    if (remaining - amount < 0) {
       return false;
     }
 
