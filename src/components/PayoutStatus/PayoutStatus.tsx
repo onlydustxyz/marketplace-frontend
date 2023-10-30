@@ -20,8 +20,7 @@ export default function PayoutStatus({ status }: Props) {
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
     [PaymentStatus.PENDING_SIGNUP]: <PendingSignup />,
     [PaymentStatus.PROCESSING]: <ProcessingTag />,
-    //TODO: uncomment this when API is ready
-    // [PaymentStatus.PAYMENT_INFO_MISSING]: <PayoutInfoMissingTag />,
+    [PaymentStatus.MISSING_PAYOUT_INFO]: <PayoutInfoMissingTag />,
   };
   return statuses[status];
 }
@@ -74,23 +73,22 @@ const InvoiceNeededTag = () => {
   );
 };
 
-// TODO: uncomment this when API is ready
-// const PayoutInfoMissingTag = (isProjectLeaderView: boolean) => {
-//   const { T } = useIntl();
+const PayoutInfoMissingTag = (isProjectLeaderView: boolean) => {
+  const { T } = useIntl();
 
-//   return (
-//     <Tag
-//       size={TagSize.Medium}
-//       borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
-//       {...withTooltip(
-//         isProjectLeaderView ? T("reward.status.tooltip.pending") : T("reward.status.tooltip.payoutInfoMissing"),
-//         { className: "w-52" }
-//       )}
-//     >
-//       <ErrorWarningLine className="text-pink-500" />
-//       <span className="whitespace-nowrap font-normal text-greyscale-50">
-//         {isProjectLeaderView ? T("reward.status.pending") : T("reward.status.payoutInfoMissing")}
-//       </span>
-//     </Tag>
-//   );
-// };
+  return (
+    <Tag
+      size={TagSize.Medium}
+      borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
+      {...withTooltip(
+        isProjectLeaderView ? T("reward.status.tooltip.pending") : T("reward.status.tooltip.payoutInfoMissing"),
+        { className: "w-52" }
+      )}
+    >
+      <ErrorWarningLine className="text-pink-500" />
+      <span className="whitespace-nowrap font-normal text-greyscale-50">
+        {isProjectLeaderView ? T("reward.status.pending") : T("reward.status.payoutInfoMissing")}
+      </span>
+    </Tag>
+  );
+};

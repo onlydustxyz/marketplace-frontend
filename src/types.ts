@@ -78,6 +78,7 @@ export enum PaymentStatus {
   PENDING_INVOICE = "PENDING_INVOICE",
   PENDING_SIGNUP = "PENDING_SIGNUP",
   PROCESSING = "PROCESSING",
+  MISSING_PAYOUT_INFO = "MISSING_PAYOUT_INFO",
 }
 
 export type Locale = "en" | "fr";
