@@ -1,16 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Currency, PaymentStatus } from "src/types";
 
 import UserRewardTable from "src/components/UserRewardTable";
 import { MyRewardType as Reward } from "src/components/UserRewardTable/Line";
 import { Field } from "src/pages/Rewards";
 import { daysFromNow } from "src/utils/date";
-import { AuthProvider } from "src/hooks/useAuth";
+import withAuthProvider from "../decorators/withAuthProvider";
 
-export default {
-  title: "UserRewardTable",
-  component: UserRewardTable,
-} as ComponentMeta<typeof UserRewardTable>;
+const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
 const mockPayments: Reward[] = [
   {
@@ -41,20 +37,26 @@ const mockPayments: Reward[] = [
   },
 ];
 
-const Template: ComponentStory<typeof UserRewardTable> = args => (
-  <AuthProvider>
-    <UserRewardTable
-      rewards={mockPayments}
-      fetchNextPage={() => {}}
-      hasNextPage={false}
-      isFetchingNextPage={false}
-      sorting={{
-        field: Field.Date,
-        ascending: false,
-      }}
-      applySorting={() => {}}
-    />
-  </AuthProvider>
-);
+export default {
+  title: "UserRewardTable",
+  component: UserRewardTable,
+  decorators: [withAuthProvider({ userId: USER_ID }),],
+};
 
-export const Default = Template.bind({});
+
+
+export const Default = {
+  render: () => (
+    <UserRewardTable
+        rewards={mockPayments}
+        fetchNextPage={() => {}}
+        hasNextPage={false}
+        isFetchingNextPage={false}
+        sorting={{
+          field: Field.Date,
+          ascending: false,
+        }}
+        applySorting={() => {}}
+      />
+  ),
+};
