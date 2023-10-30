@@ -119,7 +119,7 @@ const RewardForm: React.FC = () => {
         >
           {!isBudgetLoading && projectBudget?.remainingDollarsEquivalent && projectBudget?.initialDollarsEquivalent ? (
             <View
-              budget={reorderBudgets(projectBudget)}
+              projectBudget={reorderBudgets(projectBudget)}
               preferredCurrency={preferredCurrency}
               projectId={projectId}
               onWorkItemsChange={onWorkItemsChange}

@@ -29,7 +29,7 @@ import { Controller, useFormContext } from "react-hook-form";
 
 interface Props {
   projectId: string;
-  budget: ProjectBudgetType;
+  projectBudget: ProjectBudgetType;
   preferredCurrency?: BudgetCurrencyType;
   onWorkItemsChange: (workItems: WorkItemFragment[]) => void;
   contributor: Contributor | null | undefined;
@@ -53,7 +53,7 @@ function SectionTitle({ title, rightAction }: TitleProps) {
 }
 
 const View: React.FC<Props> = ({
-  budget,
+  projectBudget,
   onWorkItemsChange,
   projectId,
   contributor,
@@ -207,13 +207,13 @@ const View: React.FC<Props> = ({
               imageElement={<img width={165} src={addContributionImg} className="absolute bottom-0 right-0" />}
             />
           )}
-          {contributor && workItems.length > 0 && budget?.budgets && (
+          {contributor && workItems.length > 0 && projectBudget?.budgets && (
             <Controller
               name="rewardBudget"
               control={control}
               render={() => (
                 <RewardBudget
-                  budgets={budget.budgets}
+                  budgets={projectBudget.budgets}
                   preferedCurrency={preferredCurrency}
                   onChange={({ amount, currency }: RewardBudgetChangeProps) => {
                     setValue("amountToWire", amount);
