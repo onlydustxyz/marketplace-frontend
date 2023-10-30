@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use chrono::Utc;
 use derive_more::Constructor;
 use domain::{currencies, services::quotes, BudgetEvent, Event, SubscriberCallbackError};
-use infrastructure::dbclient::Repository;
+use infrastructure::{database::enums::Currency, dbclient::Repository};
 use tracing::instrument;
 
 use super::EventListener;
@@ -24,9 +24,9 @@ impl EventListener<Event> for Projector {
 		if let Event::Budget(event) = event {
 			match event {
 				BudgetEvent::Created { currency, .. } if currency != currencies::USD => {
-					let code = currency.try_into()?;
+					let code: Currency = currency.try_into()?;
 
-					if !self.quotes_repository.exists(code)? {
+					if code.has_usd_equivalent() && !self.quotes_repository.exists(code)? {
 						let price = self
 							.quote_service
 							.fetch_conversion_rate(currency)

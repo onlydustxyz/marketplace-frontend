@@ -12,6 +12,18 @@ pub enum Currency {
 	Stark,
 }
 
+impl Currency {
+	pub fn has_usd_equivalent(&self) -> bool {
+		match self {
+			Currency::Usd => false,
+			Currency::Eth => true,
+			Currency::Op => true,
+			Currency::Apt => true,
+			Currency::Stark => false,
+		}
+	}
+}
+
 impl TryFrom<&'static domain::Currency> for Currency {
 	type Error = ParseCurrencyError;
 
