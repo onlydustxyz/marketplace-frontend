@@ -20,4 +20,5 @@ export enum ApiResourcePaths {
   GET_PROJECT_BUDGETS = "/api/v1/projects/{{projectId}}/budgets",
   PROJECT_REWARDS = "/api/v1/projects/{{id}}/rewards",
   GET_GITHUB_USERS = "/api/v1/github/users",
+  GET_INSTALLED_GITHUB_ORGANIZATION = "/api/v1/github/installations/{{id}}",
 }
