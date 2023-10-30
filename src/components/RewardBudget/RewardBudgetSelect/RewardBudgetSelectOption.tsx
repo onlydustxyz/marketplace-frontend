@@ -49,12 +49,17 @@ export const RewardBudgetSelectOption = ({ budget, last }: RewardBudgetSelectOpt
           </p>
         </div>
         {budget.currency !== Currency.USD && (
-          <p className={cn("font-walsheim text-sm font-normal", isDisabled && "text-greyscale-500")}>
+          <p
+            className={cn(
+              "font-walsheim text-[10px] font-normal text-spaceBlue-200",
+              isDisabled && "text-greyscale-500"
+            )}
+          >
             {budget.remainingDollarsEquivalent
-              ? `(${formatMoneyAmount({
+              ? `~${formatMoneyAmount({
                   amount: budget.remainingDollarsEquivalent,
                   currency: Currency.USD,
-                })})`
+                })}`
               : T("availableConversion.tooltip.na")}
           </p>
         )}
