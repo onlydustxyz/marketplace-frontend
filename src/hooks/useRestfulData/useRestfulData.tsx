@@ -28,7 +28,7 @@ export function useRestfulData<R = unknown>({
 
   const options = useHttpOptions(method);
 
-  const { isLoading, isError, data } = useQuery<R>({
+  const { isLoading, isError, data, ...rest } = useQuery<R>({
     queryKey: [resourcePath, pathParam, queryParams, method, isLoggedIn],
     queryFn: () =>
       fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)
@@ -44,10 +44,12 @@ export function useRestfulData<R = unknown>({
         }),
     staleTime: 0,
     gcTime: 0,
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
     ...queryOption,
   });
 
-  return { data, isLoading, isError };
+  return { data, isLoading, isError, ...rest };
 }
 
 export function useMutationRestfulData<Payload = unknown, Response = unknown>({

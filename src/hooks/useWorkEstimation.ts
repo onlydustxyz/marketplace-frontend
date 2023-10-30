@@ -43,15 +43,15 @@ export const stepSizes = {
 };
 
 export const getInitialStep = (budget: Budget): State => {
-  if (budget.remainingAmount < DAY_RATE_USD) {
+  if (budget?.remainingAmount < DAY_RATE_USD) {
     return {
-      stepNumber: Math.floor(budget.remainingAmount / rates[Steps.Hours]),
+      stepNumber: Math.floor(budget?.remainingAmount / rates[Steps.Hours]),
       steps: Steps.Hours,
     };
   }
 
   return {
-    stepNumber: Math.min(DEFAULT_NUMBER_OF_DAYS, Math.floor(budget.remainingAmount / rates[Steps.Days])),
+    stepNumber: Math.min(DEFAULT_NUMBER_OF_DAYS, Math.floor(budget?.remainingAmount / rates[Steps.Days])),
     steps: Steps.Days,
   };
 };
@@ -72,7 +72,7 @@ export const getReducer = (budget: Budget) => (state: State, action: Action) => 
       if (state.steps === Steps.Days && state.stepNumber === maxSteps[state.steps]) {
         nextState = state;
       }
-      if (budget.remainingAmount - nextState.stepNumber * rates[state.steps] < 0) {
+      if (budget?.remainingAmount - nextState.stepNumber * rates[state.steps] < 0) {
         nextState = state;
       }
 
@@ -118,7 +118,7 @@ export const useWorkEstimation = (
   const canIncrease = useMemo(
     () =>
       (stepNumber + stepSizes[steps]) * rates[steps] <=
-      Math.min(budget.remainingAmount, maxSteps[Steps.Days] * rates[Steps.Days]),
+      Math.min(budget?.remainingAmount, maxSteps[Steps.Days] * rates[Steps.Days]),
     [steps, stepNumber]
   );
 
