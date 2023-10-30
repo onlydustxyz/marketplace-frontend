@@ -28,7 +28,7 @@ export function getEndpointUrl({
   const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH as string;
   const basePath = `${scheme}${apiBasepath}`;
   const queryString = buildQueryString(queryParams);
-  const pageQuery = pageParam != null ? `page_index=${pageParam}&page_size=${pageSize}` : "";
+  const pageQuery = pageParam != null ? `pageIndex=${pageParam}&pageSize=${pageSize}` : "";
   const separator = queryString || pageQuery ? "?" : "";
   const ampersand = queryString && pageQuery ? "&" : "";
 
