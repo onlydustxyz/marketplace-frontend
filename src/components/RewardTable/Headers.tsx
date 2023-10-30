@@ -9,7 +9,7 @@ import Amount from "src/assets/icons/Amount";
 
 export enum Fields {
   Date = "DATE",
-  Contributor = "CONTRIBUTOR",
+  Contributor = "CONTRIBUTION",
   Amount = "AMOUNT",
   Status = "STATUS",
 }

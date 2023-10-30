@@ -15,9 +15,10 @@ type Props = {
   reward: MyRewardType;
   onClick: () => void;
   selected: boolean;
+  isProjectLeader: boolean;
 };
 
-export default function RewardLine({ reward, onClick, selected }: Props) {
+export default function RewardLine({ reward, onClick, selected, isProjectLeader }: Props) {
   const { T } = useIntl();
 
   return (
@@ -57,6 +58,7 @@ export default function RewardLine({ reward, onClick, selected }: Props) {
           {...{
             id: `payout-status-${reward?.id}`,
             status: reward?.status,
+            isProjectLeaderView: isProjectLeader,
           }}
         />
       </Cell>

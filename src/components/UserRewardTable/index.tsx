@@ -9,6 +9,7 @@ import { useMediaQuery } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
 import { Field, Sorting } from "src/pages/Rewards";
 import { ShowMore } from "src/components/Table/ShowMore";
+import { useAuth } from "src/hooks/useAuth";
 
 type PropsType = {
   rewards: MyRewardType[];
@@ -27,6 +28,7 @@ const UserRewardTable: React.FC<PropsType> = ({
   sorting,
   applySorting,
 }) => {
+  const { ledProjectIds } = useAuth();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
@@ -48,6 +50,7 @@ const UserRewardTable: React.FC<PropsType> = ({
                 reward={p}
                 onClick={() => onRewardClick(p)}
                 selected={p?.id === selectedReward?.id}
+                isProjectLeader={ledProjectIds.includes(p.projectId)}
               />
             ))}
           </Table>
@@ -64,6 +67,7 @@ const UserRewardTable: React.FC<PropsType> = ({
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          ledProjectIds={ledProjectIds}
         />
       )}
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
