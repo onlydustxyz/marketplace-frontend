@@ -11,6 +11,7 @@ import { Width } from "src/components/Button";
 import CheckLine from "src/icons/CheckLine";
 import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
 import { RewardBudgetUtils } from "./RewardBudget.utils";
+import { Currency } from "src/types";
 
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
@@ -79,7 +80,9 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
             />
           </div>
           <FieldInfoMessage icon={({ className }) => <InformationLine className={className} />}>
-            {T("currencies.network.label", { currency: T(`currencies.currency.${selectedBudget.currency}`) })}
+            {selectedBudget.currency === Currency.USD
+              ? T("currencies.network.label_dollar")
+              : T("currencies.network.label", { currency: T(`currencies.currency.${selectedBudget.currency}`) })}
           </FieldInfoMessage>
         </div>
       </div>
