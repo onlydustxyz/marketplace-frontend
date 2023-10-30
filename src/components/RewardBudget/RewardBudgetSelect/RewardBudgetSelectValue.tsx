@@ -4,12 +4,14 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { WorkEstimationBudgetDetails } from "src/components/RewardBudget/RewardBudget.type";
 import { Chip } from "src/components/Chip/Chip";
+import { cn } from "src/utils/cn";
 
 export interface RewardBudgetSelectValueProps {
   value: WorkEstimationBudgetDetails;
+  disabled: boolean;
 }
 
-export const RewardBudgetSelectValue = ({ value }: RewardBudgetSelectValueProps) => {
+export const RewardBudgetSelectValue = ({ value, disabled }: RewardBudgetSelectValueProps) => {
   const { T } = useIntl();
 
   return (
@@ -22,7 +24,7 @@ export const RewardBudgetSelectValue = ({ value }: RewardBudgetSelectValueProps)
           {T(`currencies.currency.${value.currency}`)}
         </label>
       </div>
-      <ArrowDownSLine className="text-2xl leading-[24px] text-spaceBlue-200" />
+      <ArrowDownSLine className={cn("text-2xl leading-[24px] text-spaceBlue-200", disabled && "opacity-0")} />
     </Listbox.Button>
   );
 };

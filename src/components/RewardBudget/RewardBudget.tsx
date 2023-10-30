@@ -10,6 +10,7 @@ import Button from "src/components/Button";
 import { Width } from "src/components/Button";
 import CheckLine from "src/icons/CheckLine";
 import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
+import { RewardBudgetUtils } from "./RewardBudget.utils";
 
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
@@ -32,7 +33,6 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   };
 
   const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("e", e.target.value, e.target.value === "");
     if (e.target.value === "") {
       setAmount(undefined);
     }
@@ -43,7 +43,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   };
 
   const handleSave = () => {
-    if (props.onChange) {
+    if (props.onChange && selectedBudget.remaining > 0 && selectedBudget.remaining - withDefaultAmount > 0) {
       props.onChange({
         amount: withDefaultAmount,
         currency: selectedBudget.currency,
@@ -53,14 +53,12 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
   const selectedBudgetDollarEquivalent = useMemo(
     () =>
-      selectedBudget.dollarsConversionRate
-        ? Math.round(withDefaultAmount * selectedBudget.dollarsConversionRate * 100) / 100
-        : undefined,
+      RewardBudgetUtils.getDollarEquivalent({ rate: selectedBudget.dollarsConversionRate, amount: withDefaultAmount }),
     [selectedBudget, withDefaultAmount]
   );
 
   const canRewards = useMemo(
-    () => selectedBudget.remaining - withDefaultAmount > 0,
+    () => RewardBudgetUtils.canRewards({ remaining: selectedBudget.remaining, amount: withDefaultAmount }),
     [selectedBudget, withDefaultAmount]
   );
 

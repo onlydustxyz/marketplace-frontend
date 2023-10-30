@@ -7,6 +7,7 @@ import InformationLine from "src/icons/InformationLine";
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
 import { formatMoneyAmount } from "src/utils/money";
+import { RewardBudgetUtils } from "src/components/RewardBudget/RewardBudget.utils";
 
 interface RewardBudgetDetailsProps {
   budget: WorkEstimationBudgetDetails;
@@ -96,11 +97,10 @@ const RewardBudgetDetails = ({ budget, amount, selectedBudgetDollarEquivalent }:
       <RewardBudgetDetailsRow
         label={T("rewardBudget.detail.left")}
         currency={budget.currency}
-        dollar={
-          selectedBudgetDollarEquivalent
-            ? Math.abs((budget.remainingDollarsEquivalent || 0) - selectedBudgetDollarEquivalent)
-            : undefined
-        }
+        dollar={RewardBudgetUtils.getDollarForLeftToSpend({
+          remaining: budget.remainingDollarsEquivalent,
+          selected: selectedBudgetDollarEquivalent,
+        })}
         amount={budget.remaining - amount}
         warningIcon
         warning={amountExceeds}

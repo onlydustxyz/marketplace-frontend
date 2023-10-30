@@ -13,6 +13,13 @@ export default {
   },
 };
 
+/**
+ * Full
+ * 1 currency
+ * currency with 0 remaining
+ * prefered currency
+ */
+
 const defaultProps: ComponentProps<typeof RewardBudget> = {
   initialDollarsEquivalent: 10000,
   remainingDollarsEquivalent: 5000,
@@ -38,6 +45,13 @@ const defaultProps: ComponentProps<typeof RewardBudget> = {
       initialDollarsEquivalent: 20,
       remaining: 20,
       remainingDollarsEquivalent: 20,
+    },
+    {
+      currency: "STARK",
+      initialAmount: 0,
+      initialDollarsEquivalent: 0,
+      remaining: 0,
+      remainingDollarsEquivalent: 0,
     },
   ],
 };

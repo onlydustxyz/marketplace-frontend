@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { Listbox } from "@headlessui/react";
 import { RewardBudgetSelectOption } from "./RewardBudgetSelectOption";
 import { RewardBudgetSelectValue } from "./RewardBudgetSelectValue";
@@ -11,7 +11,7 @@ export interface RewardBudgetSelectProps {
 }
 
 export const RewardBudgetSelect: FC<RewardBudgetSelectProps> = ({ budgets, onChange, value }) => {
-  const disabled = false;
+  const disabled = useMemo(() => budgets.filter(b => b.remaining > 0).length === 1, []);
 
   const handleSelectChange = (value: WorkEstimationBudgetDetails) => {
     onChange(value);
@@ -22,7 +22,7 @@ export const RewardBudgetSelect: FC<RewardBudgetSelectProps> = ({ budgets, onCha
     <Listbox value={value} onChange={handleSelectChange} disabled={disabled}>
       {({ value }) => (
         <div className="relative flex-1">
-          <RewardBudgetSelectValue value={value} />
+          <RewardBudgetSelectValue value={value} disabled={disabled} />
           <Listbox.Options className="absolute left-0 top-full max-h-[144px] w-full translate-y-[4px] overflow-auto rounded-2xl border border-greyscale-50/12 bg-greyscale-900 shadow-heavy">
             {budgets.map((budget, i) => (
               <RewardBudgetSelectOption key={budget.currency} budget={budget} last={i === budgets.length} />
