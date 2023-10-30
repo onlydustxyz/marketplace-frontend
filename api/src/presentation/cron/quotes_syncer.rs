@@ -3,7 +3,7 @@ use std::{sync::Arc, time::Duration};
 use anyhow::Result;
 use domain::currencies;
 use infrastructure::{coinmarketcap, dbclient};
-use olog::info;
+use olog::{error, info, IntoField};
 use tokio::time::Instant;
 use tokio_cron_scheduler::Job;
 
@@ -12,7 +12,15 @@ use crate::{application::quotes::sync::Usecase, Config};
 pub async fn bootstrap(config: Config) -> Result<Job> {
 	let job = Job::new_repeated_async(sleep_duration(), move |_id, _lock| {
 		let cloned_config = config.clone();
-		Box::pin(async move { _bootstrap(cloned_config.clone()).await.unwrap() })
+		Box::pin(async move {
+			_bootstrap(cloned_config.clone())
+				.await
+				.map_err(|e: anyhow::Error| {
+					error!(error = e.to_field(), "Error in quotes syncer job");
+					e
+				})
+				.unwrap()
+		})
 	})?;
 
 	Ok(job)
