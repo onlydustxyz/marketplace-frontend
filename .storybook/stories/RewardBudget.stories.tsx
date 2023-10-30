@@ -14,13 +14,14 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof RewardBudget> = {
-  initialDollarsEquivalent: 10,
-  remainingDollarsEquivalent: 10,
+  initialDollarsEquivalent: 10000,
+  remainingDollarsEquivalent: 5000,
   budgets: [
     {
       currency: "APT",
       initialAmount: 20,
       initialDollarsEquivalent: 2000,
+      dollarsConversionRate: 100,
       remaining: 20,
       remainingDollarsEquivalent: 2000,
     },
@@ -34,9 +35,9 @@ const defaultProps: ComponentProps<typeof RewardBudget> = {
     {
       currency: "USD",
       initialAmount: 20,
-      initialDollarsEquivalent: 2000,
+      initialDollarsEquivalent: 20,
       remaining: 20,
-      remainingDollarsEquivalent: 2000,
+      remainingDollarsEquivalent: 20,
     },
   ],
 };

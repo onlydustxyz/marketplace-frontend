@@ -13,6 +13,7 @@ interface RewardBudgetDetailsProps {
   amount: number;
   initialDollarsEquivalent?: number;
   remainingDollarsEquivalent?: number;
+  selectedBudgetDollarEquivalent?: number;
 }
 
 interface RewardBudgetDetailsRowProps {
@@ -48,7 +49,7 @@ const RewardBudgetDetailsRow = ({
         <p className="font-walsheim text-sm text-greyscale-300">{label}</p>
       </div>
       <div className="flex flex-row items-center justify-end gap-1">
-        {dollar && currency !== Currency.USD && (
+        {dollar && currency !== Currency.USD ? (
           <p
             className="font-walsheim text-[10px] font-normal text-spaceBlue-200"
             {...withTooltip(T("rewardBudget.detail.dollarTooltip"), {
@@ -57,7 +58,7 @@ const RewardBudgetDetailsRow = ({
           >
             {`~${formatMoneyAmount({ amount: dollar, currency: Currency.USD })}`}
           </p>
-        )}
+        ) : null}
         <p className={cn("font-walsheim text-sm font-normal", warning && "text-orange-500")}>
           {formatMoneyAmount({
             amount: amount,
@@ -73,9 +74,10 @@ const RewardBudgetDetailsRow = ({
   );
 };
 
-const RewardBudgetDetails = ({ budget, amount }: RewardBudgetDetailsProps) => {
+const RewardBudgetDetails = ({ budget, amount, selectedBudgetDollarEquivalent }: RewardBudgetDetailsProps) => {
   const { T } = useIntl();
   const amountExceeds = budget.remaining - amount < 0;
+
   return (
     <div className="flex flex-col items-start justify-start gap-1">
       <RewardBudgetDetailsRow
@@ -87,14 +89,18 @@ const RewardBudgetDetails = ({ budget, amount }: RewardBudgetDetailsProps) => {
       <RewardBudgetDetailsRow
         label={T("rewardBudget.detail.this")}
         currency={budget.currency}
-        dollar={undefined} // calcalute with conversion rate
+        dollar={selectedBudgetDollarEquivalent}
         amount={amount}
         warning={amountExceeds}
       />
       <RewardBudgetDetailsRow
         label={T("rewardBudget.detail.left")}
         currency={budget.currency}
-        dollar={undefined} // calcalute with conversion rate
+        dollar={
+          selectedBudgetDollarEquivalent
+            ? Math.abs((budget.remainingDollarsEquivalent || 0) - selectedBudgetDollarEquivalent)
+            : undefined
+        }
         amount={budget.remaining - amount}
         warningIcon
         warning={amountExceeds}

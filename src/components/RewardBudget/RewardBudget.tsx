@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
 import { RewardBudgetSelect } from "./RewardBudgetSelect/RewardBudgetSelect";
 import { RewardBudgetProps, WorkEstimationBudgetDetails } from "./RewardBudget.type";
 import { FieldInput } from "src/components/New/Field/Input";
@@ -9,22 +9,13 @@ import RewardBudgetDetails from "./Details/RewardBudgetDetails";
 import Button from "src/components/Button";
 import { Width } from "src/components/Button";
 import CheckLine from "src/icons/CheckLine";
-
-// default value order (1) Dollars, (2) Ether, (3) Stark, (4) Optimism, (5) Aptos
-// If project has only 1 currency left with non-zero amount, disable the select behaviour and display budget / currency as a non editable input
-// Dollar -> Reward granted on the Ethereum network or regular banking system depending on user preferences
-// Optimisum
-// Etherium
-// Aptos
-// Starknet
-// total spent initial - remaining
-// remaining - nouvelle valeurs
+import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
 
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
-  const disabledButton = false;
   const [selectedBudget, setSelectedBudget] = useState<WorkEstimationBudgetDetails>(props.budgets[0]);
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number | undefined>(0);
+  const withDefaultAmount = useMemo(() => amount || 0, [amount]);
 
   useEffect(() => {
     if (props.preferedCurrency) {
@@ -41,6 +32,10 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   };
 
   const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("e", e.target.value, e.target.value === "");
+    if (e.target.value === "") {
+      setAmount(undefined);
+    }
     const value = parseInt(e.target.value);
     if (!isNaN(value)) {
       setAmount(value);
@@ -50,13 +45,24 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   const handleSave = () => {
     if (props.onChange) {
       props.onChange({
-        amount: amount,
+        amount: withDefaultAmount,
         currency: selectedBudget.currency,
       });
     }
   };
 
-  console.log("selectedBudget", selectedBudget, amount);
+  const selectedBudgetDollarEquivalent = useMemo(
+    () =>
+      selectedBudget.dollarsConversionRate
+        ? Math.round(withDefaultAmount * selectedBudget.dollarsConversionRate * 100) / 100
+        : undefined,
+    [selectedBudget, withDefaultAmount]
+  );
+
+  const canRewards = useMemo(
+    () => selectedBudget.remaining - withDefaultAmount > 0,
+    [selectedBudget, withDefaultAmount]
+  );
 
   return (
     <div className="flex w-full flex-col rounded-2xl border border-greyscale-50/8 bg-white/5 shadow-light">
@@ -79,16 +85,24 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           </FieldInfoMessage>
         </div>
       </div>
+      <div className="flex w-full flex-col px-8 pb-3 pt-3">
+        <RewardBudgetBar
+          total={props.initialDollarsEquivalent || 0}
+          spending={withDefaultAmount}
+          remaining={props.remainingDollarsEquivalent || 0}
+        />
+      </div>
       <div className="flex w-full flex-col border-b-[1px] border-greyscale-50/8 px-8 pb-6 pt-3">
         <RewardBudgetDetails
-          amount={amount}
+          amount={withDefaultAmount}
           budget={selectedBudget}
           initialDollarsEquivalent={props.initialDollarsEquivalent}
           remainingDollarsEquivalent={props.remainingDollarsEquivalent}
+          selectedBudgetDollarEquivalent={selectedBudgetDollarEquivalent}
         />
       </div>
       <div className="flex w-full flex-col px-6 pb-6 pt-4">
-        <Button width={Width.Full} disabled={disabledButton} onClick={handleSave}>
+        <Button width={Width.Full} disabled={!canRewards} onClick={handleSave}>
           <CheckLine />
           {T("rewardBudget.submit")}
         </Button>
