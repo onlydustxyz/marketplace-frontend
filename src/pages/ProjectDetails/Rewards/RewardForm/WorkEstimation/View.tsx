@@ -32,7 +32,7 @@ export default function WorkEstimation({
   steps,
 }: Props) {
   const { T } = useT();
-  const isRewardDisbled = budget.remainingDollarsEquivalent === 0;
+  const isRewardDisbled = budget.remaining === 0;
 
   return (
     <Card padded={false}>
