@@ -85,9 +85,9 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
       </div>
       <div className="flex w-full flex-col px-8 pb-3 pt-3">
         <RewardBudgetBar
-          total={props.initialDollarsEquivalent || 0}
+          total={selectedBudget.initialAmount || 0}
           spending={withDefaultAmount}
-          remaining={props.remainingDollarsEquivalent || 0}
+          remaining={selectedBudget.remaining || 0}
         />
       </div>
       <div className="flex w-full flex-col border-b-[1px] border-greyscale-50/8 px-8 pb-6 pt-3">

@@ -29,7 +29,7 @@ const defaultProps: ComponentProps<typeof RewardBudget> = {
       initialAmount: 20,
       initialDollarsEquivalent: 2000,
       dollarsConversionRate: 100,
-      remaining: 20,
+      remaining: 10,
       remainingDollarsEquivalent: 2000,
     },
     {
