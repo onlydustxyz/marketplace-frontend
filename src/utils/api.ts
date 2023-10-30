@@ -73,7 +73,6 @@ export function formatRewardItemToGithubCodeReview(item: components["schemas"]["
     },
     status: item.status,
     submittedAt: item.createdAt,
-    // TODO
-    outcome: item.status,
+    outcome: item.codeReviewOutcome,
   } as GithubCodeReviewFragment;
 }

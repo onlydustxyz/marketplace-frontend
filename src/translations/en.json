@@ -535,7 +535,6 @@
         "to": "to",
         "you": "(you)",
         "contributions": "Included in reward",
-        "rewardGrantedOnNetwork": "Reward granted on __network__ network.",
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
         "rewardItems": {
           "error": "An error occurred, please try again later."

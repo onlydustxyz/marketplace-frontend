@@ -1,3 +1,4 @@
+import { UseMutateFunction } from "@tanstack/react-query";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -6,12 +7,12 @@ import { GithubUserFragment } from "src/__generated/graphql";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
+import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import ExternalLink from "src/components/ExternalLink";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
-import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ShowMore } from "src/components/Table/ShowMore";
 import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
@@ -33,9 +34,10 @@ import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
-import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
+import { formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
-import { UseMutateFunction } from "@tanstack/react-query";
+import { SkeletonDetail } from "./SkeletonDetail";
+import { SkeletonItems } from "./SkeletonItems";
 
 enum Align {
   Top = "top",
@@ -68,23 +70,17 @@ export default function View({
   const { T } = useIntl();
   const { githubUserId } = useAuth();
 
-  const { data, isLoading: loading } = useRestfulData<components["schemas"]["RewardResponse"]>({
+  const {
+    data,
+    isLoading: loading,
+    isError,
+  } = useRestfulData<components["schemas"]["RewardResponse"]>({
     resourcePath: isMine ? ApiResourcePaths.GET_MY_REWARD_BY_ID : ApiResourcePaths.PROJECT_REWARD,
     pathParam: isMine ? rewardId : { projectId, rewardId },
     method: "GET",
   });
 
-  const infiniteOptions = isMine
-    ? {
-        rewardId,
-        enabled: Boolean(data),
-        isMine,
-      }
-    : {
-        projectId,
-        rewardId,
-        enabled: Boolean(data),
-      };
+  const infiniteOptions = isMine ? { isMine } : { projectId };
 
   const {
     data: rewardItemsData,
@@ -93,22 +89,19 @@ export default function View({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteRewardItems(infiniteOptions);
+  } = useInfiniteRewardItems({ rewardId, enabled: Boolean(data), ...infiniteOptions });
 
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
-  const formattedReceipt = formatReceipt(data?.receipt);
+  const formattedReceipt = isMine ? formatReceipt(data?.receipt) : null;
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
 
   function renderRewardItems() {
     if (rewardItemsLoading) {
       return (
-        <div className="flex h-full flex-col gap-3 pt-8">
-          <div className="h-6 w-1/3 animate-pulse rounded-lg bg-greyscale-800" />
-          <div className="h-20 w-full animate-pulse rounded-2xl bg-greyscale-800 animation-delay-150" />
-          <div className="h-20 w-full animate-pulse rounded-2xl bg-greyscale-800 animation-delay-300" />
-          <div className="animation-delay[600ms] h-20 w-full animate-pulse rounded-2xl bg-greyscale-800" />
+        <div className="py-8">
+          <SkeletonItems />
         </div>
       );
     }
@@ -150,12 +143,8 @@ export default function View({
                 }
               }
             })}
+            {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
           </div>
-          {hasNextPage ? (
-            <div className="pt-6">
-              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
-            </div>
-          ) : null}
         </div>
       );
     }
@@ -163,9 +152,27 @@ export default function View({
     return null;
   }
 
-  return (
-    <QueryWrapper query={{ loading, data }}>
-      {data ? (
+  function renderDetail() {
+    if (loading) {
+      return (
+        <div className="px-6 py-8">
+          <SkeletonDetail />
+        </div>
+      );
+    }
+
+    if (isError) {
+      return (
+        <div className="flex h-full items-center justify-center px-6">
+          <p className="whitespace-pre-line text-center font-walsheim text-greyscale-50">
+            {T("reward.table.detailsPanel.error")}
+          </p>
+        </div>
+      );
+    }
+
+    if (data) {
+      return (
         <div className="flex h-full flex-col gap-8 px-6">
           <div className="flex flex-wrap items-center gap-3 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.title", { id: pretty(data.id) })}
@@ -174,24 +181,24 @@ export default function View({
           <div className="flex flex-col gap-8 divide-y divide-greyscale-50/12">
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-2">
-                <PayoutStatus status={data.status} />
-                {!isCurrencyUSD ? (
-                  <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
-                    <InfoIcon className="h-4 w-3" />
-                    <span>
-                      {T("reward.table.detailsPanel.rewardGrantedOnNetwork", {
-                        network: currencyToNetwork(data.currency),
-                      })}
-                    </span>
-                  </div>
-                ) : null}
+                <PayoutStatus status={data.status} isProjectLeaderView={projectLeaderView} />
+                <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
+                  <InfoIcon className="h-4 w-3" />
+                  <span>
+                    {data.currency === Currency.USD
+                      ? T("currencies.network.label_dollar")
+                      : T("currencies.network.label", { currency: T(`currencies.currency.${data.currency}`) })}
+                  </span>
+                </div>
               </div>
               <div className="flex items-baseline gap-2">
                 <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
-                  {/* TODO add CurrencyIcon */}
-                  <span>
-                    {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
-                  </span>
+                  <div className="flex items-center gap-1">
+                    <CurrencyIcons currency={data.currency} className="h-8 w-8" />
+                    <span>
+                      {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
+                    </span>
+                  </div>
                   {!isCurrencyUSD ? <span className="text-3xl">{data.currency}</span> : null}
                 </div>
                 {!isCurrencyUSD && data.dollarsEquivalent ? (
@@ -300,9 +307,19 @@ export default function View({
             {renderRewardItems()}
           </div>
         </div>
-      ) : null}
-    </QueryWrapper>
-  );
+      );
+    }
+
+    return (
+      <div className="flex h-full items-center justify-center px-6">
+        <p className="whitespace-pre-line text-center font-walsheim text-greyscale-50">
+          {T("reward.table.detailsPanel.empty")}
+        </p>
+      </div>
+    );
+  }
+
+  return renderDetail();
 }
 
 const Details = ({ align = Align.Center, children }: PropsWithChildren & { align?: Align }) => (
