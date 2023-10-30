@@ -24,7 +24,7 @@ export const RewardBudgetSelectValue = ({ value, disabled }: RewardBudgetSelectV
           {T(`currencies.currency.${value.currency}`)}
         </label>
       </div>
-      <ArrowDownSLine className={cn("text-2xl leading-[24px] text-spaceBlue-200", disabled && "opacity-0")} />
+      <ArrowDownSLine className={cn("text-2xl leading-6 text-spaceBlue-200", disabled && "opacity-0")} />
     </Listbox.Button>
   );
 };
