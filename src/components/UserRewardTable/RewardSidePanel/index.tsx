@@ -40,7 +40,7 @@ export function RewardSidePanelAsLeader({
     resourcePath: ApiResourcePaths.PROJECT_REWARD,
     pathParam: { projectId, rewardId },
     method: "DELETE",
-    onSuccess: async () => {
+    onSuccess: () => {
       setOpen(false);
       showToaster(T("reward.form.cancelled"));
     },
