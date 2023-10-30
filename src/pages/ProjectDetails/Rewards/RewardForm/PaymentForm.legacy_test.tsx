@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
-
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import RewardForm from ".";
 import {
@@ -13,6 +12,7 @@ import {
 } from "src/__generated/graphql";
 import { VirtuosoMockContext } from "react-virtuoso";
 import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const TEST_CONTRIBUTOR: ContributorFragment = {
   __typename: "UserProfiles",
@@ -75,13 +75,18 @@ const ADD_WORK_ITEM_BUTTON_ID = "add-work-item-btn";
 
 const RECIPIENT_INPUT_LABEL = /Search by Github handle/i;
 
+// Create a client
+const queryClient = new QueryClient();
+
 describe('"RewardForm" component', () => {
   beforeEach(() => {
     renderWithIntl(
       <VirtuosoMockContext.Provider value={{ viewportHeight: 1000, itemHeight: 36 }}>
-        <ContributorProfilePanelProvider>
-          <RewardForm />
-        </ContributorProfilePanelProvider>
+        <QueryClientProvider client={queryClient}>
+          <ContributorProfilePanelProvider>
+            <RewardForm />
+          </ContributorProfilePanelProvider>
+        </QueryClientProvider>
       </VirtuosoMockContext.Provider>,
       {
         wrapper: MemoryRouterProviderFactory({
