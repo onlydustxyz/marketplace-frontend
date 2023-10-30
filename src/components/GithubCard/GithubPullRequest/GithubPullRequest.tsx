@@ -1,4 +1,3 @@
-import { cn } from "src/utils/cn";
 import { GithubPullRequestWithCommitsFragment, GithubUserFragment } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
@@ -8,7 +7,8 @@ import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitCommitLine from "src/icons/GitCommitLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { GithubContributionType } from "src/types";
+import { GithubContributionStatusREST, GithubContributionType } from "src/types";
+import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 import { CommitsTooltip } from "./CommitsTooltip";
 
@@ -28,10 +28,13 @@ export enum Action {
 function getPullRequestStatusDate(pullRequest: GithubPullRequestWithCommitsFragment) {
   switch (pullRequest.status) {
     case GithubPullRequestStatus.Closed:
+    case GithubContributionStatusREST.Cancelled:
       return new Date(pullRequest.closedAt);
     case GithubPullRequestStatus.Merged:
+    case GithubContributionStatusREST.Completed:
       return new Date(pullRequest.mergedAt);
     case GithubPullRequestStatus.Open:
+    case GithubContributionStatusREST.InProgress:
     default:
       return new Date(pullRequest.createdAt);
   }

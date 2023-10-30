@@ -148,6 +148,12 @@ export enum GithubContributionStatus {
   Canceled = "canceled",
 }
 
+export enum GithubContributionStatusREST {
+  InProgress = "IN_PROGRESS",
+  Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
+}
+
 export enum GithubContributionReviewStatus {
   PendingReviewer = "pendingReviewer",
   UnderReview = "underReview",
