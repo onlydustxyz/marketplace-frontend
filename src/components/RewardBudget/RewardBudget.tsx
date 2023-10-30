@@ -97,8 +97,6 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
         <RewardBudgetDetails
           amount={withDefaultAmount}
           budget={selectedBudget}
-          initialDollarsEquivalent={props.initialDollarsEquivalent}
-          remainingDollarsEquivalent={props.remainingDollarsEquivalent}
           selectedBudgetDollarEquivalent={selectedBudgetDollarEquivalent}
         />
       </div>

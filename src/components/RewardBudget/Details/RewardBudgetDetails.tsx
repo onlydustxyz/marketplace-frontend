@@ -12,8 +12,6 @@ import { RewardBudgetUtils } from "src/components/RewardBudget/RewardBudget.util
 interface RewardBudgetDetailsProps {
   budget: WorkEstimationBudgetDetails;
   amount: number;
-  initialDollarsEquivalent?: number;
-  remainingDollarsEquivalent?: number;
   selectedBudgetDollarEquivalent?: number;
 }
 

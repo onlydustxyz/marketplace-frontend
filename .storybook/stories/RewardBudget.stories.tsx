@@ -14,8 +14,6 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof RewardBudget> = {
-  initialDollarsEquivalent: 10000,
-  remainingDollarsEquivalent: 5000,
   budgets: [
     {
       currency: "APT",
@@ -59,8 +57,6 @@ const defaultProps: ComponentProps<typeof RewardBudget> = {
 };
 
 const With0RemainingCurrencyCurrencyProps: ComponentProps<typeof RewardBudget> = {
-  initialDollarsEquivalent: 10000,
-  remainingDollarsEquivalent: 5000,
   budgets: [
     {
       currency: "APT",
