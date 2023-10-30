@@ -7,10 +7,9 @@ import Subtract from "src/icons/Subtract";
 import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimation/BudgetBar";
 import { formatMoneyAmount } from "src/utils/money";
 import { useT } from "talkr";
-import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 
 interface Props {
-  budget: ProjectBudgetType["budgets"][number];
+  budget: { initialAmount: number; remaining: number };
   requestNewPaymentMutationLoading: boolean;
   canIncrease: boolean;
   canDecrease: boolean;

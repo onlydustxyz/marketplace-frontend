@@ -35,7 +35,7 @@ interface Props {
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
   unpaidContributions: ContributionFragment[] | null | undefined;
-  isCreateProjectRewardLoading: boolean;
+  isCreateProjectRewardLoading?: boolean;
 }
 
 type TitleProps = {

@@ -17,7 +17,7 @@ const Template: ComponentStory<typeof WorkEstimation> = args => (
 export const Default = Template.bind({});
 
 Default.args = {
-  budget: { initialAmount: 5000, remainingAmount: 3000 },
+  budget: { initialAmount: 5000, remaining: 3000 },
   canIncrease: true,
   canDecrease: true,
   amountToPay: 1000,

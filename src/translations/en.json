@@ -214,7 +214,7 @@
             "APT": "Aptos",
             "ETH": "Ethereum",
             "OP": "Optimism",
-            "STARK": "Starknet",
+            "STARK": "Stark chain",
             "USD": "IBAN/BIC",
             "label": "Reward granted on __currency__ network.",
             "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
