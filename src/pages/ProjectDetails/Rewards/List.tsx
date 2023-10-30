@@ -25,7 +25,7 @@ const RewardList: React.FC = () => {
     isBudgetLoading: boolean;
   }>();
 
-  const { sorting, sortField, queryParams } = useQueryParamsSorting({ field: Fields.Date, isAscending: true });
+  const { sorting, sortField, queryParams } = useQueryParamsSorting({ field: Fields.Date, isAscending: false });
   const {
     data,
     isLoading: isRewardsLoading,
