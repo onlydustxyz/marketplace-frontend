@@ -94,14 +94,7 @@ export default function View({
 
   function renderRewardItems() {
     if (rewardItemsLoading) {
-      return (
-        <div className="flex h-full flex-col gap-3 pt-8">
-          <div className="h-6 w-1/3 animate-pulse rounded-lg bg-greyscale-800" />
-          <div className="h-20 w-full animate-pulse rounded-2xl bg-greyscale-800 animation-delay-150" />
-          <div className="h-20 w-full animate-pulse rounded-2xl bg-greyscale-800 animation-delay-300" />
-          <div className="animation-delay[600ms] h-20 w-full animate-pulse rounded-2xl bg-greyscale-800" />
-        </div>
-      );
+      return null;
     }
 
     if (rewardItemsError) {
