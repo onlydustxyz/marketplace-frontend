@@ -49,5 +49,7 @@ export default function useInfiniteMyRewardList({
         }),
     initialPageParam: 0,
     getNextPageParam: lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
   });
 }

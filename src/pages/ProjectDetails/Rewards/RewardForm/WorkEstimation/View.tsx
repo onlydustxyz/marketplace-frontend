@@ -32,7 +32,7 @@ export default function WorkEstimation({
   steps,
 }: Props) {
   const { T } = useT();
-  const isRewardDisbled = budget.remainingAmount < rates.hours || budget.remainingAmount === 0;
+  const isRewardDisbled = budget?.remainingAmount < rates.hours || budget?.remainingAmount === 0;
 
   return (
     <Card padded={false}>
@@ -63,11 +63,11 @@ export default function WorkEstimation({
               </div>
             </div>
           </div>
-          <BudgetBar budget={{ ...budget, remaining: budget.remainingAmount }} pendingSpending={amountToPay} />
+          <BudgetBar budget={{ ...budget, remaining: budget?.remainingAmount }} pendingSpending={amountToPay} />
           <div className="flex flex-col text-sm font-medium">
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.remainingBudget")}</div>
-              <div className="font-semibold">{formatMoneyAmount({ amount: budget.remainingAmount })}</div>
+              <div className="font-semibold">{formatMoneyAmount({ amount: budget?.remainingAmount })}</div>
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.thisReward")}</div>
@@ -75,7 +75,9 @@ export default function WorkEstimation({
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.leftToSpend")}</div>
-              <div className="font-semibold">{formatMoneyAmount({ amount: budget.remainingAmount - amountToPay })}</div>
+              <div className="font-semibold">
+                {formatMoneyAmount({ amount: budget?.remainingAmount - amountToPay })}
+              </div>
             </div>
           </div>
         </div>

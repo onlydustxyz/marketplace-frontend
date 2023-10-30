@@ -24,6 +24,7 @@ export default function InvoiceSubmission() {
     data: rewardsPendingInvoice,
     isLoading: isRewardsPendingInvoiceLoading,
     isError: isRewardsPendingInvoiceError,
+    refetch,
   } = useRestfulData<MyRewardsPendingInvoiceType>({
     resourcePath: ApiResourcePaths.GET_MY_REWARDS_PENDING_INVOICE,
     method: "GET",
@@ -41,7 +42,10 @@ export default function InvoiceSubmission() {
   const [markInvoiceAsReceived] = useMarkInvoiceAsReceivedMutation({
     variables: { payments: rewardsPendingInvoice?.rewards?.map(p => p.id) },
     context: { graphqlErrorDisplay: "toaster" },
-    onCompleted: () => showToaster(T("invoiceSubmission.toaster.success")),
+    onCompleted: () => {
+      refetch();
+      showToaster(T("reward.details.earning.invoiceReceived"));
+    },
     update: (cache, _, { variables }) => {
       const { payments } = variables as MarkInvoiceAsReceivedMutationVariables;
       const paymentIds = [payments].flat();

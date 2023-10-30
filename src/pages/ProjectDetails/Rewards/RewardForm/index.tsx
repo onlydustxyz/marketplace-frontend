@@ -40,7 +40,7 @@ const RewardForm: React.FC = () => {
 
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      remainingBudget: budget.remainingAmount,
+      remainingBudget: budget?.remainingAmount,
       contributorHandle: null,
     },
     mode: "all",
