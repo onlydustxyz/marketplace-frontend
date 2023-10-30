@@ -35,8 +35,8 @@ const RewardForm: React.FC = () => {
   });
 
   const { mutate: mutateProjectBudget, isPending: mutateProjectBudgetIsPending } = useMutationRestfulData({
-    resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
-    pathParam: { projectId },
+    resourcePath: ApiResourcePaths.PROJECT_REWARDS_LIST,
+    pathParam: projectId,
     method: "POST",
     onSuccess: async () => {
       await refetch();
