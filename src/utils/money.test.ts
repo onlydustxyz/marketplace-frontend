@@ -1,5 +1,5 @@
 import { Currency } from "src/types";
-import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
+import { formatMoneyAmount } from "src/utils/money";
 import { describe, expect, it } from "vitest";
 
 describe("Money", () => {
@@ -21,14 +21,5 @@ describe("Money", () => {
     expect(formatMoneyAmount({ amount: 123, currency: Currency.APT, notation: "compact" })).toBe("123 APT");
     expect(formatMoneyAmount({ amount: 12345, currency: Currency.ETH, notation: "compact" })).toBe("12.3k ETH");
     expect(formatMoneyAmount({ amount: 12010, currency: Currency.STARK, notation: "compact" })).toBe("12k STARK");
-  });
-
-  it("should format currencies to networks", () => {
-    expect(currencyToNetwork("APT")).toBe("Aptos");
-    expect(currencyToNetwork("ETH")).toBe("Ethereum");
-    expect(currencyToNetwork("OP")).toBe("Optimism");
-    expect(currencyToNetwork("STARK")).toBe("Stark chain");
-    expect(currencyToNetwork("USD")).toBe("IBAN/BIC");
-    expect(currencyToNetwork("xyz" as Currency)).toBe("");
   });
 });

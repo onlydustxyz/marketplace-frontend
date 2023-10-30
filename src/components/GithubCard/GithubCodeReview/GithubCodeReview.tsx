@@ -1,14 +1,14 @@
-import { cn } from "src/utils/cn";
 import { GithubCodeReviewFragment } from "src/__generated/graphql";
 import Card from "src/components/Card";
-import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { parsePullRequestLink } from "src/utils/github";
-import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
-import { GithubCodeReviewStatus, GithubContributionType } from "src/types";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
+import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
+import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import { GithubCodeReviewStatus, GithubContributionStatusREST, GithubContributionType } from "src/types";
+import { cn } from "src/utils/cn";
+import { parsePullRequestLink } from "src/utils/github";
 
 export enum Action {
   Add = "add",
@@ -27,8 +27,10 @@ function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment) {
 
   switch (status) {
     case GithubCodeReviewStatus.Completed:
+    case GithubContributionStatusREST.Completed:
       return new Date(codeReview.submittedAt);
     case GithubCodeReviewStatus.Pending:
+    case GithubContributionStatusREST.InProgress:
     default:
       return new Date(codeReview.githubPullRequest?.createdAt);
   }
@@ -40,11 +42,14 @@ function getStatus(codeReview: GithubCodeReviewFragment) {
 
   switch (status) {
     case GithubCodeReviewStatus.Completed:
+    case GithubContributionStatusREST.Completed:
+    case GithubContributionStatusREST.Cancelled:
       return outcome === GithubCodeReviewOutcome.ChangeRequested
         ? GithubCodeReviewStatus.ChangeRequested
         : GithubCodeReviewStatus.Completed;
 
     case GithubCodeReviewStatus.Pending:
+    case GithubContributionStatusREST.InProgress:
     default:
       return GithubCodeReviewStatus.Pending;
   }

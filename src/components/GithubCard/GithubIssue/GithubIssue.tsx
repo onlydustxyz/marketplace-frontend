@@ -1,4 +1,3 @@
-import { cn } from "src/utils/cn";
 import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
@@ -8,7 +7,8 @@ import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitCommentLine from "src/icons/GitCommentLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { GithubContributionType } from "src/types";
+import { GithubContributionStatusREST, GithubContributionType } from "src/types";
+import { cn } from "src/utils/cn";
 import { parseIssueLink } from "src/utils/github";
 
 export enum Action {
@@ -22,8 +22,11 @@ function getIssueStatusDate(issue: GithubIssueFragment) {
   switch (issue.status) {
     case GithubIssueStatus.Cancelled:
     case GithubIssueStatus.Completed:
+    case GithubContributionStatusREST.Completed:
+    case GithubContributionStatusREST.Cancelled:
       return new Date(issue.closedAt);
     case GithubIssueStatus.Open:
+    case GithubContributionStatusREST.InProgress:
     default:
       return new Date(issue.createdAt);
   }
