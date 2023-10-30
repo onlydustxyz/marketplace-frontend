@@ -4,6 +4,7 @@ import { cn } from "src/utils/cn";
 
 export interface FieldInputProps extends Omit<FieldProps, "children"> {
   type?: string;
+  min?: string;
   value?: string | number | readonly string[] | undefined;
   className?: string;
   inputClassName?: string;
@@ -21,6 +22,7 @@ export const FieldInput: FC<FieldInputProps> = ({
   onChange,
   className,
   inputClassName,
+  min,
   value,
   startIcon,
   endIcon,
@@ -36,6 +38,7 @@ export const FieldInput: FC<FieldInputProps> = ({
       >
         {startIcon ? startIcon({ className: "w-3.5 h-3.5 text-spaceBlue-200" }) : null}
         <input
+          min={min}
           value={value}
           type={type}
           onBlur={onBlur}

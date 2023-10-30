@@ -38,19 +38,12 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
       setAmount(undefined);
     }
     const value = parseInt(e.target.value);
-    if (!isNaN(value)) {
+    if (value < 0) {
+      setAmount(0);
+    } else if (!isNaN(value)) {
       setAmount(value);
     }
   };
-
-  // const handleSave = () => {
-  //   if (props.onChange && selectedBudget.remaining > 0 && selectedBudget.remaining - withDefaultAmount > 0) {
-  //     props.onChange({
-  //       amount: withDefaultAmount,
-  //       currency: selectedBudget.currency,
-  //     });
-  //   }
-  // };
 
   useEffect(() => {
     if (props.onChange && selectedBudget.remaining > 0 && selectedBudget.remaining - withDefaultAmount > 0) {
@@ -79,6 +72,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           <div className="z-50 flex flex-1 flex-row items-stretch justify-between gap-4">
             <RewardBudgetSelect {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
             <FieldInput
+              min="0"
               name="budget-amount-input"
               type="number"
               value={amount}
