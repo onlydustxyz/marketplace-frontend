@@ -34,8 +34,8 @@ const RewardForm: React.FC = () => {
     method: "GET",
   });
 
-  const { mutate: mutateProjectBudget, isPending: mutateProjectBudgetIsPending } = useMutationRestfulData({
-    resourcePath: ApiResourcePaths.PROJECT_REWARDS_LIST,
+  const { mutate: createProjectReward, isPending: isCreateProjectRewardLoading } = useMutationRestfulData({
+    resourcePath: ApiResourcePaths.PROJECT_REWARDS,
     pathParam: projectId,
     method: "POST",
     onSuccess: async () => {
@@ -45,9 +45,9 @@ const RewardForm: React.FC = () => {
     },
   });
 
-  const [preferredCurrency, setPreferredCurrency] = useLocalStorage<BudgetCurrencyType | null>(
+  const [preferredCurrency, setPreferredCurrency] = useLocalStorage<BudgetCurrencyType | undefined>(
     `preferredCurrency-${projectId}`,
-    null
+    undefined
   );
 
   const formMethods = useForm<Inputs>({
@@ -73,20 +73,11 @@ const RewardForm: React.FC = () => {
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
     formData => {
       if (contributor) {
-        console.log(mapFormDataToVariables({ ...formData, contributor }));
-        mutateProjectBudget(mapFormDataToVariables({ ...formData, contributor }));
+        createProjectReward(mapFormDataToVariables({ ...formData, contributor }));
+        setPreferredCurrency(formData.currency);
       }
     },
     [contributor, projectId]
-  );
-
-  const onWorkEstimationChange = useCallback(
-    (amountToPay: number, currency: BudgetCurrencyType) => {
-      formMethods.setValue("amountToWire", amountToPay);
-      formMethods.setValue("currency", currency);
-      setPreferredCurrency(currency);
-    },
-    [formMethods]
   );
 
   const onWorkItemsChange = useCallback(
@@ -125,12 +116,11 @@ const RewardForm: React.FC = () => {
               budget={reorderBudgets(projectBudget)}
               preferredCurrency={preferredCurrency}
               projectId={projectId}
-              onWorkEstimationChange={onWorkEstimationChange}
               onWorkItemsChange={onWorkItemsChange}
               contributor={contributor}
               setContributor={setContributor}
               unpaidContributions={data?.contributions as ContributionFragment[] | null | undefined}
-              requestNewPaymentMutationLoading={mutateProjectBudgetIsPending}
+              isCreateProjectRewardLoading={isCreateProjectRewardLoading}
             />
           ) : (
             <Loader />

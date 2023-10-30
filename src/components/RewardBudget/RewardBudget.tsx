@@ -26,7 +26,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
         setSelectedBudget(find);
       }
     }
-  }, [props.preferedCurrency, selectedBudget]);
+  }, [props.preferedCurrency]);
 
   const onSelectedBudgetChange = (newBudget: WorkEstimationBudgetDetails) => {
     setSelectedBudget(newBudget);
@@ -43,14 +43,23 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     }
   };
 
-  const handleSave = () => {
+  // const handleSave = () => {
+  //   if (props.onChange && selectedBudget.remaining > 0 && selectedBudget.remaining - withDefaultAmount > 0) {
+  //     props.onChange({
+  //       amount: withDefaultAmount,
+  //       currency: selectedBudget.currency,
+  //     });
+  //   }
+  // };
+
+  useEffect(() => {
     if (props.onChange && selectedBudget.remaining > 0 && selectedBudget.remaining - withDefaultAmount > 0) {
       props.onChange({
         amount: withDefaultAmount,
         currency: selectedBudget.currency,
       });
     }
-  };
+  }, [withDefaultAmount, selectedBudget]);
 
   const selectedBudgetDollarEquivalent = useMemo(
     () =>
@@ -101,7 +110,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
         />
       </div>
       <div className="flex w-full flex-col px-6 pb-6 pt-4">
-        <Button width={Width.Full} disabled={!canRewards || props.loading} onClick={handleSave}>
+        <Button width={Width.Full} disabled={!canRewards || props.loading} htmlType="submit">
           <CheckLine />
           {T("rewardBudget.submit")}
         </Button>

@@ -9,7 +9,7 @@ export interface RewardBudgetChangeProps {
 
 export interface RewardBudgetProps {
   budgets: WorkEstimationBudgetDetails[];
-  preferedCurrency?: WorkEstimationBudgetDetails["currency"] | undefined;
+  preferedCurrency?: WorkEstimationBudgetDetails["currency"] | null;
   onChange?: (props: RewardBudgetChangeProps) => void;
   loading?: boolean;
 }

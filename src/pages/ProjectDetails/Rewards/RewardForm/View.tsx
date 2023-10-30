@@ -22,19 +22,20 @@ import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
 import { filterUnpaidContributionsByType } from "./utils";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
-import WorkEstimation from "./WorkEstimation";
 import { BudgetCurrencyType } from "src/utils/money";
+import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
+import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
+import { Controller, useFormContext } from "react-hook-form";
 
 interface Props {
   projectId: string;
   budget: ProjectBudgetType;
-  preferredCurrency: BudgetCurrencyType | null;
-  onWorkEstimationChange: (amountToPay: number, currency: BudgetCurrencyType) => void;
+  preferredCurrency?: BudgetCurrencyType;
   onWorkItemsChange: (workItems: WorkItemFragment[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
   unpaidContributions: ContributionFragment[] | null | undefined;
-  requestNewPaymentMutationLoading: boolean;
+  isCreateProjectRewardLoading: boolean;
 }
 
 type TitleProps = {
@@ -53,15 +54,15 @@ function SectionTitle({ title, rightAction }: TitleProps) {
 
 const View: React.FC<Props> = ({
   budget,
-  onWorkEstimationChange,
   onWorkItemsChange,
   projectId,
   contributor,
   setContributor,
   unpaidContributions,
-  requestNewPaymentMutationLoading,
+  isCreateProjectRewardLoading,
   preferredCurrency,
 }) => {
+  const { control, setValue } = useFormContext();
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
@@ -206,12 +207,21 @@ const View: React.FC<Props> = ({
               imageElement={<img width={165} src={addContributionImg} className="absolute bottom-0 right-0" />}
             />
           )}
-          {contributor && workItems.length > 0 && (
-            <WorkEstimation
-              onChange={onWorkEstimationChange}
-              budget={budget}
-              requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
-              preferredCurrency={preferredCurrency}
+          {contributor && workItems.length > 0 && budget?.budgets && (
+            <Controller
+              name="rewardBudget"
+              control={control}
+              render={() => (
+                <RewardBudget
+                  budgets={budget.budgets}
+                  preferedCurrency={preferredCurrency}
+                  onChange={({ amount, currency }: RewardBudgetChangeProps) => {
+                    setValue("amountToWire", amount);
+                    setValue("currency", currency);
+                  }}
+                  loading={isCreateProjectRewardLoading}
+                />
+              )}
             />
           )}
         </div>
