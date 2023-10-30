@@ -10,11 +10,15 @@ import {
   stepSizes,
   useWorkEstimation,
 } from "src/hooks/useWorkEstimation";
+import { Currency } from "src/types";
 import { describe, expect, it, vi, beforeEach, test } from "vitest";
 
 const budget = {
   initialAmount: 200,
-  remainingAmount: 10000,
+  remaining: 10000,
+  currency: Currency.USD,
+  initialDollarsEquivalent: 0,
+  remainingDollarsEquivalent: 0,
 };
 
 describe("useWorkEstimation", () => {
@@ -52,7 +56,10 @@ describe("useWorkEstimation", () => {
   it("should forbid decreasing when estimation is 1 hour", () => {
     const veryLowBudget = {
       initialAmount: 200,
-      remainingAmount: 150,
+      remaining: 150,
+      currency: Currency.USD,
+      initialDollarsEquivalent: 0,
+      remainingDollarsEquivalent: 0,
     };
     const { result } = renderHook(() => useWorkEstimation(onChange, veryLowBudget));
     expect(result.current.canDecrease).toBe(true);
@@ -65,7 +72,10 @@ describe("useWorkEstimation", () => {
   it("should forbid increasing when estimation is at budget maximum", () => {
     const lowBudget = {
       initialAmount: 200,
-      remainingAmount: 200,
+      remaining: 200,
+      currency: Currency.USD,
+      initialDollarsEquivalent: 0,
+      remainingDollarsEquivalent: 0,
     };
     const { result } = renderHook(() => useWorkEstimation(onChange, lowBudget));
     expect(result.current.canIncrease).toBe(false);
@@ -89,7 +99,10 @@ describe("useWorkEstimation", () => {
   it("should give integer amounts", () => {
     const lowBudget = {
       initialAmount: 200,
-      remainingAmount: 200,
+      remaining: 200,
+      currency: Currency.USD,
+      initialDollarsEquivalent: 0,
+      remainingDollarsEquivalent: 0,
     };
     const { result } = renderHook(() => useWorkEstimation(onChange, lowBudget));
     expect(result.current.amountToPay).toBe(188);
@@ -172,7 +185,10 @@ describe("reducer", () => {
   it("does not exceed budget in days", () => {
     const lowBudget = {
       initialAmount: 200,
-      remainingAmount: 5249,
+      remaining: 5249,
+      currency: Currency.USD,
+      initialDollarsEquivalent: 0,
+      remainingDollarsEquivalent: 0,
     };
     const reducer = getReducer(lowBudget);
 
@@ -189,7 +205,10 @@ describe("reducer", () => {
   it("does not exceed budget in hours", () => {
     const lowBudget = {
       initialAmount: 110,
-      remainingAmount: 312,
+      remaining: 312,
+      currency: Currency.USD,
+      initialDollarsEquivalent: 0,
+      remainingDollarsEquivalent: 0,
     };
     const reducer = getReducer(lowBudget);
 
@@ -206,7 +225,10 @@ describe("reducer", () => {
   it("does not change when budget is too low", () => {
     const closeToZeroBudget = {
       initialAmount: 110,
-      remainingAmount: 1,
+      remaining: 1,
+      currency: Currency.USD,
+      initialDollarsEquivalent: 0,
+      remainingDollarsEquivalent: 0,
     };
     const reducer = getReducer(closeToZeroBudget);
 
@@ -245,7 +267,10 @@ describe("getInitialStep", () => {
   ])("returns %i %s for an initial budget of %i", (expectedStepNumber, expectedSteps, remainingBudget) => {
     const budget = {
       initialAmount: 100,
-      remainingAmount: remainingBudget,
+      remaining: remainingBudget,
+      currency: Currency.USD,
+      initialDollarsEquivalent: 0,
+      remainingDollarsEquivalent: 0,
     };
     const initialStep = getInitialStep(budget);
     expect(initialStep.stepNumber).toBe(expectedStepNumber);

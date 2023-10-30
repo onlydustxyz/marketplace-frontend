@@ -63,14 +63,11 @@ export default function WorkEstimation({
               </div>
             </div>
           </div>
-          <BudgetBar
-            budget={{ ...budget, remaining: budget?.remainingDollarsEquivalent }}
-            pendingSpending={amountToPay}
-          />
+          <BudgetBar budget={{ ...budget, remaining: budget?.remaining }} pendingSpending={amountToPay} />
           <div className="flex flex-col text-sm font-medium">
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.remainingBudget")}</div>
-              <div className="font-semibold">{formatMoneyAmount({ amount: budget?.remainingDollarsEquivalent })}</div>
+              <div className="font-semibold">{formatMoneyAmount({ amount: budget?.remaining })}</div>
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.thisReward")}</div>
@@ -78,9 +75,7 @@ export default function WorkEstimation({
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.leftToSpend")}</div>
-              <div className="font-semibold">
-                {formatMoneyAmount({ amount: budget?.remainingDollarsEquivalent - amountToPay })}
-              </div>
+              <div className="font-semibold">{formatMoneyAmount({ amount: budget?.remaining - amountToPay })}</div>
             </div>
           </div>
         </div>
