@@ -34,7 +34,7 @@ import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
-import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
+import { formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
@@ -182,16 +182,14 @@ export default function View({
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-2">
                 <PayoutStatus status={data.status} isProjectLeaderView={projectLeaderView} />
-                {!isCurrencyUSD ? (
-                  <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
-                    <InfoIcon className="h-4 w-3" />
-                    <span>
-                      {T("reward.table.detailsPanel.rewardGrantedOnNetwork", {
-                        network: currencyToNetwork(data.currency),
-                      })}
-                    </span>
-                  </div>
-                ) : null}
+                <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
+                  <InfoIcon className="h-4 w-3" />
+                  <span>
+                    {data.currency === Currency.USD
+                      ? T("currencies.network.label_dollar")
+                      : T("currencies.network.label", { currency: T(`currencies.currency.${data.currency}`) })}
+                  </span>
+                </div>
               </div>
               <div className="flex items-baseline gap-2">
                 <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">

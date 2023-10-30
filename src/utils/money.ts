@@ -54,15 +54,3 @@ const maximumFractionDigits = ({ amount, notation }: Params) => {
       return 0;
   }
 };
-
-const networkDict: Record<BudgetCurrencyType, string> = {
-  APT: "Aptos",
-  ETH: "Ethereum",
-  OP: "Optimism",
-  STARK: "Stark chain",
-  USD: "IBAN/BIC",
-};
-
-export function currencyToNetwork(currency: BudgetCurrencyType) {
-  return networkDict[currency] ?? "";
-}
