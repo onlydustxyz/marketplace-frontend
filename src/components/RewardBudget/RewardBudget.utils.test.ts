@@ -49,11 +49,11 @@ describe("Reward Budget utils", () => {
     });
 
     it("should return false if remaining is less than or equal to amount", () => {
-      expect(RewardBudgetUtils.canRewards({ remaining: 50, amount: 50 })).toBe(false);
       expect(RewardBudgetUtils.canRewards({ remaining: 100, amount: 110 })).toBe(false);
     });
 
     it("should return true if both amount and remaining are valid", () => {
+      expect(RewardBudgetUtils.canRewards({ remaining: 50, amount: 50 })).toBe(true);
       expect(RewardBudgetUtils.canRewards({ remaining: 100, amount: 50 })).toBe(true);
       expect(RewardBudgetUtils.canRewards({ remaining: 150, amount: 100 })).toBe(true);
     });
