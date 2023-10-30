@@ -10,6 +10,7 @@ import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData
 import { useShowToaster } from "src/hooks/useToaster";
 import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import { ProfileType } from "./types";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   open: boolean;
@@ -20,6 +21,9 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
   const { T } = useIntl();
   const showToaster = useShowToaster();
 
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
+
   const { data: user } = useRestfulData<UserPayoutType>({
     resourcePath: ApiResourcePaths.GET_PAYOUT_INFO,
     method: "GET",
@@ -27,7 +31,10 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
 
   const { mutate: userPayoutInformation, isPending: userPayoutInformationIsPending } = useMutationRestfulData({
     resourcePath: ApiResourcePaths.GET_PAYOUT_INFO,
-    onSuccess: () => showToaster(T("profile.form.success")),
+    onSuccess: () => {
+      showToaster(T("profile.form.success"));
+      queryClient.invalidateQueries();
+    },
   });
 
   const formMethods = useForm<FormDataType>({
