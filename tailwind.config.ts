@@ -103,6 +103,18 @@ const config: Config = {
           blue: "#2c2c3e",
         },
         snow: "#F4F4F4",
+        card: {
+          background: {
+            light: "#FFFFFF05",
+            medium: "#FFFFFF0D",
+            heavy: "#FFFFFF14",
+          },
+          border: {
+            light: "#F3F0EE14",
+            medium: "#F3F0EE1F",
+            heavy: "#F3F0EE33",
+          },
+        },
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",
@@ -190,7 +202,7 @@ const config: Config = {
     typography,
     headlessUi,
     scrollbar({ nocompatible: true }),
-    plugin(function ({ addComponents }) {
+    plugin(function ({ addComponents, theme }) {
       const pseudoOutline = {
         position: "relative",
         "&:before": {
@@ -221,6 +233,111 @@ const config: Config = {
           };
           return acc;
         }, {}),
+        /* -------------------------------------------------------------------------- */
+        /*                                     NEW                                    */
+        /* -------------------------------------------------------------------------- */
+
+        /* -------------------------------- TYPESCALE ------------------------------- */
+        ".text-title-xl": {
+          fontSize: "48px",
+          fontFamily: theme("fontFamily.belwe"),
+          fontWeight: "400",
+          lineHeight: "48px",
+          letterSpacing: "-1.632px",
+        },
+        ".text-title-l": {
+          fontSize: "32px",
+          fontFamily: theme("fontFamily.belwe"),
+          fontWeight: "400",
+          lineHeight: "36px",
+          letterSpacing: "-0.32px",
+        },
+        ".text-title-m": {
+          fontSize: "24px",
+          fontFamily: theme("fontFamily.belwe"),
+          fontWeight: "400",
+          lineHeight: "32px",
+          letterSpacing: "-0.24px",
+        },
+        ".text-title-s": {
+          fontSize: "16px",
+          fontFamily: theme("fontFamily.belwe"),
+          fontWeight: "400",
+          lineHeight: "20px",
+          letterSpacing: "-0.16px",
+        },
+        ".text-body-l": {
+          fontSize: "18px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "400",
+          lineHeight: "24px",
+          letterSpacing: "-0.18px",
+        },
+        ".text-body-l-bold": {
+          fontSize: "18px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "600",
+          lineHeight: "24px",
+          letterSpacing: "-0.18px",
+        },
+        ".text-body-m": {
+          fontSize: "16px",
+          lineHeight: "20px",
+          letterSpacing: "-0.18px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "400",
+        },
+        ".text-body-m-bold": {
+          fontSize: "16px",
+          lineHeight: "20px",
+          letterSpacing: "-0.16px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "600",
+        },
+        ".text-body-s": {
+          fontSize: "14px",
+          lineHeight: "16px",
+          letterSpacing: "-0.14px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "400",
+        },
+        ".text-body-s-bold": {
+          fontSize: "14px",
+          lineHeight: "16px",
+          letterSpacing: "-0.14px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "600",
+        },
+        ".text-body-xs": {
+          fontSize: "12px",
+          lineHeight: "16px",
+          letterSpacing: "-0.12px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "400",
+        },
+        ".text-body-xs-bold": {
+          fontSize: "12px",
+          lineHeight: "16px",
+          letterSpacing: "-0.12px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "600",
+        },
+        /* ---------------------------------- CARD ---------------------------------- */
+        ".card-light": {
+          border: "1px solid",
+          borderColor: theme("colors.card.border.light"),
+          background: theme("colors.card.background.light"),
+        },
+        ".card-medium": {
+          border: "1px solid",
+          borderColor: theme("colors.card.border.medium"),
+          background: theme("colors.card.background.medium"),
+        },
+        ".card-heavy": {
+          border: "1px solid",
+          borderColor: theme("colors.card.border.heavy"),
+          background: theme("colors.card.background.heavy"),
+        },
       });
     }),
     plugin(({ matchUtilities, theme }) => {

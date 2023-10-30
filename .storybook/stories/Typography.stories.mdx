@@ -1,0 +1,98 @@
+import { Meta, ColorPalette, ColorItem, Typeset, Story, Canvas } from "@storybook/addon-docs/blocks";
+import { copyCanvas, StoryBookCopyAction } from "../utils.ts";
+
+<Meta
+  title="Typography"
+  parameters={{
+    docs: {
+      source: {
+        code: null,
+      },
+    },
+    previewTabs: {
+      canvas: { hidden: true },
+    },
+  }}
+/>
+
+export const SampleText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+
+# Typography
+
+## Title
+
+### Title/XL
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-title-xl")}>
+  <p className="text-title-xl text-black">{SampleText}</p>
+</Canvas>
+
+### Title/L
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-title-m")}>
+  <p className="text-title-m text-black">{SampleText}</p>
+</Canvas>
+
+### Title/M
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-title-l")}>
+  <p className="text-title-l text-black">{SampleText}</p>
+</Canvas>
+
+### Title/S
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-title-s")}>
+  <p className="text-title-m text-black">{SampleText}</p>
+</Canvas>
+
+## Body
+
+### Body/L
+
+#### Body/L
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-body-l")}>
+  <p className="text-body-l text-black">{SampleText}</p>
+</Canvas>
+
+#### Body/L • Bold
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-body-l-bold")}>
+  <p className="text-body-l-bold text-black">{SampleText}</p>
+</Canvas>
+
+#### Body/M
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-body-m")}>
+  <p className="text-body-m text-black">{SampleText}</p>
+</Canvas>
+
+#### Body/M • Bold
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-body-m-bold")}>
+  <p className="text-body-m-bold text-black">{SampleText}</p>
+</Canvas>
+
+#### Body/S
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-body-s")}>
+  <p className="text-body-s text-black">{SampleText}</p>
+</Canvas>
+
+#### Body/S • Bold
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-body-s-bold")}>
+  <p className="text-body-s-bold text-black">{SampleText}</p>
+</Canvas>
+
+#### Body/XS
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-body-xs")}>
+  <p className="text-body-xs text-black">{SampleText}</p>
+</Canvas>
+
+#### Body/XS • Bold
+
+<Canvas withSource="none" additionalActions={StoryBookCopyAction("text-body-xs-bold")}>
+  <p className="text-body-xs-bold text-black">{SampleText}</p>
+</Canvas>
