@@ -115,7 +115,10 @@ export const AvailableConversion: FC<AvailableConversion> = ({
     }
 
     return props;
-  }, [currency]);
+  }, [currency, currencies]);
+
+  const tooltipForCurrency = useMemo(() => (currency ? tooltipIdProps : {}), [currency]);
+  const tooltipForCurrencies = useMemo(() => (currencies ? tooltipIdProps : {}), [currencies]);
 
   const currencyArray = useMemo(() => {
     if (currencies) return currencies;
@@ -129,7 +132,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
 
   return (
     <>
-      <div {...(currencies ? tooltipIdProps : {})} className="flex flex-row items-center justify-start gap-1">
+      <div {...tooltipForCurrencies} className="flex flex-row items-center justify-start gap-1">
         <Chips number={numberCurencyToShow}>
           {currencyArray?.map(currency => (
             <div key={currency.currency}>
@@ -140,7 +143,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
           ))}
         </Chips>
         <ConversionAmount amount={totalAmount || currency?.amount} currency={currency?.currency} />
-        <div {...(currency ? tooltipIdProps : {})}>
+        <div {...tooltipForCurrency}>
           <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
         </div>
       </div>
