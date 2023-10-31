@@ -9,7 +9,6 @@ type Params = {
   currency?: BudgetCurrencyType;
   notation?: "standard" | "scientific" | "engineering" | "compact";
   showCurrency?: boolean;
-  addRound?: boolean;
 };
 
 export const formatMoneyAmount = ({
@@ -17,21 +16,31 @@ export const formatMoneyAmount = ({
   currency = Currency.USD,
   notation = "standard",
   showCurrency = true,
-  addRound = true,
 }: Params) => {
   switch (currency) {
     case Currency.USD:
+      if (!showCurrency) {
+        return Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency,
+          maximumFractionDigits: maximumFractionDigits({ amount, notation }),
+          notation,
+        })
+          .format(amount)
+          .replace("K", "k")
+          .replace("$", "");
+      }
       return Intl.NumberFormat("en-US", {
         style: "currency",
         currency,
-        maximumFractionDigits: addRound ? maximumFractionDigits({ amount, notation }) : undefined,
+        maximumFractionDigits: maximumFractionDigits({ amount, notation }),
         notation,
       })
         .format(amount)
         .replace("K", "k");
     default:
       return `${Intl.NumberFormat("en-US", {
-        maximumFractionDigits: addRound ? maximumFractionDigits({ amount, notation, addRound }) : undefined,
+        // maximumFractionDigits: maximumFractionDigits({ amount, notation }), // keep this but we need to disable because when don't want to round for crypto
         notation,
       })
         .format(amount)

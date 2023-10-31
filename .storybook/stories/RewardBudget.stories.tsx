@@ -40,9 +40,9 @@ const defaultProps: ComponentProps<typeof RewardBudget> = {
     },
     {
       currency: "OP",
-      initialAmount: 100,
+      initialAmount: 150000,
       initialDollarsEquivalent: 2000,
-      remaining: 75,
+      remaining: 150000,
       dollarsConversionRate: 2000,
       remainingDollarsEquivalent: 1000,
     },
@@ -102,7 +102,7 @@ const With0RemainingCurrencyCurrencyProps: ComponentProps<typeof RewardBudget> =
 export const Default = {
   render: (args: ComponentProps<typeof RewardBudget>) => (
     <div style={{ width: 384 }}>
-      <RewardBudget {...defaultProps} {...args} />
+      <RewardBudget {...defaultProps} {...args} onChange={e => console.log("change", e)} />
       <Tooltip />
     </div>
   ),

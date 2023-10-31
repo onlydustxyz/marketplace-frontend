@@ -5,6 +5,7 @@ import { cn } from "src/utils/cn";
 export interface FieldInputProps extends Omit<FieldProps, "children"> {
   type?: string;
   min?: string;
+  step?: string;
   value?: string | number | readonly string[] | undefined;
   className?: string;
   inputClassName?: string;
@@ -23,6 +24,7 @@ export const FieldInput: FC<FieldInputProps> = ({
   className,
   inputClassName,
   min,
+  step,
   value,
   startIcon,
   endIcon,
@@ -40,6 +42,7 @@ export const FieldInput: FC<FieldInputProps> = ({
         {startIcon ? startIcon({ className: "w-3.5 h-3.5 text-spaceBlue-200" }) : null}
         <input
           min={min}
+          step={step}
           value={value}
           type={type}
           placeholder={placeholder}

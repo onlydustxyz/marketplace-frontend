@@ -13,10 +13,6 @@ const RewardBudgetBar = ({ total, remaining, spending }: Props) => {
     [total, remaining, spending]
   );
 
-  console.log("BAR", { total, remaining, spending });
-
-  console.log("PRO", progression, `${progression.remaining}%`);
-
   return (
     <div className="relative h-2 w-full overflow-hidden rounded-full bg-spacePurple-200 ">
       <div
