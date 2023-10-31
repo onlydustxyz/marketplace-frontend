@@ -32,7 +32,7 @@ export const FieldInput: FC<FieldInputProps> = ({
     <Field {...rest}>
       <div
         className={cn(
-          "flex w-full items-center gap-2 rounded-lg border border-greyscale-50/8 bg-white/5 px-3 py-2 text-sm leading-none focus-within:border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500",
+          "flex w-full items-center gap-2 rounded-lg border border-greyscale-50/8 bg-white/5 text-sm leading-none focus-within:border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500",
           className
         )}
       >
@@ -45,7 +45,7 @@ export const FieldInput: FC<FieldInputProps> = ({
           onChange={onChange}
           onFocus={onFocus}
           className={cn(
-            "w-full bg-transparent text-greyscale-50 outline-none placeholder:text-spaceBlue-200",
+            "h-full w-full w-full bg-transparent px-3 py-2 text-greyscale-50 outline-none placeholder:text-spaceBlue-200",
             inputClassName
           )}
         />
