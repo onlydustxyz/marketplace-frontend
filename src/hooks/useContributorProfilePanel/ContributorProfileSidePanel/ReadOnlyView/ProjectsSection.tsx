@@ -1,14 +1,15 @@
-import { useIntl } from "src/hooks/useIntl";
-import { Section } from "./Section";
-import ProjectCard, { Project } from "./ProjectCard";
+import { ComponentProps } from "react";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
+import { useIntl } from "src/hooks/useIntl";
+import { useMediaQuery } from "usehooks-ts";
+import ProjectCard from "./ProjectCard";
+import { Section } from "./Section";
 
 type Props = {
-  projects: Project[];
-  setOpen: (value: boolean) => void;
+  projects: ComponentProps<typeof ProjectCard>["project"][];
+  setOpen?: (value: boolean) => void;
 };
 
 export default function ProjectsSection({ projects, setOpen }: Props) {
@@ -21,7 +22,7 @@ export default function ProjectsSection({ projects, setOpen }: Props) {
         {projects.map(project =>
           isXl ? (
             <Link
-              onClick={() => setOpen(false)}
+              onClick={() => setOpen?.(false)}
               key={project.id}
               to={generatePath(RoutePaths.ProjectDetails, { projectKey: project.slug || "" })}
             >
