@@ -31,6 +31,7 @@ export const formatMoneyAmount = ({
       return `${Intl.NumberFormat("en-US", {
         // maximumFractionDigits: maximumFractionDigits({ amount, notation }), // keep this but we need to disable because when don't want to round for crypto
         notation,
+        maximumFractionDigits: 6,
       })
         .format(amount)
         .replace("K", "k")}${showCurrency ? ` ${currency}` : ""}`;

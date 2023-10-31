@@ -76,7 +76,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
             <RewardBudgetSelect {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
             <FieldInput
               min="0"
-              step="0.00000000001"
+              step="0.000001"
               placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency}`)}
               name="budget-amount-input"
               type="number"
