@@ -6,7 +6,7 @@ import { Chips } from "src/components/Chips/Chips";
 import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { useIntl } from "src/hooks/useIntl";
 import Tooltip from "src/components/Tooltip";
-import { TooltipPosition, Variant } from "src/components/Tooltip";
+import { TooltipPosition } from "src/components/Tooltip";
 
 // TODO : doc
 /**
@@ -65,7 +65,7 @@ const ConversionTooltip = ({
   }
 
   return (
-    <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
+    <Tooltip id={tooltipId} clickable position={TooltipPosition.Top}>
       <div className="flex flex-col gap-2">
         <p className="font-walsheim text-sm font-medium text-white">{T("availableConversion.tooltip.title")}</p>
         {currencies && (
