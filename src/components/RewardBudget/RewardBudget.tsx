@@ -35,10 +35,12 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
   const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const fieldValue = e.target.value;
+
+    console.log("fieldValue", fieldValue);
     if (fieldValue === "") {
       setAmount(undefined);
     }
-    const value = parseInt(fieldValue);
+    const value = parseFloat(fieldValue);
     if (value < 0) {
       setAmount(0);
     } else if (!isNaN(value)) {

@@ -63,6 +63,7 @@ const RewardBudgetDetailsRow = ({
             amount: amount,
             currency: currency,
             showCurrency: false,
+            notation: "compact",
           })}
         </p>
         <Chip solid>
