@@ -81,7 +81,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
               name="budget-amount-input"
               type="number"
               value={amount === undefined ? "" : amount}
-              fieldClassName="flex-1 max-w-[60px] min-w-[60px] w-[60px]"
+              fieldClassName="flex-1 max-w-[96px] min-w-[96px] w-[96px]"
               className="h-full flex-1 rounded-2xl"
               onChange={onChangeAmount}
               inputClassName="text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
