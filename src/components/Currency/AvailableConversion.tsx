@@ -1,11 +1,12 @@
 import { FC, useMemo } from "react";
 import { Chip } from "src/components/Chip/Chip";
-import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { Currency } from "src/types";
 import { CurrencyIcons } from "./CurrencyIcon";
 import { Chips } from "src/components/Chips/Chips";
 import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { useIntl } from "src/hooks/useIntl";
+import Tooltip from "src/components/Tooltip";
+import { TooltipPosition, Variant } from "src/components/Tooltip";
 
 // TODO : doc
 /**
@@ -32,7 +33,7 @@ const ConversionAmount = ({ amount, currency }: { amount: number | undefined; cu
   }
 
   return (
-    <p className="text-body-s-bold leading-[14px]">
+    <p className="text-body-s leading-[14px]">
       {formatMoneyAmount({ amount: amount, currency: currency || Currency.USD })}
     </p>
   );
@@ -44,7 +45,7 @@ const ConversionDollar = ({ dollar }: { dollar: number | undefined }) => {
   }
 
   return (
-    <p className="font-walsheim text-[10px] text-spaceBlue-200">
+    <p className="font-walsheim text-xs text-spaceBlue-200">
       {`~${formatMoneyAmount({ amount: dollar, currency: Currency.USD })}`}
     </p>
   );
@@ -79,7 +80,7 @@ const ConversionTooltip = ({
                     {formatMoneyAmount({ amount: currency.amount, currency: currency.currency })}
                   </p>
                   {currency.currency !== Currency.USD && (
-                    <p className="font-walsheim text-[10px] text-spaceBlue-200">
+                    <p className="font-walsheim text-xs text-spaceBlue-200">
                       {currency.dollar
                         ? `~${formatMoneyAmount({ amount: currency.dollar, currency: Currency.USD })}`
                         : T("availableConversion.tooltip.na")}
