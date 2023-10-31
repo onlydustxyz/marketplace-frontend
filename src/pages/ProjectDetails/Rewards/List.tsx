@@ -33,6 +33,7 @@ const RewardList: React.FC = () => {
     hasNextPage,
     error,
     isFetchingNextPage,
+    refetch,
   } = useInfiniteRewardsList({
     projectId,
     queryParams,
@@ -88,7 +89,7 @@ const RewardList: React.FC = () => {
             <Card>
               <RewardTable
                 rewards={rewards}
-                options={{ fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage }}
+                options={{ fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch }}
                 projectId={projectId}
               />
             </Card>

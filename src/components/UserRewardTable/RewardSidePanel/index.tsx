@@ -27,11 +27,11 @@ export default function RewardSidePanel({
 export function RewardSidePanelAsLeader({
   projectId,
   rewardId,
-  setOpen,
+  onRewardCancel,
 }: {
   projectId: string;
   rewardId: string;
-  setOpen: (value: boolean) => void;
+  onRewardCancel: () => void;
 }) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
@@ -41,7 +41,7 @@ export function RewardSidePanelAsLeader({
     pathParam: { projectId, rewardId },
     method: "DELETE",
     onSuccess: () => {
-      setOpen(false);
+      onRewardCancel();
       showToaster(T("reward.form.cancelled"));
     },
   });
