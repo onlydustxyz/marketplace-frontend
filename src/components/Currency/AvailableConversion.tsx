@@ -129,7 +129,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
 
   return (
     <>
-      <div {...tooltipIdProps} className="flex flex-row items-center justify-start gap-1">
+      <div {...(currencies ? tooltipIdProps : {})} className="flex flex-row items-center justify-start gap-1">
         <Chips number={numberCurencyToShow}>
           {currencyArray?.map(currency => (
             <div key={currency.currency}>
@@ -140,7 +140,9 @@ export const AvailableConversion: FC<AvailableConversion> = ({
           ))}
         </Chips>
         <ConversionAmount amount={totalAmount || currency?.amount} currency={currency?.currency} />
-        <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
+        <div {...(currency ? tooltipIdProps : {})}>
+          <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
+        </div>
       </div>
       <ConversionTooltip tooltipId={tooltipId} currencies={currencies} />
     </>
