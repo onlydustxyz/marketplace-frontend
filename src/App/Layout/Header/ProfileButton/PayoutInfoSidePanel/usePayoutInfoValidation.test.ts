@@ -30,6 +30,7 @@ describe("usePayoutInfoValidation", () => {
   it("should return true for isContactInfoValid and false for isPaymentInfoValid when missing payment infos", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
+      hasValidContactInfo: true,
       location: {
         ...mockUser.location,
         city: "London",
@@ -39,7 +40,7 @@ describe("usePayoutInfoValidation", () => {
     expect(isPaymentInfoValid).toBe(false);
   });
 
-  it("should return false for isPaymentInfoValid and true for isContactInfoValid when missing contact infos", () => {
+  it("should return false for isPaymentInfoValid and false for isContactInfoValid when missing contact infos", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
       payoutSettings: {
@@ -47,8 +48,7 @@ describe("usePayoutInfoValidation", () => {
         ethName: "007.eth",
       },
     });
-    expect(isContactInfoValid).toBe(false);
-    expect(isPaymentInfoValid).toBe(true);
+    expect(isPaymentInfoValid && isContactInfoValid).toBe(false);
   });
 
   it("should return false for isContactInfoValid when missing company informations", () => {
@@ -57,6 +57,7 @@ describe("usePayoutInfoValidation", () => {
       isCompany: true,
       payoutSettings: {
         ...mockUser.payoutSettings,
+        hasValidPayoutSettings: true,
         ethName: "007.eth",
       },
     });
@@ -74,6 +75,7 @@ describe("usePayoutInfoValidation", () => {
       },
       payoutSettings: {
         ...mockUser.payoutSettings,
+        hasValidPayoutSettings: true,
         ethName: "007.eth",
       },
     });
@@ -84,6 +86,7 @@ describe("usePayoutInfoValidation", () => {
   it("should returns false for isPaymentInfoValid when FIAT is preferred method without banking infos", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
+      hasValidContactInfo: true,
       location: {
         ...mockUser.location,
         city: "London",
@@ -101,12 +104,14 @@ describe("usePayoutInfoValidation", () => {
   it("should return true when FIAT is preferred method with banking infos", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
+      hasValidContactInfo: true,
       location: {
         ...mockUser.location,
         city: "London",
       },
       payoutSettings: {
         ...mockUser.payoutSettings,
+        hasValidPayoutSettings: true,
         sepaAccount: {
           bic: "TRZOFR21XXX",
           iban: "NL40RABO4212215411",
@@ -120,12 +125,14 @@ describe("usePayoutInfoValidation", () => {
   it("should return true for both isContactInfoValid and isPaymentInfoValid when valid", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
+      hasValidContactInfo: true,
       location: {
         ...mockUser.location,
         city: "London",
       },
       payoutSettings: {
         ...mockUser.payoutSettings,
+        hasValidPayoutSettings: true,
         ethName: "007.eth",
       },
     });
