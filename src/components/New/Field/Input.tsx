@@ -26,6 +26,7 @@ export const FieldInput: FC<FieldInputProps> = ({
   value,
   startIcon,
   endIcon,
+  placeholder,
   ...rest
 }) => {
   return (
@@ -41,11 +42,12 @@ export const FieldInput: FC<FieldInputProps> = ({
           min={min}
           value={value}
           type={type}
+          placeholder={placeholder}
           onBlur={onBlur}
           onChange={onChange}
           onFocus={onFocus}
           className={cn(
-            "h-full w-full w-full bg-transparent px-3 py-2 text-greyscale-50 outline-none placeholder:text-spaceBlue-200",
+            "h-full w-full bg-transparent px-3 py-2 text-greyscale-50 outline-none placeholder:text-spaceBlue-200",
             inputClassName
           )}
         />

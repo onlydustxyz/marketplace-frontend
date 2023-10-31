@@ -16,7 +16,7 @@ import { Currency } from "src/types";
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
   const [selectedBudget, setSelectedBudget] = useState<WorkEstimationBudgetDetails>(props.budgets[0]);
-  const [amount, setAmount] = useState<number | undefined>(0);
+  const [amount, setAmount] = useState<number | undefined>(undefined);
   const withDefaultAmount = useMemo(() => amount || 0, [amount]);
 
   useEffect(() => {
@@ -30,13 +30,12 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
   const onSelectedBudgetChange = (newBudget: WorkEstimationBudgetDetails) => {
     setSelectedBudget(newBudget);
-    setAmount(0);
+    setAmount(undefined);
   };
 
   const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const fieldValue = e.target.value;
 
-    console.log("fieldValue", fieldValue);
     if (fieldValue === "") {
       setAmount(undefined);
     }
@@ -76,6 +75,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
             <RewardBudgetSelect {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
             <FieldInput
               min="0"
+              placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency}`)}
               name="budget-amount-input"
               type="number"
               value={amount}
