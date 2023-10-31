@@ -28,12 +28,12 @@ export const RewardBudgetSelectOption = ({ budget, last }: RewardBudgetSelectOpt
         "pointer-events-none": isDisabled,
       })}
     >
-      <div className="flex w-full flex-row items-center justify-between gap-2">
+      <div className="flex w-auto min-w-full flex-row items-center justify-between gap-2">
         <div className="flex flex-row items-center justify-start gap-3">
           <Chip solid>
             <CurrencyIcons currency={budget.currency} className="h-4 w-4" />
           </Chip>
-          <p>
+          <p className="whitespace-nowrap">
             <span className={cn("font-walsheim text-sm font-normal", isDisabled && "text-greyscale-500")}>
               {T(`currencies.currency.${budget.currency}`)}
             </span>

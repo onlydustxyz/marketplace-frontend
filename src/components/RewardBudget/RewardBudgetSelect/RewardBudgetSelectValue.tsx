@@ -20,7 +20,7 @@ export const RewardBudgetSelectValue = ({ value, disabled }: RewardBudgetSelectV
         <Chip solid>
           <CurrencyIcons currency={value.currency} className="h-4 w-4" />
         </Chip>
-        <label className="font-walsheim text-base font-bold leading-4">
+        <label className="font-walsheim text-base font-medium leading-4">
           {T(`currencies.currency.${value.currency}`)}
         </label>
       </div>

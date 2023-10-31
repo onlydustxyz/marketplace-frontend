@@ -50,7 +50,7 @@ const RewardBudgetDetailsRow = ({
       <div className="flex flex-row items-center justify-end gap-1">
         {dollar && currency !== Currency.USD ? (
           <p
-            className="font-walsheim text-[10px] font-normal text-spaceBlue-200"
+            className="font-walsheim text-xs font-normal text-spaceBlue-200"
             {...withTooltip(T("rewardBudget.detail.dollarTooltip"), {
               position: TooltipPosition.Top,
             })}

@@ -30,6 +30,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
   };
 
   const { data } = useUnrewardedContributionsByTypeQuery({
+    fetchPolicy: "no-cache",
     variables: {
       projectId,
       githubUserId: contributorId,

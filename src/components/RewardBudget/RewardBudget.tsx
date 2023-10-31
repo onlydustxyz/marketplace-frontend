@@ -12,11 +12,12 @@ import CheckLine from "src/icons/CheckLine";
 import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
 import { RewardBudgetUtils } from "./RewardBudget.utils";
 import { Currency } from "src/types";
+import { cn } from "src/utils/cn";
 
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
   const [selectedBudget, setSelectedBudget] = useState<WorkEstimationBudgetDetails>(props.budgets[0]);
-  const [amount, setAmount] = useState<number | undefined>(0);
+  const [amount, setAmount] = useState<number | null>(null);
   const withDefaultAmount = useMemo(() => amount || 0, [amount]);
 
   useEffect(() => {
@@ -30,15 +31,16 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
   const onSelectedBudgetChange = (newBudget: WorkEstimationBudgetDetails) => {
     setSelectedBudget(newBudget);
-    setAmount(0);
+    setAmount(null);
   };
 
   const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const fieldValue = e.target.value;
+
     if (fieldValue === "") {
-      setAmount(undefined);
+      setAmount(null);
     }
-    const value = parseInt(fieldValue);
+    const value = parseFloat(fieldValue);
     if (value < 0) {
       setAmount(0);
     } else if (!isNaN(value)) {
@@ -70,20 +72,27 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     <div className="flex w-full flex-col rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 shadow-light">
       <div className="flex w-full flex-col px-8 pb-2 pt-4">
         <div className="flex w-full flex-col gap-2">
-          <div className="z-1 flex flex-1 flex-row items-stretch justify-between gap-4">
+          <div className="z-10 flex flex-1 flex-row items-stretch justify-between gap-4">
             <RewardBudgetSelect {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
             <FieldInput
               min="0"
+              step="0.01"
+              placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency}`)}
               name="budget-amount-input"
               type="number"
-              value={amount}
-              fieldClassName="flex-1 max-w-[60px] min-w-[60px] w-[60px]"
-              className="h-full flex-1"
+              value={amount === null ? "" : amount}
+              fieldClassName="flex-1 max-w-[96px] min-w-[96px]"
+              className="h-full flex-1 rounded-2xl"
               onChange={onChangeAmount}
               inputClassName="text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
           </div>
-          <FieldInfoMessage icon={({ className }) => <InformationLine className={className} />}>
+          <FieldInfoMessage
+            icon={({ className }) => <InformationLine className={className} />}
+            className={cn({
+              "items-start": selectedBudget.currency === Currency.USD,
+            })}
+          >
             {selectedBudget.currency === Currency.USD
               ? T("currencies.network.label_dollar")
               : T("currencies.network.label", { currency: T(`currencies.currency.${selectedBudget.currency}`) })}
