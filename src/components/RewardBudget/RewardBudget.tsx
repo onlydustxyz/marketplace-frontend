@@ -12,6 +12,7 @@ import CheckLine from "src/icons/CheckLine";
 import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
 import { RewardBudgetUtils } from "./RewardBudget.utils";
 import { Currency } from "src/types";
+import { cn } from "src/utils/cn";
 
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
@@ -80,12 +81,17 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
               type="number"
               value={amount === undefined ? "" : amount}
               fieldClassName="flex-1 max-w-[60px] min-w-[60px] w-[60px]"
-              className="h-full flex-1"
+              className="h-full flex-1 rounded-2xl"
               onChange={onChangeAmount}
               inputClassName="text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
           </div>
-          <FieldInfoMessage icon={({ className }) => <InformationLine className={className} />}>
+          <FieldInfoMessage
+            icon={({ className }) => <InformationLine className={className} />}
+            className={cn({
+              "items-start": selectedBudget.currency === Currency.USD,
+            })}
+          >
             {selectedBudget.currency === Currency.USD
               ? T("currencies.network.label_dollar")
               : T("currencies.network.label", { currency: T(`currencies.currency.${selectedBudget.currency}`) })}
