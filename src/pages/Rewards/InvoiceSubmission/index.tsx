@@ -44,7 +44,7 @@ export default function InvoiceSubmission() {
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => {
       refetch();
-      showToaster(T("reward.details.earning.invoiceReceived"));
+      showToaster(T("invoiceSubmission.toaster.success"));
     },
     update: (cache, _, { variables }) => {
       const { payments } = variables as MarkInvoiceAsReceivedMutationVariables;

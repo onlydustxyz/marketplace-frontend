@@ -63,6 +63,7 @@ const RewardForm: React.FC = () => {
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
   const { data } = useUnrewardedContributionsQuery({
+    fetchPolicy: "no-cache",
     variables: {
       projectId,
       githubUserId: contributor?.githubUserId,

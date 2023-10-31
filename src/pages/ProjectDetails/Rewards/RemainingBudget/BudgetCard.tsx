@@ -53,7 +53,7 @@ export function BudgetCard({ budget, className }: Props) {
         <div className="flex items-center text-sm text-white">{T(budgetName[budget.currency])}</div>
         <div className="flex flex-wrap items-center font-belwe text-2xl text-greyscale-50">
           <Chip className="mr-1 h-5 w-5">{budgetIcons[budget.currency]}</Chip>
-          {formatMoneyAmount({ amount: budget.initialAmount, currency: budget.currency, showCurrency: false })}
+          {formatMoneyAmount({ amount: budget.remaining, currency: budget.currency, showCurrency: false })}
           {!isUsd ? <div className="ml-1 mt-2 text-sm">{budget.currency}</div> : null}
 
           {hasUsdEquivalent ? (

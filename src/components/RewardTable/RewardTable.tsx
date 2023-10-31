@@ -4,25 +4,24 @@ import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { RewardSidePanelAsLeader } from "src/components/UserRewardTable/RewardSidePanel";
 import { viewportConfig } from "src/config";
-import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
+import useInfiniteRewardsList, { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
 import { useMediaQuery } from "usehooks-ts";
 import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
 import { useAuth } from "src/hooks/useAuth";
 
+type Options = {
+  sorting: {
+    field: string | undefined;
+    isAscending: boolean | undefined;
+  };
+  sortField: (field: string) => void;
+} & Pick<ReturnType<typeof useInfiniteRewardsList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage" | "refetch">;
+
 type RewardTableProps = {
   rewards: RewardPageItemType[];
-  options: {
-    fetchNextPage: () => void;
-    hasNextPage: boolean;
-    sorting: {
-      field: string | undefined;
-      isAscending: boolean | undefined;
-    };
-    isFetchingNextPage: boolean;
-    sortField: (field: string) => void;
-  };
+  options: Options;
   projectId: string;
 };
 
@@ -33,7 +32,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
   const { ledProjectIds } = useAuth();
   const isProjectLeader = ledProjectIds.includes(projectId);
 
-  const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage } = options;
+  const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch } = options;
 
   const onRewardClick = (reward: RewardPageItemType) => {
     setSelectedReward(reward);
@@ -65,7 +64,14 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
 
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
         {selectedReward && (
-          <RewardSidePanelAsLeader projectId={projectId} rewardId={selectedReward.id} setOpen={setSidePanelOpen} />
+          <RewardSidePanelAsLeader
+            projectId={projectId}
+            rewardId={selectedReward.id}
+            onRewardCancel={() => {
+              setSidePanelOpen(false);
+              refetch();
+            }}
+          />
         )}
       </SidePanel>
     </>

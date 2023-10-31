@@ -12,6 +12,8 @@ import { formatMoneyAmount } from "src/utils/money";
 import { MyRewardType } from "./Line";
 import { ReactNode } from "react";
 import { ShowMore } from "src/components/Table/ShowMore";
+import { components } from "src/__generated/api";
+import { AvailableConversion } from "../Currency/AvailableConversion";
 
 export default function MobileUserRewardList({
   rewards,
@@ -36,6 +38,7 @@ export default function MobileUserRewardList({
         <button onClick={() => onRewardClick(reward)} key={reward.id}>
           <MobileUserRewardItem
             title={reward?.rewardedOnProjectName}
+            id={reward.id}
             image={
               <RoundedImage
                 src={reward?.rewardedOnProjectLogoUrl || onlyDustLogo}
@@ -43,7 +46,7 @@ export default function MobileUserRewardList({
               />
             }
             request={T("reward.table.reward", { id: pretty(reward.id), count: reward.numberOfRewardedContributions })}
-            amount={formatMoneyAmount({ amount: reward.amount.total, currency: reward.amount.currency })}
+            amount={reward.amount}
             date={new Date(reward.requestedAt)}
             payoutStatus={
               <PayoutStatus
@@ -69,6 +72,7 @@ export default function MobileUserRewardList({
 export function MobileUserRewardItem({
   image,
   title,
+  id,
   request,
   amount,
   date,
@@ -76,8 +80,9 @@ export function MobileUserRewardItem({
 }: {
   image: ReactNode;
   title?: string | null;
+  id: string;
   request: string;
-  amount: string | null;
+  amount: components["schemas"]["RewardAmountResponse"];
   date: Date;
   payoutStatus: ReactNode;
 }) {
@@ -106,7 +111,17 @@ export function MobileUserRewardItem({
             <MoneyDollarCircleLine className="text-base font-medium" />
             {T("reward.table.amount")}
           </div>
-          {amount}
+          <div className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]">
+            <AvailableConversion
+              tooltipId={`${id}-contributors-earned-details`}
+              totalAmount={amount?.total}
+              currency={{
+                currency: amount?.currency,
+                amount: amount?.total,
+                dollar: amount?.dollarsEquivalent,
+              }}
+            />
+          </div>
         </div>
 
         <div className="flex flex-col items-start pl-4 text-left">
