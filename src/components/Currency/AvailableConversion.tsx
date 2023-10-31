@@ -7,6 +7,7 @@ import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { useIntl } from "src/hooks/useIntl";
 import Tooltip from "src/components/Tooltip";
 import { TooltipPosition } from "src/components/Tooltip";
+import { cn } from "src/utils/cn";
 
 // TODO : doc
 /**
@@ -63,11 +64,10 @@ const ConversionTooltip = ({
   if (!tooltipId) {
     return null;
   }
-
   return (
     <Tooltip id={tooltipId} clickable position={TooltipPosition.Top}>
       <div className="flex flex-col gap-2">
-        <p className="font-walsheim text-sm font-medium text-white">{T("availableConversion.tooltip.title")}</p>
+        <p className={cn("text-greyscale-50", currencies && "font-medium")}>{T("availableConversion.tooltip.title")}</p>
         {currencies && (
           <div className="flex flex-col gap-1">
             {currencies.map(currency => (

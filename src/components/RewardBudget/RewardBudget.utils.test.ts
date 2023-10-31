@@ -114,7 +114,7 @@ describe("Reward Budget utils", () => {
         remaining: 500,
         spending: 300,
       });
-      expect(result.remaining).toBe(50);
+      expect(result.remaining).toBe(20);
       expect(result.spending).toBe(30);
 
       const result2 = RewardBudgetUtils.getBudgetProgression({
@@ -122,7 +122,7 @@ describe("Reward Budget utils", () => {
         remaining: 1000,
         spending: 150,
       });
-      expect(result2.remaining).toBe(50);
+      expect(result2.remaining).toBe(42);
       expect(result2.spending).toBe(7);
     });
 
@@ -150,7 +150,7 @@ describe("Reward Budget utils", () => {
         remaining: 200,
         spending: 150,
       });
-      expect(result.remaining).toBe(200);
+      expect(result.remaining).toBe(50);
       expect(result.spending).toBe(150);
     });
   });

@@ -17,7 +17,7 @@ export default function Headers({ sorting, applySorting }: Props) {
   const { T } = useIntl();
   return (
     <HeaderLine>
-      <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Date, false)} horizontalMargin>
+      <HeaderCell onClick={() => applySorting(Field.Date, false)} horizontalMargin>
         <TimeLine className="p-px font-normal" />
         <span>{T("reward.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
@@ -27,12 +27,12 @@ export default function Headers({ sorting, applySorting }: Props) {
         <span>{T("reward.table.project")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.RewardId} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Amount, false)} horizontalMargin>
+      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Amount, false)} horizontalMargin>
         <MoneyDollarCircleLine className="p-px font-normal" />
         <span>{T("reward.table.amount")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Amount} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Status, true)} horizontalMargin>
+      <HeaderCell onClick={() => applySorting(Field.Status, true)} horizontalMargin>
         <FocusLine className="p-px font-normal" />
         <span>{T("reward.table.status")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Status} />
