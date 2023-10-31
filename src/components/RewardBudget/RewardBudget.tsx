@@ -78,7 +78,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
               placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency}`)}
               name="budget-amount-input"
               type="number"
-              value={amount}
+              value={amount === undefined ? "" : amount}
               fieldClassName="flex-1 max-w-[60px] min-w-[60px] w-[60px]"
               className="h-full flex-1"
               onChange={onChangeAmount}
