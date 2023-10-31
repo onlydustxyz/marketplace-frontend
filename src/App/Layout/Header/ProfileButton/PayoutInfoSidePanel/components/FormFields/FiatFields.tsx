@@ -4,8 +4,9 @@ import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { BIC_REGEXP } from "src/utils/regex";
 import IBANParser from "iban";
+import { RequiredFieldsType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/usePayoutInfoValidation";
 
-export function FiatFields() {
+export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
   const {
     watch,
@@ -14,7 +15,7 @@ export function FiatFields() {
     trigger,
     clearErrors,
   } = useFormContext();
-
+  const { missingSepaAccount } = requiredFields || {};
   const [iban, bic] = watch(["iban", "bic"]);
 
   return (
@@ -35,7 +36,7 @@ export function FiatFields() {
                   return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
                 },
               }}
-              requiredForPayment={true}
+              requiredForPayment={missingSepaAccount}
               value={value && IBANParser.printFormat(value)}
               onChange={onChange}
               onBlur={() => {
@@ -67,7 +68,7 @@ export function FiatFields() {
                   message: T("profile.form.bicRequired"),
                 },
               }}
-              requiredForPayment={true}
+              requiredForPayment={missingSepaAccount}
               value={value}
               onChange={onChange}
               onBlur={() => {
