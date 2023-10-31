@@ -15,7 +15,7 @@ const BudgetBar = ({ budget, pendingSpending }: Props) => {
         }}
       />
       <div
-        className="absolute inset-y-0 left-0 h-2 rounded-full bg-spacePurple-500"
+        className="absolute inset-y-0 left-0 h-2 rounded-l-lg bg-spacePurple-500"
         style={{
           width: `${Math.floor(((budget.initialAmount - budget.remaining) * 100) / budget.initialAmount)}%`,
         }}
