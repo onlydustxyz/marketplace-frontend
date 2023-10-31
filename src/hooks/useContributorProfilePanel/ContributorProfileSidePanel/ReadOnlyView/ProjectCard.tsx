@@ -21,8 +21,10 @@ export default function ProjectCard({ project }: { project: components["schemas"
     leadSince,
     userContributionCount,
     userLastContributedAt,
-    private: private_,
+    visibility,
   } = project;
+
+  const isPrivate = visibility === "PRIVATE";
 
   const { T } = useIntl();
 
@@ -31,7 +33,7 @@ export default function ProjectCard({ project }: { project: components["schemas"
       <div className="flex h-full flex-col gap-3 p-4">
         <div className="relative w-fit">
           <RoundedImage src={logoUrl || onlyDustLogo} alt={name} />
-          {private_ && (
+          {isPrivate && (
             <div className="absolute -bottom-2.5 -right-2.5">
               <PrivateTag />
             </div>
