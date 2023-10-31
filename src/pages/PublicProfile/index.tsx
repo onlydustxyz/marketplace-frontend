@@ -15,9 +15,9 @@ const PublicProfilePage = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
-  const { data: userProfile, loading } = useRestfulProfile({ githubUserLogin: userLogin });
+  const { data: userProfile, isLoading } = useRestfulProfile({ githubUserLogin: userLogin ?? "" });
 
-  if (!userProfile && !loading) {
+  if (!userProfile && !isLoading) {
     showToaster(T("profile.error.notFound"), { isError: true });
     navigate(RoutePaths.Home);
   }
