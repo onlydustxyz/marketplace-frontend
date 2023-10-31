@@ -32,7 +32,7 @@ const ConversionAmount = ({ amount, currency }: { amount: number | undefined; cu
   }
 
   return (
-    <p className="font-walsheim text-sm font-bold leading-[14px]">
+    <p className="text-body-s-bold leading-[14px]">
       {formatMoneyAmount({ amount: amount, currency: currency || Currency.USD })}
     </p>
   );
