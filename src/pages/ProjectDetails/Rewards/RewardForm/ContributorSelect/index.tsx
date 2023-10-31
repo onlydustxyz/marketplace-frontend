@@ -33,6 +33,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   const { data } = useSuspenseQuery<GetProjectPendingContributorsQuery>(GetProjectPendingContributorsDocument, {
     variables: { projectId },
     ...contextWithCacheHeaders,
+    fetchPolicy: "no-cache",
   });
   const contributors = data?.projectsPendingContributors.map(u => u.user).filter(isDefined);
 
