@@ -47,9 +47,9 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
       <div className="flex flex-row gap-6">
         <div className="flex flex-1 flex-col gap-1 font-walsheim text-white">
           <span className="text-lg font-semibold">
-            <span className="mr-2 inline-flex text-orange-500">
-              <InfoIcon className="h-4 w-4"/>
-            </span>
+
+              <InfoIcon className="h-4 w-4 mr-1 mb-1 inline-flex text-orange-500"/>
+
             {T("invoiceSubmission.title")}
           </span>
           <span className="text-sm font-normal text-spaceBlue-200">{T("invoiceSubmission.text", { count: paymentRequests.length })}</span>
