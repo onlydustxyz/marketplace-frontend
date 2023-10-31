@@ -17,7 +17,7 @@ import { cn } from "src/utils/cn";
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
   const [selectedBudget, setSelectedBudget] = useState<WorkEstimationBudgetDetails>(props.budgets[0]);
-  const [amount, setAmount] = useState<number | undefined>(undefined);
+  const [amount, setAmount] = useState<number | null>(null);
   const withDefaultAmount = useMemo(() => amount || 0, [amount]);
 
   useEffect(() => {
@@ -31,14 +31,14 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
   const onSelectedBudgetChange = (newBudget: WorkEstimationBudgetDetails) => {
     setSelectedBudget(newBudget);
-    setAmount(undefined);
+    setAmount(null);
   };
 
   const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const fieldValue = e.target.value;
 
     if (fieldValue === "") {
-      setAmount(undefined);
+      setAmount(null);
     }
     const value = parseFloat(fieldValue);
     if (value < 0) {
@@ -80,8 +80,8 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
               placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency}`)}
               name="budget-amount-input"
               type="number"
-              value={amount === undefined ? "" : amount}
-              fieldClassName="flex-1 max-w-[96px] min-w-[96px] w-[96px]"
+              value={amount === null ? "" : amount}
+              fieldClassName="flex-1 max-w-[96px] min-w-[96px]"
               className="h-full flex-1 rounded-2xl"
               onChange={onChangeAmount}
               inputClassName="text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
