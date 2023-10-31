@@ -1,12 +1,12 @@
 import { useIntl } from "src/hooks/useIntl";
 
 import { pretty } from "src/utils/id";
-import { formatMoneyAmount } from "src/utils/money";
 import { MobileUserRewardItem } from "src/components/UserRewardTable/MobileUserRewardList";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
 import { PaymentStatus } from "src/types";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 
 export default function MobileRewardList({
   rewards,
@@ -45,7 +45,19 @@ function MobileRewardItemContainer({
         id: pretty(reward.id),
         count: reward.numberOfRewardedContributions,
       })}
-      amount={formatMoneyAmount({ amount: reward.amount.total })}
+      //   amount={formatMoneyAmount({ amount: reward.amount.total })}
+      amount={
+        <div className="mt-2 rounded-full border border-card-border-light bg-card-background-light px-3 py-[6px]">
+          <AvailableConversion
+            tooltipId={`${reward.id}-reward-conversion`}
+            currency={{
+              currency: reward.amount.currency,
+              amount: reward.amount.total,
+              dollar: reward.amount.dollarsEquivalent,
+            }}
+          />
+        </div>
+      }
       date={new Date(reward.requestedAt)}
       payoutStatus={<PayoutStatus status={PaymentStatus[reward.status]} isProjectLeaderView={isProjectLeader} />}
     />
