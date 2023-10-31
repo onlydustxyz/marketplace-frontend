@@ -16,7 +16,19 @@ import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import isDefined from "src/utils/isDefined";
 import { daysFromNow, weekNumber } from "src/utils/date";
-import { Project } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/ProjectCard";
+
+type Project = {
+  id: string;
+  slug: string;
+  logoUrl: string | undefined;
+  name: string;
+  contributorCount: number;
+  totalGranted: number;
+  leadSince?: Date;
+  lastContribution?: Date;
+  contributionCount?: number;
+  private?: boolean;
+};
 
 export type UserProfile = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;

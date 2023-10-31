@@ -100,7 +100,7 @@
     "tooltip": {
       "contributionCount": {
         "total": {
-          "zero": "No contribution",
+          "zero": "No contributions",
           "one": "1 contribution",
           "many": "__count__ contributions"
         }
@@ -602,7 +602,7 @@
       },
       "projects": {
         "contributionCount": {
-          "zero": "No contribution",
+          "zero": "No contributions",
           "one": "1 contribution",
           "many": "__count__ contributions"
         },

@@ -61,7 +61,6 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode, gq
   const linkedin = findContact("LINKEDIN");
   const whatsapp = findContact("WHATSAPP");
 
-  console.log("gqlProfile", gqlProfile);
   return (
     <div className="flex flex-col gap-6">
       {!isPublic && (

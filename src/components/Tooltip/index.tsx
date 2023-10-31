@@ -60,10 +60,12 @@ export default function Tooltip({
       delayShow={delayShow}
       className={cn(
         "!text-xs", // !important class is required to override react-tooltip font-size
-        "opaque z-50 rounded-lg px-3 py-2 text-center font-walsheim font-normal text-greyscale-50",
+        "opaque rounded-lg px-3 py-2 text-center font-walsheim font-normal text-greyscale-50",
         variants[variant],
         className
       )}
+      // Need to force z-index to be able to show tooltip over other components
+      style={{ zIndex: 1000 }}
       render={({ content, activeAnchor }) =>
         content ? (
           <div className={activeAnchor?.getAttribute("data-tooltip-classname") || undefined}>{content}</div>
