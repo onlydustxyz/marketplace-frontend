@@ -48,11 +48,11 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
         <div className="flex flex-1 flex-col gap-1 font-walsheim text-white">
           <span className="text-lg font-semibold">
             <span className="mr-2 inline-flex text-orange-500">
-              <InfoIcon />
+              <InfoIcon className="h-4 w-4"/>
             </span>
             {T("invoiceSubmission.title")}
           </span>
-          <span className="text-sm font-normal">{T("invoiceSubmission.text", { count: paymentRequests.length })}</span>
+          <span className="text-sm font-normal text-spaceBlue-200">{T("invoiceSubmission.text", { count: paymentRequests.length })}</span>
         </div>
 
         <MemoizedSlider onSubmit={onSliderSubmit} onClose={onSliderClose} hiddenFields={hiddenFields} />
