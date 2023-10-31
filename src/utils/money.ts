@@ -19,20 +19,9 @@ export const formatMoneyAmount = ({
 }: Params) => {
   switch (currency) {
     case Currency.USD:
-      if (!showCurrency) {
-        return Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency,
-          maximumFractionDigits: maximumFractionDigits({ amount, notation }),
-          notation,
-        })
-          .format(amount)
-          .replace("K", "k")
-          .replace("$", "");
-      }
       return Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency,
+        style: showCurrency ? "currency" : undefined,
+        currency: showCurrency ? currency : undefined,
         maximumFractionDigits: maximumFractionDigits({ amount, notation }),
         notation,
       })

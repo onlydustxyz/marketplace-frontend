@@ -61,7 +61,7 @@ const RewardBudgetDetailsRow = ({
         <p className={cn("font-walsheim text-sm font-normal", warning && "text-orange-500")}>
           {formatMoneyAmount({
             amount: amount,
-            currency: undefined,
+            currency: currency,
             showCurrency: false,
           })}
         </p>
