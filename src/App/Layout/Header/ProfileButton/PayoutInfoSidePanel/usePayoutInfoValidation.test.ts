@@ -1,25 +1,24 @@
-import { PreferredMethod, UserPayoutSettingsFragment } from "src/__generated/graphql";
+import { PreferredMethod } from "src/__generated/graphql";
+import { UserPayoutType } from "./PayoutInfoSidePanel";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
 
-const mockUser: UserPayoutSettingsFragment = {
-  userId: "user-1",
-  companyName: null,
-  companyIdentificationNumber: "1234567890",
-  firstname: "James",
-  lastname: "Bond",
-  address: "007 Big Ben Street",
-  postCode: "007GB",
-  city: null,
-  country: "GB",
-  usdPreferredMethod: PreferredMethod.Crypto,
-  ethWallet: null,
-  bic: null,
-  iban: null,
+const mockUser: UserPayoutType = {
+  company: {
+    identificationNumber: "1234567890",
+  },
   isCompany: false,
-  arePayoutSettingsValid: true,
-  aptosWallet: null,
-  optimismWallet: null,
-  starknetWallet: null,
+  location: {
+    address: "007 Big Ben Street",
+    postalCode: "007GB",
+    country: "GB",
+  },
+  payoutSettings: {
+    usdPreferredMethod: PreferredMethod.Crypto,
+  },
+  person: {
+    firstname: "James",
+    lastname: "Bond",
+  },
 };
 
 describe("usePayoutInfoValidation", () => {
@@ -29,13 +28,25 @@ describe("usePayoutInfoValidation", () => {
   });
 
   it("should return true for isContactInfoValid and false for isPaymentInfoValid when missing payment infos", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({ ...mockUser, city: "London" });
+    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
+      ...mockUser,
+      location: {
+        ...mockUser.location,
+        city: "London",
+      },
+    });
     expect(isContactInfoValid).toBe(true);
     expect(isPaymentInfoValid).toBe(false);
   });
 
   it("should return false for isPaymentInfoValid and true for isContactInfoValid when missing contact infos", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({ ...mockUser, ethWallet: "007.eth" });
+    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
+      ...mockUser,
+      payoutSettings: {
+        ...mockUser.payoutSettings,
+        ethName: "007.eth",
+      },
+    });
     expect(isContactInfoValid).toBe(false);
     expect(isPaymentInfoValid).toBe(true);
   });
@@ -44,7 +55,10 @@ describe("usePayoutInfoValidation", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
       isCompany: true,
-      ethWallet: "007.eth",
+      payoutSettings: {
+        ...mockUser.payoutSettings,
+        ethName: "007.eth",
+      },
     });
     expect(isContactInfoValid).toBe(false);
     expect(isPaymentInfoValid).toBe(true);
@@ -54,8 +68,14 @@ describe("usePayoutInfoValidation", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
       isCompany: true,
-      companyName: "ODDDDD",
-      ethWallet: "007.eth",
+      company: {
+        ...mockUser.company,
+        name: "ODDDDD",
+      },
+      payoutSettings: {
+        ...mockUser.payoutSettings,
+        ethName: "007.eth",
+      },
     });
     expect(isContactInfoValid).toBe(false);
     expect(isPaymentInfoValid).toBe(true);
@@ -64,9 +84,15 @@ describe("usePayoutInfoValidation", () => {
   it("should returns false for isPaymentInfoValid when FIAT is preferred method without banking infos", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
-      city: "London",
-      ethWallet: "007.eth",
-      usdPreferredMethod: PreferredMethod.Fiat,
+      location: {
+        ...mockUser.location,
+        city: "London",
+      },
+      payoutSettings: {
+        ...mockUser.payoutSettings,
+        ethName: "007.eth",
+        usdPreferredMethod: PreferredMethod.Fiat,
+      },
     });
     expect(isContactInfoValid).toBe(true);
     expect(isPaymentInfoValid).toBe(false);
@@ -75,10 +101,18 @@ describe("usePayoutInfoValidation", () => {
   it("should return true when FIAT is preferred method with banking infos", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
-      city: "London",
-      bic: "TRZOFR21XXX",
-      iban: "NL40RABO4212215411",
-      usdPreferredMethod: PreferredMethod.Fiat,
+      location: {
+        ...mockUser.location,
+        city: "London",
+      },
+      payoutSettings: {
+        ...mockUser.payoutSettings,
+        sepaAccount: {
+          bic: "TRZOFR21XXX",
+          iban: "NL40RABO4212215411",
+        },
+        usdPreferredMethod: PreferredMethod.Fiat,
+      },
     });
     expect(isContactInfoValid && isPaymentInfoValid).toBe(true);
   });
@@ -86,8 +120,14 @@ describe("usePayoutInfoValidation", () => {
   it("should return true for both isContactInfoValid and isPaymentInfoValid when valid", () => {
     const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
       ...mockUser,
-      city: "London",
-      ethWallet: "007.eth",
+      location: {
+        ...mockUser.location,
+        city: "London",
+      },
+      payoutSettings: {
+        ...mockUser.payoutSettings,
+        ethName: "007.eth",
+      },
     });
     expect(isContactInfoValid && isPaymentInfoValid).toBe(true);
   });
