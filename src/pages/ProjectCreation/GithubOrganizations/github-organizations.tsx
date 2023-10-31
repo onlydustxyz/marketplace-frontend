@@ -22,12 +22,11 @@ export const GithubOrganizationPage = () => {
             <OrganizationList />
             <hr className="mb-4 border-greyscale-50/20 lg:mb-6" />
             <div className="flex justify-center">
-              <Link
-                to={import.meta.env.VITE_GITHUB_INSTALLATION_URL ?? ""}
+            <a href={import.meta.env.VITE_GITHUB_INSTALLATION_URL ?? ""}
                 className="border-lg mx-auto rounded-lg bg-white px-4 py-2 text-zinc-800"
               >
                 Install to another organisation
-              </Link>
+              </a>
             </div>
           </Card>
         </MultiStepsForm>

@@ -22,6 +22,8 @@ export default function OrganizationList() {
     resourcePath: ApiResourcePaths.GET_INSTALLED_GITHUB_ORGANIZATION,
     pathParam: installation_id,
     method: "GET",
+    enabled: !!installation_id,
+    retry: 1,
   });
 
   useEffect(() => {
