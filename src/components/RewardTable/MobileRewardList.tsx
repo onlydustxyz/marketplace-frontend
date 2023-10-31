@@ -45,7 +45,6 @@ function MobileRewardItemContainer({
         id: pretty(reward.id),
         count: reward.numberOfRewardedContributions,
       })}
-      //   amount={formatMoneyAmount({ amount: reward.amount.total })}
       amount={
         <div className="mt-2 rounded-full border border-card-border-light bg-card-background-light px-3 py-[6px]">
           <AvailableConversion
