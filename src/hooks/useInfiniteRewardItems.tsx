@@ -1,9 +1,9 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
 import { components } from "src/__generated/api";
+import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { PageData, PagesData } from "src/types";
 import { getEndpointUrl, QueryParam } from "src/utils/getEndpointUrl";
-import { useHttpOptions } from "./useHttpOptions";
 
 type RewardPageData = PageData<{ rewardItems: components["schemas"]["RewardItemResponse"][] }>;
 type RewardsPagesData = PagesData<RewardPageData>;
