@@ -5,6 +5,7 @@ import {
   useInfiniteQuery,
   useMutation,
   useQuery,
+  QueryKey,
 } from "@tanstack/react-query";
 import { useAuth } from "src/hooks/useAuth";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
@@ -16,8 +17,9 @@ type QueryParam = {
 };
 
 export interface UseRestfulDataProps<R = unknown>
-  extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
+  extends Omit<QueryOptions<R>, "queryFn" | "staleTime" | "gcTime">,
     QueryObserverOptions<R> {
+  queryKey?: QueryKey;
   resourcePath: string;
   pathParam?: string | Record<string, string>;
   queryParams?: QueryParam[];
@@ -25,6 +27,7 @@ export interface UseRestfulDataProps<R = unknown>
 }
 
 export function useRestfulData<R = unknown>({
+  queryKey,
   resourcePath,
   pathParam = "",
   queryParams = [],
@@ -36,7 +39,15 @@ export function useRestfulData<R = unknown>({
   const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
 
   return useQuery<R>({
-    queryKey: [resourcePath, pathParam, queryParams, isImpersonating, isValidImpersonation, isLoggedIn],
+    queryKey: [
+      ...(queryKey || []),
+      resourcePath,
+      pathParam,
+      queryParams,
+      isImpersonating,
+      isValidImpersonation,
+      isLoggedIn,
+    ],
     queryFn: () =>
       fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)
         .then(res => {

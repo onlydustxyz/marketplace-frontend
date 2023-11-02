@@ -11,6 +11,7 @@ import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
 import { useAuth } from "src/hooks/useAuth";
 import { useApolloClient } from "@apollo/client";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Options = {
   sorting: {
@@ -28,6 +29,7 @@ type RewardTableProps = {
 };
 
 export default function RewardTable({ rewards, options, projectId }: RewardTableProps) {
+  const queryClient = useQueryClient();
   const client = useApolloClient();
 
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -47,6 +49,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
     try {
       // refetch PaymentRequests to hide MyRewards
       client.refetchQueries({ include: ["GetPaymentRequestIds"] });
+      queryClient.invalidateQueries({ queryKey: ["GetUser"] });
       setSidePanelOpen(false);
       refetch();
       refetchBudgets();
