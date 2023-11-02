@@ -22,14 +22,14 @@ export function useRestfulData<R = unknown>({
   pathParam = "",
   queryParams = [],
   method = "GET",
-  ...queryOption
+  ...queryOptions
 }: UseRestfulDataProps<R>) {
+  const { enabled, ...restQueryOptions } = queryOptions;
   const { isLoggedIn } = useAuth();
-
-  const options = useHttpOptions(method);
+  const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
 
   const { isLoading, isError, data, ...rest } = useQuery<R>({
-    queryKey: [resourcePath, pathParam, queryParams, method, isLoggedIn],
+    queryKey: [resourcePath, pathParam, queryParams, options, isLoggedIn],
     queryFn: () =>
       fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)
         .then(res => {
@@ -46,7 +46,8 @@ export function useRestfulData<R = unknown>({
     gcTime: 0,
     refetchInterval: false,
     refetchIntervalInBackground: false,
-    ...queryOption,
+    enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
+    ...restQueryOptions,
   });
 
   return { data, isLoading, isError, ...rest };
@@ -61,7 +62,7 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
   onError,
   onSettled,
 }: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void; onSettled?: () => void }) {
-  const options = useHttpOptions(method);
+  const { options } = useHttpOptions(method);
   const { mutate, isPending, error } = useMutation({
     mutationFn: (data: Payload): Promise<Response> => {
       return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
