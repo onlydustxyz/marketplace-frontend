@@ -106,6 +106,8 @@ export const AvailableConversion: FC<AvailableConversion> = ({
 }) => {
   const orderedCurrencies = useCurrenciesOrder({ currencies: currencies });
 
+  console.log("orderedCurrencies", orderedCurrencies);
+
   const tooltipIdProps = useMemo(() => {
     const props: { "data-tooltip-id"?: string; "data-tooltip-hidden"?: boolean } = {};
 
@@ -122,14 +124,14 @@ export const AvailableConversion: FC<AvailableConversion> = ({
   }, [currency, orderedCurrencies]);
 
   const currencyArray = useMemo(() => {
-    if (orderedCurrencies) return orderedCurrencies;
+    if (currencies) return orderedCurrencies;
 
     if (currency) {
       return [currency];
     }
 
     return [];
-  }, [orderedCurrencies]);
+  }, [orderedCurrencies, currencies]);
 
   return (
     <>

@@ -75,6 +75,7 @@ const RewardForm: React.FC = () => {
 
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
     formData => {
+      console.log("FOMDATE", formData);
       if (contributor) {
         createProjectReward(mapFormDataToVariables({ ...formData, contributor }));
         setPreferredCurrency(formData.currency);
