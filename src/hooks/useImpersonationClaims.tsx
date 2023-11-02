@@ -9,7 +9,14 @@ export type ImpersonationClaimsContextType = {
   setImpersonationSet: (impersonationSet: ImpersonationSet) => void;
   setCustomClaims: (customClaims: CustomClaims) => void;
   clearImpersonationSet: () => void;
-  getImpersonationHeaders: () => HeadersInit;
+  getImpersonationHeaders: () => Partial<{
+    "X-Hasura-Admin-Secret": string;
+    "X-Hasura-Role": string;
+    "X-Hasura-User-Id": string;
+    "X-Hasura-projectsLeaded": string;
+    "X-Hasura-githubUserId": string;
+    "X-Impersonation-Claims": string;
+  }>;
 };
 
 type CustomClaims = {
@@ -55,7 +62,7 @@ export const ImpersonationClaimsProvider = ({ children }: PropsWithChildren) => 
           // Impersonation for OnlyDust API
           "X-Impersonation-Claims": JSON.stringify(impersonationClaims),
         }
-      : [];
+      : {};
   };
 
   const value = {
