@@ -69,7 +69,7 @@ const ConversionTooltip = ({
     <Tooltip id={tooltipId} clickable position={TooltipPosition.Top}>
       <div className="flex flex-col gap-2">
         <p className={cn("text-greyscale-50", currencies && "font-medium")}>{T("availableConversion.tooltip.title")}</p>
-        {currencies && (
+        {currencies && currencies.length > 0 && (
           <div className="flex flex-col gap-1">
             {currencies.map(currency => (
               <div key={currency.currency} className="flex items-center justify-start gap-1">
