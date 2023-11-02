@@ -70,12 +70,12 @@ const Input = forwardRef(function Input(
   }: PropsType,
   ref: ForwardedRef<ReactNode>
 ) {
-  const { register, watch } = useFormContext();
+  const { register } = useFormContext();
   const { errors } = useFormState({ name });
-  const fieldValue = watch(name);
+
   const overridenRegister = defaults(
     {
-      ref,
+      ref: ref || undefined,
       onChange,
       onBlur,
       name,
@@ -92,7 +92,7 @@ const Input = forwardRef(function Input(
         loading,
         placeholder,
         type,
-        value: fieldValue || value,
+        value,
         register: overridenRegister,
         onFocus,
         onKeyDown,

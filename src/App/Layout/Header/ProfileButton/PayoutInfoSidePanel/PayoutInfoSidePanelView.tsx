@@ -41,8 +41,8 @@ export default function PayoutInfoSidePanel({
   unsavedChanges,
   isContactInfoValid,
   isPaymentInfoValid,
-  requiredFields,
   isContactInfoComplete,
+  requiredFields,
 }: Props) {
   const { T } = useIntl();
   const {

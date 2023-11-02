@@ -1,5 +1,5 @@
 import React, { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren, ReactNode } from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
+import { useFormContext, UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, { BackgroundNoise, BackgroundPosition, BackgroundSize } from "src/components/ImageCard";
 import headerElementBackground from "src/assets/img/alert-bg.png";
@@ -67,6 +67,9 @@ const View: React.FC<PropsType> = ({
   disabled,
   size,
 }) => {
+  const { watch } = useFormContext();
+  const stateValue = watch(register.name);
+
   const isValidationError = error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate;
   const showError = error && (!isValidationError || showValidationErrors) && errorDisplay === InputErrorDisplay.Normal;
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -81,7 +84,7 @@ const View: React.FC<PropsType> = ({
       {label && (
         <div className="flex justify-between text-sm font-medium tracking-tight">
           {label}
-          {showRequiredError && !value && <ErrorWarningLine className="text-body-m text-orange-500" />}
+          {showRequiredError && !stateValue && <ErrorWarningLine className="text-body-m text-orange-500" />}
         </div>
       )}
       <div
