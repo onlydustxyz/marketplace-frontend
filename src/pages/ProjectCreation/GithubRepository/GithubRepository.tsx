@@ -11,6 +11,7 @@ import { GithubRepositoryCount } from "./GithubRepositoryCount";
 export interface createProjectInformation {
   organisations: {
     name: string;
+    logoUrl: string;
     repos: {
       githubId: number;
       shortDescription: string;
@@ -121,7 +122,7 @@ export const GithubRepositoryPage = () => {
     }
   };
 
-  const reposCount = useMemo(() => {
+  const selectedReposCounts = useMemo(() => {
     return {
       selected: organisation.reduce((acc, org) => {
         return acc + org.repos.filter(repo => repo.selected).length;
@@ -133,12 +134,12 @@ export const GithubRepositoryPage = () => {
   }, [organisation]);
 
   const footerRightElement = useMemo(() => {
-    if (reposCount.selected === 0) {
+    if (selectedReposCounts.selected === 0) {
       return <GithubRepositoryCountError />;
     }
 
-    return <GithubRepositoryCount total={reposCount.total} selected={reposCount.selected} />;
-  }, [reposCount]);
+    return <GithubRepositoryCount total={selectedReposCounts.total} selected={selectedReposCounts.selected} />;
+  }, [selectedReposCounts]);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
