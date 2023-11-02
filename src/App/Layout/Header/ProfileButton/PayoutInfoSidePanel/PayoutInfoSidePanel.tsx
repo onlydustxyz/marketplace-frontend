@@ -54,7 +54,8 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     reset(formData);
   };
 
-  const { isContactInfoValid, isPaymentInfoValid, isAlert, requiredFields } = usePayoutInfoValidation(user);
+  const { isContactInfoValid, isContactInfoComplete, isPaymentInfoValid, requiredFields } =
+    usePayoutInfoValidation(user);
 
   return (
     <SidePanel open={open} setOpen={setOpen}>
@@ -68,10 +69,10 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
             <PayoutInfoSidePanelView
               saveButtonDisabled={userPayoutInformationIsPending || !isDirty}
               unsavedChanges={isDirty}
+              isContactInfoComplete={isContactInfoComplete}
               isContactInfoValid={isContactInfoValid}
               isPaymentInfoValid={isPaymentInfoValid}
               requiredFields={requiredFields}
-              isAlert={isAlert}
             />
           </form>
         </FormProvider>

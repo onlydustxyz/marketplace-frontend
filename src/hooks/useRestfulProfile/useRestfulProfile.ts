@@ -16,6 +16,7 @@ type LoginProps = {
 
 export default function useRestfulProfile({ githubUserLogin, githubUserId }: IdProps | LoginProps) {
   return useRestfulData<Profile>({
+    queryKey: ["resftullProfile", githubUserId],
     resourcePath: githubUserLogin
       ? ApiResourcePaths.GET_PUBLIC_USER_PROFILE_BY_LOGIN
       : ApiResourcePaths.GET_PUBLIC_USER_PROFILE,

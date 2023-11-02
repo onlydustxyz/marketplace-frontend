@@ -3,10 +3,10 @@ import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
 
 type LocationFieldsProps = {
-  isAlert: boolean;
+  isRequired: boolean;
 };
 
-export function LocationFields({ isAlert }: LocationFieldsProps) {
+export function LocationFields({ isRequired }: LocationFieldsProps) {
   const { T } = useIntl();
   const { register } = useFormContext();
 
@@ -16,7 +16,7 @@ export function LocationFields({ isAlert }: LocationFieldsProps) {
         label={T("profile.form.address")}
         placeholder={T("profile.form.address")}
         {...register("address")}
-        showRequiredError={isAlert}
+        showRequiredError={isRequired}
       />
       <div className="flex flex-row gap-5">
         <Input
@@ -24,21 +24,21 @@ export function LocationFields({ isAlert }: LocationFieldsProps) {
           label={T("profile.form.postCode")}
           placeholder={T("profile.form.postCode")}
           {...register("postCode")}
-          showRequiredError={isAlert}
+          showRequiredError={isRequired}
         />
         <Input
           withMargin={false}
           label={T("profile.form.city")}
           placeholder={T("profile.form.city")}
           {...register("city")}
-          showRequiredError={isAlert}
+          showRequiredError={isRequired}
         />
         <Input
           withMargin={false}
           label={T("profile.form.country")}
           placeholder={T("profile.form.country")}
           {...register("country")}
-          showRequiredError={isAlert}
+          showRequiredError={isRequired}
         />
       </div>
     </>

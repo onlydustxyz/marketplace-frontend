@@ -33,7 +33,7 @@ type Props = {
   isContactInfoValid: boolean;
   isPaymentInfoValid: boolean;
   requiredFields: RequiredFieldsType;
-  isAlert: boolean;
+  isContactInfoComplete: boolean;
 };
 
 export default function PayoutInfoSidePanel({
@@ -41,8 +41,8 @@ export default function PayoutInfoSidePanel({
   unsavedChanges,
   isContactInfoValid,
   isPaymentInfoValid,
+  isContactInfoComplete,
   requiredFields,
-  isAlert,
 }: Props) {
   const { T } = useIntl();
   const {
@@ -51,6 +51,8 @@ export default function PayoutInfoSidePanel({
   } = useFormContext();
 
   const [profileType, usdPreferredMethod] = watch(["profileType", "usdPreferredMethod"]);
+  const shouldDisplayStatus =
+    (isContactInfoValid && isContactInfoComplete) || (!isContactInfoValid && !isContactInfoComplete);
 
   return (
     <Flex className="h-full min-h-0 flex-col justify-between overflow-y-auto">
@@ -72,15 +74,17 @@ export default function PayoutInfoSidePanel({
           ]}
         />
         <Card padded={false} className="p-6" withBg={false}>
-          <StatusTag isValid={isContactInfoValid} type={StatusType.Contact} />
+          {shouldDisplayStatus ? (
+            <StatusTag isValid={isContactInfoValid && isContactInfoComplete} type={StatusType.Contact} />
+          ) : null}
 
-          {profileType === ProfileType.Company ? <CompanyFields isAlert={isAlert} /> : null}
-          {profileType === ProfileType.Individual ? <IndividualFields isAlert={isAlert} /> : null}
-          <LocationFields isAlert={isAlert} />
+          {profileType === ProfileType.Company ? <CompanyFields isRequired={!isContactInfoValid} /> : null}
+          {profileType === ProfileType.Individual ? <IndividualFields isRequired={!isContactInfoValid} /> : null}
+          <LocationFields isRequired={!isContactInfoValid} />
         </Card>
 
         <Card padded={false} className="p-6" withBg={false}>
-          <StatusTag isValid={isPaymentInfoValid} type={StatusType.Payment} />
+          {shouldDisplayStatus ? <StatusTag isValid={isPaymentInfoValid} type={StatusType.Payment} /> : null}
 
           <div className={cn({ "mb-6": usdPreferredMethod === PreferredMethod.Fiat })}>
             {profileType === ProfileType.Company && (
