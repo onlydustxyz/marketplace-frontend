@@ -1,10 +1,10 @@
-import { useIntl } from "src/hooks/useIntl";
-import HeaderLine from "src/components/Table/HeaderLine";
+import { Sorting } from "src/components/RewardTable/useQueryParamsSorting";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
-import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
+import HeaderLine from "src/components/Table/HeaderLine";
+import { useIntl } from "src/hooks/useIntl";
 import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
+import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
 import { Fields } from "src/pages/Rewards";
 import { Sorting } from "src/types";

@@ -14,6 +14,7 @@ import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/use
 import { useIntl } from "src/hooks/useIntl";
 import { rates } from "src/hooks/useWorkEstimation";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
+import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/pages/ProjectDetails/Title";
 import { Project } from "src/types";
 import { useMediaQuery } from "usehooks-ts";

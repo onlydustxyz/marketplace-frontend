@@ -48,16 +48,31 @@ export default function AllProjects({
     clear: clearFilters,
   } = useProjectFilter();
 
-  const queryParams = useMemo(
-    () => [
-      ...(technologies.length > 0 ? [{ key: "technologies", value: technologies }] : []),
-      ...(sponsors.length > 0 ? [{ key: "sponsor", value: sponsors }] : []),
-      ...(search ? [{ key: "search", value: [search] }] : []),
-      ...(sorting ? [{ key: "sort", value: [sorting] }] : []),
-      ...(ownership ? [{ key: "mine", value: [ownership === "Mine" ? true : false] }] : []),
-    ],
-    [technologies, sponsors, search, sorting, ownership]
-  );
+  const queryParams = useMemo(() => {
+    const params: Parameters<typeof useRestfulData>[0]["queryParams"] = {};
+
+    if (technologies.length > 0) {
+      params["technologies"] = technologies;
+    }
+
+    if (sponsors.length > 0) {
+      params["sponsor"] = sponsors;
+    }
+
+    if (search) {
+      params["search"] = [search];
+    }
+
+    if (sorting) {
+      params["sort"] = [sorting];
+    }
+
+    if (ownership) {
+      params["mine"] = ownership === "Mine";
+    }
+
+    return params;
+  }, [technologies, sponsors, search, sorting, ownership]);
 
   const { data, isLoading, isError } = useRestfulData<components["schemas"]["ProjectListResponse"]>({
     resourcePath: ApiResourcePaths.GET_ALL_PROJECTS,

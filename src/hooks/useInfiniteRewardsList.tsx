@@ -1,13 +1,13 @@
 import { components } from "src/__generated/api";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useInfiniteRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { QueryParam } from "src/utils/getEndpointUrl";
+import { QueryParams } from "src/utils/getEndpointUrl";
 
 export type RewardPageItemType = components["schemas"]["RewardPageItemResponse"];
 
 interface useInfiniteRewardsListProps {
   projectId: string;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
   enabled?: boolean;
 }
 

@@ -6,6 +6,7 @@ import {
 } from "src/__generated/graphql";
 
 import { ComponentProps, JSXElementConstructor } from "react";
+import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { PaymentStatus } from "src/types";
@@ -110,7 +111,7 @@ export const Default = {
         options={{
           fetchNextPage: (() => {}) as ComponentProps<typeof RewardTable>["options"]["fetchNextPage"],
           hasNextPage: false,
-          sorting: { field: undefined, isAscending: undefined },
+          sorting: { field: Fields.Date, ascending: false },
           sortField: () => {},
           isFetchingNextPage: false,
           refetch: (() => {}) as ComponentProps<typeof RewardTable>["options"]["refetch"],

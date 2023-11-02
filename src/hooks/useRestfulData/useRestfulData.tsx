@@ -9,12 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { useAuth } from "src/hooks/useAuth";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
-import { getEndpointUrl } from "src/utils/getEndpointUrl";
-
-type QueryParam = {
-  key: string;
-  value: Array<string | number | boolean>;
-};
+import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 
 export interface UseRestfulDataProps<R = unknown>
   extends Omit<QueryOptions<R>, "queryFn" | "staleTime" | "gcTime">,
@@ -22,7 +17,7 @@ export interface UseRestfulDataProps<R = unknown>
   queryKey?: QueryKey;
   resourcePath: string;
   pathParam?: string | Record<string, string>;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }
 
@@ -30,7 +25,7 @@ export function useRestfulData<R = unknown>({
   queryKey,
   resourcePath,
   pathParam = "",
-  queryParams = [],
+  queryParams = {},
   method = "GET",
   ...queryOptions
 }: UseRestfulDataProps<R>) {
@@ -72,7 +67,7 @@ export function useRestfulData<R = unknown>({
 export function useMutationRestfulData<Payload = unknown, Response = unknown>({
   resourcePath,
   pathParam = "",
-  queryParams = [],
+  queryParams = {},
   method = "PUT",
   onSuccess,
   onError,
@@ -93,13 +88,14 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
               const data = text ? JSON.parse(text) : {}; // Try to parse the response as JSON
 
               return data;
-            } catch (err: unknown) {
-              console.log("ERROR", err);
+            } catch (e) {
+              throw new Error("Invalid response");
             }
           }
+
+          throw new Error(res.statusText);
         })
         .catch(e => {
-          console.log("Error!!", e);
           throw new Error(e);
         });
     },

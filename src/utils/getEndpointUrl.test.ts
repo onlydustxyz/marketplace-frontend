@@ -5,7 +5,7 @@ describe("getEndpointUrl", () => {
     const url = getEndpointUrl({
       resourcePath: "/api/v1/projects/{{id}}/contributors",
       pathParam: "123",
-      queryParams: [{ key: "status", value: ["active"] }],
+      queryParams: { status: ["active"] },
       pageParam: 2,
       pageSize: 10,
     });

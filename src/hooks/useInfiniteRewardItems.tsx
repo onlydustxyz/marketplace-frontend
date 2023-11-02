@@ -1,11 +1,11 @@
 import { components } from "src/__generated/api";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useInfiniteRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { QueryParam } from "src/utils/getEndpointUrl";
+import { QueryParams } from "src/utils/getEndpointUrl";
 
 type Props = {
   rewardId: string;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
   enabled?: boolean;
 };
 
