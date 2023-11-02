@@ -74,7 +74,7 @@ const Input = forwardRef(function Input(
   const { errors } = useFormState({ name });
   const overridenRegister = defaults(
     {
-      ref,
+      ref: ref || undefined,
       onChange,
       onBlur,
       name,

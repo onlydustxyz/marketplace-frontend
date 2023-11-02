@@ -88,7 +88,9 @@ export default function View({
   }, [searchEnabled]);
 
   const showIgnoredItemsName = "show-ignored-items";
-  const { control } = useForm({ defaultValues: { [showIgnoredItemsName]: false } });
+  const { control } = useForm({
+    defaultValues: { [showIgnoredItemsName]: false },
+  });
   const showIgnoredItems = useWatch({
     control,
     name: showIgnoredItemsName,
