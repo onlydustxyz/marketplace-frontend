@@ -111,14 +111,14 @@ const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
     },
     payoutSettings: {
       usdPreferredMethod: values.usdPreferredMethod,
-      ...(values.usdPreferredMethod === PreferredMethod.Fiat
+      ...(values.bic && values.iban
         ? {
             sepaAccount: {
               bic: values.bic,
               iban: values.iban,
             },
           }
-        : null),
+        : { sepaAccount: undefined }),
       ethAddress: values.ethWallet || undefined,
       starknetAddress: values.starknetWallet || undefined,
       optimismAddress: values.optimismWallet || undefined,

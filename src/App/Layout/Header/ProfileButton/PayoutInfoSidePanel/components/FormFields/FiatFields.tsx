@@ -9,14 +9,12 @@ import { RequiredFieldsType } from "src/App/Layout/Header/ProfileButton/PayoutIn
 export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
   const {
-    watch,
     control,
     formState: { touchedFields },
     trigger,
     clearErrors,
   } = useFormContext();
   const { missingSepaAccount } = requiredFields || {};
-  const [iban, bic] = watch(["iban", "bic"]);
 
   return (
     <Flex className="flex-row gap-5">
@@ -31,7 +29,6 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
               name="iban"
               placeholder={T("profile.form.iban")}
               options={{
-                required: { value: !!bic, message: T("profile.form.ibanRequired") },
                 validate: value => {
                   return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
                 },
@@ -63,10 +60,6 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
               placeholder={T("profile.form.bic")}
               options={{
                 pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
-                required: {
-                  value: !!iban?.trim(),
-                  message: T("profile.form.bicRequired"),
-                },
               }}
               showRequiredError={missingSepaAccount}
               value={value}
