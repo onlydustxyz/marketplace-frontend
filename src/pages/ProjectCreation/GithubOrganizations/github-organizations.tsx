@@ -21,9 +21,9 @@ export const GithubOrganizationPage = () => {
           <Card>
             <OrganizationList />
             <hr className="mb-4 border-greyscale-50/20 lg:mb-6" />
-            <div className="flex justify-center">
+            <div className="flex justify-start">
             <a href={import.meta.env.VITE_GITHUB_INSTALLATION_URL ?? ""}
-                className="border-lg mx-auto rounded-lg bg-white px-4 py-2 text-zinc-800"
+                className="border-lg rounded-lg bg-white px-4 py-2 text-zinc-800"
               >
                 Install to another organisation
               </a>
