@@ -15,11 +15,14 @@ import { useLocalStorage } from "usehooks-ts";
 import { reorderBudgets } from "./utils";
 import { BudgetCurrencyType } from "src/utils/money";
 import ErrorFallback from "src/ErrorFallback";
+import { useApolloClient } from "@apollo/client";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
+  const client = useApolloClient();
+
   const { projectId, projectKey } = useOutletContext<{
     projectId: string;
     projectKey: string;
@@ -41,9 +44,16 @@ const RewardForm: React.FC = () => {
     pathParam: projectId,
     method: "POST",
     onSuccess: async () => {
-      await refetch();
-      showToaster(T("reward.form.sent"));
-      navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
+      try {
+        await refetch();
+        showToaster(T("reward.form.sent"));
+
+        // refetch PaymentRequests to display MyRewards
+        await client.refetchQueries({ include: ["GetPaymentRequestIds"] });
+        navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
+      } catch (e) {
+        console.error(e);
+      }
     },
   });
 

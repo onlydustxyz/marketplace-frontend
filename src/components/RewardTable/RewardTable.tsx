@@ -10,6 +10,7 @@ import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
 import { useAuth } from "src/hooks/useAuth";
+import { useApolloClient } from "@apollo/client";
 
 type Options = {
   sorting: {
@@ -27,6 +28,8 @@ type RewardTableProps = {
 };
 
 export default function RewardTable({ rewards, options, projectId }: RewardTableProps) {
+  const client = useApolloClient();
+
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [selectedReward, setSelectedReward] = useState<RewardPageItemType | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
@@ -39,6 +42,18 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
     setSelectedReward(reward);
     setSidePanelOpen(true);
   };
+
+  function handleCancelReward() {
+    try {
+      // refetch PaymentRequests to hide MyRewards
+      client.refetchQueries({ include: ["GetPaymentRequestIds"] });
+      setSidePanelOpen(false);
+      refetch();
+      refetchBudgets();
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <>
@@ -68,11 +83,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
           <RewardSidePanelAsLeader
             projectId={projectId}
             rewardId={selectedReward.id}
-            onRewardCancel={() => {
-              setSidePanelOpen(false);
-              refetch();
-              refetchBudgets();
-            }}
+            onRewardCancel={handleCancelReward}
           />
         )}
       </SidePanel>
