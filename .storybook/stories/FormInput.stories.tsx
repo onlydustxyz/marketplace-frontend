@@ -1,3 +1,5 @@
+import { JSXElementConstructor } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { Size } from "src/components/FormInput";
 import { InputErrorDisplay } from "src/components/FormInput/types";
 import FormInput from "src/components/FormInput/View";
@@ -15,6 +17,13 @@ export default {
     loading: { type: "boolean" },
     showRequiredError: { type: "boolean" },
   },
+  decorators: [
+    (Story: JSXElementConstructor<any>) => (
+      <FormProvider {...useForm()}>
+        <Story />
+      </FormProvider>
+    ),
+  ],
 };
 
 type Props = {
