@@ -97,13 +97,13 @@ const View: React.FC<PropsType> = ({
             type,
             className: cn(
               "w-full bg-white/5 rounded-xl font-walsheim font-normal",
-              { "text-greyscale-50": !disabled, "text-greyscale-600": disabled },
-              { "placeholder:text-spaceBlue-200": !disabled, "placeholder:text-greyscale-600": disabled },
-              { "cursor-not-allowed": disabled },
+              {
+                "text-greyscale-50 placeholder:text-spaceBlue-200": !disabled,
+                "cursor-not-allowed placeholder:text-greyscale-600 text-greyscale-600": disabled,
+              },
               "border border-greyscale-50/[0.08]",
               "focus:placeholder:text-spacePurple-200/60 focus:border-spacePurple-500 focus:bg-spacePurple-900",
               {
-                // "outline outline-1 outline-orange-500": showError,
                 "outline outline-1 outline-github-red-light": showError,
                 "h-11": as === "input" && size === Size.Md,
                 "h-8": as === "input" && size === Size.Sm,

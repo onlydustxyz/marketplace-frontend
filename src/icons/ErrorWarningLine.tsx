@@ -1,9 +1,9 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 interface Props {
   className?: string;
 }
 
 export default function ErrorWarningLine({ className }: Props) {
-  return <i className={classNames("ri-error-warning-line", className)} />;
+  return <i className={cn("ri-error-warning-line", className)} />;
 }
