@@ -1,7 +1,14 @@
-import { QueryObserverOptions, QueryOptions, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  QueryObserverOptions,
+  QueryOptions,
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 import { useAuth } from "src/hooks/useAuth";
-import { getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
+import { getEndpointUrl } from "src/utils/getEndpointUrl";
 
 type QueryParam = {
   key: string;
@@ -22,14 +29,14 @@ export function useRestfulData<R = unknown>({
   pathParam = "",
   queryParams = [],
   method = "GET",
-  ...queryOption
+  ...queryOptions
 }: UseRestfulDataProps<R>) {
+  const { enabled, ...restQueryOptions } = queryOptions;
   const { isLoggedIn } = useAuth();
+  const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
 
-  const options = useHttpOptions(method);
-
-  const { isLoading, isError, data, ...rest } = useQuery<R>({
-    queryKey: [resourcePath, pathParam, queryParams, method, isLoggedIn],
+  return useQuery<R>({
+    queryKey: [resourcePath, pathParam, queryParams, isImpersonating, isValidImpersonation, isLoggedIn],
     queryFn: () =>
       fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)
         .then(res => {
@@ -46,10 +53,9 @@ export function useRestfulData<R = unknown>({
     gcTime: 0,
     refetchInterval: false,
     refetchIntervalInBackground: false,
-    ...queryOption,
+    enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
+    ...restQueryOptions,
   });
-
-  return { data, isLoading, isError, ...rest };
 }
 
 export function useMutationRestfulData<Payload = unknown, Response = unknown>({
@@ -61,8 +67,9 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
   onError,
   onSettled,
 }: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void; onSettled?: () => void }) {
-  const options = useHttpOptions(method);
-  const { mutate, isPending, error } = useMutation({
+  const { options } = useHttpOptions(method);
+
+  return useMutation({
     mutationFn: (data: Payload): Promise<Response> => {
       return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
         ...options,
@@ -89,6 +96,76 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
     onError,
     onSettled,
   });
+}
 
-  return { mutate, isPending, error };
+type ResponseData = {
+  totalPageNumber: number;
+  totalItemNumber: number;
+  hasMore: boolean;
+  nextPageIndex: number;
+};
+
+export function useInfiniteRestfulData<R extends ResponseData>(
+  {
+    resourcePath,
+    pageSize = 10,
+    pathParam = "",
+    queryParams = [],
+  }: {
+    resourcePath: string;
+    pageSize?: number;
+    pathParam?: string | Record<string, string>;
+    queryParams?: QueryParam[];
+  },
+  queryOptions: Omit<UseInfiniteQueryOptions<R>, "queryFn" | "initialPageParam" | "getNextPageParam" | "select"> &
+    Partial<Pick<UseInfiniteQueryOptions<R>, "initialPageParam" | "getNextPageParam">>
+) {
+  const {
+    queryKey,
+    initialPageParam = 0,
+    getNextPageParam = lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
+    refetchInterval = false,
+    refetchIntervalInBackground = false,
+    enabled,
+    ...restQueryOptions
+  } = queryOptions;
+  const { options, isImpersonating, isValidImpersonation } = useHttpOptions("GET");
+
+  return useInfiniteQuery<R>({
+    queryKey: [isImpersonating, isValidImpersonation, ...queryKey],
+    queryFn: ({ pageParam }) =>
+      fetch(
+        getEndpointUrl({
+          resourcePath,
+          pageParam: typeof pageParam === "number" ? pageParam : 0,
+          pageSize,
+          pathParam,
+          queryParams,
+        }),
+        options
+      )
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+
+          throw new Error(res.statusText);
+        })
+        .catch(e => {
+          throw new Error(e);
+        }),
+    select: data => {
+      // Make sure to return an object that includes the `pages` and `pageParams` properties
+      return {
+        pages: data.pages,
+        pageParams: data.pageParams,
+      };
+    },
+    initialPageParam,
+    getNextPageParam,
+    refetchInterval,
+    refetchIntervalInBackground,
+    enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
+    ...restQueryOptions,
+  });
 }
