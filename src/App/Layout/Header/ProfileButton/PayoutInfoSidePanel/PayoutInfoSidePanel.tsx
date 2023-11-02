@@ -54,7 +54,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     reset(formData);
   };
 
-  const { isContactInfoValid, isPaymentInfoValid, requiredFields } = usePayoutInfoValidation(user);
+  const { isContactInfoValid, isPaymentInfoValid, isAlert, requiredFields } = usePayoutInfoValidation(user);
 
   return (
     <SidePanel open={open} setOpen={setOpen}>
@@ -71,6 +71,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
               isContactInfoValid={isContactInfoValid}
               isPaymentInfoValid={isPaymentInfoValid}
               requiredFields={requiredFields}
+              isAlert={isAlert}
             />
           </form>
         </FormProvider>

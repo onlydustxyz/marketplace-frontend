@@ -12,30 +12,34 @@ export type RequiredFieldsType = {
 export function usePayoutInfoValidation(user?: UserPayoutType): {
   isContactInfoValid: boolean;
   isPaymentInfoValid: boolean;
+  isAlert: boolean;
   requiredFields: RequiredFieldsType;
 } {
-  let isContactInfoValid;
+  let isContactInfoValid = false;
 
   const { hasValidContactInfo, payoutSettings, location, company, person, isCompany } = user || {};
   const { address, city, country, postalCode } = location || {};
   const { missingAptosWallet, missingEthWallet, missingOptimismWallet, missingSepaAccount, missingStarknetWallet } =
     payoutSettings || {};
 
-  if (address && city && country && postalCode) {
-    isContactInfoValid = true;
-
-    if (isCompany && company) {
-      isContactInfoValid = Boolean(
-        company.name && company.identificationNumber && company.owner?.firstname && company.owner?.lastname
-      );
-    } else {
-      isContactInfoValid = Boolean(person?.firstname && person?.lastname);
+  if (!hasValidContactInfo) {
+    if (address && city && country && postalCode) {
+      if (isCompany && company) {
+        isContactInfoValid = Boolean(
+          company.name && company.identificationNumber && company.owner?.firstname && company.owner?.lastname
+        );
+      } else {
+        isContactInfoValid = Boolean(person?.firstname && person?.lastname);
+      }
     }
+  } else {
+    isContactInfoValid = true;
   }
 
   return {
-    isContactInfoValid: Boolean(hasValidContactInfo && isContactInfoValid),
+    isContactInfoValid: Boolean(isContactInfoValid),
     isPaymentInfoValid: Boolean(payoutSettings?.hasValidPayoutSettings),
+    isAlert: !hasValidContactInfo,
     requiredFields: {
       missingAptosWallet,
       missingEthWallet,

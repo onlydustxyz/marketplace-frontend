@@ -4,7 +4,11 @@ import Input from "src/components/FormInput";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
 
-export function CompanyFields() {
+type CompanyFieldsProps = {
+  isAlert: boolean;
+};
+
+export function CompanyFields({ isAlert }: CompanyFieldsProps) {
   const { T } = useIntl();
   const { register } = useFormContext();
 
@@ -16,13 +20,13 @@ export function CompanyFields() {
           label={T("profile.form.companyName")}
           placeholder={T("profile.form.companyName")}
           {...register("companyName")}
-          requiredForPayment
+          showRequiredError={isAlert}
         />
         <Input
           label={T("profile.form.identificationNumber")}
           placeholder={T("profile.form.identificationNumber")}
           {...register("companyIdentificationNumber")}
-          requiredForPayment
+          showRequiredError={isAlert}
         />
       </div>
       <div className="flex w-full flex-row gap-5">
@@ -30,13 +34,13 @@ export function CompanyFields() {
           label={T("profile.form.companyOwnerFirstName")}
           placeholder={T("profile.form.companyOwnerFirstName")}
           {...register("firstname")}
-          requiredForPayment
+          showRequiredError={isAlert}
         />
         <Input
           label={T("profile.form.companyOwnerLastName")}
           placeholder={T("profile.form.companyOwnerLastName")}
           {...register("lastname")}
-          requiredForPayment
+          showRequiredError={isAlert}
         />
       </div>
     </Flex>

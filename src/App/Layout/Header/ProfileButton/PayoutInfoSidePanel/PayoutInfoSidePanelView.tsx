@@ -33,6 +33,7 @@ type Props = {
   isContactInfoValid: boolean;
   isPaymentInfoValid: boolean;
   requiredFields: RequiredFieldsType;
+  isAlert: boolean;
 };
 
 export default function PayoutInfoSidePanel({
@@ -41,6 +42,7 @@ export default function PayoutInfoSidePanel({
   isContactInfoValid,
   isPaymentInfoValid,
   requiredFields,
+  isAlert,
 }: Props) {
   const { T } = useIntl();
   const {
@@ -72,9 +74,9 @@ export default function PayoutInfoSidePanel({
         <Card padded={false} className="p-6" withBg={false}>
           <StatusTag isValid={isContactInfoValid} type={StatusType.Contact} />
 
-          {profileType === ProfileType.Company ? <CompanyFields /> : null}
-          {profileType === ProfileType.Individual ? <IndividualFields /> : null}
-          <LocationFields />
+          {profileType === ProfileType.Company ? <CompanyFields isAlert={isAlert} /> : null}
+          {profileType === ProfileType.Individual ? <IndividualFields isAlert={isAlert} /> : null}
+          <LocationFields isAlert={isAlert} />
         </Card>
 
         <Card padded={false} className="p-6" withBg={false}>

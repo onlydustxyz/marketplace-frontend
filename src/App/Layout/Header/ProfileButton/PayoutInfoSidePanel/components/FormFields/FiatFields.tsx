@@ -36,7 +36,7 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
                   return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
                 },
               }}
-              requiredForPayment={missingSepaAccount}
+              showRequiredError={missingSepaAccount}
               value={value && IBANParser.printFormat(value)}
               onChange={onChange}
               onBlur={() => {
@@ -68,7 +68,7 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
                   message: T("profile.form.bicRequired"),
                 },
               }}
-              requiredForPayment={missingSepaAccount}
+              showRequiredError={missingSepaAccount}
               value={value}
               onChange={onChange}
               onBlur={() => {

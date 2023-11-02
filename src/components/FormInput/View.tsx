@@ -30,7 +30,7 @@ type PropsType = {
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
   showValidationErrors: boolean;
-  requiredForPayment: boolean;
+  showRequiredError: boolean;
   withMargin: boolean;
   negativeZIndex?: boolean;
   as?: React.ElementType;
@@ -58,7 +58,7 @@ const View: React.FC<PropsType> = ({
   suffixComponent,
   inputClassName,
   showValidationErrors,
-  requiredForPayment,
+  showRequiredError,
   withMargin,
   children,
   negativeZIndex = false,
@@ -81,7 +81,7 @@ const View: React.FC<PropsType> = ({
       {label && (
         <div className="flex justify-between text-sm font-medium tracking-tight">
           {label}
-          {requiredForPayment && !value && <ErrorWarningLine className="text-body-m text-orange-500" />}
+          {showRequiredError && !value && <ErrorWarningLine className="text-body-m text-orange-500" />}
         </div>
       )}
       <div

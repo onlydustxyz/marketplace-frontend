@@ -35,7 +35,7 @@ export function OtherCryptoFields({ requiredFields }: { requiredFields: Required
               message: T("profile.form.invalidEthWallet"),
             },
           })}
-          requiredForPayment={missingEthWallet}
+          showRequiredError={missingEthWallet}
         />
       </div>
       <Input
@@ -54,7 +54,7 @@ export function OtherCryptoFields({ requiredFields }: { requiredFields: Required
             message: T("profile.form.invalidStarknetWallet"),
           },
         })}
-        requiredForPayment={missingStarknetWallet}
+        showRequiredError={missingStarknetWallet}
       />
       <Input
         label={
@@ -72,7 +72,7 @@ export function OtherCryptoFields({ requiredFields }: { requiredFields: Required
             message: T("profile.form.invalidOptimismWallet"),
           },
         })}
-        requiredForPayment={missingOptimismWallet}
+        showRequiredError={missingOptimismWallet}
       />
       <Input
         label={
@@ -90,7 +90,7 @@ export function OtherCryptoFields({ requiredFields }: { requiredFields: Required
             message: T("profile.form.invalidAptosWallet"),
           },
         })}
-        requiredForPayment={missingAptosWallet}
+        showRequiredError={missingAptosWallet}
       />
     </>
   );
