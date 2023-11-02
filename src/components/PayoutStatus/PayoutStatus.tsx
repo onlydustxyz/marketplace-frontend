@@ -57,7 +57,7 @@ const PendingSignup = () => {
   const { T } = useIntl();
 
   return (
-    <Tag size={TagSize.Medium} {...withTooltip(T("reward.status.tooltip.processing"), { className: "w-44" })}>
+    <Tag size={TagSize.Medium} {...withTooltip(T("reward.status.tooltip.pending"), { className: "w-44" })}>
       <ErrorWarningLine className="text-pink-500" />
       <span className="font-normal text-greyscale-50">{T("reward.status.pendingSignup")}</span>
     </Tag>
@@ -86,10 +86,7 @@ const PayoutInfoMissingTag: React.FC<PayoutInfoMissingTagProps> = ({ isProjectLe
     <Tag
       size={TagSize.Medium}
       borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
-      {...withTooltip(
-        isProjectLeaderView
-          ? T("reward.status.tooltip.payoutInfoMissingAsLeader")
-          : T("reward.status.tooltip.payoutInfoMissingAsContributor"),
+      {...withTooltip(T("reward.status.tooltip.payoutInfoMissing"),
         { className: "w-52" }
       )}
     >
