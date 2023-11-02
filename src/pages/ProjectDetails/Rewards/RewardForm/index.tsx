@@ -16,11 +16,14 @@ import { reorderBudgets } from "./utils";
 import { BudgetCurrencyType } from "src/utils/money";
 import ErrorFallback from "src/ErrorFallback";
 import { useApolloClient } from "@apollo/client";
+import { useQueryClient } from "@tanstack/react-query";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
   const client = useApolloClient();
 
   const { projectId, projectKey } = useOutletContext<{
@@ -47,8 +50,8 @@ const RewardForm: React.FC = () => {
       try {
         await refetch();
         showToaster(T("reward.form.sent"));
-
         // refetch PaymentRequests to display MyRewards
+        queryClient.invalidateQueries({ queryKey: ["GetUser"] });
         await client.refetchQueries({ include: ["GetPaymentRequestIds"] });
         navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
       } catch (e) {

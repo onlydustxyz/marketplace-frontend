@@ -34,7 +34,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     resourcePath: ApiResourcePaths.GET_PAYOUT_INFO,
     onSuccess: () => {
       showToaster(T("profile.form.success"));
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({ queryKey: ["GetUser"] });
       setOpen(false);
     },
   });
