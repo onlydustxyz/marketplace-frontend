@@ -21,7 +21,7 @@ describe("validateImpersonationHeader", () => {
       "x-hasura-user-id": "41b46107-9e4c-4e31-8acf-8371e4ca123a",
       "x-hasura-projectsLeaded": "{}",
       "x-hasura-githubUserId": "2360414",
-      "x-hasura-githubAccessToken": "gho_YLv0ECGHUkeSQVtsLRLqv3786xY4YM4RqsdK",
+      "x-hasura-githubAccessToken": "gho_123456",
     });
 
     expect(validateImpersonationHeader(validHeader)).toEqual(true);
