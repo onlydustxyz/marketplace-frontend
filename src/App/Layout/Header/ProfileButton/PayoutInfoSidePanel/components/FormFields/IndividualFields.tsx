@@ -4,10 +4,10 @@ import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
 
 type IndividualFieldsProps = {
-  isAlert: boolean;
+  isRequired: boolean;
 };
 
-export function IndividualFields({ isAlert }: IndividualFieldsProps) {
+export function IndividualFields({ isRequired }: IndividualFieldsProps) {
   const { T } = useIntl();
   const { register } = useFormContext();
 
@@ -17,13 +17,13 @@ export function IndividualFields({ isAlert }: IndividualFieldsProps) {
         label={T("profile.form.firstname")}
         placeholder={T("profile.form.firstname")}
         {...register("firstname")}
-        showRequiredError={isAlert}
+        showRequiredError={isRequired}
       />
       <Input
         label={T("profile.form.lastname")}
         placeholder={T("profile.form.lastname")}
         {...register("lastname")}
-        showRequiredError={isAlert}
+        showRequiredError={isRequired}
       />
     </Flex>
   );
