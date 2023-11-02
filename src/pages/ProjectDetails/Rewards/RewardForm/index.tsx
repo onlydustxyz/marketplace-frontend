@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { Contributor, Inputs } from "./types";
 import { useCallback, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
@@ -73,16 +73,13 @@ const RewardForm: React.FC = () => {
 
   const { handleSubmit } = formMethods;
 
-  const onValidSubmit: SubmitHandler<Inputs> = useCallback(
-    formData => {
-      console.log("FOMDATE", formData);
-      if (contributor) {
-        createProjectReward(mapFormDataToVariables({ ...formData, contributor }));
-        setPreferredCurrency(formData.currency);
-      }
-    },
-    [contributor, projectId]
-  );
+  const onValidSubmit = (formData: Inputs) => {
+    if (contributor) {
+      createProjectReward(mapFormDataToVariables({ ...formData, contributor }));
+      setPreferredCurrency(formData.currency);
+      console.log("formData.amountToWire", formData?.amountToWire);
+    }
+  };
 
   const onWorkItemsChange = useCallback(
     (workItems: WorkItemFragment[]) =>

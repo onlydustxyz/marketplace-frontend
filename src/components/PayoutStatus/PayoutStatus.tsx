@@ -86,9 +86,7 @@ const PayoutInfoMissingTag: React.FC<PayoutInfoMissingTagProps> = ({ isProjectLe
     <Tag
       size={TagSize.Medium}
       borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
-      {...withTooltip(T("reward.status.tooltip.payoutInfoMissing"),
-        { className: "w-52" }
-      )}
+      {...withTooltip(T("reward.status.tooltip.payoutInfoMissing"), { className: "w-52" })}
     >
       {isProjectLeaderView ? (
         <QuestionMarkLine className="text-orange-500" />

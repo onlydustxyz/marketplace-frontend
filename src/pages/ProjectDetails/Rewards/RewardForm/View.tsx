@@ -218,6 +218,7 @@ const View: React.FC<Props> = ({
                   onChange={({ amount, currency }: RewardBudgetChangeProps) => {
                     setValue("amountToWire", amount);
                     setValue("currency", currency);
+                    console.log("amountToWire", amount);
                   }}
                   loading={isCreateProjectRewardLoading}
                 />

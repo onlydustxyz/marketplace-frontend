@@ -493,7 +493,7 @@
       "tooltip": {
         "complete": "Payment successful",
         "invoicePending": "An invoice is required to process your payment. Please wait up to 5 days if you already sent it.",
-        "signupPending": "You need to sign up on OnlyDust to get paid", 
+        "signupPending": "You need to sign up on OnlyDust to get paid",
         "payoutInfoMissing": "Fill in your payment information to get paid",
         "payoutInfoMissingAsContributor": "Contributor must fill his payment information to get paid",
         "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
