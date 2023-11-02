@@ -120,7 +120,7 @@ export default function View({
           <div className="font-belwe text-base font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.contributions")}
           </div>
-          <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+          <div className="flex h-0 flex-auto flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
             {rewardItems.map(item => {
               switch (item.type) {
                 case GithubContributionType.PullRequest: {
@@ -173,12 +173,12 @@ export default function View({
 
     if (data) {
       return (
-        <div className="flex h-full flex-col gap-8 px-6">
+        <div className="flex h-full flex-col gap-8 overflow-hidden px-6">
           <div className="flex flex-wrap items-center gap-3 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.title", { id: pretty(data.id) })}
             {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
           </div>
-          <div className="flex flex-col gap-8 divide-y divide-greyscale-50/12">
+          <div className="flex h-full flex-col gap-8 divide-y divide-greyscale-50/12">
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-2">
                 <PayoutStatus status={data.status} isProjectLeaderView={projectLeaderView} />
