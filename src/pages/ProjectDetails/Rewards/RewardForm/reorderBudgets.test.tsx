@@ -86,7 +86,7 @@ const projectBudgetMock: ProjectBudgetType = {
 };
 
 describe("reorderBudgets", () => {
-  it("should filter out empty budgets", () => {
+  it("should push correctly empty budgets to the end", () => {
     expect(reorderBudgets(projectBudgetWithEmptyBudgetsMock).budgets).toEqual([
       {
         currency: "USD",
@@ -102,11 +102,31 @@ describe("reorderBudgets", () => {
         remainingDollarsEquivalent: 5000,
         initialDollarsEquivalent: 5000,
       },
+      {
+        currency: "ETH",
+        initialAmount: 5000,
+        remaining: 0,
+        remainingDollarsEquivalent: 5000,
+        initialDollarsEquivalent: 5000,
+      },
+      {
+        currency: "STARK",
+        initialAmount: 1000,
+        remaining: 0,
+        remainingDollarsEquivalent: 2000,
+        initialDollarsEquivalent: 2000,
+      },
+      {
+        currency: "OP",
+        initialAmount: 5000,
+        remaining: 0,
+        remainingDollarsEquivalent: 5000,
+        initialDollarsEquivalent: 5000,
+      },
     ]);
   });
 
   it("should re-order correctly", () => {
-    console.log(reorderBudgets(projectBudgetMock).budgets);
     expect(reorderBudgets(projectBudgetMock).budgets).toEqual([
       {
         currency: "USD",
