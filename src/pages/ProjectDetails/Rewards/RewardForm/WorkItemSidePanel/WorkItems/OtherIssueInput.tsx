@@ -116,8 +116,8 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId }: Pr
       </div>
 
       <Input
-        showValidationErrors={false}
         name={inputName}
+        showValidationErrors={false}
         placeholder={T(`reward.form.contributions.${tKey}.addOther.placeholder`)}
         withMargin={false}
         options={{

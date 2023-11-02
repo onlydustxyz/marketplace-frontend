@@ -18,11 +18,12 @@ const RewardList: React.FC = () => {
   const { T } = useIntl();
   const navigate = useNavigate();
 
-  const { projectId, projectKey, projectBudget, isBudgetLoading } = useOutletContext<{
+  const { projectId, projectKey, projectBudget, isBudgetLoading, refetchBudgets } = useOutletContext<{
     projectId: string;
     projectKey: string;
     projectBudget: ProjectBudgetType;
     isBudgetLoading: boolean;
+    refetchBudgets: () => void;
   }>();
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({ field: Fields.Date, isAscending: false });
@@ -89,7 +90,15 @@ const RewardList: React.FC = () => {
             <Card>
               <RewardTable
                 rewards={rewards}
-                options={{ fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch }}
+                options={{
+                  fetchNextPage,
+                  hasNextPage,
+                  sorting,
+                  sortField,
+                  isFetchingNextPage,
+                  refetch,
+                  refetchBudgets,
+                }}
                 projectId={projectId}
               />
             </Card>

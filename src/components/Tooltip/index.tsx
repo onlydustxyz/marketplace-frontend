@@ -42,7 +42,7 @@ const variants = {
 
 export default function Tooltip({
   id = GLOBAL_TOOLTIP_ID,
-  position = TooltipPosition.Bottom,
+  position = TooltipPosition.Top,
   anchorId,
   anchorSelect,
   children,
@@ -82,7 +82,7 @@ export default function Tooltip({
 type WithTooltipOptions = { className?: string } & CommonProps;
 
 export function withTooltip(content: string, options?: WithTooltipOptions) {
-  const { visible = true, position = TooltipPosition.Bottom, className } = options || {};
+  const { visible = true, position = TooltipPosition.Top, className } = options || {};
 
   return {
     "data-tooltip-id": GLOBAL_TOOLTIP_ID,

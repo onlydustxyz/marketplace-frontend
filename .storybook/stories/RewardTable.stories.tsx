@@ -103,6 +103,7 @@ export const Default = {
           sortField: () => {},
           isFetchingNextPage: false,
           refetch: (() => {}) as ComponentProps<typeof RewardTable>["options"]["refetch"],
+          refetchBudgets: (() => {}) as ComponentProps<typeof RewardTable>["options"]["refetchBudgets"],
         }}
       />
     </ToasterProvider>

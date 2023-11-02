@@ -8,6 +8,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Tooltip from "src/components/Tooltip";
 import { TooltipPosition } from "src/components/Tooltip";
 import { cn } from "src/utils/cn";
+import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 
 // TODO : doc
 /**
@@ -103,6 +104,8 @@ export const AvailableConversion: FC<AvailableConversion> = ({
   currency,
   totalAmount,
 }) => {
+  const orderedCurrencies = useCurrenciesOrder({ currencies: currencies });
+
   const tooltipIdProps = useMemo(() => {
     const props: { "data-tooltip-id"?: string; "data-tooltip-hidden"?: boolean } = {};
 
@@ -111,26 +114,26 @@ export const AvailableConversion: FC<AvailableConversion> = ({
     }
 
     /** if we have only one currency and the she is USD don't show the tooltips */
-    if (!currencies && currency) {
+    if (!orderedCurrencies && currency) {
       props["data-tooltip-hidden"] = currency.currency === Currency.USD || !currency.dollar;
     }
 
     return props;
-  }, [currency, currencies]);
+  }, [currency, orderedCurrencies]);
 
   const currencyArray = useMemo(() => {
-    if (currencies) return currencies;
+    if (currencies) return orderedCurrencies;
 
     if (currency) {
       return [currency];
     }
 
     return [];
-  }, [currencies]);
+  }, [orderedCurrencies, currencies]);
 
   return (
     <>
-      <div {...(currencies ? tooltipIdProps : {})} className="flex flex-row items-center justify-start gap-1">
+      <div {...(orderedCurrencies ? tooltipIdProps : {})} className="flex flex-row items-center justify-start gap-1">
         <Chips number={numberCurencyToShow}>
           {currencyArray?.map(currency => (
             <div key={currency.currency}>
@@ -145,7 +148,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
           <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
         </div>
       </div>
-      <ConversionTooltip tooltipId={tooltipId} currencies={currencies} />
+      <ConversionTooltip tooltipId={tooltipId} currencies={orderedCurrencies} />
     </>
   );
 };

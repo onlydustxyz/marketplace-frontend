@@ -75,6 +75,6 @@ export default {
 
 export const Default = {
   render: () => (
-    <OtherWorkForm projectId={PROJECT_ID} contributorHandle="ofux" addWorkItem={Function.prototype()} />
+    <OtherWorkForm projectId={PROJECT_ID} contributorHandle="ofux" addWorkItem={Function.prototype()} setOpen={Function.prototype()}/>
   ),
 };

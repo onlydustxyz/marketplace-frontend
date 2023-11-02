@@ -18,6 +18,7 @@ type Options = {
     isAscending: boolean | undefined;
   };
   sortField: (field: string) => void;
+  refetchBudgets: () => void;
 } & Pick<ReturnType<typeof useInfiniteRewardsList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage" | "refetch">;
 
 type RewardTableProps = {
@@ -35,7 +36,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
   const { ledProjectIds } = useAuth();
   const isProjectLeader = ledProjectIds.includes(projectId);
 
-  const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch } = options;
+  const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch, refetchBudgets } = options;
 
   const onRewardClick = (reward: RewardPageItemType) => {
     setSelectedReward(reward);
@@ -48,6 +49,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
       client.refetchQueries({ include: ["GetPaymentRequestIds"] });
       setSidePanelOpen(false);
       refetch();
+      refetchBudgets();
     } catch (e) {
       console.error(e);
     }

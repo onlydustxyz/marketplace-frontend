@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ElementType, PropsWithChildren } from "react";
+import { ComponentPropsWithoutRef, ElementType, ForwardedRef, PropsWithChildren, forwardRef } from "react";
 import { cn } from "src/utils/cn";
 
 export enum Size {
@@ -13,18 +13,22 @@ export enum Variant {
   Active = "active",
 }
 
-export function FormOption<T extends ElementType = "div">({
-  as,
-  children,
-  className,
-  size,
-  variant = Variant.Default,
-  ...restProps
-}: PropsWithChildren<{ as?: T; className?: string; size: Size; variant?: Variant } & ComponentPropsWithoutRef<T>>) {
+export const FormOption = forwardRef(function FormOption<T extends ElementType = "div">(
+  {
+    as,
+    children,
+    className,
+    size,
+    variant = Variant.Default,
+    ...restProps
+  }: PropsWithChildren<{ as?: T; className?: string; size: Size; variant?: Variant } & ComponentPropsWithoutRef<T>>,
+  ref: ForwardedRef<HTMLDivElement>
+) {
   const Component = as ?? "div";
 
   return (
     <Component
+      ref={ref}
       className={cn(
         // Base styles
         "flex cursor-pointer select-none items-center gap-1 whitespace-nowrap border font-walsheim font-normal leading-none text-snow",
@@ -54,4 +58,4 @@ export function FormOption<T extends ElementType = "div">({
       {children}
     </Component>
   );
-}
+});

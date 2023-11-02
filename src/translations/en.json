@@ -211,11 +211,11 @@
       "USD": "Dollars"
     },
     "amount_placeholder": {
-        "APT": "75 APT",
-        "ETH": "0.3 ETH",
-        "OP": "350 OPT",
-        "STARK": "100 Stark",
-        "USD": "500$"
+      "APT": "75 APT",
+      "ETH": "0.3 ETH",
+      "OP": "350 OPT",
+      "STARK": "100 Stark",
+      "USD": "500$"
     },
     "network": {
       "APT": "Aptos",
@@ -494,7 +494,7 @@
         "complete": "Payment successful",
         "invoicePending": "An invoice is required to process your payment. Please wait up to 5 days if you already sent it.",
         "signupPending": "You need to sign up on OnlyDust to get paid",
-        "payoutInfoMissingAsLeader": "Fill in your payment information to get paid",
+        "payoutInfoMissing": "Fill in your payment information to get paid",
         "payoutInfoMissingAsContributor": "Contributor must fill his payment information to get paid",
         "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
         "processing": "Payment is being processed by our team, usually within 2 weeks"
