@@ -36,7 +36,7 @@ export function useRestfulData<R = unknown>({
   const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
 
   return useQuery<R>({
-    queryKey: [resourcePath, pathParam, queryParams, options, isLoggedIn],
+    queryKey: [resourcePath, pathParam, queryParams, isImpersonating, isValidImpersonation, isLoggedIn],
     queryFn: () =>
       fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)
         .then(res => {
@@ -132,7 +132,7 @@ export function useInfiniteRestfulData<R extends ResponseData>(
   const { options, isImpersonating, isValidImpersonation } = useHttpOptions("GET");
 
   return useInfiniteQuery<R>({
-    queryKey,
+    queryKey: [isImpersonating, isValidImpersonation, ...queryKey],
     queryFn: ({ pageParam }) =>
       fetch(
         getEndpointUrl({
