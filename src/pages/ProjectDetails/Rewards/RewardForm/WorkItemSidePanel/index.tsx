@@ -83,7 +83,6 @@ export default function WorkItemSidePanel({
             projectId={projectId}
             contributorHandle={contributorHandle}
             addWorkItem={addWorkItem}
-            setOpen={props.setOpen}
           />
         ) : (
           <WorkItems

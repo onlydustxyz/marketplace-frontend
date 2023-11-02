@@ -32,10 +32,9 @@ type Props = {
   projectId: string;
   contributorHandle: string;
   addWorkItem: (workItem: WorkItemFragment) => void;
-  setOpen: (value: boolean) => void;
 };
 
-export default function OtherWorkForm({ projectId, contributorHandle, addWorkItem, setOpen }: Props) {
+export default function OtherWorkForm({ projectId, contributorHandle, addWorkItem }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -101,7 +100,6 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     handleSubmit(() => createIssue())(e);
-    setOpen(false);
     e.stopPropagation();
   };
 
