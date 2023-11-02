@@ -32,10 +32,9 @@ type Props = {
   projectId: string;
   contributorHandle: string;
   addWorkItem: (workItem: WorkItemFragment) => void;
-  setOpen: (value: boolean) => void;
 };
 
-export default function OtherWorkForm({ projectId, contributorHandle, addWorkItem, setOpen }: Props) {
+export default function OtherWorkForm({ projectId, contributorHandle, addWorkItem }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -94,7 +93,6 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     onCompleted: data => {
       clearForm();
       addWorkItem(issueToWorkItem(liveIssueToCached(data.createAndCloseIssue)));
-      setOpen(false);
       showToaster(T("reward.form.contributions.other.success"));
     },
   });
