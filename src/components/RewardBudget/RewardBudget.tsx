@@ -84,7 +84,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
               fieldClassName="flex-1 max-w-[96px] min-w-[96px]"
               className="h-full flex-1 rounded-2xl"
               onChange={onChangeAmount}
-              inputClassName="text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              inputClassName="font-medium text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
           </div>
           <FieldInfoMessage
