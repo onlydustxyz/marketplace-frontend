@@ -1,5 +1,5 @@
 /* Letters and space only */
-export const ALPHABETICAL_VALIDATOR = /^[a-zA-Z ]*$/;
+export const ALPHABETICAL_VALIDATOR = /^[A-zÀ-ú ]*$/;
 
 /* International zipcodes light validator for 10 characters long composed of letters and numbers with space or dash in between */
 export const ZIPCODE_VALIDATOR = /^[a-zA-Z0-9][a-zA-Z0-9\- ]{0,10}[a-zA-Z0-9]$/;

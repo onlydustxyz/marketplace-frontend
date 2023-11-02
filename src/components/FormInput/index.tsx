@@ -34,7 +34,7 @@ type PropsType = {
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
   showValidationErrors?: boolean;
-  requiredForPayment?: boolean;
+  showRequiredError?: boolean;
   withMargin?: boolean;
   as?: React.ElementType;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>;
@@ -60,7 +60,7 @@ const Input = forwardRef(function Input(
     suffixComponent,
     inputClassName,
     showValidationErrors = true,
-    requiredForPayment = false,
+    showRequiredError = false,
     withMargin = true,
     children,
     as,
@@ -70,8 +70,9 @@ const Input = forwardRef(function Input(
   }: PropsType,
   ref: ForwardedRef<ReactNode>
 ) {
-  const { register } = useFormContext();
+  const { register, watch } = useFormContext();
   const { errors } = useFormState({ name });
+  const fieldValue = watch(name);
   const overridenRegister = defaults(
     {
       ref,
@@ -91,7 +92,7 @@ const Input = forwardRef(function Input(
         loading,
         placeholder,
         type,
-        value,
+        value: fieldValue || value,
         register: overridenRegister,
         onFocus,
         onKeyDown,
@@ -99,7 +100,7 @@ const Input = forwardRef(function Input(
         suffixComponent,
         inputClassName,
         showValidationErrors,
-        requiredForPayment,
+        showRequiredError,
         withMargin,
         children,
         as,

@@ -8,21 +8,18 @@ import StarknetIcon from "src/assets/icons/Starknet";
 import { APTOS_WALLET, ETH_WALLET_OR_ENS_ADDRESS, OPTIMISM_WALLET, STARKNET_WALLET } from "src/utils/regex";
 import Aptos from "src/assets/icons/Aptos";
 import EthereumIcon from "src/assets/icons/Ethereum";
-import { withTooltip } from "src/components/Tooltip";
+import { RequiredFieldsType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/usePayoutInfoValidation";
 
-export function OtherCryptoFields({ isEtherDisabled }: { isEtherDisabled: boolean }) {
+export function OtherCryptoFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
+  const { missingAptosWallet, missingEthWallet, missingOptimismWallet, missingStarknetWallet } = requiredFields || {};
+
   const { T } = useIntl();
   const { register } = useFormContext();
 
   return (
     <>
-      <div
-        {...withTooltip(T("profile.form.disabledEther"), {
-          visible: isEtherDisabled,
-        })}
-      >
+      <div>
         <Input
-          disabled={isEtherDisabled}
           label={
             <Flex className="items-center gap-1">
               <Chip>
@@ -38,6 +35,7 @@ export function OtherCryptoFields({ isEtherDisabled }: { isEtherDisabled: boolea
               message: T("profile.form.invalidEthWallet"),
             },
           })}
+          showRequiredError={missingEthWallet}
         />
       </div>
       <Input
@@ -56,6 +54,7 @@ export function OtherCryptoFields({ isEtherDisabled }: { isEtherDisabled: boolea
             message: T("profile.form.invalidStarknetWallet"),
           },
         })}
+        showRequiredError={missingStarknetWallet}
       />
       <Input
         label={
@@ -73,6 +72,7 @@ export function OtherCryptoFields({ isEtherDisabled }: { isEtherDisabled: boolea
             message: T("profile.form.invalidOptimismWallet"),
           },
         })}
+        showRequiredError={missingOptimismWallet}
       />
       <Input
         label={
@@ -90,6 +90,7 @@ export function OtherCryptoFields({ isEtherDisabled }: { isEtherDisabled: boolea
             message: T("profile.form.invalidAptosWallet"),
           },
         })}
+        showRequiredError={missingAptosWallet}
       />
     </>
   );

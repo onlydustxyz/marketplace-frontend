@@ -1,9 +1,12 @@
 import { useFormContext } from "react-hook-form";
 import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
-import { ALPHABETICAL_VALIDATOR, ZIPCODE_VALIDATOR } from "src/utils/regex";
 
-export function LocationFields() {
+type LocationFieldsProps = {
+  isAlert: boolean;
+};
+
+export function LocationFields({ isAlert }: LocationFieldsProps) {
   const { T } = useIntl();
   const { register } = useFormContext();
 
@@ -12,38 +15,30 @@ export function LocationFields() {
       <Input
         label={T("profile.form.address")}
         placeholder={T("profile.form.address")}
-        requiredForPayment={true}
-        {...register("address", {
-          required: { value: true, message: T("profile.form.payoutFieldRequired") },
-        })}
+        {...register("address")}
+        showRequiredError={isAlert}
       />
       <div className="flex flex-row gap-5">
         <Input
           withMargin={false}
           label={T("profile.form.postCode")}
           placeholder={T("profile.form.postCode")}
-          {...register("postCode", {
-            required: { value: true, message: T("profile.form.payoutFieldRequired") },
-            pattern: { value: ZIPCODE_VALIDATOR, message: T("profile.form.invalidZipcode") },
-          })}
+          {...register("postCode")}
+          showRequiredError={isAlert}
         />
         <Input
           withMargin={false}
           label={T("profile.form.city")}
           placeholder={T("profile.form.city")}
-          {...register("city", {
-            required: true,
-            pattern: { value: ALPHABETICAL_VALIDATOR, message: T("profile.form.alphabeticallyInvalid") },
-          })}
+          {...register("city")}
+          showRequiredError={isAlert}
         />
         <Input
           withMargin={false}
           label={T("profile.form.country")}
           placeholder={T("profile.form.country")}
-          {...register("country", {
-            required: true,
-            pattern: { value: ALPHABETICAL_VALIDATOR, message: T("profile.form.alphabeticallyInvalid") },
-          })}
+          {...register("country")}
+          showRequiredError={isAlert}
         />
       </div>
     </>

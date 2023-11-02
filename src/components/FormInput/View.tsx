@@ -10,6 +10,7 @@ import { withTooltip } from "src/components/Tooltip";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 import { InputErrorDisplay } from "./types";
+import CrossIconLine from "src/assets/icons/CrossIconLine";
 
 type PropsType = {
   label?: ReactNode;
@@ -29,7 +30,7 @@ type PropsType = {
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
   showValidationErrors: boolean;
-  requiredForPayment: boolean;
+  showRequiredError: boolean;
   withMargin: boolean;
   negativeZIndex?: boolean;
   as?: React.ElementType;
@@ -57,6 +58,7 @@ const View: React.FC<PropsType> = ({
   suffixComponent,
   inputClassName,
   showValidationErrors,
+  showRequiredError,
   withMargin,
   children,
   negativeZIndex = false,
@@ -76,7 +78,12 @@ const View: React.FC<PropsType> = ({
         "mb-6": withMargin,
       })}
     >
-      {label && <div className="flex justify-between text-sm font-medium tracking-tight">{label}</div>}
+      {label && (
+        <div className="flex justify-between text-sm font-medium tracking-tight">
+          {label}
+          {showRequiredError && !value && <ErrorWarningLine className="text-body-m text-orange-500" />}
+        </div>
+      )}
       <div
         className={cn("flex flex-col", {
           "gap-8": errorDisplay === InputErrorDisplay.Banner,
@@ -90,12 +97,14 @@ const View: React.FC<PropsType> = ({
             type,
             className: cn(
               "w-full bg-white/5 rounded-xl font-walsheim font-normal",
-              { "text-greyscale-50": !disabled, "text-greyscale-600": disabled },
+              {
+                "text-greyscale-50 placeholder:text-spaceBlue-200": !disabled,
+                "cursor-not-allowed placeholder:text-greyscale-600 text-greyscale-600": disabled,
+              },
               "border border-greyscale-50/[0.08]",
-              "placeholder:text-spaceBlue-200",
               "focus:placeholder:text-spacePurple-200/60 focus:border-spacePurple-500 focus:bg-spacePurple-900",
               {
-                "outline outline-1 outline-orange-500": showError,
+                "outline outline-1 outline-github-red-light": showError,
                 "h-11": as === "input" && size === Size.Md,
                 "h-8": as === "input" && size === Size.Sm,
                 "px-4 py-3 text-base": size === Size.Md,
@@ -116,8 +125,11 @@ const View: React.FC<PropsType> = ({
           })}
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
           {showError ? (
-            <div className="absolute right-0 mr-3 flex text-xl text-orange-400" {...withTooltip(error.message ?? "")}>
-              <ErrorWarningLine />
+            <div
+              className="absolute right-0 mr-3 flex text-xl text-github-red-light"
+              {...withTooltip(error.message ?? "")}
+            >
+              <CrossIconLine className="h-4 w-4" />
             </div>
           ) : loading ? (
             <LoaderIcon className="absolute right-0 mr-3 flex animate-spin place-items-center" />
@@ -137,6 +149,7 @@ const View: React.FC<PropsType> = ({
               <div className="flex flex-row justify-between px-6 py-5">
                 <div className="flex flex-row items-center justify-start gap-4 font-medium text-white">
                   <div className="flex flex-col ">
+                    <ErrorWarningLine className="rounded-2xl bg-white/10 px-3 py-2.5 text-3xl" />
                     <div className="text-lg">{error.message.toString()}</div>
                   </div>
                 </div>

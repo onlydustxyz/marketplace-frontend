@@ -13,7 +13,7 @@ export default {
     },
     error: { type: "boolean" },
     loading: { type: "boolean" },
-    requiredForPayment: { type: "boolean" },
+    showRequiredError: { type: "boolean" },
   },
 };
 
@@ -21,7 +21,7 @@ type Props = {
   loading: boolean;
   error: boolean;
   errorType: InputErrorDisplay;
-  requiredForPayment: boolean;
+  showRequiredError: boolean;
 };
 
 const props = {
@@ -49,7 +49,7 @@ export const Default = {
       error={args.error ? { message: "Invalid value" } : undefined}
       errorDisplay={args.errorType}
       showValidationErrors={true}
-      requiredForPayment={args.requiredForPayment}
+      showRequiredError={args.showRequiredError}
       withMargin={true}
       size={Size.Md}
     />
