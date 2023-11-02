@@ -14,7 +14,7 @@ export default function withImpersonationClaimsProvider(Story: StoryFn) {
     clearImpersonationSet: () => {
       return;
     },
-    getImpersonationHeaders: () => [],
+    getImpersonationHeaders: () => ({}),
   };
 
   return (
