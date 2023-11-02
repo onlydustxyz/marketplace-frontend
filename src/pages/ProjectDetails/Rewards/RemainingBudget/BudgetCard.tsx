@@ -13,6 +13,7 @@ import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { LeftToSpend } from "./LeftToSpend";
 import { ReactElement } from "react";
 import { useIntl } from "src/hooks/useIntl";
+import RewardBudgetBar from "src/components/RewardBudget/BudgetBar/RewardBudgetBar";
 
 const budgetName: Record<Currency, string> = {
   [Currency.USD]: "project.details.remainingBudget.budget.dollars",
@@ -69,7 +70,7 @@ export function BudgetCard({ budget, className }: Props) {
           ) : null}
         </div>
         <div className="flex items-center gap-2">
-          <BudgetBar budget={budget} pendingSpending={0} />
+          <RewardBudgetBar total={budget.initialAmount} remaining={budget.remaining} spending={0} />
           <LeftToSpend budget={budget} />
         </div>
       </div>

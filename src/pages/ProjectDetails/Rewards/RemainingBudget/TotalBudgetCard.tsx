@@ -7,6 +7,7 @@ import { cn } from "src/utils/cn";
 import { formatMoneyAmount } from "src/utils/money";
 import { LeftToSpend } from "./LeftToSpend";
 import { useIntl } from "src/hooks/useIntl";
+import RewardBudgetBar from "src/components/RewardBudget/BudgetBar/RewardBudgetBar";
 
 interface Props {
   budget: { initialAmount: number; remaining: number };
@@ -30,7 +31,7 @@ export function TotalBudgetCard({ budget, className }: Props) {
           {formatMoneyAmount({ amount: budget.initialAmount, currency: Currency.USD })}
         </div>
         <div className="flex items-center gap-2">
-          <BudgetBar budget={budget} pendingSpending={0} />
+          <RewardBudgetBar total={budget.initialAmount} remaining={budget.remaining} spending={0} />
           <LeftToSpend budget={budget} />
         </div>
       </div>
