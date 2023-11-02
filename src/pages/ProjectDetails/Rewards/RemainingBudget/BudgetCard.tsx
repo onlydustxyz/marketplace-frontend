@@ -6,7 +6,6 @@ import Starknet from "src/assets/icons/Starknet";
 import Card from "src/components/Card";
 import { Chip } from "src/components/Chip/Chip";
 import { withTooltip } from "src/components/Tooltip";
-import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimation/BudgetBar";
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
 import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";

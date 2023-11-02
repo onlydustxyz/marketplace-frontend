@@ -8,12 +8,11 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
-import { formatMoneyAmount } from "src/utils/money";
 import { MyRewardType } from "./Line";
 import { ReactNode } from "react";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { components } from "src/__generated/api";
-import { AvailableConversion } from "../Currency/AvailableConversion";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 
 export default function MobileUserRewardList({
   rewards,

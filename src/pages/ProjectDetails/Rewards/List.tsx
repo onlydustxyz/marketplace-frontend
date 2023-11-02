@@ -90,7 +90,15 @@ const RewardList: React.FC = () => {
             <Card>
               <RewardTable
                 rewards={rewards}
-                options={{ fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch, refetchBudgets }}
+                options={{
+                  fetchNextPage,
+                  hasNextPage,
+                  sorting,
+                  sortField,
+                  isFetchingNextPage,
+                  refetch,
+                  refetchBudgets,
+                }}
                 projectId={projectId}
               />
             </Card>

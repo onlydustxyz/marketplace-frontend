@@ -101,7 +101,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     handleSubmit(() => createIssue())(e);
-    setOpen(false)
+    setOpen(false);
     e.stopPropagation();
   };
 

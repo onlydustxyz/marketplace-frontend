@@ -1,7 +1,6 @@
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Card from "src/components/Card";
 import { withTooltip } from "src/components/Tooltip";
-import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimation/BudgetBar";
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
 import { formatMoneyAmount } from "src/utils/money";

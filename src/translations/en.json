@@ -211,11 +211,11 @@
       "USD": "Dollars"
     },
     "amount_placeholder": {
-        "APT": "75 APT",
-        "ETH": "0.3 ETH",
-        "OP": "350 OPT",
-        "STARK": "100 Stark",
-        "USD": "500$"
+      "APT": "75 APT",
+      "ETH": "0.3 ETH",
+      "OP": "350 OPT",
+      "STARK": "100 Stark",
+      "USD": "500$"
     },
     "network": {
       "APT": "Aptos",

@@ -6,7 +6,6 @@ import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
 import { PaymentStatus } from "src/types";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
-import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 
 export default function MobileRewardList({
   rewards,
