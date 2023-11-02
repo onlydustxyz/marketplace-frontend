@@ -22,7 +22,7 @@ export default function useInfiniteContributorList({
   projectId,
   queryParams,
 }: UseInfiniteContributorsProps): UseInfiniteQueryResult<ContributorsPagesData, unknown> {
-  const options = useHttpOptions("GET");
+  const { options } = useHttpOptions("GET");
 
   return useInfiniteQuery({
     queryKey: ["contributors", projectId, queryParams],

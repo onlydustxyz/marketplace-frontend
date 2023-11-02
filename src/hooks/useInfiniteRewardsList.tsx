@@ -20,7 +20,7 @@ export default function useInfiniteRewardsList({
   projectId,
   queryParams,
 }: useInfiniteRewardsListProps): UseInfiniteQueryResult<RewardsPagesData, unknown> {
-  const options = useHttpOptions("GET");
+  const { options } = useHttpOptions("GET");
 
   return useInfiniteQuery({
     queryKey: ["contributors", queryParams],

@@ -23,7 +23,7 @@ type PagesData = {
 export default function useInfiniteMyRewardList({
   queryParams,
 }: useInfiniteMyRewardListProps): UseInfiniteQueryResult<PagesData, unknown> {
-  const options = useHttpOptions("GET");
+  const { options } = useHttpOptions("GET");
 
   return useInfiniteQuery({
     queryKey: ["myRewards", queryParams],

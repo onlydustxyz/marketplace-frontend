@@ -31,7 +31,7 @@ export default function useInfiniteRewardItems({
   enabled,
   isMine,
 }: ProjectProps | MyProps): UseInfiniteQueryResult<RewardsPagesData, unknown> {
-  const options = useHttpOptions("GET");
+  const { options } = useHttpOptions("GET");
 
   const queryKey = isMine
     ? ["my-reward-items", rewardId, queryParams]
