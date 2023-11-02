@@ -1,3 +1,5 @@
+import { JSXElementConstructor } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { Size } from "src/components/FormInput";
 import { InputErrorDisplay } from "src/components/FormInput/types";
 import FormInput from "src/components/FormInput/View";
@@ -13,15 +15,22 @@ export default {
     },
     error: { type: "boolean" },
     loading: { type: "boolean" },
-    requiredForPayment: { type: "boolean" },
+    showRequiredError: { type: "boolean" },
   },
+  decorators: [
+    (Story: JSXElementConstructor<any>) => (
+      <FormProvider {...useForm()}>
+        <Story />
+      </FormProvider>
+    ),
+  ],
 };
 
 type Props = {
   loading: boolean;
   error: boolean;
   errorType: InputErrorDisplay;
-  requiredForPayment: boolean;
+  showRequiredError: boolean;
 };
 
 const props = {
@@ -49,7 +58,7 @@ export const Default = {
       error={args.error ? { message: "Invalid value" } : undefined}
       errorDisplay={args.errorType}
       showValidationErrors={true}
-      requiredForPayment={args.requiredForPayment}
+      showRequiredError={args.showRequiredError}
       withMargin={true}
       size={Size.Md}
     />

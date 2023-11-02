@@ -12,16 +12,16 @@ type PropsType = {
   label?: string;
   options: Option[];
   register?: UseFormRegisterReturn;
-  requiredForPayment: boolean;
+  showRequiredError: boolean;
 };
 
-export default function View({ label, options, register, requiredForPayment }: PropsType) {
+export default function View({ label, options, register, showRequiredError }: PropsType) {
   return (
     <label className="flex flex-col gap-2">
       {label ? (
         <div className="text-sm font-medium tracking-tight text-greyscale-300">
           {label}
-          {requiredForPayment && <span className="pl-0.5 text-orange-500">{"*"}</span>}
+          {showRequiredError && <span className="pl-0.5 text-orange-500">{"*"}</span>}
         </div>
       ) : null}
       <div className="flex flex-row items-center gap-2">

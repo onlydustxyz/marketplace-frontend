@@ -5,12 +5,12 @@ export default {
   title: "ProfileRadioGroup",
   component: ProfileRadioGroup,
   argTypes: {
-    requiredForPayment: { type: "boolean" },
+    showRequiredError: { type: "boolean" },
   },
 };
 
 type Args = {
-  requiredForPayment: boolean;
+  showRequiredError: boolean;
 };
 
 const props = {
@@ -19,7 +19,7 @@ const props = {
     { value: "ETH", label: "Eth wire" },
     { value: "BANK", label: "Crypto wire", icon: <BankLine className="text-xl" /> },
   ],
-  requiredForPayment: false,
+  showRequiredError: false,
 };
 
 export const Default = {

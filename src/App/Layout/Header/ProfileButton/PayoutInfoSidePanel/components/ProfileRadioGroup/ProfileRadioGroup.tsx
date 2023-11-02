@@ -12,10 +12,10 @@ type Props = {
   name: string;
   label?: string;
   options: Option[];
-  requiredForPayment?: boolean;
+  showRequiredError?: boolean;
 };
 
-export default function ProfileRadioGroup({ name, label, options, requiredForPayment = false }: Props) {
+export default function ProfileRadioGroup({ name, label, options, showRequiredError = false }: Props) {
   const { register } = useFormContext();
-  return <View {...{ options, label, register: register(name), requiredForPayment }} />;
+  return <View {...{ options, label, register: register(name), showRequiredError }} />;
 }

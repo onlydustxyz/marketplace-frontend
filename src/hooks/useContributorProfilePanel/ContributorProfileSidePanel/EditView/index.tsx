@@ -30,6 +30,7 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "src/utils/cn";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment; // we don't want to revamp the edit mode for now
@@ -40,6 +41,9 @@ type Props = {
 export default function EditView({ profile, setEditMode, restFulProfile }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
 
   const formMethods = useForm<UserProfileInfo>({
     defaultValues: fromFragment(profile),
@@ -62,6 +66,7 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
     awaitRefetchQueries: true,
     onCompleted: () => {
       setEditMode(false);
+      queryClient.invalidateQueries({ queryKey: ["resftullProfile", profile.githubUserId] });
     },
   });
 

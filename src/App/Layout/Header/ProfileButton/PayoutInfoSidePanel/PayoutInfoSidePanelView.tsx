@@ -1,11 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { PreferredMethod } from "src/__generated/graphql";
-import EthereumIcon from "src/assets/icons/Ethereum";
 import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
-import { Chip } from "src/components/Chip/Chip";
-import Input from "src/components/FormInput";
 import Tag, { TagSize } from "src/components/Tag";
 import Center from "src/components/Utils/Center";
 import Flex from "src/components/Utils/Flex";
@@ -17,7 +14,6 @@ import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import LockFill from "src/icons/LockFill";
 import User3Line from "src/icons/User3Line";
-import { ETH_WALLET_OR_ENS_ADDRESS } from "src/utils/regex";
 import { CompanyFields } from "./components/FormFields/CompanyFields";
 import { FiatFields } from "./components/FormFields/FiatFields";
 import { IndividualFields } from "./components/FormFields/IndividualFields";
@@ -27,27 +23,36 @@ import ProfileContent from "./components/ProfileContent";
 import ProfileRadioGroup from "./components/ProfileRadioGroup/ProfileRadioGroup";
 import { StatusTag, StatusType } from "./components/StatusTag";
 import { ProfileType } from "./types";
+import { RequiredFieldsType } from "./usePayoutInfoValidation";
+import { cn } from "src/utils/cn";
 
 type Props = {
   payoutSettingsValid?: boolean;
   saveButtonDisabled: boolean;
   unsavedChanges: boolean;
+  isContactInfoValid: boolean;
+  isPaymentInfoValid: boolean;
+  requiredFields: RequiredFieldsType;
+  isContactInfoComplete: boolean;
 };
 
-export default function PayoutInfoSidePanel({ saveButtonDisabled, unsavedChanges }: Props) {
+export default function PayoutInfoSidePanel({
+  saveButtonDisabled,
+  unsavedChanges,
+  isContactInfoValid,
+  isPaymentInfoValid,
+  isContactInfoComplete,
+  requiredFields,
+}: Props) {
   const { T } = useIntl();
   const {
     watch,
-    register,
     formState: { isValid },
   } = useFormContext();
 
-  const [profileType, usdPreferredMethod, hasValidContactInfo, hasValidPayoutSettings] = watch([
-    "profileType",
-    "usdPreferredMethod",
-    "hasValidContactInfo",
-    "hasValidPayoutSettings",
-  ]);
+  const [profileType, usdPreferredMethod] = watch(["profileType", "usdPreferredMethod"]);
+  const shouldDisplayStatus =
+    (isContactInfoValid && isContactInfoComplete) || (!isContactInfoValid && !isContactInfoComplete);
 
   return (
     <Flex className="h-full min-h-0 flex-col justify-between overflow-y-auto">
@@ -69,17 +74,19 @@ export default function PayoutInfoSidePanel({ saveButtonDisabled, unsavedChanges
           ]}
         />
         <Card padded={false} className="p-6" withBg={false}>
-          <StatusTag isValid={hasValidContactInfo} type={StatusType.Contact} />
+          {shouldDisplayStatus ? (
+            <StatusTag isValid={isContactInfoValid && isContactInfoComplete} type={StatusType.Contact} />
+          ) : null}
 
-          {profileType === ProfileType.Company ? <CompanyFields /> : null}
-          {profileType === ProfileType.Individual ? <IndividualFields /> : null}
-          <LocationFields />
+          {profileType === ProfileType.Company ? <CompanyFields isRequired={!isContactInfoValid} /> : null}
+          {profileType === ProfileType.Individual ? <IndividualFields isRequired={!isContactInfoValid} /> : null}
+          <LocationFields isRequired={!isContactInfoValid} />
         </Card>
 
         <Card padded={false} className="p-6" withBg={false}>
-          <StatusTag isValid={hasValidPayoutSettings} type={StatusType.Payment} />
+          {shouldDisplayStatus ? <StatusTag isValid={isPaymentInfoValid} type={StatusType.Payment} /> : null}
 
-          <ProfileContent title={T("profile.form.payoutSettingsType")} isCard={profileType === ProfileType.Company}>
+          <div className={cn({ "mb-6": usdPreferredMethod === PreferredMethod.Fiat })}>
             {profileType === ProfileType.Company && (
               <Flex className="mb-4 w-fit flex-row gap-3 font-medium text-neutral-300">
                 <ProfileRadioGroup
@@ -100,34 +107,13 @@ export default function PayoutInfoSidePanel({ saveButtonDisabled, unsavedChanges
               </Flex>
             )}
 
-            {usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company && <FiatFields />}
-
-            {usdPreferredMethod === PreferredMethod.Crypto && profileType === ProfileType.Company && (
-              <Input
-                withMargin={profileType === ProfileType.Individual}
-                label={
-                  <Flex className="items-center gap-1">
-                    <Chip>
-                      <EthereumIcon className="h-3" />
-                    </Chip>
-                    {T("profile.form.ethIdentity")}
-                  </Flex>
-                }
-                placeholder={T("profile.form.ethIdentityPlaceholder")}
-                {...register("ethWallet", {
-                  pattern: {
-                    value: ETH_WALLET_OR_ENS_ADDRESS,
-                    message: T("profile.form.invalidEthWallet"),
-                  },
-                })}
-              />
+            {usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company && (
+              <FiatFields {...{ requiredFields }} />
             )}
-          </ProfileContent>
+          </div>
 
-          <ProfileContent title={T("profile.form.payoutCurrenciesType")} isCard={profileType === ProfileType.Company}>
-            <OtherCryptoFields
-              isEtherDisabled={usdPreferredMethod === PreferredMethod.Crypto && profileType === ProfileType.Company}
-            />
+          <ProfileContent title={T("profile.form.payoutCurrenciesType")}>
+            <OtherCryptoFields {...{ requiredFields }} />
           </ProfileContent>
         </Card>
 
