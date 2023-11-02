@@ -1,17 +1,16 @@
-export type QueryParam = {
-  key: string;
-  value: Array<string | number | boolean>;
-};
+type QueryParamsValue = string | number | boolean;
+
+export type QueryParams = Record<string, QueryParamsValue | QueryParamsValue[]>;
 
 interface EndpointUrlParams {
   resourcePath: string;
   pathParam?: string | Record<string, string>;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
   pageParam?: number;
   pageSize?: number;
 }
 
-function buildQueryString(queryParams: QueryParam[]): string {
+function buildQueryString(queryParams: QueryParams): string {
   return queryParams
     .map(param => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value.join(","))}`)
     .join("&");
@@ -20,7 +19,7 @@ function buildQueryString(queryParams: QueryParam[]): string {
 export function getEndpointUrl({
   resourcePath,
   pathParam = "",
-  queryParams = [],
+  queryParams = {},
   pageParam,
   pageSize = 15,
 }: EndpointUrlParams): string {
