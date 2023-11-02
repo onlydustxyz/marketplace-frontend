@@ -94,6 +94,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     onCompleted: data => {
       clearForm();
       addWorkItem(issueToWorkItem(liveIssueToCached(data.createAndCloseIssue)));
+      setOpen(false);
       showToaster(T("reward.form.contributions.other.success"));
     },
   });
@@ -101,7 +102,6 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     handleSubmit(() => createIssue())(e);
-    setOpen(false);
     e.stopPropagation();
   };
 
