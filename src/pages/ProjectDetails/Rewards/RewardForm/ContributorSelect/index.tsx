@@ -8,7 +8,6 @@ import View from "./View";
 import { useLocation } from "react-router-dom";
 import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { useDebounce } from "usehooks-ts";
-import { contextWithCacheHeaders } from "src/utils/headers";
 import isDefined from "src/utils/isDefined";
 import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 
@@ -32,7 +31,6 @@ export default function ContributorSelect({ projectId, contributor, setContribut
 
   const { data } = useSuspenseQuery<GetProjectPendingContributorsQuery>(GetProjectPendingContributorsDocument, {
     variables: { projectId },
-    ...contextWithCacheHeaders,
     fetchPolicy: "no-cache",
   });
   const contributors = data?.projectsPendingContributors.map(u => u.user).filter(isDefined);
