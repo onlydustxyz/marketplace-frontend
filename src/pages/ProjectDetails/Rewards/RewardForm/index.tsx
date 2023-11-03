@@ -52,7 +52,7 @@ const RewardForm: React.FC = () => {
         showToaster(T("reward.form.sent"));
         // refetch PaymentRequests to display MyRewards
         queryClient.invalidateQueries({ queryKey: ["GetUser"] });
-        await client.refetchQueries({ include: ["GetPaymentRequestIds"] });
+        await client.refetchQueries({ include: ["GetPaymentRequestIds", "GetProjectPendingContributors"] });
         navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
       } catch (e) {
         console.error(e);
