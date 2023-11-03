@@ -866,6 +866,12 @@
     "acceptShort": "Accept",
     "prompt": "You've been promoted to Project Lead on __projectName__"
   },
+  "projectCreation": {
+    "repository": {
+        "error_count": "Please select at least one repo to continue.",
+        "counter": "__selected__/__total__ repos selected"
+    }
+},
   "projects": {
     "count": {
       "many": "__count__ PROJECTS",

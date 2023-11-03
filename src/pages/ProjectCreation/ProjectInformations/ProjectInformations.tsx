@@ -14,10 +14,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { useEffect } from "react";
+import { fakeRepoData } from "src/pages/ProjectCreation/GithubRepository";
 
 const validationSchema = z.object({
-  githubRepoIds: z.array(z.number()),
-  image: z.instanceof(File),
+  image: z.instanceof(File).optional(),
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()),
   isLookingForContributors: z.boolean(),
   longDescription: z.string().min(1),
@@ -36,7 +36,7 @@ interface createProjectInformation {
   isLookingForContributors: boolean;
   longDescription: string;
   name: string;
-  image?: string;
+  image?: File;
   moreInfo?: {
     url: string;
     value: string;
@@ -51,14 +51,13 @@ export const ProjectInformationsPage = () => {
     setValue,
     reset,
     getValues,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm<createProjectInformation>({
     mode: "all",
     resolver: zodResolver(validationSchema),
-    defaultValues: {
-      githubRepoIds: [1],
-    },
   });
+
+  console.log("errors", errors, isValid, getValues());
 
   const [savedFormData, setSavedFormData, savedFormDataStatus] = useSessionStorage<
     createProjectInformation | undefined
@@ -66,12 +65,28 @@ export const ProjectInformationsPage = () => {
 
   useEffect(() => {
     if (savedFormDataStatus === "getted") {
-      reset(savedFormData);
+      reset({ ...savedFormData, image: undefined });
     }
   }, [savedFormDataStatus]);
 
+  const getSelectedRepoIds = () => {
+    return fakeRepoData.reduce((acc, org) => {
+      return [
+        ...acc,
+        ...org.repos.reduce((acc2, repo) => {
+          if (repo.selected) {
+            return [...acc2, repo.githubId];
+          }
+
+          return acc2;
+        }, [] as number[]),
+      ];
+    }, [] as number[]);
+  };
+
   const onSubmit = (formData: createProjectInformation) => {
-    console.log("formData", formData);
+    const repoIds = getSelectedRepoIds();
+    console.log("formData", formData, repoIds);
   };
 
   useEffect(() => {

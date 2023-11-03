@@ -44,7 +44,7 @@ const validationSchema = z.object({
     ),
 });
 
-const fakeData = [
+export const fakeRepoData = [
   {
     name: "Madara",
     logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/4137005338789730434.png",
@@ -75,6 +75,7 @@ const fakeData = [
         name: "kakarot4",
         shortDescription: "ZK-EVM type 2.5 written in Cairo, leveraging STARK proof system.",
         githubId: 456,
+        selected: true,
       },
       {
         name: "kakarot5",
@@ -85,6 +86,7 @@ const fakeData = [
         name: "kakarot6",
         shortDescription: "ZK-EVM type 2.5 written in Cairo, leveraging STARK proof system.",
         githubId: 4563,
+        selected: true,
       },
     ],
   },
@@ -102,7 +104,7 @@ export const GithubRepositoryPage = () => {
     mode: "all",
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      organisations: fakeData,
+      organisations: fakeRepoData,
     },
   });
 
