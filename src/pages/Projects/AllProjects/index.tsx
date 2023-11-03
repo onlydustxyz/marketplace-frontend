@@ -49,29 +49,13 @@ export default function AllProjects({
   } = useProjectFilter();
 
   const queryParams = useMemo(() => {
-    const params: Parameters<typeof useRestfulData>[0]["queryParams"] = {};
-
-    if (technologies.length > 0) {
-      params["technologies"] = technologies;
-    }
-
-    if (sponsors.length > 0) {
-      params["sponsor"] = sponsors;
-    }
-
-    if (search) {
-      params["search"] = search;
-    }
-
-    if (sorting) {
-      console.log({ sorting });
-
-      params["sort"] = sorting;
-    }
-
-    if (ownership) {
-      params["mine"] = String(ownership === "Mine");
-    }
+    const params: Parameters<typeof useRestfulData>[0]["queryParams"] = [
+      technologies.length > 0 ? ["technologies", technologies.join(",")] : null,
+      sponsors.length > 0 ? ["sponsor", sponsors.join(",")] : null,
+      search ? ["search", search] : null,
+      sorting ? ["sort", sorting] : null,
+      ownership ? ["mine", String(ownership === "Mine")] : null,
+    ].filter((param): param is string[] => Boolean(param));
 
     return params;
   }, [technologies, sponsors, search, sorting, ownership]);
