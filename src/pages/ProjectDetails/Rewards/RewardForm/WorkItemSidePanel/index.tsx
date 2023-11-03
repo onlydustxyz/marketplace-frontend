@@ -79,11 +79,7 @@ export default function WorkItemSidePanel({
         </div>
 
         {selectedTab === Tabs.Other ? (
-          <OtherWorkForm
-            projectId={projectId}
-            contributorHandle={contributorHandle}
-            addWorkItem={addWorkItem}
-          />
+          <OtherWorkForm projectId={projectId} contributorHandle={contributorHandle} addWorkItem={addWorkItem} />
         ) : (
           <WorkItems
             projectId={projectId}

@@ -22,22 +22,16 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubPullRequestStatus.Closed]: "contributions.tooltip.dateClosed",
     [GithubPullRequestStatus.Merged]: "contributions.tooltip.dateMerged",
     [GithubPullRequestDraft.Draft]: "contributions.tooltip.dateOpened",
-    IN_PROGRESS: "contributions.tooltip.dateOpened",
-    COMPLETED: "contributions.tooltip.dateMerged",
-    CANCELLED: "contributions.tooltip.dateClosed",
   },
   [GithubContributionType.Issue]: {
     [GithubIssueStatus.Open]: "contributions.tooltip.dateAssigned",
     [GithubIssueStatus.Completed]: "contributions.tooltip.dateClosed",
     [GithubIssueStatus.Cancelled]: "contributions.tooltip.dateClosed",
-    IN_PROGRESS: "contributions.tooltip.dateAssigned",
   },
   [GithubContributionType.CodeReview]: {
     [GithubCodeReviewStatus.Pending]: "contributions.tooltip.dateAssigned",
     [GithubCodeReviewStatus.Completed]: "contributions.tooltip.dateApproved",
     [GithubCodeReviewStatus.ChangeRequested]: "contributions.tooltip.dateChangeRequested",
-    IN_PROGRESS: "contributions.tooltip.dateAssigned",
-    CANCELLED: "contributions.tooltip.dateChangeRequested",
   },
 };
 

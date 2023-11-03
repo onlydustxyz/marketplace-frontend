@@ -1,5 +1,4 @@
-import { GetAllContributionsQuery, GithubIssueStatus } from "src/__generated/graphql";
-import { components } from "./__generated/api";
+import { GetAllContributionsQuery } from "src/__generated/graphql";
 
 export type Branded<T, B> = T & { __brand: B };
 
@@ -125,6 +124,12 @@ export enum GithubPullRequestStatus {
   Closed = "CLOSED",
 }
 
+export enum GithubIssueStatus {
+  Open = "OPEN",
+  Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
+}
+
 export enum GithubCodeReviewStatus {
   Pending = "PENDING",
   ChangeRequested = "CHANGE_REQUESTED",
@@ -165,29 +170,21 @@ export enum GithubPullRequestDraft {
   Draft = "DRAFT",
 }
 
+// Same as components["schemas"]["RewardItemResponse"]["status"] but uses enums
 export type GithubItemStatus =
   | GithubPullRequestStatus
   | GithubIssueStatus
   | GithubCodeReviewStatus
-  | GithubPullRequestDraft
-  | RewardItemStatus;
-
-type RewardItemStatus = components["schemas"]["RewardItemResponse"]["status"];
+  | GithubPullRequestDraft;
 
 type GithubPullRequestTypeStatusDict<T> = Record<
   GithubContributionType.PullRequest,
-  Record<GithubPullRequestStatus | GithubPullRequestDraft | RewardItemStatus, T>
+  Record<GithubPullRequestStatus | GithubPullRequestDraft, T>
 >;
 
-type GithubIssueTypeStatusDict<T> = Record<
-  GithubContributionType.Issue,
-  Record<GithubIssueStatus | RewardItemStatus, T>
->;
+type GithubIssueTypeStatusDict<T> = Record<GithubContributionType.Issue, Record<GithubIssueStatus, T>>;
 
-type GithubCodeReviewTypeStatusDict<T> = Record<
-  GithubContributionType.CodeReview,
-  Record<GithubCodeReviewStatus | RewardItemStatus, T>
->;
+type GithubCodeReviewTypeStatusDict<T> = Record<GithubContributionType.CodeReview, Record<GithubCodeReviewStatus, T>>;
 
 export type GithubTypeStatusDict<T> = GithubPullRequestTypeStatusDict<T> &
   GithubIssueTypeStatusDict<T> &
