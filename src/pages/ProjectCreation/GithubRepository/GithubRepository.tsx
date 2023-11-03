@@ -8,6 +8,9 @@ import { FieldCheckbox } from "src/components/New/Field/Checkbox";
 import { useMemo } from "react";
 import { GithubRepositoryCountError } from "./GithubRepositoryCountError";
 import { GithubRepositoryCount } from "./GithubRepositoryCount";
+import { Avatar } from "src/components/New/Avatar";
+import { FieldInput } from "src/components/New/Field/Input";
+import SearchLine from "src/icons/SearchLine";
 export interface createProjectInformation {
   organisations: {
     name: string;
@@ -155,6 +158,11 @@ export const GithubRepositoryPage = () => {
           footerRightElement={footerRightElement}
         >
           <Flex direction="col" gap={8}>
+            <FieldInput
+              name={""}
+              placeholder="Search repository"
+              startIcon={({ className }) => <SearchLine className={className} />}
+            />
             <Controller
               name="organisations"
               control={control}
@@ -163,8 +171,12 @@ export const GithubRepositoryPage = () => {
                   {(value || []).map(organisation => (
                     <div
                       key={organisation.name}
-                      className="flex flex-col gap-2 rounded-2xl border border-card-border-light bg-card-background-light p-5"
+                      className="flex flex-col gap-3 rounded-2xl border border-card-border-light bg-card-background-light p-5"
                     >
+                      <Flex justify="start" item="center" gap={2}>
+                        <Avatar src={organisation.logoUrl} alt={organisation.name} size="6" shape="square" />
+                        <p className=" text-sm font-medium uppercase">{organisation.name}</p>
+                      </Flex>
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
                         {organisation.repos.map(repo => (
                           <label key={repo.name}>
