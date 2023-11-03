@@ -1,17 +1,23 @@
-import { useIntl } from "src/hooks/useIntl";
-import HeaderLine from "src/components/Table/HeaderLine";
+import { SortField, Sorting } from "src/components/RewardTable/useQueryParamsSorting";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
-import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
+import HeaderLine from "src/components/Table/HeaderLine";
+import { useIntl } from "src/hooks/useIntl";
 import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
+import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
-import { Fields } from "src/pages/Rewards";
-import { Sorting } from "src/types";
+import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
+
+export enum Fields {
+  Date = "REQUESTED_AT",
+  RewardId = "CONTRIBUTION",
+  Amount = "AMOUNT",
+  Status = "STATUS",
+}
 
 type Props = {
-  sorting: Sorting;
-  sortField: (field: Fields) => void;
+  sorting: Sorting<Fields>;
+  sortField: SortField<Fields>;
 };
 
 export default function Headers({ sorting, sortField }: Props) {

@@ -1,18 +1,18 @@
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import ErrorFallback from "src/ErrorFallback";
 import Button, { ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import ProjectRewardTableFallback from "src/components/ProjectRewardTableFallback";
+import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
+import Skeleton from "src/components/Skeleton";
 import { withTooltip } from "src/components/Tooltip";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
 import Title from "src/pages/ProjectDetails/Title";
 import { ProjectBudgetType, RemainingBudget } from "./RemainingBudget/RemainingBudget";
-import { Fields } from "src/components/RewardTable/Headers";
-import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import ErrorFallback from "src/ErrorFallback";
-import Skeleton from "src/components/Skeleton";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();

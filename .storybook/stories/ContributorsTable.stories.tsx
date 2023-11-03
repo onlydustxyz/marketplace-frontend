@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { ComponentProps } from "react";
-import { Fields } from "src/pages/ProjectDetails/Contributors";
+import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable/View";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 

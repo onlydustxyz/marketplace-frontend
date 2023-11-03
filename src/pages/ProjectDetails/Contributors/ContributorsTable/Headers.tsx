@@ -1,18 +1,25 @@
-import { useIntl } from "src/hooks/useIntl";
-import HeaderLine from "src/components/Table/HeaderLine";
+import { SortField, Sorting } from "src/components/RewardTable/useQueryParamsSorting";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
-import SortingArrow from "./SortingArrow";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import User3Line from "src/icons/User3Line";
-import StackLine from "src/icons/StackLine";
-import Medal2Fill from "src/icons/Medal2Fill";
+import HeaderLine from "src/components/Table/HeaderLine";
+import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
-import { Fields } from "..";
-import { Sorting } from "src/types";
+import Medal2Fill from "src/icons/Medal2Fill";
+import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
+import StackLine from "src/icons/StackLine";
+import User3Line from "src/icons/User3Line";
+import SortingArrow from "./SortingArrow";
+
+export enum Fields {
+  ContributionCount = "CONTRIBUTION_COUNT",
+  TotalEarned = "EARNED",
+  Login = "LOGIN",
+  RewardCount = "REWARD_COUNT",
+  ToRewardCount = "TO_REWARD_COUNT",
+}
 
 type Props = {
-  sorting: Sorting;
-  sortField: (field: string) => void;
+  sorting: Sorting<Fields>;
+  sortField: SortField<Fields>;
   isProjectLeader: boolean;
 };
 

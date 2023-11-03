@@ -6,7 +6,7 @@ import Folder3Line from "src/icons/Folder3Line";
 import FocusLine from "src/icons/FocusLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import Amount from "src/assets/icons/Amount";
-import { Sorting } from "src/types";
+import { SortField, Sorting } from "./useQueryParamsSorting";
 
 export enum Fields {
   Date = "DATE",
@@ -16,8 +16,8 @@ export enum Fields {
 }
 
 type Props = {
-  sorting: Sorting;
-  sortField: (field: Fields) => void;
+  sorting: Sorting<Fields>;
+  sortField: SortField<Fields>;
 };
 
 export default function Headers({ sorting, sortField }: Props) {

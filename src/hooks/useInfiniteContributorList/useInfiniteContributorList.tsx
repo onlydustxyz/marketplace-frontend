@@ -1,15 +1,11 @@
 import { components } from "src/__generated/api";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useInfiniteRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-
-type QueryParam = {
-  key: string;
-  value: Array<string | number | boolean>;
-};
+import { QueryParams } from "src/utils/getEndpointUrl";
 
 interface UseInfiniteContributorsProps {
   projectId: string;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
 }
 
 export default function useInfiniteContributorList({ projectId, queryParams }: UseInfiniteContributorsProps) {

@@ -3,21 +3,15 @@ import { RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Card from "src/components/Card";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import SEO from "src/components/SEO";
 import Skeleton from "src/components/Skeleton";
 import UserRewardTable from "src/components/UserRewardTable";
+import { Fields } from "src/components/UserRewardTable/Headers";
 import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfiniteMyRewardList";
 import { useT } from "talkr";
 import { EarningWrapper } from "./Earning/EarningWrapper";
 import InvoiceSubmission from "./InvoiceSubmission";
-import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-
-export enum Fields {
-  Date = "REQUESTED_AT",
-  RewardId = "CONTRIBUTION",
-  Amount = "AMOUNT",
-  Status = "STATUS",
-}
 
 export enum RewardStatus {
   COMPLETE = "COMPLETE",

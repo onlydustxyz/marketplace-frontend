@@ -1,23 +1,19 @@
-import Table from "src/components/Table";
-import RewardLine, { MyRewardType } from "./Line";
-import Headers from "./Headers";
-import { useState } from "react";
-import RewardSidePanel from "./RewardSidePanel";
-import { viewportConfig } from "src/config";
-import MobileUserRewardList from "./MobileUserRewardList";
-import { useMediaQuery } from "usehooks-ts";
+import { ComponentProps, useState } from "react";
 import SidePanel from "src/components/SidePanel";
+import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { Sorting } from "src/types";
+import { viewportConfig } from "src/config";
+import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfiniteMyRewardList";
+import { useMediaQuery } from "usehooks-ts";
+import Headers from "./Headers";
+import RewardLine, { MyRewardType } from "./Line";
+import MobileUserRewardList from "./MobileUserRewardList";
+import RewardSidePanel from "./RewardSidePanel";
 
 type PropsType = {
   rewards: MyRewardType[];
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  sorting: Sorting;
-  sortField: (field: string) => void;
-};
+} & ComponentProps<typeof Headers> &
+  Pick<ReturnType<typeof useInfiniteMyRewardList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage">;
 
 const UserRewardTable: React.FC<PropsType> = ({
   rewards,

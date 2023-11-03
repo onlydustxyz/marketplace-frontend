@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useApolloClient } from "@apollo/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { ComponentProps, useState } from "react";
 import SidePanel from "src/components/SidePanel";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
@@ -9,15 +11,12 @@ import { useMediaQuery } from "usehooks-ts";
 import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
-import { useApolloClient } from "@apollo/client";
-import { useQueryClient } from "@tanstack/react-query";
-import { Sorting } from "src/types";
 
-type Options = {
-  sorting: Sorting;
-  sortField: (field: string) => void;
-  refetchBudgets: () => void;
-} & Pick<ReturnType<typeof useInfiniteRewardsList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage" | "refetch">;
+type Options = ComponentProps<typeof Headers> &
+  Pick<
+    ReturnType<typeof useInfiniteRewardsList>,
+    "fetchNextPage" | "hasNextPage" | "isFetchingNextPage" | "refetch"
+  > & { refetchBudgets: () => void };
 
 type RewardTableProps = {
   rewards: RewardPageItemType[];

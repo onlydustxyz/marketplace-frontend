@@ -1,3 +1,4 @@
+import { ComponentProps } from "react";
 import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
@@ -6,19 +7,15 @@ import { rates } from "src/hooks/useWorkEstimation";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
-import { Sorting } from "src/types";
+import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 
 type Props<C> = {
   contributors: C[];
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
   isProjectLeader: boolean;
   remainingBudget: number;
   onRewardGranted: (contributor: C) => void;
-  sorting: Sorting;
-  sortField: (field: string) => void;
-};
+} & ComponentProps<typeof Headers> &
+  Pick<ReturnType<typeof useInfiniteContributorList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage">;
 
 export default function View<C extends components["schemas"]["ContributorPageItemResponse"]>({
   contributors,
@@ -27,7 +24,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
   isFetchingNextPage,
   isProjectLeader,
   remainingBudget,
-  onRewardGranted: onPaymentRequested,
+  onRewardGranted,
   sorting,
   sortField,
 }: Props<C>) {
@@ -46,7 +43,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
               contributor,
               isProjectLeader,
               isGivingRewardDisabled: isSendingNewPaymentDisabled,
-              onRewardGranted: onPaymentRequested,
+              onRewardGranted,
             }}
           />
         ))}

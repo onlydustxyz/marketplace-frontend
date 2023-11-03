@@ -14,6 +14,7 @@ import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/use
 import { useIntl } from "src/hooks/useIntl";
 import { rates } from "src/hooks/useWorkEstimation";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
+import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/pages/ProjectDetails/Title";
 import { Project } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
@@ -21,14 +22,6 @@ import { useMediaQuery } from "usehooks-ts";
 type OutletContext = {
   project: Project;
 };
-
-export enum Fields {
-  ContributionCount = "CONTRIBUTION_COUNT",
-  TotalEarned = "EARNED",
-  Login = "LOGIN",
-  RewardCount = "REWARD_COUNT",
-  ToRewardCount = "TO_REWARD_COUNT",
-}
 
 export default function Contributors() {
   const { T } = useIntl();

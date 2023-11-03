@@ -1,8 +1,9 @@
 import { Currency, PaymentStatus } from "src/types";
 
+import { ComponentProps } from "react";
 import UserRewardTable from "src/components/UserRewardTable";
+import { Fields } from "src/components/UserRewardTable/Headers";
 import { MyRewardType as Reward } from "src/components/UserRewardTable/Line";
-import { Fields } from "src/pages/Rewards";
 import { daysFromNow } from "src/utils/date";
 import withAuthProvider from "../decorators/withAuthProvider";
 
@@ -40,23 +41,21 @@ const mockPayments: Reward[] = [
 export default {
   title: "UserRewardTable",
   component: UserRewardTable,
-  decorators: [withAuthProvider({ userId: USER_ID }),],
+  decorators: [withAuthProvider({ userId: USER_ID })],
 };
-
-
 
 export const Default = {
   render: () => (
     <UserRewardTable
-        rewards={mockPayments}
-        fetchNextPage={() => {}}
-        hasNextPage={false}
-        isFetchingNextPage={false}
-        sorting={{
-          field: Fields.Date,
-          isAscending: false,
-        }}
-        sortField={() => {}}
-      />
+      rewards={mockPayments}
+      fetchNextPage={(() => {}) as ComponentProps<typeof UserRewardTable>["fetchNextPage"]}
+      hasNextPage={false}
+      isFetchingNextPage={false}
+      sorting={{
+        field: Fields.Date,
+        isAscending: false,
+      }}
+      sortField={() => {}}
+    />
   ),
 };
