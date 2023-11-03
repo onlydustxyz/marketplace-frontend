@@ -2,6 +2,7 @@ import { QueryObserverOptions, QueryOptions, useQuery } from "@tanstack/react-qu
 import { useAuth } from "src/hooks/useAuth";
 import { QueryParam, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
+import { QueryTags } from "./query.type";
 
 interface UseBaseQueryOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
@@ -13,7 +14,7 @@ export interface UseBaseQueryProps<R = unknown> extends BaseQueryOptions<R> {
   resourcePath: string;
   pathParam?: string | Record<string, string>;
   queryParams?: QueryParam[];
-  tags?: ReadonlyArray<unknown>;
+  tags?: QueryTags;
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }
 
