@@ -32,22 +32,16 @@ export const variants: { status: GithubTypeStatusDict<string> } = {
       [GithubPullRequestStatus.Closed]: "text-github-red-light border-github-red",
       [GithubPullRequestStatus.Merged]: "text-github-purple-light border-github-purple",
       [GithubPullRequestDraft.Draft]: "text-github-grey-light border-github-grey",
-      IN_PROGRESS: "text-github-green-light border-github-green",
-      COMPLETED: "text-github-purple-light border-github-purple",
-      CANCELLED: "text-github-red-light border-github-red",
     },
     [GithubContributionType.Issue]: {
       [GithubIssueStatus.Open]: "text-github-green-light border-github-green",
       [GithubIssueStatus.Completed]: "text-github-purple-light border-github-purple",
       [GithubIssueStatus.Cancelled]: "text-github-grey-light border-github-grey",
-      IN_PROGRESS: "text-github-green-light border-github-green",
     },
     [GithubContributionType.CodeReview]: {
       [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
       [GithubCodeReviewStatus.Completed]: "text-github-purple-light border-github-purple",
       [GithubCodeReviewStatus.ChangeRequested]: "text-github-purple-light border-github-purple",
-      IN_PROGRESS: "text-github-green-light border-github-green",
-      CANCELLED: "text-github-purple-light border-github-purple",
     },
   },
 };
@@ -83,22 +77,16 @@ export function ContributionIcon({
       [GithubPullRequestStatus.Closed]: <PrClosed className={size} />,
       [GithubPullRequestStatus.Merged]: <GitMergeLine className={size} />,
       [GithubPullRequestDraft.Draft]: <PrDraft className={size} />,
-      IN_PROGRESS: <GitPullRequestLine className={size} />,
-      COMPLETED: <GitMergeLine className={size} />,
-      CANCELLED: <PrClosed className={size} />,
     },
     [GithubContributionType.Issue]: {
       [GithubIssueStatus.Open]: <IssueOpenIcon size={size} />,
       [GithubIssueStatus.Completed]: <IssueClosedIcon size={size} />,
       [GithubIssueStatus.Cancelled]: <IssueCancelled className={size} />,
-      IN_PROGRESS: <IssueOpenIcon size={size} />,
     },
     [GithubContributionType.CodeReview]: {
       [GithubCodeReviewStatus.Pending]: <EyeLine className={size} />,
       [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className={size} />,
       [GithubCodeReviewStatus.ChangeRequested]: <CodeReviewCheckIcon className={size} />,
-      IN_PROGRESS: <EyeLine className={size} />,
-      CANCELLED: <CodeReviewCheckIcon className={size} />,
     },
   };
 
