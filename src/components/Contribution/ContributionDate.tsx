@@ -51,7 +51,7 @@ export function ContributionDate({
   date,
   withIcon = false,
   tooltipProps = {
-    position: TooltipPosition.Top,
+    position: TooltipPosition.Bottom,
     variant: Variant.Default,
   },
 }: ContributionDateProps) {

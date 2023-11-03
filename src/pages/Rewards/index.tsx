@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
@@ -11,8 +10,9 @@ import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfini
 import { useT } from "talkr";
 import { EarningWrapper } from "./Earning/EarningWrapper";
 import InvoiceSubmission from "./InvoiceSubmission";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 
-export enum Field {
+export enum Fields {
   Date = "REQUESTED_AT",
   RewardId = "CONTRIBUTION",
   Amount = "AMOUNT",
@@ -26,35 +26,16 @@ export enum RewardStatus {
   PROCESSING = "PROCESSING",
 }
 
-export type Sorting = {
-  field: Field;
-  ascending: boolean;
-};
-
 export default function Rewards() {
   const { T } = useT();
 
-  const [sorting, setSorting] = useState({
-    field: Field.Amount,
-    ascending: false,
+  const { sorting, sortField, queryParams } = useQueryParamsSorting({
+    field: Fields.Date,
+    isAscending: false,
+    storageKey: "myRewardsSorting",
   });
 
-  const applySorting = (field: Field, ascending: boolean) =>
-    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : ascending });
-
-  const queryParams = useMemo(
-    () => [
-      ...(sorting
-        ? [
-            { key: "sort", value: [sorting.field] },
-            { key: "direction", value: [sorting.ascending ? "ASC" : "DESC"] },
-          ]
-        : []),
-    ],
-    [sorting]
-  );
-
-  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteMyRewardList({
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteMyRewardList({
     queryParams,
   });
 
@@ -79,7 +60,7 @@ export default function Rewards() {
       <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
           <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
-          <InvoiceSubmission />
+          <InvoiceSubmission refetchMyRewards={refetch} />
           <EarningWrapper />
           {isFetching ? (
             <Skeleton variant="rewards" />
@@ -92,7 +73,7 @@ export default function Rewards() {
                   hasNextPage={hasNextPage}
                   isFetchingNextPage={isFetchingNextPage}
                   sorting={sorting}
-                  applySorting={applySorting}
+                  sortField={sortField}
                 />
               )}
             </Card>

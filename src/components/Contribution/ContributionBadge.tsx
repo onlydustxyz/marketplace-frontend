@@ -29,7 +29,7 @@ export function ContributionBadge({
   asLink = false,
   size = ContributionBadgeSizes.Sm,
   tooltipProps = {
-    position: TooltipPosition.TopEnd,
+    position: TooltipPosition.Bottom,
     variant: Variant.Blue,
   },
 }: {

@@ -74,7 +74,7 @@ export default function GithubIssue({
               date={new Date(issue.createdAt)}
               tooltipProps={{
                 variant: Variant.Default,
-                position: TooltipPosition.Top,
+                position: TooltipPosition.Bottom,
               }}
             />
           </div>
@@ -86,7 +86,7 @@ export default function GithubIssue({
               date={getIssueStatusDate(issue)}
               tooltipProps={{
                 variant: Variant.Default,
-                position: TooltipPosition.Top,
+                position: TooltipPosition.Bottom,
               }}
               withIcon
             />

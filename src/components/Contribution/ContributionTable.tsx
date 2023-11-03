@@ -211,7 +211,7 @@ export function ContributionTable({
               type={contribution.type as GithubContributionType}
               status={draft ? GithubPullRequestDraft.Draft : (contributionStatus as GithubItemStatus)}
               date={new Date(lineDate)}
-              tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.TopStart }}
+              tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.Bottom }}
             />
           </Cell>
           <Cell height={CellHeight.Compact}>

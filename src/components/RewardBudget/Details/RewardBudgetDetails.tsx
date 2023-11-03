@@ -41,7 +41,7 @@ const RewardBudgetDetailsRow = ({
         {warning && warningIcon ? (
           <div
             {...withTooltip(T("rewardBudget.detail.exceedsBudgetTooltip"), {
-              position: TooltipPosition.Top,
+              position: TooltipPosition.Bottom,
             })}
           >
             <InformationLine className=" leading-[14px] text-[14p] text-orange-500" />
@@ -54,7 +54,7 @@ const RewardBudgetDetailsRow = ({
           <p
             className="font-walsheim text-xs font-normal text-spaceBlue-200"
             {...withTooltip(T("rewardBudget.detail.dollarTooltip"), {
-              position: TooltipPosition.Top,
+              position: TooltipPosition.Bottom,
             })}
           >
             {`~${formatMoneyAmount({ amount: dollar, currency: Currency.USD })}`}

@@ -15,7 +15,7 @@ export default function useInfiniteRewardsList({ projectId, queryParams }: useIn
   return useInfiniteRestfulData<components["schemas"]["RewardsPageResponse"]>(
     {
       resourcePath: ApiResourcePaths.PROJECT_REWARDS,
-      pageSize: 9,
+      pageSize: 10,
       pathParam: projectId,
       queryParams,
     },

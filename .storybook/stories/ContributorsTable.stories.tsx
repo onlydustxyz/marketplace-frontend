@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { ComponentProps } from "react";
-import { Field } from "src/pages/ProjectDetails/Contributors";
+import { Fields } from "src/pages/ProjectDetails/Contributors";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable/View";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 
@@ -110,8 +110,8 @@ const Template: ComponentStory<typeof ContributorsTable> = args => (
     fetchNextPage={Function.prototype()}
     hasNextPage={false}
     isFetchingNextPage={false}
-    sorting={{ field: Field.ToRewardCount, ascending: false }}
-    applySorting={Function.prototype()}
+    sorting={{ field: Fields.ToRewardCount, isAscending: false }}
+    sortField={Function.prototype()}
   />
 );
 

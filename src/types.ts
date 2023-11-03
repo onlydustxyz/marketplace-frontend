@@ -309,3 +309,8 @@ export type Contributors = {
   nextPageIndex: number;
   hasMore: boolean;
 };
+
+export type Sorting = {
+  field: string | undefined;
+  isAscending: boolean | undefined;
+};

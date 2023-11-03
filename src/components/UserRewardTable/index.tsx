@@ -7,9 +7,8 @@ import { viewportConfig } from "src/config";
 import MobileUserRewardList from "./MobileUserRewardList";
 import { useMediaQuery } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
-import { Field, Sorting } from "src/pages/Rewards";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useAuth } from "src/hooks/useAuth";
+import { Sorting } from "src/types";
 
 type PropsType = {
   rewards: MyRewardType[];
@@ -17,7 +16,7 @@ type PropsType = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   sorting: Sorting;
-  applySorting: (field: Field, ascending: boolean) => void;
+  sortField: (field: string) => void;
 };
 
 const UserRewardTable: React.FC<PropsType> = ({
@@ -26,9 +25,8 @@ const UserRewardTable: React.FC<PropsType> = ({
   hasNextPage,
   isFetchingNextPage,
   sorting,
-  applySorting,
+  sortField,
 }) => {
-  const { ledProjectIds } = useAuth();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
@@ -43,14 +41,13 @@ const UserRewardTable: React.FC<PropsType> = ({
     <>
       {isXl ? (
         <div>
-          <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
+          <Table id="reward_table" headers={<Headers sorting={sorting} sortField={sortField} />}>
             {rewards.map(p => (
               <RewardLine
                 key={p?.id}
                 reward={p}
                 onClick={() => onRewardClick(p)}
                 selected={p?.id === selectedReward?.id}
-                isProjectLeader={ledProjectIds.includes(p.projectId)}
               />
             ))}
           </Table>
@@ -67,7 +64,6 @@ const UserRewardTable: React.FC<PropsType> = ({
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          ledProjectIds={ledProjectIds}
         />
       )}
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>

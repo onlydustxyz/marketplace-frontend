@@ -102,7 +102,7 @@ const With0RemainingCurrencyCurrencyProps: ComponentProps<typeof RewardBudget> =
 export const Default = {
   render: (args: ComponentProps<typeof RewardBudget>) => (
     <div style={{ width: 384 }}>
-      <RewardBudget {...defaultProps} {...args} onChange={e => console.log("change", e)} />
+      <RewardBudget {...defaultProps} {...args} />
       <Tooltip />
     </div>
   ),

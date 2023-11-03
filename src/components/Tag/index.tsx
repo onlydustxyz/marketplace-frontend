@@ -10,6 +10,7 @@ export enum TagSize {
 
 export enum TagBorderColor {
   Grey = "grey",
+  Orange = "orange",
   MultiColor = "multi-color",
 }
 
@@ -56,12 +57,13 @@ export default function Tag({
           },
           {
             "border border-greyscale-50/8": borderColor === TagBorderColor.Grey,
+            "border border-orange-500": borderColor === TagBorderColor.Orange,
             "before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen before:animate-spin-invert-slow before:rounded-full before:bg-multi-color-gradient":
               borderColor === TagBorderColor.MultiColor,
           },
           {
             "bg-spaceBlue-900": borderColor === TagBorderColor.MultiColor || opaque,
-            "bg-white/2": borderColor === TagBorderColor.Grey && !opaque,
+            "bg-white/2": (borderColor === TagBorderColor.Grey || borderColor === TagBorderColor.Orange) && !opaque,
           },
           className
         )}

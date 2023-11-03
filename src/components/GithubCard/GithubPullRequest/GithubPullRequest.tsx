@@ -87,7 +87,7 @@ export default function GithubPullRequest({
               date={new Date(pullRequest.createdAt)}
               tooltipProps={{
                 variant: Variant.Default,
-                position: TooltipPosition.Top,
+                position: TooltipPosition.Bottom,
               }}
             />
           </div>
@@ -99,7 +99,7 @@ export default function GithubPullRequest({
               date={getPullRequestStatusDate(pullRequest)}
               tooltipProps={{
                 variant: Variant.Default,
-                position: TooltipPosition.Top,
+                position: TooltipPosition.Bottom,
               }}
               withIcon
             />

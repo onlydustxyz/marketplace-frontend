@@ -4,9 +4,9 @@ import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { rates } from "src/hooks/useWorkEstimation";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
-import { Field, Sorting } from "..";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
+import { Sorting } from "src/types";
 
 type Props<C> = {
   contributors: C[];
@@ -17,7 +17,7 @@ type Props<C> = {
   remainingBudget: number;
   onRewardGranted: (contributor: C) => void;
   sorting: Sorting;
-  applySorting: (field: Field, ascending: boolean) => void;
+  sortField: (field: string) => void;
 };
 
 export default function View<C extends components["schemas"]["ContributorPageItemResponse"]>({
@@ -29,7 +29,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
   remainingBudget,
   onRewardGranted: onPaymentRequested,
   sorting,
-  applySorting,
+  sortField,
 }: Props<C>) {
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
@@ -37,7 +37,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
     <Card className="h-full">
       <Table
         id="contributors_table"
-        headers={<Headers sorting={sorting} applySorting={applySorting} isProjectLeader={isProjectLeader} />}
+        headers={<Headers sorting={sorting} sortField={sortField} isProjectLeader={isProjectLeader} />}
       >
         {contributors.map(contributor => (
           <ContributorLine

@@ -9,15 +9,12 @@ import { useMediaQuery } from "usehooks-ts";
 import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
-import { useAuth } from "src/hooks/useAuth";
 import { useApolloClient } from "@apollo/client";
 import { useQueryClient } from "@tanstack/react-query";
+import { Sorting } from "src/types";
 
 type Options = {
-  sorting: {
-    field: string | undefined;
-    isAscending: boolean | undefined;
-  };
+  sorting: Sorting;
   sortField: (field: string) => void;
   refetchBudgets: () => void;
 } & Pick<ReturnType<typeof useInfiniteRewardsList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage" | "refetch">;
@@ -35,8 +32,6 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [selectedReward, setSelectedReward] = useState<RewardPageItemType | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const { ledProjectIds } = useAuth();
-  const isProjectLeader = ledProjectIds.includes(projectId);
 
   const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch, refetchBudgets } = options;
 
@@ -63,17 +58,11 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
       {isXl ? (
         <Table id="reward_table" headers={<Headers sorting={sorting} sortField={sortField} />}>
           {rewards.map(p => (
-            <RewardLine
-              key={p.id}
-              reward={p}
-              onClick={() => onRewardClick(p)}
-              selected={p.id === selectedReward?.id}
-              isProjectLeader={isProjectLeader}
-            />
+            <RewardLine key={p.id} reward={p} onClick={() => onRewardClick(p)} selected={p.id === selectedReward?.id} />
           ))}
         </Table>
       ) : (
-        <MobileRewardList rewards={rewards} onRewardClick={onRewardClick} isProjectLeader={isProjectLeader} />
+        <MobileRewardList rewards={rewards} onRewardClick={onRewardClick} />
       )}
       {hasNextPage && (
         <div className="pt-6">
