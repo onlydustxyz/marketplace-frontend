@@ -108,27 +108,27 @@ export default function Contributions() {
     };
   }
 
-  //   const {
-  //     data: inProgressData,
-  //     isLoading: inProgressLoading,
-  //     isError: inProgressError,
-  //   } = useInfiniteMyContributions({
-  //     queryParams: [],
-  //     enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress))),
-  //   });
-
   const {
     data: inProgressData,
-    loading: inProgressLoading,
-    error: inProgressError,
-  } = useGetAllContributionsQuery({
-    variables: {
-      orderBy: sort[GithubContributionStatus.InProgress].orderBy as ContributionsOrderBy,
-      where: tableWhere({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
-    },
-    skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
-  });
+    isLoading: inProgressLoading,
+    isError: inProgressError,
+  } = useInfiniteMyContributions(
+    { queryParams: [] },
+    { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress))) }
+  );
+
+  //   const {
+  //     data: inProgressData,
+  //     loading: inProgressLoading,
+  //     error: inProgressError,
+  //   } = useGetAllContributionsQuery({
+  //     variables: {
+  //       orderBy: sort[GithubContributionStatus.InProgress].orderBy as ContributionsOrderBy,
+  //       where: tableWhere({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
+  //     },
+  //     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
+  //     fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
+  //   });
 
   const {
     data: completedData,
