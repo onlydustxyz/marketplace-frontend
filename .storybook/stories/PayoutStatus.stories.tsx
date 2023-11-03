@@ -55,14 +55,7 @@ export const PendingInvoice = {
   },
 };
 
-export const MissingPayoutInfoAsLeader = {
-  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.MISSING_PAYOUT_INFO }} {...args} isProjectLeaderView={true} />,
-  parameters: {
-    backgrounds: { default: "space" },
-  },
-};
-
-export const MissingPayoutInfoAsContributor = {
+export const MissingPayoutInfo = {
   render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.MISSING_PAYOUT_INFO }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },

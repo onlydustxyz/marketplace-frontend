@@ -181,7 +181,7 @@ export default function View({
           <div className="flex h-full flex-col gap-8 divide-y divide-greyscale-50/12">
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-2">
-                <PayoutStatus status={data.status} isProjectLeaderView={projectLeaderView} />
+                <PayoutStatus status={data.status} />
                 <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
                   <InfoIcon className="h-4 w-3" />
                   <span>

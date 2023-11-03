@@ -20,14 +20,12 @@ export default function MobileUserRewardList({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
-  ledProjectIds,
 }: {
   rewards: MyRewardType[];
   onRewardClick: (reward: MyRewardType) => void;
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
-  ledProjectIds: string[];
 }) {
   const { T } = useIntl();
 
@@ -52,7 +50,6 @@ export default function MobileUserRewardList({
                 {...{
                   id: `payout-status-${reward.id}`,
                   status: reward.status,
-                  isProjectLeaderView: ledProjectIds.includes(reward.projectId),
                 }}
               />
             }
