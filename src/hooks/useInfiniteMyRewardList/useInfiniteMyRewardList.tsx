@@ -15,7 +15,7 @@ export default function useInfiniteMyRewardList({ queryParams }: useInfiniteMyRe
   return useInfiniteRestfulData<components["schemas"]["MyRewardsPageResponse"]>(
     {
       resourcePath: ApiResourcePaths.GET_MY_REWARDS,
-      pageSize: 5,
+      pageSize: 10,
       queryParams,
     },
     { queryKey: ["myRewards", queryParams] }
