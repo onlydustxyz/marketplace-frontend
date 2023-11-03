@@ -48,7 +48,7 @@ export default function Tag({
     >
       <div
         className={cn(
-          "relative flex w-fit items-center justify-center gap-1 rounded-full font-walsheim font-normal text-white xl:h-7",
+          "xl:min-h-7 relative flex w-fit items-center justify-center gap-1 rounded-full font-walsheim font-normal text-white",
           {
             "px-2 py-1 text-xs": size === TagSize.Small,
             "px-3 py-1.5 text-sm": size === TagSize.Medium,
