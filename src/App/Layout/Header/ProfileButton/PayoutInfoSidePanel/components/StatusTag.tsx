@@ -39,7 +39,7 @@ export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
 
   const networks = requiredNetworks
     ? Object.entries(requiredNetworks)
-        .filter(([, value]) => value === true)
+        .filter(([, value]) => value)
         .map(([key]) => T(networksMessages[key as keyof typeof networksMessages]))
     : [];
 

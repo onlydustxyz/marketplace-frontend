@@ -87,6 +87,9 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
 type UserPayoutRequestType = components["schemas"]["UserPayoutInformationRequest"];
 
 const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
+  const isEthName = values.ethWallet.match(ENS_DOMAIN_REGEXP);
+  const sepaAccount = values.bic && values.iban ? { bic: values.bic, iban: values.iban } : undefined;
+
   const variables: UserPayoutRequestType = {
     ...(values.profileType === ProfileType.Company
       ? {
@@ -113,23 +116,9 @@ const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
     },
     payoutSettings: {
       usdPreferredMethod: values.usdPreferredMethod,
-      ...(values.bic && values.iban
-        ? {
-            sepaAccount: {
-              bic: values.bic,
-              iban: values.iban,
-            },
-          }
-        : { sepaAccount: undefined }),
-      ...(values.ethWallet.match(ENS_DOMAIN_REGEXP)
-        ? {
-            ethName: values.ethWallet,
-            ethAddress: undefined,
-          }
-        : {
-            ethAddress: values.ethWallet,
-            ethName: undefined,
-          }),
+      sepaAccount,
+      ethName: isEthName ? values.ethWallet : undefined,
+      ethAddress: !isEthName ? values.ethWallet : undefined,
       starknetAddress: values.starknetWallet || undefined,
       optimismAddress: values.optimismWallet || undefined,
       aptosAddress: values.aptosWallet || undefined,
