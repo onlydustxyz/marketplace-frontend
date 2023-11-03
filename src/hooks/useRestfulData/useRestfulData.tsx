@@ -117,12 +117,12 @@ export function useInfiniteRestfulData<R extends ResponseData>(
     resourcePath,
     pageSize = 10,
     pathParam = "",
-    queryParams = [],
+    queryParams = {},
   }: {
     resourcePath: string;
     pageSize?: number;
     pathParam?: string | Record<string, string>;
-    queryParams?: QueryParam[];
+    queryParams?: QueryParams;
   },
   queryOptions: Omit<UseInfiniteQueryOptions<R>, "queryFn" | "initialPageParam" | "getNextPageParam" | "select"> &
     Partial<Pick<UseInfiniteQueryOptions<R>, "initialPageParam" | "getNextPageParam">>
