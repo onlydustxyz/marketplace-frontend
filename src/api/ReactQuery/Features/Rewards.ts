@@ -22,27 +22,29 @@ const REWARDS_API_PATH = {
 };
 
 export const useMyRewardsByIdQuery = (
-  params: { rewardId: string },
+  params: { rewardId?: string },
   options?: BaseQueryOptions<components["schemas"]["RewardResponse"]>
 ) => {
   return useBaseQuery<components["schemas"]["RewardResponse"]>({
     resourcePath: REWARDS_API_PATH.MY_REWARD_BY_ID,
-    tags: REWARDS_TAGS.detail(REWARDS_TAGS.me(), params.rewardId),
+    tags: REWARDS_TAGS.detail(REWARDS_TAGS.me(), params.rewardId || ""),
     pathParam: params,
     method: "GET",
+    enabled: !!params.rewardId,
     ...(options || {}),
   });
 };
 
 export const useProjectRewardsByIdQuery = (
-  params: { rewardId: string; projectId: string },
+  params: { rewardId?: string; projectId?: string },
   options?: BaseQueryOptions<components["schemas"]["RewardResponse"]>
 ) => {
   return useBaseQuery<components["schemas"]["RewardResponse"]>({
     resourcePath: REWARDS_API_PATH.PROJECT_REWARD,
-    tags: REWARDS_TAGS.detail(REWARDS_TAGS.project(params.projectId), params.rewardId),
+    tags: REWARDS_TAGS.detail(REWARDS_TAGS.project(params.projectId || ""), params.rewardId || ""),
     pathParam: params,
     method: "GET",
+    enabled: !!params.rewardId && !!params.projectId,
     ...(options || {}),
   });
 };
