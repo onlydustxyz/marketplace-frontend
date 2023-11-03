@@ -1,6 +1,6 @@
 import { getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
-import { QueryParam } from "./query.type";
+import { QueryParam, QueryTags } from "./query.type";
 import { UseInfiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 
 export interface useInfiniteBaseQueryProps {
@@ -8,6 +8,7 @@ export interface useInfiniteBaseQueryProps {
   pageSize?: number;
   pathParam?: string | Record<string, string>;
   queryParams?: QueryParam[];
+  tags?: QueryTags;
 }
 
 export type useInfiniteBaseQueryOptions<R extends InifiniteQueryResponseData> = Omit<
@@ -24,7 +25,7 @@ export type InifiniteQueryResponseData = {
 };
 
 export function useInfiniteBaseQuery<R extends InifiniteQueryResponseData>(
-  { resourcePath, pageSize = 10, pathParam = "", queryParams = [] }: useInfiniteBaseQueryProps,
+  { resourcePath, pageSize = 10, pathParam = "", queryParams = [], tags }: useInfiniteBaseQueryProps,
   queryOptions: useInfiniteBaseQueryOptions<R>
 ) {
   const {
@@ -39,7 +40,7 @@ export function useInfiniteBaseQuery<R extends InifiniteQueryResponseData>(
   const { options, isImpersonating, isValidImpersonation } = useHttpOptions("GET");
 
   return useInfiniteQuery<R>({
-    queryKey: [isImpersonating, isValidImpersonation, ...queryKey],
+    queryKey: [...(tags || []), isImpersonating, isValidImpersonation, ...queryKey],
     queryFn: ({ pageParam }) =>
       fetch(
         getEndpointUrl({

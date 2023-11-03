@@ -1,6 +1,7 @@
 import { components } from "src/__generated/api";
 import { QUERY_TAGS } from "src/api/ReactQuery/query-tags";
-import { BaseQueryOptions, useBaseQuery } from "src/api/ReactQuery/useBaseQuery";
+import { UseQueryProps, useBaseQuery } from "src/api/ReactQuery/useBaseQuery";
+import { UseMutationProps, useBaseMutation } from "src/api/ReactQuery/useBaseMutation";
 
 const REWARDS_TAGS = {
   all: [QUERY_TAGS.REWARDS],
@@ -21,30 +22,44 @@ const REWARDS_API_PATH = {
   PROJECT_REWARDS: "/api/v1/projects/{{id}}/rewards",
 };
 
-export const useMyRewardsByIdQuery = (
-  params: { rewardId?: string },
-  options?: BaseQueryOptions<components["schemas"]["RewardResponse"]>
-) => {
+export const useMyRewardsByIdQuery = ({
+  params,
+  options,
+}: UseQueryProps<components["schemas"]["RewardResponse"], { rewardId?: string }>) => {
   return useBaseQuery<components["schemas"]["RewardResponse"]>({
     resourcePath: REWARDS_API_PATH.MY_REWARD_BY_ID,
-    tags: REWARDS_TAGS.detail(REWARDS_TAGS.me(), params.rewardId || ""),
     pathParam: params,
     method: "GET",
-    enabled: !!params.rewardId,
+    enabled: !!params?.rewardId,
+    tags: REWARDS_TAGS.detail(REWARDS_TAGS.me(), params?.rewardId || ""),
     ...(options || {}),
   });
 };
 
-export const useProjectRewardsByIdQuery = (
-  params: { rewardId?: string; projectId?: string },
-  options?: BaseQueryOptions<components["schemas"]["RewardResponse"]>
-) => {
+export const useProjectRewardsByIdQuery = ({
+  params,
+  options,
+}: UseQueryProps<components["schemas"]["RewardResponse"], { rewardId?: string; projectId?: string }>) => {
   return useBaseQuery<components["schemas"]["RewardResponse"]>({
     resourcePath: REWARDS_API_PATH.PROJECT_REWARD,
-    tags: REWARDS_TAGS.detail(REWARDS_TAGS.project(params.projectId || ""), params.rewardId || ""),
     pathParam: params,
     method: "GET",
-    enabled: !!params.rewardId && !!params.projectId,
+    enabled: !!params?.rewardId && !!params?.projectId,
+    tags: REWARDS_TAGS.detail(REWARDS_TAGS.project(params?.projectId || ""), params?.rewardId || ""),
+    ...(options || {}),
+  });
+};
+
+export const useCreateProjectRewardMutation = ({
+  params,
+  options,
+}: UseMutationProps<components["schemas"]["RewardResponse"], { projectId?: string }, unknown>) => {
+  return useBaseMutation<unknown, components["schemas"]["RewardResponse"]>({
+    resourcePath: REWARDS_API_PATH.PROJECT_REWARD,
+    pathParam: params?.projectId,
+    method: "POST",
+    enabled: !!params?.projectId,
+    invalidatesTags: [{ queryKey: REWARDS_TAGS.project(params?.projectId || ""), exact: true }],
     ...(options || {}),
   });
 };
