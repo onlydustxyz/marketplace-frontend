@@ -23,14 +23,6 @@ type OutletContext = {
   project: Project;
 };
 
-export enum Fields {
-  ContributionCount = "CONTRIBUTION_COUNT",
-  TotalEarned = "EARNED",
-  Login = "LOGIN",
-  RewardCount = "REWARD_COUNT",
-  ToRewardCount = "TO_REWARD_COUNT",
-}
-
 export default function Contributors() {
   const { T } = useIntl();
   const { ledProjectIds } = useAuth();

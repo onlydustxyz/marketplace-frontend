@@ -12,14 +12,6 @@ import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfini
 import { useT } from "talkr";
 import { EarningWrapper } from "./Earning/EarningWrapper";
 import InvoiceSubmission from "./InvoiceSubmission";
-import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-
-export enum Fields {
-  Date = "REQUESTED_AT",
-  RewardId = "CONTRIBUTION",
-  Amount = "AMOUNT",
-  Status = "STATUS",
-}
 
 export enum RewardStatus {
   COMPLETE = "COMPLETE",

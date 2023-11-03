@@ -24,25 +24,25 @@ export default function Headers({ sorting, sortField }: Props) {
   const { T } = useIntl();
   return (
     <HeaderLine>
-      <HeaderCell horizontalMargin onClick={() => sortField(Fields.Date, false)}>
+      <HeaderCell horizontalMargin onClick={() => sortField(Fields.Date)}>
         <TimeLine className="pl-px font-normal" />
         <span>{T("reward.table.date")}</span>
-        <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Fields.Date} />
+        <SortingArrow direction={sorting.isAscending ? "up" : "down"} visible={sorting.field === Fields.Date} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Third} horizontalMargin onClick={() => sortField(Fields.Contributor, true)}>
+      <HeaderCell width={HeaderCellWidth.Third} horizontalMargin onClick={() => sortField(Fields.Contributor)}>
         <Folder3Line className="pl-px font-normal" />
         <span>{T("reward.table.contributor")}</span>
-        <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Fields.Contributor} />
+        <SortingArrow direction={sorting.isAscending ? "up" : "down"} visible={sorting.field === Fields.Contributor} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => sortField(Fields.Amount, false)} horizontalMargin>
+      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => sortField(Fields.Amount)} horizontalMargin>
         <Amount className="pl-px font-normal" />
         <span>{T("reward.table.amount")}</span>
-        <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Fields.Amount} />
+        <SortingArrow direction={sorting.isAscending ? "up" : "down"} visible={sorting.field === Fields.Amount} />
       </HeaderCell>
-      <HeaderCell onClick={() => sortField(Fields.Status, true)} horizontalMargin>
+      <HeaderCell onClick={() => sortField(Fields.Status)} horizontalMargin>
         <FocusLine className="pl-0.5 font-normal" />
         <span>{T("reward.table.status")}</span>
-        <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Fields.Status} />
+        <SortingArrow direction={sorting.isAscending ? "up" : "down"} visible={sorting.field === Fields.Status} />
       </HeaderCell>
     </HeaderLine>
   );

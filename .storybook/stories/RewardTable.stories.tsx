@@ -111,7 +111,7 @@ export const Default = {
         options={{
           fetchNextPage: (() => {}) as ComponentProps<typeof RewardTable>["options"]["fetchNextPage"],
           hasNextPage: false,
-          sorting: { field: Fields.Date, ascending: false },
+          sorting: { field: Fields.Date, isAscending: false },
           sortField: () => {},
           isFetchingNextPage: false,
           refetch: (() => {}) as ComponentProps<typeof RewardTable>["options"]["refetch"],

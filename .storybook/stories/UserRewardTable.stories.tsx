@@ -2,8 +2,8 @@ import { Currency, PaymentStatus } from "src/types";
 
 import { ComponentProps } from "react";
 import UserRewardTable from "src/components/UserRewardTable";
+import { Fields } from "src/components/UserRewardTable/Headers";
 import { MyRewardType as Reward } from "src/components/UserRewardTable/Line";
-import { Fields } from "src/pages/Rewards";
 import { daysFromNow } from "src/utils/date";
 import withAuthProvider from "../decorators/withAuthProvider";
 
