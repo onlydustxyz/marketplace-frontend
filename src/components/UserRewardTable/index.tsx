@@ -7,7 +7,7 @@ import { viewportConfig } from "src/config";
 import MobileUserRewardList from "./MobileUserRewardList";
 import { useMediaQuery } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
-import { Field, Sorting } from "src/pages/Rewards";
+import { Sorting } from "src/pages/Rewards";
 import { ShowMore } from "src/components/Table/ShowMore";
 
 type PropsType = {
@@ -16,7 +16,7 @@ type PropsType = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   sorting: Sorting;
-  applySorting: (field: Field, ascending: boolean) => void;
+  sortField: (field: string) => void;
 };
 
 const UserRewardTable: React.FC<PropsType> = ({
@@ -25,7 +25,7 @@ const UserRewardTable: React.FC<PropsType> = ({
   hasNextPage,
   isFetchingNextPage,
   sorting,
-  applySorting,
+  sortField,
 }) => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -41,7 +41,7 @@ const UserRewardTable: React.FC<PropsType> = ({
     <>
       {isXl ? (
         <div>
-          <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
+          <Table id="reward_table" headers={<Headers sorting={sorting} sortField={sortField} />}>
             {rewards.map(p => (
               <RewardLine
                 key={p?.id}

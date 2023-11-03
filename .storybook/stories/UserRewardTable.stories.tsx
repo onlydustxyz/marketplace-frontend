@@ -2,7 +2,7 @@ import { Currency, PaymentStatus } from "src/types";
 
 import UserRewardTable from "src/components/UserRewardTable";
 import { MyRewardType as Reward } from "src/components/UserRewardTable/Line";
-import { Field } from "src/pages/Rewards";
+import { Fields } from "src/pages/Rewards";
 import { daysFromNow } from "src/utils/date";
 import withAuthProvider from "../decorators/withAuthProvider";
 
@@ -53,10 +53,10 @@ export const Default = {
         hasNextPage={false}
         isFetchingNextPage={false}
         sorting={{
-          field: Field.Date,
-          ascending: false,
+          field: Fields.Date,
+          isAscending: false,
         }}
-        applySorting={() => {}}
+        sortField={() => {}}
       />
   ),
 };

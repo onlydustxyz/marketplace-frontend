@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
@@ -11,8 +10,9 @@ import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfini
 import { useT } from "talkr";
 import { EarningWrapper } from "./Earning/EarningWrapper";
 import InvoiceSubmission from "./InvoiceSubmission";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 
-export enum Field {
+export enum Fields {
   Date = "REQUESTED_AT",
   RewardId = "CONTRIBUTION",
   Amount = "AMOUNT",
@@ -27,32 +27,14 @@ export enum RewardStatus {
 }
 
 export type Sorting = {
-  field: Field;
-  ascending: boolean;
+  field: string | undefined;
+  isAscending: boolean | undefined;
 };
 
 export default function Rewards() {
   const { T } = useT();
 
-  const [sorting, setSorting] = useState({
-    field: Field.Amount,
-    ascending: false,
-  });
-
-  const applySorting = (field: Field, ascending: boolean) =>
-    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : ascending });
-
-  const queryParams = useMemo(
-    () => [
-      ...(sorting
-        ? [
-            { key: "sort", value: [sorting.field] },
-            { key: "direction", value: [sorting.ascending ? "ASC" : "DESC"] },
-          ]
-        : []),
-    ],
-    [sorting]
-  );
+  const { sorting, sortField, queryParams } = useQueryParamsSorting({ field: Fields.Date, isAscending: false });
 
   const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteMyRewardList({
     queryParams,
@@ -92,7 +74,7 @@ export default function Rewards() {
                   hasNextPage={hasNextPage}
                   isFetchingNextPage={isFetchingNextPage}
                   sorting={sorting}
-                  applySorting={applySorting}
+                  sortField={sortField}
                 />
               )}
             </Card>
