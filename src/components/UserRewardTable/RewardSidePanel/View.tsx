@@ -203,7 +203,7 @@ export default function View({
                 </div>
                 {!isCurrencyUSD && data.dollarsEquivalent ? (
                   <>
-                    <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Top}>
+                    <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Bottom}>
                       {T("reward.table.detailsPanel.usdEstimateTooltip")}
                     </Tooltip>
                     <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">

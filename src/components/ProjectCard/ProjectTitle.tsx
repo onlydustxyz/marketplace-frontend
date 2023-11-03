@@ -38,7 +38,7 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
         className="flex flex-row -space-x-1"
         {...withTooltip(formatList(leads.map(lead => lead.login || "")), {
           visible: leads.length > 1,
-          position: TooltipPosition.Top,
+          position: TooltipPosition.Bottom,
         })}
       >
         {leads.map(lead => (

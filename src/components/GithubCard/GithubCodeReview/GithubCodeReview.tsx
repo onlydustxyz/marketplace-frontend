@@ -98,7 +98,7 @@ export default function GithubCodeReview({
               date={new Date(createdAt)}
               tooltipProps={{
                 variant: Variant.Default,
-                position: TooltipPosition.Top,
+                position: TooltipPosition.Bottom,
               }}
             />
           </div>
@@ -110,7 +110,7 @@ export default function GithubCodeReview({
               date={getCodeReviewStatusDate(codeReview)}
               tooltipProps={{
                 variant: Variant.Default,
-                position: TooltipPosition.Top,
+                position: TooltipPosition.Bottom,
               }}
               withIcon
             />

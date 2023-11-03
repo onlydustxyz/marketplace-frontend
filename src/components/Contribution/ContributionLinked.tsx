@@ -10,7 +10,7 @@ export function ContributionLinked({
   withTooltip = true,
   asLink = false,
   tooltipProps = {
-    position: TooltipPosition.TopEnd,
+    position: TooltipPosition.Bottom,
     variant: Variant.Blue,
   },
 }: {

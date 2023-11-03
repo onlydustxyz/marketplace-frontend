@@ -147,7 +147,7 @@ export function ContributionDetail({
                         <ContributionLinked
                           contribution={contribution}
                           tooltipProps={{
-                            position: TooltipPosition.TopEnd,
+                            position: TooltipPosition.Bottom,
                             variant: Variant.Default,
                           }}
                         />

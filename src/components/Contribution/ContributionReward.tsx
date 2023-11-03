@@ -21,7 +21,7 @@ export function ContributionReward({
 
   return (
     <>
-      <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
+      <Tooltip id={tooltipId} clickable position={TooltipPosition.Bottom} variant={Variant.Blue}>
         <div className="flex items-center gap-2">
           <Medal2Fill className="text-sm leading-none text-orange-400" />
           <p className="text-sm font-medium leading-none">
