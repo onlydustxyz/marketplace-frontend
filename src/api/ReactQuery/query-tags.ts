@@ -1,0 +1,7 @@
+export enum QUERY_TAGS {
+  ME = "ME",
+  REWARDS = "REWARDS",
+  PROJECTS = "PROJECTS",
+  GITHUB = "GITHUB",
+  USERS = "USERS",
+}
