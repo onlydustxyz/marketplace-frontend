@@ -26,15 +26,14 @@ export enum RewardStatus {
   PROCESSING = "PROCESSING",
 }
 
-export type Sorting = {
-  field: string | undefined;
-  isAscending: boolean | undefined;
-};
-
 export default function Rewards() {
   const { T } = useT();
 
-  const { sorting, sortField, queryParams } = useQueryParamsSorting({ field: Fields.Date, isAscending: false });
+  const { sorting, sortField, queryParams } = useQueryParamsSorting({
+    field: Fields.Date,
+    isAscending: false,
+    storageKey: "myRewardsSorting",
+  });
 
   const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteMyRewardList({
     queryParams,

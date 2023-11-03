@@ -26,7 +26,11 @@ const RewardList: React.FC = () => {
     refetchBudgets: () => void;
   }>();
 
-  const { sorting, sortField, queryParams } = useQueryParamsSorting({ field: Fields.Date, isAscending: false });
+  const { sorting, sortField, queryParams } = useQueryParamsSorting({
+    field: Fields.Date,
+    isAscending: false,
+    storageKey: "projectRewardsSorting",
+  });
   const {
     data,
     isLoading: isRewardsLoading,

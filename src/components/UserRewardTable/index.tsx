@@ -7,8 +7,8 @@ import { viewportConfig } from "src/config";
 import MobileUserRewardList from "./MobileUserRewardList";
 import { useMediaQuery } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
-import { Sorting } from "src/pages/Rewards";
 import { ShowMore } from "src/components/Table/ShowMore";
+import { Sorting } from "src/types";
 
 type PropsType = {
   rewards: MyRewardType[];

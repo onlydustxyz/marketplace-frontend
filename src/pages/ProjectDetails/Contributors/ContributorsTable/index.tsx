@@ -4,9 +4,9 @@ import { components } from "src/__generated/api";
 import { viewportConfig } from "src/config";
 import { rates } from "src/hooks/useWorkEstimation";
 import { useMediaQuery } from "usehooks-ts";
-import { Field, Sorting } from "..";
 import View from "./View";
 import { ViewMobile } from "./ViewMobile";
+import { Sorting } from "src/types";
 
 type Props<C> = {
   contributors: C[];
@@ -17,7 +17,7 @@ type Props<C> = {
   remainingBudget: number;
   projectKey: string;
   sorting: Sorting;
-  applySorting: (field: Field, ascending: boolean) => void;
+  sortField: (field: string) => void;
 };
 
 export default function ContributorsTable<C extends components["schemas"]["ContributorPageItemResponse"]>({
@@ -29,7 +29,7 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
   remainingBudget,
   projectKey,
   sorting,
-  applySorting,
+  sortField,
 }: Props<C>) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -63,7 +63,7 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
         remainingBudget,
         onRewardGranted: onPaymentRequested,
         sorting,
-        applySorting,
+        sortField,
       }}
     />
   ) : (

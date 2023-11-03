@@ -11,12 +11,10 @@ import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
 import { useApolloClient } from "@apollo/client";
 import { useQueryClient } from "@tanstack/react-query";
+import { Sorting } from "src/types";
 
 type Options = {
-  sorting: {
-    field: string | undefined;
-    isAscending: boolean | undefined;
-  };
+  sorting: Sorting;
   sortField: (field: string) => void;
   refetchBudgets: () => void;
 } & Pick<ReturnType<typeof useInfiniteRewardsList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage" | "refetch">;

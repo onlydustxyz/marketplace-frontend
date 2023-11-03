@@ -6,6 +6,7 @@ import Folder3Line from "src/icons/Folder3Line";
 import FocusLine from "src/icons/FocusLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import Amount from "src/assets/icons/Amount";
+import { Sorting } from "src/types";
 
 export enum Fields {
   Date = "DATE",
@@ -14,13 +15,8 @@ export enum Fields {
   Status = "STATUS",
 }
 
-type SortingType = {
-  field?: string;
-  isAscending?: boolean;
-};
-
 type Props = {
-  sorting: SortingType;
+  sorting: Sorting;
   sortField: (field: Fields) => void;
 };
 
