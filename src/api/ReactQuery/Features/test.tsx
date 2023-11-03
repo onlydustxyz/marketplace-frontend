@@ -6,7 +6,8 @@ const Test = () => {
     params: { projectId: "123" },
     options: {
       onSuccess: async (result, client) => {
-        client.invalidateQueries({ queryKey: ["GetUser"] });
+        // we can use the client directly in the callback if needed ( ex : client.invalidateQueries({ queryKey: ["GetUser"] }) )
+        // make something on the result in the callback ( ex : console.log(result)))
       },
     },
   });
