@@ -8,13 +8,9 @@ import { RequiredFieldsType } from "src/App/Layout/Header/ProfileButton/PayoutIn
 
 export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
-  const {
-    control,
-    formState: { touchedFields },
-    trigger,
-    clearErrors,
-  } = useFormContext();
+  const { watch, control, trigger, clearErrors } = useFormContext();
   const { missingSepaAccount } = requiredFields || {};
+  const [iban, bic] = watch(["iban", "bic"]);
 
   return (
     <Flex className="flex-row gap-5">
@@ -29,6 +25,7 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
               name="iban"
               placeholder={T("profile.form.iban")}
               options={{
+                required: { value: !!bic, message: T("profile.form.ibanRequired") },
                 validate: value => {
                   return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
                 },
@@ -37,9 +34,7 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
               value={value && IBANParser.printFormat(value)}
               onChange={onChange}
               onBlur={() => {
-                if (touchedFields.BIC) {
-                  trigger("bic");
-                }
+                trigger("bic");
                 onBlur();
               }}
               onFocus={() => clearErrors("iban")}
@@ -59,15 +54,17 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
               name="bic"
               placeholder={T("profile.form.bic")}
               options={{
+                required: {
+                  value: !!iban,
+                  message: T("profile.form.bicRequired"),
+                },
                 pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
               }}
               showRequiredError={missingSepaAccount}
               value={value}
               onChange={onChange}
               onBlur={() => {
-                if (touchedFields.IBAN) {
-                  trigger("iban");
-                }
+                trigger("iban");
                 onBlur();
               }}
               onFocus={() => clearErrors("bic")}
