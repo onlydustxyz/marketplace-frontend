@@ -14,7 +14,7 @@ import View from "./View";
 export type MyPayoutInfoType = components["schemas"]["UserPayoutInformationResponse"];
 export type MyRewardsPendingInvoiceType = components["schemas"]["MyRewardsListResponse"];
 
-export default function InvoiceSubmission() {
+export default function InvoiceSubmission({ refetchMyRewards }: { refetchMyRewards: () => void }) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
 
@@ -43,8 +43,9 @@ export default function InvoiceSubmission() {
     variables: { payments: rewardsPendingInvoice?.rewards?.map(p => p.id) },
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => {
+      showToaster(T("invoiceSubmission.toaster.success"));
       refetch();
-      showToaster(T("reward.details.earning.invoiceReceived"));
+      refetchMyRewards();
     },
     update: (cache, _, { variables }) => {
       const { payments } = variables as MarkInvoiceAsReceivedMutationVariables;

@@ -5,12 +5,14 @@ import {
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
 
-import { ComponentProps } from "react";
+import { ComponentProps, JSXElementConstructor } from "react";
+import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { PaymentStatus } from "src/types";
-import withMockedProvider from "../decorators/withMockedProvider";
 import withAuthProvider from "../decorators/withAuthProvider";
+import withMockedProvider from "../decorators/withMockedProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const GITHUB_USER_ID2 = 1321654;
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
@@ -84,10 +86,20 @@ const mocks = [
   },
 ];
 
+const queryClient = new QueryClient();
+
 export default {
   title: "RewardTable",
   component: RewardTable,
-  decorators: [withMockedProvider(mocks), withAuthProvider({ userId: USER_ID }),],
+  decorators: [
+    (Story: JSXElementConstructor<any>) => (
+      <QueryClientProvider client={queryClient}>
+        <Story />
+      </QueryClientProvider>
+    ),
+    withMockedProvider(mocks),
+    withAuthProvider({ userId: USER_ID }),
+  ],
 };
 
 export const Default = {
@@ -97,11 +109,13 @@ export const Default = {
         projectId="project-1"
         rewards={mockPayments}
         options={{
-          fetchNextPage: () => {},
+          fetchNextPage: (() => {}) as ComponentProps<typeof RewardTable>["options"]["fetchNextPage"],
           hasNextPage: false,
-          sorting: { field: undefined, isAscending: undefined },
+          sorting: { field: Fields.Date, isAscending: false },
           sortField: () => {},
           isFetchingNextPage: false,
+          refetch: (() => {}) as ComponentProps<typeof RewardTable>["options"]["refetch"],
+          refetchBudgets: (() => {}) as ComponentProps<typeof RewardTable>["options"]["refetchBudgets"],
         }}
       />
     </ToasterProvider>

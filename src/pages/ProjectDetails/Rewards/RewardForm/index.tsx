@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { Contributor, Inputs } from "./types";
 import { useCallback, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
@@ -15,11 +15,17 @@ import { useLocalStorage } from "usehooks-ts";
 import { reorderBudgets } from "./utils";
 import { BudgetCurrencyType } from "src/utils/money";
 import ErrorFallback from "src/ErrorFallback";
+import { useApolloClient } from "@apollo/client";
+import { useQueryClient } from "@tanstack/react-query";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+  const client = useApolloClient();
+
   const { projectId, projectKey } = useOutletContext<{
     projectId: string;
     projectKey: string;
@@ -41,9 +47,16 @@ const RewardForm: React.FC = () => {
     pathParam: projectId,
     method: "POST",
     onSuccess: async () => {
-      await refetch();
-      showToaster(T("reward.form.sent"));
-      navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
+      try {
+        await refetch();
+        showToaster(T("reward.form.sent"));
+        // refetch PaymentRequests to display MyRewards
+        queryClient.invalidateQueries({ queryKey: ["GetUser"] });
+        await client.refetchQueries({ include: ["GetPaymentRequestIds", "GetProjectPendingContributors"] });
+        navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
+      } catch (e) {
+        console.error(e);
+      }
     },
   });
 
@@ -63,6 +76,7 @@ const RewardForm: React.FC = () => {
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
   const { data } = useUnrewardedContributionsQuery({
+    fetchPolicy: "no-cache",
     variables: {
       projectId,
       githubUserId: contributor?.githubUserId,
@@ -72,15 +86,12 @@ const RewardForm: React.FC = () => {
 
   const { handleSubmit } = formMethods;
 
-  const onValidSubmit: SubmitHandler<Inputs> = useCallback(
-    formData => {
-      if (contributor) {
-        createProjectReward(mapFormDataToVariables({ ...formData, contributor }));
-        setPreferredCurrency(formData.currency);
-      }
-    },
-    [contributor, projectId]
-  );
+  const onValidSubmit = (formData: Inputs) => {
+    if (contributor) {
+      createProjectReward(mapFormDataToVariables({ ...formData, contributor }));
+      setPreferredCurrency(formData.currency);
+    }
+  };
 
   const onWorkItemsChange = useCallback(
     (workItems: WorkItemFragment[]) =>

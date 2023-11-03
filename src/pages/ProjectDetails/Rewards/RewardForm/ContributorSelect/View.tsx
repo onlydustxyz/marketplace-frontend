@@ -244,7 +244,7 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
               value={contributor.login}
               className="flex items-center justify-between p-2 ui-active:cursor-pointer ui-active:bg-white/4"
             >
-              <Contributor contributor={contributor} />
+              <Contributor contributor={contributor} userId={contributor.userId} />
               {contributor.unpaidCompletedContributions > 0 && (
                 <>
                   <Badge

@@ -22,6 +22,7 @@ interface RewardBudgetDetailsRowProps {
   dollar?: number | undefined;
   warning?: boolean;
   warningIcon?: boolean;
+  purple?: boolean;
 }
 
 const RewardBudgetDetailsRow = ({
@@ -31,6 +32,7 @@ const RewardBudgetDetailsRow = ({
   label,
   warning,
   warningIcon,
+  purple,
 }: RewardBudgetDetailsRowProps) => {
   const { T } = useIntl();
   return (
@@ -39,7 +41,7 @@ const RewardBudgetDetailsRow = ({
         {warning && warningIcon ? (
           <div
             {...withTooltip(T("rewardBudget.detail.exceedsBudgetTooltip"), {
-              position: TooltipPosition.Top,
+              position: TooltipPosition.Bottom,
             })}
           >
             <InformationLine className=" leading-[14px] text-[14p] text-orange-500" />
@@ -50,15 +52,21 @@ const RewardBudgetDetailsRow = ({
       <div className="flex flex-row items-center justify-end gap-1">
         {dollar && currency !== Currency.USD ? (
           <p
-            className="font-walsheim text-[10px] font-normal text-spaceBlue-200"
+            className="font-walsheim text-xs font-normal text-spaceBlue-200"
             {...withTooltip(T("rewardBudget.detail.dollarTooltip"), {
-              position: TooltipPosition.Top,
+              position: TooltipPosition.Bottom,
             })}
           >
             {`~${formatMoneyAmount({ amount: dollar, currency: Currency.USD })}`}
           </p>
         ) : null}
-        <p className={cn("font-walsheim text-sm font-normal", warning && "text-orange-500")}>
+        <p
+          className={cn(
+            "font-walsheim text-sm font-normal",
+            warning && "text-orange-500",
+            purple && " text-spacePurple-500"
+          )}
+        >
           {formatMoneyAmount({
             amount: amount,
             currency: currency,
@@ -91,6 +99,7 @@ const RewardBudgetDetails = ({ budget, amount, selectedBudgetDollarEquivalent }:
         dollar={selectedBudgetDollarEquivalent}
         amount={amount}
         warning={amountExceeds}
+        purple
       />
       <RewardBudgetDetailsRow
         label={T("rewardBudget.detail.left")}

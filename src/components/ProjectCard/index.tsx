@@ -114,7 +114,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
                           topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
                         })
                       : "",
-                    { position: TooltipPosition.Top, className: "w-fit" }
+                    { position: TooltipPosition.Bottom, className: "w-fit" }
                   )}
                 >
                   <div className="flex flex-row -space-x-1">

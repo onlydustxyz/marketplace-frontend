@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
@@ -6,6 +5,7 @@ import Button, { ButtonSize } from "src/components/Button";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import { withTooltip } from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
@@ -14,25 +14,13 @@ import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/use
 import { useIntl } from "src/hooks/useIntl";
 import { rates } from "src/hooks/useWorkEstimation";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
+import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/pages/ProjectDetails/Title";
 import { Project } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
 
 type OutletContext = {
   project: Project;
-};
-
-export enum Field {
-  ContributionCount = "CONTRIBUTION_COUNT",
-  TotalEarned = "EARNED",
-  Login = "LOGIN",
-  RewardCount = "REWARD_COUNT",
-  ToRewardCount = "TO_REWARD_COUNT",
-}
-
-export type Sorting = {
-  field: Field;
-  ascending: boolean;
 };
 
 export default function Contributors() {
@@ -49,25 +37,11 @@ export default function Contributors() {
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
-  const [sorting, setSorting] = useState({
-    field: isProjectLeader ? Field.ToRewardCount : Field.ContributionCount,
-    ascending: false,
+  const { sorting, sortField, queryParams } = useQueryParamsSorting({
+    field: isProjectLeader ? Fields.ToRewardCount : Fields.ContributionCount,
+    isAscending: false,
+    storageKey: "projectContributorsSorting",
   });
-
-  const applySorting = (field: Field, ascending: boolean) =>
-    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : ascending });
-
-  const queryParams = useMemo(
-    () => [
-      ...(sorting
-        ? [
-            { key: "sort", value: [sorting.field] },
-            { key: "direction", value: [sorting.ascending ? "ASC" : "DESC"] },
-          ]
-        : []),
-    ],
-    [sorting]
-  );
 
   const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
     projectId,
@@ -132,7 +106,7 @@ export default function Contributors() {
             projectId,
             projectKey,
             sorting,
-            applySorting,
+            sortField,
           }}
         />
       )}

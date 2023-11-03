@@ -11,6 +11,8 @@ import { useShowToaster } from "src/hooks/useToaster";
 import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import { ProfileType } from "./types";
 import { useQueryClient } from "@tanstack/react-query";
+import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
+import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
 
 type Props = {
   open: boolean;
@@ -34,6 +36,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     onSuccess: () => {
       showToaster(T("profile.form.success"));
       queryClient.invalidateQueries();
+      setOpen(false);
     },
   });
 
@@ -53,6 +56,9 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     reset(formData);
   };
 
+  const { isContactInfoValid, isPaymentInfoValid, isContactInfoComplete, isPayoutInfoComplete, requiredFields } =
+    usePayoutInfoValidation(user);
+
   return (
     <SidePanel open={open} setOpen={setOpen}>
       <div className="flex h-full flex-col">
@@ -65,6 +71,11 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
             <PayoutInfoSidePanelView
               saveButtonDisabled={userPayoutInformationIsPending || !isDirty}
               unsavedChanges={isDirty}
+              isContactInfoComplete={isContactInfoComplete}
+              isContactInfoValid={isContactInfoValid}
+              isPaymentInfoValid={isPaymentInfoValid}
+              isPayoutInfoComplete={isPayoutInfoComplete}
+              requiredFields={requiredFields}
             />
           </form>
         </FormProvider>
@@ -76,41 +87,38 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
 type UserPayoutRequestType = components["schemas"]["UserPayoutInformationRequest"];
 
 const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
+  const isEthName = values.ethWallet.match(ENS_DOMAIN_REGEXP);
+  const sepaAccount = values.bic && values.iban ? { bic: values.bic, iban: values.iban } : undefined;
+
   const variables: UserPayoutRequestType = {
     ...(values.profileType === ProfileType.Company
       ? {
           company: {
-            name: values.companyName,
-            identificationNumber: values.companyIdentificationNumber,
+            name: values.companyName || undefined,
+            identificationNumber: values.companyIdentificationNumber || undefined,
             owner: {
-              firstname: values.firstname,
-              lastname: values.lastname,
+              firstname: values.firstname || undefined,
+              lastname: values.lastname || undefined,
             },
           },
         }
       : {
           person: {
-            firstname: values.firstname,
-            lastname: values.lastname,
+            firstname: values.firstname || undefined,
+            lastname: values.lastname || undefined,
           },
         }),
     location: {
-      address: values.address,
-      postalCode: values.postCode,
-      city: values.city,
-      country: values.country,
+      address: values.address || undefined,
+      postalCode: values.postCode || undefined,
+      city: values.city || undefined,
+      country: values.country || undefined,
     },
     payoutSettings: {
       usdPreferredMethod: values.usdPreferredMethod,
-      ...(values.usdPreferredMethod === PreferredMethod.Fiat
-        ? {
-            sepaAccount: {
-              bic: values.bic,
-              iban: values.iban,
-            },
-          }
-        : null),
-      ethAddress: values.ethWallet || undefined,
+      sepaAccount,
+      ethName: isEthName && values.ethWallet ? values.ethWallet : undefined,
+      ethAddress: !isEthName && values.ethWallet ? values.ethWallet : undefined,
       starknetAddress: values.starknetWallet || undefined,
       optimismAddress: values.optimismWallet || undefined,
       aptosAddress: values.aptosWallet || undefined,
@@ -121,9 +129,9 @@ const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
   return variables;
 };
 
-type UserPayoutType = components["schemas"]["UserPayoutInformationResponse"];
+export type UserPayoutType = components["schemas"]["UserPayoutInformationResponse"];
 
-type FormDataType = {
+export type FormDataType = {
   firstname: string;
   lastname: string;
   companyName: string;
@@ -140,12 +148,10 @@ type FormDataType = {
   bic: string;
   usdPreferredMethod: components["schemas"]["UserPayoutInformationResponsePayoutSettings"]["usdPreferredMethod"];
   profileType: ProfileType;
-  hasValidContactInfo: boolean;
-  hasValidPayoutSettings: boolean;
 };
 
 const decodeQuery = (user?: UserPayoutType): FormDataType => {
-  const { location, person, payoutSettings, company, hasValidContactInfo } = user || {};
+  const { location, person, payoutSettings, company } = user || {};
   return {
     firstname: (person?.firstname || company?.owner?.firstname) ?? "",
     lastname: (person?.lastname || company?.owner?.lastname) ?? "",
@@ -163,7 +169,5 @@ const decodeQuery = (user?: UserPayoutType): FormDataType => {
     bic: payoutSettings?.sepaAccount?.bic ?? "",
     usdPreferredMethod: payoutSettings?.usdPreferredMethod ?? PreferredMethod.Crypto,
     profileType: user?.isCompany ? ProfileType.Company : ProfileType.Individual,
-    hasValidContactInfo: !!hasValidContactInfo,
-    hasValidPayoutSettings: !!payoutSettings?.hasValidPayoutSettings,
   };
 };

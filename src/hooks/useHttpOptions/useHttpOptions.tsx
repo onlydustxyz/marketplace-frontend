@@ -1,11 +1,24 @@
+import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useTokenSet } from "src/hooks/useTokenSet";
+import { validateImpersonationHeader } from "src/utils/validateImpersonationHeader";
 
-export function useHttpOptions(method: "GET" | "POST" | "PUT" | "DELETE"): {
-  method: "GET" | "POST" | "PUT" | "DELETE";
-  headers: {
-    Authorization?: string;
+type useHttpOptionsReturn = {
+  options: {
+    method: "GET" | "POST" | "PUT" | "DELETE";
+    headers: {
+      Authorization?: string;
+      "Content-Type": string;
+      accept: string;
+    } & ReturnType<ReturnType<typeof useImpersonationClaims>["getImpersonationHeaders"]>;
   };
-} {
+  isImpersonating: boolean;
+  isValidImpersonation: boolean;
+};
+
+export function useHttpOptions(method: "GET" | "POST" | "PUT" | "DELETE"): useHttpOptionsReturn {
+  const { getImpersonationHeaders } = useImpersonationClaims();
+  const impersonationHeaders = getImpersonationHeaders();
+
   const { tokenSet } = useTokenSet();
   const token = tokenSet?.accessToken;
 
@@ -15,8 +28,12 @@ export function useHttpOptions(method: "GET" | "POST" | "PUT" | "DELETE"): {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       "Content-Type": "application/json",
       accept: "application/json",
+      ...impersonationHeaders,
     },
   };
 
-  return options;
+  const isImpersonating = Boolean(options.headers["X-Impersonation-Claims"]);
+  const isValidImpersonation = validateImpersonationHeader(options.headers["X-Impersonation-Claims"] ?? "");
+
+  return { options, isImpersonating, isValidImpersonation };
 }

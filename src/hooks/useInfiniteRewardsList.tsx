@@ -1,41 +1,24 @@
-import { useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { useHttpOptions } from "./useHttpOptions";
-import { getEndpointUrl, QueryParam } from "src/utils/getEndpointUrl";
 import { components } from "src/__generated/api";
-import { PageData, PagesData } from "src/types";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useInfiniteRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import { QueryParams } from "src/utils/getEndpointUrl";
 
 export type RewardPageItemType = components["schemas"]["RewardPageItemResponse"];
 
-type RewardPageData = PageData<{ rewards: RewardPageItemType[] }>;
-type RewardsPagesData = PagesData<RewardPageData>;
-
 interface useInfiniteRewardsListProps {
   projectId: string;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
   enabled?: boolean;
 }
 
-export default function useInfiniteRewardsList({
-  projectId,
-  queryParams,
-}: useInfiniteRewardsListProps): UseInfiniteQueryResult<RewardsPagesData, unknown> {
-  const options = useHttpOptions("GET");
-
-  return useInfiniteQuery({
-    queryKey: ["contributors", queryParams],
-    queryFn: ({ pageParam }) =>
-      fetch(
-        getEndpointUrl({
-          resourcePath: ApiResourcePaths.PROJECT_REWARDS,
-          pageParam,
-          pageSize: 9,
-          pathParam: projectId,
-          queryParams,
-        }),
-        options
-      ).then(res => res.json()),
-    initialPageParam: 0,
-    getNextPageParam: lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
-  });
+export default function useInfiniteRewardsList({ projectId, queryParams }: useInfiniteRewardsListProps) {
+  return useInfiniteRestfulData<components["schemas"]["RewardsPageResponse"]>(
+    {
+      resourcePath: ApiResourcePaths.PROJECT_REWARDS,
+      pageSize: 10,
+      pathParam: projectId,
+      queryParams,
+    },
+    { queryKey: ["reward-list", queryParams] }
+  );
 }

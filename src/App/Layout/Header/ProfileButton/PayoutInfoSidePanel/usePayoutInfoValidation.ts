@@ -1,47 +1,71 @@
-import { UserPayoutSettingsFragment } from "src/__generated/graphql";
-import { PreferredMethod } from "src/__generated/graphql";
+import { useMemo } from "react";
+import { UserPayoutType } from "./PayoutInfoSidePanel";
+
+export type RequiredFieldsType = {
+  missingAptosWallet?: boolean;
+  missingEthWallet?: boolean;
+  missingOptimismWallet?: boolean;
+  missingSepaAccount?: boolean;
+  missingStarknetWallet?: boolean;
+};
 
 // Contact & payout informations validation hook
-export function usePayoutInfoValidation(user?: UserPayoutSettingsFragment | null): {
+export function usePayoutInfoValidation(user?: UserPayoutType): {
   isContactInfoValid: boolean;
+  isContactInfoComplete: boolean;
   isPaymentInfoValid: boolean;
+  isPayoutInfoComplete: boolean;
+  requiredFields: RequiredFieldsType;
 } {
+  const { hasValidContactInfo, payoutSettings, location, company, person, isCompany } = user || {};
+  const { address, city, country, postalCode } = location || {};
   const {
-    firstname,
-    lastname,
-    address,
-    city,
-    postCode,
-    country,
-    isCompany,
-    companyName,
-    companyIdentificationNumber,
-    usdPreferredMethod,
-    ethWallet,
-    starknetWallet,
-    optimismWallet,
-    aptosWallet,
-    iban,
-    bic,
-  } = user || {};
+    missingAptosWallet,
+    missingEthWallet,
+    missingOptimismWallet,
+    missingSepaAccount,
+    missingStarknetWallet,
+    sepaAccount,
+    ethAddress,
+    ethName,
+    starknetAddress,
+    aptosAddress,
+    optimismAddress,
+  } = payoutSettings || {};
 
-  let isContactInfoValid = false;
-  let isPaymentInfoValid = false;
-
-  if (address && city && country && postCode && firstname && lastname) {
-    if (isCompany) {
-      isContactInfoValid = Boolean(companyName && companyIdentificationNumber);
+  const isContactInfoComplete = useMemo(() => {
+    if (address && city && country && postalCode) {
+      if (isCompany && company) {
+        return Boolean(
+          company.name && company.identificationNumber && company.owner?.firstname && company.owner?.lastname
+        );
+      }
+      return Boolean(person?.firstname && person?.lastname);
     }
+    return false;
+  }, [address, city, country, postalCode, company, isCompany, person]);
 
-    isContactInfoValid = true;
-  }
+  const isPayoutInfoComplete = useMemo(() => {
+    if ((ethAddress || ethName) && starknetAddress && aptosAddress && optimismAddress) {
+      if (isCompany) {
+        return Boolean(sepaAccount?.bic && sepaAccount?.iban);
+      }
+      return true;
+    }
+    return false;
+  }, [ethAddress, ethName, starknetAddress, aptosAddress, optimismAddress, sepaAccount, isCompany]);
 
-  if (usdPreferredMethod === PreferredMethod.Fiat) {
-    isPaymentInfoValid = Boolean(bic && iban);
-  } else {
-    const conditionsArray = [!!ethWallet, !!starknetWallet, !!optimismWallet, !!aptosWallet];
-    isPaymentInfoValid = conditionsArray.includes(true);
-  }
-
-  return { isContactInfoValid, isPaymentInfoValid };
+  return {
+    isContactInfoValid: Boolean(hasValidContactInfo),
+    isPaymentInfoValid: Boolean(payoutSettings?.hasValidPayoutSettings),
+    isContactInfoComplete,
+    isPayoutInfoComplete,
+    requiredFields: {
+      missingAptosWallet,
+      missingEthWallet,
+      missingOptimismWallet,
+      missingSepaAccount,
+      missingStarknetWallet,
+    },
+  };
 }

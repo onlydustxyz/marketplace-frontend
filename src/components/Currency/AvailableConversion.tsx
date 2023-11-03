@@ -1,11 +1,14 @@
 import { FC, useMemo } from "react";
 import { Chip } from "src/components/Chip/Chip";
-import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { Currency } from "src/types";
 import { CurrencyIcons } from "./CurrencyIcon";
 import { Chips } from "src/components/Chips/Chips";
 import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { useIntl } from "src/hooks/useIntl";
+import Tooltip from "src/components/Tooltip";
+import { TooltipPosition } from "src/components/Tooltip";
+import { cn } from "src/utils/cn";
+import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 
 // TODO : doc
 /**
@@ -26,14 +29,14 @@ export type AvailableConversion = {
   numberCurencyToShow?: number;
 };
 
-const ConversionAmount = ({ amount }: { amount: number | undefined }) => {
+const ConversionAmount = ({ amount, currency }: { amount: number | undefined; currency?: BudgetCurrencyType }) => {
   if (!amount) {
     return null;
   }
 
   return (
-    <p className="font-walsheim text-sm font-bold leading-[14px]">
-      {formatMoneyAmount({ amount: amount, currency: Currency.USD })}
+    <p className="text-body-s leading-[14px]">
+      {formatMoneyAmount({ amount: amount, currency: currency || Currency.USD })}
     </p>
   );
 };
@@ -44,7 +47,7 @@ const ConversionDollar = ({ dollar }: { dollar: number | undefined }) => {
   }
 
   return (
-    <p className="font-walsheim text-[10px] text-spaceBlue-200">
+    <p className="font-walsheim text-xs text-spaceBlue-200">
       {`~${formatMoneyAmount({ amount: dollar, currency: Currency.USD })}`}
     </p>
   );
@@ -62,12 +65,11 @@ const ConversionTooltip = ({
   if (!tooltipId) {
     return null;
   }
-
   return (
-    <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
+    <Tooltip id={tooltipId} clickable position={TooltipPosition.Bottom}>
       <div className="flex flex-col gap-2">
-        <p className="font-walsheim text-sm font-medium text-white">{T("availableConversion.tooltip.title")}</p>
-        {currencies && (
+        <p className={cn("text-greyscale-50", currencies && "font-medium")}>{T("availableConversion.tooltip.title")}</p>
+        {currencies && currencies.length > 0 && (
           <div className="flex flex-col gap-1">
             {currencies.map(currency => (
               <div key={currency.currency} className="flex items-center justify-start gap-1">
@@ -79,7 +81,7 @@ const ConversionTooltip = ({
                     {formatMoneyAmount({ amount: currency.amount, currency: currency.currency })}
                   </p>
                   {currency.currency !== Currency.USD && (
-                    <p className="font-walsheim text-[10px] text-spaceBlue-200">
+                    <p className="font-walsheim text-xs text-spaceBlue-200">
                       {currency.dollar
                         ? `~${formatMoneyAmount({ amount: currency.dollar, currency: Currency.USD })}`
                         : T("availableConversion.tooltip.na")}
@@ -102,6 +104,8 @@ export const AvailableConversion: FC<AvailableConversion> = ({
   currency,
   totalAmount,
 }) => {
+  const orderedCurrencies = useCurrenciesOrder({ currencies: currencies });
+
   const tooltipIdProps = useMemo(() => {
     const props: { "data-tooltip-id"?: string; "data-tooltip-hidden"?: boolean } = {};
 
@@ -110,26 +114,26 @@ export const AvailableConversion: FC<AvailableConversion> = ({
     }
 
     /** if we have only one currency and the she is USD don't show the tooltips */
-    if (!currencies && currency) {
-      props["data-tooltip-hidden"] = currency.currency === Currency.USD;
+    if (!orderedCurrencies && currency) {
+      props["data-tooltip-hidden"] = currency.currency === Currency.USD || !currency.dollar;
     }
 
     return props;
-  }, []);
+  }, [currency, orderedCurrencies]);
 
   const currencyArray = useMemo(() => {
-    if (currencies) return currencies;
+    if (currencies) return orderedCurrencies;
 
     if (currency) {
       return [currency];
     }
 
     return [];
-  }, [currencies]);
+  }, [orderedCurrencies, currencies]);
 
   return (
     <>
-      <div {...tooltipIdProps} className="flex flex-row items-center justify-start gap-1">
+      <div {...(orderedCurrencies ? tooltipIdProps : {})} className="flex flex-row items-center justify-start gap-1">
         <Chips number={numberCurencyToShow}>
           {currencyArray?.map(currency => (
             <div key={currency.currency}>
@@ -139,10 +143,12 @@ export const AvailableConversion: FC<AvailableConversion> = ({
             </div>
           ))}
         </Chips>
-        <ConversionAmount amount={totalAmount || currency?.amount} />
-        <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
+        <ConversionAmount amount={totalAmount || currency?.amount} currency={currency?.currency} />
+        <div {...(currency ? tooltipIdProps : {})}>
+          <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
+        </div>
       </div>
-      <ConversionTooltip tooltipId={tooltipId} currencies={currencies} />
+      <ConversionTooltip tooltipId={tooltipId} currencies={orderedCurrencies} />
     </>
   );
 };

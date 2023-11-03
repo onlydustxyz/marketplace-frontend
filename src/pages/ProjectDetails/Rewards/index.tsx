@@ -12,7 +12,11 @@ export default function Rewards() {
   const { project } = useOutletContext<OutletContext>();
   const { id: projectId, slug: projectKey } = project;
 
-  const { data: projectBudget, isLoading: isBudgetLoading } = useRestfulData({
+  const {
+    data: projectBudget,
+    isLoading: isBudgetLoading,
+    refetch,
+  } = useRestfulData({
     resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
     pathParam: { projectId },
     method: "GET",
@@ -25,6 +29,7 @@ export default function Rewards() {
         projectBudget,
         projectId,
         projectKey,
+        refetchBudgets: refetch,
       }}
     />
   );

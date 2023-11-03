@@ -6,13 +6,13 @@ import Starknet from "src/assets/icons/Starknet";
 import Card from "src/components/Card";
 import { Chip } from "src/components/Chip/Chip";
 import { withTooltip } from "src/components/Tooltip";
-import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimation/BudgetBar";
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
 import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { LeftToSpend } from "./LeftToSpend";
 import { ReactElement } from "react";
 import { useIntl } from "src/hooks/useIntl";
+import RewardBudgetBar from "src/components/RewardBudget/BudgetBar/RewardBudgetBar";
 
 const budgetName: Record<Currency, string> = {
   [Currency.USD]: "project.details.remainingBudget.budget.dollars",
@@ -53,7 +53,7 @@ export function BudgetCard({ budget, className }: Props) {
         <div className="flex items-center text-sm text-white">{T(budgetName[budget.currency])}</div>
         <div className="flex flex-wrap items-center font-belwe text-2xl text-greyscale-50">
           <Chip className="mr-1 h-5 w-5">{budgetIcons[budget.currency]}</Chip>
-          {formatMoneyAmount({ amount: budget.initialAmount, currency: budget.currency, showCurrency: false })}
+          {formatMoneyAmount({ amount: budget.remaining, currency: budget.currency, showCurrency: false })}
           {!isUsd ? <div className="ml-1 mt-2 text-sm">{budget.currency}</div> : null}
 
           {hasUsdEquivalent ? (
@@ -69,7 +69,7 @@ export function BudgetCard({ budget, className }: Props) {
           ) : null}
         </div>
         <div className="flex items-center gap-2">
-          <BudgetBar budget={budget} pendingSpending={0} />
+          <RewardBudgetBar total={budget.initialAmount} remaining={budget.remaining} spending={0} />
           <LeftToSpend budget={budget} />
         </div>
       </div>

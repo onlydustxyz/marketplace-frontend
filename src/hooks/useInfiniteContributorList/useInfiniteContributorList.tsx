@@ -1,43 +1,21 @@
-import { useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
-import { PageData, PagesData } from "src/types";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { getEndpointUrl } from "src/utils/getEndpointUrl";
-import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { components } from "src/__generated/api";
-
-type ContributorsPageData = PageData<{ contributors: components["schemas"]["ContributorPageItemResponse"][] }>;
-type ContributorsPagesData = PagesData<ContributorsPageData>;
-
-type QueryParam = {
-  key: string;
-  value: Array<string | number | boolean>;
-};
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useInfiniteRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import { QueryParams } from "src/utils/getEndpointUrl";
 
 interface UseInfiniteContributorsProps {
   projectId: string;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
 }
 
-export default function useInfiniteContributorList({
-  projectId,
-  queryParams,
-}: UseInfiniteContributorsProps): UseInfiniteQueryResult<ContributorsPagesData, unknown> {
-  const options = useHttpOptions("GET");
-
-  return useInfiniteQuery({
-    queryKey: ["contributors", projectId, queryParams],
-    queryFn: ({ pageParam }) =>
-      fetch(
-        getEndpointUrl({
-          resourcePath: ApiResourcePaths.GET_PROJECT_CONTRIBUTORS,
-          pageParam,
-          pageSize: 15,
-          pathParam: projectId,
-          queryParams,
-        }),
-        options
-      ).then(res => res.json()),
-    initialPageParam: 0,
-    getNextPageParam: lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
-  });
+export default function useInfiniteContributorList({ projectId, queryParams }: UseInfiniteContributorsProps) {
+  return useInfiniteRestfulData<components["schemas"]["ContributorsPageResponse"]>(
+    {
+      resourcePath: ApiResourcePaths.GET_PROJECT_CONTRIBUTORS,
+      pageSize: 15,
+      pathParam: projectId,
+      queryParams,
+    },
+    { queryKey: ["contributors", projectId, queryParams] }
+  );
 }

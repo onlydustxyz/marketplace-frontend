@@ -6,27 +6,21 @@ import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
 import { withTooltip } from "src/components/Tooltip";
 import { components } from "src/__generated/api";
-import QuestionMarkLine from "src/icons/QuestionMarkLine";
 
 type Props = {
   status: PaymentStatusUnion;
-  isProjectLeaderView?: boolean;
 };
-
-interface PayoutInfoMissingTagProps {
-  isProjectLeaderView?: boolean;
-}
 
 export type PaymentStatusType = components["schemas"]["RewardPageItemResponse"]["status"];
 type PaymentStatusUnion = `${PaymentStatus}`;
 
-export default function PayoutStatus({ status, isProjectLeaderView }: Props) {
+export default function PayoutStatus({ status }: Props) {
   const statuses: Record<PaymentStatusUnion, JSX.Element> = {
     [PaymentStatus.COMPLETE]: <CompleteTag />,
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
     [PaymentStatus.PENDING_SIGNUP]: <PendingSignup />,
     [PaymentStatus.PROCESSING]: <ProcessingTag />,
-    [PaymentStatus.MISSING_PAYOUT_INFO]: <PayoutInfoMissingTag isProjectLeaderView={isProjectLeaderView} />,
+    [PaymentStatus.MISSING_PAYOUT_INFO]: <PayoutInfoMissingTag />,
   };
   return statuses[status];
 }
@@ -57,7 +51,7 @@ const PendingSignup = () => {
   const { T } = useIntl();
 
   return (
-    <Tag size={TagSize.Medium} {...withTooltip(T("reward.status.tooltip.processing"), { className: "w-44" })}>
+    <Tag size={TagSize.Medium} {...withTooltip(T("reward.status.tooltip.pending"), { className: "w-44" })}>
       <ErrorWarningLine className="text-pink-500" />
       <span className="font-normal text-greyscale-50">{T("reward.status.pendingSignup")}</span>
     </Tag>
@@ -79,25 +73,16 @@ const InvoiceNeededTag = () => {
   );
 };
 
-const PayoutInfoMissingTag: React.FC<PayoutInfoMissingTagProps> = ({ isProjectLeaderView = false }) => {
+const PayoutInfoMissingTag = () => {
   const { T } = useIntl();
 
   return (
     <Tag
       size={TagSize.Medium}
-      borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
-      {...withTooltip(
-        isProjectLeaderView
-          ? T("reward.status.tooltip.payoutInfoMissingAsLeader")
-          : T("reward.status.tooltip.payoutInfoMissingAsContributor"),
-        { className: "w-52" }
-      )}
+      borderColor={TagBorderColor.Orange}
+      {...withTooltip(T("reward.status.tooltip.payoutInfoMissing"), { className: "w-52" })}
     >
-      {isProjectLeaderView ? (
-        <QuestionMarkLine className="text-orange-500" />
-      ) : (
-        <ErrorWarningLine className="text-pink-500" />
-      )}
+      <ErrorWarningLine className="text-orange-500" />
       <span className="whitespace-nowrap font-normal text-greyscale-50">{T("reward.status.payoutInfoMissing")}</span>
     </Tag>
   );

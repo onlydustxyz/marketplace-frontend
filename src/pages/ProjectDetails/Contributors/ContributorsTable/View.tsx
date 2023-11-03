@@ -1,24 +1,21 @@
+import { ComponentProps } from "react";
 import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { rates } from "src/hooks/useWorkEstimation";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
-import { Field, Sorting } from "..";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
+import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 
 type Props<C> = {
   contributors: C[];
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
   isProjectLeader: boolean;
   remainingBudget: number;
   onRewardGranted: (contributor: C) => void;
-  sorting: Sorting;
-  applySorting: (field: Field, ascending: boolean) => void;
-};
+} & ComponentProps<typeof Headers> &
+  Pick<ReturnType<typeof useInfiniteContributorList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage">;
 
 export default function View<C extends components["schemas"]["ContributorPageItemResponse"]>({
   contributors,
@@ -27,9 +24,9 @@ export default function View<C extends components["schemas"]["ContributorPageIte
   isFetchingNextPage,
   isProjectLeader,
   remainingBudget,
-  onRewardGranted: onPaymentRequested,
+  onRewardGranted,
   sorting,
-  applySorting,
+  sortField,
 }: Props<C>) {
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
@@ -37,7 +34,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
     <Card className="h-full">
       <Table
         id="contributors_table"
-        headers={<Headers sorting={sorting} applySorting={applySorting} isProjectLeader={isProjectLeader} />}
+        headers={<Headers sorting={sorting} sortField={sortField} isProjectLeader={isProjectLeader} />}
       >
         {contributors.map(contributor => (
           <ContributorLine
@@ -46,7 +43,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
               contributor,
               isProjectLeader,
               isGivingRewardDisabled: isSendingNewPaymentDisabled,
-              onRewardGranted: onPaymentRequested,
+              onRewardGranted,
             }}
           />
         ))}

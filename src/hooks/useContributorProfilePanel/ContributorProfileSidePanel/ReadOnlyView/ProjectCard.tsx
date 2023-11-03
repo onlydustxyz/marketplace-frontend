@@ -1,39 +1,30 @@
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
+import { components } from "src/__generated/api";
 import Card from "src/components/Card";
+import PrivateTag from "src/components/PrivateTag";
 import RoundedImage from "src/components/RoundedImage";
 import Tag, { TagSize } from "src/components/Tag";
-import User3Line from "src/icons/User3Line";
-import FundsLine from "src/icons/FundsLine";
-import { formatMoneyAmount } from "src/utils/money";
-import StarLine from "src/icons/StarLine";
-import { useIntl } from "src/hooks/useIntl";
-import displayRelativeDate from "src/utils/displayRelativeDate";
 import { withTooltip } from "src/components/Tooltip";
-import PrivateTag from "src/components/PrivateTag";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-export type Project = {
-  id: string;
-  slug: string;
-  logoUrl: string | undefined;
-  name: string;
-  contributorCount: number;
-  totalGranted: number;
-  leadSince?: Date;
-  lastContribution?: Date;
-  contributionCount?: number;
-  private?: boolean;
-};
+import { useIntl } from "src/hooks/useIntl";
+import FundsLine from "src/icons/FundsLine";
+import StarLine from "src/icons/StarLine";
+import User3Line from "src/icons/User3Line";
+import displayRelativeDate from "src/utils/displayRelativeDate";
+import { formatMoneyAmount } from "src/utils/money";
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({ project }: { project: components["schemas"]["UserProfileProjects"] }) {
   const {
     logoUrl,
     name,
     contributorCount,
     totalGranted,
     leadSince,
-    contributionCount,
-    lastContribution,
-    private: private_,
+    userContributionCount,
+    userLastContributedAt,
+    visibility,
   } = project;
+
+  const isPrivate = visibility === "PRIVATE";
 
   const { T } = useIntl();
 
@@ -42,7 +33,7 @@ export default function ProjectCard({ project }: { project: Project }) {
       <div className="flex h-full flex-col gap-3 p-4">
         <div className="relative w-fit">
           <RoundedImage src={logoUrl || onlyDustLogo} alt={name} />
-          {private_ && (
+          {isPrivate && (
             <div className="absolute -bottom-2.5 -right-2.5">
               <PrivateTag />
             </div>
@@ -73,21 +64,16 @@ export default function ProjectCard({ project }: { project: Project }) {
               <StarLine className="text-base" /> {T("profile.sections.projects.projectLead")}
             </div>
           ) : (
-            <>{T("profile.sections.projects.contributionCount", { count: contributionCount })}</>
+            T("profile.sections.projects.contributionCount", { count: userContributionCount })
           )}
         </div>
         <div className="font-walsheim text-xs font-medium text-greyscale-200">
-          {leadSince ? (
-            <>{T("profile.sections.projects.projectLeadSince", { since: displayRelativeDate(leadSince) })}</>
-          ) : (
-            lastContribution && (
-              <>
-                {T("profile.sections.projects.lastContribution", {
-                  lastContribution: displayRelativeDate(lastContribution),
-                })}
-              </>
-            )
-          )}
+          {leadSince
+            ? T("profile.sections.projects.projectLeadSince", { since: displayRelativeDate(new Date(leadSince)) })
+            : userLastContributedAt &&
+              T("profile.sections.projects.lastContribution", {
+                lastContribution: displayRelativeDate(new Date(userLastContributedAt)),
+              })}
         </div>
       </div>
     </Card>

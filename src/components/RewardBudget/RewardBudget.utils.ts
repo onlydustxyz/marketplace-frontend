@@ -50,7 +50,7 @@ export namespace RewardBudgetUtils {
     const _r = (remaining || 0) > 0 ? remaining : 0;
     const _s = (spending || 0) > 0 ? spending : 0;
     return {
-      remaining: Math.floor((_r / _t) * 100) || 0,
+      remaining: Math.floor(((_r - _s) / _t) * 100) || 0,
       spending: Math.floor((_s / _t) * 100) || 0,
     };
   };

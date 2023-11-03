@@ -1,24 +1,19 @@
-import Table from "src/components/Table";
-import RewardLine, { MyRewardType } from "./Line";
-import Headers from "./Headers";
-import { useState } from "react";
-import RewardSidePanel from "./RewardSidePanel";
-import { viewportConfig } from "src/config";
-import MobileUserRewardList from "./MobileUserRewardList";
-import { useMediaQuery } from "usehooks-ts";
+import { ComponentProps, useState } from "react";
 import SidePanel from "src/components/SidePanel";
-import { Field, Sorting } from "src/pages/Rewards";
+import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useAuth } from "src/hooks/useAuth";
+import { viewportConfig } from "src/config";
+import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfiniteMyRewardList";
+import { useMediaQuery } from "usehooks-ts";
+import Headers from "./Headers";
+import RewardLine, { MyRewardType } from "./Line";
+import MobileUserRewardList from "./MobileUserRewardList";
+import RewardSidePanel from "./RewardSidePanel";
 
 type PropsType = {
   rewards: MyRewardType[];
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  sorting: Sorting;
-  applySorting: (field: Field, ascending: boolean) => void;
-};
+} & ComponentProps<typeof Headers> &
+  Pick<ReturnType<typeof useInfiniteMyRewardList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage">;
 
 const UserRewardTable: React.FC<PropsType> = ({
   rewards,
@@ -26,9 +21,8 @@ const UserRewardTable: React.FC<PropsType> = ({
   hasNextPage,
   isFetchingNextPage,
   sorting,
-  applySorting,
+  sortField,
 }) => {
-  const { ledProjectIds } = useAuth();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
@@ -43,14 +37,13 @@ const UserRewardTable: React.FC<PropsType> = ({
     <>
       {isXl ? (
         <div>
-          <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
+          <Table id="reward_table" headers={<Headers sorting={sorting} sortField={sortField} />}>
             {rewards.map(p => (
               <RewardLine
                 key={p?.id}
                 reward={p}
                 onClick={() => onRewardClick(p)}
                 selected={p?.id === selectedReward?.id}
-                isProjectLeader={ledProjectIds.includes(p.projectId)}
               />
             ))}
           </Table>
@@ -67,7 +60,6 @@ const UserRewardTable: React.FC<PropsType> = ({
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          ledProjectIds={ledProjectIds}
         />
       )}
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>

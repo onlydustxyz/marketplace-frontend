@@ -278,7 +278,7 @@ const config: Config = {
         ".text-body-l-bold": {
           fontSize: "18px",
           fontFamily: theme("fontFamily.walsheim"),
-          fontWeight: "600",
+          fontWeight: "500",
           lineHeight: "24px",
           letterSpacing: "-0.18px",
         },
@@ -294,7 +294,7 @@ const config: Config = {
           lineHeight: "20px",
           letterSpacing: "-0.16px",
           fontFamily: theme("fontFamily.walsheim"),
-          fontWeight: "600",
+          fontWeight: "500",
         },
         ".text-body-s": {
           fontSize: "14px",
@@ -308,7 +308,7 @@ const config: Config = {
           lineHeight: "16px",
           letterSpacing: "-0.14px",
           fontFamily: theme("fontFamily.walsheim"),
-          fontWeight: "600",
+          fontWeight: "500",
         },
         ".text-body-xs": {
           fontSize: "12px",
@@ -322,7 +322,7 @@ const config: Config = {
           lineHeight: "16px",
           letterSpacing: "-0.12px",
           fontFamily: theme("fontFamily.walsheim"),
-          fontWeight: "600",
+          fontWeight: "500",
         },
         /* ---------------------------------- CARD ---------------------------------- */
         ".card-light": {

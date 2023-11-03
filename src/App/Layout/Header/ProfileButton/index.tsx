@@ -21,6 +21,7 @@ const ProfileButton = () => {
   const avatarUrl = profile?.userProfiles.at(0)?.avatarUrl || "";
 
   const { data: userInfo } = useRestfulData<components["schemas"]["GetMeResponse"]>({
+    queryKey: ["GetUser"],
     resourcePath: ApiResourcePaths.GET_USER,
     method: "GET",
   });
