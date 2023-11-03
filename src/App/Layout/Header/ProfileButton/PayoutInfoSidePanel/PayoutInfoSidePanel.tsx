@@ -117,8 +117,8 @@ const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
     payoutSettings: {
       usdPreferredMethod: values.usdPreferredMethod,
       sepaAccount,
-      ethName: isEthName ? values.ethWallet : undefined,
-      ethAddress: !isEthName ? values.ethWallet : undefined,
+      ethName: isEthName && values.ethWallet ? values.ethWallet : undefined,
+      ethAddress: !isEthName && values.ethWallet ? values.ethWallet : undefined,
       starknetAddress: values.starknetWallet || undefined,
       optimismAddress: values.optimismWallet || undefined,
       aptosAddress: values.aptosWallet || undefined,
