@@ -684,8 +684,8 @@
       "payoutSettingsRequiredTag": "* required to receive payments",
       "payoutSettingsType": "Preferred payment method",
       "payoutCurrenciesType": "Other currencies",
-      "contactSettingsValidTag": "You're able to receive payments",
-      "payoutSettingsValidTag": "You're able to receive payments on following networks",
+      "contactSettingsValidTag": "You're able to receive rewards",
+      "payoutSettingsValidTag": "You're able to receive rewards on all networks",
       "pictureUploadError": "We were not able to upload your profile picture, please try again.",
       "postCode": "Zip code",
       "profileType": "Account type",
@@ -708,6 +708,7 @@
       "twitter": "Twitter",
       "twitterPlaceholder": "Twitter",
       "typeOfProfile": "Profile type",
+      "usdPreferredMethod": "Preferred payment method for dollars",
       "privacyNotice": "Your info remains private.\n We'll only use it to process payments.",
       "weeklyAllocatedTime": {
         "title": "Weekly allocated time",
@@ -732,8 +733,11 @@
       "button": "Complete payout information",
       "subtitle": "We won't be able to issue any payment until your payout information is completed",
       "title": "Payout information missing",
-      "contact": "Missing information to receive payments",
-      "payment": "Missing addresses to receive payments on some networks"
+      "contact": "Missing information to receive rewards",
+      "payment": {
+        "one": "Missing addresses to receive rewards on __networks__ network",
+        "many": "Missing addresses to receive rewards on __networks__ networks"
+      }
     }
   },
   "publicProfile": {

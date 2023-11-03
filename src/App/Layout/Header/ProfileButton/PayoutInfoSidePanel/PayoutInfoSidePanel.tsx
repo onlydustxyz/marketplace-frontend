@@ -12,6 +12,7 @@ import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import { ProfileType } from "./types";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
+import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
 
 type Props = {
   open: boolean;
@@ -55,7 +56,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     reset(formData);
   };
 
-  const { isContactInfoValid, isContactInfoComplete, isPaymentInfoValid, requiredFields } =
+  const { isContactInfoValid, isPaymentInfoValid, isContactInfoComplete, isPayoutInfoComplete, requiredFields } =
     usePayoutInfoValidation(user);
 
   return (
@@ -73,6 +74,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
               isContactInfoComplete={isContactInfoComplete}
               isContactInfoValid={isContactInfoValid}
               isPaymentInfoValid={isPaymentInfoValid}
+              isPayoutInfoComplete={isPayoutInfoComplete}
               requiredFields={requiredFields}
             />
           </form>
@@ -85,6 +87,9 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
 type UserPayoutRequestType = components["schemas"]["UserPayoutInformationRequest"];
 
 const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
+  const isEthName = values.ethWallet.match(ENS_DOMAIN_REGEXP);
+  const sepaAccount = values.bic && values.iban ? { bic: values.bic, iban: values.iban } : undefined;
+
   const variables: UserPayoutRequestType = {
     ...(values.profileType === ProfileType.Company
       ? {
@@ -111,15 +116,9 @@ const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
     },
     payoutSettings: {
       usdPreferredMethod: values.usdPreferredMethod,
-      ...(values.bic && values.iban
-        ? {
-            sepaAccount: {
-              bic: values.bic,
-              iban: values.iban,
-            },
-          }
-        : { sepaAccount: undefined }),
-      ethAddress: values.ethWallet || undefined,
+      sepaAccount,
+      ethName: isEthName ? values.ethWallet : undefined,
+      ethAddress: !isEthName ? values.ethWallet : undefined,
       starknetAddress: values.starknetWallet || undefined,
       optimismAddress: values.optimismWallet || undefined,
       aptosAddress: values.aptosWallet || undefined,
