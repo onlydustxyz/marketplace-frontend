@@ -23,7 +23,7 @@ describe("getEndpointUrl", () => {
     expect(url).toBe("https://develop-api.onlydust.com/api/v1/projects/123/contributors/456?status=inProgress");
   });
 
-  it("should generate endpoint URL with multiple path params", () => {
+  it("should generate endpoint URL with query param object", () => {
     const url = getEndpointUrl({
       resourcePath: "/api/v1/projects/{{id}}/contributors",
       pathParam: "123",
