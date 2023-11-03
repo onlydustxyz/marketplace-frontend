@@ -60,15 +60,17 @@ export default function AllProjects({
     }
 
     if (search) {
-      params["search"] = [search];
+      params["search"] = search;
     }
 
     if (sorting) {
-      params["sort"] = [sorting];
+      console.log({ sorting });
+
+      params["sort"] = sorting;
     }
 
     if (ownership) {
-      params["mine"] = ownership === "Mine";
+      params["mine"] = String(ownership === "Mine");
     }
 
     return params;

@@ -1,6 +1,4 @@
-type QueryParamsValue = string | number | boolean;
-
-export type QueryParams = Record<string, QueryParamsValue | QueryParamsValue[]>;
+export type QueryParams = ConstructorParameters<typeof URLSearchParams>[0];
 
 interface EndpointUrlParams {
   resourcePath: string;
@@ -10,27 +8,13 @@ interface EndpointUrlParams {
   pageSize?: number;
 }
 
-function buildQueryString(queryParams: QueryParams): string {
-  return queryParams
-    .map(param => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value.join(","))}`)
-    .join("&");
-}
-
 export function getEndpointUrl({
   resourcePath,
   pathParam = "",
-  queryParams = {},
+  queryParams,
   pageParam,
   pageSize = 15,
 }: EndpointUrlParams): string {
-  const scheme = "https://";
-  const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH as string;
-  const basePath = `${scheme}${apiBasepath}`;
-  const queryString = buildQueryString(queryParams);
-  const pageQuery = pageParam != null ? `pageIndex=${pageParam}&pageSize=${pageSize}` : "";
-  const separator = queryString || pageQuery ? "?" : "";
-  const ampersand = queryString && pageQuery ? "&" : "";
-
   let finalResourcePath = "";
 
   if (typeof pathParam === "string") {
@@ -42,5 +26,17 @@ export function getEndpointUrl({
     );
   }
 
-  return `${basePath}${finalResourcePath}${separator}${queryString}${ampersand}${pageQuery}`;
+  const urlSearchParams = new URLSearchParams(queryParams);
+
+  if (Number.isInteger(pageParam)) {
+    urlSearchParams.set("pageIndex", String(pageParam));
+    urlSearchParams.set("pageSize", String(pageSize));
+  }
+
+  const urlSearchParamsStr = urlSearchParams.toString();
+
+  return new URL(
+    `${finalResourcePath}${urlSearchParamsStr ? `?${urlSearchParamsStr}` : ""}`,
+    `https://${import.meta.env.VITE_ONLYDUST_API_BASEPATH}`
+  ).toString();
 }
