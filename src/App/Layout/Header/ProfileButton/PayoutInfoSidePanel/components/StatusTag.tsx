@@ -41,6 +41,7 @@ export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
     ? Object.entries(requiredNetworks)
         .filter(([, value]) => value)
         .map(([key]) => T(networksMessages[key as keyof typeof networksMessages]))
+        .join(", ")
     : [];
 
   return (
