@@ -7,14 +7,10 @@ import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
 import TimeLine from "src/icons/TimeLine";
 import { Fields } from "src/pages/Rewards";
-
-type SortingType = {
-  field?: string;
-  isAscending?: boolean;
-};
+import { Sorting } from "src/types";
 
 type Props = {
-  sorting: SortingType;
+  sorting: Sorting;
   sortField: (field: Fields) => void;
 };
 
