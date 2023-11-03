@@ -20,13 +20,28 @@ const invalidMessages = {
   [StatusType.Payment]: "profile.missing.payment",
 };
 
+const networksMessages = {
+  missingAptosWallet: "currencies.network.APT",
+  missingEthWallet: "currencies.network.ETH",
+  missingOptimismWallet: "currencies.network.OP",
+  missingSepaAccount: "currencies.network.USD",
+  missingStarknetWallet: "currencies.network.STARK",
+};
+
 type StatusTagType = {
   isValid: boolean;
   type: StatusType;
+  requiredNetworks?: Record<string, boolean>;
 };
 
-export function StatusTag({ isValid, type }: StatusTagType) {
+export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
   const { T } = useIntl();
+
+  const networks = requiredNetworks
+    ? Object.entries(requiredNetworks)
+        .filter(([, value]) => value === true)
+        .map(([key]) => T(networksMessages[key as keyof typeof networksMessages]))
+    : [];
 
   return (
     <Box className="pb-6">
@@ -43,7 +58,7 @@ export function StatusTag({ isValid, type }: StatusTagType) {
           ) : (
             <>
               <ErrorWarningLine className="mr-1 text-orange-500" />
-              {T(invalidMessages[type])}
+              {T(invalidMessages[type], { count: networks.length, networks: networks })}
             </>
           )}
         </div>

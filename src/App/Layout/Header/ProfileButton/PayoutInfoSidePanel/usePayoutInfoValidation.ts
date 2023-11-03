@@ -13,14 +13,27 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
   isContactInfoValid: boolean;
   isContactInfoComplete: boolean;
   isPaymentInfoValid: boolean;
+  isPayoutInfoComplete: boolean;
   requiredFields: RequiredFieldsType;
 } {
   let isContactInfoComplete = false;
+  let isPayoutInfoComplete = false;
 
   const { hasValidContactInfo, payoutSettings, location, company, person, isCompany } = user || {};
   const { address, city, country, postalCode } = location || {};
-  const { missingAptosWallet, missingEthWallet, missingOptimismWallet, missingSepaAccount, missingStarknetWallet } =
-    payoutSettings || {};
+  const {
+    missingAptosWallet,
+    missingEthWallet,
+    missingOptimismWallet,
+    missingSepaAccount,
+    missingStarknetWallet,
+    sepaAccount,
+    ethAddress,
+    ethName,
+    starknetAddress,
+    aptosAddress,
+    optimismAddress,
+  } = payoutSettings || {};
 
   if (address && city && country && postalCode) {
     if (isCompany && company) {
@@ -32,10 +45,19 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
     }
   }
 
+  if ((ethAddress || ethName) && starknetAddress && aptosAddress && optimismAddress) {
+    isPayoutInfoComplete = true;
+
+    if (isCompany) {
+      isPayoutInfoComplete = Boolean(sepaAccount?.bic && sepaAccount?.iban);
+    }
+  }
+
   return {
-    isContactInfoComplete: Boolean(isContactInfoComplete),
     isContactInfoValid: Boolean(hasValidContactInfo),
     isPaymentInfoValid: Boolean(payoutSettings?.hasValidPayoutSettings),
+    isContactInfoComplete,
+    isPayoutInfoComplete,
     requiredFields: {
       missingAptosWallet,
       missingEthWallet,

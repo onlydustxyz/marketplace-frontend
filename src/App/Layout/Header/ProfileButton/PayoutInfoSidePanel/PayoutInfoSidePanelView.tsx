@@ -24,7 +24,6 @@ import ProfileRadioGroup from "./components/ProfileRadioGroup/ProfileRadioGroup"
 import { StatusTag, StatusType } from "./components/StatusTag";
 import { ProfileType } from "./types";
 import { RequiredFieldsType } from "./usePayoutInfoValidation";
-import { cn } from "src/utils/cn";
 
 type Props = {
   payoutSettingsValid?: boolean;
@@ -32,8 +31,9 @@ type Props = {
   unsavedChanges: boolean;
   isContactInfoValid: boolean;
   isPaymentInfoValid: boolean;
-  requiredFields: RequiredFieldsType;
   isContactInfoComplete: boolean;
+  isPayoutInfoComplete: boolean;
+  requiredFields: RequiredFieldsType;
 };
 
 export default function PayoutInfoSidePanel({
@@ -42,6 +42,7 @@ export default function PayoutInfoSidePanel({
   isContactInfoValid,
   isPaymentInfoValid,
   isContactInfoComplete,
+  isPayoutInfoComplete,
   requiredFields,
 }: Props) {
   const { T } = useIntl();
@@ -51,8 +52,10 @@ export default function PayoutInfoSidePanel({
   } = useFormContext();
 
   const [profileType, usdPreferredMethod] = watch(["profileType", "usdPreferredMethod"]);
-  const shouldDisplayStatus =
+  const shouldDisplayContactStatus =
     (isContactInfoValid && isContactInfoComplete) || (!isContactInfoValid && !isContactInfoComplete);
+  const shouldDisplayPayoutStatus =
+    (isPaymentInfoValid && isPayoutInfoComplete) || (!isPaymentInfoValid && !isPayoutInfoComplete);
 
   return (
     <Flex className="h-full min-h-0 flex-col justify-between overflow-y-auto">
@@ -74,7 +77,7 @@ export default function PayoutInfoSidePanel({
           ]}
         />
         <Card padded={false} className="p-6" withBg={false}>
-          {shouldDisplayStatus ? (
+          {shouldDisplayContactStatus ? (
             <StatusTag isValid={isContactInfoValid && isContactInfoComplete} type={StatusType.Contact} />
           ) : null}
 
@@ -84,33 +87,40 @@ export default function PayoutInfoSidePanel({
         </Card>
 
         <Card padded={false} className="p-6" withBg={false}>
-          {shouldDisplayStatus ? <StatusTag isValid={isPaymentInfoValid} type={StatusType.Payment} /> : null}
+          {shouldDisplayPayoutStatus ? (
+            <StatusTag
+              isValid={isPaymentInfoValid && isPayoutInfoComplete}
+              type={StatusType.Payment}
+              requiredNetworks={requiredFields}
+            />
+          ) : null}
 
-          <div className={cn({ "mb-6": usdPreferredMethod === PreferredMethod.Fiat })}>
-            {profileType === ProfileType.Company && (
-              <Flex className="mb-4 w-fit flex-row gap-3 font-medium text-neutral-300">
-                <ProfileRadioGroup
-                  name="usdPreferredMethod"
-                  options={[
-                    {
-                      value: PreferredMethod.Fiat,
-                      label: T("profile.form.bankWire"),
-                      icon: <BankLine className="text-xl" />,
-                    },
-                    {
-                      value: PreferredMethod.Crypto,
-                      label: T("profile.form.cryptoWire"),
-                      icon: <BitcoinLine className="text-xl" />,
-                    },
-                  ]}
-                />
-              </Flex>
-            )}
+          {profileType === ProfileType.Company && (
+            <Flex className="mb-4 w-fit flex-row gap-3 font-medium text-neutral-300">
+              <ProfileRadioGroup
+                label={T("profile.form.usdPreferredMethod")}
+                name="usdPreferredMethod"
+                options={[
+                  {
+                    value: PreferredMethod.Fiat,
+                    label: T("profile.form.bankWire"),
+                    icon: <BankLine className="text-xl" />,
+                  },
+                  {
+                    value: PreferredMethod.Crypto,
+                    label: T("profile.form.cryptoWire"),
+                    icon: <BitcoinLine className="text-xl" />,
+                  },
+                ]}
+              />
+            </Flex>
+          )}
 
-            {usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company && (
+          {usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company && (
+            <div className="mb-6">
               <FiatFields {...{ requiredFields }} />
-            )}
-          </div>
+            </div>
+          )}
 
           <ProfileContent title={T("profile.form.payoutCurrenciesType")}>
             <OtherCryptoFields {...{ requiredFields }} />

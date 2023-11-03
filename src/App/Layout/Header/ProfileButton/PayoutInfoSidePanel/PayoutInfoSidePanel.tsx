@@ -12,6 +12,7 @@ import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import { ProfileType } from "./types";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
+import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
 
 type Props = {
   open: boolean;
@@ -55,7 +56,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     reset(formData);
   };
 
-  const { isContactInfoValid, isContactInfoComplete, isPaymentInfoValid, requiredFields } =
+  const { isContactInfoValid, isPaymentInfoValid, isContactInfoComplete, isPayoutInfoComplete, requiredFields } =
     usePayoutInfoValidation(user);
 
   return (
@@ -73,6 +74,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
               isContactInfoComplete={isContactInfoComplete}
               isContactInfoValid={isContactInfoValid}
               isPaymentInfoValid={isPaymentInfoValid}
+              isPayoutInfoComplete={isPayoutInfoComplete}
               requiredFields={requiredFields}
             />
           </form>
@@ -119,7 +121,15 @@ const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
             },
           }
         : { sepaAccount: undefined }),
-      ethAddress: values.ethWallet || undefined,
+      ...(values.ethWallet.match(ENS_DOMAIN_REGEXP)
+        ? {
+            ethName: values.ethWallet,
+            ethAddress: undefined,
+          }
+        : {
+            ethAddress: values.ethWallet,
+            ethName: undefined,
+          }),
       starknetAddress: values.starknetWallet || undefined,
       optimismAddress: values.optimismWallet || undefined,
       aptosAddress: values.aptosWallet || undefined,
