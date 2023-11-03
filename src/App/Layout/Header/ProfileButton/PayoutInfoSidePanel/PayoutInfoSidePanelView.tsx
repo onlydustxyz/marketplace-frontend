@@ -96,7 +96,7 @@ export default function PayoutInfoSidePanel({
           ) : null}
 
           {profileType === ProfileType.Company && (
-            <Flex className="mb-4 w-fit flex-row gap-3 font-medium text-neutral-300">
+            <Flex className="mb-6 w-fit flex-row gap-3 font-medium text-neutral-300">
               <ProfileRadioGroup
                 label={T("profile.form.usdPreferredMethod")}
                 name="usdPreferredMethod"
