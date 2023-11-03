@@ -16,7 +16,7 @@ export function LeftToSpend({ budget }: LeftToSpendProps) {
     if (leftToSpend < 1 || leftToSpend > 99) {
       return leftToSpend.toFixed(1);
     }
-    return Math.floor(leftToSpend);
+    return Math.round(leftToSpend);
   }, [leftToSpend]);
 
   return (
