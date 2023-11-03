@@ -14,6 +14,12 @@ export function LeftToSpend({ budget }: LeftToSpendProps) {
 
   const leftToSpendFormated = useMemo(() => {
     if ((leftToSpend < 1 && leftToSpend !== 0) || (leftToSpend > 99 && leftToSpend < 100)) {
+      if (leftToSpend <= 0.09) {
+        return 0.1;
+      }
+      if (100 - leftToSpend <= 0.09) {
+        return 99.9;
+      }
       return leftToSpend.toFixed(1);
     }
     return Math.round(leftToSpend);
