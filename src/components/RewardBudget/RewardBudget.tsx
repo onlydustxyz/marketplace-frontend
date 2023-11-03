@@ -58,8 +58,6 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const fieldValue = e.target.value;
 
-    console.log("fieldValue", fieldValue);
-
     if (fieldValue === "") {
       setAmount(null);
     }

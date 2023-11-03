@@ -90,7 +90,6 @@ const RewardForm: React.FC = () => {
     if (contributor) {
       createProjectReward(mapFormDataToVariables({ ...formData, contributor }));
       setPreferredCurrency(formData.currency);
-      console.log("formData.amountToWire", formData?.amountToWire);
     }
   };
 
