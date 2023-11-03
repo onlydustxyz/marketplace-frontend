@@ -5,15 +5,13 @@ import { QueryTags } from "./query.type";
 
 interface UseBaseMutationOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
-    QueryObserverOptions<R> {}
-
-export interface UseBaseMutationCallBack<R = unknown> {
+    QueryObserverOptions<R> {
   onSuccess?: (result: R, client: QueryClient) => void;
   onError?: (client: QueryClient) => void;
   onSettled?: (client: QueryClient) => void;
 }
 
-export type BaseMutationOptions<R = unknown> = Partial<UseBaseMutationOptions<R>> & UseBaseMutationCallBack<R>;
+export type BaseMutationOptions<R = unknown> = Partial<UseBaseMutationOptions<R>>;
 
 export interface UseBaseMutationProps<R = unknown> extends BaseMutationOptions<R> {
   resourcePath: string;
