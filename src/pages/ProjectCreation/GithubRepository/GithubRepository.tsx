@@ -5,23 +5,25 @@ import { Controller, useForm } from "react-hook-form";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { Flex } from "src/components/New/Layout/Flex";
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { GithubRepositoryCountError } from "./GithubRepositoryCountError";
 import { GithubRepositoryCount } from "./GithubRepositoryCount";
 import { Avatar } from "src/components/New/Avatar";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
-export interface createProjectInformation {
-  organisations: {
+
+interface Organisation {
+  name: string;
+  logoUrl: string;
+  repos: {
+    githubId: number;
+    shortDescription: string;
     name: string;
-    logoUrl: string;
-    repos: {
-      githubId: number;
-      shortDescription: string;
-      name: string;
-      selected?: boolean;
-    }[];
+    selected?: boolean;
   }[];
+}
+export interface createProjectInformation {
+  organisations: Organisation[];
 }
 
 const validationSchema = z.object({
@@ -34,12 +36,10 @@ const validationSchema = z.object({
     )
     .refine(
       organisations => {
-        const test = organisations.filter(organisation => organisation.repos.find(repo => repo.selected)).length > 0;
-        console.log("test", test);
         return organisations.filter(organisation => organisation.repos.find(repo => repo.selected)).length > 0;
       },
       {
-        message: "Phone numbers dont match",
+        message: "",
       }
     ),
 });
@@ -98,7 +98,7 @@ export const GithubRepositoryPage = () => {
     setValue,
     trigger,
     formState: { isValid },
-  } = useForm<createProjectInformation>({
+  } = useForm<createProjectInformation & { search?: string }>({
     mode: "all",
     resolver: zodResolver(validationSchema),
     defaultValues: {
@@ -107,6 +107,7 @@ export const GithubRepositoryPage = () => {
   });
 
   const organisation = watch("organisations") || [];
+  const search = watch("search");
 
   const onSubmit = (formData: createProjectInformation) => {
     console.log("formData", formData);
@@ -144,6 +145,28 @@ export const GithubRepositoryPage = () => {
     return <GithubRepositoryCount total={selectedReposCounts.total} selected={selectedReposCounts.selected} />;
   }, [selectedReposCounts]);
 
+  const filterOrganizationBySearch = useCallback(
+    (value: Organisation[]) => {
+      if (!search) {
+        return value;
+      }
+
+      return value
+        .map(org => {
+          const findRepos = org.repos.filter(repo => repo.name.includes(search));
+          if (findRepos.length === 0) {
+            return undefined;
+          }
+
+          return {
+            ...org,
+            repos: findRepos,
+          };
+        })
+        .filter(org => org !== undefined) as Organisation[];
+    },
+    [search]
+  );
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <form className="flex items-center justify-center p-4 pt-[72px]" onSubmit={handleSubmit(onSubmit)}>
@@ -158,17 +181,24 @@ export const GithubRepositoryPage = () => {
           footerRightElement={footerRightElement}
         >
           <Flex direction="col" gap={8}>
-            <FieldInput
-              name={""}
-              placeholder="Search repository"
-              startIcon={({ className }) => <SearchLine className={className} />}
+            <Controller
+              name="search"
+              control={control}
+              render={props => (
+                <FieldInput
+                  placeholder="Search repository"
+                  {...props.field}
+                  {...props.fieldState}
+                  startIcon={({ className }) => <SearchLine className={className} />}
+                />
+              )}
             />
             <Controller
               name="organisations"
               control={control}
               render={({ field: { value } }) => (
                 <>
-                  {(value || []).map(organisation => (
+                  {filterOrganizationBySearch(value || []).map(organisation => (
                     <div
                       key={organisation.name}
                       className="flex flex-col gap-3 rounded-2xl border border-card-border-light bg-card-background-light p-5"
@@ -178,24 +208,26 @@ export const GithubRepositoryPage = () => {
                         <p className=" text-sm font-medium uppercase">{organisation.name}</p>
                       </Flex>
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
-                        {organisation.repos.map(repo => (
-                          <label key={repo.name}>
-                            <div className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy">
-                              <Flex justify="start" item="start" direction="col" gap={2}>
-                                <Flex justify="between" item="center" className="w-full">
-                                  <h3 className="text-body-m-bold">{repo.name}</h3>
-                                  <FieldCheckbox
-                                    onChange={value => onCheckboxChange(value, repo.githubId, organisation.name)}
-                                    value={repo.selected}
-                                    name={`repository-${repo.githubId}`}
-                                    fieldClassName={"inline-flex w-auto"}
-                                  />
+                        {organisation.repos.map(repo =>
+                          search && !repo.name.includes(search) ? null : (
+                            <label key={repo.name}>
+                              <div className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy">
+                                <Flex justify="start" item="start" direction="col" gap={2}>
+                                  <Flex justify="between" item="center" className="w-full">
+                                    <h3 className="text-body-m-bold">{repo.name}</h3>
+                                    <FieldCheckbox
+                                      onChange={value => onCheckboxChange(value, repo.githubId, organisation.name)}
+                                      value={repo.selected}
+                                      name={`repository-${repo.githubId}`}
+                                      fieldClassName={"inline-flex w-auto"}
+                                    />
+                                  </Flex>
+                                  <p className="text-body-s text-greyscale-200">{repo.shortDescription}</p>
                                 </Flex>
-                                <p className="text-body-s text-greyscale-200">{repo.shortDescription}</p>
-                              </Flex>
-                            </div>
-                          </label>
-                        ))}
+                              </div>
+                            </label>
+                          )
+                        )}
                       </div>
                     </div>
                   ))}
