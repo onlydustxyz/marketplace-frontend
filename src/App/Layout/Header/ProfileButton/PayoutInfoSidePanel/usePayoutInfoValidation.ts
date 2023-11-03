@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { UserPayoutType } from "./PayoutInfoSidePanel";
 
 export type RequiredFieldsType = {
@@ -16,9 +17,6 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
   isPayoutInfoComplete: boolean;
   requiredFields: RequiredFieldsType;
 } {
-  let isContactInfoComplete = false;
-  let isPayoutInfoComplete = false;
-
   const { hasValidContactInfo, payoutSettings, location, company, person, isCompany } = user || {};
   const { address, city, country, postalCode } = location || {};
   const {
@@ -35,23 +33,27 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
     optimismAddress,
   } = payoutSettings || {};
 
-  if (address && city && country && postalCode) {
-    if (isCompany && company) {
-      isContactInfoComplete = Boolean(
-        company.name && company.identificationNumber && company.owner?.firstname && company.owner?.lastname
-      );
-    } else {
-      isContactInfoComplete = Boolean(person?.firstname && person?.lastname);
+  const isContactInfoComplete = useMemo(() => {
+    if (address && city && country && postalCode) {
+      if (isCompany && company) {
+        return Boolean(
+          company.name && company.identificationNumber && company.owner?.firstname && company.owner?.lastname
+        );
+      }
+      return Boolean(person?.firstname && person?.lastname);
     }
-  }
+    return false;
+  }, [address, city, country, postalCode, company, isCompany, person]);
 
-  if ((ethAddress || ethName) && starknetAddress && aptosAddress && optimismAddress) {
-    isPayoutInfoComplete = true;
-
-    if (isCompany) {
-      isPayoutInfoComplete = Boolean(sepaAccount?.bic && sepaAccount?.iban);
+  const isPayoutInfoComplete = useMemo(() => {
+    if ((ethAddress || ethName) && starknetAddress && aptosAddress && optimismAddress) {
+      if (isCompany) {
+        return Boolean(sepaAccount?.bic && sepaAccount?.iban);
+      }
+      return true;
     }
-  }
+    return false;
+  }, [ethAddress, ethName, starknetAddress, aptosAddress, optimismAddress, sepaAccount, isCompany]);
 
   return {
     isContactInfoValid: Boolean(hasValidContactInfo),
