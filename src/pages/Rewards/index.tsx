@@ -54,7 +54,7 @@ export default function Rewards() {
     [sorting]
   );
 
-  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteMyRewardList({
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteMyRewardList({
     queryParams,
   });
 
@@ -79,7 +79,7 @@ export default function Rewards() {
       <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
           <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
-          <InvoiceSubmission />
+          <InvoiceSubmission refetchMyRewards={refetch} />
           <EarningWrapper />
           {isFetching ? (
             <Skeleton variant="rewards" />
