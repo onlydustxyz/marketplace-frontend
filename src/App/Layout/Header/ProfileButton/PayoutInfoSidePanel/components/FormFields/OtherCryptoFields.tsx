@@ -14,15 +14,14 @@ import { PreferredMethod } from "src/types";
 
 export function OtherCryptoFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
-  const { register } = useFormContext();
+  const { register, watch } = useFormContext();
 
-  const { watch } = useFormContext();
   const [usdPreferredMethod, profileType] = watch(["usdPreferredMethod", "profileType"]);
 
   const { missingAptosWallet, missingEthWallet, missingOptimismWallet, missingStarknetWallet, missingUsdcWallet } =
     requiredFields || {};
 
-  const isEhterRequired =
+  const isEtherRequired =
     profileType === ProfileType.Individual ||
     (profileType === ProfileType.Company && usdPreferredMethod === PreferredMethod.Crypto);
 
@@ -45,7 +44,7 @@ export function OtherCryptoFields({ requiredFields }: { requiredFields: Required
               message: T("profile.form.invalidEthWallet"),
             },
           })}
-          showRequiredError={(missingUsdcWallet || missingEthWallet) && isEhterRequired}
+          showRequiredError={(missingUsdcWallet || missingEthWallet) && isEtherRequired}
         />
       </div>
       <Input
