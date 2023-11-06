@@ -54,7 +54,8 @@ export default function Projects() {
           <div className="flex h-full gap-6">
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
               <div className="sticky top-4">
-                <SubmitProject />
+                {/* TEMP Feature fliping */}
+                {import.meta.env.VITE_CAN_CREATE_PROJECT === "true" ? <SubmitProject /> : null}
                 <FilterPanel isProjectLeader={isProjectLeader} technologies={technologies} sponsors={sponsors} />
               </div>
             </div>
