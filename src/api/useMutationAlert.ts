@@ -1,7 +1,4 @@
-// const showToaster = useShowToaster();
-// showToaster(T("profile.form.success"));
 import { useEffect } from "react";
-// import useToaster from "api/UseToaster";
 import { useShowToaster } from "src/hooks/useToaster";
 
 interface Props {
@@ -9,7 +6,6 @@ interface Props {
     isError?: boolean;
     isSuccess?: boolean;
   };
-  //   mutation?: UseMutationResult;
   error?: {
     message: string;
   };
