@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { components } from "src/__generated/api";
+import GithubApi from "src/api/Github";
+import { useInstallationByIdResponse } from "src/api/Github/queries";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import PencilLine from "src/icons/PencilLine";
 
-type ExtendedInstallationResponse = components["schemas"]["InstallationResponse"] & {
+type ExtendedInstallationResponse = useInstallationByIdResponse & {
   organization: {
     installationId: string;
   };
@@ -18,7 +17,7 @@ type ExtendedInstallationResponse = components["schemas"]["InstallationResponse"
 
 function isOrganizationAlreadyExist(
   organizations: ExtendedInstallationResponse[],
-  newOrganization: ExtendedInstallationResponse
+  newOrganization: useInstallationByIdResponse
 ) {
   return organizations.some(org => org?.organization?.name === newOrganization?.organization?.name);
 }
@@ -32,13 +31,16 @@ export default function OrganizationList() {
     []
   );
 
-  const { data, isLoading, isError } = useRestfulData<ExtendedInstallationResponse>({
-    resourcePath: ApiResourcePaths.GET_INSTALLED_GITHUB_ORGANIZATION,
-    pathParam: installation_id,
-    method: "GET",
-    enabled: !!installation_id,
-    retry: 1,
+  const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
+    params: { installation_id: installation_id },
   });
+  //   const { data, isLoading, isError } = useRestfulData<ExtendedInstallationResponse>({
+  //     resourcePath: ApiResourcePaths.GET_INSTALLED_GITHUB_ORGANIZATION,
+  //     pathParam: installation_id,
+  //     method: "GET",
+  //     enabled: !!installation_id,
+  //     retry: 1,
+  //   });
 
   useEffect(() => {
     if (data && savedOrgsDataStatus === "getted" && !isOrganizationAlreadyExist(savedOrgsData, data)) {
