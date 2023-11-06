@@ -57,6 +57,8 @@ export default function PayoutInfoSidePanel({
   const shouldDisplayPayoutStatus =
     (isPaymentInfoValid && isPayoutInfoComplete) || (!isPaymentInfoValid && !isPayoutInfoComplete);
 
+  const isFiat = usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company;
+
   return (
     <Flex className="h-full min-h-0 flex-col justify-between overflow-y-auto">
       <Flex className="mx-2 mb-1 min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
@@ -92,7 +94,7 @@ export default function PayoutInfoSidePanel({
               isValid={isPaymentInfoValid && isPayoutInfoComplete}
               requiredNetworks={requiredFields}
               type={StatusType.Payment}
-              isFiat={profileType === ProfileType.Company && usdPreferredMethod === PreferredMethod.Fiat}
+              isFiat={isFiat}
             />
           ) : null}
 
@@ -117,7 +119,7 @@ export default function PayoutInfoSidePanel({
             </Flex>
           )}
 
-          {usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company && (
+          {isFiat && (
             <div className="mb-6">
               <FiatFields {...{ requiredFields }} />
             </div>
