@@ -6,6 +6,7 @@ export type RequiredFieldsType = {
   missingEthWallet?: boolean;
   missingOptimismWallet?: boolean;
   missingSepaAccount?: boolean;
+  missingUsdcWallet?: boolean;
   missingStarknetWallet?: boolean;
 };
 
@@ -24,6 +25,7 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
     missingEthWallet,
     missingOptimismWallet,
     missingSepaAccount,
+    missingUsdcWallet,
     missingStarknetWallet,
     sepaAccount,
     ethAddress,
@@ -65,6 +67,7 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
       missingEthWallet,
       missingOptimismWallet,
       missingSepaAccount,
+      missingUsdcWallet,
       missingStarknetWallet,
     },
   };

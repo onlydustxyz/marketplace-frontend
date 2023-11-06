@@ -1,15 +1,13 @@
 import {
   GetUserPayoutSettingsDocument,
   GetUserPayoutSettingsQueryResult,
-  PreferredMethod,
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
-
 import { ComponentProps, JSXElementConstructor } from "react";
 import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import { ToasterProvider } from "src/hooks/useToaster";
-import { PaymentStatus } from "src/types";
+import { PaymentStatus, PreferredMethod } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

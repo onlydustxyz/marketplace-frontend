@@ -1,6 +1,5 @@
 import { useFormContext } from "react-hook-form";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { PreferredMethod } from "src/__generated/graphql";
 import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
 import Tag, { TagSize } from "src/components/Tag";
@@ -24,6 +23,7 @@ import ProfileRadioGroup from "./components/ProfileRadioGroup/ProfileRadioGroup"
 import { StatusTag, StatusType } from "./components/StatusTag";
 import { ProfileType } from "./types";
 import { RequiredFieldsType } from "./usePayoutInfoValidation";
+import { PreferredMethod } from "src/types";
 
 type Props = {
   payoutSettingsValid?: boolean;
@@ -90,8 +90,9 @@ export default function PayoutInfoSidePanel({
           {shouldDisplayPayoutStatus ? (
             <StatusTag
               isValid={isPaymentInfoValid && isPayoutInfoComplete}
-              type={StatusType.Payment}
               requiredNetworks={requiredFields}
+              type={StatusType.Payment}
+              isFiat={profileType === ProfileType.Company && usdPreferredMethod === PreferredMethod.Fiat}
             />
           ) : null}
 
