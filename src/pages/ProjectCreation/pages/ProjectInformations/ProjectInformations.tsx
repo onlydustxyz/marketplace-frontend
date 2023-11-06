@@ -25,7 +25,7 @@ interface createProjectInformation {
   isLookingForContributors: boolean;
   longDescription: string;
   name: string;
-  image?: File;
+  image?: string;
   moreInfo: {
     url: string;
     value: string;
@@ -41,34 +41,56 @@ export const ProjectInformationsPage = () => {
     setValue,
     reset,
     getValues,
-    formState: { isValid, errors },
+    formState: { isValid },
   } = useForm<createProjectInformation>({
     mode: "all",
     resolver: zodResolver(validationSchema),
   });
 
-  console.log("error", errors, getValues());
+  const { storedValue: savedOrgsData, removeValue: removeOrgsData } = useOrganizationSession();
+  const {
+    storedValue: savedFormData,
+    setValue: setSavedFormData,
+    status: savedFormDataStatus,
+    removeValue: removeFormData,
+  } = useInformationSession<createProjectInformation>();
 
-  const [savedOrgsData] = useOrganizationSession();
-  const [savedFormData, setSavedFormData, savedFormDataStatus] = useInformationSession<createProjectInformation>();
-  const { mutate } = ProjectApi.mutations.useCreateProject({});
-
-  useEffect(() => {
-    if (savedFormDataStatus === "getted") {
-      reset({ ...savedFormData, image: undefined });
-    }
-  }, [savedFormDataStatus]);
+  const { mutate } = ProjectApi.mutations.useCreateProject({
+    options: {
+      onSuccess: () => {
+        removeOrgsData();
+        removeFormData();
+      },
+    },
+  });
+  const {
+    mutate: uploadProjectLogo,
+    isSuccess: successUploadLogo,
+    isPending: loadingUploadLogo,
+  } = ProjectApi.mutations.useUploadLogo({
+    options: {
+      onSuccess: data => {
+        setValue("image", data.url);
+      },
+    },
+  });
 
   const onSubmit = (formData: createProjectInformation) => {
     const repoIds = getSelectedRepoIds(savedOrgsData);
     mutate({
       ...formData,
       // remove when project lead components is ready
-      inviteGithubUserIdsAsProjectLeads: [],
+      inviteGithubUserIdsAsProjectLeads: [17259618],
       moreInfo: [formData.moreInfo],
       githubRepoIds: repoIds,
     });
   };
+
+  useEffect(() => {
+    if (savedFormDataStatus === "getted") {
+      reset({ ...savedFormData, image: undefined });
+    }
+  }, [savedFormDataStatus]);
 
   useEffect(() => {
     return () => {
@@ -118,7 +140,19 @@ export const ProjectInformationsPage = () => {
               <Controller
                 name="image"
                 control={control}
-                render={props => <FieldImage {...props.field} {...props.fieldState} label="Project visual" />}
+                render={props => (
+                  <FieldImage<string>
+                    {...props.field}
+                    {...props.fieldState}
+                    label="Project visual"
+                    max_size_mo={10}
+                    upload={{
+                      mutate: uploadProjectLogo,
+                      success: successUploadLogo,
+                      loading: loadingUploadLogo,
+                    }}
+                  />
+                )}
               />
               <Controller
                 name="moreInfo"

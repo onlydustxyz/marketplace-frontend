@@ -3,7 +3,7 @@ import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 
-interface UseBaseMutationOptions<R = unknown>
+interface UseBaseUploaderOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
     QueryObserverOptions<R> {
   onSuccess?: (result: R, client: QueryClient) => void;
@@ -11,24 +11,23 @@ interface UseBaseMutationOptions<R = unknown>
   onSettled?: (client: QueryClient) => void;
 }
 
-export type BaseMutationOptions<R = unknown> = Partial<UseBaseMutationOptions<R>>;
+export type BaseUploaderOptions<R = unknown> = Partial<UseBaseUploaderOptions<R>>;
 
-export interface UseBaseMutationProps<R = unknown> extends BaseMutationOptions<R> {
+export interface UseBaseUploaderProps<R = unknown> extends BaseUploaderOptions<R> {
   resourcePath: string;
   pathParam?: string | Record<string, string>;
   queryParams?: QueryParams;
   invalidatesTags?: { queryKey: QueryTags; exact: boolean }[];
-  stringifiedBody?: boolean;
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }
 
-export interface UseMutationProps<RESULT = unknown, PARAMS = unknown, Payload = unknown> {
-  options?: BaseMutationOptions<RESULT>;
+export interface UseUploaderProps<RESULT = unknown, PARAMS = unknown> {
+  options?: BaseUploaderOptions<RESULT>;
   params?: PARAMS;
-  body?: Payload;
+  body?: File;
 }
 
-export function useBaseMutation<Payload = unknown, Response = unknown>({
+export function useBaseUploader<Response = unknown>({
   resourcePath,
   pathParam = "",
   queryParams = [],
@@ -37,21 +36,24 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
   onError,
   onSettled,
   invalidatesTags,
-}: UseBaseMutationProps<Response>) {
+}: UseBaseUploaderProps<Response>) {
   const { options } = useHttpOptions(method);
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Payload): Promise<Response> => {
+    mutationFn: (data: File): Promise<Response> => {
       return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
         ...options,
-        body: JSON.stringify(data),
+        headers: {
+          ...options.headers,
+          "Content-Type": data.type,
+        },
+        body: data,
       })
         .then(async res => {
           if (res.ok) {
             try {
-              const text = await res.text();
-              const data = text ? JSON.parse(text) : {}; // Try to parse the response as JSON
+              const data = await res.json();
 
               return data;
             } catch (err: unknown) {

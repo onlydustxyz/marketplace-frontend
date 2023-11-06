@@ -24,7 +24,11 @@ export default function OrganizationList() {
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
 
-  const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useOrganizationSession();
+  const {
+    storedValue: savedOrgsData,
+    setValue: setSavedOrgsData,
+    status: savedOrgsDataStatus,
+  } = useOrganizationSession();
 
   const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
     params: { installation_id: installation_id },

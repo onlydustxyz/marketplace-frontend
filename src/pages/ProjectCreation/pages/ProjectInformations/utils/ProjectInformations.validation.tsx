@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const validationSchema = z.object({
-  image: z.instanceof(File).optional(),
+  image: z.string().optional(),
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()),
   isLookingForContributors: z.boolean().optional(),
   longDescription: z.string().min(1),

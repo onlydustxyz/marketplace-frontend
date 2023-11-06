@@ -27,7 +27,12 @@ export interface createProjectRepository {
 export const GithubRepositoryPage = () => {
   usePagesGuard("repository");
 
-  const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useOrganizationSession();
+  const {
+    storedValue: savedOrgsData,
+    setValue: setSavedOrgsData,
+    status: savedOrgsDataStatus,
+  } = useOrganizationSession();
+
   const {
     control,
     handleSubmit,

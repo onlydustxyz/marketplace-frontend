@@ -18,9 +18,18 @@ export const OrganizationSessionStorageKey = "OrganizationsType";
 export const InformationSessionStorageKey = "createProjectInformation";
 
 export const useOrganizationSession = () => {
-  return useSessionStorage<OrganizationSessionStorageInterface[]>(OrganizationSessionStorageKey, []);
+  const [storedValue, setValue, status, removeValue] = useSessionStorage<OrganizationSessionStorageInterface[]>(
+    OrganizationSessionStorageKey,
+    []
+  );
+  return { storedValue, setValue, status, removeValue };
 };
 
 export const useInformationSession = <V>() => {
-  return useSessionStorage<V | undefined>("createProjectInformation", undefined);
+  const [storedValue, setValue, status, removeValue] = useSessionStorage<V | undefined>(
+    "createProjectInformation",
+    undefined
+  );
+
+  return { storedValue, setValue, status, removeValue };
 };

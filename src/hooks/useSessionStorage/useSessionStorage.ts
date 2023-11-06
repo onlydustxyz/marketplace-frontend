@@ -32,7 +32,7 @@ export function useSessionStorage<T>(
   key: string,
   initialValue: T,
   options?: UseSessionStorageOptions
-): [T, (value: T) => void, UseSessionStorageStatus] {
+): [T, (value: T) => void, UseSessionStorageStatus, () => void] {
   const [status, setStatus] = useState<UseSessionStorageStatus>("idle");
   const [storedValue, setStoredValue] = useState(initialValue);
   const { deserialize = JSON.parse, serialize = JSON.stringify } = options || {};
@@ -60,5 +60,14 @@ export function useSessionStorage<T>(
     [key, serialize]
   );
 
-  return [storedValue, setValue, status];
+  const removeValue = useCallback(() => {
+    try {
+      setStoredValue(initialValue);
+      sessionStorage.removeItem(key);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [key]);
+
+  return [storedValue, setValue, status, removeValue];
 }
