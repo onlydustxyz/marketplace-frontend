@@ -47,19 +47,19 @@ export const ProjectInformationsPage = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const { storedValue: savedOrgsData, removeValue: removeOrgsData } = useOrganizationSession();
+  const { storedValue: orgsSession, removeValue: removeOrgsSession } = useOrganizationSession();
   const {
-    storedValue: savedFormData,
-    setValue: setSavedFormData,
-    status: savedFormDataStatus,
-    removeValue: removeFormData,
+    storedValue: formSession,
+    setValue: setFormSession,
+    status: formSessionStatus,
+    removeValue: removeFormSession,
   } = useInformationSession<createProjectInformation>();
 
   const { mutate } = ProjectApi.mutations.useCreateProject({
     options: {
       onSuccess: () => {
-        removeOrgsData();
-        removeFormData();
+        removeOrgsSession();
+        removeFormSession();
       },
     },
   });
@@ -76,7 +76,7 @@ export const ProjectInformationsPage = () => {
   });
 
   const onSubmit = (formData: createProjectInformation) => {
-    const repoIds = getSelectedRepoIds(savedOrgsData);
+    const repoIds = getSelectedRepoIds(orgsSession);
     mutate({
       ...formData,
       // remove when project lead components is ready
@@ -87,14 +87,14 @@ export const ProjectInformationsPage = () => {
   };
 
   useEffect(() => {
-    if (savedFormDataStatus === "getted") {
-      reset({ ...savedFormData, image: undefined });
+    if (formSessionStatus === "getted") {
+      reset({ ...formSession, image: undefined });
     }
-  }, [savedFormDataStatus]);
+  }, [formSessionStatus]);
 
   useEffect(() => {
     return () => {
-      setSavedFormData(getValues());
+      setFormSession(getValues());
     };
   }, []);
 
