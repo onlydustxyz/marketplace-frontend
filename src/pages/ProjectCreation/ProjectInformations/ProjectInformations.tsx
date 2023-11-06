@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { useEffect } from "react";
-import { fakeRepoData } from "src/pages/ProjectCreation/GithubRepository";
+import { useOrganizationSession } from "../useProjectCreationSession";
 
 const validationSchema = z.object({
   image: z.instanceof(File).optional(),
@@ -59,6 +59,7 @@ export const ProjectInformationsPage = () => {
 
   console.log("errors", errors, isValid, getValues());
 
+  const [savedOrgsData] = useOrganizationSession();
   const [savedFormData, setSavedFormData, savedFormDataStatus] = useSessionStorage<
     createProjectInformation | undefined
   >("createProjectInformation", undefined);
@@ -70,11 +71,11 @@ export const ProjectInformationsPage = () => {
   }, [savedFormDataStatus]);
 
   const getSelectedRepoIds = () => {
-    return fakeRepoData.reduce((acc, org) => {
+    return savedOrgsData.reduce((acc, org) => {
       return [
         ...acc,
-        ...org.repos.reduce((acc2, repo) => {
-          if (repo.selected) {
+        ...(org.repos || []).reduce((acc2, repo) => {
+          if (repo.selected && repo.githubId) {
             return [...acc2, repo.githubId];
           }
 

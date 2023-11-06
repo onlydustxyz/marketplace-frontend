@@ -6,17 +6,11 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import PencilLine from "src/icons/PencilLine";
-
-type ExtendedInstallationResponse = useInstallationByIdResponse & {
-  organization: {
-    installationId: string;
-  };
-};
+import { OrganizationSessionStorageInterface, useOrganizationSession } from "../useProjectCreationSession";
 
 function isOrganizationAlreadyExist(
-  organizations: ExtendedInstallationResponse[],
+  organizations: OrganizationSessionStorageInterface[],
   newOrganization: useInstallationByIdResponse
 ) {
   return organizations.some(org => org?.organization?.name === newOrganization?.organization?.name);
@@ -26,25 +20,16 @@ export default function OrganizationList() {
   const { T } = useIntl();
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
-  const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useSessionStorage<ExtendedInstallationResponse[]>(
-    "OrganizationsType",
-    []
-  );
+
+  const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useOrganizationSession();
 
   const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
     params: { installation_id: installation_id },
   });
-  //   const { data, isLoading, isError } = useRestfulData<ExtendedInstallationResponse>({
-  //     resourcePath: ApiResourcePaths.GET_INSTALLED_GITHUB_ORGANIZATION,
-  //     pathParam: installation_id,
-  //     method: "GET",
-  //     enabled: !!installation_id,
-  //     retry: 1,
-  //   });
 
   useEffect(() => {
     if (data && savedOrgsDataStatus === "getted" && !isOrganizationAlreadyExist(savedOrgsData, data)) {
-      const newData: ExtendedInstallationResponse = {
+      const newData: OrganizationSessionStorageInterface = {
         ...data,
         organization: {
           ...data.organization,
@@ -75,7 +60,7 @@ export default function OrganizationList() {
         {T("project.details.create.organizations.installedOn", { count: savedOrgsData?.length })}
       </h2>
       <ul className="flex flex-col gap-2 py-4 pb-6">
-        {savedOrgsData?.map((installation: ExtendedInstallationResponse, index: number) => (
+        {savedOrgsData?.map((installation: OrganizationSessionStorageInterface, index: number) => (
           <Card className="shadow-medium" key={installation?.organization?.name}>
             <div key={index} className="flex items-center gap-3 ">
               <RoundedImage
