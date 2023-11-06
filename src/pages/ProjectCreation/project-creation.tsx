@@ -9,17 +9,17 @@ import { useEffect } from "react";
 import { components } from "src/__generated/api";
 
 export const ProjectCreationPage = () => {
-  const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useSessionStorage<components["schemas"]["InstallationResponse"][]>(
-    "OrganizationsType", []);
+  const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useSessionStorage<
+    components["schemas"]["InstallationResponse"][]
+  >("OrganizationsType", []);
 
-    useEffect(() => {
-      console.log("savedOrgsData", savedOrgsData);
-      console.log("savedOrgsDataStatus", savedOrgsDataStatus);
-      if (savedOrgsDataStatus === "getted") {
-        setSavedOrgsData([]);
-      }
-    }, [savedOrgsDataStatus]);
-
+  useEffect(() => {
+    console.log("savedOrgsData", savedOrgsData);
+    console.log("savedOrgsDataStatus", savedOrgsDataStatus);
+    if (savedOrgsDataStatus === "getted") {
+      setSavedOrgsData([]);
+    }
+  }, [savedOrgsDataStatus]);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>

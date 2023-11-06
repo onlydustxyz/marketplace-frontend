@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Avatar } from "src/components/New/Avatar";
 import CloseLine from "src/icons/CloseLine";
 

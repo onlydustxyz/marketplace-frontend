@@ -1,8 +1,7 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { IMAGES } from "src/assets/img";
 import { Avatar } from "src/components/New/Avatar";
 import CheckLine from "src/icons/CheckLine";
-import CloseLine from "src/icons/CloseLine";
 
 export interface FieldProjectLeadSelectItemProps {
   avatarUrl: string;

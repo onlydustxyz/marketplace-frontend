@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Card from "src/components/Card";
-import { Flex } from "src/components/New/Layout/Flex";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import OrganizationList from "./organization-list";
 
@@ -18,11 +16,12 @@ export const GithubOrganizationPage = () => {
           // submitDisabled={!isValid}
           next="../repository"
         >
-          <Card>
+          <Card withBg={false}>
             <OrganizationList />
             <hr className="mb-4 border-greyscale-50/20 lg:mb-6" />
             <div className="flex justify-start">
-            <a href={import.meta.env.VITE_GITHUB_INSTALLATION_URL ?? ""}
+              <a
+                href={import.meta.env.VITE_GITHUB_INSTALLATION_URL ?? ""}
                 className="border-lg rounded-lg bg-white px-4 py-2 text-zinc-800"
               >
                 Install to another organisation
