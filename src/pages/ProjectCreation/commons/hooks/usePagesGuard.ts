@@ -5,12 +5,15 @@ import { useEffect } from "react";
 
 type pageSteps = "organization" | "information" | "repository";
 
-export const usePagesControl = (page: pageSteps) => {
+export const usePagesGuard = (page: pageSteps) => {
   const [savedOrgsData, _, savedOrgsDataStatus] = useOrganizationSession();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if ((page === "information" || page === "repository") && savedOrgsDataStatus === "getted") {
+    if (
+      (page === "information" || page === "repository" || page === "organization") &&
+      savedOrgsDataStatus === "getted"
+    ) {
       if (savedOrgsData?.length === 0) {
         navigate(RoutePaths.ProjectCreation);
       } else if (

@@ -1,11 +1,12 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Card from "src/components/Card";
-import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
-import OrganizationList from "./organization-list";
+import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
+import OrganizationList from "./components/organization-list";
 import { useIntl } from "src/hooks/useIntl";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();
+  //   usePagesGuard("organization");
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="flex items-center justify-center p-4 pt-[72px]">

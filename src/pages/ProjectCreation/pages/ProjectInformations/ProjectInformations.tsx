@@ -9,14 +9,14 @@ import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
 import InformationLine from "src/icons/InformationLine";
 import Link from "src/icons/Link";
-import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
+import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useInformationSession, useOrganizationSession } from "../../hooks/useProjectCreationSession";
+import { useInformationSession, useOrganizationSession } from "../../commons/hooks/useProjectCreationSession";
 import validationSchema from "./utils/ProjectInformations.validation";
 import ProjectApi from "src/api/Project";
 import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
-import { usePagesControl } from "../../hooks/usePagesControl";
+import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -34,7 +34,7 @@ interface createProjectInformation {
 }
 
 export const ProjectInformationsPage = () => {
-  usePagesControl("information");
+  usePagesGuard("information");
   const {
     control,
     handleSubmit,
