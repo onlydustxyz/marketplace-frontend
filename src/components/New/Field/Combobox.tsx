@@ -1,10 +1,11 @@
 import { Combobox as HeadlessCombobox, Transition } from "@headlessui/react";
+import { Spinner } from "src/components/Spinner/Spinner";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import { cn } from "src/utils/cn";
 
 type Item = {
-  id: string | number;
+  githubUserId: string | number;
 };
 
 type Props<T> = {
@@ -14,6 +15,7 @@ type Props<T> = {
   onQuery: (query: string) => void;
   placeholder?: string;
   multiple?: boolean;
+  loading?: boolean;
 };
 
 type SingleProps<T> = Props<T> & {
@@ -37,6 +39,7 @@ export function Combobox<T extends Item>({
   onChange,
   placeholder,
   multiple = false,
+  loading = false,
 }: SingleProps<T> | MultipleProps<T>) {
   // TODO handle loading state
 
@@ -84,12 +87,17 @@ export function Combobox<T extends Item>({
           >
             <div className="h-9" />
             <HeadlessCombobox.Options className="max-h-60 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
-              {items.length === 0 && query !== "" ? (
+              {loading && (
+                <div className="flex justify-center px-4 py-2 text-spacePurple-500">
+                  <Spinner />
+                </div>
+              )}
+              {items.length === 0 && query !== "" && !loading ? (
                 <div className="select-none text-greyscale-50">Nothing here.</div>
               ) : (
-                items.map(item => (
+                items?.map(item => (
                   <HeadlessCombobox.Option
-                    key={item.id}
+                    key={item.githubUserId}
                     className={({ active }) =>
                       cn("relative cursor-pointer select-none py-2", {
                         "bg-white/2": active,

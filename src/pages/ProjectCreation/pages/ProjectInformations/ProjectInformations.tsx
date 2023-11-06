@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { FieldCombined } from "src/components/New/Field/Combined";
-import { FieldProjectLead } from "src/components/New/Field/Custom/ProjectLead/ProjectLead";
+import { FieldProjectLead } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
