@@ -1,0 +1,10 @@
+import { Datepicker } from "src/components/New/Field/Datepicker";
+
+export default {
+  title: "Datepicker",
+  component: Datepicker,
+};
+
+export const Default = {
+  render: (args: typeof Datepicker) => <Datepicker mode="single" />,
+};
