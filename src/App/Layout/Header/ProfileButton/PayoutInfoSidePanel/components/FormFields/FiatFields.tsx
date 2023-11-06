@@ -11,7 +11,7 @@ import { ProfileType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSideP
 export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
   const { watch, control, trigger, clearErrors } = useFormContext();
-  const { missingUsdcWallet } = requiredFields || {};
+  const { missingSepaAccount, missingUsdcWallet } = requiredFields || {};
 
   const [iban, bic, usdPreferredMethod, profileType] = watch(["iban", "bic", "usdPreferredMethod", "profileType"]);
   const isFiatRequired = profileType === ProfileType.Company && usdPreferredMethod === PreferredMethod.Fiat;
@@ -34,7 +34,7 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
                   return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
                 },
               }}
-              showRequiredError={missingUsdcWallet && isFiatRequired}
+              showRequiredError={(missingSepaAccount || missingUsdcWallet) && isFiatRequired}
               value={value && IBANParser.printFormat(value)}
               onChange={onChange}
               onBlur={() => {
@@ -64,7 +64,7 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
                 },
                 pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
               }}
-              showRequiredError={missingUsdcWallet}
+              showRequiredError={(missingSepaAccount || missingUsdcWallet) && isFiatRequired}
               value={value}
               onChange={onChange}
               onBlur={() => {
