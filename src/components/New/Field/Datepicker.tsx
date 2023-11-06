@@ -1,31 +1,40 @@
 import { Popover, Transition } from "@headlessui/react";
+import { useIntl } from "src/hooks/useIntl";
+import ArrowDownSLine from "src/icons/ArrowDownSLine";
+import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
 import { SingleCalendar } from "../Calendar";
 
 type Props = {
-  mode: "single" | "multiple";
+  zLayer?: 1 | 2;
 };
+
+type SingleProps = {
+  mode: "single";
+} & Props;
+
+type MultipleProps = {
+  mode: "multiple";
+} & Props;
 
 type RangeProps = {
   mode: "range";
   ranges: unknown[];
-};
+} & Props;
 
-export function Datepicker({ mode }: Props | RangeProps) {
+export function Datepicker({ mode = "single", zLayer = 1 }: SingleProps | MultipleProps | RangeProps) {
+  const { T } = useIntl();
+
   function renderCalendar() {
-    if (mode === "multiple") {
-      return <div>Multiple</div>;
-    }
+    // if (mode === "multiple") {
+    //   return <div>Multiple</div>;
+    // }
 
-    if (mode === "range") {
-      return <div>Range</div>;
-    }
+    // if (mode === "range") {
+    //   return <div>Range</div>;
+    // }
 
-    return (
-      <div>
-        <SingleCalendar />
-      </div>
-    );
+    return <SingleCalendar />;
   }
 
   return (
@@ -41,7 +50,20 @@ export function Datepicker({ mode }: Props | RangeProps) {
               }
             )}
           >
-            Solutions
+            <span className="flex flex-1 items-center gap-2">
+              <CalendarEventLine
+                className={cn("text-base leading-none", {
+                  "text-spacePurple-500": open,
+                })}
+              />
+
+              <span className="font-walsheim text-sm leading-none">{T("form.datePlaceholder")}</span>
+            </span>
+            <ArrowDownSLine
+              className={cn("text-xl leading-none text-spaceBlue-200", {
+                "text-spacePurple-300": open,
+              })}
+            />
           </Popover.Button>
 
           <Transition
@@ -51,11 +73,15 @@ export function Datepicker({ mode }: Props | RangeProps) {
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
-            // className="absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 overflow-hidden rounded-2xl border border-greyscale-50/12 bg-whiteFakeOpacity-8 shadow-lg"
-            className="absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 rounded-2xl border border-greyscale-50/12 bg-whiteFakeOpacity-8 shadow-lg"
+            className="absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 overflow-hidden rounded-xl border border-greyscale-50/8 bg-greyscale-800 shadow-lg"
           >
-            <Popover.Panel className="absolute z-10">
-              <ul>
+            <Popover.Panel
+              className={cn({
+                "bg-greyscale-900": zLayer === 1,
+                "bg-greyscale-800": zLayer === 2,
+              })}
+            >
+              {/* <ul>
                 <li>
                   <button>This week</button>
                 </li>
@@ -68,9 +94,8 @@ export function Datepicker({ mode }: Props | RangeProps) {
                 <li>
                   <button>All time</button>
                 </li>
-              </ul>
-
-              <div>{renderCalendar()}</div>
+              </ul> */}
+              {renderCalendar()}
             </Popover.Panel>
           </Transition>
         </>

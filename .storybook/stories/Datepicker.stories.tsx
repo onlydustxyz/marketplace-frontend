@@ -6,5 +6,9 @@ export default {
 };
 
 export const Default = {
-  render: (args: typeof Datepicker) => <Datepicker mode="single" />,
+  render: (args: typeof Datepicker) => (
+    <div className="w-60">
+      <Datepicker mode="single" />
+    </div>
+  ),
 };

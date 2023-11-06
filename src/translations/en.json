@@ -232,7 +232,8 @@
     "placeholderShort": "Search projects"
   },
   "form": {
-    "required": "Required"
+    "required": "Required",
+    "datePlaceholder": "Select a date"
   },
   "github": {
     "invalidLogin": "Invalid Github login",
