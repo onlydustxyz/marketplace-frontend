@@ -1,6 +1,7 @@
 import { PreferredMethod } from "src/__generated/graphql";
 import { UserPayoutType } from "./PayoutInfoSidePanel";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
+import { renderHook } from "@testing-library/react";
 
 const mockUser: UserPayoutType = {
   company: {
@@ -23,119 +24,171 @@ const mockUser: UserPayoutType = {
 
 describe("usePayoutInfoValidation", () => {
   it("should return false for both isContactInfoValid and isPaymentInfoValid when missing contact and payments infos", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation(mockUser);
+    const {
+      result: {
+        current: { isContactInfoValid, isPaymentInfoValid },
+      },
+    } = renderHook(() => usePayoutInfoValidation(mockUser));
     expect(isContactInfoValid && isPaymentInfoValid).toBe(false);
   });
 
   it("should return true for isContactInfoValid and false for isPaymentInfoValid when missing payment infos", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
-      ...mockUser,
-      hasValidContactInfo: true,
-      location: {
-        ...mockUser.location,
-        city: "London",
+    const {
+      result: {
+        current: { isContactInfoValid, isPaymentInfoValid },
       },
-    });
+    } = renderHook(() =>
+      usePayoutInfoValidation({
+        ...mockUser,
+        hasValidContactInfo: true,
+        location: {
+          ...mockUser.location,
+          city: "London",
+        },
+      })
+    );
+
     expect(isContactInfoValid).toBe(true);
     expect(isPaymentInfoValid).toBe(false);
   });
 
   it("should return false for isPaymentInfoValid and false for isContactInfoValid when missing contact infos", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
-      ...mockUser,
-      payoutSettings: {
-        ...mockUser.payoutSettings,
-        ethName: "007.eth",
+    const {
+      result: {
+        current: { isContactInfoValid, isPaymentInfoValid },
       },
-    });
+    } = renderHook(() =>
+      usePayoutInfoValidation({
+        ...mockUser,
+        payoutSettings: {
+          ...mockUser.payoutSettings,
+          ethName: "007.eth",
+        },
+      })
+    );
     expect(isPaymentInfoValid && isContactInfoValid).toBe(false);
   });
 
   it("should return false for isContactInfoValid when missing company informations", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
-      ...mockUser,
-      isCompany: true,
-      payoutSettings: {
-        ...mockUser.payoutSettings,
-        hasValidPayoutSettings: true,
-        ethName: "007.eth",
+    const {
+      result: {
+        current: { isContactInfoValid, isPaymentInfoValid },
       },
-    });
+    } = renderHook(() =>
+      usePayoutInfoValidation({
+        ...mockUser,
+        isCompany: true,
+        payoutSettings: {
+          ...mockUser.payoutSettings,
+          hasValidPayoutSettings: true,
+          ethName: "007.eth",
+        },
+      })
+    );
+
     expect(isContactInfoValid).toBe(false);
     expect(isPaymentInfoValid).toBe(true);
   });
 
   it("should return true for isContactInfoValid with complete company infos", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
-      ...mockUser,
-      isCompany: true,
-      company: {
-        ...mockUser.company,
-        name: "ODDDDD",
+    const {
+      result: {
+        current: { isContactInfoValid, isPaymentInfoValid },
       },
-      payoutSettings: {
-        ...mockUser.payoutSettings,
-        hasValidPayoutSettings: true,
-        ethName: "007.eth",
-      },
-    });
+    } = renderHook(() =>
+      usePayoutInfoValidation({
+        ...mockUser,
+        isCompany: true,
+        company: {
+          ...mockUser.company,
+          name: "ODDDDD",
+        },
+        payoutSettings: {
+          ...mockUser.payoutSettings,
+          hasValidPayoutSettings: true,
+          ethName: "007.eth",
+        },
+      })
+    );
+
     expect(isContactInfoValid).toBe(false);
     expect(isPaymentInfoValid).toBe(true);
   });
 
   it("should returns false for isPaymentInfoValid when FIAT is preferred method without banking infos", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
-      ...mockUser,
-      hasValidContactInfo: true,
-      location: {
-        ...mockUser.location,
-        city: "London",
+    const {
+      result: {
+        current: { isContactInfoValid, isPaymentInfoValid },
       },
-      payoutSettings: {
-        ...mockUser.payoutSettings,
-        ethName: "007.eth",
-        usdPreferredMethod: PreferredMethod.Fiat,
-      },
-    });
+    } = renderHook(() =>
+      usePayoutInfoValidation({
+        ...mockUser,
+        hasValidContactInfo: true,
+        location: {
+          ...mockUser.location,
+          city: "London",
+        },
+        payoutSettings: {
+          ...mockUser.payoutSettings,
+          ethName: "007.eth",
+          usdPreferredMethod: PreferredMethod.Fiat,
+        },
+      })
+    );
+
     expect(isContactInfoValid).toBe(true);
     expect(isPaymentInfoValid).toBe(false);
   });
 
   it("should return true when FIAT is preferred method with banking infos", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
-      ...mockUser,
-      hasValidContactInfo: true,
-      location: {
-        ...mockUser.location,
-        city: "London",
+    const {
+      result: {
+        current: { isContactInfoValid, isPaymentInfoValid },
       },
-      payoutSettings: {
-        ...mockUser.payoutSettings,
-        hasValidPayoutSettings: true,
-        sepaAccount: {
-          bic: "TRZOFR21XXX",
-          iban: "NL40RABO4212215411",
+    } = renderHook(() =>
+      usePayoutInfoValidation({
+        ...mockUser,
+        hasValidContactInfo: true,
+        location: {
+          ...mockUser.location,
+          city: "London",
         },
-        usdPreferredMethod: PreferredMethod.Fiat,
-      },
-    });
+        payoutSettings: {
+          ...mockUser.payoutSettings,
+          hasValidPayoutSettings: true,
+          sepaAccount: {
+            bic: "TRZOFR21XXX",
+            iban: "NL40RABO4212215411",
+          },
+          usdPreferredMethod: PreferredMethod.Fiat,
+        },
+      })
+    );
+
     expect(isContactInfoValid && isPaymentInfoValid).toBe(true);
   });
 
   it("should return true for both isContactInfoValid and isPaymentInfoValid when valid", () => {
-    const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation({
-      ...mockUser,
-      hasValidContactInfo: true,
-      location: {
-        ...mockUser.location,
-        city: "London",
+    const {
+      result: {
+        current: { isContactInfoValid, isPaymentInfoValid },
       },
-      payoutSettings: {
-        ...mockUser.payoutSettings,
-        hasValidPayoutSettings: true,
-        ethName: "007.eth",
-      },
-    });
+    } = renderHook(() =>
+      usePayoutInfoValidation({
+        ...mockUser,
+        hasValidContactInfo: true,
+        location: {
+          ...mockUser.location,
+          city: "London",
+        },
+        payoutSettings: {
+          ...mockUser.payoutSettings,
+          hasValidPayoutSettings: true,
+          ethName: "007.eth",
+        },
+      })
+    );
+
     expect(isContactInfoValid && isPaymentInfoValid).toBe(true);
   });
 });
