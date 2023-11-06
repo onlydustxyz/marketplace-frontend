@@ -1,4 +1,5 @@
-export enum QUERY_TAGS {
+export enum RESSOURCE_TAGS {
+  SAMPLE = "SAMPLE",
   ME = "ME",
   REWARDS = "REWARDS",
   PROJECTS = "PROJECTS",
