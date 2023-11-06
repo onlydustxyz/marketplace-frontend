@@ -8,11 +8,13 @@ import { useEffect } from "react";
 import { Avatar } from "src/components/New/Avatar";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
-import { OrganizationSessionStorageInterface, useOrganizationSession } from "../useProjectCreationSession";
-import { useRepositoryCount } from "./useRepositoryCount";
-import { useFormCountInformation } from "./useFormCountInformation";
-import { useRepositorySearch } from "./useRepositorySearch";
-import validationSchema from "./GithubRepository.validation";
+import { OrganizationSessionStorageInterface, useOrganizationSession } from "../../hooks/useProjectCreationSession";
+import { useRepositoryCount } from "./hooks/useRepositoryCount";
+import { useFormCountInformation } from "./hooks/useFormCountInformation";
+import { useRepositorySearch } from "./hooks/useRepositorySearch";
+import validationSchema from "./utils/GithubRepository.validation";
+import { usePagesControl } from "../../hooks/usePagesControl";
+import { useNavigate } from "react-router-dom";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {
@@ -20,6 +22,8 @@ export interface createProjectRepository {
 }
 
 export const GithubRepositoryPage = () => {
+  usePagesControl("repository");
+
   const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useOrganizationSession();
   const {
     control,
@@ -37,14 +41,13 @@ export const GithubRepositoryPage = () => {
       organizations: [],
     },
   });
+  const navigate = useNavigate();
 
   const organization = watch("organizations") || [];
   const search = watch("search");
   const selectedReposCounts = useRepositoryCount(organization);
   const footerRightElement = useFormCountInformation(selectedReposCounts.selected, selectedReposCounts.total);
   const filterOrganizationBySearch = useRepositorySearch(search);
-
-  console.log("selectedReposCounts", selectedReposCounts, organization);
 
   useEffect(() => {
     if (savedOrgsDataStatus === "getted") {
@@ -60,7 +63,8 @@ export const GithubRepositoryPage = () => {
   }, []);
 
   const onSubmit = (formData: createProjectRepository) => {
-    console.log("formData", formData);
+    setSavedOrgsData(formData.organizations);
+    navigate("../informations");
   };
 
   const onCheckboxChange = (value: boolean, repoId: number | undefined, organizationName: string | undefined) => {

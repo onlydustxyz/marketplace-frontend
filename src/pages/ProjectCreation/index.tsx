@@ -1,4 +1,4 @@
-export * from "./project-creation";
+export * from "./projectCreation";
 export * from "./GithubOrganizations";
-export * from "./GithubRepository";
-export * from "./ProjectInformations";
+export * from "./pages/GithubRepository";
+export * from "./pages/ProjectInformations";

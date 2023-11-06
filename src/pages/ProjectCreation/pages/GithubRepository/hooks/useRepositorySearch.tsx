@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { OrganizationSessionStorageInterface } from "../useProjectCreationSession";
+import { OrganizationSessionStorageInterface } from "../../../hooks/useProjectCreationSession";
 
 export const useRepositorySearch = (search?: string) => {
   return useCallback(

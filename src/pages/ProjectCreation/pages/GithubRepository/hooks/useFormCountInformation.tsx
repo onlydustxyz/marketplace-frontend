@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { GithubRepositoryCount } from "./GithubRepositoryCount";
-import { GithubRepositoryCountError } from "./GithubRepositoryCountError";
+import { GithubRepositoryCount } from "../components/GithubRepositoryCount";
+import { GithubRepositoryCountError } from "../components/GithubRepositoryCountError";
 
 export const useFormCountInformation = (selected: number, total: number) => {
   return useMemo(() => {

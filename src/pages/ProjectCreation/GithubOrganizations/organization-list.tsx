@@ -7,7 +7,7 @@ import Card from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import PencilLine from "src/icons/PencilLine";
-import { OrganizationSessionStorageInterface, useOrganizationSession } from "../useProjectCreationSession";
+import { OrganizationSessionStorageInterface, useOrganizationSession } from "../hooks/useProjectCreationSession";
 
 function isOrganizationAlreadyExist(
   organizations: OrganizationSessionStorageInterface[],

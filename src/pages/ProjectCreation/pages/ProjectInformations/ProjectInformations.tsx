@@ -12,10 +12,11 @@ import Link from "src/icons/Link";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useInformationSession, useOrganizationSession } from "../useProjectCreationSession";
-import validationSchema from "./ProjectInformations.validation";
+import { useInformationSession, useOrganizationSession } from "../../hooks/useProjectCreationSession";
+import validationSchema from "./utils/ProjectInformations.validation";
 import ProjectApi from "src/api/Project";
-import { getSelectedRepoIds } from "./ProjectInformations.utils";
+import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
+import { usePagesControl } from "../../hooks/usePagesControl";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -33,6 +34,7 @@ interface createProjectInformation {
 }
 
 export const ProjectInformationsPage = () => {
+  usePagesControl("information");
   const {
     control,
     handleSubmit,

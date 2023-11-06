@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { OrganizationSessionStorageInterface } from "../useProjectCreationSession";
+import { OrganizationSessionStorageInterface } from "../../../hooks/useProjectCreationSession";
 
 export const useRepositoryCount = (organizations: OrganizationSessionStorageInterface[]) => {
   return useMemo(() => {
