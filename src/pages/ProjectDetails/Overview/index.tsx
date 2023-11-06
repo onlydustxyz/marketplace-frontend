@@ -240,9 +240,9 @@ function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
         <Badge value={githubRepos.length} size={BadgeSize.Small} />
       </div>
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
-        {githubRepos?.map(githubRepo =>
-          githubRepo?.id ? <GithubRepoDetails key={githubRepo?.id} githubRepoId={githubRepo?.id} /> : null
-        )}
+        {githubRepos?.map(githubRepo => (
+          <GithubRepoDetails key={githubRepo?.id} githubRepo={githubRepo} />
+        ))}
       </div>
     </Card>
   );
