@@ -1,6 +1,6 @@
 import { QueryObserverOptions, QueryOptions, useQuery } from "@tanstack/react-query";
 import { useAuth } from "src/hooks/useAuth";
-import { QueryParam, getEndpointUrl } from "src/utils/getEndpointUrl";
+import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 
@@ -13,7 +13,7 @@ export type BaseQueryOptions<R = unknown> = Partial<UseBaseQueryOptions<R>>;
 export interface UseBaseQueryProps<R = unknown> extends BaseQueryOptions<R> {
   resourcePath: string;
   pathParam?: string | Record<string, string>;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
   tags?: QueryTags;
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }

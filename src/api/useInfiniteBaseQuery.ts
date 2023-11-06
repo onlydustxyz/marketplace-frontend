@@ -1,13 +1,13 @@
-import { getEndpointUrl } from "src/utils/getEndpointUrl";
+import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
-import { QueryParam, QueryTags } from "./query.type";
+import { QueryTags } from "./query.type";
 import { UseInfiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 
 export interface useInfiniteBaseQueryProps {
   resourcePath: string;
   pageSize?: number;
   pathParam?: string | Record<string, string>;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
   tags?: QueryTags;
 }
 

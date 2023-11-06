@@ -1,5 +1,5 @@
 import { QueryClient, QueryObserverOptions, QueryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
-import { QueryParam, getEndpointUrl } from "src/utils/getEndpointUrl";
+import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 
@@ -16,7 +16,7 @@ export type BaseMutationOptions<R = unknown> = Partial<UseBaseMutationOptions<R>
 export interface UseBaseMutationProps<R = unknown> extends BaseMutationOptions<R> {
   resourcePath: string;
   pathParam?: string | Record<string, string>;
-  queryParams?: QueryParam[];
+  queryParams?: QueryParams;
   invalidatesTags?: { queryKey: QueryTags; exact: boolean }[];
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }
