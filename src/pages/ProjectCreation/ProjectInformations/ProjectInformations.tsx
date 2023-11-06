@@ -14,6 +14,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useInformationSession, useOrganizationSession } from "../useProjectCreationSession";
 import validationSchema from "./ProjectInformations.validation";
+import ProjectApi from "src/api/Project";
+import { getSelectedRepoIds } from "./ProjectInformations.utils";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -23,7 +25,7 @@ interface createProjectInformation {
   longDescription: string;
   name: string;
   image?: File;
-  moreInfo?: {
+  moreInfo: {
     url: string;
     value: string;
   };
@@ -45,6 +47,7 @@ export const ProjectInformationsPage = () => {
 
   const [savedOrgsData] = useOrganizationSession();
   const [savedFormData, setSavedFormData, savedFormDataStatus] = useInformationSession<createProjectInformation>();
+  const { mutate } = ProjectApi.mutations.useCreateProject({});
 
   useEffect(() => {
     if (savedFormDataStatus === "getted") {
@@ -52,24 +55,13 @@ export const ProjectInformationsPage = () => {
     }
   }, [savedFormDataStatus]);
 
-  const getSelectedRepoIds = () => {
-    return savedOrgsData.reduce((acc, org) => {
-      return [
-        ...acc,
-        ...(org.repos || []).reduce((acc2, repo) => {
-          if (repo.selected && repo.githubId) {
-            return [...acc2, repo.githubId];
-          }
-
-          return acc2;
-        }, [] as number[]),
-      ];
-    }, [] as number[]);
-  };
-
   const onSubmit = (formData: createProjectInformation) => {
-    const repoIds = getSelectedRepoIds();
-    console.log("formData", formData, repoIds);
+    const repoIds = getSelectedRepoIds(savedOrgsData);
+    mutate({
+      ...formData,
+      moreInfo: [formData.moreInfo],
+      githubRepoIds: repoIds,
+    });
   };
 
   useEffect(() => {

@@ -18,9 +18,10 @@ export interface UseBaseQueryProps<R = unknown> extends BaseQueryOptions<R> {
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }
 
-export interface UseQueryProps<RESULT = unknown, PARAMS = unknown> {
+export interface UseQueryProps<RESULT = unknown, PARAMS = unknown | undefined, BODY = unknown | undefined> {
   options?: BaseQueryOptions<RESULT>;
   params?: PARAMS;
+  body?: BODY;
 }
 
 export function useBaseQuery<R = unknown>({
