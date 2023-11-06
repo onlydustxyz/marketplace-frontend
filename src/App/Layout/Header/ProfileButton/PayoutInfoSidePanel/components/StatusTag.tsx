@@ -25,6 +25,7 @@ const networksMessages = {
   missingEthWallet: "currencies.network.ETH",
   missingOptimismWallet: "currencies.network.OP",
   missingSepaAccount: "currencies.network.USD",
+  missingUsdcWallet: "currencies.network.ETH",
   missingStarknetWallet: "currencies.network.STARK",
 };
 
@@ -32,16 +33,20 @@ type StatusTagType = {
   isValid: boolean;
   type: StatusType;
   requiredNetworks?: Record<string, boolean>;
+  isFiat?: boolean;
 };
 
-export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
+export function StatusTag({ isValid, type, requiredNetworks, isFiat }: StatusTagType) {
   const { T } = useIntl();
 
   const networks = requiredNetworks
     ? Object.entries(requiredNetworks)
         .filter(([, value]) => value)
-        .map(([key]) => T(networksMessages[key as keyof typeof networksMessages]))
-        .join(", ")
+        .map(([key]) =>
+          isFiat && key === "missingUsdcWallet"
+            ? T(networksMessages["missingSepaAccount"])
+            : T(networksMessages[key as keyof typeof networksMessages])
+        )
     : [];
 
   return (
@@ -59,7 +64,7 @@ export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
           ) : (
             <>
               <ErrorWarningLine className="mr-1 text-orange-500" />
-              {T(invalidMessages[type], { count: networks.length, networks: networks })}
+              {T(invalidMessages[type], { count: networks.length, networks: networks.join(", ") })}
             </>
           )}
         </div>

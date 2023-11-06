@@ -1,5 +1,5 @@
 import { UserFixture } from "../../types";
-import { PreferredMethod } from "../../__generated/graphql";
+import { PreferredMethod } from "../../../../src/types";
 
 export const users: Record<string, UserFixture> = {
   TokioRs: {
