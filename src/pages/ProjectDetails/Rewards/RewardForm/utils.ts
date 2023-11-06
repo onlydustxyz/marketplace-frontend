@@ -1,21 +1,13 @@
 import { filter } from "lodash";
-import { ContributionFragment, GithubIssueStatus } from "src/__generated/graphql";
-import { GithubPullRequestStatus } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
-import { GithubCodeReviewStatus, GithubContributionType } from "src/types";
+import { ContributionFragment } from "src/__generated/graphql";
+import { GithubContributionType } from "src/types";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
-
-const filters = {
-  [GithubContributionType.Issue]: { githubIssue: { status: GithubIssueStatus.Completed } },
-  [GithubContributionType.PullRequest]: { githubPullRequest: { status: GithubPullRequestStatus.Merged } },
-  [GithubContributionType.CodeReview]: { githubCodeReview: { status: GithubCodeReviewStatus.Completed } },
-};
 
 export const filterUnpaidContributionsByType = (
   type: GithubContributionType,
   contributions: ContributionFragment[]
 ): ContributionFragment[] => {
   return filter(contributions, {
-    ...filters[type],
     status: "complete",
     type: type,
     ignored: false,
