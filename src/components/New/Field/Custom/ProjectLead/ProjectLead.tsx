@@ -3,12 +3,11 @@ import { FieldLabel } from "src/components/New/Field/Label";
 import { debounce } from "lodash";
 import { FieldProjectLeadItem } from "./ProjectLeadItem";
 import { Combobox } from "src/components/New/Field/Combobox";
-import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useAuth } from "src/hooks/useAuth";
 import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
 import InformationLine from "src/icons/InformationLine";
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
+import GithubApi from "src/api/Github";
 
 // TODO : Doc
 /**
@@ -51,15 +50,13 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ id, onChange, valu
   // export const FieldProjectLead = () => {
   const { user } = useAuth();
   const [query, setQuery] = useState("");
-  const queryParams = useMemo(() => [{ key: "search", value: [query] }], [query]);
 
-  const { data, isLoading, isError } = useRestfulData<GithubUser[]>({
-    resourcePath: ApiResourcePaths.GET_GITHUB_USERS,
-    queryParams: queryParams,
-    method: "GET",
-    retry: false,
-    enabled: false,
+  const { data, isLoading, isError } = GithubApi.queries.useUsers({
+    params: { search: query },
+    options: { enabled: false },
   });
+
+  console.log("data", data);
 
   const [selectedLead, setSelectedLead] = useState<GithubUser[]>([]);
 
@@ -98,7 +95,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ id, onChange, valu
   );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex w-full flex-col gap-2">
       <FieldLabel id={id}>Project leads</FieldLabel>
       <div className="flex flex-col gap-3">
         <div className="relative sm:w-2/3">

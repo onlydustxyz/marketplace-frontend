@@ -11,9 +11,8 @@ import InformationLine from "src/icons/InformationLine";
 import Link from "src/icons/Link";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { useEffect } from "react";
-import { useOrganizationSession } from "../useProjectCreationSession";
+import { useInformationSession, useOrganizationSession } from "../useProjectCreationSession";
 import validationSchema from "./ProjectInformations.validation";
 
 interface createProjectInformation {
@@ -45,9 +44,7 @@ export const ProjectInformationsPage = () => {
   });
 
   const [savedOrgsData] = useOrganizationSession();
-  const [savedFormData, setSavedFormData, savedFormDataStatus] = useSessionStorage<
-    createProjectInformation | undefined
-  >("createProjectInformation", undefined);
+  const [savedFormData, setSavedFormData, savedFormDataStatus] = useInformationSession<createProjectInformation>();
 
   useEffect(() => {
     if (savedFormDataStatus === "getted") {

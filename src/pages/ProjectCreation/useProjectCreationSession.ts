@@ -15,7 +15,12 @@ export interface OrganizationSessionStorageInterface extends useInstallationById
 }
 
 export const OrganizationSessionStorageKey = "OrganizationsType";
+export const InformationSessionStorageKey = "createProjectInformation";
 
 export const useOrganizationSession = () => {
   return useSessionStorage<OrganizationSessionStorageInterface[]>(OrganizationSessionStorageKey, []);
+};
+
+export const useInformationSession = <V>() => {
+  return useSessionStorage<V | undefined>("createProjectInformation", undefined);
 };
