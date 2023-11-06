@@ -1,5 +1,5 @@
-import { Navigate, useParams } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { Navigate, matchPath, useLocation, useParams } from "react-router-dom";
+import { ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
 import { components } from "src/__generated/api";
 import Loader from "src/components/Loader";
@@ -15,6 +15,10 @@ type ProjectDetailsParams = {
 
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
+  const { pathname } = useLocation();
+  const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
+
+  console.log("isProjectEdition", isProjectEdition);
 
   const { data, isLoading, isError } = useRestfulData<components["schemas"]["ProjectResponse"]>({
     resourcePath: ApiResourcePaths.GET_PROJECT_DETAILS_SLUG,
@@ -40,7 +44,7 @@ export default function ProjectDetails() {
   return (
     <>
       <SEO title={`${name} — OnlyDust`} />
-      <View project={data} loading={isLoading} error={isError} />
+      <View project={data} loading={isLoading} error={isError} padded={!isProjectEdition} />
     </>
   );
 }

@@ -770,6 +770,13 @@
         "reward": "Reward",
         "title": "Contributors"
       },
+      "editProject": {
+        "title": "Edit project",
+        "tabs": {
+          "general": "General",
+          "repositories": "Repositories"
+        }
+      },
       "githubRepos": {
         "count": {
           "many": "__count__ repositories",

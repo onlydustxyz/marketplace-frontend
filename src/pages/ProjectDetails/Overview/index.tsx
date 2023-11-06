@@ -13,7 +13,7 @@ import {
   useUpdateUserProfileMutation,
 } from "src/__generated/graphql";
 import Badge, { BadgeSize } from "src/components/Badge";
-import Button, { ButtonSize, Width } from "src/components/Button";
+import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import Card from "src/components/Card";
 import ContactInformations from "src/components/ContactInformations";
@@ -45,6 +45,7 @@ import { useMediaQuery } from "usehooks-ts";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
+import Flex from "src/components/Utils/Flex";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -98,27 +99,44 @@ export default function Overview() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
-          {isProjectLeader && (
-            <Button
-              disabled={isRewardDisabled}
-              size={ButtonSize.Sm}
-              {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                visible: isRewardDisabled,
-              })}
-              onClick={() =>
-                navigate(
-                  generatePath(
-                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                    {
+          {isProjectLeader ? (
+            <Flex className="justify-end gap-2">
+              <Button
+                type={ButtonType.Secondary}
+                size={ButtonSize.Sm}
+                className="bg-spaceBlue-900"
+                onClick={() =>
+                  navigate(
+                    generatePath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, {
                       projectKey: projectSlug,
-                    }
+                    })
                   )
-                )
-              }
-            >
-              {T("project.rewardButton.full")}
-            </Button>
-          )}
+                }
+              >
+                {T("project.details.editProject.title")}
+              </Button>
+
+              <Button
+                disabled={isRewardDisabled}
+                size={ButtonSize.Sm}
+                {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                  visible: isRewardDisabled,
+                })}
+                onClick={() =>
+                  navigate(
+                    generatePath(
+                      `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                      {
+                        projectKey: projectSlug,
+                      }
+                    )
+                  )
+                }
+              >
+                {T("project.rewardButton.full")}
+              </Button>
+            </Flex>
+          ) : null}
         </div>
       </Title>
       <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
