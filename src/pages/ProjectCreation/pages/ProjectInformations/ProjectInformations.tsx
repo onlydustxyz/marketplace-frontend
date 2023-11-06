@@ -41,11 +41,13 @@ export const ProjectInformationsPage = () => {
     setValue,
     reset,
     getValues,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm<createProjectInformation>({
     mode: "all",
     resolver: zodResolver(validationSchema),
   });
+
+  console.log("error", errors, getValues());
 
   const [savedOrgsData] = useOrganizationSession();
   const [savedFormData, setSavedFormData, savedFormDataStatus] = useInformationSession<createProjectInformation>();
@@ -61,6 +63,8 @@ export const ProjectInformationsPage = () => {
     const repoIds = getSelectedRepoIds(savedOrgsData);
     mutate({
       ...formData,
+      // remove when project lead components is ready
+      inviteGithubUserIdsAsProjectLeads: [],
       moreInfo: [formData.moreInfo],
       githubRepoIds: repoIds,
     });
