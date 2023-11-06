@@ -54,7 +54,7 @@ const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
     tbody: "flex flex-col gap-1",
     row: "w-full flex justify-between",
     cell: "w-8 h-8",
-    day: "text-xs text-greyscale-50 w-8 h-8 rounded flex items-center justify-center",
+    day: "text-xs text-greyscale-50 w-8 h-8 rounded flex items-center justify-center focus:outline-none focus:ring-1 focus:ring-spacePurple-500 focus:bg-spacePurple-900",
     day_disabled: "text-greyscale-600",
     day_outside: "text-greyscale-600",
     day_selected: "bg-spacePurple-500",
