@@ -1,43 +1,26 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { Flex } from "src/components/New/Layout/Flex";
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
-import { useCallback, useEffect, useMemo } from "react";
-import { GithubRepositoryCountError } from "./GithubRepositoryCountError";
-import { GithubRepositoryCount } from "./GithubRepositoryCount";
+import { useEffect } from "react";
 import { Avatar } from "src/components/New/Avatar";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
 import { OrganizationSessionStorageInterface, useOrganizationSession } from "../useProjectCreationSession";
+import { useRepositoryCount } from "./useRepositoryCount";
+import { useFormCountInformation } from "./useFormCountInformation";
+import { useRepositorySearch } from "./useRepositorySearch";
+import validationSchema from "./GithubRepository.validation";
 
 type Organization = OrganizationSessionStorageInterface;
-export interface createProjectInformation {
+export interface createProjectRepository {
   organizations: Organization[];
 }
 
-const validationSchema = z.object({
-  organizations: z
-    .array(
-      z.object({
-        repos: z.array(z.object({ githubId: z.number(), selected: z.boolean().optional() })),
-      })
-    )
-    .refine(
-      organizations => {
-        return organizations.filter(organization => organization.repos.find(repo => repo.selected)).length > 0;
-      },
-      {
-        message: "",
-      }
-    ),
-});
-
 export const GithubRepositoryPage = () => {
   const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useOrganizationSession();
-
   const {
     control,
     handleSubmit,
@@ -47,13 +30,21 @@ export const GithubRepositoryPage = () => {
     getValues,
     reset,
     formState: { isValid },
-  } = useForm<createProjectInformation & { search?: string }>({
+  } = useForm<createProjectRepository & { search?: string }>({
     mode: "all",
     resolver: zodResolver(validationSchema),
     defaultValues: {
       organizations: [],
     },
   });
+
+  const organization = watch("organizations") || [];
+  const search = watch("search");
+  const selectedReposCounts = useRepositoryCount(organization);
+  const footerRightElement = useFormCountInformation(selectedReposCounts.selected, selectedReposCounts.total);
+  const filterOrganizationBySearch = useRepositorySearch(search);
+
+  console.log("selectedReposCounts", selectedReposCounts, organization);
 
   useEffect(() => {
     if (savedOrgsDataStatus === "getted") {
@@ -68,10 +59,7 @@ export const GithubRepositoryPage = () => {
     };
   }, []);
 
-  const organization = watch("organizations") || [];
-  const search = watch("search");
-
-  const onSubmit = (formData: createProjectInformation) => {
+  const onSubmit = (formData: createProjectRepository) => {
     console.log("formData", formData);
   };
 
@@ -87,48 +75,6 @@ export const GithubRepositoryPage = () => {
       }
     }
   };
-
-  const selectedReposCounts = useMemo(() => {
-    return {
-      selected: organization.reduce((acc, org) => {
-        return acc + (org.repos || []).filter(repo => repo.selected).length;
-      }, 0),
-      total: organization.reduce((acc, org) => {
-        return acc + (org.repos || []).length;
-      }, 0),
-    };
-  }, [organization]);
-
-  const footerRightElement = useMemo(() => {
-    if (selectedReposCounts.selected === 0) {
-      return <GithubRepositoryCountError />;
-    }
-
-    return <GithubRepositoryCount total={selectedReposCounts.total} selected={selectedReposCounts.selected} />;
-  }, [selectedReposCounts]);
-
-  const filterOrganizationBySearch = useCallback(
-    (value: Organization[]) => {
-      if (!search) {
-        return value;
-      }
-
-      return value
-        .map(org => {
-          const findRepos = org.repos?.filter(repo => repo.name?.includes(search));
-          if (!findRepos || findRepos.length === 0) {
-            return undefined;
-          }
-
-          return {
-            ...org,
-            repos: findRepos,
-          };
-        })
-        .filter(org => org !== undefined) as Organization[];
-    },
-    [search]
-  );
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>

@@ -11,23 +11,10 @@ import InformationLine from "src/icons/InformationLine";
 import Link from "src/icons/Link";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { useEffect } from "react";
 import { useOrganizationSession } from "../useProjectCreationSession";
-
-const validationSchema = z.object({
-  image: z.instanceof(File).optional(),
-  inviteGithubUserIdsAsProjectLeads: z.array(z.number()),
-  isLookingForContributors: z.boolean(),
-  longDescription: z.string().min(1),
-  moreInfo: z.object({
-    url: z.string().min(1),
-    value: z.string().min(1),
-  }),
-  name: z.string().min(1),
-  shortDescription: z.string().min(1),
-});
+import validationSchema from "./ProjectInformations.validation";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -51,13 +38,11 @@ export const ProjectInformationsPage = () => {
     setValue,
     reset,
     getValues,
-    formState: { isValid, errors },
+    formState: { isValid },
   } = useForm<createProjectInformation>({
     mode: "all",
     resolver: zodResolver(validationSchema),
   });
-
-  console.log("errors", errors, isValid, getValues());
 
   const [savedOrgsData] = useOrganizationSession();
   const [savedFormData, setSavedFormData, savedFormDataStatus] = useSessionStorage<
@@ -109,7 +94,7 @@ export const ProjectInformationsPage = () => {
           prev="../repository"
         >
           <Flex direction="col" gap={8}>
-            <Flex direction="col" gap={6}>
+            <Flex direction="col" gap={6} className="w-full">
               <Controller
                 name="name"
                 control={control}
