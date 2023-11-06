@@ -811,6 +811,10 @@
           "label": "AUTO-ADD"
         }
       },
+      "submit": {
+        "button": "Submit",
+        "description": "Managing an open source project ?"
+      },
       "remainingBudget": {
         "leftToSpend": "left",
         "newReward": "Reward contributor",
