@@ -4,10 +4,10 @@ import { components } from "src/__generated/api";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import { useIntl } from "src/hooks/useIntl";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
-import CloseLine from "src/icons/CloseLine";
 import PencilLine from "src/icons/PencilLine";
 
 type ExtendedInstallationResponse = components["schemas"]["InstallationResponse"] & {
@@ -24,7 +24,8 @@ function isOrganizationAlreadyExist(
 }
 
 export default function OrganizationList() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { T } = useIntl();
+  const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
   const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useSessionStorage<ExtendedInstallationResponse[]>(
     "OrganizationsType",
@@ -68,11 +69,11 @@ export default function OrganizationList() {
 
   return (
     <div>
-      <h2 className="font-medium">
-        INSTALLED ON {savedOrgsData?.length} ORGANANISATION{savedOrgsData?.length > 1 ? "S" : ""} :
+      <h2 className="font-medium uppercase">
+        {T("project.details.create.organizations.installedOn", { count: savedOrgsData?.length })}
       </h2>
       <ul className="flex flex-col gap-2 py-4 pb-6">
-        {savedOrgsData?.map((installation: components["schemas"]["InstallationResponse"], index: number) => (
+        {savedOrgsData?.map((installation: ExtendedInstallationResponse, index: number) => (
           <Card className="shadow-medium" key={installation?.organization?.name}>
             <div key={index} className="flex items-center gap-3 ">
               <RoundedImage
@@ -81,16 +82,22 @@ export default function OrganizationList() {
                 rounding={Rounding.Corners}
                 size={ImageSize.Md}
               />
-              <li key={index} className="flex-1">{installation?.organization?.name}</li>
-              <a href={`https://github.com/settings/installations/${installation?.organization?.installationId}`} target="blank">
-              <Button
-                size={ButtonSize.Sm}
-                type={ButtonType.Secondary}
-                iconOnly
-                data-testid="close-add-work-item-panel-btn"
+              <li key={index} className="flex-1">
+                {installation?.organization?.name}
+              </li>
+              <a
+                href={`https://github.com/organizations/${installation?.organization?.name}
+                        /settings/installations/${installation?.organization?.installationId}`}
+                target="blank"
               >
-                <PencilLine />
-              </Button>
+                <Button
+                  size={ButtonSize.Sm}
+                  type={ButtonType.Secondary}
+                  iconOnly
+                  data-testid="close-add-work-item-panel-btn"
+                >
+                  <PencilLine />
+                </Button>
               </a>
             </div>
           </Card>

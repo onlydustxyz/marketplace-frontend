@@ -811,9 +811,21 @@
           "label": "AUTO-ADD"
         }
       },
-      "submit": {
-        "button": "Submit",
-        "description": "Managing an open source project ?"
+      "create": {
+        "submit": {
+          "button": "Submit"
+        },
+        "description": "Managing an open source project ?",
+        "organizations": {
+          "title": "Which organisations are concerned ?",
+          "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",
+          "installAnotherOrgs": "Install to another organization",
+          "installedOn": {
+            "many": "Installed on __count__ organizations",
+            "one": "Installed on 1 organization",
+            "zero": "Installed on 0 organization"
+          }
+        }
       },
       "remainingBudget": {
         "leftToSpend": "left",
@@ -872,10 +884,10 @@
   },
   "projectCreation": {
     "repository": {
-        "error_count": "Please select at least one repo to continue.",
-        "counter": "__selected__/__total__ repos selected"
+      "error_count": "Please select at least one repo to continue.",
+      "counter": "__selected__/__total__ repos selected"
     }
-},
+  },
   "projects": {
     "count": {
       "many": "__count__ PROJECTS",

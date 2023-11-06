@@ -27,7 +27,7 @@ export default function SubmitProject() {
 
   return (
     <Card className="mb-4 flex h-fit flex-row gap-4 p-6">
-      <div className="flex-1 text-sm leading-4">{T("project.details.submit.description")}</div>
+      <div className="flex-1 text-sm leading-4">{T("project.details.create.description")}</div>
       <Button
         htmlType="submit"
         size={ButtonSize.Sm}
@@ -36,7 +36,7 @@ export default function SubmitProject() {
         onClick={() => startProjectCreation()}
       >
         <i className="ri-magic-line" />
-        {T("project.details.submit.button")}
+        {T("project.details.create.submit.button")}
       </Button>
     </Card>
   );
