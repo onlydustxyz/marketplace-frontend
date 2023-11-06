@@ -7,7 +7,7 @@ export default {
 
 export const Default = {
   render: (args: typeof SingleCalendar) => (
-    <div className="w-80 bg-red-500">
+    <div className="w-80">
       <SingleCalendar />
     </div>
   ),
@@ -15,7 +15,7 @@ export const Default = {
 
 export const Single = {
   render: (args: typeof SingleCalendar) => (
-    <div className="w-80 bg-red-500">
+    <div className="w-80">
       <SingleCalendar />
     </div>
   ),
@@ -23,7 +23,7 @@ export const Single = {
 
 export const Multiple = {
   render: (args: typeof MultipleCalendar) => (
-    <div className="w-80 bg-red-500">
+    <div className="w-80">
       <MultipleCalendar />
     </div>
   ),
@@ -31,7 +31,7 @@ export const Multiple = {
 
 export const Range = {
   render: (args: typeof RangeCalendar) => (
-    <div className="w-80 bg-red-500">
+    <div className="w-80">
       <RangeCalendar />
     </div>
   ),
