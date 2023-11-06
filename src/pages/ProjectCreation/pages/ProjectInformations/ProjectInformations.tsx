@@ -25,7 +25,7 @@ interface createProjectInformation {
   isLookingForContributors: boolean;
   longDescription: string;
   name: string;
-  image?: string;
+  logoUrl?: string;
   moreInfo: {
     url: string;
     value: string;
@@ -70,7 +70,7 @@ export const ProjectInformationsPage = () => {
   } = ProjectApi.mutations.useUploadLogo({
     options: {
       onSuccess: data => {
-        setValue("image", data.url);
+        setValue("logoUrl", data.url);
       },
     },
   });
@@ -88,7 +88,7 @@ export const ProjectInformationsPage = () => {
 
   useEffect(() => {
     if (formSessionStatus === "getted") {
-      reset({ ...formSession, image: undefined });
+      reset({ ...formSession });
     }
   }, [formSessionStatus]);
 
@@ -138,7 +138,7 @@ export const ProjectInformationsPage = () => {
                 render={props => <FieldTextarea {...props.field} {...props.fieldState} label="Long description" />}
               />
               <Controller
-                name="image"
+                name="logoUrl"
                 control={control}
                 render={props => (
                   <FieldImage<string>
