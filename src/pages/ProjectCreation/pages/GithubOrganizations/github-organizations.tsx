@@ -3,9 +3,11 @@ import Card from "src/components/Card";
 import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
 import OrganizationList from "./components/organization-list";
 import { useIntl } from "src/hooks/useIntl";
+import { useState } from "react";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();
+  const [isValid, setIsValid] = useState(false);
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="flex items-center justify-center p-4 pt-[72px]">
@@ -14,12 +16,11 @@ export const GithubOrganizationPage = () => {
           description={T("project.details.create.organizations.description")}
           step={1}
           stepCount={3}
-          // submit
-          // submitDisabled={!isValid}
+          submitDisabled={isValid}
           next="../repository"
         >
           <Card withBg={false}>
-            <OrganizationList />
+            <OrganizationList setIsValid={setIsValid} />
             <div className="flex justify-start">
               <a
                 href={import.meta.env.VITE_GITHUB_INSTALLATION_URL ?? ""}

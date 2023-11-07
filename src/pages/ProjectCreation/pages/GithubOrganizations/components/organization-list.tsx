@@ -19,7 +19,7 @@ function isOrganizationAlreadyExist(
   return organizations.some(org => org?.organization?.name === newOrganization?.organization?.name);
 }
 
-export default function OrganizationList() {
+export default function OrganizationList({ setIsValid }: { setIsValid: (isValid: boolean) => void }) {
   const { T } = useIntl();
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
@@ -46,6 +46,14 @@ export default function OrganizationList() {
       setSavedOrgsData([...savedOrgsData, newData]);
     }
   }, [data, savedOrgsDataStatus]);
+
+  useEffect(() => {
+    if (savedOrgsData.length > 0) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [savedOrgsData]);
 
   useEffect(() => {
     if (!installation_id && savedOrgsDataStatus === "getted" && savedOrgsData.length === 0) {
