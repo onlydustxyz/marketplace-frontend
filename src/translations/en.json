@@ -833,7 +833,7 @@
           "installedOn": {
             "many": "Installed on __count__ organizations",
             "one": "Installed on 1 organization",
-            "zero": "Installed on 0 organization"
+            "zero": "Installed on 0 organizations"
           }
         }
       },
