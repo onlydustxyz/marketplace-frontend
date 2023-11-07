@@ -3,19 +3,12 @@ import { API_PATH } from "../ApiPath";
 import { UseQueryProps, useBaseQuery } from "../useBaseQuery";
 import { USERS_TAGS } from "./tags";
 
-export interface useGithubUsers {
-  id: number;
-  login: string;
-  avatarUrl: string;
-  isRegistered: boolean;
-}
-
-const useUsers = ({
+const useUsersSearchByLogin = ({
   params,
   options,
 }: UseQueryProps<components["schemas"]["ContributorSearchItemResponse"][], { login?: string }>) => {
   return useBaseQuery<components["schemas"]["ContributorSearchItemResponse"][]>({
-    resourcePath: API_PATH.USERS_SEARCH,
+    resourcePath: API_PATH.USERS_SEARCH_BY_LOGIN,
     pathParam: params,
     queryParams: params,
     method: "GET",
@@ -25,4 +18,4 @@ const useUsers = ({
   });
 };
 
-export default { useUsers };
+export default { useUsersSearchByLogin };

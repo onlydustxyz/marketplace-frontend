@@ -14,8 +14,6 @@ export const ProjectCreationPage = () => {
   >("OrganizationsType", []);
 
   useEffect(() => {
-    console.log("savedOrgsData", savedOrgsData);
-    console.log("savedOrgsDataStatus", savedOrgsDataStatus);
     if (savedOrgsDataStatus === "getted") {
       setSavedOrgsData([]);
     }
