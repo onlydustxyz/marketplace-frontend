@@ -97,10 +97,12 @@ function App() {
         },
       ],
     },
-    {
-      path: ProjectRoutePaths.Edit,
-      element: <ProjectDetailsEdit />,
-    },
+    parseFlag("VITE_CAN_EDIT_PROJECT")
+      ? {
+          path: ProjectRoutePaths.Edit,
+          element: <ProjectDetailsEdit />,
+        }
+      : {},
   ];
   const routes = useRoutes([
     {

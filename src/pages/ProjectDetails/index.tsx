@@ -17,8 +17,6 @@ export default function ProjectDetails() {
   const { pathname } = useLocation();
   const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
 
-  console.log("isProjectEdition", isProjectEdition);
-
   const { data, isLoading, isError } = useRestfulData<components["schemas"]["ProjectResponse"]>({
     resourcePath: ApiResourcePaths.GET_PROJECT_DETAILS_SLUG,
     pathParam: projectKey,

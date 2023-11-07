@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { PropsWithChildren, useState } from "react";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import FileListLine from "src/icons/FilelistLine";
+import FileListLine from "src/icons/FileListLine";
 
 function TabContents({ children }: PropsWithChildren) {
   return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;

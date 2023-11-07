@@ -46,6 +46,7 @@ import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
 import Flex from "src/components/Utils/Flex";
+import { parseFlag } from "src/utils/parseFlag";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -83,6 +84,8 @@ export default function Overview() {
   const { data: userProfileData } = useUserProfile({ githubUserId });
   const profile = userProfileData?.profile;
 
+  const isEditProjectEnabled = parseFlag("VITE_CAN_EDIT_PROJECT");
+
   useEffect(() => {
     if (projectId && projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) {
       dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: projectId });
@@ -101,20 +104,22 @@ export default function Overview() {
           {T("project.details.overview.title")}
           {isProjectLeader ? (
             <Flex className="justify-end gap-2">
-              <Button
-                type={ButtonType.Secondary}
-                size={ButtonSize.Sm}
-                className="bg-spaceBlue-900"
-                onClick={() =>
-                  navigate(
-                    generatePath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, {
-                      projectKey: projectSlug,
-                    })
-                  )
-                }
-              >
-                {T("project.details.editProject.title")}
-              </Button>
+              {isEditProjectEnabled ? (
+                <Button
+                  type={ButtonType.Secondary}
+                  size={ButtonSize.Sm}
+                  className="bg-spaceBlue-900"
+                  onClick={() =>
+                    navigate(
+                      generatePath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, {
+                        projectKey: projectSlug,
+                      })
+                    )
+                  }
+                >
+                  {T("project.details.editProject.title")}
+                </Button>
+              ) : null}
 
               <Button
                 disabled={isRewardDisabled}
