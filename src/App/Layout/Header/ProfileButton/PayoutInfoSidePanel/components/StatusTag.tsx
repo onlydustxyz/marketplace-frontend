@@ -4,6 +4,7 @@ import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
+import { RequiredFieldsType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/usePayoutInfoValidation";
 
 export enum StatusType {
   Contact = "CONTACT",
@@ -20,14 +21,18 @@ const invalidMessages = {
   [StatusType.Payment]: "profile.missing.payment",
 };
 
-const networksMessages = {
-  missingAptosWallet: "currencies.network.APT",
-  missingEthWallet: "currencies.network.ETH",
-  missingOptimismWallet: "currencies.network.OP",
-  missingSepaAccount: "currencies.network.USD",
-  missingUsdcWallet: "currencies.network.ETH",
-  missingStarknetWallet: "currencies.network.STARK",
-};
+function getNetworkMessage(key: string, isFiat?: boolean) {
+  const networksMessages: Record<keyof RequiredFieldsType, string> = {
+    missingAptosWallet: "profile.missing.networkFull.APT",
+    missingEthWallet: "profile.missing.networkFull.ETH",
+    missingOptimismWallet: "profile.missing.networkFull.OP",
+    missingSepaAccount: isFiat ? "profile.missing.networkFull.USD" : "profile.missing.networkFull.ETH",
+    missingUsdcWallet: isFiat ? "profile.missing.networkFull.USD" : "profile.missing.networkFull.ETH",
+    missingStarknetWallet: "profile.missing.networkFull.STARK",
+  };
+
+  return networksMessages[key as keyof typeof networksMessages];
+}
 
 type StatusTagType = {
   isValid: boolean;
@@ -42,16 +47,14 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat }: StatusTag
   const networks = requiredNetworks
     ? Object.entries(requiredNetworks)
         .filter(([, value]) => value)
-        .map(([key]) =>
-          isFiat && key === "missingUsdcWallet"
-            ? T(networksMessages["missingSepaAccount"])
-            : T(networksMessages[key as keyof typeof networksMessages])
-        )
+        .map(([key]) => T(getNetworkMessage(key, isFiat)))
     : [];
+
+  const uniqueNetworks = [...new Set(networks)];
 
   return (
     <Box className="pb-6">
-      <Tag size={TagSize.Medium}>
+      <Tag size={TagSize.Medium} className="px-4">
         <div
           className={cn({
             "text-orange-500": !isValid,
@@ -64,7 +67,7 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat }: StatusTag
           ) : (
             <>
               <ErrorWarningLine className="mr-1 text-orange-500" />
-              {T(invalidMessages[type], { count: networks.length, networks: networks.join(", ") })}
+              {T(invalidMessages[type], { networks: uniqueNetworks.join(", ") })}
             </>
           )}
         </div>
