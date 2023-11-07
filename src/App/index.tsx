@@ -144,24 +144,31 @@ function App() {
         },
         {
           path: RoutePaths.ProjectCreation,
-          children: [
-            {
-              index: true,
-              element: <ProjectCreationPage />,
-            },
-            {
-              path: "organizations",
-              element: <GithubOrganizationPage />,
-            },
-            {
-              path: "repository",
-              element: <GithubRepositoryPage />,
-            },
-            {
-              path: "informations",
-              element: <ProjectInformationsPage />,
-            },
-          ],
+          children: parseFlag("VITE_CAN_CREATE_PROJECT")
+            ? [
+                {
+                  index: true,
+                  element: <ProjectCreationPage />,
+                },
+                {
+                  path: "organizations",
+                  element: <GithubOrganizationPage />,
+                },
+                {
+                  path: "repository",
+                  element: <GithubRepositoryPage />,
+                },
+                {
+                  path: "informations",
+                  element: <ProjectInformationsPage />,
+                },
+              ]
+            : [
+                {
+                  index: true,
+                  element: <Navigate to={RoutePaths.Projects} />,
+                },
+              ],
         },
         {
           path: RoutePaths.ProjectDetails,
