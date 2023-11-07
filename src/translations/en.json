@@ -815,7 +815,7 @@
         "submit": {
           "button": "Submit",
           "success": "Project created successfully",
-          "error":"An error occurred, please try again later."
+          "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project ?",
         "intro": {
@@ -852,37 +852,37 @@
             "error_count": "Please select at least one repo to continue.",
             "counter": "__selected__/__total__ repos selected",
             "fields": {
-                "name": {
-                  "label": "Project name",
-                  "info": "This will be used to define your project URL",
-                  "placeholder": "Dusty React"
-                },
-                "short": {
-                  "label": "Short description",
-                  "placeholder": "A project about dust."
-                },
-                "long": {
-                  "label": "Long description",
-                  "placeholder": "A project about dust."
-                },
-                "logo": {
-                  "label": "Project visual",
-                  "placeholder": "image.png",
-                  "info": "SVG, PNG, JPG or GIF (MAX. 400x400px)."
-                },
-                "moreInfo": {
-                  "label": "More info",
-                  "placeholderLink": "Link",
-                  "placeholderLabel": "Label"
-                },
-                "jobs": {
-                  "label": "Accept new applications",
-                  "subLabel": "Looking for contributors"
-                },
-                "projectLead": {
-                  "placeholderLabel": "Pick a contributor or type in Github handle",
-                  "info": "To remove a project lead, ask us using the feedback form in the header."
-                }
+              "name": {
+                "label": "Project name",
+                "info": "This will be used to define your project URL",
+                "placeholder": "Dusty React"
+              },
+              "short": {
+                "label": "Short description",
+                "placeholder": "A project about dust."
+              },
+              "long": {
+                "label": "Long description",
+                "placeholder": "A project about dust."
+              },
+              "logo": {
+                "label": "Project visual",
+                "placeholder": "image.png",
+                "info": "SVG, PNG, JPG or GIF (MAX. 400x400px)."
+              },
+              "moreInfo": {
+                "label": "More info",
+                "placeholderLink": "Link",
+                "placeholderLabel": "Label"
+              },
+              "jobs": {
+                "label": "Accept new applications",
+                "subLabel": "Looking for contributors"
+              },
+              "projectLead": {
+                "placeholderLabel": "Pick a contributor or type in Github handle",
+                "info": "To remove a project lead, ask us using the feedback form in the header."
+              }
             }
           }
         }
