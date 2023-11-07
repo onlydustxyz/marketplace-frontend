@@ -223,7 +223,10 @@ export const ProjectInformationsPage = () => {
                 render={({ field: { value, name } }) => (
                   <FieldProjectLead
                     onChange={({ invited }) => {
-                      setValue("inviteGithubUserIdsAsProjectLeads", invited, { shouldDirty: true });
+                      setValue("inviteGithubUserIdsAsProjectLeads", invited, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      });
                     }}
                     githubUserId={name}
                     value={value}

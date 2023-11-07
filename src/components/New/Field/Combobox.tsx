@@ -45,11 +45,11 @@ export function Combobox<T extends { [key: string]: unknown }>({
   return (
     <HeadlessCombobox value={selected} onChange={onChange} multiple={multiple as false}>
       {({ open }) => (
-        <div className="relative">
+        <div className="z-1 relative">
           <HeadlessCombobox.Button
             as="div"
             className={cn(
-              "group relative z-10 flex items-center gap-3 overflow-hidden rounded-lg border px-2.5 py-1.5",
+              "group relative z-30 flex items-center gap-3 overflow-hidden rounded-lg border px-2.5 py-1.5",
               open
                 ? "border-spacePurple-500 bg-spacePurple-900 ring-1 ring-spacePurple-500"
                 : "border-greyscale-50/8 bg-white/5 focus-within:border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500"
@@ -83,7 +83,7 @@ export function Combobox<T extends { [key: string]: unknown }>({
             leaveTo="opacity-0"
             afterLeave={() => onQuery("")}
             className={cn(
-              "z-5 absolute -left-4 -right-4 -top-4 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 bg-spaceBlue-900 p-4 shadow-heavy"
+              "absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 bg-spaceBlue-900 p-4 shadow-heavy"
             )}
           >
             <div className="h-9" />

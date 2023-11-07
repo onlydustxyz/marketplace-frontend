@@ -84,7 +84,7 @@ export const GithubRepositoryPage = () => {
       const findRepo = (findOrganization.repos || []).find(repo => repo.githubId === repoId);
       if (findRepo) {
         findRepo.selected = value;
-        setValue("organizations", [...organization], { shouldDirty: true });
+        setValue("organizations", [...organization], { shouldDirty: true, shouldValidate: true });
         trigger("organizations");
       }
     }

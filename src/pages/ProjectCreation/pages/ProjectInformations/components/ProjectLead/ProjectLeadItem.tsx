@@ -14,13 +14,12 @@ export const FieldProjectLeadItem: FC<FieldProjectLeadItemProps> = ({ isYou = fa
     <div className="flex items-center">
       <div className="flex items-center gap-2">
         <Avatar src={avatar} alt={label} shape="circle" size="6" />
-        {/* <Avatar src={onlydustLogo} alt={label} shape="circle" size="6" /> */}
-        <span className="text-sm text-spacePurple-300">{label}</span>
+        <span className=" text-sm leading-[14px] text-spacePurple-300">{label}</span>
       </div>
       {isYou ? (
         <span className="ml-2 text-sm text-spaceBlue-200">(you)</span>
       ) : (
-        <button type="button" onClick={onRemove}>
+        <button type="button" onClick={onRemove} className="leading-none">
           <CloseLine className="h-4 w-4 text-spacePurple-300" />
         </button>
       )}

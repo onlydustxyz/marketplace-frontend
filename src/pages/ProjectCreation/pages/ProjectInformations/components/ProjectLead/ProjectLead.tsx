@@ -76,13 +76,13 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
   );
 
   return (
-    <div className="flex w-full flex-col gap-2">
+    <div className=" flex w-full flex-col gap-2">
       <FieldLabel id={githubUserId}>Project leads</FieldLabel>
-      <div className="flex flex-col gap-3">
-        <div className="relative sm:w-2/3">
+      <div className="flex flex-col gap-3 ">
+        <div className=" relative z-[1]  sm:w-2/3">
           <Combobox
             // Need to ask backend why do we have this distinction between external and internal contributors
-            items={data?.externalContributors ?? []}
+            items={data?.contributors ?? []}
             itemKeyName="githubUserId"
             renderItem={({ item, selected }) => (
               <FieldProjectLeadSelectItem
