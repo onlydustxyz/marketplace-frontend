@@ -21,7 +21,6 @@ const project: ComponentProps<typeof View>["project"] = {
   visibility: "PUBLIC",
   contributorCount: 3,
   moreInfoUrl: "www.onlydust.xyz",
-  invitedLeaders: [],
   leaders: [
     {
       githubUserId: 74653697,
