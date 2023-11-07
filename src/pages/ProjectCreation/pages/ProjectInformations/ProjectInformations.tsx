@@ -22,6 +22,7 @@ import ProjectApi from "src/api/Project";
 import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
 import UseMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
+import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -41,7 +42,7 @@ interface createProjectInformation {
 export const ProjectInformationsPage = () => {
   const { T } = useIntl();
 
-  //   usePagesGuard("information");
+  usePagesGuard("information");
   const {
     control,
     handleSubmit,

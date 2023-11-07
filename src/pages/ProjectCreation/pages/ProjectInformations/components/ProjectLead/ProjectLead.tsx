@@ -83,6 +83,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
           <Combobox
             // Need to ask backend why do we have this distinction between external and internal contributors
             items={data?.externalContributors ?? []}
+            itemKeyName="githubUserId"
             renderItem={({ item, selected }) => (
               <FieldProjectLeadSelectItem
                 login={item.login}
