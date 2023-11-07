@@ -25,5 +25,7 @@ pub struct Config {
 	#[serde(default)]
 	pub indexer_client: http_client::Config,
 	#[serde(default)]
+	pub new_indexer_client: http_client::Config,
+	#[serde(default)]
 	pub coinmarketcap: coinmarketcap::Config,
 }

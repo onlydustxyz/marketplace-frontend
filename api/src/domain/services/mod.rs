@@ -10,3 +10,5 @@ mod dusty_bot;
 pub use self::dusty_bot::Service as DustyBotService;
 
 pub mod indexer;
+
+pub mod new_indexer;

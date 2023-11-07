@@ -1,0 +1,17 @@
+{
+    "request": {
+        "urlPattern": "/new_indexer/api/v1/indexes/repos/[0-9]*",
+        "method": "PUT",
+        "headers": {
+            "Authorization": {
+                "contains": "Bearer "
+            },
+            "Api-Key": {
+                "contains": "test-api-key"
+            }
+        }
+    },
+    "response": {
+        "status": 204
+    }
+}

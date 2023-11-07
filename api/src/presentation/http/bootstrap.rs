@@ -3,11 +3,14 @@ use std::sync::Arc;
 use anyhow::Result;
 use diesel_migrations::{embed_migrations, EmbeddedMigrations};
 use domain::{AggregateRepository, CompositePublisher, EventPublisher};
-use infrastructure::{amqp, dbclient, event_bus::EXCHANGE_NAME, github};
+use infrastructure::{
+	amqp, dbclient, event_bus::EXCHANGE_NAME, github, http::Client as HttpClient,
+};
+use reqwest::header::HeaderMap;
 use rocket::{Build, Rocket};
 
 use crate::{
-	domain::projectors::{self, projections},
+	domain::projectors::{self, new_indexer, projections},
 	infrastructure::{simple_storage, web3::ens},
 	presentation::{graphql, http, http::github_client_pat_factory::GithubClientPatFactory},
 	Config,
@@ -28,6 +31,10 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		github::RoundRobinClient::new(config.dusty_bot_api_client.clone())?.into();
 	let simple_storage = Arc::new(simple_storage::Client::new(config.s3.clone()).await?);
 	let github_client_pat_factory = GithubClientPatFactory::new(config.github_api_client.clone());
+	let new_indexer_client = Arc::new(HttpClient::new(
+		config.new_indexer_client.clone(),
+		HeaderMap::default(),
+	)?);
 
 	let projector = projections::Projector::new(
 		database.clone(),
@@ -51,6 +58,9 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 			projectors::event_store::Projector::new(database.clone()),
 		)),
 		Arc::new(EventPublisher::new(projector.clone())),
+		Arc::new(EventPublisher::new(new_indexer::Projector::new(
+			new_indexer_client,
+		))),
 		Arc::new(
 			amqp::Bus::new(config.amqp.clone())
 				.await?

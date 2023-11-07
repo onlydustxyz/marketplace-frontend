@@ -33,4 +33,10 @@ impl Client {
 		let json = response.json().await?;
 		Ok(json)
 	}
+
+	pub async fn put<R: DeserializeOwned>(&self, path: String) -> Result<R> {
+		let response = self.client.put(self.url(path)?).send().await?.error_for_status()?;
+		let json = response.json().await?;
+		Ok(json)
+	}
 }

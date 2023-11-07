@@ -31,6 +31,10 @@ default:
     base_url: $GITHUB_INDEXER_BASE_URL
     headers:
       api-key: $GITHUB_INDEXER_API_KEY
+  new_indexer_client:
+    base_url: $INDEXER_BASE_URL
+    headers:
+      api-key: $INDEXER_API_KEY
   s3:
     images_bucket_name: onlydust-app-images
     bucket_region: eu-west-1

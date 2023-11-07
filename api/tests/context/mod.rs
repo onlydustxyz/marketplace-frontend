@@ -17,6 +17,7 @@ use tokio_cron_scheduler::Job;
 
 pub mod environment;
 pub mod indexer;
+pub mod new_indexer;
 pub mod simple_storage;
 pub mod utils;
 pub mod web3;
@@ -40,6 +41,7 @@ pub struct Context<'a> {
 	pub dusty_bot_github: github::Context<'a>,
 	pub github: github::Context<'a>,
 	pub indexer: indexer::Context<'a>,
+	pub new_indexer: new_indexer::Context<'a>,
 	pub web3: web3::Context<'a>,
 	pub coinmarketcap: coinmarketcap::Context<'a>,
 	_environment: environment::Context,
@@ -86,6 +88,14 @@ impl<'a> Context<'a> {
 			),
 		)?;
 
+		let new_indexer = new_indexer::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/new_indexer",
+				env::current_dir().unwrap().display(),
+			),
+		)?;
+
 		let coinmarketcap = coinmarketcap::Context::new(
 			docker,
 			format!(
@@ -110,6 +120,7 @@ impl<'a> Context<'a> {
 			github_api_client: github.config.clone(),
 			dusty_bot_api_client: dusty_bot_github.config.clone(),
 			indexer_client: indexer.config.clone(),
+			new_indexer_client: new_indexer.config.clone(),
 			coinmarketcap: coinmarketcap.config.clone(),
 		};
 
@@ -146,6 +157,7 @@ impl<'a> Context<'a> {
 			dusty_bot_github,
 			github,
 			indexer,
+			new_indexer,
 			web3,
 			coinmarketcap,
 			quotes_syncer: api::presentation::cron::quotes_syncer::bootstrap(config.clone())
