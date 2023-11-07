@@ -89,6 +89,9 @@ export const ProjectInformationsPage = () => {
     success: {
       message: T("project.details.create.submit.success"),
     },
+    error: {
+      message: T("project.details.create.submit.error"),
+    },
   });
 
   const onSubmit = (formData: createProjectInformation) => {

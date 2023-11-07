@@ -29,7 +29,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
   const { user } = useAuth();
   const [query, setQuery] = useState("");
 
-  const { data, isLoading, isError } = UsersApi.queries.useUsersSearchByLogin({
+  const { data, isLoading } = UsersApi.queries.useUsersSearchByLogin({
     params: { login: query },
     options: { enabled: query !== "" },
   });

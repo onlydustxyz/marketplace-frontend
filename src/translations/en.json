@@ -814,7 +814,8 @@
       "create": {
         "submit": {
           "button": "Submit",
-          "success": "Project created successfully"
+          "success": "Project created successfully",
+          "error":"An error occurred, please try again later."
         },
         "description": "Managing an open source project ?",
         "intro": {

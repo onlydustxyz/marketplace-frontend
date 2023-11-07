@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEventHandler, useEffect, useState } from "react";
+import { ChangeEvent, FocusEventHandler, Ref, forwardRef, useEffect, useState } from "react";
 import { Field, FieldProps } from "./Field";
 import { cn } from "src/utils/cn";
 import { FieldInfoMessage } from "./InfoMessage";
@@ -19,16 +19,10 @@ export interface FieldImageProps<F extends string | File> extends Omit<FieldProp
   };
 }
 
-export const FieldImage = <F extends string | File>({
-  onBlur,
-  onFocus,
-  onChange,
-  className,
-  max_size_mo,
-  upload,
-  value,
-  ...rest
-}: FieldImageProps<F>) => {
+export const FieldImage = forwardRef(function FieldImage<F extends string | File>(
+  { onBlur, onFocus, onChange, className, max_size_mo, upload, value, ...rest }: FieldImageProps<F>,
+  ref: Ref<HTMLInputElement>
+) {
   const [preview, setPreview] = useState("");
   const bytesToMegaBytes = (bytes: number) => bytes / (1024 * 1024);
 
@@ -90,6 +84,7 @@ export const FieldImage = <F extends string | File>({
           <input
             id={rest.name}
             type="file"
+            ref={ref}
             className={cn(
               "rounded-lg border border-greyscale-50/8 bg-white/5 text-sm text-spaceBlue-200 file:mr-3 file:cursor-pointer file:rounded-l-lg file:border file:border-none file:border-greyscale-50 file:bg-white/5 file:px-4 file:py-2 file:leading-none file:text-greyscale-50 file:shadow-lg file:ring-1 file:ring-inset file:ring-greyscale-50 file:hover:text-spacePurple-100 file:hover:ring-spacePurple-200",
               {
@@ -107,4 +102,4 @@ export const FieldImage = <F extends string | File>({
       </div>
     </Field>
   );
-};
+});
