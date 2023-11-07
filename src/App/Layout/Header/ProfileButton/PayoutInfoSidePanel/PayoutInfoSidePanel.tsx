@@ -2,7 +2,6 @@ import IBANParser from "iban";
 import { useEffect } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { components } from "src/__generated/api";
-import { PreferredMethod } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
@@ -13,6 +12,7 @@ import { ProfileType } from "./types";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
 import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
+import { PreferredMethod } from "src/types";
 
 type Props = {
   open: boolean;

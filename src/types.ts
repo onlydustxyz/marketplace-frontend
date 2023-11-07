@@ -72,6 +72,11 @@ export enum Currency {
   OP = "OP",
 }
 
+export enum PreferredMethod {
+  Crypto = "CRYPTO",
+  Fiat = "FIAT",
+}
+
 export enum PaymentStatus {
   COMPLETE = "COMPLETE",
   PENDING_INVOICE = "PENDING_INVOICE",
