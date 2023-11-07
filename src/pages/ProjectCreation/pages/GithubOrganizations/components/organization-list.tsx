@@ -7,7 +7,10 @@ import Card from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import PencilLine from "src/icons/PencilLine";
-import { OrganizationSessionStorageInterface, useOrganizationSession } from "../hooks/useProjectCreationSession";
+import {
+  OrganizationSessionStorageInterface,
+  useOrganizationSession,
+} from "../../../commons/hooks/useProjectCreationSession";
 
 function isOrganizationAlreadyExist(
   organizations: OrganizationSessionStorageInterface[],
@@ -21,7 +24,11 @@ export default function OrganizationList() {
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
 
-  const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useOrganizationSession();
+  const {
+    storedValue: savedOrgsData,
+    setValue: setSavedOrgsData,
+    status: savedOrgsDataStatus,
+  } = useOrganizationSession();
 
   const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
     params: { installation_id: installation_id },

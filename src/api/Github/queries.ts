@@ -5,13 +5,6 @@ import { components } from "src/__generated/api";
 
 export type useInstallationByIdResponse = components["schemas"]["InstallationResponse"];
 
-export interface useGithubUsers {
-  id: number;
-  login: string;
-  avatarUrl: string;
-  isRegistered: boolean;
-}
-
 const useInstallationById = ({
   params,
   options,
@@ -26,16 +19,4 @@ const useInstallationById = ({
   });
 };
 
-const useUsers = ({ params, options }: UseQueryProps<useGithubUsers[], { search?: string }>) => {
-  return useBaseQuery<useGithubUsers[]>({
-    resourcePath: API_PATH.GITHUB_USERS,
-    pathParam: params,
-    queryParams: params,
-    method: "GET",
-    tags: GITHUB_TAGS.users(),
-    retry: 0,
-    ...(options || {}),
-  });
-};
-
-export default { useInstallationById, useUsers };
+export default { useInstallationById };

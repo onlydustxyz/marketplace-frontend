@@ -1,19 +1,22 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
+import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
 import { Flex } from "src/components/New/Layout/Flex";
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
 import { useEffect } from "react";
 import { Avatar } from "src/components/New/Avatar";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
-import { OrganizationSessionStorageInterface, useOrganizationSession } from "../../hooks/useProjectCreationSession";
+import {
+  OrganizationSessionStorageInterface,
+  useOrganizationSession,
+} from "../../commons/hooks/useProjectCreationSession";
 import { useRepositoryCount } from "./hooks/useRepositoryCount";
 import { useFormCountInformation } from "./hooks/useFormCountInformation";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import validationSchema from "./utils/GithubRepository.validation";
-import { usePagesControl } from "../../hooks/usePagesControl";
+import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
 import { useNavigate } from "react-router-dom";
 
 type Organization = OrganizationSessionStorageInterface;
@@ -22,9 +25,14 @@ export interface createProjectRepository {
 }
 
 export const GithubRepositoryPage = () => {
-  usePagesControl("repository");
+  usePagesGuard("repository");
 
-  const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useOrganizationSession();
+  const {
+    storedValue: savedOrgsData,
+    setValue: setSavedOrgsData,
+    status: savedOrgsDataStatus,
+  } = useOrganizationSession();
+
   const {
     control,
     handleSubmit,

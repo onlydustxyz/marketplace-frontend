@@ -4,5 +4,4 @@ export const GITHUB_TAGS = {
   all: [RESSOURCE_TAGS.GITHUB],
   installations: () => [...GITHUB_TAGS.all, "installations"],
   installation: (installations_id: string) => [...GITHUB_TAGS.installations(), { installations_id }],
-  users: (search?: string) => [...GITHUB_TAGS.all, "users", { search }],
 };

@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { FieldCombined } from "src/components/New/Field/Combined";
-import { FieldProjectLead } from "src/components/New/Field/Custom/ProjectLead/ProjectLead";
+import { FieldProjectLead } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
@@ -9,14 +9,14 @@ import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
 import InformationLine from "src/icons/InformationLine";
 import Link from "src/icons/Link";
-import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
+import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useInformationSession, useOrganizationSession } from "../../hooks/useProjectCreationSession";
+import { useInformationSession, useOrganizationSession } from "../../commons/hooks/useProjectCreationSession";
 import validationSchema from "./utils/ProjectInformations.validation";
 import ProjectApi from "src/api/Project";
 import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
-import { usePagesControl } from "../../hooks/usePagesControl";
+import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -25,7 +25,7 @@ interface createProjectInformation {
   isLookingForContributors: boolean;
   longDescription: string;
   name: string;
-  image?: File;
+  logoUrl?: string;
   moreInfo: {
     url: string;
     value: string;
@@ -34,45 +34,67 @@ interface createProjectInformation {
 }
 
 export const ProjectInformationsPage = () => {
-  usePagesControl("information");
+  usePagesGuard("information");
   const {
     control,
     handleSubmit,
     setValue,
     reset,
     getValues,
-    formState: { isValid, errors },
+    formState: { isValid },
   } = useForm<createProjectInformation>({
     mode: "all",
     resolver: zodResolver(validationSchema),
   });
 
-  console.log("error", errors, getValues());
+  const { storedValue: orgsSession, removeValue: removeOrgsSession } = useOrganizationSession();
+  const {
+    storedValue: formSession,
+    setValue: setFormSession,
+    status: formSessionStatus,
+    removeValue: removeFormSession,
+  } = useInformationSession<createProjectInformation>();
 
-  const [savedOrgsData] = useOrganizationSession();
-  const [savedFormData, setSavedFormData, savedFormDataStatus] = useInformationSession<createProjectInformation>();
-  const { mutate } = ProjectApi.mutations.useCreateProject({});
-
-  useEffect(() => {
-    if (savedFormDataStatus === "getted") {
-      reset({ ...savedFormData, image: undefined });
-    }
-  }, [savedFormDataStatus]);
+  const { mutate } = ProjectApi.mutations.useCreateProject({
+    options: {
+      onSuccess: () => {
+        removeOrgsSession();
+        removeFormSession();
+      },
+    },
+  });
+  const {
+    mutate: uploadProjectLogo,
+    isSuccess: successUploadLogo,
+    isPending: loadingUploadLogo,
+  } = ProjectApi.mutations.useUploadLogo({
+    options: {
+      onSuccess: data => {
+        setValue("logoUrl", data.url);
+      },
+    },
+  });
 
   const onSubmit = (formData: createProjectInformation) => {
-    const repoIds = getSelectedRepoIds(savedOrgsData);
+    const repoIds = getSelectedRepoIds(orgsSession);
     mutate({
       ...formData,
       // remove when project lead components is ready
-      inviteGithubUserIdsAsProjectLeads: [],
+      inviteGithubUserIdsAsProjectLeads: [17259618],
       moreInfo: [formData.moreInfo],
       githubRepoIds: repoIds,
     });
   };
 
   useEffect(() => {
+    if (formSessionStatus === "getted") {
+      reset({ ...formSession });
+    }
+  }, [formSessionStatus]);
+
+  useEffect(() => {
     return () => {
-      setSavedFormData(getValues());
+      setFormSession(getValues());
     };
   }, []);
 
@@ -116,9 +138,21 @@ export const ProjectInformationsPage = () => {
                 render={props => <FieldTextarea {...props.field} {...props.fieldState} label="Long description" />}
               />
               <Controller
-                name="image"
+                name="logoUrl"
                 control={control}
-                render={props => <FieldImage {...props.field} {...props.fieldState} label="Project visual" />}
+                render={props => (
+                  <FieldImage<string>
+                    {...props.field}
+                    {...props.fieldState}
+                    label="Project visual"
+                    max_size_mo={10}
+                    upload={{
+                      mutate: uploadProjectLogo,
+                      success: successUploadLogo,
+                      loading: loadingUploadLogo,
+                    }}
+                  />
+                )}
               />
               <Controller
                 name="moreInfo"

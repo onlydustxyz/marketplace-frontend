@@ -6,7 +6,6 @@ import Loader from "src/components/Loader";
 import SEO from "src/components/SEO";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { Project } from "src/types";
 import View from "./View";
 
 type ProjectDetailsParams = {
@@ -35,7 +34,7 @@ export default function ProjectDetails() {
     return <ErrorFallback />;
   }
 
-  const { name } = data as Project;
+  const { name } = data as components["schemas"]["ProjectResponse"];
 
   if (!data) {
     return <Navigate to={RoutePaths.NotFound} />;
