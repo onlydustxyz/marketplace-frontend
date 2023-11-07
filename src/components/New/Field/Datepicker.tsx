@@ -59,7 +59,7 @@ export function Datepicker({ mode = "single", isElevated = false }: SingleProps 
         <>
           <Popover.Button
             className={cn(
-              "flex w-full items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 text-greyscale-50 shadow-lg",
+              "flex w-full items-center gap-6 rounded-xl border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 text-greyscale-50 shadow-lg",
               {
                 "border-spacePurple-500 bg-spacePurple-900 text-spacePurple-200 outline-double outline-1 outline-spacePurple-500":
                   open,

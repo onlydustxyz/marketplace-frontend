@@ -837,6 +837,17 @@
           }
         }
       },
+      "edit": {
+        "fields": {
+          "rewardableContributions": {
+            "label": "Rewardable contributions",
+            "message": "All contributions before start date and from unselected categories will be auto ignored when rewarding a contributor.",
+            "pullRequests": "Pull requests",
+            "issues": "Issues",
+            "codeReviews": "Code reviews"
+          }
+        }
+      },
       "remainingBudget": {
         "leftToSpend": "left",
         "newReward": "Reward contributor",
