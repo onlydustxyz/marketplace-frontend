@@ -817,6 +817,13 @@
           "success": "Project created successfully"
         },
         "description": "Managing an open source project ?",
+        "intro": {
+          "upperTitle": "Submit project",
+          "title": "Kickstart your open source journey",
+          "description": "Want your project to join the stellar OnlyDust galaxy? How exciting! We just need you to review permission details to get started.",
+          "button": "Connect with GitHub",
+          "disclaimer": "We need your permission to connect with your github repositories"
+        },
         "organizations": {
           "title": "Which organisations are concerned ?",
           "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",

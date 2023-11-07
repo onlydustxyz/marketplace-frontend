@@ -26,7 +26,7 @@ import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
 import useReloadOnNewRelease from "./useReloadOnNewRelease";
 import {
-  ProjectCreationPage,
+  ProjectIntroPage,
   GithubOrganizationPage,
   GithubRepositoryPage,
   ProjectInformationsPage,
@@ -148,7 +148,7 @@ function App() {
             ? [
                 {
                   index: true,
-                  element: <ProjectCreationPage />,
+                  element: <ProjectIntroPage />,
                 },
                 {
                   path: "organizations",

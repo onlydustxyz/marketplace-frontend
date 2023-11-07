@@ -6,8 +6,10 @@ import Card from "src/components/Card";
 import GithubLogo from "src/icons/GithubLogo";
 import { useEffect } from "react";
 import { useResetSession } from "../commons/hooks/useProjectCreationSession";
+import { useIntl } from "src/hooks/useIntl";
 
-export const ProjectCreationPage = () => {
+export const ProjectIntroPage = () => {
+  const { T } = useIntl();
   const { reset } = useResetSession();
 
   useEffect(() => {
@@ -28,21 +30,22 @@ export const ProjectCreationPage = () => {
           <div className="flex flex-col items-center gap-12">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-2">
-                <span className="text-sm font-medium uppercase text-spaceBlue-200">Submit project</span>
+                <span className="text-sm font-medium uppercase text-spaceBlue-200">
+                  {T("project.details.create.intro.upperTitle")}
+                </span>
                 <div className="text-center font-belwe text-3xl font-normal text-greyscale-50">
-                  Kickstart your open source journey
+                  {T("project.details.create.intro.title")}
                 </div>
               </div>
               <p className="whitespace-pre-line text-center text-greyscale-50">
-                Want your project to join the stellar OnlyDust galaxy? How exciting! We just need you to review
-                permission details to get started.
+                {T("project.details.create.intro.description")}
               </p>
             </div>
             <div className="flex flex-col items-center gap-6">
               <a href={import.meta.env.VITE_GITHUB_INSTALLATION_URL ?? ""}>
                 <Button size={ButtonSize.Lg}>
                   <GithubLogo className="h-6 w-6" />
-                  Connect with GitHub
+                  {T("project.details.create.intro.button")}
                 </Button>
               </a>
               <div
@@ -50,7 +53,7 @@ export const ProjectCreationPage = () => {
                 className="flex items-center gap-2 align-baseline font-medium text-spaceBlue-200"
               >
                 <Lightbulb className="h-6 w-6 fill-spaceBlue-200" />
-                <span>We need your permission to connect with your github repositories</span>
+                <span>{T("project.details.create.intro.disclaimer")}</span>
               </div>
             </div>
           </div>
@@ -60,4 +63,4 @@ export const ProjectCreationPage = () => {
   );
 };
 
-export default ProjectCreationPage;
+export default ProjectIntroPage;
