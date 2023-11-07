@@ -6,8 +6,8 @@ import { USERS_TAGS } from "./tags";
 const useUsersSearchByLogin = ({
   params,
   options,
-}: UseQueryProps<components["schemas"]["ContributorSearchItemResponse"][], { login?: string }>) => {
-  return useBaseQuery<components["schemas"]["ContributorSearchItemResponse"][]>({
+}: UseQueryProps<components["schemas"]["ContributorSearchResponse"], { login?: string }>) => {
+  return useBaseQuery<components["schemas"]["ContributorSearchResponse"]>({
     resourcePath: API_PATH.USERS_SEARCH_BY_LOGIN,
     pathParam: params,
     queryParams: params,

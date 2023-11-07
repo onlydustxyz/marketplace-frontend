@@ -878,6 +878,10 @@
                 "jobs": {
                   "label": "Accept new applications",
                   "subLabel": "Looking for contributors"
+                },
+                "projectLead": {
+                  "placeholderLabel": "Pick a contributor or type in Github handle",
+                  "info": "To remove a project lead, ask us using the feedback form in the header."
                 }
             }
           }

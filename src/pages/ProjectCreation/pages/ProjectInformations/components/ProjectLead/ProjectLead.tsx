@@ -9,6 +9,7 @@ import InformationLine from "src/icons/InformationLine";
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
 import UsersApi from "src/api/Users";
 import { components } from "src/__generated/api";
+import { useIntl } from "src/hooks/useIntl";
 
 // TODO : Doc
 /**
@@ -28,18 +29,21 @@ export interface FieldProjectLeadProps {
 export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onChange, value }) => {
   const { user } = useAuth();
   const [query, setQuery] = useState("");
+  const { T } = useIntl();
 
   const { data, isLoading } = UsersApi.queries.useUsersSearchByLogin({
     params: { login: query },
     options: { enabled: query !== "" },
   });
 
+  const contributors = data?.contributors;
+
   const [selectedLead, setSelectedLead] = useState<components["schemas"]["ContributorSearchItemResponse"][]>([]);
 
   useEffect(() => {
-    if (!selectedLead.length && data && value?.invited?.length) {
+    if (!selectedLead.length && contributors && value?.invited?.length) {
       const findSelectedLead = value.invited
-        .map(invited => data.find(lead => lead.githubUserId === invited))
+        .map(invited => contributors?.find(lead => lead.githubUserId === invited))
         .filter(l => l !== undefined);
 
       setSelectedLead(findSelectedLead as components["schemas"]["ContributorSearchItemResponse"][]);
@@ -81,8 +85,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
       <div className="flex flex-col gap-3 ">
         <div className=" relative z-[1]  sm:w-2/3">
           <Combobox
-            // Need to ask backend why do we have this distinction between external and internal contributors
-            items={data?.contributors ?? []}
+            items={contributors ?? []}
             itemKeyName="githubUserId"
             renderItem={({ item, selected }) => (
               <FieldProjectLeadSelectItem
@@ -96,14 +99,14 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
             onQuery={handleQueryChange}
             selected={selectedLead}
             onChange={setSelectedLead}
-            placeholder="Pick a contributor or type in Github handle"
+            placeholder={T("project.details.create.informations.form.fields.projectLead.placeholderLabel")}
             multiple
             loading={isLoading}
           />
         </div>
         <div className="flex flex-wrap gap-3">{SelectedLeads}</div>
         <FieldInfoMessage icon={({ className }) => <InformationLine className={className} />}>
-          To remove a project lead, ask us using the feedback form in the header.
+          {T("project.details.create.informations.form.fields.projectLead.info")}
         </FieldInfoMessage>
       </div>
     </div>

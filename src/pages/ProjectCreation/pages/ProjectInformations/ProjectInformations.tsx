@@ -98,8 +98,6 @@ export const ProjectInformationsPage = () => {
     const repoIds = getSelectedRepoIds(orgsSession);
     mutate({
       ...formData,
-      // remove when project lead components is ready
-      inviteGithubUserIdsAsProjectLeads: [17259618],
       moreInfo: [formData.moreInfo],
       githubRepoIds: repoIds,
     });
