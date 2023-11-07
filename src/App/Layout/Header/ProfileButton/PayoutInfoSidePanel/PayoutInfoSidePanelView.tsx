@@ -1,6 +1,5 @@
 import { useFormContext } from "react-hook-form";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { PreferredMethod } from "src/__generated/graphql";
 import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
 import Tag, { TagSize } from "src/components/Tag";
@@ -24,6 +23,7 @@ import ProfileRadioGroup from "./components/ProfileRadioGroup/ProfileRadioGroup"
 import { StatusTag, StatusType } from "./components/StatusTag";
 import { ProfileType } from "./types";
 import { RequiredFieldsType } from "./usePayoutInfoValidation";
+import { PreferredMethod } from "src/types";
 
 type Props = {
   payoutSettingsValid?: boolean;
@@ -56,6 +56,8 @@ export default function PayoutInfoSidePanel({
     (isContactInfoValid && isContactInfoComplete) || (!isContactInfoValid && !isContactInfoComplete);
   const shouldDisplayPayoutStatus =
     (isPaymentInfoValid && isPayoutInfoComplete) || (!isPaymentInfoValid && !isPayoutInfoComplete);
+
+  const isFiat = usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company;
 
   return (
     <Flex className="h-full min-h-0 flex-col justify-between overflow-y-auto">
@@ -90,8 +92,9 @@ export default function PayoutInfoSidePanel({
           {shouldDisplayPayoutStatus ? (
             <StatusTag
               isValid={isPaymentInfoValid && isPayoutInfoComplete}
-              type={StatusType.Payment}
               requiredNetworks={requiredFields}
+              type={StatusType.Payment}
+              isFiat={isFiat}
             />
           ) : null}
 
@@ -116,7 +119,7 @@ export default function PayoutInfoSidePanel({
             </Flex>
           )}
 
-          {usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company && (
+          {isFiat && (
             <div className="mb-6">
               <FiatFields {...{ requiredFields }} />
             </div>
