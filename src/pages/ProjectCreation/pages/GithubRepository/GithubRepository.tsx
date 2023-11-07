@@ -18,6 +18,7 @@ import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import validationSchema from "./utils/GithubRepository.validation";
 import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
 import { useNavigate } from "react-router-dom";
+import { useIntl } from "src/hooks/useIntl";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {
@@ -25,6 +26,7 @@ export interface createProjectRepository {
 }
 
 export const GithubRepositoryPage = () => {
+  const { T } = useIntl();
   usePagesGuard("repository");
 
   const {
@@ -92,13 +94,13 @@ export const GithubRepositoryPage = () => {
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <form className="flex items-center justify-center p-4 pt-[72px]" onSubmit={handleSubmit(onSubmit)}>
         <MultiStepsForm
-          title="Which repositories will you need?"
-          description="Only repositories from organization where github app is installed are listed. "
+          title={T("project.details.create.repository.title")}
+          description={T("project.details.create.repository.description")}
           step={2}
           stepCount={3}
           submit
           submitDisabled={!isValid}
-          prev="../organization"
+          prev="../organizations"
           footerRightElement={footerRightElement}
         >
           <Flex direction="col" gap={8}>
@@ -107,7 +109,7 @@ export const GithubRepositoryPage = () => {
               control={control}
               render={props => (
                 <FieldInput
-                  placeholder="Search repository"
+                  placeholder={T("project.details.create.repository.search")}
                   {...props.field}
                   {...props.fieldState}
                   startIcon={({ className }) => <SearchLine className={className} />}
