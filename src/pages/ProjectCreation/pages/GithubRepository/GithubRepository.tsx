@@ -152,7 +152,10 @@ export const GithubRepositoryPage = () => {
                                       fieldClassName={"inline-flex w-auto"}
                                     />
                                   </Flex>
-                                  <p className="text-body-s text-greyscale-200">{repo.shortDescription}</p>
+                                  <p className={`text-body-s text-greyscale-200 ${!repo.shortDescription && "italic"}`}>
+                                    {repo.shortDescription ||
+                                      T("project.details.overview.repositories.descriptionPlaceholder")}
+                                  </p>
                                 </Flex>
                               </div>
                             </label>
