@@ -24,7 +24,7 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
         )}
       >
         <textarea
-          value={value}
+          value={value || ""}
           onBlur={onBlur}
           onChange={onChange}
           onFocus={onFocus}

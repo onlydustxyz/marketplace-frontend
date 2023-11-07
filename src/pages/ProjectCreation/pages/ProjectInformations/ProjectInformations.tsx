@@ -174,7 +174,7 @@ export const ProjectInformationsPage = () => {
                 name="logoUrl"
                 control={control}
                 render={props => (
-                  <FieldImage<string>
+                  <FieldImage
                     {...props.field}
                     {...props.fieldState}
                     placeholder={T("project.details.create.informations.form.fields.logo.placeholder")}
