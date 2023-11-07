@@ -35,8 +35,6 @@ export default function ProjectDetails() {
     return <Navigate to={RoutePaths.NotFound} />;
   }
 
-  const { name } = data;
-
   return (
     <>
       <SEO title={`${name} — OnlyDust`} />
