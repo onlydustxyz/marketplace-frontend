@@ -12,7 +12,11 @@ import Link from "src/icons/Link";
 import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useInformationSession, useOrganizationSession } from "../../commons/hooks/useProjectCreationSession";
+import {
+  useInformationSession,
+  useOrganizationSession,
+  useResetSession,
+} from "../../commons/hooks/useProjectCreationSession";
 import validationSchema from "./utils/ProjectInformations.validation";
 import ProjectApi from "src/api/Project";
 import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
@@ -47,19 +51,19 @@ export const ProjectInformationsPage = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const { storedValue: orgsSession, removeValue: removeOrgsSession } = useOrganizationSession();
+  const { storedValue: orgsSession } = useOrganizationSession();
   const {
     storedValue: formSession,
     setValue: setFormSession,
     status: formSessionStatus,
-    removeValue: removeFormSession,
   } = useInformationSession<createProjectInformation>();
+
+  const { reset: resetSession } = useResetSession();
 
   const { mutate } = ProjectApi.mutations.useCreateProject({
     options: {
       onSuccess: () => {
-        removeOrgsSession();
-        removeFormSession();
+        resetSession();
       },
     },
   });
@@ -187,7 +191,7 @@ export const ProjectInformationsPage = () => {
                     onChange={({ invited }) => {
                       setValue("inviteGithubUserIdsAsProjectLeads", invited, { shouldDirty: true });
                     }}
-                    id={name}
+                    githubUserId={name}
                     value={value}
                   />
                 )}

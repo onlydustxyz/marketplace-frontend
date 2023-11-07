@@ -4,20 +4,15 @@ import Background, { BackgroundRoundedBorders } from "src/components/Background"
 import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
 import GithubLogo from "src/icons/GithubLogo";
-import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { useEffect } from "react";
-import { components } from "src/__generated/api";
+import { useResetSession } from "../commons/hooks/useProjectCreationSession";
 
 export const ProjectCreationPage = () => {
-  const [savedOrgsData, setSavedOrgsData, savedOrgsDataStatus] = useSessionStorage<
-    components["schemas"]["InstallationResponse"][]
-  >("OrganizationsType", []);
+  const { reset } = useResetSession();
 
   useEffect(() => {
-    if (savedOrgsDataStatus === "getted") {
-      setSavedOrgsData([]);
-    }
-  }, [savedOrgsDataStatus]);
+    reset();
+  }, []);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>

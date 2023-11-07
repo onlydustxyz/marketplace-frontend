@@ -6,7 +6,6 @@ import { useIntl } from "src/hooks/useIntl";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();
-  //   usePagesGuard("organization");
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="flex items-center justify-center p-4 pt-[72px]">

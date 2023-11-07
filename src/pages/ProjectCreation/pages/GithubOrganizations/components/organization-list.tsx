@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import GithubApi from "src/api/Github";
 import { useInstallationByIdResponse } from "src/api/Github/queries";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -23,7 +23,7 @@ export default function OrganizationList() {
   const { T } = useIntl();
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
-
+  const navigate = useNavigate();
   const {
     storedValue: savedOrgsData,
     setValue: setSavedOrgsData,
@@ -46,6 +46,12 @@ export default function OrganizationList() {
       setSavedOrgsData([...savedOrgsData, newData]);
     }
   }, [data, savedOrgsDataStatus]);
+
+  useEffect(() => {
+    if (!installation_id && savedOrgsDataStatus === "getted" && savedOrgsData.length === 0) {
+      navigate("../");
+    }
+  }, [installation_id, savedOrgsDataStatus]);
 
   // if (!installation_id) {
   //   return <div>Installation id is missing</div>;

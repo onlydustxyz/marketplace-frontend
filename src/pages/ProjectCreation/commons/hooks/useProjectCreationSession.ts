@@ -11,7 +11,7 @@ type repos = components["schemas"]["InstalledGithubRepoResponse"] & {
 };
 export interface OrganizationSessionStorageInterface extends useInstallationByIdResponse {
   organization: organization;
-  repos?: repos[];
+  repos: repos[];
 }
 
 export const OrganizationSessionStorageKey = "OrganizationsType";
@@ -32,4 +32,15 @@ export const useInformationSession = <V>() => {
   );
 
   return { storedValue, setValue, status, removeValue };
+};
+
+export const useResetSession = () => {
+  const { removeValue: removeInfo } = useInformationSession<unknown>();
+  const { removeValue: removeOrgs } = useOrganizationSession();
+
+  const reset = () => {
+    removeInfo();
+    removeOrgs;
+  };
+  return { reset };
 };
