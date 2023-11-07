@@ -5,12 +5,14 @@ import {
   GithubCodeReviewFragment,
   GithubIssueFragment,
   GithubPullRequestWithCommitsFragment,
+  UnrewardedContributionsDocument,
   WorkItemFragment,
   WorkItemType,
   useUnrewardedContributionsByTypeQuery,
 } from "src/__generated/graphql";
 import View from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
+import { useApolloClient } from "@apollo/client";
 
 type Props = {
   type: WorkItemType;
@@ -21,15 +23,9 @@ type Props = {
 };
 
 export function WorkItems({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
-  const { ignore: ignoreContribution, unignore: unignoreContribution } = useIgnoredContributions();
+  const client = useApolloClient();
 
-  const addAndUnignoreContribution = (contribution: ContributionFragment) => {
-    if (contribution.ignored && contribution.id) unignoreContribution(projectId, contribution.id);
-    const workItem = contributionToWorkItem(contribution);
-    workItem && addWorkItem(workItem);
-  };
-
-  const { data } = useUnrewardedContributionsByTypeQuery({
+  const { data, refetch } = useUnrewardedContributionsByTypeQuery({
     fetchPolicy: "no-cache",
     variables: {
       projectId,
@@ -38,11 +34,26 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
     },
   });
 
+  const onRefetchContributions = async () => {
+    await client.refetchQueries({ include: [UnrewardedContributionsDocument] });
+    await refetch();
+  };
+
+  const { ignore: ignoreContribution, unignore: unignoreContribution } =
+    useIgnoredContributions(onRefetchContributions);
+
+  const addAndUnignoreContribution = (contribution: ContributionFragment) => {
+    if (contribution.ignored && contribution.id) unignoreContribution(projectId, contribution.id);
+    const workItem = contributionToWorkItem(contribution);
+    workItem && addWorkItem(workItem);
+  };
+
   const contributionsNotAdded = useMemo(
     () =>
       chain(data?.contributions)
         .differenceWith(workItems, (contribution, workItem) => contribution.detailsId === workItem.id)
-        .value(),
+        .value()
+        .filter(contribution => contribution.status === "complete"),
     [data?.contributions, workItems]
   );
 

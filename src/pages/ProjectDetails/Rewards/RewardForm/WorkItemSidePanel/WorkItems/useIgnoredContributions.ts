@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useIgnoreContributionMutation, useUnignoreContributionMutation } from "src/__generated/graphql";
 
-export function useIgnoredContributions() {
+export function useIgnoredContributions(refetchContribution?: () => void) {
   const [ignoreContribution] = useIgnoreContributionMutation();
   const [unignoreContribution] = useUnignoreContributionMutation();
 
@@ -10,14 +10,20 @@ export function useIgnoredContributions() {
       ignoreContribution({
         variables: { projectId, contributionId },
         context: { graphqlErrorDisplay: "toaster" },
-        update: cache => {
-          cache.modify({
-            id: `Contributions:${contributionId}`,
-            fields: {
-              ignored: () => true,
-            },
-          });
+        onCompleted: () => {
+          if (refetchContribution) {
+            refetchContribution();
+          }
         },
+        // TO KEEP : Legacy cache update
+        // update: cache => {
+        //   cache.modify({
+        //     id: `Contributions:${contributionId}`,
+        //     fields: {
+        //       ignored: () => true,
+        //     },
+        //   });
+        // },
       }),
     [ignoreContribution]
   );
@@ -27,14 +33,20 @@ export function useIgnoredContributions() {
       unignoreContribution({
         variables: { projectId, contributionId },
         context: { graphqlErrorDisplay: "toaster" },
-        update: cache => {
-          cache.modify({
-            id: `Contributions:${contributionId}`,
-            fields: {
-              ignored: () => false,
-            },
-          });
+        onCompleted: () => {
+          if (refetchContribution) {
+            refetchContribution();
+          }
         },
+        // TO KEEP : Legacy cache update
+        // update: cache => {
+        //   cache.modify({
+        //     id: `Contributions:${contributionId}`,
+        //     fields: {
+        //       ignored: () => false,
+        //     },
+        //   });
+        // },
       }),
     [unignoreContribution]
   );
