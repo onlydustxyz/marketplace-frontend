@@ -31,7 +31,6 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
           rows={rows || 3}
           ref={ref}
           className="w-full bg-transparent text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
-          {...rest}
         />
       </div>
     </Field>
