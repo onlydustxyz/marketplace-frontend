@@ -11,6 +11,7 @@ import {
   OrganizationSessionStorageInterface,
   useOrganizationSession,
 } from "../../../commons/hooks/useProjectCreationSession";
+import Skeleton from "src/components/Skeleton";
 
 function isOrganizationAlreadyExist(
   organizations: OrganizationSessionStorageInterface[],
@@ -62,8 +63,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
   }, [installation_id, savedOrgsDataStatus]);
 
   if (isLoading) {
-    // TODO Replace with skeleton component
-    return <div>Loading ...</div>;
+    return <Skeleton variant="organizationItem" />;
   }
 
   if (isError) {
