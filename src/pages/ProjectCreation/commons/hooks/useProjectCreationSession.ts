@@ -40,7 +40,7 @@ export const useResetSession = () => {
 
   const reset = () => {
     removeInfo();
-    removeOrgs;
+    removeOrgs();
   };
   return { reset };
 };

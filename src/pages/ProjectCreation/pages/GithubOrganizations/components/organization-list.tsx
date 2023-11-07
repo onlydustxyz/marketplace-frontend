@@ -61,10 +61,6 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
     }
   }, [installation_id, savedOrgsDataStatus]);
 
-  // if (!installation_id) {
-  //   return <div>Installation id is missing</div>;
-  // }
-
   if (isLoading) {
     // TODO Replace with skeleton component
     return <div>Loading ...</div>;
