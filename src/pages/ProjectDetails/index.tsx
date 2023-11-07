@@ -30,6 +30,7 @@ export default function ProjectDetails() {
     return <ErrorFallback />;
   }
 
+  const { name } = data as components["schemas"]["ProjectResponse"];
   if (!data) {
     return <Navigate to={RoutePaths.NotFound} />;
   }
