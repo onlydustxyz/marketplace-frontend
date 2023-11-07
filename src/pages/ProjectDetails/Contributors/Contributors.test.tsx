@@ -122,6 +122,7 @@ const project: ComponentProps<typeof View>["project"] = {
     Python: 6840986,
   },
   remainingUsdBudget: 99250.0,
+  invitedLeaders: [],
 };
 
 const queryClient = new QueryClient();
