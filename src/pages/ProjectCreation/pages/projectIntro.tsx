@@ -17,8 +17,8 @@ export const ProjectIntroPage = () => {
   }, []);
 
   return (
-    <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="flex h-screen items-center justify-center">
+    <Background roundedBorders={BackgroundRoundedBorders.Full} className="flex justify-center">
+      <div className="flex h-full items-center justify-center">
         <Card
           fullWidth={true}
           padded={false}

@@ -9,8 +9,9 @@ import { RoutePaths } from "..";
 export default function Layout() {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
-  const match = useMatch(`${RoutePaths.ProjectDetails}/*`);
-  const hideHeader = match && !isXl;
+  const isMatchProjectDetail = useMatch(`${RoutePaths.ProjectDetails}/*`);
+  const isMatchProjectCreation = useMatch(`${RoutePaths.ProjectCreation}/*`);
+  const hideHeader = isMatchProjectDetail && !isMatchProjectCreation && !isXl;
 
   return (
     <div className="flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
