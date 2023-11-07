@@ -1,38 +1,38 @@
-import { SingleCalendar, MultipleCalendar, RangeCalendar } from "src/components/New/Calendar";
+import { Calendar } from "src/components/New/Calendar";
 
 export default {
   title: "Calendar",
-  component: SingleCalendar,
+  component: Calendar,
 };
 
 export const Default = {
-  render: (args: typeof SingleCalendar) => (
+  render: () => (
     <div className="w-80">
-      <SingleCalendar />
+      <Calendar mode="single" />
     </div>
   ),
 };
 
 export const Single = {
-  render: (args: typeof SingleCalendar) => (
+  render: () => (
     <div className="w-80">
-      <SingleCalendar />
+      <Calendar mode="single" />
     </div>
   ),
 };
 
 export const Multiple = {
-  render: (args: typeof MultipleCalendar) => (
+  render: () => (
     <div className="w-80">
-      <MultipleCalendar />
+      <Calendar mode="multiple" />
     </div>
   ),
 };
 
 export const Range = {
-  render: (args: typeof RangeCalendar) => (
+  render: () => (
     <div className="w-80">
-      <RangeCalendar />
+      <Calendar mode="range" />
     </div>
   ),
 };

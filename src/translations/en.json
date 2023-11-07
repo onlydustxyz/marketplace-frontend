@@ -233,7 +233,9 @@
   },
   "form": {
     "required": "Required",
-    "datePlaceholder": "Select a date"
+    "singleDatePlaceholder": "Select a date",
+    "multipleDatesPlaceholder": "Select some dates",
+    "dateRangePlaceholder": "Select a date range"
   },
   "github": {
     "invalidLogin": "Invalid Github login",

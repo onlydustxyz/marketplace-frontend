@@ -1,12 +1,13 @@
 import { Popover, Transition } from "@headlessui/react";
+import { Calendar, useMultipleCalendar, useRangeCalendar, useSingleCalendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
-import { SingleCalendar } from "../Calendar";
+import { getFormattedDateGB } from "src/utils/date";
 
 type Props = {
-  zLayer?: 1 | 2;
+  isElevated?: boolean;
 };
 
 type SingleProps = {
@@ -22,19 +23,34 @@ type RangeProps = {
   ranges: unknown[];
 } & Props;
 
-export function Datepicker({ mode = "single", zLayer = 1 }: SingleProps | MultipleProps | RangeProps) {
+export function Datepicker({ mode = "single", isElevated = false }: SingleProps | MultipleProps | RangeProps) {
   const { T } = useIntl();
+  const [day, setDay] = useSingleCalendar();
+  const [days, setDays] = useMultipleCalendar();
+  const [range, setRange] = useRangeCalendar();
 
   function renderCalendar() {
-    // if (mode === "multiple") {
-    //   return <div>Multiple</div>;
-    // }
+    if (mode === "multiple") {
+      return <Calendar mode={mode} selected={days} onSelect={setDays} />;
+    }
 
-    // if (mode === "range") {
-    //   return <div>Range</div>;
-    // }
+    if (mode === "range") {
+      return <Calendar mode={mode} selected={range} onSelect={setRange} />;
+    }
 
-    return <SingleCalendar />;
+    return <Calendar mode={mode} selected={day} onSelect={setDay} />;
+  }
+
+  function renderPlaceholder() {
+    if (mode === "multiple") {
+      return T("form.multipleDatesPlaceholder");
+    }
+
+    if (mode === "range") {
+      return T("form.dateRangePlaceholder");
+    }
+
+    return day ? getFormattedDateGB(day) : T("form.singleDatePlaceholder");
   }
 
   return (
@@ -56,8 +72,7 @@ export function Datepicker({ mode = "single", zLayer = 1 }: SingleProps | Multip
                   "text-spacePurple-500": open,
                 })}
               />
-
-              <span className="font-walsheim text-sm leading-none">{T("form.datePlaceholder")}</span>
+              <span className="font-walsheim text-sm leading-none">{renderPlaceholder()}</span>
             </span>
             <ArrowDownSLine
               className={cn("text-xl leading-none text-spaceBlue-200", {
@@ -73,14 +88,12 @@ export function Datepicker({ mode = "single", zLayer = 1 }: SingleProps | Multip
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
-            className="absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 overflow-hidden rounded-xl border border-greyscale-50/8 bg-greyscale-800 shadow-lg"
+            className={cn(
+              "absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 overflow-hidden rounded-xl border border-greyscale-50/8 shadow-lg",
+              isElevated ? "bg-greyscale-800" : "bg-greyscale-900"
+            )}
           >
-            <Popover.Panel
-              className={cn({
-                "bg-greyscale-900": zLayer === 1,
-                "bg-greyscale-800": zLayer === 2,
-              })}
-            >
+            <Popover.Panel>
               {/* <ul>
                 <li>
                   <button>This week</button>

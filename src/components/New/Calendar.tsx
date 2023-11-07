@@ -1,15 +1,6 @@
 import { format } from "date-fns";
 import { useState } from "react";
-import {
-  CaptionProps,
-  DateRange,
-  DayPicker,
-  DayPickerBase,
-  DayPickerMultipleProps,
-  DayPickerRangeProps,
-  DayPickerSingleProps,
-  useNavigation,
-} from "react-day-picker";
+import { CaptionProps, DateRange, DayPicker, DayPickerBase, DayPickerProps, useNavigation } from "react-day-picker";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
@@ -72,54 +63,18 @@ const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
   weekStartsOn: 1,
 };
 
-export function SingleCalendar({ onSelect, ...options }: Omit<DayPickerSingleProps, "mode" | "selected">) {
-  const today = new Date();
-  const [day, setDay] = useState<Date | undefined>(today);
-
-  return (
-    <DayPicker
-      mode="single"
-      selected={day}
-      onSelect={(day, selectedDate, activeModifiers, e) => {
-        setDay(day);
-        onSelect?.(day, selectedDate, activeModifiers, e);
-      }}
-      {...defaultOptions}
-      {...options}
-    />
-  );
+export function useSingleCalendar(defaultValue?: Date) {
+  return useState<Date | undefined>(defaultValue);
 }
 
-export function MultipleCalendar({ onSelect, ...options }: Omit<DayPickerMultipleProps, "mode" | "selected">) {
-  const [days, setDays] = useState<Date[]>();
-
-  return (
-    <DayPicker
-      mode="multiple"
-      selected={days}
-      onSelect={(days, selectedDate, activeModifiers, e) => {
-        setDays(days);
-        onSelect?.(days, selectedDate, activeModifiers, e);
-      }}
-      {...defaultOptions}
-      {...options}
-    />
-  );
+export function useMultipleCalendar(defaultValue?: Date[]) {
+  return useState<Date[] | undefined>(defaultValue);
 }
 
-export function RangeCalendar({ onSelect, ...options }: Omit<DayPickerRangeProps, "mode" | "selected">) {
-  const [range, setRange] = useState<DateRange | undefined>();
+export function useRangeCalendar(defaultValue?: DateRange) {
+  return useState<DateRange | undefined>(defaultValue);
+}
 
-  return (
-    <DayPicker
-      mode="range"
-      selected={range}
-      onSelect={(range, selectedDate, activeModifiers, e) => {
-        setRange(range);
-        onSelect?.(range, selectedDate, activeModifiers, e);
-      }}
-      {...defaultOptions}
-      {...options}
-    />
-  );
+export function Calendar(options: DayPickerProps) {
+  return <DayPicker {...defaultOptions} {...options} />;
 }
