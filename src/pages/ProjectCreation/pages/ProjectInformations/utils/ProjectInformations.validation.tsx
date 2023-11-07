@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const validationSchema = z.object({
   logoUrl: z.string().optional(),
-  inviteGithubUserIdsAsProjectLeads: z.array(z.number()),
+  inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
   moreInfo: z.object({

@@ -23,6 +23,8 @@ import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
 import UseMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
 import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
+import { generatePath, useNavigate } from "react-router-dom";
+import { RoutePaths } from "src/App";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -41,6 +43,7 @@ interface createProjectInformation {
 
 export const ProjectInformationsPage = () => {
   const { T } = useIntl();
+  const navigate = useNavigate();
 
   usePagesGuard("information");
   const {
@@ -53,6 +56,9 @@ export const ProjectInformationsPage = () => {
   } = useForm<createProjectInformation>({
     mode: "all",
     resolver: zodResolver(validationSchema),
+    defaultValues: {
+      isLookingForContributors: false,
+    },
   });
 
   const { storedValue: orgsSession } = useOrganizationSession();
@@ -66,8 +72,11 @@ export const ProjectInformationsPage = () => {
 
   const { mutate, ...restCreateProjectMutation } = ProjectApi.mutations.useCreateProject({
     options: {
-      onSuccess: () => {
+      onSuccess: data => {
         resetSession();
+        if (data?.projectSlug) {
+          navigate(generatePath(RoutePaths.ProjectDetails, { projectKey: data.projectSlug }));
+        }
       },
     },
   });
@@ -98,6 +107,7 @@ export const ProjectInformationsPage = () => {
     const repoIds = getSelectedRepoIds(orgsSession);
     mutate({
       ...formData,
+      isLookingForContributors: formData.isLookingForContributors || false,
       moreInfo: [formData.moreInfo],
       githubRepoIds: repoIds,
     });
