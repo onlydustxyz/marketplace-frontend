@@ -44,7 +44,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
     if (!selectedLead.length && contributors && value?.invited?.length) {
       const findSelectedLead = value.invited
         .map(invited => contributors?.find(lead => lead.githubUserId === invited))
-        .filter(l => l !== undefined);
+        .filter(Boolean);
 
       setSelectedLead(findSelectedLead as components["schemas"]["ContributorSearchItemResponse"][]);
     }
