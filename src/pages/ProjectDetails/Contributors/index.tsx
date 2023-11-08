@@ -110,7 +110,7 @@ export default function Contributors() {
           }}
         />
       )}
-      {!isFetching && contributors?.length === 0 && <ContributorsTableFallback />}
+      {!isFetching && contributors?.length === 0 && <ContributorsTableFallback projectName={project?.name} />}
     </>
   );
 }
