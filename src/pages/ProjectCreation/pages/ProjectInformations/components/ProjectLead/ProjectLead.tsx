@@ -59,9 +59,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
   };
 
   useEffect(() => {
-    if (onChange) {
-      onChange({ invited: selectedLead.map(lead => lead.githubUserId) });
-    }
+    onChange?.({ invited: selectedLead.map(lead => lead.githubUserId) });
   }, [selectedLead]);
 
   const SelectedLeads = useMemo(
