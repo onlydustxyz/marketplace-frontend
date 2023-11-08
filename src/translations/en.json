@@ -19,7 +19,10 @@
     "many": "__count__ comments"
   },
   "common": {
-    "retry": "Retry"
+    "retry": "Retry",
+    "next": "Next",
+    "back": "Back",
+    "publish": "Publish"
   },
   "contribution": {
     "review": {

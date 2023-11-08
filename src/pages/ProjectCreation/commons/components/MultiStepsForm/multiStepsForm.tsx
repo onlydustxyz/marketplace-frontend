@@ -7,6 +7,7 @@ import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CheckLine from "src/icons/CheckLine";
 import { Flex } from "src/components/New/Layout/Flex";
+import { useIntl } from "src/hooks/useIntl";
 
 export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   step,
@@ -20,6 +21,8 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   submitDisabled,
   children,
 }) => {
+  const { T } = useIntl();
+
   return (
     <div className="relative w-[688px] max-w-full overflow-hidden rounded-2xl">
       <div className="absolute z-10 h-1.5 w-full bg-mosaic bg-cover" />
@@ -51,21 +54,21 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
               <Link to={prev}>
                 <Button type={ButtonType.Secondary}>
                   <ArrowLeftSLine className="-ml-2 text-2xl" />
-                  Back
+                  {T("common.back")}
                 </Button>
               </Link>
             )}
             {next && (
               <Link to={next}>
                 <Button>
-                  Next
+                  {T("common.next")}
                   <ArrowRightSLine className="-mr-2 text-2xl" />
                 </Button>
               </Link>
             )}
             {submit && (
               <Button htmlType="submit" disabled={submitDisabled}>
-                <CheckLine className="-ml-1 text-2xl" /> Publish
+                <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
               </Button>
             )}
           </Flex>
