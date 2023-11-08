@@ -58,7 +58,7 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, 
    */
   const networks2 = useMemo(() => {
     const { missingSepaAccount, missingUsdcWallet, missingEthWallet, ...networks } = requiredNetworks || {};
-
+    const debgArray: any[] = [];
     const networkMessages = Object.entries(networks)
       .filter(([, value]) => value)
       .map(([key]) => T(getNetworkMessage(key, isFiat)));
@@ -66,16 +66,21 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, 
     if (isBankWire) {
       if (isCompany && (missingUsdcWallet || missingSepaAccount)) {
         networkMessages.push(T("profile.missing.networkFull.USD"));
+        debgArray.push("69", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
       }
       if (!isCompany && (missingUsdcWallet || missingSepaAccount)) {
+        debgArray.push("72", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
         networkMessages.push(T("profile.missing.networkFull.ETH"));
       }
       if (missingEthWallet) {
+        debgArray.push("76", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
         networkMessages.push(T("profile.missing.networkFull.ETH"));
       }
     } else if (!isCompany && (missingUsdcWallet || missingSepaAccount) && !missingEthWallet) {
+      debgArray.push("80", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
       networkMessages.push(T("profile.missing.networkFull.ETH"));
     } else if (missingEthWallet) {
+      debgArray.push("83", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
       networkMessages.push(T("profile.missing.networkFull.ETH"));
     }
     console.log("requiredNetworks", requiredNetworks);
