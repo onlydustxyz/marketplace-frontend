@@ -33,7 +33,7 @@ export default function SubmitProject() {
         size={ButtonSize.Sm}
         type={ButtonType.Primary}
         width={Width.Fit}
-        onClick={() => startProjectCreation()}
+        onClick={startProjectCreation}
       >
         <i className="ri-magic-line" />
         {T("project.details.create.submit.button")}
