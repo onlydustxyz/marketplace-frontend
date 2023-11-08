@@ -7,23 +7,20 @@ export type useCreateProjectBody = components["schemas"]["CreateProjectRequest"]
 export type useCreateProjectResponse = components["schemas"]["CreateProjectResponse"];
 
 const useCreateProject = ({
-  params,
-  options,
+  options = {},
 }: UseMutationProps<useCreateProjectResponse, undefined, useCreateProjectBody>) => {
   return useBaseMutation<useCreateProjectBody, useCreateProjectResponse>({
     resourcePath: API_PATH.PROJECTS,
-    pathParam: params,
     method: "POST",
-    ...(options || {}),
+    ...options,
   });
 };
 
-const useUploadLogo = ({ params, options }: UseUploaderProps<{ url: string }, undefined>) => {
+const useUploadLogo = ({ options = {} }: UseUploaderProps<{ url: string }, undefined>) => {
   return useBaseUploader<{ url: string }>({
     resourcePath: API_PATH.PROJECTS_LOGO,
-    pathParam: params,
     method: "POST",
-    ...(options || {}),
+    ...options,
   });
 };
 

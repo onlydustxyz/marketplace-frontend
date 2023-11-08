@@ -30,7 +30,6 @@ export interface UseMutationProps<RESULT = unknown, PARAMS = unknown, Payload = 
 
 export function useBaseMutation<Payload = unknown, Response = unknown>({
   resourcePath,
-  pathParam = "",
   queryParams = [],
   method = "PUT",
   onSuccess,
@@ -43,7 +42,7 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
 
   return useMutation({
     mutationFn: (data: Payload): Promise<Response> => {
-      return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
+      return fetch(getEndpointUrl({ resourcePath, queryParams }), {
         ...options,
         body: JSON.stringify(data),
       })
