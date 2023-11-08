@@ -74,7 +74,7 @@ export default function View({
     data,
     isLoading: loading,
     isError,
-  } = useRestfulData<components["schemas"]["RewardResponse"]>({
+  } = useRestfulData<components["schemas"]["RewardDetailsResponse"]>({
     resourcePath: isMine ? ApiResourcePaths.GET_MY_REWARD_BY_ID : ApiResourcePaths.PROJECT_REWARD,
     pathParam: isMine ? rewardId : { projectId, rewardId },
     method: "GET",
