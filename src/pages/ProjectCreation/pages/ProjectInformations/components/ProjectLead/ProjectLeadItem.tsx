@@ -3,12 +3,22 @@ import { Avatar } from "src/components/New/Avatar";
 import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
 
-export interface FieldProjectLeadItemProps {
-  isYou?: boolean;
+type Props = {
   avatar: string;
   label: string;
-  onRemove?: () => void;
-}
+};
+
+type YouProps = {
+  isYou: boolean;
+  onRemove?: never;
+} & Props;
+
+type RemoveProps = {
+  isYou?: never;
+  onRemove: () => void;
+} & Props;
+
+export type FieldProjectLeadItemProps = YouProps | RemoveProps;
 
 export const FieldProjectLeadItem: FC<FieldProjectLeadItemProps> = ({ isYou = false, avatar, label, onRemove }) => {
   const { T } = useIntl();
