@@ -46,10 +46,14 @@ export const FieldImage = forwardRef(function FieldImage<F extends string | File
   };
 
   useEffect(() => {
-    if (value && typeof value === "string") {
-      setPreview(value);
-    } else if (value && typeof value === "object") {
-      setPreview(URL.createObjectURL(value));
+    if (value) {
+      if (typeof value === "string") {
+        setPreview(value);
+      }
+
+      if (value instanceof File) {
+        setPreview(URL.createObjectURL(value));
+      }
     }
   }, [value]);
 
