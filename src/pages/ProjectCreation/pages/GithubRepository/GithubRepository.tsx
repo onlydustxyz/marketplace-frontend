@@ -16,7 +16,7 @@ import { useRepositoryCount } from "./hooks/useRepositoryCount";
 import { useFormCountInformation } from "./hooks/useFormCountInformation";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import validationSchema from "./utils/GithubRepository.validation";
-import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
+import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -27,7 +27,7 @@ export interface createProjectRepository {
 
 export const GithubRepositoryPage = () => {
   const { T } = useIntl();
-  usePagesGuard("repository");
+  useProjectCreatePageGuard("repository");
 
   const {
     storedValue: savedOrgsData,

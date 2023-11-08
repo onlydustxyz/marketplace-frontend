@@ -9,7 +9,7 @@ const STEP_REPOSITORY = "repository";
 
 type pageSteps = typeof STEP_ORGANIZATION | typeof STEP_INFORMATION | typeof STEP_REPOSITORY;
 
-export const usePagesGuard = (page: pageSteps) => {
+export const useProjectCreatePageGuard = (page: pageSteps) => {
   const { storedValue, status } = useOrganizationSession();
   const { removeValue: removeFormData } = useInformationSession();
   const { reset } = useResetSession();
