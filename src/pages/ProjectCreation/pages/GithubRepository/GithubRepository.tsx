@@ -53,9 +53,9 @@ export const GithubRepositoryPage = () => {
   });
   const navigate = useNavigate();
 
-  const organization = watch("organizations") || [];
+  const organizations = watch("organizations");
   const search = watch("search");
-  const selectedReposCounts = useRepositoryCount(organization);
+  const selectedReposCounts = useRepositoryCount(organizations);
   const footerRightElement = useFormCountInformation(selectedReposCounts.selected, selectedReposCounts.total);
   const filterOrganizationBySearch = useRepositorySearch(search);
 
@@ -78,13 +78,13 @@ export const GithubRepositoryPage = () => {
   };
 
   const onCheckboxChange = (value: boolean, repoId: number | undefined, organizationName: string | undefined) => {
-    const findOrganization = organization.find(org => org.organization.name === organizationName);
+    const findOrganization = organizations.find(org => org.organization.name === organizationName);
 
     if (findOrganization && repoId) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.githubId === repoId);
       if (findRepo) {
         findRepo.selected = value;
-        setValue("organizations", [...organization], { shouldDirty: true, shouldValidate: true });
+        setValue("organizations", [...organizations], { shouldDirty: true, shouldValidate: true });
         trigger("organizations");
       }
     }
