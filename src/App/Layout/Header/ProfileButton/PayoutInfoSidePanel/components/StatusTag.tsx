@@ -23,13 +23,13 @@ const invalidMessages = {
   [StatusType.Payment]: "profile.missing.payment",
 };
 
-function getNetworkMessage(key: string, isFiat?: boolean) {
+function getNetworkMessage(key: string) {
   const networksMessages: Record<keyof RequiredFieldsType, string> = {
     missingAptosWallet: "profile.missing.networkFull.APT",
     missingEthWallet: "profile.missing.networkFull.ETH",
     missingOptimismWallet: "profile.missing.networkFull.OP",
-    missingSepaAccount: isFiat ? "profile.missing.networkFull.USD" : "profile.missing.networkFull.ETH",
-    missingUsdcWallet: isFiat ? "profile.missing.networkFull.USD" : "profile.missing.networkFull.ETH",
+    missingSepaAccount: "profile.missing.networkFull.USD", // no using but keep for typing
+    missingUsdcWallet: "profile.missing.networkFull.USD", // no using but keep for typing
     missingStarknetWallet: "profile.missing.networkFull.STARK",
   };
 
@@ -40,7 +40,6 @@ type StatusTagType = {
   isValid: boolean;
   type: StatusType;
   requiredNetworks?: RequiredFieldsType;
-  isFiat?: boolean;
   isCompany?: boolean;
   isBankWire?: boolean;
   isEthFormFilled?: boolean;
@@ -51,7 +50,6 @@ export function StatusTag({
   isValid,
   type,
   requiredNetworks,
-  isFiat,
   isCompany,
   isBankWire,
   isEthFormFilled,
@@ -59,11 +57,11 @@ export function StatusTag({
 }: StatusTagType) {
   const { T } = useIntl();
 
-  const networks2 = useMemo(() => {
+  const networks = useMemo(() => {
     const { missingSepaAccount, missingUsdcWallet, missingEthWallet, ...networks } = requiredNetworks || {};
     const networkMessages = Object.entries(networks)
       .filter(([, value]) => value)
-      .map(([key]) => T(getNetworkMessage(key, isFiat)));
+      .map(([key]) => T(getNetworkMessage(key)));
 
     const _missingSepaAccount = missingSepaAccount && !isSepaFormFilled;
     const _missingEthWallet = missingEthWallet && !isEthFormFilled;
@@ -84,7 +82,7 @@ export function StatusTag({
     ];
   }, [requiredNetworks, isCompany, isBankWire]);
 
-  const uniqueNetworks = [...new Set(networks2)];
+  const uniqueNetworks = [...new Set(networks)];
 
   return type !== StatusType.Payment || uniqueNetworks.length > 0 ? (
     <Box className="pb-6">

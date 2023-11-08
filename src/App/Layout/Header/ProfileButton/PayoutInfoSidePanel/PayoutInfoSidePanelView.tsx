@@ -96,7 +96,6 @@ export default function PayoutInfoSidePanel({
               isValid={isPaymentInfoValid && isPayoutInfoComplete}
               requiredNetworks={requiredFields}
               type={StatusType.Payment}
-              isFiat={isFiat}
               isBankWire={usdPreferredMethod === PreferredMethod.Fiat}
               isCompany={profileType === ProfileType.Company}
               isEthFormFilled={!!ethWallet}
