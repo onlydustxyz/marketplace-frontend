@@ -58,7 +58,7 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, 
    */
   const networks2 = useMemo(() => {
     const { missingSepaAccount, missingUsdcWallet, missingEthWallet, ...networks } = requiredNetworks || {};
-    const debgArray: any[] = [];
+    const debgArray: unknown[] = [];
     const networkMessages = Object.entries(networks)
       .filter(([, value]) => value)
       .map(([key]) => T(getNetworkMessage(key, isFiat)));
@@ -83,10 +83,8 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, 
       debgArray.push("83", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
       networkMessages.push(T("profile.missing.networkFull.ETH"));
     }
-    console.log("requiredNetworks", requiredNetworks);
-    console.log("isFiat", isFiat);
 
-    console.log("----", networkMessages, missingSepaAccount, missingUsdcWallet);
+    console.log("----", debgArray);
 
     return networkMessages;
   }, [requiredNetworks, isCompany, isBankWire]);
