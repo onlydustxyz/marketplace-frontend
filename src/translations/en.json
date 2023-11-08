@@ -780,13 +780,6 @@
         "reward": "Reward",
         "title": "Contributors"
       },
-      "editProject": {
-        "title": "Edit project",
-        "tabs": {
-          "general": "General",
-          "repositories": "Repositories"
-        }
-      },
       "githubRepos": {
         "count": {
           "many": "__count__ repositories",
@@ -920,6 +913,11 @@
         }
       },
       "edit": {
+        "title": "Edit project",
+        "tabs": {
+          "general": "General",
+          "repositories": "Repositories"
+        },
         "fields": {
           "rewardableContributions": {
             "label": "Rewardable contributions",
@@ -927,179 +925,113 @@
             "pullRequests": "Pull requests",
             "issues": "Issues",
             "codeReviews": "Code reviews"
-          },
-          "repository": {
-            "title": "Which repositories will you need?",
-            "description": "Only repositories from organisation where github app is installed are listed. ",
-            "search": "Search repository",
-            "form": {
-              "error_count": "Please select at least one repo to continue.",
-              "counter": "__selected__/__total__ repos selected"
-            }
-          },
-          "informations": {
-            "title": "Tell us about your project!",
-            "success": "Only repositories from organisation where github app is installed are listed. ",
-            "search": "Search repository",
-            "form": {
-              "error_count": "Please select at least one repo to continue.",
-              "counter": "__selected__/__total__ repos selected",
-              "fields": {
-                "name": {
-                  "label": "Project name",
-                  "info": "This will be used to define your project URL",
-                  "placeholder": "Dusty React"
-                },
-                "short": {
-                  "label": "Short description",
-                  "placeholder": "A project about dust."
-                },
-                "long": {
-                  "label": "Long description",
-                  "placeholder": "A project about dust."
-                },
-                "logo": {
-                  "label": "Project visual",
-                  "placeholder": "image.png",
-                  "info": "SVG, PNG, JPG or GIF (MAX. 400x400px)."
-                },
-                "moreInfo": {
-                  "label": "More info",
-                  "placeholderLink": "Link",
-                  "placeholderLabel": "Label"
-                },
-                "jobs": {
-                  "label": "Accept new applications",
-                  "subLabel": "Looking for contributors"
-                },
-                "projectLead": {
-                  "placeholderLabel": "Pick a contributor or type in Github handle",
-                  "info": "To remove a project lead, ask us using the feedback form in the header."
-                }
-              }
-            }
           }
-        },
-        "remainingBudget": {
-          "leftToSpend": "left",
-          "newReward": "Reward contributor",
-          "title": "Remaining budget",
-          "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
-          "usdInfo": "Dollar equivalent at today's date",
-          "budget": {
-            "total": "Total budget",
-            "dollars": "Dollars budget",
-            "ether": "Ether budget",
-            "stark": "Stark budget",
-            "aptos": "Aptos budget",
-            "optimism": "Optimism budget"
-          }
-        },
-        "sidebar": {
-          "backToProjects": "All projects",
-          "contributors": {
-            "many": "__count__ contributors",
-            "one": "1 contributor",
-            "zero": "No contributor"
-          },
-          "newInvite": "NEW",
-          "overview": "Overview"
-        },
-        "tableFallback": {
-          "disabledButtonTooltip": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
-          "newReward": "Reward contributor",
-          "noRewards": "No rewards so far",
-          "send": "Give your first one!"
         }
       },
-      "error": {
-        "notFound": "This project does not exist"
+      "sidebar": {
+        "backToProjects": "All projects",
+        "contributors": {
+          "many": "__count__ contributors",
+          "one": "1 contributor",
+          "zero": "No contributor"
+        },
+        "newInvite": "NEW",
+        "overview": "Overview"
       },
-      "fundedBy": "Funded by __topSponsorsString__",
-      "rewardButton": {
-        "full": "Reward contributor",
-        "short": "Reward"
-      },
-      "sponsorsCount": "__count__ sponsors",
-      "ledBy": {
-        "many": "__count__ project leads",
-        "one": "Led by"
-      },
-      "projectLeadInvitation": {
-        "prompt": "You've been promoted to Project Lead",
-        "view": "View invite"
+      "tableFallback": {
+        "disabledButtonTooltip": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
+        "newReward": "Reward contributor",
+        "noRewards": "No rewards so far",
+        "send": "Give your first one!"
       }
+    },
+    "error": {
+      "notFound": "This project does not exist"
+    },
+    "fundedBy": "Funded by __topSponsorsString__",
+    "rewardButton": {
+      "full": "Reward contributor",
+      "short": "Reward"
+    },
+    "sponsorsCount": "__count__ sponsors",
+    "ledBy": {
+      "many": "__count__ project leads",
+      "one": "Led by"
     },
     "projectLeadInvitation": {
-      "accept": "Accept invite",
-      "acceptShort": "Accept",
-      "prompt": "You've been promoted to Project Lead on __projectName__"
+      "prompt": "You've been promoted to Project Lead",
+      "view": "View invite"
+    }
+  },
+  "projectLeadInvitation": {
+    "accept": "Accept invite",
+    "acceptShort": "Accept",
+    "prompt": "You've been promoted to Project Lead on __projectName__"
+  },
+  "projects": {
+    "count": {
+      "many": "__count__ PROJECTS",
+      "one": "1 PROJECT",
+      "zero": "0 PROJECTS"
     },
-    "projects": {
-      "count": {
-        "many": "__count__ PROJECTS",
-        "one": "1 PROJECT",
-        "zero": "0 PROJECTS"
-      },
-      "fallback": {
-        "clearFiltersButton": "Clear query",
-        "subTitle": "Try changing your query",
-        "title": "Nothing to show"
-      },
-      "sorting": {
-        "button": "Sort",
-        "label": "Sort by ",
-        "NAME": "Project name",
-        "REPO_COUNT": "Number of repositories",
-        "CONTRIBUTOR_COUNT": "Number of contributors",
-        "RANK": "Trending projects"
-      }
+    "fallback": {
+      "clearFiltersButton": "Clear query",
+      "subTitle": "Try changing your query",
+      "title": "Nothing to show"
     },
-    "rewardBudget": {
-      "submit": "Confirm reward",
-      "detail": {
-        "remaining": "Remaining budget",
-        "this": "This reward",
-        "left": "Left to spend",
-        "exceedsBudgetTooltip": "Not enough budget",
-        "dollarTooltip": "Dollars equivalent at today’s date."
-      }
+    "sorting": {
+      "button": "Sort",
+      "label": "Sort by ",
+      "NAME": "Project name",
+      "REPO_COUNT": "Number of repositories",
+      "CONTRIBUTOR_COUNT": "Number of contributors",
+      "RANK": "Trending projects"
+    }
+  },
+  "rewardBudget": {
+    "submit": "Confirm reward",
+    "detail": {
+      "remaining": "Remaining budget",
+      "this": "This reward",
+      "left": "Left to spend",
+      "exceedsBudgetTooltip": "Not enough budget",
+      "dollarTooltip": "Dollars equivalent at today’s date."
+    }
+  },
+  "seniority": {
+    "levels": {
+      "advanced": "Advanced",
+      "expert": "Expert",
+      "junior": "Junior",
+      "senior": "Senior"
     },
-    "seniority": {
-      "levels": {
-        "advanced": "Advanced",
-        "expert": "Expert",
-        "junior": "Junior",
-        "senior": "Senior"
-      },
-      "title": "Seniority"
+    "title": "Seniority"
+  },
+  "state": {
+    "error": {
+      "back": "Go back home",
+      "description": "Please try again or _contact us_ if the problem persists",
+      "refresh": "Refresh page",
+      "title": "We've just crashed"
     },
-    "state": {
-      "error": {
-        "back": "Go back home",
-        "description": "Please try again or _contact us_ if the problem persists",
-        "refresh": "Refresh page",
-        "title": "We've just crashed"
-      },
-      "maintenance": {
-        "description": "We're hard at work to make OnlyDust better. Check back later!",
-        "visitButton": "Visit onlydust.xyz",
-        "title": "We're under maintenance"
-      },
-      "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
-      "loading": "Loading...",
-      "success": "Success !"
+    "maintenance": {
+      "description": "We're hard at work to make OnlyDust better. Check back later!",
+      "visitButton": "Visit onlydust.xyz",
+      "title": "We're under maintenance"
     },
-    "tryToRefresh": "Try to refresh the page",
-    "notFound": {
-      "title1": "Page not found.",
-      "title2": "Are you lost in space?",
-      "text": "Looks like you've ventured a bit too far into the cosmic code-space and hit a pixel asteroid.",
-      "button": "Go back to Homepage"
-    },
-    "dataFetching": {
-      "dataContext": "This component must be used within a DataSwitch component"
-    },
-    "showMore": "Show more"
-  }
+    "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
+    "loading": "Loading...",
+    "success": "Success !"
+  },
+  "tryToRefresh": "Try to refresh the page",
+  "notFound": {
+    "title1": "Page not found.",
+    "title2": "Are you lost in space?",
+    "text": "Looks like you've ventured a bit too far into the cosmic code-space and hit a pixel asteroid.",
+    "button": "Go back to Homepage"
+  },
+  "dataFetching": {
+    "dataContext": "This component must be used within a DataSwitch component"
+  },
+  "showMore": "Show more"
 }

@@ -117,7 +117,7 @@ export default function Overview() {
                     )
                   }
                 >
-                  {T("project.details.editProject.title")}
+                  {T("project.details.edit.title")}
                 </Button>
               ) : null}
 

@@ -32,7 +32,7 @@ export default function ProjectEditionPage() {
       children: (
         <TabContents>
           <FileListLine />
-          {T("project.details.editProject.tabs.general")}
+          {T("project.details.edit.tabs.general")}
         </TabContents>
       ),
     },
@@ -44,7 +44,7 @@ export default function ProjectEditionPage() {
       children: (
         <TabContents>
           <GitRepositoryLine />
-          {T("project.details.editProject.tabs.repositories")}
+          {T("project.details.edit.tabs.repositories")}
         </TabContents>
       ),
     },
@@ -57,15 +57,13 @@ export default function ProjectEditionPage() {
           <CloseLine />
         </Button>
         <Title>
-          <div className="flex flex-row items-center justify-between gap-2">
-            {T("project.details.editProject.title")}
-          </div>
+          <div className="flex flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</div>
         </Title>
       </Flex>
 
       <header className="sticky top-0 z-10 border-b border-greyscale-50/20 bg-card-background-base pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:pb-0 md:pt-8">
         <div className="flex items-center justify-between px-4 xl:px-8">
-          <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.editProject.title")} />
+          <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
         </div>
       </header>
     </>
