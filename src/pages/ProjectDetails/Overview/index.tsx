@@ -241,7 +241,7 @@ function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
       </div>
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
         {githubRepos?.map(githubRepo => (
-          <GithubRepoDetails key={githubRepo?.id} githubRepo={githubRepo} />
+          <GithubRepoDetails key={githubRepo.id} githubRepo={githubRepo} />
         ))}
       </div>
     </Card>
