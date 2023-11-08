@@ -1,9 +1,9 @@
-import { PROJECT_TAGS } from "./tags";
+import { PROJECT_TAGS as tags } from "./tags";
 import mutations from "./mutations";
 
 const ProjectApi = {
-  tags: PROJECT_TAGS,
-  mutations: mutations,
+  tags,
+  mutations,
 };
 
 export default ProjectApi;
