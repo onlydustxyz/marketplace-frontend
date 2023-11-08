@@ -4,8 +4,8 @@ import mutations from "./mutations";
 
 const SampleSubApi = {
   tags: SAMPLE_SUB_TAGS,
-  queries: queries,
-  mutations: mutations,
+  queries,
+  mutations,
 };
 
 export default SampleSubApi;

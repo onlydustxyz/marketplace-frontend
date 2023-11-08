@@ -84,7 +84,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
 
   const [createIssue, { loading }] = useCreateAndCloseIssueMutation({
     variables: {
-      projectId: projectId,
+      projectId,
       githubRepoId: selectedRepo?.id,
       title: title || defaultTitle,
       description,

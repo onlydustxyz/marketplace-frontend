@@ -9,7 +9,7 @@ export const filterUnpaidContributionsByType = (
 ): ContributionFragment[] => {
   return filter(contributions, {
     status: "complete",
-    type: type,
+    type,
     ignored: false,
   }) as ContributionFragment[];
 };

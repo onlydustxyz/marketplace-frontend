@@ -22,7 +22,7 @@ export default function useSignupRedirection({ githubUserId, userId }: User) {
   const { valid: validPayoutInfo, loading: payoutSettingsQueryLoading } = usePayoutSettings(githubUserId);
 
   const pendingUserPaymentsQuery = usePendingUserPaymentsQuery({
-    variables: { userId: userId },
+    variables: { userId },
     skip: !userId,
   });
 

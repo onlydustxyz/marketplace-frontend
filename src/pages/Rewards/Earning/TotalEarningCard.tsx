@@ -25,7 +25,7 @@ export function TotalEarningCard({ amount, className }: Props) {
           {T("reward.details.earning.totalEarnings")}
         </div>
         <div className="flex flex-wrap items-center font-belwe text-2xl text-greyscale-50">
-          {formatMoneyAmount({ amount: amount, currency: Currency.USD })}
+          {formatMoneyAmount({ amount, currency: Currency.USD })}
         </div>
       </div>
     </Card>

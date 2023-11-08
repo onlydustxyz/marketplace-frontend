@@ -32,7 +32,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
   } = useOrganizationSession();
 
   const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
-    params: { installation_id: installation_id },
+    params: { installation_id },
   });
 
   useEffect(() => {
