@@ -17,11 +17,11 @@ export default function SubmitProject() {
   const dispatchSession = useSessionDispatch();
 
   const startProjectCreation = () => {
-    if (!isLoggedIn) {
+    if (isLoggedIn) {
+      navigate(RoutePaths.ProjectCreation);
+    } else {
       dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: RoutePaths.ProjectCreation });
       window.location.replace(LOGIN_URL);
-    } else {
-      navigate(RoutePaths.ProjectCreation);
     }
   };
 
