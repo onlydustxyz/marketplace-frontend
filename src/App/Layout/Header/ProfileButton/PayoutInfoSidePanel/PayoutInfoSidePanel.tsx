@@ -46,9 +46,21 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     shouldFocusError: true,
   });
 
-  const { handleSubmit, formState, reset } = formMethods;
+  const { handleSubmit, formState, reset, watch, setValue } = formMethods;
   const { isDirty } = formState;
+
+  const profileType = watch("profileType");
   useEffect(() => reset(decodeQuery(user)), [user]);
+
+  useEffect(() => {
+    if (profileType === ProfileType.Individual) {
+      setValue("bic", "", { shouldDirty: true });
+      setValue("iban", "", { shouldDirty: true });
+    } else {
+      setValue("bic", user?.payoutSettings?.sepaAccount?.bic || "", { shouldDirty: true });
+      setValue("iban", user?.payoutSettings?.sepaAccount?.iban || "", { shouldDirty: true });
+    }
+  }, [profileType, user]);
 
   const onSubmit: SubmitHandler<FormDataType> = formData => {
     userPayoutInformation(mapFormDataToSchema(formData));
