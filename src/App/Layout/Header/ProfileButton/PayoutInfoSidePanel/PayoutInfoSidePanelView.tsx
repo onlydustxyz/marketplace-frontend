@@ -95,6 +95,8 @@ export default function PayoutInfoSidePanel({
               requiredNetworks={requiredFields}
               type={StatusType.Payment}
               isFiat={isFiat}
+              isBankWire={usdPreferredMethod === PreferredMethod.Fiat}
+              isCompany={profileType === ProfileType.Company}
             />
           ) : null}
 

@@ -36,7 +36,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     onSuccess: () => {
       showToaster(T("profile.form.success"));
       queryClient.invalidateQueries();
-      setOpen(false);
+      // setOpen(false);
     },
   });
 

@@ -5,6 +5,7 @@ import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
 import { RequiredFieldsType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/usePayoutInfoValidation";
+import { useMemo } from "react";
 
 export enum StatusType {
   Contact = "CONTACT",
@@ -37,12 +38,53 @@ function getNetworkMessage(key: string, isFiat?: boolean) {
 type StatusTagType = {
   isValid: boolean;
   type: StatusType;
-  requiredNetworks?: Record<string, boolean>;
+  requiredNetworks?: RequiredFieldsType;
   isFiat?: boolean;
+  isCompany?: boolean;
+  isBankWire?: boolean;
 };
 
-export function StatusTag({ isValid, type, requiredNetworks, isFiat }: StatusTagType) {
+export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, isBankWire }: StatusTagType) {
   const { T } = useIntl();
+
+  /** SHOW IBAN MESSAGE
+   * 1 : isCompany && bank wire tab && ( missingUsdcWallet || missingSepaAccount )
+   * Then show iban message
+   */
+  /** SHOW ETH MESSAGE
+   * 1 : !isCompany && (missingUsdcWallet  || missingEthWallet || missingSepaAccount) then show eth message
+   * 2 : isCompany && crypto tabs && (missingUsdcWallet || missingSepaAccount || missingEthWallet) -> show eth message
+   *
+   */
+  const networks2 = useMemo(() => {
+    const { missingSepaAccount, missingUsdcWallet, missingEthWallet, ...networks } = requiredNetworks || {};
+
+    const networkMessages = Object.entries(networks)
+      .filter(([, value]) => value)
+      .map(([key]) => T(getNetworkMessage(key, isFiat)));
+
+    if (isBankWire) {
+      if (isCompany && (missingUsdcWallet || missingSepaAccount)) {
+        networkMessages.push(T("profile.missing.networkFull.USD"));
+      }
+      if (!isCompany && (missingUsdcWallet || missingSepaAccount)) {
+        networkMessages.push(T("profile.missing.networkFull.ETH"));
+      }
+      if (missingEthWallet) {
+        networkMessages.push(T("profile.missing.networkFull.ETH"));
+      }
+    } else if (!isCompany && (missingUsdcWallet || missingSepaAccount || missingEthWallet)) {
+      networkMessages.push(T("profile.missing.networkFull.ETH"));
+    } else if (isCompany && missingEthWallet) {
+      networkMessages.push(T("profile.missing.networkFull.ETH"));
+    }
+    console.log("requiredNetworks", requiredNetworks);
+    console.log("isFiat", isFiat);
+
+    console.log("----", networkMessages, missingSepaAccount, missingUsdcWallet);
+
+    return networkMessages;
+  }, [requiredNetworks, isCompany, isBankWire]);
 
   const networks = requiredNetworks
     ? Object.entries(requiredNetworks)
@@ -50,7 +92,7 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat }: StatusTag
         .map(([key]) => T(getNetworkMessage(key, isFiat)))
     : [];
 
-  const uniqueNetworks = [...new Set(networks)];
+  const uniqueNetworks = [...new Set(networks2)];
 
   return (
     <Box className="pb-6">
