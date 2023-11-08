@@ -52,6 +52,8 @@ export default function PayoutInfoSidePanel({
   } = useFormContext();
 
   const [profileType, usdPreferredMethod] = watch(["profileType", "usdPreferredMethod"]);
+  const [ethWallet, iban, bic] = watch(["ethWallet", "iban", "bic"]);
+
   const shouldDisplayContactStatus =
     (isContactInfoValid && isContactInfoComplete) || (!isContactInfoValid && !isContactInfoComplete);
   const shouldDisplayPayoutStatus =
@@ -94,7 +96,10 @@ export default function PayoutInfoSidePanel({
               isValid={isPaymentInfoValid && isPayoutInfoComplete}
               requiredNetworks={requiredFields}
               type={StatusType.Payment}
-              isFiat={isFiat}
+              isBankWire={usdPreferredMethod === PreferredMethod.Fiat}
+              isCompany={profileType === ProfileType.Company}
+              isEthFormFilled={!!ethWallet}
+              isSepaFormFilled={!!iban && !!bic}
             />
           ) : null}
 
