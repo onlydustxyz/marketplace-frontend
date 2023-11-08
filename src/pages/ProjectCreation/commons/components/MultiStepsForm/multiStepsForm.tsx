@@ -44,7 +44,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
           className="fixed inset-x-0 bottom-0 z-10 flex w-full border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:relative xl:rounded-b-2xl"
         >
           <Flex justify="start" item="center">
-            {footerRightElement && footerRightElement}
+            {footerRightElement ? footerRightElement : null}
           </Flex>
           <Flex justify="end" item="center" gap={6}>
             {prev && (
