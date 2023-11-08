@@ -824,7 +824,7 @@
           "success": "Project created successfully",
           "error": "An error occurred, please try again later."
         },
-        "description": "Managing an open source project ?",
+        "description": "Managing an open source project?",
         "intro": {
           "upperTitle": "Submit project",
           "title": "Kickstart your open source journey",
@@ -833,13 +833,13 @@
           "disclaimer": "We need your permission to connect with your github repositories"
         },
         "organizations": {
-          "title": "Which organisations are concerned ?",
+          "title": "Which organisations are concerned?",
           "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",
           "installAnotherOrgs": "Install to another organization",
           "installedOn": {
             "many": "Installed on __count__ organizations",
             "one": "Installed on 1 organization",
-            "zero": "Installed on 0 organization"
+            "zero": "Installed on 0 organizations"
           }
         },
         "repository": {
