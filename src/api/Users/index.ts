@@ -3,7 +3,7 @@ import queries from "./queries";
 
 const UsersApi = {
   tags: USERS_TAGS,
-  queries: queries,
+  queries,
 };
 
 export default UsersApi;

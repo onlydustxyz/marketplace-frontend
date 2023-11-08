@@ -1,4 +1,5 @@
 import Button from "src/components/Button";
+import { useIntl } from "src/hooks/useIntl";
 
 interface Props {
   queries: {
@@ -27,11 +28,13 @@ interface Props {
  * @returns {React.ReactElement | null} - The rendered component or null if there's no error.
  */
 export const UseQueriesError = ({ queries, errorComponent, errorLabel }: Props) => {
+  const { T } = useIntl();
+
   if (!queries?.isError) return null;
 
   if (errorComponent) return errorComponent({ refetch: queries.refetch });
 
-  return <Button onClick={queries.refetch}>{errorLabel || "Retry"}</Button>;
+  return <Button onClick={queries.refetch}>{errorLabel || T("common.retry")}</Button>;
 };
 
 export default UseQueriesError;

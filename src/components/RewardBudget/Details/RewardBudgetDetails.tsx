@@ -68,8 +68,8 @@ const RewardBudgetDetailsRow = ({
           )}
         >
           {formatMoneyAmount({
-            amount: amount,
-            currency: currency,
+            amount,
+            currency,
             showCurrency: false,
           })}
         </p>

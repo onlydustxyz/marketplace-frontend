@@ -55,6 +55,8 @@ module.exports = {
     "react/prop-types": "off",
     "react-hooks/exhaustive-deps": "off",
     "unused-imports/no-unused-imports": "error",
+    "object-shorthand": ["error", "always"],
+    "no-trailing-spaces": "error",
   },
   ignorePatterns: [
     "dist/*",

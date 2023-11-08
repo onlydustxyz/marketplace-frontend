@@ -1,4 +1,4 @@
-import { PreferredMethod } from "src/__generated/graphql";
+import { PreferredMethod } from "src/types";
 import { UserPayoutType } from "./PayoutInfoSidePanel";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
 import { renderHook } from "@testing-library/react";

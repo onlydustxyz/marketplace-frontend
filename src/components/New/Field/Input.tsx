@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC, FocusEventHandler, ReactNode } from "react";
+import { ChangeEventHandler, FocusEventHandler, ReactNode, Ref, forwardRef } from "react";
 import { Field, FieldProps } from "./Field";
 import { cn } from "src/utils/cn";
 
@@ -16,21 +16,24 @@ export interface FieldInputProps extends Omit<FieldProps, "children"> {
   endIcon?: ({ className }: { className: string }) => ReactNode;
 }
 
-export const FieldInput: FC<FieldInputProps> = ({
-  type,
-  onBlur,
-  onFocus,
-  onChange,
-  className,
-  inputClassName,
-  min,
-  step,
-  value,
-  startIcon,
-  endIcon,
-  placeholder,
-  ...rest
-}) => {
+export const FieldInput = forwardRef(function FieldInput(
+  {
+    type,
+    onBlur,
+    onFocus,
+    onChange,
+    className,
+    inputClassName,
+    min,
+    step,
+    value,
+    startIcon,
+    endIcon,
+    placeholder,
+    ...rest
+  }: FieldInputProps,
+  ref: Ref<HTMLInputElement>
+) {
   return (
     <Field {...rest}>
       <div
@@ -45,9 +48,10 @@ export const FieldInput: FC<FieldInputProps> = ({
             })
           : null}
         <input
+          ref={ref}
           min={min}
           step={step}
-          value={value}
+          value={value ?? ""}
           type={type}
           placeholder={placeholder}
           onBlur={onBlur}
@@ -68,4 +72,4 @@ export const FieldInput: FC<FieldInputProps> = ({
       </div>
     </Field>
   );
-};
+});

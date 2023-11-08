@@ -12,11 +12,19 @@ import Link from "src/icons/Link";
 import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useInformationSession, useOrganizationSession } from "../../commons/hooks/useProjectCreationSession";
+import {
+  useInformationSession,
+  useOrganizationSession,
+  useResetSession,
+} from "../../commons/hooks/useProjectCreationSession";
 import validationSchema from "./utils/ProjectInformations.validation";
 import ProjectApi from "src/api/Project";
 import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
-import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
+import UseMutationAlert from "src/api/useMutationAlert";
+import { useIntl } from "src/hooks/useIntl";
+import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
+import { generatePath, useNavigate } from "react-router-dom";
+import { RoutePaths } from "src/App";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -34,7 +42,10 @@ interface createProjectInformation {
 }
 
 export const ProjectInformationsPage = () => {
-  usePagesGuard("information");
+  const { T } = useIntl();
+  const navigate = useNavigate();
+
+  useProjectCreatePageGuard("information");
   const {
     control,
     handleSubmit,
@@ -45,24 +56,31 @@ export const ProjectInformationsPage = () => {
   } = useForm<createProjectInformation>({
     mode: "all",
     resolver: zodResolver(validationSchema),
+    defaultValues: {
+      isLookingForContributors: false,
+    },
   });
 
-  const { storedValue: orgsSession, removeValue: removeOrgsSession } = useOrganizationSession();
+  const { storedValue: orgsSession } = useOrganizationSession();
   const {
     storedValue: formSession,
     setValue: setFormSession,
     status: formSessionStatus,
-    removeValue: removeFormSession,
   } = useInformationSession<createProjectInformation>();
 
-  const { mutate } = ProjectApi.mutations.useCreateProject({
+  const { reset: resetSession } = useResetSession();
+
+  const { mutate, ...restCreateProjectMutation } = ProjectApi.mutations.useCreateProject({
     options: {
-      onSuccess: () => {
-        removeOrgsSession();
-        removeFormSession();
+      onSuccess: data => {
+        resetSession();
+        if (data?.projectSlug) {
+          navigate(generatePath(RoutePaths.ProjectDetails, { projectKey: data.projectSlug }));
+        }
       },
     },
   });
+
   const {
     mutate: uploadProjectLogo,
     isSuccess: successUploadLogo,
@@ -75,19 +93,28 @@ export const ProjectInformationsPage = () => {
     },
   });
 
+  UseMutationAlert({
+    mutation: restCreateProjectMutation,
+    success: {
+      message: T("project.details.create.submit.success"),
+    },
+    error: {
+      message: T("project.details.create.submit.error"),
+    },
+  });
+
   const onSubmit = (formData: createProjectInformation) => {
     const repoIds = getSelectedRepoIds(orgsSession);
     mutate({
       ...formData,
-      // remove when project lead components is ready
-      inviteGithubUserIdsAsProjectLeads: [17259618],
+      isLookingForContributors: formData.isLookingForContributors || false,
       moreInfo: [formData.moreInfo],
       githubRepoIds: repoIds,
     });
   };
 
   useEffect(() => {
-    if (formSessionStatus === "getted") {
+    if (formSessionStatus === "ready") {
       reset({ ...formSession });
     }
   }, [formSessionStatus]);
@@ -102,8 +129,7 @@ export const ProjectInformationsPage = () => {
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <form className="flex items-center justify-center p-4 pt-[72px]" onSubmit={handleSubmit(onSubmit)}>
         <MultiStepsForm
-          title="Tell us about your project!"
-          description="Please install the github app on the desired github organisation(s) containing the repositories you want to add."
+          title={T("project.details.create.informations.title")}
           step={3}
           stepCount={3}
           submit
@@ -119,9 +145,10 @@ export const ProjectInformationsPage = () => {
                   <FieldInput
                     {...props.field}
                     {...props.fieldState}
-                    label="Project name"
+                    label={T("project.details.create.informations.form.fields.name.label")}
+                    placeholder={T("project.details.create.informations.form.fields.name.placeholder")}
                     infoMessage={{
-                      children: "This will be used to define your project URL",
+                      children: T("project.details.create.informations.form.fields.name.info"),
                       icon: ({ className }) => <InformationLine className={className} />,
                     }}
                   />
@@ -130,21 +157,36 @@ export const ProjectInformationsPage = () => {
               <Controller
                 name="shortDescription"
                 control={control}
-                render={props => <FieldInput {...props.field} {...props.fieldState} label="Short description" />}
+                render={props => (
+                  <FieldInput
+                    {...props.field}
+                    {...props.fieldState}
+                    placeholder={T("project.details.create.informations.form.fields.short.placeholder")}
+                    label={T("project.details.create.informations.form.fields.short.label")}
+                  />
+                )}
               />
               <Controller
                 name="longDescription"
                 control={control}
-                render={props => <FieldTextarea {...props.field} {...props.fieldState} label="Long description" />}
+                render={props => (
+                  <FieldTextarea
+                    {...props.field}
+                    {...props.fieldState}
+                    placeholder={T("project.details.create.informations.form.fields.long.placeholder")}
+                    label={T("project.details.create.informations.form.fields.long.label")}
+                  />
+                )}
               />
               <Controller
                 name="logoUrl"
                 control={control}
                 render={props => (
-                  <FieldImage<string>
+                  <FieldImage
                     {...props.field}
                     {...props.fieldState}
-                    label="Project visual"
+                    placeholder={T("project.details.create.informations.form.fields.logo.placeholder")}
+                    label={T("project.details.create.informations.form.fields.logo.label")}
                     max_size_mo={10}
                     upload={{
                       mutate: uploadProjectLogo,
@@ -158,13 +200,19 @@ export const ProjectInformationsPage = () => {
                 name="moreInfo"
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <FieldCombined onChange={onChange} name="moreInfo" label={"More info"} className="gap-2">
+                  <FieldCombined
+                    onChange={onChange}
+                    name="moreInfo"
+                    label={T("project.details.create.informations.form.fields.moreInfo.label")}
+                    className="gap-2"
+                  >
                     {onChangeField => [
                       <FieldInput
                         key="moreInfo.url"
                         name="moreInfo.url"
                         value={value?.url}
                         fieldClassName="flex-1"
+                        placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLink")}
                         onChange={event => onChangeField({ ...value, url: event.target.value })}
                         startIcon={({ className }) => <Link className={className} />}
                       />,
@@ -172,6 +220,7 @@ export const ProjectInformationsPage = () => {
                         key="moreInfo.value"
                         name="moreInfo.value"
                         value={value?.value}
+                        placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
                         fieldClassName="w-[180px] max-w-full"
                         onChange={event => onChangeField({ ...value, value: event.target.value })}
                       />,
@@ -185,9 +234,12 @@ export const ProjectInformationsPage = () => {
                 render={({ field: { value, name } }) => (
                   <FieldProjectLead
                     onChange={({ invited }) => {
-                      setValue("inviteGithubUserIdsAsProjectLeads", invited, { shouldDirty: true });
+                      setValue("inviteGithubUserIdsAsProjectLeads", invited, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      });
                     }}
-                    id={name}
+                    githubUserId={name}
                     value={value}
                   />
                 )}
@@ -199,8 +251,8 @@ export const ProjectInformationsPage = () => {
                   <FieldSwitch
                     {...props.field}
                     {...props.fieldState}
-                    label="Accept new applications"
-                    switchLabel="Looking for contributors"
+                    switchLabel={T("project.details.create.informations.form.fields.jobs.subLabel")}
+                    label={T("project.details.create.informations.form.fields.jobs.label")}
                   />
                 )}
               />

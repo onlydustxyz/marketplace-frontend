@@ -17,7 +17,7 @@ export type UseSessionStorageOptions = {
   deserialize: (value: string) => unknown;
 };
 
-export type UseSessionStorageStatus = "idle" | "getted" | "error";
+export type UseSessionStorageStatus = "idle" | "ready" | "error";
 
 /**
  * Modified `useState` hook that syncs with useSessionStorage.
@@ -41,7 +41,7 @@ export function useSessionStorage<T>(
     try {
       const item = sessionStorage.getItem(key);
       item && setStoredValue(deserialize(item));
-      setStatus("getted");
+      setStatus("ready");
     } catch (error) {
       setStatus("error");
       console.error(error);

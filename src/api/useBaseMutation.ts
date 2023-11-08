@@ -30,7 +30,6 @@ export interface UseMutationProps<RESULT = unknown, PARAMS = unknown, Payload = 
 
 export function useBaseMutation<Payload = unknown, Response = unknown>({
   resourcePath,
-  pathParam = "",
   queryParams = [],
   method = "PUT",
   onSuccess,
@@ -43,7 +42,7 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
 
   return useMutation({
     mutationFn: (data: Payload): Promise<Response> => {
-      return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
+      return fetch(getEndpointUrl({ resourcePath, queryParams }), {
         ...options,
         body: JSON.stringify(data),
       })
@@ -55,12 +54,12 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
 
               return data;
             } catch (err: unknown) {
-              console.log("ERROR", err);
+              console.error(err);
+              throw new Error("Invalid JSON response");
             }
           }
         })
         .catch(e => {
-          console.log("Error!!", e);
           throw new Error(e);
         });
     },
@@ -70,19 +69,14 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
           queryClient.invalidateQueries(invalidate);
         });
       }
-      if (onSuccess) {
-        onSuccess(result, queryClient);
-      }
+
+      onSuccess?.(result, queryClient);
     },
     onError: () => {
-      if (onError) {
-        onError(queryClient);
-      }
+      onError?.(queryClient);
     },
     onSettled: () => {
-      if (onSettled) {
-        onSettled(queryClient);
-      }
+      onSettled?.(queryClient);
     },
   });
 }

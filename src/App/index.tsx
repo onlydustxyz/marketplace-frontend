@@ -27,11 +27,12 @@ import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
 import useReloadOnNewRelease from "./useReloadOnNewRelease";
 import {
-  ProjectCreationPage,
+  ProjectIntroPage,
   GithubOrganizationPage,
   GithubRepositoryPage,
   ProjectInformationsPage,
 } from "src/pages/ProjectCreation";
+import { useAuth } from "src/hooks/useAuth";
 
 export enum RoutePaths {
   Home = "/",
@@ -63,6 +64,7 @@ export enum ProjectRewardsRoutePaths {
 }
 
 function App() {
+  const { isLoggedIn } = useAuth();
   const location = useLocation();
   const reloadOnNewRelease = useReloadOnNewRelease();
 
@@ -152,24 +154,32 @@ function App() {
         },
         {
           path: RoutePaths.ProjectCreation,
-          children: [
-            {
-              index: true,
-              element: <ProjectCreationPage />,
-            },
-            {
-              path: "organizations",
-              element: <GithubOrganizationPage />,
-            },
-            {
-              path: "repository",
-              element: <GithubRepositoryPage />,
-            },
-            {
-              path: "informations",
-              element: <ProjectInformationsPage />,
-            },
-          ],
+          children:
+            parseFlag("VITE_CAN_CREATE_PROJECT") && isLoggedIn
+              ? [
+                  {
+                    index: true,
+                    element: <ProjectIntroPage />,
+                  },
+                  {
+                    path: "organizations",
+                    element: <GithubOrganizationPage />,
+                  },
+                  {
+                    path: "repository",
+                    element: <GithubRepositoryPage />,
+                  },
+                  {
+                    path: "informations",
+                    element: <ProjectInformationsPage />,
+                  },
+                ]
+              : [
+                  {
+                    index: true,
+                    element: <Navigate to={RoutePaths.Projects} />,
+                  },
+                ],
         },
         {
           path: RoutePaths.ProjectDetails,

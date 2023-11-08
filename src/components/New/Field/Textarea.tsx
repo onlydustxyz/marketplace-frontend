@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC, FocusEventHandler } from "react";
+import { ChangeEventHandler, FocusEventHandler, Ref, forwardRef } from "react";
 import { Field, FieldProps } from "./Field";
 import { cn } from "src/utils/cn";
 
@@ -11,15 +11,10 @@ export interface FieldTextareaProps extends Omit<FieldProps, "children"> {
   onBlur?: FocusEventHandler<HTMLTextAreaElement>;
 }
 
-export const FieldTextarea: FC<FieldTextareaProps> = ({
-  onBlur,
-  rows,
-  onFocus,
-  onChange,
-  className,
-  value,
-  ...rest
-}) => {
+export const FieldTextarea = forwardRef(function FieldTextarea(
+  { onBlur, rows = 3, onFocus, onChange, className, value, ...rest }: FieldTextareaProps,
+  ref: Ref<HTMLTextAreaElement>
+) {
   return (
     <Field {...rest}>
       <div
@@ -29,14 +24,15 @@ export const FieldTextarea: FC<FieldTextareaProps> = ({
         )}
       >
         <textarea
-          value={value}
+          value={value ?? ""}
           onBlur={onBlur}
           onChange={onChange}
           onFocus={onFocus}
-          rows={rows || 3}
+          rows={rows}
+          ref={ref}
           className="w-full bg-transparent text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
         />
       </div>
     </Field>
   );
-};
+});

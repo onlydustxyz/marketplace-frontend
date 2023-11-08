@@ -26,7 +26,6 @@ export interface UseQueryProps<RESULT = unknown, PARAMS = unknown | undefined, B
 
 export function useBaseQuery<R = unknown>({
   resourcePath,
-  pathParam = "",
   queryParams = [],
   method = "GET",
   tags,
@@ -37,17 +36,9 @@ export function useBaseQuery<R = unknown>({
   const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
 
   return useQuery<R>({
-    queryKey: [
-      ...(tags || []),
-      resourcePath,
-      pathParam,
-      queryParams,
-      isImpersonating,
-      isValidImpersonation,
-      isLoggedIn,
-    ],
+    queryKey: [...(tags || []), resourcePath, queryParams, isImpersonating, isValidImpersonation, isLoggedIn],
     queryFn: () =>
-      fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)
+      fetch(getEndpointUrl({ resourcePath, queryParams }), options)
         .then(res => {
           if (res.ok) {
             return res.json();

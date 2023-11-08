@@ -7,15 +7,13 @@ export type useInstallationByIdResponse = components["schemas"]["InstallationRes
 
 const useInstallationById = ({
   params,
-  options,
+  options = {},
 }: UseQueryProps<useInstallationByIdResponse, { installation_id?: string }>) => {
   return useBaseQuery<useInstallationByIdResponse>({
     resourcePath: API_PATH.GITHUB_INSTALLATIONS(params?.installation_id || ""),
-    pathParam: params,
-    method: "GET",
     enabled: !!params?.installation_id,
     tags: GITHUB_TAGS.installation(params?.installation_id || ""),
-    ...(options || {}),
+    ...options,
   });
 };
 

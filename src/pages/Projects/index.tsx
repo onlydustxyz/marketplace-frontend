@@ -14,6 +14,7 @@ import SEO from "src/components/SEO";
 import AllProjectLoading from "./AllProjects/AllProjectsLoading";
 import AllProjects from "./AllProjects";
 import SubmitProject from "./SubmitProject";
+import { parseFlag } from "src/utils/parseFlag";
 
 export enum Sorting {
   Trending = "RANK",
@@ -54,8 +55,7 @@ export default function Projects() {
           <div className="flex h-full gap-6">
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
               <div className="sticky top-4">
-                {/* TEMP Feature fliping */}
-                {import.meta.env.VITE_CAN_CREATE_PROJECT === "true" ? <SubmitProject /> : null}
+                {parseFlag("VITE_CAN_CREATE_PROJECT") ? <SubmitProject /> : null}
                 <FilterPanel isProjectLeader={isProjectLeader} technologies={technologies} sponsors={sponsors} />
               </div>
             </div>

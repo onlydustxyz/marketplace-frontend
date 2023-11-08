@@ -13,11 +13,12 @@ import {
   useOrganizationSession,
 } from "../../commons/hooks/useProjectCreationSession";
 import { useRepositoryCount } from "./hooks/useRepositoryCount";
-import { useFormCountInformation } from "./hooks/useFormCountInformation";
+import { FormInformationCount } from "./components/FormInformationCount";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import validationSchema from "./utils/GithubRepository.validation";
-import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
+import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { useNavigate } from "react-router-dom";
+import { useIntl } from "src/hooks/useIntl";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {
@@ -25,7 +26,8 @@ export interface createProjectRepository {
 }
 
 export const GithubRepositoryPage = () => {
-  usePagesGuard("repository");
+  const { T } = useIntl();
+  useProjectCreatePageGuard("repository");
 
   const {
     storedValue: savedOrgsData,
@@ -51,14 +53,14 @@ export const GithubRepositoryPage = () => {
   });
   const navigate = useNavigate();
 
-  const organization = watch("organizations") || [];
+  const organizations = watch("organizations");
   const search = watch("search");
-  const selectedReposCounts = useRepositoryCount(organization);
-  const footerRightElement = useFormCountInformation(selectedReposCounts.selected, selectedReposCounts.total);
+  const selectedReposCounts = useRepositoryCount(organizations);
+  const footerRightElement = FormInformationCount(selectedReposCounts.selected, selectedReposCounts.total);
   const filterOrganizationBySearch = useRepositorySearch(search);
 
   useEffect(() => {
-    if (savedOrgsDataStatus === "getted") {
+    if (savedOrgsDataStatus === "ready") {
       reset({ organizations: savedOrgsData });
     }
   }, [savedOrgsDataStatus]);
@@ -76,50 +78,52 @@ export const GithubRepositoryPage = () => {
   };
 
   const onCheckboxChange = (value: boolean, repoId: number | undefined, organizationName: string | undefined) => {
-    const findOrganization = organization.find(org => org.organization.name === organizationName);
+    const findOrganization = organizations.find(org => org.organization.name === organizationName);
 
     if (findOrganization && repoId) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.githubId === repoId);
       if (findRepo) {
         findRepo.selected = value;
-        setValue("organizations", [...organization], { shouldDirty: true });
+        setValue("organizations", [...organizations], { shouldDirty: true, shouldValidate: true });
         trigger("organizations");
       }
     }
   };
 
   return (
-    <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <form className="flex items-center justify-center p-4 pt-[72px]" onSubmit={handleSubmit(onSubmit)}>
+    <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
+      <form className="flex h-full items-center justify-center p-[72px] pt-[72px]" onSubmit={handleSubmit(onSubmit)}>
         <MultiStepsForm
-          title="Which repositories will you need?"
-          description="Only repositories from organization where github app is installed are listed. "
+          title={T("project.details.create.repository.title")}
+          description={T("project.details.create.repository.description")}
           step={2}
           stepCount={3}
           submit
           submitDisabled={!isValid}
-          prev="../organization"
+          prev="../organizations"
           footerRightElement={footerRightElement}
-        >
-          <Flex direction="col" gap={8}>
+          stickyChildren={
             <Controller
               name="search"
               control={control}
               render={props => (
                 <FieldInput
-                  placeholder="Search repository"
+                  placeholder={T("project.details.create.repository.search")}
                   {...props.field}
                   {...props.fieldState}
                   startIcon={({ className }) => <SearchLine className={className} />}
                 />
               )}
             />
+          }
+        >
+          <Flex direction="col" gap={8}>
             <Controller
               name="organizations"
               control={control}
               render={({ field: { value } }) => (
                 <>
-                  {filterOrganizationBySearch(value || []).map(organization => (
+                  {filterOrganizationBySearch([...value] || []).map(organization => (
                     <div
                       key={organization.organization.name}
                       className="flex w-full flex-col gap-3 rounded-2xl border border-card-border-light bg-card-background-light p-5"
@@ -150,7 +154,10 @@ export const GithubRepositoryPage = () => {
                                       fieldClassName={"inline-flex w-auto"}
                                     />
                                   </Flex>
-                                  <p className="text-body-s text-greyscale-200">{repo.shortDescription}</p>
+                                  <p className={`text-body-s text-greyscale-200 ${!repo.shortDescription && "italic"}`}>
+                                    {repo.shortDescription ||
+                                      T("project.details.overview.repositories.descriptionPlaceholder")}
+                                  </p>
                                 </Flex>
                               </div>
                             </label>

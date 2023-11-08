@@ -4,10 +4,6 @@ import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import { cn } from "src/utils/cn";
 
-type Item = {
-  githubUserId: string | number;
-};
-
 type Props<T> = {
   items: T[];
   renderItem: ({ item, selected, active }: { item: T; selected: boolean; active: boolean }) => JSX.Element;
@@ -16,6 +12,10 @@ type Props<T> = {
   placeholder?: string;
   multiple?: boolean;
   loading?: boolean;
+  /**
+   * @description name the key for the item object that will be used as key for the item
+   */
+  itemKeyName: string;
 };
 
 type SingleProps<T> = Props<T> & {
@@ -30,7 +30,7 @@ type MultipleProps<T> = Props<T> & {
   multiple: true;
 };
 
-export function Combobox<T extends Item>({
+export function Combobox<T extends { [key: string]: unknown }>({
   items,
   renderItem,
   query,
@@ -40,13 +40,12 @@ export function Combobox<T extends Item>({
   placeholder,
   multiple = false,
   loading = false,
+  itemKeyName,
 }: SingleProps<T> | MultipleProps<T>) {
-  // TODO handle loading state
-
   return (
     <HeadlessCombobox value={selected} onChange={onChange} multiple={multiple as false}>
       {({ open }) => (
-        <div className="relative">
+        <div className="z-1 relative">
           <HeadlessCombobox.Button
             as="div"
             className={cn(
@@ -83,7 +82,9 @@ export function Combobox<T extends Item>({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
             afterLeave={() => onQuery("")}
-            className="absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 bg-spaceBlue-900 p-4 shadow-heavy"
+            className={cn(
+              "absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 bg-spaceBlue-900 p-4 shadow-heavy"
+            )}
           >
             <div className="h-9" />
             <HeadlessCombobox.Options className="max-h-60 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
@@ -95,9 +96,9 @@ export function Combobox<T extends Item>({
               {items.length === 0 && query !== "" && !loading ? (
                 <div className="select-none text-greyscale-50">Nothing here.</div>
               ) : (
-                items?.map(item => (
+                items?.map((item, key) => (
                   <HeadlessCombobox.Option
-                    key={item.githubUserId}
+                    key={(item[itemKeyName] as number | string) || key}
                     className={({ active }) =>
                       cn("relative cursor-pointer select-none py-2", {
                         "bg-white/2": active,
