@@ -13,7 +13,7 @@ import {
   useOrganizationSession,
 } from "../../commons/hooks/useProjectCreationSession";
 import { useRepositoryCount } from "./hooks/useRepositoryCount";
-import { useFormCountInformation } from "./hooks/useFormCountInformation";
+import { FormInformationCount } from "./components/FormInformationCount";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import validationSchema from "./utils/GithubRepository.validation";
 import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
@@ -56,7 +56,7 @@ export const GithubRepositoryPage = () => {
   const organizations = watch("organizations");
   const search = watch("search");
   const selectedReposCounts = useRepositoryCount(organizations);
-  const footerRightElement = useFormCountInformation(selectedReposCounts.selected, selectedReposCounts.total);
+  const footerRightElement = FormInformationCount(selectedReposCounts.selected, selectedReposCounts.total);
   const filterOrganizationBySearch = useRepositorySearch(search);
 
   useEffect(() => {
@@ -123,7 +123,7 @@ export const GithubRepositoryPage = () => {
               control={control}
               render={({ field: { value } }) => (
                 <>
-                  {filterOrganizationBySearch([...value, ...value, ...value] || []).map(organization => (
+                  {filterOrganizationBySearch([...value] || []).map(organization => (
                     <div
                       key={organization.organization.name}
                       className="flex w-full flex-col gap-3 rounded-2xl border border-card-border-light bg-card-background-light p-5"
