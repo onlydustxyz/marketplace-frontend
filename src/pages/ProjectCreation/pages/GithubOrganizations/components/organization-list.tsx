@@ -49,11 +49,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
   }, [data, savedOrgsDataStatus]);
 
   useEffect(() => {
-    if (savedOrgsData.length > 0) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
+    setIsValid(savedOrgsData.length > 0);
   }, [savedOrgsData]);
 
   useEffect(() => {
