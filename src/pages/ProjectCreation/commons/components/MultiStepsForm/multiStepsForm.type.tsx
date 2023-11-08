@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-export type MultiStepsFormProps = {
+export type MultiStepsFormProps = PropsWithChildren<{
   title: string;
   description?: string;
   step: number;
@@ -11,4 +11,4 @@ export type MultiStepsFormProps = {
   submit?: boolean;
   submitDisabled?: boolean;
   footerRightElement?: React.ReactNode;
-} & PropsWithChildren;
+}>;
