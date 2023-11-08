@@ -18,6 +18,9 @@
     "one": "1 comment",
     "many": "__count__ comments"
   },
+  "common": {
+    "retry": "Retry"
+  },
   "contribution": {
     "review": {
       "status": {
