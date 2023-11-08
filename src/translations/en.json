@@ -930,6 +930,9 @@
             "issues": "Issues",
             "codeReviews": "Code reviews"
           }
+        },
+        "repositories": {
+          "addRepositories": "Add repositories"
         }
       },
       "sidebar": {

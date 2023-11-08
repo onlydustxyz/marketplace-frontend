@@ -8,6 +8,7 @@ import { Tabs } from "src/components/Tabs/Tabs";
 import { PropsWithChildren, useState } from "react";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import FileListLine from "src/icons/FileListLine";
+import RepositoriesTab from "./RepositoriesTab";
 
 function TabContents({ children }: PropsWithChildren) {
   return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
@@ -66,6 +67,8 @@ export default function ProjectEditionPage() {
           <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
         </div>
       </header>
+
+      {activeTab === TabsType.Repos ? <RepositoriesTab /> : null}
     </>
   );
 }
