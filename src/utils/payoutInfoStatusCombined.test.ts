@@ -25,7 +25,7 @@ describe("PayoutInfoStatusCombined", () => {
       expect(eth).toBe(false);
       expect(iban).toBe(true);
     });
-    it("(Not Show) if company is true and missingSepaAccount is false", () => {
+    it("Show if company is true and missingSepaAccount is false", () => {
       const { eth, iban } = payoutInfoCombinedStatus({
         missingSepaAccount: false,
         missingUsdcWallet: true,
@@ -121,7 +121,7 @@ describe("PayoutInfoStatusCombined", () => {
         });
       });
       describe("isCompany is false", () => {
-        it("(show) missingUsdcWallet is true and missingUsdcWallet is true", () => {
+        it("(show) missingUsdcWallet is true", () => {
           const { eth, iban } = payoutInfoCombinedStatus({
             missingSepaAccount: true,
             missingUsdcWallet: true,
@@ -133,7 +133,7 @@ describe("PayoutInfoStatusCombined", () => {
           expect(eth).toBe(true);
           expect(iban).toBe(false);
         });
-        it("(not show) missingUsdcWallet is true and missingEthWallet is true", () => {
+        it("(not show) missingUsdcWallet is false and missingEthWallet is false", () => {
           const { eth, iban } = payoutInfoCombinedStatus({
             missingSepaAccount: false,
             missingUsdcWallet: false,
