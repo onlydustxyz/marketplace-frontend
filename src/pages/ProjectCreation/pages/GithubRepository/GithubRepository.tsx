@@ -60,7 +60,7 @@ export const GithubRepositoryPage = () => {
   const filterOrganizationBySearch = useRepositorySearch(search);
 
   useEffect(() => {
-    if (savedOrgsDataStatus === "getted") {
+    if (savedOrgsDataStatus === "ready") {
       reset({ organizations: savedOrgsData });
     }
   }, [savedOrgsDataStatus]);

@@ -114,7 +114,7 @@ export const ProjectInformationsPage = () => {
   };
 
   useEffect(() => {
-    if (formSessionStatus === "getted") {
+    if (formSessionStatus === "ready") {
       reset({ ...formSession });
     }
   }, [formSessionStatus]);

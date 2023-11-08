@@ -16,7 +16,7 @@ export const useProjectCreatePageGuard = (page: pageSteps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if ((page === STEP_INFORMATION || page === STEP_REPOSITORY || page === STEP_ORGANIZATION) && status === "getted") {
+    if ((page === STEP_INFORMATION || page === STEP_REPOSITORY || page === STEP_ORGANIZATION) && status === "ready") {
       if (storedValue?.length === 0) {
         reset();
         navigate(RoutePaths.ProjectCreation);

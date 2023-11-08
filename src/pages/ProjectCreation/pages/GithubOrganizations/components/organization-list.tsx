@@ -36,7 +36,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
   });
 
   useEffect(() => {
-    if (data && savedOrgsDataStatus === "getted" && !isOrganizationAlreadyExist(savedOrgsData, data)) {
+    if (data && savedOrgsDataStatus === "ready" && !isOrganizationAlreadyExist(savedOrgsData, data)) {
       const newData: OrganizationSessionStorageInterface = {
         ...data,
         organization: {
@@ -53,7 +53,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
   }, [savedOrgsData]);
 
   useEffect(() => {
-    if (!installation_id && savedOrgsDataStatus === "getted" && savedOrgsData.length === 0) {
+    if (!installation_id && savedOrgsDataStatus === "ready" && savedOrgsData.length === 0) {
       navigate("../");
     }
   }, [installation_id, savedOrgsDataStatus]);
