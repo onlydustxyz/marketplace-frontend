@@ -63,24 +63,31 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, 
       .filter(([, value]) => value)
       .map(([key]) => T(getNetworkMessage(key, isFiat)));
 
-    if (isBankWire) {
+    // if (isBankWire) {
+    //   if (isCompany && (missingUsdcWallet || missingSepaAccount)) {
+    //     networkMessages.push(T("profile.missing.networkFull.USD"));
+    //   }
+    //   if (!isCompany && (missingUsdcWallet || missingSepaAccount)) {
+    //     networkMessages.push(T("profile.missing.networkFull.ETH"));
+    //   }
+    //   if (missingEthWallet) {
+    //     networkMessages.push(T("profile.missing.networkFull.ETH"));
+    //   }
+    // } else if (isCompany && (missingUsdcWallet || missingSepaAccount) && missingEthWallet) {
+    //   networkMessages.push(T("profile.missing.networkFull.ETH"));
+    // } else if (missingEthWallet) {
+    //   networkMessages.push(T("profile.missing.networkFull.ETH"));
+    // }
+
+    if (missingEthWallet) {
+      networkMessages.push(T("profile.missing.networkFull.ETH"));
+    } else if (isBankWire) {
       if (isCompany && (missingUsdcWallet || missingSepaAccount)) {
         networkMessages.push(T("profile.missing.networkFull.USD"));
-        debgArray.push("69", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
-      }
-      if (!isCompany && (missingUsdcWallet || missingSepaAccount)) {
-        debgArray.push("72", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
+      } else if (!isCompany && (missingUsdcWallet || missingSepaAccount)) {
         networkMessages.push(T("profile.missing.networkFull.ETH"));
       }
-      if (missingEthWallet) {
-        debgArray.push("76", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
-        networkMessages.push(T("profile.missing.networkFull.ETH"));
-      }
-    } else if (isCompany && (missingUsdcWallet || missingSepaAccount) && missingEthWallet) {
-      debgArray.push("80", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
-      networkMessages.push(T("profile.missing.networkFull.ETH"));
-    } else if (missingEthWallet) {
-      debgArray.push("83", { isCompany, isBankWire, missingUsdcWallet, missingSepaAccount, missingEthWallet });
+    } else if (isCompany && (missingUsdcWallet || missingSepaAccount)) {
       networkMessages.push(T("profile.missing.networkFull.ETH"));
     }
 
@@ -97,7 +104,7 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, 
 
   const uniqueNetworks = [...new Set(networks2)];
 
-  return (
+  return type !== StatusType.Payment || uniqueNetworks.length > 0 ? (
     <Box className="pb-6">
       <Tag size={TagSize.Medium} className="px-4">
         <div
@@ -118,5 +125,5 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, 
         </div>
       </Tag>
     </Box>
-  );
+  ) : null;
 }
