@@ -9,6 +9,7 @@ const validationSchema = z.object({
     url: z.string().min(1),
     value: z.string().min(1),
   }),
+
   name: z.string().min(1),
   shortDescription: z.string().min(1),
 });

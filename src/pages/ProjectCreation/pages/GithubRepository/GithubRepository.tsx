@@ -91,8 +91,8 @@ export const GithubRepositoryPage = () => {
   };
 
   return (
-    <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <form className="flex items-center justify-center p-4 pt-[72px]" onSubmit={handleSubmit(onSubmit)}>
+    <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
+      <form className="flex h-full items-center justify-center p-[72px] pt-[72px]" onSubmit={handleSubmit(onSubmit)}>
         <MultiStepsForm
           title={T("project.details.create.repository.title")}
           description={T("project.details.create.repository.description")}
@@ -102,8 +102,7 @@ export const GithubRepositoryPage = () => {
           submitDisabled={!isValid}
           prev="../organizations"
           footerRightElement={footerRightElement}
-        >
-          <Flex direction="col" gap={8}>
+          stickyChildren={
             <Controller
               name="search"
               control={control}
@@ -116,12 +115,15 @@ export const GithubRepositoryPage = () => {
                 />
               )}
             />
+          }
+        >
+          <Flex direction="col" gap={8}>
             <Controller
               name="organizations"
               control={control}
               render={({ field: { value } }) => (
                 <>
-                  {filterOrganizationBySearch(value || []).map(organization => (
+                  {filterOrganizationBySearch([...value, ...value, ...value] || []).map(organization => (
                     <div
                       key={organization.organization.name}
                       className="flex w-full flex-col gap-3 rounded-2xl border border-card-border-light bg-card-background-light p-5"

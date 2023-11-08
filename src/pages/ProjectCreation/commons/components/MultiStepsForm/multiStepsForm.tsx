@@ -19,29 +19,34 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   submit,
   submitDisabled,
   children,
+  stickyChildren,
 }) => {
   return (
-    <div className="relative w-[688px] max-w-full overflow-hidden rounded-2xl">
-      <div className="absolute z-10 h-1.5 w-full bg-mosaic bg-cover" />
+    <div className="rounded-2x relative h-full w-[688px] max-w-full scroll-mr-2 overflow-auto bg-card-background-base scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+      <div className="sticky top-0 z-20 h-1.5 w-full bg-mosaic bg-cover" />
       <Card
         className="flex flex-1 flex-col justify-between gap-12 divide-y divide-greyscale-50/8 bg-card-background-base"
         padded={false}
       >
-        <div className="flex flex-col gap-8 px-8 pb-28 pt-16 xl:px-12 xl:pb-0">
-          <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-8 px-8 pb-28 pt-16"> */}
+        <div className="flex flex-col">
+          {/* // should be sticky */}
+          <div className="sticky top-0 z-10 flex flex-col gap-4 bg-card-background-base p-12 pb-5">
             <div className="font-walsheim text-base font-normal text-spaceBlue-100">{`${step}/${stepCount}`}</div>
             <div className="font-belwe text-2xl font-normal text-greyscale-50">{title}</div>
             {description ? (
               <div className="font-walsheim text-base font-normal text-spaceBlue-100">{description}</div>
             ) : null}
+            {stickyChildren ? stickyChildren : <div className="h-3" />}
           </div>
-          <div className="flex h-full flex-col gap-6">{children}</div>
+          {/* // should not be sticky */}
+          <div className="flex h-full flex-col gap-6 px-12">{children}</div>
         </div>
         <Flex
           justify="between"
           item="center"
           gap={4}
-          className="fixed inset-x-0 bottom-0 z-10 flex w-full border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:relative xl:rounded-b-2xl"
+          className="sticky inset-x-0  bottom-0 z-10 flex w-full border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
         >
           <Flex justify="start" item="center">
             {footerRightElement && footerRightElement}
