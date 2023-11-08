@@ -1,7 +1,7 @@
 import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
-import Subtract from "src/icons/SubtractLine";
+import Subtract from "src/icons/Subtract";
 import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import { withTooltip } from "src/components/Tooltip";
