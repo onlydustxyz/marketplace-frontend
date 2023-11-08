@@ -6,6 +6,7 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
 import { RequiredFieldsType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/usePayoutInfoValidation";
 import { useMemo } from "react";
+import { payoutInfoCombinedStatus } from "src/utils/payoutInfoStatusCombined";
 
 export enum StatusType {
   Contact = "CONTACT",
@@ -42,65 +43,46 @@ type StatusTagType = {
   isFiat?: boolean;
   isCompany?: boolean;
   isBankWire?: boolean;
+  isEthFormFilled?: boolean;
+  isSepaFormFilled?: boolean;
 };
 
-export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, isBankWire }: StatusTagType) {
+export function StatusTag({
+  isValid,
+  type,
+  requiredNetworks,
+  isFiat,
+  isCompany,
+  isBankWire,
+  isEthFormFilled,
+  isSepaFormFilled,
+}: StatusTagType) {
   const { T } = useIntl();
 
-  /** SHOW IBAN MESSAGE
-   * 1 : isCompany && bank wire tab && ( missingUsdcWallet || missingSepaAccount )
-   * Then show iban message
-   */
-  /** SHOW ETH MESSAGE
-   * 1 : !isCompany && (missingUsdcWallet  || missingEthWallet || missingSepaAccount) then show eth message
-   * 2 : isCompany && crypto tabs && (missingUsdcWallet || missingSepaAccount || missingEthWallet) -> show eth message
-   *
-   */
   const networks2 = useMemo(() => {
     const { missingSepaAccount, missingUsdcWallet, missingEthWallet, ...networks } = requiredNetworks || {};
-    const debgArray: unknown[] = [];
     const networkMessages = Object.entries(networks)
       .filter(([, value]) => value)
       .map(([key]) => T(getNetworkMessage(key, isFiat)));
 
-    // if (isBankWire) {
-    //   if (isCompany && (missingUsdcWallet || missingSepaAccount)) {
-    //     networkMessages.push(T("profile.missing.networkFull.USD"));
-    //   }
-    //   if (!isCompany && (missingUsdcWallet || missingSepaAccount)) {
-    //     networkMessages.push(T("profile.missing.networkFull.ETH"));
-    //   }
-    //   if (missingEthWallet) {
-    //     networkMessages.push(T("profile.missing.networkFull.ETH"));
-    //   }
-    // } else if (isCompany && (missingUsdcWallet || missingSepaAccount) && missingEthWallet) {
-    //   networkMessages.push(T("profile.missing.networkFull.ETH"));
-    // } else if (missingEthWallet) {
-    //   networkMessages.push(T("profile.missing.networkFull.ETH"));
-    // }
+    const _missingSepaAccount = missingSepaAccount && !isSepaFormFilled;
+    const _missingEthWallet = missingEthWallet && !isEthFormFilled;
+    const _missingUsdcWallet = missingUsdcWallet && !isEthFormFilled && !isSepaFormFilled;
 
-    if (missingEthWallet) {
-      networkMessages.push(T("profile.missing.networkFull.ETH"));
-    } else if (isBankWire) {
-      if (isCompany && (missingUsdcWallet || missingSepaAccount)) {
-        networkMessages.push(T("profile.missing.networkFull.USD"));
-      } else if (!isCompany && (missingUsdcWallet || missingSepaAccount)) {
-        networkMessages.push(T("profile.missing.networkFull.ETH"));
-      }
-    } else if (isCompany && (missingUsdcWallet || missingSepaAccount)) {
-      networkMessages.push(T("profile.missing.networkFull.ETH"));
-    }
+    const { eth, iban } = payoutInfoCombinedStatus({
+      missingSepaAccount: _missingSepaAccount || false,
+      missingUsdcWallet: _missingUsdcWallet || false,
+      missingEthWallet: _missingEthWallet || false,
+      isCompany: isCompany,
+      isBankWire: isBankWire,
+    });
 
-    console.log("----", debgArray);
-
-    return networkMessages;
+    return [
+      ...networkMessages,
+      ...(eth ? [T("profile.missing.networkFull.ETH")] : []),
+      ...(iban ? [T("profile.missing.networkFull.USD")] : []),
+    ];
   }, [requiredNetworks, isCompany, isBankWire]);
-
-  const networks = requiredNetworks
-    ? Object.entries(requiredNetworks)
-        .filter(([, value]) => value)
-        .map(([key]) => T(getNetworkMessage(key, isFiat)))
-    : [];
 
   const uniqueNetworks = [...new Set(networks2)];
 
