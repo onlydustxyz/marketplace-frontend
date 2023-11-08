@@ -73,37 +73,35 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
         {T("project.details.create.organizations.installedOn", { count: savedOrgsData?.length })}
       </h2>
       <ul className="flex flex-col gap-2 py-4 pb-6">
-        {[...savedOrgsData, ...savedOrgsData, ...savedOrgsData]?.map(
-          (installation: OrganizationSessionStorageInterface, index: number) => (
-            <Card className="shadow-medium" key={installation?.organization?.name}>
-              <div key={index} className="flex items-center gap-3 ">
-                <RoundedImage
-                  src={installation?.organization?.logoUrl ?? ""}
-                  alt={installation?.organization?.name ?? ""}
-                  rounding={Rounding.Corners}
-                  size={ImageSize.Md}
-                />
-                <li key={index} className="flex-1">
-                  {installation?.organization?.name}
-                </li>
-                <a
-                  href={`https://github.com/organizations/${installation?.organization?.name}
+        {savedOrgsData?.map((installation: OrganizationSessionStorageInterface, index: number) => (
+          <Card className="shadow-medium" key={installation?.organization?.name}>
+            <div key={index} className="flex items-center gap-3 ">
+              <RoundedImage
+                src={installation?.organization?.logoUrl ?? ""}
+                alt={installation?.organization?.name ?? ""}
+                rounding={Rounding.Corners}
+                size={ImageSize.Md}
+              />
+              <li key={index} className="flex-1">
+                {installation?.organization?.name}
+              </li>
+              <a
+                href={`https://github.com/organizations/${installation?.organization?.name}
                         /settings/installations/${installation?.organization?.installationId}`}
-                  target="blank"
+                target="blank"
+              >
+                <Button
+                  size={ButtonSize.Sm}
+                  type={ButtonType.Secondary}
+                  iconOnly
+                  data-testid="close-add-work-item-panel-btn"
                 >
-                  <Button
-                    size={ButtonSize.Sm}
-                    type={ButtonType.Secondary}
-                    iconOnly
-                    data-testid="close-add-work-item-panel-btn"
-                  >
-                    <PencilLine />
-                  </Button>
-                </a>
-              </div>
-            </Card>
-          )
-        )}
+                  <PencilLine />
+                </Button>
+              </a>
+            </div>
+          </Card>
+        ))}
       </ul>
     </div>
   );
