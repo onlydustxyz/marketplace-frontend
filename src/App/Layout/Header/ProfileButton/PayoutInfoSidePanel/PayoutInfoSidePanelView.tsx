@@ -53,6 +53,7 @@ export default function PayoutInfoSidePanel({
 
   const [profileType, usdPreferredMethod] = watch(["profileType", "usdPreferredMethod"]);
   const [ethWallet, iban, bic] = watch(["ethWallet", "iban", "bic"]);
+
   const shouldDisplayContactStatus =
     (isContactInfoValid && isContactInfoComplete) || (!isContactInfoValid && !isContactInfoComplete);
   const shouldDisplayPayoutStatus =
