@@ -73,9 +73,9 @@ export function StatusTag({ isValid, type, requiredNetworks, isFiat, isCompany, 
       if (missingEthWallet) {
         networkMessages.push(T("profile.missing.networkFull.ETH"));
       }
-    } else if (!isCompany && (missingUsdcWallet || missingSepaAccount || missingEthWallet)) {
+    } else if (!isCompany && (missingUsdcWallet || missingSepaAccount) && !missingEthWallet) {
       networkMessages.push(T("profile.missing.networkFull.ETH"));
-    } else if (isCompany && missingEthWallet) {
+    } else if (missingEthWallet) {
       networkMessages.push(T("profile.missing.networkFull.ETH"));
     }
     console.log("requiredNetworks", requiredNetworks);
