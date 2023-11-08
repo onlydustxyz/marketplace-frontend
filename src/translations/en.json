@@ -18,6 +18,13 @@
     "one": "1 comment",
     "many": "__count__ comments"
   },
+  "common": {
+    "retry": "Retry",
+    "next": "Next",
+    "back": "Back",
+    "publish": "Publish",
+    "you": "You"
+  },
   "contribution": {
     "review": {
       "status": {
@@ -809,6 +816,82 @@
         "title": "Rewards",
         "autoAdd": {
           "label": "AUTO-ADD"
+        }
+      },
+      "create": {
+        "submit": {
+          "button": "Submit",
+          "success": "Project created successfully",
+          "error": "An error occurred, please try again later."
+        },
+        "description": "Managing an open source project?",
+        "intro": {
+          "upperTitle": "Submit project",
+          "title": "Kickstart your open source journey",
+          "description": "Want your project to join the stellar OnlyDust galaxy? How exciting! We just need you to review permission details to get started.",
+          "button": "Connect with GitHub",
+          "disclaimer": "We need your permission to connect with your github repositories"
+        },
+        "organizations": {
+          "title": "Which organisations are concerned?",
+          "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",
+          "installAnotherOrgs": "Install to another organization",
+          "installedOn": {
+            "many": "Installed on __count__ organizations",
+            "one": "Installed on 1 organization",
+            "zero": "Installed on 0 organizations"
+          }
+        },
+        "repository": {
+          "title": "Which repositories will you need?",
+          "description": "Only repositories from organisation where github app is installed are listed. ",
+          "search": "Search repository",
+          "form": {
+            "error_count": "Please select at least one repo to continue.",
+            "counter": "__selected__/__total__ repos selected"
+          }
+        },
+        "informations": {
+          "title": "Tell us about your project!",
+          "success": "Only repositories from organisation where github app is installed are listed. ",
+          "search": "Search repository",
+          "form": {
+            "error_count": "Please select at least one repo to continue.",
+            "counter": "__selected__/__total__ repos selected",
+            "fields": {
+              "name": {
+                "label": "Project name",
+                "info": "This will be used to define your project URL",
+                "placeholder": "Dusty React"
+              },
+              "short": {
+                "label": "Short description",
+                "placeholder": "A project about dust."
+              },
+              "long": {
+                "label": "Long description",
+                "placeholder": "A project about dust."
+              },
+              "logo": {
+                "label": "Project visual",
+                "placeholder": "image.png",
+                "info": "SVG, PNG, JPG or GIF (MAX. 400x400px)."
+              },
+              "moreInfo": {
+                "label": "More info",
+                "placeholderLink": "Link",
+                "placeholderLabel": "Label"
+              },
+              "jobs": {
+                "label": "Accept new applications",
+                "subLabel": "Looking for contributors"
+              },
+              "projectLead": {
+                "placeholderLabel": "Pick a contributor or type in Github handle",
+                "info": "To remove a project lead, ask us using the feedback form in the header."
+              }
+            }
+          }
         }
       },
       "remainingBudget": {

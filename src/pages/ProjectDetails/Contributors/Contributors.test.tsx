@@ -21,6 +21,7 @@ const project: ComponentProps<typeof View>["project"] = {
   visibility: "PUBLIC",
   contributorCount: 3,
   moreInfoUrl: "www.onlydust.xyz",
+  invitedLeaders: [],
   leaders: [
     {
       githubUserId: 74653697,
@@ -122,7 +123,6 @@ const project: ComponentProps<typeof View>["project"] = {
     Python: 6840986,
   },
   remainingUsdBudget: 99250.0,
-  invitedLeaders: [],
 };
 
 const queryClient = new QueryClient();

@@ -8,10 +8,12 @@ export enum BackgroundRoundedBorders {
 
 type Props = {
   roundedBorders: BackgroundRoundedBorders;
+  className?: string;
+  innerClassName?: string;
 } & PropsWithChildren;
 
 const Background = forwardRef(function Background(
-  { roundedBorders, children }: Props,
+  { roundedBorders, children, className, innerClassName }: Props,
   ref: ForwardedRef<HTMLDivElement>
 ) {
   return (
@@ -19,10 +21,11 @@ const Background = forwardRef(function Background(
       ref={ref}
       className={cn(
         "h-full w-full overflow-y-auto bg-space bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5",
-        roundedBorders
+        roundedBorders,
+        className
       )}
     >
-      <div>{children}</div>
+      <div className={innerClassName}>{children}</div>
     </div>
   );
 });

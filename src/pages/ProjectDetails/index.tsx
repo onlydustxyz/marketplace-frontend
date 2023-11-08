@@ -31,6 +31,7 @@ export default function ProjectDetails() {
   }
 
   const { name } = data as components["schemas"]["ProjectResponse"];
+
   if (!data) {
     return <Navigate to={RoutePaths.NotFound} />;
   }

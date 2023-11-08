@@ -1,0 +1,8 @@
+export enum RESSOURCE_TAGS {
+  SAMPLE = "SAMPLE",
+  ME = "ME",
+  REWARDS = "REWARDS",
+  PROJECTS = "PROJECTS",
+  GITHUB = "GITHUB",
+  USERS = "USERS",
+}
