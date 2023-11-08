@@ -16,7 +16,7 @@ import { useRepositoryCount } from "./hooks/useRepositoryCount";
 import { useFormCountInformation } from "./hooks/useFormCountInformation";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import validationSchema from "./utils/GithubRepository.validation";
-import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
+import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -27,7 +27,7 @@ export interface createProjectRepository {
 
 export const GithubRepositoryPage = () => {
   const { T } = useIntl();
-  usePagesGuard("repository");
+  useProjectCreatePageGuard("repository");
 
   const {
     storedValue: savedOrgsData,
@@ -53,9 +53,9 @@ export const GithubRepositoryPage = () => {
   });
   const navigate = useNavigate();
 
-  const organization = watch("organizations") || [];
+  const organizations = watch("organizations");
   const search = watch("search");
-  const selectedReposCounts = useRepositoryCount(organization);
+  const selectedReposCounts = useRepositoryCount(organizations);
   const footerRightElement = useFormCountInformation(selectedReposCounts.selected, selectedReposCounts.total);
   const filterOrganizationBySearch = useRepositorySearch(search);
 
@@ -78,13 +78,13 @@ export const GithubRepositoryPage = () => {
   };
 
   const onCheckboxChange = (value: boolean, repoId: number | undefined, organizationName: string | undefined) => {
-    const findOrganization = organization.find(org => org.organization.name === organizationName);
+    const findOrganization = organizations.find(org => org.organization.name === organizationName);
 
     if (findOrganization && repoId) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.githubId === repoId);
       if (findRepo) {
         findRepo.selected = value;
-        setValue("organizations", [...organization], { shouldDirty: true, shouldValidate: true });
+        setValue("organizations", [...organizations], { shouldDirty: true, shouldValidate: true });
         trigger("organizations");
       }
     }
@@ -154,7 +154,10 @@ export const GithubRepositoryPage = () => {
                                       fieldClassName={"inline-flex w-auto"}
                                     />
                                   </Flex>
-                                  <p className="text-body-s text-greyscale-200">{repo.shortDescription}</p>
+                                  <p className={`text-body-s text-greyscale-200 ${!repo.shortDescription && "italic"}`}>
+                                    {repo.shortDescription ||
+                                      T("project.details.overview.repositories.descriptionPlaceholder")}
+                                  </p>
                                 </Flex>
                               </div>
                             </label>

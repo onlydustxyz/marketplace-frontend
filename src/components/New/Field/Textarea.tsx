@@ -12,7 +12,7 @@ export interface FieldTextareaProps extends Omit<FieldProps, "children"> {
 }
 
 export const FieldTextarea = forwardRef(function FieldTextarea(
-  { onBlur, rows, onFocus, onChange, className, value, ...rest }: FieldTextareaProps,
+  { onBlur, rows = 3, onFocus, onChange, className, value, ...rest }: FieldTextareaProps,
   ref: Ref<HTMLTextAreaElement>
 ) {
   return (
@@ -24,11 +24,11 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
         )}
       >
         <textarea
-          value={value || ""}
+          value={value ?? ""}
           onBlur={onBlur}
           onChange={onChange}
           onFocus={onFocus}
-          rows={rows || 3}
+          rows={rows}
           ref={ref}
           className="w-full bg-transparent text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
         />

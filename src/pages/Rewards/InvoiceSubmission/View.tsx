@@ -30,7 +30,7 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
     setIsClosed(true);
   }, []);
   const hiddenFields = useMemo(
-    () => buildHiddenFields({ paymentRequests: paymentRequests, githubUserId, payoutInfo }),
+    () => buildHiddenFields({ paymentRequests, githubUserId, payoutInfo }),
     [paymentRequests, githubUserId, payoutInfo]
   );
 

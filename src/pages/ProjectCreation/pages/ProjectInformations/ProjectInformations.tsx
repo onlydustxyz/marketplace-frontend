@@ -22,7 +22,7 @@ import ProjectApi from "src/api/Project";
 import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
 import UseMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
-import { usePagesGuard } from "../../commons/hooks/usePagesGuard";
+import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 
@@ -45,7 +45,7 @@ export const ProjectInformationsPage = () => {
   const { T } = useIntl();
   const navigate = useNavigate();
 
-  usePagesGuard("information");
+  useProjectCreatePageGuard("information");
   const {
     control,
     handleSubmit,

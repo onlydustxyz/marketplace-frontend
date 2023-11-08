@@ -44,7 +44,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
     if (!selectedLead.length && contributors && value?.invited?.length) {
       const findSelectedLead = value.invited
         .map(invited => contributors?.find(lead => lead.githubUserId === invited))
-        .filter(l => l !== undefined);
+        .filter(Boolean);
 
       setSelectedLead(findSelectedLead as components["schemas"]["ContributorSearchItemResponse"][]);
     }
@@ -59,9 +59,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
   };
 
   useEffect(() => {
-    if (onChange) {
-      onChange({ invited: selectedLead.map(lead => lead.githubUserId) });
-    }
+    onChange?.({ invited: selectedLead.map(lead => lead.githubUserId) });
   }, [selectedLead]);
 
   const SelectedLeads = useMemo(
@@ -80,10 +78,10 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
   );
 
   return (
-    <div className=" flex w-full flex-col gap-2">
+    <div className="flex w-full flex-col gap-2">
       <FieldLabel id={githubUserId}>Project leads</FieldLabel>
-      <div className="flex flex-col gap-3 ">
-        <div className=" relative z-[1]  sm:w-2/3">
+      <div className="flex flex-col gap-3">
+        <div className="relative z-[1] sm:w-2/3">
           <Combobox
             items={contributors ?? []}
             itemKeyName="githubUserId"

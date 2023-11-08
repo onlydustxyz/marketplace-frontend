@@ -4,6 +4,7 @@ import { cn } from "src/utils/cn";
 import { FieldInfoMessage } from "./InfoMessage";
 import GalleryLine from "src/assets/icons/GalleryLine";
 import LoaderIcon from "src/assets/icons/Loader";
+import { useIntl } from "src/hooks/useIntl";
 export interface FieldImageProps<F extends string | File> extends Omit<FieldProps, "children"> {
   className?: string;
   onChange?: (...event: unknown[]) => void;
@@ -23,6 +24,7 @@ export const FieldImage = forwardRef(function FieldImage<F extends string | File
   { onBlur, onFocus, onChange, className, max_size_mo, upload, value, ...rest }: FieldImageProps<F>,
   ref: Ref<HTMLInputElement>
 ) {
+  const { T } = useIntl();
   const [preview, setPreview] = useState("");
   const bytesToMegaBytes = (bytes: number) => bytes / (1024 * 1024);
 
@@ -46,10 +48,14 @@ export const FieldImage = forwardRef(function FieldImage<F extends string | File
   };
 
   useEffect(() => {
-    if (value && typeof value === "string") {
-      setPreview(value);
-    } else if (value && typeof value === "object") {
-      setPreview(URL.createObjectURL(value));
+    if (value) {
+      if (typeof value === "string") {
+        setPreview(value);
+      }
+
+      if (value instanceof File) {
+        setPreview(URL.createObjectURL(value));
+      }
     }
   }, [value]);
 
@@ -97,7 +103,7 @@ export const FieldImage = forwardRef(function FieldImage<F extends string | File
             onBlur={onBlur}
             onFocus={onFocus}
           />
-          <FieldInfoMessage>SVG, PNG, JPG or GIF (MAX. 400x400px).</FieldInfoMessage>
+          <FieldInfoMessage>{T("project.details.create.informations.form.fields.logo.info")}</FieldInfoMessage>
         </div>
       </div>
     </Field>

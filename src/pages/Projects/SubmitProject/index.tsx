@@ -17,11 +17,11 @@ export default function SubmitProject() {
   const dispatchSession = useSessionDispatch();
 
   const startProjectCreation = () => {
-    if (!isLoggedIn) {
+    if (isLoggedIn) {
+      navigate(RoutePaths.ProjectCreation);
+    } else {
       dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: RoutePaths.ProjectCreation });
       window.location.replace(LOGIN_URL);
-    } else {
-      navigate(RoutePaths.ProjectCreation);
     }
   };
 
@@ -33,7 +33,7 @@ export default function SubmitProject() {
         size={ButtonSize.Sm}
         type={ButtonType.Primary}
         width={Width.Fit}
-        onClick={() => startProjectCreation()}
+        onClick={startProjectCreation}
       >
         <i className="ri-magic-line" />
         {T("project.details.create.submit.button")}

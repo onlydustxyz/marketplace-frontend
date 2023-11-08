@@ -8,11 +8,10 @@ const useCreateProjectRewardMutation = ({
 }: UseMutationProps<{ sample: string }, { projectId?: string }, unknown>) => {
   return useBaseMutation<unknown, { sample: string }>({
     resourcePath: API_PATH.SAMPLES,
-    pathParam: params?.projectId,
     method: "POST",
     enabled: !!params?.projectId,
     invalidatesTags: [{ queryKey: SAMPLE_SUB_TAGS.all, exact: true }],
-    ...(options || {}),
+    ...options,
   });
 };
 

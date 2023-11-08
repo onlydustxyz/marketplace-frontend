@@ -11,6 +11,7 @@ import {
   OrganizationSessionStorageInterface,
   useOrganizationSession,
 } from "../../../commons/hooks/useProjectCreationSession";
+import Skeleton from "src/components/Skeleton";
 
 function isOrganizationAlreadyExist(
   organizations: OrganizationSessionStorageInterface[],
@@ -31,7 +32,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
   } = useOrganizationSession();
 
   const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
-    params: { installation_id: installation_id },
+    params: { installation_id },
   });
 
   useEffect(() => {
@@ -48,11 +49,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
   }, [data, savedOrgsDataStatus]);
 
   useEffect(() => {
-    if (savedOrgsData.length > 0) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
+    setIsValid(savedOrgsData.length > 0);
   }, [savedOrgsData]);
 
   useEffect(() => {
@@ -62,8 +59,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
   }, [installation_id, savedOrgsDataStatus]);
 
   if (isLoading) {
-    // TODO Replace with skeleton component
-    return <div>Loading ...</div>;
+    return <Skeleton variant="organizationItem" />;
   }
 
   if (isError) {

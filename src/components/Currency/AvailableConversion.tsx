@@ -35,9 +35,7 @@ const ConversionAmount = ({ amount, currency }: { amount: number | undefined; cu
   }
 
   return (
-    <p className="text-body-s leading-[14px]">
-      {formatMoneyAmount({ amount: amount, currency: currency || Currency.USD })}
-    </p>
+    <p className="text-body-s leading-[14px]">{formatMoneyAmount({ amount, currency: currency || Currency.USD })}</p>
   );
 };
 
@@ -104,7 +102,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
   currency,
   totalAmount,
 }) => {
-  const orderedCurrencies = useCurrenciesOrder({ currencies: currencies });
+  const orderedCurrencies = useCurrenciesOrder({ currencies });
 
   const tooltipIdProps = useMemo(() => {
     const props: { "data-tooltip-id"?: string; "data-tooltip-hidden"?: boolean } = {};

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useIgnoreContributionMutation, useUnignoreContributionMutation } from "src/__generated/graphql";
 
-export function useIgnoredContributions() {
+export function useIgnoredContributions(onCompleted?: () => void) {
   const [ignoreContribution] = useIgnoreContributionMutation();
   const [unignoreContribution] = useUnignoreContributionMutation();
 
@@ -10,13 +10,8 @@ export function useIgnoredContributions() {
       ignoreContribution({
         variables: { projectId, contributionId },
         context: { graphqlErrorDisplay: "toaster" },
-        update: cache => {
-          cache.modify({
-            id: `Contributions:${contributionId}`,
-            fields: {
-              ignored: () => true,
-            },
-          });
+        onCompleted: () => {
+          onCompleted?.();
         },
       }),
     [ignoreContribution]
@@ -27,13 +22,8 @@ export function useIgnoredContributions() {
       unignoreContribution({
         variables: { projectId, contributionId },
         context: { graphqlErrorDisplay: "toaster" },
-        update: cache => {
-          cache.modify({
-            id: `Contributions:${contributionId}`,
-            fields: {
-              ignored: () => false,
-            },
-          });
+        onCompleted: () => {
+          onCompleted?.();
         },
       }),
     [unignoreContribution]

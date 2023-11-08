@@ -1,13 +1,13 @@
-import { SAMPLE_TAGS } from "./tags";
+import { SAMPLE_TAGS as tags } from "./tags";
 import queries from "./queries";
 import mutations from "./mutations";
-import SampleSubApi from "./subSample";
+import sub from "./subSample";
 
 const SampleApi = {
-  tags: SAMPLE_TAGS,
-  queries: queries,
-  mutations: mutations,
-  sub: SampleSubApi,
+  tags,
+  queries,
+  mutations,
+  sub,
 };
 
 export default SampleApi;

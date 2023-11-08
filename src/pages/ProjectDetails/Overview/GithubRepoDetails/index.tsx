@@ -1,10 +1,6 @@
+import { ComponentProps } from "react";
 import View from "./View";
-import { components } from "src/__generated/api";
 
-type Props = {
-  githubRepo?: components["schemas"]["GithubRepoResponse"];
-};
-
-export default function GithubRepoDetails({ githubRepo }: Props) {
-  return <View githubRepo={githubRepo} />;
+export default function GithubRepoDetails({ githubRepo }: Partial<ComponentProps<typeof View>>) {
+  return githubRepo ? <View githubRepo={githubRepo} /> : null;
 }

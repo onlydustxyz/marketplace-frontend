@@ -9,9 +9,9 @@ export const IMAGES = {
     gradient: onlyDustLogo,
   },
   gradient: {
-    compass: compass,
-    circle: circle,
-    axeCoin: axeCoin,
-    atom: atom,
+    compass,
+    circle,
+    axeCoin,
+    atom,
   },
 };

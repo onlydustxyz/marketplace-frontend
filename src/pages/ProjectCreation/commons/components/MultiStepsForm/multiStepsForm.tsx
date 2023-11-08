@@ -7,6 +7,7 @@ import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CheckLine from "src/icons/CheckLine";
 import { Flex } from "src/components/New/Layout/Flex";
+import { useIntl } from "src/hooks/useIntl";
 
 export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   step,
@@ -21,6 +22,8 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   children,
   stickyChildren,
 }) => {
+  const { T } = useIntl();
+
   return (
     <div className="rounded-2x relative h-full w-[688px] max-w-full scroll-mr-2 overflow-auto bg-card-background-base scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
       <div className="sticky top-0 z-20 h-1.5 w-full bg-mosaic bg-cover" />
@@ -49,28 +52,28 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
           className="sticky inset-x-0  bottom-0 z-10 flex w-full border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
         >
           <Flex justify="start" item="center">
-            {footerRightElement && footerRightElement}
+            {footerRightElement ? footerRightElement : null}
           </Flex>
           <Flex justify="end" item="center" gap={6}>
             {prev && (
               <Link to={prev}>
                 <Button type={ButtonType.Secondary}>
                   <ArrowLeftSLine className="-ml-2 text-2xl" />
-                  Back
+                  {T("common.back")}
                 </Button>
               </Link>
             )}
             {next && (
               <Link to={next}>
                 <Button>
-                  Next
+                  {T("common.next")}
                   <ArrowRightSLine className="-mr-2 text-2xl" />
                 </Button>
               </Link>
             )}
             {submit && (
               <Button htmlType="submit" disabled={submitDisabled}>
-                <CheckLine className="-ml-1 text-2xl" /> Publish
+                <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
               </Button>
             )}
           </Flex>
