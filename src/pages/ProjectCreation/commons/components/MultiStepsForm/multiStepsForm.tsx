@@ -24,8 +24,8 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   const { T } = useIntl();
 
   return (
-    <div className="rounded-2x relative flex max-h-full w-[688px] max-w-full flex-col overflow-hidden bg-card-background-base">
-      <div className=" h-1.5 w-full bg-mosaic bg-cover" />
+    <div className="relative flex max-h-full w-full max-w-full flex-col overflow-hidden bg-card-background-base md:w-[688px] md:rounded-2xl">
+      <div className="hidden h-1.5 w-full bg-mosaic bg-cover md:block" />
       <div className="flex flex-col gap-4 bg-card-background-base p-12 pb-5">
         <div className="font-walsheim text-base font-normal text-spaceBlue-100">{`${step}/${stepCount}`}</div>
         <div className="font-belwe text-2xl font-normal text-greyscale-50">{title}</div>
