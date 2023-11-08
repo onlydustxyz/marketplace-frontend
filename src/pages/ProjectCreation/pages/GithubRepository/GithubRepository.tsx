@@ -19,6 +19,7 @@ import validationSchema from "./utils/GithubRepository.validation";
 import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
+import { truncateText } from "./utils/GithubDescription.truncate";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {
@@ -140,27 +141,32 @@ export const GithubRepositoryPage = () => {
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
                         {(organization.repos || []).map(repo =>
                           search && !repo.name?.includes(search) ? null : (
-                            <label key={repo.name}>
-                              <div className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy">
-                                <Flex justify="start" item="start" direction="col" gap={2}>
-                                  <Flex justify="between" item="center" className="w-full">
-                                    <h3 className="text-body-m-bold">{repo.name}</h3>
-                                    <FieldCheckbox
-                                      onChange={value =>
-                                        onCheckboxChange(value, repo.githubId, organization.organization.name)
-                                      }
-                                      value={repo.selected}
-                                      name={`repository-${repo.githubId}`}
-                                      fieldClassName={"inline-flex w-auto"}
-                                    />
-                                  </Flex>
-                                  <p className={`text-body-s text-greyscale-200 ${!repo.shortDescription && "italic"}`}>
-                                    {repo.shortDescription ||
-                                      T("project.details.overview.repositories.descriptionPlaceholder")}
-                                  </p>
+                            <div
+                              key={repo.name}
+                              className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"
+                            >
+                              <Flex justify="start" item="start" direction="col" gap={2}>
+                                <Flex justify="between" item="center" className="w-full">
+                                  <h3 className="h- text-body-m-bold">{repo.name}</h3>
+                                  <FieldCheckbox
+                                    onChange={value =>
+                                      onCheckboxChange(value, repo.githubId, organization.organization.name)
+                                    }
+                                    value={repo.selected}
+                                    name={`repository-${repo.githubId}`}
+                                    fieldClassName={"inline-flex w-auto"}
+                                  />
                                 </Flex>
-                              </div>
-                            </label>
+                                <p
+                                  className={`text-body-s w-full text-greyscale-200 ${
+                                    !repo.shortDescription && "italic"
+                                  }`}
+                                >
+                                  {truncateText(repo.shortDescription || "", 85) ||
+                                    T("project.details.overview.repositories.descriptionPlaceholder")}
+                                </p>
+                              </Flex>
+                            </div>
                           )
                         )}
                       </div>
