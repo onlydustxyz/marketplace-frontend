@@ -92,7 +92,7 @@ export const GithubRepositoryPage = () => {
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
-      <form className="flex h-full items-center justify-center p-[72px] pt-[72px]" onSubmit={handleSubmit(onSubmit)}>
+      <form className="flex h-full items-center justify-center p-6" onSubmit={handleSubmit(onSubmit)}>
         <MultiStepsForm
           title={T("project.details.create.repository.title")}
           description={T("project.details.create.repository.description")}
@@ -123,7 +123,7 @@ export const GithubRepositoryPage = () => {
               control={control}
               render={({ field: { value } }) => (
                 <>
-                  {filterOrganizationBySearch([...value] || []).map(organization => (
+                  {filterOrganizationBySearch(value || []).map(organization => (
                     <div
                       key={organization.organization.name}
                       className="flex w-full flex-col gap-3 rounded-2xl border border-card-border-light bg-card-background-light p-5"

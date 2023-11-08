@@ -9,8 +9,8 @@ export const GithubOrganizationPage = () => {
   const { T } = useIntl();
   const [isValid, setIsValid] = useState(false);
   return (
-    <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="flex items-center justify-center p-4 pt-[72px]">
+    <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
+      <div className="flex h-full items-center justify-center p-6">
         <MultiStepsForm
           title={T("project.details.create.organizations.title")}
           description={T("project.details.create.organizations.description")}
