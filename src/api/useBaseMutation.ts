@@ -69,19 +69,14 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
           queryClient.invalidateQueries(invalidate);
         });
       }
-      if (onSuccess) {
-        onSuccess(result, queryClient);
-      }
+
+      onSuccess?.(result, queryClient);
     },
     onError: () => {
-      if (onError) {
-        onError(queryClient);
-      }
+      onError?.(queryClient);
     },
     onSettled: () => {
-      if (onSettled) {
-        onSettled(queryClient);
-      }
+      onSettled?.(queryClient);
     },
   });
 }
