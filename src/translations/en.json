@@ -932,7 +932,13 @@
           }
         },
         "repositories": {
-          "addRepositories": "Add repositories"
+          "addRepositories": "Add repositories",
+          "removeRepository": "Remove repository",
+          "error": "An error occurred, please try again later.",
+          "empty": {
+            "title": "No repositories added on your project",
+            "message": "You’ll need to install a github app on every organisation hosting repositories."
+          }
         }
       },
       "sidebar": {
