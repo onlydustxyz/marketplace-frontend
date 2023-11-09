@@ -21,7 +21,7 @@ import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import {
   DeepPartial,
-  GithubContributionStatus,
+  ContributionStatus,
   GithubContributionType,
   GithubItemStatus,
   GithubPullRequestDraft,
@@ -85,7 +85,7 @@ export function ContributionTable({
   loading: boolean;
   onHeaderClick: () => void;
   fullTable?: boolean;
-  status: GithubContributionStatus;
+  status: ContributionStatus;
   title: string;
   sort: TableSort;
   onSort: (sort: TableSort) => void;
@@ -141,7 +141,7 @@ export function ContributionTable({
         {contributions?.map(contribution => {
           return (
             <div
-              key={`${contribution.id}-${contribution.project?.id}`}
+              key={`${contribution.id}-${contribution.projectName}`}
               className={cn("rounded-xl", {
                 "bg-whiteFakeOpacity-5/95 lg:bg-none": !fullTable,
               })}
@@ -178,7 +178,7 @@ export function ContributionTable({
 
     return memoizedContributions?.map(contribution => {
       const lineId = `${contribution.id}-${contribution.project?.id}`;
-      const lineDate = status === GithubContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
+      const lineDate = status === ContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
       const { status: contributionStatus } = contribution.githubPullRequest ??
         contribution.githubIssue ??
         contribution.githubCodeReview ?? { status: GithubPullRequestStatus.Open };
@@ -245,7 +245,7 @@ export function ContributionTable({
               <HeaderCell
                 horizontalMargin
                 onClick={() => {
-                  const field = status === GithubContributionStatus.InProgress ? "createdAt" : "closedAt";
+                  const field = status === ContributionStatus.InProgress ? "createdAt" : "closedAt";
 
                   onSort({
                     column: TableColumns.Date,

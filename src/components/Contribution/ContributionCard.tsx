@@ -1,23 +1,17 @@
 import { ComponentProps } from "react";
-
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import TimeLine from "src/icons/TimeLine";
-import { GithubContributionStatus, QueryContribution } from "src/types";
+import { Contribution as ContributionT, ContributionStatus } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
-export function ContributionCard({
-  contribution,
-  status,
-}: {
-  contribution: QueryContribution;
-  status: GithubContributionStatus;
-}) {
+export function ContributionCard({ contribution }: { contribution: ContributionT }) {
   const { T } = useIntl();
-  const date = status === GithubContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
+  const date =
+    contribution.status === ContributionStatus.InProgress ? contribution.createdAt : contribution.completedAt;
 
   return (
     <article className="flex flex-col gap-2 rounded-xl border border-greyscale-50/8 bg-white/2 p-4 font-walsheim">

@@ -20,14 +20,14 @@ import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
-import { GithubContributionStatus } from "src/types";
+import { ContributionStatus } from "src/types";
 import { isInArray } from "src/utils/isInArray";
 
 enum AllTabs {
-  All = "allContributions",
-  InProgress = "inProgress",
-  Completed = "completed",
-  Cancelled = "cancelled",
+  All = "ALL_CONTRIBUTIONS",
+  InProgress = "IN_PROGRESS",
+  Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
 }
 
 const tabValues = Object.values(AllTabs);
@@ -36,18 +36,18 @@ function TabContents({ children }: PropsWithChildren) {
   return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
 }
 
-const initialSort: Record<GithubContributionStatus, TableSort> = {
-  [GithubContributionStatus.InProgress]: {
+const initialSort: Record<ContributionStatus, TableSort> = {
+  [ContributionStatus.InProgress]: {
     column: TableColumns.Date,
     direction: OrderBy.Desc,
     orderBy: { createdAt: OrderBy.Desc },
   },
-  [GithubContributionStatus.Completed]: {
+  [ContributionStatus.Completed]: {
     column: TableColumns.Date,
     direction: OrderBy.Desc,
     orderBy: { closedAt: OrderBy.Desc },
   },
-  [GithubContributionStatus.Canceled]: {
+  [ContributionStatus.Cancelled]: {
     column: TableColumns.Date,
     direction: OrderBy.Desc,
     orderBy: { closedAt: OrderBy.Desc },
@@ -82,7 +82,7 @@ export default function Contributions() {
 
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
 
-  function tableWhere({ status }: { status: GithubContributionStatus }) {
+  function tableWhere({ status }: { status: ContributionStatus }) {
     return {
       githubUserId: { _eq: githubUserId },
       projectId: { _in: projectIds.length ? projectIds : undefined },
@@ -105,6 +105,8 @@ export default function Contributions() {
       projectId: { _in: projectIds.length ? projectIds : undefined },
     };
   }
+
+  // TODO ContributionsApi -> MeApi
 
   const {
     data: inProgressData,
@@ -260,12 +262,12 @@ export default function Contributions() {
       contributions: inProgressData?.pages?.flatMap(({ contributions }) => contributions),
       loading: inProgressLoading,
       error: inProgressError,
-      status: GithubContributionStatus.InProgress,
+      status: ContributionStatus.InProgress,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
-      sort: sort[GithubContributionStatus.InProgress],
+      sort: sort[ContributionStatus.InProgress],
       onSort: sort => {
         setSort(prevState => {
-          const state = { ...prevState, [GithubContributionStatus.InProgress]: sort };
+          const state = { ...prevState, [ContributionStatus.InProgress]: sort };
 
           setSortStorage(JSON.stringify(state));
 
@@ -284,11 +286,11 @@ export default function Contributions() {
       contributions: completedData?.pages?.flatMap(({ contributions }) => contributions),
       loading: completedLoading,
       error: completedError,
-      status: GithubContributionStatus.Completed,
-      sort: sort[GithubContributionStatus.Completed],
+      status: ContributionStatus.Completed,
+      sort: sort[ContributionStatus.Completed],
       onSort: sort => {
         setSort(prevState => {
-          const state = { ...prevState, [GithubContributionStatus.Completed]: sort };
+          const state = { ...prevState, [ContributionStatus.Completed]: sort };
 
           setSortStorage(JSON.stringify(state));
 
@@ -308,11 +310,11 @@ export default function Contributions() {
       contributions: cancelledData?.pages?.flatMap(({ contributions }) => contributions),
       loading: cancelledLoading,
       error: cancelledError,
-      status: GithubContributionStatus.Canceled,
-      sort: sort[GithubContributionStatus.Canceled],
+      status: ContributionStatus.Cancelled,
+      sort: sort[ContributionStatus.Cancelled],
       onSort: sort => {
         setSort(prevState => {
-          const state = { ...prevState, [GithubContributionStatus.Canceled]: sort };
+          const state = { ...prevState, [ContributionStatus.Cancelled]: sort };
 
           setSortStorage(JSON.stringify(state));
 

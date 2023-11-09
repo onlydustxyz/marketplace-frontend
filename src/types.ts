@@ -154,18 +154,6 @@ export enum GithubContributionType {
   CodeReview = "CODE_REVIEW",
 }
 
-export enum GithubContributionStatus {
-  InProgress = "in_progress",
-  Completed = "complete",
-  Canceled = "canceled",
-}
-
-export enum GithubContributionStatusREST {
-  InProgress = "IN_PROGRESS",
-  Completed = "COMPLETED",
-  Cancelled = "CANCELLED",
-}
-
 export enum GithubContributionReviewStatus {
   PendingReviewer = "pendingReviewer",
   UnderReview = "underReview",
@@ -333,4 +321,12 @@ type Organization = Omit<components["schemas"]["GithubOrganizationResponse"], "r
 
 export interface OrganizationSessionStorageInterface extends useInstallationByIdResponse {
   organization: Organization;
+}
+
+export type Contribution = components["schemas"]["ContributionPageItemResponse"];
+
+export enum ContributionStatus {
+  InProgress = "IN_PROGRESS",
+  Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
 }

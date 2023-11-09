@@ -2,7 +2,7 @@ import { ComponentProps } from "react";
 import { OrderBy, UserIdentityDocument } from "src/__generated/graphql";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionTable, TableColumns } from "src/components/Contribution/ContributionTable";
-import { GithubContributionStatus } from "src/types";
+import { ContributionStatus } from "src/types";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributionDetailPanelProvider from "../decorators/withContributionDetailPanelProvider";
@@ -58,7 +58,7 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
   data: contributionTable,
   loading: false,
   error: undefined,
-  status: GithubContributionStatus.InProgress,
+  status: ContributionStatus.InProgress,
   sort: {
     column: TableColumns.Date,
     direction: OrderBy.Desc,
