@@ -15,7 +15,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   footerRightElement,
   prev,
   next,
-  submitButton,
+  submitButton = null,
   nextDisabled,
   children,
   stickyChildren,
@@ -64,7 +64,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
               </Button>
             </Link>
           )}
-          {submitButton ? submitButton : null}
+          {submitButton}
         </Flex>
       </Flex>
     </div>
