@@ -130,6 +130,7 @@ export default function Overview() {
         size={CalloutSizes.Large}
         projectSlug={projectSlug}
         isInvited={isInvited}
+        projectName={project?.name}
       />
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex grow flex-col gap-4">

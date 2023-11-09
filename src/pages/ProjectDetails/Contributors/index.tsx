@@ -101,6 +101,7 @@ export default function Contributors() {
         size={CalloutSizes.Large}
         projectSlug={projectKey}
         isInvited={isInvited}
+        projectName={project?.name}
       />
       {contributors?.length > 0 && (
         <ContributorsTable
