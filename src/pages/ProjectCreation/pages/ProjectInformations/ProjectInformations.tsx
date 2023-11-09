@@ -127,7 +127,7 @@ export const ProjectInformationsPage = () => {
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
-      <form className="flex h-full items-center justify-center p-6" onSubmit={handleSubmit(onSubmit)}>
+      <form className="flex h-full items-center justify-center md:p-6" onSubmit={handleSubmit(onSubmit)}>
         <MultiStepsForm
           title={T("project.details.create.informations.title")}
           step={3}

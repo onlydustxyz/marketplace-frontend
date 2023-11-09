@@ -10,7 +10,7 @@ export const GithubOrganizationPage = () => {
   const [isValid, setIsValid] = useState(false);
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
-      <div className="flex h-full items-center justify-center p-6">
+      <div className="flex h-full items-center justify-center md:p-6">
         <MultiStepsForm
           title={T("project.details.create.organizations.title")}
           description={T("project.details.create.organizations.description")}
