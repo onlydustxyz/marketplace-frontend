@@ -24,7 +24,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   const { T } = useIntl();
 
   return (
-    <div className="rounded-2x relative w-[688px] max-w-full scroll-mr-2 overflow-auto bg-card-background-base scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+    <div className="rounded-2x relative h-full w-[688px] max-w-full scroll-mr-2 overflow-auto bg-card-background-base scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
       <div className="sticky top-0 z-20 h-1.5 w-full bg-mosaic bg-cover" />
       <Card
         className="flex flex-1 flex-col justify-between gap-12 divide-y divide-greyscale-50/8 bg-card-background-base"
