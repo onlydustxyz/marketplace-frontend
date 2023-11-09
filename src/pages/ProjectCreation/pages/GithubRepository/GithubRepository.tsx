@@ -146,7 +146,7 @@ export const GithubRepositoryPage = () => {
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
                         {(organization.repos || []).map(repo =>
                           search && !repo.name?.includes(search) ? null : (
-                            <div
+                            <label
                               key={repo.name}
                               className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"
                             >
@@ -171,7 +171,7 @@ export const GithubRepositoryPage = () => {
                                     T("project.details.overview.repositories.descriptionPlaceholder")}
                                 </p>
                               </Flex>
-                            </div>
+                            </label>
                           )
                         )}
                       </div>

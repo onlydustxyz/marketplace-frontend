@@ -1,6 +1,6 @@
 import RainbowBanner from "src/components/New/Banners/RainbowBanner";
 import { useIntl } from "src/hooks/useIntl";
-import LoaderTwo from "src/icons/LoaderTwo";
+import Loader2Line from "src/icons/Loader2Line";
 import dayjs from "dayjs";
 
 type StillFetchingBannerProps = {
@@ -25,7 +25,7 @@ export default function StillFetchingBanner({ createdAt }: StillFetchingBannerPr
 
   return (
     <RainbowBanner
-      icon={<LoaderTwo className="text-xl font-normal text-white" />}
+      icon={<Loader2Line className="text-xl font-normal text-white" />}
       description={T("project.stillFetching")}
     />
   );
