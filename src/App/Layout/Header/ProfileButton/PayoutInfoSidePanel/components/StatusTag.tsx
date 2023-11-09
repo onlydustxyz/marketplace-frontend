@@ -71,8 +71,8 @@ export function StatusTag({
       missingSepaAccount: _missingSepaAccount || false,
       missingUsdcWallet: _missingUsdcWallet || false,
       missingEthWallet: _missingEthWallet || false,
-      isCompany: isCompany,
-      isBankWire: isBankWire,
+      isCompany,
+      isBankWire,
     });
 
     return [
