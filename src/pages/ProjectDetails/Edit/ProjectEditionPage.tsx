@@ -14,6 +14,7 @@ import { Flex } from "src/components/New/Layout/Flex";
 import RepositoriesTab from "./RepositoriesTab";
 import { cn } from "src/utils/cn";
 import { DescriptionForm } from "./components/Form/DescriptionForm";
+import { EditPanelProvider } from "./components/Panel/context";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -57,36 +58,46 @@ export default function ProjectEditionPage() {
   ];
 
   return (
-    <Flex className="h-[calc(100vh-68px)] flex-col xl:h-[calc(100vh-77px-1.5rem)]">
-      <Flex className="items-center px-4 py-6 xl:px-8">
-        <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly onClick={() => navigate(-1)} className="mr-3">
-          <CloseLine />
-        </Button>
-        <Title>
-          <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
-        </Title>
-      </Flex>
+    <EditPanelProvider openOnLoad={false} projectSlug="mock-project-slug">
+      <Flex className="h-[calc(100vh-68px)] flex-col xl:h-[calc(100vh-77px-1.5rem)]">
+        <Flex className="items-center px-4 py-6 xl:px-8">
+          <Button
+            size={ButtonSize.Xs}
+            type={ButtonType.Secondary}
+            iconOnly
+            onClick={() => navigate(-1)}
+            className="mr-3"
+          >
+            <CloseLine />
+          </Button>
+          <Title>
+            <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
+          </Title>
+        </Flex>
 
-      <header className="z-10 w-full border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 ">
-        <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
-      </header>
+        <header className="z-10 w-full border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 ">
+          <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
+        </header>
 
-      <Flex className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}>
-        {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab />}
-      </Flex>
+        <Flex
+          className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}
+        >
+          {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab />}
+        </Flex>
 
-      <Flex
-        justify="between"
-        item="center"
-        gap={4}
-        className="max-h-[88px] w-full items-center border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
-      >
-        <div></div>
-        <Button size={ButtonSize.Md}>
-          Save changes
-          <ArrowRightSLine className="-mr-2 text-2xl" />
-        </Button>
+        <Flex
+          justify="between"
+          item="center"
+          gap={4}
+          className="max-h-[88px] w-full items-center border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
+        >
+          <div></div>
+          <Button size={ButtonSize.Md}>
+            Save changes
+            <ArrowRightSLine className="-mr-2 text-2xl" />
+          </Button>
+        </Flex>
       </Flex>
-    </Flex>
+    </EditPanelProvider>
   );
 }

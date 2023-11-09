@@ -922,6 +922,13 @@
           "general": "General",
           "repositories": "Repositories"
         },
+        "panel": {
+          "title": "Add repositories",
+          "tabs": {
+            "organizations": "Organisations",
+            "repositories": "Repositories"
+          }
+        },
         "fields": {
           "rewardableContributions": {
             "label": "Rewardable contributions",

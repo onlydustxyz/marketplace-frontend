@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import InfoIcon from "src/assets/icons/InfoIcon";
@@ -9,11 +9,12 @@ import AddLine from "src/icons/AddLine";
 import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
 import SubtractLine from "src/icons/SubtractLine";
+import { EditPanelContext } from "./components/Panel/context";
 
 export default function RepositoriesTab() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { T } = useIntl();
-
+  const { open } = useContext(EditPanelContext);
   // TODO move to parent
   const { data, isLoading, isError } = ProjectApi.queries.useDetails({
     params: { projectKey },
@@ -147,7 +148,7 @@ export default function RepositoriesTab() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-end">
-        <Button size={ButtonSize.Md}>
+        <Button size={ButtonSize.Md} onClick={open}>
           <AddLine className="text-xl" />
           {T("project.details.edit.repositories.addRepositories")}
         </Button>
