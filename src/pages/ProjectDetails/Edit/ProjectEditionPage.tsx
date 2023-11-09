@@ -1,9 +1,7 @@
 import { PropsWithChildren, useState } from "react";
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Tabs } from "src/components/Tabs/Tabs";
-
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CloseLine from "src/icons/CloseLine";
@@ -14,7 +12,12 @@ import { Flex } from "src/components/New/Layout/Flex";
 import RepositoriesTab from "./RepositoriesTab";
 import { cn } from "src/utils/cn";
 import { DescriptionForm } from "./components/Form/DescriptionForm";
+<<<<<<< Updated upstream
 import { EditPanelProvider } from "./components/Panel/context";
+=======
+import { OutletContext } from "../View";
+import ProjectApi from "src/api/Project";
+>>>>>>> Stashed changes
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -26,9 +29,28 @@ enum TabsType {
 }
 
 export default function ProjectEditionPage() {
+  const { project } = useOutletContext<OutletContext>();
+  const { slug: projectKey } = project;
+
   const { T } = useIntl();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabsType>(TabsType.General);
+
+  // TODO: Use query
+  const { data, isLoading, isError } = ProjectApi.queries.useDetails({
+    params: { projectKey },
+    options: { refetchOnMount: false, refetchOnWindowFocus: false },
+  });
+
+  // TODO: Use mutation
+  const { mutate, ...rest } = ProjectApi.mutations.useUpdateroject({
+    params: { projectKey },
+    options: {
+      onSuccess: async () => {
+        //noop
+      },
+    },
+  });
 
   const tabItems = [
     {
@@ -79,11 +101,17 @@ export default function ProjectEditionPage() {
           <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
         </header>
 
+<<<<<<< Updated upstream
         <Flex
           className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}
         >
           {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab />}
         </Flex>
+=======
+      <Flex className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}>
+        {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab {...{ data, isLoading, isError }} />}
+      </Flex>
+>>>>>>> Stashed changes
 
         <Flex
           justify="between"

@@ -8,8 +8,12 @@ import { useMediaQuery } from "usehooks-ts";
 import ProjectsSidebar from "./Sidebar";
 import { cn } from "src/utils/cn";
 
-interface Props {
+export type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
+};
+
+interface Props {
+  project: OutletContext;
   padded?: boolean;
   loading: boolean | undefined;
   error: null | unknown;

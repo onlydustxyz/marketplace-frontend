@@ -47,10 +47,7 @@ import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
 import Flex from "src/components/Utils/Flex";
 import { parseFlag } from "src/utils/parseFlag";
-
-type OutletContext = {
-  project: components["schemas"]["ProjectResponse"];
-};
+import { OutletContext } from "../View";
 
 export default function Overview() {
   const { T } = useIntl();
