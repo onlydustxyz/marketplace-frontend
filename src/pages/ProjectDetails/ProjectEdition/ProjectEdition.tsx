@@ -9,15 +9,14 @@ import FileListLine from "src/icons/FileListLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Title from "../Title";
 import { Flex } from "src/components/New/Layout/Flex";
-import RepositoriesTab from "./RepositoriesTab";
+
 import { cn } from "src/utils/cn";
-import { DescriptionForm } from "./components/Form/DescriptionForm";
-<<<<<<< Updated upstream
+
 import { EditPanelProvider } from "./components/Panel/context";
-=======
 import { OutletContext } from "../View";
 import ProjectApi from "src/api/Project";
->>>>>>> Stashed changes
+import { Repository } from "./pages/Repository";
+import { Information } from "./pages/Information";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -28,7 +27,7 @@ enum TabsType {
   Repos = "Repos",
 }
 
-export default function ProjectEditionPage() {
+export default function ProjectEdition() {
   const { project } = useOutletContext<OutletContext>();
   const { slug: projectKey } = project;
 
@@ -43,7 +42,7 @@ export default function ProjectEditionPage() {
   });
 
   // TODO: Use mutation
-  const { mutate, ...rest } = ProjectApi.mutations.useUpdateroject({
+  const { mutate } = ProjectApi.mutations.useUpdateroject({
     params: { projectKey },
     options: {
       onSuccess: async () => {
@@ -101,17 +100,11 @@ export default function ProjectEditionPage() {
           <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
         </header>
 
-<<<<<<< Updated upstream
         <Flex
           className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}
         >
-          {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab />}
+          {activeTab === TabsType.General ? <Information /> : <Repository {...{ data, isLoading, isError }} />}
         </Flex>
-=======
-      <Flex className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}>
-        {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab {...{ data, isLoading, isError }} />}
-      </Flex>
->>>>>>> Stashed changes
 
         <Flex
           justify="between"

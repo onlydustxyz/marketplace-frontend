@@ -10,7 +10,7 @@ import InformationLine from "src/icons/InformationLine";
 import { FieldProjectLead } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import { FieldSwitch } from "src/components/New/Field/Switch";
 import { zodResolver } from "@hookform/resolvers/zod";
-import validationSchema from "../../../../../pages/ProjectCreation/pages/ProjectInformations/utils/ProjectInformations.validation";
+import validationSchema from "../../../ProjectCreation/pages/ProjectInformations/utils/ProjectInformations.validation";
 import {
   useInformationSession,
   useOrganizationSession,
@@ -34,7 +34,7 @@ interface createProjectInformation {
   shortDescription: string;
 }
 
-export function DescriptionForm() {
+export function Information() {
   const {
     control,
     handleSubmit,
