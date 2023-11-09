@@ -57,14 +57,14 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
             </Link>
           )}
           {next && (
-              <Link to={next}>
-                <Button disabled={nextDisabled}>
-                  {T("common.next")}
-                  <ArrowRightSLine className="-mr-2 text-2xl" />
-                </Button>
-              </Link>
-            )}
-            {submitButton ? submitButton : null}
+            <Link to={next}>
+              <Button disabled={nextDisabled}>
+                {T("common.next")}
+                <ArrowRightSLine className="-mr-2 text-2xl" />
+              </Button>
+            </Link>
+          )}
+          {submitButton ? submitButton : null}
         </Flex>
       </Flex>
     </div>
