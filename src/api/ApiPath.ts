@@ -19,6 +19,7 @@ export const API_PATH = {
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),
 
   /* ----------------------------------- ME ----------------------------------- */
+  MY_CONTRIBUTIONS: BASE_API_V1("me/contributions"),
   ME_PROJECT_LEADER_INVITATIONS: (projectId: string) => BASE_API_V1(`me/project-leader-invitations/${projectId}`),
   ME: BASE_API_V1("me"),
   ME_REWARDS: BASE_API_V1("me/rewards"),
