@@ -52,8 +52,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
     () =>
       chain(data?.contributions)
         .differenceWith(workItems, (contribution, workItem) => contribution.detailsId === workItem.id)
-        .value()
-        .filter(contribution => contribution.status === "complete"),
+        .value(),
     [data?.contributions, workItems]
   );
 
