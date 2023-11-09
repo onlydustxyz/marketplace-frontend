@@ -741,10 +741,14 @@
       "subtitle": "We won't be able to issue any payment until your payout information is completed",
       "title": "Payout information missing",
       "contact": "Missing information to receive rewards",
-      "payment": {
-        "one": "Missing addresses to receive rewards on __networks__ network",
-        "many": "Missing addresses to receive rewards on __networks__ networks"
-      }
+      "networkFull": {
+        "APT": "the Aptos network",
+        "ETH": "the Ethereum network",
+        "OP": "the Optimism network",
+        "STARK": "the Stark chain network",
+        "USD": "your bank account"
+      },
+      "payment": "Missing addresses to receive rewards on __networks__"
     }
   },
   "publicProfile": {
