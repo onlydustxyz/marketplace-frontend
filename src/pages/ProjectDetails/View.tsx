@@ -23,15 +23,14 @@ export default function View({ project, padded = true }: Props) {
 
   const { id } = project;
   return (
-    <div
-      className={cn(
-        "flex w-full flex-1 flex-col gap-10 overflow-hidden pt-4 xl:h-0 xl:flex-row xl:pt-0",
-        padded ? "xl:gap-0" : "xl:gap-2"
-      )}
-    >
+    <div className="flex w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:h-0 xl:flex-row xl:gap-2 xl:p-6 xl:pt-0">
       <ProjectsSidebar projectId={id} />
       <Background roundedBorders={isXl ? BackgroundRoundedBorders.Right : BackgroundRoundedBorders.Full}>
-        <div className={cn("mx-auto flex h-full flex-1 flex-col gap-6 py-6", { "max-w-7xl px-4 xl:px-8": padded })}>
+        <div
+          className={cn("mx-auto flex h-full flex-1 flex-col gap-6", {
+            "max-w-7xl gap-6 px-4 py-6 xl:px-8": padded,
+          })}
+        >
           <Suspense fallback={<Loader />}>
             <Outlet context={outletContext} />
           </Suspense>

@@ -1,17 +1,22 @@
-import Title from "src/pages/ProjectDetails/Title";
-import { useIntl } from "src/hooks/useIntl";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import CloseLine from "src/icons/CloseLine";
-import Flex from "src/components/Utils/Flex";
-import { useNavigate } from "react-router-dom";
-import { Tabs } from "src/components/Tabs/Tabs";
 import { PropsWithChildren, useState } from "react";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
+
+import { useNavigate } from "react-router-dom";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { Tabs } from "src/components/Tabs/Tabs";
+
+import { useIntl } from "src/hooks/useIntl";
+import ArrowRightSLine from "src/icons/ArrowRightSLine";
+import CloseLine from "src/icons/CloseLine";
 import FileListLine from "src/icons/FileListLine";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import Title from "../Title";
+import { Flex } from "src/components/New/Layout/Flex";
 import RepositoriesTab from "./RepositoriesTab";
+import { cn } from "src/utils/cn";
+import { DescriptionForm } from "./components/Form/DescriptionForm";
 
 function TabContents({ children }: PropsWithChildren) {
-  return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
+  return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
 }
 
 enum TabsType {
@@ -52,23 +57,36 @@ export default function ProjectEditionPage() {
   ];
 
   return (
-    <>
-      <Flex className="items-center gap-4 px-4 xl:px-8">
-        <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly onClick={() => navigate(-1)}>
+    <Flex className="h-[calc(100vh-68px)] flex-col xl:h-[calc(100vh-77px-1.5rem)]">
+      <Flex className="items-center px-4 py-6 xl:px-8">
+        <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly onClick={() => navigate(-1)} className="mr-3">
           <CloseLine />
         </Button>
         <Title>
-          <div className="flex flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</div>
+          <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
         </Title>
       </Flex>
 
-      <header className="sticky top-0 z-10 border-b border-greyscale-50/20 bg-card-background-base pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:pb-0 md:pt-8">
-        <div className="flex items-center justify-between px-4 xl:px-8">
-          <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
-        </div>
+      <header className="z-10 w-full border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 ">
+        <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
       </header>
 
-      {activeTab === TabsType.Repos ? <RepositoriesTab /> : null}
-    </>
+      <Flex className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}>
+        {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab />}
+      </Flex>
+
+      <Flex
+        justify="between"
+        item="center"
+        gap={4}
+        className="max-h-[88px] w-full items-center border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
+      >
+        <div></div>
+        <Button size={ButtonSize.Md}>
+          Save changes
+          <ArrowRightSLine className="-mr-2 text-2xl" />
+        </Button>
+      </Flex>
+    </Flex>
   );
 }
