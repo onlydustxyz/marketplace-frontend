@@ -27,8 +27,6 @@ import useFilteredContributions from "./useFilteredWorkItems";
 import { contributionToWorkItem } from "./WorkItems";
 import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 
-const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
-
 const tabNames = {
   [WorkItemType.Issue]: "issues",
   [WorkItemType.PullRequest]: "pullRequests",
