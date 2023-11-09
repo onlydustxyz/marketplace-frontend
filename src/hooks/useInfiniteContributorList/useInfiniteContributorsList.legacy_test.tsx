@@ -27,7 +27,7 @@ const contributors = [
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
-    json: () => Promise.resolve({ pages: [{ contributors: contributors }] }),
+    json: () => Promise.resolve({ pages: [{ contributors }] }),
   })
 ) as jest.Mock<Promise<Response>>;
 

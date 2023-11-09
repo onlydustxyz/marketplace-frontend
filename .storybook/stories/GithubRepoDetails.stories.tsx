@@ -6,22 +6,16 @@ export default {
   title: "GithubRepoDetails",
 };
 
-const Template: ComponentStory<typeof GithubRepoDetails> = args => <GithubRepoDetails {...args} />;
+const Template: ComponentStory<typeof GithubRepoDetails> = args => <GithubRepoDetails githubRepo={githubRepo}/>;
 export const Default = Template.bind({});
 
-Default.args = {
+const githubRepo = {
   id: 545531678,
   owner: "sayajin-labs",
   name: "kakarot",
-  languages: {
-    Cairo: 699257,
-    Shell: 15765,
-    Python: 227995,
-    Makefile: 3257,
-    Solidity: 404893,
-    Dockerfile: 1335,
-  },
   description: "ZK-EVM type 3 written in Cairo, leveraging STARK proof system.",
   stars: 308,
   forkCount: 67,
+  hasIssues: true,
+  htmlUrl: ""
 };

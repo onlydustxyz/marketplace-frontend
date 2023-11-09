@@ -105,6 +105,7 @@ const config: Config = {
         snow: "#F4F4F4",
         card: {
           background: {
+            base: "#0E0D2E",
             light: "#FFFFFF05",
             medium: "#FFFFFF0D",
             heavy: "#FFFFFF14",
@@ -181,6 +182,7 @@ const config: Config = {
         "bottom-sm": "0px 2px 4px rgba(0, 0, 0, 0.32), inset 0px -1px 2px 1px rgba(0, 0, 0, 0.32)",
         heavy: "0px 8px 64px rgba(0, 0, 0, 0.05)",
         light: "0px 8px 32px 0px rgba(0, 0, 0, 0.16)",
+        medium: "0px 8px 64px 0px rgba(0, 0, 0, 0.32)",
       },
       dropShadow: {
         "bottom-sm": "0px 8px 32px rgba(0, 0, 0, 0.16)",

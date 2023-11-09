@@ -45,6 +45,7 @@ import { useMediaQuery } from "usehooks-ts";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -95,6 +96,7 @@ export default function Overview() {
 
   return (
     <>
+      <StillFetchingBanner createdAt={project?.createdAt} />
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
@@ -240,9 +242,9 @@ function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
         <Badge value={githubRepos.length} size={BadgeSize.Small} />
       </div>
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
-        {githubRepos?.map(githubRepo =>
-          githubRepo?.id ? <GithubRepoDetails key={githubRepo?.id} githubRepoId={githubRepo?.id} /> : null
-        )}
+        {githubRepos?.map(githubRepo => (
+          <GithubRepoDetails key={githubRepo.id} githubRepo={githubRepo} />
+        ))}
       </div>
     </Card>
   );

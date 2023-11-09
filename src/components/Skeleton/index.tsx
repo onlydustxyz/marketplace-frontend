@@ -10,6 +10,7 @@ import SkeletonRewards from "./SkeletonRewards";
 import SkeletonEarnedRewards from "./SkeletonEarnedRewards";
 import SkeletonRewardsList from "./SkeletonRewardsList";
 import SkeletonInvoice from "./SkeletonInvoice";
+import SkeletonOrganizationItem from "./SkeletonOrganizationItem";
 
 type SkeletonVariant =
   | "card"
@@ -22,7 +23,8 @@ type SkeletonVariant =
   | "rewards"
   | "earnedRewards"
   | "rewardsList"
-  | "invoice";
+  | "invoice"
+  | "organizationItem";
 
 interface SkeletonProps {
   variant: SkeletonVariant;
@@ -40,6 +42,7 @@ const VARIANT_COMPONENTS = {
   earnedRewards: SkeletonEarnedRewards,
   rewardsList: SkeletonRewardsList,
   invoice: SkeletonInvoice,
+  organizationItem: SkeletonOrganizationItem,
 };
 
 export default function Skeleton({ variant }: SkeletonProps) {

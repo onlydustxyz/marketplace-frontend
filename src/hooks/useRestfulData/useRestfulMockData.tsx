@@ -13,5 +13,5 @@ export function useRestfulMockData({ mock }: UseRestfulDataProps & { mock?: unkn
     }, 100);
   }, []);
 
-  return { data: data, isLoading: isLoading, isError: false };
+  return { data, isLoading, isError: false };
 }
