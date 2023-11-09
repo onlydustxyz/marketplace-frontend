@@ -1,8 +1,5 @@
-import type { ApolloError } from "@apollo/client";
 import { ComponentProps, PropsWithChildren, ReactNode, useMemo, useState } from "react";
-import { cn } from "src/utils/cn";
-
-import { ContributionsOrderBy, GetAllContributionsQuery, OrderBy } from "src/__generated/graphql";
+import { ContributionsOrderBy, OrderBy } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -30,10 +27,12 @@ import {
   GithubPullRequestDraft,
   GithubPullRequestStatus,
 } from "src/types";
+import { cn } from "src/utils/cn";
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
 import { useMediaQuery } from "usehooks-ts";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
+import { UseMyContributionsResponse } from "src/api/Contributions/queries";
 
 export enum TableColumns {
   Date = "date",
@@ -65,7 +64,7 @@ function TableText({ children }: PropsWithChildren) {
 }
 
 export function ContributionTable({
-  data,
+  contributions = [],
   description,
   error,
   icon,
@@ -78,9 +77,9 @@ export function ContributionTable({
   sort,
   onSort,
 }: {
-  data?: GetAllContributionsQuery;
+  contributions?: UseMyContributionsResponse["contributions"];
   description: string;
-  error?: ApolloError;
+  error?: boolean;
   icon(className: string): ReactNode;
   id: string;
   loading: boolean;
@@ -99,8 +98,6 @@ export function ContributionTable({
 
   const sortDirection = sort.direction === OrderBy.Asc ? "up" : "down";
   const newSortDirection = sort.direction === OrderBy.Asc ? OrderBy.Desc : OrderBy.Asc;
-
-  const { contributions } = data ?? {};
 
   const memoizedContributions = useMemo(() => {
     // Need to clone the array because Array.sort() mutates the original
@@ -129,14 +126,7 @@ export function ContributionTable({
     if (memoizedContributions?.length === 0) {
       return (
         <div className="py-6">
-          <Message>
-            {T("contributions.table.empty", {
-              time: Intl.DateTimeFormat("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-              }).format(new Date(data?.githubRepos[0].indexedAt)),
-            })}
-          </Message>
+          <Message>{T("contributions.table.empty")}</Message>
         </div>
       );
     }
@@ -183,16 +173,7 @@ export function ContributionTable({
     }
 
     if (memoizedContributions?.length === 0) {
-      return (
-        <TableText>
-          {T("contributions.table.empty", {
-            time: Intl.DateTimeFormat("en-US", {
-              hour: "numeric",
-              minute: "numeric",
-            }).format(new Date(data?.githubRepos[0].indexedAt)),
-          })}
-        </TableText>
-      );
+      return <TableText>{T("contributions.table.empty")}</TableText>;
     }
 
     return memoizedContributions?.map(contribution => {

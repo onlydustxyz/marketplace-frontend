@@ -3,14 +3,13 @@ import { useSearchParams } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import {
   ContributionsBoolExp,
-  ContributionsOrderBy,
   GithubRepos,
   OrderBy,
   Projects,
-  useGetAllContributionsQuery,
   useGetContributionProjectsQuery,
   useGetContributionReposQuery,
 } from "src/__generated/graphql";
+import ContributionsApi from "src/api/Contributions";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
@@ -18,7 +17,6 @@ import { ContributionTable, TableColumns, type TableSort } from "src/components/
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
-import useInfiniteMyContributions from "src/hooks/useInfiniteMyContributions";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
@@ -29,7 +27,7 @@ enum AllTabs {
   All = "allContributions",
   InProgress = "inProgress",
   Completed = "completed",
-  Canceled = "canceled",
+  Cancelled = "cancelled",
 }
 
 const tabValues = Object.values(AllTabs);
@@ -112,9 +110,27 @@ export default function Contributions() {
     data: inProgressData,
     isLoading: inProgressLoading,
     isError: inProgressError,
-  } = useInfiniteMyContributions(
-    { queryParams: [] },
+  } = ContributionsApi.queries.useMyContributions(
+    { queryParams: { statuses: "IN_PROGRESS" } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress))) }
+  );
+
+  const {
+    data: completedData,
+    isLoading: completedLoading,
+    isError: completedError,
+  } = ContributionsApi.queries.useMyContributions(
+    { queryParams: { statuses: "COMPLETED" } },
+    { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed))) }
+  );
+
+  const {
+    data: cancelledData,
+    isLoading: cancelledLoading,
+    isError: cancelledError,
+  } = ContributionsApi.queries.useMyContributions(
+    { queryParams: { statuses: "CANCELLED" } },
+    { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled))) }
   );
 
   //   const {
@@ -130,31 +146,31 @@ export default function Contributions() {
   //     fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
   //   });
 
-  const {
-    data: completedData,
-    loading: completedLoading,
-    error: completedError,
-  } = useGetAllContributionsQuery({
-    variables: {
-      orderBy: sort[GithubContributionStatus.Completed].orderBy as ContributionsOrderBy,
-      where: tableWhere({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
-    },
-    skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
-  });
+  //   const {
+  //     data: completedData,
+  //     loading: completedLoading,
+  //     error: completedError,
+  //   } = useGetAllContributionsQuery({
+  //     variables: {
+  //       orderBy: sort[GithubContributionStatus.Completed].orderBy as ContributionsOrderBy,
+  //       where: tableWhere({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
+  //     },
+  //     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
+  //     fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
+  //   });
 
-  const {
-    data: canceledData,
-    loading: canceledLoading,
-    error: canceledError,
-  } = useGetAllContributionsQuery({
-    variables: {
-      orderBy: sort[GithubContributionStatus.Canceled].orderBy as ContributionsOrderBy,
-      where: tableWhere({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
-    },
-    skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
-  });
+  //   const {
+  //     data: canceledData,
+  //     loading: canceledLoading,
+  //     error: canceledError,
+  //   } = useGetAllContributionsQuery({
+  //     variables: {
+  //       orderBy: sort[GithubContributionStatus.Canceled].orderBy as ContributionsOrderBy,
+  //       where: tableWhere({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
+  //     },
+  //     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Cancelled)),
+  //     fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
+  //   });
 
   const { data: projectsData } = useGetContributionProjectsQuery({
     variables: { where: projectsWhere() as ContributionsBoolExp },
@@ -218,9 +234,9 @@ export default function Contributions() {
       ),
     },
     {
-      active: isActiveTab(AllTabs.Canceled),
+      active: isActiveTab(AllTabs.Cancelled),
       onClick: () => {
-        updateActiveTab(AllTabs.Canceled);
+        updateActiveTab(AllTabs.Cancelled);
       },
       testId: "contributions-canceled-tab",
       children: (
@@ -241,7 +257,7 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.InProgress);
       },
-      data: inProgressData,
+      contributions: inProgressData?.pages?.flatMap(({ contributions }) => contributions),
       loading: inProgressLoading,
       error: inProgressError,
       status: GithubContributionStatus.InProgress,
@@ -265,7 +281,7 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.Completed);
       },
-      data: completedData,
+      contributions: completedData?.pages?.flatMap(({ contributions }) => contributions),
       loading: completedLoading,
       error: completedError,
       status: GithubContributionStatus.Completed,
@@ -287,11 +303,11 @@ export default function Contributions() {
       description: T("contributions.canceled.description"),
       icon: className => <CancelCircleLine className={className} />,
       onHeaderClick: () => {
-        updateActiveTab(AllTabs.Canceled);
+        updateActiveTab(AllTabs.Cancelled);
       },
-      data: canceledData,
-      loading: canceledLoading,
-      error: canceledError,
+      contributions: cancelledData?.pages?.flatMap(({ contributions }) => contributions),
+      loading: cancelledLoading,
+      error: cancelledError,
       status: GithubContributionStatus.Canceled,
       sort: sort[GithubContributionStatus.Canceled],
       onSort: sort => {
@@ -303,7 +319,7 @@ export default function Contributions() {
           return state;
         });
       },
-      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Canceled),
+      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
     },
   ];
 
@@ -338,7 +354,7 @@ export default function Contributions() {
                       state={filtersState}
                       projects={filterProjectsAndRepos.projects}
                       repos={filterProjectsAndRepos.repos}
-                      loading={inProgressLoading || completedLoading || canceledLoading}
+                      loading={inProgressLoading || completedLoading || cancelledLoading}
                       onChange={newState => {
                         setFiltersStorage(JSON.stringify(newState));
                       }}
