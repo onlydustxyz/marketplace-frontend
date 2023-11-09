@@ -2,13 +2,16 @@ import { useAcceptProjectLeaderInvitationMutation, useGetProjectLeadInvitationsQ
 import { useAuth } from "src/hooks/useAuth";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import ProjectLeadInvitationView, { CalloutSizes } from "./ProjectLeadInvitationView";
+import MeApi from "src/api/me";
 
 interface ProjectLeadInvitationProps {
   projectId: string;
+  projectSlug: string;
+  isInvited: boolean;
   size?: CalloutSizes;
 }
 
-export default function ProjectLeadInvitation({ projectId, size }: ProjectLeadInvitationProps) {
+export default function ProjectLeadInvitation({ projectId, projectSlug, size, isInvited }: ProjectLeadInvitationProps) {
   const { githubUserId } = useAuth();
 
   const { data } = useGetProjectLeadInvitationsQuery({
@@ -26,7 +29,13 @@ export default function ProjectLeadInvitation({ projectId, size }: ProjectLeadIn
     onCompleted: () => window.location.reload(),
   });
 
-  return invitationId ? (
-    <ProjectLeadInvitationView projectName={projectName} onClick={acceptInvitation} size={size} />
+  const { mutate } = MeApi.mutations.useAcceptProjectLeaderInvitation({ params: { projectId, projectSlug } });
+
+  const onAcceptInvite = () => {
+    mutate(undefined);
+  };
+
+  return isInvited ? (
+    <ProjectLeadInvitationView projectName={projectName} onClick={onAcceptInvite} size={size} />
   ) : null;
 }

@@ -65,11 +65,10 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
           throw new Error(e);
         });
     },
-    onSuccess: (result: Response) => {
+    onSuccess: async (result: Response) => {
+      console.log("resut", result, invalidatesTags);
       if (invalidatesTags && invalidatesTags.length > 0) {
-        invalidatesTags.forEach(invalidate => {
-          queryClient.invalidateQueries(invalidate);
-        });
+        await Promise.all(invalidatesTags.map(invalidate => queryClient.invalidateQueries(invalidate)));
       }
 
       onSuccess?.(result, queryClient);
