@@ -151,7 +151,7 @@ export const GithubRepositoryPage = () => {
                                     onChange={value =>
                                       onCheckboxChange(value, repo.githubId, organization.organization.name)
                                     }
-                                    value={repo.selected}
+                                    value={repo.selected || false}
                                     name={`repository-${repo.githubId}`}
                                     fieldClassName={"inline-flex w-auto"}
                                   />
