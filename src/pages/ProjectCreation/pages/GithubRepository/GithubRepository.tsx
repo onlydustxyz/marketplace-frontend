@@ -19,7 +19,6 @@ import validationSchema from "./utils/GithubRepository.validation";
 import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
-import { truncateText } from "./utils/GithubDescription.truncate";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {
@@ -158,11 +157,11 @@ export const GithubRepositoryPage = () => {
                                   />
                                 </Flex>
                                 <p
-                                  className={`text-body-s w-full text-greyscale-200 ${
+                                  className={`text-body-s line-clamp-2 w-full text-greyscale-200 ${
                                     !repo.shortDescription && "italic"
                                   }`}
                                 >
-                                  {truncateText(repo.shortDescription || "", 85) ||
+                                  {repo.shortDescription ||
                                     T("project.details.overview.repositories.descriptionPlaceholder")}
                                 </p>
                               </Flex>
