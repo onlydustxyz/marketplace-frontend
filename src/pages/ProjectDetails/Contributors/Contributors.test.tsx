@@ -12,6 +12,7 @@ import { renderWithIntl } from "src/test/utils";
 
 const project: ComponentProps<typeof View>["project"] = {
   id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
+  createdAt: "2023-11-09T14:30:01.193Z",
   slug: "performance-test-with-a-very-long-name",
   name: "Performance test with a very long name",
   shortDescription: "Do not create issue on this one as it is linked with real projects !",
