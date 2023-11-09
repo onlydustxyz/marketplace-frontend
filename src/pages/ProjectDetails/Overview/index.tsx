@@ -47,6 +47,7 @@ import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
 import Flex from "src/components/Utils/Flex";
 import { parseFlag } from "src/utils/parseFlag";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { OutletContext } from "../View";
 
 export default function Overview() {
@@ -96,6 +97,7 @@ export default function Overview() {
 
   return (
     <>
+      <StillFetchingBanner createdAt={project?.createdAt} />
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}

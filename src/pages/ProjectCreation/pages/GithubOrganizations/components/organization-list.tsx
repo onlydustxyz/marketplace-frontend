@@ -33,6 +33,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
 
   const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
     params: { installation_id },
+    options: { retry: 1 },
   });
 
   useEffect(() => {

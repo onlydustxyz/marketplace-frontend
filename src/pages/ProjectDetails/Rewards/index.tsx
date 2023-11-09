@@ -1,16 +1,15 @@
 import { Outlet, useOutletContext } from "react-router-dom";
+import { components } from "src/__generated/api";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 
-import { Project } from "src/types";
-
 type OutletContext = {
-  project: Project;
+  project: components["schemas"]["ProjectResponse"];
 };
 
 export default function Rewards() {
   const { project } = useOutletContext<OutletContext>();
-  const { id: projectId, slug: projectKey } = project;
+  const { id: projectId, slug: projectKey, createdAt } = project;
 
   const {
     data: projectBudget,
@@ -30,6 +29,7 @@ export default function Rewards() {
         projectId,
         projectKey,
         refetchBudgets: refetch,
+        createdAt,
       }}
     />
   );
