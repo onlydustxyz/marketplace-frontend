@@ -1,17 +1,14 @@
+import { components } from "src/__generated/api";
 import { OrderBy } from "src/__generated/graphql";
-import { QueryContribution } from "src/types";
+
+type Contribution = components["schemas"]["ContributionPageItemResponse"];
 
 export function sortContributionsByNumber(
-  [a, b]: [QueryContribution, QueryContribution],
+  [a, b]: [Contribution, Contribution],
   order: OrderBy.Asc | OrderBy.Desc = OrderBy.Desc
 ) {
-  const { githubPullRequest: githubPullRequestA, githubIssue: githubIssueA, githubCodeReview: githubCodeReviewA } = a;
-  const numberA =
-    githubPullRequestA?.number ?? githubIssueA?.number ?? githubCodeReviewA?.githubPullRequest?.number ?? 0;
+  const { githubNumber: githubNumberA = 0 } = a;
+  const { githubNumber: githubNumberB = 0 } = b;
 
-  const { githubPullRequest: githubPullRequestB, githubIssue: githubIssueB, githubCodeReview: githubCodeReviewB } = b;
-  const numberB =
-    githubPullRequestB?.number ?? githubIssueB?.number ?? githubCodeReviewB?.githubPullRequest?.number ?? 0;
-
-  return order === OrderBy.Asc ? (numberA > numberB ? 1 : -1) : numberA < numberB ? 1 : -1;
+  return order === OrderBy.Asc ? (githubNumberA > githubNumberB ? 1 : -1) : githubNumberA < githubNumberB ? 1 : -1;
 }
