@@ -57,6 +57,8 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
               console.error(err);
               throw new Error("Invalid JSON response");
             }
+          } else {
+            throw new Error(`${res.status}`);
           }
         })
         .catch(e => {

@@ -1,20 +1,14 @@
 import RainbowBanner from "src/components/New/Banners/RainbowBanner";
 import { useIntl } from "src/hooks/useIntl";
 import LoaderTwo from "src/icons/LoaderTwo";
+import dayjs from "dayjs";
 
 type StillFetchingBannerProps = {
   createdAt: string;
 };
 
 const shouldDisplayBanner = (createdAt: string): boolean => {
-  const createdAtDate = new Date(createdAt);
-  const currentTime = new Date();
-  const tenMinutesInMilliseconds = 10 * 60 * 1000;
-
-  console.log("createdAtDate", createdAtDate);
-  console.log("currentTime", currentTime);
-
-  return currentTime.getTime() - createdAtDate.getTime() < tenMinutesInMilliseconds;
+  return dayjs().isBefore(dayjs(createdAt).add(10, "minute"));
 };
 
 export default function StillFetchingBanner({ createdAt }: StillFetchingBannerProps) {

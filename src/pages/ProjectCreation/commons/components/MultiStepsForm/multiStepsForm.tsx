@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import Button, { ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
-import CheckLine from "src/icons/CheckLine";
 import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -17,15 +16,15 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   footerRightElement,
   prev,
   next,
-  submit,
-  submitDisabled,
+  submitButton,
+  nextDisabled,
   children,
   stickyChildren,
 }) => {
   const { T } = useIntl();
 
   return (
-    <div className="rounded-2x relative h-full w-[688px] max-w-full scroll-mr-2 overflow-auto bg-card-background-base scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+    <div className="rounded-2x relative w-[688px] max-w-full scroll-mr-2 overflow-auto bg-card-background-base scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
       <div className="sticky top-0 z-20 h-1.5 w-full bg-mosaic bg-cover" />
       <Card
         className="flex flex-1 flex-col justify-between gap-12 divide-y divide-greyscale-50/8 bg-card-background-base"
@@ -65,17 +64,13 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
             )}
             {next && (
               <Link to={next}>
-                <Button>
+                <Button disabled={nextDisabled}>
                   {T("common.next")}
                   <ArrowRightSLine className="-mr-2 text-2xl" />
                 </Button>
               </Link>
             )}
-            {submit && (
-              <Button htmlType="submit" disabled={submitDisabled}>
-                <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
-              </Button>
-            )}
+            {submitButton ? submitButton : null}
           </Flex>
         </Flex>
       </Card>

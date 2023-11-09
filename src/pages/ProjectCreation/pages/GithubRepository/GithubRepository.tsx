@@ -19,6 +19,8 @@ import validationSchema from "./utils/GithubRepository.validation";
 import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
+import Button from "src/components/Button";
+import ArrowRightSLine from "src/icons/ArrowRightSLine";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {
@@ -98,8 +100,12 @@ export const GithubRepositoryPage = () => {
           description={T("project.details.create.repository.description")}
           step={2}
           stepCount={3}
-          submit
-          submitDisabled={!isValid}
+          submitButton={
+            <Button htmlType="submit" disabled={!isValid}>
+              {T("common.next")}
+              <ArrowRightSLine className="-mr-2 text-2xl" />
+            </Button>
+          }
           prev="../organizations"
           footerRightElement={footerRightElement}
           stickyChildren={

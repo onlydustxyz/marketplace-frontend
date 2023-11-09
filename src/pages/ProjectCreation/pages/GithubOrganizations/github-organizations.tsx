@@ -16,8 +16,8 @@ export const GithubOrganizationPage = () => {
           description={T("project.details.create.organizations.description")}
           step={1}
           stepCount={3}
-          submitDisabled={isValid}
           next="../repository"
+          nextDisabled={!isValid}
         >
           <Card withBg={false}>
             <OrganizationList setIsValid={setIsValid} />

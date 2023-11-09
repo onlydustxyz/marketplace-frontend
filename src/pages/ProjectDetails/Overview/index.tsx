@@ -96,7 +96,7 @@ export default function Overview() {
 
   return (
     <>
-      <StillFetchingBanner createdAt="2023-11-09T11:43:28.854Z" />
+      <StillFetchingBanner createdAt={project?.createdAt} />
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
