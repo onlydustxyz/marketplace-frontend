@@ -45,6 +45,7 @@ import { useMediaQuery } from "usehooks-ts";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -95,6 +96,7 @@ export default function Overview() {
 
   return (
     <>
+      <StillFetchingBanner createdAt={project?.createdAt} />
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}

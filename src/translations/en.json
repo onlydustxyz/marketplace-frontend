@@ -763,6 +763,7 @@
     "privacy": "Privacy"
   },
   "project": {
+    "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "amountGranted": "Granted: __granted__ / __total__",
     "hiring": "Looking for contributors",
     "visibility": {

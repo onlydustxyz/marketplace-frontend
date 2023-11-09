@@ -16,11 +16,12 @@ import { rates } from "src/hooks/useWorkEstimation";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
 import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/pages/ProjectDetails/Title";
-import { Project } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
+import { components } from "src/__generated/api";
 
 type OutletContext = {
-  project: Project;
+  project: components["schemas"]["ProjectResponse"];
 };
 
 export default function Contributors() {
@@ -67,6 +68,7 @@ export default function Contributors() {
 
   return (
     <>
+      <StillFetchingBanner createdAt={project?.createdAt} />
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.contributors.title")}
@@ -110,7 +112,7 @@ export default function Contributors() {
           }}
         />
       )}
-      {!isFetching && contributors?.length === 0 && <ContributorsTableFallback />}
+      {!isFetching && contributors?.length === 0 && <ContributorsTableFallback projectName={project?.name} />}
     </>
   );
 }

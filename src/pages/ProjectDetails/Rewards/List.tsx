@@ -13,17 +13,19 @@ import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
 import Title from "src/pages/ProjectDetails/Title";
 import { ProjectBudgetType, RemainingBudget } from "./RemainingBudget/RemainingBudget";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
   const navigate = useNavigate();
 
-  const { projectId, projectKey, projectBudget, isBudgetLoading, refetchBudgets } = useOutletContext<{
+  const { projectId, projectKey, projectBudget, isBudgetLoading, refetchBudgets, createdAt } = useOutletContext<{
     projectId: string;
     projectKey: string;
     projectBudget: ProjectBudgetType;
     isBudgetLoading: boolean;
     refetchBudgets: () => void;
+    createdAt: string;
   }>();
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
@@ -64,6 +66,7 @@ const RewardList: React.FC = () => {
 
   return rewards ? (
     <>
+      <StillFetchingBanner createdAt={createdAt} />
       <div className="flex items-center justify-between">
         <Title>{T("project.details.rewards.title")}</Title>
         <Button

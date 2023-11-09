@@ -25,6 +25,8 @@ import { useIntl } from "src/hooks/useIntl";
 import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import Button from "src/components/Button";
+import CheckLine from "src/icons/CheckLine";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -132,8 +134,11 @@ export const ProjectInformationsPage = () => {
           title={T("project.details.create.informations.title")}
           step={3}
           stepCount={3}
-          submit
-          submitDisabled={!isValid}
+          submitButton={
+            <Button htmlType="submit" disabled={!isValid}>
+              <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
+            </Button>
+          }
           prev="../repository"
         >
           <Flex direction="col" gap={8}>

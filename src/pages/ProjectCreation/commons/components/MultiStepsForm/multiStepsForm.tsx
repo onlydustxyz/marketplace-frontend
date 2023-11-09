@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Button, { ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
-import CheckLine from "src/icons/CheckLine";
 import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -16,8 +15,8 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   footerRightElement,
   prev,
   next,
-  submit,
-  submitDisabled,
+  submitButton = null,
+  nextDisabled,
   children,
   stickyChildren,
 }) => {
@@ -59,17 +58,13 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
           )}
           {next && (
             <Link to={next}>
-              <Button>
+              <Button disabled={nextDisabled}>
                 {T("common.next")}
                 <ArrowRightSLine className="-mr-2 text-2xl" />
               </Button>
             </Link>
           )}
-          {submit && (
-            <Button htmlType="submit" disabled={submitDisabled}>
-              <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
-            </Button>
-          )}
+          {submitButton}
         </Flex>
       </Flex>
     </div>

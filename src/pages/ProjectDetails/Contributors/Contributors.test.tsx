@@ -11,8 +11,7 @@ import ApolloWrapper from "src/providers/ApolloWrapper";
 import { renderWithIntl } from "src/test/utils";
 
 const project: ComponentProps<typeof View>["project"] = {
-  id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
-  createdAt: "2023-11-09T14:30:01.193Z",
+  id: "test-project-id",
   slug: "performance-test-with-a-very-long-name",
   name: "Performance test with a very long name",
   shortDescription: "Do not create issue on this one as it is linked with real projects !",
@@ -22,17 +21,16 @@ const project: ComponentProps<typeof View>["project"] = {
   visibility: "PUBLIC",
   contributorCount: 3,
   moreInfoUrl: "www.onlydust.xyz",
-  invitedLeaders: [],
   leaders: [
     {
-      githubUserId: 74653697,
+      githubUserId: 498695724,
       login: "AnthonyBuisset",
       htmlUrl: "",
       avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       id: "adcb11a6-92cf-4a1e-bace-79f7bdbc54e7",
     },
     {
-      githubUserId: 8642470,
+      githubUserId: 498695724,
       login: "ofux",
       htmlUrl: "",
       avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
@@ -124,6 +122,8 @@ const project: ComponentProps<typeof View>["project"] = {
     Python: 6840986,
   },
   remainingUsdBudget: 99250.0,
+  invitedLeaders: [],
+  createdAt: "",
 };
 
 const queryClient = new QueryClient();
