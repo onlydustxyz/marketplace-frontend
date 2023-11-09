@@ -14,23 +14,20 @@ const ButtonSizes = {
   [CalloutSizes.Large]: ButtonSize.LgLowHeight,
 };
 
+type ButtonT = {
+  name: string;
+  icon?: React.ReactNode;
+  onClick: () => void;
+};
+
 interface RainbowBannerProps {
   icon?: React.ReactNode;
   description: string;
-  buttonName?: string;
-  buttonIcon?: React.ReactNode;
-  onClick?: () => void;
+  button?: ButtonT;
   size?: CalloutSizes;
 }
 
-export default function RainbowBanner({
-  icon,
-  description,
-  buttonName,
-  buttonIcon,
-  onClick,
-  size = CalloutSizes.Medium,
-}: RainbowBannerProps) {
+export default function RainbowBanner({ icon, description, button, size = CalloutSizes.Medium }: RainbowBannerProps) {
   return (
     <div
       className={cn(
@@ -55,10 +52,10 @@ export default function RainbowBanner({
         {description}
       </div>
 
-      {buttonName && onClick && (
-        <Button size={ButtonSizes[size]} onClick={onClick}>
-          {size === CalloutSizes.Large && buttonIcon ? buttonIcon : null}
-          {buttonName}
+      {button && (
+        <Button size={ButtonSizes[size]} onClick={button.onClick}>
+          {size === CalloutSizes.Large && button.icon ? button.icon : null}
+          {button.name}
         </Button>
       )}
     </div>
