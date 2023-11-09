@@ -183,7 +183,7 @@ Scroller.displayName = "Scroller";
 
 const ListBuilder = (tabName: string) => {
   const ListComponent = forwardRef<HTMLDivElement>((props, ref) => (
-    <div className="mr-1.5 flex h-full flex-col gap-2 p-px" {...props} ref={ref} data-testid={`eligible-${tabName}`} />
+    <div className="mr-1.5 flex flex-col gap-2 p-px" {...props} ref={ref} data-testid={`eligible-${tabName}`} />
   ));
   ListComponent.displayName = "List";
   return ListComponent;
@@ -225,7 +225,6 @@ const VirtualizedIssueList = ({
     <Virtuoso
       data={contributions}
       components={{ Scroller, List: ListBuilder(tabName) }}
-      style={{ height: THEORETICAL_MAX_SCREEN_HEIGHT }}
       itemContent={(_, contribution) => {
         const workItem = contributionToWorkItem(contribution);
         if (!workItem) return;
