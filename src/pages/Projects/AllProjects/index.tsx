@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from "react";
 import ErrorFallback from "src/ErrorFallback";
-import { components } from "src/__generated/api";
+import ProjectApi from "src/api/Project";
 import ProjectCard from "src/components/ProjectCard";
+import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
 import { SortButton } from "src/pages/Projects/Sorting/SortButton";
@@ -60,11 +60,10 @@ export default function AllProjects({
     return params;
   }, [technologies, sponsors, search, sorting, ownership]);
 
-  const { data, isLoading, isError } = useRestfulData<components["schemas"]["ProjectListResponse"]>({
-    resourcePath: ApiResourcePaths.GET_ALL_PROJECTS,
-    queryParams,
-    method: "GET",
-  });
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    ProjectApi.queries.useInfiniteList({
+      queryParams,
+    });
 
   useEffect(() => {
     restoreScroll();
@@ -72,9 +71,10 @@ export default function AllProjects({
 
   useEffect(() => {
     if (data && !isLoading) {
-      const { technologies, sponsors } = data;
-      setTechnologies(technologies ? replaceApostrophes(technologies) : []);
-      setSponsors(sponsors || []);
+      const technologies = data?.pages?.flatMap(({ technologies }) => (technologies ? technologies : "")) ?? [];
+      const sponsors = data?.pages?.flatMap(({ sponsors }) => (sponsors ? sponsors : "")) ?? [];
+      setTechnologies(technologies.length ? replaceApostrophes(technologies) : []);
+      setSponsors(sponsors);
     }
   }, [data]);
 
@@ -82,46 +82,45 @@ export default function AllProjects({
     return <AllProjectLoading />;
   }
 
-  // if there is an error we need to return ErrorFallback component
   if (isError) {
     return <ErrorFallback />;
   }
 
-  const { projects } = data || { projects: [] };
+  const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
 
-  // if projects is empty and loading is false, we need to return a fallback
-  if (projects.length === 0 && !isError && !isLoading) {
+  if (projects.length) {
     return (
-      <AllProjectsFallback
-        clearFilters={() => {
-          clearFilters();
-          clearSearch();
-        }}
-      />
+      <div className="flex flex-col gap-5">
+        <div className="relative flex h-10 items-center justify-between">
+          <div className="px-2 font-medium text-spaceBlue-200">{T("projects.count", { count: projects.length })}</div>
+          <div className="absolute right-0 top-0 z-10 hidden xl:block">
+            <SortingDropdown all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
+          </div>
+          <div className="flex items-center gap-2 xl:hidden">
+            <SortButton panelOpen={sortingPanelOpen} setPanelOpen={setSortingPanelOpen} />
+            <FilterButton panelOpen={filterPanelOpen} setPanelOpen={setFilterPanelOpen} />
+          </div>
+        </div>
+        <div className="flex grow flex-col gap-5">
+          {projects.map((project, index) => {
+            const isFirstHiringProject = index === 0 && project.hiring;
+            return (
+              <ProjectCard className={isFirstHiringProject ? "mt-3" : undefined} key={project.id} project={project} />
+            );
+          })}
+          {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="relative flex h-10 items-center justify-between">
-        <div className="px-2 font-medium text-spaceBlue-200">{T("projects.count", { count: projects.length })}</div>
-        <div className="absolute right-0 top-0 z-10 hidden xl:block">
-          <SortingDropdown all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
-        </div>
-        <div className="flex items-center gap-2 xl:hidden">
-          <SortButton panelOpen={sortingPanelOpen} setPanelOpen={setSortingPanelOpen} />
-          <FilterButton panelOpen={filterPanelOpen} setPanelOpen={setFilterPanelOpen} />
-        </div>
-      </div>
-      <div className="flex grow flex-col gap-5">
-        {projects.map((project, index) => {
-          const isFirstHiringProject = index === 0 && project.hiring;
-          return (
-            <ProjectCard className={isFirstHiringProject ? "mt-3" : undefined} key={project.id} project={project} />
-          );
-        })}
-      </div>
-    </div>
+    <AllProjectsFallback
+      clearFilters={() => {
+        clearFilters();
+        clearSearch();
+      }}
+    />
   );
 }
 
