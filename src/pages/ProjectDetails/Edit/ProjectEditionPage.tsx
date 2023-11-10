@@ -84,7 +84,7 @@ export default function ProjectEditionPage() {
 
   return (
     <EditProvider project={data}>
-      <EditPanelProvider openOnLoad={true} projectSlug={project.slug}>
+      <EditPanelProvider openOnLoad={false}>
         <Flex className="h-[calc(100vh-68px)] flex-col xl:h-[calc(100vh-77px-1.5rem)]">
           <Flex className="items-center px-4 py-6 xl:px-8">
             <Button

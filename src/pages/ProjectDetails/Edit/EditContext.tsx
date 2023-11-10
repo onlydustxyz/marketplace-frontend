@@ -117,10 +117,12 @@ export function EditProvider({ children, project }: EditContextProps) {
   };
 
   useEffect(() => {
-    if (status === "ready") {
+    if (status === "ready" && storedValue) {
       form.reset({ ...storedValue });
     }
   }, [status]);
+
+  console.log("---- DEBUG FORM VALUE ----", form.getValues());
 
   return (
     <EditContext.Provider
