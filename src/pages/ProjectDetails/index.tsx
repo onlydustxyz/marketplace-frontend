@@ -11,7 +11,7 @@ export default function ProjectDetails() {
   const { pathname } = useLocation();
   const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
 
-  const { data, isLoading, isError } = ProjectApi.queries.useDetails({ params: { projectKey } });
+  const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
 
   if (isLoading) {
     // TODO Replace with skeleton component

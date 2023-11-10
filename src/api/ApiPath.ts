@@ -13,7 +13,11 @@ export const API_PATH = {
   PROJECTS: BASE_API_V1("projects"),
   PROJECTS_LOGO: BASE_API_V1("projects/logos"),
   PROJECT_DETAILS: (slug: string) => BASE_API_V1(`projects/slug/${slug}`),
+  PROJECTS_BY_SLUG: (slug: string) => BASE_API_V1(`projects/slug/${slug}`),
 
   /* --------------------------------- USERS -------------------------------- */
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),
+
+  /* ----------------------------------- ME ----------------------------------- */
+  ME_PROJECT_LEADER_INVITATIONS: (projectId: string) => BASE_API_V1(`me/project-leader-invitations/${projectId}`),
 };

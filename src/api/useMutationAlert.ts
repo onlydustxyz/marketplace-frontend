@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 
 interface Props {
@@ -7,7 +8,8 @@ interface Props {
     isSuccess?: boolean;
   };
   error?: {
-    message: string;
+    message?: string;
+    default?: boolean;
   };
   success: {
     message: string;
@@ -29,12 +31,13 @@ interface Props {
  * @param {object} props.success - An object containing success-related information.
  * @param {string} props.success.message - The success message to display in the toast.
  */
-export const UseMutationAlert = ({ mutation, error, success }: Props) => {
+export const useMutationAlert = ({ mutation, error, success }: Props) => {
+  const { T } = useIntl();
   const showToaster = useShowToaster();
   const setToaster = async () => {
     if (mutation?.isError) {
-      if (error?.message) {
-        showToaster(error.message, { isError: true });
+      if (error?.message || error?.default) {
+        showToaster(error.message || T("state.errorOccured"), { isError: true });
       }
     }
     if (mutation?.isSuccess) {
@@ -48,4 +51,4 @@ export const UseMutationAlert = ({ mutation, error, success }: Props) => {
   }, [mutation?.isError, mutation?.isSuccess]);
 };
 
-export default UseMutationAlert;
+export default useMutationAlert;
