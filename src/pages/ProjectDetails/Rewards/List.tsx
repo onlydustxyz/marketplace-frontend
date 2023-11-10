@@ -47,7 +47,7 @@ const RewardList: React.FC = () => {
   });
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
-  const isRewardDisabled = projectBudget?.remainingDollarsEquivalent === 0 || rewards.length === 0;
+  const isRewardDisabled = !projectBudget?.remainingDollarsEquivalent || rewards.length === 0;
 
   if (error) {
     return <ErrorFallback />;
@@ -112,11 +112,7 @@ const RewardList: React.FC = () => {
           ) : (
             !isRewardsLoading && (
               <Card className="p-16">
-                <ProjectRewardTableFallback
-                  disabled={
-                    projectBudget?.initialDollarsEquivalent === 0 || projectBudget?.remainingDollarsEquivalent === 0
-                  }
-                />
+                <ProjectRewardTableFallback disabled={isRewardDisabled} />
               </Card>
             )
           )}

@@ -1,32 +1,48 @@
-import { useAcceptProjectLeaderInvitationMutation, useGetProjectLeadInvitationsQuery } from "src/__generated/graphql";
-import { useAuth } from "src/hooks/useAuth";
-import { contextWithCacheHeaders } from "src/utils/headers";
+import useMutationAlert from "src/api/useMutationAlert";
 import ProjectLeadInvitationView, { CalloutSizes } from "./ProjectLeadInvitationView";
+import MeApi from "src/api/me";
+import { useIntl } from "src/hooks/useIntl";
 
 interface ProjectLeadInvitationProps {
   projectId: string;
+  projectName: string;
+  projectSlug: string;
+  isInvited: boolean;
   size?: CalloutSizes;
 }
 
-export default function ProjectLeadInvitation({ projectId, size }: ProjectLeadInvitationProps) {
-  const { githubUserId } = useAuth();
-
-  const { data } = useGetProjectLeadInvitationsQuery({
-    variables: { projectId },
-    skip: !githubUserId,
-    ...contextWithCacheHeaders,
+export default function ProjectLeadInvitation({
+  projectId,
+  projectSlug,
+  size,
+  isInvited,
+  projectName,
+}: ProjectLeadInvitationProps) {
+  const { T } = useIntl();
+  const { mutate, ...rest } = MeApi.mutations.useAcceptProjectLeaderInvitation({
+    params: { projectId, projectSlug },
   });
 
-  const invitationId = data?.projects[0]?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
-  const projectName = data?.projects[0]?.name;
+  const onAcceptInvite = () => {
+    mutate(null);
+  };
 
-  const [acceptInvitation] = useAcceptProjectLeaderInvitationMutation({
-    context: { graphqlErrorDisplay: "toaster" },
-    variables: { invitationId },
-    onCompleted: () => window.location.reload(),
+  useMutationAlert({
+    mutation: rest,
+    success: {
+      message: T("projectLeadInvitation.success", { projectName }),
+    },
+    error: {
+      default: true,
+    },
   });
 
-  return invitationId ? (
-    <ProjectLeadInvitationView projectName={projectName} onClick={acceptInvitation} size={size} />
+  return isInvited ? (
+    <ProjectLeadInvitationView
+      projectName={projectName}
+      onClick={onAcceptInvite}
+      size={size}
+      isLoading={rest.isPending}
+    />
   ) : null;
 }

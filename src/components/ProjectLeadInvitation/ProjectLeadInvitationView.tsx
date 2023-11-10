@@ -19,6 +19,7 @@ const ButtonsSizes = {
 
 interface ProjectLeadInvitationProps {
   projectName?: string | null;
+  isLoading?: boolean;
   size?: CalloutSizes;
   btnLabel?: string;
   onClick?: () => void;
@@ -29,6 +30,7 @@ export default function ProjectLeadInvitationView({
   size = CalloutSizes.Small,
   btnLabel,
   onClick,
+  isLoading,
 }: ProjectLeadInvitationProps) {
   const { T } = useT();
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
@@ -54,7 +56,12 @@ export default function ProjectLeadInvitationView({
       >
         {projectName ? T("projectLeadInvitation.prompt", { projectName }) : T("project.projectLeadInvitation.prompt")}
       </div>
-      <Button size={ButtonsSizes[size]} onClick={onClick} data-testid="accept-invite-button flex-1 sm:flex-auto">
+      <Button
+        size={ButtonsSizes[size]}
+        onClick={onClick}
+        data-testid="accept-invite-button flex-1 sm:flex-auto"
+        disabled={isLoading}
+      >
         {size === CalloutSizes.Large ? <CheckLine className="text-xl font-normal text-black" /> : null}
         {btnLabel ? (
           btnLabel

@@ -3,13 +3,13 @@ import { components } from "src/__generated/api";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
 
-export type useCreateProjectBody = components["schemas"]["CreateProjectRequest"];
-export type useCreateProjectResponse = components["schemas"]["CreateProjectResponse"];
+export type UseCreateProjectBody = components["schemas"]["CreateProjectRequest"];
+export type UseCreateProjectResponse = components["schemas"]["CreateProjectResponse"];
 
 const useCreateProject = ({
   options = {},
-}: UseMutationProps<useCreateProjectResponse, undefined, useCreateProjectBody>) => {
-  return useBaseMutation<useCreateProjectBody, useCreateProjectResponse>({
+}: UseMutationProps<UseCreateProjectResponse, undefined, UseCreateProjectBody>) => {
+  return useBaseMutation<UseCreateProjectBody, UseCreateProjectResponse>({
     resourcePath: API_PATH.PROJECTS,
     method: "POST",
     ...options,

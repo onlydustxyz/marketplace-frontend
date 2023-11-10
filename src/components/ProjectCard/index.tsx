@@ -20,7 +20,7 @@ import { useMediaQuery } from "usehooks-ts";
 import ProjectTitle from "./ProjectTitle";
 
 type ProjectCardProps = {
-  project: components["schemas"]["ProjectListItemResponse"];
+  project: components["schemas"]["ProjectPageItemResponse"];
   className?: string;
 };
 
