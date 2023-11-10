@@ -1,4 +1,6 @@
 import { GetAllContributionsQuery } from "src/__generated/graphql";
+import { components } from "./__generated/api";
+import { useInstallationByIdResponse } from "./api/Github/queries";
 
 export type Branded<T, B> = T & { __brand: B };
 
@@ -319,3 +321,15 @@ export type Sorting = {
   field: string | undefined;
   isAscending: boolean | undefined;
 };
+
+type organization = components["schemas"]["InstalledGithubOrganizationResponse"] & {
+  installationId: string;
+};
+
+type repos = components["schemas"]["InstalledGithubRepoResponse"] & {
+  selected?: boolean;
+};
+export interface OrganizationSessionStorageInterface extends useInstallationByIdResponse {
+  organization: organization;
+  repos: repos[];
+}

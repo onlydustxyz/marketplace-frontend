@@ -49,7 +49,7 @@ export function useBaseQuery<R = unknown>({
         .catch(e => {
           throw new Error(e);
         }),
-    staleTime: 0,
+    staleTime: 10000,
     gcTime: 0,
     refetchInterval: false,
     refetchIntervalInBackground: false,

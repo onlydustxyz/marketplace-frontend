@@ -5,13 +5,9 @@ import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/Mul
 import { Flex } from "src/components/New/Layout/Flex";
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
 import { useEffect } from "react";
-import { Avatar } from "src/components/New/Avatar";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
-import {
-  OrganizationSessionStorageInterface,
-  useOrganizationSession,
-} from "../../commons/hooks/useProjectCreationSession";
+import { useOrganizationSession } from "../../commons/hooks/useProjectCreationSession";
 import { useRepositoryCount } from "./hooks/useRepositoryCount";
 import { FormInformationCount } from "./components/FormInformationCount";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
@@ -21,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
 import Button from "src/components/Button";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
+import { OrganizationSessionStorageInterface } from "src/types";
+import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {
@@ -130,19 +128,12 @@ export const GithubRepositoryPage = () => {
               render={({ field: { value } }) => (
                 <>
                   {filterOrganizationBySearch(value || []).map(organization => (
-                    <div
+                    <VerticalListItemCard
                       key={organization.organization.name}
-                      className="flex w-full flex-col gap-3 rounded-2xl border border-card-border-light bg-card-background-light p-5"
+                      title={organization.organization.name || ""}
+                      avatarAlt={organization.organization.name || ""}
+                      avatarSrc={organization.organization.logoUrl || ""}
                     >
-                      <Flex justify="start" item="center" gap={2}>
-                        <Avatar
-                          src={organization.organization.logoUrl || ""}
-                          alt={organization.organization.name || ""}
-                          size="6"
-                          shape="square"
-                        />
-                        <p className=" text-sm font-medium uppercase">{organization.organization.name}</p>
-                      </Flex>
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
                         {(organization.repos || []).map(repo =>
                           search && !repo.name?.includes(search) ? null : (
@@ -175,7 +166,7 @@ export const GithubRepositoryPage = () => {
                           )
                         )}
                       </div>
-                    </div>
+                    </VerticalListItemCard>
                   ))}
                 </>
               )}
