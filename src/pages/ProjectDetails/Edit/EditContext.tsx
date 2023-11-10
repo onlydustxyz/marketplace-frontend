@@ -1,9 +1,10 @@
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import { UseProjectDetailsResponse } from "src/api/Project/queries";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { components } from "src/__generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 
 interface EditContextProps {
   project: UseProjectDetailsResponse;
@@ -14,6 +15,7 @@ type Edit = {
   project?: UseProjectDetailsResponse;
   form?: UseFormReturn<EditFormData, unknown>;
   formHelpers: {
+    saveInSession: () => void;
     addRepository: (organizationId: number, repoId: number) => void;
     removeRepository: (organizationId: number, repoId: number) => void;
   };
@@ -28,6 +30,7 @@ export const EditContext = createContext<Edit>({
   project: undefined,
   formHelpers: {
     addRepository: () => null,
+    saveInSession: () => null,
     removeRepository: () => null,
   },
 });
@@ -49,6 +52,11 @@ const validationSchema = z.object({
 });
 
 export function EditProvider({ children, project }: EditContextProps) {
+  const [storedValue, setValue, status, removeValue] = useSessionStorage<EditFormData | undefined>(
+    `edit-project-${project.slug}`,
+    undefined
+  );
+
   const form = useForm<EditFormData>({
     mode: "all",
     defaultValues: {
@@ -104,6 +112,16 @@ export function EditProvider({ children, project }: EditContextProps) {
     }
   };
 
+  const onSaveInSession = () => {
+    setValue(form.getValues());
+  };
+
+  useEffect(() => {
+    if (status === "ready") {
+      form.reset({ ...storedValue });
+    }
+  }, [status]);
+
   return (
     <EditContext.Provider
       value={{
@@ -111,6 +129,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         project,
         formHelpers: {
           addRepository: onAddRepository,
+          saveInSession: onSaveInSession,
           removeRepository: onRemoveRepository,
         },
       }}
