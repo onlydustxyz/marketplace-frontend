@@ -8,6 +8,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { useIntl } from "src/hooks/useIntl";
 import GlobalLine from "src/icons/GlobalLine";
 import { Tabs } from "src/components/Tabs/Tabs";
+import { Spinner } from "src/components/Spinner/Spinner";
 
 enum TabsType {
   Orgs = "Orgs",
@@ -20,7 +21,7 @@ function TabContents({ children }: { children: React.ReactNode }) {
 
 export const EditPanel = () => {
   const { T } = useIntl();
-  const { isOpen, toggle } = useContext(EditPanelContext);
+  const { isOpen, toggle, loadingProject } = useContext(EditPanelContext);
   const [activeTab, setActiveTab] = useState<TabsType>(TabsType.Orgs);
   const tabItems = useMemo(
     () => [
@@ -70,7 +71,7 @@ export const EditPanel = () => {
         <div className="mb-6 w-full">
           <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.panel.title")} />
         </div>
-        {ActiveTab}
+        {loadingProject ? <Spinner /> : ActiveTab}
       </div>
     </SidePanel>
   );

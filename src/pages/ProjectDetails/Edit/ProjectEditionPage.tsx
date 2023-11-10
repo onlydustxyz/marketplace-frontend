@@ -77,7 +77,7 @@ export default function ProjectEditionPage() {
   ];
 
   return (
-    <EditPanelProvider openOnLoad={false} projectSlug="mock-project-slug">
+    <EditPanelProvider openOnLoad={false} projectSlug={project.slug}>
       <Flex className="h-[calc(100vh-68px)] flex-col xl:h-[calc(100vh-77px-1.5rem)]">
         <Flex className="items-center px-4 py-6 xl:px-8">
           <Button
