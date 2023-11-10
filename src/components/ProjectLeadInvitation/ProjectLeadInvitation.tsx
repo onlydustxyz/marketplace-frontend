@@ -19,7 +19,7 @@ export default function ProjectLeadInvitation({
   const { mutate } = MeApi.mutations.useAcceptProjectLeaderInvitation({ params: { projectId, projectSlug } });
 
   const onAcceptInvite = () => {
-    mutate(undefined);
+    mutate(null);
   };
 
   return isInvited ? (

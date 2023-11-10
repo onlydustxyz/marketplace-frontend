@@ -44,7 +44,7 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
     mutationFn: (data: Payload): Promise<Response> => {
       return fetch(getEndpointUrl({ resourcePath, queryParams }), {
         ...options,
-        body: JSON.stringify(data),
+        body: data ? JSON.stringify(data) : undefined,
       })
         .then(async res => {
           if (res.ok) {
