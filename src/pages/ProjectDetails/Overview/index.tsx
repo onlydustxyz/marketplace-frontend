@@ -13,7 +13,7 @@ import {
   useUpdateUserProfileMutation,
 } from "src/__generated/graphql";
 import Badge, { BadgeSize } from "src/components/Badge";
-import Button, { ButtonSize, Width } from "src/components/Button";
+import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import Card from "src/components/Card";
 import ContactInformations from "src/components/ContactInformations";
@@ -45,11 +45,10 @@ import { useMediaQuery } from "usehooks-ts";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
+import Flex from "src/components/Utils/Flex";
+import { parseFlag } from "src/utils/parseFlag";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
-
-type OutletContext = {
-  project: components["schemas"]["ProjectResponse"];
-};
+import { OutletContext } from "../View";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -83,6 +82,7 @@ export default function Overview() {
   const { data: userProfileData } = useUserProfile({ githubUserId });
   const profile = userProfileData?.profile;
 
+  const isEditProjectEnabled = parseFlag("VITE_CAN_EDIT_PROJECT");
   const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
   useEffect(() => {
@@ -102,27 +102,46 @@ export default function Overview() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
-          {isProjectLeader && (
-            <Button
-              disabled={isRewardDisabled}
-              size={ButtonSize.Sm}
-              {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                visible: isRewardDisabled,
-              })}
-              onClick={() =>
-                navigate(
-                  generatePath(
-                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                    {
-                      projectKey: projectSlug,
-                    }
+          {isProjectLeader ? (
+            <Flex className="justify-end gap-2">
+              {isEditProjectEnabled ? (
+                <Button
+                  type={ButtonType.Secondary}
+                  size={ButtonSize.Sm}
+                  className="bg-spaceBlue-900"
+                  onClick={() =>
+                    navigate(
+                      generatePath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, {
+                        projectKey: projectSlug,
+                      })
+                    )
+                  }
+                >
+                  {T("project.details.edit.title")}
+                </Button>
+              ) : null}
+
+              <Button
+                disabled={isRewardDisabled}
+                size={ButtonSize.Sm}
+                {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                  visible: isRewardDisabled,
+                })}
+                onClick={() =>
+                  navigate(
+                    generatePath(
+                      `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                      {
+                        projectKey: projectSlug,
+                      }
+                    )
                   )
-                )
-              }
-            >
-              {T("project.rewardButton.full")}
-            </Button>
-          )}
+                }
+              >
+                {T("project.rewardButton.full")}
+              </Button>
+            </Flex>
+          ) : null}
         </div>
       </Title>
       <ProjectLeadInvitation

@@ -4,7 +4,9 @@ import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 import { useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { PROJECT_TAGS } from "./tags";
 
+export type useDetailsResponse = components["schemas"]["ProjectResponse"];
 export type UseGetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
+export type useInfiniteListResponse = components["schemas"]["ProjectPageResponse"];
 
 const useGetProjectBySlug = ({
   params,
@@ -17,8 +19,6 @@ const useGetProjectBySlug = ({
     ...options,
   });
 };
-
-export type useInfiniteListResponse = components["schemas"]["ProjectPageResponse"];
 
 const useInfiniteList = (
   params: Partial<Parameters<typeof useInfiniteBaseQuery>[0]>,

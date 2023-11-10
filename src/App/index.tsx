@@ -14,6 +14,7 @@ const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/C
 const ProjectDetailsRewards = lazy(() => import("src/pages/ProjectDetails/Rewards"));
 const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Rewards/List"));
 const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
+const ProjectDetailsEdit = lazy(() => import("src/pages/ProjectDetails/ProjectEdition/ProjectEdition"));
 
 import LoaderFallback from "src/components/Loader";
 import { NotFound } from "src/components/NotFound";
@@ -54,6 +55,7 @@ export enum ProjectRoutePaths {
   Overview = "",
   Contributors = "contributors",
   Rewards = "rewards",
+  Edit = "edit",
 }
 
 export enum ProjectRewardsRoutePaths {
@@ -97,6 +99,12 @@ function App() {
         },
       ],
     },
+    parseFlag("VITE_CAN_EDIT_PROJECT")
+      ? {
+          path: ProjectRoutePaths.Edit,
+          element: <ProjectDetailsEdit />,
+        }
+      : {},
   ];
   const routes = useRoutes([
     {
