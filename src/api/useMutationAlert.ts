@@ -31,7 +31,7 @@ interface Props {
  * @param {object} props.success - An object containing success-related information.
  * @param {string} props.success.message - The success message to display in the toast.
  */
-export const UseMutationAlert = ({ mutation, error, success }: Props) => {
+export const useMutationAlert = ({ mutation, error, success }: Props) => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const setToaster = async () => {
@@ -51,4 +51,4 @@ export const UseMutationAlert = ({ mutation, error, success }: Props) => {
   }, [mutation?.isError, mutation?.isSuccess]);
 };
 
-export default UseMutationAlert;
+export default useMutationAlert;

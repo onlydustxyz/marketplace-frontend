@@ -1,4 +1,4 @@
-import UseMutationAlert from "src/api/useMutationAlert";
+import useMutationAlert from "src/api/useMutationAlert";
 import ProjectLeadInvitationView, { CalloutSizes } from "./ProjectLeadInvitationView";
 import MeApi from "src/api/me";
 import { useIntl } from "src/hooks/useIntl";
@@ -27,7 +27,7 @@ export default function ProjectLeadInvitation({
     mutate(null);
   };
 
-  UseMutationAlert({
+  useMutationAlert({
     mutation: rest,
     success: {
       message: T("projectLeadInvitation.success", { projectName }),
