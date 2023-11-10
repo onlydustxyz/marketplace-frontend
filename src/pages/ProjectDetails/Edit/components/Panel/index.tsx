@@ -1,6 +1,6 @@
 import SidePanel from "src/components/SidePanel";
 import { EditPanelOrganization } from "./OrganizationsTabs";
-import { EditPanelRepositories } from "./RepositoriesTabs";
+import { EditPanelRepositories } from "./RepositoriesTabs/RepositoriesTabs";
 import { useContext, useMemo, useState } from "react";
 import { EditPanelContext } from "./context";
 import { Flex } from "src/components/New/Layout/Flex";
@@ -8,7 +8,6 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { useIntl } from "src/hooks/useIntl";
 import GlobalLine from "src/icons/GlobalLine";
 import { Tabs } from "src/components/Tabs/Tabs";
-import { Spinner } from "src/components/Spinner/Spinner";
 
 enum TabsType {
   Orgs = "Orgs",
@@ -21,7 +20,7 @@ function TabContents({ children }: { children: React.ReactNode }) {
 
 export const EditPanel = () => {
   const { T } = useIntl();
-  const { isOpen, toggle, loadingProject } = useContext(EditPanelContext);
+  const { isOpen, toggle } = useContext(EditPanelContext);
   const [activeTab, setActiveTab] = useState<TabsType>(TabsType.Orgs);
   const tabItems = useMemo(
     () => [
@@ -71,7 +70,7 @@ export const EditPanel = () => {
         <div className="mb-6 w-full">
           <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.panel.title")} />
         </div>
-        {loadingProject ? <Spinner /> : ActiveTab}
+        {ActiveTab}
       </div>
     </SidePanel>
   );
