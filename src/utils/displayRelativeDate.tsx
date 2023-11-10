@@ -7,6 +7,6 @@ dayjs.extend(relativeTime);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export default function displayRelativeDate(date: Date) {
+export default function displayRelativeDate(date: NonNullable<Parameters<typeof dayjs.utc>[0]>) {
   return dayjs.utc(date).fromNow();
 }
