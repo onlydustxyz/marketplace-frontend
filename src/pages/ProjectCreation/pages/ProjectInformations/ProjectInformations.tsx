@@ -20,7 +20,7 @@ import {
 import validationSchema from "./utils/ProjectInformations.validation";
 import ProjectApi from "src/api/Project";
 import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
-import UseMutationAlert from "src/api/useMutationAlert";
+import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { generatePath, useNavigate } from "react-router-dom";
@@ -95,7 +95,7 @@ export const ProjectInformationsPage = () => {
     },
   });
 
-  UseMutationAlert({
+  useMutationAlert({
     mutation: restCreateProjectMutation,
     success: {
       message: T("project.details.create.submit.success"),

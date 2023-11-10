@@ -44,7 +44,7 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
     mutationFn: (data: Payload): Promise<Response> => {
       return fetch(getEndpointUrl({ resourcePath, queryParams }), {
         ...options,
-        body: JSON.stringify(data),
+        body: data ? JSON.stringify(data) : undefined,
       })
         .then(async res => {
           if (res.ok) {
@@ -65,11 +65,9 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
           throw new Error(e);
         });
     },
-    onSuccess: (result: Response) => {
+    onSuccess: async (result: Response) => {
       if (invalidatesTags && invalidatesTags.length > 0) {
-        invalidatesTags.forEach(invalidate => {
-          queryClient.invalidateQueries(invalidate);
-        });
+        await Promise.all(invalidatesTags.map(invalidate => queryClient.invalidateQueries(invalidate)));
       }
 
       onSuccess?.(result, queryClient);

@@ -4,9 +4,8 @@ import ErrorFallback from "src/ErrorFallback";
 import { components } from "src/__generated/api";
 import Loader from "src/components/Loader";
 import SEO from "src/components/SEO";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import View from "./View";
+import ProjectApi from "src/api/Project";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -15,11 +14,7 @@ type ProjectDetailsParams = {
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
-  const { data, isLoading, isError } = useRestfulData<components["schemas"]["ProjectResponse"]>({
-    resourcePath: ApiResourcePaths.GET_PROJECT_DETAILS_SLUG,
-    pathParam: projectKey,
-    method: "GET",
-  });
+  const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
 
   if (isLoading) {
     // TODO Replace with skeleton component
