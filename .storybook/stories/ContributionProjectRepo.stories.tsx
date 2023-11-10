@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
-
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
 import { withRouter } from "storybook-addon-react-router-v6";
+import { contribution } from "../mocks/contribution";
 
 export default {
   title: "ContributionProjectRepo",
@@ -10,15 +10,7 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof ContributionProjectRepo> = {
-  project: {
-    key: "onlydust",
-    logoUrl: "https://avatars.githubusercontent.com/u/77183114?s=200&v=4",
-    name: "OnlyDust",
-  },
-  repo: {
-    htmlUrl: "#",
-    name: "test",
-  },
+  contribution,
 };
 
 export const Default = {

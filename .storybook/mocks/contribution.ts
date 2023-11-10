@@ -1,7 +1,8 @@
-export const contribution = {
+import { Contribution } from "src/types";
+
+export const contribution: Contribution = {
   id: "652825ae108702f028ae4454bee3925c40c9a1b308a6d815d14ecbf50572e082",
   createdAt: "2023-09-18T16:41:40Z",
-  completedAt: null,
   type: "CODE_REVIEW",
   status: "IN_PROGRESS",
   repo: {
@@ -20,7 +21,6 @@ export const contribution = {
   githubStatus: "COMMENTED",
   githubTitle: "E 655 build my contributions list",
   githubHtmlUrl: "https://github.com/onlydustxyz/marketplace-frontend/pull/1242",
-  githubBody: null,
   project: {
     id: "1ac6c2ce-cba0-4e14-837c-facf9c1f0258",
     slug: "onlydust",
@@ -52,7 +52,6 @@ export const contribution = {
       githubStatus: "MERGED",
       githubTitle: "E 655 build my contributions list",
       githubHtmlUrl: "https://github.com/onlydustxyz/marketplace-frontend/pull/1242",
-      githubBody: null,
       is_mine: true,
     },
   ],

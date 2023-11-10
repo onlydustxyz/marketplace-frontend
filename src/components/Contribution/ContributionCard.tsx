@@ -1,4 +1,3 @@
-import { ComponentProps } from "react";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
@@ -15,15 +14,12 @@ export function ContributionCard({ contribution }: { contribution: ContributionT
 
   return (
     <article className="flex flex-col gap-2 rounded-xl border border-greyscale-50/8 bg-white/2 p-4 font-walsheim">
-      <ContributionProjectRepo
-        project={contribution.project as ComponentProps<typeof ContributionProjectRepo>["project"]}
-        repo={contribution.githubRepo as ComponentProps<typeof ContributionProjectRepo>["repo"]}
-      />
+      <ContributionProjectRepo contribution={contribution} />
       <Contribution contribution={contribution} isMobile />
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1 text-spaceBlue-200">
           <TimeLine className="text-base leading-none" />
-          <span className="text-xs leading-none">{displayRelativeDate(date)}</span>
+          <span className="text-xs leading-none">{displayRelativeDate(date ?? "")}</span>
         </div>
 
         {ContributionLinked({ contribution }) ? (
