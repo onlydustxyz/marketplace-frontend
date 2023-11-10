@@ -1,14 +1,15 @@
 import { useEffect, useMemo } from "react";
+import { InView } from "react-intersection-observer";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
+import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 import ProjectCard from "src/components/ProjectCard";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
-import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
-import { SortButton } from "src/pages/Projects/Sorting/SortButton";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/Sorting/SortingDropdown";
 import { useProjectFilter } from "src/pages/Projects/useProjectFilter";
+import { FilterButton } from "../FilterPanel/FilterButton";
+import { SortButton } from "../Sorting/SortButton";
 import AllProjectsFallback from "./AllProjectsFallback";
 import AllProjectLoading from "./AllProjectsLoading";
 
@@ -49,7 +50,7 @@ export default function AllProjects({
   } = useProjectFilter();
 
   const queryParams = useMemo(() => {
-    const params: Parameters<typeof useRestfulData>[0]["queryParams"] = [
+    const params: useInfiniteBaseQueryProps["queryParams"] = [
       technologies.length > 0 ? ["technologies", technologies.join(",")] : null,
       sponsors.length > 0 ? ["sponsor", sponsors.join(",")] : null,
       search ? ["search", search] : null,
@@ -71,8 +72,9 @@ export default function AllProjects({
 
   useEffect(() => {
     if (data && !isLoading) {
-      const technologies = data?.pages?.flatMap(({ technologies }) => (technologies ? technologies : "")) ?? [];
-      const sponsors = data?.pages?.flatMap(({ sponsors }) => (sponsors ? sponsors : "")) ?? [];
+      const technologies =
+        [...new Set(data?.pages?.flatMap(({ technologies }) => (technologies ? technologies : "")))] ?? [];
+      const sponsors = [...new Set(data?.pages?.flatMap(({ sponsors }) => (sponsors ? sponsors : "")))] ?? [];
       setTechnologies(technologies.length ? replaceApostrophes(technologies) : []);
       setSponsors(sponsors);
     }
@@ -108,7 +110,15 @@ export default function AllProjects({
               <ProjectCard className={isFirstHiringProject ? "mt-3" : undefined} key={project.id} project={project} />
             );
           })}
-          {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
+          {hasNextPage ? (
+            <InView
+              onChange={inView => {
+                if (inView) fetchNextPage();
+              }}
+            >
+              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+            </InView>
+          ) : null}
         </div>
       </div>
     );
