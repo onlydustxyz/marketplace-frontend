@@ -5,9 +5,13 @@ import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { Contribution } from "src/types";
 
-export function ContributionProjectRepo({ contribution }: { contribution: Contribution }) {
-  const { project, repo } = contribution;
-
+export function ContributionProjectRepo({
+  project,
+  repo,
+}: {
+  project: Contribution["project"];
+  repo: Contribution["repo"];
+}) {
   return (
     <div className="flex items-center gap-3">
       <RoundedImage

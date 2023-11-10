@@ -10,7 +10,8 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof ContributionProjectRepo> = {
-  contribution,
+  project: contribution.project,
+  repo: contribution.repo,
 };
 
 export const Default = {

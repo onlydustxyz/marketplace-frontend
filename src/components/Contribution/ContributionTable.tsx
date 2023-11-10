@@ -196,7 +196,7 @@ export function ContributionTable({
             />
           </Cell>
           <Cell height={CellHeight.Compact}>
-            <ContributionProjectRepo contribution={contribution} />
+            <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
           </Cell>
           <Cell height={CellHeight.Compact}>
             <Contribution contribution={contribution} />

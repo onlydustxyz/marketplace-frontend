@@ -14,7 +14,7 @@ export function ContributionCard({ contribution }: { contribution: ContributionT
 
   return (
     <article className="flex flex-col gap-2 rounded-xl border border-greyscale-50/8 bg-white/2 p-4 font-walsheim">
-      <ContributionProjectRepo contribution={contribution} />
+      <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
       <Contribution contribution={contribution} isMobile />
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1 text-spaceBlue-200">
