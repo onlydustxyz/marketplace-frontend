@@ -3,7 +3,7 @@ import { components } from "src/__generated/api";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectCard from ".";
 
-const PROJECT: components["schemas"]["ProjectListItemResponse"] = {
+const PROJECT: components["schemas"]["ProjectPageItemResponse"] = {
   id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
   slug: "performance-test-with-a-very-long-name",
   name: "Performance test with a very long name",
