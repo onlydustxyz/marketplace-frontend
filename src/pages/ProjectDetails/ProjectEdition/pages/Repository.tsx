@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { useDetailsResponse } from "src/api/Project/queries";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Avatar } from "src/components/New/Avatar";
@@ -9,16 +8,20 @@ import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
 import SubtractLine from "src/icons/SubtractLine";
 import { EditPanelContext } from "../components/Panel/context";
+import { EditContext } from "../EditContext";
 
 type RepositoriesTabType = {
-  data: useDetailsResponse;
+  // to remove
   isLoading: boolean;
+  // to remove
   isError: boolean;
 };
 
-export function Repository({ data, isLoading, isError }: RepositoriesTabType) {
+export function Repository({ isLoading, isError }: RepositoriesTabType) {
   const { T } = useIntl();
   const { open } = useContext(EditPanelContext);
+  // not use data but form values
+  const { form, project: data } = useContext(EditContext);
 
   // TODO move to parent
   const [repositoriesData, setRepositoriesData] = useState<typeof data>(data);

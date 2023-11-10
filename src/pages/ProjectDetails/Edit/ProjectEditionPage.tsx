@@ -14,8 +14,8 @@ import { cn } from "src/utils/cn";
 import { DescriptionForm } from "./components/Form/DescriptionForm";
 import { OutletContext } from "../View";
 import ProjectApi from "src/api/Project";
-import { EditPanelProvider } from "./components/Panel/context";
-import { EditProvider } from "./EditContext";
+import { EditPanelProvider } from "../ProjectEdition/components/Panel/context";
+import { EditProvider } from "../ProjectEdition/EditContext";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;

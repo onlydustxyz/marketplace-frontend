@@ -1,8 +1,9 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { EditPanel } from ".";
+import { UseProjectDetailsResponse } from "src/api/Project/queries";
+import { EditContext } from "../../EditContext";
 
 interface EditPanelContextProps {
-  projectSlug?: string;
   openOnLoad: boolean;
   children: React.ReactNode;
 }
@@ -11,20 +12,22 @@ type EditPanel = {
   open: () => void;
   close: () => void;
   toggle: (value: boolean) => void;
-  projectSlug?: string;
   isOpen: boolean;
+  project?: UseProjectDetailsResponse;
 };
 
 export const EditPanelContext = createContext<EditPanel>({
   open: () => null,
   close: () => null,
   toggle: () => null,
-  projectSlug: undefined,
   isOpen: false,
+  project: undefined,
 });
 
-export function EditPanelProvider({ children, projectSlug, openOnLoad }: EditPanelContextProps) {
+export function EditPanelProvider({ children, openOnLoad }: EditPanelContextProps) {
   const [open, setOpen] = useState(false);
+
+  const { project } = useContext(EditContext);
 
   const openSidePanel = useCallback(() => {
     setOpen(true);
@@ -47,8 +50,8 @@ export function EditPanelProvider({ children, projectSlug, openOnLoad }: EditPan
   return (
     <EditPanelContext.Provider
       value={{
-        isOpen: open && !!projectSlug,
-        projectSlug,
+        isOpen: open && !!project,
+        project,
         open: openSidePanel,
         toggle: toggleSidePanel,
         close: closeSidePanel,

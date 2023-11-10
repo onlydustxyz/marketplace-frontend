@@ -8,7 +8,6 @@ import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
 import InformationLine from "src/icons/InformationLine";
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
 import UsersApi from "src/api/Users";
-import { components } from "src/__generated/api";
 import { useIntl } from "src/hooks/useIntl";
 
 // TODO : Doc
@@ -17,7 +16,15 @@ import { useIntl } from "src/hooks/useIntl";
  */
 // TODO : when a project id is pass to the component use the layout for edition and fetch another API route
 
-type SelectedLeadType = components["schemas"]["ContributorSearchItemResponse"];
+export type SelectedLeadType = {
+  avatarUrl?: string;
+  id?: string;
+  githubUserId?: number;
+  login: string;
+  name?: string;
+  isRegistered?: boolean;
+};
+
 export interface FieldProjectLeadValue {
   invited: SelectedLeadType[];
 }
@@ -80,7 +87,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
                 login={item.login}
                 selected={selected}
                 avatarUrl={item.avatarUrl}
-                isRegistered={item.isRegistered}
+                isRegistered={item.isRegistered || false}
               />
             )}
             query={query}

@@ -9,7 +9,7 @@ import AddLine from "src/icons/AddLine";
 import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
 import SubtractLine from "src/icons/SubtractLine";
-import { EditPanelContext } from "./components/Panel/context";
+import { EditPanelContext } from "../ProjectEdition/components/Panel/context";
 
 export default function RepositoriesTab() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();

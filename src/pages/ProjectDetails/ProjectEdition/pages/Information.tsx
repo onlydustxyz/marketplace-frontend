@@ -1,4 +1,4 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import Link from "src/icons/Link";
 import { FieldCombined } from "src/components/New/Field/Combined";
 import { FieldImage } from "src/components/New/Field/File";
@@ -8,31 +8,14 @@ import { Flex } from "src/components/New/Layout/Flex";
 import InformationLine from "src/icons/InformationLine";
 import { FieldProjectLead } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import { FieldSwitch } from "src/components/New/Field/Switch";
-import { useOrganizationSession } from "src/pages/ProjectCreation/commons/hooks/useProjectCreationSession";
 import ProjectApi from "src/api/Project";
 import { useIntl } from "src/hooks/useIntl";
-
-interface createProjectInformation {
-  githubRepoIds: number[];
-  projectLead: { invited: number[] };
-  inviteGithubUserIdsAsProjectLeads: number[];
-  isLookingForContributors: boolean;
-  longDescription: string;
-  name: string;
-  logoUrl?: string;
-  moreInfo: {
-    url: string;
-    value: string;
-  };
-  shortDescription: string;
-}
+import { useContext } from "react";
+import { EditContext } from "../EditContext";
 
 export function Information() {
   const { T } = useIntl();
-
-  const { control, setValue } = useFormContext();
-
-  const { storedValue: orgsSession, removeValue: removeOrgsSession } = useOrganizationSession();
+  const { form } = useContext(EditContext);
 
   const {
     mutate: uploadProjectLogo,
@@ -51,7 +34,7 @@ export function Information() {
       <Flex direction="col" gap={6} className="w-full">
         <Controller
           name="name"
-          control={control}
+          control={form?.control}
           render={props => (
             <FieldInput
               {...props.field}
@@ -67,19 +50,19 @@ export function Information() {
         />
         <Controller
           name="shortDescription"
-          control={control}
+          control={form?.control}
           render={props => <FieldInput {...props.field} {...props.fieldState} label="Short description" />}
         />
         <Controller
           name="longDescription"
-          control={control}
+          control={form?.control}
           render={props => <FieldTextarea {...props.field} {...props.fieldState} label="Long description" />}
         />
         <Controller
           name="logoUrl"
-          control={control}
+          control={form?.control}
           render={props => (
-            <FieldImage<string>
+            <FieldImage
               {...props.field}
               {...props.fieldState}
               label="Project visual"
@@ -94,14 +77,14 @@ export function Information() {
         />
         <Controller
           name="moreInfo"
-          control={control}
+          control={form?.control}
           render={({ field: { onChange, value } }) => (
             <FieldCombined onChange={onChange} name="moreInfo" label={"More info"} className="gap-2">
               {onChangeField => [
                 <FieldInput
                   key="moreInfo.url"
                   name="moreInfo.url"
-                  value={value?.url}
+                  value={value?.[0].url}
                   fieldClassName="flex-1"
                   onChange={event => onChangeField({ ...value, url: event.target.value })}
                   startIcon={({ className }) => <Link className={className} />}
@@ -109,7 +92,7 @@ export function Information() {
                 <FieldInput
                   key="moreInfo.value"
                   name="moreInfo.value"
-                  value={value?.value}
+                  value={value?.[0].value}
                   fieldClassName="w-[180px] max-w-full"
                   onChange={event => onChangeField({ ...value, value: event.target.value })}
                 />,
@@ -118,22 +101,22 @@ export function Information() {
           )}
         />
         <Controller
-          name="projectLead"
-          control={control}
+          name="projectLeads"
+          control={form?.control}
           render={({ field: { value, name } }) => (
             <FieldProjectLead
+              githubUserId="" // check what is this
               onChange={({ invited }) => {
                 // setValue("inviteGithubUserIdsAsProjectLeads", invited, { shouldDirty: true });
-                setValue("projectLead", invited, { shouldDirty: true });
+                form?.setValue("projectLeads", invited, { shouldDirty: true });
               }}
-              id={name}
-              value={value}
+              value={{ invited: value }}
             />
           )}
         />
         <Controller
           name="isLookingForContributors"
-          control={control}
+          control={form?.control}
           render={props => (
             <FieldSwitch
               {...props.field}

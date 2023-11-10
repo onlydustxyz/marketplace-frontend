@@ -1,18 +1,19 @@
 import { createContext, useEffect } from "react";
-import { UseProjectDetailsResponse } from "src/api/Project/queries";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { components } from "src/__generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 
 interface EditContextProps {
-  project: UseProjectDetailsResponse;
+  project: UseGetProjectBySlugResponse;
   children: React.ReactNode;
 }
 
 type Edit = {
-  project?: UseProjectDetailsResponse;
+  project?: UseGetProjectBySlugResponse;
   form?: UseFormReturn<EditFormData, unknown>;
   formHelpers: {
     saveInSession: () => void;
@@ -23,6 +24,7 @@ type Edit = {
 
 export type EditFormData = components["schemas"]["UpdateProjectRequest"] & {
   organizations: components["schemas"]["ProjectGithubOrganizationResponse"][];
+  projectLeads: SelectedLeadType[];
 };
 
 export const EditContext = createContext<Edit>({
@@ -74,6 +76,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       isLookingForContributors: project.hiring,
       inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
+      projectLeads: [...project.leaders, ...project.invitedLeaders],
       organizations: project.organizations,
     },
     resolver: zodResolver(validationSchema),
@@ -123,6 +126,32 @@ export function EditProvider({ children, project }: EditContextProps) {
   }, [status]);
 
   console.log("---- DEBUG FORM VALUE ----", form.getValues());
+  console.log("form ERRRO", form.formState.errors);
+
+  const onSubmit = (formData: EditFormData) => {
+    console.log("SUBMIT, formData", formData);
+
+    // mutate({
+    //   ...formData,
+    //   inviteGithubUserIdsAsProjectLeads,
+    //   isLookingForContributors: false,
+    //   moreInfo: [
+    //     {
+    //       url: "string",
+    //       value: "string",
+    //     },
+    //   ],
+    //   name: "string",
+    //   projectLeadsToKeep: ["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
+    //   rewardSettings: {
+    //     ignoreCodeReviews: false,
+    //     ignoreContributionsBefore: "2023-11-10T14:41:08.472Z",
+    //     ignoreIssues: false,
+    //     ignorePullRequests: false,
+    //   },
+    //   shortDescription: "string",
+    // });
+  };
 
   return (
     <EditContext.Provider
@@ -136,7 +165,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         },
       }}
     >
-      {children}
+      <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
     </EditContext.Provider>
   );
 }
