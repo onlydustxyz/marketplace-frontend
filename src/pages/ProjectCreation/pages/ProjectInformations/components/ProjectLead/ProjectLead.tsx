@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { FieldLabel } from "src/components/New/Field/Label";
 import { debounce } from "lodash";
 import { FieldProjectLeadItem } from "./ProjectLeadItem";
@@ -16,8 +16,10 @@ import { useIntl } from "src/hooks/useIntl";
  * used in https://www.figma.com/file/8PqNt4K2uKLu3DvxF3rVDX/%F0%9F%A7%AA-Only-Dust-%E2%80%A2-Venus?type=design&node-id=10797-233325&mode=design&t=ES631NUQNvE41TSD-4
  */
 // TODO : when a project id is pass to the component use the layout for edition and fetch another API route
+
+type SelectedLeadType = components["schemas"]["ContributorSearchItemResponse"];
 export interface FieldProjectLeadValue {
-  invited: number[];
+  invited: SelectedLeadType[];
 }
 
 export interface FieldProjectLeadProps {
@@ -38,34 +40,18 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
 
   const contributors = data?.contributors;
 
-  const [selectedLead, setSelectedLead] = useState<components["schemas"]["ContributorSearchItemResponse"][]>([]);
-
-  useEffect(() => {
-    if (!selectedLead.length && contributors && value?.invited?.length) {
-      const findSelectedLead = value.invited
-        .map(invited => contributors?.find(lead => lead.githubUserId === invited))
-        .filter(Boolean);
-
-      setSelectedLead(findSelectedLead as components["schemas"]["ContributorSearchItemResponse"][]);
-    }
-  }, [data, value]);
-
   const handleQueryChange = debounce(async (query: string) => {
     setQuery(query);
   }, 500);
 
   const onRemoveLead = (login: string) => {
-    setSelectedLead(selectedLead.filter(lead => lead.login !== login));
+    onChange?.({ invited: value?.invited.filter(lead => lead.login !== login) || [] });
   };
-
-  useEffect(() => {
-    onChange?.({ invited: selectedLead.map(lead => lead.githubUserId) });
-  }, [selectedLead]);
 
   const SelectedLeads = useMemo(
     () => [
       <FieldProjectLeadItem key={user?.id} avatar={user?.avatarUrl ?? ""} isYou label={user?.login ?? ""} />,
-      ...selectedLead.map(({ githubUserId, avatarUrl, login }) => (
+      ...(value?.invited || []).map(({ githubUserId, avatarUrl, login }) => (
         <FieldProjectLeadItem
           key={githubUserId}
           avatar={avatarUrl}
@@ -74,8 +60,12 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
         />
       )),
     ],
-    [selectedLead, user]
+    [value, user]
   );
+
+  function handleChange(value: SelectedLeadType[]) {
+    onChange?.({ invited: value });
+  }
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -95,8 +85,8 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
             )}
             query={query}
             onQuery={handleQueryChange}
-            selected={selectedLead}
-            onChange={setSelectedLead}
+            selected={value?.invited ?? []}
+            onChange={handleChange}
             placeholder={T("project.details.create.informations.form.fields.projectLead.placeholderLabel")}
             multiple
             loading={isLoading}

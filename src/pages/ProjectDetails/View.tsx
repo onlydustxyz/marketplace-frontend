@@ -11,9 +11,8 @@ import { cn } from "src/utils/cn";
 export type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
 };
-
 interface Props {
-  project: OutletContext;
+  project: components["schemas"]["ProjectResponse"];
   padded?: boolean;
   loading: boolean | undefined;
   error: null | unknown;
