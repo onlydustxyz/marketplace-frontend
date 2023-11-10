@@ -12,12 +12,9 @@ import { Flex } from "src/components/New/Layout/Flex";
 import RepositoriesTab from "./RepositoriesTab";
 import { cn } from "src/utils/cn";
 import { DescriptionForm } from "./components/Form/DescriptionForm";
-<<<<<<< Updated upstream
-import { EditPanelProvider } from "./components/Panel/context";
-=======
 import { OutletContext } from "../View";
 import ProjectApi from "src/api/Project";
->>>>>>> Stashed changes
+import { EditPanelProvider } from "./components/Panel/context";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -101,17 +98,11 @@ export default function ProjectEditionPage() {
           <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
         </header>
 
-<<<<<<< Updated upstream
         <Flex
           className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}
         >
-          {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab />}
+          {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab {...{ data, isLoading, isError }} />}
         </Flex>
-=======
-      <Flex className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}>
-        {activeTab === TabsType.General ? <DescriptionForm /> : <RepositoriesTab {...{ data, isLoading, isError }} />}
-      </Flex>
->>>>>>> Stashed changes
 
         <Flex
           justify="between"

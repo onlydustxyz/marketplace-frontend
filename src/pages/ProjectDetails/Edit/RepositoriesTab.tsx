@@ -1,11 +1,6 @@
-<<<<<<< Updated upstream
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
-=======
-import { useState } from "react";
-import { useDetailsResponse } from "src/api/Project/queries";
->>>>>>> Stashed changes
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Avatar } from "src/components/New/Avatar";
@@ -16,7 +11,6 @@ import StarLine from "src/icons/StarLine";
 import SubtractLine from "src/icons/SubtractLine";
 import { EditPanelContext } from "./components/Panel/context";
 
-<<<<<<< Updated upstream
 export default function RepositoriesTab() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { T } = useIntl();
@@ -26,16 +20,6 @@ export default function RepositoriesTab() {
     params: { projectKey },
     options: { refetchOnMount: false, refetchOnWindowFocus: false },
   });
-=======
-type RepositoriesTabType = {
-  data: useDetailsResponse;
-  isLoading: boolean;
-  isError: boolean;
-};
-
-export default function RepositoriesTab({ data, isLoading, isError }: RepositoriesTabType) {
-  const { T } = useIntl();
->>>>>>> Stashed changes
 
   // TODO move to parent
   const [repositoriesData, setRepositoriesData] = useState<typeof data>(data);
