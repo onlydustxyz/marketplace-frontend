@@ -32,7 +32,7 @@ import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
 import { useMediaQuery } from "usehooks-ts";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
-import { UseMyContributionsResponse } from "src/api/Contributions/queries";
+import { UseMyContributionsResponse } from "src/api/Me/queries";
 
 export enum TableColumns {
   Date = "date",

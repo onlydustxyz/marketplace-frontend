@@ -9,7 +9,7 @@ import {
   useGetContributionProjectsQuery,
   useGetContributionReposQuery,
 } from "src/__generated/graphql";
-import ContributionsApi from "src/api/Contributions";
+import MeApi from "src/api/Me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
@@ -106,13 +106,11 @@ export default function Contributions() {
     };
   }
 
-  // TODO ContributionsApi -> MeApi
-
   const {
     data: inProgressData,
     isLoading: inProgressLoading,
     isError: inProgressError,
-  } = ContributionsApi.queries.useMyContributions(
+  } = MeApi.queries.useMyContributions(
     { queryParams: { statuses: "IN_PROGRESS" } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress))) }
   );
@@ -121,7 +119,7 @@ export default function Contributions() {
     data: completedData,
     isLoading: completedLoading,
     isError: completedError,
-  } = ContributionsApi.queries.useMyContributions(
+  } = MeApi.queries.useMyContributions(
     { queryParams: { statuses: "COMPLETED" } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed))) }
   );
@@ -130,7 +128,7 @@ export default function Contributions() {
     data: cancelledData,
     isLoading: cancelledLoading,
     isError: cancelledError,
-  } = ContributionsApi.queries.useMyContributions(
+  } = MeApi.queries.useMyContributions(
     { queryParams: { statuses: "CANCELLED" } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled))) }
   );

@@ -31,4 +31,20 @@ const useMyRewardsInfiniteList = (
   );
 };
 
-export default { useGetMe, useMyRewardsInfiniteList };
+export type UseMyContributionsResponse = components["schemas"]["ContributionPageResponse"];
+
+const useMyContributions = (
+  params: Partial<Parameters<typeof useInfiniteBaseQuery>[0]>,
+  options: Parameters<typeof useInfiniteBaseQuery<UseMyContributionsResponse>>[1] = {}
+) => {
+  return useInfiniteBaseQuery<UseMyContributionsResponse>(
+    {
+      ...params,
+      resourcePath: API_PATH.MY_CONTRIBUTIONS,
+      tags: ME_TAGS.contributions(),
+    },
+    options
+  );
+};
+
+export default { useGetMe, useMyRewardsInfiniteList, useMyContributions };
