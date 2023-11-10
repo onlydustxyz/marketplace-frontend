@@ -1,5 +1,7 @@
+import UseMutationAlert from "src/api/useMutationAlert";
 import ProjectLeadInvitationView, { CalloutSizes } from "./ProjectLeadInvitationView";
 import MeApi from "src/api/me";
+import { useIntl } from "src/hooks/useIntl";
 
 interface ProjectLeadInvitationProps {
   projectId: string;
@@ -16,13 +18,31 @@ export default function ProjectLeadInvitation({
   isInvited,
   projectName,
 }: ProjectLeadInvitationProps) {
-  const { mutate } = MeApi.mutations.useAcceptProjectLeaderInvitation({ params: { projectId, projectSlug } });
+  const { T } = useIntl();
+  const { mutate, ...rest } = MeApi.mutations.useAcceptProjectLeaderInvitation({
+    params: { projectId, projectSlug },
+  });
 
   const onAcceptInvite = () => {
     mutate(null);
   };
 
+  UseMutationAlert({
+    mutation: rest,
+    success: {
+      message: T("projectLeadInvitation.success", { projectName }),
+    },
+    error: {
+      default: true,
+    },
+  });
+
   return isInvited ? (
-    <ProjectLeadInvitationView projectName={projectName} onClick={onAcceptInvite} size={size} />
+    <ProjectLeadInvitationView
+      projectName={projectName}
+      onClick={onAcceptInvite}
+      size={size}
+      isLoading={rest.isPending}
+    />
   ) : null;
 }
