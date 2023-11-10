@@ -11,25 +11,24 @@ export interface useInfiniteBaseQueryProps {
   tags?: QueryTags;
 }
 
-export type useInfiniteBaseQueryOptions<R extends InifiniteQueryResponseData> = Omit<
+export type useInfiniteBaseQueryOptions<R extends InfiniteQueryResponseData> = Omit<
   UseInfiniteQueryOptions<R>,
-  "queryFn" | "initialPageParam" | "getNextPageParam" | "select"
+  "queryKey" | "queryFn" | "initialPageParam" | "getNextPageParam" | "select"
 > &
   Partial<Pick<UseInfiniteQueryOptions<R>, "initialPageParam" | "getNextPageParam">>;
 
-export type InifiniteQueryResponseData = {
+export type InfiniteQueryResponseData = {
   totalPageNumber: number;
   totalItemNumber: number;
   hasMore: boolean;
   nextPageIndex: number;
 };
 
-export function useInfiniteBaseQuery<R extends InifiniteQueryResponseData>(
+export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
   { resourcePath, pageSize = 10, pathParam = "", queryParams = [], tags }: useInfiniteBaseQueryProps,
   queryOptions: useInfiniteBaseQueryOptions<R>
 ) {
   const {
-    queryKey,
     initialPageParam = 0,
     getNextPageParam = lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
     refetchInterval = false,
@@ -40,7 +39,7 @@ export function useInfiniteBaseQuery<R extends InifiniteQueryResponseData>(
   const { options, isImpersonating, isValidImpersonation } = useHttpOptions("GET");
 
   return useInfiniteQuery<R>({
-    queryKey: [...(tags || []), isImpersonating, isValidImpersonation, ...queryKey],
+    queryKey: [...(tags || []), isImpersonating, isValidImpersonation, queryParams],
     queryFn: ({ pageParam }) =>
       fetch(
         getEndpointUrl({
