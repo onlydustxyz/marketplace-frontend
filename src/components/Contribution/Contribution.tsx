@@ -1,6 +1,5 @@
 import { cn } from "src/utils/cn";
 
-import { ComponentProps } from "react";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
@@ -10,22 +9,27 @@ import {
   GithubCodeReviewOutcome,
   GithubContributionReviewStatus,
   GithubPullRequestStatus,
-  QueryContribution,
+  Contribution as ContributionT,
 } from "src/types";
-import { getContributionInfo } from "src/utils/getContributionInfo";
 
 type Props = {
-  contribution: Pick<
-    QueryContribution,
-    "githubCodeReview" | "githubIssue" | "githubPullRequest" | "id" | "rewardItems" | "type" | "project"
-  >;
+  contribution: ContributionT;
   isMobile?: boolean;
 };
 
 export function Contribution({ contribution, isMobile = false }: Props) {
-  const { githubPullRequest, id, rewardItems } = contribution;
+  const { githubPullRequest, project, rewardIds } = contribution;
 
-  const { type, title, htmlUrl, author, status, number } = getContributionInfo(contribution);
+  //   const { type, title, htmlUrl, author, status, number } = getContributionInfo(contribution);
+  const {
+    id,
+    type,
+    githubTitle: title,
+    githubHtmlUrl: htmlUrl,
+    githubAuthor: author,
+    status,
+    githubNumber: number,
+  } = contribution;
 
   const { githubUserId } = useAuth();
   const { open } = useContributionDetailPanel();
@@ -83,11 +87,8 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         </button>
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
-        {rewardItems?.length ? (
-          <ContributionReward
-            id={id ?? ""}
-            rewards={rewardItems as ComponentProps<typeof ContributionReward>["rewards"]}
-          />
+        {rewardIds?.length ? (
+          <ContributionReward contributionId={id} projectId={project.id} rewardIds={rewardIds} />
         ) : null}
         {renderReview()}
       </div>

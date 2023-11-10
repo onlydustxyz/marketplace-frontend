@@ -55,5 +55,5 @@ export const contribution: Contribution = {
       is_mine: true,
     },
   ],
-  rewardIds: [],
+  rewardIds: ["880819f1-2ab9-406d-9bf1-3012b6f565bc", "35234563456345-2ab9-406d-9bf1-3012b6f565bc"],
 };
