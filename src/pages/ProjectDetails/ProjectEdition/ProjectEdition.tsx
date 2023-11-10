@@ -61,7 +61,7 @@ function SafeProjectEdition() {
   //     formState: { isValid, isDirty },
   //   } = methods;
 
-  const inviteGithubUserIdsAsProjectLeads = project?.leaders?.flatMap(leader => leader.githubUserId) || [];
+  // const inviteGithubUserIdsAsProjectLeads = project?.leaders?.flatMap(leader => leader.githubUserId) || [];
 
   //   useEffect(() => {
   //     reset({
