@@ -26,12 +26,13 @@ type OutletContext = {
 
 export default function Contributors() {
   const { T } = useIntl();
-  const { ledProjectIds } = useAuth();
+  const { ledProjectIds, githubUserId } = useAuth();
   const navigate = useNavigate();
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
   const { project } = useOutletContext<OutletContext>();
 
   const { id: projectId, slug: projectKey } = project;
+  const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
   const isProjectLeader = ledProjectIds.includes(projectId);
 
@@ -95,7 +96,13 @@ export default function Contributors() {
           )}
         </div>
       </Title>
-      <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
+      <ProjectLeadInvitation
+        projectId={projectId}
+        size={CalloutSizes.Large}
+        projectSlug={projectKey}
+        isInvited={isInvited}
+        projectName={project?.name}
+      />
       {contributors?.length > 0 && (
         <ContributorsTable
           {...{

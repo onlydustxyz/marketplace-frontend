@@ -1,5 +1,5 @@
 import SampleApi from ".";
-import UseMutationAlert from "src/api/useMutationAlert";
+import useMutationAlert from "src/api/useMutationAlert";
 import UseQueriesError from "src/api/useQueriesError";
 
 export const Test = () => {
@@ -16,7 +16,7 @@ export const Test = () => {
     },
   });
 
-  UseMutationAlert({ mutation: rest, success: { message: "sucess" }, error: { message: "error" } });
+  useMutationAlert({ mutation: rest, success: { message: "sucess" }, error: { message: "error" } });
 
   const errorFallback = UseQueriesError({
     queries: query,

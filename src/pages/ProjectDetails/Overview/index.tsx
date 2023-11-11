@@ -83,6 +83,8 @@ export default function Overview() {
   const { data: userProfileData } = useUserProfile({ githubUserId });
   const profile = userProfileData?.profile;
 
+  const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
+
   useEffect(() => {
     if (projectId && projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) {
       dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: projectId });
@@ -123,7 +125,13 @@ export default function Overview() {
           )}
         </div>
       </Title>
-      <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
+      <ProjectLeadInvitation
+        projectId={projectId}
+        size={CalloutSizes.Large}
+        projectSlug={projectSlug}
+        isInvited={isInvited}
+        projectName={project?.name}
+      />
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex grow flex-col gap-4">
           <ProjectDescriptionCard
