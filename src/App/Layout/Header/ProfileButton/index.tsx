@@ -1,6 +1,6 @@
 import { useAuth } from "src/hooks/useAuth";
 import View from "src/App/Layout/Header/ProfileButton/View";
-import { useGetUserAvatarUrlQuery, usePendingUserPaymentsQuery } from "src/__generated/graphql";
+import { usePendingUserPaymentsQuery } from "src/__generated/graphql";
 import { useOnboarding } from "src/App/OnboardingProvider";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
@@ -13,12 +13,6 @@ const ProfileButton = () => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { user, logout, githubUserId } = useAuth();
   const { login } = user ?? { login: "My Account" };
-
-  const { data: profile } = useGetUserAvatarUrlQuery({
-    variables: { githubUserId },
-    skip: !githubUserId,
-  });
-  const avatarUrl = profile?.userProfiles.at(0)?.avatarUrl || "";
 
   const { data: userInfo } = useRestfulData<components["schemas"]["GetMeResponse"]>({
     queryKey: ["GetUser"],
@@ -38,6 +32,8 @@ const ProfileButton = () => {
       ?.paymentRequests.filter(p => p.paymentsAggregate.aggregate?.sum?.amount || 0 < p.amount).length || 0;
 
   const payoutSettingsInvalid = userInfo?.hasValidPayoutInfos === false && pendingPaymentRequestsCount > 0;
+
+  const avatarUrl = userInfo?.avatarUrl || "";
 
   const props = {
     githubUserId,
