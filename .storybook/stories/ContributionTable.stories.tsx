@@ -58,15 +58,17 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
   contributions: contributionTable,
   loading: false,
   error: undefined,
-  status: ContributionStatus.InProgress,
   sort: {
-    column: TableColumns.Date,
+    sort: TableColumns.Date,
     direction: OrderBy.Desc,
-    orderBy: { createdAt: OrderBy.Desc },
   },
   onSort: sort => {
     alert("Sorting");
   },
+  hasNextPage: false,
+  // @ts-expect-error
+  fetchNextPage: () => {},
+  isFetchingNextPage: false,
 };
 
 export const Default = {

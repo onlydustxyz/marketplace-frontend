@@ -38,19 +38,16 @@ function TabContents({ children }: PropsWithChildren) {
 
 const initialSort: Record<ContributionStatus, TableSort> = {
   [ContributionStatus.InProgress]: {
-    column: TableColumns.Date,
+    sort: TableColumns.Date,
     direction: OrderBy.Desc,
-    orderBy: { createdAt: OrderBy.Desc },
   },
   [ContributionStatus.Completed]: {
-    column: TableColumns.Date,
+    sort: TableColumns.Date,
     direction: OrderBy.Desc,
-    orderBy: { closedAt: OrderBy.Desc },
   },
   [ContributionStatus.Cancelled]: {
-    column: TableColumns.Date,
+    sort: TableColumns.Date,
     direction: OrderBy.Desc,
-    orderBy: { closedAt: OrderBy.Desc },
   },
 };
 
@@ -82,16 +79,6 @@ export default function Contributions() {
 
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
 
-  function tableWhere({ status }: { status: ContributionStatus }) {
-    return {
-      githubUserId: { _eq: githubUserId },
-      projectId: { _in: projectIds.length ? projectIds : undefined },
-      repoId: { _in: repoIds.length ? repoIds : undefined },
-      status: { _eq: status },
-      type: { _in: types.length ? types : undefined },
-    };
-  }
-
   function projectsWhere() {
     return {
       githubUserId: { _eq: githubUserId },
@@ -114,7 +101,7 @@ export default function Contributions() {
     fetchNextPage: inProgressFetchNextPage,
     isFetchingNextPage: inProgressFetchingNextPage,
   } = MeApi.queries.useMyContributions(
-    { queryParams: { statuses: "IN_PROGRESS" } },
+    { queryParams: { statuses: "IN_PROGRESS", ...sort.IN_PROGRESS } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress))) }
   );
 
@@ -126,7 +113,7 @@ export default function Contributions() {
     fetchNextPage: completedFetchNextPage,
     isFetchingNextPage: completedFetchingNextPage,
   } = MeApi.queries.useMyContributions(
-    { queryParams: { statuses: "COMPLETED" } },
+    { queryParams: { statuses: "COMPLETED", ...sort.COMPLETED } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed))) }
   );
 
@@ -138,7 +125,7 @@ export default function Contributions() {
     fetchNextPage: cancelledFetchNextPage,
     isFetchingNextPage: cancelledFetchingNextPage,
   } = MeApi.queries.useMyContributions(
-    { queryParams: { statuses: "CANCELLED" } },
+    { queryParams: { statuses: "CANCELLED", ...sort.CANCELLED } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled))) }
   );
 

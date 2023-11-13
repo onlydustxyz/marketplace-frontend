@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactNode, useMemo, useState } from "react";
-import { ContributionsOrderBy, OrderBy } from "src/__generated/graphql";
+import { OrderBy } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -19,10 +19,9 @@ import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
-import { DeepPartial, ContributionStatus, GithubContributionType } from "src/types";
+import { ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
-import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
 import { useMediaQuery } from "usehooks-ts";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 import { UseMyContributionsResponse } from "src/api/Me/queries";
@@ -30,16 +29,15 @@ import { ShowMore } from "../Table/ShowMore";
 import MeApi from "src/api/Me";
 
 export enum TableColumns {
-  Date = "date",
-  Project = "project",
-  Id = "id",
-  Linked = "linked",
+  Date = "CREATED_AT",
+  Project = "PROJECT_REPO_NAME",
+  Id = "GITHUB_NUMBER_TITLE",
+  Linked = "LINKED",
 }
 
 export type TableSort = {
-  column: TableColumns;
+  sort: TableColumns;
   direction: OrderBy.Asc | OrderBy.Desc;
-  orderBy?: { [K in keyof Partial<ContributionsOrderBy>]: DeepPartial<ContributionsOrderBy[K]> };
 };
 
 function Message({ children }: PropsWithChildren) {
@@ -67,7 +65,6 @@ export function ContributionTable({
   loading,
   onHeaderClick,
   fullTable = true,
-  status,
   title,
   sort,
   onSort,
@@ -101,14 +98,10 @@ export function ContributionTable({
   const newSortDirection = sort.direction === OrderBy.Asc ? OrderBy.Desc : OrderBy.Asc;
 
   const memoizedContributions = useMemo(() => {
-    // Need to clone the array because Array.sort() mutates the original
-    const sortArr = contributions ? [...contributions] : [];
+    if (sort.sort === TableColumns.Linked) {
+      // Need to clone the array because Array.sort() mutates the original
+      const sortArr = contributions ? [...contributions] : [];
 
-    if (sort.column === TableColumns.Id) {
-      return sortArr.sort((a, b) => sortContributionsByNumber([a, b], sort.direction));
-    }
-
-    if (sort.column === TableColumns.Linked) {
       return sortArr.sort((a, b) => sortContributionsByLinked([a, b], sort.direction));
     }
 
@@ -240,54 +233,50 @@ export function ContributionTable({
               <HeaderCell
                 horizontalMargin
                 onClick={() => {
-                  const field = status === ContributionStatus.InProgress ? "createdAt" : "closedAt";
-
                   onSort({
-                    column: TableColumns.Date,
+                    sort: TableColumns.Date,
                     direction: newSortDirection,
-                    orderBy: { [field]: newSortDirection },
                   });
                 }}
               >
                 <TimeLine />
                 <span>{T("contributions.table.date")}</span>
-                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Date} />
+                <SortingArrow direction={sortDirection} visible={sort.sort === TableColumns.Date} />
               </HeaderCell>
               <HeaderCell
                 width={HeaderCellWidth.Quarter}
                 horizontalMargin
                 onClick={() => {
                   onSort({
-                    column: TableColumns.Project,
+                    sort: TableColumns.Project,
                     direction: newSortDirection,
-                    orderBy: { project: { name: newSortDirection }, githubRepo: { name: newSortDirection } },
                   });
                 }}
               >
                 <Folder3Line />
                 <span>{T("contributions.table.projectRepo")}</span>
-                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Project} />
+                <SortingArrow direction={sortDirection} visible={sort.sort === TableColumns.Project} />
               </HeaderCell>
               <HeaderCell
                 width={HeaderCellWidth.Half}
                 horizontalMargin
                 onClick={() => {
                   onSort({
-                    column: TableColumns.Id,
+                    sort: TableColumns.Id,
                     direction: newSortDirection,
                   });
                 }}
               >
                 <StackLine />
                 <span>{T("contributions.table.contribution")}</span>
-                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Id} />
+                <SortingArrow direction={sortDirection} visible={sort.sort === TableColumns.Id} />
               </HeaderCell>
               <HeaderCell
                 horizontalMargin
                 className="justify-end"
                 onClick={() => {
                   onSort({
-                    column: TableColumns.Linked,
+                    sort: TableColumns.Linked,
                     direction: newSortDirection,
                   });
                 }}
@@ -296,7 +285,7 @@ export function ContributionTable({
                   <IssueOpen className="h-3 w-3" />
                 </span>
                 <span>{T("contributions.table.linkedTo")}</span>
-                {sort.column === TableColumns.Linked ? <SortingArrow direction={sortDirection} visible={true} /> : null}
+                {sort.sort === TableColumns.Linked ? <SortingArrow direction={sortDirection} visible={true} /> : null}
               </HeaderCell>
             </HeaderLine>
           }

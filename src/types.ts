@@ -9,11 +9,6 @@ export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType exten
   ? ElementType
   : never;
 
-//https://stackoverflow.com/a/47914631
-export type DeepPartial<T> = {
-  [P in keyof T]?: DeepPartial<T[P]>;
-};
-
 export enum HasuraUserRole {
   Public = "public",
   RegisteredUser = "registered_user",
