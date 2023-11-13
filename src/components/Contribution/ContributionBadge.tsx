@@ -57,17 +57,20 @@ export function ContributionBadge({
             {isExternal ? (
               <div className="flex items-center justify-center text-sm">
                 <span className="text-spaceBlue-200">{tokens[type]}</span>
-
                 <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} clickable />
               </div>
             ) : null}
             <div className="flex gap-2">
               <ContributionIcon type={type as GithubContributionType} status={githubStatus} />
-              <div className="flex flex-col items-start gap-2">
-                <span className="text-sm font-medium leading-4">
-                  <ExternalLink url={githubHtmlUrl} text={`#${githubNumber} • ${githubTitle}`} />
+              <div className="flex max-w-sm flex-col items-start justify-start gap-2 text-left">
+                <span className="line-clamp-2 text-sm font-medium leading-4">
+                  <ExternalLink
+                    url={githubHtmlUrl}
+                    text={`#${githubNumber} • ${githubTitle}`}
+                    anchorProps={{ className: "line-clamp-2 whitespace-pre-line" }}
+                  />
                 </span>
-                {githubBody ? <p className="text-xs text-spaceBlue-200">{githubBody}</p> : null}
+                {githubBody ? <p className="line-clamp-2 break-all text-xs text-spaceBlue-200">{githubBody}</p> : null}
               </div>
             </div>
           </div>
