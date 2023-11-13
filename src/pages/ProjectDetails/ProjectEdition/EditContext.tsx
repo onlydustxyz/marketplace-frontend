@@ -101,10 +101,9 @@ export function EditProvider({ children, project }: EditContextProps) {
     options: { retry: 1, enabled: !!installation_id },
   });
 
-  const [storedValue, setValue, status, removeValue] = useSessionStorage<Partial<EditFormData> | undefined>(
-    `edit-project-${project.slug}`,
-    undefined
-  );
+  const [storedValue, setValue, status, removeValue] = useSessionStorage<
+    { form: EditFormData; dirtyFields: Array<keyof EditFormData> } | undefined
+  >(`edit-project-${project.slug}`, undefined);
 
   const form = useForm<EditFormData>({
     mode: "all",
@@ -172,17 +171,19 @@ export function EditProvider({ children, project }: EditContextProps) {
   };
 
   const onSaveInSession = () => {
-    // const dirtyField = { ...form.formState.dirtyFields } as { [key: string]: boolean | undefined };
-    // const dirtykeys = Object.keys(dirtyField)
-    //   .map(key => (dirtyField[key] ? key : undefined))
-    //   .filter(Boolean) as string[];
-    // console.log("DIRTY", dirtyField, dirtykeys);
-    setValue(form.getValues());
+    const dirtyField = { ...form.formState.dirtyFields } as { [key: string]: boolean | undefined };
+    const dirtykeys = Object.keys(dirtyField)
+      .map(key => (dirtyField[key] ? key : undefined))
+      .filter(Boolean) as Array<keyof EditFormData>;
+
+    setValue({ form: form.getValues(), dirtyFields: dirtykeys });
   };
 
   useEffect(() => {
     if (status === "ready" && storedValue) {
-      form.reset({ ...storedValue });
+      storedValue.dirtyFields.forEach(field => {
+        form.setValue(field, storedValue.form[field], { shouldDirty: true, shouldValidate: true });
+      });
     }
   }, [status]);
 
@@ -198,7 +199,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const onSubmit = (formData: EditFormData) => {
     console.log("SUBMIT, formData", formData);
-
+    // TODO : call removeValue on success to clear session
     // mutate({
     //   ...formData,
     //   inviteGithubUserIdsAsProjectLeads,
