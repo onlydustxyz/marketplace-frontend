@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { createContext, useEffect } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { generatePath, useLocation, useNavigate } from "react-router-dom";
+import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import ProjectApi from "src/api/Project";
 import { useUpdateProjectBody } from "src/api/Project/mutations";
@@ -64,7 +64,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
   const navigate = useNavigate();
   const showToaster = useShowToaster();
-  const queryClient = useQueryClient();
+  const location = useLocation();
 
   const [storedValue, setValue, status, removeValue] = useSessionStorage<EditFormData | undefined>(
     `edit-project-${project.slug}`,
@@ -144,27 +144,22 @@ export function EditProvider({ children, project }: EditContextProps) {
     params: { projectId: project?.id },
     options: {
       onSuccess: async data => {
-        //TODO: replace pathname with project slug
-        console.log("data", data);
         showToaster(T("form.toast.success"));
         removeValue();
-        queryClient.invalidateQueries();
 
-        // if (id === response .id && slug === response .slug) {
-        //   // Don't do anything as the user is on right page
-        // } else if (id === response .id && slug !== response .slug) {
-        //     navigate("/products/" + response .id + "/" + response .slug);
-        // history.replace({ pathname: `/product/${this.props.product.id}`})
-        // navigate(to, { replace: true });
-        // } else {}
+        // Replace the current path on the history stack if different
+        const newPathname = `${generatePath(RoutePaths.ProjectDetails, {
+          projectKey: data?.projectSlug ?? "",
+        })}/${ProjectRoutePaths.Edit}`;
+
+        if (location.pathname !== newPathname) {
+          navigate(`${newPathname}`, { replace: true, state: location.state });
+        }
       },
     },
   });
 
   const onSubmit = (formData: EditFormData) => {
-    // console.log("SUBMIT, formData", formData);
-    // console.log("FORM VALUES", form.getValues());
-
     const test: useUpdateProjectBody = {
       ...formData,
       //TODO: rewards settings mapping

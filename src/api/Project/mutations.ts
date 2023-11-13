@@ -17,7 +17,7 @@ const useCreateProject = ({
 };
 
 export type useUpdateProjectBody = components["schemas"]["UpdateProjectRequest"];
-export type useUpdateProjectResponse = components["schemas"]["UpdateProjectRequest"];
+export type useUpdateProjectResponse = components["schemas"]["UpdateProjectResponse"];
 
 const useUpdateProject = ({
   params,

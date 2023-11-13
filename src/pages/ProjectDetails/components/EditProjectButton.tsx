@@ -1,4 +1,4 @@
-import { generatePath, useNavigate } from "react-router-dom";
+import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 
@@ -10,6 +10,7 @@ type EditProjectButtonProps = { projectKey: string };
 export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
   const { T } = useIntl();
   const navigate = useNavigate();
+  const location = useLocation();
   const isEditProjectEnabled = parseFlag("VITE_CAN_EDIT_PROJECT");
 
   return isEditProjectEnabled ? (
@@ -21,7 +22,8 @@ export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
         navigate(
           generatePath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, {
             projectKey,
-          })
+          }),
+          { state: { prevPath: location.pathname, slug: projectKey } }
         )
       }
     >

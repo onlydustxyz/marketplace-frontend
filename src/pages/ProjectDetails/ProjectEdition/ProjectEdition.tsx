@@ -1,5 +1,5 @@
 import { PropsWithChildren, useContext, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -33,8 +33,9 @@ enum TabsType {
 function SafeProjectEdition() {
   const { T } = useIntl();
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<TabsType>(TabsType.General);
-  const { form } = useContext(EditContext);
+  const { form, project } = useContext(EditContext);
 
   const tabItems = [
     {
@@ -63,17 +64,20 @@ function SafeProjectEdition() {
     },
   ];
 
+  const handleGoBack = () => {
+    if (project?.slug !== location?.state?.slug) {
+      const prevPath = location.state.prevPath.replace(location.state.slug, project?.slug);
+      return navigate(prevPath, { replace: true });
+    }
+
+    return navigate(-1);
+  };
+
   return (
     <Flex className="h-full w-full flex-col">
       <Flex className="w-full flex-col">
         <Flex className="items-center px-4 py-6 xl:px-8">
-          <Button
-            size={ButtonSize.Xs}
-            type={ButtonType.Secondary}
-            iconOnly
-            onClick={() => navigate(-1)}
-            className="mr-3"
-          >
+          <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly onClick={handleGoBack} className="mr-3">
             <CloseLine />
           </Button>
           <Title>
