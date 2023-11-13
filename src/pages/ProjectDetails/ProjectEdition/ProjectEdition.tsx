@@ -16,7 +16,7 @@ import ProjectApi from "src/api/Project";
 import { FormStatus } from "src/components/FormStatus/FormStatus";
 import Card from "src/components/Card";
 import { Information } from "./pages/Information";
-import { Repository } from "./pages/Repository";
+import { Repository } from "./pages/Repository/Repository";
 import { EditContext, EditProvider } from "./EditContext";
 import { EditPanelProvider } from "./components/Panel/context";
 

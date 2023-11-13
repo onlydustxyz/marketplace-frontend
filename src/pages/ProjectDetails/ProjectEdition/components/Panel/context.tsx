@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { EditPanel } from ".";
-import { UseProjectDetailsResponse } from "src/api/Project/queries";
 import { EditContext } from "../../EditContext";
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 
 interface EditPanelContextProps {
   openOnLoad: boolean;
@@ -13,7 +13,7 @@ type EditPanel = {
   close: () => void;
   toggle: (value: boolean) => void;
   isOpen: boolean;
-  project?: UseProjectDetailsResponse;
+  project?: UseGetProjectBySlugResponse;
 };
 
 export const EditPanelContext = createContext<EditPanel>({
