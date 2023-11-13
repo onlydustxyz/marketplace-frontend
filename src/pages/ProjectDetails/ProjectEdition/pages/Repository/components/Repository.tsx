@@ -25,7 +25,7 @@ export function Repository({ organization, repository }: RepositoryType) {
   return (
     <div
       key={repository.name}
-      className="flex basis-1/2 flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"
+      className="flex basis-1/2 flex-col gap-2 rounded-2xl border border-card-border-medium bg-card-background-medium p-5 shadow-heavy"
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">

@@ -17,7 +17,7 @@ type RepositoriesTabType = {
 export function Repository({ isLoading, isError }: RepositoriesTabType) {
   const { T } = useIntl();
   const { open } = useContext(EditPanelContext);
-  const { form } = useContext(EditContext);
+  const { form, formHelpers } = useContext(EditContext);
   const organizations = form?.watch("organizations") || [];
 
   const renderOrganization = useMemo(() => {
