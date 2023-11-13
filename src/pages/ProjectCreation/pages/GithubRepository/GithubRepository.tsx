@@ -153,10 +153,10 @@ export const GithubRepositoryPage = () => {
                                 </Flex>
                                 <p
                                   className={`text-body-s line-clamp-2 w-full text-greyscale-200 ${
-                                    !repo.shortDescription && "italic"
+                                    !repo.description && "italic"
                                   }`}
                                 >
-                                  {repo.shortDescription ||
+                                  {repo.description ||
                                     T("project.details.overview.repositories.descriptionPlaceholder")}
                                 </p>
                               </Flex>

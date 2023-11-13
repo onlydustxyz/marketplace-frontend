@@ -26,8 +26,8 @@ export const EditPanelOrganization = () => {
           <HorizontalListItemCard
             key={`${organization?.name}+${index}`}
             imageUrl={organization?.avatarUrl ?? ""}
-            title={organization?.name ?? ""}
-            linkUrl={`https://github.com/organizations/${organization?.name}/settings/installations/${organization?.installationId}`}
+            title={organization?.name || organization?.login || ""}
+            linkUrl={`https://github.com/organizations/${organization?.login}/settings/installations/${organization?.installationId}`}
           />
         ))}
       </ul>
