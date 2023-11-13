@@ -45,7 +45,7 @@ export function Repository({ isLoading, isError }: RepositoriesTabType) {
 
     if (organizations.length && hasInstalledRepo) {
       return (
-        <div>
+        <div className="flex flex-col gap-6">
           {organizations.map(organization => (
             <RepositoryOrganization key={organization.id} organization={organization} />
           ))}

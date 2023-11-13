@@ -46,7 +46,7 @@ export function EditPanelProvider({ children, openOnLoad, isLoading, project }: 
     if (!open && openOnLoad) {
       setOpen(openOnLoad);
     }
-  }, [openOnLoad, open]);
+  }, [openOnLoad]);
 
   return (
     <EditPanelContext.Provider
