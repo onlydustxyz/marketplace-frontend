@@ -931,6 +931,9 @@
           "tabs": {
             "organizations": "Organisations",
             "repositories": "Repositories"
+          },
+          "repositories": {
+            "noRepositoriesToAdd": "All repositories from this organisation have been added to your project."
           }
         },
         "toasts": {
@@ -971,6 +974,9 @@
             "issues": "Issues",
             "codeReviews": "Code reviews"
           }
+        },
+        "organizations": {
+          "installGithubApp": "Install Github app"
         },
         "repositories": {
           "addRepositories": "Add repositories",

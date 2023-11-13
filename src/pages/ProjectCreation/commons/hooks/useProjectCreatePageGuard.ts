@@ -22,7 +22,8 @@ export const useProjectCreatePageGuard = (page: pageSteps) => {
         navigate(RoutePaths.ProjectCreation);
       } else if (
         page === STEP_INFORMATION &&
-        storedValue.filter(organization => (organization.repos || []).find(repo => repo.selected)).length == 0
+        storedValue.filter(organization => (organization.organization.repos || []).find(repo => repo.selected))
+          .length == 0
       ) {
         removeFormData();
         navigate(`${RoutePaths.ProjectCreation}/repository`);

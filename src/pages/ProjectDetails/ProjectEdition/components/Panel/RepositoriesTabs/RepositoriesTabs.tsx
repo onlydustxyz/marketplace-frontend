@@ -1,16 +1,17 @@
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import { EditContext } from "../../../EditContext";
 import { Organization } from "./components/Organization";
+import { Flex } from "src/components/New/Layout/Flex";
 
 export const EditPanelRepositories = () => {
   const { form } = useContext(EditContext);
+  const organizations = form?.watch("organizations") || [];
 
-  const organizations = useMemo(() => form?.getValues("organizations") || [], [form]);
   return (
-    <div>
+    <Flex justify="start" item="start" className="w-full gap-6" direction="col">
       {organizations.map(organization => (
         <Organization key={organization.id} organization={organization} />
       ))}
-    </div>
+    </Flex>
   );
 };

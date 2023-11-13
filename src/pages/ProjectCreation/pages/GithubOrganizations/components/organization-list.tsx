@@ -12,7 +12,7 @@ function isOrganizationAlreadyExist(
   organizations: OrganizationSessionStorageInterface[],
   newOrganization: useInstallationByIdResponse
 ) {
-  return organizations.some(org => org?.organization?.name === newOrganization?.organization?.name);
+  return organizations.some(org => org?.organization?.login === newOrganization?.organization?.login);
 }
 
 export default function OrganizationList({ setIsValid }: { setIsValid: (isValid: boolean) => void }) {
@@ -28,16 +28,17 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
 
   const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
     params: { installation_id },
-    options: { retry: 1 },
+    options: { retry: 1, enabled: !!installation_id },
   });
 
   useEffect(() => {
     if (data && savedOrgsDataStatus === "ready" && !isOrganizationAlreadyExist(savedOrgsData, data)) {
+      console.log("data", data);
       const newData: OrganizationSessionStorageInterface = {
         ...data,
         organization: {
           ...data.organization,
-          installationId: installation_id,
+          installationId: data.id,
         },
       };
       setSavedOrgsData([...savedOrgsData, newData]);
@@ -71,10 +72,10 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
       <ul className="flex flex-col gap-2 py-4 pb-6">
         {savedOrgsData?.map((installation: OrganizationSessionStorageInterface, index: number) => (
           <HorizontalListItemCard
-            key={`${installation?.organization?.name}+${index}`}
-            imageUrl={installation?.organization?.logoUrl ?? ""}
-            title={installation?.organization?.name ?? ""}
-            linkUrl={`https://github.com/organizations/${installation?.organization?.name}/settings/installations/${installation?.organization?.installationId}`}
+            key={`${installation?.organization?.login}+${index}`}
+            imageUrl={installation?.organization?.avatarUrl ?? ""}
+            title={installation?.organization?.name || installation?.organization?.login || ""}
+            linkUrl={`https://github.com/organizations/${installation?.organization?.login}/settings/installations/${installation?.organization?.installationId}`}
           />
         ))}
       </ul>

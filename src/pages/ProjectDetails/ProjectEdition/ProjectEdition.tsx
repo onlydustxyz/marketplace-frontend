@@ -1,5 +1,5 @@
 import { PropsWithChildren, useContext, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -17,9 +17,8 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { cn } from "src/utils/cn";
 import Title from "../Title";
 import { EditContext, EditProvider } from "./EditContext";
-import { EditPanelProvider } from "./components/Panel/context";
 import { Information } from "./pages/Information";
-import { Repository } from "./pages/Repository";
+import { Repository } from "./pages/Repository/Repository";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -34,8 +33,10 @@ function SafeProjectEdition() {
   const { T } = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState<TabsType>(TabsType.General);
-  const { form, project } = useContext(EditContext);
+  const [searchParams] = useSearchParams();
+  const installation_id = searchParams.get("installation_id") ?? "";
+  const [activeTab, setActiveTab] = useState<TabsType>(installation_id ? TabsType.Repos : TabsType.General);
+  const { project, form } = useContext(EditContext);
 
   const tabItems = [
     {
@@ -138,9 +139,7 @@ export default function ProjectEdition() {
 
   return (
     <EditProvider project={data}>
-      <EditPanelProvider openOnLoad={false}>
-        <SafeProjectEdition />
-      </EditPanelProvider>
+      <SafeProjectEdition />
     </EditProvider>
   );
 }

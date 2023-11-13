@@ -2,9 +2,10 @@ import { useApolloClient } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createContext, useEffect } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
-import { generatePath, useLocation, useNavigate } from "react-router-dom";
+import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
+import GithubApi from "src/api/Github";
 import ProjectApi from "src/api/Project";
 import { useUpdateProjectBody } from "src/api/Project/mutations";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
@@ -13,6 +14,8 @@ import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage
 import { useShowToaster } from "src/hooks/useToaster";
 import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import { z } from "zod";
+import { EditPanelProvider } from "./components/Panel/context";
+import transformOrganization from "./utils/transformInstallationToOrganization";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -23,6 +26,7 @@ type Edit = {
   project?: UseGetProjectBySlugResponse;
   form?: UseFormReturn<EditFormData, unknown>;
   formHelpers: {
+    addOrganization: (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => void;
     saveInSession: () => void;
     addRepository: (organizationId: number, repoId: number) => void;
     removeRepository: (organizationId: number, repoId: number) => void;
@@ -38,6 +42,7 @@ export const EditContext = createContext<Edit>({
   form: undefined,
   project: undefined,
   formHelpers: {
+    addOrganization: () => null,
     addRepository: () => null,
     saveInSession: () => null,
     removeRepository: () => null,
@@ -68,10 +73,17 @@ export function EditProvider({ children, project }: EditContextProps) {
   const location = useLocation();
   const client = useApolloClient();
 
-  const [storedValue, setValue, status, removeValue] = useSessionStorage<EditFormData | undefined>(
-    `edit-project-${project.slug}`,
-    undefined
-  );
+  const [searchParams] = useSearchParams();
+  const installation_id = searchParams.get("installation_id") ?? "";
+
+  const { data: installationData, isLoading: isInstallationLoading } = GithubApi.queries.useInstallationById({
+    params: { installation_id },
+    options: { retry: 1, enabled: !!installation_id },
+  });
+
+  const [storedValue, setValue, status, removeValue] = useSessionStorage<
+    { form: EditFormData; dirtyFields: Array<keyof EditFormData> } | undefined
+  >(`edit-project-${project.slug}`, undefined);
 
   const form = useForm<EditFormData>({
     mode: "all",
@@ -95,6 +107,15 @@ export function EditProvider({ children, project }: EditContextProps) {
     },
     resolver: zodResolver(validationSchema),
   });
+
+  const onAddOrganization = (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => {
+    const organizations = [...form.getValues("organizations")];
+    const findOrganization = organizations.find(org => org.id === organization.id);
+    if (!findOrganization) {
+      organizations.push(organization);
+      form.setValue("organizations", organizations, { shouldDirty: true, shouldValidate: true });
+    }
+  };
 
   const onAddRepository = (organizationId: number, repoId: number) => {
     const organizations = [...form.getValues("organizations")];
@@ -130,14 +151,28 @@ export function EditProvider({ children, project }: EditContextProps) {
   };
 
   const onSaveInSession = () => {
-    setValue(form.getValues());
+    const dirtyField = { ...form.formState.dirtyFields } as { [key: string]: boolean | undefined };
+    const dirtykeys = Object.keys(dirtyField)
+      .map(key => (dirtyField[key] ? key : undefined))
+      .filter(Boolean) as Array<keyof EditFormData>;
+
+    setValue({ form: form.getValues(), dirtyFields: dirtykeys });
   };
 
   useEffect(() => {
     if (status === "ready" && storedValue) {
-      form.reset({ ...storedValue });
+      storedValue.dirtyFields.forEach(field => {
+        form.setValue(field, storedValue.form[field], { shouldDirty: true, shouldValidate: true });
+      });
     }
   }, [status]);
+
+  useEffect(() => {
+    const transformedOrganization = transformOrganization(installationData);
+    if (transformedOrganization) {
+      onAddOrganization(transformedOrganization);
+    }
+  }, [installationData]);
 
   // console.log("----DEBUG FORM VALUE ----", form.getValues());
   // console.log("form ERRRO", form.formState.errors);
@@ -184,15 +219,18 @@ export function EditProvider({ children, project }: EditContextProps) {
         form,
         project,
         formHelpers: {
+          addOrganization: onAddOrganization,
           addRepository: onAddRepository,
           saveInSession: onSaveInSession,
           removeRepository: onRemoveRepository,
         },
       }}
     >
-      <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-hidden">
-        {children}
-      </form>
+      <EditPanelProvider openOnLoad={!!installation_id} isLoading={isInstallationLoading} project={project}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-hidden">
+          {children}
+        </form>
+      </EditPanelProvider>
     </EditContext.Provider>
   );
 }
