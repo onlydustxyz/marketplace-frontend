@@ -5,7 +5,7 @@ import { useOrganizationSession } from "src/pages/ProjectCreation/commons/hooks/
 import { OrganizationSessionStorageInterface } from "src/types";
 import { useIntl } from "src/hooks/useIntl";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
-import { EditContext } from "../../EditContext";
+import { EditContext } from "../../../EditContext";
 
 function transformOrganizations(
   orgs: components["schemas"]["ProjectGithubOrganizationResponse"][]
@@ -29,7 +29,7 @@ export const EditPanelOrganization = () => {
   const { T } = useIntl();
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
-  const { form, project } = useContext(EditContext);
+  const { form, project } = useContext(EditContext); 
   const organizations = form?.watch("organizations");
 
   const {

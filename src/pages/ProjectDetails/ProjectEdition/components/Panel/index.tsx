@@ -1,5 +1,5 @@
 import SidePanel from "src/components/SidePanel";
-import { EditPanelOrganization } from "./OrganizationsTabs";
+import { EditPanelOrganization } from "./OrganizationTab/OrganizationsTabs";
 import { EditPanelRepositories } from "./RepositoriesTabs/RepositoriesTabs";
 import { useContext, useMemo, useState } from "react";
 import { EditPanelContext } from "./context";
