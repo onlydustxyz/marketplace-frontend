@@ -86,8 +86,6 @@ export function ContributionTable({
   const { T } = useIntl();
   const [showAll, setShowAll] = useState(false);
 
-  console.log(contributions);
-
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
 
