@@ -1,4 +1,3 @@
-import { Dollar } from "src/assets/icons/Dollar";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
@@ -9,6 +8,7 @@ import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 import PayoutStatus from "../PayoutStatus/PayoutStatus";
+import { AvailableConversion } from "../Currency/AvailableConversion";
 
 export function RewardCard({
   reward,
@@ -50,6 +50,17 @@ export function RewardCard({
         <PayoutStatus status={reward.status} />
       </div>
 
+      <Tag>
+        <AvailableConversion
+          tooltipId={`${reward.id}-reward-conversion`}
+          currency={{
+            currency: reward.currency,
+            amount: reward.amount,
+            dollar: reward.dollarsEquivalent,
+          }}
+        />
+      </Tag>
+
       <div className="flex items-center gap-2">
         <RoundedImage
           src={reward.from.avatarUrl ?? ""}
@@ -70,18 +81,6 @@ export function RewardCard({
             {reward.from.login}
           </button>
         </p>
-      </div>
-
-      <div className="flex items-center gap-2">
-        {/* TODO design */}
-        {/* <Tag>
-          <CalendarEventLine className="text-xs leading-none" />
-          {timeWorked}
-        </Tag> */}
-        <Tag>
-          <Dollar />
-          {reward.amount}
-        </Tag>
       </div>
     </article>
   );
