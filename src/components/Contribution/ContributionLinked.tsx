@@ -19,14 +19,15 @@ export function ContributionLinked({
   tooltipProps?: React.ComponentProps<typeof Tooltip>;
 }) {
   function renderBadges({ withTooltip, asLink }: { withTooltip: boolean; asLink: boolean }) {
-    return (
+    return contribution.links.map(link => (
       <ContributionBadge
-        contribution={contribution}
+        key={link.id}
+        contribution={link}
         withTooltip={withTooltip}
         asLink={asLink}
         tooltipProps={tooltipProps}
       />
-    );
+    ));
   }
 
   const nbLinkedContributions = contribution.links.length;
