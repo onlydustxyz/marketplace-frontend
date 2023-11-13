@@ -19,14 +19,14 @@ const useCreateProject = ({
 export type useUpdateProjectBody = components["schemas"]["UpdateProjectRequest"];
 export type useUpdateProjectResponse = components["schemas"]["UpdateProjectRequest"];
 
-const useUpdateroject = ({
+const useUpdateProject = ({
   params,
   options = {},
-}: UseMutationProps<useUpdateProjectResponse, { projectKey?: string }, useUpdateProjectBody>) => {
+}: UseMutationProps<useUpdateProjectResponse, { projectId?: string }, useUpdateProjectBody>) => {
   return useBaseMutation<useUpdateProjectBody, useUpdateProjectResponse>({
-    resourcePath: API_PATH.PROJECT_DETAILS(params?.projectKey || ""),
+    resourcePath: API_PATH.PROJECT_DETAILS(params?.projectId || ""),
     method: "PUT",
-    enabled: !!params?.projectKey,
+    enabled: !!params?.projectId,
     ...options,
   });
 };
@@ -39,4 +39,4 @@ const useUploadLogo = ({ options = {} }: UseUploaderProps<{ url: string }, undef
   });
 };
 
-export default { useCreateProject, useUpdateroject, useUploadLogo };
+export default { useCreateProject, useUpdateProject, useUploadLogo };

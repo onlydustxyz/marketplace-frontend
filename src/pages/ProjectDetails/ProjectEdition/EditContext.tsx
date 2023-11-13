@@ -6,6 +6,8 @@ import { z } from "zod";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+import ProjectApi from "src/api/Project";
+import { useUpdateProjectBody } from "src/api/Project/mutations";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -42,11 +44,12 @@ const validationSchema = z.object({
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
-  moreInfo: z.object({
-    url: z.string().min(1),
-    value: z.string().min(1),
-  }),
-
+  moreInfo: z.array(
+    z.object({
+      url: z.string().min(1),
+      value: z.string().min(1),
+    })
+  ),
   name: z.string().min(1),
   githubRepoIds: z.array(z.number()).min(1),
   projectLeadsToKeep: z.array(z.string()).min(1),
@@ -125,32 +128,36 @@ export function EditProvider({ children, project }: EditContextProps) {
     }
   }, [status]);
 
-  console.log("---- DEBUG FORM VALUE ----", form.getValues());
+  console.log("----DEBUG FORM VALUE ----", form.getValues());
   console.log("form ERRRO", form.formState.errors);
 
-  const onSubmit = (formData: EditFormData) => {
-    console.log("SUBMIT, formData", formData);
+  const { mutate: updateProject } = ProjectApi.mutations.useUpdateProject({
+    params: { projectId: project?.id },
+    options: {
+      onSuccess: async () => {
+        //noop
+        console.log("Success");
+      },
+    },
+  });
 
-    // mutate({
-    //   ...formData,
-    //   inviteGithubUserIdsAsProjectLeads,
-    //   isLookingForContributors: false,
-    //   moreInfo: [
-    //     {
-    //       url: "string",
-    //       value: "string",
-    //     },
-    //   ],
-    //   name: "string",
-    //   projectLeadsToKeep: ["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
-    //   rewardSettings: {
-    //     ignoreCodeReviews: false,
-    //     ignoreContributionsBefore: "2023-11-10T14:41:08.472Z",
-    //     ignoreIssues: false,
-    //     ignorePullRequests: false,
-    //   },
-    //   shortDescription: "string",
-    // });
+  type RewardsType = components["schemas"]["ProjectRewardSettings"];
+  const onSubmit = (formData: EditFormData) => {
+    // console.log("SUBMIT, formData", formData);
+    // console.log("FORM VALUES", form.getValues());
+
+    const test: useUpdateProjectBody = {
+      ...formData,
+      //TODO: rewards settings mapping
+      rewardSettings: {
+        ignoreCodeReviews: false,
+        ignoreContributionsBefore: undefined,
+        ignoreIssues: false,
+        ignorePullRequests: false,
+      },
+    };
+
+    updateProject(test);
   };
 
   return (

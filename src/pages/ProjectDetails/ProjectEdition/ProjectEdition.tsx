@@ -29,70 +29,11 @@ enum TabsType {
   Repos = "Repos",
 }
 
-interface createProjectInformation {
-  githubRepoIds: number[];
-  projectLead: { invited: number[] };
-  inviteGithubUserIdsAsProjectLeads: number[];
-  isLookingForContributors: boolean;
-  longDescription: string;
-  name: string;
-  logoUrl?: string;
-  moreInfo: {
-    url: string;
-    value: string;
-  };
-  shortDescription: string;
-}
-
 function SafeProjectEdition() {
   const { T } = useIntl();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabsType>(TabsType.General);
-  const { project, form } = useContext(EditContext);
-
-  //   const methods = useForm<createProjectInformation>({
-  //     mode: "all",
-  //     resolver: zodResolver(validationSchema),
-  //   });
-
-  //   const {
-  //     handleSubmit,
-  //     reset,
-  //     formState: { isValid, isDirty },
-  //   } = methods;
-
-  // const inviteGithubUserIdsAsProjectLeads = project?.leaders?.flatMap(leader => leader.githubUserId) || [];
-
-  //   useEffect(() => {
-  //     reset({
-  //       name: project.name,
-  //       longDescription: project.longDescription,
-  //       shortDescription: project.shortDescription,
-  //       logoUrl: project.logoUrl,
-  //       inviteGithubUserIdsAsProjectLeads,
-  //       isLookingForContributors: project.hiring,
-  //       moreInfo: { url: project.moreInfoUrl, value: project.moreInfoUrl },
-  //       projectLead: { invited: project.leaders },
-  //     });
-  //   }, [project]);
-
-  //   console.log("project", project);
-
-  // TODO: Use mutation
-  const { mutate } = ProjectApi.mutations.useUpdateroject({
-    params: { projectKey: project?.slug || "" },
-    options: {
-      onSuccess: async () => {
-        //noop
-        console.log("Success");
-      },
-    },
-  });
-
-  //TODO: hydrate this with Repository formData
-  const githubRepoIds = project?.organizations?.flatMap(org => org.repos?.map(repo => repo.id)) || [];
-
-  console.log("githubRepoIds", githubRepoIds);
+  const { form } = useContext(EditContext);
 
   const tabItems = [
     {
@@ -138,10 +79,7 @@ function SafeProjectEdition() {
 
       <Flex className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}>
         <Card>
-          {/* <FormProvider {...methods}> */}
-          {/* <form>{activeTab === TabsType.General ? <Information /> : <Repository />}</form> */}
           {activeTab === TabsType.General ? <Information /> : <Repository isError={false} isLoading={false} />}
-          {/* </FormProvider> */}
         </Card>
       </Flex>
 
@@ -164,6 +102,7 @@ function SafeProjectEdition() {
 export default function ProjectEdition() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
+
   if (!data) {
     /** TODO handle loading and error */
     return null;

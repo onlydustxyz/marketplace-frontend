@@ -31,7 +31,12 @@ export function Information() {
 
   return (
     <Flex direction="col" gap={8} className="w-full">
-      <Flex direction="col" gap={6} className="w-full">
+      <Flex
+        direction="col"
+        className={
+          "border-card-light  w-full divide-y divide-card-border-light [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*]:py-4"
+        }
+      >
         <Controller
           name="name"
           control={form?.control}
@@ -39,24 +44,37 @@ export function Information() {
             <FieldInput
               {...props.field}
               {...props.fieldState}
-              label={T("project.details.create.informations.form.fields.name.label")}
-              placeholder={T("project.details.create.informations.form.fields.name.placeholder")}
+              label={T("project.details.edit.informations.fields.name.label")}
+              placeholder={T("project.details.edit.informations.fields.name.placeholder")}
               infoMessage={{
-                children: T("project.details.create.informations.form.fields.name.info"),
+                children: T("project.details.edit.informations.fields.name.info"),
                 icon: ({ className }) => <InformationLine className={className} />,
               }}
             />
           )}
         />
+
         <Controller
           name="shortDescription"
           control={form?.control}
-          render={props => <FieldInput {...props.field} {...props.fieldState} label="Short description" />}
+          render={props => (
+            <FieldInput
+              {...props.field}
+              {...props.fieldState}
+              label={T("project.details.edit.informations.fields.short.label")}
+            />
+          )}
         />
         <Controller
           name="longDescription"
           control={form?.control}
-          render={props => <FieldTextarea {...props.field} {...props.fieldState} label="Long description" />}
+          render={props => (
+            <FieldTextarea
+              {...props.field}
+              {...props.fieldState}
+              label={T("project.details.edit.informations.fields.long.label")}
+            />
+          )}
         />
         <Controller
           name="logoUrl"
@@ -65,7 +83,7 @@ export function Information() {
             <FieldImage
               {...props.field}
               {...props.fieldState}
-              label="Project visual"
+              label={T("project.details.edit.informations.fields.logo.label")}
               max_size_mo={10}
               upload={{
                 mutate: uploadProjectLogo,
@@ -79,7 +97,12 @@ export function Information() {
           name="moreInfo"
           control={form?.control}
           render={({ field: { onChange, value } }) => (
-            <FieldCombined onChange={onChange} name="moreInfo" label={"More info"} className="gap-2">
+            <FieldCombined
+              onChange={onChange}
+              name="moreInfo"
+              label={T("project.details.edit.informations.fields.moreInfo.label")}
+              className="gap-2"
+            >
               {onChangeField => [
                 <FieldInput
                   key="moreInfo.url"
@@ -103,11 +126,10 @@ export function Information() {
         <Controller
           name="projectLeads"
           control={form?.control}
-          render={({ field: { value, name } }) => (
+          render={({ field: { value } }) => (
             <FieldProjectLead
               githubUserId="" // check what is this
               onChange={({ invited }) => {
-                // setValue("inviteGithubUserIdsAsProjectLeads", invited, { shouldDirty: true });
                 form?.setValue("projectLeads", invited, { shouldDirty: true });
               }}
               value={{ invited: value }}
@@ -121,8 +143,8 @@ export function Information() {
             <FieldSwitch
               {...props.field}
               {...props.fieldState}
-              label="Accept new applications"
-              switchLabel="Looking for contributors"
+              label={T("project.details.edit.informations.fields.hire.label")}
+              switchLabel={T("project.details.edit.informations.fields.hire.subLabel")}
             />
           )}
         />
