@@ -42,10 +42,12 @@ const validationSchema = z.object({
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
-  moreInfo: z.object({
-    url: z.string().min(1),
-    value: z.string().min(1),
-  }),
+  moreInfo: z.array(
+    z.object({
+      url: z.string().min(1),
+      value: z.string().min(1),
+    })
+  ),
 
   name: z.string().min(1),
   githubRepoIds: z.array(z.number()).min(1),
