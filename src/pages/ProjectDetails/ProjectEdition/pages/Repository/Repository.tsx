@@ -64,7 +64,6 @@ export function Repository({ isLoading, isError }: RepositoriesTabType) {
     );
   }, [isLoading, isError, organizations, hasInstalledRepo]);
 
-  console.log("hasInstalledRepo", hasInstalledRepo);
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-end">
