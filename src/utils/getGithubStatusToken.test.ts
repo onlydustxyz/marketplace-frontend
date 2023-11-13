@@ -66,6 +66,24 @@ describe("getGithubStatusToken", () => {
     );
   });
 
+  it("should get the token for an approved code review", () => {
+    expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Approved)).toBe(
+      "githubCodeReview.status.approved"
+    );
+  });
+
+  it("should get the token for a commented code review", () => {
+    expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Commented)).toBe(
+      "githubCodeReview.status.commented"
+    );
+  });
+
+  it("should get the token for a dismissed code review", () => {
+    expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Dismissed)).toBe(
+      "githubCodeReview.status.dismissed"
+    );
+  });
+
   it("should return empty string if unknown status", () => {
     // @ts-expect-error test is an invalid status
     expect(getGithubStatusToken(GithubContributionType.PullRequest, "test")).toBe("");

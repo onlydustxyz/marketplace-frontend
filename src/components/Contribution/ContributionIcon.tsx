@@ -13,9 +13,9 @@ import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
-  GithubItemStatus,
   GithubPullRequestDraft,
   GithubPullRequestStatus,
+  GithubStatus,
   GithubTypeStatusDict,
 } from "src/types";
 
@@ -39,9 +39,12 @@ export const variants: { status: GithubTypeStatusDict<string> } = {
       [GithubIssueStatus.Cancelled]: "text-github-grey-light border-github-grey",
     },
     [GithubContributionType.CodeReview]: {
-      [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
-      [GithubCodeReviewStatus.Completed]: "text-github-purple-light border-github-purple",
+      [GithubCodeReviewStatus.Approved]: "text-github-purple-light border-github-purple",
       [GithubCodeReviewStatus.ChangeRequested]: "text-github-purple-light border-github-purple",
+      [GithubCodeReviewStatus.Commented]: "text-github-green-light border-github-green",
+      [GithubCodeReviewStatus.Completed]: "text-github-purple-light border-github-purple",
+      [GithubCodeReviewStatus.Dismissed]: "text-github-grey-light border-github-grey",
+      [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
     },
   },
 };
@@ -68,7 +71,7 @@ export function ContributionIcon({
   size = Sizes.md,
 }: {
   type: GithubContributionType;
-  status: GithubItemStatus;
+  status: GithubStatus;
   size?: Sizes;
 }) {
   const icons: GithubTypeStatusDict<JSX.Element> = {
@@ -84,9 +87,12 @@ export function ContributionIcon({
       [GithubIssueStatus.Cancelled]: <IssueCancelled className={size} />,
     },
     [GithubContributionType.CodeReview]: {
-      [GithubCodeReviewStatus.Pending]: <EyeLine className={size} />,
-      [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className={size} />,
+      [GithubCodeReviewStatus.Approved]: <CodeReviewCheckIcon className={size} />,
       [GithubCodeReviewStatus.ChangeRequested]: <CodeReviewCheckIcon className={size} />,
+      [GithubCodeReviewStatus.Commented]: <EyeLine className={size} />,
+      [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className={size} />,
+      [GithubCodeReviewStatus.Dismissed]: <CodeReviewCheckIcon className={size} />,
+      [GithubCodeReviewStatus.Pending]: <EyeLine className={size} />,
     },
   };
 

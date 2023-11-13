@@ -3,13 +3,12 @@ import { cn } from "src/utils/cn";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
-import { useAuth } from "src/hooks/useAuth";
 import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import {
-  GithubCodeReviewOutcome,
   GithubContributionReviewStatus,
   GithubPullRequestStatus,
   Contribution as ContributionT,
+  GithubContributionType,
 } from "src/types";
 
 type Props = {
@@ -18,39 +17,25 @@ type Props = {
 };
 
 export function Contribution({ contribution, isMobile = false }: Props) {
-  const { githubPullRequest, project, rewardIds } = contribution;
-
-  //   const { type, title, htmlUrl, author, status, number } = getContributionInfo(contribution);
-  const {
-    id,
-    type,
-    githubTitle: title,
-    githubHtmlUrl: htmlUrl,
-    githubAuthor: author,
-    status,
-    githubNumber: number,
-  } = contribution;
-
-  const { githubUserId } = useAuth();
   const { open } = useContributionDetailPanel();
 
-  function renderReview() {
-    if (githubPullRequest && status === GithubPullRequestStatus.Open) {
-      let review = GithubContributionReviewStatus.PendingReviewer;
-      const {
-        codeReviews: [codeReview],
-      } = githubPullRequest;
+  const { githubCodeReviewOutcome, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
+    contribution;
 
-      switch (codeReview?.outcome) {
-        case null:
-          review = GithubContributionReviewStatus.UnderReview;
-          break;
-        case GithubCodeReviewOutcome.ChangesRequested:
-          review = GithubContributionReviewStatus.ChangesRequested;
-          break;
-        case GithubCodeReviewOutcome.Approved:
-          review = GithubContributionReviewStatus.Approved;
-          break;
+  function renderReview() {
+    if (type === GithubContributionType.PullRequest && githubStatus === GithubPullRequestStatus.Open) {
+      let review = GithubContributionReviewStatus.PendingReviewer;
+
+      if (githubCodeReviewOutcome === null) {
+        review = GithubContributionReviewStatus.UnderReview;
+      }
+
+      if (githubCodeReviewOutcome === "CHANGES_REQUESTED") {
+        review = GithubContributionReviewStatus.ChangesRequested;
+      }
+
+      if (githubCodeReviewOutcome === "APPROVED") {
+        review = GithubContributionReviewStatus.Approved;
       }
 
       return <ContributionReview status={review} />;
@@ -67,23 +52,15 @@ export function Contribution({ contribution, isMobile = false }: Props) {
       })}
     >
       <div className="flex min-w-0 items-center gap-2 font-walsheim">
-        <ContributionBadge
-          id={id ?? ""}
-          number={number}
-          type={type}
-          status={status}
-          title={title}
-          author={author}
-          url={htmlUrl}
-        />
+        <ContributionBadge contribution={contribution} />
         <button
           className="truncate text-left hover:underline"
           onClick={() => {
-            if (githubUserId && id && contribution.project?.id)
-              open({ githubUserId, contributionId: id, projectId: contribution.project.id }, htmlUrl);
+            if (id && contribution.project?.id)
+              open({ contributionId: id, projectId: contribution.project.id }, githubHtmlUrl);
           }}
         >
-          {title}
+          {githubTitle}
         </button>
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">

@@ -6,9 +6,9 @@ import { useIntl } from "src/hooks/useIntl";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
-  GithubItemStatus,
   GithubPullRequestDraft,
   GithubPullRequestStatus,
+  GithubStatus,
   GithubTypeStatusDict,
 } from "src/types";
 import { cn } from "src/utils/cn";
@@ -29,16 +29,19 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubIssueStatus.Cancelled]: "contributions.tooltip.dateClosed",
   },
   [GithubContributionType.CodeReview]: {
-    [GithubCodeReviewStatus.Pending]: "contributions.tooltip.dateAssigned",
-    [GithubCodeReviewStatus.Completed]: "contributions.tooltip.dateApproved",
+    [GithubCodeReviewStatus.Approved]: "contributions.tooltip.dateApproved",
     [GithubCodeReviewStatus.ChangeRequested]: "contributions.tooltip.dateChangeRequested",
+    [GithubCodeReviewStatus.Commented]: "contributions.tooltip.dateCommented",
+    [GithubCodeReviewStatus.Completed]: "contributions.tooltip.dateApproved",
+    [GithubCodeReviewStatus.Dismissed]: "contributions.tooltip.dateDismissed",
+    [GithubCodeReviewStatus.Pending]: "contributions.tooltip.dateAssigned",
   },
 };
 
 type ContributionDateProps = {
   id: string;
   type: GithubContributionType;
-  status: GithubItemStatus;
+  status: GithubStatus;
   date: Date;
   withIcon?: boolean;
   tooltipProps?: ComponentProps<typeof Tooltip>;

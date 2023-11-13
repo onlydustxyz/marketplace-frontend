@@ -138,9 +138,12 @@ export enum GithubIssueStatus {
 }
 
 export enum GithubCodeReviewStatus {
-  Pending = "PENDING",
-  ChangeRequested = "CHANGE_REQUESTED",
+  Approved = "APPROVED",
+  ChangeRequested = "CHANGES_REQUESTED",
+  Commented = "COMMENTED",
   Completed = "COMPLETED",
+  Dismissed = "DISMISSED",
+  Pending = "PENDING",
 }
 
 export enum GithubCodeReviewOutcome {
@@ -159,18 +162,13 @@ export enum GithubContributionReviewStatus {
   UnderReview = "underReview",
   Approved = "approved",
   ChangesRequested = "changesRequested",
+  Dismissed = "dismissed",
+  Commented = "commented",
 }
 
 export enum GithubPullRequestDraft {
   Draft = "DRAFT",
 }
-
-// Same as components["schemas"]["RewardItemResponse"]["status"] but uses enums
-export type GithubItemStatus =
-  | GithubPullRequestStatus
-  | GithubIssueStatus
-  | GithubCodeReviewStatus
-  | GithubPullRequestDraft;
 
 type GithubPullRequestTypeStatusDict<T> = Record<
   GithubContributionType.PullRequest,
@@ -324,9 +322,12 @@ export interface OrganizationSessionStorageInterface extends useInstallationById
 }
 
 export type Contribution = components["schemas"]["ContributionPageItemResponse"];
+export type ContributionDetail = components["schemas"]["ContributionDetailsResponse"];
 
 export enum ContributionStatus {
   InProgress = "IN_PROGRESS",
   Completed = "COMPLETED",
   Cancelled = "CANCELLED",
 }
+
+export type GithubStatus = components["schemas"]["ContributionPageItemResponse"]["githubStatus"];

@@ -20,6 +20,22 @@ const useGetProjectBySlug = ({
   });
 };
 
+export type UseGetProjectContributionDetailResponse = components["schemas"]["ContributionDetailsResponse"];
+
+const useGetProjectContributionDetail = ({
+  params,
+  options = {},
+}: UseQueryProps<UseGetProjectContributionDetailResponse, { projectId?: string; contributionId?: string }>) => {
+  return useBaseQuery<UseGetProjectContributionDetailResponse>({
+    resourcePath: API_PATH.PROJECT_CONTRIBUTION_DETAIL(params?.projectId ?? "", params?.contributionId ?? ""),
+    enabled: !!params?.projectId && !!params?.contributionId,
+    tags: PROJECT_TAGS.contribution_detail(params?.projectId ?? "", params?.contributionId ?? ""),
+    ...options,
+  });
+};
+
+export type useInfiniteListResponse = components["schemas"]["ProjectPageResponse"];
+
 const useInfiniteList = (
   params: Partial<Parameters<typeof useInfiniteBaseQuery>[0]>,
   options: Parameters<typeof useInfiniteBaseQuery<UseInfiniteListResponse>>[1] = {}
@@ -34,4 +50,4 @@ const useInfiniteList = (
   );
 };
 
-export default { useGetProjectBySlug, useInfiniteList };
+export default { useGetProjectBySlug, useGetProjectContributionDetail, useInfiniteList };

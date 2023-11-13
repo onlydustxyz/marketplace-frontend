@@ -19,14 +19,7 @@ import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
-import {
-  DeepPartial,
-  ContributionStatus,
-  GithubContributionType,
-  GithubItemStatus,
-  GithubPullRequestDraft,
-  GithubPullRequestStatus,
-} from "src/types";
+import { DeepPartial, ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
@@ -93,6 +86,8 @@ export function ContributionTable({
   const { T } = useIntl();
   const [showAll, setShowAll] = useState(false);
 
+  console.log(contributions);
+
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
 
@@ -141,12 +136,12 @@ export function ContributionTable({
         {contributions?.map(contribution => {
           return (
             <div
-              key={`${contribution.id}-${contribution.projectName}`}
+              key={`${contribution.id}-${contribution.project.name}`}
               className={cn("rounded-xl", {
                 "bg-whiteFakeOpacity-5/95 lg:bg-none": !fullTable,
               })}
             >
-              <ContributionCard contribution={contribution} status={status} />
+              <ContributionCard contribution={contribution} />
             </div>
           );
         })}
@@ -177,26 +172,23 @@ export function ContributionTable({
     }
 
     return memoizedContributions?.map(contribution => {
-      const lineId = `${contribution.id}-${contribution.project?.id}`;
-      const lineDate = status === ContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
-      const { status: contributionStatus } = contribution.githubPullRequest ??
-        contribution.githubIssue ??
-        contribution.githubCodeReview ?? { status: GithubPullRequestStatus.Open };
-      const { draft } = contribution?.githubPullRequest ?? {};
+      const { createdAt, completedAt, githubStatus, id, project, repo, status, type } = contribution;
+      const lineId = `${id}-${project.id}`;
+      const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
 
       return (
         <Line key={lineId}>
           <Cell height={CellHeight.Compact}>
             <ContributionDate
               id={lineId}
-              type={contribution.type as GithubContributionType}
-              status={draft ? GithubPullRequestDraft.Draft : (contributionStatus as GithubItemStatus)}
-              date={new Date(lineDate)}
+              type={type as GithubContributionType}
+              status={githubStatus}
+              date={new Date(lineDate ?? "")}
               tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.Bottom }}
             />
           </Cell>
           <Cell height={CellHeight.Compact}>
-            <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
+            <ContributionProjectRepo project={project} repo={repo} />
           </Cell>
           <Cell height={CellHeight.Compact}>
             <Contribution contribution={contribution} />

@@ -2,9 +2,9 @@ import { GithubIssueStatus } from "src/__generated/graphql";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
-  GithubItemStatus,
   GithubPullRequestDraft,
   GithubPullRequestStatus,
+  GithubStatus,
   GithubTypeStatusDict,
 } from "src/types";
 
@@ -21,12 +21,15 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubIssueStatus.Cancelled]: "githubIssue.status.closed",
   },
   [GithubContributionType.CodeReview]: {
-    [GithubCodeReviewStatus.Pending]: "githubCodeReview.status.pending",
-    [GithubCodeReviewStatus.Completed]: "githubCodeReview.status.approved",
+    [GithubCodeReviewStatus.Approved]: "githubCodeReview.status.approved",
     [GithubCodeReviewStatus.ChangeRequested]: "githubCodeReview.status.changeRequested",
+    [GithubCodeReviewStatus.Commented]: "githubCodeReview.status.commented",
+    [GithubCodeReviewStatus.Completed]: "githubCodeReview.status.approved",
+    [GithubCodeReviewStatus.Dismissed]: "githubCodeReview.status.dismissed",
+    [GithubCodeReviewStatus.Pending]: "githubCodeReview.status.pending",
   },
 };
 
-export function getGithubStatusToken(type: GithubContributionType, status: GithubItemStatus): string {
+export function getGithubStatusToken(type: GithubContributionType, status: GithubStatus): string {
   return tokens[type]?.[status as keyof typeof tokens[GithubContributionType]] ?? "";
 }

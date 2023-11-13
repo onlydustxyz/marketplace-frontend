@@ -14,6 +14,8 @@ export const API_PATH = {
   PROJECTS_LOGO: BASE_API_V1("projects/logos"),
   PROJECT_DETAILS: (slug: string) => BASE_API_V1(`projects/${slug}`),
   PROJECTS_BY_SLUG: (slug: string) => BASE_API_V1(`projects/slug/${slug}`),
+  PROJECT_CONTRIBUTION_DETAIL: (projectId: string, contributionId: string) =>
+    BASE_API_V1(`projects/${projectId}/contributions/${contributionId}`),
 
   /* --------------------------------- USERS -------------------------------- */
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),

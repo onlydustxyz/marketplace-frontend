@@ -55,7 +55,7 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
   onHeaderClick: () => {
     alert("Header clicked!");
   },
-  data: contributionTable,
+  contributions: contributionTable,
   loading: false,
   error: undefined,
   status: ContributionStatus.InProgress,
