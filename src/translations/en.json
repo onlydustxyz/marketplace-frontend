@@ -239,6 +239,9 @@
     "placeholderShort": "Search projects"
   },
   "form": {
+    "toast": {
+      "success": "Changes saved"
+    },
     "required": "Required",
     "singleDatePlaceholder": "Select a date",
     "multipleDatesPlaceholder": "Select some dates",
@@ -929,6 +932,9 @@
             "organizations": "Organisations",
             "repositories": "Repositories"
           }
+        },
+        "toasts": {
+          "logoUpdate": "Logo updated successfully"
         },
         "fields": {
           "name": {

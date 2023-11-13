@@ -12,9 +12,11 @@ import ProjectApi from "src/api/Project";
 import { useIntl } from "src/hooks/useIntl";
 import { useContext } from "react";
 import { EditContext } from "../EditContext";
+import { useShowToaster } from "src/hooks/useToaster";
 
 export function Information() {
   const { T } = useIntl();
+  const showToaster = useShowToaster();
   const { form } = useContext(EditContext);
 
   const {
@@ -23,8 +25,8 @@ export function Information() {
     isPending: loadingUploadLogo,
   } = ProjectApi.mutations.useUploadLogo({
     options: {
-      onSuccess: data => {
-        // noop
+      onSuccess: () => {
+        showToaster(T("project.details.edit.toasts.logoUpdate"));
       },
     },
   });
@@ -111,13 +113,6 @@ export function Information() {
                   fieldClassName="flex-1"
                   onChange={event => onChangeField({ ...value, url: event.target.value })}
                   startIcon={({ className }) => <Link className={className} />}
-                />,
-                <FieldInput
-                  key="moreInfo.value"
-                  name="moreInfo.value"
-                  value={value?.[0].value}
-                  fieldClassName="w-[180px] max-w-full"
-                  onChange={event => onChangeField({ ...value, value: event.target.value })}
                 />,
               ]}
             </FieldCombined>

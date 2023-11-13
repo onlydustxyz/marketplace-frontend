@@ -1,13 +1,17 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { createContext, useEffect } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { components } from "src/__generated/api";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
-import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import ProjectApi from "src/api/Project";
 import { useUpdateProjectBody } from "src/api/Project/mutations";
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+import { useIntl } from "src/hooks/useIntl";
+import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
+import { useShowToaster } from "src/hooks/useToaster";
+import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+import { z } from "zod";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -57,6 +61,11 @@ const validationSchema = z.object({
 });
 
 export function EditProvider({ children, project }: EditContextProps) {
+  const { T } = useIntl();
+  const navigate = useNavigate();
+  const showToaster = useShowToaster();
+  const queryClient = useQueryClient();
+
   const [storedValue, setValue, status, removeValue] = useSessionStorage<EditFormData | undefined>(
     `edit-project-${project.slug}`,
     undefined
@@ -128,20 +137,30 @@ export function EditProvider({ children, project }: EditContextProps) {
     }
   }, [status]);
 
-  console.log("----DEBUG FORM VALUE ----", form.getValues());
-  console.log("form ERRRO", form.formState.errors);
+  // console.log("----DEBUG FORM VALUE ----", form.getValues());
+  // console.log("form ERRRO", form.formState.errors);
 
   const { mutate: updateProject } = ProjectApi.mutations.useUpdateProject({
     params: { projectId: project?.id },
     options: {
-      onSuccess: async () => {
-        //noop
-        console.log("Success");
+      onSuccess: async data => {
+        //TODO: replace pathname with project slug
+        console.log("data", data);
+        showToaster(T("form.toast.success"));
+        removeValue();
+        queryClient.invalidateQueries();
+
+        // if (id === response .id && slug === response .slug) {
+        //   // Don't do anything as the user is on right page
+        // } else if (id === response .id && slug !== response .slug) {
+        //     navigate("/products/" + response .id + "/" + response .slug);
+        // history.replace({ pathname: `/product/${this.props.product.id}`})
+        // navigate(to, { replace: true });
+        // } else {}
       },
     },
   });
 
-  type RewardsType = components["schemas"]["ProjectRewardSettings"];
   const onSubmit = (formData: EditFormData) => {
     // console.log("SUBMIT, formData", formData);
     // console.log("FORM VALUES", form.getValues());
@@ -158,6 +177,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     };
 
     updateProject(test);
+    form.reset(test);
   };
 
   return (
@@ -172,7 +192,9 @@ export function EditProvider({ children, project }: EditContextProps) {
         },
       }}
     >
-      <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-hidden">
+        {children}
+      </form>
     </EditContext.Provider>
   );
 }
