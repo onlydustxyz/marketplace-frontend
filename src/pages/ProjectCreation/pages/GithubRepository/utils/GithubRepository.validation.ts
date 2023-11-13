@@ -5,7 +5,7 @@ const validationSchema = z.object({
     .array(
       z.object({
         organization: z.object({
-          repos: z.array(z.object({ githubId: z.number(), selected: z.boolean().optional() })),
+          repos: z.array(z.object({ id: z.number(), selected: z.boolean().optional() })),
         }),
       })
     )

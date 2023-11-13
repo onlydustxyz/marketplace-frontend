@@ -9,8 +9,6 @@ export const EditPanelOrganization = () => {
   const { form, project } = useContext(EditContext);
   const organizations = form?.watch("organizations") || [];
 
-  console.log("organizations", organizations);
-
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -24,7 +22,7 @@ export const EditPanelOrganization = () => {
       <ul className="flex flex-col gap-2 py-4 pb-6">
         {organizations?.map((organization, index: number) => (
           <HorizontalListItemCard
-            key={`${organization?.name}+${index}`}
+            key={`${organization?.login}+${index}`}
             imageUrl={organization?.avatarUrl ?? ""}
             title={organization?.name || organization?.login || ""}
             linkUrl={`https://github.com/organizations/${organization?.login}/settings/installations/${organization?.installationId}`}

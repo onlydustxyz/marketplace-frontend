@@ -51,6 +51,7 @@ export const GithubRepositoryPage = () => {
       organizations: [],
     },
   });
+
   const navigate = useNavigate();
 
   const organizations = watch("organizations");
@@ -77,8 +78,8 @@ export const GithubRepositoryPage = () => {
     navigate("../informations");
   };
 
-  const onCheckboxChange = (value: boolean, repoId: number | undefined, organizationName: string | undefined) => {
-    const findOrganization = organizations.find(org => org.organization.name === organizationName);
+  const onCheckboxChange = (value: boolean, repoId: number | undefined, organizationLogin: string | undefined) => {
+    const findOrganization = organizations.find(org => org.organization.login === organizationLogin);
 
     if (findOrganization && repoId) {
       const findRepo = (findOrganization.organization?.repos || []).find(repo => repo.id === repoId);
@@ -129,9 +130,9 @@ export const GithubRepositoryPage = () => {
                 <>
                   {filterOrganizationBySearch(value || []).map(organization => (
                     <VerticalListItemCard
-                      key={organization.organization.name}
-                      title={organization.organization.name || ""}
-                      avatarAlt={organization.organization.name || ""}
+                      key={organization.organization.login}
+                      title={organization.organization.login || ""}
+                      avatarAlt={organization.organization.login || ""}
                       avatarSrc={organization.organization.avatarUrl || ""}
                     >
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
@@ -145,7 +146,9 @@ export const GithubRepositoryPage = () => {
                                 <Flex justify="between" item="center" className="w-full">
                                   <h3 className="h- text-body-m-bold">{repo.name}</h3>
                                   <FieldCheckbox
-                                    onChange={value => onCheckboxChange(value, repo.id, organization.organization.name)}
+                                    onChange={value =>
+                                      onCheckboxChange(value, repo.id, organization.organization.login)
+                                    }
                                     value={repo.selected || false}
                                     name={`repository-${repo.id}`}
                                     fieldClassName={"inline-flex w-auto"}
