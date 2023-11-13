@@ -151,7 +151,7 @@ function SafeProjectEdition() {
         className="max-h-[88px] w-full items-center border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
       >
         <FormStatus {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }} />
-        <Button size={ButtonSize.Md} htmlType="submit">
+        <Button size={ButtonSize.Md} htmlType="submit" disabled={!form?.formState.isValid}>
           Save changes
           <ArrowRightSLine className="-mr-2 text-2xl" />
         </Button>
