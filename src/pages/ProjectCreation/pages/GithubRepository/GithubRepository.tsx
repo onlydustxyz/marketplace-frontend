@@ -81,7 +81,7 @@ export const GithubRepositoryPage = () => {
     const findOrganization = organizations.find(org => org.organization.name === organizationName);
 
     if (findOrganization && repoId) {
-      const findRepo = (findOrganization.repos || []).find(repo => repo.githubId === repoId);
+      const findRepo = (findOrganization.organization?.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
         findRepo.selected = value;
         setValue("organizations", [...organizations], { shouldDirty: true, shouldValidate: true });
@@ -132,10 +132,10 @@ export const GithubRepositoryPage = () => {
                       key={organization.organization.name}
                       title={organization.organization.name || ""}
                       avatarAlt={organization.organization.name || ""}
-                      avatarSrc={organization.organization.logoUrl || ""}
+                      avatarSrc={organization.organization.avatarUrl || ""}
                     >
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
-                        {(organization.repos || []).map(repo =>
+                        {(organization.organization.repos || []).map(repo =>
                           search && !repo.name?.includes(search) ? null : (
                             <label
                               key={repo.name}
@@ -145,11 +145,9 @@ export const GithubRepositoryPage = () => {
                                 <Flex justify="between" item="center" className="w-full">
                                   <h3 className="h- text-body-m-bold">{repo.name}</h3>
                                   <FieldCheckbox
-                                    onChange={value =>
-                                      onCheckboxChange(value, repo.githubId, organization.organization.name)
-                                    }
+                                    onChange={value => onCheckboxChange(value, repo.id, organization.organization.name)}
                                     value={repo.selected || false}
-                                    name={`repository-${repo.githubId}`}
+                                    name={`repository-${repo.id}`}
                                     fieldClassName={"inline-flex w-auto"}
                                   />
                                 </Flex>

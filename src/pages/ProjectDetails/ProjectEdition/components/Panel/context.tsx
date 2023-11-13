@@ -6,6 +6,7 @@ import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 interface EditPanelContextProps {
   openOnLoad: boolean;
   children: React.ReactNode;
+  isLoading: boolean;
 }
 
 type EditPanel = {
@@ -13,6 +14,7 @@ type EditPanel = {
   close: () => void;
   toggle: (value: boolean) => void;
   isOpen: boolean;
+  isLoading: boolean;
   project?: UseGetProjectBySlugResponse;
 };
 
@@ -21,10 +23,11 @@ export const EditPanelContext = createContext<EditPanel>({
   close: () => null,
   toggle: () => null,
   isOpen: false,
+  isLoading: false,
   project: undefined,
 });
 
-export function EditPanelProvider({ children, openOnLoad }: EditPanelContextProps) {
+export function EditPanelProvider({ children, openOnLoad, isLoading }: EditPanelContextProps) {
   const [open, setOpen] = useState(false);
 
   const { project } = useContext(EditContext);
@@ -51,7 +54,7 @@ export function EditPanelProvider({ children, openOnLoad }: EditPanelContextProp
     <EditPanelContext.Provider
       value={{
         isOpen: open && !!project,
-        project,
+        isLoading,
         open: openSidePanel,
         toggle: toggleSidePanel,
         close: closeSidePanel,

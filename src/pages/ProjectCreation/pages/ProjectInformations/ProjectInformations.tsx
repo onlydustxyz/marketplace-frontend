@@ -1,7 +1,10 @@
 import { Controller, useForm } from "react-hook-form";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { FieldCombined } from "src/components/New/Field/Combined";
-import { FieldProjectLead } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+import {
+  FieldProjectLead,
+  SelectedLeadType,
+} from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
@@ -30,7 +33,7 @@ import CheckLine from "src/icons/CheckLine";
 
 interface createProjectInformation {
   githubRepoIds: number[];
-  projectLead: { invited: number[] };
+  projectLeads: SelectedLeadType[];
   inviteGithubUserIdsAsProjectLeads: number[];
   isLookingForContributors: boolean;
   longDescription: string;
@@ -234,18 +237,20 @@ export const ProjectInformationsPage = () => {
                 )}
               />
               <Controller
-                name="projectLead"
+                name="projectLeads"
                 control={control}
-                render={({ field: { value, name } }) => (
+                render={({ field: { value } }) => (
                   <FieldProjectLead
+                    githubUserId="" // check what is this
                     onChange={({ invited }) => {
-                      setValue("inviteGithubUserIdsAsProjectLeads", invited, {
-                        shouldDirty: true,
-                        shouldValidate: true,
-                      });
+                      setValue(
+                        "inviteGithubUserIdsAsProjectLeads",
+                        invited.map(lead => lead.githubUserId).filter(Boolean) as number[],
+                        { shouldDirty: true }
+                      );
+                      setValue("projectLeads", invited, { shouldDirty: true });
                     }}
-                    githubUserId={name}
-                    value={value}
+                    value={{ invited: value }}
                   />
                 )}
               />

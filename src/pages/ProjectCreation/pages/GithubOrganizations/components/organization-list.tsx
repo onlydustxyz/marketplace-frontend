@@ -37,7 +37,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
         ...data,
         organization: {
           ...data.organization,
-          installationId: installation_id,
+          installationId: data.id,
         },
       };
       setSavedOrgsData([...savedOrgsData, newData]);
@@ -72,7 +72,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
         {savedOrgsData?.map((installation: OrganizationSessionStorageInterface, index: number) => (
           <HorizontalListItemCard
             key={`${installation?.organization?.name}+${index}`}
-            imageUrl={installation?.organization?.logoUrl ?? ""}
+            imageUrl={installation?.organization?.avatarUrl ?? ""}
             title={installation?.organization?.name ?? ""}
             linkUrl={`https://github.com/organizations/${installation?.organization?.name}/settings/installations/${installation?.organization?.installationId}`}
           />
