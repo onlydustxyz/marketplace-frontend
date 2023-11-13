@@ -942,6 +942,9 @@
             "codeReviews": "Code reviews"
           }
         },
+        "organizations": {
+          "installGithubApp": "Install Github app"
+        },
         "repositories": {
           "addRepositories": "Add repositories",
           "removeRepository": "Remove repository",

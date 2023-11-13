@@ -6,6 +6,37 @@ import { z } from "zod";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+import { EditPanelProvider } from "./components/Panel/context";
+import { useSearchParams } from "react-router-dom";
+import GithubApi from "src/api/Github";
+
+function transformOrganization(
+  input: components["schemas"]["InstallationResponse"] | undefined
+): components["schemas"]["ProjectGithubOrganizationResponse"][] {
+  if (!input) {
+    return [];
+  }
+  const transformedOrganization: components["schemas"]["ProjectGithubOrganizationResponse"] = {
+    id: undefined,
+    login: undefined,
+    avatarUrl: input.organization.logoUrl, // Assuming logoUrl is the avatarUrl
+    htmlUrl: undefined,
+    name: input.organization.name,
+    repos: (input.repos || []).map(repo => ({
+      id: repo.githubId ?? 0,
+      owner: "",
+      name: repo.name ?? "",
+      htmlUrl: "",
+      description: repo.shortDescription,
+      stars: 0,
+      forkCount: 0,
+      hasIssues: false,
+      isIncludedInProject: undefined,
+    })),
+  };
+
+  return [transformedOrganization];
+}
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -16,6 +47,7 @@ type Edit = {
   project?: UseGetProjectBySlugResponse;
   form?: UseFormReturn<EditFormData, unknown>;
   formHelpers: {
+    addOrganization: (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => void;
     saveInSession: () => void;
     addRepository: (organizationId: number, repoId: number) => void;
     removeRepository: (organizationId: number, repoId: number) => void;
@@ -31,6 +63,7 @@ export const EditContext = createContext<Edit>({
   form: undefined,
   project: undefined,
   formHelpers: {
+    addOrganization: () => null,
     addRepository: () => null,
     saveInSession: () => null,
     removeRepository: () => null,
@@ -54,6 +87,14 @@ const validationSchema = z.object({
 });
 
 export function EditProvider({ children, project }: EditContextProps) {
+  const [searchParams] = useSearchParams();
+  const installation_id = searchParams.get("installation_id") ?? "";
+
+  const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
+    params: { installation_id },
+    options: { retry: 1, enabled: !!installation_id },
+  });
+
   const [storedValue, setValue, status, removeValue] = useSessionStorage<EditFormData | undefined>(
     `edit-project-${project.slug}`,
     undefined
@@ -81,6 +122,15 @@ export function EditProvider({ children, project }: EditContextProps) {
     },
     resolver: zodResolver(validationSchema),
   });
+
+  const onAddOrganization = (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => {
+    const organizations = [...form.getValues("organizations")];
+    const findOrganization = organizations.find(org => org.id === organization.id);
+    if (!findOrganization) {
+      organizations.push(organization);
+      form.setValue("organizations", organizations, { shouldDirty: true, shouldValidate: true });
+    }
+  };
 
   const onAddRepository = (organizationId: number, repoId: number) => {
     const organizations = [...form.getValues("organizations")];
@@ -159,13 +209,16 @@ export function EditProvider({ children, project }: EditContextProps) {
         form,
         project,
         formHelpers: {
+          addOrganization: onAddOrganization,
           addRepository: onAddRepository,
           saveInSession: onSaveInSession,
           removeRepository: onRemoveRepository,
         },
       }}
     >
-      <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
+      <EditPanelProvider openOnLoad={false}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
+      </EditPanelProvider>
     </EditContext.Provider>
   );
 }
