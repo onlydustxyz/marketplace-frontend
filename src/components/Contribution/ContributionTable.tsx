@@ -26,6 +26,8 @@ import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
 import { useMediaQuery } from "usehooks-ts";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 import { UseMyContributionsResponse } from "src/api/Me/queries";
+import { ShowMore } from "../Table/ShowMore";
+import MeApi from "src/api/Me";
 
 export enum TableColumns {
   Date = "date",
@@ -69,6 +71,9 @@ export function ContributionTable({
   title,
   sort,
   onSort,
+  hasNextPage,
+  fetchNextPage,
+  isFetchingNextPage,
 }: {
   contributions?: UseMyContributionsResponse["contributions"];
   description: string;
@@ -82,6 +87,9 @@ export function ContributionTable({
   title: string;
   sort: TableSort;
   onSort: (sort: TableSort) => void;
+  hasNextPage: ReturnType<typeof MeApi.queries.useMyContributions>["hasNextPage"];
+  fetchNextPage: ReturnType<typeof MeApi.queries.useMyContributions>["fetchNextPage"];
+  isFetchingNextPage: ReturnType<typeof MeApi.queries.useMyContributions>["isFetchingNextPage"];
 }) {
   const { T } = useIntl();
   const [showAll, setShowAll] = useState(false);
@@ -295,6 +303,11 @@ export function ContributionTable({
         >
           {isLg ? renderDesktopContent() : null}
         </Table>
+        {isLg && hasNextPage ? (
+          <div className="pt-6">
+            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+          </div>
+        ) : null}
       </div>
     </section>
   );

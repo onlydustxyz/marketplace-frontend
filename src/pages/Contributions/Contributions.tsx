@@ -110,6 +110,9 @@ export default function Contributions() {
     data: inProgressData,
     isLoading: inProgressLoading,
     isError: inProgressError,
+    hasNextPage: inProgressHasNextPage,
+    fetchNextPage: inProgressFetchNextPage,
+    isFetchingNextPage: inProgressFetchingNextPage,
   } = MeApi.queries.useMyContributions(
     { queryParams: { statuses: "IN_PROGRESS" } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress))) }
@@ -119,6 +122,9 @@ export default function Contributions() {
     data: completedData,
     isLoading: completedLoading,
     isError: completedError,
+    hasNextPage: completedHasNextPage,
+    fetchNextPage: completedFetchNextPage,
+    isFetchingNextPage: completedFetchingNextPage,
   } = MeApi.queries.useMyContributions(
     { queryParams: { statuses: "COMPLETED" } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed))) }
@@ -128,49 +134,13 @@ export default function Contributions() {
     data: cancelledData,
     isLoading: cancelledLoading,
     isError: cancelledError,
+    hasNextPage: cancelledHasNextPage,
+    fetchNextPage: cancelledFetchNextPage,
+    isFetchingNextPage: cancelledFetchingNextPage,
   } = MeApi.queries.useMyContributions(
     { queryParams: { statuses: "CANCELLED" } },
     { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled))) }
   );
-
-  //   const {
-  //     data: inProgressData,
-  //     loading: inProgressLoading,
-  //     error: inProgressError,
-  //   } = useGetAllContributionsQuery({
-  //     variables: {
-  //       orderBy: sort[GithubContributionStatus.InProgress].orderBy as ContributionsOrderBy,
-  //       where: tableWhere({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
-  //     },
-  //     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
-  //     fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
-  //   });
-
-  //   const {
-  //     data: completedData,
-  //     loading: completedLoading,
-  //     error: completedError,
-  //   } = useGetAllContributionsQuery({
-  //     variables: {
-  //       orderBy: sort[GithubContributionStatus.Completed].orderBy as ContributionsOrderBy,
-  //       where: tableWhere({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
-  //     },
-  //     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
-  //     fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
-  //   });
-
-  //   const {
-  //     data: canceledData,
-  //     loading: canceledLoading,
-  //     error: canceledError,
-  //   } = useGetAllContributionsQuery({
-  //     variables: {
-  //       orderBy: sort[GithubContributionStatus.Canceled].orderBy as ContributionsOrderBy,
-  //       where: tableWhere({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
-  //     },
-  //     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Cancelled)),
-  //     fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
-  //   });
 
   const { data: projectsData } = useGetContributionProjectsQuery({
     variables: { where: projectsWhere() as ContributionsBoolExp },
@@ -272,6 +242,9 @@ export default function Contributions() {
           return state;
         });
       },
+      hasNextPage: inProgressHasNextPage,
+      fetchNextPage: inProgressFetchNextPage,
+      isFetchingNextPage: inProgressFetchingNextPage,
     },
     {
       id: "completed_contributions_table",
@@ -295,6 +268,9 @@ export default function Contributions() {
           return state;
         });
       },
+      hasNextPage: completedHasNextPage,
+      fetchNextPage: completedFetchNextPage,
+      isFetchingNextPage: completedFetchingNextPage,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
     },
     {
@@ -319,6 +295,9 @@ export default function Contributions() {
           return state;
         });
       },
+      hasNextPage: cancelledHasNextPage,
+      fetchNextPage: cancelledFetchNextPage,
+      isFetchingNextPage: cancelledFetchingNextPage,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
     },
   ];
