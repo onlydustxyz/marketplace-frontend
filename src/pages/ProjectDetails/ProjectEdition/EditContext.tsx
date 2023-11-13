@@ -10,6 +10,7 @@ import { EditPanelProvider } from "./components/Panel/context";
 import { useSearchParams } from "react-router-dom";
 import GithubApi from "src/api/Github";
 import transformOrganization from "./utils/transformInstallationToOrganization";
+import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -210,6 +211,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     >
       <EditPanelProvider openOnLoad={!!installation_id} isLoading={isInstallationLoading} project={project}>
         <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
+        <ConfirmationModal />
       </EditPanelProvider>
     </EditContext.Provider>
   );
