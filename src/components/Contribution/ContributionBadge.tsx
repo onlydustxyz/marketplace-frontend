@@ -53,16 +53,16 @@ export function ContributionBadge({
     <>
       {withTooltip ? (
         <Tooltip id={tooltipId} clickable {...tooltipProps}>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2 text-left">
             {isExternal ? (
-              <div className="flex items-center justify-center text-sm">
+              <div className="flex items-center text-sm">
                 <span className="text-spaceBlue-200">{tokens[type]}</span>
                 <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} clickable />
               </div>
             ) : null}
             <div className="flex gap-2">
               <ContributionIcon type={type as GithubContributionType} status={githubStatus} />
-              <div className="flex max-w-sm flex-col items-start justify-start gap-2 text-left">
+              <div className="flex max-w-sm flex-col items-start justify-start gap-2">
                 <span className="line-clamp-2 text-sm font-medium leading-4">
                   <ExternalLink
                     url={githubHtmlUrl}
