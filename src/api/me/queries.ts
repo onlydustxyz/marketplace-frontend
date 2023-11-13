@@ -41,7 +41,7 @@ const useMyContributions = (
     {
       ...params,
       resourcePath: API_PATH.MY_CONTRIBUTIONS,
-      tags: ME_TAGS.contributions(),
+      tags: ME_TAGS.contributions([params.queryParams]),
     },
     options
   );
