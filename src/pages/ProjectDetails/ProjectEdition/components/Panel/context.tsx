@@ -1,12 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { EditPanel } from ".";
-import { EditContext } from "../../EditContext";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 
 interface EditPanelContextProps {
   openOnLoad: boolean;
   children: React.ReactNode;
   isLoading: boolean;
+  project: UseGetProjectBySlugResponse;
 }
 
 type EditPanel = {
@@ -27,10 +27,8 @@ export const EditPanelContext = createContext<EditPanel>({
   project: undefined,
 });
 
-export function EditPanelProvider({ children, openOnLoad, isLoading }: EditPanelContextProps) {
+export function EditPanelProvider({ children, openOnLoad, isLoading, project }: EditPanelContextProps) {
   const [open, setOpen] = useState(false);
-
-  const { project } = useContext(EditContext);
 
   const openSidePanel = useCallback(() => {
     setOpen(true);

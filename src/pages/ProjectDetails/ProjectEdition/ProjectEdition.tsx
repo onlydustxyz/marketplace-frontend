@@ -16,8 +16,8 @@ import ProjectApi from "src/api/Project";
 import { FormStatus } from "src/components/FormStatus/FormStatus";
 import Card from "src/components/Card";
 import { Information } from "./pages/Information";
-import { Repository } from "./pages/Repository/Repository";
 import { EditContext, EditProvider } from "./EditContext";
+import { Repository } from "./pages/Repository/Repository";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -163,7 +163,6 @@ function SafeProjectEdition() {
 export default function ProjectEdition() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
-
   if (!data) {
     /** TODO handle loading and error */
     return null;

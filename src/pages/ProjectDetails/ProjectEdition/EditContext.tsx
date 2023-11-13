@@ -101,7 +101,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     options: { retry: 1, enabled: !!installation_id },
   });
 
-  const [storedValue, setValue, status, removeValue] = useSessionStorage<EditFormData | undefined>(
+  const [storedValue, setValue, status, removeValue] = useSessionStorage<Partial<EditFormData> | undefined>(
     `edit-project-${project.slug}`,
     undefined
   );
@@ -172,6 +172,11 @@ export function EditProvider({ children, project }: EditContextProps) {
   };
 
   const onSaveInSession = () => {
+    // const dirtyField = { ...form.formState.dirtyFields } as { [key: string]: boolean | undefined };
+    // const dirtykeys = Object.keys(dirtyField)
+    //   .map(key => (dirtyField[key] ? key : undefined))
+    //   .filter(Boolean) as string[];
+    // console.log("DIRTY", dirtyField, dirtykeys);
     setValue(form.getValues());
   };
 
@@ -229,7 +234,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         },
       }}
     >
-      <EditPanelProvider openOnLoad={!!installation_id} isLoading={isInstallationLoading}>
+      <EditPanelProvider openOnLoad={!!installation_id} isLoading={isInstallationLoading} project={project}>
         <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
       </EditPanelProvider>
     </EditContext.Provider>
