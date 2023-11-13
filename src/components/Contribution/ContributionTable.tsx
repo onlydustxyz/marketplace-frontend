@@ -225,7 +225,7 @@ export function ContributionTable({
       ) : null}
       <div className="p-3 lg:hidden">{!isLg ? renderMobileContent() : null}</div>
 
-      <div className="hidden px-4 py-6 lg:block">
+      <div className={cn("hidden px-4 pt-6 lg:block", isLg && hasNextPage ? "pb-0" : "pb-6")}>
         <Table
           id={id}
           headers={
@@ -293,7 +293,7 @@ export function ContributionTable({
           {isLg ? renderDesktopContent() : null}
         </Table>
         {isLg && hasNextPage ? (
-          <div className="pt-6">
+          <div className="py-3">
             <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
           </div>
         ) : null}
