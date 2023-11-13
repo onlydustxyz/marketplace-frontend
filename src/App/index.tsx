@@ -33,6 +33,7 @@ import {
   ProjectInformationsPage,
 } from "src/pages/ProjectCreation";
 import { useAuth } from "src/hooks/useAuth";
+import GithubCallbackHandler from "src/pages/Callbacks/GithubCallbackHandler";
 
 export enum RoutePaths {
   Home = "/",
@@ -49,6 +50,7 @@ export enum RoutePaths {
   Onboarding = "/onboarding",
   PublicProfile = "/u/:userLogin",
   Contributions = "/contributions",
+  GithubCallbacks = "/github-callbacks",
 }
 
 export enum ProjectRoutePaths {
@@ -197,6 +199,10 @@ function App() {
         {
           path: RoutePaths.Error,
           element: <ErrorTrigger />,
+        },
+        {
+          path: RoutePaths.GithubCallbacks,
+          element: <GithubCallbackHandler />,
         },
       ],
     },

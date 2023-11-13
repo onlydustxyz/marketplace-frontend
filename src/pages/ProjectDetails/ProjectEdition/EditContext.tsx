@@ -6,6 +6,10 @@ import { z } from "zod";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+import { EditPanelProvider } from "./components/Panel/context";
+import { useSearchParams } from "react-router-dom";
+import GithubApi from "src/api/Github";
+import transformOrganization from "./utils/transformInstallationToOrganization";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -16,6 +20,7 @@ type Edit = {
   project?: UseGetProjectBySlugResponse;
   form?: UseFormReturn<EditFormData, unknown>;
   formHelpers: {
+    addOrganization: (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => void;
     saveInSession: () => void;
     addRepository: (organizationId: number, repoId: number) => void;
     removeRepository: (organizationId: number, repoId: number) => void;
@@ -31,6 +36,7 @@ export const EditContext = createContext<Edit>({
   form: undefined,
   project: undefined,
   formHelpers: {
+    addOrganization: () => null,
     addRepository: () => null,
     saveInSession: () => null,
     removeRepository: () => null,
@@ -42,10 +48,12 @@ const validationSchema = z.object({
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
-  moreInfo: z.object({
-    url: z.string().min(1),
-    value: z.string().min(1),
-  }),
+  moreInfo: z.array(
+    z.object({
+      url: z.string().min(1),
+      value: z.string().min(1),
+    })
+  ),
 
   name: z.string().min(1),
   githubRepoIds: z.array(z.number()).min(1),
@@ -54,10 +62,21 @@ const validationSchema = z.object({
 });
 
 export function EditProvider({ children, project }: EditContextProps) {
-  const [storedValue, setValue, status, removeValue] = useSessionStorage<EditFormData | undefined>(
-    `edit-project-${project.slug}`,
-    undefined
-  );
+  const [searchParams] = useSearchParams();
+  const installation_id = searchParams.get("installation_id") ?? "";
+
+  const {
+    data: installationData,
+    isLoading: isInstallationLoading,
+    isError,
+  } = GithubApi.queries.useInstallationById({
+    params: { installation_id },
+    options: { retry: 1, enabled: !!installation_id },
+  });
+
+  const [storedValue, setValue, status, removeValue] = useSessionStorage<
+    { form: EditFormData; dirtyFields: Array<keyof EditFormData> } | undefined
+  >(`edit-project-${project.slug}`, undefined);
 
   const form = useForm<EditFormData>({
     mode: "all",
@@ -81,6 +100,15 @@ export function EditProvider({ children, project }: EditContextProps) {
     },
     resolver: zodResolver(validationSchema),
   });
+
+  const onAddOrganization = (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => {
+    const organizations = [...form.getValues("organizations")];
+    const findOrganization = organizations.find(org => org.id === organization.id);
+    if (!findOrganization) {
+      organizations.push(organization);
+      form.setValue("organizations", organizations, { shouldDirty: true, shouldValidate: true });
+    }
+  };
 
   const onAddRepository = (organizationId: number, repoId: number) => {
     const organizations = [...form.getValues("organizations")];
@@ -116,21 +144,35 @@ export function EditProvider({ children, project }: EditContextProps) {
   };
 
   const onSaveInSession = () => {
-    setValue(form.getValues());
+    const dirtyField = { ...form.formState.dirtyFields } as { [key: string]: boolean | undefined };
+    const dirtykeys = Object.keys(dirtyField)
+      .map(key => (dirtyField[key] ? key : undefined))
+      .filter(Boolean) as Array<keyof EditFormData>;
+
+    setValue({ form: form.getValues(), dirtyFields: dirtykeys });
   };
 
   useEffect(() => {
     if (status === "ready" && storedValue) {
-      form.reset({ ...storedValue });
+      storedValue.dirtyFields.forEach(field => {
+        form.setValue(field, storedValue.form[field], { shouldDirty: true, shouldValidate: true });
+      });
     }
   }, [status]);
 
-  console.log("---- DEBUG FORM VALUE ----", form.getValues());
-  console.log("form ERRRO", form.formState.errors);
+  useEffect(() => {
+    const transformedOrganization = transformOrganization(installationData);
+    if (transformedOrganization) {
+      onAddOrganization(transformedOrganization);
+    }
+  }, [installationData]);
+
+  // console.log("---- DEBUG FORM VALUE ----", form.getValues());
+  // console.log("form ERRRO", form.formState.errors);
 
   const onSubmit = (formData: EditFormData) => {
     console.log("SUBMIT, formData", formData);
-
+    // TODO : call removeValue on success to clear session
     // mutate({
     //   ...formData,
     //   inviteGithubUserIdsAsProjectLeads,
@@ -159,13 +201,16 @@ export function EditProvider({ children, project }: EditContextProps) {
         form,
         project,
         formHelpers: {
+          addOrganization: onAddOrganization,
           addRepository: onAddRepository,
           saveInSession: onSaveInSession,
           removeRepository: onRemoveRepository,
         },
       }}
     >
-      <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
+      <EditPanelProvider openOnLoad={!!installation_id} isLoading={isInstallationLoading} project={project}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
+      </EditPanelProvider>
     </EditContext.Provider>
   );
 }

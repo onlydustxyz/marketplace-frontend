@@ -1,5 +1,5 @@
 import { PropsWithChildren, useContext, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useIntl } from "src/hooks/useIntl";
@@ -16,9 +16,8 @@ import ProjectApi from "src/api/Project";
 import { FormStatus } from "src/components/FormStatus/FormStatus";
 import Card from "src/components/Card";
 import { Information } from "./pages/Information";
-import { Repository } from "./pages/Repository";
 import { EditContext, EditProvider } from "./EditContext";
-import { EditPanelProvider } from "./components/Panel/context";
+import { Repository } from "./pages/Repository/Repository";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -47,7 +46,9 @@ interface createProjectInformation {
 function SafeProjectEdition() {
   const { T } = useIntl();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<TabsType>(TabsType.General);
+  const [searchParams] = useSearchParams();
+  const installation_id = searchParams.get("installation_id") ?? "";
+  const [activeTab, setActiveTab] = useState<TabsType>(installation_id ? TabsType.Repos : TabsType.General);
   const { project, form } = useContext(EditContext);
 
   //   const methods = useForm<createProjectInformation>({
@@ -92,7 +93,7 @@ function SafeProjectEdition() {
   //TODO: hydrate this with Repository formData
   const githubRepoIds = project?.organizations?.flatMap(org => org.repos?.map(repo => repo.id)) || [];
 
-  console.log("githubRepoIds", githubRepoIds);
+  // console.log("githubRepoIds", githubRepoIds);
 
   const tabItems = [
     {
@@ -152,7 +153,7 @@ function SafeProjectEdition() {
         className="max-h-[88px] w-full items-center border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
       >
         <FormStatus {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }} />
-        <Button size={ButtonSize.Md} htmlType="submit">
+        <Button size={ButtonSize.Md} htmlType="submit" disabled={!form?.formState.isValid}>
           Save changes
           <ArrowRightSLine className="-mr-2 text-2xl" />
         </Button>
@@ -170,9 +171,7 @@ export default function ProjectEdition() {
   }
   return (
     <EditProvider project={data}>
-      <EditPanelProvider openOnLoad={false}>
-        <SafeProjectEdition />
-      </EditPanelProvider>
+      <SafeProjectEdition />
     </EditProvider>
   );
 }

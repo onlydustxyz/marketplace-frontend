@@ -322,14 +322,15 @@ export type Sorting = {
   isAscending: boolean | undefined;
 };
 
-type organization = components["schemas"]["InstalledGithubOrganizationResponse"] & {
-  installationId: string;
-};
-
-type repos = components["schemas"]["InstalledGithubRepoResponse"] & {
+type repos = components["schemas"]["ShortGithubRepoResponse"] & {
   selected?: boolean;
 };
+
+type organization = Omit<components["schemas"]["GithubOrganizationResponse"], "repos"> & {
+  installationId: number;
+  repos: repos[];
+};
+
 export interface OrganizationSessionStorageInterface extends useInstallationByIdResponse {
   organization: organization;
-  repos: repos[];
 }
