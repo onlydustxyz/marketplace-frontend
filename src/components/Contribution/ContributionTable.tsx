@@ -296,7 +296,7 @@ export function ContributionTable({
                   <IssueOpen className="h-3 w-3" />
                 </span>
                 <span>{T("contributions.table.linkedTo")}</span>
-                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Linked} />
+                {sort.column === TableColumns.Linked ? <SortingArrow direction={sortDirection} visible={true} /> : null}
               </HeaderCell>
             </HeaderLine>
           }
