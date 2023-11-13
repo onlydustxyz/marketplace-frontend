@@ -9,7 +9,7 @@ interface EditPanelContextProps {
   project: UseGetProjectBySlugResponse;
 }
 
-type EditPanel = {
+type EditPanelType = {
   open: () => void;
   close: () => void;
   toggle: (value: boolean) => void;
@@ -18,7 +18,7 @@ type EditPanel = {
   project?: UseGetProjectBySlugResponse;
 };
 
-export const EditPanelContext = createContext<EditPanel>({
+export const EditPanelContext = createContext<EditPanelType>({
   open: () => null,
   close: () => null,
   toggle: () => null,
