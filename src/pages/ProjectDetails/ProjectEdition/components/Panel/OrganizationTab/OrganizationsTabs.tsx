@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import { EditContext } from "../../../EditContext";
@@ -7,7 +7,7 @@ export const EditPanelOrganization = () => {
   const { T } = useIntl();
 
   const { form, project } = useContext(EditContext);
-  const organizations = useMemo(() => form?.getValues("organizations") || [], [form]);
+  const organizations = form?.watch("organizations") || [];
 
   console.log("organizations", organizations);
 

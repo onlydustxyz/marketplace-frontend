@@ -12,22 +12,22 @@ import GithubApi from "src/api/Github";
 
 function transformOrganization(
   input: components["schemas"]["InstallationResponse"] | undefined
-): components["schemas"]["ProjectGithubOrganizationResponse"][] {
+): components["schemas"]["ProjectGithubOrganizationResponse"] | undefined {
   if (!input) {
-    return [];
+    return undefined;
   }
   const transformedOrganization: components["schemas"]["ProjectGithubOrganizationResponse"] = {
     id: undefined,
     login: undefined,
-    avatarUrl: input.organization.logoUrl, // Assuming logoUrl is the avatarUrl
+    avatarUrl: input.organization.avatarUrl,
     htmlUrl: undefined,
     name: input.organization.name,
-    repos: (input.repos || []).map(repo => ({
-      id: repo.githubId ?? 0,
+    repos: (input.organization.repos || []).map(repo => ({
+      id: repo.id ?? 0,
       owner: "",
       name: repo.name ?? "",
       htmlUrl: "",
-      description: repo.shortDescription,
+      shortDescription: repo.shortDescription,
       stars: 0,
       forkCount: 0,
       hasIssues: false,
@@ -35,7 +35,7 @@ function transformOrganization(
     })),
   };
 
-  return [transformedOrganization];
+  return transformedOrganization;
 }
 
 interface EditContextProps {
@@ -90,7 +90,11 @@ export function EditProvider({ children, project }: EditContextProps) {
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
 
-  const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
+  const {
+    data: installationData,
+    isLoading: isInstallationLoading,
+    isError,
+  } = GithubApi.queries.useInstallationById({
     params: { installation_id },
     options: { retry: 1, enabled: !!installation_id },
   });
@@ -175,6 +179,13 @@ export function EditProvider({ children, project }: EditContextProps) {
     }
   }, [status]);
 
+  useEffect(() => {
+    const transformedOrganization = transformOrganization(installationData);
+    if (transformedOrganization) {
+      onAddOrganization(transformedOrganization);
+    }
+  }, [installationData]);
+
   console.log("---- DEBUG FORM VALUE ----", form.getValues());
   console.log("form ERRRO", form.formState.errors);
 
@@ -216,7 +227,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         },
       }}
     >
-      <EditPanelProvider openOnLoad={false}>
+      <EditPanelProvider openOnLoad={!!installation_id} isLoading={isInstallationLoading}>
         <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
       </EditPanelProvider>
     </EditContext.Provider>
