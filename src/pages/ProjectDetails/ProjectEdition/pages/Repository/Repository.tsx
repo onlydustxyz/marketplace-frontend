@@ -19,6 +19,13 @@ export function Repository({ isLoading, isError }: RepositoriesTabType) {
   const { open } = useContext(EditPanelContext);
   const { form, formHelpers } = useContext(EditContext);
   const organizations = form?.watch("organizations") || [];
+  const hasInstalledRepo = useMemo(
+    () =>
+      organizations.find(
+        organization => (organization.repos || []).filter(repo => repo.isIncludedInProject).length > 0
+      ),
+    [organizations]
+  );
 
   const renderOrganization = useMemo(() => {
     if (isLoading) {
@@ -36,11 +43,11 @@ export function Repository({ isLoading, isError }: RepositoriesTabType) {
       );
     }
 
-    if (organizations.length) {
+    if (organizations.length && hasInstalledRepo) {
       return (
         <div>
           {organizations.map(organization => (
-            <RepositoryOrganization key={organization.name} organization={organization} />
+            <RepositoryOrganization key={organization.id} organization={organization} />
           ))}
         </div>
       );
@@ -55,8 +62,9 @@ export function Repository({ isLoading, isError }: RepositoriesTabType) {
         </p>
       </div>
     );
-  }, [isLoading, isError, organizations, organizations]);
+  }, [isLoading, isError, organizations, hasInstalledRepo]);
 
+  console.log("hasInstalledRepo", hasInstalledRepo);
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-end">
