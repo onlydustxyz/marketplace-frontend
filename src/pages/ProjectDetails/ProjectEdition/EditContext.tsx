@@ -1,3 +1,4 @@
+import { useApolloClient } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createContext, useEffect } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
@@ -65,6 +66,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
+  const client = useApolloClient();
 
   const [storedValue, setValue, status, removeValue] = useSessionStorage<EditFormData | undefined>(
     `edit-project-${project.slug}`,
@@ -141,19 +143,20 @@ export function EditProvider({ children, project }: EditContextProps) {
   // console.log("form ERRRO", form.formState.errors);
 
   const { mutate: updateProject } = ProjectApi.mutations.useUpdateProject({
-    params: { projectId: project?.id },
+    params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
       onSuccess: async data => {
+        await client.refetchQueries({ include: ["GetProjectsForSidebar"] });
         showToaster(T("form.toast.success"));
         removeValue();
 
         // Replace the current path on the history stack if different
         const newPathname = `${generatePath(RoutePaths.ProjectDetails, {
-          projectKey: data?.projectSlug ?? "",
+          projectKey: data.projectSlug,
         })}/${ProjectRoutePaths.Edit}`;
 
         if (location.pathname !== newPathname) {
-          navigate(`${newPathname}`, { replace: true, state: location.state });
+          navigate(newPathname, { replace: true, state: location.state });
         }
       },
     },

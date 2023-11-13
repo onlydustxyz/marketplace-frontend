@@ -2,6 +2,7 @@ import { API_PATH } from "src/api/ApiPath";
 import { components } from "src/__generated/api";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
+import { PROJECT_TAGS } from "./tags";
 
 export type UseCreateProjectBody = components["schemas"]["CreateProjectRequest"];
 export type UseCreateProjectResponse = components["schemas"]["CreateProjectResponse"];
@@ -22,11 +23,12 @@ export type useUpdateProjectResponse = components["schemas"]["UpdateProjectRespo
 const useUpdateProject = ({
   params,
   options = {},
-}: UseMutationProps<useUpdateProjectResponse, { projectId?: string }, useUpdateProjectBody>) => {
+}: UseMutationProps<useUpdateProjectResponse, { projectId?: string; projectSlug: string }, useUpdateProjectBody>) => {
   return useBaseMutation<useUpdateProjectBody, useUpdateProjectResponse>({
     resourcePath: API_PATH.PROJECT_DETAILS(params?.projectId || ""),
     method: "PUT",
     enabled: !!params?.projectId,
+    invalidatesTags: [{ queryKey: PROJECT_TAGS.detail_by_id(params?.projectId || ""), exact: false }],
     ...options,
   });
 };

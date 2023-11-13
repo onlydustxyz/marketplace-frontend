@@ -25,8 +25,9 @@ export function Information() {
     isPending: loadingUploadLogo,
   } = ProjectApi.mutations.useUploadLogo({
     options: {
-      onSuccess: () => {
+      onSuccess: data => {
         showToaster(T("project.details.edit.toasts.logoUpdate"));
+        form?.setValue("logoUrl", data.url, { shouldDirty: true });
       },
     },
   });
