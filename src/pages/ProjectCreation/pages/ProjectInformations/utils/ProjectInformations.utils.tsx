@@ -1,12 +1,12 @@
-import { OrganizationSessionStorageInterface } from "../../../commons/hooks/useProjectCreationSession";
+import { OrganizationSessionStorageInterface } from "src/types";
 
 export const getSelectedRepoIds = (orgs: OrganizationSessionStorageInterface[]) => {
   return orgs.reduce((acc, org) => {
     return [
       ...acc,
-      ...(org.repos || []).reduce((acc2, repo) => {
-        if (repo.selected && repo.githubId) {
-          return [...acc2, repo.githubId];
+      ...(org.organization.repos || []).reduce((acc2, repo) => {
+        if (repo.selected && repo.id) {
+          return [...acc2, repo.id];
         }
 
         return acc2;

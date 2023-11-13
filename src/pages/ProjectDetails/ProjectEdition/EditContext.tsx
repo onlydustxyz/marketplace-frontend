@@ -9,34 +9,7 @@ import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInforma
 import { EditPanelProvider } from "./components/Panel/context";
 import { useSearchParams } from "react-router-dom";
 import GithubApi from "src/api/Github";
-
-function transformOrganization(
-  input: components["schemas"]["InstallationResponse"] | undefined
-): components["schemas"]["ProjectGithubOrganizationResponse"] | undefined {
-  if (!input) {
-    return undefined;
-  }
-  const transformedOrganization: components["schemas"]["ProjectGithubOrganizationResponse"] = {
-    id: undefined,
-    login: undefined,
-    avatarUrl: input.organization.avatarUrl,
-    htmlUrl: undefined,
-    name: input.organization.name,
-    repos: (input.organization.repos || []).map(repo => ({
-      id: repo.id ?? 0,
-      owner: "",
-      name: repo.name ?? "",
-      htmlUrl: "",
-      shortDescription: repo.shortDescription,
-      stars: 0,
-      forkCount: 0,
-      hasIssues: false,
-      isIncludedInProject: undefined,
-    })),
-  };
-
-  return transformedOrganization;
-}
+import transformOrganization from "./utils/transformInstallationToOrganization";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -194,8 +167,8 @@ export function EditProvider({ children, project }: EditContextProps) {
     }
   }, [installationData]);
 
-  console.log("---- DEBUG FORM VALUE ----", form.getValues());
-  console.log("form ERRRO", form.formState.errors);
+  // console.log("---- DEBUG FORM VALUE ----", form.getValues());
+  // console.log("form ERRRO", form.formState.errors);
 
   const onSubmit = (formData: EditFormData) => {
     console.log("SUBMIT, formData", formData);

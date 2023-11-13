@@ -1,5 +1,5 @@
 import { PropsWithChildren, useContext, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useIntl } from "src/hooks/useIntl";
@@ -46,7 +46,9 @@ interface createProjectInformation {
 function SafeProjectEdition() {
   const { T } = useIntl();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<TabsType>(TabsType.General);
+  const [searchParams] = useSearchParams();
+  const installation_id = searchParams.get("installation_id") ?? "";
+  const [activeTab, setActiveTab] = useState<TabsType>(installation_id ? TabsType.Repos : TabsType.General);
   const { project, form } = useContext(EditContext);
 
   //   const methods = useForm<createProjectInformation>({
@@ -91,7 +93,7 @@ function SafeProjectEdition() {
   //TODO: hydrate this with Repository formData
   const githubRepoIds = project?.organizations?.flatMap(org => org.repos?.map(repo => repo.id)) || [];
 
-  console.log("githubRepoIds", githubRepoIds);
+  // console.log("githubRepoIds", githubRepoIds);
 
   const tabItems = [
     {
