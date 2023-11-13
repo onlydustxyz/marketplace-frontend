@@ -19,19 +19,23 @@ export function ContributionLinked({
   tooltipProps?: React.ComponentProps<typeof Tooltip>;
 }) {
   function renderBadges({ withTooltip, asLink }: { withTooltip: boolean; asLink: boolean }) {
-    return (
-      <>
-        {contribution.links.map(link => (
-          <ContributionBadge
-            key={link.id}
-            contribution={link}
-            withTooltip={withTooltip}
-            asLink={asLink}
-            tooltipProps={tooltipProps}
-          />
-        ))}
-      </>
-    );
+    if (contribution.links.length) {
+      return (
+        <>
+          {contribution.links.map(link => (
+            <ContributionBadge
+              key={link.id}
+              contribution={link}
+              withTooltip={withTooltip}
+              asLink={asLink}
+              tooltipProps={tooltipProps}
+            />
+          ))}
+        </>
+      );
+    }
+
+    return null;
   }
 
   const nbLinkedContributions = contribution.links.length;
