@@ -17,7 +17,7 @@ type RepositoriesTabType = {
 export function Repository({ isLoading, isError }: RepositoriesTabType) {
   const { T } = useIntl();
   const { open } = useContext(EditPanelContext);
-  const { form, formHelpers } = useContext(EditContext);
+  const { form } = useContext(EditContext);
   const organizations = form?.watch("organizations") || [];
   const hasInstalledRepo = useMemo(
     () =>
@@ -67,13 +67,7 @@ export function Repository({ isLoading, isError }: RepositoriesTabType) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-end">
-        <Button
-          size={ButtonSize.Md}
-          onClick={() => {
-            open();
-            formHelpers.saveInSession();
-          }}
-        >
+        <Button size={ButtonSize.Md} onClick={open}>
           <AddLine className="text-xl" />
           {T("project.details.edit.repositories.addRepositories")}
         </Button>
