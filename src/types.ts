@@ -1,4 +1,3 @@
-import { GetAllContributionsQuery } from "src/__generated/graphql";
 import { components } from "./__generated/api";
 import { useInstallationByIdResponse } from "./api/Github/queries";
 
@@ -177,8 +176,6 @@ type GithubCodeReviewTypeStatusDict<T> = Record<GithubContributionType.CodeRevie
 export type GithubTypeStatusDict<T> = GithubPullRequestTypeStatusDict<T> &
   GithubIssueTypeStatusDict<T> &
   GithubCodeReviewTypeStatusDict<T>;
-
-export type QueryContribution = GetAllContributionsQuery["contributions"][number];
 
 export interface Leader {
   id: string;
