@@ -39,6 +39,7 @@ export default function ProjectsSidebar({ projectId }: Props) {
     ...contextWithCacheHeaders,
   });
 
+  // TODO je pense que le current project c'est project + is leader
   const currentProject =
     getCurrentProjectsForSidebarQuery.data?.projects[0] &&
     projectFromQuery(getCurrentProjectsForSidebarQuery.data?.projects[0], githubUserId);
@@ -48,6 +49,7 @@ export default function ProjectsSidebar({ projectId }: Props) {
     skip: !isProjectMine(currentProject),
   });
 
+  // lead projet + invite project
   const projects =
     getProjectsForSidebarQuery?.data?.projects
       .filter(project => isProjectVisibleToUser({ project, user: { githubUserId, userId: user?.id } }))
@@ -73,6 +75,7 @@ export default function ProjectsSidebar({ projectId }: Props) {
     },
   };
 
+  // TODO si leader alors afficher la tabs reward
   const availableTabs =
     currentProject && ledProjectIds.includes(currentProject?.id)
       ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.rewards]
@@ -84,7 +87,7 @@ export default function ProjectsSidebar({ projectId }: Props) {
     availableTabs,
     currentProject,
     allProjects: sortedProjects,
-    expandable: isProjectMine(currentProject) ? sortedProjects.length > 1 : false,
+    expandable: isProjectMine(currentProject) ? sortedProjects.length > 1 : false, // TODO : boolean
   };
 
   return isXl ? <View {...props} /> : <ViewMobile {...props} />;
