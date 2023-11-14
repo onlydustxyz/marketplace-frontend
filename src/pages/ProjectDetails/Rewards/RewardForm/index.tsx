@@ -17,6 +17,7 @@ import { BudgetCurrencyType } from "src/utils/money";
 import ErrorFallback from "src/ErrorFallback";
 import { useApolloClient } from "@apollo/client";
 import { useQueryClient } from "@tanstack/react-query";
+import MeApi from "src/api/me";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -51,7 +52,7 @@ const RewardForm: React.FC = () => {
         await refetch();
         showToaster(T("reward.form.sent"));
         // refetch PaymentRequests to display MyRewards
-        queryClient.invalidateQueries({ queryKey: ["GetUser"] });
+        queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
         await client.refetchQueries({ include: ["GetPaymentRequestIds"] });
         navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
       } catch (e) {
