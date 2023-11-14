@@ -7,8 +7,8 @@ import { ShowMore } from "../Table/ShowMore";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
-import Skeleton from "../Skeleton";
 import Card from "src/components/Card";
+import Skeleton from "../Skeleton";
 
 type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;
@@ -22,7 +22,7 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward }:
     storageKey: "myRewardsSorting",
   });
 
-  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, error, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     MeApi.queries.useMyRewardsInfiniteList({
       queryParams,
     });
@@ -38,13 +38,15 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward }:
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
 
   const hasRewards = rewards && rewards.length > 0;
-  if (!hasRewards && !isFetching && !isFetchingNextPage) {
+  if (!hasRewards && !isLoading && !isFetchingNextPage) {
     return <Navigate to={RoutePaths.Projects} />;
   }
 
-  return isFetching ? (
-    <Skeleton variant="rewards" />
-  ) : (
+  if (isLoading) {
+    return <Skeleton variant="rewards" />;
+  }
+
+  return (
     <Card>
       <div>
         <Table id="reward_table" headers={<Headers sorting={sorting} sortField={sortField} />}>

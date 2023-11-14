@@ -14,6 +14,7 @@ const useMyRewardsInfiniteList = (
       ...params,
       resourcePath: API_PATH.ME_REWARDS,
       tags: ME_TAGS.rewards(),
+      pageSize: 15,
     },
     options
   );
