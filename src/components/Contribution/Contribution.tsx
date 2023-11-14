@@ -51,7 +51,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         "items-center": !isMobile,
       })}
     >
-      <div className="flex w-full items-center gap-2 font-walsheim">
+      <div className={cn("flex items-center gap-2 font-walsheim", isMobile ? "w-full" : "min-w-0")}>
         <ContributionBadge contribution={contribution} />
         <button
           className="truncate break-all text-left hover:underline"
