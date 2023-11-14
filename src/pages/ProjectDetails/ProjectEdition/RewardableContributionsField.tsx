@@ -17,7 +17,7 @@ type RewardableContributionsFieldProps = {
 
 export const RewardableContributionsField = forwardRef(function RewardableContributionsField(
   { value, onChange }: RewardableContributionsFieldProps,
-  ...rest
+  ref: React.ForwardedRef<HTMLDivElement>
 ) {
   const { T } = useIntl();
 
@@ -58,7 +58,6 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
 
   return (
     <Field
-      {...rest}
       label={T("project.details.edit.fields.rewardableContributions.label")}
       name="rewardable_contributions"
       infoMessage={{
@@ -71,11 +70,12 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
           {typeOptions.map(option => (
             <div className="flex" key={option.value}>
               <FormOption
+                ref={ref}
                 as="button"
                 size={FormOptionSize.Md}
                 name={option.name}
                 value={option.value}
-                variant={value?.[option.name as keyof typeof value] ? Variant.Active : Variant.Default}
+                variant={value?.[option.name as keyof typeof value] ? Variant.Default : Variant.Active}
                 onClick={handleContributionChange}
               >
                 {option.icon}
