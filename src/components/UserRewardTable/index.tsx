@@ -49,7 +49,13 @@ const UserRewardTable: React.FC<PropsType> = ({
           </Table>
           {hasNextPage && (
             <div className="pt-6">
-              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+              <ShowMore
+                onClick={fetchNextPage}
+                loading={isFetchingNextPage}
+                // TODO this is a temp fix to avoid annoying scroll behaviour
+                // Need to relocate data fetching
+                isInfinite={false}
+              />
             </div>
           )}
         </div>
