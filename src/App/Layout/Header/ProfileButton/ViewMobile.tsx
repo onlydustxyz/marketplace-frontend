@@ -56,7 +56,7 @@ export default function ViewMobile({
   });
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
-  const hasRewards = rewards.length > 0 && !isLoading && !isError;
+  const hasRewards = rewards.length && !isLoading && !isError;
 
   return (
     <>
