@@ -1,5 +1,6 @@
-import { PropsWithChildren, ReactNode, useMemo, useState } from "react";
+import { PropsWithChildren, ReactNode, useMemo } from "react";
 import { OrderBy } from "src/__generated/graphql";
+import MeApi from "src/api/Me";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -14,7 +15,6 @@ import Line from "src/components/Table/Line";
 import { TooltipPosition, Variant as TooltipVariant } from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
-import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
@@ -23,9 +23,9 @@ import { ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { useMediaQuery } from "usehooks-ts";
-import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 import { ShowMore } from "../Table/ShowMore";
-import MeApi from "src/api/Me";
+import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
+import { MobileShowMore } from "./MobileShowMore";
 
 export enum TableColumns {
   Date = "CREATED_AT",
@@ -78,7 +78,6 @@ export function ContributionTable({
   title: string;
 }) {
   const { T } = useIntl();
-  const [showAll, setShowAll] = useState(false);
 
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
@@ -92,7 +91,7 @@ export function ContributionTable({
 
   const contributions = data?.pages?.flatMap(({ contributions }) => contributions);
 
-  const memoizedContributions = useMemo(() => {
+  const desktopContributions = useMemo(() => {
     if (sort.sort === TableColumns.Linked) {
       // Need to clone the array because Array.sort() mutates the original
       const sortArr = contributions ? [...contributions] : [];
@@ -112,18 +111,13 @@ export function ContributionTable({
       );
     }
 
-    if (memoizedContributions?.length === 0) {
+    if (contributions?.length === 0) {
       return (
         <div className="py-6">
           <Message>{T("contributions.table.empty")}</Message>
         </div>
       );
     }
-
-    const nbContributions = memoizedContributions?.length ?? 0;
-    const maxContributions = 2;
-    const showAllContributions = nbContributions > maxContributions;
-    const contributions = showAll ? memoizedContributions : memoizedContributions?.slice(0, maxContributions);
 
     return (
       <div className="flex flex-col gap-2">
@@ -140,16 +134,9 @@ export function ContributionTable({
           );
         })}
 
-        {showAllContributions && !showAll ? (
+        {hasNextPage ? (
           <div className="px-3 py-3.5">
-            <button
-              type="button"
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-greyscale-50 bg-white/5 px-4 py-3.5 font-walsheim font-medium leading-none text-greyscale-50 shadow-lg"
-              onClick={() => setShowAll(true)}
-            >
-              <ArrowDownSLine className="text-xl leading-none" />
-              {T("contributions.table.showAll", { count: nbContributions })}
-            </button>
+            <MobileShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={!fullTable} />
           </div>
         ) : null}
       </div>
@@ -161,11 +148,11 @@ export function ContributionTable({
       return <TableText>{T("contributions.table.error")}</TableText>;
     }
 
-    if (memoizedContributions?.length === 0) {
+    if (desktopContributions?.length === 0) {
       return <TableText>{T("contributions.table.empty")}</TableText>;
     }
 
-    return memoizedContributions?.map(contribution => {
+    return desktopContributions?.map(contribution => {
       const { createdAt, completedAt, githubStatus, id, project, repo, status, type } = contribution;
       const lineId = `${id}-${project.id}`;
       const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
@@ -287,7 +274,7 @@ export function ContributionTable({
         >
           {isLg ? renderDesktopContent() : null}
         </Table>
-        {isLg && hasNextPage ? (
+        {hasNextPage ? (
           <div className="py-3">
             <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={!fullTable} />
           </div>
