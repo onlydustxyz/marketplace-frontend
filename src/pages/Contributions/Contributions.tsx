@@ -9,7 +9,6 @@ import {
   useGetContributionProjectsQuery,
   useGetContributionReposQuery,
 } from "src/__generated/graphql";
-import MeApi from "src/api/Me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
@@ -75,6 +74,12 @@ export default function Contributions() {
   const projectIds = projects.map(({ id }) => id);
   const repoIds = repos.map(({ id }) => id);
 
+  const filterQueryParams = {
+    types: types.join(","),
+    projects: projectIds.join(","),
+    repositories: repoIds.join(","),
+  };
+
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
@@ -93,42 +98,7 @@ export default function Contributions() {
     };
   }
 
-  const {
-    data: inProgressData,
-    isLoading: inProgressLoading,
-    isError: inProgressError,
-    hasNextPage: inProgressHasNextPage,
-    fetchNextPage: inProgressFetchNextPage,
-    isFetchingNextPage: inProgressFetchingNextPage,
-  } = MeApi.queries.useMyContributions(
-    { queryParams: { statuses: "IN_PROGRESS", ...sort.IN_PROGRESS } },
-    { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress))) }
-  );
-
-  const {
-    data: completedData,
-    isLoading: completedLoading,
-    isError: completedError,
-    hasNextPage: completedHasNextPage,
-    fetchNextPage: completedFetchNextPage,
-    isFetchingNextPage: completedFetchingNextPage,
-  } = MeApi.queries.useMyContributions(
-    { queryParams: { statuses: "COMPLETED", ...sort.COMPLETED } },
-    { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed))) }
-  );
-
-  const {
-    data: cancelledData,
-    isLoading: cancelledLoading,
-    isError: cancelledError,
-    hasNextPage: cancelledHasNextPage,
-    fetchNextPage: cancelledFetchNextPage,
-    isFetchingNextPage: cancelledFetchingNextPage,
-  } = MeApi.queries.useMyContributions(
-    { queryParams: { statuses: "CANCELLED", ...sort.CANCELLED } },
-    { enabled: Boolean(githubUserId && (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled))) }
-  );
-
+  // TODO replace with REST
   const { data: projectsData } = useGetContributionProjectsQuery({
     variables: { where: projectsWhere() as ContributionsBoolExp },
     skip: !githubUserId,
@@ -214,9 +184,6 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.InProgress);
       },
-      contributions: inProgressData?.pages?.flatMap(({ contributions }) => contributions),
-      loading: inProgressLoading,
-      error: inProgressError,
       status: ContributionStatus.InProgress,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
       sort: sort[ContributionStatus.InProgress],
@@ -229,9 +196,16 @@ export default function Contributions() {
           return state;
         });
       },
-      hasNextPage: inProgressHasNextPage,
-      fetchNextPage: inProgressFetchNextPage,
-      isFetchingNextPage: inProgressFetchingNextPage,
+      queryProps: [
+        {
+          queryParams: {
+            statuses: ContributionStatus.InProgress,
+            ...sort.IN_PROGRESS,
+            ...filterQueryParams,
+          },
+        },
+        { enabled: Boolean(isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) },
+      ],
     },
     {
       id: "completed_contributions_table",
@@ -241,9 +215,6 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.Completed);
       },
-      contributions: completedData?.pages?.flatMap(({ contributions }) => contributions),
-      loading: completedLoading,
-      error: completedError,
       status: ContributionStatus.Completed,
       sort: sort[ContributionStatus.Completed],
       onSort: sort => {
@@ -255,10 +226,17 @@ export default function Contributions() {
           return state;
         });
       },
-      hasNextPage: completedHasNextPage,
-      fetchNextPage: completedFetchNextPage,
-      isFetchingNextPage: completedFetchingNextPage,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
+      queryProps: [
+        {
+          queryParams: {
+            statuses: ContributionStatus.Completed,
+            ...sort.COMPLETED,
+            ...filterQueryParams,
+          },
+        },
+        { enabled: Boolean(isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) },
+      ],
     },
     {
       id: "canceled_contributions_table",
@@ -268,9 +246,6 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.Cancelled);
       },
-      contributions: cancelledData?.pages?.flatMap(({ contributions }) => contributions),
-      loading: cancelledLoading,
-      error: cancelledError,
       status: ContributionStatus.Cancelled,
       sort: sort[ContributionStatus.Cancelled],
       onSort: sort => {
@@ -282,10 +257,17 @@ export default function Contributions() {
           return state;
         });
       },
-      hasNextPage: cancelledHasNextPage,
-      fetchNextPage: cancelledFetchNextPage,
-      isFetchingNextPage: cancelledFetchingNextPage,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
+      queryProps: [
+        {
+          queryParams: {
+            statuses: ContributionStatus.Cancelled,
+            ...sort.CANCELLED,
+            ...filterQueryParams,
+          },
+        },
+        { enabled: Boolean(isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) },
+      ],
     },
   ];
 
@@ -320,7 +302,6 @@ export default function Contributions() {
                       state={filtersState}
                       projects={filterProjectsAndRepos.projects}
                       repos={filterProjectsAndRepos.repos}
-                      loading={inProgressLoading || completedLoading || cancelledLoading}
                       onChange={newState => {
                         setFiltersStorage(JSON.stringify(newState));
                       }}

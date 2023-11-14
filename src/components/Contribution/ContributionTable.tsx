@@ -24,7 +24,6 @@ import { cn } from "src/utils/cn";
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { useMediaQuery } from "usehooks-ts";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
-import { UseMyContributionsResponse } from "src/api/Me/queries";
 import { ShowMore } from "../Table/ShowMore";
 import MeApi from "src/api/Me";
 
@@ -57,36 +56,26 @@ function TableText({ children }: PropsWithChildren) {
 }
 
 export function ContributionTable({
-  contributions = [],
   description,
-  error,
+  fullTable = true,
   icon,
   id,
-  loading,
   onHeaderClick,
-  fullTable = true,
-  title,
-  sort,
   onSort,
-  hasNextPage,
-  fetchNextPage,
-  isFetchingNextPage,
+  queryProps,
+  sort,
+  title,
 }: {
-  contributions?: UseMyContributionsResponse["contributions"];
   description: string;
-  error?: boolean;
+  fullTable?: boolean;
   icon(className: string): ReactNode;
   id: string;
-  loading: boolean;
   onHeaderClick: () => void;
-  fullTable?: boolean;
+  onSort: (sort: TableSort) => void;
+  queryProps: Parameters<typeof MeApi.queries.useMyContributions>;
+  sort: TableSort;
   status: ContributionStatus;
   title: string;
-  sort: TableSort;
-  onSort: (sort: TableSort) => void;
-  hasNextPage: ReturnType<typeof MeApi.queries.useMyContributions>["hasNextPage"];
-  fetchNextPage: ReturnType<typeof MeApi.queries.useMyContributions>["fetchNextPage"];
-  isFetchingNextPage: ReturnType<typeof MeApi.queries.useMyContributions>["isFetchingNextPage"];
 }) {
   const { T } = useIntl();
   const [showAll, setShowAll] = useState(false);
@@ -96,6 +85,12 @@ export function ContributionTable({
 
   const sortDirection = sort.direction === OrderBy.Asc ? "up" : "down";
   const newSortDirection = sort.direction === OrderBy.Asc ? OrderBy.Desc : OrderBy.Asc;
+
+  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = MeApi.queries.useMyContributions(
+    ...queryProps
+  );
+
+  const contributions = data?.pages?.flatMap(({ contributions }) => contributions);
 
   const memoizedContributions = useMemo(() => {
     if (sort.sort === TableColumns.Linked) {
@@ -109,7 +104,7 @@ export function ContributionTable({
   }, [contributions, sort]);
 
   function renderMobileContent() {
-    if (error) {
+    if (isError) {
       return (
         <div className="py-6">
           <Message>{T("contributions.table.error")}</Message>
@@ -162,7 +157,7 @@ export function ContributionTable({
   }
 
   function renderDesktopContent() {
-    if (error) {
+    if (isError) {
       return <TableText>{T("contributions.table.error")}</TableText>;
     }
 
@@ -200,7 +195,7 @@ export function ContributionTable({
     });
   }
 
-  return loading ? (
+  return isLoading ? (
     <ContributionTableSkeleton />
   ) : (
     <section
