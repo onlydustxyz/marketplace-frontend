@@ -7,7 +7,6 @@ import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import GithubApi from "src/api/Github";
 import ProjectApi from "src/api/Project";
-import { useUpdateProjectBody } from "src/api/Project/mutations";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { useIntl } from "src/hooks/useIntl";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
@@ -64,6 +63,12 @@ const validationSchema = z.object({
   githubRepoIds: z.array(z.number()).min(1),
   projectLeadsToKeep: z.array(z.string()).min(1),
   shortDescription: z.string().min(1),
+  rewardSettings: z.object({
+    ignorePullRequests: z.boolean().nullish().optional(),
+    ignoreIssues: z.boolean().nullish().optional(),
+    ignoreCodeReviews: z.boolean().nullish().optional(),
+    ignoreContributionsBefore: z.coerce.date(),
+  }),
 });
 
 export function EditProvider({ children, project }: EditContextProps) {
@@ -104,6 +109,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
       projectLeads: [...project.leaders, ...project.invitedLeaders],
       organizations: project.organizations,
+      rewardSettings: project.rewardSettings,
     },
     resolver: zodResolver(validationSchema),
   });
@@ -174,9 +180,6 @@ export function EditProvider({ children, project }: EditContextProps) {
     }
   }, [installationData]);
 
-  // console.log("----DEBUG FORM VALUE ----", form.getValues());
-  // console.log("form ERRRO", form.formState.errors);
-
   const { mutate: updateProject } = ProjectApi.mutations.useUpdateProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
@@ -198,19 +201,8 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const onSubmit = (formData: EditFormData) => {
-    const test: useUpdateProjectBody = {
-      ...formData,
-      //TODO: rewards settings mapping
-      rewardSettings: {
-        ignoreCodeReviews: false,
-        ignoreContributionsBefore: undefined,
-        ignoreIssues: false,
-        ignorePullRequests: false,
-      },
-    };
-
-    updateProject(test);
-    form.reset(test);
+    updateProject(formData);
+    form.reset(formData);
   };
 
   return (

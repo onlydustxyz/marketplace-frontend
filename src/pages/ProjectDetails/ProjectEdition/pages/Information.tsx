@@ -124,7 +124,7 @@ export function Information() {
           control={form?.control}
           render={({ field: { value } }) => (
             <FieldProjectLead
-              githubUserId="" // check what is this
+              githubUserId=""
               onChange={({ invited }) => {
                 form?.setValue("projectLeads", invited, { shouldDirty: true });
               }}
@@ -135,14 +135,16 @@ export function Information() {
         <Controller
           name="rewardSettings"
           control={form?.control}
-          render={({ field: { value } }) => (
-            <RewardableContributionsField
-            // onChange={({ invited }) => {
-            //   form?.setValue("projectLeads", invited, { shouldDirty: true });
-            // }}
-            // value={{ invited: value }}
-            />
-          )}
+          render={props => {
+            return (
+              <RewardableContributionsField
+                {...props.field}
+                onChange={data => {
+                  form?.setValue("rewardSettings", data, { shouldDirty: true });
+                }}
+              />
+            );
+          }}
         />
 
         <Controller

@@ -926,6 +926,7 @@
           "general": "General",
           "repositories": "Repositories"
         },
+        "save": "Save changes",
         "panel": {
           "title": "Add repositories",
           "tabs": {

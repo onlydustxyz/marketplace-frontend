@@ -113,7 +113,7 @@ function SafeProjectEdition() {
           htmlType="submit"
           disabled={!form?.formState.isDirty || !form?.formState.isValid || form?.formState.isSubmitting}
         >
-          Save changes
+          {T("project.details.edit.save")}
           <ArrowRightSLine className="-mr-2 text-2xl" />
         </Button>
       </Flex>
