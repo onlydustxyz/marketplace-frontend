@@ -31,7 +31,7 @@ export default function Header() {
     queryParams,
   });
 
-  const rewards = data?.pages.flatMap(page => page.rewards) || [];
+  const rewards = data?.pages.flatMap(({rewards})=> rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
 
   const { onboardingInProgress } = useOnboarding();
