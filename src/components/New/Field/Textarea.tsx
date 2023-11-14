@@ -30,7 +30,7 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
           onFocus={onFocus}
           rows={rows}
           ref={ref}
-          className="w-full bg-transparent text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
+          className="scrollbar-sm w-full bg-transparent text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
         />
       </div>
     </Field>

@@ -75,6 +75,7 @@ export function Information() {
             <FieldTextarea
               {...props.field}
               {...props.fieldState}
+              rows={4}
               label={T("project.details.edit.informations.fields.long.label")}
             />
           )}
