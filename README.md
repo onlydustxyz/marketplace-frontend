@@ -58,7 +58,7 @@ The marketplace project is organized in different components and routes. The mai
 
 The `App` component defines an enumeration called `RoutePaths` that represents the different routes of the application. It also defines enumerations called `ProjectRoutePaths` and `ProjectPaymentsRoutePaths` that represent sub-routes within the project details and project payments pages, respectively.
 
-The `App` component uses the `useReloadOnNewRelease` hook to reload the application if a new release is available. It also defines arrays called `projectRoutes` and `routes` using the `useRoutes` hook. These arrays represent the routes of the application and include nested routes and protected routes based on user roles.
+The `App` component defines arrays called `projectRoutes` and `routes` using the `useRoutes` hook. These arrays represent the routes of the application and include nested routes and protected routes based on user roles.
 
 The `Layout` component is responsible for rendering the layout of the marketplace application. It uses various components and hooks to create the desired layout, such as `classNames`, `Outlet`, `useLocation`, `ResponsivityFallback`, `Toaster`, `Header`, and `Tooltip`. The `Layout` component conditionally renders the `ResponsivityFallback` component and controls the visibility of the main content based on the current location.
 
