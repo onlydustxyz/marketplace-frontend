@@ -294,7 +294,7 @@ export function ContributionTable({
         </Table>
         {isLg && hasNextPage ? (
           <div className="py-3">
-            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={!fullTable} />
           </div>
         ) : null}
       </div>
