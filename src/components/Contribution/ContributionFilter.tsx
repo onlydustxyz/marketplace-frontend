@@ -1,6 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { GithubRepos, Projects } from "src/__generated/graphql";
+import { UseMyContributedProjectsResponse, UseMyContributedReposResponse } from "src/api/me/queries";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -27,8 +27,8 @@ export function ContributionFilter({
   onChange,
 }: {
   state: [Filters, Dispatch<SetStateAction<Filters>>];
-  projects: Projects[];
-  repos: GithubRepos[];
+  projects: UseMyContributedProjectsResponse["projects"];
+  repos: UseMyContributedReposResponse["repos"];
   onChange?: (newState: Filters) => void;
 }) {
   const [filters, setFilters] = state;

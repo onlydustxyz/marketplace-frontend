@@ -1,21 +1,14 @@
-import { ComponentProps, PropsWithChildren, useMemo, useState } from "react";
+import { ComponentProps, PropsWithChildren, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLocalStorage } from "react-use";
-import {
-  ContributionsBoolExp,
-  GithubRepos,
-  OrderBy,
-  Projects,
-  useGetContributionProjectsQuery,
-  useGetContributionReposQuery,
-} from "src/__generated/graphql";
+import { OrderBy } from "src/__generated/graphql";
+import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
@@ -58,9 +51,7 @@ const initialFilters: Filters = {
 
 export default function Contributions() {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
 
@@ -71,8 +62,8 @@ export default function Contributions() {
   const filtersState = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
   const [{ types, projects, repos }] = filtersState;
 
-  const projectIds = projects.map(({ id }) => id);
-  const repoIds = repos.map(({ id }) => id);
+  const projectIds = projects.map(({ id }) => String(id));
+  const repoIds = repos.map(({ id }) => String(id));
 
   const filterQueryParams = {
     types: types.join(","),
@@ -84,32 +75,15 @@ export default function Contributions() {
 
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
 
-  function projectsWhere() {
-    return {
-      githubUserId: { _eq: githubUserId },
-      repoId: { _in: repoIds.length ? repoIds : undefined },
-    };
-  }
-
-  function reposWhere() {
-    return {
-      githubUserId: { _eq: githubUserId },
-      projectId: { _in: projectIds.length ? projectIds : undefined },
-    };
-  }
-
-  // TODO replace with REST
-  const { data: projectsData } = useGetContributionProjectsQuery({
-    variables: { where: projectsWhere() as ContributionsBoolExp },
-    skip: !githubUserId,
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
+  const { data: projectsData } = MeApi.queries.useMyContributedProjects({
+    params: { repositories: repoIds.length ? repoIds.join(",") : "" },
   });
+  const contributedProjects = projectsData?.projects ?? [];
 
-  const { data: reposData } = useGetContributionReposQuery({
-    variables: { where: reposWhere() as ContributionsBoolExp },
-    skip: !githubUserId,
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
+  const { data: reposData } = MeApi.queries.useMyContributedRepos({
+    params: { projects: projectIds.length ? projectIds.join(",") : "" },
   });
+  const contributedRepos = reposData?.repos ?? [];
 
   function isActiveTab(tab: AllTabs) {
     return activeTab === tab;
@@ -268,20 +242,6 @@ export default function Contributions() {
     },
   ];
 
-  const filterProjectsAndRepos = useMemo((): { projects: Projects[]; repos: GithubRepos[] } => {
-    let projects: Projects[] = [];
-    let repos: GithubRepos[] = [];
-
-    if (!projectsData || !reposData) {
-      return { projects, repos };
-    }
-
-    projects = projectsData.contributions.flat().map(({ project }) => project) as Projects[];
-    repos = reposData.contributions.flat().map(({ githubRepo }) => githubRepo) as GithubRepos[];
-
-    return { projects, repos };
-  }, [projectsData, reposData]);
-
   return (
     <>
       <SEO />
@@ -297,8 +257,8 @@ export default function Contributions() {
                   <div className="hidden -translate-y-3 lg:block">
                     <ContributionFilter
                       state={filtersState}
-                      projects={filterProjectsAndRepos.projects}
-                      repos={filterProjectsAndRepos.repos}
+                      projects={contributedProjects}
+                      repos={contributedRepos}
                       onChange={newState => {
                         setFiltersStorage(JSON.stringify(newState));
                       }}

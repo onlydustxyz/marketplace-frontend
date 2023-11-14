@@ -25,4 +25,6 @@ export const API_PATH = {
   ME_PROJECT_LEADER_INVITATIONS: (projectId: string) => BASE_API_V1(`me/project-leader-invitations/${projectId}`),
   ME: BASE_API_V1("me"),
   ME_REWARDS: BASE_API_V1("me/rewards"),
+  MY_CONTRIBUTED_PROJECTS: BASE_API_V1("me/contributed-projects"),
+  MY_CONTRIBUTED_REPOS: BASE_API_V1("me/contributed-repos"),
 };

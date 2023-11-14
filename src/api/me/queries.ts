@@ -47,4 +47,38 @@ const useMyContributions = (
   );
 };
 
-export default { useGetMe, useMyRewardsInfiniteList, useMyContributions };
+export type UseMyContributedProjectsResponse = components["schemas"]["ContributedProjectsResponse"];
+
+const useMyContributedProjects = ({
+  params,
+  options = {},
+}: UseQueryProps<UseMyContributedProjectsResponse, { repositories?: string }>) => {
+  return useBaseQuery<UseMyContributedProjectsResponse>({
+    resourcePath: API_PATH.MY_CONTRIBUTED_PROJECTS,
+    tags: ME_TAGS.contributedProjects(),
+    queryParams: params,
+    ...options,
+  });
+};
+
+export type UseMyContributedReposResponse = components["schemas"]["ContributedReposResponse"];
+
+const useMyContributedRepos = ({
+  params,
+  options = {},
+}: UseQueryProps<UseMyContributedReposResponse, { projects?: string }>) => {
+  return useBaseQuery<UseMyContributedReposResponse>({
+    resourcePath: API_PATH.MY_CONTRIBUTED_REPOS,
+    queryParams: params,
+    tags: ME_TAGS.contributedRepos(),
+    ...options,
+  });
+};
+
+export default {
+  useGetMe,
+  useMyRewardsInfiniteList,
+  useMyContributions,
+  useMyContributedProjects,
+  useMyContributedRepos,
+};
