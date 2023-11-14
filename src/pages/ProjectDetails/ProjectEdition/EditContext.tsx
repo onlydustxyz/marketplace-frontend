@@ -11,10 +11,10 @@ import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { useIntl } from "src/hooks/useIntl";
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { useShowToaster } from "src/hooks/useToaster";
-import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import { z } from "zod";
 import { EditPanelProvider } from "./components/Panel/context";
 import transformOrganization from "./utils/transformInstallationToOrganization";
+import { FieldProjectLeadValue } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -34,7 +34,7 @@ type Edit = {
 
 export type EditFormData = components["schemas"]["UpdateProjectRequest"] & {
   organizations: components["schemas"]["ProjectGithubOrganizationResponse"][];
-  projectLeads: SelectedLeadType[];
+  projectLeads: FieldProjectLeadValue;
 };
 
 export const EditContext = createContext<Edit>({
@@ -107,7 +107,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       isLookingForContributors: project.hiring,
       inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
-      projectLeads: [...project.leaders, ...project.invitedLeaders],
+      projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
       organizations: project.organizations,
       rewardSettings: project.rewardSettings,
     },

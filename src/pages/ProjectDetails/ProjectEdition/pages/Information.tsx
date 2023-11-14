@@ -125,10 +125,15 @@ export function Information() {
           render={({ field: { value } }) => (
             <FieldProjectLead
               githubUserId=""
-              onChange={({ invited }) => {
-                form?.setValue("projectLeads", invited, { shouldDirty: true });
+              value={value}
+              onChange={({ invited, toKeep }) => {
+                const invitedUsers = invited.map(lead => lead.githubUserId).filter(Boolean) as number[];
+                const usersToKeep = toKeep.map(lead => lead.id).filter(Boolean) as string[];
+
+                form?.setValue("inviteGithubUserIdsAsProjectLeads", invitedUsers, { shouldDirty: true });
+                form?.setValue("projectLeadsToKeep", usersToKeep, { shouldDirty: true });
+                form?.setValue("projectLeads", { invited, toKeep }, { shouldDirty: true });
               }}
-              value={{ invited: value }}
             />
           )}
         />

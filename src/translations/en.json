@@ -23,7 +23,8 @@
     "next": "Next",
     "back": "Back",
     "publish": "Publish",
-    "you": "You"
+    "you": "You",
+    "pendingInvite": "Pending invite"
   },
   "contribution": {
     "review": {
