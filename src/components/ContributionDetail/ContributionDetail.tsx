@@ -65,11 +65,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <div>
-                  <ContributionBadge
-                    contribution={{ ...contribution, id: `reward-detail-${contribution.id}` }}
-                    size={ContributionBadgeSizes.Md}
-                    withTooltip={false}
-                  />
+                  <ContributionBadge contribution={contribution} size={ContributionBadgeSizes.Md} withTooltip={false} />
                 </div>
 
                 <h6 className="text-lg font-semibold">{contribution.githubTitle}</h6>

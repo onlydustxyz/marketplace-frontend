@@ -13,7 +13,7 @@ export function ContributionLinked({
     variant: Variant.Blue,
   },
 }: {
-  contribution: ComponentProps<typeof ContributionBadge>["contribution"] & Pick<Contribution, "links">;
+  contribution: ComponentProps<typeof ContributionBadge>["contribution"] & Pick<Contribution, "id" | "links">;
   withTooltip?: boolean;
   asLink?: boolean;
   tooltipProps?: React.ComponentProps<typeof Tooltip>;
@@ -24,7 +24,7 @@ export function ContributionLinked({
         <>
           {contribution.links.map(link => (
             <ContributionBadge
-              key={link.id}
+              key={link.githubNumber}
               contribution={link}
               withTooltip={withTooltip}
               asLink={asLink}

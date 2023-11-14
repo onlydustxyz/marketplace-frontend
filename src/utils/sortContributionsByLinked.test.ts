@@ -33,11 +33,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
     },
     links: [
       {
-        id: "70baa44b953e8addcb0945fcb78e0e827feac5a82d1b7b716ed87f85142348dd",
-        createdAt: "2023-09-18T16:41:40Z",
-        completedAt: "2023-10-02T11:55:52Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -93,11 +89,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
     },
     links: [
       {
-        id: "0ba295b5132061cad1e171a0484c2942145e43369c45fc42a20457dc1b30a83f",
-        createdAt: "2023-09-19T18:02:29Z",
-        completedAt: "2023-09-20T11:51:44Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -152,11 +144,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
     },
     links: [
       {
-        id: "d11ce2216fd710fc351c0d46a1d100817bcce3d4b268771627992f688caace93",
-        createdAt: "2023-10-02T14:10:16Z",
-        completedAt: "2023-10-02T15:49:04Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -210,11 +198,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
     },
     links: [
       {
-        id: "8dc1b645a77f48f898dd1deb048c89c85c7c303a9d321083ff542ac6226a7a2c",
-        createdAt: "2023-10-05T10:16:15Z",
-        completedAt: "2023-10-05T10:16:41Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -270,11 +254,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
     },
     links: [
       {
-        id: "735aee9dac894f8a2ff32a8ded08aaae2f45181a184b54f795e67e9f8c1080d4",
-        createdAt: "2023-10-09T15:12:22Z",
-        completedAt: "2023-10-09T16:54:56Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -329,11 +309,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
     },
     links: [
       {
-        id: "10aeaca41d281fcba7207513791861bec53963c612a859492347543f1ccc2eee",
-        createdAt: "2023-10-16T18:26:24Z",
-        completedAt: "2023-10-18T18:25:18Z",
         type: "PULL_REQUEST",
-        status: "CANCELLED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -387,11 +363,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
     },
     links: [
       {
-        id: "52db964265f3940dd7e87d31683db36a24c3ce7731fc73fec81e57a5697097f1",
-        createdAt: "2023-10-18T16:36:46Z",
-        completedAt: "2023-10-19T17:49:37Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -445,11 +417,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
     },
     links: [
       {
-        id: "cfdea2998c6cfdb80588910e00d9787b8a78901d269804cf2d4a20216568c146",
-        createdAt: "2023-10-19T14:13:47Z",
-        completedAt: "2023-10-24T10:49:22Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -470,11 +438,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
         is_mine: true,
       },
       {
-        id: "7b17ba7ea771b5b59f49b1e5d9b01f5b0f01379d605394c36c5caaa873546c34",
-        createdAt: "2023-10-19T14:13:47Z",
-        completedAt: "2023-10-24T10:49:22Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -495,11 +459,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
         is_mine: false,
       },
       {
-        id: "bc10c9e2302a709cd999521bf9d8fb74d6801805ca012836bc15ae4f9b19df65",
-        createdAt: "2023-10-19T14:13:47Z",
-        completedAt: "2023-10-24T10:49:22Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -586,11 +546,7 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
     },
     links: [
       {
-        id: "2e86786c5e7c02dc40d0483a12fd61573a84381631eb2e92cd6519d51834a612",
-        createdAt: "2023-10-25T15:57:45Z",
-        completedAt: "2023-10-27T10:14:26Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",
@@ -608,15 +564,10 @@ const mockContributions: Parameters<typeof sortContributionsByLinked>[0][0][] = 
         githubTitle:
           "E 697 update total earned on contributors profiles && E-696 Update project's contributors list && E-833 Caching issue in the contributors table.",
         githubHtmlUrl: "https://github.com/onlydustxyz/marketplace-frontend/pull/1320",
-
         is_mine: false,
       },
       {
-        id: "f9843580b1e97fa751eb857120ee543d5e33f387fa65a15572dfb98a9364b19b",
-        createdAt: "2023-10-25T15:57:45Z",
-        completedAt: "2023-10-27T10:14:26Z",
         type: "PULL_REQUEST",
-        status: "COMPLETED",
         repo: {
           id: 498695724,
           owner: "onlydustxyz",

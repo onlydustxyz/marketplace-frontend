@@ -31,11 +31,7 @@ export const contribution: Contribution = {
   },
   links: [
     {
-      id: "70baa44b953e8addcb0945fcb78e0e827feac5a82d1b7b716ed87f85142348dd",
-      createdAt: "2023-09-18T16:41:40Z",
-      completedAt: "2023-10-02T11:55:52Z",
       type: "PULL_REQUEST",
-      status: "COMPLETED",
       repo: {
         id: 498695724,
         owner: "onlydustxyz",

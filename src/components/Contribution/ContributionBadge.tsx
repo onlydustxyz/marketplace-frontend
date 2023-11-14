@@ -27,7 +27,7 @@ export function ContributionBadge({
 }: {
   contribution: Pick<
     Contribution,
-    "id" | "githubNumber" | "githubTitle" | "githubBody" | "githubHtmlUrl" | "githubAuthor" | "githubStatus" | "type"
+    "githubNumber" | "githubTitle" | "githubBody" | "githubHtmlUrl" | "githubAuthor" | "githubStatus" | "type"
   >;
   withTooltip?: boolean;
   asLink?: boolean;
@@ -37,11 +37,11 @@ export function ContributionBadge({
   const { T } = useIntl();
   const { githubUserId } = useAuth();
 
-  const { id, githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
+  const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
   const Component = asLink ? "a" : "div";
   const ComponentProps = asLink ? { href: githubHtmlUrl, target: "_blank", rel: "noopener noreferrer" } : {};
   const isExternal = githubAuthor && githubUserId !== githubAuthor.githubUserId;
-  const tooltipId = `${id}-${githubNumber}-${type}-${status}`;
+  const tooltipId = `${githubNumber}-${type}-${githubStatus}`;
 
   const tokens = {
     [GithubContributionType.PullRequest]: T("contributions.tooltip.badgePullRequest"),
