@@ -6,7 +6,7 @@ import { ME_TAGS } from "./tags";
 export type useMyRewardsInfiniteListResponse = components["schemas"]["MyRewardsPageResponse"];
 
 const useMyRewardsInfiniteList = (
-  params: Partial<Parameters<typeof useInfiniteBaseQuery>[0]>,
+  params: Partial<Parameters<typeof useInfiniteBaseQuery<useMyRewardsInfiniteListResponse>>[0]>,
   options: Parameters<typeof useInfiniteBaseQuery<useMyRewardsInfiniteListResponse>>[1] = {}
 ) => {
   return useInfiniteBaseQuery<useMyRewardsInfiniteListResponse>(
