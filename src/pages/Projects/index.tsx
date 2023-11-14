@@ -55,7 +55,11 @@ export default function Projects() {
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
               <div className="sticky top-4">
                 {parseFlag("VITE_CAN_CREATE_PROJECT") ? <SubmitProject /> : null}
-                <FilterPanel isProjectLeader={isProjectLeader} technologies={technologies} sponsors={sponsors} />
+                <FilterPanel
+                  isProjectLeader={!!isProjectLeader.length}
+                  technologies={technologies}
+                  sponsors={sponsors}
+                />
               </div>
             </div>
             <div className="min-w-0 grow">
@@ -79,7 +83,12 @@ export default function Projects() {
         </div>
       </Background>
       <SidePanel withBackdrop open={filterPanelOpen} setOpen={setFilterPanelOpen} placement="bottom">
-        <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel technologies={technologies} sponsors={sponsors} />
+        <FilterPanel
+          isProjectLeader={!!isProjectLeader.length}
+          fromSidePanel
+          technologies={technologies}
+          sponsors={sponsors}
+        />
       </SidePanel>
       <SidePanel withBackdrop open={sortingPanelOpen} setOpen={setSortingPanelOpen} placement="bottom">
         <SortingPanel all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
