@@ -29,7 +29,8 @@ export default function ProjectsSidebar({ projectId }: Props) {
   const { ledProjectIds, githubUserId, user } = useAuth();
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-
+  //   console.log('ledProjectIds',)
+  //   const isProjectLeader = useProjectLeader();
   const isProjectMine = (project?: Maybe<SidebarProjectDetails>) =>
     (project && ledProjectIds.includes(project?.id)) || project?.withInvitation;
 

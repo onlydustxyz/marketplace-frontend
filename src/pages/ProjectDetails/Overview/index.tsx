@@ -49,12 +49,12 @@ import Flex from "src/components/Utils/Flex";
 import { parseFlag } from "src/utils/parseFlag";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { OutletContext } from "../View";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 
 export default function Overview() {
   const { T } = useIntl();
   const { project } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId } = useAuth();
-  const { ledProjectIds } = useAuth();
   const { lastVisitedProjectId } = useSession();
   const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
@@ -74,7 +74,7 @@ export default function Overview() {
   const leads = project?.leaders;
   const languages = getTopTechnologies(project?.technologies);
   const hiring = project?.hiring;
-  const isProjectLeader = ledProjectIds.includes(projectId);
+  const isProjectLeader = useProjectLeader({ id: projectId });
 
   const { alreadyApplied, applyToProject } = useApplications(projectId);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
@@ -86,10 +86,10 @@ export default function Overview() {
   const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
   useEffect(() => {
-    if (projectId && projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) {
+    if (projectId && projectId !== lastVisitedProjectId && isProjectLeader) {
       dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: projectId });
     }
-  }, [projectId, ledProjectIds]);
+  }, [projectId, isProjectLeader]);
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 

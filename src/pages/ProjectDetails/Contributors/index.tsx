@@ -19,6 +19,7 @@ import Title from "src/pages/ProjectDetails/Title";
 import { useMediaQuery } from "usehooks-ts";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { components } from "src/__generated/api";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -26,7 +27,7 @@ type OutletContext = {
 
 export default function Contributors() {
   const { T } = useIntl();
-  const { ledProjectIds, githubUserId } = useAuth();
+  const { githubUserId } = useAuth();
   const navigate = useNavigate();
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
   const { project } = useOutletContext<OutletContext>();
@@ -34,7 +35,7 @@ export default function Contributors() {
   const { id: projectId, slug: projectKey } = project;
   const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
-  const isProjectLeader = ledProjectIds.includes(projectId);
+  const isProjectLeader = useProjectLeader({ id: projectId });
 
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;

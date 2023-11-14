@@ -1,5 +1,4 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import { useAuth } from "src/hooks/useAuth";
 import { DEFAULT_SORTING } from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
@@ -15,6 +14,7 @@ import AllProjectLoading from "./AllProjects/AllProjectsLoading";
 import AllProjects from "./AllProjects";
 import SubmitProject from "./SubmitProject";
 import { parseFlag } from "src/utils/parseFlag";
+import { useLeadProjects } from "src/hooks/useProjectLeader/useProjectLeader";
 
 export enum Sorting {
   Trending = "RANK",
@@ -26,8 +26,7 @@ export enum Sorting {
 export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.ReposCount, Sorting.ContributorsCount];
 
 export default function Projects() {
-  const { ledProjectIds } = useAuth();
-  const isProjectLeader = !!ledProjectIds.length;
+  const isProjectLeader = useLeadProjects();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [search, setSearch] = useState<string>("");
