@@ -16,6 +16,10 @@ export function useNavigationBlocker({
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    when.current = shouldBlockNavigation;
+  }, [shouldBlockNavigation]);
+
   /** Native navigation */
   useEffect(() => {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -49,7 +53,7 @@ export function useNavigationBlocker({
     return () => {
       navigator.push = push;
     };
-  }, [navigator, isBlocked, when]);
+  }, [navigator, isBlocked, when, shouldBlockNavigation]);
 
   const unBlockNavigation = useCallback(
     (type: "confirm" | "cancel") => {
@@ -66,9 +70,7 @@ export function useNavigationBlocker({
     [isBlocked]
   );
 
-  useEffect(() => {
-    when.current = shouldBlockNavigation;
-  }, [shouldBlockNavigation]);
+  console.log("shouldBlockNavigation", shouldBlockNavigation);
 
   return [isBlocked.blocked, unBlockNavigation];
 }

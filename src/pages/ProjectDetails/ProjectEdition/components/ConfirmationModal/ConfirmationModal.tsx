@@ -6,15 +6,8 @@ import { useNavigationBlocker } from "src/hooks/useNavigationBlocker/useNavigati
 export const ConfirmationModal = () => {
   const { form } = useContext(EditContext);
   const { T } = useIntl();
-  //   const [shouldUnBlock, setShouldUnBlock] = useState(false);
-  //   const [shouldUnBlock, setShouldUnBlock] = useState(false);
-  //   useNavigationBlocker({ shouldBlockNavigation: true });
-  //   const [showModal] = useNavigationBlocker({
-  //     shouldBlockNavigation: !shouldUnBlock && !!form?.formState.isDirty,
-  //     shouldUnBlock: () => shouldUnBlock,
-  //   });
   const [isBlock, unBlock] = useNavigationBlocker({
-    shouldBlockNavigation: true,
+    shouldBlockNavigation: !!form?.formState.isDirty,
   });
   //   const [showModal] = useNavigationBlocker({
   //     shouldBlockNavigation: true,
