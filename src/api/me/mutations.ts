@@ -1,6 +1,7 @@
 import { API_PATH } from "src/api/ApiPath";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { PROJECT_TAGS } from "../Project/tags";
+import MeApi from ".";
 
 const useAcceptProjectLeaderInvitation = ({
   options = {},
@@ -9,7 +10,10 @@ const useAcceptProjectLeaderInvitation = ({
   return useBaseMutation<null, unknown>({
     resourcePath: API_PATH.ME_PROJECT_LEADER_INVITATIONS(params?.projectId || ""),
     enabled: !!params?.projectId,
-    invalidatesTags: [{ queryKey: PROJECT_TAGS.detail_by_slug(params?.projectSlug || ""), exact: false }],
+    invalidatesTags: [
+      { queryKey: PROJECT_TAGS.detail_by_slug(params?.projectSlug || ""), exact: false },
+      { queryKey: MeApi.tags.all, exact: false },
+    ],
     ...options,
   });
 };
