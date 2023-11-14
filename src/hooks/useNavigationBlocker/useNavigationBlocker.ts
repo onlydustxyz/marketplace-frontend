@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { UNSAFE_NavigationContext as NavigationContext, Path, useNavigate } from "react-router-dom";
+import { UNSAFE_NavigationContext as NavigationContext, Path, useBeforeUnload, useNavigate } from "react-router-dom";
 
 export interface Blockers {
   shouldBlockNavigation: boolean;
@@ -20,19 +20,17 @@ export function useNavigationBlocker({
     when.current = shouldBlockNavigation;
   }, [shouldBlockNavigation]);
 
-  /** Native navigation */
-  useEffect(() => {
-    const onBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (shouldBlockNavigation && !isBlocked.blocked) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    };
-    window.addEventListener("beforeunload", onBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", onBeforeUnload);
-    };
-  }, [shouldBlockNavigation, isBlocked]);
+  useBeforeUnload(
+    useCallback(
+      (event: BeforeUnloadEvent) => {
+        if (shouldBlockNavigation && !isBlocked.blocked) {
+          event.preventDefault();
+          event.returnValue = "";
+        }
+      },
+      [shouldBlockNavigation, isBlocked]
+    )
+  );
 
   /** Router navigation */
   useEffect(() => {
