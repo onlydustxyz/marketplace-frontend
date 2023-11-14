@@ -7,6 +7,9 @@ export interface Blockers {
 
 /**
  * Custom React hook to handle navigation blocking.
+ * @why We need to create a custom hook to display a custom element on the
+ * page for the user. And prevent the user to navigate. With the native event,
+ * we can only show the pre-built modal provided by the navigator.
  * @function
  * @param {Blockers} config - Configuration object for the hook.
  * @returns {Array} Tuple containing a boolean indicating whether navigation is blocked,
