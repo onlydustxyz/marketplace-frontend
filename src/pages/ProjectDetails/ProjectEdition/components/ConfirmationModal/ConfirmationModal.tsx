@@ -1,29 +1,49 @@
-import { useBeforeUnload } from "react-use";
+import { useContext } from "react";
 import { Modal } from "src/components/New/Modal";
 import { useIntl } from "src/hooks/useIntl";
-
+import { EditContext } from "../../EditContext";
+import { useNavigationBlocker } from "src/hooks/useNavigationBlocker/useNavigationBlocker";
 export const ConfirmationModal = () => {
+  const { form } = useContext(EditContext);
   const { T } = useIntl();
-  const test = useBeforeUnload(true, "coucou");
+  //   const [shouldUnBlock, setShouldUnBlock] = useState(false);
+  //   const [shouldUnBlock, setShouldUnBlock] = useState(false);
+  //   useNavigationBlocker({ shouldBlockNavigation: true });
+  //   const [showModal] = useNavigationBlocker({
+  //     shouldBlockNavigation: !shouldUnBlock && !!form?.formState.isDirty,
+  //     shouldUnBlock: () => shouldUnBlock,
+  //   });
+  const [isBlock, unBlock] = useNavigationBlocker({
+    shouldBlockNavigation: true,
+  });
+  //   const [showModal] = useNavigationBlocker({
+  //     shouldBlockNavigation: true,
+  //     shouldUnBlock: () => false,
+  //   });
+
+  //   return null;
   return (
     <Modal
-      isOpen={true}
+      isOpen={isBlock}
       title={T("project.details.edit.confirmationModal.title")}
       description={T("project.details.edit.confirmationModal.content")}
       confirm={{
         text: T("project.details.edit.confirmationModal.save"),
         onClick: () => {
-          alert("Confirmed");
+          //   alert("Confirmed");
+          unBlock("confirm");
         },
       }}
       cancel={{
         text: T("project.details.edit.confirmationModal.discard"),
         onClick: () => {
-          alert("Cancelled");
+          //   alert("Cancelled");
+          unBlock("confirm");
         },
       }}
       onClose={() => {
-        alert("Closing");
+        // alert("Closing");
+        unBlock("cancel");
       }}
     />
   );

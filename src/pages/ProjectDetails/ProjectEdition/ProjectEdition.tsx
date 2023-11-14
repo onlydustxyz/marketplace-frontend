@@ -1,5 +1,5 @@
 import { PropsWithChildren, useContext, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useIntl } from "src/hooks/useIntl";
@@ -125,9 +125,11 @@ function SafeProjectEdition() {
   return (
     <Flex className="h-[calc(100vh-68px)] flex-col xl:h-[calc(100vh-77px-1.5rem)]">
       <Flex className="items-center px-4 py-6 xl:px-8">
-        <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly onClick={() => navigate(-1)} className="mr-3">
-          <CloseLine />
-        </Button>
+        <Link to="../">
+          <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
+            <CloseLine />
+          </Button>
+        </Link>
         <Title>
           <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
         </Title>
