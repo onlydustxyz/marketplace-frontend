@@ -10,13 +10,15 @@ import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 import View from "./View";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type MyPayoutInfoType = components["schemas"]["UserPayoutInformationResponse"];
 export type MyRewardsPendingInvoiceType = components["schemas"]["MyRewardsListResponse"];
 
-export default function InvoiceSubmission({ refetchMyRewards }: { refetchMyRewards: () => void }) {
+export default function InvoiceSubmission() {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
+  const queryClient = useQueryClient();
 
   const showToaster = useShowToaster();
 
@@ -45,7 +47,7 @@ export default function InvoiceSubmission({ refetchMyRewards }: { refetchMyRewar
     onCompleted: () => {
       showToaster(T("invoiceSubmission.toaster.success"));
       refetch();
-      refetchMyRewards();
+      queryClient.invalidateQueries({ queryKey: ["ME", "rewards"] });
     },
     update: (cache, _, { variables }) => {
       const { payments } = variables as MarkInvoiceAsReceivedMutationVariables;
