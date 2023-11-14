@@ -51,10 +51,10 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         "items-center": !isMobile,
       })}
     >
-      <div className="flex min-w-0 items-center gap-2 font-walsheim">
+      <div className="flex w-full items-center gap-2 font-walsheim">
         <ContributionBadge contribution={contribution} />
         <button
-          className="truncate text-left hover:underline"
+          className="truncate break-all text-left hover:underline"
           onClick={() => {
             if (id && contribution.project?.id)
               open({ contributionId: id, projectId: contribution.project.id }, githubHtmlUrl);
