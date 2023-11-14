@@ -1,4 +1,4 @@
-import { UseMyContributionsResponse } from "src/api/Me/queries";
+import { UseMyContributionsResponse } from "src/api/me/queries";
 
 export const contributionTable: UseMyContributionsResponse["contributions"] = [
   {

@@ -1,6 +1,6 @@
 import { PropsWithChildren, ReactNode, useMemo } from "react";
 import { OrderBy } from "src/__generated/graphql";
-import MeApi from "src/api/Me";
+import MeApi from "src/api/me";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
