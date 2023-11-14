@@ -1,4 +1,4 @@
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { components } from "src/__generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,9 +20,15 @@ interface EditContextProps {
 type Edit = {
   project?: UseGetProjectBySlugResponse;
   form?: UseFormReturn<EditFormData, unknown>;
+  githubWorklow: {
+    run: () => void;
+    inGithubWorkflow: boolean;
+  };
   formHelpers: {
     addOrganization: (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => void;
     saveInSession: () => void;
+    resetBeforLeave: () => void;
+    triggerSubmit: () => void;
     addRepository: (organizationId: number, repoId: number) => void;
     removeRepository: (organizationId: number, repoId: number) => void;
   };
@@ -38,9 +44,15 @@ export const EditContext = createContext<Edit>({
   project: undefined,
   formHelpers: {
     addOrganization: () => null,
+    resetBeforLeave: () => null,
+    triggerSubmit: () => null,
     addRepository: () => null,
     saveInSession: () => null,
     removeRepository: () => null,
+  },
+  githubWorklow: {
+    run: () => null,
+    inGithubWorkflow: false,
   },
 });
 
@@ -65,7 +77,7 @@ const validationSchema = z.object({
 export function EditProvider({ children, project }: EditContextProps) {
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
-
+  const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
   const {
     data: installationData,
     isLoading: isInstallationLoading,
@@ -153,6 +165,20 @@ export function EditProvider({ children, project }: EditContextProps) {
     setValue({ form: form.getValues(), dirtyFields: dirtykeys });
   };
 
+  const runGithubWorkflow = () => {
+    setInGithubWorkflow(true);
+    onSaveInSession();
+  };
+
+  const onTriggerSubmit = () => {
+    return form.handleSubmit(onSubmit)();
+  };
+
+  const onResetBeforLeave = () => {
+    form.reset();
+    removeValue();
+  };
+
   useEffect(() => {
     if (status === "ready" && storedValue) {
       storedValue.dirtyFields.forEach(field => {
@@ -204,8 +230,14 @@ export function EditProvider({ children, project }: EditContextProps) {
         formHelpers: {
           addOrganization: onAddOrganization,
           addRepository: onAddRepository,
+          resetBeforLeave: onResetBeforLeave,
           saveInSession: onSaveInSession,
+          triggerSubmit: onTriggerSubmit,
           removeRepository: onRemoveRepository,
+        },
+        githubWorklow: {
+          inGithubWorkflow,
+          run: runGithubWorkflow,
         },
       }}
     >

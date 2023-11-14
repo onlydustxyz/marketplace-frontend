@@ -70,7 +70,5 @@ export function useNavigationBlocker({
     [isBlocked]
   );
 
-  console.log("shouldBlockNavigation", shouldBlockNavigation);
-
   return [isBlocked.blocked, unBlockNavigation];
 }
