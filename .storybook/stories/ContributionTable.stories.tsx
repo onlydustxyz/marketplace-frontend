@@ -2,14 +2,12 @@ import { ComponentProps } from "react";
 import { OrderBy, UserIdentityDocument } from "src/__generated/graphql";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionTable, TableColumns } from "src/components/Contribution/ContributionTable";
-import { ContributionStatus } from "src/types";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributionDetailPanelProvider from "../decorators/withContributionDetailPanelProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
-import withRewardDetailPanelProvider from "../decorators/withRewardDetailPanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
-import { contributionTable } from "../mocks/contributionTable";
+import withRewardDetailPanelProvider from "../decorators/withRewardDetailPanelProvider";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
@@ -55,9 +53,6 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
   onHeaderClick: () => {
     alert("Header clicked!");
   },
-  contributions: contributionTable,
-  loading: false,
-  error: undefined,
   sort: {
     sort: TableColumns.Date,
     direction: OrderBy.Desc,
@@ -65,16 +60,9 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
   onSort: sort => {
     alert("Sorting");
   },
-  hasNextPage: false,
-  // @ts-expect-error
-  fetchNextPage: () => {},
-  isFetchingNextPage: false,
+  queryProps: [{}, {}],
 };
 
 export const Default = {
   render: (args: typeof ContributionTable) => <ContributionTable {...defaultProps} {...args} />,
-};
-
-export const Loading = {
-  render: (args: typeof ContributionTable) => <ContributionTable {...defaultProps} {...args} loading={true} />,
 };

@@ -74,7 +74,6 @@ export function ContributionTable({
   onSort: (sort: TableSort) => void;
   queryProps: Parameters<typeof MeApi.queries.useMyContributions>;
   sort: TableSort;
-  status: ContributionStatus;
   title: string;
 }) {
   const { T } = useIntl();

@@ -184,7 +184,6 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.InProgress);
       },
-      status: ContributionStatus.InProgress,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
       sort: sort[ContributionStatus.InProgress],
       onSort: sort => {
@@ -215,7 +214,6 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.Completed);
       },
-      status: ContributionStatus.Completed,
       sort: sort[ContributionStatus.Completed],
       onSort: sort => {
         setSort(prevState => {
@@ -246,7 +244,6 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.Cancelled);
       },
-      status: ContributionStatus.Cancelled,
       sort: sort[ContributionStatus.Cancelled],
       onSort: sort => {
         setSort(prevState => {
