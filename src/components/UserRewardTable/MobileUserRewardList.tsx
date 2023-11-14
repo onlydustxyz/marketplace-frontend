@@ -13,55 +13,77 @@ import { ReactNode } from "react";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { components } from "src/__generated/api";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import useQueryParamsSorting from "../RewardTable/useQueryParamsSorting";
+import { Fields } from "./Headers";
+import MeApi from "src/api/me";
+import ErrorFallback from "src/ErrorFallback";
+import { RoutePaths } from "src/App";
+import { Navigate } from "react-router-dom";
 
-export default function MobileUserRewardList({
-  rewards,
-  onRewardClick,
-  fetchNextPage,
-  hasNextPage,
-  isFetchingNextPage,
-}: {
-  rewards: MyRewardType[];
-  onRewardClick: (reward: MyRewardType) => void;
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-}) {
+export default function MobileUserRewardList({ onRewardClick }: { onRewardClick: (reward: MyRewardType) => void }) {
   const { T } = useIntl();
 
+  const { queryParams } = useQueryParamsSorting({
+    field: Fields.Date,
+    isAscending: false,
+    storageKey: "myRewardsSorting",
+  });
+
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    MeApi.queries.useMyRewardsInfiniteList({
+      queryParams,
+    });
+
+  if (error) {
+    return (
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
+        <ErrorFallback />
+      </div>
+    );
+  }
+
+  const rewards = data?.pages.flatMap(page => page.rewards) || [];
+
+  const hasRewards = rewards && rewards.length > 0;
+  if (!hasRewards && !isFetching && !isFetchingNextPage) {
+    return <Navigate to={RoutePaths.Projects} />;
+  }
+
   return (
-    <div className="flex flex-col gap-4">
-      {rewards.map(reward => (
-        <button onClick={() => onRewardClick(reward)} key={reward.id}>
-          <MobileUserRewardItem
-            title={reward?.rewardedOnProjectName}
-            id={reward.id}
-            image={
-              <RoundedImage
-                src={reward?.rewardedOnProjectLogoUrl || onlyDustLogo}
-                alt={reward?.rewardedOnProjectName || ""}
-              />
-            }
-            request={T("reward.table.reward", { id: pretty(reward.id), count: reward.numberOfRewardedContributions })}
-            amount={reward.amount}
-            date={new Date(reward.requestedAt)}
-            payoutStatus={
-              <PayoutStatus
-                {...{
-                  id: `payout-status-${reward.id}`,
-                  status: reward.status,
-                }}
-              />
-            }
-          />
-        </button>
-      ))}
-      {hasNextPage && (
-        <div className="py-6">
-          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
-        </div>
-      )}
-    </div>
+    <Card>
+      <div className="flex flex-col gap-4">
+        {rewards.map(reward => (
+          <button onClick={() => onRewardClick(reward)} key={reward.id}>
+            <MobileUserRewardItem
+              title={reward?.rewardedOnProjectName}
+              id={reward.id}
+              image={
+                <RoundedImage
+                  src={reward?.rewardedOnProjectLogoUrl || onlyDustLogo}
+                  alt={reward?.rewardedOnProjectName || ""}
+                />
+              }
+              request={T("reward.table.reward", { id: pretty(reward.id), count: reward.numberOfRewardedContributions })}
+              amount={reward.amount}
+              date={new Date(reward.requestedAt)}
+              payoutStatus={
+                <PayoutStatus
+                  {...{
+                    id: `payout-status-${reward.id}`,
+                    status: reward.status,
+                  }}
+                />
+              }
+            />
+          </button>
+        ))}
+        {hasNextPage && (
+          <div className="py-6">
+            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+          </div>
+        )}
+      </div>
+    </Card>
   );
 }
 
