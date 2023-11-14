@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect } from "react";
-import { Navigate, RouteObject, useLocation, useRoutes } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
 import ProtectedRoute from "src/App/ProtectedRoute";
@@ -24,7 +24,6 @@ import PublicProfilePage from "src/pages/PublicProfile";
 import TermsAndConditions from "src/pages/TermsAndConditions";
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
-import useReloadOnNewRelease from "./useReloadOnNewRelease";
 import {
   ProjectIntroPage,
   GithubOrganizationPage,
@@ -63,12 +62,6 @@ export enum ProjectRewardsRoutePaths {
 
 function App() {
   const { isLoggedIn } = useAuth();
-  const location = useLocation();
-  const reloadOnNewRelease = useReloadOnNewRelease();
-
-  useEffect(() => {
-    reloadOnNewRelease();
-  }, [location]);
 
   const projectRoutes: RouteObject[] = [
     {

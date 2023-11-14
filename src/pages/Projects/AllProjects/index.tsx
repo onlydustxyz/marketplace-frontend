@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from "react";
-import { InView } from "react-intersection-observer";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
@@ -110,15 +109,7 @@ export default function AllProjects({
               <ProjectCard className={isFirstHiringProject ? "mt-3" : undefined} key={project.id} project={project} />
             );
           })}
-          {hasNextPage ? (
-            <InView
-              onChange={inView => {
-                if (inView) fetchNextPage();
-              }}
-            >
-              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
-            </InView>
-          ) : null}
+          {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
         </div>
       </div>
     );
