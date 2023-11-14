@@ -3,13 +3,13 @@ import { useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { API_PATH } from "../ApiPath";
 import { ME_TAGS } from "./tags";
 
-export type useMyRewardsInfiniteListResponse = components["schemas"]["MyRewardsPageResponse"];
+export type UseMyRewardsInfiniteListResponse = components["schemas"]["MyRewardsPageResponse"];
 
 const useMyRewardsInfiniteList = (
-  params: Partial<Parameters<typeof useInfiniteBaseQuery<useMyRewardsInfiniteListResponse>>[0]>,
-  options: Parameters<typeof useInfiniteBaseQuery<useMyRewardsInfiniteListResponse>>[1] = {}
+  params: Partial<Parameters<typeof useInfiniteBaseQuery<UseMyRewardsInfiniteListResponse>>[0]>,
+  options: Parameters<typeof useInfiniteBaseQuery<UseMyRewardsInfiniteListResponse>>[1] = {}
 ) => {
-  return useInfiniteBaseQuery<useMyRewardsInfiniteListResponse>(
+  return useInfiniteBaseQuery<UseMyRewardsInfiniteListResponse>(
     {
       ...params,
       resourcePath: API_PATH.ME_REWARDS,

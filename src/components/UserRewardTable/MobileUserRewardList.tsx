@@ -42,7 +42,7 @@ export default function MobileUserRewardList({ onRewardClick }: { onRewardClick:
     );
   }
 
-  const rewards = data?.pages.flatMap(page => page.rewards) || [];
+  const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
 
   const hasRewards = rewards && rewards.length > 0;
   if (!hasRewards && !isFetching && !isFetchingNextPage) {
