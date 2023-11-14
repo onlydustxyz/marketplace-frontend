@@ -13,6 +13,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { useContext } from "react";
 import { EditContext } from "../EditContext";
 import { useShowToaster } from "src/hooks/useToaster";
+import { RewardableContributionsField } from "../RewardableContributionsField";
 
 export function Information() {
   const { T } = useIntl();
@@ -56,7 +57,6 @@ export function Information() {
             />
           )}
         />
-
         <Controller
           name="shortDescription"
           control={form?.control}
@@ -132,6 +132,19 @@ export function Information() {
             />
           )}
         />
+        <Controller
+          name="rewardSettings"
+          control={form?.control}
+          render={({ field: { value } }) => (
+            <RewardableContributionsField
+            // onChange={({ invited }) => {
+            //   form?.setValue("projectLeads", invited, { shouldDirty: true });
+            // }}
+            // value={{ invited: value }}
+            />
+          )}
+        />
+
         <Controller
           name="isLookingForContributors"
           control={form?.control}

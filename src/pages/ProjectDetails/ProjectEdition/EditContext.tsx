@@ -227,7 +227,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       }}
     >
       <EditPanelProvider openOnLoad={!!installation_id} isLoading={isInstallationLoading} project={project}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-hidden">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="h-full overflow-hidden">
           {children}
         </form>
       </EditPanelProvider>

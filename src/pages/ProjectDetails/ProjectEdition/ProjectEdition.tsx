@@ -92,9 +92,13 @@ function SafeProjectEdition() {
       </Flex>
 
       <Flex className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}>
-        <Card>
-          {activeTab === TabsType.General ? <Information /> : <Repository isError={false} isLoading={false} />}
-        </Card>
+        {activeTab === TabsType.General ? (
+          <Card>
+            <Information />
+          </Card>
+        ) : (
+          <Repository isError={false} isLoading={false} />
+        )}
       </Flex>
 
       <Flex
