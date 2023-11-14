@@ -2,7 +2,6 @@ import { cn } from "src/utils/cn";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { useGetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import Dot from "src/assets/icons/Dot";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SidePanel from "src/components/SidePanel";
@@ -18,6 +17,9 @@ import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
 import { parseFlag } from "src/utils/parseFlag";
 import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
+import { Fields } from "src/components/UserRewardTable/Headers";
+import MeApi from "src/api/me";
 
 type Props = {
   avatarUrl: string | null;
@@ -43,11 +45,18 @@ export default function ViewMobile({
 
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
-  const { data: paymentRequestIdsQueryData } = useGetPaymentRequestIdsQuery({
-    variables: { githubUserId },
-    skip: !githubUserId,
+  const { queryParams } = useQueryParamsSorting({
+    field: Fields.Date,
+    isAscending: false,
+    storageKey: "myRewardsSorting",
   });
-  const hasRewards = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
+
+  const { data, isLoading, isError } = MeApi.queries.useMyRewardsInfiniteList({
+    queryParams,
+  });
+
+  const rewards = data?.pages.flatMap(page => page.rewards) || [];
+  const hasRewards = rewards.length > 0 && !isLoading && !isError;
 
   return (
     <>

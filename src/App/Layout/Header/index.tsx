@@ -4,11 +4,14 @@ import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import { useGetPaymentRequestIdsQuery, useOwnUserProfileQuery } from "src/__generated/graphql";
+import { useOwnUserProfileQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useOnboarding } from "src/App/OnboardingProvider";
 import { parseFlag } from "src/utils/parseFlag";
+import MeApi from "src/api/me";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
+import { Fields } from "src/components/UserRewardTable/Headers";
 
 export default function Header() {
   const location = useLocation();
@@ -18,15 +21,21 @@ export default function Header() {
   const { impersonationSet } = useImpersonationClaims();
   const impersonating = !!impersonationSet;
 
-  const { data: paymentRequestIdsQueryData } = useGetPaymentRequestIdsQuery({
-    variables: { githubUserId },
-    skip: !githubUserId,
+  const { queryParams } = useQueryParamsSorting({
+    field: Fields.Date,
+    isAscending: false,
+    storageKey: "myRewardsSorting",
   });
+
+  const { data, isLoading, isError } = MeApi.queries.useMyRewardsInfiniteList({
+    queryParams,
+  });
+
+  const rewards = data?.pages.flatMap(page => page.rewards) || [];
+  const hasRewards = rewards.length > 0 && !isLoading && !isError;
 
   const { onboardingInProgress } = useOnboarding();
   const profileQuery = useOwnUserProfileQuery({ variables: { githubUserId }, skip: !githubUserId });
-
-  const hasRewards = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
 
   const rewardsMenuItem = hasRewards && !onboardingInProgress ? T("navbar.rewards") : undefined;
   const contributionsMenuItem =
