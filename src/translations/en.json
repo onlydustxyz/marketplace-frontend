@@ -928,10 +928,10 @@
           "repositories": "Repositories"
         },
         "confirmationModal": {
-            "title": "You have unsaved changes",
-            "content": "If you leave this page, any whanges you have made will be lost.",
-            "discard": "Discard changes",
-            "save": "Save changes"
+          "title": "You have unsaved changes",
+          "content": "If you leave this page, any whanges you have made will be lost.",
+          "discard": "Discard changes",
+          "save": "Save changes"
         },
         "save": "Save changes",
         "panel": {
