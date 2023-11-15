@@ -13,23 +13,23 @@ export function RepositoryOrganization({ organization }: RepositoryOrganizationT
     [organization]
   );
 
-  if (installedRepo.length === 0) {
-    return null;
+  if (installedRepo.length) {
+    return (
+      <VerticalListItemCard
+        ContainerProps={{ className: " bg-card-background-base" }}
+        key={organization.name || organization?.login}
+        title={organization?.name || organization?.login || ""}
+        avatarAlt={organization?.name || organization?.login || ""}
+        avatarSrc={organization?.avatarUrl || ""}
+      >
+        <div className="grid grid-flow-row grid-cols-3 gap-x-5 gap-y-5">
+          {installedRepo.map(repo => (
+            <Repository key={repo.name} organization={organization} repository={repo} />
+          ))}
+        </div>
+      </VerticalListItemCard>
+    );
   }
 
-  return (
-    <VerticalListItemCard
-      ContainerProps={{ className: " bg-card-background-base" }}
-      key={organization.name || organization?.login}
-      title={organization?.name || organization?.login || ""}
-      avatarAlt={organization?.name || organization?.login || ""}
-      avatarSrc={organization?.avatarUrl || ""}
-    >
-      <div className="grid grid-flow-row grid-cols-3 gap-x-5 gap-y-5">
-        {installedRepo.map(repo => (
-          <Repository key={repo.name} organization={organization} repository={repo} />
-        ))}
-      </div>
-    </VerticalListItemCard>
-  );
+  return null;
 }
