@@ -21,7 +21,7 @@ export const Repository: FC<RepositoryProps> = ({ organization, repository }) =>
   };
 
   return (
-    <div className="card-light w-full rounded-large border p-4 shadow-light" key={repository.id}>
+    <div className="card-light w-full rounded-large border p-4 shadow-light">
       <Flex justify="start" item="start" className="gap-5">
         <Button iconOnly type={ButtonType.Secondary} size={ButtonSize.Sm} onClick={onClick}>
           <AddLine className="text-base leading-none" />
