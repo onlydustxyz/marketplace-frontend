@@ -1,21 +1,21 @@
-import React, { ComponentProps, FC } from "react";
+import { ComponentProps, FC, PropsWithChildren } from "react";
 import { Avatar } from "../Avatar";
 import { Flex } from "../Layout/Flex";
 import Card from "src/components/Card";
 import { cn } from "src/utils/cn";
 
-export interface VerticalListItemCardProps {
+export interface VerticalListItemCardProps extends PropsWithChildren {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;
   ContainerProps?: Partial<ComponentProps<typeof Card>>;
   ChildrenContainerProps?: {
     className?: string;
   };
   titleComponent?: React.ReactElement;
-  children?: React.ReactNode;
   title: string;
   avatarSrc: string;
   avatarAlt: string;
 }
+
 export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
   AvatarProps = {},
   ContainerProps = {},
