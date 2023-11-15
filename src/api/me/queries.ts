@@ -31,4 +31,4 @@ const useMyRewardsInfiniteList = (
   );
 };
 
-export { useGetMe, useMyRewardsInfiniteList };
+export default { useGetMe, useMyRewardsInfiniteList };
