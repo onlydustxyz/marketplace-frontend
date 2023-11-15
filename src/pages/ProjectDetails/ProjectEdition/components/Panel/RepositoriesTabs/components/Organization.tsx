@@ -17,13 +17,13 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
   );
 
   const repositories = useMemo(() => {
-    if (unInstalledRepo && unInstalledRepo.length > 0) {
+    if (unInstalledRepo?.length) {
       return unInstalledRepo.map(repo => <Repository key={repo.id} organization={organization} repository={repo} />);
     }
 
     return (
-      <div className={"flex flex-row items-center justify-start gap-0.5"}>
-        <InformationLine className="text-[16px] text-spaceBlue-200" />
+      <div className="flex flex-row items-center justify-start gap-0.5">
+        <InformationLine className="text-base leading-4 text-spaceBlue-200" />
         <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
           {T("project.details.edit.panel.repositories.noRepositoriesToAdd")}
         </p>
