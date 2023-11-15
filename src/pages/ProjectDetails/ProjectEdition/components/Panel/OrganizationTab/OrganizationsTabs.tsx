@@ -6,7 +6,7 @@ import { EditContext } from "../../../EditContext";
 export const EditPanelOrganization = () => {
   const { T } = useIntl();
 
-  const { form, project, formHelpers } = useContext(EditContext);
+  const { form, project, githubWorklow } = useContext(EditContext);
   const organizations = form?.watch("organizations") || [];
 
   return (
@@ -33,7 +33,7 @@ export const EditPanelOrganization = () => {
         <a
           href={`${import.meta.env.VITE_GITHUB_INSTALLATION_URL}?state=${project?.slug}`}
           className="border-lg rounded-lg bg-white px-4 py-2 font-medium text-zinc-800"
-          onClick={formHelpers.saveInSession}
+          onClick={githubWorklow.run}
         >
           {T("project.details.edit.organizations.installGithubApp")}
         </a>

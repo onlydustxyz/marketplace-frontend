@@ -1,6 +1,4 @@
-import { useApolloClient } from "@apollo/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
@@ -14,7 +12,9 @@ import { useShowToaster } from "src/hooks/useToaster";
 import { z } from "zod";
 import { EditPanelProvider } from "./components/Panel/context";
 import transformOrganization from "./utils/transformInstallationToOrganization";
+import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 import { FieldProjectLeadValue } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -24,9 +24,15 @@ interface EditContextProps {
 type Edit = {
   project?: UseGetProjectBySlugResponse;
   form?: UseFormReturn<EditFormData, unknown>;
+  githubWorklow: {
+    run: () => void;
+    inGithubWorkflow: boolean;
+  };
   formHelpers: {
     addOrganization: (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => void;
     saveInSession: () => void;
+    resetBeforLeave: () => void;
+    triggerSubmit: () => void;
     addRepository: (organizationId: number, repoId: number) => void;
     removeRepository: (organizationId: number, repoId: number) => void;
   };
@@ -42,9 +48,15 @@ export const EditContext = createContext<Edit>({
   project: undefined,
   formHelpers: {
     addOrganization: () => null,
+    resetBeforLeave: () => null,
+    triggerSubmit: () => null,
     addRepository: () => null,
     saveInSession: () => null,
     removeRepository: () => null,
+  },
+  githubWorklow: {
+    run: () => null,
+    inGithubWorkflow: false,
   },
 });
 
@@ -76,11 +88,10 @@ export function EditProvider({ children, project }: EditContextProps) {
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
-  const client = useApolloClient();
 
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
-
+  const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
   const { data: installationData, isLoading: isInstallationLoading } = GithubApi.queries.useInstallationById({
     params: { installation_id },
     options: { retry: 1, enabled: !!installation_id },
@@ -165,6 +176,20 @@ export function EditProvider({ children, project }: EditContextProps) {
     setValue({ form: form.getValues(), dirtyFields: dirtykeys });
   };
 
+  const runGithubWorkflow = () => {
+    setInGithubWorkflow(true);
+    onSaveInSession();
+  };
+
+  const onTriggerSubmit = () => {
+    return form.handleSubmit(onSubmit)();
+  };
+
+  const onResetBeforLeave = () => {
+    form.reset();
+    removeValue();
+  };
+
   useEffect(() => {
     if (status === "ready" && storedValue) {
       storedValue.dirtyFields.forEach(field => {
@@ -184,7 +209,6 @@ export function EditProvider({ children, project }: EditContextProps) {
     params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
       onSuccess: async data => {
-        await client.refetchQueries({ include: ["GetProjectsForSidebar"] });
         showToaster(T("form.toast.success"));
         removeValue();
 
@@ -213,8 +237,14 @@ export function EditProvider({ children, project }: EditContextProps) {
         formHelpers: {
           addOrganization: onAddOrganization,
           addRepository: onAddRepository,
+          resetBeforLeave: onResetBeforLeave,
           saveInSession: onSaveInSession,
+          triggerSubmit: onTriggerSubmit,
           removeRepository: onRemoveRepository,
+        },
+        githubWorklow: {
+          inGithubWorkflow,
+          run: runGithubWorkflow,
         },
       }}
     >
@@ -222,6 +252,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="h-full overflow-hidden">
           {children}
         </form>
+        <ConfirmationModal />
       </EditPanelProvider>
     </EditContext.Provider>
   );
