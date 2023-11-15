@@ -33,7 +33,6 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
 
   useEffect(() => {
     if (data && savedOrgsDataStatus === "ready" && !isOrganizationAlreadyExist(savedOrgsData, data)) {
-      console.log("data", data);
       const newData: OrganizationSessionStorageInterface = {
         ...data,
         organization: {
