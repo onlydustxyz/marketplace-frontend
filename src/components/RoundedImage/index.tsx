@@ -17,7 +17,7 @@ export enum Rounding {
 
 interface RoundedImageProps {
   src: string | null;
-  alt: string | null;
+  alt?: string;
   size?: ImageSize;
   className?: string;
   rounding?: Rounding;
@@ -26,14 +26,14 @@ interface RoundedImageProps {
 
 export default function RoundedImage({
   src,
-  alt,
+  alt = "",
   className,
   size = ImageSize.Lg,
   rounding = Rounding.Corners,
   useLogoFallback,
 }: RoundedImageProps) {
   const srcMemo = useMemo(() => {
-    if (src && src !== "") {
+    if (src?.length) {
       return src;
     }
     if (useLogoFallback) {
@@ -42,6 +42,7 @@ export default function RoundedImage({
 
     return src;
   }, [src, useLogoFallback]);
+
   return (
     <div
       className={cn(
@@ -71,8 +72,8 @@ export default function RoundedImage({
           "h-10 w-10": size === ImageSize.Lg,
           "h-12 w-12": size === ImageSize.Xl,
         })}
-        alt={alt || ""}
-        src={srcMemo}
+        alt={alt}
+        src={srcMemo ?? ""}
       />
     </div>
   );
