@@ -1,5 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
-import { DateRange, DayPickerMultipleProps, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
+import { DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
@@ -7,72 +7,21 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB } from "src/utils/date";
 
-export type DatepickProps =
-  | DayPickerSingleProps["selected"]
-  | DayPickerMultipleProps["selected"]
-  | DayPickerRangeProps["selected"];
-
 type Props = {
-  value?:
-    | string
-    | DayPickerSingleProps["selected"]
-    | DayPickerMultipleProps["selected"]
-    | DayPickerRangeProps["selected"];
-  onChange: DayPickerSingleProps["onSelect"] | DayPickerMultipleProps["onSelect"] | DayPickerRangeProps["onSelect"];
+  value?: Date;
+  onChange: DayPickerSingleProps["onSelect"];
   isElevated?: boolean;
 };
 
-type SingleProps = {
-  mode: "single";
-} & Props;
-
-type MultipleProps = {
-  mode: "multiple";
-} & Props;
-
-type RangeProps = {
-  mode: "range";
-  ranges: unknown[];
-} & Props;
-
-export function Datepicker({
-  value,
-  mode = "single",
-  isElevated = false,
-  onChange,
-}: SingleProps | MultipleProps | RangeProps) {
+export function Datepicker({ value, isElevated = false, onChange }: Props) {
   const { T } = useIntl();
 
   function renderCalendar() {
-    if (mode === "multiple") {
-      return (
-        <Calendar
-          mode="multiple"
-          selected={value as Date[]}
-          onSelect={onChange as DayPickerMultipleProps["onSelect"]}
-        />
-      );
-    }
-
-    if (mode === "range") {
-      return (
-        <Calendar mode="range" selected={value as DateRange} onSelect={onChange as DayPickerRangeProps["onSelect"]} />
-      );
-    }
-
-    return <Calendar mode="single" selected={value as Date} onSelect={onChange as DayPickerSingleProps["onSelect"]} />;
+    return <Calendar mode="single" selected={value} onSelect={onChange} />;
   }
 
   function renderPlaceholder() {
-    if (mode === "multiple") {
-      return T("form.multipleDatesPlaceholder");
-    }
-
-    if (mode === "range") {
-      return T("form.dateRangePlaceholder");
-    }
-
-    return value ? getFormattedDateGB(new Date(value as Date)) : T("form.singleDatePlaceholder");
+    return value ? getFormattedDateGB(new Date(value)) : T("form.singleDatePlaceholder");
   }
 
   return (

@@ -79,7 +79,7 @@ const validationSchema = z.object({
     ignorePullRequests: z.boolean().nullish().optional(),
     ignoreIssues: z.boolean().nullish().optional(),
     ignoreCodeReviews: z.boolean().nullish().optional(),
-    ignoreContributionsBefore: z.coerce.date(),
+    ignoreContributionsBefore: z.coerce.date().optional(),
   }),
 });
 

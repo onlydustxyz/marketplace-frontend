@@ -1,9 +1,9 @@
-import { forwardRef } from "react";
+import { ComponentProps, forwardRef } from "react";
 import { components } from "src/__generated/api";
 import EyeCheckLine from "src/assets/icons/EyeCheckLine";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
-import { DatepickProps, Datepicker } from "src/components/New/Field/Datepicker";
+import { Datepicker } from "src/components/New/Field/Datepicker";
 import { Field } from "src/components/New/Field/Field";
 import { useIntl } from "src/hooks/useIntl";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
@@ -31,7 +31,7 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
       });
   }
 
-  function handleDateChange(date: DatepickProps) {
+  function handleDateChange(date: ComponentProps<typeof Datepicker>["value"]) {
     onChange({ ...value, ignoreContributionsBefore: date?.toString() });
   }
 
@@ -89,7 +89,10 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
             {T("project.details.edit.fields.date.since")}
           </span>
           <div className="w-60">
-            <Datepicker mode="single" value={value?.ignoreContributionsBefore} onChange={handleDateChange} />
+            <Datepicker
+              value={value?.ignoreContributionsBefore ? new Date(value.ignoreContributionsBefore) : undefined}
+              onChange={handleDateChange}
+            />
           </div>
         </div>
       </div>
