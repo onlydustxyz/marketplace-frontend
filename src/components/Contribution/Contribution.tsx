@@ -26,7 +26,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
     if (type === GithubContributionType.PullRequest && githubStatus === GithubPullRequestStatus.Open) {
       let review = GithubContributionReviewStatus.PendingReviewer;
 
-      if (githubCodeReviewOutcome === null) {
+      if (githubCodeReviewOutcome === "COMMENTED") {
         review = GithubContributionReviewStatus.UnderReview;
       }
 
