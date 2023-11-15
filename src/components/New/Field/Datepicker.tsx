@@ -1,19 +1,20 @@
 import { Popover, Transition } from "@headlessui/react";
-import { useEffect } from "react";
-import { DateRange } from "react-day-picker";
-import { Calendar, useMultipleCalendar, useRangeCalendar, useSingleCalendar } from "src/components/New/Calendar";
+import { DateRange, DayPickerMultipleProps, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
+import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB } from "src/utils/date";
 
-export type DatepickProps = string | Date | Date[] | DateRange;
-
 type Props = {
-  value?: DatepickProps;
+  value?:
+    | string
+    | DayPickerSingleProps["selected"]
+    | DayPickerMultipleProps["selected"]
+    | DayPickerRangeProps["selected"];
+  onChange: DayPickerSingleProps["onSelect"] | DayPickerMultipleProps["onSelect"] | DayPickerRangeProps["onSelect"];
   isElevated?: boolean;
-  onChange: (date: DatepickProps) => void;
 };
 
 type SingleProps = {
@@ -37,25 +38,24 @@ export function Datepicker({
 }: SingleProps | MultipleProps | RangeProps) {
   const { T } = useIntl();
 
-  const [day, setDay] = useSingleCalendar(new Date(value as string));
-  const [days, setDays] = useMultipleCalendar(value as Date[]);
-  const [range, setRange] = useRangeCalendar(value as DateRange);
-  const selectedDate: DatepickProps | undefined = day;
-
-  useEffect(() => {
-    selectedDate && onChange(selectedDate);
-  }, [selectedDate]);
-
   function renderCalendar() {
     if (mode === "multiple") {
-      return <Calendar mode={mode} selected={days} onSelect={setDays} />;
+      return (
+        <Calendar
+          mode="multiple"
+          selected={value as Date[]}
+          onSelect={onChange as DayPickerMultipleProps["onSelect"]}
+        />
+      );
     }
 
     if (mode === "range") {
-      return <Calendar mode={mode} selected={range} onSelect={setRange} />;
+      return (
+        <Calendar mode="range" selected={value as DateRange} onSelect={onChange as DayPickerRangeProps["onSelect"]} />
+      );
     }
 
-    return <Calendar mode={mode} selected={day} onSelect={setDay} />;
+    return <Calendar mode="single" selected={value as Date} onSelect={onChange as DayPickerSingleProps["onSelect"]} />;
   }
 
   function renderPlaceholder() {
@@ -67,7 +67,7 @@ export function Datepicker({
       return T("form.dateRangePlaceholder");
     }
 
-    return day ? getFormattedDateGB(day) : T("form.singleDatePlaceholder");
+    return value ? getFormattedDateGB(new Date(value as Date)) : T("form.singleDatePlaceholder");
   }
 
   return (
