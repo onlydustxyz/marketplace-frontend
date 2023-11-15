@@ -2,6 +2,7 @@ import { API_PATH } from "src/api/ApiPath";
 import { components } from "src/__generated/api";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
+import { PROJECT_TAGS } from "./tags";
 
 export type UseCreateProjectBody = components["schemas"]["CreateProjectRequest"];
 export type UseCreateProjectResponse = components["schemas"]["CreateProjectResponse"];
@@ -17,16 +18,17 @@ const useCreateProject = ({
 };
 
 export type useUpdateProjectBody = components["schemas"]["UpdateProjectRequest"];
-export type useUpdateProjectResponse = components["schemas"]["UpdateProjectRequest"];
+export type useUpdateProjectResponse = components["schemas"]["UpdateProjectResponse"];
 
-const useUpdateroject = ({
+const useUpdateProject = ({
   params,
   options = {},
-}: UseMutationProps<useUpdateProjectResponse, { projectKey?: string }, useUpdateProjectBody>) => {
+}: UseMutationProps<useUpdateProjectResponse, { projectId?: string; projectSlug: string }, useUpdateProjectBody>) => {
   return useBaseMutation<useUpdateProjectBody, useUpdateProjectResponse>({
-    resourcePath: API_PATH.PROJECT_DETAILS(params?.projectKey || ""),
+    resourcePath: API_PATH.PROJECT_DETAILS(params?.projectId || ""),
     method: "PUT",
-    enabled: !!params?.projectKey,
+    enabled: !!params?.projectId,
+    invalidatesTags: [{ queryKey: PROJECT_TAGS.detail_by_id(params?.projectId || ""), exact: false }],
     ...options,
   });
 };
@@ -39,4 +41,4 @@ const useUploadLogo = ({ options = {} }: UseUploaderProps<{ url: string }, undef
   });
 };
 
-export default { useCreateProject, useUpdateroject, useUploadLogo };
+export default { useCreateProject, useUpdateProject, useUploadLogo };

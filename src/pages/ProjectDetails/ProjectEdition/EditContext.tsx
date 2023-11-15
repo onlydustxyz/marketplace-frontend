@@ -1,15 +1,20 @@
+import { useApolloClient } from "@apollo/client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { createContext, useEffect } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
+import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
-import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import { SelectedLeadType } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
-import { EditPanelProvider } from "./components/Panel/context";
-import { useSearchParams } from "react-router-dom";
 import GithubApi from "src/api/Github";
+import ProjectApi from "src/api/Project";
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+import { useIntl } from "src/hooks/useIntl";
+import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
+import { useShowToaster } from "src/hooks/useToaster";
+import { z } from "zod";
+import { EditPanelProvider } from "./components/Panel/context";
 import transformOrganization from "./utils/transformInstallationToOrganization";
+import { FieldProjectLeadValue } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -29,7 +34,7 @@ type Edit = {
 
 export type EditFormData = components["schemas"]["UpdateProjectRequest"] & {
   organizations: components["schemas"]["ProjectGithubOrganizationResponse"][];
-  projectLeads: SelectedLeadType[];
+  projectLeads: FieldProjectLeadValue;
 };
 
 export const EditContext = createContext<Edit>({
@@ -54,22 +59,29 @@ const validationSchema = z.object({
       value: z.string().min(1),
     })
   ),
-
   name: z.string().min(1),
   githubRepoIds: z.array(z.number()).min(1),
   projectLeadsToKeep: z.array(z.string()).min(1),
   shortDescription: z.string().min(1),
+  rewardSettings: z.object({
+    ignorePullRequests: z.boolean().nullish().optional(),
+    ignoreIssues: z.boolean().nullish().optional(),
+    ignoreCodeReviews: z.boolean().nullish().optional(),
+    ignoreContributionsBefore: z.coerce.date(),
+  }),
 });
 
 export function EditProvider({ children, project }: EditContextProps) {
+  const { T } = useIntl();
+  const navigate = useNavigate();
+  const showToaster = useShowToaster();
+  const location = useLocation();
+  const client = useApolloClient();
+
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
 
-  const {
-    data: installationData,
-    isLoading: isInstallationLoading,
-    isError,
-  } = GithubApi.queries.useInstallationById({
+  const { data: installationData, isLoading: isInstallationLoading } = GithubApi.queries.useInstallationById({
     params: { installation_id },
     options: { retry: 1, enabled: !!installation_id },
   });
@@ -95,8 +107,9 @@ export function EditProvider({ children, project }: EditContextProps) {
       isLookingForContributors: project.hiring,
       inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
-      projectLeads: [...project.leaders, ...project.invitedLeaders],
+      projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
       organizations: project.organizations,
+      rewardSettings: project.rewardSettings,
     },
     resolver: zodResolver(validationSchema),
   });
@@ -167,32 +180,29 @@ export function EditProvider({ children, project }: EditContextProps) {
     }
   }, [installationData]);
 
-  // console.log("---- DEBUG FORM VALUE ----", form.getValues());
-  // console.log("form ERRRO", form.formState.errors);
+  const { mutate: updateProject } = ProjectApi.mutations.useUpdateProject({
+    params: { projectId: project?.id, projectSlug: project?.slug },
+    options: {
+      onSuccess: async data => {
+        await client.refetchQueries({ include: ["GetProjectsForSidebar"] });
+        showToaster(T("form.toast.success"));
+        removeValue();
+
+        // Replace the current path on the history stack if different
+        const newPathname = `${generatePath(RoutePaths.ProjectDetails, {
+          projectKey: data.projectSlug,
+        })}/${ProjectRoutePaths.Edit}`;
+
+        if (location.pathname !== newPathname) {
+          navigate(newPathname, { replace: true, state: location.state });
+        }
+      },
+    },
+  });
 
   const onSubmit = (formData: EditFormData) => {
-    console.log("SUBMIT, formData", formData);
-    // TODO : call removeValue on success to clear session
-    // mutate({
-    //   ...formData,
-    //   inviteGithubUserIdsAsProjectLeads,
-    //   isLookingForContributors: false,
-    //   moreInfo: [
-    //     {
-    //       url: "string",
-    //       value: "string",
-    //     },
-    //   ],
-    //   name: "string",
-    //   projectLeadsToKeep: ["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
-    //   rewardSettings: {
-    //     ignoreCodeReviews: false,
-    //     ignoreContributionsBefore: "2023-11-10T14:41:08.472Z",
-    //     ignoreIssues: false,
-    //     ignorePullRequests: false,
-    //   },
-    //   shortDescription: "string",
-    // });
+    updateProject(formData);
+    form.reset(formData);
   };
 
   return (
@@ -209,7 +219,9 @@ export function EditProvider({ children, project }: EditContextProps) {
       }}
     >
       <EditPanelProvider openOnLoad={!!installation_id} isLoading={isInstallationLoading} project={project}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="h-full overflow-hidden">
+          {children}
+        </form>
       </EditPanelProvider>
     </EditContext.Provider>
   );

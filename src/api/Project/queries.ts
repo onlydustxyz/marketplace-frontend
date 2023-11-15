@@ -14,8 +14,9 @@ const useGetProjectBySlug = ({
 }: UseQueryProps<UseGetProjectBySlugResponse, { slug?: string }>) => {
   return useBaseQuery<UseGetProjectBySlugResponse>({
     resourcePath: API_PATH.PROJECTS_BY_SLUG(params?.slug || ""),
-    enabled: !!params?.slug,
     tags: PROJECT_TAGS.detail_by_slug(params?.slug || ""),
+    callbackTags: result => PROJECT_TAGS.detail_by_id(result?.id || ""),
+    enabled: !!params?.slug,
     ...options,
   });
 };
