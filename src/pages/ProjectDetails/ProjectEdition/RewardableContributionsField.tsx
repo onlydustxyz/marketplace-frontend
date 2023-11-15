@@ -85,7 +85,9 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <span className="font-walsheim text-sm text-greyscale-300">since</span>
+          <span className="font-walsheim text-sm text-greyscale-300">
+            {T("project.details.edit.fields.date.since")}
+          </span>
           <div className="w-60">
             <Datepicker mode="single" value={value?.ignoreContributionsBefore} onChange={handleDateChange} />
           </div>

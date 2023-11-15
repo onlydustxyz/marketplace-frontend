@@ -981,6 +981,9 @@
             "pullRequests": "Pull requests",
             "issues": "Issues",
             "codeReviews": "Code reviews"
+          },
+          "date": {
+            "since": "since"
           }
         },
         "organizations": {
