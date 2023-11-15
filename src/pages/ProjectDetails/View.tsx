@@ -24,10 +24,10 @@ export default function View({ project, padded = true }: Props) {
     project,
   };
 
-  const { id } = project;
+  const { id, slug } = project;
   return (
     <div className="flex w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:h-0 xl:flex-row xl:gap-2 xl:p-6 xl:pt-0">
-      <ProjectsSidebar projectId={id} />
+      <ProjectsSidebar projectId={id} projectSlug={slug} />
       <Background roundedBorders={isXl ? BackgroundRoundedBorders.Right : BackgroundRoundedBorders.Full}>
         <div
           className={cn("mx-auto flex h-full flex-1 flex-col gap-6", {
