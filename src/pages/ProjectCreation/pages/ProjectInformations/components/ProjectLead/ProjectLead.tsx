@@ -62,14 +62,16 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
   const SelectedLeads = useMemo(
     () => [
       <FieldProjectLeadItem key={user?.id} avatar={user?.avatarUrl ?? ""} isYou label={user?.login ?? ""} />,
-      ...(value?.toKeep || []).map(({ githubUserId, avatarUrl, login }) => (
-        <FieldProjectLeadItem
-          key={githubUserId}
-          avatar={avatarUrl}
-          label={login}
-          onRemove={() => onRemoveLead(login)}
-        />
-      )),
+      ...(value?.toKeep || [])
+        .filter(lead => lead.id !== user?.id)
+        .map(({ githubUserId, avatarUrl, login }) => (
+          <FieldProjectLeadItem
+            key={githubUserId}
+            avatar={avatarUrl}
+            label={login}
+            onRemove={() => onRemoveLead(login)}
+          />
+        )),
       ...(value?.invited || []).map(({ githubUserId, avatarUrl, login }) => (
         <FieldProjectLeadItem
           key={githubUserId}

@@ -1,21 +1,21 @@
+import { useContext } from "react";
 import { Controller } from "react-hook-form";
-import Link from "src/icons/Link";
+import ProjectApi from "src/api/Project";
 import { FieldCombined } from "src/components/New/Field/Combined";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
+import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
+import { useIntl } from "src/hooks/useIntl";
+import { useShowToaster } from "src/hooks/useToaster";
 import InformationLine from "src/icons/InformationLine";
+import Link from "src/icons/Link";
 import {
   FieldProjectLead,
   SelectedLeadType,
 } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
-import { FieldSwitch } from "src/components/New/Field/Switch";
-import ProjectApi from "src/api/Project";
-import { useIntl } from "src/hooks/useIntl";
-import { useContext } from "react";
 import { EditContext } from "../EditContext";
-import { useShowToaster } from "src/hooks/useToaster";
 import { RewardableContributionsField } from "../RewardableContributionsField";
 
 export function Information() {
@@ -123,7 +123,9 @@ export function Information() {
                   name="moreInfo.url"
                   value={value?.[0].url}
                   fieldClassName="flex-1"
-                  onChange={event => onChangeField({ ...value, url: event.target.value })}
+                  onChange={event => {
+                    onChangeField([{ ...value[0], url: event.target.value }]);
+                  }}
                   startIcon={({ className }) => <Link className={className} />}
                 />,
               ]}

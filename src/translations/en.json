@@ -737,7 +737,7 @@
       "saveStatus": {
         "unsaved": "Unsaved changes",
         "saved": "All changes saved",
-        "invalid": "The form has errors"
+        "invalid": "The form is invalid"
       },
       "starkIdentity": "Starknet wallet address",
       "starkIdentityPlaceholder": "Starknet adress",
