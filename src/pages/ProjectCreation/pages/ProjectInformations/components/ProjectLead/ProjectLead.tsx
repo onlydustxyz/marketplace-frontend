@@ -46,7 +46,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
     options: { enabled: query !== "" },
   });
 
-  const contributors = data?.contributors;
+  const contributors = [...(data?.internalContributors || []), ...(data?.externalContributors || [])];
 
   const handleQueryChange = debounce(async (query: string) => {
     setQuery(query);
