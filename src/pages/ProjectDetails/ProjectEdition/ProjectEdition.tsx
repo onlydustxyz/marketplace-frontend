@@ -1,4 +1,4 @@
-import { PropsWithChildren, useContext, useState } from "react";
+import { PropsWithChildren, useContext, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
@@ -7,7 +7,6 @@ import Card from "src/components/Card";
 import { FormStatus } from "src/components/FormStatus/FormStatus";
 import Loader from "src/components/Loader";
 import { Flex } from "src/components/New/Layout/Flex";
-import { Tabs } from "src/components/Tabs/Tabs";
 import Center from "src/components/Utils/Center";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
@@ -19,6 +18,7 @@ import Title from "../Title";
 import { EditContext, EditProvider } from "./EditContext";
 import { Information } from "./pages/Information";
 import { Repository } from "./pages/Repository/Repository";
+import { Tabs } from "src/components/Tabs/Tabs";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -38,42 +38,35 @@ function SafeProjectEdition() {
   const [activeTab, setActiveTab] = useState<TabsType>(installation_id ? TabsType.Repos : TabsType.General);
   const { project, form } = useContext(EditContext);
 
-  const tabItems = [
-    {
-      active: activeTab === TabsType.General,
-      onClick: () => {
-        setActiveTab(TabsType.General);
+  const tabs = useMemo(
+    () => [
+      {
+        active: activeTab === TabsType.General,
+        onClick: () => {
+          setActiveTab(TabsType.General);
+        },
+        children: (
+          <TabContents>
+            <FileListLine />
+            {T("project.details.edit.tabs.general")}
+          </TabContents>
+        ),
       },
-      children: (
-        <TabContents>
-          <FileListLine />
-          {T("project.details.edit.tabs.general")}
-        </TabContents>
-      ),
-    },
-    {
-      active: activeTab === TabsType.Repos,
-      onClick: () => {
-        setActiveTab(TabsType.Repos);
+      {
+        active: activeTab === TabsType.Repos,
+        onClick: () => {
+          setActiveTab(TabsType.Repos);
+        },
+        children: (
+          <TabContents>
+            <GitRepositoryLine />
+            {T("project.details.edit.tabs.repositories")}
+          </TabContents>
+        ),
       },
-      children: (
-        <TabContents>
-          <GitRepositoryLine />
-          {T("project.details.edit.tabs.repositories")}
-        </TabContents>
-      ),
-    },
-  ];
-
-  /** TO TEST WHEN CHANGE SLUG  */
-  const handleGoBack = () => {
-    if (project?.slug !== location?.state?.slug) {
-      const prevPath = location.state.prevPath.replace(location.state.slug, project?.slug);
-      return navigate(prevPath, { replace: true });
-    }
-
-    return navigate(-1);
-  };
+    ],
+    [activeTab]
+  );
 
   return (
     <Flex className="h-full w-full flex-col">
@@ -90,7 +83,7 @@ function SafeProjectEdition() {
         </Flex>
 
         <header className="z-10 w-full border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 ">
-          <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.title")} />
+          <Tabs tabs={tabs} variant="blue" mobileTitle={T("project.details.edit.title")} />
         </header>
       </Flex>
 

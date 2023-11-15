@@ -123,9 +123,9 @@ export function Information() {
         <Controller
           name="projectLeads"
           control={form?.control}
-          render={({ field: { value } }) => (
+          render={({ field: { value, name } }) => (
             <FieldProjectLead
-              githubUserId=""
+              name={name}
               value={value}
               onChange={({ invited, toKeep }) => {
                 const invitedUsers = invited.map(lead => lead.githubUserId).filter(Boolean) as number[];

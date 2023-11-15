@@ -71,7 +71,12 @@ export default function View({
                 }`}
               >
                 <div className="flex flex-row items-center gap-4">
-                  <RoundedImage src={currentProject?.logoUrl || ""} alt="Project Logo" size={ImageSize.Md} />
+                  <RoundedImage
+                    src={currentProject?.logoUrl || ""}
+                    useLogoFallback
+                    alt="Project Logo"
+                    size={ImageSize.Md}
+                  />
                   <div className="grow truncate text-left font-walsheim">{currentProject?.name}</div>
                   {expandable && <UpDownChevrons className="h-5 w-5 fill-greyscale-50/50" />}
                 </div>

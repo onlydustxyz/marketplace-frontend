@@ -61,7 +61,7 @@ export const EditContext = createContext<Edit>({
 });
 
 const validationSchema = z.object({
-  logoUrl: z.string().optional(),
+  logoUrl: z.string().optional().nullable(),
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
@@ -83,6 +83,8 @@ const validationSchema = z.object({
   }),
 });
 
+const SESSION_KEY = "edit-project-";
+
 export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
   const navigate = useNavigate();
@@ -97,9 +99,9 @@ export function EditProvider({ children, project }: EditContextProps) {
     options: { retry: 1, enabled: !!installation_id },
   });
 
-  const [storedValue, setValue, status, removeValue] = useSessionStorage<
+  const [storedValue, setValue, status, removeValue, clearSessionPattern] = useSessionStorage<
     { form: EditFormData; dirtyFields: Array<keyof EditFormData> } | undefined
-  >(`edit-project-${project.slug}`, undefined);
+  >(`${SESSION_KEY}${project.slug}`, undefined);
 
   const form = useForm<EditFormData>({
     mode: "all",
@@ -190,11 +192,20 @@ export function EditProvider({ children, project }: EditContextProps) {
     removeValue();
   };
 
+  const clearSession = () => {
+    clearSessionPattern(SESSION_KEY);
+    removeValue();
+  };
+
   useEffect(() => {
     if (status === "ready" && storedValue) {
+      const storage = { ...storedValue };
       storedValue.dirtyFields.forEach(field => {
-        form.setValue(field, storedValue.form[field], { shouldDirty: true, shouldValidate: true });
+        form.setValue(field, storage.form[field], { shouldDirty: true, shouldValidate: true });
       });
+      clearSession();
+    } else if (status === "ready") {
+      clearSession();
     }
   }, [status]);
 
@@ -210,7 +221,8 @@ export function EditProvider({ children, project }: EditContextProps) {
     options: {
       onSuccess: async data => {
         showToaster(T("form.toast.success"));
-        removeValue();
+        clearSession();
+        form.reset();
 
         // Replace the current path on the history stack if different
         const newPathname = `${generatePath(RoutePaths.ProjectDetails, {

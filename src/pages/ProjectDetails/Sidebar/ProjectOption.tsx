@@ -4,7 +4,6 @@ import CheckLine from "src/icons/CheckLine";
 import RoundedImage from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import { components } from "src/__generated/api";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 interface Props {
   project: components["schemas"]["ProjectLedShortResponse"];
   isSelected: boolean;
@@ -23,7 +22,7 @@ export default function ProjectOption({ project, isSelected, isInvited }: Props)
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-row items-center gap-5">
-          <RoundedImage src={project.logoUrl || onlyDustLogo} alt="Project Logo" />
+          <RoundedImage src={project.logoUrl || ""} useLogoFallback alt="Project Logo" />
           <div className="flex flex-1 flex-col justify-self-start truncate">
             <div className="truncate text-base font-medium">{project.name}</div>
             <div className="font-regular truncate text-sm text-slate-400">

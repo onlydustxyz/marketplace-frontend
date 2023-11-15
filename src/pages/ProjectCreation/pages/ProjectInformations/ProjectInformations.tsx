@@ -239,9 +239,9 @@ export const ProjectInformationsPage = () => {
               <Controller
                 name="projectLeads"
                 control={control}
-                render={({ field: { value } }) => (
+                render={({ field: { value, name } }) => (
                   <FieldProjectLead
-                    githubUserId="" // check what is this
+                    name={name}
                     value={{ invited: value, toKeep: [] }}
                     onChange={({ invited }) => {
                       setValue(

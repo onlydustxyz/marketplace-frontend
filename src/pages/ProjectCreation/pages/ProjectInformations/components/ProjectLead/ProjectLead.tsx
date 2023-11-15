@@ -31,12 +31,12 @@ export interface FieldProjectLeadValue {
 }
 
 export interface FieldProjectLeadProps {
-  githubUserId: string;
+  name: string;
   onChange?: (props: FieldProjectLeadValue) => void;
   value?: FieldProjectLeadValue;
 }
 
-export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onChange, value }) => {
+export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, value }) => {
   const { user } = useAuth();
   const [query, setQuery] = useState("");
   const { T } = useIntl();
@@ -89,7 +89,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <FieldLabel id={githubUserId}>Project leads</FieldLabel>
+      <FieldLabel id={name}>Project leads</FieldLabel>
       <div className="flex flex-col gap-3">
         <div className="relative z-[1] sm:w-2/3">
           <Combobox
