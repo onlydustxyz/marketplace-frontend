@@ -44,6 +44,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
     try {
       // refetch PaymentRequests to hide MyRewards
       client.refetchQueries({ include: ["GetPaymentRequestIds"] });
+      // TODO refactor mutateReward in RewardSidePanelAsLeader and add invalidate query directly inside the mutation query
       queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
       setSidePanelOpen(false);
       refetch();
