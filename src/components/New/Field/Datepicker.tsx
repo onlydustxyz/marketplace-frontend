@@ -7,6 +7,11 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB } from "src/utils/date";
 
+export type DatepickProps =
+  | DayPickerSingleProps["selected"]
+  | DayPickerMultipleProps["selected"]
+  | DayPickerRangeProps["selected"];
+
 type Props = {
   value?:
     | string

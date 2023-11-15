@@ -32,7 +32,7 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
   }
 
   function handleDateChange(date: DatepickProps) {
-    onChange({ ...value, ignoreContributionsBefore: date.toString() });
+    onChange({ ...value, ignoreContributionsBefore: date?.toString() });
   }
 
   const typeOptions: { name: string; value: GithubContributionType; icon: JSX.Element; label: string }[] = [
