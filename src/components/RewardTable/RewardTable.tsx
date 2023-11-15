@@ -11,6 +11,7 @@ import { useMediaQuery } from "usehooks-ts";
 import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
+import MeApi from "src/api/me";
 
 type Options = ComponentProps<typeof Headers> &
   Pick<
@@ -43,7 +44,8 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
     try {
       // refetch PaymentRequests to hide MyRewards
       client.refetchQueries({ include: ["GetPaymentRequestIds"] });
-      queryClient.invalidateQueries({ queryKey: ["GetUser"] });
+      // TODO refactor mutateReward in RewardSidePanelAsLeader and add invalidate query directly inside the mutation query
+      queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
       setSidePanelOpen(false);
       refetch();
       refetchBudgets();

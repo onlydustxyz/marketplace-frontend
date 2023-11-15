@@ -31,7 +31,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
   return (
-    <Card className="h-full">
+    <Card>
       <Table
         id="contributors_table"
         headers={<Headers sorting={sorting} sortField={sortField} isProjectLeader={isProjectLeader} />}

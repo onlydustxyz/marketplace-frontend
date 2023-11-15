@@ -1,4 +1,4 @@
-import { QueryObserverOptions, QueryOptions, useQuery } from "@tanstack/react-query";
+import { QueryObserverOptions, QueryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "src/hooks/useAuth";
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
@@ -15,6 +15,7 @@ export interface UseBaseQueryProps<R = unknown> extends BaseQueryOptions<R> {
   pathParam?: string | Record<string, string>;
   queryParams?: QueryParams;
   tags?: QueryTags;
+  callbackTags?: (result: R) => QueryTags;
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }
 
@@ -29,8 +30,11 @@ export function useBaseQuery<R = unknown>({
   queryParams = [],
   method = "GET",
   tags,
+  callbackTags,
   ...queryOptions
 }: UseBaseQueryProps<R>) {
+  const queryClient = useQueryClient();
+
   const { enabled, ...restQueryOptions } = queryOptions;
   const { isLoggedIn } = useAuth();
   const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
@@ -46,10 +50,17 @@ export function useBaseQuery<R = unknown>({
 
           throw new Error(res.statusText);
         })
+        .then(data => {
+          if (callbackTags) {
+            const generatedTags = callbackTags(data);
+            queryClient.setQueryData([...generatedTags], data);
+          }
+          return data;
+        })
         .catch(e => {
           throw new Error(e);
         }),
-    staleTime: 0,
+    staleTime: 10000,
     gcTime: 0,
     refetchInterval: false,
     refetchIntervalInBackground: false,

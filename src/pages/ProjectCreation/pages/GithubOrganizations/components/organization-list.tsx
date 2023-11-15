@@ -2,22 +2,17 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import GithubApi from "src/api/Github";
 import { useInstallationByIdResponse } from "src/api/Github/queries";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import Card from "src/components/Card";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-import PencilLine from "src/icons/PencilLine";
-import {
-  OrganizationSessionStorageInterface,
-  useOrganizationSession,
-} from "../../../commons/hooks/useProjectCreationSession";
+import { useOrganizationSession } from "../../../commons/hooks/useProjectCreationSession";
 import Skeleton from "src/components/Skeleton";
+import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
+import { OrganizationSessionStorageInterface } from "src/types";
 
 function isOrganizationAlreadyExist(
   organizations: OrganizationSessionStorageInterface[],
   newOrganization: useInstallationByIdResponse
 ) {
-  return organizations.some(org => org?.organization?.name === newOrganization?.organization?.name);
+  return organizations.some(org => org?.organization?.login === newOrganization?.organization?.login);
 }
 
 export default function OrganizationList({ setIsValid }: { setIsValid: (isValid: boolean) => void }) {
@@ -33,7 +28,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
 
   const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
     params: { installation_id },
-    options: { retry: 1 },
+    options: { retry: 1, enabled: !!installation_id },
   });
 
   useEffect(() => {
@@ -42,7 +37,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
         ...data,
         organization: {
           ...data.organization,
-          installationId: installation_id,
+          installationId: data.id,
         },
       };
       setSavedOrgsData([...savedOrgsData, newData]);
@@ -75,33 +70,12 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
       </h2>
       <ul className="flex flex-col gap-2 py-4 pb-6">
         {savedOrgsData?.map((installation: OrganizationSessionStorageInterface, index: number) => (
-          <Card className="shadow-medium" key={installation?.organization?.name}>
-            <div key={index} className="flex items-center gap-3 ">
-              <RoundedImage
-                src={installation?.organization?.logoUrl ?? ""}
-                alt={installation?.organization?.name ?? ""}
-                rounding={Rounding.Corners}
-                size={ImageSize.Md}
-              />
-              <li key={index} className="flex-1">
-                {installation?.organization?.name}
-              </li>
-              <a
-                href={`https://github.com/organizations/${installation?.organization?.name}
-                        /settings/installations/${installation?.organization?.installationId}`}
-                target="blank"
-              >
-                <Button
-                  size={ButtonSize.Sm}
-                  type={ButtonType.Secondary}
-                  iconOnly
-                  data-testid="close-add-work-item-panel-btn"
-                >
-                  <PencilLine />
-                </Button>
-              </a>
-            </div>
-          </Card>
+          <HorizontalListItemCard
+            key={`${installation?.organization?.login}+${index}`}
+            avatarUrl={installation?.organization?.avatarUrl ?? ""}
+            title={installation?.organization?.name || installation?.organization?.login || ""}
+            linkUrl={`https://github.com/organizations/${installation?.organization?.login}/settings/installations/${installation?.organization?.installationId}`}
+          />
         ))}
       </ul>
     </div>

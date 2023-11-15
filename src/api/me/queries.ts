@@ -1,7 +1,18 @@
 import { components } from "src/__generated/api";
-import { useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { API_PATH } from "../ApiPath";
+import { UseQueryProps, useBaseQuery } from "../useBaseQuery";
+import { useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { ME_TAGS } from "./tags";
+
+export type UseGetUserMeResponse = components["schemas"]["GetMeResponse"];
+
+const useGetMe = ({ options = {} }: UseQueryProps<UseGetUserMeResponse, undefined>) => {
+  return useBaseQuery<UseGetUserMeResponse>({
+    resourcePath: API_PATH.ME,
+    tags: ME_TAGS.all,
+    ...options,
+  });
+};
 
 export type UseMyRewardsInfiniteListResponse = components["schemas"]["MyRewardsPageResponse"];
 
@@ -20,4 +31,4 @@ const useMyRewardsInfiniteList = (
   );
 };
 
-export default { useMyRewardsInfiniteList };
+export default { useGetMe, useMyRewardsInfiniteList };

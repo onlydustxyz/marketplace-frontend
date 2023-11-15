@@ -45,17 +45,16 @@ import { useMediaQuery } from "usehooks-ts";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
+import Flex from "src/components/Utils/Flex";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
-
-type OutletContext = {
-  project: components["schemas"]["ProjectResponse"];
-};
+import { OutletContext } from "../View";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
+import { EditProjectButton } from "../components/EditProjectButton";
 
 export default function Overview() {
   const { T } = useIntl();
   const { project } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId } = useAuth();
-  const { ledProjectIds } = useAuth();
   const { lastVisitedProjectId } = useSession();
   const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
@@ -75,7 +74,7 @@ export default function Overview() {
   const leads = project?.leaders;
   const languages = getTopTechnologies(project?.technologies);
   const hiring = project?.hiring;
-  const isProjectLeader = ledProjectIds.includes(projectId);
+  const isProjectLeader = useProjectLeader({ id: projectId });
 
   const { alreadyApplied, applyToProject } = useApplications(projectId);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
@@ -86,10 +85,10 @@ export default function Overview() {
   const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
   useEffect(() => {
-    if (projectId && projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) {
+    if (projectId && projectId !== lastVisitedProjectId && isProjectLeader) {
       dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: projectId });
     }
-  }, [projectId, ledProjectIds]);
+  }, [projectId, isProjectLeader]);
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
@@ -102,27 +101,31 @@ export default function Overview() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
-          {isProjectLeader && (
-            <Button
-              disabled={isRewardDisabled}
-              size={ButtonSize.Sm}
-              {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                visible: isRewardDisabled,
-              })}
-              onClick={() =>
-                navigate(
-                  generatePath(
-                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                    {
-                      projectKey: projectSlug,
-                    }
+          {isProjectLeader ? (
+            <Flex className="justify-end gap-2">
+              <EditProjectButton projectKey={projectSlug} />
+
+              <Button
+                disabled={isRewardDisabled}
+                size={ButtonSize.Sm}
+                {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                  visible: isRewardDisabled,
+                })}
+                onClick={() =>
+                  navigate(
+                    generatePath(
+                      `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                      {
+                        projectKey: projectSlug,
+                      }
+                    )
                   )
-                )
-              }
-            >
-              {T("project.rewardButton.full")}
-            </Button>
-          )}
+                }
+              >
+                {T("project.rewardButton.full")}
+              </Button>
+            </Flex>
+          ) : null}
         </div>
       </Title>
       <ProjectLeadInvitation

@@ -1,18 +1,15 @@
-import { Navigate, useParams } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { Navigate, matchPath, useLocation, useParams } from "react-router-dom";
+import { ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
-import { components } from "src/__generated/api";
+import ProjectApi from "src/api/Project";
 import Loader from "src/components/Loader";
 import SEO from "src/components/SEO";
 import View from "./View";
-import ProjectApi from "src/api/Project";
-
-type ProjectDetailsParams = {
-  projectKey: string;
-};
 
 export default function ProjectDetails() {
-  const { projectKey = "" } = useParams<ProjectDetailsParams>();
+  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { pathname } = useLocation();
+  const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
 
   const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
 
@@ -25,16 +22,14 @@ export default function ProjectDetails() {
     return <ErrorFallback />;
   }
 
-  const { name } = data as components["schemas"]["ProjectResponse"];
-
   if (!data) {
     return <Navigate to={RoutePaths.NotFound} />;
   }
 
   return (
     <>
-      <SEO title={`${name} — OnlyDust`} />
-      <View project={data} loading={isLoading} error={isError} />
+      <SEO title={`${data.name} — OnlyDust`} />
+      <View project={data} loading={isLoading} error={isError} padded={!isProjectEdition} />
     </>
   );
 }

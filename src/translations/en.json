@@ -23,7 +23,8 @@
     "next": "Next",
     "back": "Back",
     "publish": "Publish",
-    "you": "You"
+    "you": "You",
+    "pendingInvite": "Pending invite"
   },
   "contribution": {
     "review": {
@@ -239,7 +240,13 @@
     "placeholderShort": "Search projects"
   },
   "form": {
-    "required": "Required"
+    "toast": {
+      "success": "Changes saved"
+    },
+    "required": "Required",
+    "singleDatePlaceholder": "Select a date",
+    "multipleDatesPlaceholder": "Select some dates",
+    "dateRangePlaceholder": "Select a date range"
   },
   "github": {
     "invalidLogin": "Invalid Github login",
@@ -730,7 +737,7 @@
       "saveStatus": {
         "unsaved": "Unsaved changes",
         "saved": "All changes saved",
-        "invalid": "The form has errors"
+        "invalid": "The form is invalid"
       },
       "starkIdentity": "Starknet wallet address",
       "starkIdentityPlaceholder": "Starknet adress",
@@ -914,6 +921,84 @@
           "optimism": "Optimism budget"
         }
       },
+      "edit": {
+        "title": "Edit project",
+        "tabs": {
+          "general": "General",
+          "repositories": "Repositories"
+        },
+        "confirmationModal": {
+          "title": "You have unsaved changes",
+          "content": "If you leave this page, any whanges you have made will be lost.",
+          "discard": "Discard changes",
+          "save": "Save changes"
+        },
+        "save": "Save changes",
+        "panel": {
+          "title": "Add repositories",
+          "tabs": {
+            "organizations": "Organisations",
+            "repositories": "Repositories"
+          },
+          "repositories": {
+            "noRepositoriesToAdd": "All repositories from this organisation have been added to your project."
+          }
+        },
+        "toasts": {
+          "logoUpdate": "Logo updated successfully"
+        },
+        "fields": {
+          "name": {
+            "label": "Project name",
+            "info": "Changing the project name will change its URL. If you've shared links to this project, they will be broken.",
+            "placeholder": "Update your project name"
+          },
+          "short": {
+            "label": "Short description",
+            "placeholder": "Edit your short description"
+          },
+          "long": {
+            "label": "Long description",
+            "placeholder": "Edit your long description"
+          },
+          "logo": {
+            "label": "Project visual",
+            "placeholder": "image.png",
+            "info": "SVG, PNG, JPG or GIF (MAX. 400x400px)."
+          },
+          "moreInfo": {
+            "label": "More info",
+            "placeholderLink": "Link",
+            "placeholderLabel": "Label"
+          },
+          "hire": {
+            "label": "Accept new applications",
+            "subLabel": "Looking for contributors"
+          },
+          "rewardableContributions": {
+            "label": "Rewardable contributions",
+            "message": "All contributions before start date and from unselected categories will be auto ignored when rewarding a contributor.",
+            "pullRequests": "Pull requests",
+            "issues": "Issues",
+            "codeReviews": "Code reviews"
+          },
+          "date": {
+            "since": "since"
+          }
+        },
+        "organizations": {
+          "installGithubApp": "Install Github app"
+        },
+        "repositories": {
+          "addRepositories": "Add repositories",
+          "removeRepository": "Remove repository",
+          "error": "An error occurred, please try again later.",
+          "empty": {
+            "title": "No repositories added on your project",
+            "message": "You’ll need to install a github app on every organisation hosting repositories."
+          }
+        }
+      },
       "sidebar": {
         "backToProjects": "All projects",
         "contributors": {
@@ -922,6 +1007,7 @@
           "zero": "No contributor"
         },
         "newInvite": "NEW",
+        "viewInvite": "View invite",
         "overview": "Overview"
       },
       "tableFallback": {

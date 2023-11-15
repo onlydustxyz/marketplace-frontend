@@ -1,5 +1,6 @@
 import GalleryLine from "src/assets/icons/GalleryLine";
 import { cn } from "src/utils/cn";
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 
 const sizes = {
   "2": "w-2 h-2",
@@ -7,7 +8,7 @@ const sizes = {
   "4": "w-4 h-4",
   "6": "w-6 h-6",
   "12": "w-12 h-12",
-};
+} as const;
 
 const shapes: { square: Record<keyof typeof sizes, string>; circle: string } = {
   square: {
@@ -18,7 +19,7 @@ const shapes: { square: Record<keyof typeof sizes, string>; circle: string } = {
     "12": "rounded-xl",
   },
   circle: "rounded-full",
-};
+} as const;
 
 const border: Record<keyof typeof sizes, string> = {
   "2": "border-1",
@@ -26,7 +27,7 @@ const border: Record<keyof typeof sizes, string> = {
   "4": "border-1",
   "6": "border-2",
   "12": "border-2",
-};
+} as const;
 
 export interface AvatarProps {
   src: string;
@@ -40,7 +41,7 @@ export function Avatar({ src, alt, shape = "circle", size = "6", className }: Av
   return (
     <div
       className={cn(
-        "relative flex items-center justify-center overflow-hidden border-greyscale-50/12 bg-greyscale-50/8 bg-noise-heavy",
+        "relative box-content flex items-center justify-center overflow-hidden border-greyscale-50/12 bg-greyscale-50/8 bg-noise-heavy",
         shape === "circle" ? shapes[shape] : shapes[shape][size],
         sizes[size],
         border[size],
@@ -48,7 +49,7 @@ export function Avatar({ src, alt, shape = "circle", size = "6", className }: Av
       )}
     >
       {src ? (
-        <img src={src} alt={alt} className="h-full w-full object-cover" />
+        <img src={src || onlyDustLogo} alt={alt} className="h-full w-full object-cover" />
       ) : (
         <GalleryLine className="h-4 w-4 text-spaceBlue-300" />
       )}

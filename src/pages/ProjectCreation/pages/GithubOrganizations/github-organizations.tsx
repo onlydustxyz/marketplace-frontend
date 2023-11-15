@@ -23,7 +23,7 @@ export const GithubOrganizationPage = () => {
             <OrganizationList setIsValid={setIsValid} />
             <div className="flex justify-start">
               <a
-                href={import.meta.env.VITE_GITHUB_INSTALLATION_URL ?? ""}
+                href={import.meta.env.VITE_GITHUB_INSTALLATION_URL}
                 className="border-lg rounded-lg bg-white px-4 py-2 text-zinc-800"
               >
                 {T("project.details.create.organizations.installAnotherOrgs")}

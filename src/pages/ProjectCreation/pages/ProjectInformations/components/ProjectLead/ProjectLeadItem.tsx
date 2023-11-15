@@ -4,8 +4,9 @@ import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
 
 type Props = {
-  avatar: string;
+  avatar?: string;
   label: string;
+  isPending?: boolean;
 };
 
 type YouProps = {
@@ -20,15 +21,24 @@ type RemoveProps = {
 
 export type FieldProjectLeadItemProps = YouProps | RemoveProps;
 
-export const FieldProjectLeadItem: FC<FieldProjectLeadItemProps> = ({ isYou = false, avatar, label, onRemove }) => {
+export const FieldProjectLeadItem: FC<FieldProjectLeadItemProps> = ({
+  isYou = false,
+  isPending = false,
+  avatar,
+  label,
+  onRemove,
+}) => {
   const { T } = useIntl();
 
   return (
     <div className="flex items-center">
       <div className="flex items-center gap-2">
-        <Avatar src={avatar} alt={label} shape="circle" size="6" />
+        <Avatar src={avatar || ""} alt={label} shape="circle" size="6" />
         <span className=" text-sm leading-[14px] text-spacePurple-300">{label}</span>
       </div>
+
+      {isPending ? <span className="ml-2 text-sm text-spaceBlue-200">({T("common.pendingInvite")})</span> : null}
+
       {isYou ? (
         <span className="ml-2 text-sm text-spaceBlue-200">({T("common.you")})</span>
       ) : (

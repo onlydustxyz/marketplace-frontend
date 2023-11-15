@@ -145,8 +145,7 @@ export function ContributionFilter({
                     {typeOptions.map(option => (
                       <div className="flex" key={option.value}>
                         <FormOption
-                          as="label"
-                          htmlFor={option.value}
+                          as="button"
                           size={FormOptionSize.Sm}
                           variant={filters.types.includes(option.value) ? Variant.Active : Variant.Default}
                           onClick={() => {

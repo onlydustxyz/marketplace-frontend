@@ -32,7 +32,7 @@ export function useSessionStorage<T>(
   key: string,
   initialValue: T,
   options?: UseSessionStorageOptions
-): [T, (value: T) => void, UseSessionStorageStatus, () => void] {
+): [T, (value: T) => void, UseSessionStorageStatus, () => void, (pattern: string) => void] {
   const [status, setStatus] = useState<UseSessionStorageStatus>("idle");
   const [storedValue, setStoredValue] = useState(initialValue);
   const { deserialize = JSON.parse, serialize = JSON.stringify } = options || {};
@@ -69,5 +69,17 @@ export function useSessionStorage<T>(
     }
   }, [key]);
 
-  return [storedValue, setValue, status, removeValue];
+  const clearByPattern = useCallback((pattern: string) => {
+    try {
+      for (const item in sessionStorage) {
+        if (item.indexOf(pattern) === 0) {
+          sessionStorage.removeItem(item);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  return [storedValue, setValue, status, removeValue, clearByPattern];
 }

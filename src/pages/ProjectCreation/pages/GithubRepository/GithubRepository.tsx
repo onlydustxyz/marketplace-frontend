@@ -5,13 +5,9 @@ import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/Mul
 import { Flex } from "src/components/New/Layout/Flex";
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
 import { useEffect } from "react";
-import { Avatar } from "src/components/New/Avatar";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
-import {
-  OrganizationSessionStorageInterface,
-  useOrganizationSession,
-} from "../../commons/hooks/useProjectCreationSession";
+import { useOrganizationSession } from "../../commons/hooks/useProjectCreationSession";
 import { useRepositoryCount } from "./hooks/useRepositoryCount";
 import { FormInformationCount } from "./components/FormInformationCount";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
@@ -21,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
 import Button from "src/components/Button";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
+import { OrganizationSessionStorageInterface } from "src/types";
+import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {
@@ -53,6 +51,7 @@ export const GithubRepositoryPage = () => {
       organizations: [],
     },
   });
+
   const navigate = useNavigate();
 
   const organizations = watch("organizations");
@@ -79,11 +78,11 @@ export const GithubRepositoryPage = () => {
     navigate("../informations");
   };
 
-  const onCheckboxChange = (value: boolean, repoId: number | undefined, organizationName: string | undefined) => {
-    const findOrganization = organizations.find(org => org.organization.name === organizationName);
+  const onCheckboxChange = (value: boolean, repoId: number | undefined, organizationLogin: string | undefined) => {
+    const findOrganization = organizations.find(org => org.organization.login === organizationLogin);
 
     if (findOrganization && repoId) {
-      const findRepo = (findOrganization.repos || []).find(repo => repo.githubId === repoId);
+      const findRepo = (findOrganization.organization?.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
         findRepo.selected = value;
         setValue("organizations", [...organizations], { shouldDirty: true, shouldValidate: true });
@@ -130,21 +129,14 @@ export const GithubRepositoryPage = () => {
               render={({ field: { value } }) => (
                 <>
                   {filterOrganizationBySearch(value || []).map(organization => (
-                    <div
-                      key={organization.organization.name}
-                      className="flex w-full flex-col gap-3 rounded-2xl border border-card-border-light bg-card-background-light p-5"
+                    <VerticalListItemCard
+                      key={organization.organization.login}
+                      title={organization.organization.login || ""}
+                      avatarAlt={organization.organization.login || ""}
+                      avatarSrc={organization.organization.avatarUrl || ""}
                     >
-                      <Flex justify="start" item="center" gap={2}>
-                        <Avatar
-                          src={organization.organization.logoUrl || ""}
-                          alt={organization.organization.name || ""}
-                          size="6"
-                          shape="square"
-                        />
-                        <p className=" text-sm font-medium uppercase">{organization.organization.name}</p>
-                      </Flex>
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
-                        {(organization.repos || []).map(repo =>
+                        {(organization.organization.repos || []).map(repo =>
                           search && !repo.name?.includes(search) ? null : (
                             <label
                               key={repo.name}
@@ -155,19 +147,19 @@ export const GithubRepositoryPage = () => {
                                   <h3 className="h- text-body-m-bold">{repo.name}</h3>
                                   <FieldCheckbox
                                     onChange={value =>
-                                      onCheckboxChange(value, repo.githubId, organization.organization.name)
+                                      onCheckboxChange(value, repo.id, organization.organization.login)
                                     }
                                     value={repo.selected || false}
-                                    name={`repository-${repo.githubId}`}
+                                    name={`repository-${repo.id}`}
                                     fieldClassName={"inline-flex w-auto"}
                                   />
                                 </Flex>
                                 <p
                                   className={`text-body-s line-clamp-2 w-full text-greyscale-200 ${
-                                    !repo.shortDescription && "italic"
+                                    !repo.description && "italic"
                                   }`}
                                 >
-                                  {repo.shortDescription ||
+                                  {repo.description ||
                                     T("project.details.overview.repositories.descriptionPlaceholder")}
                                 </p>
                               </Flex>
@@ -175,7 +167,7 @@ export const GithubRepositoryPage = () => {
                           )
                         )}
                       </div>
-                    </div>
+                    </VerticalListItemCard>
                   ))}
                 </>
               )}
