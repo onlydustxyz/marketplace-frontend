@@ -76,7 +76,7 @@ export default function Contributors() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.contributors.title")}
-          {isProjectLeader && !isFetching && (
+          {isProjectLeader && (
             <Flex className="gap-2">
               <EditProjectButton projectKey={projectKey} />
               <Button
