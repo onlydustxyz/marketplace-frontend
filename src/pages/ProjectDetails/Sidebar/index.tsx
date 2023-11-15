@@ -1,20 +1,18 @@
-import View, { SidebarProjectDetails } from "./View";
-import {
-  Maybe,
-  SidebarProjectDetailsFragment,
-  useGetCurrentProjectForSidebarQuery,
-  useGetProjectsForSidebarQuery,
-} from "src/__generated/graphql";
-import { useAuth } from "src/hooks/useAuth";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
+import View from "./View";
 import { chain } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
-import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
-import { contextWithCacheHeaders } from "src/utils/headers";
 import ViewMobile from "./ViewMobile";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import {
+  useLeadProjects,
+  usePendingLeadProjects,
+  usePendingProjectLeader,
+  useProjectLeader,
+} from "src/hooks/useProjectLeader/useProjectLeader";
+import { useMemo } from "react";
+import ProjectApi from "src/api/Project";
 
 export type ProjectDetailsTab = {
   label: string;
@@ -23,39 +21,29 @@ export type ProjectDetailsTab = {
 
 interface Props {
   projectId: string;
+  projectSlug: string;
 }
 
-export default function ProjectsSidebar({ projectId }: Props) {
-  const { ledProjectIds, githubUserId, user } = useAuth();
+export default function ProjectsSidebar({ projectId, projectSlug }: Props) {
+  const { data: currentProject } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectSlug } });
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isProjectLeader = useProjectLeader({ id: projectId });
+  const isPendingProjectLeader = usePendingProjectLeader({ id: projectId });
+  const leadedProjects = useLeadProjects();
+  const pendingLeadedProjects = usePendingLeadProjects();
+  const sortedProject = useMemo(() => {
+    return {
+      leadedProjects: chain(leadedProjects).sortBy("name").value(),
+      pendingLeadedProjects: chain(pendingLeadedProjects).sortBy("name").value(),
+    };
+  }, [leadedProjects, pendingLeadedProjects]);
 
-  const isProjectMine = (project?: Maybe<SidebarProjectDetails>) =>
-    (project && ledProjectIds.includes(project?.id)) || project?.withInvitation;
+  const canExpand = useMemo(() => {
+    const projects = [...leadedProjects, ...pendingLeadedProjects];
 
-  const getCurrentProjectsForSidebarQuery = useGetCurrentProjectForSidebarQuery({
-    variables: { projectId },
-    ...contextWithCacheHeaders,
-  });
-
-  const currentProject =
-    getCurrentProjectsForSidebarQuery.data?.projects[0] &&
-    projectFromQuery(getCurrentProjectsForSidebarQuery.data?.projects[0], githubUserId);
-
-  const getProjectsForSidebarQuery = useGetProjectsForSidebarQuery({
-    variables: { ledProjectIds, githubUserId },
-    skip: !isProjectMine(currentProject),
-  });
-
-  const projects =
-    getProjectsForSidebarQuery?.data?.projects
-      .filter(project => isProjectVisibleToUser({ project, user: { githubUserId, userId: user?.id } }))
-      .map(project => projectFromQuery(project, githubUserId)) || [];
-
-  const sortedProjects = chain(projects)
-    .sortBy("name")
-    .sortBy(p => !p.withInvitation)
-    .value();
+    return (isPendingProjectLeader || isProjectLeader) && projects.length > 0;
+  }, [leadedProjects, pendingLeadedProjects, isPendingProjectLeader, isProjectLeader]);
 
   const AvailableTabs: Record<string, ProjectDetailsTab> = {
     overview: {
@@ -72,28 +60,21 @@ export default function ProjectsSidebar({ projectId }: Props) {
     },
   };
 
-  const availableTabs =
-    currentProject && ledProjectIds.includes(currentProject?.id)
-      ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.rewards]
-      : [AvailableTabs.overview, AvailableTabs.contributors];
+  const availableTabs = [
+    AvailableTabs.overview,
+    AvailableTabs.contributors,
+    ...(isProjectLeader ? [AvailableTabs.rewards] : []),
+  ];
 
   if (!currentProject) return <div />;
 
   const props = {
     availableTabs,
     currentProject,
-    allProjects: sortedProjects,
-    expandable: isProjectMine(currentProject) ? sortedProjects.length > 1 : false,
+    projects: sortedProject.leadedProjects,
+    pendingProjects: sortedProject.pendingLeadedProjects,
+    expandable: canExpand,
   };
 
   return isXl ? <View {...props} /> : <ViewMobile {...props} />;
 }
-
-const projectFromQuery = (project: SidebarProjectDetailsFragment, githubUserId?: number): SidebarProjectDetails => ({
-  ...project,
-  name: project.name || "",
-  key: project.key || "",
-  logoUrl: project.logoUrl || onlyDustLogo,
-  withInvitation: project.pendingInvitations?.some(i => i.githubUserId === githubUserId),
-  contributorsCount: project.contributorsAggregate.aggregate?.count || 0,
-});

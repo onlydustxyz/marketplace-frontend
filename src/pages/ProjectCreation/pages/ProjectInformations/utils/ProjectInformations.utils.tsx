@@ -1,5 +1,10 @@
 import { OrganizationSessionStorageInterface } from "src/types";
 
+/**
+ * Returns an array of selected repository IDs from an array of organizations.
+ * @param orgs - An array of organizations with repositories.
+ * @returns An array of selected repository IDs.
+ */
 export const getSelectedRepoIds = (orgs: OrganizationSessionStorageInterface[]) => {
   return orgs.reduce((acc, org) => {
     return [

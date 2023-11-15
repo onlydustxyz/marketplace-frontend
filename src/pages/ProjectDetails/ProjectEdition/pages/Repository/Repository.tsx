@@ -65,7 +65,7 @@ export function Repository({ isLoading, isError }: RepositoriesTabType) {
   }, [isLoading, isError, organizations, hasInstalledRepo]);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex w-full flex-col gap-6">
       <div className="flex justify-end">
         <Button size={ButtonSize.Md} onClick={open}>
           <AddLine className="text-xl" />

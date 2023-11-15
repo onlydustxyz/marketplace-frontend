@@ -5,9 +5,7 @@ import { useOnboarding } from "src/App/OnboardingProvider";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import ViewMobile from "./ViewMobile";
-import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { components } from "src/__generated/api";
+import MeApi from "src/api/me";
 
 const ProfileButton = () => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -20,11 +18,7 @@ const ProfileButton = () => {
   });
   const avatarUrl = profile?.userProfiles.at(0)?.avatarUrl || "";
 
-  const { data: userInfo } = useRestfulData<components["schemas"]["GetMeResponse"]>({
-    queryKey: ["GetUser"],
-    resourcePath: ApiResourcePaths.GET_USER,
-    method: "GET",
-  });
+  const { data: userInfo } = MeApi.queries.useGetMe({});
 
   const { data } = usePendingUserPaymentsQuery({
     variables: { userId: user?.id },

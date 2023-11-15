@@ -27,6 +27,7 @@ export type SelectedLeadType = {
 
 export interface FieldProjectLeadValue {
   invited: SelectedLeadType[];
+  toKeep: SelectedLeadType[];
 }
 
 export interface FieldProjectLeadProps {
@@ -45,20 +46,23 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
     options: { enabled: query !== "" },
   });
 
-  const contributors = data?.contributors;
+  const contributors = [...(data?.internalContributors || []), ...(data?.externalContributors || [])];
 
   const handleQueryChange = debounce(async (query: string) => {
     setQuery(query);
   }, 500);
 
   const onRemoveLead = (login: string) => {
-    onChange?.({ invited: value?.invited.filter(lead => lead.login !== login) || [] });
+    onChange?.({
+      invited: value?.invited.filter(lead => lead.login !== login) || [],
+      toKeep: value?.toKeep.filter(lead => lead.login !== login) || [],
+    });
   };
 
   const SelectedLeads = useMemo(
     () => [
       <FieldProjectLeadItem key={user?.id} avatar={user?.avatarUrl ?? ""} isYou label={user?.login ?? ""} />,
-      ...(value?.invited || []).map(({ githubUserId, avatarUrl, login }) => (
+      ...(value?.toKeep || []).map(({ githubUserId, avatarUrl, login }) => (
         <FieldProjectLeadItem
           key={githubUserId}
           avatar={avatarUrl}
@@ -66,12 +70,21 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ githubUserId, onCh
           onRemove={() => onRemoveLead(login)}
         />
       )),
+      ...(value?.invited || []).map(({ githubUserId, avatarUrl, login }) => (
+        <FieldProjectLeadItem
+          key={githubUserId}
+          avatar={avatarUrl}
+          label={login}
+          isPending
+          onRemove={() => onRemoveLead(login)}
+        />
+      )),
     ],
     [value, user]
   );
 
-  function handleChange(value: SelectedLeadType[]) {
-    onChange?.({ invited: value });
+  function handleChange(leader: SelectedLeadType[]) {
+    onChange?.({ invited: leader, toKeep: value?.toKeep || [] });
   }
 
   return (

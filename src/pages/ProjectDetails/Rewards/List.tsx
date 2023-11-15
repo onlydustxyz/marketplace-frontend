@@ -14,6 +14,8 @@ import { useIntl } from "src/hooks/useIntl";
 import Title from "src/pages/ProjectDetails/Title";
 import { ProjectBudgetType, RemainingBudget } from "./RemainingBudget/RemainingBudget";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
+import { EditProjectButton } from "../components/EditProjectButton";
+import Flex from "src/components/Utils/Flex";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
@@ -69,26 +71,29 @@ const RewardList: React.FC = () => {
       <StillFetchingBanner createdAt={createdAt} />
       <div className="flex items-center justify-between">
         <Title>{T("project.details.rewards.title")}</Title>
-        <Button
-          width={Width.Fit}
-          size={ButtonSize.Sm}
-          disabled={isRewardDisabled}
-          onClick={() => {
-            return navigate(
-              generatePath(
-                `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                {
-                  projectKey,
-                }
-              )
-            );
-          }}
-          {...withTooltip(T("contributor.table.noBudgetLeft"), {
-            visible: isRewardDisabled,
-          })}
-        >
-          <span>{T("project.details.remainingBudget.newReward")}</span>
-        </Button>
+        <Flex className="gap-2">
+          <EditProjectButton projectKey={projectKey} />
+          <Button
+            width={Width.Fit}
+            size={ButtonSize.Sm}
+            disabled={isRewardDisabled}
+            onClick={() => {
+              return navigate(
+                generatePath(
+                  `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                  {
+                    projectKey,
+                  }
+                )
+              );
+            }}
+            {...withTooltip(T("contributor.table.noBudgetLeft"), {
+              visible: isRewardDisabled,
+            })}
+          >
+            <span>{T("project.details.remainingBudget.newReward")}</span>
+          </Button>
+        </Flex>
       </div>
       {!isBudgetLoading && projectBudget ? <RemainingBudget projectBudget={projectBudget} /> : null}
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">

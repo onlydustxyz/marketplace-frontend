@@ -12,9 +12,12 @@ import ProjectApi from "src/api/Project";
 import { useIntl } from "src/hooks/useIntl";
 import { useContext } from "react";
 import { EditContext } from "../EditContext";
+import { useShowToaster } from "src/hooks/useToaster";
+import { RewardableContributionsField } from "../RewardableContributionsField";
 
 export function Information() {
   const { T } = useIntl();
+  const showToaster = useShowToaster();
   const { form } = useContext(EditContext);
 
   const {
@@ -24,14 +27,20 @@ export function Information() {
   } = ProjectApi.mutations.useUploadLogo({
     options: {
       onSuccess: data => {
-        // noop
+        showToaster(T("project.details.edit.toasts.logoUpdate"));
+        form?.setValue("logoUrl", data.url, { shouldDirty: true });
       },
     },
   });
 
   return (
     <Flex direction="col" gap={8} className="w-full">
-      <Flex direction="col" gap={6} className="w-full">
+      <Flex
+        direction="col"
+        className={
+          "border-card-light  w-full divide-y divide-card-border-light [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*]:py-4"
+        }
+      >
         <Controller
           name="name"
           control={form?.control}
@@ -39,10 +48,10 @@ export function Information() {
             <FieldInput
               {...props.field}
               {...props.fieldState}
-              label={T("project.details.create.informations.form.fields.name.label")}
-              placeholder={T("project.details.create.informations.form.fields.name.placeholder")}
+              label={T("project.details.edit.informations.fields.name.label")}
+              placeholder={T("project.details.edit.informations.fields.name.placeholder")}
               infoMessage={{
-                children: T("project.details.create.informations.form.fields.name.info"),
+                children: T("project.details.edit.informations.fields.name.info"),
                 icon: ({ className }) => <InformationLine className={className} />,
               }}
             />
@@ -51,12 +60,25 @@ export function Information() {
         <Controller
           name="shortDescription"
           control={form?.control}
-          render={props => <FieldInput {...props.field} {...props.fieldState} label="Short description" />}
+          render={props => (
+            <FieldInput
+              {...props.field}
+              {...props.fieldState}
+              label={T("project.details.edit.informations.fields.short.label")}
+            />
+          )}
         />
         <Controller
           name="longDescription"
           control={form?.control}
-          render={props => <FieldTextarea {...props.field} {...props.fieldState} label="Long description" />}
+          render={props => (
+            <FieldTextarea
+              {...props.field}
+              {...props.fieldState}
+              rows={4}
+              label={T("project.details.edit.informations.fields.long.label")}
+            />
+          )}
         />
         <Controller
           name="logoUrl"
@@ -65,7 +87,7 @@ export function Information() {
             <FieldImage
               {...props.field}
               {...props.fieldState}
-              label="Project visual"
+              label={T("project.details.edit.informations.fields.logo.label")}
               max_size_mo={10}
               upload={{
                 mutate: uploadProjectLogo,
@@ -79,7 +101,12 @@ export function Information() {
           name="moreInfo"
           control={form?.control}
           render={({ field: { onChange, value } }) => (
-            <FieldCombined onChange={onChange} name="moreInfo" label={"More info"} className="gap-2">
+            <FieldCombined
+              onChange={onChange}
+              name="moreInfo"
+              label={T("project.details.edit.informations.fields.moreInfo.label")}
+              className="gap-2"
+            >
               {onChangeField => [
                 <FieldInput
                   key="moreInfo.url"
@@ -89,13 +116,6 @@ export function Information() {
                   onChange={event => onChangeField({ ...value, url: event.target.value })}
                   startIcon={({ className }) => <Link className={className} />}
                 />,
-                <FieldInput
-                  key="moreInfo.value"
-                  name="moreInfo.value"
-                  value={value?.[0].value}
-                  fieldClassName="w-[180px] max-w-full"
-                  onChange={event => onChangeField({ ...value, value: event.target.value })}
-                />,
               ]}
             </FieldCombined>
           )}
@@ -103,17 +123,36 @@ export function Information() {
         <Controller
           name="projectLeads"
           control={form?.control}
-          render={({ field: { value, name } }) => (
+          render={({ field: { value } }) => (
             <FieldProjectLead
-              githubUserId="" // check what is this
-              onChange={({ invited }) => {
-                // setValue("inviteGithubUserIdsAsProjectLeads", invited, { shouldDirty: true });
-                form?.setValue("projectLeads", invited, { shouldDirty: true });
+              githubUserId=""
+              value={value}
+              onChange={({ invited, toKeep }) => {
+                const invitedUsers = invited.map(lead => lead.githubUserId).filter(Boolean) as number[];
+                const usersToKeep = toKeep.map(lead => lead.id).filter(Boolean) as string[];
+
+                form?.setValue("inviteGithubUserIdsAsProjectLeads", invitedUsers, { shouldDirty: true });
+                form?.setValue("projectLeadsToKeep", usersToKeep, { shouldDirty: true });
+                form?.setValue("projectLeads", { invited, toKeep }, { shouldDirty: true });
               }}
-              value={{ invited: value }}
             />
           )}
         />
+        <Controller
+          name="rewardSettings"
+          control={form?.control}
+          render={props => {
+            return (
+              <RewardableContributionsField
+                {...props.field}
+                onChange={data => {
+                  form?.setValue("rewardSettings", data, { shouldDirty: true });
+                }}
+              />
+            );
+          }}
+        />
+
         <Controller
           name="isLookingForContributors"
           control={form?.control}
@@ -121,8 +160,8 @@ export function Information() {
             <FieldSwitch
               {...props.field}
               {...props.fieldState}
-              label="Accept new applications"
-              switchLabel="Looking for contributors"
+              label={T("project.details.edit.informations.fields.hire.label")}
+              switchLabel={T("project.details.edit.informations.fields.hire.subLabel")}
             />
           )}
         />

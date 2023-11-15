@@ -19,6 +19,9 @@ import Title from "src/pages/ProjectDetails/Title";
 import { useMediaQuery } from "usehooks-ts";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { components } from "src/__generated/api";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
+import Flex from "src/components/Utils/Flex";
+import { EditProjectButton } from "../components/EditProjectButton";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -26,7 +29,7 @@ type OutletContext = {
 
 export default function Contributors() {
   const { T } = useIntl();
-  const { ledProjectIds, githubUserId } = useAuth();
+  const { githubUserId } = useAuth();
   const navigate = useNavigate();
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
   const { project } = useOutletContext<OutletContext>();
@@ -34,7 +37,7 @@ export default function Contributors() {
   const { id: projectId, slug: projectKey } = project;
   const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
-  const isProjectLeader = ledProjectIds.includes(projectId);
+  const isProjectLeader = useProjectLeader({ id: projectId });
 
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
@@ -74,25 +77,28 @@ export default function Contributors() {
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.contributors.title")}
           {isProjectLeader && !isFetching && (
-            <Button
-              size={ButtonSize.Sm}
-              disabled={isRewardDisabled}
-              onClick={() =>
-                navigate(
-                  generatePath(
-                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                    {
-                      projectKey,
-                    }
+            <Flex className="gap-2">
+              <EditProjectButton projectKey={projectKey} />
+              <Button
+                size={ButtonSize.Sm}
+                disabled={isRewardDisabled}
+                onClick={() =>
+                  navigate(
+                    generatePath(
+                      `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                      {
+                        projectKey,
+                      }
+                    )
                   )
-                )
-              }
-              {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                visible: isRewardDisabled,
-              })}
-            >
-              {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
-            </Button>
+                }
+                {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                  visible: isRewardDisabled,
+                })}
+              >
+                {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
+              </Button>
+            </Flex>
           )}
         </div>
       </Title>
