@@ -23,7 +23,7 @@ export const EditPanelOrganization = () => {
         {organizations?.map((organization, index: number) => (
           <HorizontalListItemCard
             key={`${organization?.login}+${index}`}
-            imageUrl={organization?.avatarUrl ?? ""}
+            avatarUrl={organization?.avatarUrl ?? ""}
             title={organization?.name || organization?.login || ""}
             linkUrl={`https://github.com/organizations/${organization?.login}/settings/installations/${organization?.installationId}`}
           />
