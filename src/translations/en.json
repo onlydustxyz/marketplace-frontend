@@ -1007,6 +1007,7 @@
           "zero": "No contributor"
         },
         "newInvite": "NEW",
+        "viewInvite": "View invite",
         "overview": "Overview"
       },
       "tableFallback": {

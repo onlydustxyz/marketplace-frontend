@@ -4,6 +4,8 @@ import CheckLine from "src/icons/CheckLine";
 import RoundedImage from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import { components } from "src/__generated/api";
+import { IMAGES } from "src/assets/img";
+import { cn } from "src/utils/cn";
 interface Props {
   project: components["schemas"]["ProjectLedShortResponse"];
   isSelected: boolean;
@@ -16,13 +18,13 @@ export default function ProjectOption({ project, isSelected, isInvited }: Props)
   return (
     <Listbox.Option
       value={project}
-      className={`border-neutral-600 p-4 duration-300 last:rounded-b-2xl hover:cursor-pointer hover:bg-white/10 ${
-        isInvited && "bg-orange-400/10  hover:bg-amber-700/30"
-      } `}
+      className={cn("border-neutral-600 p-4 duration-300 last:rounded-b-2xl hover:cursor-pointer hover:bg-white/10", {
+        "bg-orange-400/10 hover:bg-amber-700/30": !isInvited,
+      })}
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-row items-center gap-5">
-          <RoundedImage src={project.logoUrl || ""} useLogoFallback alt="Project Logo" />
+          <RoundedImage src={project.logoUrl || IMAGES.logo.gradient} alt="Project Logo" />
           <div className="flex flex-1 flex-col justify-self-start truncate">
             <div className="truncate text-base font-medium">{project.name}</div>
             <div className="font-regular truncate text-sm text-slate-400">
@@ -41,7 +43,9 @@ export default function ProjectOption({ project, isSelected, isInvited }: Props)
           </>
         </div>
         {isInvited && (
-          <div className="w-full rounded-xl bg-neutral-100 p-2 text-center text-sm text-black">View invite</div>
+          <div className="w-full rounded-xl bg-neutral-100 p-2 text-center text-sm text-black">
+            {T("project.details.sidebar.viewInvite")}
+          </div>
         )}
       </div>
     </Listbox.Option>
