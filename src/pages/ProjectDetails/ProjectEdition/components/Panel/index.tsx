@@ -1,7 +1,7 @@
 import SidePanel from "src/components/SidePanel";
 import { EditPanelOrganization } from "./OrganizationTab/EditPanelOrganization";
 import { EditPanelRepositories } from "./RepositoriesTabs/EditPanelRepositories";
-import { useContext, useMemo, useState } from "react";
+import { PropsWithChildren, useContext, useMemo, useState } from "react";
 import { EditPanelContext } from "./context";
 import { Flex } from "src/components/New/Layout/Flex";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
@@ -14,7 +14,7 @@ enum TabsType {
   Repos = "Repos",
 }
 
-function TabContents({ children }: { children: React.ReactNode }) {
+function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
 }
 
