@@ -1,4 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
+import { useEffect } from "react";
+import { DateRange } from "react-day-picker";
 import { Calendar, useMultipleCalendar, useRangeCalendar, useSingleCalendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
@@ -6,8 +8,12 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB } from "src/utils/date";
 
+export type DatepickProps = string | Date | Date[] | DateRange;
+
 type Props = {
+  value?: DatepickProps;
   isElevated?: boolean;
+  onChange: (date: DatepickProps) => void;
 };
 
 type SingleProps = {
@@ -23,11 +29,22 @@ type RangeProps = {
   ranges: unknown[];
 } & Props;
 
-export function Datepicker({ mode = "single", isElevated = false }: SingleProps | MultipleProps | RangeProps) {
+export function Datepicker({
+  value,
+  mode = "single",
+  isElevated = false,
+  onChange,
+}: SingleProps | MultipleProps | RangeProps) {
   const { T } = useIntl();
-  const [day, setDay] = useSingleCalendar();
-  const [days, setDays] = useMultipleCalendar();
-  const [range, setRange] = useRangeCalendar();
+
+  const [day, setDay] = useSingleCalendar(new Date(value as string));
+  const [days, setDays] = useMultipleCalendar(value as Date[]);
+  const [range, setRange] = useRangeCalendar(value as DateRange);
+  const selectedDate: DatepickProps | undefined = day;
+
+  useEffect(() => {
+    selectedDate && onChange(selectedDate);
+  }, [selectedDate]);
 
   function renderCalendar() {
     if (mode === "multiple") {
@@ -93,23 +110,7 @@ export function Datepicker({ mode = "single", isElevated = false }: SingleProps 
               isElevated ? "bg-greyscale-800" : "bg-greyscale-900"
             )}
           >
-            <Popover.Panel>
-              {/* <ul>
-                <li>
-                  <button>This week</button>
-                </li>
-                <li>
-                  <button>This month</button>
-                </li>
-                <li>
-                  <button>This year</button>
-                </li>
-                <li>
-                  <button>All time</button>
-                </li>
-              </ul> */}
-              {renderCalendar()}
-            </Popover.Panel>
+            <Popover.Panel>{renderCalendar()}</Popover.Panel>
           </Transition>
         </>
       )}

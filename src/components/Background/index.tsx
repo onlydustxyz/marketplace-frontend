@@ -25,7 +25,7 @@ const Background = forwardRef(function Background(
         className
       )}
     >
-      <div className={innerClassName}>{children}</div>
+      <div className={cn("h-full", innerClassName)}>{children}</div>
     </div>
   );
 });

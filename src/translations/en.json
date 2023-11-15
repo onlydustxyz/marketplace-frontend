@@ -23,7 +23,8 @@
     "next": "Next",
     "back": "Back",
     "publish": "Publish",
-    "you": "You"
+    "you": "You",
+    "pendingInvite": "Pending invite"
   },
   "contribution": {
     "review": {
@@ -239,6 +240,9 @@
     "placeholderShort": "Search projects"
   },
   "form": {
+    "toast": {
+      "success": "Changes saved"
+    },
     "required": "Required",
     "singleDatePlaceholder": "Select a date",
     "multipleDatesPlaceholder": "Select some dates",
@@ -923,6 +927,7 @@
           "general": "General",
           "repositories": "Repositories"
         },
+        "save": "Save changes",
         "panel": {
           "title": "Add repositories",
           "tabs": {
@@ -933,7 +938,37 @@
             "noRepositoriesToAdd": "All repositories from this organisation have been added to your project."
           }
         },
+        "toasts": {
+          "logoUpdate": "Logo updated successfully"
+        },
         "fields": {
+          "name": {
+            "label": "Project name",
+            "info": "Changing the project name will change its URL. If you've shared links to this project, they will be broken.",
+            "placeholder": "Update your project name"
+          },
+          "short": {
+            "label": "Short description",
+            "placeholder": "Edit your short description"
+          },
+          "long": {
+            "label": "Long description",
+            "placeholder": "Edit your long description"
+          },
+          "logo": {
+            "label": "Project visual",
+            "placeholder": "image.png",
+            "info": "SVG, PNG, JPG or GIF (MAX. 400x400px)."
+          },
+          "moreInfo": {
+            "label": "More info",
+            "placeholderLink": "Link",
+            "placeholderLabel": "Label"
+          },
+          "hire": {
+            "label": "Accept new applications",
+            "subLabel": "Looking for contributors"
+          },
           "rewardableContributions": {
             "label": "Rewardable contributions",
             "message": "All contributions before start date and from unselected categories will be auto ignored when rewarding a contributor.",
