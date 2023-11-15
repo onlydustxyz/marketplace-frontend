@@ -1,4 +1,4 @@
-import React, { ComponentProps } from "react";
+import { ComponentProps } from "react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import PencilLine from "src/icons/PencilLine";
