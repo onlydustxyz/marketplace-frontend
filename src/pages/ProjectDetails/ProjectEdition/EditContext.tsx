@@ -11,7 +11,7 @@ import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage
 import { useShowToaster } from "src/hooks/useToaster";
 import { z } from "zod";
 import { EditPanelProvider } from "./components/Panel/context";
-import transformOrganization from "./utils/transformInstallationToOrganization";
+import transformInstallationToOrganization from "./utils/transformInstallationToOrganization";
 import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 import { FieldProjectLeadValue } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -199,7 +199,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   }, [status]);
 
   useEffect(() => {
-    const transformedOrganization = transformOrganization(installationData);
+    const transformedOrganization = transformInstallationToOrganization(installationData);
     if (transformedOrganization) {
       onAddOrganization(transformedOrganization);
     }
