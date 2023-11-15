@@ -7,14 +7,7 @@ import { EditPanelContext } from "../../components/Panel/context";
 import { EditContext } from "../../EditContext";
 import { RepositoryOrganization } from "./components/Organization";
 
-type RepositoriesTabType = {
-  // to remove
-  isLoading: boolean;
-  // to remove
-  isError: boolean;
-};
-
-export function Repository({ isLoading, isError }: RepositoriesTabType) {
+export function Repository() {
   const { T } = useIntl();
   const { open } = useContext(EditPanelContext);
   const { form } = useContext(EditContext);
@@ -28,21 +21,6 @@ export function Repository({ isLoading, isError }: RepositoriesTabType) {
   );
 
   const renderOrganization = useMemo(() => {
-    if (isLoading) {
-      // TODO skeleton ?
-      return null;
-    }
-
-    if (isError) {
-      return (
-        <div className="py-24">
-          <p className="text-center font-walsheim text-sm text-greyscale-50">
-            {T("project.details.edit.repositories.error")}
-          </p>
-        </div>
-      );
-    }
-
     if (organizations.length && hasInstalledRepo) {
       return (
         <div className="flex flex-col gap-6">
@@ -62,7 +40,7 @@ export function Repository({ isLoading, isError }: RepositoriesTabType) {
         </p>
       </div>
     );
-  }, [isLoading, isError, organizations, hasInstalledRepo]);
+  }, [organizations, hasInstalledRepo]);
 
   return (
     <div className="flex w-full flex-col gap-6">

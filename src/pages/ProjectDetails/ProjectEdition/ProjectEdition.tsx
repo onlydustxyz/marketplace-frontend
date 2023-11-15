@@ -100,7 +100,7 @@ function SafeProjectEdition() {
             <Information />
           </Card>
         ) : (
-          <Repository isError={false} isLoading={false} />
+          <Repository />
         )}
       </Flex>
 
