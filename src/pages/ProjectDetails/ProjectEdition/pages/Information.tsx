@@ -6,7 +6,10 @@ import { FieldInput } from "src/components/New/Field/Input";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
 import InformationLine from "src/icons/InformationLine";
-import { FieldProjectLead } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+import {
+  FieldProjectLead,
+  SelectedLeadType,
+} from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
 import { FieldSwitch } from "src/components/New/Field/Switch";
 import ProjectApi from "src/api/Project";
 import { useIntl } from "src/hooks/useIntl";
@@ -32,6 +35,15 @@ export function Information() {
       },
     },
   });
+
+  function handleProjectLeadsChange({ invited, toKeep }: { invited: SelectedLeadType[]; toKeep: SelectedLeadType[] }) {
+    const invitedUsers = invited.map(lead => lead.githubUserId).filter(Boolean) as number[];
+    const usersToKeep = toKeep.map(lead => lead.id).filter(Boolean) as string[];
+
+    form?.setValue("inviteGithubUserIdsAsProjectLeads", invitedUsers, { shouldDirty: true });
+    form?.setValue("projectLeadsToKeep", usersToKeep, { shouldDirty: true });
+    form?.setValue("projectLeads", { invited, toKeep }, { shouldDirty: true });
+  }
 
   return (
     <Flex direction="col" gap={8} className="w-full">
@@ -125,14 +137,7 @@ export function Information() {
             <FieldProjectLead
               name={name}
               value={value}
-              onChange={({ invited, toKeep }) => {
-                const invitedUsers = invited.map(lead => lead.githubUserId).filter(Boolean) as number[];
-                const usersToKeep = toKeep.map(lead => lead.id).filter(Boolean) as string[];
-
-                form?.setValue("inviteGithubUserIdsAsProjectLeads", invitedUsers, { shouldDirty: true });
-                form?.setValue("projectLeadsToKeep", usersToKeep, { shouldDirty: true });
-                form?.setValue("projectLeads", { invited, toKeep }, { shouldDirty: true });
-              }}
+              onChange={({ invited, toKeep }) => handleProjectLeadsChange({ invited, toKeep })}
             />
           )}
         />
