@@ -1,5 +1,5 @@
 import { PropsWithChildren, useContext, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -31,12 +31,10 @@ enum TabsType {
 
 function SafeProjectEdition() {
   const { T } = useIntl();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
   const [activeTab, setActiveTab] = useState<TabsType>(installation_id ? TabsType.Repos : TabsType.General);
-  const { project, form } = useContext(EditContext);
+  const { form } = useContext(EditContext);
 
   const tabs = useMemo(
     () => [
