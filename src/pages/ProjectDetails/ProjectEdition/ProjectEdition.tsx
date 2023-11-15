@@ -121,7 +121,7 @@ export default function ProjectEdition() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return (
       <Center className="h-full">
         <Loader />
@@ -129,7 +129,7 @@ export default function ProjectEdition() {
     );
   }
 
-  if (isError) {
+  if (isError || !data) {
     return (
       <Center className="h-full overflow-hidden">
         <ErrorFallback />

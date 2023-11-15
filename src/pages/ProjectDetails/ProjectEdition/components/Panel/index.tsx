@@ -1,6 +1,6 @@
 import SidePanel from "src/components/SidePanel";
-import { EditPanelOrganization } from "./OrganizationTab/OrganizationsTabs";
-import { EditPanelRepositories } from "./RepositoriesTabs/RepositoriesTabs";
+import { EditPanelOrganization } from "./OrganizationTab/EditPanelOrganization";
+import { EditPanelRepositories } from "./RepositoriesTabs/EditPanelRepositories";
 import { useContext, useMemo, useState } from "react";
 import { EditPanelContext } from "./context";
 import { Flex } from "src/components/New/Layout/Flex";

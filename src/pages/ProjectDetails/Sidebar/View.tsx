@@ -34,11 +34,6 @@ export default function View({
   const navigate = useNavigate();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  console.log("props", {
-    currentProject,
-    pendingProjects,
-    projects,
-  });
   return (
     <div
       className={

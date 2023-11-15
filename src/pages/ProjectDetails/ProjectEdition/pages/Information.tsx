@@ -37,9 +37,7 @@ export function Information() {
     <Flex direction="col" gap={8} className="w-full">
       <Flex
         direction="col"
-        className={
-          "border-card-light  w-full divide-y divide-card-border-light [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*]:py-4"
-        }
+        className="border-card-light w-full divide-y divide-card-border-light [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*]:py-4"
       >
         <Controller
           name="name"
