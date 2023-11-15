@@ -26,7 +26,7 @@ export const Repository: FC<RepositoryProps> = ({ organization, repository }) =>
         <Button iconOnly type={ButtonType.Secondary} size={ButtonSize.Sm} onClick={onClick}>
           <AddLine className="text-base leading-none" />
         </Button>
-        <Flex justify="start" item="start" direction="col" className="flex-1 gap-[10px] overflow-hidden">
+        <Flex justify="start" item="start" direction="col" className="flex-1 gap-2.5 overflow-hidden">
           <p className="text-body-m-bold">{repository.name}</p>
           <div className="w-full max-w-full">
             <p className="text-body-s w-full max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-greyscale-200">
