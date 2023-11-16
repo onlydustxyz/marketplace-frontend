@@ -1,5 +1,4 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import { useAuth } from "src/hooks/useAuth";
 import { DEFAULT_SORTING } from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
@@ -15,6 +14,7 @@ import AllProjectLoading from "./AllProjects/AllProjectsLoading";
 import AllProjects from "./AllProjects";
 import SubmitProject from "./SubmitProject";
 import { parseFlag } from "src/utils/parseFlag";
+import { useLeadProjects } from "src/hooks/useProjectLeader/useProjectLeader";
 
 export enum Sorting {
   Trending = "RANK",
@@ -26,8 +26,7 @@ export enum Sorting {
 export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.ReposCount, Sorting.ContributorsCount];
 
 export default function Projects() {
-  const { ledProjectIds } = useAuth();
-  const isProjectLeader = !!ledProjectIds.length;
+  const isProjectLeader = useLeadProjects();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [search, setSearch] = useState<string>("");
@@ -56,7 +55,11 @@ export default function Projects() {
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
               <div className="sticky top-4">
                 {parseFlag("VITE_CAN_CREATE_PROJECT") ? <SubmitProject /> : null}
-                <FilterPanel isProjectLeader={isProjectLeader} technologies={technologies} sponsors={sponsors} />
+                <FilterPanel
+                  isProjectLeader={!!isProjectLeader.length}
+                  technologies={technologies}
+                  sponsors={sponsors}
+                />
               </div>
             </div>
             <div className="min-w-0 grow">
@@ -80,7 +83,12 @@ export default function Projects() {
         </div>
       </Background>
       <SidePanel withBackdrop open={filterPanelOpen} setOpen={setFilterPanelOpen} placement="bottom">
-        <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel technologies={technologies} sponsors={sponsors} />
+        <FilterPanel
+          isProjectLeader={!!isProjectLeader.length}
+          fromSidePanel
+          technologies={technologies}
+          sponsors={sponsors}
+        />
       </SidePanel>
       <SidePanel withBackdrop open={sortingPanelOpen} setOpen={setSortingPanelOpen} placement="bottom">
         <SortingPanel all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />

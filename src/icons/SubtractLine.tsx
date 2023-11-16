@@ -1,13 +1,5 @@
 import { cn } from "src/utils/cn";
 
-export enum Size {
-  Medium = "Medium",
-}
-
-interface Props {
-  size?: Size;
-}
-
-export default function Subtract({ size = Size.Medium }: Props) {
-  return <i role="add" className={cn("ri-subtract-line", { "text-base": size === Size.Medium })} />;
+export default function Subtract({ className }: { className?: string }) {
+  return <i className={cn("ri-subtract-line", className)} />;
 }

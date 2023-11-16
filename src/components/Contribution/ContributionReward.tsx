@@ -4,18 +4,21 @@ import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import Medal2Fill from "src/icons/Medal2Fill";
+import { Contribution } from "src/types";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
 export function ContributionReward({
-  id,
-  rewards,
+  contributionId,
+  projectId,
+  rewardIds,
 }: {
-  id: string;
-  rewards: { paymentId: string; paymentRequest: { projectId: string } }[];
+  contributionId: Contribution["id"];
+  projectId: Contribution["project"]["id"];
+  rewardIds: Contribution["rewardIds"];
 }) {
   const { T } = useIntl();
-  const count = rewards.length;
-  const tooltipId = `${id}-${rewards?.[0].paymentId ?? "rewards"}`;
+  const count = rewardIds.length;
+  const tooltipId = `${contributionId}-${rewardIds?.[0] ?? "rewards"}`;
 
   const { open } = useRewardDetailPanel();
 
@@ -26,17 +29,17 @@ export function ContributionReward({
           <Medal2Fill className="text-sm leading-none text-orange-400" />
           <p className="text-sm font-medium leading-none">
             {T("contributions.tooltip.rewards")}&nbsp;
-            {rewards.map((reward, i) => (
-              <Fragment key={reward.paymentId}>
+            {rewardIds.map((rewardId, i) => (
+              <Fragment key={rewardId}>
                 {i > 0 ? ", " : null}
                 <button
                   type="button"
                   className="hover:underline"
                   onClick={() => {
-                    open({ rewardId: reward.paymentId, projectId: reward.paymentRequest.projectId });
+                    open({ rewardId, projectId });
                   }}
                 >
-                  {formatPaymentId(reward.paymentId)}
+                  {formatPaymentId(rewardId)}
                 </button>
               </Fragment>
             ))}
@@ -49,8 +52,8 @@ export function ContributionReward({
         className={count > 1 ? "cursor-default" : ""}
         onClick={() => {
           if (count === 1) {
-            const [reward] = rewards;
-            open({ rewardId: reward.paymentId, projectId: reward.paymentRequest.projectId });
+            const [rewardId] = rewardIds;
+            open({ rewardId, projectId });
           }
         }}
       >

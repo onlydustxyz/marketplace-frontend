@@ -1,4 +1,5 @@
-import { GetAllContributionsQuery } from "src/__generated/graphql";
+import { components } from "./__generated/api";
+import { useInstallationByIdResponse } from "./api/Github/queries";
 
 export type Branded<T, B> = T & { __brand: B };
 
@@ -6,11 +7,6 @@ export type Branded<T, B> = T & { __brand: B };
 export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends readonly (infer ElementType)[]
   ? ElementType
   : never;
-
-//https://stackoverflow.com/a/47914631
-export type DeepPartial<T> = {
-  [P in keyof T]?: DeepPartial<T[P]>;
-};
 
 export enum HasuraUserRole {
   Public = "public",
@@ -136,14 +132,20 @@ export enum GithubIssueStatus {
 }
 
 export enum GithubCodeReviewStatus {
-  Pending = "PENDING",
-  ChangeRequested = "CHANGE_REQUESTED",
+  Approved = "APPROVED",
+  ChangeRequested = "CHANGES_REQUESTED",
+  Commented = "COMMENTED",
   Completed = "COMPLETED",
+  Dismissed = "DISMISSED",
+  Pending = "PENDING",
 }
 
 export enum GithubCodeReviewOutcome {
-  Approved = "approved",
-  ChangesRequested = "changes_requested",
+  Approved = "APPROVED",
+  ChangesRequested = "CHANGES_REQUESTED",
+  Commented = "COMMENTED",
+  Dismissed = "DISMISSED",
+  Pending = "PENDING",
 }
 
 export enum GithubContributionType {
@@ -152,35 +154,18 @@ export enum GithubContributionType {
   CodeReview = "CODE_REVIEW",
 }
 
-export enum GithubContributionStatus {
-  InProgress = "in_progress",
-  Completed = "complete",
-  Canceled = "canceled",
-}
-
-export enum GithubContributionStatusREST {
-  InProgress = "IN_PROGRESS",
-  Completed = "COMPLETED",
-  Cancelled = "CANCELLED",
-}
-
 export enum GithubContributionReviewStatus {
   PendingReviewer = "pendingReviewer",
   UnderReview = "underReview",
   Approved = "approved",
   ChangesRequested = "changesRequested",
+  Dismissed = "dismissed",
+  Commented = "commented",
 }
 
 export enum GithubPullRequestDraft {
   Draft = "DRAFT",
 }
-
-// Same as components["schemas"]["RewardItemResponse"]["status"] but uses enums
-export type GithubItemStatus =
-  | GithubPullRequestStatus
-  | GithubIssueStatus
-  | GithubCodeReviewStatus
-  | GithubPullRequestDraft;
 
 type GithubPullRequestTypeStatusDict<T> = Record<
   GithubContributionType.PullRequest,
@@ -194,8 +179,6 @@ type GithubCodeReviewTypeStatusDict<T> = Record<GithubContributionType.CodeRevie
 export type GithubTypeStatusDict<T> = GithubPullRequestTypeStatusDict<T> &
   GithubIssueTypeStatusDict<T> &
   GithubCodeReviewTypeStatusDict<T>;
-
-export type QueryContribution = GetAllContributionsQuery["contributions"][number];
 
 export interface Leader {
   id: string;
@@ -319,3 +302,27 @@ export type Sorting = {
   field: string | undefined;
   isAscending: boolean | undefined;
 };
+
+type Repos = components["schemas"]["ShortGithubRepoResponse"] & {
+  selected?: boolean;
+};
+
+type Organization = Omit<components["schemas"]["GithubOrganizationResponse"], "repos"> & {
+  installationId: number;
+  repos: Repos[];
+};
+
+export interface OrganizationSessionStorageInterface extends useInstallationByIdResponse {
+  organization: Organization;
+}
+
+export type Contribution = components["schemas"]["ContributionPageItemResponse"];
+export type ContributionDetail = components["schemas"]["ContributionDetailsResponse"];
+
+export enum ContributionStatus {
+  InProgress = "IN_PROGRESS",
+  Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
+}
+
+export type GithubStatus = components["schemas"]["ContributionPageItemResponse"]["githubStatus"];

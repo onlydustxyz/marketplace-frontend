@@ -31,7 +31,7 @@ export const FormOption = forwardRef(function FormOption<T extends ElementType =
       ref={ref}
       className={cn(
         // Base styles
-        "flex cursor-pointer select-none items-center gap-1 whitespace-nowrap border font-walsheim font-normal leading-none text-snow",
+        "flex cursor-pointer select-none items-center gap-1 whitespace-nowrap border font-walsheim font-normal !leading-none text-snow",
 
         // ProfileRadioGroup styles
         "peer-checked:border-spacePurple-500 peer-checked:bg-spacePurple-900 peer-checked:outline-double peer-checked:outline-1 peer-checked:outline-spacePurple-500",

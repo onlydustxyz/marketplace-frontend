@@ -106,4 +106,12 @@
   .opaque {
     opacity: 1 !important;
   }
+
+  .bg-transparency-gradiant {
+    @apply bg-gradient-to-b from-[#000113]/[0] to-[#0E0D2E];
+  }
+
+  .scrollbar-sm {
+    @apply scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5;
+  }
 }

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { OrganizationSessionStorageInterface } from "../../../commons/hooks/useProjectCreationSession";
+import { OrganizationSessionStorageInterface } from "src/types";
 
 export const useRepositorySearch = (search?: string) => {
   return useCallback(
@@ -10,7 +10,7 @@ export const useRepositorySearch = (search?: string) => {
 
       return value
         .map(org => {
-          const repos = org.repos?.filter(repo => repo.name?.includes(search));
+          const repos = org.organization.repos?.filter(repo => repo.name?.includes(search));
 
           if (!repos || repos.length === 0) {
             return null;

@@ -42,7 +42,7 @@ export const ProjectIntroPage = () => {
               </p>
             </div>
             <div className="flex flex-col items-center gap-6">
-              <a href={import.meta.env.VITE_GITHUB_INSTALLATION_URL ?? ""}>
+              <a href={import.meta.env.VITE_GITHUB_INSTALLATION_URL}>
                 <Button size={ButtonSize.Lg}>
                   <GithubLogo className="h-6 w-6" />
                   {T("project.details.create.intro.button")}

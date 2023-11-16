@@ -9,7 +9,7 @@ export interface FieldLabelProps {
 
 export const FieldLabel: FC<FieldLabelProps> = ({ className, children, id }) => {
   return (
-    <label className={cn("text-sm font-medium text-spaceBlue-200", className)} htmlFor={id}>
+    <label className={cn("font-walsheim text-sm font-medium text-spaceBlue-200", className)} htmlFor={id}>
       {children}
     </label>
   );

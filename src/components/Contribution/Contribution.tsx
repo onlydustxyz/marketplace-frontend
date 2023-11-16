@@ -1,52 +1,42 @@
 import { cn } from "src/utils/cn";
 
-import { ComponentProps } from "react";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
-import { useAuth } from "src/hooks/useAuth";
 import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import {
+  Contribution as ContributionT,
   GithubCodeReviewOutcome,
   GithubContributionReviewStatus,
+  GithubContributionType,
   GithubPullRequestStatus,
-  QueryContribution,
 } from "src/types";
-import { getContributionInfo } from "src/utils/getContributionInfo";
 
 type Props = {
-  contribution: Pick<
-    QueryContribution,
-    "githubCodeReview" | "githubIssue" | "githubPullRequest" | "id" | "rewardItems" | "type" | "project"
-  >;
+  contribution: ContributionT;
   isMobile?: boolean;
 };
 
 export function Contribution({ contribution, isMobile = false }: Props) {
-  const { githubPullRequest, id, rewardItems } = contribution;
-
-  const { type, title, htmlUrl, author, status, number } = getContributionInfo(contribution);
-
-  const { githubUserId } = useAuth();
   const { open } = useContributionDetailPanel();
 
-  function renderReview() {
-    if (githubPullRequest && status === GithubPullRequestStatus.Open) {
-      let review = GithubContributionReviewStatus.PendingReviewer;
-      const {
-        codeReviews: [codeReview],
-      } = githubPullRequest;
+  const { githubCodeReviewOutcome, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
+    contribution;
 
-      switch (codeReview?.outcome) {
-        case null:
-          review = GithubContributionReviewStatus.UnderReview;
-          break;
-        case GithubCodeReviewOutcome.ChangesRequested:
-          review = GithubContributionReviewStatus.ChangesRequested;
-          break;
-        case GithubCodeReviewOutcome.Approved:
-          review = GithubContributionReviewStatus.Approved;
-          break;
+  function renderReview() {
+    if (type === GithubContributionType.PullRequest && githubStatus === GithubPullRequestStatus.Open) {
+      let review = GithubContributionReviewStatus.PendingReviewer;
+
+      if (githubCodeReviewOutcome === GithubCodeReviewOutcome.Commented) {
+        review = GithubContributionReviewStatus.UnderReview;
+      }
+
+      if (githubCodeReviewOutcome === GithubCodeReviewOutcome.ChangesRequested) {
+        review = GithubContributionReviewStatus.ChangesRequested;
+      }
+
+      if (githubCodeReviewOutcome === GithubCodeReviewOutcome.Approved) {
+        review = GithubContributionReviewStatus.Approved;
       }
 
       return <ContributionReview status={review} />;
@@ -62,32 +52,21 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         "items-center": !isMobile,
       })}
     >
-      <div className="flex min-w-0 items-center gap-2 font-walsheim">
-        <ContributionBadge
-          id={id ?? ""}
-          number={number}
-          type={type}
-          status={status}
-          title={title}
-          author={author}
-          url={htmlUrl}
-        />
+      <div className={cn("flex items-center gap-2 font-walsheim", isMobile ? "w-full" : "min-w-0")}>
+        <ContributionBadge contribution={contribution} />
         <button
-          className="truncate text-left hover:underline"
+          className="truncate break-all text-left hover:underline"
           onClick={() => {
-            if (githubUserId && id && contribution.project?.id)
-              open({ githubUserId, contributionId: id, projectId: contribution.project.id }, htmlUrl);
+            if (id && contribution.project?.id)
+              open({ contributionId: id, projectId: contribution.project.id }, githubHtmlUrl);
           }}
         >
-          {title}
+          {githubTitle}
         </button>
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
-        {rewardItems?.length ? (
-          <ContributionReward
-            id={id ?? ""}
-            rewards={rewardItems as ComponentProps<typeof ContributionReward>["rewards"]}
-          />
+        {rewardIds?.length ? (
+          <ContributionReward contributionId={id} projectId={project.id} rewardIds={rewardIds} />
         ) : null}
         {renderReview()}
       </div>

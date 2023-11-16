@@ -1,7 +1,6 @@
 import { ComponentProps } from "react";
 import { UserIdentityDocument } from "src/__generated/graphql";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
-import { GithubContributionStatus } from "src/types";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributionDetailPanelProvider from "../decorators/withContributionDetailPanelProvider";
@@ -45,7 +44,6 @@ export default {
 
 const defaultProps: ComponentProps<typeof ContributionCard> = {
   contribution,
-  status: GithubContributionStatus.InProgress,
 };
 
 export const Default = {

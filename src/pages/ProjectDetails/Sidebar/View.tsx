@@ -10,25 +10,26 @@ import { cn } from "src/utils/cn";
 import ProjectOption from "./ProjectOption";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import { components } from "src/__generated/api";
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 
 interface Props {
   expandable: boolean;
-  currentProject: SidebarProjectDetails;
-  allProjects: SidebarProjectDetails[];
+  currentProject: UseGetProjectBySlugResponse;
+  projects: components["schemas"]["ProjectLedShortResponse"][];
+  pendingProjects: components["schemas"]["ProjectLedShortResponse"][];
   availableTabs: ProjectDetailsTab[];
   onLinkClick?: () => void;
 }
 
-export interface SidebarProjectDetails {
-  id: string;
-  key: string;
-  name: string;
-  logoUrl: string;
-  withInvitation: boolean;
-  contributorsCount: number;
-}
-
-export default function View({ expandable, currentProject, allProjects, availableTabs, onLinkClick }: Props) {
+export default function View({
+  expandable,
+  currentProject,
+  availableTabs,
+  onLinkClick,
+  pendingProjects,
+  projects,
+}: Props) {
   const { T } = useIntl();
   const navigate = useNavigate();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -36,7 +37,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
   return (
     <div
       className={
-        "flex w-full shrink-0 flex-col gap-6 bg-white/4 bg-noise-medium p-6 font-walsheim xl:ml-6 xl:w-80 xl:rounded-l-2xl"
+        "flex w-full shrink-0 flex-col gap-6 bg-white/4 bg-noise-medium p-6 font-walsheim xl:w-80 xl:rounded-l-2xl"
       }
     >
       {isXl && (
@@ -51,7 +52,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
             onChange={project =>
               navigate(
                 generatePath(RoutePaths.ProjectDetails, {
-                  projectKey: project.key,
+                  projectKey: project.slug,
                 }),
                 { state: { openMenu: true } }
               )
@@ -65,14 +66,32 @@ export default function View({ expandable, currentProject, allProjects, availabl
                 }`}
               >
                 <div className="flex flex-row items-center gap-4">
-                  <RoundedImage src={currentProject?.logoUrl || ""} alt="Project Logo" size={ImageSize.Md} />
+                  <RoundedImage
+                    src={currentProject?.logoUrl || ""}
+                    useLogoFallback
+                    alt="Project Logo"
+                    size={ImageSize.Md}
+                  />
                   <div className="grow truncate text-left font-walsheim">{currentProject?.name}</div>
                   {expandable && <UpDownChevrons className="h-5 w-5 fill-greyscale-50/50" />}
                 </div>
               </Listbox.Button>
               <Listbox.Options className="flex max-h-[calc(50dvh)] flex-col divide-y overflow-y-auto rounded-b-2xl scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-                {allProjects.map(project => (
-                  <ProjectOption key={project.id} project={project} isSelected={project.id === currentProject?.id} />
+                {pendingProjects.map(project => (
+                  <ProjectOption
+                    key={project.id}
+                    project={project}
+                    isSelected={project.id === currentProject?.id}
+                    isInvited
+                  />
+                ))}
+                {projects.map(project => (
+                  <ProjectOption
+                    key={project.id}
+                    project={project}
+                    isSelected={project.id === currentProject?.id}
+                    isInvited={false}
+                  />
                 ))}
               </Listbox.Options>
             </div>

@@ -1,44 +1,55 @@
-export const contribution = {
-  closedAt: "2023-09-26T13:36:51",
-  createdAt: "2023-09-26T13:36:51",
-  id: "0ffe86e6371964f1839c4dd65ac3dccaac616fb7f9fd418fc660fc1143c10c1c",
-  githubPullRequest: null,
-  githubRepo: {
-    htmlUrl: "https://github.com/haydencleary/test",
-    name: "test",
-    id: 694659372,
-  },
-  project: {
-    name: "Test project",
-    logoUrl: null,
-    id: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
-    key: "test-project",
-  },
-  status: "in_progress",
+import { Contribution } from "src/types";
+
+export const contribution: Contribution = {
+  id: "652825ae108702f028ae4454bee3925c40c9a1b308a6d815d14ecbf50572e082",
+  createdAt: "2023-09-18T16:41:40Z",
   type: "CODE_REVIEW",
-  rewardItems: [],
-  githubCodeReview: {
-    id: "68ccc74ff428bf2f9b66fdbdfc668754e096ccaa6f84b8056eeed73bc133ef48",
-    outcome: null,
-    status: "PENDING",
-    reviewer: {
-      avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
-      login: "haydencleary",
-      id: 5160414,
-    },
-    githubPullRequest: {
-      author: {
-        avatarUrl: "https://avatars.githubusercontent.com/u/31901905?v=4",
-        login: "kaelsky",
-        id: 31901905,
-      },
-      draft: false,
-      htmlUrl: "https://github.com/haydencleary/test/pull/11",
-      id: 1530628417,
-      number: 11,
-      status: "OPEN",
-      title: "doc: comment",
-    },
+  status: "IN_PROGRESS",
+  repo: {
+    id: 498695724,
+    owner: "onlydustxyz",
+    name: "marketplace-frontend",
+    htmlUrl: "https://github.com/onlydustxyz/marketplace-frontend",
   },
-  githubIssue: null,
+  githubAuthor: {
+    githubUserId: 5160414,
+    login: "haydencleary",
+    htmlUrl: "https://github.com/haydencleary",
+    avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
+  },
+  githubNumber: 1242,
+  githubStatus: "COMMENTED",
+  githubTitle: "E 655 build my contributions list",
+  githubHtmlUrl: "https://github.com/onlydustxyz/marketplace-frontend/pull/1242",
+  project: {
+    id: "1ac6c2ce-cba0-4e14-837c-facf9c1f0258",
+    slug: "onlydust",
+    name: "OnlyDust",
+    shortDescription: "Contribute to the best Open-Source projects",
+    logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
+    visibility: "PUBLIC",
+  },
+  links: [
+    {
+      type: "PULL_REQUEST",
+      repo: {
+        id: 498695724,
+        owner: "onlydustxyz",
+        name: "marketplace-frontend",
+        htmlUrl: "https://github.com/onlydustxyz/marketplace-frontend",
+      },
+      githubAuthor: {
+        githubUserId: 5160414,
+        login: "haydencleary",
+        htmlUrl: "https://github.com/haydencleary",
+        avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
+      },
+      githubNumber: 1242,
+      githubStatus: "MERGED",
+      githubTitle: "E 655 build my contributions list",
+      githubHtmlUrl: "https://github.com/onlydustxyz/marketplace-frontend/pull/1242",
+      is_mine: true,
+    },
+  ],
+  rewardIds: ["880819f1-2ab9-406d-9bf1-3012b6f565bc", "35234563456345-2ab9-406d-9bf1-3012b6f565bc"],
 };

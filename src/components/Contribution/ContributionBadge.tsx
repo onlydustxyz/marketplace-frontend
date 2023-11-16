@@ -1,6 +1,5 @@
 import { cn } from "src/utils/cn";
 
-import { GithubUser } from "src/__generated/graphql";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import Contributor from "src/components/Contributor";
 import ExternalLink from "src/components/ExternalLink";
@@ -8,7 +7,7 @@ import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-import { GithubContributionType, GithubItemStatus } from "src/types";
+import { Contribution, GithubContributionType } from "src/types";
 
 export enum ContributionBadgeSizes {
   Xs = "text-xs",
@@ -17,14 +16,7 @@ export enum ContributionBadgeSizes {
 }
 
 export function ContributionBadge({
-  id,
-  number,
-  type,
-  status,
-  title,
-  description,
-  author,
-  url,
+  contribution,
   withTooltip = true,
   asLink = false,
   size = ContributionBadgeSizes.Sm,
@@ -33,26 +25,23 @@ export function ContributionBadge({
     variant: Variant.Blue,
   },
 }: {
-  id: string;
-  number: number;
-  type: GithubContributionType;
-  status: GithubItemStatus;
-  title: string;
-  description?: string;
-  author: Pick<GithubUser, "id" | "login" | "avatarUrl"> | null;
-  url: string;
+  contribution: Pick<
+    Contribution,
+    "githubNumber" | "githubTitle" | "githubBody" | "githubHtmlUrl" | "githubAuthor" | "githubStatus" | "type"
+  >;
   withTooltip?: boolean;
   asLink?: boolean;
   size?: ContributionBadgeSizes;
   tooltipProps?: React.ComponentProps<typeof Tooltip>;
 }) {
-  const Component = asLink ? "a" : "div";
-  const ComponentProps = asLink ? { href: url, target: "_blank", rel: "noopener noreferrer" } : {};
   const { T } = useIntl();
   const { githubUserId } = useAuth();
 
-  const isExternal = author && githubUserId !== author.id;
-  const tooltipId = `${id}-${number}-${type}-${status}`;
+  const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
+  const Component = asLink ? "a" : "div";
+  const ComponentProps = asLink ? { href: githubHtmlUrl, target: "_blank", rel: "noopener noreferrer" } : {};
+  const isExternal = githubAuthor && githubUserId !== githubAuthor.githubUserId;
+  const tooltipId = `${githubNumber}-${type}-${githubStatus}`;
 
   const tokens = {
     [GithubContributionType.PullRequest]: T("contributions.tooltip.badgePullRequest"),
@@ -64,29 +53,24 @@ export function ContributionBadge({
     <>
       {withTooltip ? (
         <Tooltip id={tooltipId} clickable {...tooltipProps}>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2 text-left">
             {isExternal ? (
-              <div className="flex items-center justify-center text-sm">
+              <div className="flex items-center text-sm">
                 <span className="text-spaceBlue-200">{tokens[type]}</span>
-
-                <Contributor
-                  className="ml-1 flex-row-reverse"
-                  contributor={{
-                    login: author?.login ?? "",
-                    avatarUrl: author?.avatarUrl ?? "",
-                    githubUserId: author?.id,
-                  }}
-                  clickable
-                />
+                <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} clickable />
               </div>
             ) : null}
             <div className="flex gap-2">
-              <ContributionIcon type={type} status={status} />
-              <div className="flex flex-col items-start gap-2">
-                <span className="text-sm font-medium leading-4">
-                  <ExternalLink url={url} text={`#${number} • ${title}`} />
+              <ContributionIcon type={type as GithubContributionType} status={githubStatus} />
+              <div className="flex max-w-sm flex-col items-start justify-start gap-2">
+                <span className="line-clamp-2 text-sm font-medium leading-4">
+                  <ExternalLink
+                    url={githubHtmlUrl}
+                    text={`#${githubNumber} • ${githubTitle}`}
+                    anchorProps={{ className: "line-clamp-2 whitespace-pre-line" }}
+                  />
                 </span>
-                {description ? <p className="text-xs text-spaceBlue-200">{description}</p> : null}
+                {githubBody ? <p className="line-clamp-2 break-all text-xs text-spaceBlue-200">{githubBody}</p> : null}
               </div>
             </div>
           </div>
@@ -103,14 +87,14 @@ export function ContributionBadge({
             "border-0.5 border-solid": !isExternal,
           },
           contributionIconVariants.status[type][
-            status as keyof typeof contributionIconVariants.status[GithubContributionType]
+            githubStatus as keyof typeof contributionIconVariants.status[GithubContributionType]
           ]
         )}
         {...ComponentProps}
       >
-        <ContributionIcon type={type} status={status} />
+        <ContributionIcon type={type as GithubContributionType} status={githubStatus} />
         <div className="flex">
-          <span className={cn("leading-none", size)}>{number}</span>
+          <span className={cn("leading-none", size)}>{githubNumber}</span>
           {isExternal ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
         </div>
       </Component>

@@ -6,7 +6,7 @@ import GithubLogo from "src/icons/GithubLogo";
 import { linkClickHandlerFactory } from "src/utils/clickHandler";
 import { useIntl } from "./useIntl";
 
-type Props = { githubUserId: number | null; contributionId: string; projectId: string };
+type Props = { contributionId: string; projectId: string };
 
 type ContributionDetailPanel = {
   open: (props: Props, githubUrl: string) => void;
@@ -18,7 +18,6 @@ const ContributionDetailPanelContext = createContext<ContributionDetailPanel | n
 export function ContributionDetailPanelProvider({ children }: PropsWithChildren) {
   const { T } = useIntl();
   const [props, setProps] = useState<Props>({
-    githubUserId: null,
     contributionId: "",
     projectId: "",
   });
@@ -48,12 +47,8 @@ export function ContributionDetailPanelProvider({ children }: PropsWithChildren)
           </Button>
         }
       >
-        {props.githubUserId && props.contributionId && props.projectId ? (
-          <ContributionDetail
-            githubUserId={props.githubUserId}
-            contributionId={props.contributionId}
-            projectId={props.projectId}
-          />
+        {props.contributionId && props.projectId ? (
+          <ContributionDetail contributionId={props.contributionId} projectId={props.projectId} />
         ) : null}
       </SidePanel>
     </ContributionDetailPanelContext.Provider>
