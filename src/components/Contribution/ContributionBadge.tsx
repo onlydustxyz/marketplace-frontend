@@ -55,7 +55,7 @@ export function ContributionBadge({
         <Tooltip id={tooltipId} clickable {...tooltipProps}>
           <div className="flex flex-col gap-2 text-left">
             {isExternal ? (
-              <div className="flex items-center text-sm">
+              <div className="flex items-center justify-center text-sm">
                 <span className="text-spaceBlue-200">{tokens[type]}</span>
                 <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} clickable />
               </div>
