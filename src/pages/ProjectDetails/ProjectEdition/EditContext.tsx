@@ -137,6 +137,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     options: { retry: 1, enabled: !!githubUserId },
   });
 
+  // !!Needed ( GITHHUB WORKFLOW) ?
   const [storedValue, setValue, status, removeValue, clearSessionPattern] = useSessionStorage<
     { form: EditFormData; dirtyFields: Array<keyof EditFormData> } | undefined
   >(`${SESSION_KEY}${project.slug}`, undefined);
@@ -165,6 +166,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     resolver: zodResolver(validationSchema),
   });
 
+  // !! should be cleaner with swagger update
   const mergeOrganization = useMemo(() => {
     return uniqWith(
       [
@@ -174,8 +176,6 @@ export function EditProvider({ children, project }: EditContextProps) {
       (arr, oth) => arr.id === oth.id
     );
   }, [organizationsData, project]);
-
-  console.log("githubRepoIds", form.getValues("githubRepoIds"));
 
   // !!REMOVE ( GITHHUB WORKFLOW)
   const onAddOrganization = (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => {

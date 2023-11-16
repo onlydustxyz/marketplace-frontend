@@ -12,13 +12,6 @@ export function Repository() {
   const { open } = useContext(EditPanelContext);
   const { form, organizations } = useContext(EditContext);
   const installedRepos = form?.watch("githubRepoIds") || [];
-  const hasInstalledRepo = useMemo(
-    () =>
-      organizations.find(
-        organization => (organization.repos || []).filter(repo => installedRepos.includes(repo.id)).length > 0
-      ),
-    [organizations, installedRepos]
-  );
 
   const renderOrganization = useMemo(() => {
     if (installedRepos.length && organizations.length) {
@@ -40,7 +33,7 @@ export function Repository() {
         </p>
       </div>
     );
-  }, [organizations, hasInstalledRepo, installedRepos]);
+  }, [organizations, installedRepos]);
 
   return (
     <div className="flex w-full flex-col gap-6">

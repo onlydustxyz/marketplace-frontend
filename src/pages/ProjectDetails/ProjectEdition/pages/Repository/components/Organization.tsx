@@ -9,14 +9,12 @@ type RepositoryOrganizationType = {
 };
 
 export function RepositoryOrganization({ organization, installedRepos }: RepositoryOrganizationType) {
-  const installedRepo = useMemo(
+  const installedReposData = useMemo(
     () => organization.repos?.filter(repo => installedRepos.includes(repo.id)) || [],
     [organization, installedRepos]
   );
 
-  console.log("installedRepo", installedRepo, organization.name);
-
-  if (installedRepo.length) {
+  if (installedReposData.length) {
     return (
       <VerticalListItemCard
         ContainerProps={{ className: " bg-card-background-base" }}
@@ -26,7 +24,7 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
         avatarSrc={organization?.avatarUrl || ""}
       >
         <div className="grid grid-flow-row grid-cols-3 gap-x-5 gap-y-5">
-          {installedRepo.map(repo => (
+          {installedReposData.map(repo => (
             <Repository key={repo.name} organization={organization} repository={repo} />
           ))}
         </div>
