@@ -5,7 +5,6 @@ import { useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { PROJECT_TAGS } from "./tags";
 
 export type UseGetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
-export type UseInfiniteListResponse = components["schemas"]["ProjectPageResponse"];
 
 const useGetProjectBySlug = ({
   params,
@@ -34,7 +33,7 @@ const useGetProjectContributionDetail = ({
   });
 };
 
-export type useInfiniteListResponse = components["schemas"]["ProjectPageResponse"];
+export type UseInfiniteListResponse = components["schemas"]["ProjectPageResponse"];
 
 const useInfiniteList = (
   params: Partial<Parameters<typeof useInfiniteBaseQuery>[0]>,
