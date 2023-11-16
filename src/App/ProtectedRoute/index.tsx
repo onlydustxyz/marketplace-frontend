@@ -17,8 +17,8 @@ export default function ProtectedRoute({
 }: ProtectedRouteProps) {
   const { roles } = useAuth();
   const params = useParams();
-  const isProjectleader = useProjectLeader({ id: params.projectKey });
-
+  const isProjectleader = useProjectLeader({ slug: params.projectKey });
+  console.log("isProjectleader", isProjectleader);
   const isAuthorized = () => {
     if (!roles.includes(requiredRole)) {
       return false;
