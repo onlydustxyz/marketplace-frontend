@@ -1,17 +1,20 @@
 import { useMemo } from "react";
-import { components } from "src/__generated/api";
 import { Repository } from "./Repository";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
+import { EditOrganizationMerged } from "../../../EditContext";
 
 type RepositoryOrganizationType = {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
+  organization: EditOrganizationMerged;
+  installedRepos: number[];
 };
 
-export function RepositoryOrganization({ organization }: RepositoryOrganizationType) {
+export function RepositoryOrganization({ organization, installedRepos }: RepositoryOrganizationType) {
   const installedRepo = useMemo(
-    () => organization.repos?.filter(repo => repo.isIncludedInProject) || [],
-    [organization]
+    () => organization.repos?.filter(repo => installedRepos.includes(repo.id)) || [],
+    [organization, installedRepos]
   );
+
+  console.log("installedRepo", installedRepo, organization.name);
 
   if (installedRepo.length) {
     return (
