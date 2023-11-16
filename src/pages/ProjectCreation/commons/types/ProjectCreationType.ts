@@ -16,7 +16,11 @@ import { SelectedLeadType } from "../../pages/ProjectInformations/components/Pro
 //   shortDescription: string;
 // }
 
+export interface CreateFormDataRepos {
+    repoId: string; orgId: string
+}
+
 export type CreateFormData = components["schemas"]["CreateProjectRequest"] & {
-  selectedRepos: { repoId: string; orgId: string }[]
+  selectedRepos: CreateFormDataRepos[]
   projectLeads: SelectedLeadType[];
 };

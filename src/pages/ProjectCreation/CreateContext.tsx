@@ -3,7 +3,7 @@ import { UseFormReturn, useForm } from "react-hook-form";
 import { useIntl } from "src/hooks/useIntl";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateFormData } from "./commons/types/ProjectCreationType";
+import { CreateFormData, CreateFormDataRepos } from "./commons/types/ProjectCreationType";
 import { useResetSession } from "./commons/hooks/useProjectCreationSession";
 import {
   ProjectCreationSteps,
@@ -30,6 +30,10 @@ interface CreateContextProps {
 type CreateProject = {
   form: UseFormReturn<CreateFormData, unknown>;
   currentStep: ProjectCreationSteps;
+  formFn: {
+    addRepository: (data: CreateFormDataRepos) => void;
+    removeRepository: (data: CreateFormDataRepos) => void;
+  };
   helpers: {
     saveInSession: () => void;
     goTo: (step: ProjectCreationSteps) => void;
@@ -46,6 +50,10 @@ export const CreateProjectContext = createContext<CreateProject>({
     goTo: () => null,
     next: () => null,
     prev: () => null,
+  },
+  formFn: {
+    addRepository: () => null,
+    removeRepository: () => null,
   },
 });
 
@@ -87,6 +95,37 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
 
   /* ----------------------------- TODO : ADD / REMOVE REPO ---------------------------- */
 
+  const isOrgsExist = (orgId: string) => {
+    // TODO to implement
+    return true;
+  };
+  const addRepository = (data: CreateFormDataRepos) => {
+    const formValues = form.getValues();
+    const repos = [...(formValues.selectedRepos || [])];
+
+    // add check on org ID
+    if (isOrgsExist(data.orgId)) {
+      const findRepo = repos.find(repo => repo.repoId === data.repoId);
+      if (!findRepo) {
+        repos.push(data);
+        form.setValue("selectedRepos", repos);
+      }
+    }
+  };
+
+  const removeRepository = (data: CreateFormDataRepos) => {
+    const formValues = form.getValues();
+    const repos = [...(formValues.selectedRepos || [])];
+
+    if (isOrgsExist(data.orgId)) {
+      const findRepoIndex = repos.findIndex(repo => repo.repoId === data.repoId);
+      if (findRepoIndex !== -1) {
+        repos.splice(findRepoIndex, 1);
+        form.setValue("selectedRepos", repos);
+      }
+    }
+  };
+
   /* ----------------------------- TODO : ROUTING ---------------------------- */
 
   const goTo = useCallback(
@@ -119,6 +158,10 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
           goTo,
           prev,
           next,
+        },
+        formFn: {
+          addRepository,
+          removeRepository,
         },
       }}
     >
