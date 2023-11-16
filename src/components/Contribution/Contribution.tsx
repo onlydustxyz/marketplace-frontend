@@ -5,10 +5,11 @@ import { ContributionReview } from "src/components/Contribution/ContributionRevi
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import {
-  GithubContributionReviewStatus,
-  GithubPullRequestStatus,
   Contribution as ContributionT,
+  GithubCodeReviewOutcome,
+  GithubContributionReviewStatus,
   GithubContributionType,
+  GithubPullRequestStatus,
 } from "src/types";
 
 type Props = {
@@ -26,15 +27,15 @@ export function Contribution({ contribution, isMobile = false }: Props) {
     if (type === GithubContributionType.PullRequest && githubStatus === GithubPullRequestStatus.Open) {
       let review = GithubContributionReviewStatus.PendingReviewer;
 
-      if (githubCodeReviewOutcome === "COMMENTED") {
+      if (githubCodeReviewOutcome === GithubCodeReviewOutcome.Commented) {
         review = GithubContributionReviewStatus.UnderReview;
       }
 
-      if (githubCodeReviewOutcome === "CHANGES_REQUESTED") {
+      if (githubCodeReviewOutcome === GithubCodeReviewOutcome.ChangesRequested) {
         review = GithubContributionReviewStatus.ChangesRequested;
       }
 
-      if (githubCodeReviewOutcome === "APPROVED") {
+      if (githubCodeReviewOutcome === GithubCodeReviewOutcome.Approved) {
         review = GithubContributionReviewStatus.Approved;
       }
 

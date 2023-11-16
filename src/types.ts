@@ -141,8 +141,11 @@ export enum GithubCodeReviewStatus {
 }
 
 export enum GithubCodeReviewOutcome {
-  Approved = "approved",
-  ChangesRequested = "changes_requested",
+  Approved = "APPROVED",
+  ChangesRequested = "CHANGES_REQUESTED",
+  Commented = "COMMENTED",
+  Dismissed = "DISMISSED",
+  Pending = "PENDING",
 }
 
 export enum GithubContributionType {
