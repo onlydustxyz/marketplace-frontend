@@ -1,17 +1,20 @@
 import { Combobox as HeadlessCombobox, Transition } from "@headlessui/react";
-import { Spinner } from "src/components/Spinner/Spinner";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import { cn } from "src/utils/cn";
+import { ComboboxState } from "./ComboboxState";
+import { ItemType, MultiList } from "./MultiList";
+import { SingleList } from "./SingleList";
 
 type Props<T> = {
-  items: T[];
+  items: T[] | ItemType<T>[];
   renderItem: ({ item, selected, active }: { item: T; selected: boolean; active: boolean }) => JSX.Element;
   query: string;
   onQuery: (query: string) => void;
   placeholder?: string;
   multiple?: boolean;
   loading?: boolean;
+  isMultiList?: boolean;
   /**
    * @description name the key for the item object that will be used as key for the item
    */
@@ -41,6 +44,7 @@ export function Combobox<T extends { [key: string]: unknown }>({
   multiple = false,
   loading = false,
   itemKeyName,
+  isMultiList = true,
 }: SingleProps<T> | MultipleProps<T>) {
   return (
     <HeadlessCombobox value={selected} onChange={onChange} multiple={multiple as false}>
@@ -88,27 +92,12 @@ export function Combobox<T extends { [key: string]: unknown }>({
           >
             <div className="h-9" />
             <HeadlessCombobox.Options className="max-h-60 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
-              {loading && (
-                <div className="flex justify-center px-4 py-2 text-spacePurple-500">
-                  <Spinner />
-                </div>
-              )}
-              {items.length === 0 && query !== "" && !loading ? (
-                <div className="select-none text-greyscale-50">Nothing here.</div>
+              <ComboboxState items={items} query={query} loading={loading} />
+
+              {isMultiList ? (
+                <MultiList {...{ items: items as ItemType<T>[], itemKeyName, loading, renderItem }} />
               ) : (
-                items?.map((item, key) => (
-                  <HeadlessCombobox.Option
-                    key={(item[itemKeyName] as number | string) || key}
-                    className={({ active }) =>
-                      cn("relative cursor-pointer select-none py-2", {
-                        "bg-white/2": active,
-                      })
-                    }
-                    value={item}
-                  >
-                    {({ selected, active }) => renderItem({ item, selected, active })}
-                  </HeadlessCombobox.Option>
-                ))
+                <SingleList {...{ items: items as T[], itemKeyName, loading, renderItem }} />
               )}
             </HeadlessCombobox.Options>
           </Transition>
