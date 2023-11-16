@@ -1,10 +1,9 @@
 import { PropsWithChildren } from "react";
 import { generatePath, Navigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { useGetProjectIdFromKeyQuery } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { CustomUserRole, HasuraUserRole, UserRole } from "src/types";
-import { contextWithCacheHeaders } from "src/utils/headers";
 
 interface ProtectedRouteProps extends PropsWithChildren {
   requiredRole: UserRole;
@@ -16,23 +15,16 @@ export default function ProtectedRoute({
   redirectTo = RoutePaths.NotFound,
   children,
 }: ProtectedRouteProps) {
-  const { roles, ledProjectIds } = useAuth();
+  const { roles } = useAuth();
   const params = useParams();
-
-  const { data } = useGetProjectIdFromKeyQuery({
-    variables: { projectKey: params.projectKey || "" },
-    skip: !params.projectKey,
-    ...contextWithCacheHeaders,
-  });
-
-  const projectId = data?.projects[0].id;
+  const isProjectleader = useProjectLeader({ id: params.projectKey });
 
   const isAuthorized = () => {
     if (!roles.includes(requiredRole)) {
       return false;
     }
 
-    if (requiredRole === CustomUserRole.ProjectLead && projectId && !ledProjectIds.includes(projectId)) {
+    if (requiredRole === CustomUserRole.ProjectLead && params.projectKey && !isProjectleader) {
       return false;
     }
 
