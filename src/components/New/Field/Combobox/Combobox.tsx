@@ -92,7 +92,7 @@ export function Combobox<T extends { [key: string]: unknown }>({
           >
             <div className="h-9" />
             <HeadlessCombobox.Options className="max-h-60 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
-              <ComboboxState items={items} query={query} loading={loading} />
+              <ComboboxState items={items} query={query} loading={loading} isMultiList={isMultiList} />
 
               {isMultiList ? (
                 <MultiList {...{ items: items as ItemType<T>[], itemKeyName, loading, renderItem }} />

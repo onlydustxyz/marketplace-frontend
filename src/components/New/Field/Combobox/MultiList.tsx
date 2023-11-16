@@ -15,16 +15,22 @@ type MultiProps<T> = {
 };
 
 export function MultiList<T>({ items, itemKeyName, loading, renderItem }: MultiProps<T>): ReactElement | null {
-  const hasItems = items.flatMap(item => item.data).length > 0;
+  const filteredItems = items.flatMap(item => item).filter(({ data }) => data.length > 0);
 
-  if (!hasItems || loading) return null;
+  if (filteredItems.length === 0 || loading) return null;
 
   return (
     <>
-      {items?.map(item => (
+      {filteredItems?.map((item, index) => (
         <>
           {item.label && item.data.length > 0 ? (
-            <div className="peer text-body-s-bold border-none py-2 pt-6 uppercase text-spaceBlue-200">{item.label}</div>
+            <div
+              className={cn("text-body-s-bold border-none py-2 uppercase text-spaceBlue-200", {
+                "pt-6": index > 0,
+              })}
+            >
+              {item.label}
+            </div>
           ) : null}
           {item.data.map((value: T, key) => {
             return (

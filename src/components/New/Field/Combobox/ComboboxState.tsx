@@ -6,11 +6,12 @@ type StateProps<T> = {
   items: T[] | ItemType<T>[];
   query?: string;
   loading: boolean;
+  isMultiList?: boolean;
 };
 
-export function ComboboxState<T extends object>({ items, query, loading }: StateProps<T>) {
+export function ComboboxState<T extends object>({ items, query, loading, isMultiList }: StateProps<T>) {
   const { T } = useIntl();
-  const hasItems = items.flatMap(item => ("data" in item ? item.data : [])).length > 0 || items.length > 0;
+  const hasItems = isMultiList ? items.flatMap(item => ("data" in item ? item.data : [])).length > 0 : items.length > 0;
 
   return (
     <>
