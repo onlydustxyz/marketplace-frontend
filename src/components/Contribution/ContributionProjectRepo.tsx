@@ -1,4 +1,3 @@
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ExternalLink from "src/components/ExternalLink";
@@ -15,10 +14,11 @@ export function ContributionProjectRepo({
   return (
     <div className="flex items-center gap-3">
       <RoundedImage
-        src={project.logoUrl ?? onlyDustLogo}
+        src={project.logoUrl}
         alt={project.name}
         rounding={Rounding.Corners}
         size={ImageSize.Sm}
+        useLogoFallback
       />
 
       <div className="text-sm">

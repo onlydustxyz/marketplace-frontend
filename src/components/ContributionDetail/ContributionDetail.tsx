@@ -1,7 +1,6 @@
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
-import { IMAGES } from "src/assets/img";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
@@ -74,9 +73,10 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <RoundedImage
-                    src={contribution.project.logoUrl ?? IMAGES.logo.gradient}
+                    src={contribution.project.logoUrl}
                     alt={contribution.project.name}
                     size={ImageSize.Xxs}
+                    useLogoFallback
                   />
                   <div className="text-sm text-greyscale-300">
                     {T("contributions.panel.contribution.forProject")}&nbsp;
