@@ -10,6 +10,8 @@ import {
   ProjectCreationStepsNext,
   ProjectCreationStepsPrev,
 } from "./commons/types/ProjectCreationSteps";
+import { useAuth } from "src/hooks/useAuth";
+import GithubApi from "src/api/Github";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Button, { ButtonSize } from "src/components/Button";
 
@@ -36,6 +38,7 @@ type CreateProject = {
   };
   helpers: {
     saveInSession: () => void;
+    syncOrganizations: () => void;
     goTo: (step: ProjectCreationSteps) => void;
     next: () => void;
     prev: () => void;
@@ -47,6 +50,7 @@ export const CreateProjectContext = createContext<CreateProject>({
   currentStep: ProjectCreationSteps.ORGANIZATIONS,
   helpers: {
     saveInSession: () => null,
+    syncOrganizations: () => null,
     goTo: () => null,
     next: () => null,
     prev: () => null,
@@ -74,6 +78,15 @@ const validationSchema = z.object({
 export function CreateProjectProvider({ children, initialProject, formStorage, stepStorage }: CreateContextProps) {
   const { T } = useIntl();
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(ProjectCreationSteps.ORGANIZATIONS);
+  const { githubUserId } = useAuth();
+  const { data: organizationsData, isLoading: isOrganizationsLoading } =
+    GithubApi.queries.useOrganizationsByGithubUserId({
+      params: { githubUserId },
+      // Polling the organizations every second knowing that user can delete and installation
+      // and the related github event can take an unknown delay to be triggered
+      options: { retry: 1, enabled: !!githubUserId, refetchInterval: 1000 },
+    });
+
   const { reset: clearSession } = useResetSession();
   const form = useForm<CreateFormData>({
     mode: "all",
@@ -92,6 +105,18 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
   };
 
   /* -- TODO : SYNC ORGANIZATION (check selected repo and remove or add orga -- */
+
+  const onSyncOrganizations = () => {
+    const selectedRepos = form.getValues().selectedRepos;
+    if (selectedRepos) {
+      const organizationIds = new Set(organizationsData?.map(org => org.id));
+
+      const filteredRepos = selectedRepos.filter(repo => organizationIds.has(parseInt(repo.orgId)));
+      form.setValue("selectedRepos", filteredRepos);
+    }
+
+    return;
+  };
 
   /* ----------------------------- TODO : ADD / REMOVE REPO ---------------------------- */
 
@@ -155,6 +180,7 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
         currentStep,
         helpers: {
           saveInSession: onSaveInSession,
+          syncOrganizations: onSyncOrganizations,
           goTo,
           prev,
           next,
