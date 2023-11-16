@@ -1,0 +1,5 @@
+export enum ProjectCreationSteps {
+    ORGANIZATIONS = "ORGANIZATIONS",
+    REPOSITORIES = "REPOSITORIES",
+    INFORMATIONS = "INFORMATIONS"
+}

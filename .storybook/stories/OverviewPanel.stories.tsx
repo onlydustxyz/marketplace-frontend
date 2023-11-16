@@ -12,18 +12,18 @@ export const Default = {
       {...{
         topContributors: [
           {
-              githubUserId: 74653697,
-              login: "antiyro",
-              htmlUrl: "https://github.com/antiyro",
-              avatarUrl: "https://avatars.githubusercontent.com/u/74653697?v=4"
+            githubUserId: 74653697,
+            login: "antiyro",
+            htmlUrl: "https://github.com/antiyro",
+            avatarUrl: "https://avatars.githubusercontent.com/u/74653697?v=4",
           },
           {
-              githubUserId: 8642470,
-              login: "gregcha",
-              htmlUrl: "https://github.com/gregcha",
-              avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4"
-          }
-      ],
+            githubUserId: 8642470,
+            login: "gregcha",
+            htmlUrl: "https://github.com/gregcha",
+            avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
+          },
+        ],
         totalContributorsCount: 5,
         leads: [
           {

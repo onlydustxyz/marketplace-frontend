@@ -5,10 +5,15 @@ import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
 import GithubLogo from "src/icons/GithubLogo";
 import { useEffect } from "react";
-import { useResetSession } from "../commons/hooks/useProjectCreationSession";
+import { useResetSession } from "./commons/hooks/useProjectCreationSession";
 import { useIntl } from "src/hooks/useIntl";
+import { CreateProjectProvider } from "./CreateContext";
+import {
+  useProjectCreationFormStorage,
+  useProjectCreationStepStorage,
+} from "./commons/hooks/useProjectCreationStorage";
 
-export const ProjectIntroPage = () => {
+export const SafeProjectCreation = () => {
   const { T } = useIntl();
   const { reset } = useResetSession();
 
@@ -63,4 +68,30 @@ export const ProjectIntroPage = () => {
   );
 };
 
-export default ProjectIntroPage;
+export const ProjectCreation = () => {
+  const { storedFormStatus, storedFormValue, saveFormData, removeFormValue } = useProjectCreationFormStorage();
+  const { storedStepValue, storedStepStatus, saveStep, removeStepValue } = useProjectCreationStepStorage();
+  //   const { reset } = useResetSession();
+
+  //   useEffect(() => {
+  //     reset();
+  //   }, []);
+
+  if (storedFormStatus === "ready" && storedStepStatus === "ready") {
+    return (
+      <CreateProjectProvider
+        initialProject={storedFormValue}
+        initialStep={storedStepValue}
+        formStorage={{ setValue: saveFormData, removeValue: removeFormValue }}
+        stepStorage={{ setValue: saveStep, removeValue: removeStepValue }}
+      >
+        <SafeProjectCreation />
+      </CreateProjectProvider>
+    );
+  }
+
+  //   TODO LOADING ?
+  return null;
+};
+
+export default ProjectCreation;

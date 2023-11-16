@@ -1,6 +1,7 @@
 import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
 import { OrganizationSessionStorageInterface } from "src/types";
 
+// TODO : clean
 export const OrganizationSessionStorageKey = "OrganizationsType";
 export const InformationSessionStorageKey = "createProjectInformation";
 
