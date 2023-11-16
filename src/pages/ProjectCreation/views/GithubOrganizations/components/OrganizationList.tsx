@@ -32,5 +32,5 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
     );
   }
 
-  return <p className="text-center text-gray-500">{emptyListFallBackText}</p>;
+  return <p className="mt-3 text-gray-500">{emptyListFallBackText}</p>;
 }

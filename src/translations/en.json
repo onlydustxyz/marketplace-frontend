@@ -856,7 +856,7 @@
           "installedOrganizations": "Installed on these organizations",
           "availableOrganizations": "Available organizations",
           "installedOrganizationEmpty": "Not installed on any organization.",
-          "availableOrganizationEmpty": "You have no organization available to install the github app."
+          "availableOrganizationEmpty": "You have no organization available."
         },
         "repository": {
           "title": "Which repositories will you need?",
