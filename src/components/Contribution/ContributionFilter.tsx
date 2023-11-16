@@ -1,6 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { GithubRepos, Projects } from "src/__generated/graphql";
+import { UseMyContributedProjectsResponse, UseMyContributedReposResponse } from "src/api/me/queries";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -22,15 +22,13 @@ export type Filters = {
 
 export function ContributionFilter({
   state,
-  loading,
   projects,
   repos,
   onChange,
 }: {
   state: [Filters, Dispatch<SetStateAction<Filters>>];
-  loading: boolean;
-  projects: Projects[];
-  repos: GithubRepos[];
+  projects: UseMyContributedProjectsResponse["projects"];
+  repos: UseMyContributedReposResponse["repos"];
   onChange?: (newState: Filters) => void;
 }) {
   const [filters, setFilters] = state;
@@ -126,7 +124,6 @@ export function ContributionFilter({
               static
               className="absolute right-0 z-10 flex translate-y-1.5 flex-col divide-y divide-greyscale-50/8 rounded-2xl border border-greyscale-50/12 bg-whiteFakeOpacity-8 shadow-xl"
             >
-              {loading ? <div className="absolute inset-0 z-10 cursor-progress" /> : null}
               <div className="flex justify-between px-6 py-3">
                 <p className="font-belwe text-base text-greyscale-50">{T("filter.title")}</p>
                 {showClear ? (

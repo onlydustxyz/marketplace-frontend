@@ -1,10 +1,10 @@
 import { ComponentProps } from "react";
 import { UserIdentityDocument } from "src/__generated/graphql";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
-import withMockedProvider from "../decorators/withMockedProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
+import withMockedProvider from "../decorators/withMockedProvider";
+import { contribution } from "../mocks/contribution";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
@@ -35,17 +35,7 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof ContributionBadge> = {
-  id: "123",
-  number: 123,
-  status: GithubPullRequestStatus.Open,
-  type: GithubContributionType.PullRequest,
-  title: "Contribution Badge",
-  url: "",
-  author: {
-    avatarUrl: "#",
-    login: "test-account",
-    id: 123,
-  },
+  contribution,
 };
 
 export const Default = {

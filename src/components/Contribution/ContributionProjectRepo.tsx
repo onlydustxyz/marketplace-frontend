@@ -1,30 +1,30 @@
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { GithubRepos, Projects } from "src/__generated/graphql";
 import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import { Contribution } from "src/types";
 
 export function ContributionProjectRepo({
   project,
   repo,
 }: {
-  project: Pick<Projects, "key" | "logoUrl" | "name">;
-  repo: Pick<GithubRepos, "htmlUrl" | "name">;
+  project: Contribution["project"];
+  repo: Contribution["repo"];
 }) {
   return (
     <div className="flex items-center gap-3">
       <RoundedImage
-        src={project.logoUrl ?? onlyDustLogo}
-        alt={project.name ?? ""}
+        src={project.logoUrl}
+        alt={project.name}
         rounding={Rounding.Corners}
         size={ImageSize.Sm}
+        useLogoFallback
       />
 
       <div className="text-sm">
         <Link
           to={generatePath(RoutePaths.ProjectDetails, {
-            projectKey: project.key ?? "",
+            projectKey: project.slug ?? "",
           })}
           className="hover:underline"
         >
@@ -32,7 +32,7 @@ export function ContributionProjectRepo({
         </Link>
         &nbsp;<span className="text-spaceBlue-300">/</span>&nbsp;
         <span className="inline-flex">
-          <ExternalLink url={repo?.htmlUrl ?? ""} text={repo.name} />
+          <ExternalLink url={repo.htmlUrl} text={repo.name} />
         </span>
       </div>
     </div>

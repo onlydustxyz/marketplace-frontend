@@ -2,6 +2,7 @@ import { ComponentProps } from "react";
 import withAuthProvider from "../decorators/withAuthProvider";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import withRewardDetailPanelProvider from "../decorators/withRewardDetailPanelProvider";
+import { contribution } from "../mocks/contribution";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
@@ -12,15 +13,9 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof ContributionReward> = {
-  id: "123",
-  rewards: [
-    {
-      paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
-      paymentRequest: {
-        projectId: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
-      },
-    },
-  ],
+  contributionId: contribution.id,
+  projectId: contribution.project.id,
+  rewardIds: [contribution.rewardIds[0]],
 };
 
 export const Default = {
@@ -32,21 +27,9 @@ export const Default = {
 };
 
 const multipleProps: ComponentProps<typeof ContributionReward> = {
-  id: "123",
-  rewards: [
-    {
-      paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
-      paymentRequest: {
-        projectId: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
-      },
-    },
-    {
-      paymentId: "35234563456345-2ab9-406d-9bf1-3012b6f565bc",
-      paymentRequest: {
-        projectId: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
-      },
-    },
-  ],
+  contributionId: contribution.id,
+  projectId: contribution.project.id,
+  rewardIds: contribution.rewardIds,
 };
 
 export const Multiple = {

@@ -6,7 +6,7 @@ import { GithubActionButton } from "src/components/GithubCard/GithubActionButton
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { GithubCodeReviewStatus, GithubContributionStatusREST, GithubContributionType } from "src/types";
+import { GithubCodeReviewStatus, ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 
@@ -27,10 +27,10 @@ function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment) {
 
   switch (status) {
     case GithubCodeReviewStatus.Completed:
-    case GithubContributionStatusREST.Completed:
+    case ContributionStatus.Completed:
       return new Date(codeReview.submittedAt);
     case GithubCodeReviewStatus.Pending:
-    case GithubContributionStatusREST.InProgress:
+    case ContributionStatus.InProgress:
     default:
       return new Date(codeReview.githubPullRequest?.createdAt);
   }
@@ -42,14 +42,14 @@ function getStatus(codeReview: GithubCodeReviewFragment) {
 
   switch (status) {
     case GithubCodeReviewStatus.Completed:
-    case GithubContributionStatusREST.Completed:
-    case GithubContributionStatusREST.Cancelled:
+    case ContributionStatus.Completed:
+    case ContributionStatus.Cancelled:
       return outcome === GithubCodeReviewOutcome.ChangeRequested
         ? GithubCodeReviewStatus.ChangeRequested
         : GithubCodeReviewStatus.Completed;
 
     case GithubCodeReviewStatus.Pending:
-    case GithubContributionStatusREST.InProgress:
+    case ContributionStatus.InProgress:
     default:
       return GithubCodeReviewStatus.Pending;
   }

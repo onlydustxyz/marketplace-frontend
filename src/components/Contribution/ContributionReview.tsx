@@ -4,13 +4,15 @@ import FileChange from "src/assets/icons/FileChange";
 import Hourglass from "src/assets/icons/Hourglass";
 import { ContributionAttribute } from "src/components/Contribution/ContributionAttribute";
 import { useIntl } from "src/hooks/useIntl";
+import Chat4Line from "src/icons/Chat4Line";
 import CheckLine from "src/icons/CheckLine";
+import CloseLine from "src/icons/CloseLine";
 import { GithubContributionReviewStatus } from "src/types";
 
 export function ContributionReview({ status }: { status: GithubContributionReviewStatus }) {
   const { T } = useIntl();
 
-  const dict: Record<string, { icon: ReactElement; text: string }> = {
+  const dict: Record<GithubContributionReviewStatus, { icon: ReactElement; text: string }> = {
     [GithubContributionReviewStatus.PendingReviewer]: {
       icon: <Hourglass />,
       text: T("contribution.review.status.pendingReviewer"),
@@ -26,6 +28,14 @@ export function ContributionReview({ status }: { status: GithubContributionRevie
     [GithubContributionReviewStatus.ChangesRequested]: {
       icon: <FileChange />,
       text: T("contribution.review.status.changesRequested"),
+    },
+    [GithubContributionReviewStatus.Dismissed]: {
+      icon: <CloseLine />,
+      text: T("contribution.review.status.dismissed"),
+    },
+    [GithubContributionReviewStatus.Commented]: {
+      icon: <Chat4Line />,
+      text: T("contribution.review.status.commented"),
     },
   };
 
