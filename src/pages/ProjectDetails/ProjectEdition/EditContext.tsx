@@ -13,7 +13,7 @@ import { z } from "zod";
 import { EditPanelProvider } from "./components/Panel/context";
 import transformInstallationToOrganization from "./utils/transformInstallationToOrganization";
 import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
-import { FieldProjectLeadValue } from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+import { FieldProjectLeadValue } from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface EditContextProps {

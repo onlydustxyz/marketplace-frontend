@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import GithubApi from "src/api/Github";
 import { useInstallationByIdResponse } from "src/api/Github/queries";
 import { useIntl } from "src/hooks/useIntl";
-import { useOrganizationSession } from "../../../commons/hooks/useProjectCreationSession";
+import { useOrganizationSession } from "../../../hooks/useProjectCreationSession";
 import Skeleton from "src/components/Skeleton";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import { OrganizationSessionStorageInterface } from "src/types";

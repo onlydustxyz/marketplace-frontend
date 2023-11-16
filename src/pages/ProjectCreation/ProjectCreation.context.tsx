@@ -1,19 +1,16 @@
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useIntl } from "src/hooks/useIntl";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateFormData, CreateFormDataRepos } from "./commons/types/ProjectCreationType";
-import { useResetSession } from "./commons/hooks/useProjectCreationSession";
-import {
-  ProjectCreationSteps,
-  ProjectCreationStepsNext,
-  ProjectCreationStepsPrev,
-} from "./commons/types/ProjectCreationSteps";
+import { CreateFormData, CreateFormDataRepos } from "./types/ProjectCreationType";
+import { useResetSession } from "./hooks/useProjectCreationSession";
+import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";
 import { useAuth } from "src/hooks/useAuth";
 import GithubApi from "src/api/Github";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Button, { ButtonSize } from "src/components/Button";
+import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
 
 interface CreateContextProps {
   initialProject: CreateFormData | undefined;
@@ -32,6 +29,7 @@ interface CreateContextProps {
 type CreateProject = {
   form: UseFormReturn<CreateFormData, unknown>;
   currentStep: ProjectCreationSteps;
+  organizations: UseOrganizationsByGithubUserIdResponse[];
   formFn: {
     addRepository: (data: CreateFormDataRepos) => void;
     removeRepository: (data: CreateFormDataRepos) => void;
@@ -48,6 +46,7 @@ type CreateProject = {
 export const CreateProjectContext = createContext<CreateProject>({
   form: {} as UseFormReturn<CreateFormData, unknown>,
   currentStep: ProjectCreationSteps.ORGANIZATIONS,
+  organizations: [],
   helpers: {
     saveInSession: () => null,
     syncOrganizations: () => null,
@@ -104,36 +103,31 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
     form.reset(formData);
   };
 
-  /* -- TODO : SYNC ORGANIZATION (check selected repo and remove or add orga -- */
-
   const onSyncOrganizations = () => {
     const selectedRepos = form.getValues().selectedRepos;
     if (selectedRepos) {
       const organizationIds = new Set(organizationsData?.map(org => org.id));
 
-      const filteredRepos = selectedRepos.filter(repo => organizationIds.has(parseInt(repo.orgId)));
-      form.setValue("selectedRepos", filteredRepos);
+      const filteredRepos = selectedRepos.filter(repo => organizationIds.has(repo.orgId));
+      form.setValue("selectedRepos", filteredRepos, { shouldDirty: true, shouldValidate: true });
     }
 
     return;
   };
 
-  /* ----------------------------- TODO : ADD / REMOVE REPO ---------------------------- */
-
-  const isOrgsExist = (orgId: string) => {
-    // TODO to implement
-    return true;
+  const isOrgsExist = (orgId: number) => {
+    return !!(organizationsData || [])?.find(org => org.id === orgId);
   };
+
   const addRepository = (data: CreateFormDataRepos) => {
     const formValues = form.getValues();
     const repos = [...(formValues.selectedRepos || [])];
 
-    // add check on org ID
     if (isOrgsExist(data.orgId)) {
       const findRepo = repos.find(repo => repo.repoId === data.repoId);
       if (!findRepo) {
         repos.push(data);
-        form.setValue("selectedRepos", repos);
+        form.setValue("selectedRepos", repos, { shouldDirty: true, shouldValidate: true });
       }
     }
   };
@@ -146,12 +140,10 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
       const findRepoIndex = repos.findIndex(repo => repo.repoId === data.repoId);
       if (findRepoIndex !== -1) {
         repos.splice(findRepoIndex, 1);
-        form.setValue("selectedRepos", repos);
+        form.setValue("selectedRepos", repos, { shouldDirty: true, shouldValidate: true });
       }
     }
   };
-
-  /* ----------------------------- TODO : ROUTING ---------------------------- */
 
   const goTo = useCallback(
     (step: ProjectCreationSteps) => {
@@ -162,22 +154,23 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
   );
 
   const next = useCallback(() => {
-    const step = ProjectCreationStepsNext[currentStep];
-    stepStorage.setValue(step);
-    setCurrentStep(step);
+    goTo(ProjectCreationStepsNext[currentStep]);
   }, [currentStep]);
 
   const prev = useCallback(() => {
-    const step = ProjectCreationStepsPrev[currentStep];
-    stepStorage.setValue(step);
-    setCurrentStep(step);
+    goTo(ProjectCreationStepsPrev[currentStep]);
   }, [currentStep]);
+
+  useEffect(() => {
+    onSyncOrganizations();
+  }, [organizationsData]);
 
   return (
     <CreateProjectContext.Provider
       value={{
         form,
         currentStep,
+        organizations: organizationsData || [],
         helpers: {
           saveInSession: onSaveInSession,
           syncOrganizations: onSyncOrganizations,

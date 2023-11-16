@@ -1,5 +1,5 @@
 import { components } from "src/__generated/api";
-import { SelectedLeadType } from "../../pages/ProjectInformations/components/ProjectLead/ProjectLead";
+import { SelectedLeadType } from "../views/ProjectInformations/components/ProjectLead/ProjectLead";
 
 // export interface CreateFormData {
 //   githubRepoIds: number[];
@@ -17,7 +17,8 @@ import { SelectedLeadType } from "../../pages/ProjectInformations/components/Pro
 // }
 
 export interface CreateFormDataRepos {
-    repoId: string; orgId: string
+    repoId: number;
+    orgId: number;
 }
 
 export type CreateFormData = components["schemas"]["CreateProjectRequest"] & {

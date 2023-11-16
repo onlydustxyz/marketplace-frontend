@@ -17,13 +17,13 @@ const useInstallationById = ({
   });
 };
 
-export type UseOrganizationsByGithubUserIdResponse = components["schemas"]["GithubOrganizationResponse"][];
+export type UseOrganizationsByGithubUserIdResponse = components["schemas"]["GithubOrganizationResponse"];
 
 const useOrganizationsByGithubUserId = ({
   params,
   options = {},
-}: UseQueryProps<UseOrganizationsByGithubUserIdResponse, { githubUserId?: number }>) => {
-  return useBaseQuery<UseOrganizationsByGithubUserIdResponse>({
+}: UseQueryProps<UseOrganizationsByGithubUserIdResponse[], { githubUserId?: number }>) => {
+  return useBaseQuery<UseOrganizationsByGithubUserIdResponse[]>({
     resourcePath: API_PATH.GITHUB_ORGANIZATIONS_BY_USERID(params?.githubUserId || 0),
     enabled: !!params?.githubUserId,
     tags: GITHUB_TAGS.organizations(params?.githubUserId || 0),

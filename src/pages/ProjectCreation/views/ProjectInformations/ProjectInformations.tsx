@@ -4,7 +4,7 @@ import { FieldCombined } from "src/components/New/Field/Combined";
 import {
   FieldProjectLead,
   SelectedLeadType,
-} from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+} from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
@@ -12,14 +12,10 @@ import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
 import InformationLine from "src/icons/InformationLine";
 import Link from "src/icons/Link";
-import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
+import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useEffect } from "react";
-import {
-  useInformationSession,
-  useOrganizationSession,
-  useResetSession,
-} from "../../commons/hooks/useProjectCreationSession";
+import { useInformationSession, useOrganizationSession, useResetSession } from "../../hooks/useProjectCreationSession";
 import validationSchema from "./utils/ProjectInformations.validation";
 import ProjectApi from "src/api/Project";
 import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
@@ -29,7 +25,7 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Button from "src/components/Button";
 import CheckLine from "src/icons/CheckLine";
-import { CreateProjectContext } from "../../CreateContext";
+import { CreateProjectContext } from "../../ProjectCreation.context";
 
 interface createProjectInformation {
   githubRepoIds: number[];

@@ -5,17 +5,14 @@ import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
 import GithubLogo from "src/icons/GithubLogo";
 import { useContext, useEffect, useMemo } from "react";
-import { useResetSession } from "./commons/hooks/useProjectCreationSession";
+import { useResetSession } from "./hooks/useProjectCreationSession";
 import { useIntl } from "src/hooks/useIntl";
-import { CreateProjectContext, CreateProjectProvider } from "./CreateContext";
-import {
-  useProjectCreationFormStorage,
-  useProjectCreationStepStorage,
-} from "./commons/hooks/useProjectCreationStorage";
-import { ProjectInformationsPage } from "./pages/ProjectInformations";
-import { ProjectCreationSteps } from "./commons/types/ProjectCreationSteps";
-import { GithubRepositoryPage } from "./pages/GithubRepository";
-import { GithubOrganizationPage } from "./pages/GithubOrganizations";
+import { CreateProjectContext, CreateProjectProvider } from "./ProjectCreation.context";
+import { useProjectCreationFormStorage, useProjectCreationStepStorage } from "./hooks/useProjectCreationStorage";
+import { ProjectInformationsPage } from "./views/ProjectInformations";
+import { ProjectCreationSteps } from "./types/ProjectCreationSteps";
+import { GithubRepositoryPage } from "./views/GithubRepository";
+import { GithubOrganizationPage } from "./views/GithubOrganizations/GithubOrganizations";
 
 export const SafeProjectCreationOld = () => {
   const { T } = useIntl();

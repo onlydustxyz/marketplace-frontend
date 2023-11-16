@@ -14,7 +14,7 @@ import Link from "src/icons/Link";
 import {
   FieldProjectLead,
   SelectedLeadType,
-} from "src/pages/ProjectCreation/pages/ProjectInformations/components/ProjectLead/ProjectLead";
+} from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { EditContext } from "../EditContext";
 import { RewardableContributionsField } from "../RewardableContributionsField";
 

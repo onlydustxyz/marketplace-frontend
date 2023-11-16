@@ -1,13 +1,13 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
+import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { Flex } from "src/components/New/Layout/Flex";
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
 import { useContext, useEffect } from "react";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
-import { useOrganizationSession } from "../../commons/hooks/useProjectCreationSession";
+import { useOrganizationSession } from "../../hooks/useProjectCreationSession";
 import { useRepositoryCount } from "./hooks/useRepositoryCount";
 import { FormInformationCount } from "./components/FormInformationCount";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
 import { OrganizationSessionStorageInterface } from "src/types";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
-import { CreateProjectContext } from "../../CreateContext";
+import { CreateProjectContext } from "../../ProjectCreation.context";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {

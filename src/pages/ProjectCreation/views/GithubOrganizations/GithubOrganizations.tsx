@@ -1,10 +1,10 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Card from "src/components/Card";
-import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
-import OrganizationList from "./components/organization-list";
+import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
+import OrganizationList from "./components/OrganizationList";
 import { useIntl } from "src/hooks/useIntl";
 import { useContext, useState } from "react";
-import { CreateProjectContext } from "../../CreateContext";
+import { CreateProjectContext } from "../../ProjectCreation.context";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();
