@@ -14,7 +14,7 @@ import InformationLine from "src/icons/InformationLine";
 import Link from "src/icons/Link";
 import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import {
   useInformationSession,
   useOrganizationSession,
@@ -25,11 +25,11 @@ import ProjectApi from "src/api/Project";
 import { getSelectedRepoIds } from "./utils/ProjectInformations.utils";
 import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
-import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Button from "src/components/Button";
 import CheckLine from "src/icons/CheckLine";
+import { CreateProjectContext } from "../../CreateContext";
 
 interface createProjectInformation {
   githubRepoIds: number[];
@@ -49,8 +49,10 @@ interface createProjectInformation {
 export const ProjectInformationsPage = () => {
   const { T } = useIntl();
   const navigate = useNavigate();
-
-  useProjectCreatePageGuard("information");
+  const {
+    helpers: { prev },
+  } = useContext(CreateProjectContext);
+  //   useProjectCreatePageGuard("information");
   const {
     control,
     handleSubmit,
@@ -142,7 +144,7 @@ export const ProjectInformationsPage = () => {
               <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
             </Button>
           }
-          prev="../repository"
+          prev={prev}
         >
           <Flex direction="col" gap={8}>
             <Flex direction="col" gap={6} className="w-full">

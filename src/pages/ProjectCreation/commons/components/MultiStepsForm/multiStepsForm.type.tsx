@@ -6,8 +6,8 @@ export type MultiStepsFormProps = PropsWithChildren<{
   step: number;
   stepCount: number;
   private?: boolean;
-  prev?: string;
-  next?: string;
+  prev?: () => void;
+  next?: () => void;
   nextDisabled?: boolean;
   submitButton?: React.ReactNode;
   footerRightElement?: React.ReactNode;

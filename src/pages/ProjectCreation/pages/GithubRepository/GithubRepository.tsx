@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
 import { Flex } from "src/components/New/Layout/Flex";
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
 import { useOrganizationSession } from "../../commons/hooks/useProjectCreationSession";
@@ -12,13 +12,11 @@ import { useRepositoryCount } from "./hooks/useRepositoryCount";
 import { FormInformationCount } from "./components/FormInformationCount";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import validationSchema from "./utils/GithubRepository.validation";
-import { useProjectCreatePageGuard } from "../../commons/hooks/useProjectCreatePageGuard";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
-import Button from "src/components/Button";
-import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import { OrganizationSessionStorageInterface } from "src/types";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
+import { CreateProjectContext } from "../../CreateContext";
 
 type Organization = OrganizationSessionStorageInterface;
 export interface createProjectRepository {
@@ -27,8 +25,9 @@ export interface createProjectRepository {
 
 export const GithubRepositoryPage = () => {
   const { T } = useIntl();
-  useProjectCreatePageGuard("repository");
-
+  const {
+    helpers: { next, prev },
+  } = useContext(CreateProjectContext);
   const {
     storedValue: savedOrgsData,
     setValue: setSavedOrgsData,
@@ -99,13 +98,8 @@ export const GithubRepositoryPage = () => {
           description={T("project.details.create.repository.description")}
           step={2}
           stepCount={3}
-          submitButton={
-            <Button htmlType="submit" disabled={!isValid}>
-              {T("common.next")}
-              <ArrowRightSLine className="-mr-2 text-2xl" />
-            </Button>
-          }
-          prev="../organizations"
+          prev={prev}
+          next={next}
           footerRightElement={footerRightElement}
           stickyChildren={
             <Controller

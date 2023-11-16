@@ -4,16 +4,20 @@ import Background, { BackgroundRoundedBorders } from "src/components/Background"
 import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
 import GithubLogo from "src/icons/GithubLogo";
-import { useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useResetSession } from "./commons/hooks/useProjectCreationSession";
 import { useIntl } from "src/hooks/useIntl";
-import { CreateProjectProvider } from "./CreateContext";
+import { CreateProjectContext, CreateProjectProvider } from "./CreateContext";
 import {
   useProjectCreationFormStorage,
   useProjectCreationStepStorage,
 } from "./commons/hooks/useProjectCreationStorage";
+import { ProjectInformationsPage } from "./pages/ProjectInformations";
+import { ProjectCreationSteps } from "./commons/types/ProjectCreationSteps";
+import { GithubRepositoryPage } from "./pages/GithubRepository";
+import { GithubOrganizationPage } from "./pages/GithubOrganizations";
 
-export const SafeProjectCreation = () => {
+export const SafeProjectCreationOld = () => {
   const { T } = useIntl();
   const { reset } = useResetSession();
 
@@ -66,6 +70,29 @@ export const SafeProjectCreation = () => {
       </div>
     </Background>
   );
+};
+
+export const SafeProjectCreation = () => {
+  const { T } = useIntl();
+  const { reset } = useResetSession();
+  const { currentStep } = useContext(CreateProjectContext);
+
+  useEffect(() => {
+    reset();
+  }, []);
+
+  const ActiveStep = useMemo(() => {
+    switch (currentStep) {
+      case ProjectCreationSteps.INFORMATIONS:
+        return <ProjectInformationsPage />;
+      case ProjectCreationSteps.REPOSITORIES:
+        return <GithubRepositoryPage />;
+      default:
+        return <GithubOrganizationPage />;
+    }
+  }, [currentStep]);
+
+  return ActiveStep;
 };
 
 export const ProjectCreation = () => {

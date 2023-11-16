@@ -1,11 +1,17 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useIntl } from "src/hooks/useIntl";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateFormData } from "./commons/types/ProjectCreationType";
 import { useResetSession } from "./commons/hooks/useProjectCreationSession";
-import { ProjectCreationSteps } from "./commons/types/ProjectCreationSteps";
+import {
+  ProjectCreationSteps,
+  ProjectCreationStepsNext,
+  ProjectCreationStepsPrev,
+} from "./commons/types/ProjectCreationSteps";
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
+import Button, { ButtonSize } from "src/components/Button";
 
 interface CreateContextProps {
   initialProject: CreateFormData | undefined;
@@ -24,16 +30,22 @@ interface CreateContextProps {
 type CreateProject = {
   form: UseFormReturn<CreateFormData, unknown>;
   currentStep: ProjectCreationSteps;
-  formHelpers: {
+  helpers: {
     saveInSession: () => void;
+    goTo: (step: ProjectCreationSteps) => void;
+    next: () => void;
+    prev: () => void;
   };
 };
 
-export const CreateContext = createContext<CreateProject>({
+export const CreateProjectContext = createContext<CreateProject>({
   form: {} as UseFormReturn<CreateFormData, unknown>,
   currentStep: ProjectCreationSteps.ORGANIZATIONS,
-  formHelpers: {
+  helpers: {
     saveInSession: () => null,
+    goTo: () => null,
+    next: () => null,
+    prev: () => null,
   },
 });
 
@@ -77,17 +89,56 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
 
   /* ----------------------------- TODO : ROUTING ---------------------------- */
 
+  const goTo = useCallback(
+    (step: ProjectCreationSteps) => {
+      stepStorage.setValue(step);
+      setCurrentStep(step);
+    },
+    [currentStep]
+  );
+
+  const next = useCallback(() => {
+    const step = ProjectCreationStepsNext[currentStep];
+    stepStorage.setValue(step);
+    setCurrentStep(step);
+  }, [currentStep]);
+
+  const prev = useCallback(() => {
+    const step = ProjectCreationStepsPrev[currentStep];
+    stepStorage.setValue(step);
+    setCurrentStep(step);
+  }, [currentStep]);
+
   return (
-    <CreateContext.Provider
+    <CreateProjectContext.Provider
       value={{
         form,
         currentStep,
-        formHelpers: {
+        helpers: {
           saveInSession: onSaveInSession,
+          goTo,
+          prev,
+          next,
         },
       }}
     >
-      <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
-    </CreateContext.Provider>
+      <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
+        <form className="flex h-full items-center justify-center md:p-6" onSubmit={form.handleSubmit(onSubmit)}>
+          {children}
+          {/* /* ------------------------------- DEBUG CODE ------------------------------- */}
+          <div className="fixed right-10 top-24 z-40 flex gap-2">
+            <Button size={ButtonSize.Sm} onClick={() => goTo(ProjectCreationSteps.ORGANIZATIONS)}>
+              Organization
+            </Button>
+            <Button size={ButtonSize.Sm} onClick={() => goTo(ProjectCreationSteps.REPOSITORIES)}>
+              Repositories
+            </Button>
+            <Button size={ButtonSize.Sm} onClick={() => goTo(ProjectCreationSteps.INFORMATIONS)}>
+              Information
+            </Button>
+          </div>
+        </form>
+      </Background>
+    </CreateProjectContext.Provider>
   );
 }

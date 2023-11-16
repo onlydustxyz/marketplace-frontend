@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { MultiStepsFormProps } from "./multiStepsForm.type";
-import { Link } from "react-router-dom";
 import Button, { ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
@@ -49,20 +48,16 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
         </Flex>
         <Flex justify="end" item="center" gap={6}>
           {prev && (
-            <Link to={prev}>
-              <Button type={ButtonType.Secondary}>
-                <ArrowLeftSLine className="-ml-2 text-2xl" />
-                {T("common.back")}
-              </Button>
-            </Link>
+            <Button type={ButtonType.Secondary} onClick={prev}>
+              <ArrowLeftSLine className="-ml-2 text-2xl" />
+              {T("common.back")}
+            </Button>
           )}
           {next && (
-            <Link to={next}>
-              <Button disabled={nextDisabled}>
-                {T("common.next")}
-                <ArrowRightSLine className="-mr-2 text-2xl" />
-              </Button>
-            </Link>
+            <Button disabled={nextDisabled} onClick={next}>
+              {T("common.next")}
+              <ArrowRightSLine className="-mr-2 text-2xl" />
+            </Button>
           )}
           {submitButton}
         </Flex>

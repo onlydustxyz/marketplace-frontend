@@ -50,7 +50,7 @@ export default function OrganizationList({ setIsValid }: { setIsValid: (isValid:
 
   useEffect(() => {
     if (!installation_id && savedOrgsDataStatus === "ready" && savedOrgsData.length === 0) {
-      navigate("../");
+      //   navigate("../");
     }
   }, [installation_id, savedOrgsDataStatus]);
 

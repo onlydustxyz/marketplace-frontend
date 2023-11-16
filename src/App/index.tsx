@@ -25,14 +25,9 @@ import PublicProfilePage from "src/pages/PublicProfile";
 import TermsAndConditions from "src/pages/TermsAndConditions";
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
-import {
-  ProjectIntroPage,
-  GithubOrganizationPage,
-  GithubRepositoryPage,
-  ProjectInformationsPage,
-} from "src/pages/ProjectCreation";
 import { useAuth } from "src/hooks/useAuth";
 import GithubCallbackHandler from "src/pages/Callbacks/GithubCallbackHandler";
+import { ProjectCreation } from "src/pages/ProjectCreation";
 
 export enum RoutePaths {
   Home = "/",
@@ -149,32 +144,12 @@ function App() {
         },
         {
           path: RoutePaths.ProjectCreation,
-          children:
-            parseFlag("VITE_CAN_CREATE_PROJECT") && isLoggedIn
-              ? [
-                  {
-                    index: true,
-                    element: <ProjectIntroPage />,
-                  },
-                  {
-                    path: "organizations",
-                    element: <GithubOrganizationPage />,
-                  },
-                  {
-                    path: "repository",
-                    element: <GithubRepositoryPage />,
-                  },
-                  {
-                    path: "informations",
-                    element: <ProjectInformationsPage />,
-                  },
-                ]
-              : [
-                  {
-                    index: true,
-                    element: <Navigate to={RoutePaths.Projects} />,
-                  },
-                ],
+          element:
+            parseFlag("VITE_CAN_CREATE_PROJECT") && isLoggedIn ? (
+              <ProjectCreation />
+            ) : (
+              <Navigate to={RoutePaths.Projects} />
+            ),
         },
         {
           path: RoutePaths.ProjectDetails,

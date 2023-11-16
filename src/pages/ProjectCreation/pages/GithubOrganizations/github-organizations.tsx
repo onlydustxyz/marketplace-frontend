@@ -3,11 +3,16 @@ import Card from "src/components/Card";
 import { MultiStepsForm } from "src/pages/ProjectCreation/commons/components/MultiStepsForm";
 import OrganizationList from "./components/organization-list";
 import { useIntl } from "src/hooks/useIntl";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CreateProjectContext } from "../../CreateContext";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();
   const [isValid, setIsValid] = useState(false);
+  const {
+    helpers: { next },
+  } = useContext(CreateProjectContext);
+
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
       <div className="flex h-full items-center justify-center md:p-6">
@@ -16,7 +21,7 @@ export const GithubOrganizationPage = () => {
           description={T("project.details.create.organizations.description")}
           step={1}
           stepCount={3}
-          next="../repository"
+          next={next}
           nextDisabled={!isValid}
         >
           <Card withBg={false}>
