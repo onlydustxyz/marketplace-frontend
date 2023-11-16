@@ -16,7 +16,7 @@ import ProjectApi from "src/api/Project";
 import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
-import { STORAGE_KEY_FORM } from "./hooks/useProjectCreationStorage";
+import { STORAGE_KEY_CREATE_PROJECT_FORM } from "./hooks/useProjectCreationStorage";
 
 interface CreateContextProps {
   initialProject: CreateFormData | undefined;
@@ -147,10 +147,9 @@ export function CreateProjectProvider({
 
   const onSyncOrganizations = () => {
     const selectedRepos = form.getValues().selectedRepos;
-    if (selectedRepos) {
+    if (selectedRepos?.length && organizationsData) {
       const organizationIds = new Set(organizationsData?.map(org => org.id));
-
-      const filteredRepos = selectedRepos.filter(repo => organizationIds.has(repo.orgId));
+      const filteredRepos = selectedRepos?.filter(repo => organizationIds.has(repo.orgId));
       form.setValue("selectedRepos", filteredRepos, { shouldDirty: true, shouldValidate: true });
     }
 
@@ -241,7 +240,7 @@ export function CreateProjectProvider({
               Information
             </Button>
           </div>
-          <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_FORM} />
+          <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_CREATE_PROJECT_FORM} />
         </form>
       </Background>
     </CreateProjectContext.Provider>

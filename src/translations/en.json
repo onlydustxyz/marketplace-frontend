@@ -837,6 +837,12 @@
           "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project?",
+        "startPopOver": {
+            "title": "Resume project creation?",
+            "description": "If you decide to start over all your previous changes will be lost.",
+            "restart": "Start over",
+            "resume": "Resume"
+        },
         "intro": {
           "upperTitle": "Submit project",
           "title": "Kickstart your open source journey",
