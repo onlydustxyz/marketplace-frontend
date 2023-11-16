@@ -15,6 +15,8 @@ import useMutationAlert from "src/api/useMutationAlert";
 import ProjectApi from "src/api/Project";
 import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
+import { STORAGE_KEY_FORM } from "./hooks/useProjectCreationStorage";
 
 interface CreateContextProps {
   initialProject: CreateFormData | undefined;
@@ -78,10 +80,19 @@ const validationSchema = z.object({
   shortDescription: z.string().min(1),
 });
 
-export function CreateProjectProvider({ children, initialProject, formStorage, stepStorage }: CreateContextProps) {
+export function CreateProjectProvider({
+  children,
+  initialProject,
+  formStorage,
+  stepStorage,
+  initialStep,
+}: CreateContextProps) {
   const { T } = useIntl();
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(ProjectCreationSteps.ORGANIZATIONS);
+  const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
+    initialStep || ProjectCreationSteps.ORGANIZATIONS
+  );
+
   const { githubUserId } = useAuth();
   const { reset: clearSession } = useResetSession();
   const { data: organizationsData, isLoading: isOrganizationsLoading } =
@@ -230,6 +241,7 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
               Information
             </Button>
           </div>
+          <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_FORM} />
         </form>
       </Background>
     </CreateProjectContext.Provider>

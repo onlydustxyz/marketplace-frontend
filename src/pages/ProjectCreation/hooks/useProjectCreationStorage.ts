@@ -3,10 +3,12 @@ import { CreateFormData } from "../types/ProjectCreationType";
 import { useLocalStorage } from "src/hooks/useLocalStorage/useLocalStorage";
 
 const STORAGE_KEY = "create-project-";
+export const STORAGE_KEY_FORM = `${STORAGE_KEY}form`;
+export const STORAGE_KEY_STEP = `${STORAGE_KEY}step`;
 
 export const useProjectCreationFormStorage = () => {
   const [storedValue, setValue, status, removeValue, clearSessionPattern] = useLocalStorage<CreateFormData | undefined>(
-    `${STORAGE_KEY}form`,
+    STORAGE_KEY_FORM,
     undefined
   );
 
@@ -21,7 +23,7 @@ export const useProjectCreationFormStorage = () => {
 
 export const useProjectCreationStepStorage = () => {
   const [storedValue, setValue, status, removeValue, clearSessionPattern] = useLocalStorage<ProjectCreationSteps>(
-    `${STORAGE_KEY}step`,
+    STORAGE_KEY_STEP,
     ProjectCreationSteps.ORGANIZATIONS
   );
 

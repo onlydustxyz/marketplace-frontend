@@ -41,7 +41,7 @@ export const ProjectInformationsPage = () => {
       step={3}
       stepCount={3}
       submitButton={
-        <Button htmlType="submit" disabled={!form.formState.isValid || form.formState.isSubmitting}>
+        <Button htmlType="submit" disabled={!form.formState?.isValid || form.formState.isSubmitting}>
           <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
         </Button>
       }
