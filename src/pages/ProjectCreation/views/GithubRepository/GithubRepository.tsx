@@ -1,4 +1,3 @@
-import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
@@ -91,85 +90,78 @@ export const GithubRepositoryPage = () => {
   };
 
   return (
-    <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
-      <form className="flex h-full items-center justify-center md:p-6" onSubmit={handleSubmit(onSubmit)}>
-        <MultiStepsForm
-          title={T("project.details.create.repository.title")}
-          description={T("project.details.create.repository.description")}
-          step={2}
-          stepCount={3}
-          prev={prev}
-          next={next}
-          footerRightElement={footerRightElement}
-          stickyChildren={
-            <Controller
-              name="search"
-              control={control}
-              render={props => (
-                <FieldInput
-                  placeholder={T("project.details.create.repository.search")}
-                  {...props.field}
-                  {...props.fieldState}
-                  startIcon={({ className }) => <SearchLine className={className} />}
-                />
-              )}
+    <MultiStepsForm
+      title={T("project.details.create.repository.title")}
+      description={T("project.details.create.repository.description")}
+      step={2}
+      stepCount={3}
+      prev={prev}
+      next={next}
+      footerRightElement={footerRightElement}
+      stickyChildren={
+        <Controller
+          name="search"
+          control={control}
+          render={props => (
+            <FieldInput
+              placeholder={T("project.details.create.repository.search")}
+              {...props.field}
+              {...props.fieldState}
+              startIcon={({ className }) => <SearchLine className={className} />}
             />
-          }
-        >
-          <Flex direction="col" gap={8}>
-            <Controller
-              name="organizations"
-              control={control}
-              render={({ field: { value } }) => (
-                <>
-                  {filterOrganizationBySearch(value || []).map(organization => (
-                    <VerticalListItemCard
-                      key={organization.organization.login}
-                      title={organization.organization.login || ""}
-                      avatarAlt={organization.organization.login || ""}
-                      avatarSrc={organization.organization.avatarUrl || ""}
-                    >
-                      <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
-                        {(organization.organization.repos || []).map(repo =>
-                          search && !repo.name?.includes(search) ? null : (
-                            <label
-                              key={repo.name}
-                              className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"
+          )}
+        />
+      }
+    >
+      <Flex direction="col" gap={8}>
+        <Controller
+          name="organizations"
+          control={control}
+          render={({ field: { value } }) => (
+            <>
+              {filterOrganizationBySearch(value || []).map(organization => (
+                <VerticalListItemCard
+                  key={organization.organization.login}
+                  title={organization.organization.login || ""}
+                  avatarAlt={organization.organization.login || ""}
+                  avatarSrc={organization.organization.avatarUrl || ""}
+                >
+                  <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
+                    {(organization.organization.repos || []).map(repo =>
+                      search && !repo.name?.includes(search) ? null : (
+                        <label
+                          key={repo.name}
+                          className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"
+                        >
+                          <Flex justify="start" item="start" direction="col" gap={2}>
+                            <Flex justify="between" item="center" className="w-full">
+                              <h3 className="h- text-body-m-bold">{repo.name}</h3>
+                              <FieldCheckbox
+                                onChange={value => onCheckboxChange(value, repo.id, organization.organization.login)}
+                                value={repo.selected || false}
+                                name={`repository-${repo.id}`}
+                                fieldClassName={"inline-flex w-auto"}
+                              />
+                            </Flex>
+                            <p
+                              className={`text-body-s line-clamp-2 w-full text-greyscale-200 ${
+                                !repo.description && "italic"
+                              }`}
                             >
-                              <Flex justify="start" item="start" direction="col" gap={2}>
-                                <Flex justify="between" item="center" className="w-full">
-                                  <h3 className="h- text-body-m-bold">{repo.name}</h3>
-                                  <FieldCheckbox
-                                    onChange={value =>
-                                      onCheckboxChange(value, repo.id, organization.organization.login)
-                                    }
-                                    value={repo.selected || false}
-                                    name={`repository-${repo.id}`}
-                                    fieldClassName={"inline-flex w-auto"}
-                                  />
-                                </Flex>
-                                <p
-                                  className={`text-body-s line-clamp-2 w-full text-greyscale-200 ${
-                                    !repo.description && "italic"
-                                  }`}
-                                >
-                                  {repo.description ||
-                                    T("project.details.overview.repositories.descriptionPlaceholder")}
-                                </p>
-                              </Flex>
-                            </label>
-                          )
-                        )}
-                      </div>
-                    </VerticalListItemCard>
-                  ))}
-                </>
-              )}
-            />
-          </Flex>
-        </MultiStepsForm>
-      </form>
-    </Background>
+                              {repo.description || T("project.details.overview.repositories.descriptionPlaceholder")}
+                            </p>
+                          </Flex>
+                        </label>
+                      )
+                    )}
+                  </div>
+                </VerticalListItemCard>
+              ))}
+            </>
+          )}
+        />
+      </Flex>
+    </MultiStepsForm>
   );
 };
 

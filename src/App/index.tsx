@@ -27,7 +27,7 @@ import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
 import { useAuth } from "src/hooks/useAuth";
 import GithubCallbackHandler from "src/pages/Callbacks/GithubCallbackHandler";
-import { ProjectCreation } from "src/pages/ProjectCreation";
+import ProjectCreation from "src/pages/ProjectCreation/ProjectCreation";
 
 export enum RoutePaths {
   Home = "/",
