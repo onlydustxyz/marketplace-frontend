@@ -94,7 +94,7 @@ export default function AllProjects({
       <div className="flex flex-col gap-5">
         <div className="relative flex h-10 items-center justify-between">
           <div className="px-2 font-medium text-spaceBlue-200">
-            {T("projects.count", { count: data?.pages?.[0]?.totalItemNumber })}
+            {T("projects.count", { count: data?.pages?.[0]?.totalItemNumber ?? 0 })}
           </div>
           <div className="absolute right-0 top-0 z-10 hidden xl:block">
             <SortingDropdown all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
