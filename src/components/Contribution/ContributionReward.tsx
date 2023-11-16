@@ -9,11 +9,9 @@ import { formatPaymentId } from "src/utils/formatPaymentId";
 
 export function ContributionReward({
   contributionId,
-  projectId,
   rewardIds,
 }: {
   contributionId: Contribution["id"];
-  projectId: Contribution["project"]["id"];
   rewardIds: Contribution["rewardIds"];
 }) {
   const { T } = useIntl();
@@ -36,7 +34,7 @@ export function ContributionReward({
                   type="button"
                   className="hover:underline"
                   onClick={() => {
-                    open({ rewardId, projectId });
+                    open({ rewardId, isMine: true });
                   }}
                 >
                   {formatPaymentId(rewardId)}
@@ -53,7 +51,7 @@ export function ContributionReward({
         onClick={() => {
           if (count === 1) {
             const [rewardId] = rewardIds;
-            open({ rewardId, projectId });
+            open({ rewardId, isMine: true });
           }
         }}
       >

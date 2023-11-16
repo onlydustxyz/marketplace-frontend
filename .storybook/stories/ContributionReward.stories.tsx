@@ -14,7 +14,6 @@ export default {
 
 const defaultProps: ComponentProps<typeof ContributionReward> = {
   contributionId: contribution.id,
-  projectId: contribution.project.id,
   rewardIds: [contribution.rewardIds[0]],
 };
 
@@ -28,7 +27,6 @@ export const Default = {
 
 const multipleProps: ComponentProps<typeof ContributionReward> = {
   contributionId: contribution.id,
-  projectId: contribution.project.id,
   rewardIds: contribution.rewardIds,
 };
 

@@ -159,7 +159,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                       reward={reward}
                       onClick={() => {
                         if (reward.id) {
-                          openRewardPanel({ rewardId: reward.id, projectId });
+                          openRewardPanel({ rewardId: reward.id, isMine: true });
                         }
                       }}
                     />
