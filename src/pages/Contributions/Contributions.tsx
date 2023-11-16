@@ -177,7 +177,6 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-        { enabled: Boolean(isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) },
       ],
     },
     {
@@ -207,7 +206,6 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-        { enabled: Boolean(isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) },
       ],
     },
     {
@@ -237,7 +235,6 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-        { enabled: Boolean(isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) },
       ],
     },
   ];
