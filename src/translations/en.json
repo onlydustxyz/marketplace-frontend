@@ -852,7 +852,11 @@
             "many": "Installed on __count__ organizations",
             "one": "Installed on 1 organization",
             "zero": "Installed on 0 organizations"
-          }
+          },
+          "installedOrganizations": "Installed on these organizations",
+          "availableOrganizations": "Available organizations",
+          "installedOrganizationEmpty": "Not installed on any organization.",
+          "availableOrganizationEmpty": "You have no organization available to install the github app."
         },
         "repository": {
           "title": "Which repositories will you need?",

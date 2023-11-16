@@ -1,17 +1,19 @@
 import Card from "src/components/Card";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
-import OrganizationList from "./components/OrganizationList";
 import { useIntl } from "src/hooks/useIntl";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { CreateProjectContext } from "../../ProjectCreation.context";
+import OrganizationList from "./components/OrganizationList";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();
-  const [isValid, setIsValid] = useState(false);
   const {
     helpers: { next },
     organizations,
   } = useContext(CreateProjectContext);
+
+  const installedOrganizations = organizations.filter(org => org.installed);
+  const availableOrganizations = organizations.filter(org => !org.installed);
 
   return (
     <MultiStepsForm
@@ -23,15 +25,19 @@ export const GithubOrganizationPage = () => {
       nextDisabled={!!organizations.length}
     >
       <Card withBg={false}>
-        <OrganizationList setIsValid={setIsValid} />
-        <div className="flex justify-start">
-          <a
-            href={import.meta.env.VITE_GITHUB_INSTALLATION_URL}
-            className="border-lg rounded-lg bg-white px-4 py-2 text-zinc-800"
-          >
-            {T("project.details.create.organizations.installAnotherOrgs")}
-          </a>
-        </div>
+        <h2 className="font-medium uppercase">{T("project.details.create.organizations.installedOrganizations")}</h2>
+        <OrganizationList
+          organizations={installedOrganizations}
+          emptyListFallBackText={T("project.details.create.organizations.installedOrganizationEmpty")}
+        />
+      </Card>
+
+      <Card withBg={false} className="mt-6">
+        <h2 className="font-medium uppercase">{T("project.details.create.organizations.availableOrganizations")}</h2>
+        <OrganizationList
+          organizations={availableOrganizations}
+          emptyListFallBackText={T("project.details.create.organizations.availableOrganizationEmpty")}
+        />
       </Card>
     </MultiStepsForm>
   );

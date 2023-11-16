@@ -1,83 +1,36 @@
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import GithubApi from "src/api/Github";
-import { useInstallationByIdResponse } from "src/api/Github/queries";
-import { useIntl } from "src/hooks/useIntl";
-import { useOrganizationSession } from "../../../hooks/useProjectCreationSession";
-import Skeleton from "src/components/Skeleton";
+import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
-import { OrganizationSessionStorageInterface } from "src/types";
+import AddLine from "src/icons/AddLine";
+import PencilLine from "src/icons/PencilLine";
 
-function isOrganizationAlreadyExist(
-  organizations: OrganizationSessionStorageInterface[],
-  newOrganization: useInstallationByIdResponse
-) {
-  return organizations.some(org => org?.organization?.login === newOrganization?.organization?.login);
+interface OrganizationListProps {
+  organizations: UseOrganizationsByGithubUserIdResponse[];
+  emptyListFallBackText: string;
 }
 
-export default function OrganizationList({ setIsValid }: { setIsValid: (isValid: boolean) => void }) {
-  const { T } = useIntl();
-  const [searchParams] = useSearchParams();
-  const installation_id = searchParams.get("installation_id") ?? "";
-  const navigate = useNavigate();
-  const {
-    storedValue: savedOrgsData,
-    setValue: setSavedOrgsData,
-    status: savedOrgsDataStatus,
-  } = useOrganizationSession();
-
-  const { data, isLoading, isError } = GithubApi.queries.useInstallationById({
-    params: { installation_id },
-    options: { retry: 1, enabled: !!installation_id },
-  });
-
-  useEffect(() => {
-    if (data && savedOrgsDataStatus === "ready" && !isOrganizationAlreadyExist(savedOrgsData, data)) {
-      const newData: OrganizationSessionStorageInterface = {
-        ...data,
-        organization: {
-          ...data.organization,
-          installationId: data.id,
-        },
-      };
-      setSavedOrgsData([...savedOrgsData, newData]);
-    }
-  }, [data, savedOrgsDataStatus]);
-
-  useEffect(() => {
-    setIsValid(savedOrgsData.length > 0);
-  }, [savedOrgsData]);
-
-  useEffect(() => {
-    if (!installation_id && savedOrgsDataStatus === "ready" && savedOrgsData.length === 0) {
-      //   navigate("../");
-    }
-  }, [installation_id, savedOrgsDataStatus]);
-
-  if (isLoading) {
-    return <Skeleton variant="organizationItem" />;
-  }
-
-  if (isError) {
-    // TODO Replace with error component
-    return <div>Something went wrong!</div>;
-  }
-
-  return (
-    <div>
-      <h2 className="font-medium uppercase">
-        {T("project.details.create.organizations.installedOn", { count: savedOrgsData?.length })}
-      </h2>
+export default function OrganizationList({ organizations, emptyListFallBackText }: OrganizationListProps) {
+  if (organizations.length) {
+    return (
       <ul className="flex flex-col gap-2 py-4 pb-6">
-        {savedOrgsData?.map((installation: OrganizationSessionStorageInterface, index: number) => (
-          <HorizontalListItemCard
-            key={`${installation?.organization?.login}+${index}`}
-            avatarUrl={installation?.organization?.avatarUrl ?? ""}
-            title={installation?.organization?.name || installation?.organization?.login || ""}
-            linkUrl={`https://github.com/organizations/${installation?.organization?.login}/settings/installations/${installation?.organization?.installationId}`}
-          />
-        ))}
+        {organizations.map((org, index) => {
+          const linkUrl = org.installed
+            ? `https://github.com/organizations/${org.login}/settings/installations/${org.id}`
+            : `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}`;
+
+          return (
+            <HorizontalListItemCard
+              key={`${org.login}+${index}`}
+              avatarUrl={org.avatarUrl ?? ""}
+              title={org.name || org.login || ""}
+              linkUrl={linkUrl}
+              linkIcon={org.installed ? <PencilLine /> : <AddLine />}
+              isExternalFlow={org.installed}
+            />
+          );
+        })}
       </ul>
-    </div>
-  );
+    );
+  }
+
+  return <p className="text-center text-gray-500">{emptyListFallBackText}</p>;
 }
