@@ -1,15 +1,16 @@
 import { useMemo } from "react";
-import { OrganizationSessionStorageInterface } from "src/types";
+import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
 
-export const useRepositoryCount = (organizations: OrganizationSessionStorageInterface[]) => {
+export const useRepositoryCount = (
+  organizations: UseOrganizationsByGithubUserIdResponse[],
+  selectedRepos: unknown[]
+) => {
   return useMemo(() => {
     return {
-      selected: organizations.reduce((acc, org) => {
-        return acc + (org.organization.repos || []).filter(repo => repo.selected).length;
-      }, 0),
+      selected: selectedRepos?.length || 0,
       total: organizations.reduce((acc, org) => {
-        return acc + (org.organization.repos || []).length;
+        return acc + (org.repos || []).length;
       }, 0),
     };
-  }, [organizations]);
+  }, [organizations, selectedRepos]);
 };

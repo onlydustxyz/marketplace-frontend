@@ -11,6 +11,10 @@ import GithubApi from "src/api/Github";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Button, { ButtonSize } from "src/components/Button";
 import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
+import useMutationAlert from "src/api/useMutationAlert";
+import ProjectApi from "src/api/Project";
+import { generatePath, useNavigate } from "react-router-dom";
+import { RoutePaths } from "src/App";
 
 interface CreateContextProps {
   initialProject: CreateFormData | undefined;
@@ -76,17 +80,39 @@ const validationSchema = z.object({
 
 export function CreateProjectProvider({ children, initialProject, formStorage, stepStorage }: CreateContextProps) {
   const { T } = useIntl();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(ProjectCreationSteps.ORGANIZATIONS);
   const { githubUserId } = useAuth();
+  const { reset: clearSession } = useResetSession();
   const { data: organizationsData, isLoading: isOrganizationsLoading } =
     GithubApi.queries.useOrganizationsByGithubUserId({
       params: { githubUserId },
       // Polling the organizations every second knowing that user can delete and installation
       // and the related github event can take an unknown delay to be triggered
-      options: { retry: 1, enabled: !!githubUserId, refetchInterval: 1000 },
+      options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },
     });
 
-  const { reset: clearSession } = useResetSession();
+  const { mutate: createProject, ...restCreateProjectMutation } = ProjectApi.mutations.useCreateProject({
+    options: {
+      onSuccess: data => {
+        clearSession();
+        if (data?.projectSlug) {
+          navigate(generatePath(RoutePaths.ProjectDetails, { projectKey: data.projectSlug }));
+        }
+      },
+    },
+  });
+
+  useMutationAlert({
+    mutation: restCreateProjectMutation,
+    success: {
+      message: T("project.details.create.submit.success"),
+    },
+    error: {
+      message: T("project.details.create.submit.error"),
+    },
+  });
+
   const form = useForm<CreateFormData>({
     mode: "all",
     defaultValues: initialProject || {},
@@ -97,10 +123,15 @@ export function CreateProjectProvider({ children, initialProject, formStorage, s
     formStorage.setValue(form.getValues());
   };
 
-  const onSubmit = (formData: CreateFormData) => {
-    // updateProject(formData);
-    // TODO CREATE PROJECT
-    form.reset(formData);
+  const onSubmit = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { search, selectedRepos, ...formData } = form.getValues();
+    createProject({
+      ...formData,
+      isLookingForContributors: formData.isLookingForContributors || false,
+      moreInfo: [formData.moreInfo],
+      githubRepoIds: selectedRepos.map(repo => repo.repoId),
+    });
   };
 
   const onSyncOrganizations = () => {

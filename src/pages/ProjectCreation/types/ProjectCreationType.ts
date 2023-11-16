@@ -24,4 +24,6 @@ export interface CreateFormDataRepos {
 export type CreateFormData = components["schemas"]["CreateProjectRequest"] & {
   selectedRepos: CreateFormDataRepos[]
   projectLeads: SelectedLeadType[];
+  moreInfo: components["schemas"]["MoreInfo"]
+  search: string;
 };

@@ -1,27 +1,30 @@
 import { useCallback } from "react";
-import { OrganizationSessionStorageInterface } from "src/types";
+import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
 
 export const useRepositorySearch = (search?: string) => {
   return useCallback(
-    (value: OrganizationSessionStorageInterface[]) => {
+    (value: UseOrganizationsByGithubUserIdResponse[]) => {
       if (!search) {
         return value;
       }
 
+      const searchUppercase = search.toUpperCase();
+
       return value
         .map(org => {
-          const repos = org.organization.repos?.filter(repo => repo.name?.includes(search));
+          const repos = org.repos?.filter(repo => repo.name?.toUpperCase()?.includes(searchUppercase));
+          const findOrg = org.name?.toUpperCase()?.includes(searchUppercase);
 
-          if (!repos || repos.length === 0) {
+          if (!findOrg && !repos.length) {
             return null;
           }
 
           return {
             ...org,
-            repos,
+            repos: findOrg && !repos.length ? org.repos : repos,
           };
         })
-        .filter(Boolean) as OrganizationSessionStorageInterface[];
+        .filter(Boolean) as UseOrganizationsByGithubUserIdResponse[];
     },
     [search]
   );

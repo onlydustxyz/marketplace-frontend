@@ -4,12 +4,12 @@ import Background, { BackgroundRoundedBorders } from "src/components/Background"
 import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
 import GithubLogo from "src/icons/GithubLogo";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect } from "react";
 import { useResetSession } from "./hooks/useProjectCreationSession";
 import { useIntl } from "src/hooks/useIntl";
 import { CreateProjectContext, CreateProjectProvider } from "./ProjectCreation.context";
 import { useProjectCreationFormStorage, useProjectCreationStepStorage } from "./hooks/useProjectCreationStorage";
-import { ProjectInformationsPage } from "./views/ProjectInformations";
+import { ProjectInformationsPage } from "./views/ProjectInformations/ProjectInformations";
 import { ProjectCreationSteps } from "./types/ProjectCreationSteps";
 import { GithubRepositoryPage } from "./views/GithubRepository";
 import { GithubOrganizationPage } from "./views/GithubOrganizations/GithubOrganizations";
@@ -78,7 +78,7 @@ export const SafeProjectCreation = () => {
     reset();
   }, []);
 
-  const ActiveStep = useMemo(() => {
+  const ActiveStep = () => {
     switch (currentStep) {
       case ProjectCreationSteps.INFORMATIONS:
         return <ProjectInformationsPage />;
@@ -87,9 +87,9 @@ export const SafeProjectCreation = () => {
       default:
         return <GithubOrganizationPage />;
     }
-  }, [currentStep]);
+  };
 
-  return ActiveStep;
+  return ActiveStep();
 };
 
 export const ProjectCreation = () => {
