@@ -13,6 +13,14 @@ import {
 import View from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
 import { useApolloClient } from "@apollo/client";
+import useRewardableItemsQueryParams from "../hooks/useRewardableItemsQueryParams";
+import ProjectApi from "src/api/Project";
+
+export enum ContributionType {
+  PullRequest = "PULL_REQUEST",
+  Issue = "ISSUE",
+  CodeReview = "CODE_REVIEW",
+}
 
 type Props = {
   type: WorkItemType;
@@ -23,6 +31,25 @@ type Props = {
 };
 
 export function WorkItems({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
+  const { queryParams, setType, setSearch, setIncludeIgnoredItems } = useRewardableItemsQueryParams({
+    type: ContributionType.PullRequest,
+    githubUserId: contributorId,
+    includeIgnoredItems: true,
+  });
+
+  const {
+    data: contributionItems,
+    isLoading,
+    isError,
+  } = ProjectApi.queries.useRewardableItemsInfiniteList({
+    queryParams,
+    projectId,
+  });
+
+  const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
+
+  console.log("contributions", contributions);
+
   const client = useApolloClient();
 
   const { data, refetch } = useUnrewardedContributionsByTypeQuery({

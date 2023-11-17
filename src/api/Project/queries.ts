@@ -3,6 +3,7 @@ import { API_PATH } from "src/api/ApiPath";
 import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 import { useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { PROJECT_TAGS } from "./tags";
+import { QueryParams } from "src/utils/getEndpointUrl";
 
 export type UseGetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
 
@@ -49,4 +50,29 @@ const useInfiniteList = (
   );
 };
 
-export default { useGetProjectBySlug, useGetProjectContributionDetail, useInfiniteList };
+export type UseRewardableItemsInfiniteListResponse = components["schemas"]["RewardableItemsPageResponse"];
+interface UseRewardableItemsInfiniteListParams {
+  projectId?: string;
+  queryParams?: QueryParams;
+}
+
+const useRewardableItemsInfiniteList = (
+  params: UseRewardableItemsInfiniteListParams,
+  options: Parameters<typeof useInfiniteBaseQuery<UseRewardableItemsInfiniteListResponse>>[1] = {}
+) => {
+  return useInfiniteBaseQuery<UseRewardableItemsInfiniteListResponse>(
+    {
+      resourcePath: API_PATH.PROJECT_REWARDABLE_ITEMS(params?.projectId ?? ""),
+      tags: PROJECT_TAGS.rewardable_items([params.queryParams]),
+      queryParams: params.queryParams,
+    },
+    options
+  );
+};
+
+export default {
+  useGetProjectBySlug,
+  useGetProjectContributionDetail,
+  useInfiniteList,
+  useRewardableItemsInfiniteList,
+};
