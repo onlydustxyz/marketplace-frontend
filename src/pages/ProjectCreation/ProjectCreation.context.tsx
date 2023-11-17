@@ -13,7 +13,7 @@ import Button, { ButtonSize } from "src/components/Button";
 import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
 import useMutationAlert from "src/api/useMutationAlert";
 import ProjectApi from "src/api/Project";
-import { generatePath, useNavigate } from "react-router-dom";
+import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
 import { STORAGE_KEY_CREATE_PROJECT_FORM } from "./hooks/useProjectCreationStorage";
@@ -21,6 +21,7 @@ import { STORAGE_KEY_CREATE_PROJECT_FORM } from "./hooks/useProjectCreationStora
 interface CreateContextProps {
   initialProject: CreateFormData | undefined;
   initialStep: ProjectCreationSteps | undefined;
+  initialInstallatedRepo: string[] | undefined;
   children: React.ReactNode;
   formStorage: {
     setValue: (values: CreateFormData) => void;
@@ -28,6 +29,10 @@ interface CreateContextProps {
   };
   stepStorage: {
     setValue: (values: ProjectCreationSteps) => void;
+    removeValue: () => void;
+  };
+  installatedRepoStorage: {
+    setValue: (values: string[]) => void;
     removeValue: () => void;
   };
 }
@@ -92,6 +97,16 @@ export function CreateProjectProvider({
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
     initialStep || ProjectCreationSteps.ORGANIZATIONS
   );
+  const [searchParams] = useSearchParams();
+  const installation_id = searchParams.get("installation_id") ?? "";
+  // TODO : When get installation_id from url -> save it in storage if not present
+  // TODO : when sync repo if an organization id with on of the instalated repo is present remove it in storage
+  // TODO : in the orgazation list if the installation_id is include in the storage so make it disable
+
+  //   const { data: installationData, isLoading, isError } = GithubApi.queries.useInstallationById({
+  //     params: { installation_id },
+  //     options: { retry: 1, enabled: !!installation_id },
+  //   });
 
   const { githubUserId } = useAuth();
   const { reset: clearSession } = useResetSession();

@@ -4,6 +4,9 @@ import { OrganizationSessionStorageInterface } from "src/types";
 // TODO : clean
 export const OrganizationSessionStorageKey = "OrganizationsType";
 export const InformationSessionStorageKey = "createProjectInformation";
+const STORAGE_KEY = "create-project-";
+export const STORAGE_KEY_CREATE_PROJECT_FORM = `${STORAGE_KEY}form`;
+export const STORAGE_KEY_CREATE_PROJECT_STEP = `${STORAGE_KEY}step`;
 
 export const useOrganizationSession = () => {
   const [storedValue, setValue, status, removeValue] = useSessionStorage<OrganizationSessionStorageInterface[]>(
@@ -18,6 +21,12 @@ export const useInformationSession = <V>() => {
     "createProjectInformation",
     undefined
   );
+
+  return { storedValue, setValue, status, removeValue };
+};
+
+export const useInstallatedRepoSession = () => {
+  const [storedValue, setValue, status, removeValue] = useSessionStorage<string[]>("createProjectInformation", []);
 
   return { storedValue, setValue, status, removeValue };
 };

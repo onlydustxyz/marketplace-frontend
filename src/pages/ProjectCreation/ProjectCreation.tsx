@@ -8,7 +8,11 @@ import { useContext, useEffect } from "react";
 import { useResetSession } from "./hooks/useProjectCreationSession";
 import { useIntl } from "src/hooks/useIntl";
 import { CreateProjectContext, CreateProjectProvider } from "./ProjectCreation.context";
-import { useProjectCreationFormStorage, useProjectCreationStepStorage } from "./hooks/useProjectCreationStorage";
+import {
+  useProjectCreationFormStorage,
+  useProjectCreationInstallatedReposStorage,
+  useProjectCreationStepStorage,
+} from "./hooks/useProjectCreationStorage";
 import { ProjectInformationsPage } from "./views/ProjectInformations/ProjectInformations";
 import { ProjectCreationSteps } from "./types/ProjectCreationSteps";
 import { GithubRepositoryPage } from "./views/GithubRepository";
@@ -95,19 +99,23 @@ export const SafeProjectCreation = () => {
 export const ProjectCreation = () => {
   const { storedFormStatus, storedFormValue, saveFormData, removeFormValue } = useProjectCreationFormStorage();
   const { storedStepValue, storedStepStatus, saveStep, removeStepValue } = useProjectCreationStepStorage();
+  const { storedInstallatedRepoValue, storedInstallatedRepoStatus, saveInstallatedRepo, removeInstallatedRepoValue } =
+    useProjectCreationInstallatedReposStorage();
   //   const { reset } = useResetSession();
 
   //   useEffect(() => {
   //     reset();
   //   }, []);
 
-  if (storedFormStatus === "ready" && storedStepStatus === "ready") {
+  if (storedFormStatus === "ready" && storedStepStatus === "ready" && storedInstallatedRepoStatus === "ready") {
     return (
       <CreateProjectProvider
         initialProject={storedFormValue}
+        initialInstallatedRepo={storedInstallatedRepoValue}
         initialStep={storedStepValue}
         formStorage={{ setValue: saveFormData, removeValue: removeFormValue }}
         stepStorage={{ setValue: saveStep, removeValue: removeStepValue }}
+        installatedRepoStorage={{ setValue: saveInstallatedRepo, removeValue: removeInstallatedRepoValue }}
       >
         <SafeProjectCreation />
       </CreateProjectProvider>
