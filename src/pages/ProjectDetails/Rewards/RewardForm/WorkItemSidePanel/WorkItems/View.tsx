@@ -101,8 +101,6 @@ export default function View({
     setIncludeIgnoredItems(showIgnoredItems);
   }, [showIgnoredItems]);
 
-  console.log("showIgnoredItems", showIgnoredItems);
-
   const visibleIssues = showIgnoredItems ? contributions : filter(contributions, { ignored: false });
 
   const searchPattern = watch(`search-${tabName}`);

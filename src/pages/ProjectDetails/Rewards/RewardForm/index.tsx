@@ -6,7 +6,7 @@ import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
-import { ContributionFragment, WorkItemFragment, useUnrewardedContributionsQuery } from "src/__generated/graphql";
+import { WorkItemFragment } from "src/__generated/graphql";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
@@ -18,6 +18,9 @@ import ErrorFallback from "src/ErrorFallback";
 import { useApolloClient } from "@apollo/client";
 import { useQueryClient } from "@tanstack/react-query";
 import MeApi from "src/api/me";
+import useRewardableItemsQueryParams from "./WorkItemSidePanel/hooks/useRewardableItemsQueryParams";
+import ProjectApi from "src/api/Project";
+import { RewardableItem } from "src/api/Project/queries";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -76,14 +79,32 @@ const RewardForm: React.FC = () => {
 
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
-  const { data } = useUnrewardedContributionsQuery({
-    fetchPolicy: "no-cache",
-    variables: {
-      projectId,
-      githubUserId: contributor?.githubUserId,
-    },
-    skip: !contributor?.githubUserId,
+  // const { data } = useUnrewardedContributionsQuery({
+  //   fetchPolicy: "no-cache",
+  //   variables: {
+  //     projectId,
+  //     githubUserId: contributor?.githubUserId,
+  //   },
+  //   skip: !contributor?.githubUserId,
+  // });
+
+  const { queryParams } = useRewardableItemsQueryParams({
+    githubUserId: contributor?.githubUserId,
+    includeIgnoredItems: true,
   });
+
+  // console.log("queryParams", queryParams);
+
+  const {
+    data: contributionItems,
+    isLoading,
+    isError,
+  } = ProjectApi.queries.useRewardableItemsInfiniteList({
+    params: { projectId, queryParams },
+    options: { enabled: !!contributor?.githubUserId },
+  });
+
+  const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
 
   const { handleSubmit } = formMethods;
 
@@ -137,7 +158,7 @@ const RewardForm: React.FC = () => {
               onWorkItemsChange={onWorkItemsChange}
               contributor={contributor}
               setContributor={setContributor}
-              unpaidContributions={data?.contributions as ContributionFragment[] | null | undefined}
+              unpaidContributions={contributions as RewardableItem[] | null | undefined}
               isCreateProjectRewardLoading={isCreateProjectRewardLoading}
             />
           ) : (

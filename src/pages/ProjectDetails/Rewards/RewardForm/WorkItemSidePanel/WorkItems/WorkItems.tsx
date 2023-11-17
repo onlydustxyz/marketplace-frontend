@@ -1,26 +1,12 @@
 import { chain } from "lodash";
-import { useMemo } from "react";
-import {
-  ContributionFragment,
-  GithubCodeReviewFragment,
-  GithubIssueFragment,
-  GithubPullRequestWithCommitsFragment,
-  UnrewardedContributionsDocument,
-  WorkItemFragment,
-  WorkItemType,
-  useUnrewardedContributionsByTypeQuery,
-} from "src/__generated/graphql";
+import { useEffect, useMemo } from "react";
+import { WorkItemFragment, WorkItemType } from "src/__generated/graphql";
 import View from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
 import { useApolloClient } from "@apollo/client";
 import useRewardableItemsQueryParams from "../hooks/useRewardableItemsQueryParams";
 import ProjectApi from "src/api/Project";
-
-export enum ContributionType {
-  PullRequest = "PULL_REQUEST",
-  Issue = "ISSUE",
-  CodeReview = "CODE_REVIEW",
-}
+import { RewardableItem } from "src/api/Project/queries";
 
 type Props = {
   type: WorkItemType;
@@ -32,7 +18,7 @@ type Props = {
 
 export function WorkItems({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
   const { queryParams, setType, setSearch, setIncludeIgnoredItems } = useRewardableItemsQueryParams({
-    type: ContributionType.PullRequest,
+    type,
     githubUserId: contributorId,
     includeIgnoredItems: false,
   });
@@ -42,9 +28,12 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
     isLoading,
     isError,
   } = ProjectApi.queries.useRewardableItemsInfiniteList({
-    queryParams,
-    projectId,
+    params: { projectId, queryParams },
   });
+
+  useEffect(() => {
+    setType(type);
+  }, [type]);
 
   const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
 
@@ -52,24 +41,24 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
 
   const client = useApolloClient();
 
-  const { data, refetch } = useUnrewardedContributionsByTypeQuery({
-    fetchPolicy: "no-cache",
-    variables: {
-      projectId,
-      githubUserId: contributorId,
-      type,
-    },
-  });
+  // const { data, refetch } = useUnrewardedContributionsByTypeQuery({
+  //   fetchPolicy: "no-cache",
+  //   variables: {
+  //     projectId,
+  //     githubUserId: contributorId,
+  //     type,
+  //   },
+  // });
 
   const onRefetchContributions = async () => {
-    await client.refetchQueries({ include: [UnrewardedContributionsDocument] });
-    await refetch();
+    // await client.refetchQueries({ include: [UnrewardedContributionsDocument] });
+    // await refetch();
   };
 
   const { ignore: ignoreContribution, unignore: unignoreContribution } =
     useIgnoredContributions(onRefetchContributions);
 
-  const addAndUnignoreContribution = (contribution: ContributionFragment) => {
+  const addAndUnignoreContribution = (contribution: RewardableItem) => {
     if (contribution.ignored && contribution.id) unignoreContribution(projectId, contribution.id);
     const workItem = contributionToWorkItem(contribution);
     workItem && addWorkItem(workItem);
@@ -77,10 +66,10 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
 
   const contributionsNotAdded = useMemo(
     () =>
-      chain(data?.contributions)
-        .differenceWith(workItems, (contribution, workItem) => contribution.detailsId === workItem.id)
+      chain(contributions)
+        .differenceWith(workItems, (contribution, workItem) => contribution?.id === workItem.id)
         .value(),
-    [data?.contributions, workItems]
+    [contributions, workItems]
   );
 
   return (
@@ -91,10 +80,10 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
       addWorkItem={addWorkItem}
       addContribution={addAndUnignoreContribution}
       contributorId={contributorId}
-      ignoreContribution={(contribution: ContributionFragment) =>
+      ignoreContribution={(contribution: RewardableItem) =>
         contribution.id && ignoreContribution(projectId, contribution.id)
       }
-      unignoreContribution={(contribution: ContributionFragment) =>
+      unignoreContribution={(contribution: RewardableItem) =>
         contribution.id && unignoreContribution(projectId, contribution.id)
       }
       setIncludeIgnoredItems={setIncludeIgnoredItems}
@@ -106,7 +95,7 @@ export const contributionToWorkItem = ({
   githubIssue,
   githubPullRequest,
   githubCodeReview,
-}: ContributionFragment): WorkItemFragment | undefined => {
+}: RewardableItem): WorkItemFragment | undefined => {
   switch (true) {
     case !!githubIssue:
       return issueToWorkItem(githubIssue);
@@ -117,7 +106,7 @@ export const contributionToWorkItem = ({
   }
 };
 
-export const issueToWorkItem = (issue: GithubIssueFragment | null): WorkItemFragment => ({
+export const issueToWorkItem = (issue: RewardableItem | null): WorkItemFragment => ({
   type: WorkItemType.Issue,
   id: issue?.id.toString(),
   githubIssue: issue,
@@ -125,7 +114,7 @@ export const issueToWorkItem = (issue: GithubIssueFragment | null): WorkItemFrag
   githubCodeReview: null,
 });
 
-export const pullRequestToWorkItem = (pullRequest: GithubPullRequestWithCommitsFragment | null): WorkItemFragment => ({
+export const pullRequestToWorkItem = (pullRequest: RewardableItem | null): WorkItemFragment => ({
   type: WorkItemType.PullRequest,
   id: pullRequest?.id.toString(),
   githubIssue: null,
@@ -133,7 +122,7 @@ export const pullRequestToWorkItem = (pullRequest: GithubPullRequestWithCommitsF
   githubCodeReview: null,
 });
 
-export const codeReviewToWorkItem = (codeReview: GithubCodeReviewFragment | null): WorkItemFragment => ({
+export const codeReviewToWorkItem = (codeReview: RewardableItem | null): WorkItemFragment => ({
   type: WorkItemType.CodeReview,
   id: codeReview?.id || null,
   githubIssue: null,

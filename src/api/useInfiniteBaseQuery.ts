@@ -17,12 +17,24 @@ export type useInfiniteBaseQueryOptions<R extends InfiniteQueryResponseData> = O
 > &
   Partial<Pick<UseInfiniteQueryOptions<R>, "initialPageParam" | "getNextPageParam">>;
 
+export type InfiniteBaseQueryOptions<R extends InfiniteQueryResponseData> = Partial<useInfiniteBaseQueryOptions<R>>;
+
 export type InfiniteQueryResponseData = {
   totalPageNumber: number;
   totalItemNumber: number;
   hasMore: boolean;
   nextPageIndex: number;
 };
+
+export interface UseInfiniteBaseQueryProps<
+  RESULT extends InfiniteQueryResponseData,
+  PARAMS = unknown | undefined,
+  BODY = unknown | undefined
+> {
+  options?: InfiniteBaseQueryOptions<RESULT>;
+  params?: PARAMS;
+  body?: BODY;
+}
 
 export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
   { resourcePath, pageSize = 10, pathParam = "", queryParams = [], tags }: useInfiniteBaseQueryProps,

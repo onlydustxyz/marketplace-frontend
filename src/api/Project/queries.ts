@@ -1,7 +1,7 @@
 import { components } from "src/__generated/api";
 import { API_PATH } from "src/api/ApiPath";
 import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
-import { useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
+import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { PROJECT_TAGS } from "./tags";
 import { QueryParams } from "src/utils/getEndpointUrl";
 
@@ -51,20 +51,23 @@ const useInfiniteList = (
 };
 
 export type UseRewardableItemsInfiniteListResponse = components["schemas"]["RewardableItemsPageResponse"];
-interface UseRewardableItemsInfiniteListParams {
-  projectId?: string;
+export type RewardableItem = components["schemas"]["RewardableItemResponse"];
+
+interface RewardableItemsInfiniteListParams {
+  projectId: string;
   queryParams?: QueryParams;
 }
 
-const useRewardableItemsInfiniteList = (
-  params: UseRewardableItemsInfiniteListParams,
-  options: Parameters<typeof useInfiniteBaseQuery<UseRewardableItemsInfiniteListResponse>>[1] = {}
-) => {
+const useRewardableItemsInfiniteList = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<UseRewardableItemsInfiniteListResponse, RewardableItemsInfiniteListParams>) => {
   return useInfiniteBaseQuery<UseRewardableItemsInfiniteListResponse>(
     {
-      resourcePath: API_PATH.PROJECT_REWARDABLE_ITEMS(params?.projectId ?? ""),
-      tags: PROJECT_TAGS.rewardable_items([params.queryParams]),
-      queryParams: params.queryParams,
+      resourcePath: API_PATH.PROJECT_REWARDABLE_ITEMS(params?.projectId || ""),
+      tags: PROJECT_TAGS.rewardable_items([params?.projectId]),
+      queryParams: params?.queryParams,
+      pageSize: 10,
     },
     options
   );
