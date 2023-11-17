@@ -8,7 +8,7 @@ import InformationLine from "src/icons/InformationLine";
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
 import UsersApi from "src/api/Users";
 import { useIntl } from "src/hooks/useIntl";
-import { Combobox } from "src/components/New/Field/Combobox/Combobox";
+import { Combobox, Variant } from "src/components/New/Field/Combobox/Combobox";
 import { ItemType } from "src/components/New/Field/Combobox/MultiList";
 import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
 
@@ -119,6 +119,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
             onChange={handleChange}
             placeholder={T("project.details.create.informations.form.fields.projectLead.placeholderLabel")}
             loading={isLoading}
+            variant={Variant.Grey}
             isMultiList
             multiple
           />

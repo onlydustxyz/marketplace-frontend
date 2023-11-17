@@ -16,6 +16,7 @@ type Props<T> = {
    * @description name the key for the item object that will be used as key for the item
    */
   itemKeyName: string;
+  variant?: Variant;
 };
 
 type SingleProps<T> = Props<T> & {
@@ -42,6 +43,16 @@ type MultiListProps<T> = ListProps<T> & {
   items: ItemType<T>[];
 };
 
+export enum Variant {
+  Default,
+  Grey,
+}
+
+const variants = {
+  [Variant.Default]: "bg-spaceBlue-900",
+  [Variant.Grey]: "bg-greyscale-900",
+};
+
 export function Combobox<T extends { [key: string]: unknown }>({
   items,
   renderItem,
@@ -54,6 +65,7 @@ export function Combobox<T extends { [key: string]: unknown }>({
   loading = false,
   itemKeyName,
   isMultiList,
+  variant = Variant.Default,
 }: SingleListProps<T> | MultiListProps<T>) {
   return (
     <HeadlessCombobox value={selected} onChange={onChange} multiple={multiple as false}>
@@ -96,7 +108,8 @@ export function Combobox<T extends { [key: string]: unknown }>({
             leaveTo="opacity-0"
             afterLeave={() => onQuery("")}
             className={cn(
-              "absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 bg-spaceBlue-900 p-4 shadow-heavy"
+              "absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12  p-4 shadow-heavy",
+              variants[variant]
             )}
           >
             <div className="h-9" />
