@@ -14,7 +14,8 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
       <ul className="flex flex-col gap-2 py-4 pb-6">
         {organizations.map((org, index) => {
           const linkUrl = org.installed
-            ? `https://github.com/organizations/${org.login}/settings/installations/${org.id}`
+            ? // TODO when org installed is true, use installationId instead of org.id
+              `https://github.com/organizations/${org.login}/settings/installations/${org.id}`
             : `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}`;
 
           return (
