@@ -1,14 +1,16 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useContext, useMemo, useState } from "react";
 import { FieldLabel } from "src/components/New/Field/Label";
 import { debounce } from "lodash";
 import { FieldProjectLeadItem } from "./ProjectLeadItem";
-import { Combobox } from "src/components/New/Field/Combobox";
 import { useAuth } from "src/hooks/useAuth";
 import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
 import InformationLine from "src/icons/InformationLine";
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
 import UsersApi from "src/api/Users";
 import { useIntl } from "src/hooks/useIntl";
+import { Combobox, Variant } from "src/components/New/Field/Combobox/Combobox";
+import { ItemType } from "src/components/New/Field/Combobox/MultiList";
+import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
 
 // TODO : Doc
 /**
@@ -39,14 +41,15 @@ export interface FieldProjectLeadProps {
 export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, value }) => {
   const { user } = useAuth();
   const [query, setQuery] = useState("");
+  const { project } = useContext(EditContext);
   const { T } = useIntl();
 
   const { data, isLoading } = UsersApi.queries.useUsersSearchByLogin({
-    params: { login: query },
+    params: { login: query, projectId: project?.id },
     options: { enabled: query !== "" },
   });
 
-  const contributors = [...(data?.internalContributors || []), ...(data?.externalContributors || [])];
+  const currentLeaders = [value?.invited, value?.toKeep].flatMap(lead => lead?.map(lead => lead.githubUserId));
 
   const handleQueryChange = debounce(async (query: string) => {
     setQuery(query);
@@ -89,18 +92,23 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
     onChange?.({ invited: leader, toKeep: value?.toKeep || [] });
   }
 
+  const comboboxMultiData: ItemType<SelectedLeadType>[] = [
+    { data: data?.internalContributors || [] },
+    { label: "External", data: data?.externalContributors || [] },
+  ];
+
   return (
     <div className="flex w-full flex-col gap-2">
       <FieldLabel id={name}>Project leads</FieldLabel>
       <div className="flex flex-col gap-3">
         <div className="relative z-[1] sm:w-2/3">
           <Combobox
-            items={contributors ?? []}
+            items={comboboxMultiData}
             itemKeyName="githubUserId"
-            renderItem={({ item, selected }) => (
+            renderItem={({ item }) => (
               <FieldProjectLeadSelectItem
                 login={item.login}
-                selected={selected}
+                selected={currentLeaders.includes(item.githubUserId)}
                 avatarUrl={item.avatarUrl}
                 isRegistered={item.isRegistered || false}
               />
@@ -110,8 +118,10 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
             selected={value?.invited ?? []}
             onChange={handleChange}
             placeholder={T("project.details.create.informations.form.fields.projectLead.placeholderLabel")}
-            multiple
             loading={isLoading}
+            variant={Variant.Grey}
+            isMultiList
+            multiple
           />
         </div>
         <div className="flex flex-wrap gap-3">{SelectedLeads}</div>

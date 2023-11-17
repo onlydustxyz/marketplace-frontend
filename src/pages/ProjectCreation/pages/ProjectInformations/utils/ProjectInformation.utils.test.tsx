@@ -12,6 +12,7 @@ describe("getSelectedRepoIds", () => {
         id: 1,
         organization: {
           installationId: 123456,
+          installed: true,
           avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
           htmlUrl: "https://github.com/onlydustxyz",
           id: 595505,
@@ -39,6 +40,7 @@ describe("getSelectedRepoIds", () => {
         id: 1,
         organization: {
           installationId: 123456,
+          installed: true,
           avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
           htmlUrl: "https://github.com/onlydustxyz",
           id: 595505,
@@ -72,6 +74,7 @@ describe("getSelectedRepoIds", () => {
         id: 1,
         organization: {
           installationId: 123456,
+          installed: true,
           avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
           htmlUrl: "https://github.com/onlydustxyz",
           id: 595505,
@@ -104,6 +107,7 @@ describe("getSelectedRepoIds", () => {
         id: 1,
         organization: {
           installationId: 123,
+          installed: true,
           avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
           htmlUrl: "https://github.com/onlydustxyz",
           id: 595505,
@@ -131,6 +135,7 @@ describe("getSelectedRepoIds", () => {
         id: 2,
         organization: {
           installationId: 456,
+          installed: true,
           avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
           htmlUrl: "https://github.com/onlydustxyz",
           id: 595505,
@@ -155,6 +160,6 @@ describe("getSelectedRepoIds", () => {
         },
       },
     ];
-    expect(getSelectedRepoIds(orgs)).toEqual([650626567, 650626569]);
+    expect(getSelectedRepoIds(orgs as unknown as OrganizationSessionStorageInterface[])).toEqual([650626566]);
   });
 });
