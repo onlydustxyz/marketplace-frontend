@@ -7,14 +7,11 @@ import { ItemType, MultiList } from "./MultiList";
 import { SingleList } from "./SingleList";
 
 type Props<T> = {
-  items: T[] | ItemType<T>[];
   renderItem: ({ item, selected, active }: { item: T; selected: boolean; active: boolean }) => JSX.Element;
   query: string;
   onQuery: (query: string) => void;
   placeholder?: string;
-  multiple?: boolean;
   loading?: boolean;
-  isMultiList?: boolean;
   /**
    * @description name the key for the item object that will be used as key for the item
    */
@@ -33,6 +30,18 @@ type MultipleProps<T> = Props<T> & {
   multiple: true;
 };
 
+type ListProps<T> = SingleProps<T> | MultipleProps<T>;
+
+type SingleListProps<T> = ListProps<T> & {
+  isMultiList?: never;
+  items: T[];
+};
+
+type MultiListProps<T> = ListProps<T> & {
+  isMultiList: true;
+  items: ItemType<T>[];
+};
+
 export function Combobox<T extends { [key: string]: unknown }>({
   items,
   renderItem,
@@ -44,8 +53,8 @@ export function Combobox<T extends { [key: string]: unknown }>({
   multiple = false,
   loading = false,
   itemKeyName,
-  isMultiList = true,
-}: SingleProps<T> | MultipleProps<T>) {
+  isMultiList,
+}: SingleListProps<T> | MultiListProps<T>) {
   return (
     <HeadlessCombobox value={selected} onChange={onChange} multiple={multiple as false}>
       {({ open }) => (
@@ -95,9 +104,9 @@ export function Combobox<T extends { [key: string]: unknown }>({
               <ComboboxState items={items} query={query} loading={loading} isMultiList={isMultiList} />
 
               {isMultiList ? (
-                <MultiList {...{ items: items as ItemType<T>[], itemKeyName, loading, renderItem }} />
+                <MultiList {...{ items, itemKeyName, loading, renderItem }} />
               ) : (
-                <SingleList {...{ items: items as T[], itemKeyName, loading, renderItem }} />
+                <SingleList {...{ items, itemKeyName, loading, renderItem }} />
               )}
             </HeadlessCombobox.Options>
           </Transition>
