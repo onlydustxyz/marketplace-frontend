@@ -13,14 +13,17 @@ import {
   STORAGE_KEY_CREATE_PROJECT_STEP,
 } from "src/pages/ProjectCreation/hooks/useProjectCreationStorage";
 import { ProjectCreationSteps } from "src/pages/ProjectCreation/types/ProjectCreationSteps";
+import { useLazyGetUserPermissions } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 
-export const LOGIN_URL = `${config.LOGIN_URL}?redirect_url=${encodeURI(window.location.origin)}`;
+export const LOGIN_URL = `${config.HASURA_AUTH_BASE_URL}/signin/provider/github?redirect_url=${encodeURI(
+  window.location.origin
+)}&scope=user:email,read:org`;
 
 export default function SubmitProject() {
   const { T } = useIntl();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
-
+  const [getPermission] = useLazyGetUserPermissions();
   const [modalOpened, setModalOpened] = useState(false);
 
   const toggleModal = () => setModalOpened(!modalOpened);
@@ -42,8 +45,9 @@ export default function SubmitProject() {
     startProjectCreation();
   };
 
-  const startProjectCreation = () => {
-    if (isLoggedIn) {
+  const startProjectCreation = async () => {
+    const hasRequirePermission = await getPermission("read:org");
+    if (isLoggedIn && hasRequirePermission) {
       navigate(RoutePaths.ProjectCreation);
     } else {
       dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: RoutePaths.ProjectCreation });

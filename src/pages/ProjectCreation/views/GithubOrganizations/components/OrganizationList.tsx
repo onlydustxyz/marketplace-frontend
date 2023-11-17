@@ -6,9 +6,14 @@ import PencilLine from "src/icons/PencilLine";
 interface OrganizationListProps {
   organizations: UseOrganizationsByGithubUserIdResponse[];
   emptyListFallBackText: string;
+  installatedRepo: number[];
 }
 
-export default function OrganizationList({ organizations, emptyListFallBackText }: OrganizationListProps) {
+export default function OrganizationList({
+  organizations,
+  emptyListFallBackText,
+  installatedRepo,
+}: OrganizationListProps) {
   if (organizations.length) {
     return (
       <ul className="flex flex-col gap-2 py-4 pb-6">
@@ -20,6 +25,7 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
 
           return (
             <HorizontalListItemCard
+              disabled={installatedRepo.includes(org.id)}
               key={`${org.login}+${index}`}
               avatarUrl={org.avatarUrl ?? ""}
               title={org.name || org.login || ""}

@@ -10,7 +10,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { CreateProjectContext, CreateProjectProvider } from "./ProjectCreation.context";
 import {
   useProjectCreationFormStorage,
-  useProjectCreationInstallatedReposStorage,
+  useProjectCreationInstalledReposStorage,
   useProjectCreationStepStorage,
 } from "./hooks/useProjectCreationStorage";
 import { ProjectInformationsPage } from "./views/ProjectInformations/ProjectInformations";
@@ -99,23 +99,27 @@ export const SafeProjectCreation = () => {
 export const ProjectCreation = () => {
   const { storedFormStatus, storedFormValue, saveFormData, removeFormValue } = useProjectCreationFormStorage();
   const { storedStepValue, storedStepStatus, saveStep, removeStepValue } = useProjectCreationStepStorage();
-  const { storedInstallatedRepoValue, storedInstallatedRepoStatus, saveInstallatedRepo, removeInstallatedRepoValue } =
-    useProjectCreationInstallatedReposStorage();
-  //   const { reset } = useResetSession();
+  const {
+    storedInstalledRepoValue,
+    storedInstalledRepoStatus,
+    saveInstalledRepo,
+    removeInstalledRepoValue,
+    getInstalledRepoValue,
+  } = useProjectCreationInstalledReposStorage();
 
-  //   useEffect(() => {
-  //     reset();
-  //   }, []);
-
-  if (storedFormStatus === "ready" && storedStepStatus === "ready" && storedInstallatedRepoStatus === "ready") {
+  if (storedFormStatus === "ready" && storedStepStatus === "ready" && storedInstalledRepoStatus === "ready") {
     return (
       <CreateProjectProvider
         initialProject={storedFormValue}
-        initialInstallatedRepo={storedInstallatedRepoValue}
+        initialInstalledRepo={storedInstalledRepoValue}
         initialStep={storedStepValue}
         formStorage={{ setValue: saveFormData, removeValue: removeFormValue }}
         stepStorage={{ setValue: saveStep, removeValue: removeStepValue }}
-        installatedRepoStorage={{ setValue: saveInstallatedRepo, removeValue: removeInstallatedRepoValue }}
+        installedRepoStorage={{
+          setValue: saveInstalledRepo,
+          removeValue: removeInstalledRepoValue,
+          getValue: getInstalledRepoValue,
+        }}
       >
         <SafeProjectCreation />
       </CreateProjectProvider>

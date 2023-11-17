@@ -25,7 +25,7 @@ export const useInformationSession = <V>() => {
   return { storedValue, setValue, status, removeValue };
 };
 
-export const useInstallatedRepoSession = () => {
+export const useInstalledRepoSession = () => {
   const [storedValue, setValue, status, removeValue] = useSessionStorage<string[]>("createProjectInformation", []);
 
   return { storedValue, setValue, status, removeValue };

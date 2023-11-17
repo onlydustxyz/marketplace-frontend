@@ -4,6 +4,7 @@ import Card from "src/components/Card";
 import PencilLine from "src/icons/PencilLine";
 import { cn } from "src/utils/cn";
 import { Avatar } from "../Avatar";
+import { withTooltip } from "src/components/Tooltip";
 
 interface HorizontalListItemCardProps {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;
@@ -13,6 +14,8 @@ interface HorizontalListItemCardProps {
   linkUrl: string;
   linkIcon?: ReactElement;
   isExternalFlow?: boolean;
+  disabled?: boolean;
+  tooltip?: string;
 }
 
 const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
@@ -23,6 +26,8 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
   linkUrl = "",
   linkIcon = <PencilLine />,
   isExternalFlow = true,
+  disabled = false,
+  tooltip,
 }) => {
   const { className: ContainerClassName, ...RestContainerProps } = ContainerProps;
   return (
@@ -40,7 +45,16 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
             target={isExternalFlow ? "_blank" : undefined}
             rel={isExternalFlow ? "noopener noreferrer" : undefined}
           >
-            <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly data-testid="action-button">
+            <Button
+              size={ButtonSize.Sm}
+              type={ButtonType.Secondary}
+              iconOnly
+              data-testid="action-button"
+              disabled={disabled}
+              {...withTooltip(tooltip || "", {
+                visible: disabled && !!tooltip,
+              })}
+            >
               {linkIcon}
             </Button>
           </a>

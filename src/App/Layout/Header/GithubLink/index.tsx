@@ -2,7 +2,7 @@ import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import GithubLogo, { Size } from "src/icons/GithubLogo";
 
-export const LOGIN_URL = `${config.LOGIN_URL}?redirect_url=${encodeURI(window.location.origin)}`;
+export const LOGIN_URL = `${config.LOGIN_URL}?redirect_url=${encodeURI(window.location.origin)}&scope=user:email`;
 
 type Props = {
   onClick?: () => void;

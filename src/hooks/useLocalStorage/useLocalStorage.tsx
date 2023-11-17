@@ -31,7 +31,7 @@ export function useLocalStorage<T>(
   key: string,
   initialValue: T,
   options?: UseLocalStorageOptions
-): [T, (value: T) => void, UseLocalStorageStatus, () => void, (pattern: string) => void] {
+): [T, (value: T) => void, UseLocalStorageStatus, () => void, (pattern: string) => void, () => T | undefined] {
   const [status, setStatus] = useState<UseLocalStorageStatus>("idle");
   const [storedValue, setStoredValue] = useState(initialValue);
   const { deserialize = JSON.parse, serialize = JSON.stringify } = options || {};
@@ -58,6 +58,15 @@ export function useLocalStorage<T>(
     [key, serialize]
   );
 
+  const getValue = useCallback(() => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? deserialize(item) : undefined;
+    } catch (error) {
+      console.error(error);
+    }
+  }, [key, deserialize]);
+
   const removeValue = useCallback(() => {
     try {
       localStorage.removeItem(key);
@@ -78,5 +87,5 @@ export function useLocalStorage<T>(
     }
   }, []);
 
-  return [storedValue, setValue, status, removeValue, clearByPattern];
+  return [storedValue, setValue, status, removeValue, clearByPattern, getValue];
 }

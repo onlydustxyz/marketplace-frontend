@@ -17,11 +17,13 @@ import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
 import { STORAGE_KEY_CREATE_PROJECT_FORM } from "./hooks/useProjectCreationStorage";
+import { onSyncOrganizations } from "./utils/syncOrganization";
+import { watchInstalledRepoStorage } from "./utils/watchInstalledRepoStorage";
 
 interface CreateContextProps {
   initialProject: CreateFormData | undefined;
   initialStep: ProjectCreationSteps | undefined;
-  initialInstallatedRepo: string[] | undefined;
+  initialInstalledRepo: number[] | undefined;
   children: React.ReactNode;
   formStorage: {
     setValue: (values: CreateFormData) => void;
@@ -31,9 +33,10 @@ interface CreateContextProps {
     setValue: (values: ProjectCreationSteps) => void;
     removeValue: () => void;
   };
-  installatedRepoStorage: {
-    setValue: (values: string[]) => void;
+  installedRepoStorage: {
+    setValue: (values: number[]) => void;
     removeValue: () => void;
+    getValue: () => number[] | undefined;
   };
 }
 
@@ -47,7 +50,6 @@ type CreateProject = {
   };
   helpers: {
     saveInSession: () => void;
-    syncOrganizations: () => void;
     goTo: (step: ProjectCreationSteps) => void;
     next: () => void;
     prev: () => void;
@@ -60,7 +62,6 @@ export const CreateProjectContext = createContext<CreateProject>({
   organizations: [],
   helpers: {
     saveInSession: () => null,
-    syncOrganizations: () => null,
     goTo: () => null,
     next: () => null,
     prev: () => null,
@@ -91,6 +92,8 @@ export function CreateProjectProvider({
   formStorage,
   stepStorage,
   initialStep,
+  initialInstalledRepo,
+  installedRepoStorage,
 }: CreateContextProps) {
   const { T } = useIntl();
   const navigate = useNavigate();
@@ -103,10 +106,7 @@ export function CreateProjectProvider({
   // TODO : when sync repo if an organization id with on of the instalated repo is present remove it in storage
   // TODO : in the orgazation list if the installation_id is include in the storage so make it disable
 
-  //   const { data: installationData, isLoading, isError } = GithubApi.queries.useInstallationById({
-  //     params: { installation_id },
-  //     options: { retry: 1, enabled: !!installation_id },
-  //   });
+  // TODO : 5 sync pour le pooling max
 
   const { githubUserId } = useAuth();
   const { reset: clearSession } = useResetSession();
@@ -160,17 +160,6 @@ export function CreateProjectProvider({
     });
   };
 
-  const onSyncOrganizations = () => {
-    const selectedRepos = form.getValues().selectedRepos;
-    if (selectedRepos?.length && organizationsData) {
-      const organizationIds = new Set(organizationsData?.map(org => org.id));
-      const filteredRepos = selectedRepos?.filter(repo => organizationIds.has(repo.orgId));
-      form.setValue("selectedRepos", filteredRepos, { shouldDirty: true, shouldValidate: true });
-    }
-
-    return;
-  };
-
   const isOrgsExist = (orgId: number) => {
     return !!(organizationsData || [])?.find(org => org.id === orgId);
   };
@@ -218,8 +207,26 @@ export function CreateProjectProvider({
   }, [currentStep]);
 
   useEffect(() => {
-    onSyncOrganizations();
-  }, [organizationsData]);
+    if (installation_id) {
+      const newInstalledRepoStorage = watchInstalledRepoStorage({
+        organizations: organizationsData || [],
+        installedRepo: [...new Set([...(installedRepoStorage.getValue() || []), parseInt(installation_id)])],
+      });
+      installedRepoStorage.setValue(newInstalledRepoStorage);
+    }
+  }, [installation_id, organizationsData]);
+
+  useEffect(() => {
+    if (organizationsData) {
+      const filteredSelectedRepos = onSyncOrganizations({
+        organizations: organizationsData || [],
+        selectedRepos: form.getValues("selectedRepos") || [],
+      });
+      if (filteredSelectedRepos) {
+        form.setValue("selectedRepos", filteredSelectedRepos, { shouldDirty: true, shouldValidate: true });
+      }
+    }
+  }, [organizationsData, installation_id]);
 
   return (
     <CreateProjectContext.Provider
@@ -229,7 +236,6 @@ export function CreateProjectProvider({
         organizations: organizationsData || [],
         helpers: {
           saveInSession: onSaveInSession,
-          syncOrganizations: onSyncOrganizations,
           goTo,
           prev,
           next,

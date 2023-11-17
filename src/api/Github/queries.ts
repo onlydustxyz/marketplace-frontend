@@ -22,11 +22,10 @@ export type UseOrganizationsByGithubUserIdResponse = components["schemas"]["Gith
 const useOrganizationsByGithubUserId = ({
   params,
   options = {},
-}: UseQueryProps<UseOrganizationsByGithubUserIdResponse[], { githubUserId?: number }>) => {
+}: UseQueryProps<UseOrganizationsByGithubUserIdResponse[], unknown>) => {
   return useBaseQuery<UseOrganizationsByGithubUserIdResponse[]>({
-    resourcePath: API_PATH.GITHUB_ORGANIZATIONS_BY_USERID(params?.githubUserId || 0),
-    enabled: !!params?.githubUserId,
-    tags: GITHUB_TAGS.organizations(params?.githubUserId || 0),
+    resourcePath: API_PATH.GITHUB_ORGANIZATIONS_BY_USERID,
+    tags: GITHUB_TAGS.organizations(0),
     ...options,
   });
 };

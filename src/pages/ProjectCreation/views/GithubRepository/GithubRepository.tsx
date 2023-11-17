@@ -68,48 +68,50 @@ export const GithubRepositoryPage = () => {
           control={form.control}
           render={() => (
             <>
-              {filterOrganizationBySearch(organizations).map(organization => (
-                <VerticalListItemCard
-                  key={organization.login}
-                  title={organization.login || ""}
-                  avatarAlt={organization.login || ""}
-                  avatarSrc={organization.avatarUrl || ""}
-                >
-                  <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
-                    {(organization.repos || []).map(repo => (
-                      <label
-                        key={repo.name}
-                        className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"
-                      >
-                        <Flex justify="start" item="start" direction="col" gap={2}>
-                          <Flex justify="between" item="center" className="w-full">
-                            <h3 className="h- text-body-m-bold">{repo.name}</h3>
-                            <FieldCheckbox
-                              value={isSelected(repo.id)}
-                              name={`repository-${repo.id}`}
-                              fieldClassName={"inline-flex w-auto"}
-                              onChange={() => {
-                                if (!isSelected(repo.id)) {
-                                  addRepository({ repoId: repo.id, orgId: organization.id });
-                                } else {
-                                  removeRepository({ repoId: repo.id, orgId: organization.id });
-                                }
-                              }}
-                            />
+              {filterOrganizationBySearch(organizations).map(organization =>
+                organization.repos.length ? (
+                  <VerticalListItemCard
+                    key={organization.login}
+                    title={organization.login || ""}
+                    avatarAlt={organization.login || ""}
+                    avatarSrc={organization.avatarUrl || ""}
+                  >
+                    <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
+                      {(organization.repos || []).map(repo => (
+                        <label
+                          key={repo.name}
+                          className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"
+                        >
+                          <Flex justify="start" item="start" direction="col" gap={2}>
+                            <Flex justify="between" item="center" className="w-full">
+                              <h3 className="h- text-body-m-bold">{repo.name}</h3>
+                              <FieldCheckbox
+                                value={isSelected(repo.id)}
+                                name={`repository-${repo.id}`}
+                                fieldClassName={"inline-flex w-auto"}
+                                onChange={() => {
+                                  if (!isSelected(repo.id)) {
+                                    addRepository({ repoId: repo.id, orgId: organization.id });
+                                  } else {
+                                    removeRepository({ repoId: repo.id, orgId: organization.id });
+                                  }
+                                }}
+                              />
+                            </Flex>
+                            <p
+                              className={`text-body-s line-clamp-2 w-full text-greyscale-200 ${
+                                !repo.description && "italic"
+                              }`}
+                            >
+                              {repo.description || T("project.details.overview.repositories.descriptionPlaceholder")}
+                            </p>
                           </Flex>
-                          <p
-                            className={`text-body-s line-clamp-2 w-full text-greyscale-200 ${
-                              !repo.description && "italic"
-                            }`}
-                          >
-                            {repo.description || T("project.details.overview.repositories.descriptionPlaceholder")}
-                          </p>
-                        </Flex>
-                      </label>
-                    ))}
-                  </div>
-                </VerticalListItemCard>
-              ))}
+                        </label>
+                      ))}
+                    </div>
+                  </VerticalListItemCard>
+                ) : null
+              )}
             </>
           )}
         />
