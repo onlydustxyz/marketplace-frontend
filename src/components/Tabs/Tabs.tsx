@@ -12,7 +12,7 @@ export type Tab = PropsWithChildren<{
 
 type Props = {
   tabs: Tab[];
-  variant: Variants;
+  variant?: Variants;
 };
 
 type DefaultProps = Props & {
