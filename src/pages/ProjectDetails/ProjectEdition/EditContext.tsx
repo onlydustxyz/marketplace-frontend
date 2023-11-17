@@ -134,7 +134,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const { data: organizationsData } = GithubApi.queries.useOrganizationsByGithubUserId({
     params: { githubUserId },
-    options: { retry: 1, enabled: !!githubUserId },
+    options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },
   });
 
   // !!Needed ( GITHHUB WORKFLOW) ?
@@ -170,8 +170,8 @@ export function EditProvider({ children, project }: EditContextProps) {
   const mergeOrganization = useMemo(() => {
     return uniqWith(
       [
-        ...(organizationsData || []),
         ...(project.organizations?.map(org => ({ ...org, installed: true, repos: org?.repos || [] })) || []),
+        ...(organizationsData || []),
       ],
       (arr, oth) => arr.id === oth.id
     );
