@@ -33,7 +33,10 @@ function SafeProjectEdition() {
   const { T } = useIntl();
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
-  const [activeTab, setActiveTab] = useState<TabsType>(installation_id ? TabsType.Repos : TabsType.General);
+  const initialTab = searchParams.get("tab") ?? "";
+  const [activeTab, setActiveTab] = useState<TabsType>(
+    installation_id || initialTab === TabsType.Repos ? TabsType.Repos : TabsType.General
+  );
   const { form } = useContext(EditContext);
 
   const tabs = useMemo(

@@ -40,6 +40,7 @@ export enum RoutePaths {
   Login = "/login",
   ProjectCreation = "/p/create",
   ProjectDetails = "/p/:projectKey",
+  ProjectDetailsEditRepos = "/p/:projectKey/edit?tab=Repos",
   Rewards = "/rewards",
   CatchAll = "*",
   Error = "/error",
