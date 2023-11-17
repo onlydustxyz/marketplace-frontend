@@ -905,6 +905,8 @@
               },
               "projectLead": {
                 "placeholderLabel": "Pick a contributor or type in Github handle",
+                "startType": "Type one or more characters to search for a contributor or Github handle",
+                "empty": "Nothing here",
                 "info": "To remove a project lead, ask us using the feedback form in the header."
               }
             }

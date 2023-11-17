@@ -222,7 +222,6 @@ export function EditProvider({ children, project }: EditContextProps) {
       onSuccess: async data => {
         showToaster(T("form.toast.success"));
         clearSession();
-        form.reset();
 
         // Replace the current path on the history stack if different
         const newPathname = `${generatePath(RoutePaths.ProjectDetails, {
@@ -238,7 +237,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const onSubmit = (formData: EditFormData) => {
     updateProject(formData);
-    form.reset(formData);
+    form.reset(form.getValues());
   };
 
   return (

@@ -22,7 +22,7 @@ export function RepositoryOrganization({ organization }: RepositoryOrganizationT
         avatarAlt={organization?.name || organization?.login || ""}
         avatarSrc={organization?.avatarUrl || ""}
       >
-        <div className="grid grid-flow-row grid-cols-3 gap-x-5 gap-y-5">
+        <div className="grid grid-flow-row grid-cols-1 gap-x-5 gap-y-5 lg:grid-cols-2 xl:grid-cols-3">
           {installedRepo.map(repo => (
             <Repository key={repo.name} organization={organization} repository={repo} />
           ))}
