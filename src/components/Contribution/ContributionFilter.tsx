@@ -107,7 +107,17 @@ export function ContributionFilter({
     <Popover className="relative">
       {({ open }) => (
         <>
-          <Popover.Button as={Button} type={ButtonType.Secondary} size={ButtonSize.Sm} pressed={open}>
+          <Popover.Button
+            as={Button}
+            type={ButtonType.Secondary}
+            size={ButtonSize.Sm}
+            pressed={open}
+            className={
+              filters.types.length || filters.projects.length || filters.repos.length
+                ? "border-spacePurple-200 text-spacePurple-100"
+                : ""
+            }
+          >
             <FilterIcon /> {T("filter.title")}
           </Popover.Button>
 
