@@ -95,6 +95,7 @@ const RewardList: React.FC = () => {
           </Button>
         </Flex>
       </div>
+      {/* <MissingGithubAppInstallBanner slug={projectKey} /> */}
       {!isBudgetLoading && projectBudget ? <RemainingBudget projectBudget={projectBudget} /> : null}
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
         <div className="w-full">

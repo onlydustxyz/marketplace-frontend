@@ -102,6 +102,7 @@ export default function Contributors() {
           )}
         </div>
       </Title>
+      {/* <MissingGithubAppInstallBanner slug={project.slug} /> */}
       <ProjectLeadInvitation
         projectId={projectId}
         size={CalloutSizes.Large}

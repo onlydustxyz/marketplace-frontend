@@ -1022,6 +1022,12 @@
         "newReward": "Reward contributor",
         "noRewards": "No rewards so far",
         "send": "Give your first one!"
+      },
+      "banners": {
+        "missingGithubAppInstall": {
+          "message": "We identified multiple issues on your project. Please fix them to be able to reward contributors.",
+          "button": "Edit project"
+        }
       }
     },
     "error": {

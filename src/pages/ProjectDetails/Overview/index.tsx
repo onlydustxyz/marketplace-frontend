@@ -22,7 +22,7 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectL
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import Tag, { TagSize } from "src/components/Tag";
 import { withTooltip } from "src/components/Tooltip";
-import { viewportConfig } from "src/config";
+import config, { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
 import {
   UserProfileInfo,
@@ -62,7 +62,7 @@ export default function Overview() {
   const projectId = project?.id;
   const projectName = project?.name;
   const projectSlug = project?.slug;
-  const logoUrl = project?.logoUrl || onlyDustLogo;
+  const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
   const githubRepos = sortBy(project?.repos, "stars")
     .reverse()
@@ -128,6 +128,7 @@ export default function Overview() {
           ) : null}
         </div>
       </Title>
+      {/* <MissingGithubAppInstallBanner slug={project.slug} /> */}
       <ProjectLeadInvitation
         projectId={projectId}
         size={CalloutSizes.Large}
@@ -211,12 +212,14 @@ function ProjectDescriptionCard({
   languages,
   description,
 }: ProjectDescriptionCardProps) {
+  const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
+
   return (
     <Card className="flex flex-col gap-4 px-6 py-4">
       <div className="flex flex-row items-center gap-4">
         <img
           alt={projectName || ""}
-          src={logoUrl}
+          src={projectUrl}
           className="h-20 w-20 flex-shrink-0 rounded-lg bg-spaceBlue-900 object-cover"
         />
         <div className="flex w-full flex-col gap-1">
