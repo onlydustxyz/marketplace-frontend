@@ -1040,6 +1040,10 @@
     "projectLeadInvitation": {
       "prompt": "You've been promoted to Project Lead",
       "view": "View invite"
+    },
+    "missingGithubAppInstall": {
+      "message": "We identified multiple errors on your project. Please fix them to be able to reward contributors.",
+      "button": "Edit project"
     }
   },
   "projectLeadInvitation": {

@@ -326,3 +326,8 @@ export enum ContributionStatus {
 }
 
 export type GithubStatus = components["schemas"]["ContributionPageItemResponse"]["githubStatus"];
+
+export enum Visibility {
+  Public = "PUBLIC",
+  Private = "PRIVATE",
+}

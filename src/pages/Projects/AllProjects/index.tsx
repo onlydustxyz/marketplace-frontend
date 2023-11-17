@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
-import ProjectCard from "src/components/ProjectCard";
+import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/Sorting/SortingDropdown";
@@ -108,7 +108,12 @@ export default function AllProjects({
           {projects.map((project, index) => {
             const isFirstHiringProject = index === 0 && project.hiring;
             return (
-              <ProjectCard className={isFirstHiringProject ? "mt-3" : undefined} key={project.id} project={project} />
+              <ProjectCard
+                className={isFirstHiringProject ? "mt-3" : undefined}
+                key={project.id}
+                project={project}
+                variant={project.isMissingGithubAppInstallation ? ProjectCardVariant.Error : ProjectCardVariant.Default}
+              />
             );
           })}
           {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}

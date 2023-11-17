@@ -1,70 +1,75 @@
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { generatePath, Link } from "react-router-dom";
 import { components } from "src/__generated/api";
 import { RoutePaths } from "src/App";
 import Card, { CardBorder } from "src/components/Card";
 import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import Tag, { TagSize } from "src/components/Tag";
+import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import config, { viewportConfig } from "src/config";
+import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import RecordCircleLine from "src/icons/RecordCircleLine";
 import User3Line from "src/icons/User3Line";
+import { Visibility } from "src/types";
 import { cn } from "src/utils/cn";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
-import { useMediaQuery } from "usehooks-ts";
+import { MissingGithubAppInstall } from "../New/Project/MissingGithubAppInstall";
 import ProjectTitle from "./ProjectTitle";
+
+export enum Variant {
+  Default = "default",
+  Error = "error",
+}
 
 type ProjectCardProps = {
   project: components["schemas"]["ProjectPageItemResponse"];
   className?: string;
+  variant?: Variant;
 };
 
-export default function ProjectCard({ project, className }: ProjectCardProps) {
+export default function ProjectCard({ project, className, variant = Variant.Default }: ProjectCardProps) {
   const {
     id,
     sponsors,
     hiring,
-    name,
+    name = "",
     logoUrl,
     visibility,
     shortDescription,
-    contributorCount,
+    contributorCount = 0,
     technologies,
     slug,
-    leaders,
-    repoCount,
+    leaders = [],
+    repoCount = 0,
     isInvitedAsProjectLead,
+    isMissingGithubAppInstallation,
   } = project;
 
   const { T } = useIntl();
-  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
-
-  const repositoryCount = repoCount || 0;
-
-  const topSponsors = sponsors?.map(sponsor => sponsor).slice(0, 3) || [];
-
+  const topSponsors = sponsors?.map(sponsor => sponsor).slice(0, 3) ?? [];
   const languages = technologies ? getTopTechnologies(technologies) : [];
-
-  const contributorsCount = contributorCount || 0;
-
-  const hasPendingInvitation = isInvitedAsProjectLead;
 
   const card = (
     <Card
-      className={cn("relative bg-noise-light hover:bg-right", className)}
-      border={hasPendingInvitation ? CardBorder.MultiColor : CardBorder.Medium}
+      className={cn(
+        "relative",
+        {
+          "bg-noise-light hover:bg-right": variant === Variant.Default,
+          "border-orange-500 bg-orange-900": variant === Variant.Error,
+        },
+        className
+      )}
+      border={isInvitedAsProjectLead ? CardBorder.MultiColor : CardBorder.Medium}
       dataTestId="project-card"
     >
       {hiring && (
         <div className="absolute -top-3.5 right-3.5">
-          <Tag size={TagSize.Small} opaque>
+          <Tag size={TagSize.Small} opaque borderColor={variant === Variant.Error ? TagBorderColor.Orange : undefined}>
             <RecordCircleLine />
             {T("project.hiring")}
           </Tag>
@@ -75,36 +80,41 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
           <div className="min-w-0 basis-1/3 flex-col gap-y-5 lg:flex">
             <ProjectTitle
               projectId={id}
-              projectName={name || ""}
-              projectLeads={leaders || []}
-              logoUrl={projectUrl || onlyDustLogo}
-              private={visibility === "PRIVATE"}
+              projectName={name}
+              projectLeads={leaders}
+              logoUrl={projectUrl}
+              private={visibility === Visibility.Private}
             />
-            {languages.length > 0 && (
+            {languages.length ? (
               <div className="hidden lg:block">
                 <Tag testid={`languages-${id}`} size={TagSize.Large}>
                   <CodeSSlashLine className="text-xl" />
                   {buildLanguageString(languages)}
                 </Tag>
               </div>
-            )}
+            ) : null}
           </div>
           <div className="flex basis-2/3 flex-col justify-center gap-4 lg:gap-4 lg:pl-6">
             <div className="ml-px line-clamp-2 text-sm xl:text-base">{shortDescription}</div>
             <div className="flex flex-row flex-wrap gap-1 xl:gap-2">
-              {repositoryCount && (
+              {repoCount && (
                 <Tag testid={`github-repo-count-${id}`} size={TagSize.Small}>
                   <GitRepositoryLine />
-                  {isXl ? T("project.details.githubRepos.count", { count: repositoryCount }) : repositoryCount}
+                  <span className="hidden xl:inline">
+                    {T("project.details.githubRepos.count", { count: repoCount })}
+                  </span>
+                  <span className="xl:hidden">{repoCount}</span>
                 </Tag>
               )}
-              {contributorsCount > 0 && (
+
+              {contributorCount ? (
                 <Tag testid={`contributor-count-${id}`} size={TagSize.Small}>
                   <User3Line />
-                  {T("project.details.contributors.count", { count: contributorsCount })}
+                  {T("project.details.contributors.count", { count: contributorCount })}
                 </Tag>
-              )}
-              {topSponsors?.length > 0 && (
+              ) : null}
+
+              {topSponsors?.length ? (
                 <Tag
                   testid={`sponsor-list-${id}`}
                   size={TagSize.Small}
@@ -136,11 +146,14 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
                     ? topSponsors.at(0)?.name
                     : T("project.sponsorsCount", { count: topSponsors.length })}
                 </Tag>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
-        {hasPendingInvitation && <ProjectLeadInvitationView btnLabel={T("project.projectLeadInvitation.view")} />}
+        {isInvitedAsProjectLead ? (
+          <ProjectLeadInvitationView btnLabel={T("project.projectLeadInvitation.view")} />
+        ) : null}
+        {isMissingGithubAppInstallation ? <MissingGithubAppInstall slug={project.slug} /> : null}
       </div>
     </Card>
   );
