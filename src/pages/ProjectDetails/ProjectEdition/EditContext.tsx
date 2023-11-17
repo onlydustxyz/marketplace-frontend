@@ -67,8 +67,8 @@ const validationSchema = z.object({
   longDescription: z.string().min(1),
   moreInfo: z.array(
     z.object({
-      url: z.string().min(1).nullish(),
-      value: z.string().min(1).nullish(),
+      url: z.string().nullish(),
+      value: z.string().nullish(),
     })
   ),
   name: z.string().min(1),
