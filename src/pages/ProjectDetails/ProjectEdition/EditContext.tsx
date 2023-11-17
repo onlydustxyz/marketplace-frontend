@@ -61,14 +61,14 @@ export const EditContext = createContext<Edit>({
 });
 
 const validationSchema = z.object({
-  logoUrl: z.string(),
+  logoUrl: z.string().optional(),
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
   moreInfo: z.array(
     z.object({
-      url: z.string().min(1),
-      value: z.string().min(1),
+      url: z.string().min(1).nullish(),
+      value: z.string().min(1).nullish(),
     })
   ),
   name: z.string().min(1),
