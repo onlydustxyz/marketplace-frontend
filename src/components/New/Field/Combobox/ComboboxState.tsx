@@ -19,9 +19,9 @@ export function ComboboxState<T extends Record<string, unknown>>({
 
   let hasItems;
   if (isMultiList) {
-    items.flatMap(item => ("data" in item ? item.data : [])).length > 0;
+    hasItems = items.flatMap(item => ("data" in item ? item.data : [])).length > 0;
   } else {
-    items.length > 0;
+    hasItems = items.length > 0;
   }
 
   return (
