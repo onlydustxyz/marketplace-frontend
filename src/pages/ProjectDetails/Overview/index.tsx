@@ -33,7 +33,6 @@ import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProf
 import { useIntl } from "src/hooks/useIntl";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { Action, SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
-import { rates } from "src/hooks/useWorkEstimation";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import LockFill from "src/icons/LockFill";
@@ -93,7 +92,7 @@ export default function Overview() {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+  const isRewardDisabled = remainingBudget === 0;
 
   return (
     <>

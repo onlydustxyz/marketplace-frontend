@@ -12,7 +12,6 @@ import { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { useIntl } from "src/hooks/useIntl";
-import { rates } from "src/hooks/useWorkEstimation";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
 import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/pages/ProjectDetails/Title";
@@ -40,7 +39,7 @@ export default function Contributors() {
   const isProjectLeader = useProjectLeader({ id: projectId });
 
   const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+  const isRewardDisabled = remainingBudget === 0;
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: isProjectLeader ? Fields.ToRewardCount : Fields.ContributionCount,

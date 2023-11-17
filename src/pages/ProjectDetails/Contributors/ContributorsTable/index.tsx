@@ -3,7 +3,6 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import { viewportConfig } from "src/config";
-import { rates } from "src/hooks/useWorkEstimation";
 import { useMediaQuery } from "usehooks-ts";
 import View from "./View";
 import { ViewMobile } from "./ViewMobile";
@@ -28,21 +27,17 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
 
   const navigate = useNavigate();
 
-  const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
-
   const onRewardGranted = (contributor: C) => {
-    if (!isSendingNewPaymentDisabled) {
-      navigate(
-        generatePath(RoutePaths.ProjectDetails, { projectKey }) +
-          "/" +
-          ProjectRoutePaths.Rewards +
-          "/" +
-          ProjectRewardsRoutePaths.New,
-        {
-          state: { recipientGithubLogin: contributor.login },
-        }
-      );
-    }
+    navigate(
+      generatePath(RoutePaths.ProjectDetails, { projectKey }) +
+        "/" +
+        ProjectRoutePaths.Rewards +
+        "/" +
+        ProjectRewardsRoutePaths.New,
+      {
+        state: { recipientGithubLogin: contributor.login },
+      }
+    );
   };
 
   return isXl ? (
