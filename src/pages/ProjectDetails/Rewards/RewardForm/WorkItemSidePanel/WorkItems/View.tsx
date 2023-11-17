@@ -42,6 +42,8 @@ type Props = {
   ignoreContribution: (contribution: ContributionFragment) => void;
   unignoreContribution: (contribution: ContributionFragment) => void;
   contributorId: number;
+  /** NEW PROPS **/
+  setIncludeIgnoredItems: (value: boolean) => void;
 };
 
 export default function View({
@@ -53,6 +55,7 @@ export default function View({
   ignoreContribution,
   unignoreContribution,
   contributorId,
+  setIncludeIgnoredItems,
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
@@ -93,6 +96,12 @@ export default function View({
     control,
     name: showIgnoredItemsName,
   });
+
+  useEffect(() => {
+    setIncludeIgnoredItems(showIgnoredItems);
+  }, [showIgnoredItems]);
+
+  console.log("showIgnoredItems", showIgnoredItems);
 
   const visibleIssues = showIgnoredItems ? contributions : filter(contributions, { ignored: false });
 

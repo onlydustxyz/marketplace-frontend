@@ -17,7 +17,8 @@ export default function useRewardableItemsQueryParams(props: RewardableItemsQuer
 
     if (type) params["type"] = type;
     if (search) params["search"] = search;
-    if (includeIgnoredItems) params["include_ignored_items"] = includeIgnoredItems.toString();
+    if (includeIgnoredItems || includeIgnoredItems === false)
+      params["include_ignored_items"] = includeIgnoredItems.toString();
     if (props.githubUserId !== undefined) params["githubUserId"] = props.githubUserId.toString();
 
     return params;

@@ -34,7 +34,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
   const { queryParams, setType, setSearch, setIncludeIgnoredItems } = useRewardableItemsQueryParams({
     type: ContributionType.PullRequest,
     githubUserId: contributorId,
-    includeIgnoredItems: true,
+    includeIgnoredItems: false,
   });
 
   const {
@@ -97,6 +97,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
       unignoreContribution={(contribution: ContributionFragment) =>
         contribution.id && unignoreContribution(projectId, contribution.id)
       }
+      setIncludeIgnoredItems={setIncludeIgnoredItems}
     />
   );
 }
