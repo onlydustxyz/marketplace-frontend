@@ -236,8 +236,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const onSubmit = (formData: EditFormData) => {
-    // updateProject(formData);
-    updateProject({ ...formData, logoUrl: null });
+    updateProject(formData);
     form.reset(form.getValues());
   };
 
