@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import { EditContext } from "../../../EditContext";
+import Button, { ButtonSize } from "src/components/Button";
 
 export const EditPanelOrganization = () => {
   const { T } = useIntl();
@@ -30,12 +31,8 @@ export const EditPanelOrganization = () => {
         ))}
       </ul>
       <div className="flex justify-start">
-        <a
-          href={`${import.meta.env.VITE_GITHUB_INSTALLATION_URL}?state=${project?.slug}`}
-          className="border-lg rounded-lg bg-white px-4 py-2 font-medium text-zinc-800"
-          onClick={githubWorklow.run}
-        >
-          {T("project.details.edit.organizations.installGithubApp")}
+        <a href={`${import.meta.env.VITE_GITHUB_INSTALLATION_URL}?state=${project?.slug}`} onClick={githubWorklow.run}>
+          <Button size={ButtonSize.Sm}>{T("project.details.edit.organizations.installGithubApp")}</Button>
         </a>
       </div>
     </div>
