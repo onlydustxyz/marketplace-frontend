@@ -53,7 +53,7 @@ const variants = {
   [Variant.Grey]: "bg-greyscale-900",
 };
 
-export function Combobox<T extends { [key: string]: unknown }>({
+export function Combobox<T extends Record<string, unknown>>({
   items,
   renderItem,
   query,
@@ -108,13 +108,13 @@ export function Combobox<T extends { [key: string]: unknown }>({
             leaveTo="opacity-0"
             afterLeave={() => onQuery("")}
             className={cn(
-              "absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12  p-4 shadow-heavy",
+              "absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 p-4 shadow-heavy",
               variants[variant]
             )}
           >
             <div className="h-9" />
             <HeadlessCombobox.Options className="max-h-60 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
-              <ComboboxState items={items} query={query} loading={loading} isMultiList={isMultiList} />
+              <ComboboxState {...{ items, query, loading, isMultiList }} />
 
               {isMultiList ? (
                 <MultiList {...{ items, itemKeyName, loading, renderItem }} />

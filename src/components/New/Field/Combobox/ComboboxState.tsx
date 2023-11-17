@@ -9,9 +9,20 @@ type StateProps<T> = {
   isMultiList?: boolean;
 };
 
-export function ComboboxState<T extends object>({ items, query, loading, isMultiList }: StateProps<T>) {
+export function ComboboxState<T extends Record<string, unknown>>({
+  items,
+  query,
+  loading,
+  isMultiList,
+}: StateProps<T>) {
   const { T } = useIntl();
-  const hasItems = isMultiList ? items.flatMap(item => ("data" in item ? item.data : [])).length > 0 : items.length > 0;
+
+  let hasItems;
+  if (isMultiList) {
+    items.flatMap(item => ("data" in item ? item.data : [])).length > 0;
+  } else {
+    items.length > 0;
+  }
 
   return (
     <>
@@ -19,9 +30,7 @@ export function ComboboxState<T extends object>({ items, query, loading, isMulti
         <div className="flex justify-center px-4 py-2 text-spacePurple-500">
           <Spinner />
         </div>
-      ) : null}
-
-      {!hasItems && !loading ? (
+      ) : !hasItems ? (
         <div className="select-none text-greyscale-50">
           {!query ? T("project.details.create.informations.form.fields.projectLead.startType") : null}
           {query !== "" ? T("project.details.create.informations.form.fields.projectLead.empty") : null}

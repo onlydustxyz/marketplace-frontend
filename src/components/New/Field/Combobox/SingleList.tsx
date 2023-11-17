@@ -1,5 +1,4 @@
 import { Combobox as HeadlessCombobox } from "@headlessui/react";
-import { ReactElement } from "react";
 import { cn } from "src/utils/cn";
 
 type SingleProps<T> = {
@@ -9,7 +8,7 @@ type SingleProps<T> = {
   renderItem: ({ item, selected, active }: { item: T; selected: boolean; active: boolean }) => JSX.Element;
 };
 
-export function SingleList<T>({ items, itemKeyName, loading, renderItem }: SingleProps<T>): ReactElement | null {
+export function SingleList<T>({ items, itemKeyName, loading, renderItem }: SingleProps<T>) {
   if (items.length <= 0 || loading) return null;
 
   return (

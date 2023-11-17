@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { Fragment } from "react";
 import { Combobox as HeadlessCombobox } from "@headlessui/react";
 import { cn } from "src/utils/cn";
 
@@ -11,10 +11,10 @@ type MultiProps<T> = {
   items: ItemType<T>[];
   itemKeyName: string;
   loading: boolean;
-  renderItem: ({ item, selected, active }: { item: T; selected: boolean; active: boolean }) => React.ReactNode;
+  renderItem: ({ item, selected, active }: { item: T; selected: boolean; active: boolean }) => JSX.Element;
 };
 
-export function MultiList<T>({ items, itemKeyName, loading, renderItem }: MultiProps<T>): ReactElement | null {
+export function MultiList<T>({ items, itemKeyName, loading, renderItem }: MultiProps<T>) {
   const filteredItems = items.flatMap(item => item).filter(({ data }) => data.length > 0);
 
   if (filteredItems.length === 0 || loading) return null;
@@ -22,7 +22,7 @@ export function MultiList<T>({ items, itemKeyName, loading, renderItem }: MultiP
   return (
     <>
       {filteredItems?.map((item, index) => (
-        <>
+        <Fragment key={`${item?.label} + index`}>
           {item.label && item.data.length > 0 ? (
             <div
               className={cn("text-body-s-bold border-none py-2 uppercase text-spaceBlue-200", {
@@ -44,11 +44,11 @@ export function MultiList<T>({ items, itemKeyName, loading, renderItem }: MultiP
                 }
                 value={value}
               >
-                {({ selected, active }) => renderItem({ item: value, selected, active }) as ReactElement}
+                {({ selected, active }) => renderItem({ item: value, selected, active })}
               </HeadlessCombobox.Option>
             );
           })}
-        </>
+        </Fragment>
       ))}
     </>
   );
