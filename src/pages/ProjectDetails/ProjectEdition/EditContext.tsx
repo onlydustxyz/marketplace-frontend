@@ -61,7 +61,7 @@ export const EditContext = createContext<Edit>({
 });
 
 const validationSchema = z.object({
-  logoUrl: z.string().optional(),
+  logoUrl: z.string().nullish(),
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
@@ -236,7 +236,8 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const onSubmit = (formData: EditFormData) => {
-    updateProject(formData);
+    // updateProject(formData);
+    updateProject({ ...formData, logoUrl: null });
     form.reset(form.getValues());
   };
 
