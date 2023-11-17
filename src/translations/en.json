@@ -140,6 +140,7 @@
       "contributor": "Contributor",
       "leftToPay": "Left to Pay",
       "noBudgetLeft": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
+      "githubApp": "Fix any remaining errors before being able to send reward.",
       "contributions": "Contributions",
       "totalEarned": "Earned",
       "rewards": "Rewards",

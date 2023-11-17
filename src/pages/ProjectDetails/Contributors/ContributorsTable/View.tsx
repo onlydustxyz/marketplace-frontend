@@ -3,15 +3,13 @@ import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { rates } from "src/hooks/useWorkEstimation";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
 import Headers from "./Headers";
-import ContributorLine from "./Line";
+import ContributorLine, { RewardDisabledReason } from "./Line";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 
 type Props<C> = {
   contributors: C[];
-  isProjectLeader: boolean;
   remainingBudget: number;
   onRewardGranted: (contributor: C) => void;
 } & ComponentProps<typeof Headers> &
@@ -28,7 +26,15 @@ export default function View<C extends components["schemas"]["ContributorPageIte
   sorting,
   sortField,
 }: Props<C>) {
-  const isSendingNewPaymentDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+  const noBudget = remainingBudget === 0;
+
+  function getRewardDisableReason() {
+    if (noBudget) {
+      return RewardDisabledReason.Budget;
+    }
+
+    // TODO handle github app case
+  }
 
   return (
     <Card>
@@ -42,8 +48,8 @@ export default function View<C extends components["schemas"]["ContributorPageIte
             {...{
               contributor,
               isProjectLeader,
-              isGivingRewardDisabled: isSendingNewPaymentDisabled,
               onRewardGranted,
+              rewardDisableReason: getRewardDisableReason(),
             }}
           />
         ))}
