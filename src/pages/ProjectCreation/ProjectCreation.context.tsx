@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useIntl } from "src/hooks/useIntl";
 import { z } from "zod";
@@ -92,11 +92,11 @@ export function CreateProjectProvider({
   formStorage,
   stepStorage,
   initialStep,
-  initialInstalledRepo,
   installedRepoStorage,
 }: CreateContextProps) {
   const { T } = useIntl();
   const navigate = useNavigate();
+  const poolingCount = useRef(0);
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
     initialStep || ProjectCreationSteps.ORGANIZATIONS
   );
@@ -115,7 +115,17 @@ export function CreateProjectProvider({
       params: { githubUserId },
       // Polling the organizations every second knowing that user can delete and installation
       // and the related github event can take an unknown delay to be triggered
-      options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },
+      //   options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },
+      options: {
+        retry: 1,
+        enabled: !!githubUserId && poolingCount.current <= 10,
+        // refetchInterval: 20000,
+        refetchInterval: () => {
+          console.log("refetchInterval", poolingCount.current);
+          poolingCount.current = poolingCount.current + 1;
+          return 2000;
+        },
+      },
     });
 
   const { mutate: createProject, ...restCreateProjectMutation } = ProjectApi.mutations.useCreateProject({
