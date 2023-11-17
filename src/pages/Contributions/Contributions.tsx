@@ -249,7 +249,7 @@ export default function Contributions() {
             <div className="relative z-10">
               <header className="sticky top-0 z-10 border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
                 <div className="flex items-center justify-between md:px-4">
-                  <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
+                  <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
                   <div className="hidden -translate-y-3 lg:block">
                     <ContributionFilter

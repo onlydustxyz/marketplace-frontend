@@ -68,7 +68,7 @@ export const EditPanel = () => {
           {T("project.details.edit.panel.title")}
         </div>
         <div className="mb-6 w-full">
-          <Tabs tabs={tabItems} variant="blue" mobileTitle={T("project.details.edit.panel.title")} />
+          <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("project.details.edit.panel.title")} />
         </div>
         {ActiveTab}
       </div>

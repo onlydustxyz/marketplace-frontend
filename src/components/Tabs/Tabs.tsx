@@ -10,17 +10,22 @@ export type Tab = PropsWithChildren<{
   testId?: string;
 }>;
 
-export function Tabs({
-  tabs,
-  variant = "grey",
-  showMobile = true,
-  mobileTitle = "",
-}: {
+type Props = {
   tabs: Tab[];
   variant: Variants;
-  showMobile?: boolean;
-  mobileTitle?: string;
-}) {
+};
+
+type DefaultProps = Props & {
+  showMobile?: false;
+  mobileTitle?: never;
+};
+
+type MobileProps = Props & {
+  showMobile: true;
+  mobileTitle: string;
+};
+
+export function Tabs({ tabs, variant = "grey", showMobile, mobileTitle }: DefaultProps | MobileProps) {
   return (
     <>
       <div
