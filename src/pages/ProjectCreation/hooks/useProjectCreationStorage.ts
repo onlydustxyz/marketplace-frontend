@@ -1,6 +1,6 @@
 import { ProjectCreationSteps } from "../types/ProjectCreationSteps";
 import { CreateFormData } from "../types/ProjectCreationType";
-import { useLocalStorage } from "src/hooks/useLocalStorage/useLocalStorage";
+import { useLocalStorage } from "src/hooks/useStorage/useStorage";
 
 const STORAGE_KEY = "create-project-";
 export const STORAGE_KEY_CREATE_PROJECT_FORM = `${STORAGE_KEY}form`;
@@ -8,58 +8,38 @@ export const STORAGE_KEY_CREATE_PROJECT_STEP = `${STORAGE_KEY}step`;
 export const STORAGE_KEY_CREATE_PROJECT_INSTALLATED_REPOS = `${STORAGE_KEY}installed-repos`;
 
 export const useProjectCreationFormStorage = () => {
-  const [storedValue, setValue, status, removeValue, clearSessionPattern] = useLocalStorage<CreateFormData | undefined>(
-    STORAGE_KEY_CREATE_PROJECT_FORM,
-    undefined
-  );
+  const storage = useLocalStorage<CreateFormData | undefined>({
+    key: STORAGE_KEY_CREATE_PROJECT_FORM,
+    initialValue: undefined,
+  });
 
-  return {
-    storedFormValue: storedValue,
-    saveFormData: setValue,
-    storedFormStatus: status,
-    removeFormValue: removeValue,
-    clearFormValue: clearSessionPattern,
-  };
+  return storage;
 };
 
 export const useProjectCreationStepStorage = () => {
-  const [storedValue, setValue, status, removeValue, clearSessionPattern] = useLocalStorage<ProjectCreationSteps>(
-    STORAGE_KEY_CREATE_PROJECT_STEP,
-    ProjectCreationSteps.ORGANIZATIONS
-  );
+  const storage = useLocalStorage<ProjectCreationSteps>({
+    key: STORAGE_KEY_CREATE_PROJECT_STEP,
+    initialValue: ProjectCreationSteps.ORGANIZATIONS,
+  });
 
-  return {
-    storedStepValue: storedValue,
-    saveStep: setValue,
-    storedStepStatus: status,
-    removeStepValue: removeValue,
-    clearStepValue: clearSessionPattern,
-  };
+  return storage;
 };
 
 export const useProjectCreationInstalledReposStorage = () => {
-  const [storedValue, setValue, status, removeValue, clearSessionPattern, getValue] = useLocalStorage<number[]>(
-    STORAGE_KEY_CREATE_PROJECT_INSTALLATED_REPOS,
-    []
-  );
+  const storage = useLocalStorage<number[]>({ key: STORAGE_KEY_CREATE_PROJECT_INSTALLATED_REPOS, initialValue: [] });
 
-  return {
-    storedInstalledRepoValue: storedValue,
-    saveInstalledRepo: setValue,
-    storedInstalledRepoStatus: status,
-    removeInstalledRepoValue: removeValue,
-    clearInstalledRepoValue: clearSessionPattern,
-    getInstalledRepoValue: getValue,
-  };
+  return storage;
 };
 
 export const useResetStorage = () => {
-  const { removeFormValue } = useProjectCreationFormStorage();
-  const { removeStepValue } = useProjectCreationStepStorage();
+  const formStorage = useProjectCreationFormStorage();
+  const stepStorage = useProjectCreationStepStorage();
+  const installedRepoStorage = useProjectCreationInstalledReposStorage();
 
   const reset = () => {
-    removeFormValue();
-    removeStepValue();
+    formStorage.removeValue();
+    installedRepoStorage.removeValue();
+    stepStorage.removeValue();
   };
 
   return { reset };

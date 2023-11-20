@@ -9,8 +9,6 @@ export const onSyncOrganizations = ({ selectedRepos, organizations }: onSyncOrga
   if (selectedRepos?.length && organizations) {
     const organizationIds = new Set(organizations?.map(org => org.id));
     const filteredRepos = selectedRepos?.filter(repo => organizationIds.has(repo.orgId));
-    // watchInstalledStorageOnSync();
-    // form.setValue("selectedRepos", filteredRepos, { shouldDirty: true, shouldValidate: true });
     return filteredRepos;
   }
 

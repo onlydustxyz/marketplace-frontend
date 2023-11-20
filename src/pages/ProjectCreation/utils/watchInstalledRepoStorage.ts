@@ -9,14 +9,10 @@ export const watchInstalledRepoStorage = ({
   installedRepo,
   organizations,
 }: watchInstalledRepoStorageInterface): number[] => {
-  console.log("1", organizations, installedRepo);
   if (installedRepo?.length && organizations?.length) {
-    console.log("2", organizations);
     const installedOrganizations = new Set(
-      organizations?.filter(org => (org.installed ? org.id : null)).map(org => org.id)
+      organizations?.filter(org => (org.installed ? org.installationId : null)).map(org => org.installationId)
     );
-
-    console.log("installedOrganizations", installedOrganizations);
 
     return installedRepo?.filter(repo => !installedOrganizations.has(repo));
   }

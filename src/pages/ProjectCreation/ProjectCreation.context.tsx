@@ -4,7 +4,6 @@ import { useIntl } from "src/hooks/useIntl";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateFormData, CreateFormDataRepos } from "./types/ProjectCreationType";
-import { useResetSession } from "./hooks/useProjectCreationSession";
 import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";
 import { useAuth } from "src/hooks/useAuth";
 import GithubApi from "src/api/Github";
@@ -16,33 +15,35 @@ import ProjectApi from "src/api/Project";
 import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
-import { STORAGE_KEY_CREATE_PROJECT_FORM } from "./hooks/useProjectCreationStorage";
+import { STORAGE_KEY_CREATE_PROJECT_FORM, useResetStorage } from "./hooks/useProjectCreationStorage";
 import { onSyncOrganizations } from "./utils/syncOrganization";
 import { watchInstalledRepoStorage } from "./utils/watchInstalledRepoStorage";
+import { StorageInterface } from "src/hooks/useStorage/Storage";
 
+/**
+ * @interface CreateContextProps
+ * @property {CreateFormData | undefined} initialProject - Initial project data.
+ * @property {ProjectCreationSteps | undefined} initialStep - Initial step in project creation.
+ * @property {number[] | undefined} initialInstalledRepo - Initially installed repositories.
+ * @property {React.ReactNode} children - React components.
+ * @property {StorageInterface<CreateFormData | undefined>} formStorage - Storage for form data.
+ * @property {StorageInterface<ProjectCreationSteps>} stepStorage - Storage for step information.
+ * @property {StorageInterface<number[]>} reposStorage - Storage for repository information.
+ */
 interface CreateContextProps {
   initialProject: CreateFormData | undefined;
   initialStep: ProjectCreationSteps | undefined;
   initialInstalledRepo: number[] | undefined;
   children: React.ReactNode;
-  formStorage: {
-    setValue: (values: CreateFormData) => void;
-    removeValue: () => void;
-  };
-  stepStorage: {
-    setValue: (values: ProjectCreationSteps) => void;
-    removeValue: () => void;
-  };
-  installedRepoStorage: {
-    setValue: (values: number[]) => void;
-    removeValue: () => void;
-    getValue: () => number[] | undefined;
-  };
+  formStorage: StorageInterface<CreateFormData | undefined>;
+  stepStorage: StorageInterface<ProjectCreationSteps>;
+  reposStorage: StorageInterface<number[]>;
 }
 
 type CreateProject = {
   form: UseFormReturn<CreateFormData, unknown>;
   currentStep: ProjectCreationSteps;
+  installedRepos: number[];
   organizations: UseOrganizationsByGithubUserIdResponse[];
   formFn: {
     addRepository: (data: CreateFormDataRepos) => void;
@@ -59,6 +60,7 @@ type CreateProject = {
 export const CreateProjectContext = createContext<CreateProject>({
   form: {} as UseFormReturn<CreateFormData, unknown>,
   currentStep: ProjectCreationSteps.ORGANIZATIONS,
+  installedRepos: [],
   organizations: [],
   helpers: {
     saveInSession: () => null,
@@ -89,12 +91,14 @@ const validationSchema = z.object({
 export function CreateProjectProvider({
   children,
   initialProject,
+  initialInstalledRepo,
   formStorage,
   stepStorage,
   initialStep,
-  installedRepoStorage,
+  reposStorage,
 }: CreateContextProps) {
   const { T } = useIntl();
+  const [installedRepos, setInstalledRepos] = useState<number[]>(initialInstalledRepo || []);
   const navigate = useNavigate();
   const poolingCount = useRef(0);
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
@@ -102,36 +106,35 @@ export function CreateProjectProvider({
   );
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
-  // TODO : When get installation_id from url -> save it in storage if not present
-  // TODO : when sync repo if an organization id with on of the instalated repo is present remove it in storage
-  // TODO : in the orgazation list if the installation_id is include in the storage so make it disable
-
-  // TODO : 5 sync pour le pooling max
 
   const { githubUserId } = useAuth();
-  const { reset: clearSession } = useResetSession();
-  const { data: organizationsData, isLoading: isOrganizationsLoading } =
-    GithubApi.queries.useOrganizationsByGithubUserId({
-      params: { githubUserId },
-      // Polling the organizations every second knowing that user can delete and installation
-      // and the related github event can take an unknown delay to be triggered
-      //   options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },
-      options: {
-        retry: 1,
-        enabled: !!githubUserId && poolingCount.current <= 10,
-        // refetchInterval: 20000,
-        // refetchInterval: () => {
-        //   console.log("refetchInterval", poolingCount.current);
-        //   poolingCount.current = poolingCount.current + 1;
-        //   return 2000;
-        // },
+  const { reset: clearStorage } = useResetStorage();
+  const { data: organizationsData } = GithubApi.queries.useOrganizationsByGithubUserId({
+    params: { githubUserId },
+    // Polling the organizations every second knowing that user can delete and installation
+    // and the related github event can take an unknown delay to be triggered
+    //   options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },
+    options: {
+      retry: 1,
+      enabled: !!githubUserId && poolingCount.current <= 10,
+      refetchOnWindowFocus: () => {
+        poolingCount.current = 0;
+        return true;
       },
-    });
+      refetchInterval: () => {
+        if (poolingCount.current < 5) {
+          poolingCount.current = poolingCount.current + 1;
+          return 2000;
+        }
+        return 0;
+      },
+    },
+  });
 
   const { mutate: createProject, ...restCreateProjectMutation } = ProjectApi.mutations.useCreateProject({
     options: {
       onSuccess: data => {
-        clearSession();
+        clearStorage();
         if (data?.projectSlug) {
           navigate(generatePath(RoutePaths.ProjectDetails, { projectKey: data.projectSlug }));
         }
@@ -220,9 +223,10 @@ export function CreateProjectProvider({
     if (installation_id) {
       const newInstalledRepoStorage = watchInstalledRepoStorage({
         organizations: organizationsData || [],
-        installedRepo: [...new Set([...(installedRepoStorage.getValue() || []), parseInt(installation_id)])],
+        installedRepo: [...new Set([...(reposStorage.getValue() || []), parseInt(installation_id)])],
       });
-      installedRepoStorage.setValue(newInstalledRepoStorage);
+      reposStorage.setValue(newInstalledRepoStorage);
+      setInstalledRepos(newInstalledRepoStorage);
     }
   }, [installation_id, organizationsData]);
 
@@ -243,6 +247,7 @@ export function CreateProjectProvider({
       value={{
         form,
         currentStep,
+        installedRepos,
         organizations: organizationsData || [],
         helpers: {
           saveInSession: onSaveInSession,

@@ -9,8 +9,8 @@ import config from "src/config";
 import { useState } from "react";
 import ConfirmationPopOver from "src/components/New/Popover/confirmationPopover";
 import {
-  STORAGE_KEY_CREATE_PROJECT_FORM,
   STORAGE_KEY_CREATE_PROJECT_STEP,
+  useResetStorage,
 } from "src/pages/ProjectCreation/hooks/useProjectCreationStorage";
 import { ProjectCreationSteps } from "src/pages/ProjectCreation/types/ProjectCreationSteps";
 import { useLazyGetUserPermissions } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
@@ -25,15 +25,14 @@ export default function SubmitProject() {
   const navigate = useNavigate();
   const [getPermission] = useLazyGetUserPermissions();
   const [modalOpened, setModalOpened] = useState(false);
-
+  const { reset: clearStorage } = useResetStorage();
   const toggleModal = () => setModalOpened(!modalOpened);
   const closeModal = () => setModalOpened(false);
 
   const dispatchSession = useSessionDispatch();
 
   const onCancel = () => {
-    localStorage.removeItem(STORAGE_KEY_CREATE_PROJECT_STEP);
-    localStorage.removeItem(STORAGE_KEY_CREATE_PROJECT_FORM);
+    clearStorage();
     startProjectCreation();
   };
 

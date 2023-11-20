@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StorageClass, StorageInterface } from "./Storage";
 
 export interface useStorageInterface<T> {
@@ -12,6 +12,10 @@ export const useStorage = <T>({
   storageType = localStorage,
 }: useStorageInterface<T> & { storageType: Storage }): StorageInterface<T> => {
   const storage = useRef(new StorageClass<T>(key, initialValue, storageType));
+
+  useEffect(() => {
+    storage.current.init();
+  }, []);
 
   return storage.current;
 };
@@ -31,6 +35,10 @@ export const useStorageSubscription = <T>({
       }
     })
   );
+
+  useEffect(() => {
+    storage.current.init();
+  }, []);
 
   return [{ value, ready: status === "ready" }, storage.current];
 };
