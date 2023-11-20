@@ -120,11 +120,11 @@ export function CreateProjectProvider({
         retry: 1,
         enabled: !!githubUserId && poolingCount.current <= 10,
         // refetchInterval: 20000,
-        refetchInterval: () => {
-          console.log("refetchInterval", poolingCount.current);
-          poolingCount.current = poolingCount.current + 1;
-          return 2000;
-        },
+        // refetchInterval: () => {
+        //   console.log("refetchInterval", poolingCount.current);
+        //   poolingCount.current = poolingCount.current + 1;
+        //   return 2000;
+        // },
       },
     });
 
