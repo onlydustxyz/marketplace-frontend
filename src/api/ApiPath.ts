@@ -8,7 +8,6 @@ export const API_PATH = {
   /* --------------------------------- GITHUB --------------------------------- */
   GITHUB_USERS: BASE_API_V1("github/users"),
   GITHUB_INSTALLATIONS: (installations_id: string) => BASE_API_V1(`github/installations/${installations_id}`),
-  GITHUB_ORGANIZATIONS_BY_USERID: BASE_API_V1("github/users/organizations"),
 
   /* --------------------------------- PROJECT -------------------------------- */
   PROJECTS: BASE_API_V1("projects"),

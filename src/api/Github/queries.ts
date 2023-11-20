@@ -17,17 +17,4 @@ const useInstallationById = ({
   });
 };
 
-export type UseOrganizationsByGithubUserIdResponse = components["schemas"]["GithubOrganizationResponse"];
-
-const useOrganizationsByGithubUserId = ({
-  params,
-  options = {},
-}: UseQueryProps<UseOrganizationsByGithubUserIdResponse[], unknown>) => {
-  return useBaseQuery<UseOrganizationsByGithubUserIdResponse[]>({
-    resourcePath: API_PATH.GITHUB_ORGANIZATIONS_BY_USERID,
-    tags: GITHUB_TAGS.organizations(0),
-    ...options,
-  });
-};
-
-export default { useInstallationById, useOrganizationsByGithubUserId };
+export default { useInstallationById };
