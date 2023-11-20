@@ -5,7 +5,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateFormData, CreateFormDataRepos } from "./types/ProjectCreationType";
 import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";
-import { useAuth } from "src/hooks/useAuth";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Button, { ButtonSize } from "src/components/Button";
 import useMutationAlert from "src/api/useMutationAlert";
@@ -107,7 +106,6 @@ export function CreateProjectProvider({
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
 
-  const { githubUserId } = useAuth();
   const { reset: clearStorage } = useResetStorage();
   const { data: organizationsData } = MeApi.queries.useGithubOrganizations({
     // Polling the organizations every second knowing that user can delete and installation
@@ -115,7 +113,6 @@ export function CreateProjectProvider({
     //   options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },
     options: {
       retry: 1,
-      enabled: !!githubUserId && poolingCount.current <= 10,
       refetchOnWindowFocus: () => {
         poolingCount.current = 0;
         return true;

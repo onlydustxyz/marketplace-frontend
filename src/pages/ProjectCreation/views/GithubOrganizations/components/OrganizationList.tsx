@@ -14,14 +14,18 @@ export default function OrganizationList({
   emptyListFallBackText,
   installatedRepo,
 }: OrganizationListProps) {
+  const getLinkUrl = (org: UseGithubOrganizationsResponse) => {
+    if (org.installed && org.installationId) {
+      return `https://github.com/organizations/${org.login}/settings/installations/${org.installationId}`;
+    }
+
+    return `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}`;
+  };
   if (organizations.length) {
     return (
       <ul className="flex flex-col gap-2 py-4 pb-6">
         {organizations.map((org, index) => {
-          const linkUrl = org.installed
-            ? // TODO when org installed is true, use installationId instead of org.id
-              `https://github.com/organizations/${org.login}/settings/installations/${org.id}`
-            : `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}`;
+          const linkUrl = getLinkUrl(org);
 
           return (
             <HorizontalListItemCard

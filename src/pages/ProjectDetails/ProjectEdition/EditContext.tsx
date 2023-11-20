@@ -12,7 +12,6 @@ import { EditPanelProvider } from "./components/Panel/context";
 import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 import { FieldProjectLeadValue } from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "src/hooks/useAuth";
 import { uniqWith } from "lodash";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import MeApi from "src/api/me";
@@ -94,7 +93,6 @@ const SESSION_KEY = "edit-project-";
 
 export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
@@ -106,7 +104,6 @@ export function EditProvider({ children, project }: EditContextProps) {
   const { data: organizationsData } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
-      enabled: !!githubUserId && poolingCount.current <= 10,
       refetchOnWindowFocus: () => {
         poolingCount.current = 0;
         return true;
