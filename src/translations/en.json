@@ -853,11 +853,11 @@
         "organizations": {
           "title": "Which organisations are concerned?",
           "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",
-          "installAnotherOrgs": "Install to another organization",
+          "installAnotherOrgs": "Install to another organisation",
           "installedOn": {
-            "many": "Installed on __count__ organizations",
-            "one": "Installed on 1 organization",
-            "zero": "Installed on 0 organizations"
+            "many": "Installed on __count__ organisations",
+            "one": "Installed on 1 organisation",
+            "zero": "Installed on 0 organisations"
           }
         },
         "repository": {
