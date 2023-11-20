@@ -25,7 +25,6 @@ import PublicProfilePage from "src/pages/PublicProfile";
 import TermsAndConditions from "src/pages/TermsAndConditions";
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
-import { useAuth } from "src/hooks/useAuth";
 import GithubCallbackHandler from "src/pages/Callbacks/GithubCallbackHandler";
 import ProjectCreation from "src/pages/ProjectCreation/ProjectCreation";
 import ProtectedByFlag from "./ProtectedByFlag";
@@ -61,8 +60,6 @@ export enum ProjectRewardsRoutePaths {
 }
 
 function App() {
-  const { isLoggedIn } = useAuth();
-
   const projectRoutes: RouteObject[] = [
     {
       index: true,
