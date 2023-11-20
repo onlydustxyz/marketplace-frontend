@@ -1,4 +1,4 @@
-import { filter, some } from "lodash";
+import { filter } from "lodash";
 import { ReactElement, forwardRef, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
@@ -125,14 +125,12 @@ export default function View({
               />
             )}
           </div>
-          {some(contributions, { ignored: true }) && (
-            <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
-              <EyeOffLine />
+          <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
+            <EyeOffLine />
 
-              <div className="inline lg:hidden xl:flex">{T("reward.form.contributions.showIgnored")}</div>
-              <FormToggle name={showIgnoredItemsName} control={control} />
-            </div>
-          )}
+            <div className="inline lg:hidden xl:flex">{T("reward.form.contributions.showIgnored")}</div>
+            <FormToggle name={showIgnoredItemsName} control={control} />
+          </div>
         </div>
         {addOtherIssueEnabled && type !== WorkItemType.CodeReview && (
           <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} contributorId={contributorId} />
