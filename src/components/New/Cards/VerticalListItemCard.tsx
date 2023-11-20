@@ -3,6 +3,7 @@ import { Avatar } from "../Avatar";
 import { Flex } from "../Layout/Flex";
 import Card from "src/components/Card";
 import { cn } from "src/utils/cn";
+import InfoIcon from "src/assets/icons/InfoIcon";
 
 export interface VerticalListItemCardProps extends PropsWithChildren {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;
@@ -14,6 +15,7 @@ export interface VerticalListItemCardProps extends PropsWithChildren {
   title: string;
   avatarSrc: string;
   avatarAlt: string;
+  hasUnauthorizedInGithubRepo?: boolean;
 }
 
 export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
@@ -25,6 +27,7 @@ export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
   title,
   avatarAlt,
   avatarSrc,
+  hasUnauthorizedInGithubRepo,
 }) => {
   const { className: ContainerClassName, ...RestContainerProps } = ContainerProps;
 
@@ -35,7 +38,14 @@ export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
       {...RestContainerProps}
     >
       <Flex justify="start" item="center" gap={2}>
-        <Avatar src={avatarSrc} alt={avatarAlt} size="6" shape="square" {...AvatarProps} />
+        {hasUnauthorizedInGithubRepo ? (
+          <div className="rounded-lg bg-orange-900 p-2 text-orange-500">
+            <InfoIcon className="w-3,5 h-3.5" />
+          </div>
+        ) : (
+          <Avatar src={avatarSrc} alt={avatarAlt} size="6" shape="square" {...AvatarProps} />
+        )}
+
         {titleComponent || <p className=" text-sm font-medium uppercase">{title}</p>}
       </Flex>
       <div className={cn("w-full", ChildrenContainerProps.className)}>{children}</div>

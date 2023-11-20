@@ -7,3 +7,8 @@ export function getOrgsWithUnauthorizedRepos(project: components["schemas"]["Pro
     ) ?? []
   );
 }
+
+export function hasUnauthorizedInGithubRepo(repos?: components["schemas"]["GithubOrganizationResponse"]["repos"]) {
+  if (!repos) return false;
+  return repos.some(repo => !repo.isAuthorizedInGithubApp);
+}

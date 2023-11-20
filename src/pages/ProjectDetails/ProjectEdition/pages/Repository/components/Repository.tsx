@@ -6,10 +6,11 @@ import { components } from "src/__generated/api";
 import { useContext } from "react";
 import { EditContext } from "../../../EditContext";
 import { useIntl } from "src/hooks/useIntl";
+import { cn } from "src/utils/cn";
 
 type RepositoryType = {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
-  repository: components["schemas"]["ProjectGithubOrganizationRepoResponse"];
+  organization: components["schemas"]["GithubOrganizationResponse"];
+  repository: components["schemas"]["GithubOrganizationResponse"]["repos"][number];
 };
 
 export function Repository({ organization, repository }: RepositoryType) {
@@ -23,7 +24,12 @@ export function Repository({ organization, repository }: RepositoryType) {
   }
 
   return (
-    <div className="flex basis-1/2 flex-col gap-2 rounded-2xl border border-card-border-medium bg-card-background-medium p-5 shadow-heavy">
+    <div
+      className={cn(
+        "flex basis-1/2 flex-col gap-2 rounded-2xl border border-card-border-medium bg-card-background-medium p-5 shadow-heavy",
+        { "border-orange-500": !repository.isAuthorizedInGithubApp }
+      )}
+    >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <div className="flex w-full items-center justify-between">

@@ -12,13 +12,15 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CloseLine from "src/icons/CloseLine";
 import FileListLine from "src/icons/FileListLine";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { cn } from "src/utils/cn";
 import Title from "../Title";
 import { EditContext, EditProvider } from "./EditContext";
 import { Information } from "./pages/Information";
 import { Repository } from "./pages/Repository/Repository";
 import { Tabs } from "src/components/Tabs/Tabs";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -37,7 +39,7 @@ function SafeProjectEdition() {
   const [activeTab, setActiveTab] = useState<TabsType>(
     installation_id || initialTab === TabsType.Repos ? TabsType.Repos : TabsType.General
   );
-  const { form } = useContext(EditContext);
+  const { form, project } = useContext(EditContext);
 
   const tabs = useMemo(
     () => [
@@ -60,7 +62,11 @@ function SafeProjectEdition() {
         },
         children: (
           <TabContents>
-            <GitRepositoryLine />
+            {hasUnauthorizedInGithubRepo(project?.repos) && activeTab !== TabsType.Repos ? (
+              <ErrorWarningLine className="text-orange-500" />
+            ) : (
+              <GitRepositoryLine />
+            )}
             {T("project.details.edit.tabs.repositories")}
           </TabContents>
         ),
