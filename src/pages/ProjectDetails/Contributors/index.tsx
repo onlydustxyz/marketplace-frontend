@@ -105,7 +105,7 @@ export default function Contributors() {
           )}
         </div>
       </Title>
-      {orgsWithUnauthorizedRepos.length ? (
+      {isProjectLeader && orgsWithUnauthorizedRepos.length ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
       <ProjectLeadInvitation

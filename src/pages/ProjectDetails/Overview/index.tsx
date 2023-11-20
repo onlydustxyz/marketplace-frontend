@@ -131,7 +131,7 @@ export default function Overview() {
           ) : null}
         </div>
       </Title>
-      {orgsWithUnauthorizedRepos.length ? (
+      {isProjectLeader && orgsWithUnauthorizedRepos.length ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
       <ProjectLeadInvitation
