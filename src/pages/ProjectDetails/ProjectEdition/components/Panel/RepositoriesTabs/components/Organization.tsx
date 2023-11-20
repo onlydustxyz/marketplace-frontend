@@ -7,7 +7,7 @@ import { Repository } from "./Repository";
 import InformationLine from "src/icons/InformationLine";
 
 export interface OrganizationProps {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
+  organization: components["schemas"]["GithubOrganizationResponse"];
 }
 export const Organization: FC<OrganizationProps> = ({ organization }) => {
   const { T } = useIntl();

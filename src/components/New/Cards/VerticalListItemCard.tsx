@@ -3,7 +3,6 @@ import { Avatar } from "../Avatar";
 import { Flex } from "../Layout/Flex";
 import Card from "src/components/Card";
 import { cn } from "src/utils/cn";
-import InfoIcon from "src/assets/icons/InfoIcon";
 
 export interface VerticalListItemCardProps extends PropsWithChildren {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;
@@ -12,6 +11,8 @@ export interface VerticalListItemCardProps extends PropsWithChildren {
     className?: string;
   };
   titleComponent?: React.ReactElement;
+  avatarComponent?: React.ReactElement;
+  actionComponent?: React.ReactElement;
   title: string;
   avatarSrc: string;
   avatarAlt: string;
@@ -22,14 +23,17 @@ export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
   AvatarProps = {},
   ContainerProps = {},
   titleComponent,
+  avatarComponent,
+  actionComponent,
   children,
   ChildrenContainerProps = {},
   title,
   avatarAlt,
   avatarSrc,
-  hasUnauthorizedInGithubRepo,
 }) => {
   const { className: ContainerClassName, ...RestContainerProps } = ContainerProps;
+
+  console.log("avatarComponent", avatarComponent);
 
   return (
     <Card
@@ -37,16 +41,13 @@ export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
       fullWidth
       {...RestContainerProps}
     >
-      <Flex justify="start" item="center" gap={2}>
-        {hasUnauthorizedInGithubRepo ? (
-          <div className="rounded-lg bg-orange-900 p-2 text-orange-500">
-            <InfoIcon className="w-3,5 h-3.5" />
-          </div>
-        ) : (
-          <Avatar src={avatarSrc} alt={avatarAlt} size="6" shape="square" {...AvatarProps} />
-        )}
+      <Flex className="items-center justify-between">
+        <Flex justify="start" item="center" gap={2}>
+          {avatarComponent || <Avatar src={avatarSrc} alt={avatarAlt} size="6" shape="square" {...AvatarProps} />}
+          {titleComponent || <p className=" text-sm font-medium uppercase">{title}</p>}
+        </Flex>
 
-        {titleComponent || <p className=" text-sm font-medium uppercase">{title}</p>}
+        {actionComponent}
       </Flex>
       <div className={cn("w-full", ChildrenContainerProps.className)}>{children}</div>
     </Card>

@@ -949,7 +949,8 @@
             "repositories": "Repositories"
           },
           "repositories": {
-            "noRepositoriesToAdd": "All repositories from this organisation have been added to your project."
+            "noRepositoriesToAdd": "All repositories from this organisation have been added to your project.",
+            "fixGithubApp": "Fix configuration on Github"
           }
         },
         "toasts": {

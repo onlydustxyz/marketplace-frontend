@@ -7,8 +7,8 @@ import { useIntl } from "src/hooks/useIntl";
 import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
 
 export interface RepositoryProps {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
-  repository: components["schemas"]["ProjectGithubOrganizationRepoResponse"];
+  organization: components["schemas"]["GithubOrganizationResponse"];
+  repository: components["schemas"]["GithubRepoResponse"];
 }
 export const Repository: FC<RepositoryProps> = ({ organization, repository }) => {
   const { T } = useIntl();
