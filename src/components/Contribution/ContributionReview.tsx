@@ -7,12 +7,13 @@ import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import { GithubPullRequestReviewState } from "src/types";
 
+// Map review statuses for type safety
 export const ReviewStateStatuses = {
   APPROVED: GithubPullRequestReviewState.Approved,
   CHANGES_REQUESTED: GithubPullRequestReviewState.ChangesRequested,
   PENDING_REVIEWER: GithubPullRequestReviewState.PendingReviewer,
   UNDER_REVIEW: GithubPullRequestReviewState.UnderReview,
-};
+} as const;
 
 export function ContributionReview({ status }: { status: GithubPullRequestReviewState }) {
   const { T } = useIntl();
