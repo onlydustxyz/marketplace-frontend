@@ -3,12 +3,13 @@ import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
 import SubtractLine from "src/icons/SubtractLine";
 import { useContext } from "react";
-import { EditContext, EditOrganizationMerged, EditOrganizationRepoMerged } from "../../../EditContext";
+import { EditContext } from "../../../EditContext";
 import { useIntl } from "src/hooks/useIntl";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 type RepositoryType = {
-  organization: EditOrganizationMerged;
-  repository: EditOrganizationRepoMerged;
+  organization: UseGithubOrganizationsResponse;
+  repository: UseGithubOrganizationsResponse["repos"][0];
 };
 
 export function Repository({ organization, repository }: RepositoryType) {
@@ -48,13 +49,13 @@ export function Repository({ organization, repository }: RepositoryType) {
             {repository.stars ? (
               <li className="flex items-center gap-1">
                 <StarLine className="text-base" />
-                <span className="text-sm">{repository.stars}</span> // todo stars
+                <span className="text-sm">{repository.stars}</span>
               </li>
             ) : null}
             {repository.forkCount ? (
               <li className="flex items-center gap-1">
                 <ForkLine />
-                <span className="text-sm">{repository.forkCount}</span> // todo forkcount
+                <span className="text-sm">{repository.forkCount}</span>
               </li>
             ) : null}
           </ul>

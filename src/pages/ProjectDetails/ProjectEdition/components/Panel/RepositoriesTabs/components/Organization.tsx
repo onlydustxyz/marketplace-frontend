@@ -4,10 +4,11 @@ import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { Repository } from "./Repository";
 import InformationLine from "src/icons/InformationLine";
-import { EditContext, EditOrganizationMerged } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
+import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 export interface OrganizationProps {
-  organization: EditOrganizationMerged;
+  organization: UseGithubOrganizationsResponse;
 }
 export const Organization: FC<OrganizationProps> = ({ organization }) => {
   const { T } = useIntl();

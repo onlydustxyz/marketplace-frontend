@@ -1,14 +1,19 @@
+import { useContext } from "react";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
-import { EditOrganizationMerged } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
+import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
 
 interface OrganizationListProps {
-  organizations: EditOrganizationMerged[];
+  organizations: UseGithubOrganizationsResponse[];
   emptyListFallBackText: string;
 }
 
 export default function OrganizationList({ organizations, emptyListFallBackText }: OrganizationListProps) {
+  const {
+    githubWorklow: { run },
+  } = useContext(EditContext);
   if (organizations.length) {
     return (
       <ul className="flex flex-col gap-2 py-4 pb-6">
@@ -23,6 +28,7 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
               avatarUrl={org.avatarUrl ?? ""}
               title={org.name || org.login || ""}
               linkUrl={linkUrl}
+              linkClick={run}
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
             />

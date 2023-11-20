@@ -12,6 +12,7 @@ interface HorizontalListItemCardProps {
   avatarUrl: string;
   title: string;
   linkUrl: string;
+  linkClick?: () => void;
   linkIcon?: ReactElement;
   isExternalFlow?: boolean;
   disabled?: boolean;
@@ -24,6 +25,7 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
   avatarUrl = "",
   title = "",
   linkUrl = "",
+  linkClick,
   linkIcon = <PencilLine />,
   isExternalFlow = true,
   disabled = false,
@@ -42,6 +44,7 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
           <span className="flex-1">{title}</span>
           <a
             href={linkUrl}
+            onClick={linkClick}
             target={isExternalFlow ? "_blank" : undefined}
             rel={isExternalFlow ? "noopener noreferrer" : undefined}
           >

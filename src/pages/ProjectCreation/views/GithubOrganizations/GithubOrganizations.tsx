@@ -22,7 +22,7 @@ export const GithubOrganizationPage = () => {
       step={1}
       stepCount={3}
       next={next}
-      nextDisabled={!!organizations.length}
+      nextDisabled={!organizations.length}
     >
       <Card withBg={false}>
         <h2 className="font-medium uppercase">{T("project.details.create.organizations.installedOrganizations")}</h2>

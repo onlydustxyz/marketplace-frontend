@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { Repository } from "./Repository";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
-import { EditOrganizationMerged } from "../../../EditContext";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 type RepositoryOrganizationType = {
-  organization: EditOrganizationMerged;
+  organization: UseGithubOrganizationsResponse;
   installedRepos: number[];
 };
 

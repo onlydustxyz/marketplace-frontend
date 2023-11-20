@@ -3,15 +3,12 @@ import { Flex } from "src/components/New/Layout/Flex";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import AddLine from "src/icons/AddLine";
 import { useIntl } from "src/hooks/useIntl";
-import {
-  EditContext,
-  EditOrganizationMerged,
-  EditOrganizationRepoMerged,
-} from "src/pages/ProjectDetails/ProjectEdition/EditContext";
+import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 export interface RepositoryProps {
-  organization: EditOrganizationMerged;
-  repository: EditOrganizationRepoMerged;
+  organization: UseGithubOrganizationsResponse;
+  repository: UseGithubOrganizationsResponse["repos"][0];
 }
 export const Repository: FC<RepositoryProps> = ({ organization, repository }) => {
   const { T } = useIntl();
