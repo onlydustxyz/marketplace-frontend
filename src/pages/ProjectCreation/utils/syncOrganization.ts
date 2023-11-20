@@ -1,9 +1,9 @@
-import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
 import { CreateFormDataRepos } from "../types/ProjectCreationType";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 interface onSyncOrganizationsInterface {
   selectedRepos: CreateFormDataRepos[];
-  organizations: UseOrganizationsByGithubUserIdResponse[];
+  organizations: UseGithubOrganizationsResponse[];
 }
 export const onSyncOrganizations = ({ selectedRepos, organizations }: onSyncOrganizationsInterface) => {
   if (selectedRepos?.length && organizations) {

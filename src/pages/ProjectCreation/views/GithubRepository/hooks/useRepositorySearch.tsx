@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 export const useRepositorySearch = (search?: string) => {
   return useCallback(
-    (value: UseOrganizationsByGithubUserIdResponse[]) => {
+    (value: UseGithubOrganizationsResponse[]) => {
       if (!search) {
         return value;
       }
@@ -24,7 +24,7 @@ export const useRepositorySearch = (search?: string) => {
             repos: findOrg && !repos.length ? org.repos : repos,
           };
         })
-        .filter(Boolean) as UseOrganizationsByGithubUserIdResponse[];
+        .filter(Boolean) as UseGithubOrganizationsResponse[];
     },
     [search]
   );

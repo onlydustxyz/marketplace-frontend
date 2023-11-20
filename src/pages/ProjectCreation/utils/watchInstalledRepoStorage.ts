@@ -1,8 +1,8 @@
-import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 interface watchInstalledRepoStorageInterface {
   installedRepo: number[];
-  organizations: UseOrganizationsByGithubUserIdResponse[];
+  organizations: UseGithubOrganizationsResponse[];
 }
 
 export const watchInstalledRepoStorage = ({

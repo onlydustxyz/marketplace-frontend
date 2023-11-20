@@ -31,4 +31,14 @@ const useMyRewardsInfiniteList = (
   );
 };
 
-export default { useGetMe, useMyRewardsInfiniteList };
+export type UseGithubOrganizationsResponse = components["schemas"]["GithubOrganizationResponse"];
+
+const useGithubOrganizations = ({ options = {} }: UseQueryProps<UseGithubOrganizationsResponse[], unknown>) => {
+  return useBaseQuery<UseGithubOrganizationsResponse[]>({
+    resourcePath: API_PATH.ME_GITHUB_ORGANIZATIONS,
+    tags: ME_TAGS.githubOrganization(),
+    ...options,
+  });
+};
+
+export default { useGetMe, useMyRewardsInfiniteList, useGithubOrganizations };

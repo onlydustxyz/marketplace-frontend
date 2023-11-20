@@ -6,10 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateFormData, CreateFormDataRepos } from "./types/ProjectCreationType";
 import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";
 import { useAuth } from "src/hooks/useAuth";
-import GithubApi from "src/api/Github";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Button, { ButtonSize } from "src/components/Button";
-import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
 import useMutationAlert from "src/api/useMutationAlert";
 import ProjectApi from "src/api/Project";
 import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
@@ -19,6 +17,8 @@ import { STORAGE_KEY_CREATE_PROJECT_FORM, useResetStorage } from "./hooks/usePro
 import { onSyncOrganizations } from "./utils/syncOrganization";
 import { watchInstalledRepoStorage } from "./utils/watchInstalledRepoStorage";
 import { StorageInterface } from "src/hooks/useStorage/Storage";
+import MeApi from "src/api/me";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 /**
  * @interface CreateContextProps
@@ -44,7 +44,7 @@ type CreateProject = {
   form: UseFormReturn<CreateFormData, unknown>;
   currentStep: ProjectCreationSteps;
   installedRepos: number[];
-  organizations: UseOrganizationsByGithubUserIdResponse[];
+  organizations: UseGithubOrganizationsResponse[];
   formFn: {
     addRepository: (data: CreateFormDataRepos) => void;
     removeRepository: (data: CreateFormDataRepos) => void;
@@ -109,8 +109,7 @@ export function CreateProjectProvider({
 
   const { githubUserId } = useAuth();
   const { reset: clearStorage } = useResetStorage();
-  const { data: organizationsData } = GithubApi.queries.useOrganizationsByGithubUserId({
-    params: { githubUserId },
+  const { data: organizationsData } = MeApi.queries.useGithubOrganizations({
     // Polling the organizations every second knowing that user can delete and installation
     // and the related github event can take an unknown delay to be triggered
     //   options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },

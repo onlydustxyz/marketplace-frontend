@@ -1,10 +1,10 @@
-import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
 
 interface OrganizationListProps {
-  organizations: UseOrganizationsByGithubUserIdResponse[];
+  organizations: UseGithubOrganizationsResponse[];
   emptyListFallBackText: string;
   installatedRepo: number[];
 }

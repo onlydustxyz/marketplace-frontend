@@ -23,4 +23,5 @@ export const API_PATH = {
   ME_PROJECT_LEADER_INVITATIONS: (projectId: string) => BASE_API_V1(`me/project-leader-invitations/${projectId}`),
   ME: BASE_API_V1("me"),
   ME_REWARDS: BASE_API_V1("me/rewards"),
+  ME_GITHUB_ORGANIZATIONS: BASE_API_V1("me/organizations"),
 };
