@@ -1,8 +1,9 @@
-import { ContributionFragment, WorkItemType } from "src/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import { GithubPullRequestStatus } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
+import { RewardableItem } from "src/api/Project/queries";
 
-const workItems: ContributionFragment[] = [
+const workItems: RewardableItem[] = [
   {
     id: "123",
     type: WorkItemType.PullRequest,
@@ -84,7 +85,7 @@ describe("Work items", () => {
     const filteredWorkItems = useFilteredWorkItems({
       pattern: "123",
       contributions: workItems,
-    }) as ContributionFragment[];
+    }) as RewardableItem[];
     expect(filteredWorkItems).toHaveLength(1);
     expect(filteredWorkItems[0].id).toEqual("123");
   });
@@ -93,7 +94,7 @@ describe("Work items", () => {
     const filteredWorkItems = useFilteredWorkItems({
       pattern: "My pull Request",
       contributions: workItems,
-    }) as ContributionFragment[];
+    }) as RewardableItem[];
     expect(filteredWorkItems).toHaveLength(1);
     expect(filteredWorkItems[0].githubPullRequest?.title).toEqual("My pull Request");
   });
@@ -102,7 +103,7 @@ describe("Work items", () => {
     const filteredWorkItems = useFilteredWorkItems({
       pattern: "My pull 123",
       contributions: workItems,
-    }) as ContributionFragment[];
+    }) as RewardableItem[];
     expect(filteredWorkItems).toHaveLength(1);
     expect(filteredWorkItems[0].id).toEqual("123");
   });

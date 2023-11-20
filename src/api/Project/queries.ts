@@ -56,6 +56,7 @@ export type RewardableItem = components["schemas"]["RewardableItemResponse"];
 interface RewardableItemsInfiniteListParams {
   projectId: string;
   queryParams?: QueryParams;
+  pageSize?: number;
 }
 
 const useRewardableItemsInfiniteList = ({
@@ -67,7 +68,7 @@ const useRewardableItemsInfiniteList = ({
       resourcePath: API_PATH.PROJECT_REWARDABLE_ITEMS(params?.projectId || ""),
       tags: PROJECT_TAGS.rewardable_items([params?.projectId]),
       queryParams: params?.queryParams,
-      pageSize: 10,
+      pageSize: params?.pageSize || 10,
     },
     options
   );

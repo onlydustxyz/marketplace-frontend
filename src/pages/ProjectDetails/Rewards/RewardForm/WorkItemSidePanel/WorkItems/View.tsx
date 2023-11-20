@@ -2,13 +2,7 @@ import { filter, some } from "lodash";
 import { ReactElement, forwardRef, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import {
-  ContributionFragment,
-  GithubUserFragment,
-  WorkItemFragment,
-  WorkItemType,
-  useGithubUserByIdQuery,
-} from "src/__generated/graphql";
+import { GithubUserFragment, WorkItemType, useGithubUserByIdQuery } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -24,8 +18,9 @@ import EmptyState from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSide
 import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
 import useFilteredContributions from "./useFilteredWorkItems";
-import { contributionToWorkItem } from "./WorkItems";
+import { RewardableWorkItem, contributionToWorkItem } from "./WorkItems";
 import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
+import { RewardableItem } from "src/api/Project/queries";
 
 const tabNames = {
   [WorkItemType.Issue]: "issues",
@@ -35,12 +30,12 @@ const tabNames = {
 
 type Props = {
   projectId: string;
-  contributions: ContributionFragment[];
+  contributions: RewardableItem[];
   type: WorkItemType;
-  addWorkItem: (workItem: WorkItemFragment) => void;
-  addContribution: (contribution: ContributionFragment) => void;
-  ignoreContribution: (contribution: ContributionFragment) => void;
-  unignoreContribution: (contribution: ContributionFragment) => void;
+  addWorkItem: (workItem: RewardableWorkItem) => void;
+  addContribution: (contribution: RewardableItem) => void;
+  ignoreContribution: (contribution: RewardableItem) => void;
+  unignoreContribution: (contribution: RewardableItem) => void;
   contributorId: number;
   /** NEW PROPS **/
   setIncludeIgnoredItems: (value: boolean) => void;
@@ -79,7 +74,7 @@ export default function View({
   };
   const showToaster = useShowToaster();
 
-  const addContributionWithToast = (item: ContributionFragment) => {
+  const addContributionWithToast = (item: RewardableItem) => {
     addContribution(item);
     showToaster(T(`reward.form.contributions.${tabName}.addedToaster`));
   };
@@ -161,7 +156,7 @@ export default function View({
       {filteredContributions.length > 0 && data?.githubUsersByPk ? (
         <VirtualizedIssueList
           {...{
-            contributions: filteredContributions as ContributionFragment[],
+            contributions: filteredContributions as RewardableItem[],
             addContribution: addContributionWithToast,
             ignoreContribution,
             unignoreContribution,
@@ -210,11 +205,11 @@ function getWorkItem(type: WorkItemType, props: RewardItemType): ReactElement | 
 }
 
 interface VirtualizedIssueListProps {
-  contributions: ContributionFragment[];
+  contributions: RewardableItem[];
   contributor: GithubUserFragment;
-  addContribution: (contribution: ContributionFragment) => void;
-  ignoreContribution: (contribution: ContributionFragment) => void;
-  unignoreContribution: (contribution: ContributionFragment) => void;
+  addContribution: (contribution: RewardableItem) => void;
+  ignoreContribution: (contribution: RewardableItem) => void;
+  unignoreContribution: (contribution: RewardableItem) => void;
   tabName: string;
 }
 

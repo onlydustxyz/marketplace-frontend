@@ -6,7 +6,6 @@ import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
-import { WorkItemFragment } from "src/__generated/graphql";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
@@ -21,6 +20,7 @@ import MeApi from "src/api/me";
 import useRewardableItemsQueryParams from "./WorkItemSidePanel/hooks/useRewardableItemsQueryParams";
 import ProjectApi from "src/api/Project";
 import { RewardableItem } from "src/api/Project/queries";
+import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -100,7 +100,10 @@ const RewardForm: React.FC = () => {
     isLoading,
     isError,
   } = ProjectApi.queries.useRewardableItemsInfiniteList({
-    params: { projectId, queryParams },
+    // WE need to fetch all the contributions to be able to AUTO-ADD them all in one click
+    // It's the reason that we set pageSize to 1000 assuming that there will never be more than 1000 contributions
+    // and in the case there are more than 1000 contributions, we assume this limitation for performance reasons
+    params: { projectId, queryParams, pageSize: 1000 },
     options: { enabled: !!contributor?.githubUserId },
   });
 
@@ -116,20 +119,22 @@ const RewardForm: React.FC = () => {
   };
 
   const onWorkItemsChange = useCallback(
-    (workItems: WorkItemFragment[]) =>
+    (workItems: RewardableWorkItem[]) =>
       formMethods.setValue(
         "workItems",
         workItems.map(workItem => {
           return {
-            id: workItem.id?.toString() || "",
+            id: workItem.id || "",
             repoId:
-              workItem.githubIssue?.repoId ||
-              workItem.githubPullRequest?.repoId ||
-              workItem.githubCodeReview?.githubPullRequest?.repoId,
+              Number(workItem.githubIssue?.id) ||
+              Number(workItem.githubPullRequest?.id) ||
+              Number(workItem.githubCodeReview?.id) ||
+              0,
             number:
               workItem.githubIssue?.number ||
               workItem.githubPullRequest?.number ||
-              workItem.githubCodeReview?.githubPullRequest?.number,
+              workItem.githubCodeReview?.number ||
+              0,
 
             type: workItem.type,
           };

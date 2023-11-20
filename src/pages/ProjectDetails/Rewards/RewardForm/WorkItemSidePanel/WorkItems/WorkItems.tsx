@@ -1,19 +1,26 @@
 import { chain } from "lodash";
 import { useEffect, useMemo } from "react";
-import { WorkItemFragment, WorkItemType } from "src/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import View from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
-import { useApolloClient } from "@apollo/client";
 import useRewardableItemsQueryParams from "../hooks/useRewardableItemsQueryParams";
 import ProjectApi from "src/api/Project";
 import { RewardableItem } from "src/api/Project/queries";
+
+export interface RewardableWorkItem {
+  type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;
+  id: string;
+  githubIssue: RewardableItem | null;
+  githubPullRequest: RewardableItem | null;
+  githubCodeReview: RewardableItem | null;
+}
 
 type Props = {
   type: WorkItemType;
   projectId: string;
   contributorId: number;
-  workItems: WorkItemFragment[];
-  addWorkItem: (workItem: WorkItemFragment) => void;
+  workItems: RewardableWorkItem[];
+  addWorkItem: (workItem: RewardableWorkItem) => void;
 };
 
 export function WorkItems({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
@@ -37,9 +44,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
 
   const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
 
-  console.log("contributions", contributions);
-
-  const client = useApolloClient();
+  // const client = useApolloClient();
 
   // const { data, refetch } = useUnrewardedContributionsByTypeQuery({
   //   fetchPolicy: "no-cache",
@@ -75,7 +80,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
   return (
     <View
       projectId={projectId}
-      contributions={contributionsNotAdded}
+      contributions={contributionsNotAdded as RewardableItem[]}
       type={type}
       addWorkItem={addWorkItem}
       addContribution={addAndUnignoreContribution}
@@ -91,41 +96,37 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
   );
 }
 
-export const contributionToWorkItem = ({
-  githubIssue,
-  githubPullRequest,
-  githubCodeReview,
-}: RewardableItem): WorkItemFragment | undefined => {
-  switch (true) {
-    case !!githubIssue:
-      return issueToWorkItem(githubIssue);
-    case !!githubPullRequest:
-      return pullRequestToWorkItem(githubPullRequest);
-    case !!githubCodeReview:
-      return codeReviewToWorkItem(githubCodeReview);
+export const contributionToWorkItem = (contribution: RewardableItem): RewardableWorkItem | undefined => {
+  switch (contribution.type) {
+    case WorkItemType.Issue:
+      return issueToWorkItem(contribution);
+    case WorkItemType.PullRequest:
+      return pullRequestToWorkItem(contribution);
+    case WorkItemType.CodeReview:
+      return codeReviewToWorkItem(contribution);
   }
 };
 
-export const issueToWorkItem = (issue: RewardableItem | null): WorkItemFragment => ({
+export const issueToWorkItem = (contribution: RewardableItem | null): RewardableWorkItem => ({
   type: WorkItemType.Issue,
-  id: issue?.id.toString(),
-  githubIssue: issue,
+  id: contribution?.id || "",
+  githubIssue: contribution,
   githubPullRequest: null,
   githubCodeReview: null,
 });
 
-export const pullRequestToWorkItem = (pullRequest: RewardableItem | null): WorkItemFragment => ({
+export const pullRequestToWorkItem = (contribution: RewardableItem | null): RewardableWorkItem => ({
   type: WorkItemType.PullRequest,
-  id: pullRequest?.id.toString(),
+  id: contribution?.id || "",
   githubIssue: null,
-  githubPullRequest: pullRequest,
+  githubPullRequest: contribution,
   githubCodeReview: null,
 });
 
-export const codeReviewToWorkItem = (codeReview: RewardableItem | null): WorkItemFragment => ({
+export const codeReviewToWorkItem = (contribution: RewardableItem | null): RewardableWorkItem => ({
   type: WorkItemType.CodeReview,
-  id: codeReview?.id || null,
+  id: contribution?.id || "",
   githubIssue: null,
   githubPullRequest: null,
-  githubCodeReview: codeReview,
+  githubCodeReview: contribution,
 });

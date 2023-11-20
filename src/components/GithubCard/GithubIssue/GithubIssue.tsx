@@ -1,4 +1,5 @@
 import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
+import { RewardableItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
@@ -37,7 +38,7 @@ export type GithubIssueProps = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  issue: GithubIssueFragment;
+  issue: RewardableItem;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };

@@ -1,16 +1,17 @@
 import { ComponentType } from "react";
-import { WorkItemFragment, WorkItemType } from "src/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import { Contributor } from "./types";
+import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 
 export function WorkItem({
   workItem,
   contributor,
   action,
 }: {
-  workItem: WorkItemFragment;
+  workItem: RewardableWorkItem;
   contributor: Contributor;
   action: () => void;
 }) {
