@@ -2,7 +2,7 @@ import { components } from "src/__generated/api";
 
 export default function transformInstallationToOrganization(
   input: components["schemas"]["InstallationResponse"] | undefined
-): components["schemas"]["ProjectGithubOrganizationResponse"] | undefined {
+): components["schemas"]["GithubOrganizationResponse"] | undefined {
   if (input) {
     return {
       id: input.organization.id,
@@ -10,6 +10,8 @@ export default function transformInstallationToOrganization(
       avatarUrl: input.organization.avatarUrl,
       htmlUrl: input.organization.htmlUrl,
       name: input.organization.name || input.organization.login,
+      owner: input.organization.owner,
+      installed: input.organization.installed,
       installationId: input.id,
       repos: (input.organization.repos || []).map(repo => ({
         id: repo.id,
@@ -20,7 +22,7 @@ export default function transformInstallationToOrganization(
         stars: 0,
         forkCount: 0,
         hasIssues: false,
-        isIncludedInProject: undefined,
+        isIncludedInProject: false,
       })),
     };
   }

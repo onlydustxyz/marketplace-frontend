@@ -305,6 +305,7 @@ export type Sorting = {
 
 type Repos = components["schemas"]["ShortGithubRepoResponse"] & {
   selected?: boolean;
+  isIncludedInProject: boolean;
 };
 
 type Organization = Omit<components["schemas"]["GithubOrganizationResponse"], "repos"> & {

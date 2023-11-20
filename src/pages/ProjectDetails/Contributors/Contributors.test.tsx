@@ -47,6 +47,7 @@ const project: ComponentProps<typeof View>["project"] = {
       forkCount: 1,
       htmlUrl: "https://github.com/onlydustxyz/hasura-auth",
       hasIssues: false,
+      isIncludedInProject: true,
     },
     {
       id: 498695724,
@@ -57,6 +58,7 @@ const project: ComponentProps<typeof View>["project"] = {
       forkCount: 10,
       htmlUrl: "https://github.com/onlydustxyz/marketplace-frontend",
       hasIssues: true,
+      isIncludedInProject: true,
     },
   ],
   topContributors: [

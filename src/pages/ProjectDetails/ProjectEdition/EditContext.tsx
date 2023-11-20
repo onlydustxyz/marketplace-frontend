@@ -29,7 +29,7 @@ type Edit = {
     inGithubWorkflow: boolean;
   };
   formHelpers: {
-    addOrganization: (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => void;
+    addOrganization: (organization: components["schemas"]["GithubOrganizationResponse"]) => void;
     saveInSession: () => void;
     resetBeforLeave: () => void;
     triggerSubmit: () => void;
@@ -39,7 +39,7 @@ type Edit = {
 };
 
 export type EditFormData = components["schemas"]["UpdateProjectRequest"] & {
-  organizations: components["schemas"]["ProjectGithubOrganizationResponse"][];
+  organizations: components["schemas"]["GithubOrganizationResponse"][];
   projectLeads: FieldProjectLeadValue;
 };
 
@@ -127,7 +127,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     resolver: zodResolver(validationSchema),
   });
 
-  const onAddOrganization = (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => {
+  const onAddOrganization = (organization: components["schemas"]["GithubOrganizationResponse"]) => {
     const organizations = [...form.getValues("organizations")];
     const findOrganization = organizations.find(org => org.id === organization.id);
     if (!findOrganization) {

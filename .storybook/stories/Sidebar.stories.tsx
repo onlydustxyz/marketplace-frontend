@@ -53,16 +53,19 @@ const currentProject: Project = {
       stars: 0,
       forkCount: 0,
       hasIssues: true,
+      isIncludedInProject: true,
     },
   ],
   organizations: [
     {
       id: 58205251,
+      owner: "Barbicane-fr",
       login: "Barbicane-fr",
       avatarUrl: "https://avatars.githubusercontent.com/u/58205251?v=4",
       htmlUrl: "https://github.com/Barbicane-fr",
       name: "Barbicane",
       installationId: 411,
+      installed: true,
       repos: [
         {
           id: 347315291,
@@ -146,16 +149,19 @@ const otherProject: Project = {
       stars: 0,
       forkCount: 0,
       hasIssues: true,
+      isIncludedInProject: true,
     },
   ],
   organizations: [
     {
       id: 58205251,
       login: "Barbicane-fr",
+      owner: "Barbicane-fr",
       avatarUrl: "https://avatars.githubusercontent.com/u/58205251?v=4",
       htmlUrl: "https://github.com/Barbicane-fr",
       name: "Barbicane",
       installationId: 411,
+      installed: true,
       repos: [
         {
           id: 347315291,

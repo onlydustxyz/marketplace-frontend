@@ -8,8 +8,8 @@ import { EditContext } from "../../../EditContext";
 import { useIntl } from "src/hooks/useIntl";
 
 type RepositoryType = {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
-  repository: components["schemas"]["ProjectGithubOrganizationRepoResponse"];
+  organization: components["schemas"]["GithubOrganizationResponse"];
+  repository: components["schemas"]["GithubRepoResponse"];
 };
 
 export function Repository({ organization, repository }: RepositoryType) {

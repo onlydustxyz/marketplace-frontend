@@ -4,7 +4,7 @@ import { Repository } from "./Repository";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 
 type RepositoryOrganizationType = {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
+  organization: components["schemas"]["GithubOrganizationResponse"];
 };
 
 export function RepositoryOrganization({ organization }: RepositoryOrganizationType) {

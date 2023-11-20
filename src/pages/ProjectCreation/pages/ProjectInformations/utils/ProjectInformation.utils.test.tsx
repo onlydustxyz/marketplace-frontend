@@ -17,6 +17,7 @@ describe("getSelectedRepoIds", () => {
           htmlUrl: "https://github.com/onlydustxyz",
           id: 595505,
           login: "onlydustxyz",
+          owner: "onlydustxyz",
           name: "OnlyDust",
           repos: [
             {
@@ -24,6 +25,7 @@ describe("getSelectedRepoIds", () => {
               htmlUrl: "https://github.com/onlydustxyz/marketplace-backend",
               name: "marketplace-backend",
               owner: "onlydustxyz",
+              isIncludedInProject: true,
             },
           ],
         },
@@ -46,6 +48,7 @@ describe("getSelectedRepoIds", () => {
           id: 595505,
           login: "onlydustxyz",
           name: "OnlyDust",
+          owner: "OnlyDust",
           repos: [
             {
               id: 650626566,
@@ -53,6 +56,7 @@ describe("getSelectedRepoIds", () => {
               name: "marketplace-backend",
               owner: "onlydustxyz",
               selected: false,
+              isIncludedInProject: true,
             },
             {
               id: 650626567,
@@ -60,6 +64,7 @@ describe("getSelectedRepoIds", () => {
               name: "marketplace-backend",
               owner: "onlydustxyz",
               selected: true,
+              isIncludedInProject: true,
             },
           ],
         },
@@ -80,6 +85,7 @@ describe("getSelectedRepoIds", () => {
           id: 595505,
           login: "onlydustxyz",
           name: "OnlyDust",
+          owner: "OnlyDust",
           repos: [
             {
               id: 650626566,
@@ -87,12 +93,14 @@ describe("getSelectedRepoIds", () => {
               name: "marketplace-backend",
               owner: "onlydustxyz",
               selected: true,
+              isIncludedInProject: true,
             },
             {
               htmlUrl: "https://github.com/onlydustxyz/marketplace-backend",
               name: "marketplace-backend",
               owner: "onlydustxyz",
               selected: true,
+              isIncludedInProject: true,
             },
           ],
         },
@@ -113,6 +121,7 @@ describe("getSelectedRepoIds", () => {
           id: 595505,
           login: "onlydustxyz",
           name: "OnlyDust",
+          owner: "OnlyDust",
           repos: [
             {
               id: 650626566,
@@ -120,6 +129,7 @@ describe("getSelectedRepoIds", () => {
               name: "marketplace-backend",
               owner: "onlydustxyz",
               selected: false,
+              isIncludedInProject: true,
             },
             {
               id: 650626567,
@@ -127,6 +137,7 @@ describe("getSelectedRepoIds", () => {
               name: "marketplace-backend",
               owner: "onlydustxyz",
               selected: true,
+              isIncludedInProject: true,
             },
           ],
         },
