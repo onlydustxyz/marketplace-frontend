@@ -45,14 +45,14 @@ export default function Contributors() {
   const noBudget = remainingBudget === 0;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
-  const hasOrgsWithUnauthorizedRepos = isProjectLeader && orgsWithUnauthorizedRepos.length > 0;
+  const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
   function getRewardDisableReason() {
     if (noBudget) {
       return RewardDisabledReason.Budget;
     }
 
-    if (hasOrgsWithUnauthorizedRepos) {
+    if (isProjectLeader && hasOrgsWithUnauthorizedRepos) {
       return RewardDisabledReason.GithubApp;
     }
   }
@@ -91,7 +91,7 @@ export default function Contributors() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.contributors.title")}
-          {isProjectLeader && (
+          {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="gap-2">
               <EditProjectButton projectKey={projectKey} />
               <Button
@@ -114,10 +114,10 @@ export default function Contributors() {
                 {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
               </Button>
             </Flex>
-          )}
+          ) : null}
         </div>
       </Title>
-      {hasOrgsWithUnauthorizedRepos ? (
+      {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
       <ProjectLeadInvitation

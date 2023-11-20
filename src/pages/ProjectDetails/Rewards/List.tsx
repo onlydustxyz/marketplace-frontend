@@ -54,6 +54,7 @@ const RewardList: React.FC = () => {
   const isRewardDisabled = !projectBudget?.remainingDollarsEquivalent || rewards.length === 0;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
   if (error) {
     return <ErrorFallback />;
@@ -75,31 +76,33 @@ const RewardList: React.FC = () => {
       <StillFetchingBanner createdAt={createdAt} />
       <div className="flex items-center justify-between">
         <Title>{T("project.details.rewards.title")}</Title>
-        <Flex className="gap-2">
-          <EditProjectButton projectKey={projectKey} />
-          <Button
-            width={Width.Fit}
-            size={ButtonSize.Sm}
-            disabled={isRewardDisabled}
-            onClick={() => {
-              return navigate(
-                generatePath(
-                  `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                  {
-                    projectKey,
-                  }
-                )
-              );
-            }}
-            {...withTooltip(T("contributor.table.noBudgetLeft"), {
-              visible: isRewardDisabled,
-            })}
-          >
-            <span>{T("project.details.remainingBudget.newReward")}</span>
-          </Button>
-        </Flex>
+        {!hasOrgsWithUnauthorizedRepos ? (
+          <Flex className="gap-2">
+            <EditProjectButton projectKey={projectKey} />
+            <Button
+              width={Width.Fit}
+              size={ButtonSize.Sm}
+              disabled={isRewardDisabled}
+              onClick={() => {
+                return navigate(
+                  generatePath(
+                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                    {
+                      projectKey,
+                    }
+                  )
+                );
+              }}
+              {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                visible: isRewardDisabled,
+              })}
+            >
+              <span>{T("project.details.remainingBudget.newReward")}</span>
+            </Button>
+          </Flex>
+        ) : null}
       </div>
-      {orgsWithUnauthorizedRepos.length ? (
+      {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
       {!isBudgetLoading && projectBudget ? <RemainingBudget projectBudget={projectBudget} /> : null}

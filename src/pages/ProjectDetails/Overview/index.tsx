@@ -97,6 +97,7 @@ export default function Overview() {
   const isRewardDisabled = remainingBudget === 0;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
   return (
     <>
@@ -104,7 +105,7 @@ export default function Overview() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
-          {isProjectLeader ? (
+          {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="justify-end gap-2">
               <EditProjectButton projectKey={projectSlug} />
 
@@ -131,7 +132,7 @@ export default function Overview() {
           ) : null}
         </div>
       </Title>
-      {isProjectLeader && orgsWithUnauthorizedRepos.length ? (
+      {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
       <ProjectLeadInvitation
