@@ -38,7 +38,7 @@ export type GithubIssueProps = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  issue: RewardableItem;
+  issue: RewardableItem | GithubIssueFragment;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };

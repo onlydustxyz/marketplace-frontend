@@ -34,6 +34,9 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
     data: contributionItems,
     isLoading,
     isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   } = ProjectApi.queries.useRewardableItemsInfiniteList({
     params: { projectId, queryParams },
   });
@@ -92,6 +95,9 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
         contribution.id && unignoreContribution(projectId, contribution.id)
       }
       setIncludeIgnoredItems={setIncludeIgnoredItems}
+      fetchNextPage={fetchNextPage}
+      hasNextPage={hasNextPage}
+      isFetchingNextPage={isFetchingNextPage}
     />
   );
 }

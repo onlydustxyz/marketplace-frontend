@@ -1,4 +1,3 @@
-import { filter } from "lodash";
 import { ReactElement, forwardRef, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
@@ -21,11 +20,18 @@ import useFilteredContributions from "./useFilteredWorkItems";
 import { RewardableWorkItem, contributionToWorkItem } from "./WorkItems";
 import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import { RewardableItem } from "src/api/Project/queries";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 const tabNames = {
   [WorkItemType.Issue]: "issues",
   [WorkItemType.PullRequest]: "pullRequests",
   [WorkItemType.CodeReview]: "codeReviews",
+};
+
+type ShowMoreProps = {
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
 };
 
 type Props = {
@@ -39,7 +45,7 @@ type Props = {
   contributorId: number;
   /** NEW PROPS **/
   setIncludeIgnoredItems: (value: boolean) => void;
-};
+} & ShowMoreProps;
 
 export default function View({
   projectId,
@@ -51,6 +57,9 @@ export default function View({
   unignoreContribution,
   contributorId,
   setIncludeIgnoredItems,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
@@ -96,10 +105,10 @@ export default function View({
     setIncludeIgnoredItems(showIgnoredItems);
   }, [showIgnoredItems]);
 
-  const visibleIssues = showIgnoredItems ? contributions : filter(contributions, { ignored: false });
+  // const visibleIssues = showIgnoredItems ? contributions : filter(contributions, { ignored: false });
 
   const searchPattern = watch(`search-${tabName}`);
-  const filteredContributions = useFilteredContributions({ pattern: searchPattern, contributions: visibleIssues });
+  const filteredContributions = useFilteredContributions({ pattern: searchPattern, contributions });
 
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
@@ -160,6 +169,9 @@ export default function View({
             unignoreContribution,
             contributor: data?.githubUsersByPk,
             tabName,
+            fetchNextPage,
+            hasNextPage,
+            isFetchingNextPage,
           }}
         />
       ) : (
@@ -218,11 +230,29 @@ const VirtualizedIssueList = ({
   ignoreContribution,
   unignoreContribution,
   tabName,
-}: VirtualizedIssueListProps) => {
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+}: VirtualizedIssueListProps & ShowMoreProps) => {
+  const Footer = () => {
+    if (hasNextPage) {
+      return (
+        <div className="my-4">
+          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+        </div>
+      );
+    }
+    return <></>;
+  };
   return (
     <Virtuoso
       data={contributions}
-      components={{ Scroller, List: ListBuilder(tabName) }}
+      endReached={fetchNextPage}
+      components={{
+        Scroller,
+        List: ListBuilder(tabName),
+        Footer,
+      }}
       itemContent={(_, contribution) => {
         const workItem = contributionToWorkItem(contribution);
         if (!workItem) return;
