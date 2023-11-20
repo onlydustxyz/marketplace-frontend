@@ -1,5 +1,6 @@
 export interface StorageInterface<T> {
   key: string;
+  initialValue: T;
   value: T;
   getValue: () => T;
   setValue: (newvalue: T | ((prev: T | undefined) => T)) => void;
@@ -11,7 +12,7 @@ export class StorageClass<T> implements StorageInterface<T> {
   key: string;
   value: T;
   storage: Storage;
-  private initialValue: T;
+  initialValue: T;
   callback?: (v: T) => void;
 
   constructor(key: string, initialValue: T, storage: Storage = localStorage, callback?: (v: T) => void) {

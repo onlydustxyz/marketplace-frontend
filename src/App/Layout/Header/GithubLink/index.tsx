@@ -10,7 +10,7 @@ type Props = {
 export default function GithubLink({ onClick }: Props) {
   const { T } = useIntl();
   const getLoginUrl = useLoginUrl();
-  const login_url = useMemo(() => getLoginUrl(), []);
+  const login_url = useMemo(() => getLoginUrl(window.location.origin), []);
   return (
     <a className="z-10" href={login_url} onClick={onClick} data-testid="github-signin-button">
       <div className="m-px w-fit overflow-hidden rounded-full p-px blur-0 transition duration-300 hover:m-0 hover:p-0.5">

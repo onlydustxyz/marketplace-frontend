@@ -9,6 +9,10 @@ import { ProjectInformationsPage } from "./views/ProjectInformations/ProjectInfo
 import { ProjectCreationSteps } from "./types/ProjectCreationSteps";
 import { GithubRepositoryPage } from "./views/GithubRepository";
 import { GithubOrganizationPage } from "./views/GithubOrganizations/GithubOrganizations";
+import {
+  GITHUB_PERMISSIONS,
+  useHasGithubPermissionOrLogin,
+} from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 
 export const SafeProjectCreation = () => {
   const { currentStep } = useContext(CreateProjectContext);
@@ -28,6 +32,8 @@ export const SafeProjectCreation = () => {
 };
 
 export const ProjectCreation = () => {
+  useHasGithubPermissionOrLogin(GITHUB_PERMISSIONS.READ_ORG);
+
   const formStorage = useProjectCreationFormStorage();
   const stepStorage = useProjectCreationStepStorage();
   const reposStorage = useProjectCreationInstalledReposStorage();

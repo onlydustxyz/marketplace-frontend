@@ -12,7 +12,10 @@ import {
   useResetStorage,
 } from "src/pages/ProjectCreation/hooks/useProjectCreationStorage";
 import { ProjectCreationSteps } from "src/pages/ProjectCreation/types/ProjectCreationSteps";
-import { useLazyGetUserPermissions } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
+import {
+  GITHUB_PERMISSIONS,
+  useLazyGetUserPermissions,
+} from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 import { useLoginUrl, useLoginUrlStorage } from "src/hooks/useLoginUrl/useLoginUrl";
 
 export default function SubmitProject() {
@@ -42,12 +45,12 @@ export default function SubmitProject() {
   };
 
   const startProjectCreation = async () => {
-    const hasRequirePermission = await getPermission("read:org");
+    const hasRequirePermission = await getPermission(GITHUB_PERMISSIONS.READ_ORG);
     if (isLoggedIn && hasRequirePermission) {
       navigate(RoutePaths.ProjectCreation);
     } else {
       dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: RoutePaths.ProjectCreation });
-      loginUrlStorage.setValue("user:email,read:org");
+      loginUrlStorage.setValue(`${GITHUB_PERMISSIONS.USER_EMAIL},${GITHUB_PERMISSIONS.READ_ORG}`);
       const login_url = getLoginUrl();
       window.location.replace(login_url);
     }

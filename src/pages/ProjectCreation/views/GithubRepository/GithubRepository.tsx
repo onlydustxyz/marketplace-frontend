@@ -66,7 +66,7 @@ export const GithubRepositoryPage = () => {
                 organization.repos.length ? (
                   <VerticalListItemCard
                     key={organization.login}
-                    title={organization.login || ""}
+                    title={organization.name || organization.login || ""}
                     avatarAlt={organization.login || ""}
                     avatarSrc={organization.avatarUrl || ""}
                   >

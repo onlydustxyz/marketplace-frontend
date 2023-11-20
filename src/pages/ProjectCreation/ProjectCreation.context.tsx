@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateFormData, CreateFormDataRepos } from "./types/ProjectCreationType";
 import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import Button, { ButtonSize } from "src/components/Button";
 import useMutationAlert from "src/api/useMutationAlert";
 import ProjectApi from "src/api/Project";
 import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
@@ -160,7 +159,7 @@ export function CreateProjectProvider({
 
   const onSubmit = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { search, selectedRepos, ...formData } = form.getValues();
+    const { search, projectLeads, selectedRepos, ...formData } = form.getValues();
     createProject({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
@@ -260,18 +259,6 @@ export function CreateProjectProvider({
       <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
         <form className="flex h-full items-center justify-center md:p-6" onSubmit={form.handleSubmit(onSubmit)}>
           {children}
-          {/* /* ------------------------------- DEBUG CODE ------------------------------- */}
-          <div className="fixed right-10 top-24 z-40 flex gap-2">
-            <Button size={ButtonSize.Sm} onClick={() => goTo(ProjectCreationSteps.ORGANIZATIONS)}>
-              Organization
-            </Button>
-            <Button size={ButtonSize.Sm} onClick={() => goTo(ProjectCreationSteps.REPOSITORIES)}>
-              Repositories
-            </Button>
-            <Button size={ButtonSize.Sm} onClick={() => goTo(ProjectCreationSteps.INFORMATIONS)}>
-              Information
-            </Button>
-          </div>
           <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_CREATE_PROJECT_FORM} />
         </form>
       </Background>

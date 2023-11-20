@@ -1,22 +1,20 @@
 import config from "src/config";
 import { useLocalStorage } from "../useStorage/useStorage";
-// read:org
-export const useLoginUrlStorageKey = "login-url";
-const defaultPermission = "user:email";
+import { GITHUB_PERMISSIONS } from "../useGithubUserPermissions/useGithubUserPermissions";
 
+export const useLoginUrlStorageKey = "login-url";
 export const useLoginUrlStorage = () => {
-  const storage = useLocalStorage<string>({ key: useLoginUrlStorageKey, initialValue: defaultPermission });
+  const storage = useLocalStorage<string>({ key: useLoginUrlStorageKey, initialValue: GITHUB_PERMISSIONS.USER_EMAIL });
 
   return storage;
 };
 
 export const useLoginUrl = () => {
-  const LOGIN_URL = `${config.LOGIN_URL}?redirect_url=${encodeURI(window.location.origin)}`;
   const storage = useLoginUrlStorage();
-  return () => {
+  return (redirect?: string) => {
+    const LOGIN_URL = `${config.LOGIN_URL}?redirect_url=${encodeURI(redirect || window.location.href)}`;
     const permission = storage.getValue();
     if (permission) {
-      console.log("LOGINNNN", `${LOGIN_URL}&scope=${permission}`);
       return `${LOGIN_URL}&scope=${permission}`;
     }
 

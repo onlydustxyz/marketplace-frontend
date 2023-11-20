@@ -2,7 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useTokenSet } from "../useTokenSet";
 import jwtDecode from "jwt-decode";
 import { HasuraJWT } from "src/types";
+import { useLoginUrl, useLoginUrlStorage } from "../useLoginUrl/useLoginUrl";
 
+export enum GITHUB_PERMISSIONS {
+  READ_ORG = "read:org",
+  USER_EMAIL = "user:email",
+}
 const getGithubPermissions = (token: string) => {
   return fetch("https://api.github.com/rate_limit", {
     headers: {
@@ -11,7 +16,7 @@ const getGithubPermissions = (token: string) => {
   });
 };
 
-const getPermissions = async (token: string, requirePermission: string) => {
+const getPermissions = async (token: string, requirePermission: GITHUB_PERMISSIONS) => {
   if (token) {
     try {
       const decodedToken = jwtDecode<HasuraJWT>(token);
@@ -21,19 +26,21 @@ const getPermissions = async (token: string, requirePermission: string) => {
       const permission = getPermissions.headers.get("x-oauth-scopes");
       return permission?.includes(requirePermission) || false;
     } catch {
-      return false;
+      return undefined;
     }
   }
 
   return false;
 };
-export const useLazyGetUserPermissions = (): [(requirePermission: string) => Promise<boolean>] => {
+
+export const useLazyGetUserPermissions = (): [(requirePermission: GITHUB_PERMISSIONS) => Promise<boolean>] => {
   const { tokenSet } = useTokenSet();
 
   const getPermission = useCallback(
-    async (requirePermission: string) => {
+    async (requirePermission: GITHUB_PERMISSIONS) => {
       if (tokenSet?.accessToken) {
-        return getPermissions(tokenSet.accessToken, requirePermission);
+        const hasPermission = await getPermissions(tokenSet.accessToken, requirePermission);
+        return hasPermission || false;
       }
       return false;
     },
@@ -43,7 +50,7 @@ export const useLazyGetUserPermissions = (): [(requirePermission: string) => Pro
   return [getPermission];
 };
 
-export const useGithubUserPermissions = (requirePermission: string): [boolean, "idle" | "ready"] => {
+export const useGithubUserPermissions = (requirePermission: GITHUB_PERMISSIONS): [boolean, "idle" | "ready"] => {
   const { tokenSet } = useTokenSet();
   const [hasPermissionStatus, setHasPermissionsStatus] = useState<"idle" | "ready">("idle");
   const [hasPermission, setHasPermissions] = useState(false);
@@ -51,7 +58,7 @@ export const useGithubUserPermissions = (requirePermission: string): [boolean, "
   const getPermission = useCallback(async () => {
     if (tokenSet?.accessToken) {
       const hasPermission = await getPermissions(tokenSet.accessToken, requirePermission);
-      setHasPermissions(hasPermission);
+      setHasPermissions(hasPermission || false);
       setHasPermissionsStatus("ready");
     }
   }, [tokenSet]);
@@ -61,4 +68,36 @@ export const useGithubUserPermissions = (requirePermission: string): [boolean, "
   }, [tokenSet, requirePermission]);
 
   return [hasPermission, hasPermissionStatus];
+};
+
+export const useHasGithubPermissionOrLogin = (requirePermission: GITHUB_PERMISSIONS): [() => void] => {
+  const { tokenSet } = useTokenSet();
+  const getLoginUrl = useLoginUrl();
+  const loginUrlStorage = useLoginUrlStorage();
+
+  const getPermissionOrRedirect = useCallback(async () => {
+    if (tokenSet?.accessToken) {
+      const hasPermission = await getPermissions(tokenSet.accessToken, requirePermission);
+      if (hasPermission === false) {
+        loginUrlStorage.setValue(prev => {
+          if (!prev) {
+            return `${loginUrlStorage.initialValue},${requirePermission}`;
+          }
+          if (!prev.includes(requirePermission)) {
+            return `${prev},${requirePermission}`;
+          }
+          return prev;
+        });
+
+        const login_url = getLoginUrl();
+        window.location.replace(login_url);
+      }
+    }
+  }, [tokenSet]);
+
+  useEffect(() => {
+    getPermissionOrRedirect();
+  }, [tokenSet, requirePermission]);
+
+  return [getPermissionOrRedirect];
 };
