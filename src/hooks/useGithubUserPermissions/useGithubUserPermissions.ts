@@ -19,7 +19,6 @@ const getPermissions = async (token: string, requirePermission: string) => {
       const githubAccessToken = claims["x-hasura-githubAccessToken"];
       const getPermissions = await getGithubPermissions(githubAccessToken);
       const permission = getPermissions.headers.get("x-oauth-scopes");
-      console.log("permission", permission);
       return permission?.includes(requirePermission) || false;
     } catch {
       return false;

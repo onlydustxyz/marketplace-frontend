@@ -5,7 +5,6 @@ import Card from "src/components/Card";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import config from "src/config";
 import { useState } from "react";
 import ConfirmationPopOver from "src/components/New/Popover/confirmationPopover";
 import {
@@ -14,10 +13,7 @@ import {
 } from "src/pages/ProjectCreation/hooks/useProjectCreationStorage";
 import { ProjectCreationSteps } from "src/pages/ProjectCreation/types/ProjectCreationSteps";
 import { useLazyGetUserPermissions } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
-
-export const LOGIN_URL = `${config.HASURA_AUTH_BASE_URL}/signin/provider/github?redirect_url=${encodeURI(
-  window.location.origin
-)}&scope=user:email,read:org`;
+import { useLoginUrl, useLoginUrlStorage } from "src/hooks/useLoginUrl/useLoginUrl";
 
 export default function SubmitProject() {
   const { T } = useIntl();
@@ -28,7 +24,8 @@ export default function SubmitProject() {
   const { reset: clearStorage } = useResetStorage();
   const toggleModal = () => setModalOpened(!modalOpened);
   const closeModal = () => setModalOpened(false);
-
+  const getLoginUrl = useLoginUrl();
+  const loginUrlStorage = useLoginUrlStorage();
   const dispatchSession = useSessionDispatch();
 
   const onCancel = () => {
@@ -50,7 +47,9 @@ export default function SubmitProject() {
       navigate(RoutePaths.ProjectCreation);
     } else {
       dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: RoutePaths.ProjectCreation });
-      window.location.replace(LOGIN_URL);
+      loginUrlStorage.setValue("user:email,read:org");
+      const login_url = getLoginUrl();
+      window.location.replace(login_url);
     }
   };
 
