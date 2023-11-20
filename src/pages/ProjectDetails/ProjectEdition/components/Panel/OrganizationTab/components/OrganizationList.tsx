@@ -14,13 +14,19 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
   const {
     githubWorklow: { run },
   } = useContext(EditContext);
+  const getLinkUrl = (org: UseGithubOrganizationsResponse) => {
+    if (org.installed && org.installationId) {
+      return `https://github.com/organizations/${org.login}/settings/installations/${org.installationId}`;
+    }
+
+    return `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}`;
+  };
+
   if (organizations.length) {
     return (
       <ul className="flex flex-col gap-2 py-4 pb-6">
         {organizations.map((org, index) => {
-          const linkUrl = org.installed
-            ? `https://github.com/organizations/${org.login}/settings/installations/${org.id}`
-            : `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}`;
+          const linkUrl = getLinkUrl(org);
 
           return (
             <HorizontalListItemCard

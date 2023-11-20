@@ -109,7 +109,6 @@ export function CreateProjectProvider({
   const { data: organizationsData } = MeApi.queries.useGithubOrganizations({
     // Polling the organizations every second knowing that user can delete and installation
     // and the related github event can take an unknown delay to be triggered
-    //   options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },
     options: {
       retry: 1,
       refetchOnWindowFocus: () => {

@@ -6,7 +6,7 @@ import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
 import { useState } from "react";
-import ConfirmationPopOver from "src/components/New/Popover/confirmationPopover";
+import ConfirmationPopOver from "src/components/New/Popover/ConfirmationPopover";
 import {
   STORAGE_KEY_CREATE_PROJECT_STEP,
   useResetStorage,
