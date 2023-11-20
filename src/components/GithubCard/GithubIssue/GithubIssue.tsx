@@ -7,7 +7,7 @@ import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitCommentLine from "src/icons/GitCommentLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { GithubContributionStatusREST, GithubContributionType } from "src/types";
+import { ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { parseIssueLink } from "src/utils/github";
 
@@ -22,11 +22,11 @@ function getIssueStatusDate(issue: GithubIssueFragment) {
   switch (issue.status) {
     case GithubIssueStatus.Cancelled:
     case GithubIssueStatus.Completed:
-    case GithubContributionStatusREST.Completed:
-    case GithubContributionStatusREST.Cancelled:
+    case ContributionStatus.Completed:
+    case ContributionStatus.Cancelled:
       return new Date(issue.closedAt);
     case GithubIssueStatus.Open:
-    case GithubContributionStatusREST.InProgress:
+    case ContributionStatus.InProgress:
     default:
       return new Date(issue.createdAt);
   }

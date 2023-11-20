@@ -68,14 +68,14 @@ export const EditContext = createContext<Edit>({
 });
 
 const validationSchema = z.object({
-  logoUrl: z.string(),
+  logoUrl: z.string().nullish(),
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
   moreInfo: z.array(
     z.object({
-      url: z.string().min(1),
-      value: z.string().min(1),
+      url: z.string().min(1).nullish(),
+      value: z.string().min(1).nullish(),
     })
   ),
   name: z.string().min(1),
@@ -225,7 +225,6 @@ export function EditProvider({ children, project }: EditContextProps) {
       onSuccess: async data => {
         showToaster(T("form.toast.success"));
         clearSession();
-        form.reset();
 
         // Replace the current path on the history stack if different
         const newPathname = `${generatePath(RoutePaths.ProjectDetails, {
@@ -241,7 +240,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const onSubmit = (formData: EditFormData) => {
     updateProject(formData);
-    form.reset(formData);
+    form.reset(form.getValues());
   };
 
   return (

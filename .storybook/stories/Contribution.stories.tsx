@@ -52,22 +52,3 @@ export default {
 export const Default = {
   render: (args: typeof Contribution) => <Contribution contribution={contribution} {...args} />,
 };
-
-export const HasReward = {
-  render: (args: typeof Contribution) => (
-    <Contribution
-      contribution={{
-        ...contribution,
-        rewardItems: [
-          {
-            paymentId: "123",
-            paymentRequest: {
-              projectId: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
-            },
-          },
-        ],
-      }}
-      {...args}
-    />
-  ),
-};

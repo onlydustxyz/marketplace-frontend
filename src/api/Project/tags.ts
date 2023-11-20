@@ -5,4 +5,9 @@ export const PROJECT_TAGS = {
   details: () => [RESSOURCE_TAGS.PROJECTS, "details"],
   detail_by_slug: (slug: string) => [...PROJECT_TAGS.details(), { slug }],
   detail_by_id: (id: string) => [...PROJECT_TAGS.details(), { id }],
+  contribution_detail: (projectId: string, contributionId: string) => [
+    RESSOURCE_TAGS.PROJECTS,
+    "contributions",
+    { projectId, contributionId },
+  ],
 };

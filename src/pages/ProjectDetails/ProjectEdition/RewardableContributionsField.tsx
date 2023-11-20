@@ -5,6 +5,7 @@ import IssueOpen from "src/assets/icons/IssueOpen";
 import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
 import { Datepicker } from "src/components/New/Field/Datepicker";
 import { Field } from "src/components/New/Field/Field";
+import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import InformationLine from "src/icons/InformationLine";
@@ -65,8 +66,8 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
         icon: ({ className }) => <InformationLine className={className} />,
       }}
     >
-      <div className="flex items-center gap-4">
-        <div className="flex gap-3">
+      <Flex className="flex-col gap-4 md:flex-row md:items-center">
+        <Flex className="gap-3">
           {typeOptions.map(option => (
             <div className="flex" key={option.value}>
               <FormOption
@@ -83,8 +84,8 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
               </FormOption>
             </div>
           ))}
-        </div>
-        <div className="flex items-center gap-2">
+        </Flex>
+        <Flex className="items-center gap-2">
           <span className="font-walsheim text-sm text-greyscale-300">
             {T("project.details.edit.fields.date.since")}
           </span>
@@ -94,8 +95,8 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
               onChange={handleDateChange}
             />
           </div>
-        </div>
-      </div>
+        </Flex>
+      </Flex>
     </Field>
   );
 });

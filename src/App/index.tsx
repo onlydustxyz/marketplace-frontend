@@ -92,7 +92,11 @@ function App() {
     parseFlag("VITE_CAN_EDIT_PROJECT")
       ? {
           path: ProjectRoutePaths.Edit,
-          element: <ProjectDetailsEdit />,
+          element: (
+            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+              <ProjectDetailsEdit />
+            </ProtectedRoute>
+          ),
         }
       : {},
   ];

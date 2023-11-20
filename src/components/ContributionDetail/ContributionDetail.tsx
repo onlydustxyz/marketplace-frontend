@@ -1,7 +1,6 @@
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { GithubUser, useGetContributionDetailsQuery } from "src/__generated/graphql";
+import ProjectApi from "src/api/Project";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
@@ -14,33 +13,25 @@ import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import TimeLine from "src/icons/TimeLine";
-import type { Reward } from "src/types";
+import type { GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { getContributionInfo } from "src/utils/getContributionInfo";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
-import { getNbLinkedContributions } from "src/utils/getNbLinkedContributions";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 
-export function ContributionDetail({
-  githubUserId,
-  contributionId,
-  projectId,
-}: {
-  githubUserId: GithubUser["id"];
-  contributionId: string;
-  projectId: string;
-}) {
+export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
   const { open: openRewardPanel } = useRewardDetailPanel();
 
-  const { data, loading, error } = useGetContributionDetailsQuery({
-    variables: { githubUserId, contributionId, projectId },
-    skip: !githubUserId && !contributionId,
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
+  const {
+    data: contribution,
+    isLoading,
+    isError,
+  } = ProjectApi.queries.useGetProjectContributionDetail({
+    params: { projectId, contributionId },
   });
 
   function renderContent() {
-    if (loading) {
+    if (isLoading) {
       return (
         <div className="absolute inset-0">
           <ContributionDetailSkeleton />;
@@ -48,7 +39,7 @@ export function ContributionDetail({
       );
     }
 
-    if (error) {
+    if (isError) {
       return (
         <div className="flex h-full items-center justify-center">
           <p>{T("contributions.panel.error")}</p>
@@ -56,23 +47,13 @@ export function ContributionDetail({
       );
     }
 
-    if (!data) {
+    if (!contribution) {
       return (
         <div className="flex h-full items-center justify-center">
           <p>{T("contributions.panel.empty")}</p>
         </div>
       );
     }
-
-    const {
-      contributions: [contribution],
-    } = data;
-
-    const { id, createdAt, closedAt, project, githubRepo, rewardItems } = contribution ?? {};
-
-    const { number, type, status, title, author, htmlUrl, commentsCount } = getContributionInfo(contribution);
-
-    const nbLinkedContributions = getNbLinkedContributions(contribution);
 
     return (
       <div className="h-full font-walsheim">
@@ -83,37 +64,32 @@ export function ContributionDetail({
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <div>
-                  <ContributionBadge
-                    id={`reward-detail-${id}` ?? ""}
-                    number={number}
-                    type={type}
-                    status={status}
-                    title={title}
-                    author={author}
-                    url={htmlUrl}
-                    size={ContributionBadgeSizes.Md}
-                    withTooltip={false}
-                  />
+                  <ContributionBadge contribution={contribution} size={ContributionBadgeSizes.Md} withTooltip={false} />
                 </div>
 
-                <h6 className="text-lg font-semibold">{title}</h6>
+                <h6 className="text-lg font-semibold">{contribution.githubTitle}</h6>
               </div>
 
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <RoundedImage src={project?.logoUrl ?? onlyDustLogo} alt={project?.name ?? ""} size={ImageSize.Xxs} />
+                  <RoundedImage
+                    src={contribution.project.logoUrl}
+                    alt={contribution.project.name}
+                    size={ImageSize.Xxs}
+                    useLogoFallback
+                  />
                   <div className="text-sm text-greyscale-300">
                     {T("contributions.panel.contribution.forProject")}&nbsp;
                     <Link
                       to={generatePath(RoutePaths.ProjectDetails, {
-                        projectKey: project?.key ?? "",
+                        projectKey: contribution.project.slug,
                       })}
                       className="text-spacePurple-400 hover:text-spacePurple-300"
                       target="_blank"
                     >
-                      {project?.name}
+                      {contribution.project.name}
                     </Link>
-                    &nbsp;/&nbsp;{githubRepo?.name}
+                    &nbsp;/&nbsp;{contribution.repo.name}
                   </div>
                 </div>
 
@@ -121,13 +97,22 @@ export function ContributionDetail({
                   <div className="flex items-center gap-1">
                     <TimeLine className="text-base leading-none" />
                     <span>
-                      {T("contributions.panel.contribution.createdOn", { date: displayRelativeDate(createdAt) })}
+                      {T("contributions.panel.contribution.createdOn", {
+                        date: displayRelativeDate(contribution.createdAt),
+                      })}
                     </span>
                   </div>
                   <div>|</div>
                   <div className="flex items-center gap-1">
-                    <ContributionIcon type={type} status={status} />
-                    <span>{T(getGithubStatusToken(type, status), { date: displayRelativeDate(closedAt) })}</span>
+                    <ContributionIcon
+                      type={contribution.type as GithubContributionType}
+                      status={contribution.githubStatus}
+                    />
+                    <span>
+                      {T(getGithubStatusToken(contribution.type as GithubContributionType, contribution.githubStatus), {
+                        date: displayRelativeDate(contribution?.completedAt ?? ""),
+                      })}
+                    </span>
                   </div>
                 </div>
 
@@ -135,9 +120,9 @@ export function ContributionDetail({
                   <div className="flex items-center gap-1 text-sm leading-none text-greyscale-300">
                     <div className="flex items-center gap-1">
                       <DiscussLine className="text-base leading-none" />
-                      {T("comments", { count: commentsCount })}
+                      {T("comments", { count: contribution.commentsCount })}
                     </div>
-                    {nbLinkedContributions ? (
+                    {contribution.links.length ? (
                       <>
                         <div>|</div>
                         <div className="flex items-center gap-1">
@@ -159,7 +144,7 @@ export function ContributionDetail({
             </div>
           </div>
 
-          {rewardItems.length ? (
+          {contribution.rewards.length ? (
             <div className="flex flex-col gap-4 overflow-hidden py-8">
               <div className="flex items-center gap-2">
                 <Medal2Fill className="text-xl leading-none text-orange-400" />
@@ -167,14 +152,14 @@ export function ContributionDetail({
               </div>
 
               <div className="flex flex-col gap-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-                {rewardItems.map(rewardItem => {
+                {contribution.rewards.map(reward => {
                   return (
                     <RewardCard
-                      key={rewardItem.paymentId}
-                      reward={rewardItem as Reward}
+                      key={reward.id}
+                      reward={reward}
                       onClick={() => {
-                        if (rewardItem.paymentId) {
-                          openRewardPanel({ rewardId: rewardItem.paymentId, projectId });
+                        if (reward.id) {
+                          openRewardPanel({ rewardId: reward.id, projectId });
                         }
                       }}
                     />

@@ -1,34 +1,25 @@
-import { ComponentProps, PropsWithChildren, useMemo, useState } from "react";
+import { ComponentProps, PropsWithChildren, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLocalStorage } from "react-use";
-import {
-  ContributionsBoolExp,
-  ContributionsOrderBy,
-  GithubRepos,
-  OrderBy,
-  Projects,
-  useGetAllContributionsQuery,
-  useGetContributionProjectsQuery,
-  useGetContributionReposQuery,
-} from "src/__generated/graphql";
+import { OrderBy } from "src/__generated/graphql";
+import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
-import { GithubContributionStatus } from "src/types";
+import { ContributionStatus } from "src/types";
 import { isInArray } from "src/utils/isInArray";
 
 enum AllTabs {
-  All = "allContributions",
-  InProgress = "inProgress",
-  Completed = "completed",
-  Canceled = "canceled",
+  All = "ALL_CONTRIBUTIONS",
+  InProgress = "IN_PROGRESS",
+  Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
 }
 
 const tabValues = Object.values(AllTabs);
@@ -37,21 +28,18 @@ function TabContents({ children }: PropsWithChildren) {
   return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
 }
 
-const initialSort: Record<GithubContributionStatus, TableSort> = {
-  [GithubContributionStatus.InProgress]: {
-    column: TableColumns.Date,
+const initialSort: Record<ContributionStatus, TableSort> = {
+  [ContributionStatus.InProgress]: {
+    sort: TableColumns.Date,
     direction: OrderBy.Desc,
-    orderBy: { createdAt: OrderBy.Desc },
   },
-  [GithubContributionStatus.Completed]: {
-    column: TableColumns.Date,
+  [ContributionStatus.Completed]: {
+    sort: TableColumns.Date,
     direction: OrderBy.Desc,
-    orderBy: { closedAt: OrderBy.Desc },
   },
-  [GithubContributionStatus.Canceled]: {
-    column: TableColumns.Date,
+  [ContributionStatus.Cancelled]: {
+    sort: TableColumns.Date,
     direction: OrderBy.Desc,
-    orderBy: { closedAt: OrderBy.Desc },
   },
 };
 
@@ -63,9 +51,7 @@ const initialFilters: Filters = {
 
 export default function Contributions() {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
 
@@ -76,87 +62,28 @@ export default function Contributions() {
   const filtersState = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
   const [{ types, projects, repos }] = filtersState;
 
-  const projectIds = projects.map(({ id }) => id);
-  const repoIds = repos.map(({ id }) => id);
+  const projectIds = projects.map(({ id }) => String(id));
+  const repoIds = repos.map(({ id }) => String(id));
+
+  const filterQueryParams = {
+    types: types.join(","),
+    projects: projectIds.join(","),
+    repositories: repoIds.join(","),
+  };
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
 
-  function tableWhere({ status }: { status: GithubContributionStatus }) {
-    return {
-      githubUserId: { _eq: githubUserId },
-      projectId: { _in: projectIds.length ? projectIds : undefined },
-      repoId: { _in: repoIds.length ? repoIds : undefined },
-      status: { _eq: status },
-      type: { _in: types.length ? types : undefined },
-    };
-  }
-
-  function projectsWhere() {
-    return {
-      githubUserId: { _eq: githubUserId },
-      repoId: { _in: repoIds.length ? repoIds : undefined },
-    };
-  }
-
-  function reposWhere() {
-    return {
-      githubUserId: { _eq: githubUserId },
-      projectId: { _in: projectIds.length ? projectIds : undefined },
-    };
-  }
-
-  const {
-    data: inProgressData,
-    loading: inProgressLoading,
-    error: inProgressError,
-  } = useGetAllContributionsQuery({
-    variables: {
-      orderBy: sort[GithubContributionStatus.InProgress].orderBy as ContributionsOrderBy,
-      where: tableWhere({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
-    },
-    skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
+  const { data: projectsData } = MeApi.queries.useMyContributedProjects({
+    params: { repositories: repoIds.length ? repoIds.join(",") : "" },
   });
+  const contributedProjects = projectsData?.projects ?? [];
 
-  const {
-    data: completedData,
-    loading: completedLoading,
-    error: completedError,
-  } = useGetAllContributionsQuery({
-    variables: {
-      orderBy: sort[GithubContributionStatus.Completed].orderBy as ContributionsOrderBy,
-      where: tableWhere({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
-    },
-    skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
+  const { data: reposData } = MeApi.queries.useMyContributedRepos({
+    params: { projects: projectIds.length ? projectIds.join(",") : "" },
   });
-
-  const {
-    data: canceledData,
-    loading: canceledLoading,
-    error: canceledError,
-  } = useGetAllContributionsQuery({
-    variables: {
-      orderBy: sort[GithubContributionStatus.Canceled].orderBy as ContributionsOrderBy,
-      where: tableWhere({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
-    },
-    skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
-  });
-
-  const { data: projectsData } = useGetContributionProjectsQuery({
-    variables: { where: projectsWhere() as ContributionsBoolExp },
-    skip: !githubUserId,
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
-  });
-
-  const { data: reposData } = useGetContributionReposQuery({
-    variables: { where: reposWhere() as ContributionsBoolExp },
-    skip: !githubUserId,
-    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
-  });
+  const contributedRepos = reposData?.repos ?? [];
 
   function isActiveTab(tab: AllTabs) {
     return activeTab === tab;
@@ -208,9 +135,9 @@ export default function Contributions() {
       ),
     },
     {
-      active: isActiveTab(AllTabs.Canceled),
+      active: isActiveTab(AllTabs.Cancelled),
       onClick: () => {
-        updateActiveTab(AllTabs.Canceled);
+        updateActiveTab(AllTabs.Cancelled);
       },
       testId: "contributions-canceled-tab",
       children: (
@@ -231,21 +158,26 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.InProgress);
       },
-      data: inProgressData,
-      loading: inProgressLoading,
-      error: inProgressError,
-      status: GithubContributionStatus.InProgress,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
-      sort: sort[GithubContributionStatus.InProgress],
+      sort: sort[ContributionStatus.InProgress],
       onSort: sort => {
         setSort(prevState => {
-          const state = { ...prevState, [GithubContributionStatus.InProgress]: sort };
+          const state = { ...prevState, [ContributionStatus.InProgress]: sort };
 
           setSortStorage(JSON.stringify(state));
 
           return state;
         });
       },
+      queryProps: [
+        {
+          queryParams: {
+            statuses: ContributionStatus.InProgress,
+            ...(sort.IN_PROGRESS.sort !== TableColumns.Linked ? sort.IN_PROGRESS : {}),
+            ...filterQueryParams,
+          },
+        },
+      ],
     },
     {
       id: "completed_contributions_table",
@@ -255,14 +187,10 @@ export default function Contributions() {
       onHeaderClick: () => {
         updateActiveTab(AllTabs.Completed);
       },
-      data: completedData,
-      loading: completedLoading,
-      error: completedError,
-      status: GithubContributionStatus.Completed,
-      sort: sort[GithubContributionStatus.Completed],
+      sort: sort[ContributionStatus.Completed],
       onSort: sort => {
         setSort(prevState => {
-          const state = { ...prevState, [GithubContributionStatus.Completed]: sort };
+          const state = { ...prevState, [ContributionStatus.Completed]: sort };
 
           setSortStorage(JSON.stringify(state));
 
@@ -270,6 +198,15 @@ export default function Contributions() {
         });
       },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
+      queryProps: [
+        {
+          queryParams: {
+            statuses: ContributionStatus.Completed,
+            ...(sort.COMPLETED.sort !== TableColumns.Linked ? sort.COMPLETED : {}),
+            ...filterQueryParams,
+          },
+        },
+      ],
     },
     {
       id: "canceled_contributions_table",
@@ -277,39 +214,30 @@ export default function Contributions() {
       description: T("contributions.canceled.description"),
       icon: className => <CancelCircleLine className={className} />,
       onHeaderClick: () => {
-        updateActiveTab(AllTabs.Canceled);
+        updateActiveTab(AllTabs.Cancelled);
       },
-      data: canceledData,
-      loading: canceledLoading,
-      error: canceledError,
-      status: GithubContributionStatus.Canceled,
-      sort: sort[GithubContributionStatus.Canceled],
+      sort: sort[ContributionStatus.Cancelled],
       onSort: sort => {
         setSort(prevState => {
-          const state = { ...prevState, [GithubContributionStatus.Canceled]: sort };
+          const state = { ...prevState, [ContributionStatus.Cancelled]: sort };
 
           setSortStorage(JSON.stringify(state));
 
           return state;
         });
       },
-      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Canceled),
+      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
+      queryProps: [
+        {
+          queryParams: {
+            statuses: ContributionStatus.Cancelled,
+            ...(sort.CANCELLED.sort !== TableColumns.Linked ? sort.CANCELLED : {}),
+            ...filterQueryParams,
+          },
+        },
+      ],
     },
   ];
-
-  const filterProjectsAndRepos = useMemo((): { projects: Projects[]; repos: GithubRepos[] } => {
-    let projects: Projects[] = [];
-    let repos: GithubRepos[] = [];
-
-    if (!projectsData || !reposData) {
-      return { projects, repos };
-    }
-
-    projects = projectsData.contributions.flat().map(({ project }) => project) as Projects[];
-    repos = reposData.contributions.flat().map(({ githubRepo }) => githubRepo) as GithubRepos[];
-
-    return { projects, repos };
-  }, [projectsData, reposData]);
 
   return (
     <>
@@ -326,9 +254,8 @@ export default function Contributions() {
                   <div className="hidden -translate-y-3 lg:block">
                     <ContributionFilter
                       state={filtersState}
-                      projects={filterProjectsAndRepos.projects}
-                      repos={filterProjectsAndRepos.repos}
-                      loading={inProgressLoading || completedLoading || canceledLoading}
+                      projects={contributedProjects}
+                      repos={contributedRepos}
                       onChange={newState => {
                         setFiltersStorage(JSON.stringify(newState));
                       }}

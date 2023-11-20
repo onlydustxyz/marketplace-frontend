@@ -16,9 +16,21 @@ describe("Display relative data", () => {
     expect(displayRelativeDate(new Date("2023-01-01"))).toEqual("14 days ago");
   });
 
+  it("should display the right number of elapsed days", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2023-01-15"));
+    expect(displayRelativeDate("2023-01-01")).toEqual("14 days ago");
+  });
+
   it("should display the right number of elapsed months after 1 month", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2023-02-15"));
     expect(displayRelativeDate(new Date("2023-01-01"))).toEqual("a month ago");
+  });
+
+  it("should display the right number of elapsed months after 15 years", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2023-02-15"));
+    expect(displayRelativeDate(1199145600000)).toEqual("15 years ago");
   });
 });

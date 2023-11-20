@@ -1,8 +1,6 @@
-import type { ApolloError } from "@apollo/client";
-import { ComponentProps, PropsWithChildren, ReactNode, useMemo, useState } from "react";
-import { cn } from "src/utils/cn";
-
-import { ContributionsOrderBy, GetAllContributionsQuery, OrderBy } from "src/__generated/graphql";
+import { PropsWithChildren, ReactNode, useMemo } from "react";
+import { OrderBy } from "src/__generated/graphql";
+import MeApi from "src/api/me";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -17,35 +15,28 @@ import Line from "src/components/Table/Line";
 import { TooltipPosition, Variant as TooltipVariant } from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
-import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
-import {
-  DeepPartial,
-  GithubContributionStatus,
-  GithubContributionType,
-  GithubItemStatus,
-  GithubPullRequestDraft,
-  GithubPullRequestStatus,
-} from "src/types";
+import { ContributionStatus, GithubContributionType } from "src/types";
+import { cn } from "src/utils/cn";
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
-import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
 import { useMediaQuery } from "usehooks-ts";
+import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
+import { MobileShowMore } from "./MobileShowMore";
 
 export enum TableColumns {
-  Date = "date",
-  Project = "project",
-  Id = "id",
-  Linked = "linked",
+  Date = "CREATED_AT",
+  Project = "PROJECT_REPO_NAME",
+  Id = "GITHUB_NUMBER_TITLE",
+  Linked = "LINKED",
 }
 
 export type TableSort = {
-  column: TableColumns;
+  sort: TableColumns;
   direction: OrderBy.Asc | OrderBy.Desc;
-  orderBy?: { [K in keyof Partial<ContributionsOrderBy>]: DeepPartial<ContributionsOrderBy[K]> };
 };
 
 function Message({ children }: PropsWithChildren) {
@@ -65,34 +56,27 @@ function TableText({ children }: PropsWithChildren) {
 }
 
 export function ContributionTable({
-  data,
   description,
-  error,
+  fullTable = true,
   icon,
   id,
-  loading,
   onHeaderClick,
-  fullTable = true,
-  status,
-  title,
-  sort,
   onSort,
+  queryProps,
+  sort,
+  title,
 }: {
-  data?: GetAllContributionsQuery;
   description: string;
-  error?: ApolloError;
+  fullTable?: boolean;
   icon(className: string): ReactNode;
   id: string;
-  loading: boolean;
   onHeaderClick: () => void;
-  fullTable?: boolean;
-  status: GithubContributionStatus;
-  title: string;
-  sort: TableSort;
   onSort: (sort: TableSort) => void;
+  queryProps: Parameters<typeof MeApi.queries.useMyContributions>;
+  sort: TableSort;
+  title: string;
 }) {
   const { T } = useIntl();
-  const [showAll, setShowAll] = useState(false);
 
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
@@ -100,17 +84,17 @@ export function ContributionTable({
   const sortDirection = sort.direction === OrderBy.Asc ? "up" : "down";
   const newSortDirection = sort.direction === OrderBy.Asc ? OrderBy.Desc : OrderBy.Asc;
 
-  const { contributions } = data ?? {};
+  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = MeApi.queries.useMyContributions(
+    ...queryProps
+  );
 
-  const memoizedContributions = useMemo(() => {
-    // Need to clone the array because Array.sort() mutates the original
-    const sortArr = contributions ? [...contributions] : [];
+  const contributions = data?.pages?.flatMap(({ contributions }) => contributions);
 
-    if (sort.column === TableColumns.Id) {
-      return sortArr.sort((a, b) => sortContributionsByNumber([a, b], sort.direction));
-    }
+  const desktopContributions = useMemo(() => {
+    if (sort.sort === TableColumns.Linked) {
+      // Need to clone the array because Array.sort() mutates the original
+      const sortArr = contributions ? [...contributions] : [];
 
-    if (sort.column === TableColumns.Linked) {
       return sortArr.sort((a, b) => sortContributionsByLinked([a, b], sort.direction));
     }
 
@@ -118,7 +102,7 @@ export function ContributionTable({
   }, [contributions, sort]);
 
   function renderMobileContent() {
-    if (error) {
+    if (isError) {
       return (
         <div className="py-6">
           <Message>{T("contributions.table.error")}</Message>
@@ -126,51 +110,32 @@ export function ContributionTable({
       );
     }
 
-    if (memoizedContributions?.length === 0) {
+    if (contributions?.length === 0) {
       return (
         <div className="py-6">
-          <Message>
-            {T("contributions.table.empty", {
-              time: Intl.DateTimeFormat("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-              }).format(new Date(data?.githubRepos[0].indexedAt)),
-            })}
-          </Message>
+          <Message>{T("contributions.table.empty")}</Message>
         </div>
       );
     }
-
-    const nbContributions = memoizedContributions?.length ?? 0;
-    const maxContributions = 2;
-    const showAllContributions = nbContributions > maxContributions;
-    const contributions = showAll ? memoizedContributions : memoizedContributions?.slice(0, maxContributions);
 
     return (
       <div className="flex flex-col gap-2">
         {contributions?.map(contribution => {
           return (
             <div
-              key={`${contribution.id}-${contribution.project?.id}`}
+              key={`${contribution.id}-${contribution.project.name}`}
               className={cn("rounded-xl", {
                 "bg-whiteFakeOpacity-5/95 lg:bg-none": !fullTable,
               })}
             >
-              <ContributionCard contribution={contribution} status={status} />
+              <ContributionCard contribution={contribution} />
             </div>
           );
         })}
 
-        {showAllContributions && !showAll ? (
+        {hasNextPage ? (
           <div className="px-3 py-3.5">
-            <button
-              type="button"
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-greyscale-50 bg-white/5 px-4 py-3.5 font-walsheim font-medium leading-none text-greyscale-50 shadow-lg"
-              onClick={() => setShowAll(true)}
-            >
-              <ArrowDownSLine className="text-xl leading-none" />
-              {T("contributions.table.showAll", { count: nbContributions })}
-            </button>
+            <MobileShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={!fullTable} />
           </div>
         ) : null}
       </div>
@@ -178,47 +143,32 @@ export function ContributionTable({
   }
 
   function renderDesktopContent() {
-    if (error) {
+    if (isError) {
       return <TableText>{T("contributions.table.error")}</TableText>;
     }
 
-    if (memoizedContributions?.length === 0) {
-      return (
-        <TableText>
-          {T("contributions.table.empty", {
-            time: Intl.DateTimeFormat("en-US", {
-              hour: "numeric",
-              minute: "numeric",
-            }).format(new Date(data?.githubRepos[0].indexedAt)),
-          })}
-        </TableText>
-      );
+    if (desktopContributions?.length === 0) {
+      return <TableText>{T("contributions.table.empty")}</TableText>;
     }
 
-    return memoizedContributions?.map(contribution => {
-      const lineId = `${contribution.id}-${contribution.project?.id}`;
-      const lineDate = status === GithubContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
-      const { status: contributionStatus } = contribution.githubPullRequest ??
-        contribution.githubIssue ??
-        contribution.githubCodeReview ?? { status: GithubPullRequestStatus.Open };
-      const { draft } = contribution?.githubPullRequest ?? {};
+    return desktopContributions?.map(contribution => {
+      const { createdAt, completedAt, githubStatus, id, project, repo, status, type } = contribution;
+      const lineId = `${id}-${project.id}`;
+      const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
 
       return (
         <Line key={lineId}>
           <Cell height={CellHeight.Compact}>
             <ContributionDate
               id={lineId}
-              type={contribution.type as GithubContributionType}
-              status={draft ? GithubPullRequestDraft.Draft : (contributionStatus as GithubItemStatus)}
-              date={new Date(lineDate)}
+              type={type as GithubContributionType}
+              status={githubStatus}
+              date={new Date(lineDate ?? "")}
               tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.Bottom }}
             />
           </Cell>
           <Cell height={CellHeight.Compact}>
-            <ContributionProjectRepo
-              project={contribution.project as ComponentProps<typeof ContributionProjectRepo>["project"]}
-              repo={contribution.githubRepo as ComponentProps<typeof ContributionProjectRepo>["repo"]}
-            />
+            <ContributionProjectRepo project={project} repo={repo} />
           </Cell>
           <Cell height={CellHeight.Compact}>
             <Contribution contribution={contribution} />
@@ -231,7 +181,7 @@ export function ContributionTable({
     });
   }
 
-  return loading ? (
+  return isLoading ? (
     <ContributionTableSkeleton />
   ) : (
     <section
@@ -256,7 +206,7 @@ export function ContributionTable({
       ) : null}
       <div className="p-3 lg:hidden">{!isLg ? renderMobileContent() : null}</div>
 
-      <div className="hidden px-4 py-6 lg:block">
+      <div className={cn("hidden px-4 pt-6 lg:block", isLg && hasNextPage ? "pb-0" : "pb-6")}>
         <Table
           id={id}
           headers={
@@ -264,54 +214,50 @@ export function ContributionTable({
               <HeaderCell
                 horizontalMargin
                 onClick={() => {
-                  const field = status === GithubContributionStatus.InProgress ? "createdAt" : "closedAt";
-
                   onSort({
-                    column: TableColumns.Date,
+                    sort: TableColumns.Date,
                     direction: newSortDirection,
-                    orderBy: { [field]: newSortDirection },
                   });
                 }}
               >
                 <TimeLine />
                 <span>{T("contributions.table.date")}</span>
-                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Date} />
+                <SortingArrow direction={sortDirection} visible={sort.sort === TableColumns.Date} />
               </HeaderCell>
               <HeaderCell
                 width={HeaderCellWidth.Quarter}
                 horizontalMargin
                 onClick={() => {
                   onSort({
-                    column: TableColumns.Project,
+                    sort: TableColumns.Project,
                     direction: newSortDirection,
-                    orderBy: { project: { name: newSortDirection }, githubRepo: { name: newSortDirection } },
                   });
                 }}
               >
                 <Folder3Line />
                 <span>{T("contributions.table.projectRepo")}</span>
-                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Project} />
+                <SortingArrow direction={sortDirection} visible={sort.sort === TableColumns.Project} />
               </HeaderCell>
               <HeaderCell
                 width={HeaderCellWidth.Half}
                 horizontalMargin
                 onClick={() => {
                   onSort({
-                    column: TableColumns.Id,
+                    sort: TableColumns.Id,
                     direction: newSortDirection,
                   });
                 }}
               >
                 <StackLine />
                 <span>{T("contributions.table.contribution")}</span>
-                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Id} />
+                <SortingArrow direction={sortDirection} visible={sort.sort === TableColumns.Id} />
               </HeaderCell>
               <HeaderCell
                 horizontalMargin
                 className="justify-end"
                 onClick={() => {
                   onSort({
-                    column: TableColumns.Linked,
+                    sort: TableColumns.Linked,
                     direction: newSortDirection,
                   });
                 }}
@@ -320,13 +266,18 @@ export function ContributionTable({
                   <IssueOpen className="h-3 w-3" />
                 </span>
                 <span>{T("contributions.table.linkedTo")}</span>
-                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Linked} />
+                {sort.sort === TableColumns.Linked ? <SortingArrow direction={sortDirection} visible={true} /> : null}
               </HeaderCell>
             </HeaderLine>
           }
         >
           {isLg ? renderDesktopContent() : null}
         </Table>
+        {hasNextPage ? (
+          <div className="py-3">
+            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={!fullTable} />
+          </div>
+        ) : null}
       </div>
     </section>
   );

@@ -1,21 +1,22 @@
 import { Combobox as HeadlessCombobox, Transition } from "@headlessui/react";
-import { Spinner } from "src/components/Spinner/Spinner";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import { cn } from "src/utils/cn";
+import { ComboboxState } from "./ComboboxState";
+import { ItemType, MultiList } from "./MultiList";
+import { SingleList } from "./SingleList";
 
 type Props<T> = {
-  items: T[];
   renderItem: ({ item, selected, active }: { item: T; selected: boolean; active: boolean }) => JSX.Element;
   query: string;
   onQuery: (query: string) => void;
   placeholder?: string;
-  multiple?: boolean;
   loading?: boolean;
   /**
    * @description name the key for the item object that will be used as key for the item
    */
   itemKeyName: string;
+  variant?: Variant;
 };
 
 type SingleProps<T> = Props<T> & {
@@ -30,7 +31,29 @@ type MultipleProps<T> = Props<T> & {
   multiple: true;
 };
 
-export function Combobox<T extends { [key: string]: unknown }>({
+type ListProps<T> = SingleProps<T> | MultipleProps<T>;
+
+type SingleListProps<T> = ListProps<T> & {
+  isMultiList?: never;
+  items: T[];
+};
+
+type MultiListProps<T> = ListProps<T> & {
+  isMultiList: true;
+  items: ItemType<T>[];
+};
+
+export enum Variant {
+  Default,
+  Grey,
+}
+
+const variants = {
+  [Variant.Default]: "bg-spaceBlue-900",
+  [Variant.Grey]: "bg-greyscale-900",
+};
+
+export function Combobox<T extends Record<string, unknown>>({
   items,
   renderItem,
   query,
@@ -41,7 +64,9 @@ export function Combobox<T extends { [key: string]: unknown }>({
   multiple = false,
   loading = false,
   itemKeyName,
-}: SingleProps<T> | MultipleProps<T>) {
+  isMultiList,
+  variant = Variant.Default,
+}: SingleListProps<T> | MultiListProps<T>) {
   return (
     <HeadlessCombobox value={selected} onChange={onChange} multiple={multiple as false}>
       {({ open }) => (
@@ -83,32 +108,18 @@ export function Combobox<T extends { [key: string]: unknown }>({
             leaveTo="opacity-0"
             afterLeave={() => onQuery("")}
             className={cn(
-              "absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 bg-spaceBlue-900 p-4 shadow-heavy"
+              "absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 p-4 shadow-heavy",
+              variants[variant]
             )}
           >
             <div className="h-9" />
             <HeadlessCombobox.Options className="max-h-60 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
-              {loading && (
-                <div className="flex justify-center px-4 py-2 text-spacePurple-500">
-                  <Spinner />
-                </div>
-              )}
-              {items.length === 0 && query !== "" && !loading ? (
-                <div className="select-none text-greyscale-50">Nothing here.</div>
+              <ComboboxState {...{ items, query, loading, isMultiList }} />
+
+              {isMultiList ? (
+                <MultiList {...{ items, itemKeyName, loading, renderItem }} />
               ) : (
-                items?.map((item, key) => (
-                  <HeadlessCombobox.Option
-                    key={(item[itemKeyName] as number | string) || key}
-                    className={({ active }) =>
-                      cn("relative cursor-pointer select-none py-2", {
-                        "bg-white/2": active,
-                      })
-                    }
-                    value={item}
-                  >
-                    {({ selected, active }) => renderItem({ item, selected, active })}
-                  </HeadlessCombobox.Option>
-                ))
+                <SingleList {...{ items, itemKeyName, loading, renderItem }} />
               )}
             </HeadlessCombobox.Options>
           </Transition>

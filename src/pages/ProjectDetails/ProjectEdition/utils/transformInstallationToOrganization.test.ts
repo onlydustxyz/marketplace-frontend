@@ -9,6 +9,8 @@ describe("transformInstallationToOrganization", () => {
         avatarUrl: "http://example.com/avatar",
         htmlUrl: "http://example.com",
         name: "Test Organization",
+        installationId: 456,
+        installed: true,
         repos: [
           {
             id: 1,
@@ -29,6 +31,7 @@ describe("transformInstallationToOrganization", () => {
       htmlUrl: "http://example.com",
       name: "Test Organization",
       installationId: 456,
+      installed: true,
       repos: [
         {
           id: 1,

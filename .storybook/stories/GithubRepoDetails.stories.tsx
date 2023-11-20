@@ -18,4 +18,5 @@ const githubRepo = {
   forkCount: 67,
   hasIssues: true,
   htmlUrl: "",
+  isIncludedInProject: false,
 };
