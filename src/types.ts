@@ -147,19 +147,15 @@ export enum GithubPullRequestReviewState {
   PendingReviewer = "PENDING_REVIEWER",
 }
 
+export enum GithubCodeReviewOutcome {
+  Approved = "APPROVED",
+  ChangeRequested = "CHANGE_REQUESTED",
+}
+
 export enum GithubContributionType {
   Issue = "ISSUE",
   PullRequest = "PULL_REQUEST",
   CodeReview = "CODE_REVIEW",
-}
-
-export enum GithubContributionReviewStatus {
-  PendingReviewer = "pendingReviewer",
-  UnderReview = "underReview",
-  Approved = "approved",
-  ChangesRequested = "changesRequested",
-  Dismissed = "dismissed",
-  Commented = "commented",
 }
 
 export enum GithubPullRequestDraft {
