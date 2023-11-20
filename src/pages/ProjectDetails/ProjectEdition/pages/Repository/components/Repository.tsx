@@ -2,14 +2,13 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
 import SubtractLine from "src/icons/SubtractLine";
-import { components } from "src/__generated/api";
 import { useContext } from "react";
-import { EditContext } from "../../../EditContext";
+import { EditContext, EditOrganizationMerged, EditOrganizationRepoMerged } from "../../../EditContext";
 import { useIntl } from "src/hooks/useIntl";
 
 type RepositoryType = {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
-  repository: components["schemas"]["ProjectGithubOrganizationRepoResponse"];
+  organization: EditOrganizationMerged;
+  repository: EditOrganizationRepoMerged;
 };
 
 export function Repository({ organization, repository }: RepositoryType) {
@@ -44,16 +43,22 @@ export function Repository({ organization, repository }: RepositoryType) {
             {repository.description || T("project.details.overview.repositories.descriptionPlaceholder")}
           </p>
         </div>
-        <ul className="flex items-center gap-5 fill-greyscale-200 font-walsheim font-medium text-greyscale-200">
-          <li className="flex items-center gap-1">
-            <StarLine className="text-base" />
-            <span className="text-sm">{repository.stars}</span>
-          </li>
-          <li className="flex items-center gap-1">
-            <ForkLine />
-            <span className="text-sm">{repository.forkCount}</span>
-          </li>
-        </ul>
+        {repository.stars || repository.forkCount ? (
+          <ul className="flex items-center gap-5 fill-greyscale-200 font-walsheim font-medium text-greyscale-200">
+            {repository.stars ? (
+              <li className="flex items-center gap-1">
+                <StarLine className="text-base" />
+                <span className="text-sm">{repository.stars}</span> // todo stars
+              </li>
+            ) : null}
+            {repository.forkCount ? (
+              <li className="flex items-center gap-1">
+                <ForkLine />
+                <span className="text-sm">{repository.forkCount}</span> // todo forkcount
+              </li>
+            ) : null}
+          </ul>
+        ) : null}
       </div>
     </div>
   );

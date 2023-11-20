@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from "react";
 import { FieldLabel } from "src/components/New/Field/Label";
-import { debounce } from "lodash";
+import { debounce, uniqWith } from "lodash";
 import { FieldProjectLeadItem } from "./ProjectLeadItem";
 import { Combobox } from "src/components/New/Field/Combobox";
 import { useAuth } from "src/hooks/useAuth";
@@ -86,7 +86,10 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
   );
 
   function handleChange(leader: SelectedLeadType[]) {
-    onChange?.({ invited: leader, toKeep: value?.toKeep || [] });
+    onChange?.({
+      invited: [...uniqWith(leader, (arrVal, othVal) => arrVal.githubUserId === othVal.githubUserId)],
+      toKeep: value?.toKeep || [],
+    });
   }
 
   return (

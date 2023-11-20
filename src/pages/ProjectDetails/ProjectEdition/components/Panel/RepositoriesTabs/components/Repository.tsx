@@ -1,14 +1,17 @@
 import { FC, useContext } from "react";
-import { components } from "src/__generated/api";
 import { Flex } from "src/components/New/Layout/Flex";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import AddLine from "src/icons/AddLine";
 import { useIntl } from "src/hooks/useIntl";
-import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
+import {
+  EditContext,
+  EditOrganizationMerged,
+  EditOrganizationRepoMerged,
+} from "src/pages/ProjectDetails/ProjectEdition/EditContext";
 
 export interface RepositoryProps {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
-  repository: components["schemas"]["ProjectGithubOrganizationRepoResponse"];
+  organization: EditOrganizationMerged;
+  repository: EditOrganizationRepoMerged;
 }
 export const Repository: FC<RepositoryProps> = ({ organization, repository }) => {
   const { T } = useIntl();

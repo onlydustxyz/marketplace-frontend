@@ -1,19 +1,20 @@
 import { useMemo } from "react";
-import { components } from "src/__generated/api";
 import { Repository } from "./Repository";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
+import { EditOrganizationMerged } from "../../../EditContext";
 
 type RepositoryOrganizationType = {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
+  organization: EditOrganizationMerged;
+  installedRepos: number[];
 };
 
-export function RepositoryOrganization({ organization }: RepositoryOrganizationType) {
-  const installedRepo = useMemo(
-    () => organization.repos?.filter(repo => repo.isIncludedInProject) || [],
-    [organization]
+export function RepositoryOrganization({ organization, installedRepos }: RepositoryOrganizationType) {
+  const installedReposData = useMemo(
+    () => organization.repos?.filter(repo => installedRepos.includes(repo.id)) || [],
+    [organization, installedRepos]
   );
 
-  if (installedRepo.length) {
+  if (installedReposData.length) {
     return (
       <VerticalListItemCard
         ContainerProps={{ className: " bg-card-background-base" }}
@@ -23,7 +24,7 @@ export function RepositoryOrganization({ organization }: RepositoryOrganizationT
         avatarSrc={organization?.avatarUrl || ""}
       >
         <div className="grid grid-flow-row grid-cols-3 gap-x-5 gap-y-5">
-          {installedRepo.map(repo => (
+          {installedReposData.map(repo => (
             <Repository key={repo.name} organization={organization} repository={repo} />
           ))}
         </div>

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
@@ -15,15 +15,38 @@ import transformInstallationToOrganization from "./utils/transformInstallationTo
 import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 import { FieldProjectLeadValue } from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UseOrganizationsByGithubUserIdResponse } from "src/api/Github/queries";
+import { useAuth } from "src/hooks/useAuth";
+import { uniqWith } from "lodash";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
   children: React.ReactNode;
 }
 
+// !! CLEAN THIS IN SWAGGER
+export type EditOrganizationRepoMerged = components["schemas"]["ShortGithubRepoResponse"] & {
+  forkCount?: number | undefined;
+  stars?: number | undefined;
+};
+
+// !! CLEAN THIS IN SWAGGER
+export type EditOrganizationMerged = Omit<
+  UseOrganizationsByGithubUserIdResponse,
+  "avatarUrl" | "htmlUrl" | "id" | "login" | "name"
+> & {
+  avatarUrl?: string | undefined;
+  htmlUrl?: string | undefined;
+  id?: number | undefined;
+  login?: string | undefined;
+  name?: string | undefined;
+  repos: EditOrganizationRepoMerged[];
+};
+
 type Edit = {
   project?: UseGetProjectBySlugResponse;
   form?: UseFormReturn<EditFormData, unknown>;
+  organizations: EditOrganizationMerged[];
   githubWorklow: {
     run: () => void;
     inGithubWorkflow: boolean;
@@ -38,14 +61,21 @@ type Edit = {
   };
 };
 
+export interface EditFormDataRepos {
+  repoId: number;
+  orgId: number;
+}
+
 export type EditFormData = components["schemas"]["UpdateProjectRequest"] & {
   organizations: components["schemas"]["ProjectGithubOrganizationResponse"][];
   projectLeads: FieldProjectLeadValue;
+  selectedRepos: EditFormDataRepos[];
 };
 
 export const EditContext = createContext<Edit>({
   form: undefined,
   project: undefined,
+  organizations: [],
   formHelpers: {
     addOrganization: () => null,
     resetBeforLeave: () => null,
@@ -87,6 +117,7 @@ const SESSION_KEY = "edit-project-";
 
 export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
+  const { githubUserId } = useAuth();
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
@@ -94,11 +125,19 @@ export function EditProvider({ children, project }: EditContextProps) {
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
+
+  // !!REMOVE ( GITHHUB WORKFLOW)
   const { data: installationData, isLoading: isInstallationLoading } = GithubApi.queries.useInstallationById({
     params: { installation_id },
     options: { retry: 1, enabled: !!installation_id },
   });
 
+  const { data: organizationsData } = GithubApi.queries.useOrganizationsByGithubUserId({
+    params: { githubUserId },
+    options: { retry: 1, enabled: !!githubUserId, refetchInterval: 20000 },
+  });
+
+  // !!Needed ( GITHHUB WORKFLOW) ?
   const [storedValue, setValue, status, removeValue, clearSessionPattern] = useSessionStorage<
     { form: EditFormData; dirtyFields: Array<keyof EditFormData> } | undefined
   >(`${SESSION_KEY}${project.slug}`, undefined);
@@ -127,6 +166,18 @@ export function EditProvider({ children, project }: EditContextProps) {
     resolver: zodResolver(validationSchema),
   });
 
+  // !! should be cleaner with swagger update
+  const mergeOrganization = useMemo(() => {
+    return uniqWith(
+      [
+        ...(project.organizations?.map(org => ({ ...org, installed: true, repos: org?.repos || [] })) || []),
+        ...(organizationsData || []),
+      ],
+      (arr, oth) => arr.id === oth.id
+    );
+  }, [organizationsData, project]);
+
+  // !!REMOVE ( GITHHUB WORKFLOW)
   const onAddOrganization = (organization: components["schemas"]["ProjectGithubOrganizationResponse"]) => {
     const organizations = [...form.getValues("organizations")];
     const findOrganization = organizations.find(org => org.id === organization.id);
@@ -137,32 +188,26 @@ export function EditProvider({ children, project }: EditContextProps) {
   };
 
   const onAddRepository = (organizationId: number, repoId: number) => {
-    const organizations = [...form.getValues("organizations")];
     const githubRepoIds = [...(form.getValues("githubRepoIds") || [])];
-    const findOrganization = organizations.find(org => org.id === organizationId);
+    const findOrganization = mergeOrganization.find(org => org.id === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
-        findRepo.isIncludedInProject = true;
         githubRepoIds.push(findRepo.id);
-        form.setValue("organizations", organizations, { shouldDirty: true, shouldValidate: true });
         form.setValue("githubRepoIds", githubRepoIds, { shouldDirty: true, shouldValidate: true });
       }
     }
   };
 
   const onRemoveRepository = (organizationId: number, repoId: number) => {
-    const organizations = [...form.getValues("organizations")];
     const githubRepoIds = [...(form.getValues("githubRepoIds") || [])];
-    const findOrganization = organizations.find(org => org.id === organizationId);
+    const findOrganization = mergeOrganization.find(org => org.id === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
-        findRepo.isIncludedInProject = false;
         const findRepoIndex = githubRepoIds.findIndex(id => id === findRepo.id);
         if (findRepoIndex !== -1) {
           githubRepoIds.splice(findRepoIndex, 1);
-          form.setValue("organizations", organizations, { shouldDirty: true, shouldValidate: true });
           form.setValue("githubRepoIds", githubRepoIds, { shouldDirty: true, shouldValidate: true });
         }
       }
@@ -209,6 +254,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     }
   }, [status]);
 
+  // !!REMOVE ( GITHHUB WORKFLOW)
   useEffect(() => {
     const transformedOrganization = transformInstallationToOrganization(installationData);
     if (transformedOrganization) {
@@ -246,6 +292,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       value={{
         form,
         project,
+        organizations: mergeOrganization,
         formHelpers: {
           addOrganization: onAddOrganization,
           addRepository: onAddRepository,
