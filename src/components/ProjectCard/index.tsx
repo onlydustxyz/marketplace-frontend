@@ -7,6 +7,7 @@ import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import config from "src/config";
+import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
@@ -14,6 +15,7 @@ import RecordCircleLine from "src/icons/RecordCircleLine";
 import User3Line from "src/icons/User3Line";
 import { Visibility } from "src/types";
 import { cn } from "src/utils/cn";
+import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
 import { MissingGithubAppInstall } from "../New/Project/MissingGithubAppInstall";
@@ -49,7 +51,9 @@ export default function ProjectCard({ project, className, variant = Variant.Defa
   } = project;
 
   const { T } = useIntl();
+  const { githubUserId } = useAuth();
 
+  const isLeader = isUserProjectLead(project, githubUserId);
   const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
   const topSponsors = sponsors?.map(sponsor => sponsor).slice(0, 3) ?? [];
   const languages = technologies ? getTopTechnologies(technologies) : [];
@@ -158,7 +162,7 @@ export default function ProjectCard({ project, className, variant = Variant.Defa
           {isInvitedAsProjectLead ? (
             <ProjectLeadInvitationView btnLabel={T("project.projectLeadInvitation.view")} />
           ) : null}
-          {isMissingGithubAppInstallation ? <MissingGithubAppInstall slug={slug} /> : null}
+          {isLeader && isMissingGithubAppInstallation ? <MissingGithubAppInstall slug={slug} /> : null}
         </div>
       </Card>
     </Link>
