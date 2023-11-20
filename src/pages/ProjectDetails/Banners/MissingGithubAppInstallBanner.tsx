@@ -1,10 +1,17 @@
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import { components } from "src/__generated/api";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 
-export function MissingGithubAppInstallBanner({ slug = "" }: { slug: string }) {
+export function MissingGithubAppInstallBanner({
+  slug = "",
+  orgs = [],
+}: {
+  slug: string;
+  orgs: components["schemas"]["ProjectResponse"]["organizations"];
+}) {
   const { T } = useIntl();
 
   return (
@@ -16,8 +23,9 @@ export function MissingGithubAppInstallBanner({ slug = "" }: { slug: string }) {
         <div className="font-walsheim text-white">
           <p className="mb-1 text-sm font-medium">{T("project.details.banners.missingGithubAppInstall.message")}</p>
           <ul className="list-inside list-disc text-xs">
-            <li>test</li>
-            <li>test</li>
+            {orgs.map(({ id, name: org }) => (
+              <li key={id}>{T("project.details.banners.missingGithubAppInstall.org", { org })}</li>
+            ))}
           </ul>
         </div>
       </div>

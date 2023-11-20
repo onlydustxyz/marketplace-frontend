@@ -49,6 +49,8 @@ import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { OutletContext } from "../View";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { EditProjectButton } from "../components/EditProjectButton";
+import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
+import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -94,6 +96,8 @@ export default function Overview() {
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget === 0;
 
+  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+
   return (
     <>
       <StillFetchingBanner createdAt={project?.createdAt} />
@@ -127,7 +131,9 @@ export default function Overview() {
           ) : null}
         </div>
       </Title>
-      {/* <MissingGithubAppInstallBanner slug={project.slug} /> */}
+      {orgsWithUnauthorizedRepos.length ? (
+        <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
+      ) : null}
       <ProjectLeadInvitation
         projectId={projectId}
         size={CalloutSizes.Large}

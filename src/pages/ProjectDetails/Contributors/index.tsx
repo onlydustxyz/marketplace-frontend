@@ -1,6 +1,7 @@
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
+import { components } from "src/__generated/api";
 import Button, { ButtonSize } from "src/components/Button";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
@@ -8,18 +9,19 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import { withTooltip } from "src/components/Tooltip";
+import Flex from "src/components/Utils/Flex";
 import { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { useIntl } from "src/hooks/useIntl";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
 import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/pages/ProjectDetails/Title";
+import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useMediaQuery } from "usehooks-ts";
+import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
-import { components } from "src/__generated/api";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import Flex from "src/components/Utils/Flex";
 import { EditProjectButton } from "../components/EditProjectButton";
 
 type OutletContext = {
@@ -40,6 +42,8 @@ export default function Contributors() {
 
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget === 0;
+
+  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: isProjectLeader ? Fields.ToRewardCount : Fields.ContributionCount,
@@ -101,7 +105,9 @@ export default function Contributors() {
           )}
         </div>
       </Title>
-      {/* <MissingGithubAppInstallBanner slug={project.slug} /> */}
+      {orgsWithUnauthorizedRepos.length ? (
+        <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
+      ) : null}
       <ProjectLeadInvitation
         projectId={projectId}
         size={CalloutSizes.Large}
