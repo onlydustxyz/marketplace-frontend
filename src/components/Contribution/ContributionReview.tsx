@@ -4,38 +4,35 @@ import FileChange from "src/assets/icons/FileChange";
 import Hourglass from "src/assets/icons/Hourglass";
 import { ContributionAttribute } from "src/components/Contribution/ContributionAttribute";
 import { useIntl } from "src/hooks/useIntl";
-import Chat4Line from "src/icons/Chat4Line";
 import CheckLine from "src/icons/CheckLine";
-import CloseLine from "src/icons/CloseLine";
-import { GithubContributionReviewStatus } from "src/types";
+import { GithubPullRequestReviewState } from "src/types";
 
-export function ContributionReview({ status }: { status: GithubContributionReviewStatus }) {
+export const ReviewStateStatuses = {
+  APPROVED: GithubPullRequestReviewState.Approved,
+  CHANGES_REQUESTED: GithubPullRequestReviewState.ChangesRequested,
+  PENDING_REVIEWER: GithubPullRequestReviewState.PendingReviewer,
+  UNDER_REVIEW: GithubPullRequestReviewState.UnderReview,
+};
+
+export function ContributionReview({ status }: { status: GithubPullRequestReviewState }) {
   const { T } = useIntl();
 
-  const dict: Record<GithubContributionReviewStatus, { icon: ReactElement; text: string }> = {
-    [GithubContributionReviewStatus.PendingReviewer]: {
+  const dict: Record<GithubPullRequestReviewState, { icon: ReactElement; text: string }> = {
+    [GithubPullRequestReviewState.PendingReviewer]: {
       icon: <Hourglass />,
       text: T("contribution.review.status.pendingReviewer"),
     },
-    [GithubContributionReviewStatus.UnderReview]: {
+    [GithubPullRequestReviewState.UnderReview]: {
       icon: <Hourglass />,
       text: T("contribution.review.status.underReview"),
     },
-    [GithubContributionReviewStatus.Approved]: {
+    [GithubPullRequestReviewState.Approved]: {
       icon: <CheckLine className="flex" />,
       text: T("contribution.review.status.approved"),
     },
-    [GithubContributionReviewStatus.ChangesRequested]: {
+    [GithubPullRequestReviewState.ChangesRequested]: {
       icon: <FileChange />,
       text: T("contribution.review.status.changesRequested"),
-    },
-    [GithubContributionReviewStatus.Dismissed]: {
-      icon: <CloseLine />,
-      text: T("contribution.review.status.dismissed"),
-    },
-    [GithubContributionReviewStatus.Commented]: {
-      icon: <Chat4Line />,
-      text: T("contribution.review.status.commented"),
     },
   };
 

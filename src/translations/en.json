@@ -32,9 +32,7 @@
         "pendingReviewer": "Pending reviewer",
         "underReview": "Under review",
         "approved": "Approved",
-        "changesRequested": "Changes requested",
-        "dismissed": "Dismissed",
-        "commented": "Commented"
+        "changesRequested": "Changes requested"
       }
     }
   },
