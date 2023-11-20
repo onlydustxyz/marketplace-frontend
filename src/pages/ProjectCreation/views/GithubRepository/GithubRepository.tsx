@@ -9,14 +9,8 @@ import { useRepositoryCount } from "./hooks/useRepositoryCount";
 import { FormInformationCount } from "./components/FormInformationCount";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import { useIntl } from "src/hooks/useIntl";
-import { OrganizationSessionStorageInterface } from "src/types";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 import { CreateProjectContext } from "../../ProjectCreation.context";
-
-type Organization = OrganizationSessionStorageInterface;
-export interface createProjectRepository {
-  organizations: Organization[];
-}
 
 export const GithubRepositoryPage = () => {
   const { T } = useIntl();

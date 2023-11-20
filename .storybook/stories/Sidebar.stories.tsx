@@ -53,6 +53,7 @@ const currentProject: Project = {
       stars: 0,
       forkCount: 0,
       hasIssues: true,
+      isIncludedInProject: false,
     },
   ],
   organizations: [
@@ -63,6 +64,8 @@ const currentProject: Project = {
       htmlUrl: "https://github.com/Barbicane-fr",
       name: "Barbicane",
       installationId: 411,
+      owner: "owner-id",
+      installed: true,
       repos: [
         {
           id: 347315291,
@@ -146,6 +149,7 @@ const otherProject: Project = {
       stars: 0,
       forkCount: 0,
       hasIssues: true,
+      isIncludedInProject: true,
     },
   ],
   organizations: [
@@ -156,6 +160,8 @@ const otherProject: Project = {
       htmlUrl: "https://github.com/Barbicane-fr",
       name: "Barbicane",
       installationId: 411,
+      owner: "owner-id",
+      installed: true,
       repos: [
         {
           id: 347315291,

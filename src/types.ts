@@ -1,5 +1,4 @@
 import { components } from "./__generated/api";
-import { useInstallationByIdResponse } from "./api/Github/queries";
 
 export type Branded<T, B> = T & { __brand: B };
 
@@ -302,19 +301,6 @@ export type Sorting = {
   field: string | undefined;
   isAscending: boolean | undefined;
 };
-
-type Repos = components["schemas"]["ShortGithubRepoResponse"] & {
-  selected?: boolean;
-};
-
-type Organization = Omit<components["schemas"]["GithubOrganizationResponse"], "repos"> & {
-  installationId: number;
-  repos: Repos[];
-};
-
-export interface OrganizationSessionStorageInterface extends useInstallationByIdResponse {
-  organization: Organization;
-}
 
 export type Contribution = components["schemas"]["ContributionPageItemResponse"];
 export type ContributionDetail = components["schemas"]["ContributionDetailsResponse"];
