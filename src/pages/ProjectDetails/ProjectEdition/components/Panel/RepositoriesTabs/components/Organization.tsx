@@ -1,19 +1,23 @@
-import { FC, useMemo } from "react";
+import { FC, useContext, useMemo } from "react";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
-import { components } from "src/__generated/api";
 import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { Repository } from "./Repository";
 import InformationLine from "src/icons/InformationLine";
+import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 export interface OrganizationProps {
-  organization: components["schemas"]["ProjectGithubOrganizationResponse"];
+  organization: UseGithubOrganizationsResponse;
 }
 export const Organization: FC<OrganizationProps> = ({ organization }) => {
   const { T } = useIntl();
+  const { form } = useContext(EditContext);
+  const installedRepos = form?.watch("githubRepoIds") || [];
+
   const unInstalledRepo = useMemo(
-    () => organization.repos?.filter(repo => !repo.isIncludedInProject) || [],
-    [organization]
+    () => organization.repos?.filter(repo => !installedRepos.includes(repo.id)) || [],
+    [organization, installedRepos]
   );
 
   const repositories = useMemo(() => {
