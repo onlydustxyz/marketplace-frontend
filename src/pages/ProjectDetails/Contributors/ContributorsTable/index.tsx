@@ -10,6 +10,7 @@ import { ViewMobile } from "./ViewMobile";
 type Props<C> = {
   contributors: C[];
   projectKey: string;
+  rewardDisableReason?: ComponentProps<typeof View>["rewardDisableReason"];
 } & Omit<ComponentProps<typeof View>, "contributors" | "onRewardGranted">;
 
 export default function ContributorsTable<C extends components["schemas"]["ContributorPageItemResponse"]>({
@@ -18,10 +19,10 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
   hasNextPage,
   isFetchingNextPage,
   isProjectLeader,
-  remainingBudget,
   projectKey,
   sorting,
   sortField,
+  rewardDisableReason,
 }: Props<C>) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -48,10 +49,10 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
         hasNextPage,
         isFetchingNextPage,
         isProjectLeader,
-        remainingBudget,
         onRewardGranted,
         sorting,
         sortField,
+        rewardDisableReason,
       }}
     />
   ) : (

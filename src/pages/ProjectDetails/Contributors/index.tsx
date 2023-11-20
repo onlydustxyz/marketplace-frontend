@@ -23,6 +23,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
+import { RewardDisabledReason } from "./ContributorsTable/Line";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -41,9 +42,20 @@ export default function Contributors() {
   const isProjectLeader = useProjectLeader({ id: projectId });
 
   const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = remainingBudget === 0;
+  const noBudget = remainingBudget === 0;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const hasOrgsWithUnauthorizedRepos = isProjectLeader && orgsWithUnauthorizedRepos.length > 0;
+
+  function getRewardDisableReason() {
+    if (noBudget) {
+      return RewardDisabledReason.Budget;
+    }
+
+    if (hasOrgsWithUnauthorizedRepos) {
+      return RewardDisabledReason.GithubApp;
+    }
+  }
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: isProjectLeader ? Fields.ToRewardCount : Fields.ContributionCount,
@@ -84,7 +96,7 @@ export default function Contributors() {
               <EditProjectButton projectKey={projectKey} />
               <Button
                 size={ButtonSize.Sm}
-                disabled={isRewardDisabled}
+                disabled={noBudget}
                 onClick={() =>
                   navigate(
                     generatePath(
@@ -96,7 +108,7 @@ export default function Contributors() {
                   )
                 }
                 {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                  visible: isRewardDisabled,
+                  visible: noBudget,
                 })}
               >
                 {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
@@ -105,7 +117,7 @@ export default function Contributors() {
           )}
         </div>
       </Title>
-      {isProjectLeader && orgsWithUnauthorizedRepos.length ? (
+      {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
       <ProjectLeadInvitation
@@ -123,11 +135,11 @@ export default function Contributors() {
             hasNextPage,
             isFetchingNextPage,
             isProjectLeader,
-            remainingBudget,
             projectId,
             projectKey,
             sorting,
             sortField,
+            rewardDisableReason: getRewardDisableReason(),
           }}
         />
       )}

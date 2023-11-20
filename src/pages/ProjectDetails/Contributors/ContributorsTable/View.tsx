@@ -3,15 +3,15 @@ import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
+import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
 import Headers from "./Headers";
-import ContributorLine, { RewardDisabledReason } from "./Line";
-import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
+import ContributorLine from "./Line";
 
 type Props<C> = {
   contributors: C[];
-  remainingBudget: number;
   onRewardGranted: (contributor: C) => void;
+  rewardDisableReason?: ComponentProps<typeof ContributorLine>["rewardDisableReason"];
 } & ComponentProps<typeof Headers> &
   Pick<ReturnType<typeof useInfiniteContributorList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage">;
 
@@ -21,21 +21,11 @@ export default function View<C extends components["schemas"]["ContributorPageIte
   hasNextPage,
   isFetchingNextPage,
   isProjectLeader,
-  remainingBudget,
   onRewardGranted,
   sorting,
   sortField,
+  rewardDisableReason,
 }: Props<C>) {
-  const noBudget = remainingBudget === 0;
-
-  function getRewardDisableReason() {
-    if (noBudget) {
-      return RewardDisabledReason.Budget;
-    }
-
-    // TODO handle github app case
-  }
-
   return (
     <Card>
       <Table
@@ -49,7 +39,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
               contributor,
               isProjectLeader,
               onRewardGranted,
-              rewardDisableReason: getRewardDisableReason(),
+              rewardDisableReason,
             }}
           />
         ))}
