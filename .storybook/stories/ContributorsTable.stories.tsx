@@ -3,6 +3,7 @@ import { ComponentProps } from "react";
 import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable/View";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
+import { RewardDisabledReason } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Line";
 
 export default {
   title: "ContributorsTable",
@@ -105,7 +106,6 @@ const Template: ComponentStory<typeof ContributorsTable> = args => (
   <ContributorsTable
     contributors={mockContributors}
     isProjectLeader={args.isProjectLeader}
-    remainingBudget={args.remainingBudget}
     onRewardGranted={Function.prototype()}
     fetchNextPage={Function.prototype()}
     hasNextPage={false}
@@ -116,10 +116,10 @@ const Template: ComponentStory<typeof ContributorsTable> = args => (
 );
 
 export const Default = Template.bind({});
-Default.args = { isProjectLeader: false, remainingBudget: 10000 };
+Default.args = { isProjectLeader: false };
 
 export const ProjectLeader = Template.bind({});
-ProjectLeader.args = { isProjectLeader: true, remainingBudget: 1000 };
+ProjectLeader.args = { isProjectLeader: true };
 
 export const ProjectLeaderNoMoreBudget = Template.bind({});
-ProjectLeaderNoMoreBudget.args = { isProjectLeader: true, remainingBudget: 0 };
+ProjectLeaderNoMoreBudget.args = { isProjectLeader: true, rewardDisableReason: RewardDisabledReason.Budget };
