@@ -11,7 +11,7 @@ export const filterUnpaidContributionsByType = (
     status: "COMPLETED",
     type,
     ignored: false,
-  }) as RewardableItem[];
+  });
 };
 
 type BudgetT = ProjectBudgetType["budgets"];

@@ -19,7 +19,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getIssueStatusDate(issue: GithubIssueFragment) {
+function getIssueStatusDate(issue: GithubIssueFragment | RewardableItem) {
   switch (issue.status) {
     case GithubIssueStatus.Cancelled:
     case GithubIssueStatus.Completed:

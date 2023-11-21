@@ -1,4 +1,5 @@
 import { GithubCodeReviewFragment } from "src/__generated/graphql";
+import { RewardableItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
@@ -22,7 +23,7 @@ export enum GithubCodeReviewOutcome {
   ChangeRequested = "CHANGE_REQUESTED",
 }
 
-function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment) {
+function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment & RewardableItem) {
   const status = codeReview?.status?.toUpperCase();
 
   switch (status) {
@@ -32,7 +33,7 @@ function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment) {
     case GithubCodeReviewStatus.Pending:
     case ContributionStatus.InProgress:
     default:
-      return new Date(codeReview.githubPullRequest?.createdAt);
+      return new Date(codeReview.githubPullRequest?.createdAt ?? codeReview.createdAt);
   }
 }
 
@@ -74,7 +75,9 @@ export default function GithubCodeReview({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: GithubCodeReviewProps) {
-  const { title, number, htmlUrl, createdAt } = codeReview?.githubPullRequest || {};
+  const { title, number, htmlUrl, createdAt } =
+    codeReview?.githubPullRequest || (codeReview as unknown as RewardableItem) || {};
+
   const { repoName } = parsePullRequestLink(htmlUrl ?? "");
 
   return (
@@ -107,7 +110,7 @@ export default function GithubCodeReview({
               id={codeReview.id as string}
               type={GithubContributionType.CodeReview}
               status={getStatus(codeReview) as GithubCodeReviewStatus}
-              date={getCodeReviewStatusDate(codeReview)}
+              date={getCodeReviewStatusDate(codeReview as GithubCodeReviewFragment & RewardableItem)}
               tooltipProps={{
                 variant: Variant.Default,
                 position: TooltipPosition.Bottom,

@@ -107,10 +107,6 @@ export default function View({
     setIncludeIgnoredItems(showIgnoredItems);
   }, [showIgnoredItems]);
 
-  // const visibleIssues = showIgnoredItems ? contributions : filter(contributions, { ignored: false });
-
-  const filteredContributions = contributions;
-
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
       <div className="flex flex-col gap-3 pt-8">
@@ -125,15 +121,13 @@ export default function View({
                 testId={`add-other-${tabName}-toggle`}
               />
             ) : null}
-            {contributions.length > 0 && (
-              <Toggle
-                enabled={searchEnabled}
-                setEnabled={setSearchEnabled}
-                icon={<SearchLine />}
-                label={T(`reward.form.contributions.${tabName}.search`)}
-                testId="search-toggle"
-              />
-            )}
+            <Toggle
+              enabled={searchEnabled && !loading}
+              setEnabled={setSearchEnabled}
+              icon={<SearchLine />}
+              label={T(`reward.form.contributions.${tabName}.search`)}
+              testId="search-toggle"
+            />
           </div>
           <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
             <EyeOffLine />
