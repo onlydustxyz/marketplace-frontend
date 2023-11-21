@@ -6,7 +6,7 @@ export default {
   title: "GithubRepoDetails",
 };
 
-const Template: ComponentStory<typeof GithubRepoDetails> = args => <GithubRepoDetails githubRepo={githubRepo}/>;
+const Template: ComponentStory<typeof GithubRepoDetails> = args => <GithubRepoDetails githubRepo={githubRepo} />;
 export const Default = Template.bind({});
 
 const githubRepo = {
@@ -17,5 +17,6 @@ const githubRepo = {
   stars: 308,
   forkCount: 67,
   hasIssues: true,
-  htmlUrl: ""
+  htmlUrl: "",
+  isIncludedInProject: false,
 };

@@ -1,16 +1,10 @@
 import { cn } from "src/utils/cn";
 
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { ContributionReview } from "src/components/Contribution/ContributionReview";
+import { ContributionReview, ReviewStateStatuses } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
-import {
-  Contribution as ContributionT,
-  GithubCodeReviewOutcome,
-  GithubContributionReviewStatus,
-  GithubContributionType,
-  GithubPullRequestStatus,
-} from "src/types";
+import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
 
 type Props = {
   contribution: ContributionT;
@@ -20,26 +14,16 @@ type Props = {
 export function Contribution({ contribution, isMobile = false }: Props) {
   const { open } = useContributionDetailPanel();
 
-  const { githubCodeReviewOutcome, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
+  const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
     contribution;
 
   function renderReview() {
-    if (type === GithubContributionType.PullRequest && githubStatus === GithubPullRequestStatus.Open) {
-      let review = GithubContributionReviewStatus.PendingReviewer;
-
-      if (githubCodeReviewOutcome === GithubCodeReviewOutcome.Commented) {
-        review = GithubContributionReviewStatus.UnderReview;
-      }
-
-      if (githubCodeReviewOutcome === GithubCodeReviewOutcome.ChangesRequested) {
-        review = GithubContributionReviewStatus.ChangesRequested;
-      }
-
-      if (githubCodeReviewOutcome === GithubCodeReviewOutcome.Approved) {
-        review = GithubContributionReviewStatus.Approved;
-      }
-
-      return <ContributionReview status={review} />;
+    if (
+      type === GithubContributionType.PullRequest &&
+      githubStatus === GithubPullRequestStatus.Open &&
+      githubPullRequestReviewState
+    ) {
+      return <ContributionReview status={ReviewStateStatuses[githubPullRequestReviewState]} />;
     }
 
     return null;

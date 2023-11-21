@@ -32,9 +32,7 @@
         "pendingReviewer": "Pending reviewer",
         "underReview": "Under review",
         "approved": "Approved",
-        "changesRequested": "Changes requested",
-        "dismissed": "Dismissed",
-        "commented": "Commented"
+        "changesRequested": "Changes requested"
       }
     }
   },
@@ -842,6 +840,12 @@
           "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project?",
+        "startPopOver": {
+          "title": "Resume project creation?",
+          "description": "If you decide to start over all your previous changes will be lost.",
+          "restart": "Start over",
+          "resume": "Resume"
+        },
         "intro": {
           "upperTitle": "Submit project",
           "title": "Kickstart your open source journey",
@@ -850,14 +854,19 @@
           "disclaimer": "We need your permission to connect with your github repositories"
         },
         "organizations": {
-          "title": "Which organisations are concerned?",
+          "title": "Which Github organisations are concerned ?",
           "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",
           "installAnotherOrgs": "Install to another organization",
+          "tooltip": "You have already sent an installation request to organization owner.",
           "installedOn": {
             "many": "Installed on __count__ organizations",
             "one": "Installed on 1 organization",
             "zero": "Installed on 0 organizations"
-          }
+          },
+          "installedOrganizations": "Installed on these organizations",
+          "availableOrganizations": "Available organizations",
+          "installedOrganizationEmpty": "Not installed on any organization.",
+          "availableOrganizationEmpty": "You have no organization available."
         },
         "repository": {
           "title": "Which repositories will you need?",
@@ -905,6 +914,8 @@
               },
               "projectLead": {
                 "placeholderLabel": "Pick a contributor or type in Github handle",
+                "startType": "Type one or more characters to search for a contributor or Github handle",
+                "empty": "Nothing here",
                 "info": "To remove a project lead, ask us using the feedback form in the header."
               }
             }

@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import { generatePath, Navigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import MeApi from "src/api/me";
 import { useAuth } from "src/hooks/useAuth";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { CustomUserRole, HasuraUserRole, UserRole } from "src/types";
@@ -15,6 +16,7 @@ export default function ProtectedRoute({
   redirectTo = RoutePaths.NotFound,
   children,
 }: ProtectedRouteProps) {
+  const { isLoading: userInfoLoading } = MeApi.queries.useGetMe({});
   const { roles } = useAuth();
   const params = useParams();
   const isProjectleader = useProjectLeader({ slug: params.projectKey });
@@ -30,6 +32,10 @@ export default function ProtectedRoute({
 
     return true;
   };
+
+  if (userInfoLoading) {
+    return <></>;
+  }
 
   return isAuthorized() ? <>{children}</> : <Navigate to={generatePath(redirectTo, params)} />;
 }
