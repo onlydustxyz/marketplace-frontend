@@ -1,5 +1,6 @@
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
+import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
 
@@ -14,6 +15,7 @@ export default function OrganizationList({
   emptyListFallBackText,
   installatedRepo,
 }: OrganizationListProps) {
+  const { T } = useIntl();
   const getLinkUrl = (org: UseGithubOrganizationsResponse) => {
     if (org.installed && org.installationId) {
       return `https://github.com/organizations/${org.login}/settings/installations/${org.installationId}`;
@@ -36,6 +38,7 @@ export default function OrganizationList({
               linkUrl={linkUrl}
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
+              tooltip={T("project.details.create.organizations.tooltip")}
             />
           );
         })}

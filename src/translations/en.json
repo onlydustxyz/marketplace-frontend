@@ -855,9 +855,10 @@
           "disclaimer": "We need your permission to connect with your github repositories"
         },
         "organizations": {
-          "title": "Which organisations are concerned?",
+          "title": "Which Github organisations are concerned ?",
           "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",
-          "installAnotherOrgs": "Install to another organisation",
+          "installAnotherOrgs": "Install to another organization",
+          "tooltip": "You have already sent an installation request to organization owner.",
           "installedOn": {
             "many": "Installed on __count__ organizations",
             "one": "Installed on 1 organization",

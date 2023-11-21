@@ -28,6 +28,8 @@ import { parseFlag } from "src/utils/parseFlag";
 import GithubCallbackHandler from "src/pages/Callbacks/GithubCallbackHandler";
 import ProjectCreation from "src/pages/ProjectCreation/ProjectCreation";
 import ProtectedByFlag from "./ProtectedByFlag";
+import ProtectedByGithub from "./ProtectedByGithub";
+import { GITHUB_PERMISSIONS } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 
 export enum RoutePaths {
   Home = "/",
@@ -93,7 +95,9 @@ function App() {
       element: (
         <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
           <ProtectedByFlag flag="VITE_CAN_EDIT_PROJECT">
-            <ProjectDetailsEdit />
+            <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
+              <ProjectDetailsEdit />
+            </ProtectedByGithub>
           </ProtectedByFlag>
         </ProtectedRoute>
       ),
@@ -150,7 +154,12 @@ function App() {
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
               <ProtectedByFlag flag="VITE_CAN_CREATE_PROJECT">
-                <ProjectCreation />
+                <ProtectedByGithub
+                  requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
+                  redirectTo={RoutePaths.ProjectCreation}
+                >
+                  <ProjectCreation />
+                </ProtectedByGithub>
               </ProtectedByFlag>
             </ProtectedRoute>
           ),

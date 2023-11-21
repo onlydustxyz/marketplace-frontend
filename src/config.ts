@@ -14,7 +14,7 @@ const config = {
   API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
   HASURA_BASE_URL: import.meta.env.VITE_HASURA_BASE_URL,
   HASURA_BASE_WS_URL: import.meta.env.VITE_HASURA_BASE_WS_URL,
-  LOGIN_URL: import.meta.env.VITE_LOGIN_URL ?? `${import.meta.env.VITE_HASURA_AUTH_BASE_URL}/signin/provider/github`,
+  LOGIN_URL: `${import.meta.env.VITE_HASURA_AUTH_BASE_URL}/signin/provider/github`,
   ENVIRONMENT: import.meta.env.VITE_ENV,
   MAINTENANCE: import.meta.env.VITE_MAINTENANCE,
   GTM_ID: import.meta.env.VITE_GTM_ID,
