@@ -158,7 +158,6 @@ export function EditProvider({ children, project }: EditContextProps) {
 
       return projectOrg;
     });
-    // return uniqWith([...(project.organizations || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
     return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
   }, [organizationsData, project]);
 
