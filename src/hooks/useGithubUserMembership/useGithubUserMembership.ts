@@ -35,13 +35,14 @@ export const useGithubOrganizationMembership = ({
   organization,
 }: {
   organization: UseGithubOrganizationsResponse;
-}): [boolean] => {
+}): boolean => {
   const { tokenSet } = useTokenSet();
   const [isMember, setIsMember] = useState<boolean>(false);
 
   const getMembership = useCallback(async () => {
     if (tokenSet?.accessToken) {
       const membership = await getOrganizationMembership(tokenSet?.accessToken, organization);
+      console.log(membership);
       setIsMember(membership.role === "member");
     }
   }, [tokenSet]);
@@ -50,5 +51,5 @@ export const useGithubOrganizationMembership = ({
     getMembership();
   }, [tokenSet]);
 
-  return [isMember];
+  return isMember;
 };

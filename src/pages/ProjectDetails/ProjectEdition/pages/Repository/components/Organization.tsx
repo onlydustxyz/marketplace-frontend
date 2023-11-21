@@ -19,9 +19,7 @@ type RepositoryOrganizationType = {
 export function RepositoryOrganization({ organization, installedRepos }: RepositoryOrganizationType) {
   const { T } = useIntl();
   const hasUnauthorizedRepos = hasUnauthorizedInGithubRepo(organization.repos);
-  const [isMember] = useGithubOrganizationMembership({ organization });
-
-  console.log("isMember", isMember);
+  const isMember = useGithubOrganizationMembership({ organization });
 
   const components = {
     errorAvatar: (
