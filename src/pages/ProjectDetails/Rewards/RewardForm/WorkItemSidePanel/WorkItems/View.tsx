@@ -21,6 +21,7 @@ import { RewardableItem } from "src/api/Project/queries";
 import { ShowMore } from "src/components/Table/ShowMore";
 import EmptyState from "../EmptyState";
 import Skeleton from "src/components/Skeleton";
+import ErrorState from "../ErrorState";
 
 export const tabNames = {
   [WorkItemType.Issue]: "issues",
@@ -45,6 +46,7 @@ type Props = {
   contributorId: number;
   setIncludeIgnoredItems: (value: boolean) => void;
   loading: boolean;
+  error: boolean;
 } & ShowMoreProps;
 
 export default function View({
@@ -61,9 +63,10 @@ export default function View({
   isFetchingNextPage,
   setIncludeIgnoredItems,
   loading,
+  error,
 }: Props) {
   const { T } = useIntl();
-  const { watch, resetField } = useFormContext();
+  const { resetField } = useFormContext();
   const { data } = useGithubUserByIdQuery({
     variables: {
       githubUserId: contributorId,
@@ -154,11 +157,13 @@ export default function View({
           />
         )}
       </div>
-      {loading ? (
+      {loading && !error ? (
         <div className="mr-1.5 mt-1">
           <Skeleton variant="rewardableItems" />
         </div>
-      ) : !loading && contributions.length > 0 && data?.githubUsersByPk ? (
+      ) : !loading && error ? (
+        <ErrorState />
+      ) : contributions.length > 0 && data?.githubUsersByPk ? (
         <VirtualizedIssueList
           {...{
             contributions: contributions as RewardableItem[],
@@ -175,24 +180,6 @@ export default function View({
       ) : (
         <EmptyState indexedAt={data?.githubRepos[0].indexedAt} />
       )}
-
-      {/* {contributions.length > 0 && data?.githubUsersByPk ? (
-        <VirtualizedIssueList
-          {...{
-            contributions: contributions as RewardableItem[],
-            addContribution: addContributionWithToast,
-            ignoreContribution,
-            unignoreContribution,
-            contributor: data?.githubUsersByPk,
-            tabName,
-            fetchNextPage,
-            hasNextPage,
-            isFetchingNextPage,
-          }}
-        />
-      ) : (
-        <EmptyState indexedAt={data?.githubRepos[0].indexedAt} />
-      )} */}
     </div>
   );
 }

@@ -78,21 +78,10 @@ const RewardForm: React.FC = () => {
 
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
-  // const { data } = useUnrewardedContributionsQuery({
-  //   fetchPolicy: "no-cache",
-  //   variables: {
-  //     projectId,
-  //     githubUserId: contributor?.githubUserId,
-  //   },
-  //   skip: !contributor?.githubUserId,
-  // });
-
   const { queryParams } = useRewardableItemsQueryParams({
     githubUserId: contributor?.githubUserId,
     ignoredItemsIncluded: true,
   });
-
-  // console.log("queryParams", queryParams);
 
   const {
     data: contributionItems,

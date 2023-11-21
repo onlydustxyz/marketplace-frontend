@@ -48,27 +48,10 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
 
   const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
 
-  // const client = useApolloClient();
-
-  // const { data, refetch } = useUnrewardedContributionsByTypeQuery({
-  //   fetchPolicy: "no-cache",
-  //   variables: {
-  //     projectId,
-  //     githubUserId: contributorId,
-  //     type,
-  //   },
-  // });
-
-  const onRefetchContributions = async () => {
-    // await client.refetchQueries({ include: [UnrewardedContributionsDocument] });
-    // await refetch();
-  };
-
-  const { ignore: ignoreContribution, unignore: unignoreContribution } =
-    useIgnoredContributions(onRefetchContributions);
+  const { ignore: ignoreContribution, unignore: unignoreContribution } = useIgnoredContributions(projectId);
 
   const addAndUnignoreContribution = (contribution: RewardableItem) => {
-    if (contribution.ignored && contribution.id) unignoreContribution(projectId, contribution.id);
+    if (contribution.ignored && contribution.id) unignoreContribution(contribution.id);
     const workItem = contributionToWorkItem(contribution);
     workItem && addWorkItem(workItem);
   };
@@ -89,17 +72,14 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
       addWorkItem={addWorkItem}
       addContribution={addAndUnignoreContribution}
       contributorId={contributorId}
-      ignoreContribution={(contribution: RewardableItem) =>
-        contribution.id && ignoreContribution(projectId, contribution.id)
-      }
-      unignoreContribution={(contribution: RewardableItem) =>
-        contribution.id && unignoreContribution(projectId, contribution.id)
-      }
+      ignoreContribution={(contribution: RewardableItem) => contribution.id && ignoreContribution(contribution.id)}
+      unignoreContribution={(contribution: RewardableItem) => contribution.id && unignoreContribution(contribution.id)}
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
       setIncludeIgnoredItems={setIncludeIgnoredItems}
       loading={isLoading}
+      error={isError}
     />
   );
 }

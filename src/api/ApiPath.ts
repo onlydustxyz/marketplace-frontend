@@ -17,6 +17,8 @@ export const API_PATH = {
   PROJECT_CONTRIBUTION_DETAIL: (projectId: string, contributionId: string) =>
     BASE_API_V1(`projects/${projectId}/contributions/${contributionId}`),
   PROJECT_REWARDABLE_ITEMS: (projectId: string) => BASE_API_V1(`projects/${projectId}/rewardable-items`),
+  PROJECT_IGNORE_UNIGNORE_CONTRIBUTIONS: (projectId: string) =>
+    BASE_API_V1(`projects/${projectId}/ignored-contributions`),
 
   /* --------------------------------- USERS -------------------------------- */
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),

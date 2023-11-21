@@ -10,5 +10,5 @@ export const PROJECT_TAGS = {
     "contributions",
     { projectId, contributionId },
   ],
-  rewardable_items: (tags: unknown[] = []) => [RESSOURCE_TAGS.PROJECTS, "rewardable-items", ...tags],
+  rewardable_items: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "rewardable-items", { projectId }],
 };

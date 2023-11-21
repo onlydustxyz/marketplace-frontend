@@ -46,4 +46,23 @@ const useUploadLogo = ({ options = {} }: UseUploaderProps<{ url: string }, undef
   });
 };
 
-export default { useCreateProject, useUpdateProject, useUploadLogo };
+export type UseIgnoreUnignoreContributionBody = components["schemas"]["UpdateProjectIgnoredContributionsRequest"];
+export type UseIgnoreUnignoreContributionesponse = void;
+
+const useIgnoreUnignoreContribution = ({
+  params,
+  options = {},
+}: UseMutationProps<
+  UseIgnoreUnignoreContributionesponse,
+  { projectId?: string },
+  UseIgnoreUnignoreContributionBody
+>) => {
+  return useBaseMutation<UseIgnoreUnignoreContributionBody, UseIgnoreUnignoreContributionesponse>({
+    resourcePath: API_PATH.PROJECT_IGNORE_UNIGNORE_CONTRIBUTIONS(params?.projectId || ""),
+    invalidatesTags: [{ queryKey: PROJECT_TAGS.rewardable_items(params?.projectId || ""), exact: false }],
+    method: "PATCH",
+    ...options,
+  });
+};
+
+export default { useCreateProject, useUpdateProject, useUploadLogo, useIgnoreUnignoreContribution };

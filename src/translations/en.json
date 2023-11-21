@@ -478,6 +478,10 @@
         "emptyState": {
           "title": "Nothing to show",
           "subtitle": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh."
+        },
+        "ignoreUnignoreContribution": {
+          "success": "The contribution was successfully __action__",
+          "error": "The contribution could not be __action__"
         }
       },
       "leftToSpend": "Left to spend",

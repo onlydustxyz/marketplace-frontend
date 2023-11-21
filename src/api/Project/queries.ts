@@ -69,7 +69,7 @@ const useRewardableItemsInfiniteList = ({
   return useInfiniteBaseQuery<UseRewardableItemsInfiniteListResponse>(
     {
       resourcePath: API_PATH.PROJECT_REWARDABLE_ITEMS(params?.projectId || ""),
-      tags: PROJECT_TAGS.rewardable_items([params?.projectId]),
+      tags: PROJECT_TAGS.rewardable_items(params?.projectId || ""),
       queryParams: params?.queryParams,
       pageSize: params?.pageSize || 15,
     },
