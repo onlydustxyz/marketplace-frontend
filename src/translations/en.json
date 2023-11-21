@@ -959,7 +959,8 @@
           },
           "repositories": {
             "noRepositoriesToAdd": "All repositories from this organisation have been added to your project.",
-            "fixGithubApp": "Fix configuration on Github"
+            "fixGithubApp": "Fix configuration on Github",
+            "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration"
           }
         },
         "toasts": {

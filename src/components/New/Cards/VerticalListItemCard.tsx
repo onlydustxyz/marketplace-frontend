@@ -33,8 +33,6 @@ export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
 }) => {
   const { className: ContainerClassName, ...RestContainerProps } = ContainerProps;
 
-  console.log("avatarComponent", avatarComponent);
-
   return (
     <Card
       className={cn("flex w-full flex-col gap-3 bg-card-background-light p-5", ContainerClassName)}
