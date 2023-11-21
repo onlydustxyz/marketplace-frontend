@@ -866,7 +866,11 @@
           "installedOrganizations": "Installed on these organizations",
           "availableOrganizations": "Available organizations",
           "installedOrganizationEmpty": "Not installed on any organization.",
-          "availableOrganizationEmpty": "You have no organization available."
+          "availableOrganizationEmpty": "You have no organization available.",
+          "githubAppInformation": {
+            "title": "If you are missing any GitHub organizations, you can edit your configuration by clicking below.",
+            "button": "edit my configuration"
+          }
         },
         "repository": {
           "title": "Which repositories will you need?",

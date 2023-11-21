@@ -26,7 +26,7 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
             login: org.login,
             installationId: org.installationId,
             installed: org.installed,
-            isAPersonalOrganization: false,
+            isAPersonalOrganization: false, // TODO: Alexis
             projectSlug: project?.slug,
           });
 
@@ -39,6 +39,7 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
               linkClick={run}
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
+              disabled={false} // TODO ALEXIS disabled with canBeInstalled
             />
           );
         })}

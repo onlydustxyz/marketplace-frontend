@@ -9,6 +9,10 @@ export interface GetGithubSetupLinkProps {
 
 const baseUrl = "https://github.com/";
 
+export const OAuthGithubConfigLink = `https://github.com/settings/connections/applications/${
+  import.meta.env.VITE_GITHUB_INSTALLATION_CONFIG
+}`;
+
 export const GithubSetupLinks = {
   alreadyInstalled: (props: { login: string; installationId: number }) =>
     `${baseUrl}organizations/${props.login}/settings/installations/${props.installationId}`,

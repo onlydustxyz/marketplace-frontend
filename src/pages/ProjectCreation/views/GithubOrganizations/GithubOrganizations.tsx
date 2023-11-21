@@ -4,6 +4,9 @@ import { useIntl } from "src/hooks/useIntl";
 import { useContext } from "react";
 import { CreateProjectContext } from "../../ProjectCreation.context";
 import OrganizationList from "./components/OrganizationList";
+import GithubLogo from "src/icons/GithubLogo";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { OAuthGithubConfigLink } from "src/utils/githubSetupLink";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();
@@ -41,6 +44,19 @@ export const GithubOrganizationPage = () => {
           emptyListFallBackText={T("project.details.create.organizations.availableOrganizationEmpty")}
         />
       </Card>
+      <div className="card-light mt-6 flex w-full flex-col items-center justify-start gap-6 rounded-2xl border p-4">
+        <div className="flex flex-row items-center justify-center gap-0.5">
+          <p className="mt-3 text-center text-gray-500">
+            {T("project.details.create.organizations.githubAppInformation.title")}
+          </p>
+        </div>
+        <a href={OAuthGithubConfigLink} target="_blank" rel="noopener noreferrer">
+          <Button type={ButtonType.Secondary} size={ButtonSize.Sm}>
+            <GithubLogo />
+            {T("project.details.create.organizations.githubAppInformation.button")}
+          </Button>
+        </a>
+      </div>
     </MultiStepsForm>
   );
 };

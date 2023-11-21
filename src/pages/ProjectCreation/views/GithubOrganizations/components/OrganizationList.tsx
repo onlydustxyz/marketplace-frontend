@@ -20,7 +20,7 @@ export default function OrganizationList({
 
   if (organizations.length) {
     return (
-      <ul className="flex flex-col gap-2 py-4 pb-6">
+      <ul className="flex flex-col gap-3 py-4 pb-6">
         {organizations.map((org, index) => {
           const linkUrl = getGithubSetupLink({
             id: org.id,
