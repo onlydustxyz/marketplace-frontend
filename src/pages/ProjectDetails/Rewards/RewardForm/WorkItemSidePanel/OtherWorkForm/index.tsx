@@ -59,6 +59,8 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     },
   });
 
+  console.log({ formData: formMethods.getValues() });
+
   const { watch, setValue, control, handleSubmit } = formMethods;
   const workKind = watch("workKind");
 

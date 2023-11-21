@@ -47,17 +47,17 @@ const useUploadLogo = ({ options = {} }: UseUploaderProps<{ url: string }, undef
 };
 
 export type UseIgnoreUnignoreContributionBody = components["schemas"]["UpdateProjectIgnoredContributionsRequest"];
-export type UseIgnoreUnignoreContributionesponse = void;
+export type UseIgnoreUnignoreContributionResponse = void;
 
 const useIgnoreUnignoreContribution = ({
   params,
   options = {},
 }: UseMutationProps<
-  UseIgnoreUnignoreContributionesponse,
+  UseIgnoreUnignoreContributionResponse,
   { projectId?: string },
   UseIgnoreUnignoreContributionBody
 >) => {
-  return useBaseMutation<UseIgnoreUnignoreContributionBody, UseIgnoreUnignoreContributionesponse>({
+  return useBaseMutation<UseIgnoreUnignoreContributionBody, UseIgnoreUnignoreContributionResponse>({
     resourcePath: API_PATH.PROJECT_IGNORE_UNIGNORE_CONTRIBUTIONS(params?.projectId || ""),
     invalidatesTags: [{ queryKey: PROJECT_TAGS.rewardable_items(params?.projectId || ""), exact: false }],
     method: "PATCH",
@@ -65,4 +65,25 @@ const useIgnoreUnignoreContribution = ({
   });
 };
 
-export default { useCreateProject, useUpdateProject, useUploadLogo, useIgnoreUnignoreContribution };
+export type UseCreateOtherWorksBody = components["schemas"]["AddOtherIssueRequest"];
+export type UseCreateOtherWorksResponse = components["schemas"]["RewardableItemResponse"];
+
+const useCreateOtherWorks = ({
+  params,
+  options = {},
+}: UseMutationProps<UseCreateOtherWorksResponse, { projectId?: string }, UseCreateOtherWorksBody>) => {
+  return useBaseMutation<UseCreateOtherWorksBody, UseCreateOtherWorksResponse>({
+    resourcePath: API_PATH.PROJECT_CREATE_OTHER_WORKS(params?.projectId || ""),
+    invalidatesTags: [{ queryKey: PROJECT_TAGS.rewardable_items(params?.projectId || ""), exact: false }],
+    method: "POST",
+    ...options,
+  });
+};
+
+export default {
+  useCreateProject,
+  useUpdateProject,
+  useUploadLogo,
+  useIgnoreUnignoreContribution,
+  useCreateOtherWorks,
+};
