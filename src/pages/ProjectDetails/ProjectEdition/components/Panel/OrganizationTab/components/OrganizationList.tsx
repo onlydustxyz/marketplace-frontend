@@ -4,6 +4,7 @@ import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemC
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
 import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
+import { getGithubSetupLink } from "src/utils/githubSetupLink";
 
 interface OrganizationListProps {
   organizations: UseGithubOrganizationsResponse[];
@@ -15,27 +16,30 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
     githubWorklow: { run },
     project,
   } = useContext(EditContext);
-  const getLinkUrl = (org: UseGithubOrganizationsResponse) => {
-    if (org.installed && org.installationId) {
-      return `https://github.com/organizations/${org.login}/settings/installations/${org.installationId}`;
-    }
-
-    return `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}?state=${project?.slug}`;
-  };
 
   if (organizations.length) {
     return (
       <ul className="flex flex-col gap-2 py-4 pb-6">
         {organizations.map((org, index) => {
+          const linkUrl = getGithubSetupLink({
+            id: org.id,
+            login: org.login,
+            installationId: org.installationId,
+            installed: org.installed,
+            isAPersonalOrganization: org.isPersonal,
+            projectSlug: project?.slug,
+          });
+
           return (
             <HorizontalListItemCard
               key={`${org.login}+${index}`}
               avatarUrl={org.avatarUrl ?? ""}
               title={org.name || org.login || ""}
-              linkUrl={getLinkUrl(org)}
+              linkUrl={linkUrl}
               linkClick={run}
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
+              disabled={!org.isCurrentUserAdmin}
             />
           );
         })}

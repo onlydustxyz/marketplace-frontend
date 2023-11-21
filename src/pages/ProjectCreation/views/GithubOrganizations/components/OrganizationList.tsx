@@ -3,7 +3,7 @@ import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemC
 import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
-import { getGithubAppLinkUrl } from "src/utils/github";
+import { getGithubSetupLink } from "src/utils/githubSetupLink";
 
 interface OrganizationListProps {
   organizations: UseGithubOrganizationsResponse[];
@@ -20,15 +20,23 @@ export default function OrganizationList({
 
   if (organizations.length) {
     return (
-      <ul className="flex flex-col gap-2 py-4 pb-6">
+      <ul className="flex flex-col gap-3 py-4 pb-6">
         {organizations.map((org, index) => {
+          const linkUrl = getGithubSetupLink({
+            id: org.id,
+            login: org.login,
+            installationId: org.installationId,
+            installed: org.installed,
+            isAPersonalOrganization: false,
+          });
+
           return (
             <HorizontalListItemCard
               disabled={installatedRepo.includes(org.id)}
               key={`${org.login}+${index}`}
               avatarUrl={org.avatarUrl ?? ""}
               title={org.name || org.login || ""}
-              linkUrl={getGithubAppLinkUrl(org)}
+              linkUrl={linkUrl}
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
               tooltip={T("project.details.create.organizations.tooltip")}

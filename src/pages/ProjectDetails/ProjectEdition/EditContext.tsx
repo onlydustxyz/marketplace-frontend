@@ -231,7 +231,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const { mutate: updateProject } = ProjectApi.mutations.useUpdateProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
-      onSuccess: async data => {
+      onSuccess: async (data, queryClient) => {
         showToaster(T("form.toast.success"));
         clearSession();
         form.reset(form.getValues());
@@ -243,6 +243,8 @@ export function EditProvider({ children, project }: EditContextProps) {
 
         if (location.pathname !== newPathname) {
           navigate(newPathname, { replace: true, state: location.state });
+        } else {
+          await queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
         }
       },
     },
