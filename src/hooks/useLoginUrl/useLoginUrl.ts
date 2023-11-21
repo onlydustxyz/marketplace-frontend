@@ -12,7 +12,7 @@ export const useLoginUrlStorage = () => {
 export const useLoginUrl = () => {
   const storage = useLoginUrlStorage();
   return (redirect?: string) => {
-    const LOGIN_URL = `${config.LOGIN_URL}?redirect_url=${encodeURI(redirect || window.location.href)}`;
+    const LOGIN_URL = `${config.LOGIN_URL}?redirect_url=${encodeURI(redirect || window.location.origin)}`;
     const permission = storage.getValue();
     if (permission) {
       return `${LOGIN_URL}&scope=${permission}`;
