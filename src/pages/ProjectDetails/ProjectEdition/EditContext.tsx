@@ -47,6 +47,7 @@ export interface EditFormDataRepos {
 export type EditFormData = components["schemas"]["UpdateProjectRequest"] & {
   projectLeads: FieldProjectLeadValue;
   selectedRepos: EditFormDataRepos[];
+  githubRepoStatus: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
 };
 
 export const EditContext = createContext<Edit>({
@@ -79,6 +80,9 @@ const validationSchema = z.object({
   ),
   name: z.string().min(1),
   githubRepoIds: z.array(z.number()).min(1),
+  githubRepoStatus: z
+    .array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() }))
+    .refine(repos => repos.every(repo => repo.isAuthorizedInGithubApp)),
   projectLeadsToKeep: z.array(z.string()).min(1),
   shortDescription: z.string().min(1),
   rewardSettings: z.object({
@@ -137,6 +141,10 @@ export function EditProvider({ children, project }: EditContextProps) {
         },
       ],
       githubRepoIds: (project.repos || []).map(repo => repo.id),
+      githubRepoStatus: (project.repos || []).map(repo => ({
+        id: repo.id,
+        isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
+      })),
       isLookingForContributors: project.hiring,
       inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
@@ -164,18 +172,23 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const onAddRepository = (organizationId: number, repoId: number) => {
     const githubRepoIds = [...(form.getValues("githubRepoIds") || [])];
+    const githubRepoStatus = [...(form.getValues("githubRepoStatus") || [])];
     const findOrganization = mergeOrganization.find(org => org.id === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
         githubRepoIds.push(findRepo.id);
         form.setValue("githubRepoIds", githubRepoIds, { shouldDirty: true, shouldValidate: true });
+
+        githubRepoStatus.push({ id: findRepo.id, isAuthorizedInGithubApp: findRepo.isAuthorizedInGithubApp });
+        form.setValue("githubRepoStatus", githubRepoStatus, { shouldDirty: true, shouldValidate: true });
       }
     }
   };
 
   const onRemoveRepository = (organizationId: number, repoId: number) => {
     const githubRepoIds = [...(form.getValues("githubRepoIds") || [])];
+    const githubRepoStatus = [...(form.getValues("githubRepoStatus") || [])];
     const findOrganization = mergeOrganization.find(org => org.id === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
@@ -184,6 +197,9 @@ export function EditProvider({ children, project }: EditContextProps) {
         if (findRepoIndex !== -1) {
           githubRepoIds.splice(findRepoIndex, 1);
           form.setValue("githubRepoIds", githubRepoIds, { shouldDirty: true, shouldValidate: true });
+
+          githubRepoStatus.splice(findRepoIndex, 1);
+          form.setValue("githubRepoStatus", githubRepoStatus, { shouldDirty: true, shouldValidate: true });
         }
       }
     }
@@ -251,7 +267,8 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const onSubmit = (formData: EditFormData) => {
-    updateProject(formData);
+    const { githubRepoStatus: _, ...rest } = formData;
+    updateProject(rest);
   };
 
   return (
@@ -275,6 +292,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     >
       <EditPanelProvider openOnLoad={!!installation_id} isLoading={false} project={project}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="h-full overflow-hidden">
+          <>{JSON.stringify(form.getValues("githubRepoStatus"))}</>
           {children}
         </form>
         <ConfirmationModal />

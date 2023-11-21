@@ -57,6 +57,14 @@ module.exports = {
     "unused-imports/no-unused-imports": "error",
     "object-shorthand": ["error", "always"],
     "no-trailing-spaces": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
   },
   ignorePatterns: [
     "dist/*",
