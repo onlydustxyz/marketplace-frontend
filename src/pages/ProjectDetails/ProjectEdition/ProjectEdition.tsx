@@ -18,12 +18,9 @@ import { EditContext, EditProvider } from "./EditContext";
 import { Information } from "./pages/Information";
 import { Repository } from "./pages/Repository/Repository";
 import { Tabs } from "src/components/Tabs/Tabs";
-<<<<<<< HEAD
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
-=======
->>>>>>> origin/main
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
