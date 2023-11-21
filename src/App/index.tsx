@@ -25,14 +25,9 @@ import PublicProfilePage from "src/pages/PublicProfile";
 import TermsAndConditions from "src/pages/TermsAndConditions";
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
-import {
-  ProjectIntroPage,
-  GithubOrganizationPage,
-  GithubRepositoryPage,
-  ProjectInformationsPage,
-} from "src/pages/ProjectCreation";
-import { useAuth } from "src/hooks/useAuth";
 import GithubCallbackHandler from "src/pages/Callbacks/GithubCallbackHandler";
+import ProjectCreation from "src/pages/ProjectCreation/ProjectCreation";
+import ProtectedByFlag from "./ProtectedByFlag";
 
 export enum RoutePaths {
   Home = "/",
@@ -66,8 +61,6 @@ export enum ProjectRewardsRoutePaths {
 }
 
 function App() {
-  const { isLoggedIn } = useAuth();
-
   const projectRoutes: RouteObject[] = [
     {
       index: true,
@@ -95,16 +88,16 @@ function App() {
         },
       ],
     },
-    parseFlag("VITE_CAN_EDIT_PROJECT")
-      ? {
-          path: ProjectRoutePaths.Edit,
-          element: (
-            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-              <ProjectDetailsEdit />
-            </ProtectedRoute>
-          ),
-        }
-      : {},
+    {
+      path: ProjectRoutePaths.Edit,
+      element: (
+        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+          <ProtectedByFlag flag="VITE_CAN_EDIT_PROJECT">
+            <ProjectDetailsEdit />
+          </ProtectedByFlag>
+        </ProtectedRoute>
+      ),
+    },
   ];
   const routes = useRoutes([
     {
@@ -154,32 +147,13 @@ function App() {
         },
         {
           path: RoutePaths.ProjectCreation,
-          children:
-            parseFlag("VITE_CAN_CREATE_PROJECT") && isLoggedIn
-              ? [
-                  {
-                    index: true,
-                    element: <ProjectIntroPage />,
-                  },
-                  {
-                    path: "organizations",
-                    element: <GithubOrganizationPage />,
-                  },
-                  {
-                    path: "repository",
-                    element: <GithubRepositoryPage />,
-                  },
-                  {
-                    path: "informations",
-                    element: <ProjectInformationsPage />,
-                  },
-                ]
-              : [
-                  {
-                    index: true,
-                    element: <Navigate to={RoutePaths.Projects} />,
-                  },
-                ],
+          element: (
+            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+              <ProtectedByFlag flag="VITE_CAN_CREATE_PROJECT">
+                <ProjectCreation />
+              </ProtectedByFlag>
+            </ProtectedRoute>
+          ),
         },
         {
           path: RoutePaths.ProjectDetails,

@@ -1,10 +1,9 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { sortBy } from "lodash";
-import { Dispatch, useEffect, useState } from "react";
+import { Dispatch, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
 import { components } from "src/__generated/api";
 import {
   OwnUserProfileDetailsFragment,
@@ -51,6 +50,7 @@ import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
+import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -280,7 +280,8 @@ interface ApplyCalloutProps {
 
 function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dispatchSession }: ApplyCalloutProps) {
   const { T } = useIntl();
-
+  const getLoginUrl = useLoginUrl();
+  const login_url = useMemo(() => getLoginUrl(), []);
   const contactInfoProvided = Boolean(
     profile.contacts.telegram?.contact ||
       profile.contacts.whatsapp?.contact ||
@@ -371,7 +372,7 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
           )
         ) : (
           <a
-            href={LOGIN_URL}
+            href={login_url}
             onClick={() =>
               dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })
             }

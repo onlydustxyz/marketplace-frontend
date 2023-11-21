@@ -9,6 +9,7 @@ describe("transformInstallationToOrganization", () => {
         avatarUrl: "http://example.com/avatar",
         htmlUrl: "http://example.com",
         name: "Test Organization",
+        owner: "Test Organization",
         installationId: 456,
         installed: true,
         repos: [
@@ -18,6 +19,7 @@ describe("transformInstallationToOrganization", () => {
             name: "testrepo",
             htmlUrl: "http://example.com/repo",
             description: "A test repository",
+            isIncludedInProject: false,
           },
         ],
       },
@@ -30,6 +32,7 @@ describe("transformInstallationToOrganization", () => {
       avatarUrl: "http://example.com/avatar",
       htmlUrl: "http://example.com",
       name: "Test Organization",
+      owner: "Test Organization",
       installationId: 456,
       installed: true,
       repos: [
@@ -42,7 +45,7 @@ describe("transformInstallationToOrganization", () => {
           stars: 0,
           forkCount: 0,
           hasIssues: false,
-          isIncludedInProject: undefined,
+          isIncludedInProject: false,
         },
       ],
     };

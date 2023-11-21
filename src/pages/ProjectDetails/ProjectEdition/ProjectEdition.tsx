@@ -125,6 +125,8 @@ function SafeProjectEdition() {
 }
 
 export default function ProjectEdition() {
+  //TODO: uncomment when login loop is fixed
+  // useHasGithubPermissionOrLogin(GITHUB_PERMISSIONS.READ_ORG);
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
 

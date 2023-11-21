@@ -32,9 +32,7 @@
         "pendingReviewer": "Pending reviewer",
         "underReview": "Under review",
         "approved": "Approved",
-        "changesRequested": "Changes requested",
-        "dismissed": "Dismissed",
-        "commented": "Commented"
+        "changesRequested": "Changes requested"
       }
     }
   },
@@ -843,6 +841,12 @@
           "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project?",
+        "startPopOver": {
+          "title": "Resume project creation?",
+          "description": "If you decide to start over all your previous changes will be lost.",
+          "restart": "Start over",
+          "resume": "Resume"
+        },
         "intro": {
           "upperTitle": "Submit project",
           "title": "Kickstart your open source journey",
@@ -855,10 +859,14 @@
           "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",
           "installAnotherOrgs": "Install to another organisation",
           "installedOn": {
-            "many": "Installed on __count__ organisations",
-            "one": "Installed on 1 organisation",
-            "zero": "Installed on 0 organisations"
-          }
+            "many": "Installed on __count__ organizations",
+            "one": "Installed on 1 organization",
+            "zero": "Installed on 0 organizations"
+          },
+          "installedOrganizations": "Installed on these organizations",
+          "availableOrganizations": "Available organizations",
+          "installedOrganizationEmpty": "Not installed on any organization.",
+          "availableOrganizationEmpty": "You have no organization available."
         },
         "repository": {
           "title": "Which repositories will you need?",

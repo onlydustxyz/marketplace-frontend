@@ -1,19 +1,19 @@
 import { useMemo } from "react";
-import { components } from "src/__generated/api";
 import { Repository } from "./Repository";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
-import InfoIcon from "src/assets/icons/InfoIcon";
-
-import GithubLogo from "src/icons/GithubLogo";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
+import InfoIcon from "src/assets/icons/InfoIcon";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import GithubLogo from "src/icons/GithubLogo";
 
 type RepositoryOrganizationType = {
-  organization: components["schemas"]["GithubOrganizationResponse"];
+  organization: UseGithubOrganizationsResponse;
+  installedRepos: number[];
 };
 
-export function RepositoryOrganization({ organization }: RepositoryOrganizationType) {
+export function RepositoryOrganization({ organization, installedRepos }: RepositoryOrganizationType) {
   const { T } = useIntl();
   const hasUnauthorizedRepos = hasUnauthorizedInGithubRepo(organization.repos);
 
@@ -37,12 +37,12 @@ export function RepositoryOrganization({ organization }: RepositoryOrganizationT
     ),
   };
 
-  const installedRepo = useMemo(
-    () => organization.repos?.filter(repo => repo.isIncludedInProject) || [],
-    [organization]
+  const installedReposData = useMemo(
+    () => organization.repos?.filter(repo => installedRepos.includes(repo.id)) || [],
+    [organization, installedRepos]
   );
 
-  if (installedRepo.length) {
+  if (installedReposData.length) {
     return (
       <VerticalListItemCard
         ContainerProps={{ className: " bg-card-background-base gap-5" }}
@@ -55,7 +55,7 @@ export function RepositoryOrganization({ organization }: RepositoryOrganizationT
         hasUnauthorizedInGithubRepo={hasUnauthorizedRepos}
       >
         <div className="grid grid-flow-row grid-cols-1 gap-x-5 gap-y-5 lg:grid-cols-2 xl:grid-cols-3">
-          {installedRepo.map(repo => (
+          {installedReposData.map(repo => (
             <Repository key={repo.name} organization={organization} repository={repo} />
           ))}
         </div>
