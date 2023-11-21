@@ -53,14 +53,14 @@ const currentProject: Project = {
       stars: 0,
       forkCount: 0,
       hasIssues: true,
-      isIncludedInProject: true,
+      isIncludedInProject: false,
     },
   ],
   organizations: [
     {
       id: 58205251,
       owner: "Barbicane-fr",
-      login: "Barbicane-fr",
+      login: "owner-id",
       avatarUrl: "https://avatars.githubusercontent.com/u/58205251?v=4",
       htmlUrl: "https://github.com/Barbicane-fr",
       name: "Barbicane",
@@ -156,7 +156,7 @@ const otherProject: Project = {
     {
       id: 58205251,
       login: "Barbicane-fr",
-      owner: "Barbicane-fr",
+      owner: "owner-id",
       avatarUrl: "https://avatars.githubusercontent.com/u/58205251?v=4",
       htmlUrl: "https://github.com/Barbicane-fr",
       name: "Barbicane",

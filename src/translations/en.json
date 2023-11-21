@@ -840,6 +840,12 @@
           "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project?",
+        "startPopOver": {
+            "title": "Resume project creation?",
+            "description": "If you decide to start over all your previous changes will be lost.",
+            "restart": "Start over",
+            "resume": "Resume"
+        },
         "intro": {
           "upperTitle": "Submit project",
           "title": "Kickstart your open source journey",
@@ -855,7 +861,11 @@
             "many": "Installed on __count__ organizations",
             "one": "Installed on 1 organization",
             "zero": "Installed on 0 organizations"
-          }
+          },
+          "installedOrganizations": "Installed on these organizations",
+          "availableOrganizations": "Available organizations",
+          "installedOrganizationEmpty": "Not installed on any organization.",
+          "availableOrganizationEmpty": "You have no organization available."
         },
         "repository": {
           "title": "Which repositories will you need?",

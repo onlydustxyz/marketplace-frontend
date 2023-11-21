@@ -1,13 +1,16 @@
 import { useContext } from "react";
 import { useIntl } from "src/hooks/useIntl";
-import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import { EditContext } from "../../../EditContext";
+import Card from "src/components/Card";
+import OrganizationList from "./components/OrganizationList";
 
 export const EditPanelOrganization = () => {
   const { T } = useIntl();
 
-  const { form, project, githubWorklow } = useContext(EditContext);
-  const organizations = form?.watch("organizations") || [];
+  const { organizations } = useContext(EditContext);
+
+  const installedOrganizations = organizations.filter(org => org.installed);
+  const availableOrganizations = organizations.filter(org => !org.installed);
 
   return (
     <div className="flex flex-col gap-6">
@@ -19,25 +22,21 @@ export const EditPanelOrganization = () => {
           {T("project.details.create.organizations.description")}
         </div>
       </div>
-      <ul className="flex flex-col gap-2 py-4 pb-6">
-        {organizations?.map((organization, index: number) => (
-          <HorizontalListItemCard
-            key={`${organization?.login}+${index}`}
-            avatarUrl={organization?.avatarUrl ?? ""}
-            title={organization?.name || organization?.login || ""}
-            linkUrl={`https://github.com/organizations/${organization?.login}/settings/installations/${organization?.installationId}`}
-          />
-        ))}
-      </ul>
-      <div className="flex justify-start">
-        <a
-          href={`${import.meta.env.VITE_GITHUB_INSTALLATION_URL}?state=${project?.slug}`}
-          className="border-lg rounded-lg bg-white px-4 py-2 font-medium text-zinc-800"
-          onClick={githubWorklow.run}
-        >
-          {T("project.details.edit.organizations.installGithubApp")}
-        </a>
-      </div>
+      <Card withBg={false}>
+        <h2 className="font-medium uppercase">{T("project.details.create.organizations.installedOrganizations")}</h2>
+        <OrganizationList
+          organizations={installedOrganizations}
+          emptyListFallBackText={T("project.details.create.organizations.installedOrganizationEmpty")}
+        />
+      </Card>
+
+      <Card withBg={false} className="mt-6">
+        <h2 className="font-medium uppercase">{T("project.details.create.organizations.availableOrganizations")}</h2>
+        <OrganizationList
+          organizations={availableOrganizations}
+          emptyListFallBackText={T("project.details.create.organizations.availableOrganizationEmpty")}
+        />
+      </Card>
     </div>
   );
 };
