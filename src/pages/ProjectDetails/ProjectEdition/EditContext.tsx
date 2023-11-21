@@ -292,7 +292,6 @@ export function EditProvider({ children, project }: EditContextProps) {
     >
       <EditPanelProvider openOnLoad={!!installation_id} isLoading={false} project={project}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="h-full overflow-hidden">
-          <>{JSON.stringify(form.getValues("githubRepoStatus"))}</>
           {children}
         </form>
         <ConfirmationModal />
