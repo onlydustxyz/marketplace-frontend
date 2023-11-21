@@ -54,16 +54,9 @@ export default function ProtectedByGithub({
     retrievePermission();
   }, []);
 
-  //   if (!isAuthorized.ready) {
-  //     return <></>;
-  //   }
-  console.log("PRTECTED BY GITHUB 1");
-
   if (isAuthorized.ready && isAuthorized.isAuthorized) {
     return <>{children}</>;
   }
-
-  console.log("PRTECTED BY GITHUB 2");
 
   return <></>;
 }
