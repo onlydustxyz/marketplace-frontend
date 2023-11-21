@@ -6,7 +6,7 @@ import { GithubActionButton } from "src/components/GithubCard/GithubActionButton
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { GithubCodeReviewStatus, ContributionStatus, GithubContributionType } from "src/types";
+import { GithubCodeReviewStatus, ContributionStatus, GithubContributionType, GithubCodeReviewOutcome } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 
@@ -15,11 +15,6 @@ export enum Action {
   Remove = "remove",
   Ignore = "ignore",
   UnIgnore = "unignore",
-}
-
-export enum GithubCodeReviewOutcome {
-  Approved = "APPROVED",
-  ChangeRequested = "CHANGE_REQUESTED",
 }
 
 function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment) {

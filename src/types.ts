@@ -1,4 +1,5 @@
 import { components } from "./__generated/api";
+import { useInstallationByIdResponse } from "./api/Github/queries";
 
 export type Branded<T, B> = T & { __brand: B };
 
@@ -139,27 +140,22 @@ export enum GithubCodeReviewStatus {
   Pending = "PENDING",
 }
 
+export enum GithubPullRequestReviewState {
+  Approved = "APPROVED",
+  UnderReview = "UNDER_REVIEW",
+  ChangesRequested = "CHANGES_REQUESTED",
+  PendingReviewer = "PENDING_REVIEWER",
+}
+
 export enum GithubCodeReviewOutcome {
   Approved = "APPROVED",
-  ChangesRequested = "CHANGES_REQUESTED",
-  Commented = "COMMENTED",
-  Dismissed = "DISMISSED",
-  Pending = "PENDING",
+  ChangeRequested = "CHANGE_REQUESTED",
 }
 
 export enum GithubContributionType {
   Issue = "ISSUE",
   PullRequest = "PULL_REQUEST",
   CodeReview = "CODE_REVIEW",
-}
-
-export enum GithubContributionReviewStatus {
-  PendingReviewer = "pendingReviewer",
-  UnderReview = "underReview",
-  Approved = "approved",
-  ChangesRequested = "changesRequested",
-  Dismissed = "dismissed",
-  Commented = "commented",
 }
 
 export enum GithubPullRequestDraft {
@@ -301,6 +297,20 @@ export type Sorting = {
   field: string | undefined;
   isAscending: boolean | undefined;
 };
+
+type Repos = components["schemas"]["ShortGithubRepoResponse"] & {
+  selected?: boolean;
+  isIncludedInProject: boolean;
+};
+
+type Organization = Omit<components["schemas"]["GithubOrganizationResponse"], "repos"> & {
+  installationId: number;
+  repos: Repos[];
+};
+
+export interface OrganizationSessionStorageInterface extends useInstallationByIdResponse {
+  organization: Organization;
+}
 
 export type Contribution = components["schemas"]["ContributionPageItemResponse"];
 export type ContributionDetail = components["schemas"]["ContributionDetailsResponse"];
