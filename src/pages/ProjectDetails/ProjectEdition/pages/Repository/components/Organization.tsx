@@ -9,7 +9,6 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import GithubLogo from "src/icons/GithubLogo";
 import { getGithubAppLinkUrl } from "src/utils/github";
 import { withTooltip } from "src/components/Tooltip";
-import { useGithubOrganizationMembership } from "src/hooks/useGithubUserMembership/useGithubUserMembership";
 
 type RepositoryOrganizationType = {
   organization: UseGithubOrganizationsResponse;
@@ -19,7 +18,6 @@ type RepositoryOrganizationType = {
 export function RepositoryOrganization({ organization, installedRepos }: RepositoryOrganizationType) {
   const { T } = useIntl();
   const hasUnauthorizedRepos = hasUnauthorizedInGithubRepo(organization.repos);
-  const isGithubAdmin = useGithubOrganizationMembership({ organization });
 
   const components = {
     errorAvatar: (
@@ -32,9 +30,9 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
         <Button
           type={ButtonType.Secondary}
           size={ButtonSize.Sm}
-          disabled={!isGithubAdmin}
+          disabled={!organization.isCurrentUserAdmin}
           {...withTooltip(T("project.details.edit.panel.repositories.fixGithubAppTooltip"), {
-            visible: !isGithubAdmin,
+            visible: !organization.isCurrentUserAdmin,
           })}
         >
           <GithubLogo />
