@@ -7,6 +7,7 @@ import { useIntl } from "src/hooks/useIntl";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import GithubLogo from "src/icons/GithubLogo";
+import { getGithubAppLinkUrl } from "src/utils/github";
 
 type RepositoryOrganizationType = {
   organization: UseGithubOrganizationsResponse;
@@ -24,11 +25,7 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
       </div>
     ),
     action: (
-      <a
-        href={`https://github.com/organizations/${organization?.login}/settings/installations/${organization?.installationId}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href={getGithubAppLinkUrl(organization)} target="_blank" rel="noopener noreferrer">
         <Button type={ButtonType.Secondary} size={ButtonSize.Sm}>
           <GithubLogo />
           {T("project.details.edit.panel.repositories.fixGithubApp")}
