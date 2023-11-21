@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useTokenSet } from "../useTokenSet";
 import jwtDecode from "jwt-decode";
 import { HasuraJWT } from "src/types";
-import { useLoginUrl, useLoginUrlStorage } from "../useLoginUrl/useLoginUrl";
 
 export enum GITHUB_PERMISSIONS {
   READ_ORG = "read:org",
@@ -68,36 +67,4 @@ export const useGithubUserPermissions = (requirePermission: GITHUB_PERMISSIONS):
   }, [tokenSet, requirePermission]);
 
   return [hasPermission, hasPermissionStatus];
-};
-
-export const useHasGithubPermissionOrLogin = (requirePermission: GITHUB_PERMISSIONS): [() => void] => {
-  const { tokenSet } = useTokenSet();
-  const getLoginUrl = useLoginUrl();
-  const loginUrlStorage = useLoginUrlStorage();
-
-  const getPermissionOrRedirect = useCallback(async () => {
-    if (tokenSet?.accessToken) {
-      const hasPermission = await getPermissions(tokenSet.accessToken, requirePermission);
-      if (hasPermission === false) {
-        loginUrlStorage.setValue(prev => {
-          if (!prev) {
-            return `${loginUrlStorage.initialValue},${requirePermission}`;
-          }
-          if (!prev.includes(requirePermission)) {
-            return `${prev},${requirePermission}`;
-          }
-          return prev;
-        });
-
-        const login_url = getLoginUrl();
-        window.location.replace(login_url);
-      }
-    }
-  }, [tokenSet]);
-
-  useEffect(() => {
-    getPermissionOrRedirect();
-  }, [tokenSet, requirePermission]);
-
-  return [getPermissionOrRedirect];
 };
