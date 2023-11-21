@@ -12,7 +12,7 @@ const useGetMe = ({ options = {} }: UseQueryProps<UseGetUserMeResponse, undefine
 
   return useBaseQuery<UseGetUserMeResponse>({
     resourcePath: API_PATH.ME,
-    tags: ME_TAGS.all,
+    tags: ME_TAGS.user,
     ...options,
     enabled: isLoggedIn && (options.enabled === undefined ? true : options.enabled),
   });
