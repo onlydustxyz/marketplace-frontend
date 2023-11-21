@@ -7,7 +7,7 @@ function handleNavigation(searchParams: URLSearchParams, navigate: (path: string
   const state = searchParams.get("state");
 
   if (installationId && !state) {
-    navigate(`${RoutePaths.ProjectCreation}/organizations?installation_id=${installationId}`);
+    navigate(`${RoutePaths.ProjectCreation}?installation_id=${installationId}`);
   } else if (installationId && state) {
     navigate(`/p/${state}/edit?installation_id=${installationId}`);
   }

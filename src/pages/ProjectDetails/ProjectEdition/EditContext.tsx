@@ -147,7 +147,18 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const mergeOrganization = useMemo(() => {
-    return uniqWith([...(project.organizations || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
+    const merged = (project.organizations || [])?.map(projectOrg => {
+      const findInMe = (organizationsData || []).find(meOrg => meOrg.id === projectOrg.id);
+      if (findInMe) {
+        return {
+          ...findInMe,
+          repos: uniqWith([...(findInMe.repos || []), ...(projectOrg.repos || [])], (arr, oth) => arr.id === oth.id),
+        };
+      }
+
+      return projectOrg;
+    });
+    return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
   }, [organizationsData, project]);
 
   const onAddRepository = (organizationId: number, repoId: number) => {

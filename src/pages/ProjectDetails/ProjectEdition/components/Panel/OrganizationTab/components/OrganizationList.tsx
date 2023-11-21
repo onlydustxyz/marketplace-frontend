@@ -4,7 +4,6 @@ import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemC
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
 import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
-import { getGithubAppLinkUrl } from "src/utils/github";
 
 interface OrganizationListProps {
   organizations: UseGithubOrganizationsResponse[];
@@ -14,7 +13,15 @@ interface OrganizationListProps {
 export default function OrganizationList({ organizations, emptyListFallBackText }: OrganizationListProps) {
   const {
     githubWorklow: { run },
+    project,
   } = useContext(EditContext);
+  const getLinkUrl = (org: UseGithubOrganizationsResponse) => {
+    if (org.installed && org.installationId) {
+      return `https://github.com/organizations/${org.login}/settings/installations/${org.installationId}`;
+    }
+
+    return `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}?state=${project?.slug}`;
+  };
 
   if (organizations.length) {
     return (
@@ -25,7 +32,7 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
               key={`${org.login}+${index}`}
               avatarUrl={org.avatarUrl ?? ""}
               title={org.name || org.login || ""}
-              linkUrl={getGithubAppLinkUrl(org)}
+              linkUrl={getLinkUrl(org)}
               linkClick={run}
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
