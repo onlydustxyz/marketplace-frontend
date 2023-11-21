@@ -3,6 +3,7 @@ import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemC
 import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
+import { getGithubSetupLink } from "src/utils/githubSetupLink";
 
 interface OrganizationListProps {
   organizations: UseGithubOrganizationsResponse[];
@@ -16,18 +17,18 @@ export default function OrganizationList({
   installatedRepo,
 }: OrganizationListProps) {
   const { T } = useIntl();
-  const getLinkUrl = (org: UseGithubOrganizationsResponse) => {
-    if (org.installed && org.installationId) {
-      return `https://github.com/organizations/${org.login}/settings/installations/${org.installationId}`;
-    }
 
-    return `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}`;
-  };
   if (organizations.length) {
     return (
       <ul className="flex flex-col gap-2 py-4 pb-6">
         {organizations.map((org, index) => {
-          const linkUrl = getLinkUrl(org);
+          const linkUrl = getGithubSetupLink({
+            id: org.id,
+            login: org.login,
+            installationId: org.installationId,
+            installed: org.installed,
+            isAPersonalOrganization: false,
+          });
 
           return (
             <HorizontalListItemCard
