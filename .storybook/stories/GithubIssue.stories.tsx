@@ -2,8 +2,9 @@ import GithubIssue, { Action } from "src/components/GithubCard/GithubIssue/Githu
 import { daysFromNow } from "src/utils/date";
 import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
 import { ComponentProps } from "react";
+import { RewardableItem } from "src/api/Project/queries";
 
-const issues: Record<string, GithubIssueFragment> = {
+const issues: Record<string, Partial<GithubIssueFragment & RewardableItem>> = {
   closed: {
     id: "123",
     repoId: 123456,

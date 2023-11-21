@@ -3,7 +3,12 @@ import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { components } from "src/__generated/api";
-import { GithubUserFragment } from "src/__generated/graphql";
+import {
+  GithubCodeReviewFragment,
+  GithubIssueFragment,
+  GithubPullRequestWithCommitsFragment,
+  GithubUserFragment,
+} from "src/__generated/graphql";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -38,6 +43,7 @@ import { formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
+import { RewardableItem } from "src/api/Project/queries";
 
 enum Align {
   Top = "top",
@@ -127,16 +133,32 @@ export default function View({
                   return (
                     <GithubPullRequest
                       key={item.id}
-                      pullRequest={formatRewardItemToGithubPullRequest(item)}
+                      pullRequest={
+                        formatRewardItemToGithubPullRequest(item) as Partial<
+                          RewardableItem & GithubPullRequestWithCommitsFragment
+                        >
+                      }
                       contributor={data?.to as GithubUserFragment}
                     />
                   );
                 }
                 case GithubContributionType.Issue: {
-                  return <GithubIssue key={item.id} issue={formatRewardItemToGithubIssue(item)} />;
+                  return (
+                    <GithubIssue
+                      key={item.id}
+                      issue={formatRewardItemToGithubIssue(item) as Partial<GithubIssueFragment & RewardableItem>}
+                    />
+                  );
                 }
                 case GithubContributionType.CodeReview: {
-                  return <GithubCodeReview key={item.id} codeReview={formatRewardItemToGithubCodeReview(item)} />;
+                  return (
+                    <GithubCodeReview
+                      key={item.id}
+                      codeReview={
+                        formatRewardItemToGithubCodeReview(item) as Partial<GithubCodeReviewFragment & RewardableItem>
+                      }
+                    />
+                  );
                 }
                 default: {
                   return null;

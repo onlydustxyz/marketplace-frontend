@@ -19,7 +19,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getIssueStatusDate(issue: GithubIssueFragment | RewardableItem) {
+function getIssueStatusDate(issue: Partial<GithubIssueFragment & RewardableItem>) {
   switch (issue.status) {
     case GithubIssueStatus.Cancelled:
     case GithubIssueStatus.Completed:
@@ -27,7 +27,6 @@ function getIssueStatusDate(issue: GithubIssueFragment | RewardableItem) {
     case ContributionStatus.Cancelled:
       return new Date(issue.closedAt);
     case GithubIssueStatus.Open:
-    case ContributionStatus.InProgress:
     default:
       return new Date(issue.createdAt);
   }
@@ -38,7 +37,7 @@ export type GithubIssueProps = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  issue: RewardableItem | GithubIssueFragment;
+  issue: Partial<GithubIssueFragment & RewardableItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };

@@ -23,7 +23,7 @@ export enum GithubCodeReviewOutcome {
   ChangeRequested = "CHANGE_REQUESTED",
 }
 
-function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment & RewardableItem) {
+function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment> & Partial<RewardableItem>) {
   const status = codeReview?.status?.toUpperCase();
 
   switch (status) {
@@ -37,7 +37,7 @@ function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment & Rewardab
   }
 }
 
-function getStatus(codeReview: GithubCodeReviewFragment) {
+function getStatus(codeReview: Partial<GithubCodeReviewFragment & RewardableItem>) {
   const status = codeReview.status?.toUpperCase();
   const outcome = codeReview.outcome?.toUpperCase();
 
@@ -61,7 +61,7 @@ export type GithubCodeReviewProps = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  codeReview: GithubCodeReviewFragment;
+  codeReview: Partial<GithubCodeReviewFragment & RewardableItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -75,8 +75,7 @@ export default function GithubCodeReview({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: GithubCodeReviewProps) {
-  const { title, number, htmlUrl, createdAt } =
-    codeReview?.githubPullRequest || (codeReview as unknown as RewardableItem) || {};
+  const { title, number, htmlUrl, createdAt } = codeReview?.githubPullRequest || codeReview || {};
 
   const { repoName } = parsePullRequestLink(htmlUrl ?? "");
 
@@ -110,7 +109,7 @@ export default function GithubCodeReview({
               id={codeReview.id as string}
               type={GithubContributionType.CodeReview}
               status={getStatus(codeReview) as GithubCodeReviewStatus}
-              date={getCodeReviewStatusDate(codeReview as GithubCodeReviewFragment & RewardableItem)}
+              date={getCodeReviewStatusDate(codeReview)}
               tooltipProps={{
                 variant: Variant.Default,
                 position: TooltipPosition.Bottom,

@@ -35,7 +35,6 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId }: Pr
   const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
-        // TODO dirty hack until we have a new REST endpoint with the RewardableItem shape
         addWorkItem(issueToWorkItem(liveIssueToCached(data.fetchIssue as unknown as RewardableItem)));
         resetField(inputName);
       } else {
@@ -58,7 +57,6 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId }: Pr
   const [fetchPullRequest] = useFetchPullRequestLazyQuery({
     onCompleted: data => {
       if (data.fetchPullRequest) {
-        // TODO dirty hack until we have a new REST endpoint with the RewardableItem shape
         addWorkItem(pullRequestToWorkItem(data.fetchPullRequest.githubPullRequest as unknown as RewardableItem));
         resetField(inputName);
       } else {

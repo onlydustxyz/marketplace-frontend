@@ -4,6 +4,7 @@ import {
   GithubIssueFragment,
   GithubPullRequestWithCommitsFragment,
 } from "src/__generated/graphql";
+import { RewardableItem } from "src/api/Project/queries";
 
 export function formatRewardItemToGithubPullRequest(item: components["schemas"]["RewardItemResponse"]) {
   return {
@@ -50,9 +51,11 @@ export function formatRewardItemToGithubIssue(item: components["schemas"]["Rewar
   } as GithubIssueFragment;
 }
 
-export function formatRewardItemToGithubCodeReview(item: components["schemas"]["RewardItemResponse"]) {
+export function formatRewardItemToGithubCodeReview(
+  item: Partial<components["schemas"]["RewardItemResponse"] & RewardableItem>
+) {
   return {
-    id: item.id,
+    id: item.id || null,
     githubPullRequest: {
       number: item.number,
       title: item.title,

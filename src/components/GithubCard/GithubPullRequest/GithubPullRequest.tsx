@@ -26,7 +26,9 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getPullRequestStatusDate(pullRequest: GithubPullRequestWithCommitsFragment) {
+function getPullRequestStatusDate(
+  pullRequest: Partial<RewardableItem> & Partial<GithubPullRequestWithCommitsFragment>
+) {
   switch (pullRequest.status) {
     case GithubPullRequestStatus.Closed:
     case ContributionStatus.Cancelled:
@@ -35,7 +37,6 @@ function getPullRequestStatusDate(pullRequest: GithubPullRequestWithCommitsFragm
     case ContributionStatus.Completed:
       return new Date(pullRequest.mergedAt);
     case GithubPullRequestStatus.Open:
-    case ContributionStatus.InProgress:
     default:
       return new Date(pullRequest.createdAt);
   }
@@ -46,7 +47,7 @@ export type GithubPullRequestProps = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  pullRequest: GithubPullRequestWithCommitsFragment & RewardableItem;
+  pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
   contributor?: GithubUserFragment;
@@ -64,8 +65,8 @@ export default function GithubPullRequest({
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest.htmlUrl ?? "");
 
-  const userCommits = pullRequest?.userCommitsCount?.aggregate?.count ?? pullRequest?.userCommitsCount;
-  const commitsCount = pullRequest?.commitsCount?.aggregate?.count ?? pullRequest?.commitsCount;
+  const userCommits = pullRequest?.userCommitsCount?.aggregate?.count || pullRequest?.userCommitsCount || 0;
+  const commitsCount = pullRequest?.commitsCount?.aggregate?.count || pullRequest?.commitsCount || 0;
 
   return pullRequest ? (
     <Card

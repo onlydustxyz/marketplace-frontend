@@ -95,7 +95,6 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {
       clearForm();
-      // TODO dirty hack until we have a new REST endpoint with the RewardableItem shape
       addWorkItem(issueToWorkItem(liveIssueToCached(data.createAndCloseIssue as unknown as RewardableItem)));
       showToaster(T("reward.form.contributions.other.success"));
     },
