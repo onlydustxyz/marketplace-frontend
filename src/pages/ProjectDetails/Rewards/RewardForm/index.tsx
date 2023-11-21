@@ -17,9 +17,8 @@ import ErrorFallback from "src/ErrorFallback";
 import { useApolloClient } from "@apollo/client";
 import { useQueryClient } from "@tanstack/react-query";
 import MeApi from "src/api/me";
-import useRewardableItemsQueryParams from "./WorkItemSidePanel/hooks/useRewardableItemsQueryParams";
 import ProjectApi from "src/api/Project";
-import { RewardableItem } from "src/api/Project/queries";
+import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 
 const RewardForm: React.FC = () => {
@@ -90,7 +89,7 @@ const RewardForm: React.FC = () => {
 
   const { queryParams } = useRewardableItemsQueryParams({
     githubUserId: contributor?.githubUserId,
-    includeIgnoredItems: true,
+    ignoredItemsIncluded: true,
   });
 
   // console.log("queryParams", queryParams);

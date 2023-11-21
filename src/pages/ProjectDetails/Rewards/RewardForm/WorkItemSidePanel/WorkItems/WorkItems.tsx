@@ -1,11 +1,11 @@
 import { chain } from "lodash";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { WorkItemType } from "src/__generated/graphql";
-import View from "./View";
+import View, { tabNames } from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
-import useRewardableItemsQueryParams from "../hooks/useRewardableItemsQueryParams";
 import ProjectApi from "src/api/Project";
-import { RewardableItem } from "src/api/Project/queries";
+import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
+import { useFormContext } from "react-hook-form";
 
 export interface RewardableWorkItem {
   type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;
@@ -24,10 +24,15 @@ type Props = {
 };
 
 export function WorkItems({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
-  const { queryParams, setType, setSearch, setIncludeIgnoredItems } = useRewardableItemsQueryParams({
+  const { watch } = useFormContext();
+  const tabName = tabNames[type];
+  const search = watch(`search-${tabName}`);
+
+  const { queryParams, setIncludeIgnoredItems } = useRewardableItemsQueryParams({
     type,
     githubUserId: contributorId,
-    includeIgnoredItems: false,
+    search,
+    ignoredItemsIncluded: false,
   });
 
   const {
@@ -40,10 +45,6 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
   } = ProjectApi.queries.useRewardableItemsInfiniteList({
     params: { projectId, queryParams },
   });
-
-  useEffect(() => {
-    setType(type);
-  }, [type]);
 
   const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
 
@@ -94,10 +95,11 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
       unignoreContribution={(contribution: RewardableItem) =>
         contribution.id && unignoreContribution(projectId, contribution.id)
       }
-      setIncludeIgnoredItems={setIncludeIgnoredItems}
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
+      setIncludeIgnoredItems={setIncludeIgnoredItems}
+      loading={isLoading}
     />
   );
 }

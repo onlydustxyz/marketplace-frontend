@@ -37,11 +37,6 @@ export function AutoAdd({ unpaidContributions, workItems, onAutoAdd }: AutoAddPr
 
   const hasItems = remainingPullRequests || remainingIssues || remainingCodeReviews;
 
-  console.log("remainingPullRequests", remainingPullRequests);
-  console.log("remainingIssues", remainingIssues);
-  console.log("remainingCodeReviews", remainingCodeReviews);
-  console.log("hasItems", hasItems);
-
   return hasItems ? (
     <Card className="flex items-center justify-between bg-whiteFakeOpacity-10 px-4 py-3" padded={false}>
       <div className="flex min-w-[90px] items-center text-sm font-medium  text-spaceBlue-200">

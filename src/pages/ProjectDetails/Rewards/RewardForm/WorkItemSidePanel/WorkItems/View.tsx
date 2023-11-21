@@ -1,4 +1,4 @@
-import { ReactElement, forwardRef, useEffect, useState } from "react";
+import { ReactElement, forwardRef, useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
 import { GithubUserFragment, WorkItemType, useGithubUserByIdQuery } from "src/__generated/graphql";
@@ -13,16 +13,16 @@ import { useShowToaster } from "src/hooks/useToaster";
 import EyeOffLine from "src/icons/EyeOffLine";
 import Link from "src/icons/Link";
 import SearchLine from "src/icons/SearchLine";
-import EmptyState from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/EmptyState";
 import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
-import useFilteredContributions from "./useFilteredWorkItems";
 import { RewardableWorkItem, contributionToWorkItem } from "./WorkItems";
 import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import { RewardableItem } from "src/api/Project/queries";
 import { ShowMore } from "src/components/Table/ShowMore";
+import EmptyState from "../EmptyState";
+import Skeleton from "src/components/Skeleton";
 
-const tabNames = {
+export const tabNames = {
   [WorkItemType.Issue]: "issues",
   [WorkItemType.PullRequest]: "pullRequests",
   [WorkItemType.CodeReview]: "codeReviews",
@@ -43,8 +43,8 @@ type Props = {
   ignoreContribution: (contribution: RewardableItem) => void;
   unignoreContribution: (contribution: RewardableItem) => void;
   contributorId: number;
-  /** NEW PROPS **/
   setIncludeIgnoredItems: (value: boolean) => void;
+  loading: boolean;
 } & ShowMoreProps;
 
 export default function View({
@@ -56,10 +56,11 @@ export default function View({
   ignoreContribution,
   unignoreContribution,
   contributorId,
-  setIncludeIgnoredItems,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
+  setIncludeIgnoredItems,
+  loading,
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
@@ -96,9 +97,10 @@ export default function View({
   const { control } = useForm({
     defaultValues: { [showIgnoredItemsName]: false },
   });
+
   const showIgnoredItems = useWatch({
     control,
-    name: showIgnoredItemsName,
+    name: "show-ignored-items",
   });
 
   useEffect(() => {
@@ -107,8 +109,7 @@ export default function View({
 
   // const visibleIssues = showIgnoredItems ? contributions : filter(contributions, { ignored: false });
 
-  const searchPattern = watch(`search-${tabName}`);
-  const filteredContributions = useFilteredContributions({ pattern: searchPattern, contributions });
+  const filteredContributions = contributions;
 
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
@@ -159,11 +160,14 @@ export default function View({
           />
         )}
       </div>
-
-      {filteredContributions.length > 0 && data?.githubUsersByPk ? (
+      {loading ? (
+        <div className="mr-1.5 mt-1">
+          <Skeleton variant="rewardableItems" />
+        </div>
+      ) : !loading && contributions.length > 0 && data?.githubUsersByPk ? (
         <VirtualizedIssueList
           {...{
-            contributions: filteredContributions as RewardableItem[],
+            contributions: contributions as RewardableItem[],
             addContribution: addContributionWithToast,
             ignoreContribution,
             unignoreContribution,
@@ -177,6 +181,24 @@ export default function View({
       ) : (
         <EmptyState indexedAt={data?.githubRepos[0].indexedAt} />
       )}
+
+      {/* {contributions.length > 0 && data?.githubUsersByPk ? (
+        <VirtualizedIssueList
+          {...{
+            contributions: contributions as RewardableItem[],
+            addContribution: addContributionWithToast,
+            ignoreContribution,
+            unignoreContribution,
+            contributor: data?.githubUsersByPk,
+            tabName,
+            fetchNextPage,
+            hasNextPage,
+            isFetchingNextPage,
+          }}
+        />
+      ) : (
+        <EmptyState indexedAt={data?.githubRepos[0].indexedAt} />
+      )} */}
     </div>
   );
 }
@@ -234,20 +256,27 @@ const VirtualizedIssueList = ({
   hasNextPage,
   isFetchingNextPage,
 }: VirtualizedIssueListProps & ShowMoreProps) => {
+  const loadMore = useCallback(() => {
+    if (!isFetchingNextPage && hasNextPage) {
+      return fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage]);
+
   const Footer = () => {
     if (hasNextPage) {
       return (
         <div className="my-4">
-          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
         </div>
       );
     }
     return <></>;
   };
+
   return (
     <Virtuoso
       data={contributions}
-      endReached={fetchNextPage}
+      endReached={loadMore}
       components={{
         Scroller,
         List: ListBuilder(tabName),

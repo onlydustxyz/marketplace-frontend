@@ -4,6 +4,9 @@ import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { PROJECT_TAGS } from "./tags";
 import { QueryParams } from "src/utils/getEndpointUrl";
+import { WorkItemType } from "src/__generated/graphql";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { debounce } from "lodash";
 
 export type UseGetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
 
@@ -68,15 +71,59 @@ const useRewardableItemsInfiniteList = ({
       resourcePath: API_PATH.PROJECT_REWARDABLE_ITEMS(params?.projectId || ""),
       tags: PROJECT_TAGS.rewardable_items([params?.projectId]),
       queryParams: params?.queryParams,
-      pageSize: params?.pageSize || 10,
+      pageSize: params?.pageSize || 15,
     },
     options
   );
 };
+
+interface RewardableItemsQueryParamsProps {
+  type?: WorkItemType;
+  githubUserId?: number;
+  ignoredItemsIncluded?: boolean;
+  search?: string;
+}
+
+export function useRewardableItemsQueryParams(props: RewardableItemsQueryParamsProps) {
+  const { type, githubUserId, ignoredItemsIncluded, search } = props;
+
+  const [includeIgnoredItems, setIncludeIgnoredItems] = useState(ignoredItemsIncluded || false);
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  const debounceSearch = useCallback(
+    debounce(newSearch => {
+      setDebouncedSearch(newSearch);
+    }, 300),
+    []
+  );
+
+  useEffect(() => {
+    if (search || search === "") {
+      debounceSearch(search);
+    }
+  }, [search, debounceSearch]);
+
+  const queryParams: QueryParams = useMemo(() => {
+    const params: Record<string, string> = {};
+
+    if (type) params["type"] = type;
+    if (debouncedSearch) params["search"] = debouncedSearch;
+    if (includeIgnoredItems !== undefined) params["include_ignored_items"] = includeIgnoredItems.toString();
+    if (githubUserId) params["githubUserId"] = githubUserId.toString();
+
+    return params;
+  }, [type, debouncedSearch, includeIgnoredItems, githubUserId]);
+
+  return {
+    queryParams,
+    setIncludeIgnoredItems,
+  };
+}
 
 export default {
   useGetProjectBySlug,
   useGetProjectContributionDetail,
   useInfiniteList,
   useRewardableItemsInfiniteList,
+  useRewardableItemsQueryParams,
 };

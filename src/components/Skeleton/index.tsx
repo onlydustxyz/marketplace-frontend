@@ -11,6 +11,7 @@ import SkeletonEarnedRewards from "./SkeletonEarnedRewards";
 import SkeletonRewardsList from "./SkeletonRewardsList";
 import SkeletonInvoice from "./SkeletonInvoice";
 import SkeletonOrganizationItem from "./SkeletonOrganizationItem";
+import SkeletonRewardableItems from "./SkeletonRewardableItems";
 
 type SkeletonVariant =
   | "card"
@@ -21,6 +22,7 @@ type SkeletonVariant =
   | "counter"
   | "contributorList"
   | "rewards"
+  | "rewardableItems"
   | "earnedRewards"
   | "rewardsList"
   | "invoice"
@@ -39,6 +41,7 @@ const VARIANT_COMPONENTS = {
   counter: SkeletonCounter,
   contributorList: SkeletonContributorList,
   rewards: SkeletonRewards,
+  rewardableItems: SkeletonRewardableItems,
   earnedRewards: SkeletonEarnedRewards,
   rewardsList: SkeletonRewardsList,
   invoice: SkeletonInvoice,
