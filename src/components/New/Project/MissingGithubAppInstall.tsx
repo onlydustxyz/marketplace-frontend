@@ -1,6 +1,6 @@
 import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import Button, { ButtonSize } from "src/components/Button";
+import Button, { ButtonAccentColor, ButtonSize } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 
 export function MissingGithubAppInstall({ slug = "" }: { slug: string }) {
@@ -14,6 +14,7 @@ export function MissingGithubAppInstall({ slug = "" }: { slug: string }) {
       <Button
         size={ButtonSize.Sm}
         className="whitespace-nowrap"
+        accentColor={ButtonAccentColor.Orange}
         onClick={e => {
           e.preventDefault();
           e.stopPropagation();

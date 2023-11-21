@@ -22,22 +22,22 @@ export enum Width {
   Fit = "fit",
 }
 
-export enum AccentColor {
+export enum ButtonAccentColor {
   Purple = "purple",
   Orange = "orange",
 }
 
 const variants: Record<
   ButtonType,
-  Record<AccentColor, Record<"default" | "pressed", string>> & Record<"default" | "disabled" | "pressed", string>
+  Record<ButtonAccentColor, Record<"default" | "pressed", string>> & Record<"default" | "disabled" | "pressed", string>
 > = {
   [ButtonType.Primary]: {
-    [AccentColor.Purple]: {
+    [ButtonAccentColor.Purple]: {
       default:
         "active:bg-spacePurple-50 active:text-spacePurple-900 active:outline-spacePurple-800 focus:bg-spacePurple-50 focus:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900",
       pressed: "bg-spacePurple-50 text-spacePurple-900 outline-spacePurple-800",
     },
-    [AccentColor.Orange]: {
+    [ButtonAccentColor.Orange]: {
       default:
         "active:bg-orange-50 active:text-orange-900 active:outline-orange-800 focus:bg-orange-50 focus:text-orange-900 hover:bg-orange-50 hover:text-orange-900",
       pressed: "bg-orange-50 text-orange-900 outline-orange-800",
@@ -47,12 +47,12 @@ const variants: Record<
     pressed: "shadow-none outline outline-4",
   },
   [ButtonType.Secondary]: {
-    [AccentColor.Purple]: {
+    [ButtonAccentColor.Purple]: {
       default:
         "focus:border-spacePurple-200 focus:text-spacePurple-100 hover:border-spacePurple-200 hover:text-spacePurple-100 active:border-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-200",
       pressed: "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-200",
     },
-    [AccentColor.Orange]: {
+    [ButtonAccentColor.Orange]: {
       default:
         "focus:border-orange-200 focus:text-orange-100 hover:border-orange-200 hover:text-orange-100 active:border-orange-400 active:bg-orange-900 active:text-orange-200",
       pressed: "border-orange-400 bg-orange-900 text-orange-200",
@@ -62,12 +62,12 @@ const variants: Record<
     pressed: "",
   },
   [ButtonType.Ternary]: {
-    [AccentColor.Purple]: {
+    [ButtonAccentColor.Purple]: {
       default:
         "text-spacePurple-500 focus:text-spacePurple-400 hover:text-spacePurple-400 active:text-spacePurple-400 active:bg-spacePurple-900",
       pressed: "text-spacePurple-400 bg-spacePurple-900",
     },
-    [AccentColor.Orange]: {
+    [ButtonAccentColor.Orange]: {
       default:
         "text-orange-500 focus:text-orange-400 hover:text-orange-400 active:text-orange-400 active:bg-orange-900",
       pressed: "text-orange-400 bg-orange-900",
@@ -87,7 +87,7 @@ type ButtonProps = PropsWithChildren<
     disabled?: boolean;
     iconOnly?: boolean;
     pressed?: boolean;
-    accentColor?: AccentColor;
+    accentColor?: ButtonAccentColor;
   } & Omit<ComponentPropsWithoutRef<"button">, "type">
 >;
 
@@ -103,7 +103,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       pressed = false,
       children,
       className,
-      accentColor = AccentColor.Purple,
+      accentColor = ButtonAccentColor.Purple,
       ...otherButtonProps
     },
     ref

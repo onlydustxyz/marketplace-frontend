@@ -2,7 +2,7 @@ import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import InfoIcon from "src/assets/icons/InfoIcon";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 
 export function MissingGithubAppInstallBanner({
@@ -31,7 +31,7 @@ export function MissingGithubAppInstallBanner({
       </div>
 
       <Link to={generatePath(RoutePaths.ProjectDetailsEditRepos, { projectKey: slug })}>
-        <Button size={ButtonSize.Sm} type={ButtonType.Secondary}>
+        <Button size={ButtonSize.Sm} type={ButtonType.Secondary} accentColor={ButtonAccentColor.Orange}>
           {T("project.details.banners.missingGithubAppInstall.button")}
         </Button>
       </Link>
