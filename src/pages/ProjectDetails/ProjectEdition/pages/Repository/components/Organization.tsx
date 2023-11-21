@@ -19,7 +19,7 @@ type RepositoryOrganizationType = {
 export function RepositoryOrganization({ organization, installedRepos }: RepositoryOrganizationType) {
   const { T } = useIntl();
   const hasUnauthorizedRepos = hasUnauthorizedInGithubRepo(organization.repos);
-  const isMember = useGithubOrganizationMembership({ organization });
+  const isGithubAdmin = useGithubOrganizationMembership({ organization });
 
   const components = {
     errorAvatar: (
@@ -32,8 +32,10 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
         <Button
           type={ButtonType.Secondary}
           size={ButtonSize.Sm}
-          disabled={!isMember}
-          {...withTooltip(T("project.details.edit.panel.repositories.fixGithubAppTooltip"), { visible: !isMember })}
+          disabled={!isGithubAdmin}
+          {...withTooltip(T("project.details.edit.panel.repositories.fixGithubAppTooltip"), {
+            visible: !isGithubAdmin,
+          })}
         >
           <GithubLogo />
           {T("project.details.edit.panel.repositories.fixGithubApp")}

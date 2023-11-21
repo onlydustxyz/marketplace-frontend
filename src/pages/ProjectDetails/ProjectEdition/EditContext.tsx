@@ -152,7 +152,8 @@ export function EditProvider({ children, project }: EditContextProps) {
       if (findInMe) {
         return {
           ...findInMe,
-          repos: uniqWith([...(findInMe.repos || []), ...(projectOrg.repos || [])], (arr, oth) => arr.id === oth.id),
+          ...projectOrg,
+          repos: uniqWith([...(projectOrg.repos || []), ...(findInMe.repos || [])], (arr, oth) => arr.id === oth.id),
         };
       }
 

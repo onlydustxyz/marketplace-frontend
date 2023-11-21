@@ -37,12 +37,12 @@ export const useGithubOrganizationMembership = ({
 }): boolean => {
   const { data: userInfo } = MeApi.queries.useGetMe({});
   const { tokenSet } = useTokenSet();
-  const [isMember, setIsMember] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const getMembership = useCallback(async () => {
     if (tokenSet?.accessToken && userInfo) {
       const membership = await getOrganizationMembership(tokenSet?.accessToken, organization, userInfo.login);
-      setIsMember(membership.role === "member");
+      setIsAdmin(membership.role === "admin");
     }
   }, [tokenSet]);
 
@@ -50,5 +50,5 @@ export const useGithubOrganizationMembership = ({
     getMembership();
   }, [tokenSet]);
 
-  return isMember;
+  return isAdmin;
 };
