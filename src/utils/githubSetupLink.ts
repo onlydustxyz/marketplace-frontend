@@ -10,7 +10,7 @@ export interface GetGithubSetupLinkProps {
 const baseUrl = "https://github.com/";
 
 export const OAuthGithubConfigLink = `https://github.com/settings/connections/applications/${
-  import.meta.env.VITE_GITHUB_INSTALLATION_CONFIG
+  import.meta.env.VITE_GITHUB_OAUTH_APP_ID
 }`;
 
 export const GithubSetupLinks = {
@@ -21,7 +21,7 @@ export const GithubSetupLinks = {
   shouldInstall: (props: { orgId: number }) =>
     `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${props.orgId}`,
   shouldInstallOnEdit: (props: { orgId: number; projectSlug: string }) =>
-    `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${props.orgId}?state=${props.projectSlug}`,
+    `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${props.orgId}&state=${props.projectSlug}`,
 };
 
 export const getGithubSetupLink = ({
