@@ -1,4 +1,4 @@
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/components/Button";
 import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
 import SubtractLine from "src/icons/SubtractLine";
@@ -37,6 +37,7 @@ export function Repository({ organization, repository }: RepositoryType) {
             <Button
               size={ButtonSize.Sm}
               type={ButtonType.Secondary}
+              accentColor={!repository.isAuthorizedInGithubApp ? ButtonAccentColor.Orange : ButtonAccentColor.Purple}
               onClick={() => {
                 handleRemoveRepo(organization.id, repository.id);
               }}
