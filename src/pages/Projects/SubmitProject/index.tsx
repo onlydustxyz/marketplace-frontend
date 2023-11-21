@@ -5,7 +5,7 @@ import Card from "src/components/Card";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ConfirmationPopOver from "src/components/New/Popover/ConfirmationPopover";
 import {
   STORAGE_KEY_CREATE_PROJECT_STEP,
@@ -30,10 +30,20 @@ export default function SubmitProject() {
   const getLoginUrl = useLoginUrl();
   const loginUrlStorage = useLoginUrlStorage();
   const dispatchSession = useSessionDispatch();
+  const canResume = useMemo(() => !!localStorage.getItem(STORAGE_KEY_CREATE_PROJECT_STEP), []);
 
   const onCancel = () => {
     clearStorage();
     startProjectCreation();
+  };
+
+  const onClick = () => {
+    if (canResume) {
+      toggleModal();
+    } else {
+      clearStorage();
+      startProjectCreation();
+    }
   };
 
   const onResume = () => {
@@ -62,6 +72,7 @@ export default function SubmitProject() {
       <div className="relative z-10">
         <ConfirmationPopOver
           onClose={closeModal}
+          disabled={!canResume}
           confirm={{
             label: T("project.details.create.startPopOver.resume"),
             onClick: onResume,
@@ -73,13 +84,7 @@ export default function SubmitProject() {
             onClick: onCancel,
           }}
         >
-          <Button
-            htmlType="submit"
-            size={ButtonSize.Sm}
-            type={ButtonType.Primary}
-            width={Width.Fit}
-            onClick={toggleModal}
-          >
+          <Button size={ButtonSize.Sm} type={ButtonType.Primary} width={Width.Fit} onClick={onClick}>
             <i className="ri-magic-line" />
             {T("project.details.create.submit.button")}
           </Button>

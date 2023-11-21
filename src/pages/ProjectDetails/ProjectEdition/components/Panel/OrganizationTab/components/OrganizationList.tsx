@@ -13,13 +13,14 @@ interface OrganizationListProps {
 export default function OrganizationList({ organizations, emptyListFallBackText }: OrganizationListProps) {
   const {
     githubWorklow: { run },
+    project,
   } = useContext(EditContext);
   const getLinkUrl = (org: UseGithubOrganizationsResponse) => {
     if (org.installed && org.installationId) {
       return `https://github.com/organizations/${org.login}/settings/installations/${org.installationId}`;
     }
 
-    return `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}`;
+    return `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${org.id}?state=${project?.slug}`;
   };
 
   if (organizations.length) {
