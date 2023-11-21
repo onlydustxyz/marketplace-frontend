@@ -59,6 +59,7 @@ const currentProject: Project = {
   organizations: [
     {
       id: 58205251,
+      isCurrentUserAdmin: true,
       owner: "Barbicane-fr",
       login: "owner-id",
       avatarUrl: "https://avatars.githubusercontent.com/u/58205251?v=4",
@@ -162,6 +163,7 @@ const otherProject: Project = {
       name: "Barbicane",
       installationId: 411,
       installed: true,
+      isCurrentUserAdmin: true,
       repos: [
         {
           id: 347315291,
