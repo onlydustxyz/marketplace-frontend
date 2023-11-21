@@ -843,10 +843,10 @@
         },
         "description": "Managing an open source project?",
         "startPopOver": {
-            "title": "Resume project creation?",
-            "description": "If you decide to start over all your previous changes will be lost.",
-            "restart": "Start over",
-            "resume": "Resume"
+          "title": "Resume project creation?",
+          "description": "If you decide to start over all your previous changes will be lost.",
+          "restart": "Start over",
+          "resume": "Resume"
         },
         "intro": {
           "upperTitle": "Submit project",
@@ -856,9 +856,10 @@
           "disclaimer": "We need your permission to connect with your github repositories"
         },
         "organizations": {
-          "title": "Which organisations are concerned?",
+          "title": "Which Github organisations are concerned ?",
           "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",
           "installAnotherOrgs": "Install to another organization",
+          "tooltip": "You have already sent an installation request to organization owner.",
           "installedOn": {
             "many": "Installed on __count__ organizations",
             "one": "Installed on 1 organization",
