@@ -19,10 +19,6 @@ import { EditContext, EditProvider } from "./EditContext";
 import { Information } from "./pages/Information";
 import { Repository } from "./pages/Repository/Repository";
 import { Tabs } from "src/components/Tabs/Tabs";
-import {
-  GITHUB_PERMISSIONS,
-  useHasGithubPermissionOrLogin,
-} from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -120,7 +116,6 @@ function SafeProjectEdition() {
 }
 
 export default function ProjectEdition() {
-  useHasGithubPermissionOrLogin(GITHUB_PERMISSIONS.READ_ORG);
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
 
