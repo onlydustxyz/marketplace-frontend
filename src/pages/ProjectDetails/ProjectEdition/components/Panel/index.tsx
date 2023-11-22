@@ -66,7 +66,7 @@ export const EditPanel = () => {
 
   return (
     <SidePanel open={isOpen} setOpen={toggle}>
-      <div className="flex h-full flex-col">
+      <div className="scrollbar-sm flex h-full flex-col ">
         <div className="flex flex-col px-6 py-8">
           <div className="mb-8 font-belwe text-2xl font-normal text-greyscale-50">
             {T("project.details.edit.panel.title")}
