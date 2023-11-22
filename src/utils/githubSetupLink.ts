@@ -16,7 +16,7 @@ export const OAuthGithubConfigLink = `https://github.com/settings/connections/ap
 
 export const GithubState = {
   claim: "claim-state-",
-  edit: "claim-state-",
+  edit: "edit-state-",
 };
 export const GithubSetupLinks = {
   alreadyInstalled: (props: { login: string; installationId: number }) =>

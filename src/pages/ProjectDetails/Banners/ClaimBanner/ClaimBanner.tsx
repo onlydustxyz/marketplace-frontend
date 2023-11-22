@@ -67,11 +67,7 @@ export default function ClaimBanner() {
 
     const isAllOrganizationInstalled = project?.organizations?.every(org => org.installed);
 
-    if (isAllOrganizationInstalled) {
-      return true;
-    }
-
-    return false;
+    return isAllOrganizationInstalled || false;
   }, [project, myOrganizations, canDisplay]);
 
   const handleToggleClaimProjectModal = (value: boolean) => {
@@ -93,7 +89,7 @@ export default function ClaimBanner() {
   };
 
   useEffect(() => {
-    if (searchParams && searchParams.get("claim_callback")) {
+    if (searchParams?.get("claim_callback")) {
       searchParams.delete("claim_callback");
       handleToggleClaimProjectModal(true);
       setSearchParams(searchParams);
@@ -107,7 +103,7 @@ export default function ClaimBanner() {
   return (
     <>
       <RainbowBanner
-        description={T("project.claim.banner.content")}
+        description={T("project.claim.banner.content", { projectName: project?.name || "" })}
         button={{
           name: T("project.claim.banner.button"),
           icon: <i className="ri-magic-line text-xl font-normal text-black" />,
@@ -140,7 +136,7 @@ export default function ClaimBanner() {
                 />
               ))}
             </div>
-            <div className=" mt-6">
+            <div className="mt-6">
               <div className="flex flex-row items-center justify-start gap-0.5">
                 <InformationLine className="text-base leading-4 text-spaceBlue-200" />
                 <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
