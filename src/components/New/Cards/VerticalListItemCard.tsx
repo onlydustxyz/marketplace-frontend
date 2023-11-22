@@ -16,7 +16,6 @@ export interface VerticalListItemCardProps extends PropsWithChildren {
   title: string;
   avatarSrc: string;
   avatarAlt: string;
-  hasUnauthorizedInGithubRepo?: boolean;
 }
 
 export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
