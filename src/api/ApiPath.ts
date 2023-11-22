@@ -13,7 +13,6 @@ export const API_PATH = {
   PROJECTS: BASE_API_V1("projects"),
   PROJECTS_LOGO: BASE_API_V1("projects/logos"),
   PROJECT_DETAILS: (slug: string) => BASE_API_V1(`projects/${slug}`),
-  PROJECT_CLAIM: (slug: string) => BASE_API_V1(`projects/${slug}/claim`),
   PROJECTS_BY_SLUG: (slug: string) => BASE_API_V1(`projects/slug/${slug}`),
   PROJECT_CONTRIBUTION_DETAIL: (projectId: string, contributionId: string) =>
     BASE_API_V1(`projects/${projectId}/contributions/${contributionId}`),
@@ -29,4 +28,5 @@ export const API_PATH = {
   ME_GITHUB_ORGANIZATIONS: BASE_API_V1("me/organizations"),
   MY_CONTRIBUTED_PROJECTS: BASE_API_V1("me/contributed-projects"),
   MY_CONTRIBUTED_REPOS: BASE_API_V1("me/contributed-repos"),
+  MY_CLAIM: (projectId: string) => BASE_API_V1(`me/project-claims/${projectId}`),
 };

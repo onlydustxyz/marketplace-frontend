@@ -18,4 +18,20 @@ const useAcceptProjectLeaderInvitation = ({
   });
 };
 
-export default { useAcceptProjectLeaderInvitation };
+const useClaimProject = ({
+  params,
+  options = {},
+}: UseMutationProps<unknown, { projectId?: string; projectSlug?: string }, unknown>) => {
+  return useBaseMutation<unknown, unknown>({
+    resourcePath: API_PATH.MY_CLAIM(params?.projectId || ""),
+    method: "PUT",
+    enabled: !!params?.projectId,
+    invalidatesTags: [
+      { queryKey: PROJECT_TAGS.detail_by_slug(params?.projectSlug || ""), exact: false },
+      { queryKey: MeApi.tags.all, exact: false },
+    ],
+    ...options,
+  });
+};
+
+export default { useAcceptProjectLeaderInvitation, useClaimProject };

@@ -21,7 +21,7 @@ export default function ClaimBanner() {
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
   const { data: myOrganizations } = MeApi.queries.useGithubOrganizations({});
 
-  const { mutate: claimProjectMutation, ...restMutation } = ProjectApi.mutations.useClaimProject({
+  const { mutate: claimProjectMutation, ...restMutation } = MeApi.mutations.useClaimProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
       onSuccess: async () => {
