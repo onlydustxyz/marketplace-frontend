@@ -43,6 +43,7 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
       htmlUrl: "https://github.com/onlydustxyz",
       name: "OnlyDust",
       owner: "onlydustxyz",
+      isCurrentUserAdmin: true,
       repos: [
         {
           id: 663102799,
