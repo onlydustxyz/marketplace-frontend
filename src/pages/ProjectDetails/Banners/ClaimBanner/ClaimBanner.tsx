@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
@@ -19,9 +19,23 @@ export default function ClaimBanner() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: project, isSuccess } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
+  const poolingCount = useRef(0);
+
   const { data: myOrganizations } = MeApi.queries.useGithubOrganizations({
     options: {
+      retry: 1,
       enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
+      refetchOnWindowFocus: () => {
+        poolingCount.current = 0;
+        return true;
+      },
+      refetchInterval: () => {
+        if (poolingCount.current < 4 && openClaimProjectModal) {
+          poolingCount.current = poolingCount.current + 1;
+          return 2000;
+        }
+        return 0;
+      },
     },
   });
 
