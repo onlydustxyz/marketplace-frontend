@@ -7,25 +7,42 @@ import Section, { SectionIcon } from "./Section";
 import Contributor from "src/components/Contributor";
 import Sponsor from "./Sponsor";
 import { Leader, Sponsor as SponsorType, TopContributor } from "src/types";
+import Flex from "src/components/Utils/Flex";
+
+const filterLeadsByLogin = (leads?: Leader[]) => leads?.filter(lead => isDefined(lead?.login)) || [];
 
 interface Props {
   leads?: Leader[];
+  invitedLeads?: Leader[];
   sponsors: SponsorType[];
   moreInfoLink: string | null;
   topContributors: TopContributor[];
   totalContributorsCount: number;
+  showPendingInvites: boolean;
 }
 
 export default function OverviewPanel({
   leads,
+  invitedLeads,
   sponsors,
   moreInfoLink,
   topContributors,
   totalContributorsCount,
+  showPendingInvites,
 }: Props) {
   const { T } = useIntl();
 
-  const projectLeads = leads?.filter(lead => isDefined(lead?.login)) || [];
+  const projectLeads = filterLeadsByLogin(leads);
+  const projectInvitedLeads = filterLeadsByLogin(invitedLeads);
+
+  const contributorProps = (lead: Leader) => ({
+    contributor: {
+      login: lead.login || "",
+      avatarUrl: lead.avatarUrl,
+      githubUserId: lead.githubUserId,
+    },
+    clickable: true,
+  });
 
   return (
     <Card fullWidth={false} className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0" padded={false}>
@@ -37,16 +54,16 @@ export default function OverviewPanel({
         >
           <div className="flex flex-row flex-wrap gap-3">
             {projectLeads.map(lead => (
-              <Contributor
-                key={lead.id}
-                contributor={{
-                  login: lead.login || "",
-                  avatarUrl: lead.avatarUrl,
-                  githubUserId: lead.githubUserId,
-                }}
-                clickable
-              />
+              <Contributor key={lead.id} {...contributorProps(lead)} />
             ))}
+
+            {showPendingInvites &&
+              projectInvitedLeads.map(lead => (
+                <Flex key={lead.id} className="gap-1">
+                  <Contributor {...contributorProps(lead)} />
+                  <span className="text-sm text-spaceBlue-200">({T("common.pendingInvite")})</span>
+                </Flex>
+              ))}
           </div>
         </Section>
       )}
