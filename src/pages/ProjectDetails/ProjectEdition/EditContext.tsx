@@ -1,7 +1,7 @@
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { ProjectRoutePaths, RoutePaths } from "src/App";
+import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import ProjectApi from "src/api/Project";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
@@ -255,13 +255,11 @@ export function EditProvider({ children, project }: EditContextProps) {
         // Replace the current path on the history stack if different
         const newPathname = `${generatePath(RoutePaths.ProjectDetails, {
           projectKey: data.projectSlug,
-        })}/${ProjectRoutePaths.Edit}`;
+        })}`;
 
-        if (location.pathname !== newPathname) {
-          navigate(newPathname, { replace: true, state: location.state });
-        } else {
-          await queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
-        }
+        await queryClient.prefetchQuery({ queryKey: MeApi.tags.all });
+        await queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
+        navigate(newPathname, { replace: true, state: location.state });
       },
     },
   });

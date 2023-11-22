@@ -59,7 +59,6 @@ export default function Overview() {
   const { lastVisitedProjectId } = useSession();
   const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
-
   const projectId = project?.id;
   const projectName = project?.name;
   const projectSlug = project?.slug;
