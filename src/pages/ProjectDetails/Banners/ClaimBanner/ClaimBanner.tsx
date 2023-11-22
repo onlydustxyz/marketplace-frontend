@@ -47,7 +47,7 @@ export default function ClaimBanner() {
       }
 
       const findMyOrganizationInProject = project?.organizations?.filter(org =>
-        myOrganizations.find(meOrg => meOrg.id === org.id && meOrg.isCurrentUserAdmin)
+        myOrganizations.find(meOrg => meOrg.id === org.id && (org.installed || meOrg.isCurrentUserAdmin))
       );
 
       if (!findMyOrganizationInProject?.length) {
