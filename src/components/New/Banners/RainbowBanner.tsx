@@ -17,6 +17,7 @@ type ButtonT = {
   name: string;
   icon?: React.ReactNode;
   onClick: () => void;
+  size?: ButtonSize;
 };
 
 interface RainbowBannerProps {
@@ -52,8 +53,8 @@ export default function RainbowBanner({ icon, description, button, size = Callou
       </div>
 
       {button && (
-        <Button size={ButtonSizes[size]} onClick={button.onClick}>
-          {size === CalloutSizes.Large && button.icon ? button.icon : null}
+        <Button size={button.size || ButtonSizes[size]} onClick={button.onClick}>
+          {button.icon ? button.icon : null}
           {button.name}
         </Button>
       )}

@@ -7,6 +7,7 @@ type Props = {
   onClose: () => void;
   title: string;
   description: string;
+  disabled?: boolean;
   confirm: {
     label: string;
     onClick: () => void;
@@ -17,7 +18,15 @@ type Props = {
   };
 } & PropsWithChildren;
 
-export default function ConfirmationPopOver({ onClose, confirm, cancel, description, title, children }: Props) {
+export default function ConfirmationPopOver({
+  onClose,
+  confirm,
+  cancel,
+  description,
+  title,
+  children,
+  disabled,
+}: Props) {
   const handleCancel = () => {
     cancel.onClick();
     onClose();
@@ -29,7 +38,7 @@ export default function ConfirmationPopOver({ onClose, confirm, cancel, descript
 
   return (
     <Popover className="relative">
-      <Popover.Button as="div">{children}</Popover.Button>
+      {disabled ? <div>{children}</div> : <Popover.Button as="div">{children}</Popover.Button>}
       <Transition
         enter="transition duration-100 ease-out"
         enterFrom="transform scale-95 opacity-0"

@@ -12,13 +12,15 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CloseLine from "src/icons/CloseLine";
 import FileListLine from "src/icons/FileListLine";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { cn } from "src/utils/cn";
 import Title from "../Title";
 import { EditContext, EditProvider } from "./EditContext";
 import { Information } from "./pages/Information";
 import { Repository } from "./pages/Repository/Repository";
 import { Tabs } from "src/components/Tabs/Tabs";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -33,8 +35,11 @@ function SafeProjectEdition() {
   const { T } = useIntl();
   const [searchParams] = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
-  const [activeTab, setActiveTab] = useState<TabsType>(installation_id ? TabsType.Repos : TabsType.General);
-  const { form } = useContext(EditContext);
+  const initialTab = searchParams.get("tab") ?? "";
+  const [activeTab, setActiveTab] = useState<TabsType>(
+    installation_id || initialTab === TabsType.Repos ? TabsType.Repos : TabsType.General
+  );
+  const { form, project } = useContext(EditContext);
 
   const tabs = useMemo(
     () => [
@@ -57,7 +62,11 @@ function SafeProjectEdition() {
         },
         children: (
           <TabContents>
-            <GitRepositoryLine />
+            {hasUnauthorizedInGithubRepo(project?.repos) && activeTab !== TabsType.Repos ? (
+              <ErrorWarningLine className="text-orange-500" />
+            ) : (
+              <GitRepositoryLine />
+            )}
             {T("project.details.edit.tabs.repositories")}
           </TabContents>
         ),
@@ -81,7 +90,7 @@ function SafeProjectEdition() {
         </Flex>
 
         <header className="z-10 w-full border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 ">
-          <Tabs tabs={tabs} variant="blue" mobileTitle={T("project.details.edit.title")} />
+          <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} />
         </header>
       </Flex>
 

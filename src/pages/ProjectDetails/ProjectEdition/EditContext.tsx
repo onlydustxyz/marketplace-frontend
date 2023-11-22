@@ -1,7 +1,7 @@
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { ProjectRoutePaths, RoutePaths } from "src/App";
+import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import ProjectApi from "src/api/Project";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
@@ -47,6 +47,7 @@ export interface EditFormDataRepos {
 export type EditFormData = components["schemas"]["UpdateProjectRequest"] & {
   projectLeads: FieldProjectLeadValue;
   selectedRepos: EditFormDataRepos[];
+  githubRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
 };
 
 export const EditContext = createContext<Edit>({
@@ -78,7 +79,10 @@ const validationSchema = z.object({
     })
   ),
   name: z.string().min(1),
-  githubRepoIds: z.array(z.number()).min(1),
+  githubRepos: z
+    .array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() }))
+    .min(1)
+    .refine(repos => repos.every(repo => repo.isAuthorizedInGithubApp)),
   projectLeadsToKeep: z.array(z.string()).min(1),
   shortDescription: z.string().min(1),
   rewardSettings: z.object({
@@ -136,7 +140,10 @@ export function EditProvider({ children, project }: EditContextProps) {
           value: "website",
         },
       ],
-      githubRepoIds: (project.repos || []).map(repo => repo.id),
+      githubRepos: (project.repos || []).map(repo => ({
+        id: repo.id,
+        isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
+      })),
       isLookingForContributors: project.hiring,
       inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
@@ -147,31 +154,44 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const mergeOrganization = useMemo(() => {
-    return uniqWith([...(project.organizations || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
+    const merged = (project.organizations || [])?.map(projectOrg => {
+      const findInMe = (organizationsData || []).find(meOrg => meOrg.id === projectOrg.id);
+      if (findInMe) {
+        return {
+          ...findInMe,
+          ...projectOrg,
+          isCurrentUserAdmin: findInMe.isCurrentUserAdmin,
+          repos: uniqWith([...(projectOrg.repos || []), ...(findInMe.repos || [])], (arr, oth) => arr.id === oth.id),
+        };
+      }
+      return projectOrg;
+    });
+    return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
   }, [organizationsData, project]);
 
   const onAddRepository = (organizationId: number, repoId: number) => {
-    const githubRepoIds = [...(form.getValues("githubRepoIds") || [])];
+    const githubRepos = [...(form.getValues("githubRepos") || [])];
+
     const findOrganization = mergeOrganization.find(org => org.id === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
-        githubRepoIds.push(findRepo.id);
-        form.setValue("githubRepoIds", githubRepoIds, { shouldDirty: true, shouldValidate: true });
+        githubRepos.push({ id: findRepo.id, isAuthorizedInGithubApp: findRepo.isAuthorizedInGithubApp });
+        form.setValue("githubRepos", githubRepos, { shouldDirty: true, shouldValidate: true });
       }
     }
   };
 
   const onRemoveRepository = (organizationId: number, repoId: number) => {
-    const githubRepoIds = [...(form.getValues("githubRepoIds") || [])];
+    const githubRepos = [...(form.getValues("githubRepos") || [])];
     const findOrganization = mergeOrganization.find(org => org.id === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
-        const findRepoIndex = githubRepoIds.findIndex(id => id === findRepo.id);
+        const findRepoIndex = githubRepos.findIndex(repo => repo.id === findRepo.id);
         if (findRepoIndex !== -1) {
-          githubRepoIds.splice(findRepoIndex, 1);
-          form.setValue("githubRepoIds", githubRepoIds, { shouldDirty: true, shouldValidate: true });
+          githubRepos.splice(findRepoIndex, 1);
+          form.setValue("githubRepos", githubRepos, { shouldDirty: true, shouldValidate: true });
         }
       }
     }
@@ -219,7 +239,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const { mutate: updateProject } = ProjectApi.mutations.useUpdateProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
-      onSuccess: async data => {
+      onSuccess: async (data, queryClient) => {
         showToaster(T("form.toast.success"));
         clearSession();
         form.reset(form.getValues());
@@ -227,17 +247,19 @@ export function EditProvider({ children, project }: EditContextProps) {
         // Replace the current path on the history stack if different
         const newPathname = `${generatePath(RoutePaths.ProjectDetails, {
           projectKey: data.projectSlug,
-        })}/${ProjectRoutePaths.Edit}`;
+        })}`;
 
-        if (location.pathname !== newPathname) {
-          navigate(newPathname, { replace: true, state: location.state });
-        }
+        await queryClient.prefetchQuery({ queryKey: MeApi.tags.all });
+        await queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
+        navigate(newPathname, { replace: true, state: location.state });
       },
     },
   });
 
   const onSubmit = (formData: EditFormData) => {
-    updateProject(formData);
+    const { githubRepos, ...rest } = formData;
+    const githubRepoIds = githubRepos.map(repo => repo.id);
+    updateProject({ ...rest, githubRepoIds });
   };
 
   return (

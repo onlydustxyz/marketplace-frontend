@@ -26,6 +26,7 @@ const defaultProps: ComponentProps<typeof Tabs> = {
     },
   ],
   variant: "grey",
+  showMobile: true,
   mobileTitle: "Mobile Title",
 };
 

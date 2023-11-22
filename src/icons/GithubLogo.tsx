@@ -11,5 +11,5 @@ interface Props {
 }
 
 export default function GithubLogo({ className, size = Size.Default }: Props) {
-  return <i role="githubLogo" className={cn(`ri-github-fill ${className}`, { ["text-3xl"]: size === Size.Large })} />;
+  return <i role="githubLogo" className={cn("ri-github-fill", className, { ["text-3xl"]: size === Size.Large })} />;
 }

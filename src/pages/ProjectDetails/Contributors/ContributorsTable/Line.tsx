@@ -9,21 +9,34 @@ import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
+import { RewardDisabledReason } from "src/types";
 
 type Props<C> = {
   contributor: C;
   isProjectLeader: boolean;
-  isGivingRewardDisabled: boolean;
   onRewardGranted: (contributor: C) => void;
+  rewardDisableReason?: RewardDisabledReason;
 };
 
 export default function ContributorLine<C extends components["schemas"]["ContributorPageItemResponse"]>({
   contributor,
   isProjectLeader,
-  isGivingRewardDisabled,
   onRewardGranted,
+  rewardDisableReason,
 }: Props<C>) {
   const { T } = useIntl();
+
+  function getDisabledTooltipToken() {
+    if (rewardDisableReason === RewardDisabledReason.Budget) {
+      return T("contributor.table.noBudgetLeft");
+    }
+
+    if (rewardDisableReason === RewardDisabledReason.GithubApp) {
+      return T("contributor.table.githubApp");
+    }
+
+    return "";
+  }
 
   const currencies: AvailableConversionCurrency[] = useMemo(
     () =>
@@ -59,7 +72,7 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
           "-"
         )}
       </Cell>
-      {isProjectLeader && (
+      {isProjectLeader ? (
         <Cell height={CellHeight.Small} horizontalMargin={false}>
           {contributor?.contributionToRewardCount && contributor?.contributionToRewardCount > 0 ? (
             <div
@@ -80,20 +93,22 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
             "-"
           )}
         </Cell>
-      )}
+      ) : null}
       {isProjectLeader ? (
         <Cell
           height={CellHeight.Small}
           horizontalMargin={false}
           className="invisible flex justify-end group-hover:visible"
-          {...withTooltip(T("contributor.table.noBudgetLeft"), { visible: isGivingRewardDisabled })}
         >
           <Button
             type={ButtonType.Secondary}
             size={ButtonSize.Sm}
-            disabled={isGivingRewardDisabled}
+            disabled={Boolean(rewardDisableReason)}
             onClick={() => onRewardGranted(contributor)}
             data-testid="give-reward-button"
+            {...withTooltip(getDisabledTooltipToken(), {
+              visible: Boolean(rewardDisableReason),
+            })}
           >
             <SendPlane2Line />
             {T("project.details.contributors.reward")}

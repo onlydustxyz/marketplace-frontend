@@ -11,6 +11,8 @@ export interface VerticalListItemCardProps extends PropsWithChildren {
     className?: string;
   };
   titleComponent?: React.ReactElement;
+  avatarComponent?: React.ReactElement;
+  actionComponent?: React.ReactElement;
   title: string;
   avatarSrc: string;
   avatarAlt: string;
@@ -20,6 +22,8 @@ export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
   AvatarProps = {},
   ContainerProps = {},
   titleComponent,
+  avatarComponent,
+  actionComponent,
   children,
   ChildrenContainerProps = {},
   title,
@@ -34,9 +38,13 @@ export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
       fullWidth
       {...RestContainerProps}
     >
-      <Flex justify="start" item="center" gap={2}>
-        <Avatar src={avatarSrc} alt={avatarAlt} size="6" shape="square" {...AvatarProps} />
-        {titleComponent || <p className=" text-sm font-medium uppercase">{title}</p>}
+      <Flex className="items-center justify-between">
+        <Flex justify="start" item="center" gap={2}>
+          {avatarComponent || <Avatar src={avatarSrc} alt={avatarAlt} size="6" shape="square" {...AvatarProps} />}
+          {titleComponent || <p className=" text-sm font-medium uppercase">{title}</p>}
+        </Flex>
+
+        {actionComponent}
       </Flex>
       <div className={cn("w-full", ChildrenContainerProps.className)}>{children}</div>
     </Card>

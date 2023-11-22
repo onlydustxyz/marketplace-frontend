@@ -23,7 +23,7 @@ export default function SidePanel({
   hasCloseButton = true,
   withBackdrop,
 }: Props) {
-  const { open: openSidePanel, close: closeSidePanel, openPanelCount, closeLastPanel } = useSidePanelStack();
+  const { open: openSidePanel, close: closeSidePanel } = useSidePanelStack();
 
   const [panelIndex, setPanelIndex] = useState(0);
 
@@ -33,17 +33,9 @@ export default function SidePanel({
     }
   }, [open]);
 
-  const isCoveredPanel = panelIndex < openPanelCount - 1;
-
   function onClose() {
     setOpen(false);
     closeSidePanel();
-  }
-
-  function handleClick() {
-    if (isCoveredPanel) {
-      closeLastPanel();
-    }
   }
 
   const transitionProps = {
@@ -63,9 +55,9 @@ export default function SidePanel({
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog onClose={onClose} as="div">
+      <Dialog onClose={onClose} as="div" className="relative isolate z-50">
         {withBackdrop && (
-          <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur" aria-hidden="true" />
+          <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur-sm" aria-hidden="true" />
         )}
         <Transition.Child
           as={Fragment}
@@ -77,16 +69,14 @@ export default function SidePanel({
             className={cn(
               {
                 "inset-y-0 right-0 h-[calc(100dvh)] lg:w-[680px] lg:max-w-[80%]": placement === "right",
-                "-translate-x-10 cursor-pointer blur-sm transition duration-300":
-                  isCoveredPanel && placement === "right",
                 "inset-x-0 bottom-0 max-h-[calc(100dvh)] overflow-y-auto rounded-t-2xl": placement === "bottom",
               },
-              "fixed w-full bg-greyscale-900 blur-0"
+              "fixed w-full bg-greyscale-900"
             )}
             // z-index needs to start at 50 to show above tooltips on the page behind
             style={{ zIndex: 50 + panelIndex }}
           >
-            <div onClick={handleClick} className="h-full overflow-y-auto">
+            <div className="h-full overflow-y-auto">
               {hasCloseButton && (
                 <div className="absolute right-3.5 top-3.5 z-20 flex flex-row gap-2">
                   {action}

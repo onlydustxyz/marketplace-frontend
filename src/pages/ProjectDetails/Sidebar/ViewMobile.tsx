@@ -39,7 +39,12 @@ export default function ViewMobile(props: Props) {
             <div className="flex items-center gap-1">
               <BackLink to={RoutePaths.Projects} className="divide-none" />
               <div className="flex items-center gap-2 font-belwe text-2xl">
-                <RoundedImage src={currentProject?.logoUrl || ""} alt="Project Logo" size={ImageSize.Sm} />
+                <RoundedImage
+                  src={currentProject?.logoUrl || ""}
+                  useLogoFallback
+                  alt="Project Logo"
+                  size={ImageSize.Sm}
+                />
                 <div className="line-clamp-1">{currentProject.name}</div>
               </div>
             </div>

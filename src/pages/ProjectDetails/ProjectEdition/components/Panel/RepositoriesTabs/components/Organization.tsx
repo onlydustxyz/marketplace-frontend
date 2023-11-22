@@ -13,10 +13,10 @@ export interface OrganizationProps {
 export const Organization: FC<OrganizationProps> = ({ organization }) => {
   const { T } = useIntl();
   const { form } = useContext(EditContext);
-  const installedRepos = form?.watch("githubRepoIds") || [];
+  const installedRepos = form?.watch("githubRepos") || [];
 
   const unInstalledRepo = useMemo(
-    () => organization.repos?.filter(repo => !installedRepos.includes(repo.id)) || [],
+    () => organization.repos?.filter(repo => !installedRepos.find(installedRepo => installedRepo.id === repo.id)) || [],
     [organization, installedRepos]
   );
 

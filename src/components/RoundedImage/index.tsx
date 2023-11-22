@@ -74,6 +74,11 @@ export default function RoundedImage({
         })}
         alt={alt ?? ""}
         src={srcMemo ?? ""}
+        onError={e => {
+          if (useLogoFallback) {
+            e.currentTarget.src = onlyDustLogo;
+          }
+        }}
       />
     </div>
   );

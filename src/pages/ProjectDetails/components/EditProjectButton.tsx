@@ -35,7 +35,7 @@ export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
     } else {
       dispatchSession({
         method: SessionMethod.SetVisitedPageBeforeLogin,
-        value: generatePath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, {
+        value: generatePath(`${RoutePaths.ProjectDetails}`, {
           projectKey,
         }),
       });

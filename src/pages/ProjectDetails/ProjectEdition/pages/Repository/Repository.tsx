@@ -11,7 +11,7 @@ export function Repository() {
   const { T } = useIntl();
   const { open } = useContext(EditPanelContext);
   const { form, organizations } = useContext(EditContext);
-  const installedRepos = form?.watch("githubRepoIds") || [];
+  const installedRepos = form?.watch("githubRepos") || [];
 
   const renderOrganization = useMemo(() => {
     if (installedRepos.length && organizations.length) {

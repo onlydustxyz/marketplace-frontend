@@ -2,11 +2,13 @@ import { useEffect, useMemo } from "react";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
-import ProjectCard from "src/components/ProjectCard";
+import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
 import { ShowMore } from "src/components/Table/ShowMore";
+import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/Sorting/SortingDropdown";
 import { useProjectFilter } from "src/pages/Projects/useProjectFilter";
+import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";
 import AllProjectsFallback from "./AllProjectsFallback";
@@ -42,6 +44,7 @@ export default function AllProjects({
   setSponsors,
 }: Props) {
   const { T } = useIntl();
+  const { githubUserId } = useAuth();
 
   const {
     projectFilter: { ownership, technologies, sponsors },
@@ -107,8 +110,19 @@ export default function AllProjects({
         <div className="flex grow flex-col gap-5">
           {projects.map((project, index) => {
             const isFirstHiringProject = index === 0 && project.hiring;
+            const isLeader = isUserProjectLead(project, githubUserId);
+
             return (
-              <ProjectCard className={isFirstHiringProject ? "mt-3" : undefined} key={project.id} project={project} />
+              <ProjectCard
+                className={isFirstHiringProject ? "mt-3" : undefined}
+                key={project.id}
+                project={project}
+                variant={
+                  isLeader && project.isMissingGithubAppInstallation
+                    ? ProjectCardVariant.Error
+                    : ProjectCardVariant.Default
+                }
+              />
             );
           })}
           {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}

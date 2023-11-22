@@ -14,7 +14,7 @@ export default function Rewards() {
   const {
     data: projectBudget,
     isLoading: isBudgetLoading,
-    refetch,
+    refetch: refetchBudgets,
   } = useRestfulData({
     resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
     pathParam: { projectId },
@@ -28,7 +28,8 @@ export default function Rewards() {
         projectBudget,
         projectId,
         projectKey,
-        refetchBudgets: refetch,
+        project,
+        refetchBudgets,
         createdAt,
         repos,
       }}

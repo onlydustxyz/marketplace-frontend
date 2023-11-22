@@ -138,6 +138,7 @@
       "contributor": "Contributor",
       "leftToPay": "Left to Pay",
       "noBudgetLeft": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
+      "githubApp": "Fix any remaining errors before being able to send reward.",
       "contributions": "Contributions",
       "totalEarned": "Earned",
       "rewards": "Rewards",
@@ -779,6 +780,26 @@
   },
   "project": {
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
+    "claim": {
+      "banner": {
+        "content": "Working at __projectName__ ? You’re 3 clicks away to claim access to your own project on Onlydust!",
+        "button": "Claim project"
+      },
+      "panel": {
+        "title": "Claim project",
+        "subTitle": "First we need to verify your identity",
+        "content": "Please grant Github permissions on all the following organisations.",
+        "grantButton": "Grant permissions",
+        "submit": "Claim project",
+        "cancel": "Cancel",
+        "success": "Project successfully claimed",
+        "info": {
+          "title": "What if you can’t grant permissions on all organisations?",
+          "message": "If you encounter an issue while granting permissions, or if you don’t have sufficient access rights, please contact us so we can help.",
+          "button": "Contact us"
+        }
+      }
+    },
     "amountGranted": "Granted: __granted__ / __total__",
     "hiring": "Looking for contributors",
     "visibility": {
@@ -871,7 +892,11 @@
           "installedOrganizations": "Installed on these organizations",
           "availableOrganizations": "Available organizations",
           "installedOrganizationEmpty": "Not installed on any organization.",
-          "availableOrganizationEmpty": "You have no organization available."
+          "availableOrganizationEmpty": "You have no organization available.",
+          "githubAppInformation": {
+            "title": "If you are missing any GitHub organizations, you can edit your configuration by clicking below.",
+            "button": "Edit my configuration"
+          }
         },
         "repository": {
           "title": "Which repositories will you need?",
@@ -962,7 +987,9 @@
             "repositories": "Repositories"
           },
           "repositories": {
-            "noRepositoriesToAdd": "All repositories from this organisation have been added to your project."
+            "noRepositoriesToAdd": "All repositories from this organisation have been added to your project.",
+            "fixGithubApp": "Fix configuration on Github",
+            "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration"
           }
         },
         "toasts": {
@@ -1036,6 +1063,13 @@
         "newReward": "Reward contributor",
         "noRewards": "No rewards so far",
         "send": "Give your first one!"
+      },
+      "banners": {
+        "missingGithubAppInstall": {
+          "message": "We identified multiple issues on your project. Please fix them to be able to reward contributors.",
+          "button": "Edit project",
+          "org": "Connect the Github app for the __org__ organisation"
+        }
       }
     },
     "error": {
@@ -1054,6 +1088,10 @@
     "projectLeadInvitation": {
       "prompt": "You've been promoted to Project Lead",
       "view": "View invite"
+    },
+    "missingGithubAppInstall": {
+      "message": "We identified multiple errors on your project. Please fix them to be able to reward contributors.",
+      "button": "Edit project"
     }
   },
   "projectLeadInvitation": {
