@@ -13,9 +13,9 @@ function handleNavigation(searchParams: URLSearchParams, navigate: (path: string
     const isEdit = state.includes(GithubState.edit);
     const isClaim = state.includes(GithubState.claim);
     if (isEdit) {
-      navigate(`/p/${state}/edit?installation_id=${installationId}`);
+      navigate(`/p/${state.replace(GithubState.edit, "")}/edit?installation_id=${installationId}`);
     } else if (isClaim) {
-      navigate(`/p/${state}?claim_callback=${installationId}`);
+      navigate(`/p/${state.replace(GithubState.claim, "")}?claim_callback=${installationId}`);
     }
   }
 }
