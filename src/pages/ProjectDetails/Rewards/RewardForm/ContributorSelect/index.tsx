@@ -15,8 +15,6 @@ enum ContributorsSortFields {
   ToRewardCount = "TO_REWARD_COUNT",
 }
 
-const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
-
 type Props = {
   projectId: string;
   contributor?: Contributor | null | undefined;
@@ -51,9 +49,6 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     options: { enabled: debouncedSearch !== "" },
   });
 
-  // const debouncedGithubHandleSubstring = useDebounce(githubHandleSubstring, EXTERNAL_USER_QUERY_DEBOUNCE_TIME);
-  // const handleSubstringQuery = `type:user ${debouncedGithubHandleSubstring} in:login`;
-
   const { queryParams } = useQueryParamsSorting({
     field: ContributorsSortFields.Login,
     isAscending: true,
@@ -72,19 +67,6 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   });
 
   const contributors = ProjectContributors?.pages.flatMap(({ contributors }) => contributors) ?? [];
-
-  // console.log("githubHandleSubstring", githubHandleSubstring);
-
-  // const { data } = useSuspenseQuery<GetProjectPendingContributorsQuery>(GetProjectPendingContributorsDocument, {
-  //   variables: { projectId },
-  //   fetchPolicy: "no-cache",
-  // });
-  // const contributors = data?.projectsPendingContributors.map(u => u.user).filter(isDefined);
-
-  // const searchGithubUsersByHandleSubstringQuery = useSearchGithubUsersByHandleSubstringQuery({
-  //   variables: { handleSubstringQuery },
-  //   skip: (githubHandleSubstring?.length || 0) < 2 || githubHandleSubstring !== debouncedGithubHandleSubstring,
-  // });
 
   const internalContributors: Contributor[] = contributors.map(c => {
     const completedUnpaidPullRequestCount = c.pullRequestToReward || 0;
@@ -105,7 +87,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   });
 
   const filteredContributors = internalContributors.filter(
-    contributor => !search || (search && contributor.login?.toLowerCase().startsWith(query.toLowerCase()))
+    contributor => !search || (search && contributor.login?.toLowerCase().startsWith(search.toLowerCase()))
   );
 
   const filteredExternalContributors: Contributor[] = sortListByLogin(searchedUsers?.externalContributors)
@@ -142,7 +124,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
         setSearch,
         filteredContributors,
         filteredExternalContributors,
-        isSearchGithubUsersByHandleSubstringQueryLoading: isUsersSearchLoading,
+        isSearchGithubUsersByHandleSubstringQueryLoading: isUsersSearchLoading || isProjectContributorsLoading,
         contributor,
         fetchNextPage,
         hasNextPage,
