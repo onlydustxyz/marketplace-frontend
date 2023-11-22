@@ -142,67 +142,67 @@ export default function ClaimBanner() {
       />
       <SidePanel open={openClaimProjectModal && canDisplay} setOpen={handleToggleClaimProjectModal}>
         <div className="flex h-full flex-col justify-between">
-          <div className="flex flex-col px-6 py-8">
-            <div className="mb-8 font-belwe text-2xl font-normal text-greyscale-50">
+          <div className="flex h-full flex-col px-4 py-8">
+            <div className="mb-8 px-2 font-belwe text-2xl font-normal text-greyscale-50">
               {T("project.claim.panel.title")}
             </div>
-            <div>
-              <div className="pb-2 font-belwe text-2xl font-normal text-greyscale-50">
-                {T("project.claim.panel.subTitle")}
-              </div>
-              <div className="font-walsheim text-base font-normal text-spaceBlue-100">
-                {T("project.claim.panel.content")}
-              </div>
+            <div className="px-2">
+              <div className="text-title-s pb-2 font-normal text-greyscale-50">{T("project.claim.panel.subTitle")}</div>
+              <div className="text-body-m font-normal text-spaceBlue-100">{T("project.claim.panel.content")}</div>
             </div>
             <div className="my-6 h-[1px] w-full bg-card-border-medium" />
-            <div className="flex w-full flex-col items-start justify-start gap-3">
-              {project?.organizations?.map(org => (
-                <ClaimBannerOrganization
-                  key={org.id}
-                  organization={org}
-                  myOrganizations={myOrganizations || []}
-                  project={project}
-                />
-              ))}
-            </div>
-            <div className="mt-6">
-              <div className="flex flex-row items-center justify-start gap-0.5">
-                <InformationLine className="text-base leading-4 text-spaceBlue-200" />
-                <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
-                  {T("project.claim.panel.info.title")}
-                </p>
+            <div className="scrollbar-sm flex-1 overflow-auto px-2 pb-24">
+              <div className="flex w-full flex-col items-start justify-start gap-3">
+                {project?.organizations?.map(org => (
+                  <ClaimBannerOrganization
+                    key={org.id}
+                    organization={org}
+                    myOrganizations={myOrganizations || []}
+                    project={project}
+                  />
+                ))}
               </div>
-              <p className="text-body-m mb-4 mt-2 font-walsheim font-normal text-gray-50">
-                {T("project.claim.panel.info.message")}
-              </p>
-              <FeedbackButton
-                customButton={
-                  <Button type={ButtonType.Secondary} size={ButtonSize.Sm}>
-                    <SendPlane2Line />
-                    {T("project.claim.panel.info.button")}
-                  </Button>
-                }
-              />
+              <div className="mt-6">
+                <div className="flex flex-row items-center justify-start gap-0.5">
+                  <InformationLine className="text-base leading-4 text-spaceBlue-200" />
+                  <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
+                    {T("project.claim.panel.info.title")}
+                  </p>
+                </div>
+                <p className="text-body-m mb-4 mt-2 font-walsheim font-normal text-gray-50">
+                  {T("project.claim.panel.info.message")}
+                </p>
+                <FeedbackButton
+                  customButton={
+                    <Button type={ButtonType.Secondary} size={ButtonSize.Sm}>
+                      <SendPlane2Line />
+                      {T("project.claim.panel.info.button")}
+                    </Button>
+                  }
+                />
+              </div>
             </div>
           </div>
-          <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
-            {restMutation.isPending ? <Spinner /> : null}
-            <Button
-              type={ButtonType.Secondary}
-              size={ButtonSize.Md}
-              onClick={onCancel}
-              disabled={restMutation.isPending}
-            >
-              {T("project.claim.panel.cancel")}
-            </Button>
-            <Button
-              type={ButtonType.Primary}
-              size={ButtonSize.Md}
-              disabled={!canSubmit || restMutation.isPending}
-              onClick={onSubmitClaim}
-            >
-              {T("project.claim.panel.submit")}
-            </Button>
+          <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
+            <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
+              {restMutation.isPending ? <Spinner /> : null}
+              <Button
+                type={ButtonType.Secondary}
+                size={ButtonSize.Md}
+                onClick={onCancel}
+                disabled={restMutation.isPending}
+              >
+                {T("project.claim.panel.cancel")}
+              </Button>
+              <Button
+                type={ButtonType.Primary}
+                size={ButtonSize.Md}
+                disabled={!canSubmit || restMutation.isPending}
+                onClick={onSubmitClaim}
+              >
+                {T("project.claim.panel.submit")}
+              </Button>
+            </div>
           </div>
         </div>
       </SidePanel>
