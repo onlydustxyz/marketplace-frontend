@@ -83,6 +83,8 @@ export default function Overview() {
   const { alreadyApplied, applyToProject } = useApplications(projectId, projectSlug);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
 
+  console.log("isCurrentUserMember", isCurrentUserMember);
+
   const { data: userProfileData } = useUserProfile({ githubUserId });
   const profile = userProfileData?.profile;
 
