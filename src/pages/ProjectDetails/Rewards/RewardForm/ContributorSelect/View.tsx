@@ -8,43 +8,48 @@ import { useIntl } from "src/hooks/useIntl";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
 import Contributor from "src/components/Contributor";
 import { Virtuoso } from "react-virtuoso";
-import { forwardRef } from "react";
+import { forwardRef, useCallback } from "react";
 import { Contributor as ContributorType } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
+import { ShowMore } from "src/components/Table/ShowMore";
+import { Spinner } from "src/components/Spinner/Spinner";
 
 const MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX = 240;
 const CONTRIBUTOR_SELECT_LINE_HEIGHT_PX = 36;
 
-interface ContributorSelectViewProps {
+type ShowMoreProps = {
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+};
+
+type ContributorSelectViewProps = {
   selectedGithubHandle: string | null;
   setSelectedGithubHandle: (selectedGithubHandle: string | null) => void;
-  githubHandleSubstring: string;
-  setGithubHandleSubstring: (githubHandleSubstring: string) => void;
   filteredContributors?: ContributorType[];
   filteredExternalContributors: ContributorType[] | undefined;
   isSearchGithubUsersByHandleSubstringQueryLoading: boolean;
   contributor: ContributorType | null | undefined;
-  debouncedGithubHandleSubstring: string;
-}
+  search: string;
+  setSearch: (query: string) => void;
+} & ShowMoreProps;
 
 export default function ContributorSelectView({
   selectedGithubHandle,
   setSelectedGithubHandle,
-  githubHandleSubstring,
-  setGithubHandleSubstring,
   filteredContributors,
   filteredExternalContributors,
   isSearchGithubUsersByHandleSubstringQueryLoading,
   contributor,
-  debouncedGithubHandleSubstring,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  search,
+  setSearch,
 }: ContributorSelectViewProps) {
   const { T } = useIntl();
 
-  const contributorLines = buildContributorLines(
-    githubHandleSubstring,
-    filteredContributors,
-    filteredExternalContributors
-  );
+  const contributorLines = buildContributorLines(search, filteredContributors, filteredExternalContributors);
 
   return (
     <Combobox value={selectedGithubHandle} onChange={setSelectedGithubHandle}>
@@ -99,9 +104,8 @@ export default function ContributorSelectView({
                   className={cn(
                     "flex h-12 w-full flex-row items-center justify-between rounded-2xl border border-greyscale-50/8 px-4",
                     {
-                      "bg-white/5 text-greyscale-50": githubHandleSubstring,
-                      "ring-solid bg-spacePurple-900 text-spacePurple-500 ring-2 ring-spacePurple-500":
-                        githubHandleSubstring === "",
+                      "bg-white/5 text-greyscale-50": search,
+                      "ring-solid bg-spacePurple-900 text-spacePurple-500 ring-2 ring-spacePurple-500": search === "",
                     }
                   )}
                 >
@@ -110,12 +114,12 @@ export default function ContributorSelectView({
                       <User3Line />
                     </div>
                     <Combobox.Input
-                      onChange={event => setGithubHandleSubstring(event.target.value)}
+                      onChange={event => setSearch(event.target.value)}
                       className={cn("w-full border-none bg-transparent text-base font-medium outline-none")}
                       onFocus={() => {
-                        setGithubHandleSubstring("");
+                        setSearch("");
                       }}
-                      value={githubHandleSubstring}
+                      value={search}
                       data-testid="contributor-selection-input"
                       autoFocus
                     />
@@ -125,10 +129,7 @@ export default function ContributorSelectView({
               )}
             </Combobox.Button>
             <Combobox.Options>
-              {filteredContributors &&
-              filteredContributors.length === 0 &&
-              githubHandleSubstring &&
-              githubHandleSubstring.length < 3 ? (
+              {filteredContributors && filteredContributors.length === 0 && search && search.length < 3 ? (
                 <div className="px-4 pb-6 text-sm italic text-greyscale-100 xl:text-base">
                   {T("reward.form.contributor.select.fallback.typeMoreCharacters")}
                 </div>
@@ -137,17 +138,24 @@ export default function ContributorSelectView({
                 (!filteredExternalContributors ||
                   (filteredExternalContributors && filteredExternalContributors.length === 0)) &&
                 !isSearchGithubUsersByHandleSubstringQueryLoading &&
-                debouncedGithubHandleSubstring === githubHandleSubstring ? (
+                search === "" ? (
                 <div className="pb-6">
                   <span className="px-4 pb-6 italic text-greyscale-100">
                     {T("reward.form.contributor.select.fallback.noUser")}
                   </span>
                 </div>
               ) : contributorLines.length > 0 ? (
-                <VirtualizedContributorSubList lines={contributorLines} />
+                <VirtualizedContributorSubList
+                  lines={contributorLines}
+                  fetchNextPage={fetchNextPage}
+                  hasNextPage={hasNextPage}
+                  isFetchingNextPage={isFetchingNextPage}
+                  loading={isSearchGithubUsersByHandleSubstringQueryLoading}
+                />
               ) : (
                 <div />
               )}
+              {isSearchGithubUsersByHandleSubstringQueryLoading && <Spinner className="mx-auto my-4" />}
             </Combobox.Options>
           </div>
         </div>
@@ -200,9 +208,10 @@ type Line =
   | { type: LineType.Separator }
   | { type: LineType.LastLine };
 
-interface ContributorSubListProps {
+type ContributorSubListProps = {
   lines?: Line[];
-}
+  loading: boolean;
+} & ShowMoreProps;
 
 const List = forwardRef<HTMLDivElement>((props, ref) => {
   return <div className="divide-y divide-greyscale-50/8 px-4 pt-2.5" {...props} ref={ref} />;
@@ -222,8 +231,30 @@ const Scroller = forwardRef<HTMLDivElement>((props, ref) => {
 
 Scroller.displayName = "Scroller";
 
-function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
+function VirtualizedContributorSubList({
+  lines,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  loading,
+}: ContributorSubListProps) {
   const { T } = useIntl();
+  const loadMore = useCallback(() => {
+    if (!isFetchingNextPage && hasNextPage) {
+      return fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage]);
+
+  const Footer = () => {
+    if (hasNextPage) {
+      return (
+        <div className="my-4">
+          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
+        </div>
+      );
+    }
+    return <></>;
+  };
 
   return (
     <Virtuoso
@@ -234,7 +265,8 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
         ),
       }}
       data={lines}
-      components={{ List, Scroller }}
+      components={{ List, Scroller, Footer }}
+      endReached={loadMore}
       itemContent={(_, line) => {
         if (line.type === LineType.Contributor) {
           const contributor = line.contributor;
