@@ -57,6 +57,7 @@ export default function Overview() {
   const { project } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId } = useAuth();
   const { lastVisitedProjectId } = useSession();
+
   const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
   const projectId = project?.id;

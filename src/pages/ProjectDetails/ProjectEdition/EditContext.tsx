@@ -161,10 +161,10 @@ export function EditProvider({ children, project }: EditContextProps) {
         return {
           ...findInMe,
           ...projectOrg,
+          isCurrentUserAdmin: findInMe.isCurrentUserAdmin,
           repos: uniqWith([...(projectOrg.repos || []), ...(findInMe.repos || [])], (arr, oth) => arr.id === oth.id),
         };
       }
-
       return projectOrg;
     });
     return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
