@@ -218,14 +218,12 @@ function ProjectDescriptionCard({
   languages,
   description,
 }: ProjectDescriptionCardProps) {
-  const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
-
   return (
     <Card className="flex flex-col gap-4 px-6 py-4">
       <div className="flex flex-row items-center gap-4">
         <img
           alt={projectName || ""}
-          src={projectUrl}
+          src={logoUrl}
           className="h-20 w-20 flex-shrink-0 rounded-lg bg-spaceBlue-900 object-cover"
         />
         <div className="flex w-full flex-col gap-1">
