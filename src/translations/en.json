@@ -776,7 +776,7 @@
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "claim": {
       "banner": {
-        "content": "Working at __projectName__ ? You’re 3 click away to claim access to your own project on Onlydust!",
+        "content": "Working at __projectName__ ? You’re 3 clicks away to claim access to your own project on Onlydust!",
         "button": "Claim project"
       },
       "panel": {
