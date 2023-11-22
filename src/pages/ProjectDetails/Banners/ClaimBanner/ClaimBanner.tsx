@@ -21,7 +21,7 @@ export default function ClaimBanner() {
   const { data: project, isSuccess } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
   const poolingCount = useRef(0);
 
-  const { data: myOrganizations } = MeApi.queries.useGithubOrganizations({
+  const { data: myOrganizations, isRefetching } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
       enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
@@ -31,13 +31,18 @@ export default function ClaimBanner() {
       },
       refetchInterval: () => {
         if (poolingCount.current < 4) {
-          poolingCount.current = poolingCount.current + 1;
           return 2000;
         }
         return 0;
       },
     },
   });
+
+  useEffect(() => {
+    if (isRefetching) {
+      poolingCount.current = poolingCount.current + 1;
+    }
+  }, [isRefetching]);
 
   const { mutate: claimProjectMutation, ...restMutation } = MeApi.mutations.useClaimProject({
     params: { projectId: project?.id, projectSlug: project?.slug },

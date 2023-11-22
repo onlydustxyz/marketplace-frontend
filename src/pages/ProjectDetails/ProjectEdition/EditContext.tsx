@@ -105,7 +105,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const installation_id = searchParams.get("installation_id") ?? "";
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
 
-  const { data: organizationsData } = MeApi.queries.useGithubOrganizations({
+  const { data: organizationsData, isRefetching } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
       refetchOnWindowFocus: () => {
@@ -114,13 +114,18 @@ export function EditProvider({ children, project }: EditContextProps) {
       },
       refetchInterval: () => {
         if (poolingCount.current < 5) {
-          poolingCount.current = poolingCount.current + 1;
           return 2000;
         }
         return 0;
       },
     },
   });
+
+  useEffect(() => {
+    if (isRefetching) {
+      poolingCount.current = poolingCount.current + 1;
+    }
+  }, [isRefetching]);
 
   const formStorage = useSessionStorage<{ form: EditFormData; dirtyFields: Array<keyof EditFormData> } | undefined>({
     key: `${SESSION_KEY}${project.slug}`,
