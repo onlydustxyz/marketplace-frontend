@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Repository } from "./Repository";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
@@ -7,8 +7,9 @@ import { useIntl } from "src/hooks/useIntl";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import GithubLogo from "src/icons/GithubLogo";
-import { getGithubAppLinkUrl } from "src/utils/github";
 import { withTooltip } from "src/components/Tooltip";
+import { getGithubSetupLink } from "src/utils/githubSetupLink";
+import { EditContext } from "../../../EditContext";
 
 type RepositoryOrganizationType = {
   organization: UseGithubOrganizationsResponse;
@@ -17,6 +18,7 @@ type RepositoryOrganizationType = {
 
 export function RepositoryOrganization({ organization, installedRepos }: RepositoryOrganizationType) {
   const { T } = useIntl();
+  const { project } = useContext(EditContext);
   const hasUnauthorizedRepos = hasUnauthorizedInGithubRepo(organization.repos);
 
   const components = {
@@ -26,7 +28,18 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
       </div>
     ),
     action: (
-      <a href={getGithubAppLinkUrl(organization)} target="_blank" rel="noopener noreferrer">
+      <a
+        href={getGithubSetupLink({
+          id: organization.id,
+          login: organization.login,
+          installationId: organization.installationId,
+          installed: organization.installed,
+          isAPersonalOrganization: organization.isPersonal,
+          projectSlug: project?.slug,
+        })}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Button
           type={ButtonType.Secondary}
           size={ButtonSize.Sm}
