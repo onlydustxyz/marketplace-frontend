@@ -66,28 +66,30 @@ export const EditPanel = () => {
 
   return (
     <SidePanel open={isOpen} setOpen={toggle}>
-      <div className="scrollbar-sm flex h-full flex-col ">
-        <div className="flex flex-col px-6 py-8">
-          <div className="mb-8 font-belwe text-2xl font-normal text-greyscale-50">
+      <div className="flex h-full flex-col overflow-hidden">
+        <div className="flex h-full flex-col px-4 py-8">
+          <div className="mb-8 px-2 font-belwe text-2xl font-normal text-greyscale-50">
             {T("project.details.edit.panel.title")}
           </div>
-          <div className="mb-6 w-full md:border-b md:border-greyscale-50/8">
+          <div className="mb-6 w-full px-2 md:border-b md:border-greyscale-50/8">
             <Tabs tabs={tabItems} showMobile mobileTitle={T("project.details.edit.panel.title")} />
           </div>
-          {ActiveTab}
-        </div>
-        <div className="card-light mt-4 flex w-full flex-col items-center justify-start gap-6 border-0 p-4">
-          <div className="flex flex-row items-center justify-center gap-0.5">
-            <p className="mt-3 text-center text-gray-500">
-              {T("project.details.create.organizations.githubAppInformation.title")}
-            </p>
+          <div className="scrollbar-sm flex-1 overflow-auto px-2">
+            {ActiveTab}
+            <div className="card-light mt-4 flex w-full flex-col items-center justify-start gap-6 rounded-2xl border-0 p-4">
+              <div className="flex flex-row items-center justify-center gap-0.5">
+                <p className="text-body-m mt-3 text-center text-gray-500">
+                  {T("project.details.create.organizations.githubAppInformation.title")}
+                </p>
+              </div>
+              <a href={OAuthGithubConfigLink} target="_blank" rel="noopener noreferrer">
+                <Button type={ButtonType.Secondary} size={ButtonSize.Sm}>
+                  <GithubLogo />
+                  {T("project.details.create.organizations.githubAppInformation.button")}
+                </Button>
+              </a>
+            </div>
           </div>
-          <a href={OAuthGithubConfigLink} target="_blank" rel="noopener noreferrer">
-            <Button type={ButtonType.Secondary} size={ButtonSize.Sm}>
-              <GithubLogo />
-              {T("project.details.create.organizations.githubAppInformation.button")}
-            </Button>
-          </a>
         </div>
       </div>
     </SidePanel>
