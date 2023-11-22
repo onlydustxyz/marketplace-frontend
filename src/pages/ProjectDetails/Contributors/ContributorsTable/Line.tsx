@@ -9,11 +9,7 @@ import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
-
-export enum RewardDisabledReason {
-  Budget = "Budget",
-  GithubApp = "GithubApp",
-}
+import { RewardDisabledReason } from "src/types";
 
 type Props<C> = {
   contributor: C;

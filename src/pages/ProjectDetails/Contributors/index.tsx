@@ -18,12 +18,12 @@ import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
 import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/pages/ProjectDetails/Title";
+import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useMediaQuery } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
-import { RewardDisabledReason } from "./ContributorsTable/Line";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
