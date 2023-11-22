@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode, useMemo } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import { OrderBy } from "src/__generated/graphql";
 import MeApi from "src/api/me";
 import IssueOpen from "src/assets/icons/IssueOpen";
@@ -21,7 +21,6 @@ import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import { ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
-import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
@@ -31,7 +30,7 @@ export enum TableColumns {
   Date = "CREATED_AT",
   Project = "PROJECT_REPO_NAME",
   Id = "GITHUB_NUMBER_TITLE",
-  Linked = "LINKED",
+  Linked = "LINKS_COUNT",
 }
 
 export type TableSort = {
@@ -90,17 +89,6 @@ export function ContributionTable({
 
   const contributions = data?.pages?.flatMap(({ contributions }) => contributions);
 
-  const desktopContributions = useMemo(() => {
-    if (sort.sort === TableColumns.Linked) {
-      // Need to clone the array because Array.sort() mutates the original
-      const sortArr = contributions ? [...contributions] : [];
-
-      return sortArr.sort((a, b) => sortContributionsByLinked([a, b], sort.direction));
-    }
-
-    return contributions;
-  }, [contributions, sort]);
-
   function renderMobileContent() {
     if (isError) {
       return (
@@ -147,11 +135,11 @@ export function ContributionTable({
       return <TableText>{T("contributions.table.error")}</TableText>;
     }
 
-    if (desktopContributions?.length === 0) {
+    if (contributions?.length === 0) {
       return <TableText>{T("contributions.table.empty")}</TableText>;
     }
 
-    return desktopContributions?.map(contribution => {
+    return contributions?.map(contribution => {
       const { createdAt, completedAt, githubStatus, id, project, repo, status, type } = contribution;
       const lineId = `${id}-${project.id}`;
       const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;

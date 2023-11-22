@@ -173,7 +173,7 @@ export default function Contributions() {
         {
           queryParams: {
             statuses: ContributionStatus.InProgress,
-            ...(sort.IN_PROGRESS.sort !== TableColumns.Linked ? sort.IN_PROGRESS : {}),
+            ...sort.IN_PROGRESS,
             ...filterQueryParams,
           },
         },
@@ -202,7 +202,7 @@ export default function Contributions() {
         {
           queryParams: {
             statuses: ContributionStatus.Completed,
-            ...(sort.COMPLETED.sort !== TableColumns.Linked ? sort.COMPLETED : {}),
+            ...sort.COMPLETED,
             ...filterQueryParams,
           },
         },
@@ -231,7 +231,7 @@ export default function Contributions() {
         {
           queryParams: {
             statuses: ContributionStatus.Cancelled,
-            ...(sort.CANCELLED.sort !== TableColumns.Linked ? sort.CANCELLED : {}),
+            ...sort.CANCELLED,
             ...filterQueryParams,
           },
         },
