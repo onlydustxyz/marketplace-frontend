@@ -774,6 +774,25 @@
   },
   "project": {
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
+    "claim": {
+      "banner": {
+        "content": "Working at cal.com? You’re 3 click away to claim access to your own project on Onlydust!",
+        "button": "Claim project"
+      },
+      "panel": {
+        "title": "Claim project",
+        "subTitle": "First we need to verify your identity",
+        "content": "Please grant Github permissions on all the following organisations.",
+        "grantButton":"Grant permissions",
+        "submit": "Claim project",
+        "cancel": "Cancel",
+        "info": {
+          "title": "What if you can’t grant permissions on all organisations?",
+          "message": "If you encounter an issue while granting permissions, or if you don’t have sufficient access rights, please contact us so we can help.",
+          "button": "Contact us"
+        }
+      }
+    },
     "amountGranted": "Granted: __granted__ / __total__",
     "hiring": "Looking for contributors",
     "visibility": {

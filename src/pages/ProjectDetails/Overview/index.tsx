@@ -50,6 +50,7 @@ import { OutletContext } from "../View";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
+import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -134,6 +135,7 @@ export default function Overview() {
         isInvited={isInvited}
         projectName={project?.name}
       />
+      <ClaimBanner />
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex grow flex-col gap-4">
           <ProjectDescriptionCard
