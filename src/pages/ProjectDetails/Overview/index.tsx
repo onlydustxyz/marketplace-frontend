@@ -21,6 +21,7 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectL
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import Tag, { TagSize } from "src/components/Tag";
 import { withTooltip } from "src/components/Tooltip";
+import Flex from "src/components/Utils/Flex";
 import { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
 import {
@@ -30,32 +31,31 @@ import {
 } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
 import { useIntl } from "src/hooks/useIntl";
+import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { Action, SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
-import { rates } from "src/hooks/useWorkEstimation";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import LockFill from "src/icons/LockFill";
 import RecordCircleLine from "src/icons/RecordCircleLine";
 import Title from "src/pages/ProjectDetails/Title";
+import { HasuraUserRole } from "src/types";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
 import { useMediaQuery } from "usehooks-ts";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
+import { OutletContext } from "../View";
+import { EditProjectButton } from "../components/EditProjectButton";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
-import Flex from "src/components/Utils/Flex";
-import StillFetchingBanner from "../Banners/StillFetchingBanner";
-import { OutletContext } from "../View";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import { EditProjectButton } from "../components/EditProjectButton";
-import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 
 export default function Overview() {
   const { T } = useIntl();
   const { project } = useOutletContext<OutletContext>();
-  const { isLoggedIn, githubUserId } = useAuth();
+  const { isLoggedIn, githubUserId, roles } = useAuth();
   const { lastVisitedProjectId } = useSession();
   const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
@@ -72,6 +72,7 @@ export default function Overview() {
   const topContributors = project?.topContributors || [];
   const totalContributorsCount = project?.contributorCount || 0;
   const leads = project?.leaders;
+  const invitedLeads = project?.invitedLeaders;
   const languages = getTopTechnologies(project?.technologies);
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: projectId });
@@ -93,7 +94,8 @@ export default function Overview() {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+  const isRewardDisabled = remainingBudget === 0;
+  const showPendingInvites = isProjectLeader || roles.includes(HasuraUserRole.Admin);
 
   return (
     <>
@@ -149,6 +151,8 @@ export default function Overview() {
                 topContributors,
                 totalContributorsCount,
                 leads,
+                invitedLeads,
+                showPendingInvites,
               }}
             />
           )}
@@ -166,6 +170,8 @@ export default function Overview() {
                 topContributors,
                 totalContributorsCount,
                 leads,
+                invitedLeads,
+                showPendingInvites,
               }}
             />
           )}
