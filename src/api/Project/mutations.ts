@@ -2,7 +2,6 @@ import { API_PATH } from "src/api/ApiPath";
 import { components } from "src/__generated/api";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
-import MeApi from "../me";
 
 export type UseCreateProjectBody = components["schemas"]["CreateProjectRequest"];
 export type UseCreateProjectResponse = components["schemas"]["CreateProjectResponse"];
@@ -12,7 +11,6 @@ const useCreateProject = ({
 }: UseMutationProps<UseCreateProjectResponse, undefined, UseCreateProjectBody>) => {
   return useBaseMutation<UseCreateProjectBody, UseCreateProjectResponse>({
     resourcePath: API_PATH.PROJECTS,
-    invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
     method: "POST",
     ...options,
   });
@@ -29,7 +27,6 @@ const useUpdateProject = ({
     resourcePath: API_PATH.PROJECT_DETAILS(params?.projectId || ""),
     method: "PUT",
     enabled: !!params?.projectId,
-    invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
     ...options,
   });
 };
