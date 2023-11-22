@@ -13,7 +13,7 @@ const filteredContributors: Contributor[] = [
     login: "antho",
     avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
     unpaidMergedPullsCount: 3,
-    unpaidCompletedContributions: 0
+    unpaidCompletedContributions: 0,
   },
   {
     githubUserId: 2222,
@@ -21,14 +21,14 @@ const filteredContributors: Contributor[] = [
     avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
     userId: "user-1",
     unpaidMergedPullsCount: 0,
-    unpaidCompletedContributions: 0
+    unpaidCompletedContributions: 0,
   },
   {
     githubUserId: 3333,
     login: "ofux",
     avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
     unpaidMergedPullsCount: 10,
-    unpaidCompletedContributions: 0
+    unpaidCompletedContributions: 0,
   },
 ];
 
@@ -39,7 +39,7 @@ const filteredExternalContributors: Contributor[] = [
     avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
     unpaidMergedPullsCount: 0,
     userId: "user-4",
-    unpaidCompletedContributions: 0
+    unpaidCompletedContributions: 0,
   },
   {
     githubUserId: 5555,
@@ -47,7 +47,7 @@ const filteredExternalContributors: Contributor[] = [
     avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
     unpaidMergedPullsCount: 0,
     userId: "user-5",
-    unpaidCompletedContributions: 0
+    unpaidCompletedContributions: 0,
   },
   {
     githubUserId: 6666,
@@ -55,7 +55,7 @@ const filteredExternalContributors: Contributor[] = [
     avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
     unpaidMergedPullsCount: 0,
     userId: "user-6",
-    unpaidCompletedContributions: 0
+    unpaidCompletedContributions: 0,
   },
 ];
 

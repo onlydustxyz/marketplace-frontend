@@ -22,6 +22,62 @@ export enum Width {
   Fit = "fit",
 }
 
+export enum ButtonAccentColor {
+  Purple = "purple",
+  Orange = "orange",
+}
+
+const variants: Record<
+  ButtonType,
+  Record<ButtonAccentColor, Record<"default" | "pressed", string>> & Record<"default" | "disabled" | "pressed", string>
+> = {
+  [ButtonType.Primary]: {
+    [ButtonAccentColor.Purple]: {
+      default:
+        "active:bg-spacePurple-50 active:text-spacePurple-900 active:outline-spacePurple-800 focus:bg-spacePurple-50 focus:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900",
+      pressed: "bg-spacePurple-50 text-spacePurple-900 outline-spacePurple-800",
+    },
+    [ButtonAccentColor.Orange]: {
+      default:
+        "active:bg-orange-50 active:text-orange-900 active:outline-orange-800 focus:bg-orange-50 focus:text-orange-900 hover:bg-orange-50 hover:text-orange-900",
+      pressed: "bg-orange-50 text-orange-900 outline-orange-800",
+    },
+    default: "active:shadow-none active:outline active:outline-4 bg-greyscale-50 text-spaceBlue-900 shadow-bottom-sm",
+    disabled: "shadow-none bg-greyscale-700 text-greyscale-500",
+    pressed: "shadow-none outline outline-4",
+  },
+  [ButtonType.Secondary]: {
+    [ButtonAccentColor.Purple]: {
+      default:
+        "focus:border-spacePurple-200 focus:text-spacePurple-100 hover:border-spacePurple-200 hover:text-spacePurple-100 active:border-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-200",
+      pressed: "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-200",
+    },
+    [ButtonAccentColor.Orange]: {
+      default:
+        "focus:border-orange-200 focus:text-orange-100 hover:border-orange-200 hover:text-orange-100 active:border-orange-400 active:bg-orange-900 active:text-orange-200",
+      pressed: "border-orange-400 bg-orange-900 text-orange-200",
+    },
+    default: "border drop-shadow-bottom-sm bg-white/5 text-greyscale-50",
+    disabled: "border-greyscale-50/8 bg-white/2 text-greyscale-50/8",
+    pressed: "",
+  },
+  [ButtonType.Ternary]: {
+    [ButtonAccentColor.Purple]: {
+      default:
+        "text-spacePurple-500 focus:text-spacePurple-400 hover:text-spacePurple-400 active:text-spacePurple-400 active:bg-spacePurple-900",
+      pressed: "text-spacePurple-400 bg-spacePurple-900",
+    },
+    [ButtonAccentColor.Orange]: {
+      default:
+        "text-orange-500 focus:text-orange-400 hover:text-orange-400 active:text-orange-400 active:bg-orange-900",
+      pressed: "text-orange-400 bg-orange-900",
+    },
+    default: "focus:bg-white/5 hover:bg-white/5",
+    disabled: "text-greyscale-600",
+    pressed: "",
+  },
+};
+
 type ButtonProps = PropsWithChildren<
   {
     size?: ButtonSize;
@@ -31,6 +87,7 @@ type ButtonProps = PropsWithChildren<
     disabled?: boolean;
     iconOnly?: boolean;
     pressed?: boolean;
+    accentColor?: ButtonAccentColor;
   } & Omit<ComponentPropsWithoutRef<"button">, "type">
 >;
 
@@ -46,65 +103,34 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       pressed = false,
       children,
       className,
+      accentColor = ButtonAccentColor.Purple,
       ...otherButtonProps
     },
     ref
   ) => {
+    function getVariantStyles() {
+      if (disabled) {
+        // Disabled styles per type
+        return variants[type].disabled;
+      }
+
+      // Default styles per type and per accent color
+      const defaultStyles = [variants[type].default, variants[type][accentColor].default];
+
+      // Pressed styles per type and per accent color
+      const pressedStyles = pressed ? [variants[type].pressed, variants[type][accentColor].pressed] : [];
+
+      return [...defaultStyles, ...pressedStyles];
+    }
+
     return (
       <button
         ref={ref}
         className={cn(
           "flex flex-row items-center justify-center font-walsheim font-medium outline-none drop-shadow-bottom-sm",
           {
-            "cursor-pointer": !disabled,
             "cursor-not-allowed": disabled,
           },
-
-          {
-            "shadow-bottom-sm": type === ButtonType.Primary && !disabled && !pressed,
-
-            "bg-greyscale-50 text-spaceBlue-900": type === ButtonType.Primary && !disabled && !pressed,
-
-            "bg-greyscale-700 text-greyscale-500": type === ButtonType.Primary && disabled && !pressed,
-
-            "focus:bg-spacePurple-50 focus:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900":
-              type === ButtonType.Primary && !disabled && !pressed,
-
-            "active:bg-spacePurple-50 active:text-spacePurple-900 active:shadow-none active:outline active:outline-4 active:outline-spacePurple-800":
-              type === ButtonType.Primary && !disabled,
-            "bg-spacePurple-50 text-spacePurple-900 shadow-none outline outline-4 outline-spacePurple-800":
-              type === ButtonType.Primary && !disabled && pressed,
-          },
-
-          {
-            "border drop-shadow-bottom-sm": type === ButtonType.Secondary,
-
-            "bg-white/5 text-greyscale-50": type === ButtonType.Secondary && !disabled && !pressed,
-
-            "border-greyscale-50/8 bg-white/2 text-greyscale-50/8":
-              type === ButtonType.Secondary && disabled && !pressed,
-
-            "focus:border-spacePurple-200 focus:text-spacePurple-100 hover:border-spacePurple-200 hover:text-spacePurple-100":
-              type === ButtonType.Secondary && !disabled && !pressed,
-
-            "active:border-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-200":
-              type === ButtonType.Secondary && !disabled,
-            "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-200":
-              type === ButtonType.Secondary && !disabled && pressed,
-          },
-
-          {
-            "text-spacePurple-500": type === ButtonType.Ternary && !disabled && !pressed,
-
-            "text-greyscale-600": type === ButtonType.Ternary && disabled && !pressed,
-
-            "focus:bg-white/5 focus:text-spacePurple-400 hover:bg-white/5 hover:text-spacePurple-400":
-              type === ButtonType.Ternary && !disabled && !pressed,
-
-            "active:bg-spacePurple-900 active:text-spacePurple-400": type === ButtonType.Ternary && !disabled,
-            "bg-spacePurple-900 text-spacePurple-400": type === ButtonType.Ternary && !disabled && pressed,
-          },
-
           {
             "w-full": width === Width.Full,
             "w-fit": width === Width.Fit && !iconOnly,
@@ -132,6 +158,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             "h-8 w-8 p-2": size === ButtonSize.Sm,
             "h-6 w-6 p-1": size === ButtonSize.Xs,
           },
+          getVariantStyles(),
           className
         )}
         type={htmlType}

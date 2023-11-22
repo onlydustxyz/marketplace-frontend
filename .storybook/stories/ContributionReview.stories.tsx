@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
-import { GithubContributionReviewStatus } from "src/types";
+import { GithubPullRequestReviewState } from "src/types";
 
 export default {
   title: "ContributionReview",
@@ -8,7 +8,7 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof ContributionReview> = {
-  status: GithubContributionReviewStatus.PendingReviewer,
+  status: GithubPullRequestReviewState.PendingReviewer,
 };
 
 export const Default = {

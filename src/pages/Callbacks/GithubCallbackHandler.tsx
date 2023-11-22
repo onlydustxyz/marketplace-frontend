@@ -1,15 +1,22 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import { GithubState } from "src/utils/githubSetupLink";
 
 function handleNavigation(searchParams: URLSearchParams, navigate: (path: string) => void) {
   const installationId = searchParams.get("installation_id");
   const state = searchParams.get("state");
 
   if (installationId && !state) {
-    navigate(`${RoutePaths.ProjectCreation}/organizations?installation_id=${installationId}`);
+    navigate(`${RoutePaths.ProjectCreation}?installation_id=${installationId}`);
   } else if (installationId && state) {
-    navigate(`/p/${state}/edit?installation_id=${installationId}`);
+    const isEdit = state.includes(GithubState.edit);
+    const isClaim = state.includes(GithubState.claim);
+    if (isEdit) {
+      navigate(`/p/${state.replace(GithubState.edit, "")}/edit?installation_id=${installationId}`);
+    } else if (isClaim) {
+      navigate(`/p/${state.replace(GithubState.claim, "")}?claim_callback=${installationId}`);
+    }
   }
 }
 

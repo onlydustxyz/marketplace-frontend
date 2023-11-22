@@ -19,7 +19,7 @@ export default function ProjectOption({ project, isSelected, isInvited }: Props)
     <Listbox.Option
       value={project}
       className={cn("border-neutral-600 p-4 duration-300 last:rounded-b-2xl hover:cursor-pointer hover:bg-white/10", {
-        "bg-orange-400/10 hover:bg-amber-700/30": !isInvited,
+        "bg-orange-400/10 hover:bg-amber-700/30": isInvited,
       })}
     >
       <div className="flex flex-col gap-5">

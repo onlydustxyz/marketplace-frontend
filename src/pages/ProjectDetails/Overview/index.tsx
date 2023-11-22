@@ -1,10 +1,9 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { sortBy } from "lodash";
-import { Dispatch, useEffect, useState } from "react";
+import { Dispatch, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
 import { components } from "src/__generated/api";
 import {
   OwnUserProfileDetailsFragment,
@@ -22,7 +21,8 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectL
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import Tag, { TagSize } from "src/components/Tag";
 import { withTooltip } from "src/components/Tooltip";
-import { viewportConfig } from "src/config";
+import Flex from "src/components/Utils/Flex";
+import config, { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
 import {
   UserProfileInfo,
@@ -31,38 +31,41 @@ import {
 } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
 import { useIntl } from "src/hooks/useIntl";
+import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { Action, SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
-import { rates } from "src/hooks/useWorkEstimation";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import LockFill from "src/icons/LockFill";
 import RecordCircleLine from "src/icons/RecordCircleLine";
 import Title from "src/pages/ProjectDetails/Title";
+import { HasuraUserRole } from "src/types";
+import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
 import { useMediaQuery } from "usehooks-ts";
+import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
+import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
+import { OutletContext } from "../View";
+import { EditProjectButton } from "../components/EditProjectButton";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
-import Flex from "src/components/Utils/Flex";
-import StillFetchingBanner from "../Banners/StillFetchingBanner";
-import { OutletContext } from "../View";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import { EditProjectButton } from "../components/EditProjectButton";
 
 export default function Overview() {
   const { T } = useIntl();
   const { project } = useOutletContext<OutletContext>();
-  const { isLoggedIn, githubUserId } = useAuth();
+  const { isLoggedIn, githubUserId, roles } = useAuth();
   const { lastVisitedProjectId } = useSession();
+
   const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
-
   const projectId = project?.id;
   const projectName = project?.name;
   const projectSlug = project?.slug;
-  const logoUrl = project?.logoUrl || onlyDustLogo;
+  const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
   const githubRepos = sortBy(project?.repos, "stars")
     .reverse()
@@ -72,6 +75,7 @@ export default function Overview() {
   const topContributors = project?.topContributors || [];
   const totalContributorsCount = project?.contributorCount || 0;
   const leads = project?.leaders;
+  const invitedLeads = project?.invitedLeaders;
   const languages = getTopTechnologies(project?.technologies);
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: projectId });
@@ -93,7 +97,11 @@ export default function Overview() {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+  const isRewardDisabled = remainingBudget === 0;
+
+  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
+  const showPendingInvites = isProjectLeader || roles.includes(HasuraUserRole.Admin);
 
   return (
     <>
@@ -101,7 +109,7 @@ export default function Overview() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
-          {isProjectLeader ? (
+          {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="justify-end gap-2">
               <EditProjectButton projectKey={projectSlug} />
 
@@ -128,6 +136,9 @@ export default function Overview() {
           ) : null}
         </div>
       </Title>
+      {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
+        <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
+      ) : null}
       <ProjectLeadInvitation
         projectId={projectId}
         size={CalloutSizes.Large}
@@ -135,6 +146,7 @@ export default function Overview() {
         isInvited={isInvited}
         projectName={project?.name}
       />
+      <ClaimBanner />
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex grow flex-col gap-4">
           <ProjectDescriptionCard
@@ -148,6 +160,8 @@ export default function Overview() {
                 topContributors,
                 totalContributorsCount,
                 leads,
+                invitedLeads,
+                showPendingInvites,
               }}
             />
           )}
@@ -165,6 +179,8 @@ export default function Overview() {
                 topContributors,
                 totalContributorsCount,
                 leads,
+                invitedLeads,
+                showPendingInvites,
               }}
             />
           )}
@@ -271,7 +287,8 @@ interface ApplyCalloutProps {
 
 function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dispatchSession }: ApplyCalloutProps) {
   const { T } = useIntl();
-
+  const getLoginUrl = useLoginUrl();
+  const login_url = useMemo(() => getLoginUrl(), []);
   const contactInfoProvided = Boolean(
     profile.contacts.telegram?.contact ||
       profile.contacts.whatsapp?.contact ||
@@ -362,7 +379,7 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
           )
         ) : (
           <a
-            href={LOGIN_URL}
+            href={login_url}
             onClick={() =>
               dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })
             }

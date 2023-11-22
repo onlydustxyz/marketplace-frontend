@@ -8,7 +8,7 @@ import { ProjectDetailsTab } from ".";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import { cn } from "src/utils/cn";
 import ProjectOption from "./ProjectOption";
-import { viewportConfig } from "src/config";
+import config, { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
@@ -33,6 +33,9 @@ export default function View({
   const { T } = useIntl();
   const navigate = useNavigate();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const currentProjectUrl = currentProject.logoUrl
+    ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + currentProject.logoUrl
+    : currentProject.logoUrl;
 
   return (
     <div
@@ -66,12 +69,7 @@ export default function View({
                 }`}
               >
                 <div className="flex flex-row items-center gap-4">
-                  <RoundedImage
-                    src={currentProject?.logoUrl || ""}
-                    useLogoFallback
-                    alt="Project Logo"
-                    size={ImageSize.Md}
-                  />
+                  <RoundedImage src={currentProjectUrl} useLogoFallback alt="Project Logo" size={ImageSize.Md} />
                   <div className="grow truncate text-left font-walsheim">{currentProject?.name}</div>
                   {expandable && <UpDownChevrons className="h-5 w-5 fill-greyscale-50/50" />}
                 </div>

@@ -10,22 +10,15 @@ import { RepositoryOrganization } from "./components/Organization";
 export function Repository() {
   const { T } = useIntl();
   const { open } = useContext(EditPanelContext);
-  const { form } = useContext(EditContext);
-  const organizations = form?.watch("organizations") || [];
-  const hasInstalledRepo = useMemo(
-    () =>
-      organizations.find(
-        organization => (organization.repos || []).filter(repo => repo.isIncludedInProject).length > 0
-      ),
-    [organizations]
-  );
+  const { form, organizations } = useContext(EditContext);
+  const installedRepos = form?.watch("githubRepos") || [];
 
   const renderOrganization = useMemo(() => {
-    if (organizations.length && hasInstalledRepo) {
+    if (installedRepos.length && organizations.length) {
       return (
         <div className="flex flex-col gap-6">
           {organizations.map(organization => (
-            <RepositoryOrganization key={organization.id} organization={organization} />
+            <RepositoryOrganization key={organization.id} organization={organization} installedRepos={installedRepos} />
           ))}
         </div>
       );
@@ -40,7 +33,7 @@ export function Repository() {
         </p>
       </div>
     );
-  }, [organizations, hasInstalledRepo]);
+  }, [organizations, installedRepos]);
 
   return (
     <div className="flex w-full flex-col gap-6">

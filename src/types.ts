@@ -140,27 +140,22 @@ export enum GithubCodeReviewStatus {
   Pending = "PENDING",
 }
 
+export enum GithubPullRequestReviewState {
+  Approved = "APPROVED",
+  UnderReview = "UNDER_REVIEW",
+  ChangesRequested = "CHANGES_REQUESTED",
+  PendingReviewer = "PENDING_REVIEWER",
+}
+
 export enum GithubCodeReviewOutcome {
   Approved = "APPROVED",
-  ChangesRequested = "CHANGES_REQUESTED",
-  Commented = "COMMENTED",
-  Dismissed = "DISMISSED",
-  Pending = "PENDING",
+  ChangeRequested = "CHANGE_REQUESTED",
 }
 
 export enum GithubContributionType {
   Issue = "ISSUE",
   PullRequest = "PULL_REQUEST",
   CodeReview = "CODE_REVIEW",
-}
-
-export enum GithubContributionReviewStatus {
-  PendingReviewer = "pendingReviewer",
-  UnderReview = "underReview",
-  Approved = "approved",
-  ChangesRequested = "changesRequested",
-  Dismissed = "dismissed",
-  Commented = "commented",
 }
 
 export enum GithubPullRequestDraft {
@@ -305,6 +300,7 @@ export type Sorting = {
 
 type Repos = components["schemas"]["ShortGithubRepoResponse"] & {
   selected?: boolean;
+  isIncludedInProject: boolean;
 };
 
 type Organization = Omit<components["schemas"]["GithubOrganizationResponse"], "repos"> & {
@@ -326,3 +322,13 @@ export enum ContributionStatus {
 }
 
 export type GithubStatus = components["schemas"]["ContributionPageItemResponse"]["githubStatus"];
+
+export enum Visibility {
+  Public = "PUBLIC",
+  Private = "PRIVATE",
+}
+
+export enum RewardDisabledReason {
+  Budget = "Budget", // No bugdet left
+  GithubApp = "GithubApp", // Problem with Github App installation
+}
