@@ -30,7 +30,7 @@ export default function ClaimBanner() {
         return true;
       },
       refetchInterval: () => {
-        if (poolingCount.current < 4 && openClaimProjectModal) {
+        if (poolingCount.current < 4) {
           poolingCount.current = poolingCount.current + 1;
           return 2000;
         }
