@@ -57,7 +57,6 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
         actionComponent={hasUnauthorizedRepos ? components.action : undefined}
         avatarAlt={organization?.name || organization?.login || ""}
         avatarSrc={organization?.avatarUrl || ""}
-        hasUnauthorizedInGithubRepo={hasUnauthorizedRepos}
       >
         <div className="grid grid-flow-row grid-cols-1 gap-x-5 gap-y-5 lg:grid-cols-2 xl:grid-cols-3">
           {installedReposData.map(repo => (
