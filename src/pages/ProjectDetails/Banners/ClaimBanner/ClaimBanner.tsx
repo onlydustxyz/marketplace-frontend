@@ -42,7 +42,7 @@ export default function ClaimBanner() {
 
   const canDisplay = useMemo(() => {
     if (project && myOrganizations) {
-      if (project.leaders.length > 0) {
+      if (project.leaders.length > 0 && project.invitedLeaders.length > 0) {
         return false;
       }
 
