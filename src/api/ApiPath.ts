@@ -28,4 +28,5 @@ export const API_PATH = {
   ME_GITHUB_ORGANIZATIONS: BASE_API_V1("me/organizations"),
   MY_CONTRIBUTED_PROJECTS: BASE_API_V1("me/contributed-projects"),
   MY_CONTRIBUTED_REPOS: BASE_API_V1("me/contributed-repos"),
+  MY_CLAIM: (projectId: string) => BASE_API_V1(`me/project-claims/${projectId}`),
 };
