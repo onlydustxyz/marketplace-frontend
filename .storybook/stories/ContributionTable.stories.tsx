@@ -6,8 +6,11 @@ import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributionDetailPanelProvider from "../decorators/withContributionDetailPanelProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
+import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
+import withQueryClientProvider from "../decorators/withQueryClientProvider";
 import withRewardDetailPanelProvider from "../decorators/withRewardDetailPanelProvider";
+import withTokenSetProvider from "../decorators/withTokenSetProvider";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
@@ -38,6 +41,9 @@ export default {
     withRouter(),
     withMockedProvider(mocks),
     withAuthProvider({ userId: USER_ID }),
+    withTokenSetProvider,
+    withImpersonationClaimsProvider,
+    withQueryClientProvider,
     withContributorProfilePanelProvider,
     withContributionDetailPanelProvider,
     withRewardDetailPanelProvider,

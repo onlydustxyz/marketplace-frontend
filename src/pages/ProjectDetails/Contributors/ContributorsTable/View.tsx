@@ -3,17 +3,15 @@ import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { rates } from "src/hooks/useWorkEstimation";
+import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
-import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 
 type Props<C> = {
   contributors: C[];
-  isProjectLeader: boolean;
-  remainingBudget: number;
   onRewardGranted: (contributor: C) => void;
+  rewardDisableReason?: ComponentProps<typeof ContributorLine>["rewardDisableReason"];
 } & ComponentProps<typeof Headers> &
   Pick<ReturnType<typeof useInfiniteContributorList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage">;
 
@@ -23,13 +21,11 @@ export default function View<C extends components["schemas"]["ContributorPageIte
   hasNextPage,
   isFetchingNextPage,
   isProjectLeader,
-  remainingBudget,
   onRewardGranted,
   sorting,
   sortField,
+  rewardDisableReason,
 }: Props<C>) {
-  const isSendingNewPaymentDisabled = remainingBudget < rates.hours || remainingBudget === 0;
-
   return (
     <Card>
       <Table
@@ -42,8 +38,8 @@ export default function View<C extends components["schemas"]["ContributorPageIte
             {...{
               contributor,
               isProjectLeader,
-              isGivingRewardDisabled: isSendingNewPaymentDisabled,
               onRewardGranted,
+              rewardDisableReason,
             }}
           />
         ))}

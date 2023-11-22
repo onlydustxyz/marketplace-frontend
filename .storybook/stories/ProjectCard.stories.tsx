@@ -3,12 +3,15 @@ import ProjectCard from "src/components/ProjectCard";
 import Tooltip from "src/components/Tooltip";
 import { responsiveChromatic } from "src/test/utils";
 import { withRouter } from "storybook-addon-react-router-v6";
+import withAuthProvider from "../decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
+
+const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
 export default {
   title: "ProjectCard",
   parameters: responsiveChromatic,
-  decorators: [withRouter, withContributorProfilePanelProvider],
+  decorators: [withAuthProvider({ userId: USER_ID }), withRouter, withContributorProfilePanelProvider],
 };
 
 export const Default = {

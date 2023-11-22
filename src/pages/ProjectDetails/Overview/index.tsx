@@ -22,7 +22,7 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import Tag, { TagSize } from "src/components/Tag";
 import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
-import { viewportConfig } from "src/config";
+import config, { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
 import {
   UserProfileInfo,
@@ -41,28 +41,31 @@ import LockFill from "src/icons/LockFill";
 import RecordCircleLine from "src/icons/RecordCircleLine";
 import Title from "src/pages/ProjectDetails/Title";
 import { HasuraUserRole } from "src/types";
+import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
 import { useMediaQuery } from "usehooks-ts";
+import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
+import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
-import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 
 export default function Overview() {
   const { T } = useIntl();
   const { project } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId, roles } = useAuth();
   const { lastVisitedProjectId } = useSession();
+
   const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
   const projectId = project?.id;
   const projectName = project?.name;
   const projectSlug = project?.slug;
-  const logoUrl = project?.logoUrl || onlyDustLogo;
+  const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
   const githubRepos = sortBy(project?.repos, "stars")
     .reverse()
@@ -95,6 +98,9 @@ export default function Overview() {
 
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget === 0;
+
+  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
   const showPendingInvites = isProjectLeader || roles.includes(HasuraUserRole.Admin);
 
   return (
@@ -103,7 +109,7 @@ export default function Overview() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
-          {isProjectLeader ? (
+          {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="justify-end gap-2">
               <EditProjectButton projectKey={projectSlug} />
 
@@ -130,6 +136,9 @@ export default function Overview() {
           ) : null}
         </div>
       </Title>
+      {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
+        <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
+      ) : null}
       <ProjectLeadInvitation
         projectId={projectId}
         size={CalloutSizes.Large}

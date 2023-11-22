@@ -9,26 +9,28 @@ import RewardTable from "src/components/RewardTable/RewardTable";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import { withTooltip } from "src/components/Tooltip";
+import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
 import Title from "src/pages/ProjectDetails/Title";
-import { ProjectBudgetType, RemainingBudget } from "./RemainingBudget/RemainingBudget";
+import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
+import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
-import Flex from "src/components/Utils/Flex";
+import { ProjectBudgetType, RemainingBudget } from "./RemainingBudget/RemainingBudget";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
   const navigate = useNavigate();
 
-  const { projectId, projectKey, projectBudget, isBudgetLoading, refetchBudgets, createdAt } = useOutletContext<{
-    projectId: string;
-    projectKey: string;
+  const { project, projectBudget, isBudgetLoading, refetchBudgets } = useOutletContext<{
+    project: Parameters<typeof getOrgsWithUnauthorizedRepos>[0];
     projectBudget: ProjectBudgetType;
     isBudgetLoading: boolean;
     refetchBudgets: () => void;
-    createdAt: string;
   }>();
+
+  const { id: projectId, slug: projectKey, createdAt } = project;
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -51,6 +53,9 @@ const RewardList: React.FC = () => {
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
   const isRewardDisabled = !projectBudget?.remainingDollarsEquivalent || rewards.length === 0;
 
+  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
+
   if (error) {
     return <ErrorFallback />;
   }
@@ -71,30 +76,35 @@ const RewardList: React.FC = () => {
       <StillFetchingBanner createdAt={createdAt} />
       <div className="flex items-center justify-between">
         <Title>{T("project.details.rewards.title")}</Title>
-        <Flex className="gap-2">
-          <EditProjectButton projectKey={projectKey} />
-          <Button
-            width={Width.Fit}
-            size={ButtonSize.Sm}
-            disabled={isRewardDisabled}
-            onClick={() => {
-              return navigate(
-                generatePath(
-                  `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                  {
-                    projectKey,
-                  }
-                )
-              );
-            }}
-            {...withTooltip(T("contributor.table.noBudgetLeft"), {
-              visible: isRewardDisabled,
-            })}
-          >
-            <span>{T("project.details.remainingBudget.newReward")}</span>
-          </Button>
-        </Flex>
+        {!hasOrgsWithUnauthorizedRepos ? (
+          <Flex className="gap-2">
+            <EditProjectButton projectKey={projectKey} />
+            <Button
+              width={Width.Fit}
+              size={ButtonSize.Sm}
+              disabled={isRewardDisabled}
+              onClick={() => {
+                return navigate(
+                  generatePath(
+                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                    {
+                      projectKey,
+                    }
+                  )
+                );
+              }}
+              {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                visible: isRewardDisabled,
+              })}
+            >
+              <span>{T("project.details.remainingBudget.newReward")}</span>
+            </Button>
+          </Flex>
+        ) : null}
       </div>
+      {hasOrgsWithUnauthorizedRepos ? (
+        <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
+      ) : null}
       {!isBudgetLoading && projectBudget ? <RemainingBudget projectBudget={projectBudget} /> : null}
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
         <div className="w-full">

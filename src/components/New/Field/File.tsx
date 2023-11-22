@@ -92,7 +92,7 @@ export const FieldImage = forwardRef(function FieldImage<F extends string | File
             type="file"
             ref={ref}
             className={cn(
-              "rounded-lg border border-greyscale-50/8 bg-white/5 text-sm text-spaceBlue-200 file:mr-3 file:cursor-pointer file:rounded-l-lg file:border file:border-none file:border-greyscale-50 file:bg-white/5 file:px-4 file:py-2 file:leading-none file:text-greyscale-50 file:shadow-lg file:ring-1 file:ring-inset file:ring-greyscale-50 file:hover:text-spacePurple-100 file:hover:ring-spacePurple-200",
+              "rounded-lg border border-greyscale-50/8 bg-white/5 text-sm text-spaceBlue-200 file:mr-3 file:cursor-pointer file:rounded-l-lg file:border file:border-none file:border-greyscale-50 file:bg-white/5 file:px-4 file:py-2 file:leading-none file:text-greyscale-50 file:shadow-lg file:ring-1 file:ring-inset file:ring-greyscale-50 hover:file:text-spacePurple-100 hover:file:ring-spacePurple-200",
               {
                 "pointer-events-none opacity-50 file:hover:text-spaceBlue-200 file:hover:ring-spaceBlue-200":
                   upload?.loading,

@@ -1,6 +1,7 @@
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
+import { components } from "src/__generated/api";
 import Button, { ButtonSize } from "src/components/Button";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
@@ -8,19 +9,20 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import { withTooltip } from "src/components/Tooltip";
+import Flex from "src/components/Utils/Flex";
 import { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { useIntl } from "src/hooks/useIntl";
-import { rates } from "src/hooks/useWorkEstimation";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
 import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/pages/ProjectDetails/Title";
+import { RewardDisabledReason } from "src/types";
+import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useMediaQuery } from "usehooks-ts";
+import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
-import { components } from "src/__generated/api";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import Flex from "src/components/Utils/Flex";
 import { EditProjectButton } from "../components/EditProjectButton";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 
@@ -41,7 +43,20 @@ export default function Contributors() {
   const isProjectLeader = useProjectLeader({ id: projectId });
 
   const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+  const noBudget = remainingBudget === 0;
+
+  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
+
+  function getRewardDisableReason() {
+    if (noBudget) {
+      return RewardDisabledReason.Budget;
+    }
+
+    if (isProjectLeader && hasOrgsWithUnauthorizedRepos) {
+      return RewardDisabledReason.GithubApp;
+    }
+  }
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: isProjectLeader ? Fields.ToRewardCount : Fields.ContributionCount,
@@ -77,12 +92,12 @@ export default function Contributors() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.contributors.title")}
-          {isProjectLeader && (
+          {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="gap-2">
               <EditProjectButton projectKey={projectKey} />
               <Button
                 size={ButtonSize.Sm}
-                disabled={isRewardDisabled}
+                disabled={noBudget}
                 onClick={() =>
                   navigate(
                     generatePath(
@@ -94,15 +109,18 @@ export default function Contributors() {
                   )
                 }
                 {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                  visible: isRewardDisabled,
+                  visible: noBudget,
                 })}
               >
                 {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
               </Button>
             </Flex>
-          )}
+          ) : null}
         </div>
       </Title>
+      {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
+        <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
+      ) : null}
       <ProjectLeadInvitation
         projectId={projectId}
         size={CalloutSizes.Large}
@@ -119,11 +137,11 @@ export default function Contributors() {
             hasNextPage,
             isFetchingNextPage,
             isProjectLeader,
-            remainingBudget,
             projectId,
             projectKey,
             sorting,
             sortField,
+            rewardDisableReason: getRewardDisableReason(),
           }}
         />
       )}

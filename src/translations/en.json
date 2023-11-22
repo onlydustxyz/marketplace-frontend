@@ -138,6 +138,7 @@
       "contributor": "Contributor",
       "leftToPay": "Left to Pay",
       "noBudgetLeft": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
+      "githubApp": "Fix any remaining errors before being able to send reward.",
       "contributions": "Contributions",
       "totalEarned": "Earned",
       "rewards": "Rewards",
@@ -981,7 +982,9 @@
             "repositories": "Repositories"
           },
           "repositories": {
-            "noRepositoriesToAdd": "All repositories from this organisation have been added to your project."
+            "noRepositoriesToAdd": "All repositories from this organisation have been added to your project.",
+            "fixGithubApp": "Fix configuration on Github",
+            "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration"
           }
         },
         "toasts": {
@@ -1055,6 +1058,13 @@
         "newReward": "Reward contributor",
         "noRewards": "No rewards so far",
         "send": "Give your first one!"
+      },
+      "banners": {
+        "missingGithubAppInstall": {
+          "message": "We identified multiple issues on your project. Please fix them to be able to reward contributors.",
+          "button": "Edit project",
+          "org": "Connect the Github app for the __org__ organisation"
+        }
       }
     },
     "error": {
@@ -1073,6 +1083,10 @@
     "projectLeadInvitation": {
       "prompt": "You've been promoted to Project Lead",
       "view": "View invite"
+    },
+    "missingGithubAppInstall": {
+      "message": "We identified multiple errors on your project. Please fix them to be able to reward contributors.",
+      "button": "Edit project"
     }
   },
   "projectLeadInvitation": {

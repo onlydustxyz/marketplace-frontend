@@ -59,7 +59,7 @@ export default function ProjectTitle({ projectName, projectLeads, logoUrl, priva
   return (
     <div className="flex items-start gap-4">
       <div className="relative flex-shrink-0">
-        <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" />
+        <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" useLogoFallback />
         {private_ && (
           <div className="absolute -bottom-2.5 -right-2.5">
             <PrivateTag />
