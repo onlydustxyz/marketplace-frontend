@@ -16,7 +16,7 @@ export default function ProtectedRoute({
   redirectTo = RoutePaths.NotFound,
   children,
 }: ProtectedRouteProps) {
-  const { isLoading: userInfoLoading, isStale } = MeApi.queries.useGetMe({});
+  const { isLoading: userInfoLoading } = MeApi.queries.useGetMe({});
   const { roles } = useAuth();
   const params = useParams();
   const isProjectleader = useProjectLeader({ slug: params.projectKey });
@@ -33,7 +33,7 @@ export default function ProtectedRoute({
     return true;
   };
 
-  if (userInfoLoading || isStale) {
+  if (userInfoLoading) {
     return <></>;
   }
 
