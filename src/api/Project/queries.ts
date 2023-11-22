@@ -120,10 +120,34 @@ export function useRewardableItemsQueryParams(props: RewardableItemsQueryParamsP
   };
 }
 
+export type UseProjectContributorsInfiniteListResponse = components["schemas"]["ContributorsPageResponse"];
+
+interface ProjectContributorsInfiniteListParams {
+  projectId: string;
+  queryParams?: QueryParams;
+  pageSize?: number;
+}
+
+const useProjectContributorsInfiniteList = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<UseProjectContributorsInfiniteListResponse, ProjectContributorsInfiniteListParams>) => {
+  return useInfiniteBaseQuery<UseProjectContributorsInfiniteListResponse>(
+    {
+      resourcePath: API_PATH.PROJECT_CONTRIBUTORS(params?.projectId || ""),
+      tags: PROJECT_TAGS.contributors(params?.projectId || ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 10,
+    },
+    options
+  );
+};
+
 export default {
   useGetProjectBySlug,
   useGetProjectContributionDetail,
   useInfiniteList,
   useRewardableItemsInfiniteList,
   useRewardableItemsQueryParams,
+  useProjectContributorsInfiniteList,
 };

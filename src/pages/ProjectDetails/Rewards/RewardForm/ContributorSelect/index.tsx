@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import {
-  GetProjectPendingContributorsDocument,
-  GetProjectPendingContributorsQuery,
-  useSearchGithubUsersByHandleSubstringQuery,
-} from "src/__generated/graphql";
+import { useSearchGithubUsersByHandleSubstringQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useLocation } from "react-router-dom";
 import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { useDebounce } from "usehooks-ts";
-import isDefined from "src/utils/isDefined";
-import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
+import ProjectApi from "src/api/Project";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
+
+enum ContributorsSortFields {
+  ContributionCount = "CONTRIBUTION_COUNT",
+  Earned = "EARNED",
+  Login = "LOGIN",
+  RewardCount = "REWARD_COUNT",
+  ToRewardCount = "TO_REWARD_COUNT",
+}
 
 const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
 
@@ -29,11 +33,32 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   const debouncedGithubHandleSubstring = useDebounce(githubHandleSubstring, EXTERNAL_USER_QUERY_DEBOUNCE_TIME);
   const handleSubstringQuery = `type:user ${debouncedGithubHandleSubstring} in:login`;
 
-  const { data } = useSuspenseQuery<GetProjectPendingContributorsQuery>(GetProjectPendingContributorsDocument, {
-    variables: { projectId },
-    fetchPolicy: "no-cache",
+  const { queryParams } = useQueryParamsSorting({
+    field: ContributorsSortFields.Login,
+    isAscending: true,
+    storageKey: "ProjectContributionSorting",
   });
-  const contributors = data?.projectsPendingContributors.map(u => u.user).filter(isDefined);
+
+  const {
+    data: ProjectContributors,
+    error,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = ProjectApi.queries.useProjectContributorsInfiniteList({
+    params: { projectId, queryParams },
+  });
+
+  const contributors = ProjectContributors?.pages.flatMap(({ contributors }) => contributors) ?? [];
+
+  console.log("githubHandleSubstring", githubHandleSubstring);
+
+  // const { data } = useSuspenseQuery<GetProjectPendingContributorsQuery>(GetProjectPendingContributorsDocument, {
+  //   variables: { projectId },
+  //   fetchPolicy: "no-cache",
+  // });
+  // const contributors = data?.projectsPendingContributors.map(u => u.user).filter(isDefined);
 
   const searchGithubUsersByHandleSubstringQuery = useSearchGithubUsersByHandleSubstringQuery({
     variables: { handleSubstringQuery },
@@ -41,9 +66,9 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   });
 
   const internalContributors: Contributor[] = contributors.map(c => {
-    const completedUnpaidPullRequestCount = c.completedUnpaidPullRequestsAggregate.aggregate?.count || 0;
-    const completedUnpaidIssueCount = c.completedUnpaidIssuesAggregate.aggregate?.count || 0;
-    const completedUnpaidCodeReviewCount = c.completedUnpaidCodeReviewsAggregate.aggregate?.count || 0;
+    const completedUnpaidPullRequestCount = c.pullRequestToReward || 0;
+    const completedUnpaidIssueCount = c.issueToReward || 0;
+    const completedUnpaidCodeReviewCount = c.codeReviewToReward || 0;
 
     return {
       githubUserId: c.githubUserId,
@@ -54,16 +79,14 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       unpaidMergedPullsCount: completedUnpaidPullRequestCount,
       unpaidCompletedIssuesCount: completedUnpaidIssueCount,
       unpaidCompletedCodeReviewsCount: completedUnpaidCodeReviewCount,
-      userId: c.userId,
+      userId: c.login,
     };
   });
 
-  const filteredContributors = sortListByLogin(
-    internalContributors.filter(
-      contributor =>
-        !githubHandleSubstring ||
-        (githubHandleSubstring && contributor.login?.toLowerCase().startsWith(githubHandleSubstring.toLowerCase()))
-    )
+  const filteredContributors = internalContributors.filter(
+    contributor =>
+      !githubHandleSubstring ||
+      (githubHandleSubstring && contributor.login?.toLowerCase().startsWith(githubHandleSubstring.toLowerCase()))
   );
 
   const filteredExternalContributors: Contributor[] = sortListByLogin(
