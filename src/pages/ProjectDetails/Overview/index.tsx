@@ -80,7 +80,7 @@ export default function Overview() {
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: projectId });
 
-  const { alreadyApplied, applyToProject } = useApplications(projectId);
+  const { alreadyApplied, applyToProject } = useApplications(projectId, projectSlug);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
 
   const { data: userProfileData } = useUserProfile({ githubUserId });
