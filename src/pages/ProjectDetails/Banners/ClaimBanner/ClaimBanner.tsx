@@ -88,7 +88,13 @@ export default function ClaimBanner() {
       return false;
     }
 
-    const isAllOrganizationInstalled = project?.organizations?.every(org => org.installed);
+    const isAllOrganizationInstalled = project?.organizations?.every(org => {
+      if (org.installed) {
+        return true;
+      }
+
+      return !!myOrganizations?.find(myOrg => myOrg.id === org.id && myOrg.installed);
+    });
 
     return isAllOrganizationInstalled || false;
   }, [project, myOrganizations, canDisplay]);
