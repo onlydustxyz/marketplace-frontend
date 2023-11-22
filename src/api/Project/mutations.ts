@@ -65,7 +65,7 @@ const useIgnoreUnignoreContribution = ({
   });
 };
 
-export type UseCreateOtherWorksBody = components["schemas"]["AddOtherIssueRequest"];
+export type UseCreateOtherWorksBody = components["schemas"]["AddOtherWorkRequest"];
 export type UseCreateOtherWorksResponse = components["schemas"]["RewardableItemResponse"];
 
 const useCreateOtherWorks = ({

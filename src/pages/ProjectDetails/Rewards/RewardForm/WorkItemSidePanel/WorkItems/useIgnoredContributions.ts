@@ -10,11 +10,6 @@ export function useIgnoredContributions(projectId: string) {
   const { mutate: ignoreUnignoreContribution, ...restUnignoreContributionMutation } =
     ProjectApi.mutations.useIgnoreUnignoreContribution({
       params: { projectId },
-      options: {
-        onSuccess: () => {
-          console.log("onSuccess");
-        },
-      },
     });
 
   useMutationAlert({

@@ -458,6 +458,7 @@
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
           "success": "Issue created and contribution added",
+          "error": "The Issue could not be created!",
           "tab": "Other work",
           "tabShort": "Other",
           "title": "Describe the work",
