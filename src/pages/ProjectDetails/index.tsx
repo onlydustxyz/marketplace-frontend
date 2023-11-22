@@ -5,16 +5,12 @@ import ProjectApi from "src/api/Project";
 import Loader from "src/components/Loader";
 import SEO from "src/components/SEO";
 import View from "./View";
-import MeApi from "src/api/me";
 
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { pathname } = useLocation();
   const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
   const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
-
-  /** prefetch organization to show the claim banner */
-  MeApi.queries.useGithubOrganizations({});
 
   if (isLoading) {
     // TODO Replace with skeleton component

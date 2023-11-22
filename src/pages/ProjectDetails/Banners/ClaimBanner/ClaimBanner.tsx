@@ -18,8 +18,12 @@ export default function ClaimBanner() {
   const [openClaimProjectModal, setOpenClaimProjectModal] = useState(false);
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: project } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
-  const { data: myOrganizations } = MeApi.queries.useGithubOrganizations({});
+  const { data: project, isSuccess } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
+  const { data: myOrganizations } = MeApi.queries.useGithubOrganizations({
+    options: {
+      enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
+    },
+  });
 
   const { mutate: claimProjectMutation, ...restMutation } = MeApi.mutations.useClaimProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
