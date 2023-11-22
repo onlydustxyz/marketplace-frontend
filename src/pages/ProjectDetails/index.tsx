@@ -10,7 +10,6 @@ export default function ProjectDetails() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { pathname } = useLocation();
   const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
-
   const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
 
   if (isLoading) {

@@ -5,7 +5,7 @@ import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
 import { useUserIdentityQuery } from "src/__generated/graphql";
 
-export default function FeedbackButton() {
+export default function FeedbackButton({ customButton }: { customButton?: React.ReactNode }) {
   const { isLoggedIn, user } = useAuth();
   const { T } = useIntl();
 
@@ -34,17 +34,21 @@ export default function FeedbackButton() {
           }}
           transitiveSearchParams={true}
         >
-          <div
-            className={cn(
-              "flex flex-row items-center justify-center gap-2 rounded-xl font-walsheim",
-              "w-fit font-medium drop-shadow-bottom-sm hover:shadow-none",
-              "h-8 border border-greyscale-50 bg-white/5 px-4 py-2 text-sm text-greyscale-50",
-              "hover:border-spacePurple-200 hover:text-spacePurple-100"
-            )}
-          >
-            <DiscussLine />
-            <span>{T("navbar.feedback.button")}</span>
-          </div>
+          {customButton ? (
+            customButton
+          ) : (
+            <div
+              className={cn(
+                "flex flex-row items-center justify-center gap-2 rounded-xl font-walsheim",
+                "w-fit font-medium drop-shadow-bottom-sm hover:shadow-none",
+                "h-8 border border-greyscale-50 bg-white/5 px-4 py-2 text-sm text-greyscale-50",
+                "hover:border-spacePurple-200 hover:text-spacePurple-100"
+              )}
+            >
+              <DiscussLine />
+              <span>{T("navbar.feedback.button")}</span>
+            </div>
+          )}
         </SliderButton>
       )}
     </>

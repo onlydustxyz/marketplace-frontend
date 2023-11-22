@@ -24,6 +24,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
+import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -127,6 +128,7 @@ export default function Contributors() {
         isInvited={isInvited}
         projectName={project?.name}
       />
+      <ClaimBanner />
       {contributors?.length > 0 && (
         <ContributorsTable
           {...{
