@@ -12,7 +12,7 @@ import { withTooltip } from "src/components/Tooltip";
 
 type RepositoryOrganizationType = {
   organization: UseGithubOrganizationsResponse;
-  installedRepos: number[];
+  installedRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
 };
 
 export function RepositoryOrganization({ organization, installedRepos }: RepositoryOrganizationType) {
@@ -43,7 +43,7 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
   };
 
   const installedReposData = useMemo(
-    () => organization.repos?.filter(repo => installedRepos.includes(repo.id)) || [],
+    () => organization.repos?.filter(repo => installedRepos.find(installedRepo => installedRepo.id === repo.id)) || [],
     [organization, installedRepos]
   );
 
