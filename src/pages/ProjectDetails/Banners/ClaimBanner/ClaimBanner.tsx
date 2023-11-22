@@ -10,6 +10,8 @@ import ClaimBannerOrganization from "./components/Organization";
 import InformationLine from "src/icons/InformationLine";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import FeedbackButton from "src/App/Layout/Header/FeedbackButton";
+import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
 
 export default function ClaimBanner() {
   const { T } = useIntl();
@@ -18,6 +20,25 @@ export default function ClaimBanner() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
   const { data: myOrganizations } = MeApi.queries.useGithubOrganizations({});
+
+  const { mutate: claimProjectMutation, ...restMutation } = ProjectApi.mutations.useClaimProject({
+    params: { projectId: project?.id, projectSlug: project?.slug },
+    options: {
+      onSuccess: async () => {
+        setOpenClaimProjectModal(false);
+      },
+    },
+  });
+
+  useMutationAlert({
+    mutation: restMutation,
+    success: {
+      message: T("project.claim.panel.success"),
+    },
+    error: {
+      default: true,
+    },
+  });
 
   const canDisplay = useMemo(() => {
     if (project && myOrganizations) {
@@ -67,7 +88,7 @@ export default function ClaimBanner() {
 
   const onSubmitClaim = () => {
     if (canSubmit) {
-      console.log("CLAIM");
+      claimProjectMutation({});
     }
   };
 
@@ -140,10 +161,21 @@ export default function ClaimBanner() {
             </div>
           </div>
           <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
-            <Button type={ButtonType.Secondary} size={ButtonSize.Md} onClick={onCancel}>
+            {restMutation.isPending ? <Spinner /> : null}
+            <Button
+              type={ButtonType.Secondary}
+              size={ButtonSize.Md}
+              onClick={onCancel}
+              disabled={restMutation.isPending}
+            >
               {T("project.claim.panel.cancel")}
             </Button>
-            <Button type={ButtonType.Primary} size={ButtonSize.Md} disabled={!canSubmit} onClick={onSubmitClaim}>
+            <Button
+              type={ButtonType.Primary}
+              size={ButtonSize.Md}
+              disabled={!canSubmit || restMutation.isPending}
+              onClick={onSubmitClaim}
+            >
               {T("project.claim.panel.submit")}
             </Button>
           </div>
