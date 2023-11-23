@@ -42,4 +42,19 @@ const usePayoutInfo = ({ options = {} }: UseMutationProps) => {
   });
 };
 
-export default { useAcceptProjectLeaderInvitation, useClaimProject, usePayoutInfo };
+const useApplyProject = ({
+  params,
+  options = {},
+}: UseMutationProps<unknown, { projectSlug?: string }, { projectId: string }>) => {
+  return useBaseMutation<{ projectId: string }, unknown>({
+    resourcePath: API_PATH.ME_APPLY_TO_PROJECT,
+    method: "POST",
+    invalidatesTags: [
+      { queryKey: PROJECT_TAGS.detail_by_slug(params?.projectSlug || ""), exact: false },
+      { queryKey: MeApi.tags.all, exact: false },
+    ],
+    ...options,
+  });
+};
+
+export default { useAcceptProjectLeaderInvitation, useClaimProject, usePayoutInfo, useApplyProject };
