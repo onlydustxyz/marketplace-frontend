@@ -7,7 +7,6 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import { ProfileType } from "./types";
-import { useQueryClient } from "@tanstack/react-query";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
 import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
 import { PreferredMethod } from "src/types";
@@ -22,14 +21,11 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
   const { T } = useIntl();
   const showToaster = useShowToaster();
 
-  // Get QueryClient from the context
-  const queryClient = useQueryClient();
-
   const { data: user } = MeApi.queries.useGetMyPayoutInfo({});
 
   const { mutate: userPayoutInformation, isPending: userPayoutInformationIsPending } = MeApi.mutations.usePayoutInfo({
     options: {
-      onSuccess: () => {
+      onSuccess: (_, queryClient) => {
         showToaster(T("profile.form.success"));
         queryClient.invalidateQueries();
         setOpen(false);
