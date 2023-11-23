@@ -1,5 +1,6 @@
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
+import SkeletonOrganizationList from "src/components/Skeleton/SkeletonOrganizationList";
 import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
@@ -8,6 +9,7 @@ import { getGithubSetupLink } from "src/utils/githubSetupLink";
 interface OrganizationListProps {
   organizations: UseGithubOrganizationsResponse[];
   emptyListFallBackText: string;
+  loading?: boolean;
   installatedRepo: number[];
 }
 
@@ -15,10 +17,11 @@ export default function OrganizationList({
   organizations,
   emptyListFallBackText,
   installatedRepo,
+  loading,
 }: OrganizationListProps) {
   const { T } = useIntl();
 
-  if (organizations.length) {
+  if (loading || organizations.length) {
     return (
       <ul className="flex flex-col gap-3 py-4 pb-6">
         {organizations.map((org, index) => {
@@ -27,12 +30,12 @@ export default function OrganizationList({
             login: org.login,
             installationId: org.installationId,
             installed: org.installed,
-            isAPersonalOrganization: false,
+            isAPersonalOrganization: org.isPersonal,
           });
 
           return (
             <HorizontalListItemCard
-              disabled={installatedRepo.includes(org.id)}
+              disabled={installatedRepo.includes(org.id) || !org.isCurrentUserAdmin}
               key={`${org.login}+${index}`}
               avatarUrl={org.avatarUrl ?? ""}
               title={org.name || org.login || ""}
@@ -43,6 +46,12 @@ export default function OrganizationList({
             />
           );
         })}
+        {loading ? (
+          <>
+            <SkeletonOrganizationList />
+            <SkeletonOrganizationList />
+          </>
+        ) : null}
       </ul>
     );
   }

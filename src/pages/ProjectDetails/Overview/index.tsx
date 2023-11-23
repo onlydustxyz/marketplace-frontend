@@ -94,7 +94,7 @@ export default function Overview() {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = remainingBudget === 0;
+  const isRewardDisabled = !remainingBudget;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;

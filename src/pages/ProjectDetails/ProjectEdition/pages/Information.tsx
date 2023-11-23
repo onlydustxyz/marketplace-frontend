@@ -128,6 +128,16 @@ export function Information() {
                   }}
                   startIcon={({ className }) => <Link className={className} />}
                 />,
+                <FieldInput
+                  key="moreInfo.value"
+                  name="moreInfo.value"
+                  value={value?.[0].value}
+                  placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
+                  fieldClassName=" w-1/3 max-w-full"
+                  onChange={event => {
+                    onChangeField([{ ...value[0], value: event.target.value }]);
+                  }}
+                />,
               ]}
             </FieldCombined>
           )}
