@@ -13,6 +13,8 @@ import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";
 import AllProjectsFallback from "./AllProjectsFallback";
 import AllProjectLoading from "./AllProjectsLoading";
+import { Sponsor } from "src/types";
+import { uniqBy } from "lodash";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -27,7 +29,7 @@ type Props = {
   sortingPanelOpen: boolean;
   setSortingPanelOpen: (open: boolean) => void;
   setTechnologies: (technologies: string[]) => void;
-  setSponsors: (sponsors: string[]) => void;
+  setSponsors: (sponsors: Sponsor[]) => void;
 };
 
 export default function AllProjects({
@@ -54,7 +56,7 @@ export default function AllProjects({
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       technologies.length > 0 ? ["technologies", technologies.join(",")] : null,
-      sponsors.length > 0 ? ["sponsor", sponsors.join(",")] : null,
+      sponsors.length > 0 ? ["sponsor", sponsors.map(({ id }) => id).join(",")] : null,
       search ? ["search", search] : null,
       sorting ? ["sort", sorting] : null,
       ownership ? ["mine", String(ownership === "Mine")] : null,
@@ -74,9 +76,13 @@ export default function AllProjects({
 
   useEffect(() => {
     if (data && !isLoading) {
-      const technologies =
-        [...new Set(data?.pages?.flatMap(({ technologies }) => (technologies ? technologies : "")))] ?? [];
-      const sponsors = [...new Set(data?.pages?.flatMap(({ sponsors }) => (sponsors ? sponsors : "")))] ?? [];
+      const technologies = [...new Set(data?.pages?.flatMap(({ technologies = "" }) => technologies))] ?? [];
+      const sponsors = uniqBy(
+        data?.pages
+          ?.flatMap(({ sponsors = null }) => sponsors)
+          .filter((sponsor): sponsor is Sponsor => Boolean(sponsor)),
+        "id"
+      );
       setTechnologies(technologies.length ? replaceApostrophes(technologies) : []);
       setSponsors(sponsors);
     }

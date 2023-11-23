@@ -80,7 +80,7 @@ export default function FilterDropDown({
                   as="div"
                   value={option}
                   className={cn(
-                    "w-fit rounded-lg border border-greyscale-50/8  bg-whiteFakeOpacity-10 px-2 py-1 font-walsheim text-xs font-normal text-neutral-100",
+                    "w-fit rounded-lg border border-greyscale-50/8 bg-whiteFakeOpacity-10 px-2 py-1 font-walsheim text-xs font-normal text-neutral-100",
                     "hover:cursor-pointer",
                     "ui-selected:pseudo-outline-2",
                     "ui-selected:before:z-10",
