@@ -16,6 +16,7 @@ import { uniqWith } from "lodash";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import MeApi from "src/api/me";
 import { useSessionStorage } from "src/hooks/useStorage/useStorage";
+import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -26,6 +27,7 @@ type Edit = {
   project?: UseGetProjectBySlugResponse;
   form?: UseFormReturn<EditFormData, unknown>;
   organizations: UseGithubOrganizationsResponse[];
+  PoolingFeedback: React.ReactElement;
   githubWorklow: {
     run: () => void;
     inGithubWorkflow: boolean;
@@ -54,6 +56,7 @@ export const EditContext = createContext<Edit>({
   form: undefined,
   project: undefined,
   organizations: [],
+  PoolingFeedback: <></>,
   formHelpers: {
     resetBeforLeave: () => null,
     triggerSubmit: () => null,
@@ -102,21 +105,37 @@ export function EditProvider({ children, project }: EditContextProps) {
   const installation_id = searchParams.get("installation_id") ?? "";
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
 
-  const { data: organizationsData, isRefetching } = MeApi.queries.useGithubOrganizations({
+  const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
+    limites: 5,
+    delays: 3000,
+  });
+
+  const {
+    data: organizationsData,
+    isRefetching,
+    isLoading,
+    refetch,
+  } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
-      refetchOnWindowFocus: () => {
-        poolingCount.current = 0;
-        return true;
-      },
-      refetchInterval: () => {
-        if (poolingCount.current < 5) {
-          return 2000;
-        }
-        return 0;
-      },
+      refetchOnWindowFocus,
+      refetchInterval,
     },
   });
+
+  const PoolingFeedback = usePoolingFeedback({
+    onForcePooling,
+    isLoading,
+    isRefetching,
+    fetch: refetch,
+    ui: {
+      label: T("project.details.create.syncOganizations"),
+    },
+  });
+
+  useEffect(() => {
+    onRefetching(isRefetching);
+  }, [isRefetching]);
 
   useEffect(() => {
     if (isRefetching) {
@@ -270,6 +289,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         form,
         project,
         organizations: mergeOrganization,
+        PoolingFeedback,
         formHelpers: {
           addRepository: onAddRepository,
           resetBeforLeave: onResetBeforLeave,

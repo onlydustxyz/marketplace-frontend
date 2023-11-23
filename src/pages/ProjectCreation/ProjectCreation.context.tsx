@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useIntl } from "src/hooks/useIntl";
 import { z } from "zod";
@@ -17,6 +17,7 @@ import { watchInstalledRepoStorage } from "./utils/watchInstalledRepoStorage";
 import { StorageInterface } from "src/hooks/useStorage/Storage";
 import MeApi from "src/api/me";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
+import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 
 /**
  * @interface CreateContextProps
@@ -44,6 +45,7 @@ type CreateProject = {
   installedRepos: number[];
   organizations: UseGithubOrganizationsResponse[];
   organizationsLoading: boolean;
+  PoolingFeedback: React.ReactElement;
   formFn: {
     addRepository: (data: CreateFormDataRepos) => void;
     removeRepository: (data: CreateFormDataRepos) => void;
@@ -62,6 +64,7 @@ export const CreateProjectContext = createContext<CreateProject>({
   installedRepos: [],
   organizations: [],
   organizationsLoading: false,
+  PoolingFeedback: <></>,
   helpers: {
     saveInSession: () => null,
     goTo: () => null,
@@ -100,7 +103,6 @@ export function CreateProjectProvider({
   const { T } = useIntl();
   const [installedRepos, setInstalledRepos] = useState<number[]>(initialInstalledRepo || []);
   const navigate = useNavigate();
-  const poolingCount = useRef(0);
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
     initialStep || ProjectCreationSteps.ORGANIZATIONS
   );
@@ -108,32 +110,39 @@ export function CreateProjectProvider({
   const installation_id = searchParams.get("installation_id") ?? "";
 
   const { reset: clearStorage } = useResetStorage();
+
+  // Polling the organizations every second knowing that user can delete and installation
+  // and the related github event can take an unknown delay to be triggered
+  const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
+    limites: 5,
+    delays: 3000,
+  });
+
   const {
     data: organizationsData,
     isRefetching,
     isLoading,
+    refetch,
   } = MeApi.queries.useGithubOrganizations({
-    // Polling the organizations every second knowing that user can delete and installation
-    // and the related github event can take an unknown delay to be triggered
     options: {
       retry: 1,
-      refetchOnWindowFocus: () => {
-        poolingCount.current = 0;
-        return true;
-      },
-      refetchInterval: () => {
-        if (poolingCount.current < 5) {
-          return 2000;
-        }
-        return 0;
-      },
+      refetchOnWindowFocus,
+      refetchInterval,
+    },
+  });
+
+  const PoolingFeedback = usePoolingFeedback({
+    onForcePooling,
+    isLoading,
+    isRefetching,
+    fetch: refetch,
+    ui: {
+      label: T("project.details.create.syncOganizations"),
     },
   });
 
   useEffect(() => {
-    if (isRefetching) {
-      poolingCount.current = poolingCount.current + 1;
-    }
+    onRefetching(isRefetching);
   }, [isRefetching]);
 
   const { mutate: createProject, ...restCreateProjectMutation } = ProjectApi.mutations.useCreateProject({
@@ -255,6 +264,7 @@ export function CreateProjectProvider({
         installedRepos,
         organizationsLoading: isLoading && !organizationsData?.length,
         organizations: organizationsData || [],
+        PoolingFeedback,
         helpers: {
           saveInSession: onSaveInSession,
           goTo,
