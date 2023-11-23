@@ -27,7 +27,7 @@ export enum Action {
 }
 
 function getPullRequestStatusDate(
-  pullRequest: Partial<RewardableItem> & Partial<GithubPullRequestWithCommitsFragment>
+  pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>
 ) {
   switch (pullRequest.status) {
     case GithubPullRequestStatus.Closed:
