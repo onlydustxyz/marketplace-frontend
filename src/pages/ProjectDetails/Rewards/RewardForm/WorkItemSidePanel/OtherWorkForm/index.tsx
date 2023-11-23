@@ -63,11 +63,13 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     author: contributorHandle,
   });
 
-  const { repos: projectRepos } = useOutletContext<{
+  const context = useOutletContext<{
     projectId: string;
     projectKey: string;
-    repos: components["schemas"]["GithubRepoResponse"][];
+    repos?: components["schemas"]["GithubRepoResponse"][];
   }>();
+
+  const projectRepos = context?.repos || [];
 
   const repos = sortBy(projectRepos, "name").filter(isDefined);
 

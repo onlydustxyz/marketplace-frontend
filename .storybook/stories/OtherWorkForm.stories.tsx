@@ -5,6 +5,9 @@ import withToasterProvider from "../decorators/withToasterProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withFormProvider from "../decorators/withFormProvider";
+import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
+import withTokenSetProvider from "../decorators/withTokenSetProvider";
+import withQueryClientProvider from "../decorators/withQueryClientProvider";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 const PROJECT_ID = "project-1";
@@ -70,9 +73,13 @@ export default {
     withMockedProvider(mocks),
     withAuthProvider({ userId: USER_ID }),
     withFormProvider(),
+    withImpersonationClaimsProvider,
+    withTokenSetProvider,
+    withQueryClientProvider,
   ],
 };
 
 export const Default = {
+  
   render: () => <OtherWorkForm projectId={PROJECT_ID} contributorHandle="ofux" addWorkItem={Function.prototype()} />,
 };
