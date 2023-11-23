@@ -1,20 +1,12 @@
-import {
-  GetUserPayoutSettingsDocument,
-  GetUserPayoutSettingsQueryResult,
-  UserPayoutSettingsFragment,
-} from "src/__generated/graphql";
 import { ComponentProps, JSXElementConstructor } from "react";
 import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { PaymentStatus, PreferredMethod } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
-import withMockedProvider from "../decorators/withMockedProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const GITHUB_USER_ID2 = 1321654;
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
-
 const yearsFromNow = (years: number) => new Date(Date.now() - years * 365 * 24 * 3600 * 1000);
 
 const mockPayments: ComponentProps<typeof RewardTable>["rewards"] = [
@@ -47,43 +39,6 @@ const mockPayments: ComponentProps<typeof RewardTable>["rewards"] = [
   },
 ];
 
-const mocks = [
-  {
-    request: {
-      query: GetUserPayoutSettingsDocument,
-      variables: { githubUserId: GITHUB_USER_ID2 },
-    },
-    result: {
-      data: {
-        registeredUsers: [
-          {
-            githubUserId: GITHUB_USER_ID2,
-            id: "user-1",
-            userPayoutInfo: {
-              __typename: "UserPayoutInfo",
-              address: "avenue de la gare",
-              city: "Paris",
-              postCode: "75000",
-              country: "France",
-              firstname: "James",
-              lastname: "Bond",
-              isCompany: false,
-              companyIdentificationNumber: null,
-              companyName: null,
-              bic: null,
-              ethWallet: "007.eth",
-              iban: null,
-              usdPreferredMethod: PreferredMethod.Crypto,
-              userId: "user-1",
-              arePayoutSettingsValid: true,
-            } as UserPayoutSettingsFragment,
-          },
-        ],
-      } as GetUserPayoutSettingsQueryResult["data"],
-    },
-  },
-];
-
 const queryClient = new QueryClient();
 
 export default {
@@ -95,7 +50,6 @@ export default {
         <Story />
       </QueryClientProvider>
     ),
-    withMockedProvider(mocks),
     withAuthProvider({ userId: USER_ID }),
   ],
 };
