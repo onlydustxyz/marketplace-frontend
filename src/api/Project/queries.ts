@@ -100,7 +100,7 @@ export function useRewardableItemsQueryParams(props: RewardableItemsQueryParamsP
   );
 
   useEffect(() => {
-    if (search || search === "") {
+    if (typeof search === "string") {
       debounceSearch(search);
     }
   }, [search, debounceSearch]);

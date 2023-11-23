@@ -39,7 +39,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   );
 
   useEffect(() => {
-    if (search || search === "") {
+    if (typeof search === "string") {
       debounceSearch(search);
     }
   }, [search, debounceSearch]);
