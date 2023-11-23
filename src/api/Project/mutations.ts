@@ -2,6 +2,7 @@ import { API_PATH } from "src/api/ApiPath";
 import { components } from "src/__generated/api";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
+import { PROJECT_TAGS } from "./tags";
 
 export type UseCreateProjectBody = components["schemas"]["CreateProjectRequest"];
 export type UseCreateProjectResponse = components["schemas"]["CreateProjectResponse"];
