@@ -4,7 +4,7 @@ import { validateImpersonationHeader } from "src/utils/validateImpersonationHead
 
 type useHttpOptionsReturn = {
   options: {
-    method: "GET" | "POST" | "PUT" | "DELETE";
+    method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
     headers: {
       Authorization?: string;
       "Content-Type": string;
@@ -15,7 +15,7 @@ type useHttpOptionsReturn = {
   isValidImpersonation: boolean;
 };
 
-export function useHttpOptions(method: "GET" | "POST" | "PUT" | "DELETE"): useHttpOptionsReturn {
+export function useHttpOptions(method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"): useHttpOptionsReturn {
   const { getImpersonationHeaders } = useImpersonationClaims();
   const impersonationHeaders = getImpersonationHeaders();
 
