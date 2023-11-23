@@ -70,13 +70,16 @@ const Template: ComponentStory<typeof ContributorSelectView> = () => {
 const args = {
   selectedGithubHandle: "test",
   setSelectedGithubHandle: Function.prototype(),
-  githubHandleSubstring: "test",
-  setGithubHandleSubstring: Function.prototype(),
+  search: "test",
+  setSearch: Function.prototype(),
   filteredContributors,
   filteredExternalContributors,
   isSearchGithubUsersByHandleSubstringQueryLoading: false,
   contributor: filteredContributors[0],
-  debouncedGithubHandleSubstring: "test",
+  fetchNextPage: Function.prototype(),
+  hasNextPage: false,
+  isFetchingNextPage: false,
+  isError: false,
 };
 
 export const Default = Template.bind({});

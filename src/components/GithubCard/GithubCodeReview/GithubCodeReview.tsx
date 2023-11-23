@@ -1,4 +1,5 @@
 import { GithubCodeReviewFragment } from "src/__generated/graphql";
+import { RewardableItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
@@ -17,7 +18,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment) {
+function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment & RewardableItem>) {
   const status = codeReview?.status?.toUpperCase();
 
   switch (status) {
@@ -27,11 +28,11 @@ function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment) {
     case GithubCodeReviewStatus.Pending:
     case ContributionStatus.InProgress:
     default:
-      return new Date(codeReview.githubPullRequest?.createdAt);
+      return new Date(codeReview.githubPullRequest?.createdAt ?? codeReview.createdAt);
   }
 }
 
-function getStatus(codeReview: GithubCodeReviewFragment) {
+function getStatus(codeReview: Partial<GithubCodeReviewFragment & RewardableItem>) {
   const status = codeReview.status?.toUpperCase();
   const outcome = codeReview.outcome?.toUpperCase();
 
@@ -55,7 +56,7 @@ export type GithubCodeReviewProps = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  codeReview: GithubCodeReviewFragment;
+  codeReview: Partial<GithubCodeReviewFragment & RewardableItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -69,7 +70,8 @@ export default function GithubCodeReview({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: GithubCodeReviewProps) {
-  const { title, number, htmlUrl, createdAt } = codeReview?.githubPullRequest || {};
+  const { title, number, htmlUrl, createdAt } = codeReview?.githubPullRequest || codeReview || {};
+
   const { repoName } = parsePullRequestLink(htmlUrl ?? "");
 
   return (

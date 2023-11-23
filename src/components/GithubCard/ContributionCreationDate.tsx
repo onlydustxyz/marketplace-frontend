@@ -42,6 +42,7 @@ export function ContributionCreationDate({
   const tooltipId = `${id}-created-at-tooltip`;
   const { className, ...rest } = tooltipProps;
   const creationDateShort = displayRelativeDate(date);
+
   const creationDate = T(creationTokens[type], {
     date: getFormattedDateGB(date),
     time: getFormattedTimeUS(date),

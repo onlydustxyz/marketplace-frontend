@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
-import {
-  GetProjectPendingContributorsDocument,
-  GetProjectPendingContributorsQuery,
-  useSearchGithubUsersByHandleSubstringQuery,
-} from "src/__generated/graphql";
+import { useCallback, useEffect, useState } from "react";
 import View from "./View";
 import { useLocation } from "react-router-dom";
 import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
-import { useDebounce } from "usehooks-ts";
-import isDefined from "src/utils/isDefined";
-import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
+import ProjectApi from "src/api/Project";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
+import { debounce } from "lodash";
+import UsersApi from "src/api/Users";
 
-const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
+enum ContributorsSortFields {
+  ContributionCount = "CONTRIBUTION_COUNT",
+  Earned = "EARNED",
+  Login = "LOGIN",
+  RewardCount = "REWARD_COUNT",
+  ToRewardCount = "TO_REWARD_COUNT",
+}
 
 type Props = {
   projectId: string;
@@ -25,25 +27,51 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(
     location.state?.recipientGithubLogin || null
   );
-  const [githubHandleSubstring, setGithubHandleSubstring] = useState<string>("");
-  const debouncedGithubHandleSubstring = useDebounce(githubHandleSubstring, EXTERNAL_USER_QUERY_DEBOUNCE_TIME);
-  const handleSubstringQuery = `type:user ${debouncedGithubHandleSubstring} in:login`;
 
-  const { data } = useSuspenseQuery<GetProjectPendingContributorsQuery>(GetProjectPendingContributorsDocument, {
-    variables: { projectId },
-    fetchPolicy: "no-cache",
-  });
-  const contributors = data?.projectsPendingContributors.map(u => u.user).filter(isDefined);
+  const [search, setSearch] = useState<string>("");
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-  const searchGithubUsersByHandleSubstringQuery = useSearchGithubUsersByHandleSubstringQuery({
-    variables: { handleSubstringQuery },
-    skip: (githubHandleSubstring?.length || 0) < 2 || githubHandleSubstring !== debouncedGithubHandleSubstring,
+  const debounceSearch = useCallback(
+    debounce(newSearch => {
+      setDebouncedSearch(newSearch);
+    }, 300),
+    []
+  );
+
+  useEffect(() => {
+    if (typeof search === "string") {
+      debounceSearch(search);
+    }
+  }, [search, debounceSearch]);
+
+  const { data: searchedUsers, isLoading: isUsersSearchLoading } = UsersApi.queries.useUsersSearchByLogin({
+    params: { login: debouncedSearch, externalSearchOnly: "true" },
+    options: { enabled: debouncedSearch !== "" },
   });
+
+  const { queryParams } = useQueryParamsSorting({
+    field: ContributorsSortFields.Login,
+    isAscending: true,
+    storageKey: "ProjectContributionSorting",
+  });
+
+  const {
+    data: ProjectContributors,
+    isError,
+    isLoading: isProjectContributorsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = ProjectApi.queries.useProjectContributorsInfiniteList({
+    params: { projectId, queryParams },
+  });
+
+  const contributors = ProjectContributors?.pages.flatMap(({ contributors }) => contributors) ?? [];
 
   const internalContributors: Contributor[] = contributors.map(c => {
-    const completedUnpaidPullRequestCount = c.completedUnpaidPullRequestsAggregate.aggregate?.count || 0;
-    const completedUnpaidIssueCount = c.completedUnpaidIssuesAggregate.aggregate?.count || 0;
-    const completedUnpaidCodeReviewCount = c.completedUnpaidCodeReviewsAggregate.aggregate?.count || 0;
+    const completedUnpaidPullRequestCount = c.pullRequestToReward || 0;
+    const completedUnpaidIssueCount = c.issueToReward || 0;
+    const completedUnpaidCodeReviewCount = c.codeReviewToReward || 0;
 
     return {
       githubUserId: c.githubUserId,
@@ -54,21 +82,15 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       unpaidMergedPullsCount: completedUnpaidPullRequestCount,
       unpaidCompletedIssuesCount: completedUnpaidIssueCount,
       unpaidCompletedCodeReviewsCount: completedUnpaidCodeReviewCount,
-      userId: c.userId,
+      userId: c.login,
     };
   });
 
-  const filteredContributors = sortListByLogin(
-    internalContributors.filter(
-      contributor =>
-        !githubHandleSubstring ||
-        (githubHandleSubstring && contributor.login?.toLowerCase().startsWith(githubHandleSubstring.toLowerCase()))
-    )
+  const filteredContributors = internalContributors.filter(
+    contributor => !search || (search && contributor.login?.toLowerCase().startsWith(search.toLowerCase()))
   );
 
-  const filteredExternalContributors: Contributor[] = sortListByLogin(
-    searchGithubUsersByHandleSubstringQuery?.data?.searchUsers
-  )
+  const filteredExternalContributors: Contributor[] = sortListByLogin(searchedUsers?.externalContributors)
     ?.slice(0, 5)
     .filter(
       contributor =>
@@ -77,11 +99,11 @@ export default function ContributorSelect({ projectId, contributor, setContribut
           .includes(contributor.login.toLocaleLowerCase())
     )
     .map(c => ({
-      githubUserId: c.id,
+      githubUserId: c.githubUserId,
       login: c.login,
       avatarUrl: c.avatarUrl,
       unpaidCompletedContributions: 0,
-      userId: c.user?.id,
+      userId: c.login,
     }));
 
   useEffect(() => {
@@ -98,13 +120,16 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       {...{
         selectedGithubHandle,
         setSelectedGithubHandle,
-        githubHandleSubstring,
-        setGithubHandleSubstring,
+        search,
+        setSearch,
         filteredContributors,
         filteredExternalContributors,
-        isSearchGithubUsersByHandleSubstringQueryLoading: searchGithubUsersByHandleSubstringQuery.loading,
+        isSearchGithubUsersByHandleSubstringQueryLoading: isUsersSearchLoading || isProjectContributorsLoading,
         contributor,
-        debouncedGithubHandleSubstring,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        isError,
       }}
     />
   );

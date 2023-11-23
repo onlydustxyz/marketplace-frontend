@@ -1,14 +1,7 @@
 import { cn } from "src/utils/cn";
 import { useMemo } from "react";
 import { useFormContext, useFormState } from "react-hook-form";
-import {
-  GithubIssueFragment,
-  LiveGithubIssueFragment,
-  WorkItemFragment,
-  WorkItemType,
-  useFetchIssueLazyQuery,
-  useFetchPullRequestLazyQuery,
-} from "src/__generated/graphql";
+import { WorkItemType, useFetchIssueLazyQuery, useFetchPullRequestLazyQuery } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
@@ -20,15 +13,17 @@ import {
   parsePullRequestLink,
 } from "src/utils/github";
 import {
+  RewardableWorkItem,
   issueToWorkItem,
   pullRequestToWorkItem,
 } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import { RewardableItem } from "src/api/Project/queries";
 
 type Props = {
   projectId: string;
   type: WorkItemType;
-  addWorkItem: (workItem: WorkItemFragment) => void;
+  addWorkItem: (workItem: RewardableWorkItem) => void;
   contributorId: number;
 };
 
@@ -40,7 +35,7 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId }: Pr
   const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
-        addWorkItem(issueToWorkItem(liveIssueToCached(data.fetchIssue)));
+        addWorkItem(issueToWorkItem(liveIssueToCached(data.fetchIssue as unknown as RewardableItem)));
         resetField(inputName);
       } else {
         setError(inputName, {
@@ -62,7 +57,7 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId }: Pr
   const [fetchPullRequest] = useFetchPullRequestLazyQuery({
     onCompleted: data => {
       if (data.fetchPullRequest) {
-        addWorkItem(pullRequestToWorkItem(data.fetchPullRequest.githubPullRequest));
+        addWorkItem(pullRequestToWorkItem(data.fetchPullRequest.githubPullRequest as unknown as RewardableItem));
         resetField(inputName);
       } else {
         setError(inputName, {
@@ -156,9 +151,13 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId }: Pr
   );
 }
 
-export const liveIssueToCached = (issue: LiveGithubIssueFragment): GithubIssueFragment => ({
+type RewardableItemToCached = RewardableItem & {
+  assigneeIds: number[];
+  commentsCount: number;
+};
+
+export const liveIssueToCached = (issue: RewardableItem): RewardableItemToCached => ({
   ...issue,
-  __typename: "GithubIssues",
   assigneeIds: [],
   commentsCount: 0,
 });

@@ -383,6 +383,7 @@
           "externalUsers": "EXTERNAL USERS",
           "fallback": {
             "noUser": "No user found",
+            "error": "An error occurred, please try again later.",
             "typeMoreCharacters": "Type 3 or more characters to display external users"
           },
           "placeholder": "Search by Github handle"
@@ -459,6 +460,7 @@
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
           "success": "Issue created and contribution added",
+          "error": "The issue could not be created!",
           "tab": "Other work",
           "tabShort": "Other",
           "title": "Describe the work",
@@ -479,6 +481,10 @@
         "emptyState": {
           "title": "Nothing to show",
           "subtitle": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh."
+        },
+        "ignoreUnignoreContribution": {
+          "success": "The contribution was successfully __action__",
+          "error": "The contribution could not be __action__"
         }
       },
       "leftToSpend": "Left to spend",

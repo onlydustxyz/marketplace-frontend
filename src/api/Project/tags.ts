@@ -10,4 +10,7 @@ export const PROJECT_TAGS = {
     "contributions",
     { projectId, contributionId },
   ],
+  rewardable_items: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "rewardable-items", { projectId }],
+  other_works: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "other-works", { projectId }],
+  contributors: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributors", { projectId }],
 };
