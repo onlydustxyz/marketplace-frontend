@@ -158,7 +158,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       moreInfo: [
         {
           url: project.moreInfoUrl,
-          value: "website",
+          value: project.moreInfoUrl, // more info name
         },
       ],
       githubRepos: (project.repos || []).map(repo => ({
