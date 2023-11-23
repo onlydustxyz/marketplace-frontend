@@ -1,5 +1,5 @@
 import { filter } from "lodash";
-import { GithubContributionType } from "src/types";
+import { ContributionStatus, GithubContributionType } from "src/types";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { RewardableItem } from "src/api/Project/queries";
 
@@ -8,7 +8,7 @@ export const filterUnpaidContributionsByType = (
   contributions: RewardableItem[]
 ): RewardableItem[] => {
   return filter(contributions, {
-    status: "COMPLETED",
+    status: ContributionStatus.Completed,
     type,
     ignored: false,
   });
