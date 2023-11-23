@@ -59,7 +59,7 @@ export default function OverviewPanel({
 
             {showPendingInvites &&
               projectInvitedLeads.map(lead => (
-                <Flex key={lead.id} className="gap-1">
+                <Flex key={lead.login} className="gap-1">
                   <Contributor {...contributorProps(lead)} />
                   <span className="text-sm text-spaceBlue-200">({T("common.pendingInvite")})</span>
                 </Flex>
