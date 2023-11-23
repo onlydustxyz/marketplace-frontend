@@ -4,7 +4,7 @@ import Contributor from "src/components/Contributor";
 import { RewardableItem } from "src/api/Project/queries";
 
 type CommitsTooltipProps = {
-  pullRequest: Partial<GithubPullRequestWithCommitsFragment> & Partial<RewardableItem>;
+  pullRequest: Partial<GithubPullRequestWithCommitsFragment & RewardableItem>;
   userCommits?: number;
   commitsCount?: number;
   contributorLogin: string;
