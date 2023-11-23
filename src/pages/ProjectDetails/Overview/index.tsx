@@ -4,7 +4,6 @@ import { Dispatch, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { components } from "src/__generated/api";
 import {
   OwnUserProfileDetailsFragment,
   OwnUserProfileDocument,
@@ -53,6 +52,7 @@ import { EditProjectButton } from "../components/EditProjectButton";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
+import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -67,9 +67,6 @@ export default function Overview() {
   const projectSlug = project?.slug;
   const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
-  const githubRepos = sortBy(project?.repos, "stars")
-    .reverse()
-    .filter(r => r);
   const sponsors = project?.sponsors || [];
   const moreInfoLink = project?.moreInfoUrl || null;
   const topContributors = project?.topContributors || [];
@@ -80,7 +77,7 @@ export default function Overview() {
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: projectId });
 
-  const { alreadyApplied, applyToProject } = useApplications(projectId);
+  const { alreadyApplied, applyToProject } = useApplications(projectId, projectSlug);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
 
   const { data: userProfileData } = useUserProfile({ githubUserId });
@@ -97,11 +94,16 @@ export default function Overview() {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = remainingBudget === 0;
+  const isRewardDisabled = !remainingBudget;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
   const showPendingInvites = isProjectLeader || roles.includes(HasuraUserRole.Admin);
+
+  const nbRepos = useMemo(
+    () => project.organizations?.flatMap(({ repos }) => repos).length ?? 0,
+    [project.organizations]
+  );
 
   return (
     <>
@@ -165,7 +167,37 @@ export default function Overview() {
               }}
             />
           )}
-          <GithubRepositoriesCard githubRepos={githubRepos} />
+
+          <Card className="flex flex-col gap-4">
+            <div className="flex flex-row items-center justify-between border-b border-greyscale-50/8 pb-2 font-walsheim text-base font-medium text-greyscale-50">
+              <div className="flex flex-row items-center gap-3">
+                <GitRepositoryLine className="text-2xl text-white" />
+                {T("project.details.overview.repositories.title")}
+              </div>
+              <Badge value={nbRepos} size={BadgeSize.Small} />
+            </div>
+            <div className="flex flex-col gap-6 divide-y divide-greyscale-50/8">
+              {project.organizations?.map((organization, i) => (
+                <div key={organization.name ?? organization?.login} className={i > 0 ? "pt-6" : ""}>
+                  <VerticalListItemCard
+                    ContainerProps={{ className: "bg-transparent gap-5 p-0 lg:p-0 border-0" }}
+                    title={organization?.name ?? organization?.login ?? ""}
+                    avatarAlt={organization?.name ?? organization?.login ?? ""}
+                    avatarSrc={organization?.avatarUrl ?? ""}
+                  >
+                    <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+                      {sortBy(organization.repos, "stars")
+                        .reverse()
+                        .filter(r => r)
+                        .map(githubRepo => (
+                          <GithubRepoDetails key={githubRepo.id} githubRepo={githubRepo} />
+                        ))}
+                    </div>
+                  </VerticalListItemCard>
+                </div>
+              ))}
+            </div>
+          </Card>
         </div>
         <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
           {hiring && !isCurrentUserMember && profile && (
@@ -249,30 +281,6 @@ function ProjectDescriptionCard({
         </div>
       </div>
       <MarkdownPreview className="text-sm">{description}</MarkdownPreview>
-    </Card>
-  );
-}
-
-interface GithubRepositoriesCardProps {
-  githubRepos: components["schemas"]["GithubRepoResponse"][];
-}
-
-function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
-  const { T } = useIntl();
-  return (
-    <Card className="flex flex-col gap-4">
-      <div className="flex flex-row items-center justify-between border-b border-greyscale-50/8 pb-2 font-walsheim text-base font-medium text-greyscale-50">
-        <div className="flex flex-row items-center gap-3">
-          <GitRepositoryLine className="text-2xl text-white" />
-          {T("project.details.overview.repositories.title")}
-        </div>
-        <Badge value={githubRepos.length} size={BadgeSize.Small} />
-      </div>
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
-        {githubRepos?.map(githubRepo => (
-          <GithubRepoDetails key={githubRepo.id} githubRepo={githubRepo} />
-        ))}
-      </div>
     </Card>
   );
 }

@@ -11,6 +11,7 @@ import { Tabs } from "src/components/Tabs/Tabs";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import GithubLogo from "src/icons/GithubLogo";
 import { OAuthGithubConfigLink } from "src/utils/githubSetupLink";
+import { EditContext } from "../../EditContext";
 
 enum TabsType {
   Orgs = "Orgs",
@@ -23,6 +24,7 @@ function TabContents({ children }: PropsWithChildren) {
 
 export const EditPanel = () => {
   const { T } = useIntl();
+  const { PoolingFeedback } = useContext(EditContext);
   const { isOpen, toggle } = useContext(EditPanelContext);
   const [activeTab, setActiveTab] = useState<TabsType>(TabsType.Orgs);
   const tabItems = useMemo(
@@ -72,7 +74,12 @@ export const EditPanel = () => {
             {T("project.details.edit.panel.title")}
           </div>
           <div className="mb-6 w-full px-2 md:border-b md:border-greyscale-50/8">
-            <Tabs tabs={tabItems} showMobile mobileTitle={T("project.details.edit.panel.title")} />
+            <Tabs
+              tabs={tabItems}
+              showMobile
+              mobileTitle={T("project.details.edit.panel.title")}
+              rightElement={<div className="mb-1 flex w-full items-center justify-end">{PoolingFeedback}</div>}
+            />
           </div>
           <div className="scrollbar-sm flex-1 overflow-auto px-2">
             {ActiveTab}

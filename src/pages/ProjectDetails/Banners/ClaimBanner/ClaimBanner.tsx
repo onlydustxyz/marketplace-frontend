@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
@@ -12,6 +12,7 @@ import SendPlane2Line from "src/icons/SendPlane2Line";
 import FeedbackButton from "src/App/Layout/Header/FeedbackButton";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 
 export default function ClaimBanner() {
   const { T } = useIntl();
@@ -19,30 +20,39 @@ export default function ClaimBanner() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: project, isSuccess } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
-  const poolingCount = useRef(0);
 
-  const { data: myOrganizations, isRefetching } = MeApi.queries.useGithubOrganizations({
+  const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
+    limites: 4,
+    delays: 3000,
+  });
+
+  const {
+    data: myOrganizations,
+    isRefetching,
+    isLoading,
+    refetch,
+  } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
       enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
-      refetchOnWindowFocus: () => {
-        poolingCount.current = 0;
-        return true;
-      },
-      refetchInterval: () => {
-        if (poolingCount.current < 4) {
-          return 2000;
-        }
-        return 0;
-      },
+      refetchOnWindowFocus,
+      refetchInterval,
     },
   });
 
   useEffect(() => {
-    if (isRefetching) {
-      poolingCount.current = poolingCount.current + 1;
-    }
+    onRefetching(isRefetching);
   }, [isRefetching]);
+
+  const PoolingFeedback = usePoolingFeedback({
+    onForcePooling,
+    isLoading,
+    isRefetching,
+    fetch: refetch,
+    ui: {
+      label: T("project.details.create.syncOganizations"),
+    },
+  });
 
   const { mutate: claimProjectMutation, ...restMutation } = MeApi.mutations.useClaimProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
@@ -65,7 +75,7 @@ export default function ClaimBanner() {
 
   const canDisplay = useMemo(() => {
     if (project && myOrganizations) {
-      if (project.leaders.length > 0 && project.invitedLeaders.length > 0) {
+      if (project.leaders.length > 0 || project.invitedLeaders.length > 0) {
         return false;
       }
 
@@ -184,24 +194,27 @@ export default function ClaimBanner() {
             </div>
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-            <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
-              {restMutation.isPending ? <Spinner /> : null}
-              <Button
-                type={ButtonType.Secondary}
-                size={ButtonSize.Md}
-                onClick={onCancel}
-                disabled={restMutation.isPending}
-              >
-                {T("project.claim.panel.cancel")}
-              </Button>
-              <Button
-                type={ButtonType.Primary}
-                size={ButtonSize.Md}
-                disabled={!canSubmit || restMutation.isPending}
-                onClick={onSubmitClaim}
-              >
-                {T("project.claim.panel.submit")}
-              </Button>
+            <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
+              {PoolingFeedback}
+              <div className="flex items-center justify-end gap-5 ">
+                {restMutation.isPending ? <Spinner /> : null}
+                <Button
+                  type={ButtonType.Secondary}
+                  size={ButtonSize.Md}
+                  onClick={onCancel}
+                  disabled={restMutation.isPending}
+                >
+                  {T("project.claim.panel.cancel")}
+                </Button>
+                <Button
+                  type={ButtonType.Primary}
+                  size={ButtonSize.Md}
+                  disabled={!canSubmit || restMutation.isPending}
+                  onClick={onSubmitClaim}
+                >
+                  {T("project.claim.panel.submit")}
+                </Button>
+              </div>
             </div>
           </div>
         </div>

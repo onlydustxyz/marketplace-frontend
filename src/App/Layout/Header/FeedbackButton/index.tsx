@@ -1,21 +1,16 @@
 import { SliderButton } from "@typeform/embed-react";
-import { cn } from "src/utils/cn";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
-import { useUserIdentityQuery } from "src/__generated/graphql";
+import MeApi from "src/api/me";
 
 export default function FeedbackButton({ customButton }: { customButton?: React.ReactNode }) {
-  const { isLoggedIn, user } = useAuth();
+  const { user } = useAuth();
   const { T } = useIntl();
 
-  const getUserIdentityQuery = useUserIdentityQuery({
-    skip: !isLoggedIn,
-    fetchPolicy: "network-only",
-    variables: { userId: user?.id },
-  });
-
-  const { lastname, firstname } = getUserIdentityQuery.data?.userPayoutInfo[0] || {};
+  const { data } = MeApi.queries.useGetMyPayoutInfo({});
+  const { person } = data ?? {};
+  const { firstname = "", lastname = "" } = person ?? {};
 
   return (
     <>
@@ -25,26 +20,19 @@ export default function FeedbackButton({ customButton }: { customButton?: React.
           iframeProps={{ title: T("navbar.feedback.popupTitle") }}
           opacity={100}
           position="right"
-          autoClose={true}
           hidden={{
-            firstname: firstname || "",
-            lastname: lastname || "",
+            firstname,
+            lastname,
             email: user.email,
             github: user.login,
           }}
-          transitiveSearchParams={true}
+          autoClose
+          transitiveSearchParams
         >
           {customButton ? (
             customButton
           ) : (
-            <div
-              className={cn(
-                "flex flex-row items-center justify-center gap-2 rounded-xl font-walsheim",
-                "w-fit font-medium drop-shadow-bottom-sm hover:shadow-none",
-                "h-8 border border-greyscale-50 bg-white/5 px-4 py-2 text-sm text-greyscale-50",
-                "hover:border-spacePurple-200 hover:text-spacePurple-100"
-              )}
-            >
+            <div className="flex h-8 w-fit flex-row items-center justify-center gap-2 rounded-xl border border-greyscale-50 bg-white/5 px-4 py-2 font-walsheim text-sm font-medium text-greyscale-50 drop-shadow-bottom-sm hover:border-spacePurple-200 hover:text-spacePurple-100 hover:shadow-none">
               <DiscussLine />
               <span>{T("navbar.feedback.button")}</span>
             </div>

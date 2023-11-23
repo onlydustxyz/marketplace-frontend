@@ -18,7 +18,15 @@ const variants = {
 
 export type Variants = keyof typeof variants;
 
-export function DesktopView({ tabs, variant = "grey" }: { tabs: Tab[]; variant: Variants }) {
+export function DesktopView({
+  tabs,
+  variant = "grey",
+  rightElement,
+}: {
+  tabs: Tab[];
+  variant: Variants;
+  rightElement?: React.ReactNode;
+}) {
   return (
     <div className="flex items-center gap-8">
       {tabs.map(({ active, onClick, testId, children }, i) => {
@@ -39,6 +47,7 @@ export function DesktopView({ tabs, variant = "grey" }: { tabs: Tab[]; variant: 
           </button>
         );
       })}
+      {rightElement ? rightElement : null}
     </div>
   );
 }

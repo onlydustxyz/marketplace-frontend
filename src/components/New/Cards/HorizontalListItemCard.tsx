@@ -35,7 +35,7 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
   return (
     <li>
       <Card
-        className={cn("bg-card-background-light p-5 shadow-medium", ContainerClassName)}
+        className={cn("bg-card-background-light p-4 shadow-medium lg:p-4", ContainerClassName)}
         fullWidth
         {...RestContainerProps}
       >

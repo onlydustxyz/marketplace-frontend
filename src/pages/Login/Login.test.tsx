@@ -4,21 +4,10 @@ import { describe, expect, it, vi } from "vitest";
 
 import { MockedResponse } from "@apollo/client/testing";
 import { screen } from "@testing-library/react";
-import { GetPaymentRequestsDocument, GetPaymentRequestsQueryResult } from "e2e/playwright/__generated/graphql";
 import { generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import {
-  GetUserPayoutSettingsDocument,
-  GetUserPayoutSettingsQueryResult,
-  PendingProjectLeaderInvitationsDocument,
-  PendingProjectLeaderInvitationsQueryResult,
-  PendingUserPaymentsDocument,
-  PendingUserPaymentsQueryResult,
-  UserPayoutSettingsFragment,
-  WorkItemType,
-} from "src/__generated/graphql";
+
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
-import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import Login, { AUTH_CODE_QUERY_KEY } from ".";
@@ -67,123 +56,6 @@ vi.mock("jwt-decode", () => ({
   },
 }));
 
-const pendingProjectLeadInvitationMock = {
-  request: {
-    query: PendingProjectLeaderInvitationsDocument,
-    variables: { githubUserId: TEST_GITHUB_USER_ID },
-  },
-  result: {
-    data: {
-      pendingProjectLeaderInvitations: [
-        {
-          id: "invitation-id",
-          project: {
-            id: TEST_PROJECT_ID,
-            key: TEST_PROJECT_ID,
-          },
-        },
-      ],
-    } as PendingProjectLeaderInvitationsQueryResult["data"],
-  },
-};
-
-const pendingPaymentsMock = {
-  request: {
-    query: PendingUserPaymentsDocument,
-    variables: { userId: TEST_USER_ID },
-  },
-  result: {
-    data: {
-      registeredUsers: [
-        {
-          __typename: "RegisteredUsers",
-          id: TEST_USER_ID,
-          githubUserId: TEST_GITHUB_USER_ID,
-          paymentRequests: [
-            {
-              __typename: "PaymentRequests",
-              id: "payment-1",
-              amount: 100,
-              paymentsAggregate: { aggregate: { sum: { amount: null } } },
-            },
-          ],
-        },
-      ],
-    } as PendingUserPaymentsQueryResult["data"],
-  },
-};
-
-const paymentRequestsMock = {
-  request: {
-    query: GetPaymentRequestsDocument,
-    variables: {
-      githubUserId: TEST_GITHUB_USER_ID,
-    },
-  },
-  result: {
-    data: {
-      paymentRequests: [
-        {
-          __typename: "PaymentRequests",
-          id: "705e6b37-d0ee-4e87-b681-7009dd691965",
-          requestedAt: "2023-01-10T19:10:27.802657",
-          payments: [
-            {
-              __typename: "Payments",
-              amount: 100,
-              currencyCode: "USD",
-            },
-            {
-              __typename: "Payments",
-              amount: 100,
-              currencyCode: "USD",
-            },
-          ],
-          amount: 200,
-          workItems: [
-            {
-              __typename: "WorkItems",
-              id: "705e6b37-d0ee-4e87-b681-7009dd691965",
-              type: WorkItemType.Issue,
-              githubIssue: null,
-              githubPullRequest: null,
-            },
-          ],
-          invoiceReceivedAt: null,
-          project: {
-            __typename: "Projects",
-            id: "632d5da7-e590-4815-85ea-82a5585e6049",
-            shortDescription: "SOOOOOO awesome",
-            logoUrl: null,
-            name: "MyAwesomeProject",
-          },
-        },
-      ],
-    } as GetPaymentRequestsQueryResult["data"],
-  },
-};
-
-const payoutSettingsMock = {
-  request: {
-    query: GetUserPayoutSettingsDocument,
-    variables: { githubUserId: TEST_GITHUB_USER_ID },
-  },
-  result: {
-    data: {
-      registeredUsers: [
-        {
-          __typename: "RegisteredUsers",
-          id: TEST_USER_ID,
-          userPayoutInfo: {
-            __typename: "UserPayoutInfo",
-            userId: TEST_USER_ID,
-          } as UserPayoutSettingsFragment,
-        },
-      ],
-    } as GetUserPayoutSettingsQueryResult["data"],
-  },
-};
-
 const renderWithRoutes = (route: string, mocks?: MockedResponse[]) =>
   renderWithIntl(
     <Routes>
@@ -213,23 +85,6 @@ describe("Login page", () => {
   it("should redirect to homepage if no refresh token is passed as a query parameter in the URL", async () => {
     renderWithRoutes(RoutePaths.Login);
     await screen.findByText("Projects");
-  });
-
-  it("should redirect to project details with pending invitation at first sign-in", async () => {
-    renderWithRoutes(`${RoutePaths.Login}?${AUTH_CODE_QUERY_KEY}=${AUTH_CODE_TEST_VALUE}`, [
-      pendingProjectLeadInvitationMock,
-    ]);
-    await screen.findByText("ProjectDetails");
-  });
-
-  it("should redirect to rewards page if pending payments and missing payout info at first sign-in", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
-    renderWithRoutes(`${RoutePaths.Login}?${AUTH_CODE_QUERY_KEY}=${AUTH_CODE_TEST_VALUE}`, [
-      pendingPaymentsMock,
-      paymentRequestsMock,
-      payoutSettingsMock,
-    ]);
-    await screen.findByText("Rewards");
   });
 
   it("should redirect to last visited page if not first sign-in", async () => {

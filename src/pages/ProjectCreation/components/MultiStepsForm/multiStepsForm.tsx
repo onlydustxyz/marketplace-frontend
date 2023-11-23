@@ -1,10 +1,11 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { MultiStepsFormProps } from "./multiStepsForm.type";
 import Button, { ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
+import { CreateProjectContext } from "../../ProjectCreation.context";
 
 export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   step,
@@ -20,6 +21,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   stickyChildren,
 }) => {
   const { T } = useIntl();
+  const { PoolingFeedback } = useContext(CreateProjectContext);
 
   return (
     <div className="relative flex max-h-full w-full max-w-full flex-col overflow-hidden bg-card-background-base md:w-[688px] md:rounded-2xl">
@@ -44,6 +46,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
         className="z-10 flex w-full border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
       >
         <Flex justify="start" item="center">
+          {PoolingFeedback}
           {footerRightElement ? footerRightElement : null}
         </Flex>
         <Flex justify="end" item="center" gap={6}>

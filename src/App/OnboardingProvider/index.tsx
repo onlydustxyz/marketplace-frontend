@@ -1,10 +1,8 @@
 import { createContext, PropsWithChildren, useContext } from "react";
-import { useGetOnboardingStateQuery } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { generatePath, Navigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
-
-export const TERMS_AND_CONDITIONS_LAST_REDACTION_DATE = "2023-06-01";
+import MeApi from "src/api/me";
 
 type Onboarding = {
   onboardingInProgress: boolean;
@@ -13,32 +11,24 @@ type Onboarding = {
 export const OnboardingContext = createContext<Onboarding>({ onboardingInProgress: false });
 
 export default function OnboardingProvider({ children }: PropsWithChildren) {
-  const { user, impersonating } = useAuth();
-  const userId = user?.id;
+  const { impersonating } = useAuth();
 
-  const { data, loading } = useGetOnboardingStateQuery({
-    variables: { userId },
-    skip: !userId || impersonating,
-  });
+  const { data, isLoading } = MeApi.queries.useGetMe({});
 
   const location = useLocation();
 
   const onboardingRoutes: string[] = [RoutePaths.TermsAndConditions, RoutePaths.Onboarding];
 
-  const termsAndConditionsAccepted =
-    data?.onboardingsByPk?.termsAndConditionsAcceptanceDate &&
-    new Date(data?.onboardingsByPk?.termsAndConditionsAcceptanceDate) >=
-      new Date(TERMS_AND_CONDITIONS_LAST_REDACTION_DATE);
-
-  const onboardingWizzardCompleted = !!data?.onboardingsByPk?.profileWizardDisplayDate;
-
   const onboardingInProgress = onboardingRoutes.includes(location.pathname);
 
-  const skipRedirection = onboardingInProgress || !userId || loading;
+  const skipRedirection = onboardingInProgress || !data?.id || isLoading;
 
-  return !skipRedirection && !onboardingWizzardCompleted && !impersonating ? (
+  const showOnboarding = !skipRedirection && !data?.hasSeenOnboardingWizard && !impersonating;
+  const showTermsAndConditions = !skipRedirection && !data?.hasAcceptedLatestTermsAndConditions && !impersonating;
+
+  return showOnboarding ? (
     <Navigate to={generatePath(RoutePaths.Onboarding)} />
-  ) : !skipRedirection && !termsAndConditionsAccepted && !impersonating ? (
+  ) : showTermsAndConditions ? (
     <Navigate
       to={generatePath(RoutePaths.TermsAndConditions)}
       state={{ skipIntro: location.state?.onboardingWizzardCompleted }}

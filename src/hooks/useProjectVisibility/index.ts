@@ -60,8 +60,6 @@ export const isUserMemberOfProject = ({ project, user }: Props) => {
     project?.leaders?.some(l => l.id === user?.userId) ||
     false;
   const isInvited = project?.pendingInvitations?.some(i => i.githubUserId === user.githubUserId) || false;
-  // Dirty hack to make sure that the project is visible to the user, soon the backend will handle this
-  const isItHandledInBackend = import.meta.env.VITE_USE_APOLLO === "false";
 
-  return isContributor || isPendingContributor || isRewarded || isProjectLead || isInvited || isItHandledInBackend;
+  return isContributor || isPendingContributor || isRewarded || isProjectLead || isInvited;
 };

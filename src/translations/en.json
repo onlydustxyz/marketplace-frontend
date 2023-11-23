@@ -861,6 +861,7 @@
           "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project?",
+        "syncOganizations": "Synchronize your organization",
         "startPopOver": {
           "title": "Resume project creation?",
           "description": "If you decide to start over all your previous changes will be lost.",

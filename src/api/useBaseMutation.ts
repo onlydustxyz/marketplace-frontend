@@ -19,7 +19,7 @@ export interface UseBaseMutationProps<R = unknown> extends BaseMutationOptions<R
   queryParams?: QueryParams;
   invalidatesTags?: { queryKey: QueryTags; exact: boolean }[];
   stringifiedBody?: boolean;
-  method?: "GET" | "POST" | "PUT" | "DELETE";
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 }
 
 export interface UseMutationProps<RESULT = unknown, PARAMS = unknown, Payload = unknown> {
