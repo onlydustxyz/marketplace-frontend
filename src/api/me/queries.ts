@@ -98,6 +98,19 @@ const useGithubOrganizations = ({ options = {} }: UseQueryProps<UseGithubOrganiz
   });
 };
 
+export type UseGetMyPayoutInfoResponse = components["schemas"]["UserPayoutInformationResponse"];
+
+const useGetMyPayoutInfo = ({ options = {} }: UseQueryProps<UseGetMyPayoutInfoResponse, undefined>) => {
+  const { isLoggedIn } = useAuth();
+
+  return useBaseQuery<UseGetMyPayoutInfoResponse>({
+    resourcePath: API_PATH.MY_PAYOUT_INFO,
+    tags: ME_TAGS.payoutInfo(),
+    ...options,
+    enabled: isLoggedIn && (options.enabled === undefined ? true : options.enabled),
+  });
+};
+
 export default {
   useGetMe,
   useMyRewardsInfiniteList,
@@ -105,4 +118,5 @@ export default {
   useMyContributedProjects,
   useMyContributedRepos,
   useGithubOrganizations,
+  useGetMyPayoutInfo,
 };

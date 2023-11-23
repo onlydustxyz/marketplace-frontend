@@ -18212,13 +18212,6 @@ export type Users_StreamCursorValueInput = {
   updatedAt: InputMaybe<Scalars['timestamptz']>;
 };
 
-export type UserIdentityQueryVariables = Exact<{
-  userId: Scalars['uuid'];
-}>;
-
-
-export type UserIdentityQuery = { __typename?: 'query_root', userPayoutInfo: Array<{ __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null }> };
-
 export type GetPaymentRequestIdsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
@@ -19354,43 +19347,6 @@ export const SidebarProjectDetailsFragmentDoc = gql`
   }
 }
     ${ProjectIdFragmentDoc}`;
-export const UserIdentityDocument = gql`
-    query UserIdentity($userId: uuid!) {
-  userPayoutInfo(where: {userId: {_eq: $userId}}) {
-    userId
-    firstname
-    lastname
-  }
-}
-    `;
-
-/**
- * __useUserIdentityQuery__
- *
- * To run a query within a React component, call `useUserIdentityQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserIdentityQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUserIdentityQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useUserIdentityQuery(baseOptions: Apollo.QueryHookOptions<UserIdentityQuery, UserIdentityQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserIdentityQuery, UserIdentityQueryVariables>(UserIdentityDocument, options);
-      }
-export function useUserIdentityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserIdentityQuery, UserIdentityQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserIdentityQuery, UserIdentityQueryVariables>(UserIdentityDocument, options);
-        }
-export type UserIdentityQueryHookResult = ReturnType<typeof useUserIdentityQuery>;
-export type UserIdentityLazyQueryHookResult = ReturnType<typeof useUserIdentityLazyQuery>;
-export type UserIdentityQueryResult = Apollo.QueryResult<UserIdentityQuery, UserIdentityQueryVariables>;
 export const GetPaymentRequestIdsDocument = gql`
     query GetPaymentRequestIds($githubUserId: bigint!) {
   githubUsersByPk(id: $githubUserId) {

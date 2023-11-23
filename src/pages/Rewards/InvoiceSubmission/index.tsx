@@ -1,8 +1,10 @@
+import { useQueryClient } from "@tanstack/react-query";
 import {
   MarkInvoiceAsReceivedMutationVariables,
   useMarkInvoiceAsReceivedMutation,
 } from "src/../e2e/playwright/__generated/graphql";
 import { components } from "src/__generated/api";
+import MeApi from "src/api/me";
 import Skeleton from "src/components/Skeleton";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
@@ -10,7 +12,6 @@ import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 import View from "./View";
-import { useQueryClient } from "@tanstack/react-query";
 
 export type MyPayoutInfoType = components["schemas"]["UserPayoutInformationResponse"];
 export type MyRewardsPendingInvoiceType = components["schemas"]["MyRewardsListResponse"];
@@ -36,10 +37,7 @@ export default function InvoiceSubmission() {
     data: payoutInfo,
     isLoading: isPayoutInfoLoading,
     isError: isPayoutInfoError,
-  } = useRestfulData<MyPayoutInfoType>({
-    resourcePath: ApiResourcePaths.GET_MY_PAYOUT_INFO,
-    method: "GET",
-  });
+  } = MeApi.queries.useGetMyPayoutInfo({});
 
   const [markInvoiceAsReceived] = useMarkInvoiceAsReceivedMutation({
     variables: { payments: rewardsPendingInvoice?.rewards?.map(p => p.id) },

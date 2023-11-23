@@ -34,6 +34,14 @@ const useClaimProject = ({
   });
 };
 
+const usePayoutInfo = ({ options = {} }: UseMutationProps) => {
+  return useBaseMutation<unknown, unknown>({
+    resourcePath: API_PATH.MY_PAYOUT_INFO,
+    method: "PUT",
+    ...options,
+  });
+};
+
 const useApplyProject = ({
   params,
   options = {},
@@ -49,4 +57,4 @@ const useApplyProject = ({
   });
 };
 
-export default { useAcceptProjectLeaderInvitation, useClaimProject, useApplyProject };
+export default { useAcceptProjectLeaderInvitation, useClaimProject, usePayoutInfo, useApplyProject };
