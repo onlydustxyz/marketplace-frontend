@@ -30,7 +30,7 @@ export default function OrganizationList({
             login: org.login,
             installationId: org.installationId,
             installed: org.installed,
-            isAPersonalOrganization: false,
+            isAPersonalOrganization: org.isPersonal,
           });
 
           return (
