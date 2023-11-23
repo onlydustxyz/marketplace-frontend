@@ -2,6 +2,18 @@ import { API_PATH } from "src/api/ApiPath";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { PROJECT_TAGS } from "../Project/tags";
 import MeApi from ".";
+import { components } from "src/__generated/api";
+
+export type UseUpdateMeMeBody = components["schemas"]["PatchMeContract"];
+
+const useUpdateMe = ({ options = {} }: UseMutationProps<unknown, unknown, UseUpdateMeMeBody>) => {
+  return useBaseMutation<UseUpdateMeMeBody, unknown>({
+    resourcePath: API_PATH.ME,
+    method: "PATCH",
+    invalidatesTags: [{ queryKey: MeApi.tags.user, exact: false }],
+    ...options,
+  });
+};
 
 const useAcceptProjectLeaderInvitation = ({
   options = {},
@@ -57,4 +69,4 @@ const useApplyProject = ({
   });
 };
 
-export default { useAcceptProjectLeaderInvitation, useClaimProject, usePayoutInfo, useApplyProject };
+export default { useAcceptProjectLeaderInvitation, useClaimProject, usePayoutInfo, useApplyProject, useUpdateMe };
