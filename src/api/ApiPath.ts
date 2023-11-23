@@ -29,4 +29,5 @@ export const API_PATH = {
   MY_CONTRIBUTED_PROJECTS: BASE_API_V1("me/contributed-projects"),
   MY_CONTRIBUTED_REPOS: BASE_API_V1("me/contributed-repos"),
   MY_CLAIM: (projectId: string) => BASE_API_V1(`me/project-claims/${projectId}`),
+  MY_PAYOUT_INFO: BASE_API_V1("me/payout-info"),
 };
