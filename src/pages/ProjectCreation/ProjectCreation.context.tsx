@@ -106,7 +106,7 @@ export function CreateProjectProvider({
   const installation_id = searchParams.get("installation_id") ?? "";
 
   const { reset: clearStorage } = useResetStorage();
-  const { data: organizationsData } = MeApi.queries.useGithubOrganizations({
+  const { data: organizationsData, isRefetching } = MeApi.queries.useGithubOrganizations({
     // Polling the organizations every second knowing that user can delete and installation
     // and the related github event can take an unknown delay to be triggered
     options: {
@@ -117,13 +117,18 @@ export function CreateProjectProvider({
       },
       refetchInterval: () => {
         if (poolingCount.current < 5) {
-          poolingCount.current = poolingCount.current + 1;
           return 2000;
         }
         return 0;
       },
     },
   });
+
+  useEffect(() => {
+    if (isRefetching) {
+      poolingCount.current = poolingCount.current + 1;
+    }
+  }, [isRefetching]);
 
   const { mutate: createProject, ...restCreateProjectMutation } = ProjectApi.mutations.useCreateProject({
     options: {

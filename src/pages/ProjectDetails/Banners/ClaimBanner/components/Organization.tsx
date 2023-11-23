@@ -43,7 +43,7 @@ export default function ClaimBannerOrganization({
           <p className="text-body-m">{organization.name || organization.login}</p>
         </div>
         <div>
-          {myOrganization && !organization.installed ? (
+          {myOrganization && !organization.installed && !myOrganization.installed ? (
             <a href={githubLink}>
               <Button type={ButtonType.Primary} size={ButtonSize.Sm}>
                 <GithubLogo />
@@ -51,7 +51,7 @@ export default function ClaimBannerOrganization({
               </Button>
             </a>
           ) : null}
-          {myOrganization && organization.installed ? (
+          {myOrganization && (organization.installed || myOrganization.installed) ? (
             <CheckLine className=" text-base leading-6 text-spacePurple-500" />
           ) : null}
         </div>

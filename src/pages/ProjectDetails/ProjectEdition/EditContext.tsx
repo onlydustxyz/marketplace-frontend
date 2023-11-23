@@ -79,10 +79,7 @@ const validationSchema = z.object({
     })
   ),
   name: z.string().min(1),
-  githubRepos: z
-    .array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() }))
-    .min(1)
-    .refine(repos => repos.every(repo => repo.isAuthorizedInGithubApp)),
+  githubRepos: z.array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() })).min(1),
   projectLeadsToKeep: z.array(z.string()).min(1),
   shortDescription: z.string().min(1),
   rewardSettings: z.object({
@@ -105,7 +102,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const installation_id = searchParams.get("installation_id") ?? "";
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
 
-  const { data: organizationsData } = MeApi.queries.useGithubOrganizations({
+  const { data: organizationsData, isRefetching } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
       refetchOnWindowFocus: () => {
@@ -114,13 +111,18 @@ export function EditProvider({ children, project }: EditContextProps) {
       },
       refetchInterval: () => {
         if (poolingCount.current < 5) {
-          poolingCount.current = poolingCount.current + 1;
           return 2000;
         }
         return 0;
       },
     },
   });
+
+  useEffect(() => {
+    if (isRefetching) {
+      poolingCount.current = poolingCount.current + 1;
+    }
+  }, [isRefetching]);
 
   const formStorage = useSessionStorage<{ form: EditFormData; dirtyFields: Array<keyof EditFormData> } | undefined>({
     key: `${SESSION_KEY}${project.slug}`,
