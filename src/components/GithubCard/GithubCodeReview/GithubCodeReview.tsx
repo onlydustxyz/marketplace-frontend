@@ -18,7 +18,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment> & Partial<RewardableItem>) {
+function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment & RewardableItem>) {
   const status = codeReview?.status?.toUpperCase();
 
   switch (status) {
