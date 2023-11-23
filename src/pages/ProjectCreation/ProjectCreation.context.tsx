@@ -43,6 +43,7 @@ type CreateProject = {
   currentStep: ProjectCreationSteps;
   installedRepos: number[];
   organizations: UseGithubOrganizationsResponse[];
+  organizationsLoading: boolean;
   formFn: {
     addRepository: (data: CreateFormDataRepos) => void;
     removeRepository: (data: CreateFormDataRepos) => void;
@@ -60,6 +61,7 @@ export const CreateProjectContext = createContext<CreateProject>({
   currentStep: ProjectCreationSteps.ORGANIZATIONS,
   installedRepos: [],
   organizations: [],
+  organizationsLoading: false,
   helpers: {
     saveInSession: () => null,
     goTo: () => null,
@@ -106,7 +108,11 @@ export function CreateProjectProvider({
   const installation_id = searchParams.get("installation_id") ?? "";
 
   const { reset: clearStorage } = useResetStorage();
-  const { data: organizationsData, isRefetching } = MeApi.queries.useGithubOrganizations({
+  const {
+    data: organizationsData,
+    isRefetching,
+    isLoading,
+  } = MeApi.queries.useGithubOrganizations({
     // Polling the organizations every second knowing that user can delete and installation
     // and the related github event can take an unknown delay to be triggered
     options: {
@@ -247,6 +253,7 @@ export function CreateProjectProvider({
         form,
         currentStep,
         installedRepos,
+        organizationsLoading: isLoading && !organizationsData?.length,
         organizations: organizationsData || [],
         helpers: {
           saveInSession: onSaveInSession,

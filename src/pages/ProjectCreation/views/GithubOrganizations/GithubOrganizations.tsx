@@ -14,6 +14,7 @@ export const GithubOrganizationPage = () => {
     helpers: { next },
     installedRepos,
     organizations,
+    organizationsLoading,
   } = useContext(CreateProjectContext);
 
   const installedOrganizations = organizations.filter(org => org.installed);
@@ -33,6 +34,7 @@ export const GithubOrganizationPage = () => {
           installatedRepo={installedRepos || []}
           organizations={installedOrganizations}
           emptyListFallBackText={T("project.details.create.organizations.installedOrganizationEmpty")}
+          loading={organizationsLoading}
         />
       </Card>
 
@@ -42,6 +44,7 @@ export const GithubOrganizationPage = () => {
           installatedRepo={installedRepos || []}
           organizations={availableOrganizations}
           emptyListFallBackText={T("project.details.create.organizations.availableOrganizationEmpty")}
+          loading={organizationsLoading}
         />
       </Card>
       <div className="card-light mt-6 flex w-full flex-col items-center justify-start gap-6 rounded-2xl border p-4">
