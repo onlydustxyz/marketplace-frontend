@@ -1,4 +1,3 @@
-import { useApolloClient } from "@apollo/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { ComponentProps, useState } from "react";
 import SidePanel from "src/components/SidePanel";
@@ -27,7 +26,6 @@ type RewardTableProps = {
 
 export default function RewardTable({ rewards, options, projectId }: RewardTableProps) {
   const queryClient = useQueryClient();
-  const client = useApolloClient();
 
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [selectedReward, setSelectedReward] = useState<RewardPageItemType | null>(null);
@@ -42,13 +40,11 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
 
   function handleCancelReward() {
     try {
-      // refetch PaymentRequests to hide MyRewards
-      client.refetchQueries({ include: ["GetPaymentRequestIds"] });
       // TODO refactor mutateReward in RewardSidePanelAsLeader and add invalidate query directly inside the mutation query
       queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
       setSidePanelOpen(false);
-      refetch();
       refetchBudgets();
+      refetch();
     } catch (e) {
       console.error(e);
     }
