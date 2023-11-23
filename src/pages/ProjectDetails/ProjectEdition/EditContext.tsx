@@ -79,10 +79,7 @@ const validationSchema = z.object({
     })
   ),
   name: z.string().min(1),
-  githubRepos: z
-    .array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() }))
-    .min(1)
-    .refine(repos => repos.every(repo => repo.isAuthorizedInGithubApp)),
+  githubRepos: z.array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() })).min(1),
   projectLeadsToKeep: z.array(z.string()).min(1),
   shortDescription: z.string().min(1),
   rewardSettings: z.object({
