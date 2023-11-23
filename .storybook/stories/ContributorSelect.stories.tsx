@@ -79,6 +79,7 @@ const args = {
   fetchNextPage: Function.prototype(),
   hasNextPage: false,
   isFetchingNextPage: false,
+  isError: false,
 };
 
 export const Default = Template.bind({});
