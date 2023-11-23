@@ -113,7 +113,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
         title: title || defaultTitle,
         description,
       })
-    )(e);
+    );
     e.stopPropagation();
   };
 
