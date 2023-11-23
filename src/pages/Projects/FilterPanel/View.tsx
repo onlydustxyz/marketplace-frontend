@@ -6,10 +6,11 @@ import StarLine from "src/icons/StarLine";
 import Card from "src/components/Card";
 import FilterDropDown, { FilterDropDownIcon } from "src/components/FilterDropDown";
 import { useProjectFilter, Ownership as ProjectOwnership } from "src/pages/Projects/useProjectFilter";
+import { Sponsor } from "src/types";
 
 export interface FilterPanelViewProps {
   availableTechnologies: string[];
-  availableSponsors: string[];
+  availableSponsors: Sponsor[];
   isProjectLeader: boolean;
   fromSidePanel?: boolean;
 }
@@ -28,7 +29,7 @@ export default function View({
     clear: clearProjectFilter,
     setOwnership: setProjectOwnership,
     setTechnologies: setProjectTechnologies,
-    setSponsors: setsponsors,
+    setSponsors,
   } = useProjectFilter();
 
   return (
@@ -75,9 +76,15 @@ export default function View({
         defaultLabel={T("filter.sponsors.all")}
         selectedLabel={T("filter.sponsors.some")}
         icon={FilterDropDownIcon.Sponsors}
-        options={availableSponsors}
-        value={projectFilter.sponsors}
-        setValue={setsponsors}
+        options={availableSponsors.map(({ name }) => name)}
+        value={projectFilter.sponsors.map(({ name }) => name)}
+        setValue={value => {
+          setSponsors(
+            value
+              .map(name => availableSponsors.find(sponsor => sponsor.name === name))
+              .filter((sponsor): sponsor is Sponsor => Boolean(sponsor))
+          );
+        }}
         dataTestId="sponsors-filter-dropdown"
       />
     </Card>
