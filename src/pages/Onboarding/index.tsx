@@ -8,10 +8,7 @@ import FormToggle from "src/components/FormToggle";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import {
   AllocatedTime,
-  GetOnboardingStateDocument,
-  GetOnboardingStateQuery,
   OwnUserProfileDocument,
-  useMarkProfileWizardAsDisplayedMutation,
   useOwnUserProfileQuery,
   useUpdateUserProfileMutation,
 } from "src/__generated/graphql";
@@ -24,9 +21,10 @@ import {
 } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import { useAuth } from "src/hooks/useAuth";
 import BaseCard from "src/components/Card";
+import SEO from "src/components/SEO";
+import MeApi from "src/api/me";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import SEO from "src/components/SEO";
 
 const MAX_STEP = 3;
 
@@ -37,7 +35,7 @@ export default function Onboarding() {
 
   const { T } = useIntl();
 
-  const { githubUserId, user } = useAuth();
+  const { githubUserId } = useAuth();
   const navigate = useNavigate();
 
   const { data } = useOwnUserProfileQuery({
@@ -47,29 +45,18 @@ export default function Onboarding() {
   const [updateUserProfileInfo] = useUpdateUserProfileMutation({
     refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId } }],
     context: { graphqlErrorDisplay: "toaster" },
-    onCompleted: () => markWizzardAsCompleted(),
+    onCompleted: () =>
+      updateUserMutation({
+        hasSeenOnboardingWizard: true,
+      }),
   });
 
-  const [markWizzardAsCompleted] = useMarkProfileWizardAsDisplayedMutation({
-    context: { graphqlErrorDisplay: "toaster" },
-    update: cache => {
-      const cachedData = cache.readQuery<GetOnboardingStateQuery>({
-        query: GetOnboardingStateDocument,
-        variables: { userId: user?.id },
-      });
-      cache.writeQuery({
-        query: GetOnboardingStateDocument,
-        variables: { userId: user?.id },
-        data: {
-          onboardingsByPk: {
-            userId: user?.id,
-            termsAndConditionsAcceptanceDate: cachedData?.onboardingsByPk?.termsAndConditionsAcceptanceDate || null,
-            profileWizardDisplayDate: new Date(),
-          },
-        },
-      });
+  const { mutate: updateUserMutation } = MeApi.mutations.useUpdateMe({
+    options: {
+      onSuccess: () => {
+        navigate(RoutePaths.Home, { state: { onboardingWizzardCompleted: true } });
+      },
     },
-    onCompleted: () => navigate(RoutePaths.Home, { state: { onboardingWizzardCompleted: true } }),
   });
 
   const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
@@ -99,7 +86,16 @@ export default function Onboarding() {
       <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <FormProvider {...methods}>
           <form id="onboarding-form" className="flex justify-center px-2 xl:pb-4" onSubmit={handleSubmit(onSubmit)}>
-            {step === 0 && <Intro skip={markWizzardAsCompleted} start={next} />}
+            {step === 0 && (
+              <Intro
+                skip={() =>
+                  updateUserMutation({
+                    hasSeenOnboardingWizard: true,
+                  })
+                }
+                start={next}
+              />
+            )}
             {step === 1 && (
               <Card
                 step={step}
