@@ -21,7 +21,7 @@ import { RewardableItem } from "src/api/Project/queries";
 import { ShowMore } from "src/components/Table/ShowMore";
 import EmptyState from "../EmptyState";
 import Skeleton from "src/components/Skeleton";
-import ErrorState from "../ErrorState";
+import ErrorState from "src/components/ErrorState";
 
 export const tabNames = {
   [WorkItemType.Issue]: "issues",

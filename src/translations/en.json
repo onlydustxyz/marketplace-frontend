@@ -383,6 +383,7 @@
           "externalUsers": "EXTERNAL USERS",
           "fallback": {
             "noUser": "No user found",
+            "error": "An error occurred, please try again later.",
             "typeMoreCharacters": "Type 3 or more characters to display external users"
           },
           "placeholder": "Search by Github handle"

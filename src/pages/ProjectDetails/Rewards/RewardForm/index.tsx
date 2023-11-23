@@ -83,10 +83,11 @@ const RewardForm: React.FC = () => {
     ignoredItemsIncluded: true,
   });
 
+  // TODO waiting for new endpoint or fix the current one
   const {
     data: contributionItems,
-    isLoading,
-    isError,
+    // isLoading,
+    // isError,
   } = ProjectApi.queries.useRewardableItemsInfiniteList({
     // WE need to fetch all the contributions to be able to AUTO-ADD them all in one click
     // It's the reason that we set pageSize to 1000 assuming that there will never be more than 1000 contributions

@@ -32,6 +32,7 @@ type ContributorSelectViewProps = {
   contributor: ContributorType | null | undefined;
   search: string;
   setSearch: (query: string) => void;
+  isError: boolean;
 } & ShowMoreProps;
 
 export default function ContributorSelectView({
@@ -46,6 +47,7 @@ export default function ContributorSelectView({
   isFetchingNextPage,
   search,
   setSearch,
+  isError,
 }: ContributorSelectViewProps) {
   const { T } = useIntl();
 
@@ -156,6 +158,7 @@ export default function ContributorSelectView({
                 <div />
               )}
               {isSearchGithubUsersByHandleSubstringQueryLoading && <Spinner className="mx-auto my-4" />}
+              {isError && T("reward.form.contributor.select.fallback.error")}
             </Combobox.Options>
           </div>
         </div>
@@ -294,6 +297,7 @@ function VirtualizedContributorSubList({
                   <ToRewardDetailsTooltip positionStrategy="fixed" />
                 </>
               )}
+              {loading && <Spinner className="mx-auto my-4" />}
             </Combobox.Option>
           );
         } else if (line.type === LineType.Separator) {

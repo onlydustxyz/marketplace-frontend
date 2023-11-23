@@ -57,7 +57,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
 
   const {
     data: ProjectContributors,
-    error,
+    isError,
     isLoading: isProjectContributorsLoading,
     fetchNextPage,
     hasNextPage,
@@ -129,6 +129,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
+        isError,
       }}
     />
   );

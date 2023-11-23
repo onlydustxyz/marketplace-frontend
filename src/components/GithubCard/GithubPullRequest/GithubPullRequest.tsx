@@ -26,9 +26,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getPullRequestStatusDate(
-  pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>
-) {
+function getPullRequestStatusDate(pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>) {
   switch (pullRequest.status) {
     case GithubPullRequestStatus.Closed:
     case ContributionStatus.Cancelled:

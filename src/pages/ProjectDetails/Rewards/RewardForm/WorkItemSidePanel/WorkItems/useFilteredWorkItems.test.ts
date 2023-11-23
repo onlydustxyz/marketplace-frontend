@@ -19,6 +19,7 @@ const workItems: RewardableItem[] = [
     codeReviewOutcome: "APPROVED",
     status: GithubPullRequestStatus.Merged,
     ignored: false,
+    htmlUrl: "",
   },
 ];
 
