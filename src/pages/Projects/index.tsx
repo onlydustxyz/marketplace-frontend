@@ -15,6 +15,7 @@ import AllProjects from "./AllProjects";
 import SubmitProject from "./SubmitProject";
 import { parseFlag } from "src/utils/parseFlag";
 import { useLeadProjects } from "src/hooks/useProjectLeader/useProjectLeader";
+import { Sponsor } from "src/types";
 
 export enum Sorting {
   Trending = "RANK",
@@ -39,7 +40,7 @@ export default function Projects() {
   const [sortingPanelOpen, setSortingPanelOpen] = useState(false);
 
   const [technologies, setTechnologies] = useState<string[]>([]);
-  const [sponsors, setSponsors] = useState<string[]>([]);
+  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
 
   const { ref, restoreScroll } = useScrollRestoration();
 
@@ -57,8 +58,8 @@ export default function Projects() {
                 {parseFlag("VITE_CAN_CREATE_PROJECT") ? <SubmitProject /> : null}
                 <FilterPanel
                   isProjectLeader={!!isProjectLeader.length}
-                  technologies={technologies}
-                  sponsors={sponsors}
+                  availableTechnologies={technologies}
+                  availableSponsors={sponsors}
                 />
               </div>
             </div>
@@ -86,8 +87,8 @@ export default function Projects() {
         <FilterPanel
           isProjectLeader={!!isProjectLeader.length}
           fromSidePanel
-          technologies={technologies}
-          sponsors={sponsors}
+          availableTechnologies={technologies}
+          availableSponsors={sponsors}
         />
       </SidePanel>
       <SidePanel withBackdrop open={sortingPanelOpen} setOpen={setSortingPanelOpen} placement="bottom">

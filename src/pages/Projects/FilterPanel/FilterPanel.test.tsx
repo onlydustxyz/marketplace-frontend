@@ -169,7 +169,18 @@ vi.mock("usehooks-ts", async () => {
 const render = (isProjectLeader: boolean, { isCleared, mocks }: { isCleared?: boolean; mocks: MockedResponse[] }) =>
   renderWithIntl(
     <MockedProjectFilterProvider isCleared={isCleared}>
-      <FilterPanel isProjectLeader={isProjectLeader} technologies={["Procfile", "C"]} sponsors={["OnlyDust"]} />
+      <FilterPanel
+        isProjectLeader={isProjectLeader}
+        availableTechnologies={["Procfile", "C"]}
+        availableSponsors={[
+          {
+            id: "3fa85f64-5717-4562-b3fc-2c963f66a456",
+            logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8506434858363286425.png",
+            name: "Ethereum Foundation",
+            url: "https://ethereum.org",
+          },
+        ]}
+      />
     </MockedProjectFilterProvider>,
     {
       wrapper: MemoryRouterProviderFactory({ mocks }),

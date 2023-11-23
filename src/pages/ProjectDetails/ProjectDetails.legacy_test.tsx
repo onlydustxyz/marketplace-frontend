@@ -331,19 +331,19 @@ const PROJECT: Project = {
     {
       id: "ce038af0-9f8d-4948-bd5a-1c86cf983041",
       name: "OnlyDust",
-      url: null,
+      url: "",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
     {
       id: "ce038af0-9f8d-4948-bd5a-1c86cf983042",
       name: "OnlyFast",
-      url: null,
+      url: "",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
     {
       id: "ce038af0-9f8d-4948-bd5a-1c86cf983043",
       name: "OnlyRust",
-      url: null,
+      url: "",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
   ],
