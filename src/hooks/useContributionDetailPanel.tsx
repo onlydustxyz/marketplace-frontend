@@ -3,7 +3,6 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { ContributionDetail } from "src/components/ContributionDetail/ContributionDetail";
 import SidePanel from "src/components/SidePanel";
 import GithubLogo from "src/icons/GithubLogo";
-import { linkClickHandlerFactory } from "src/utils/clickHandler";
 import { useIntl } from "./useIntl";
 
 type Props = { contributionId: string; projectId: string };
@@ -41,10 +40,12 @@ export function ContributionDetailPanelProvider({ children }: PropsWithChildren)
         open={open}
         setOpen={setOpen}
         action={
-          <Button size={ButtonSize.Sm} type={ButtonType.Secondary} onClick={linkClickHandlerFactory(githubUrl)}>
-            <GithubLogo className="text-base leading-none" />
-            {T("contributions.panel.githubLink")}
-          </Button>
+          <a href={githubUrl} target="_blank" rel="noreferrer">
+            <Button size={ButtonSize.Sm} type={ButtonType.Secondary}>
+              <GithubLogo className="text-base leading-none" />
+              {T("contributions.panel.githubLink")}
+            </Button>
+          </a>
         }
       >
         {props.contributionId && props.projectId ? (
