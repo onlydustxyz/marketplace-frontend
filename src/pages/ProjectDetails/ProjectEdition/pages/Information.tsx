@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { Controller } from "react-hook-form";
 import ProjectApi from "src/api/Project";
-import { FieldCombined } from "src/components/New/Field/Combined";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
@@ -17,6 +16,9 @@ import {
 } from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { EditContext } from "../EditContext";
 import { RewardableContributionsField } from "../RewardableContributionsField";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import AddLine from "src/icons/AddLine";
+import DeleteBinLine from "src/icons/DeleteBinLine";
 
 export function Information() {
   const { T } = useIntl();
@@ -107,41 +109,80 @@ export function Information() {
             />
           )}
         />
+
         <Controller
           name="moreInfos"
           control={form?.control}
-          render={({ field: { onChange, value } }) => (
-            <FieldCombined
-              onChange={onChange}
-              name="moreInfos"
-              label={T("project.details.edit.informations.fields.moreInfo.label")}
-              className="gap-2"
-            >
-              {onChangeField => [
-                <FieldInput
-                  key="moreInfos.url"
-                  name="moreInfos.url"
-                  value={value?.[0].url}
-                  fieldClassName="flex-1"
-                  onChange={event => {
-                    onChangeField([{ ...(value?.[0] || {}), url: event.target.value }]);
-                  }}
-                  startIcon={({ className }) => <Link className={className} />}
-                />,
-                <FieldInput
-                  key="moreInfos.value"
-                  name="moreInfos.value"
-                  value={value?.[0].value}
-                  placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
-                  fieldClassName=" w-1/3 max-w-full"
-                  onChange={event => {
-                    onChangeField([{ ...(value?.[0] || {}), value: event.target.value }]);
-                  }}
-                />,
-              ]}
-            </FieldCombined>
-          )}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Flex className="w-full flex-col gap-2">
+                <Flex className="w-full items-center justify-between pb-4">
+                  <div className="font-walsheim text-sm font-medium text-spaceBlue-200">
+                    {T("project.details.edit.informations.fields.moreInfo.label")}
+                  </div>
+                  <Button
+                    type={ButtonType.Secondary}
+                    size={ButtonSize.Xs}
+                    onClick={() => {
+                      const moreInfos = [...(form?.getValues("moreInfos") || [])];
+                      moreInfos.push({ url: "", value: "" });
+                      form?.setValue("moreInfos", moreInfos, { shouldDirty: true, shouldValidate: true });
+                    }}
+                  >
+                    <AddLine className="text-body-m" />
+                    {T("project.details.create.informations.form.fields.moreInfo.add")}
+                  </Button>
+                </Flex>
+
+                <Flex className="w-full flex-col gap-4">
+                  {value?.map((item, index) => (
+                    <Flex key={"moreInfo" + index} className="w-full items-center gap-2">
+                      <FieldInput
+                        key={"moreInfos.url-" + index}
+                        name={"moreInfos.url-" + index}
+                        value={item.url}
+                        fieldClassName="flex-1"
+                        onChange={event => {
+                          const updatedValue = value.map((item, i) =>
+                            i === index ? { ...item, url: event.target.value } : item
+                          );
+
+                          onChange(updatedValue);
+                        }}
+                        startIcon={({ className }) => <Link className={className} />}
+                      />
+                      <FieldInput
+                        key={"moreInfos.value-" + index}
+                        name={"moreInfos.value-" + index}
+                        value={item.value}
+                        placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
+                        fieldClassName=" w-1/3 max-w-full"
+                        onChange={event => {
+                          const updatedValue = value.map((item, i) =>
+                            i === index ? { ...item, value: event.target.value } : item
+                          );
+                          onChange(updatedValue);
+                        }}
+                      />
+                      {value.length > 1 ? (
+                        <button
+                          onClick={() => {
+                            const moreInfos = [...(form?.getValues("moreInfos") || [])];
+                            moreInfos.splice(index, 1);
+                            form?.setValue("moreInfos", moreInfos, { shouldDirty: true, shouldValidate: true });
+                          }}
+                        >
+                          <DeleteBinLine />
+                        </button>
+                      ) : null}
+                    </Flex>
+                  ))}
+                </Flex>
+              </Flex>
+            );
+          }}
         />
+
         <Controller
           name="projectLeads"
           control={form?.control}

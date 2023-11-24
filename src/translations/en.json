@@ -939,7 +939,8 @@
               "moreInfo": {
                 "label": "More info",
                 "placeholderLink": "Link",
-                "placeholderLabel": "Label"
+                "placeholderLabel": "Label",
+                "add": "Add link"
               },
               "jobs": {
                 "label": "Accept new applications",
