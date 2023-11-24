@@ -34,9 +34,6 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
   description:
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni, rerum aliquam. Placeat, quisquam neque quaerat mollitia magnam asperiores quam porro dignissimos, laboriosam minima nulla consequuntur omnis. Officia deserunt dicta excepturi!",
   icon: className => <ProgressCircle className={className} />,
-  onHeaderClick: () => {
-    alert("Header clicked!");
-  },
   sort: {
     sort: TableColumns.Date,
     direction: OrderBy.Desc,
