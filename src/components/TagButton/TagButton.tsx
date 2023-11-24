@@ -4,7 +4,6 @@ import { MouseEvent } from "react";
 
 export default function TagButton({ children, onClick, ...rest }: ButtonHTMLAttributes<HTMLButtonElement>) {
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    // e.preventDefault();
     onClick?.(e);
   };
 
