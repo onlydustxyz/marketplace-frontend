@@ -73,6 +73,7 @@ export default function Onboarding() {
   const { handleSubmit, control, reset } = methods;
 
   useEffect(() => {
+    // TODO
     if (profile) reset(fromFragment(profile));
   }, [profile]);
 

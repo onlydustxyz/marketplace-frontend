@@ -76,6 +76,8 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
     const { bio, email, discord, githubHandle, linkedin, location, telegram, whatsapp, twitter, languages, website } =
       getValues();
 
+    // TODO refactor with utils function ?
+
     setCompletionScore(
       score(profile.avatarUrl, 5) +
         score(githubHandle, 10) +
