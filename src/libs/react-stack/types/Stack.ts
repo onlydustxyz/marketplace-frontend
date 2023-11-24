@@ -1,5 +1,10 @@
-import { MutableRefObject } from 'react'
-import { RefSubscriptionInterface } from '../../react-subscriber/types/RefSubscription'
+import { MutableRefObject } from "react"
+import { RefSubscriptionInterface } from "../../react-subscriber/types/RefSubscription"
+
+export interface StackRouter {
+  name: string
+
+}
 
 export interface StackOptionalInterface {
   children: React.ReactElement
@@ -15,7 +20,7 @@ export interface StackInterface {
   order: number
 }
 
-export type UpdateStackInterface = Partial<Omit<StackInterface, 'name'>>
+export type UpdateStackInterface = Partial<Omit<StackInterface, "name">>
 
 export interface StacksInterface {
   [key: string]: RefSubscriptionInterface<StackInterface>

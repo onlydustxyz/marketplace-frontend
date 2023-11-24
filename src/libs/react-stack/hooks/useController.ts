@@ -1,28 +1,28 @@
-import UseStackContext from './useStackContext'
+import UseStackContext from "./useStackContext";
 
 export interface UseControllerProps {
-  name: string
+  name: string;
 }
 
 const UseController = ({ name }: UseControllerProps) => {
   const {
-    stackMethods: { update }
-  } = UseStackContext()
+    stackMethods: { update },
+  } = UseStackContext();
 
   const toggle = (open: boolean) => {
     update(name, {
-      open: open
-    })
-  }
+      open,
+    });
+  };
   const open = () => {
-    toggle(true)
-  }
+    toggle(true);
+  };
 
   const close = () => {
-    toggle(false)
-  }
+    toggle(false);
+  };
 
-  return { open, close }
-}
+  return { open, close };
+};
 
-export default UseController
+export default UseController;

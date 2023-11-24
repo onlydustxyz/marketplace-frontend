@@ -1,27 +1,27 @@
-import { useEffect } from 'react'
-import { RegisterStackProps } from '../types/RegisterStack'
-import UseStackContext from './useStackContext'
-import { StackInterface } from '../types/Stack'
-import { useRefSubscription } from '../../react-subscriber/useRefSubscription'
+import { useEffect } from "react";
+import { RegisterStackProps } from "../types/RegisterStack";
+import UseStackContext from "./useStackContext";
+import { StackInterface } from "../types/Stack";
+import { useRefSubscription } from "../../react-subscriber/useRefSubscription";
 
 const UseRegister = (props: RegisterStackProps) => {
   const {
-    stackMethods: { register, get }
-  } = UseStackContext()
+    stackMethods: { register, get },
+  } = UseStackContext();
   const [stack] = useRefSubscription<StackInterface>({
     open: false,
     order: 0,
-    ...props
-  })
+    ...props,
+  });
 
   /** register modal if not exist */
   useEffect(() => {
     if (!get(stack.state.name)) {
-      register(stack)
+      register(stack);
     }
-  }, [stack])
+  }, [stack]);
 
-  return stack
-}
+  return stack;
+};
 
-export default UseRegister
+export default UseRegister;
