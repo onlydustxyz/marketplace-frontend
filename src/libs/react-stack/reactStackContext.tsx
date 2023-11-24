@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect } from "react";
-import { StackInterface, StacksInterface, UpdateStackInterface } from "./types/Stack";
+import { StackInterface, StackPosition, StacksInterface, UpdateStackInterface } from "./types/Stack";
 import { useRefSubscription } from "../react-subscriber/useRefSubscription";
 import { RefSubscriptionInterface } from "../react-subscriber/types/RefSubscription";
 
@@ -14,6 +14,7 @@ type IReactStackContext = {
   stackStore: RefSubscriptionInterface<StacksInterface>;
   history: RefSubscriptionInterface<string[]>;
   stackMethods: {
+    closeAll: () => void;
     register: (stack: RefSubscriptionInterface<StackInterface>) => void;
     get: (name: string) => RefSubscriptionInterface<StackInterface> | RefSubscriptionInterface<StacksInterface> | null;
     update: (name: string, payload: UpdateStackInterface, event: panelEvent) => void;
@@ -25,6 +26,7 @@ export const ReactStackContext = createContext<IReactStackContext>({
   stackStore: {} as RefSubscriptionInterface<StacksInterface>,
   history: {} as RefSubscriptionInterface<string[]>,
   stackMethods: {
+    closeAll: () => null,
     register: () => null,
     get: () => null,
     update: () => null,
@@ -47,6 +49,28 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [stacks]
   );
 
+  const updatePosition = useCallback(() => {
+    const frontPanel = history.state.at(-1);
+    const backPanel = history.state.at(-2);
+    history.state.forEach(panel => {
+      let position: StackPosition = "hidden";
+      if (panel === frontPanel) {
+        position = "front";
+      } else if (panel === backPanel) {
+        position = "back";
+      }
+
+      if (stacks.state[panel]?.state.position !== position) {
+        stacks.state[panel].setValue(prev => {
+          return {
+            ...prev,
+            position,
+          };
+        });
+      }
+    });
+  }, [stacks, history]);
+
   const updateHistory = useCallback(
     (name: string, payload: UpdateStackInterface) => {
       if (stacks.state[name]) {
@@ -61,19 +85,51 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         }
       }
     },
-    [stacks]
+    [stacks, history]
   );
+
+  const closeAll = useCallback(() => {
+    history.state.forEach(panel => {
+      stacks.state[panel].setValue(prev => {
+        return {
+          ...prev,
+          position: "hidden",
+          open: false,
+        };
+      });
+    });
+  }, [stacks]);
 
   const updateStack = useCallback(
     (name: string, payload: UpdateStackInterface, event: panelEvent) => {
       if (stacks.state[name]) {
-        updateHistory(name, payload);
-        stacks.state[name].setValue(prev => {
-          return {
-            ...prev,
-            ...payload,
-          };
-        });
+        if (event === "close") {
+          if (stacks.state[name].state.open === true) {
+            if (history.state.at(-1) === name) {
+              updateHistory(name, payload);
+              stacks.state[name].setValue(prev => {
+                return {
+                  ...prev,
+                  ...payload,
+                  position: "hidden",
+                };
+              });
+            }
+          }
+        } else if (event === "open") {
+          if (stacks.state[name].state.open === false) {
+            updateHistory(name, payload);
+            stacks.state[name].setValue(prev => {
+              return {
+                ...prev,
+                ...payload,
+                position: "front",
+              };
+            });
+          }
+        }
+
+        updatePosition();
       }
     },
     [stacks]
@@ -102,6 +158,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         history,
         stackMethods: {
           register: registerStack,
+          closeAll,
           get: getStacks,
           update: updateStack,
         },

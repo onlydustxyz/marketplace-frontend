@@ -18,6 +18,12 @@ export const Stacks = () => {
             <TestStack />
           </>
         </Register>
+        <Register name="modal-3">
+          <>
+            <div>Modal3</div>
+            <TestStack />
+          </>
+        </Register>
         <TestStack />
       </ReactStackprovider>
     </>

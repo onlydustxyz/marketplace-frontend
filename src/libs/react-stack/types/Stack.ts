@@ -6,18 +6,20 @@ export interface StackRouter {
 
 }
 
+export type StackPosition = "front" | "back" | "hidden"
+
 export interface StackOptionalInterface {
   children: React.ReactElement
   name: string
   open?: boolean
-  order?: number
+  position?: StackPosition
 }
 
 export interface StackInterface {
   children: React.ReactElement
   name: string
   open: boolean
-  order: number
+  position: StackPosition
 }
 
 export type UpdateStackInterface = Partial<Omit<StackInterface, "name">>

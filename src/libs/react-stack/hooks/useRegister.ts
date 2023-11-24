@@ -10,7 +10,7 @@ const UseRegister = (props: RegisterStackProps) => {
   } = UseStackContext();
   const [stack] = useRefSubscription<StackInterface>({
     open: false,
-    order: 0,
+    position: "hidden",
     ...props,
   });
 
