@@ -6,17 +6,12 @@ import { useIntl } from "src/hooks/useIntl";
 import TechnologiesSelect from "src/components/TechnologiesSelect";
 import FormToggle from "src/components/FormToggle";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import {
-  AllocatedTime,
-  OwnUserProfileDocument,
-  useOwnUserProfileQuery,
-  useUpdateUserProfileMutation,
-} from "src/__generated/graphql";
+import { AllocatedTime, OwnUserProfileDocument, useUpdateUserProfileMutation } from "src/__generated/graphql";
 import FormSelect, { Size } from "src/components/FormSelect";
 import ContactInformations from "src/components/ContactInformations";
 import {
   UserProfileInfo,
-  fromFragment,
+  fromFragmentREST,
   toVariables,
 } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import { useAuth } from "src/hooks/useAuth";
@@ -38,12 +33,7 @@ export default function Onboarding() {
   const { githubUserId } = useAuth();
   const navigate = useNavigate();
 
-  //   const { data: test } = MeApi.queries.useGetMyProfile({});
-
-  const { data } = useOwnUserProfileQuery({
-    variables: { githubUserId },
-    skip: !githubUserId,
-  });
+  const { data: profile } = MeApi.queries.useGetMyProfile({});
 
   const [updateUserProfileInfo] = useUpdateUserProfileMutation({
     refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId } }],
@@ -64,8 +54,6 @@ export default function Onboarding() {
 
   const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
 
-  const profile = data?.userProfiles.at(0);
-
   const methods = useForm<UserProfileInfo>({
     mode: "onChange",
   });
@@ -73,8 +61,7 @@ export default function Onboarding() {
   const { handleSubmit, control, reset } = methods;
 
   useEffect(() => {
-    // TODO
-    if (profile) reset(fromFragment(profile));
+    if (profile) reset(fromFragmentREST(profile));
   }, [profile]);
 
   const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {

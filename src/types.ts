@@ -329,3 +329,5 @@ export enum RewardDisabledReason {
   Budget = "Budget", // No bugdet left
   GithubApp = "GithubApp", // Problem with Github App installation
 }
+
+export type Contact = components["schemas"]["ContactInformation"];

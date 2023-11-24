@@ -67,6 +67,7 @@ const mockProfile = (profile: Partial<ProfileFragment>): MockedResponse => ({
   },
 });
 
+// TODO remove this test ?
 const renderOwnUserProfileQuery = (profile: Partial<ProfileFragment> = {}) => {
   const { result: cacheResult } = renderHook(() => useApolloCache());
 

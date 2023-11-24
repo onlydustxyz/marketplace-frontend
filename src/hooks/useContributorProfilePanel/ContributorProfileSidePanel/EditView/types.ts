@@ -6,8 +6,9 @@ import {
   UpdateUserProfileMutationVariables,
   UserProfileFragment,
 } from "src/__generated/graphql";
-import { LanguageMap } from "src/types";
+import { Contact, LanguageMap } from "src/types";
 import { translateProfileCover } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
+import { UseGetMyProfileResponse } from "src/api/me/queries";
 
 export type UserProfileInfo = {
   location: string;
@@ -56,6 +57,38 @@ export const fromFragment = (fragment: UserProfileFragment & OwnUserProfileDetai
   lookingForAJob: fragment.lookingForAJob ?? false,
   cover: translateProfileCover(fragment.cover) ?? ProfileCover.Blue,
 });
+
+export const fromFragmentREST = (fragment: UseGetMyProfileResponse): UserProfileInfo => {
+  const contacts = {} as Record<Contact["channel"], { contact: Contact["contact"]; isPublic: boolean }>;
+
+  fragment.contacts?.forEach(({ channel, contact, visibility }) => {
+    contacts[channel] = { contact, isPublic: visibility === "public" };
+  });
+
+  return {
+    bio: fragment.bio ?? "",
+    location: fragment.location ?? "",
+    website: fragment.website ?? "",
+    githubHandle: fragment.login ?? "",
+    isGithubHandlePublic: true,
+    email: contacts.EMAIL?.contact ?? "",
+    isEmailPublic: contacts.EMAIL?.isPublic,
+    telegram: contacts.TELEGRAM?.contact?.split("/").at(-1) ?? "",
+    isTelegramPublic: contacts.TELEGRAM?.isPublic,
+    whatsapp: contacts.WHATSAPP?.contact ?? "",
+    isWhatsappPublic: contacts.WHATSAPP?.isPublic,
+    twitter: contacts.TWITTER?.contact?.split("/").at(-1) ?? "",
+    isTwitterPublic: contacts.TWITTER?.isPublic,
+    discord: contacts.DISCORD?.contact ?? "",
+    isDiscordPublic: contacts.DISCORD?.isPublic,
+    linkedin: contacts.LINKEDIN?.contact?.split("/").at(-1) ?? "",
+    isLinkedInPublic: contacts.LINKEDIN?.isPublic,
+    languages: fragment.technologies ?? {},
+    weeklyAllocatedTime: (fragment.allocatedTimeToContribute as AllocatedTime) ?? AllocatedTime.None,
+    lookingForAJob: fragment.isLookingForAJob ?? false,
+    cover: (fragment.cover as ProfileCover) ?? ProfileCover.Blue,
+  };
+};
 
 export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutationVariables => ({
   bio: profile.bio,
