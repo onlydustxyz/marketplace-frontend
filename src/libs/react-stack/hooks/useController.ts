@@ -10,6 +10,7 @@ const UseController = ({ name }: UseControllerProps) => {
   } = UseStackContext();
 
   const toggle = (open: boolean) => {
+    console.log("toggle", open);
     update(name, {
       open,
     });

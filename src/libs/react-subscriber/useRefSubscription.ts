@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { RefSubscriptionInterface, RefSubscriptionSubscriberInterface } from "./types/RefSubscription";
 import { EventEmitter } from "events";
 import { Events } from "./types/Event";
@@ -39,6 +39,12 @@ export const useRefSubscription = <T>(
       callback?.(store.current.state);
     },
   });
+
+  useEffect(() => {
+    if (store) {
+      store.current.register();
+    }
+  }, [store]);
 
   return [store.current, store.current.setValue];
 };

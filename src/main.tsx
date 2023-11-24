@@ -28,6 +28,7 @@ import { SidePanelProvider } from "./hooks/useSidePanel";
 import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
 import { ToasterProvider } from "./hooks/useToaster";
 import { CommandsProvider } from "./providers/Commands";
+import { Stacks } from "./App/Stacks/Stacks";
 
 if (config.GTM_ID) {
   TagManager.initialize({
@@ -60,6 +61,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                                     <Maintenance />
                                   ) : (
                                     <OnboardingProvider>
+                                      <Stacks />
                                       <App />
                                     </OnboardingProvider>
                                   )}

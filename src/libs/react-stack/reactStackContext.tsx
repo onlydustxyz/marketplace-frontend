@@ -1,4 +1,4 @@
-import { createContext, useCallback } from "react";
+import { createContext, useCallback, useEffect } from "react";
 import { StackInterface, StacksInterface, UpdateStackInterface } from "./types/Stack";
 import { useRefSubscription } from "../react-subscriber/useRefSubscription";
 import { RefSubscriptionInterface } from "../react-subscriber/types/RefSubscription";
@@ -66,6 +66,10 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     },
     [stacks]
   );
+
+  useEffect(() => {
+    stacks.register();
+  }, []);
 
   return (
     <ReactStackContext.Provider
