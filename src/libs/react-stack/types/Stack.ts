@@ -20,6 +20,7 @@ export interface StackInterface {
   name: string
   open: boolean
   position: StackPosition
+  defaultStack: string
   stacks: StacksInterface
 }
 

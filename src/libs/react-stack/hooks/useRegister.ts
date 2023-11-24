@@ -13,20 +13,24 @@ const UseRegister = (props: RegisterStackProps) => {
     open: false,
     position: "hidden",
     stacks: {},
+    defaultStack: "",
     ...props,
   });
   const [stack] = useRefSubscription<StackInterface>({
     open: false,
     position: "hidden",
     stacks: {},
+    defaultStack: "",
     ...props,
   });
 
   /** register modal if not exist */
   useEffect(() => {
     if (!get(stack.state.name)) {
+      const id = uuidv4();
+      stack.state.defaultStack = id;
       stack.state.stacks = {
-        [uuidv4()]: stackStacks,
+        [id]: stackStacks,
       };
       register(stack);
     }

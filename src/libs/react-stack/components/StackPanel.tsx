@@ -13,11 +13,11 @@ type Props = {
   placement?: "right" | "bottom";
 };
 
-function SingleStack({ stack, placement = "right" }: { stack: StackInterface; placement?: "right" | "bottom" }) {
+function StackPanel({ name, placement = "right", stack }: Props & { stack: StackInterface }) {
   const {
     stackMethods: { closeAll },
   } = UseStackContext();
-  //   const { open, close } = UseController({ name });
+  const { open, close } = UseController({ name });
 
   const transitionProps = {
     right: {
@@ -34,6 +34,8 @@ function SingleStack({ stack, placement = "right" }: { stack: StackInterface; pl
     },
   }[placement];
 
+  console.log("stack", name, stack);
+
   const PanelBackStyle: CSSProperties = {
     transform: "translateX(-50px)",
     opacity: "0.8",
@@ -43,8 +45,8 @@ function SingleStack({ stack, placement = "right" }: { stack: StackInterface; pl
     <Transition.Root show={stack?.open || false} as={Fragment}>
       <Dialog onClose={close} as="div" className={cn("relative isolate z-50")}>
         {/* {withBackdrop && (
-                <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur-sm" aria-hidden="true" />
-            )} */}
+            <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur-sm" aria-hidden="true" />
+        )} */}
         {/* <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur-sm" aria-hidden="true" /> */}
         <Transition.Child
           as={Fragment}
@@ -111,7 +113,7 @@ function SingleStack({ stack, placement = "right" }: { stack: StackInterface; pl
   );
 }
 
-export default function StackPanel({ name, placement = "right" }: Props) {
+export default function StacksPanel({ name, placement = "right" }: Props) {
   const stack = UseWatch(name);
   const {
     stackMethods: { closeAll },
@@ -133,22 +135,24 @@ export default function StackPanel({ name, placement = "right" }: Props) {
     },
   }[placement];
 
-  console.log("stack", name, stack?.stacks);
+  console.log("stack", name, stack);
 
   const PanelBackStyle: CSSProperties = {
     transform: "translateX(-50px)",
     opacity: "0.8",
   };
 
-  if (!stack) {
-    return <></>;
-  }
-
   return (
     <>
-      {Object.keys(stack?.stacks || {}).map((stackName, index) => (
-        <SingleStack key={stackName} stack={stack.stacks[stackName].state} placement={placement} />
-      ))}
+      {Object.keys(stack?.stacks || {})
+        .reverse()
+        .map((stackName, index) => (
+          <>
+            {stack?.stacks[stackName] && (
+              <StackPanel name={name} key={stackName} stack={stack?.stacks[stackName].state} placement={placement} />
+            )}
+          </>
+        ))}
     </>
   );
 }
