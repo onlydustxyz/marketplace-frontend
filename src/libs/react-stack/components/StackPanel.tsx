@@ -6,18 +6,18 @@ import { cn } from "src/utils/cn";
 import UseWatch from "../hooks/useWatch";
 import UseController from "../hooks/useController";
 import UseStackContext from "../hooks/useStackContext";
+import { StackInterface } from "../types/Stack";
 
 type Props = {
   name: string;
   placement?: "right" | "bottom";
 };
 
-export default function StackPanel({ name, placement = "right" }: Props) {
-  const stack = UseWatch(name);
+function SingleStack({ stack, placement = "right" }: { stack: StackInterface; placement?: "right" | "bottom" }) {
   const {
     stackMethods: { closeAll },
   } = UseStackContext();
-  const { open, close } = UseController({ name });
+  //   const { open, close } = UseController({ name });
 
   const transitionProps = {
     right: {
@@ -34,8 +34,6 @@ export default function StackPanel({ name, placement = "right" }: Props) {
     },
   }[placement];
 
-  console.log("stack", name, stack);
-
   const PanelBackStyle: CSSProperties = {
     transform: "translateX(-50px)",
     opacity: "0.8",
@@ -45,8 +43,8 @@ export default function StackPanel({ name, placement = "right" }: Props) {
     <Transition.Root show={stack?.open || false} as={Fragment}>
       <Dialog onClose={close} as="div" className={cn("relative isolate z-50")}>
         {/* {withBackdrop && (
-            <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur-sm" aria-hidden="true" />
-        )} */}
+                <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur-sm" aria-hidden="true" />
+            )} */}
         {/* <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur-sm" aria-hidden="true" /> */}
         <Transition.Child
           as={Fragment}
@@ -110,5 +108,47 @@ export default function StackPanel({ name, placement = "right" }: Props) {
         </Transition.Child>
       </Dialog>
     </Transition.Root>
+  );
+}
+
+export default function StackPanel({ name, placement = "right" }: Props) {
+  const stack = UseWatch(name);
+  const {
+    stackMethods: { closeAll },
+  } = UseStackContext();
+  const { open, close } = UseController({ name });
+
+  const transitionProps = {
+    right: {
+      enterFrom: "translate-x-full",
+      enterTo: "translate-x-0",
+      leaveFrom: "translate-x-0",
+      leaveTo: "translate-x-full",
+    },
+    bottom: {
+      enterFrom: "translate-y-full",
+      enterTo: "translate-y-0",
+      leaveFrom: "translate-y-0",
+      leaveTo: "translate-y-full",
+    },
+  }[placement];
+
+  console.log("stack", name, stack?.stacks);
+
+  const PanelBackStyle: CSSProperties = {
+    transform: "translateX(-50px)",
+    opacity: "0.8",
+  };
+
+  if (!stack) {
+    return <></>;
+  }
+
+  return (
+    <>
+      {Object.keys(stack?.stacks || {}).map((stackName, index) => (
+        <SingleStack key={stackName} stack={stack.stacks[stackName].state} placement={placement} />
+      ))}
+    </>
   );
 }

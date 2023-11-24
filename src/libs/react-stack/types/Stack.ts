@@ -20,6 +20,7 @@ export interface StackInterface {
   name: string
   open: boolean
   position: StackPosition
+  stacks: StacksInterface
 }
 
 export type UpdateStackInterface = Partial<Omit<StackInterface, "name">>

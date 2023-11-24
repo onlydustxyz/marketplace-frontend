@@ -5,5 +5,9 @@ import StackPanel from "./StackPanel";
 export default function Register(props: RegisterStackProps) {
   UseRegister(props);
 
-  return <StackPanel name={props.name} />;
+  return (
+    <>
+      <StackPanel name={props.name} />
+    </>
+  );
 }

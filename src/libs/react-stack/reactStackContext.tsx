@@ -2,7 +2,8 @@ import { createContext, useCallback, useEffect } from "react";
 import { StackInterface, StackPosition, StacksInterface, UpdateStackInterface } from "./types/Stack";
 import { useRefSubscription } from "../react-subscriber/useRefSubscription";
 import { RefSubscriptionInterface } from "../react-subscriber/types/RefSubscription";
-
+import { Subscribe } from "../react-subscriber";
+import { v4 as uuidv4 } from "uuid";
 interface reactStackContextProps {
   children: React.ReactNode;
 }
@@ -43,6 +44,23 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         setStacks(prev => ({
           ...prev,
           [stack.state.name]: stack,
+        }));
+      }
+    },
+    [stacks]
+  );
+
+  const registerCopyStack = useCallback(
+    (name: string) => {
+      if (stacks.state[name]) {
+        const firstStack = Object.keys(stacks.state[name].state.stacks)[0];
+        const _name = uuidv4();
+        stacks.state[name].setValue(prev => ({
+          ...prev,
+          stacks: {
+            ...prev.stacks,
+            [_name]: { ...stacks.state[name].state.stacks[firstStack] },
+          },
         }));
       }
     },
@@ -126,6 +144,11 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
                 position: "front",
               };
             });
+          } else {
+            console.log("ouiiii", name);
+            registerCopyStack(name);
+            updateHistory(name, payload);
+            // updateStack(_name, payload, "open");
           }
         }
 
@@ -165,6 +188,8 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       }}
     >
       {children}
+      <Subscribe to={stacks}>{newValue => <>{console.log("Store", newValue)}</>}</Subscribe>
+      <Subscribe to={history}>{newValue => <>{console.log("History", newValue)}</>}</Subscribe>
     </ReactStackContext.Provider>
   );
 }
