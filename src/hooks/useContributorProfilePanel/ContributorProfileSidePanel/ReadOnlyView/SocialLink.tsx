@@ -15,17 +15,16 @@ export default function SocialLink({ link, copyableValue, copyableValueName, tes
 
   const Component = link ? "a" : "div";
 
-  const linkProps = link ? { href: link, target: "_blank", rel: "noreferrer" } : {};
-  const copyProps = !link
-    ? {
-        onClick: copyClickHandlerFactory(copyableValue || "", () => {
-          showToaster(T("profile.valueCopiedToClipboard", { valueName: copyableValueName }));
-        }),
-      }
-    : {};
+  const linkProps = { href: link, target: "_blank", rel: "noreferrer" };
+  const copyProps = {
+    onClick: copyClickHandlerFactory(copyableValue || "", () => {
+      showToaster(T("profile.valueCopiedToClipboard", { valueName: copyableValueName }));
+    }),
+  };
 
+  const props = link ? linkProps : copyProps;
   return (
-    <Component className="rounded-xl bg-white/4" data-testid={testId} {...linkProps} {...copyProps}>
+    <Component className="rounded-xl bg-white/4" data-testid={testId} {...props}>
       <div className="flex h-10 w-10 flex-row items-center justify-center rounded-xl bg-noise-light text-2xl text-greyscale-200  hover:cursor-pointer hover:opacity-60">
         {children}
       </div>
