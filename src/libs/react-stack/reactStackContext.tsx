@@ -7,19 +7,23 @@ interface reactStackContextProps {
   children: React.ReactNode;
 }
 
+export type panelEvent = "open" | "close";
+
 type IReactStackContext = {
   stacks: [];
   stackStore: RefSubscriptionInterface<StacksInterface>;
+  history: RefSubscriptionInterface<string[]>;
   stackMethods: {
     register: (stack: RefSubscriptionInterface<StackInterface>) => void;
     get: (name: string) => RefSubscriptionInterface<StackInterface> | RefSubscriptionInterface<StacksInterface> | null;
-    update: (name: string, payload: UpdateStackInterface) => void;
+    update: (name: string, payload: UpdateStackInterface, event: panelEvent) => void;
   };
 };
 
 export const ReactStackContext = createContext<IReactStackContext>({
   stacks: [],
   stackStore: {} as RefSubscriptionInterface<StacksInterface>,
+  history: {} as RefSubscriptionInterface<string[]>,
   stackMethods: {
     register: () => null,
     get: () => null,
@@ -29,6 +33,7 @@ export const ReactStackContext = createContext<IReactStackContext>({
 
 export default function ReactStackprovider({ children }: reactStackContextProps) {
   const [stacks, setStacks] = useRefSubscription<StacksInterface>({});
+  const [history, setHistory] = useRefSubscription<string[]>([]);
 
   const registerStack = useCallback(
     (stack: RefSubscriptionInterface<StackInterface>) => {
@@ -42,9 +47,27 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [stacks]
   );
 
-  const updateStack = useCallback(
+  const updateHistory = useCallback(
     (name: string, payload: UpdateStackInterface) => {
       if (stacks.state[name]) {
+        if (!payload.open) {
+          setHistory(prev => {
+            return prev.filter(item => item !== name);
+          });
+        } else {
+          setHistory(prev => {
+            return [...prev, name];
+          });
+        }
+      }
+    },
+    [stacks]
+  );
+
+  const updateStack = useCallback(
+    (name: string, payload: UpdateStackInterface, event: panelEvent) => {
+      if (stacks.state[name]) {
+        updateHistory(name, payload);
         stacks.state[name].setValue(prev => {
           return {
             ...prev,
@@ -76,6 +99,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       value={{
         stacks: [],
         stackStore: stacks,
+        history,
         stackMethods: {
           register: registerStack,
           get: getStacks,

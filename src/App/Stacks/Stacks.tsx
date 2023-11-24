@@ -7,10 +7,16 @@ export const Stacks = () => {
     <>
       <ReactStackprovider>
         <Register name="modal-1">
-          <div>cuocu</div>
+          <>
+            <div>Modal1</div>
+            <TestStack />
+          </>
         </Register>
         <Register name="modal-2">
-          <div>cuocu</div>
+          <>
+            <div>Modal2</div>
+            <TestStack />
+          </>
         </Register>
         <TestStack />
       </ReactStackprovider>

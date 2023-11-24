@@ -9,18 +9,24 @@ const UseController = ({ name }: UseControllerProps) => {
     stackMethods: { update },
   } = UseStackContext();
 
-  const toggle = (open: boolean) => {
-    console.log("toggle", open);
-    update(name, {
-      open,
-    });
-  };
   const open = () => {
-    toggle(true);
+    update(
+      name,
+      {
+        open: true,
+      },
+      "open"
+    );
   };
 
   const close = () => {
-    toggle(false);
+    update(
+      name,
+      {
+        open: false,
+      },
+      "close"
+    );
   };
 
   return { open, close };
