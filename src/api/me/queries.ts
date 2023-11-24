@@ -111,6 +111,19 @@ const useGetMyPayoutInfo = ({ options = {} }: UseQueryProps<UseGetMyPayoutInfoRe
   });
 };
 
+export type UseGetMyProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
+
+const useGetMyProfile = ({ options = {} }: UseQueryProps<UseGetMyProfileResponse, undefined>) => {
+  const { isLoggedIn } = useAuth();
+
+  return useBaseQuery<UseGetMyProfileResponse>({
+    resourcePath: API_PATH.MY_PROFILE,
+    tags: ME_TAGS.profile(),
+    ...options,
+    enabled: isLoggedIn && (options.enabled === undefined ? true : options.enabled),
+  });
+};
+
 export default {
   useGetMe,
   useMyRewardsInfiniteList,
@@ -119,4 +132,5 @@ export default {
   useMyContributedRepos,
   useGithubOrganizations,
   useGetMyPayoutInfo,
+  useGetMyProfile,
 };

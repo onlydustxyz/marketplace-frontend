@@ -9,4 +9,5 @@ export const ME_TAGS = {
   contributedProjects: () => [RESSOURCE_TAGS.ME, "contributed-projects"],
   contributedRepos: () => [RESSOURCE_TAGS.ME, "contributed-repos"],
   payoutInfo: () => [RESSOURCE_TAGS.ME, "payout-info"],
+  profile: () => [RESSOURCE_TAGS.ME, "profile"],
 };

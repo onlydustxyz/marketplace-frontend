@@ -4,7 +4,6 @@ import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import { useOwnUserProfileQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useOnboarding } from "src/App/OnboardingProvider";
@@ -12,6 +11,7 @@ import { parseFlag } from "src/utils/parseFlag";
 import MeApi from "src/api/me";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import { Fields } from "src/components/UserRewardTable/Headers";
+import { calculateCompletionScore } from "src/utils/calculateCompletionScore";
 
 export default function Header() {
   const location = useLocation();
@@ -35,7 +35,7 @@ export default function Header() {
   const hasRewards = rewards.length && !isLoading && !isError;
 
   const { onboardingInProgress } = useOnboarding();
-  const profileQuery = useOwnUserProfileQuery({ variables: { githubUserId }, skip: !githubUserId });
+  const { data: profileData } = MeApi.queries.useGetMyProfile({});
 
   const rewardsMenuItem = hasRewards && !onboardingInProgress ? T("navbar.rewards") : undefined;
   const contributionsMenuItem =
@@ -56,7 +56,7 @@ export default function Header() {
       selectedMenuItem={location.pathname}
       onLogin={() => dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })}
       impersonating={impersonating}
-      profileCompletionScore={profileQuery.data?.userProfiles.at(0)?.completionScore}
+      profileCompletionScore={profileData ? calculateCompletionScore(profileData) : undefined}
     />
   );
 }

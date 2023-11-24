@@ -44,11 +44,10 @@ export default function useApolloCache() {
 
             return (
               scoreByExistence("avatarUrl", 5) +
-              scoreByExistence("login", 10) +
+              scoreByExistence("login", 15) +
               scoreByExistence("location", 10) +
               scoreByExistence("bio", 20) +
               scoreByExistence("website", 10) +
-              scoreByExistence("login", 5) +
               scoreContact("email", 5) +
               scoreContact("telegram", 5) +
               scoreContact("whatsapp", 5) +

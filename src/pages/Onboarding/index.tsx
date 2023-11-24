@@ -38,8 +38,11 @@ export default function Onboarding() {
   const { githubUserId } = useAuth();
   const navigate = useNavigate();
 
+  //   const { data: test } = MeApi.queries.useGetMyProfile({});
+
   const { data } = useOwnUserProfileQuery({
     variables: { githubUserId },
+    skip: !githubUserId,
   });
 
   const [updateUserProfileInfo] = useUpdateUserProfileMutation({
