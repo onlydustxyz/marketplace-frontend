@@ -75,7 +75,7 @@ const validationSchema = z.object({
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
-  moreInfo: z.array(
+  moreInfos: z.array(
     z.object({
       url: z.string().trim().optional(),
       value: z.string().optional(),
@@ -155,12 +155,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       logoUrl: project.logoUrl,
       shortDescription: project.shortDescription,
       longDescription: project.longDescription,
-      moreInfo: [
-        {
-          url: project.moreInfoUrl,
-          value: project.moreInfoUrl, // more info name
-        },
-      ],
+      moreInfos: project.moreInfos,
       githubRepos: (project.repos || []).map(repo => ({
         id: repo.id,
         isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
