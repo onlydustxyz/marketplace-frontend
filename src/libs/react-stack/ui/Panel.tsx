@@ -14,6 +14,7 @@ type Props = {
   hasCloseButton?: boolean;
   front?: boolean;
   back?: boolean;
+  stacked?: boolean;
 } & PropsWithChildren;
 
 export default function SidePanel({
@@ -24,6 +25,7 @@ export default function SidePanel({
   children,
   front,
   back,
+  stacked,
   hasCloseButton = true,
 }: Props) {
   const [debouncedOpen, setDebouncedOpen] = useState(false);
@@ -32,13 +34,6 @@ export default function SidePanel({
     debounce(newOpen => {
       setDebouncedOpen(newOpen);
     }, 10),
-    []
-  );
-
-  const debounceClose = useCallback(
-    debounce(() => {
-      close();
-    }, 300),
     []
   );
 
@@ -68,7 +63,6 @@ export default function SidePanel({
 
   const PanelBackStyle: CSSProperties = {
     transform: "translateX(-50px)",
-    opacity: "0.8",
   };
 
   return (
@@ -90,7 +84,7 @@ export default function SidePanel({
             )}
             style={back ? PanelBackStyle : undefined}
           >
-            {front ? <StackDrop onClick={onClose} /> : null}
+            {front && stacked ? <StackDrop onClick={onClose} /> : null}
             <div className="h-full overflow-y-auto">
               {hasCloseButton && (
                 <div className="absolute right-3.5 top-3.5 z-20 flex flex-row gap-2">

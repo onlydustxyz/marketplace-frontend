@@ -16,17 +16,12 @@ export const Panel = ({ panelRef }: PanelProps) => {
   const panel = useSubscribe(panelRef || undefined);
   const [domContainer, setDomContainer] = useState<HTMLElement | null>(null);
 
-  const onClose = () => {
-    console.log("should close", panel?.name, panel?.id);
-    closeLast();
-  };
   useEffect(() => {
     if (panel?.open) {
       const domElement = document.getElementById(`stack-panel-history-item-${panel.name}-${panel.id}`);
       if (domElement) {
         setDomContainer(domElement);
       }
-      console.log("domElement", domElement);
     }
   }, [panel]);
 
@@ -34,9 +29,10 @@ export const Panel = ({ panelRef }: PanelProps) => {
     return createPortal(
       <SidePanel
         open={panel?.open || false}
-        close={onClose}
+        close={closeLast}
         back={panel?.position === "back"}
-        front={panel?.position === "front"}
+        front={panel?.position === "front" || panel?.position === "front-stacked"}
+        stacked={panel?.position === "front-stacked"}
       >
         {panelRef.state.children}
       </SidePanel>,

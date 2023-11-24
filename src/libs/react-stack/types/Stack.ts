@@ -6,7 +6,7 @@ export interface StackRouter {
 
 }
 
-export type StackPosition = "front" | "back" | "hidden"
+export type StackPosition = "front" | "back" | "hidden" | "front-stacked"
 
 export interface StackOptionalInterface {
   children: React.ReactElement

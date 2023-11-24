@@ -90,7 +90,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         let position: StackPosition = "hidden";
         const panelRef = stacks.state[panel.name]?.state.panels[panel.panelId];
         if (panel.panelId === frontPanel?.panelId) {
-          position = "front";
+          position = history.length === 1 ? "front" : "front-stacked";
         } else if (panel.panelId === backPanel?.panelId) {
           position = "back";
         }
@@ -182,7 +182,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
           return {
             ...prev,
             open: true,
-            position: "front",
+            position: history.state.length === 1 ? "front" : "front-stacked",
           };
         });
         updateHistory(panel.state.name, panel.state.id, "open");
