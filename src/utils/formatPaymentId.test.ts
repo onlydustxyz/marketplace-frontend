@@ -6,6 +6,6 @@ describe("formatPaymentId", () => {
   it("should return the first 5 characters of the payment id", () => {
     const formattedPaymentId = formatPaymentId(paymentId);
 
-    expect(formattedPaymentId).toBe("#93cd4");
+    expect(formattedPaymentId).toBe("#93CD4");
   });
 });
