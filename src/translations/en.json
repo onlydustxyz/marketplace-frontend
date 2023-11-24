@@ -603,6 +603,7 @@
     }
   },
   "profile": {
+    "whatsapp": "Whatsapp",
     "editButton": "Edit profile",
     "error": {
       "notFound": "This user does not exist"
