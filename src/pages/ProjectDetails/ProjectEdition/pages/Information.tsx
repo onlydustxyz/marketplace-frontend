@@ -108,34 +108,34 @@ export function Information() {
           )}
         />
         <Controller
-          name="moreInfo"
+          name="moreInfos"
           control={form?.control}
           render={({ field: { onChange, value } }) => (
             <FieldCombined
               onChange={onChange}
-              name="moreInfo"
+              name="moreInfos"
               label={T("project.details.edit.informations.fields.moreInfo.label")}
               className="gap-2"
             >
               {onChangeField => [
                 <FieldInput
-                  key="moreInfo.url"
-                  name="moreInfo.url"
+                  key="moreInfos.url"
+                  name="moreInfos.url"
                   value={value?.[0].url}
                   fieldClassName="flex-1"
                   onChange={event => {
-                    onChangeField([{ ...value[0], url: event.target.value }]);
+                    onChangeField([{ ...(value?.[0] || {}), url: event.target.value }]);
                   }}
                   startIcon={({ className }) => <Link className={className} />}
                 />,
                 <FieldInput
-                  key="moreInfo.value"
-                  name="moreInfo.value"
+                  key="moreInfos.value"
+                  name="moreInfos.value"
                   value={value?.[0].value}
                   placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
                   fieldClassName=" w-1/3 max-w-full"
                   onChange={event => {
-                    onChangeField([{ ...value[0], value: event.target.value }]);
+                    onChangeField([{ ...(value?.[0] || {}), value: event.target.value }]);
                   }}
                 />,
               ]}

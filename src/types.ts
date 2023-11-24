@@ -220,6 +220,7 @@ export interface Project {
   longDescription?: string;
   logoUrl: string;
   moreInfoUrl: string;
+  moreInfo?: { url: string; value: string }[];
   hiring: boolean;
   visibility: string;
   repoCount: number;
