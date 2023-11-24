@@ -5,21 +5,21 @@ import { RefSubscriptionInterface } from "../../react-subscriber/types/RefSubscr
 import { StackInterface, StacksInterface } from "../types/Stack";
 import { Events } from "src/libs/react-subscriber";
 
-export interface UseWatchProps {
+export interface UseWatchStackProps {
   name: string;
 }
 
-const UseWatch = (name: string) => {
+const UseWatchStack = (name: string) => {
   const {
     stackStore,
-    stackMethods: { get },
+    stackMethods: { getStack },
   } = UseStackContext();
   const [canWatch, setCanWatch] = useState<RefSubscriptionInterface<StackInterface> | null>(null);
   const stack = useSubscribe(canWatch || undefined);
 
   const watchStore = (data: StacksInterface) => {
     if (!canWatch && data[name]) {
-      setCanWatch(get(name) as RefSubscriptionInterface<StackInterface> | null);
+      setCanWatch(getStack(name) as RefSubscriptionInterface<StackInterface> | null);
     }
   };
 
@@ -33,4 +33,4 @@ const UseWatch = (name: string) => {
   return stack;
 };
 
-export default UseWatch;
+export default UseWatchStack;

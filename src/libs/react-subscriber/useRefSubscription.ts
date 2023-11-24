@@ -11,13 +11,13 @@ export const useRefSubscription = <T>(
     emitter: new EventEmitter(),
     registerd: false,
     on: (event, callback) => {
-      store.current.emitter.on(event, callback);
+      store.current.emitter?.on?.(event, callback);
     },
     off: (event, callback) => {
-      store.current.emitter.off(event, callback);
+      store.current.emitter?.off?.(event, callback);
     },
     emit: (event, data) => {
-      store.current.emitter.emit(event, data);
+      store.current.emitter?.emit?.(event, data);
     },
     setValue: (newvalue: T | ((prev: T) => T)) => {
       if (typeof newvalue === "function") {
@@ -26,8 +26,8 @@ export const useRefSubscription = <T>(
       } else {
         store.current.state = newvalue;
       }
-      store.current.emit(Events.ALL, store.current.state);
-      store.current.emit(Events.UPDATE, store.current.state);
+      store.current?.emit?.(Events.ALL, store.current.state);
+      store.current?.emit?.(Events.UPDATE, store.current.state);
     },
     register: (callback?: RefSubscriptionSubscriberInterface<T>) => {
       if (store.current.registerd) {

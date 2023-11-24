@@ -6,30 +6,18 @@ export interface UseControllerProps {
 
 const UseController = ({ name }: UseControllerProps) => {
   const {
-    stackMethods: { update },
+    stackMethods: { open, close },
   } = UseStackContext();
 
-  const open = () => {
-    update(
-      name,
-      {
-        open: true,
-      },
-      "open"
-    );
+  const handleOpen = () => {
+    open(name);
   };
 
-  const close = () => {
-    update(
-      name,
-      {
-        open: false,
-      },
-      "close"
-    );
+  const handleClose = () => {
+    close(name);
   };
 
-  return { open, close };
+  return { open: handleOpen, close: handleClose };
 };
 
 export default UseController;

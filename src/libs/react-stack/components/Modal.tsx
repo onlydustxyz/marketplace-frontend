@@ -1,4 +1,4 @@
-import UseWatch from "../hooks/useWatch";
+import UseWatch from "../hooks/useWatchPanel";
 
 export const Modal = (props: { name: string }) => {
   const modal = UseWatch(props.name);

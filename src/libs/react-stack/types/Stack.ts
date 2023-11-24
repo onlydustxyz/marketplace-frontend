@@ -15,16 +15,26 @@ export interface StackOptionalInterface {
   position?: StackPosition
 }
 
-export interface StackInterface {
+export interface StackPanelInterface {
   children: React.ReactElement
-  name: string
   open: boolean
+  id: string
   position: StackPosition
-  defaultStack: string
-  stacks: StacksInterface
+  name: string
 }
 
-export type UpdateStackInterface = Partial<Omit<StackInterface, "name">>
+export interface StackInterface {
+    name: string
+    defaultPanelId: string
+    defaultPanel: RefSubscriptionInterface<StackPanelInterface>
+    panels: {
+        [key: string]: RefSubscriptionInterface<StackPanelInterface>
+    }
+}
+
+export type UpdateStackInterface = {
+    open: boolean
+}
 
 export interface StacksInterface {
   [key: string]: RefSubscriptionInterface<StackInterface>

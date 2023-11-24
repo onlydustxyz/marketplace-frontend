@@ -1,13 +1,13 @@
 import UseRegister from "../hooks/useRegister";
 import { RegisterStackProps } from "../types/RegisterStack";
-import StackPanel from "./StackPanel";
+import { Stack } from "./Stack";
 
 export default function Register(props: RegisterStackProps) {
-  UseRegister(props);
+  const ref = UseRegister(props);
 
   return (
     <>
-      <StackPanel name={props.name} />
+      <Stack stackRef={ref} />
     </>
   );
 }
