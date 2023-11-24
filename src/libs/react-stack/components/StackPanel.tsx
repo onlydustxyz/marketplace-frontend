@@ -34,8 +34,6 @@ function StackPanel({ name, placement = "right", stack }: Props & { stack: Stack
     },
   }[placement];
 
-  console.log("stack", name, stack);
-
   const PanelBackStyle: CSSProperties = {
     transform: "translateX(-50px)",
     opacity: "0.8",

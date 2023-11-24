@@ -12,22 +12,13 @@ export const TestStack = () => {
       <Button size={ButtonSize.Xs} onClick={open}>
         open panel1
       </Button>
-      <Button size={ButtonSize.Xs} onClick={close}>
-        close panel1
-      </Button>
       <h2>Panel 2</h2>
       <Button size={ButtonSize.Xs} onClick={open2}>
         open panel2
       </Button>
-      <Button size={ButtonSize.Xs} onClick={close2}>
-        close panel2
-      </Button>
       <h2>Panel 3</h2>
       <Button size={ButtonSize.Xs} onClick={open3}>
         open panel3
-      </Button>
-      <Button size={ButtonSize.Xs} onClick={close3}>
-        close panel3
       </Button>
     </>
   );
