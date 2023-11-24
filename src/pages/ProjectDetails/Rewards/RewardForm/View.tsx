@@ -29,6 +29,8 @@ import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
 import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
 import { Controller, useFormContext } from "react-hook-form";
 import { RewardableItem } from "src/api/Project/queries";
+import ProjectApi from "src/api/Project";
+import useMutationAlert from "src/api/useMutationAlert";
 
 interface Props {
   projectId: string;
@@ -84,6 +86,33 @@ const View: React.FC<Props> = ({
     );
 
     addWorkItem(workItems);
+  };
+
+  const { mutate: ignoreContribution, ...restignoreContributionMutation } =
+    ProjectApi.mutations.useIgnoreUnignoreContribution({
+      params: { projectId },
+    });
+
+  useMutationAlert({
+    mutation: restignoreContributionMutation,
+    success: {
+      message: T("reward.form.contributions.ignoreUnignoreContribution.success", {
+        action: "ignored",
+      }),
+    },
+    error: {
+      message: T("reward.form.contributions.ignoreUnignoreContribution.error", {
+        action: "ignored",
+      }),
+    },
+  });
+
+  const handleAutoIgnore = (type: GithubContributionType) => {
+    if (!unpaidContributions) return;
+
+    const filteredTypedContributions = filterUnpaidContributionsByType(type, unpaidContributions);
+    const filteredTypedContributionsIds = filteredTypedContributions.map(({ id }) => id);
+    ignoreContribution({ contributionsToIgnore: [...filteredTypedContributionsIds] });
   };
 
   useEffect(() => {
@@ -162,6 +191,7 @@ const View: React.FC<Props> = ({
                       <AutoAdd
                         unpaidContributions={unpaidContributions}
                         onAutoAdd={handleAutoAdd}
+                        onAutoIgnore={handleAutoIgnore}
                         workItems={workItems}
                       />
                     ) : null}

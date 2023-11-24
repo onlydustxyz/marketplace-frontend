@@ -856,10 +856,8 @@
           "title": "Reward contributor"
         },
         "title": "Rewards",
-        "autoAdd": {
-          "label": "AUTO-ADD"
-        },
         "quickActions": {
+          "label": "QUICK ACTIONS",
           "add": {
             "many": "Add __count__ __type__s",
             "one": "Add 1 __type__"

@@ -36,14 +36,14 @@ export default function QuickActionsMenu({ add, ignore, children, disabled }: Pr
         className="relative z-10"
       >
         <Menu.Items className="absolute -left-6 -top-12 z-40 w-auto min-w-max origin-top-right rounded-xl bg-greyscale-900 p-2 font-walsheim text-sm font-normal shadow-medium outline-none focus:outline-none">
-          <div className="rounded p-2 hover:bg-white/5">
-            <Menu.Item as="button" onClick={handleAdd}>
+          <div className="cursor-pointer rounded p-2 hover:bg-white/5">
+            <Menu.Item as="div" onClick={handleAdd}>
               <AddLine className="mr-2" />
               {add.label}
             </Menu.Item>
           </div>
-          <div className="rounded p-2 hover:bg-white/5">
-            <Menu.Item as="button" onClick={handleIgnore}>
+          <div className="cursor-pointer rounded p-2 hover:bg-white/5">
+            <Menu.Item as="div" onClick={handleIgnore}>
               <EyeOffLine className="mr-2" />
               {ignore.label}
             </Menu.Item>
