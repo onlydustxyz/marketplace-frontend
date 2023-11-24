@@ -17,9 +17,9 @@ import ErrorFallback from "src/ErrorFallback";
 import { useApolloClient } from "@apollo/client";
 import { useQueryClient } from "@tanstack/react-query";
 import MeApi from "src/api/me";
-import ProjectApi from "src/api/Project";
-import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
+import { RewardableItem } from "src/api/Project/queries";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
+import { rewardableItemsMock } from "./tempMock";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -78,25 +78,27 @@ const RewardForm: React.FC = () => {
 
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
-  const { queryParams } = useRewardableItemsQueryParams({
-    githubUserId: contributor?.githubUserId,
-    ignoredItemsIncluded: true,
-  });
+  // const { queryParams } = useRewardableItemsQueryParams({
+  //   githubUserId: contributor?.githubUserId,
+  //   ignoredItemsIncluded: true,
+  // });
 
-  // TODO waiting for new endpoint or fix the current one
-  const {
-    data: contributionItems,
-    // isLoading,
-    // isError,
-  } = ProjectApi.queries.useRewardableItemsInfiniteList({
-    // WE need to fetch all the contributions to be able to AUTO-ADD them all in one click
-    // It's the reason that we set pageSize to 1000 assuming that there will never be more than 1000 contributions
-    // and in the case there are more than 1000 contributions, we assume this limitation for performance reasons
-    params: { projectId, queryParams, pageSize: 1000 },
-    options: { enabled: !!contributor?.githubUserId },
-  });
+  // // TODO waiting for new endpoint or fix the current one
+  // const {
+  //   data: contributionItems,
+  //   // isLoading,
+  //   // isError,
+  // } = ProjectApi.queries.useRewardableItemsInfiniteList({
+  //   // WE need to fetch all the contributions to be able to AUTO-ADD them all in one click
+  //   // It's the reason that we set pageSize to 1000 assuming that there will never be more than 1000 contributions
+  //   // and in the case there are more than 1000 contributions, we assume this limitation for performance reasons
+  //   params: { projectId, queryParams, pageSize: 1000 },
+  //   options: { enabled: !!contributor?.githubUserId },
+  // });
 
-  const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
+  // const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
+
+  const contributions = rewardableItemsMock;
 
   const { handleSubmit } = formMethods;
 

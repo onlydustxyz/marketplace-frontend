@@ -858,6 +858,16 @@
         "title": "Rewards",
         "autoAdd": {
           "label": "AUTO-ADD"
+        },
+        "quickActions": {
+          "add": {
+            "many": "Add __count__ __type__s",
+            "one": "Add 1 __type__"
+          },
+          "ignore": {
+            "many": "Ignore __count__ __type__s",
+            "one": "Ignore 1 __type__"
+          }
         }
       },
       "create": {

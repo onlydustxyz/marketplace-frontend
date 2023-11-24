@@ -153,7 +153,7 @@ const View: React.FC<Props> = ({
                       </div>
                     }
                   />
-                  <div className="mx-4 flex flex-col gap-3 pt-4" data-testid="added-work-items">
+                  <div className="relative z-0 mx-4 flex flex-col gap-3 pt-4" data-testid="added-work-items">
                     <div className="text-sm text-greyscale-300 xl:text-base">
                       {T("reward.form.contributions.subTitle")}
                     </div>

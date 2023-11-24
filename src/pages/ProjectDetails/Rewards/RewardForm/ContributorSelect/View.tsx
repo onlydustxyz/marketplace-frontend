@@ -157,7 +157,7 @@ export default function ContributorSelectView({
               ) : (
                 <div />
               )}
-              {isSearchGithubUsersByHandleSubstringQueryLoading && <Spinner className="mx-auto my-4" />}
+              {isSearchGithubUsersByHandleSubstringQueryLoading && <Spinner className="mx-auto mb-6 mt-4" />}
               {isError && T("reward.form.contributor.select.fallback.error")}
             </Combobox.Options>
           </div>
