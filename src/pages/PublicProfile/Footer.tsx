@@ -6,7 +6,6 @@ import TwitterFill from "src/icons/TwitterFill";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { linkClickHandlerFactory } from "src/utils/clickHandler";
 
 export default function Footer() {
   const { T } = useIntl();
@@ -15,10 +14,15 @@ export default function Footer() {
 
   return (
     <div className="flex w-full justify-between px-4 py-6 lg:px-0">
-      <div className="flex cursor-pointer items-center gap-3" onClick={linkClickHandlerFactory("https://onlydust.xyz")}>
+      <a
+        className="flex cursor-pointer items-center gap-3"
+        href="https://onlydust.xyz"
+        target="_blank"
+        rel="noreferrer"
+      >
         <img className="h-10 w-10" src={onlyDustLogo} alt={T("images.onlyDustLogo")} />
         <img className="mt-1 hidden h-6 md:inline" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
-      </div>
+      </a>
       <div className="flex items-center gap-3 text-spaceBlue-50">
         <div className="flex flex-row gap-1 font-walsheim text-sm font-normal">
           <div className="text-spaceBlue-200">{T("publicProfile.copyright")}</div>

@@ -1,5 +1,4 @@
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
-import { linkClickHandlerFactory } from "src/utils/clickHandler";
 
 type Props = {
   text?: string;
@@ -9,9 +8,9 @@ type Props = {
 export function GithubLink({ text, url }: Props) {
   return (
     <span className={"group/link hover:cursor-pointer"}>
-      <span className={"align-top group-hover/link:underline"} onClick={linkClickHandlerFactory(url)}>
+      <a className={"align-top group-hover/link:underline"} href={url} target="_blank" rel="noreferrer">
         {text || url}
-      </span>
+      </a>
       <span className="ml-1 align-top">
         <ExternalLinkLine className="invisible text-spacePurple-500 group-hover/link:visible" />
       </span>
