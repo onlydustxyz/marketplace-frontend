@@ -7,19 +7,19 @@ export const TestStack = () => {
   const { open: open3, close: close3 } = UseController({ name: "modal-3" });
 
   return (
-    <>
-      <h2>Panel 1</h2>
-      <Button size={ButtonSize.Xs} onClick={open}>
-        open panel1
+    <div className="flex flex-row gap-2">
+      <Button size={ButtonSize.Xs} onClick={() => open({ id: 16590657 })}>
+        open Pierre
       </Button>
-      <h2>Panel 2</h2>
+      <Button size={ButtonSize.Xs} onClick={() => open({ id: 17259618 })}>
+        open Current user
+      </Button>
       <Button size={ButtonSize.Xs} onClick={open2}>
         open panel2
       </Button>
-      <h2>Panel 3</h2>
       <Button size={ButtonSize.Xs} onClick={open3}>
         open panel3
       </Button>
-    </>
+    </div>
   );
 };

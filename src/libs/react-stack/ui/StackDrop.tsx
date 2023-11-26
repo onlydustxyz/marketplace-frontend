@@ -1,6 +1,33 @@
-export const StackDrop = ({ onClick }: { onClick: () => void }) => {
+import { Transition } from "@headlessui/react";
+import { debounce } from "lodash";
+import { Fragment, useCallback, useEffect, useState } from "react";
+
+export const StackDrop = ({ show }: { show: boolean }) => {
+  const [debouncedShow, setDebouncedShow] = useState(false);
+
+  const debounceShow = useCallback(
+    debounce(newShow => {
+      setDebouncedShow(newShow);
+    }, 10),
+    []
+  );
+
+  useEffect(() => {
+    debounceShow(show);
+  }, [show]);
+
   return (
-    // <div onClick={onClick} className="absolute -left-[50px] top-0 h-screen w-[50px] bg-green-500 opacity-25"></div>
-    <div onClick={onClick} className="absolute -left-[50px] top-0 h-screen w-[50px] bg-black/40 backdrop-blur-sm"></div>
+    <Transition
+      show={debouncedShow}
+      as={Fragment}
+      enter="transition-opacity ease-in duration-300"
+      enterFrom="opacity-0"
+      enterTo="opacity-100"
+      leave="transition-opacity ease-in duration-300"
+      leaveFrom="opacity-100"
+      leaveTo="opacity-0"
+    >
+      <div className="pointer-events-none absolute left-0 top-0 h-screen w-full bg-black/40 backdrop-blur-[2px]"></div>
+    </Transition>
   );
 };

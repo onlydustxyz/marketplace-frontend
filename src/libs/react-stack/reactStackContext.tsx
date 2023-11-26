@@ -14,16 +14,22 @@ interface reactStackContextProps {
 
 export type panelEvent = "open" | "close";
 
+export interface History {
+  name: string;
+  panelId: string;
+  params?: any;
+}
+
 type IReactStackContext = {
   stacks: [];
   stackStore: RefSubscriptionInterface<StacksInterface>;
-  history: RefSubscriptionInterface<{ name: string; panelId: string }[]>;
+  history: RefSubscriptionInterface<History[]>;
   stackMethods: {
     closeAll: () => void;
     register: (stack: RefSubscriptionInterface<StackInterface>) => void;
     getStack: (name: string) => RefSubscriptionInterface<StackInterface> | null;
     getPanel: (name: string, id: string) => RefSubscriptionInterface<StackPanelInterface> | null;
-    open: (name: string) => void;
+    open: (name: string, params?: any) => void;
     close: (name: string) => void;
     closeLast: () => void;
   };
@@ -32,7 +38,7 @@ type IReactStackContext = {
 export const ReactStackContext = createContext<IReactStackContext>({
   stacks: [],
   stackStore: {} as RefSubscriptionInterface<StacksInterface>,
-  history: {} as RefSubscriptionInterface<{ name: string; panelId: string }[]>,
+  history: {} as RefSubscriptionInterface<History[]>,
   stackMethods: {
     closeAll: () => null,
     register: () => null,
@@ -46,7 +52,7 @@ export const ReactStackContext = createContext<IReactStackContext>({
 
 export default function ReactStackprovider({ children }: reactStackContextProps) {
   const [stacks, setStacks] = useRefSubscription<StacksInterface>({});
-  const [history, setHistory] = useRefSubscription<{ name: string; panelId: string }[]>([]);
+  const [history, setHistory] = useRefSubscription<History[]>([]);
 
   const registerStack = useCallback(
     (stack: RefSubscriptionInterface<StackInterface>) => {
@@ -61,7 +67,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   );
 
   const registerPanel = useCallback(
-    (name: string, panelId: string) => {
+    (name: string, panelId: string, params?: any) => {
       if (stacks.state[name]) {
         const defaultPanel = Object.assign({}, stacks.state[name].state.defaultPanel);
         stacks.state[name].setValue(prev => ({
@@ -73,6 +79,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
               position: "hidden",
               id: panelId,
               name,
+              params,
               children: defaultPanel.state.children,
             }),
           },
@@ -142,7 +149,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   );
 
   const updateHistory = useCallback(
-    (name: string, panelId: string, event: panelEvent) => {
+    (name: string, panelId: string, event: panelEvent, params?: any) => {
       let currentHistory = [...history.state];
       if (event === "close") {
         currentHistory = currentHistory.filter(item => item.panelId !== panelId);
@@ -151,7 +158,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         if (stacks.state[name]?.state.panels[panelId]) {
           currentHistory = [...currentHistory, { name, panelId }];
           setHistory(prev => {
-            return [...prev, { name, panelId }];
+            return [...prev, { name, panelId, params }];
           });
           currentHistory = history.state;
         }
@@ -176,20 +183,21 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   }, [stacks]);
 
   const openPanel = useCallback(
-    (panel: RefSubscriptionInterface<StackPanelInterface>) => {
+    (panel: RefSubscriptionInterface<StackPanelInterface>, params?: any) => {
       if (panel.state.open === false) {
         panel.setValue(prev => {
           return {
             ...prev,
             open: true,
             position: history.state.length === 1 ? "front" : "front-stacked",
+            params,
           };
         });
-        updateHistory(panel.state.name, panel.state.id, "open");
+        updateHistory(panel.state.name, panel.state.id, "open", params);
       } else {
         const panelId = uuidv4();
-        registerPanel(panel.state.name, panelId);
-        updateHistory(panel.state.name, panelId, "open");
+        registerPanel(panel.state.name, panelId, params);
+        updateHistory(panel.state.name, panelId, "open", params);
       }
     },
     [stacks]
@@ -235,14 +243,14 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   );
 
   const togglePanel = useCallback(
-    (name: string, event: panelEvent) => {
+    (name: string, event: panelEvent, params?: any) => {
       if (stacks.state[name]) {
         const lastPanelInHistory = history.state.findLast(p => p.name === name);
         const defaultPanelId = lastPanelInHistory?.panelId || stacks.state[name].state.defaultPanelId;
         const currentStack = stacks.state[name].state;
         const currentPanel = currentStack.panels[defaultPanelId];
         if (event === "open") {
-          openPanel(currentPanel);
+          openPanel(currentPanel, params);
         } else if (event === "close") {
           if (history.state.filter(p => p.name === name).length > 1) {
             removePanel(currentPanel, stacks.state[name]);
@@ -300,7 +308,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
           closeLast,
           getStack,
           getPanel,
-          open: (name: string) => togglePanel(name, "open"),
+          open: (name: string, params?: any) => togglePanel(name, "open", params),
           close: (name: string) => togglePanel(name, "close"),
         },
       }}

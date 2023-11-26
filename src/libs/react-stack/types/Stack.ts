@@ -7,20 +7,23 @@ export interface StackRouter {
 }
 
 export type StackPosition = "front" | "back" | "hidden" | "front-stacked"
-
+export interface renderChildren {
+    params: any
+}
 export interface StackOptionalInterface {
-  children: React.ReactElement
+  children: (props: renderChildren) => React.ReactElement
   name: string
   open?: boolean
   position?: StackPosition
 }
 
 export interface StackPanelInterface {
-  children: React.ReactElement
+  children: (props: renderChildren) => React.ReactElement
   open: boolean
   id: string
   position: StackPosition
   name: string
+  params?: any
 }
 
 export interface StackInterface {

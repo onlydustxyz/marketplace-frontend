@@ -9,8 +9,8 @@ const UseController = ({ name }: UseControllerProps) => {
     stackMethods: { open, close },
   } = UseStackContext();
 
-  const handleOpen = () => {
-    open(name);
+  const handleOpen = (params?: any) => {
+    open(name, params);
   };
 
   const handleClose = () => {

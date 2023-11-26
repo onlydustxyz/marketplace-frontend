@@ -16,6 +16,7 @@ export const Panel = ({ panelRef }: PanelProps) => {
   const panel = useSubscribe(panelRef || undefined);
   const [domContainer, setDomContainer] = useState<HTMLElement | null>(null);
 
+  console.log("panelRef.state.params", panelRef.state.params);
   useEffect(() => {
     if (panel?.open) {
       const domElement = document.getElementById(`stack-panel-history-item-${panel.name}-${panel.id}`);
@@ -34,7 +35,7 @@ export const Panel = ({ panelRef }: PanelProps) => {
         front={panel?.position === "front" || panel?.position === "front-stacked"}
         stacked={panel?.position === "front-stacked"}
       >
-        {panelRef.state.children}
+        {panelRef.state.children({ params: panelRef.state.params })}
       </SidePanel>,
       domContainer
     );
