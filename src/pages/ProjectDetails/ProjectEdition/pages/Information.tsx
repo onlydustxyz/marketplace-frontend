@@ -60,6 +60,7 @@ export function Information() {
               {...props.fieldState}
               label={T("project.details.edit.informations.fields.name.label")}
               placeholder={T("project.details.edit.informations.fields.name.placeholder")}
+              errorMessage={props.fieldState.error?.message}
               infoMessage={{
                 children: T("project.details.edit.informations.fields.name.info"),
                 icon: ({ className }) => <InformationLine className={className} />,
@@ -74,6 +75,7 @@ export function Information() {
             <FieldInput
               {...props.field}
               {...props.fieldState}
+              errorMessage={props.fieldState.error?.message}
               label={T("project.details.edit.informations.fields.short.label")}
             />
           )}
@@ -85,6 +87,7 @@ export function Information() {
             <FieldTextarea
               {...props.field}
               {...props.fieldState}
+              errorMessage={props.fieldState.error?.message}
               rows={4}
               label={T("project.details.edit.informations.fields.long.label")}
             />
@@ -110,7 +113,7 @@ export function Information() {
         <Controller
           name="moreInfos"
           control={form?.control}
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
             <FieldCombined
               onChange={onChange}
               name="moreInfos"
@@ -121,21 +124,33 @@ export function Information() {
                 <FieldInput
                   key="moreInfos.url"
                   name="moreInfos.url"
-                  value={value?.[0].url}
+                  value={value?.[0]?.url}
                   fieldClassName="flex-1"
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  errorMessage={(error as any)?.[0]?.url?.message}
                   onChange={event => {
-                    onChangeField([{ ...(value?.[0] || {}), url: event.target.value }]);
+                    if (event.target.value || value?.[0].value) {
+                      onChangeField([{ ...(value?.[0] || {}), url: event.target.value }]);
+                    } else {
+                      onChangeField([]);
+                    }
                   }}
                   startIcon={({ className }) => <Link className={className} />}
                 />,
                 <FieldInput
                   key="moreInfos.value"
                   name="moreInfos.value"
-                  value={value?.[0].value}
+                  value={value?.[0]?.value}
                   placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
                   fieldClassName=" w-1/3 max-w-full"
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  errorMessage={(error as any)?.[0]?.value?.message}
                   onChange={event => {
-                    onChangeField([{ ...(value?.[0] || {}), value: event.target.value }]);
+                    if (event.target.value || value?.[0].url) {
+                      onChangeField([{ ...(value?.[0] || {}), value: event.target.value }]);
+                    } else {
+                      onChangeField([]);
+                    }
                   }}
                 />,
               ]}
