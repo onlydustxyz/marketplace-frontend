@@ -16,7 +16,6 @@ const workItems: RewardableItem[] = [
     commitsCount: 1,
     userCommitsCount: 1,
     commentsCount: 0,
-    codeReviewOutcome: "APPROVED",
     status: GithubPullRequestStatus.Merged,
     ignored: false,
     htmlUrl: "",
