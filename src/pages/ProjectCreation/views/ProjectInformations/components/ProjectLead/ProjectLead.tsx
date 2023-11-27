@@ -46,7 +46,6 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
 
   const { data, isLoading } = UsersApi.queries.useUsersSearchByLogin({
     params: { login: query, projectId: project?.id },
-    options: { enabled: query !== "" },
   });
 
   const currentLeaders = [value?.invited, value?.toKeep].flatMap(lead => lead?.map(lead => lead.githubUserId));
