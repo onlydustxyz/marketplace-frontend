@@ -603,6 +603,7 @@
     }
   },
   "profile": {
+    "whatsapp": "Whatsapp",
     "editButton": "Edit profile",
     "error": {
       "notFound": "This user does not exist"
@@ -875,7 +876,7 @@
           "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project?",
-        "syncOganizations": "Synchronize your organization",
+        "syncOganizations": "Sync orgs",
         "startPopOver": {
           "title": "Resume project creation?",
           "description": "If you decide to start over all your previous changes will be lost.",
@@ -913,7 +914,7 @@
           "description": "Only repositories from organisation where github app is installed are listed. ",
           "search": "Search repository",
           "form": {
-            "error_count": "Please select at least one repo to continue.",
+            "error_count": "Please select at least one repo",
             "counter": "__selected__/__total__ repos selected"
           }
         },
@@ -922,7 +923,7 @@
           "success": "Only repositories from organisation where github app is installed are listed. ",
           "search": "Search repository",
           "form": {
-            "error_count": "Please select at least one repo to continue.",
+            "error_count": "Please select at least one repo",
             "counter": "__selected__/__total__ repos selected",
             "fields": {
               "name": {

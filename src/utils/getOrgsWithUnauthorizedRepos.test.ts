@@ -9,7 +9,12 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
   longDescription:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ...",
   logoUrl: "https://develop-onlydust-app-images.s3.eu-west-1.amazonaws.com/1a91a89934ce4b6e7bc7a859552d30a3.png",
-  moreInfoUrl: "",
+  moreInfos: [
+    {
+      url: "www.onlydust.xyz",
+      value: "onlydust",
+    },
+  ],
   hiring: false,
   visibility: "PUBLIC",
   contributorCount: 1,

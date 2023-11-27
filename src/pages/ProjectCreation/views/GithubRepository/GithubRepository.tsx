@@ -11,6 +11,7 @@ import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import { useIntl } from "src/hooks/useIntl";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 import { CreateProjectContext } from "../../ProjectCreation.context";
+import { sortBy } from "lodash";
 
 export const GithubRepositoryPage = () => {
   const { T } = useIntl();
@@ -71,7 +72,7 @@ export const GithubRepositoryPage = () => {
                     avatarSrc={organization.avatarUrl || ""}
                   >
                     <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
-                      {(organization.repos || []).map(repo => (
+                      {(sortBy(organization.repos, "name") || []).map(repo => (
                         <label
                           key={repo.name}
                           className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"

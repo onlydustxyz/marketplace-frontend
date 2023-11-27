@@ -178,11 +178,11 @@ export function CreateProjectProvider({
 
   const onSubmit = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { search, projectLeads, selectedRepos, ...formData } = form.getValues();
+    const { search, projectLeads, selectedRepos, moreInfo, ...formData } = form.getValues();
     createProject({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
-      moreInfo: [formData.moreInfo],
+      moreInfos: [moreInfo],
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
     });
   };
