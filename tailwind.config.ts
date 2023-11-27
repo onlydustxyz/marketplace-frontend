@@ -181,6 +181,7 @@ const config: Config = {
       boxShadow: {
         "bottom-sm": "0px 2px 4px rgba(0, 0, 0, 0.32), inset 0px -1px 2px 1px rgba(0, 0, 0, 0.32)",
         heavy: "0px 8px 64px rgba(0, 0, 0, 0.05)",
+        panel: "0px 8px 64px rgba(0, 0, 0, 0.5)",
         light: "0px 8px 32px 0px rgba(0, 0, 0, 0.16)",
         medium: "0px 8px 64px 0px rgba(0, 0, 0, 0.32)",
       },
@@ -196,6 +197,11 @@ const config: Config = {
         4: "0.04",
         8: "0.08",
         12: "0.12",
+      },
+      transitionTimingFunction: {
+        speed: "cubic-bezier(.22,.68,0,1.71)",
+        speed2: "cubic-bezier(.68, -.55, .265, 1.55)",
+        ease2: "cubic-bezier(.525,.005,.045,1.005)",
       },
     },
   },

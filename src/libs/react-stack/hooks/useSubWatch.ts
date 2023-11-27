@@ -19,7 +19,7 @@ const UseWatch = (name: string) => {
 
   const watchStore = (data: StacksInterface) => {
     if (!canWatch && data[name]) {
-      setCanWatch(get(name) as RefSubscriptionInterface<StackInterface> | null);
+      setCanWatch(get(name)?.state.stacks as RefSubscriptionInterface<StackInterface> | null);
     }
   };
 

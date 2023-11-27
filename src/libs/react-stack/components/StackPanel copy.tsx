@@ -34,6 +34,8 @@ function StackPanel({ name, placement = "right", stack }: Props & { stack: Stack
     },
   }[placement];
 
+  console.log("stack", name, stack);
+
   const PanelBackStyle: CSSProperties = {
     transform: "translateX(-50px)",
     opacity: "0.8",
@@ -58,7 +60,7 @@ function StackPanel({ name, placement = "right", stack }: Props & { stack: Stack
                 "inset-y-0 right-0 h-[calc(100dvh)] lg:w-[680px] lg:max-w-[80%]": placement === "right",
                 "inset-x-0 bottom-0 max-h-[calc(100dvh)] overflow-y-auto rounded-t-2xl": placement === "bottom",
               },
-              "fixed z-20 w-full transform bg-greyscale-900 shadow-heavy transition duration-300 ease-in-out"
+              "fixed z-20 w-full transform bg-greyscale-900 transition duration-300 ease-in-out"
               //   stack?.position === "back" && "-translate-x-6 duration-300 ease-in-out"
             )}
             style={stack?.position === "back" ? PanelBackStyle : undefined}
