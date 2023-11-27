@@ -9,10 +9,11 @@ export interface FieldTextareaProps extends Omit<FieldProps, "children"> {
   onChange?: ChangeEventHandler<HTMLTextAreaElement>;
   onFocus?: FocusEventHandler<HTMLTextAreaElement>;
   onBlur?: FocusEventHandler<HTMLTextAreaElement>;
+  autogrow?: boolean;
 }
 
 export const FieldTextarea = forwardRef(function FieldTextarea(
-  { onBlur, rows = 3, onFocus, onChange, className, value, ...rest }: FieldTextareaProps,
+  { onBlur, rows = 3, onFocus, onChange, className, value, autogrow = false, ...rest }: FieldTextareaProps,
   ref: Ref<HTMLTextAreaElement>
 ) {
   return (
@@ -28,6 +29,15 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
           onBlur={onBlur}
           onChange={onChange}
           onFocus={onFocus}
+          onInput={
+            autogrow
+              ? e => {
+                  const { currentTarget } = e;
+                  currentTarget.style.height = "";
+                  currentTarget.style.height = currentTarget.scrollHeight + "px";
+                }
+              : undefined
+          }
           rows={rows}
           ref={ref}
           className="scrollbar-sm w-full bg-transparent text-greyscale-50 outline-none placeholder:text-spaceBlue-200"

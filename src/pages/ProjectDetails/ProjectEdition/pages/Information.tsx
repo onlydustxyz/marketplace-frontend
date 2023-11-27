@@ -87,6 +87,7 @@ export function Information() {
               {...props.fieldState}
               rows={4}
               label={T("project.details.edit.informations.fields.long.label")}
+              autogrow
             />
           )}
         />
