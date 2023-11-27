@@ -2,7 +2,7 @@ import { Controller } from "react-hook-form";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { Flex } from "src/components/New/Layout/Flex";
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
 import { useRepositoryCount } from "./hooks/useRepositoryCount";
@@ -27,7 +27,7 @@ export const GithubRepositoryPage = () => {
   const selectedReposCounts = useRepositoryCount(organizations, selectedRepos);
   const footerRightElement = FormInformationCount(selectedReposCounts.selected, selectedReposCounts.total);
   const filterOrganizationBySearch = useRepositorySearch(search);
-
+  const filteredOrganizations = useMemo(() => filterOrganizationBySearch(organizations), [organizations]);
   const isSelected = useCallback(
     (repoId: number) => !!selectedRepos.find(repo => repo.repoId === repoId),
     [selectedRepos]
@@ -63,49 +63,53 @@ export const GithubRepositoryPage = () => {
           control={form.control}
           render={() => (
             <>
-              {filterOrganizationBySearch(organizations).map(organization =>
-                organization.repos.length ? (
-                  <VerticalListItemCard
-                    key={organization.login}
-                    title={organization.name || organization.login || ""}
-                    avatarAlt={organization.login || ""}
-                    avatarSrc={organization.avatarUrl || ""}
-                  >
-                    <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
-                      {(sortBy(organization.repos, "name") || []).map(repo => (
-                        <label
-                          key={repo.name}
-                          className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"
-                        >
-                          <Flex justify="start" item="start" direction="col" gap={2}>
-                            <Flex justify="between" item="center" className="w-full">
-                              <h3 className="h- text-body-m-bold">{repo.name}</h3>
-                              <FieldCheckbox
-                                value={isSelected(repo.id)}
-                                name={`repository-${repo.id}`}
-                                fieldClassName={"inline-flex w-auto"}
-                                onChange={() => {
-                                  if (!isSelected(repo.id)) {
-                                    addRepository({ repoId: repo.id, orgId: organization.id });
-                                  } else {
-                                    removeRepository({ repoId: repo.id, orgId: organization.id });
-                                  }
-                                }}
-                              />
+              {filteredOrganizations.length > 0 ? (
+                filteredOrganizations.map(organization =>
+                  organization.repos.length ? (
+                    <VerticalListItemCard
+                      key={organization.login}
+                      title={organization.name || organization.login || ""}
+                      avatarAlt={organization.login || ""}
+                      avatarSrc={organization.avatarUrl || ""}
+                    >
+                      <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
+                        {(sortBy(organization.repos, "name") || []).map(repo => (
+                          <label
+                            key={repo.name}
+                            className="flex basis-1/2 cursor-pointer flex-col gap-2 rounded-2xl border border-card-border-heavy bg-card-background-heavy p-5 shadow-heavy"
+                          >
+                            <Flex justify="start" item="start" direction="col" gap={2}>
+                              <Flex justify="between" item="center" className="w-full">
+                                <h3 className="h- text-body-m-bold">{repo.name}</h3>
+                                <FieldCheckbox
+                                  value={isSelected(repo.id)}
+                                  name={`repository-${repo.id}`}
+                                  fieldClassName={"inline-flex w-auto"}
+                                  onChange={() => {
+                                    if (!isSelected(repo.id)) {
+                                      addRepository({ repoId: repo.id, orgId: organization.id });
+                                    } else {
+                                      removeRepository({ repoId: repo.id, orgId: organization.id });
+                                    }
+                                  }}
+                                />
+                              </Flex>
+                              <p
+                                className={`text-body-s line-clamp-2 w-full text-greyscale-200 ${
+                                  !repo.description && "italic"
+                                }`}
+                              >
+                                {repo.description || T("project.details.overview.repositories.descriptionPlaceholder")}
+                              </p>
                             </Flex>
-                            <p
-                              className={`text-body-s line-clamp-2 w-full text-greyscale-200 ${
-                                !repo.description && "italic"
-                              }`}
-                            >
-                              {repo.description || T("project.details.overview.repositories.descriptionPlaceholder")}
-                            </p>
-                          </Flex>
-                        </label>
-                      ))}
-                    </div>
-                  </VerticalListItemCard>
-                ) : null
+                          </label>
+                        ))}
+                      </div>
+                    </VerticalListItemCard>
+                  ) : null
+                )
+              ) : (
+                <p className="text-body-s mb-2">{T("project.details.create.repository.placeholder")}</p>
               )}
             </>
           )}
