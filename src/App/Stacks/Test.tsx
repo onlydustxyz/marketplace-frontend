@@ -8,11 +8,14 @@ export const TestStack = () => {
 
   return (
     <div className="flex flex-row gap-2">
+      <Button size={ButtonSize.Xs} onClick={() => open({ id: 17259618 })}>
+        open me
+      </Button>
+      <Button size={ButtonSize.Xs} onClick={() => open({ id: 143011364 })}>
+        open mehdi
+      </Button>
       <Button size={ButtonSize.Xs} onClick={() => open({ id: 16590657 })}>
         open Pierre
-      </Button>
-      <Button size={ButtonSize.Xs} onClick={() => open({ id: 17259618 })}>
-        open Current user
       </Button>
       <Button size={ButtonSize.Xs} onClick={open2}>
         open panel2
