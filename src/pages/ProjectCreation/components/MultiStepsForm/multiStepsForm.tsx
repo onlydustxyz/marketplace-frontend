@@ -46,8 +46,8 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
         className="z-10 flex w-full border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
       >
         <Flex justify="start" item="center">
-          {PoolingFeedback}
           {footerRightElement ? footerRightElement : null}
+          {PoolingFeedback}
         </Flex>
         <Flex justify="end" item="center" gap={6}>
           {prev && (
