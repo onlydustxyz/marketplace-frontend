@@ -1,4 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
+import isSameDay from "date-fns/isSameDay";
 import { DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
@@ -19,10 +20,6 @@ type Props = {
   periods?: Period[];
 };
 
-function msToMinutes(ms: number) {
-  return (ms / 60000).toFixed(0);
-}
-
 export function Datepicker({ value, isElevated = false, onChange, periods }: Props) {
   const { T } = useIntl();
 
@@ -32,7 +29,7 @@ export function Datepicker({ value, isElevated = false, onChange, periods }: Pro
 
   function renderPlaceholder() {
     const selectedPeriod = periods?.find(period => {
-      return value ? msToMinutes(period.value.getTime()) === msToMinutes(value.getTime()) : false;
+      return value ? isSameDay(period.value, value) : false;
     });
 
     if (selectedPeriod) return selectedPeriod.label;
