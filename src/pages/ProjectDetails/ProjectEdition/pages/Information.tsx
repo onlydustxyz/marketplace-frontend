@@ -115,18 +115,12 @@ export function Information() {
           control={form?.control}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <FieldCombined
-              onChange={e => {
-                console.log("e", e);
-                onChange(e);
-              }}
+              onChange={onChange}
               name="moreInfos"
               label={T("project.details.edit.informations.fields.moreInfo.label")}
               className="gap-2"
             >
               {onChangeField => [
-                <>
-                  <>{console.log("error", error)}</>
-                </>,
                 <FieldInput
                   key="moreInfos.url"
                   name="moreInfos.url"
