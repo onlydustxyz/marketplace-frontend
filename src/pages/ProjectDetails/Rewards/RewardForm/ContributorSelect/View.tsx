@@ -26,7 +26,7 @@ type ShowMoreProps = {
 type ContributorSelectViewProps = {
   selectedGithubHandle: string | null;
   setSelectedGithubHandle: (selectedGithubHandle: string | null) => void;
-  filteredContributors?: ContributorType[];
+  internalContributors?: ContributorType[];
   filteredExternalContributors: ContributorType[] | undefined;
   isSearchGithubUsersByHandleSubstringQueryLoading: boolean;
   contributor: ContributorType | null | undefined;
@@ -38,7 +38,7 @@ type ContributorSelectViewProps = {
 export default function ContributorSelectView({
   selectedGithubHandle,
   setSelectedGithubHandle,
-  filteredContributors,
+  internalContributors,
   filteredExternalContributors,
   isSearchGithubUsersByHandleSubstringQueryLoading,
   contributor,
@@ -51,7 +51,51 @@ export default function ContributorSelectView({
 }: ContributorSelectViewProps) {
   const { T } = useIntl();
 
-  const contributorLines = buildContributorLines(search, filteredContributors, filteredExternalContributors);
+  const renderOptionsContent = () => {
+    if (isSearchGithubUsersByHandleSubstringQueryLoading) {
+      return <Spinner className="mx-auto mb-6 mt-4" />;
+    }
+
+    if (isError) {
+      return <div>{T("reward.form.contributor.select.fallback.error")}</div>;
+    }
+
+    if (internalContributors?.length === 0 && search?.length < 3) {
+      return (
+        <div className="px-4 pb-6 text-sm italic text-greyscale-100 xl:text-base">
+          {T("reward.form.contributor.select.fallback.typeMoreCharacters")}
+        </div>
+      );
+    }
+
+    if (
+      internalContributors?.length === 0 &&
+      (!filteredExternalContributors || filteredExternalContributors.length === 0)
+    ) {
+      return (
+        <div className="pb-6">
+          <span className="px-4 pb-6 italic text-greyscale-100">
+            {T("reward.form.contributor.select.fallback.noUser")}
+          </span>
+        </div>
+      );
+    }
+
+    if (contributorLines.length > 0) {
+      return (
+        <VirtualizedContributorSubList
+          lines={contributorLines}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
+      );
+    }
+
+    return <div />;
+  };
+
+  const contributorLines = buildContributorLines(search, internalContributors, filteredExternalContributors);
 
   return (
     <Combobox value={selectedGithubHandle} onChange={setSelectedGithubHandle}>
@@ -130,36 +174,7 @@ export default function ContributorSelectView({
                 </div>
               )}
             </Combobox.Button>
-            <Combobox.Options>
-              {filteredContributors?.length === 0 && search?.length < 3 ? (
-                <div className="px-4 pb-6 text-sm italic text-greyscale-100 xl:text-base">
-                  {T("reward.form.contributor.select.fallback.typeMoreCharacters")}
-                </div>
-              ) : filteredContributors &&
-                filteredContributors.length === 0 &&
-                (!filteredExternalContributors ||
-                  (filteredExternalContributors && filteredExternalContributors.length === 0)) &&
-                !isSearchGithubUsersByHandleSubstringQueryLoading &&
-                search === "" ? (
-                <div className="pb-6">
-                  <span className="px-4 pb-6 italic text-greyscale-100">
-                    {T("reward.form.contributor.select.fallback.noUser")}
-                  </span>
-                </div>
-              ) : contributorLines.length > 0 ? (
-                <VirtualizedContributorSubList
-                  lines={contributorLines}
-                  fetchNextPage={fetchNextPage}
-                  hasNextPage={hasNextPage}
-                  isFetchingNextPage={isFetchingNextPage}
-                  loading={isSearchGithubUsersByHandleSubstringQueryLoading}
-                />
-              ) : (
-                <div />
-              )}
-              {isSearchGithubUsersByHandleSubstringQueryLoading && <Spinner className="mx-auto mb-6 mt-4" />}
-              {isError && T("reward.form.contributor.select.fallback.error")}
-            </Combobox.Options>
+            <Combobox.Options>{renderOptionsContent()}</Combobox.Options>
           </div>
         </div>
       )}
@@ -169,16 +184,16 @@ export default function ContributorSelectView({
 
 function buildContributorLines(
   githubHandleSubstring: string,
-  filteredContributors?: ContributorType[],
+  internalContributors?: ContributorType[],
   filteredExternalContributors?: ContributorType[]
 ) {
   const showExternalUsersSection = !!(githubHandleSubstring && githubHandleSubstring.length > 2);
 
   let lines: Line[] = [];
 
-  if (filteredContributors && filteredContributors.length > 0) {
+  if (internalContributors && internalContributors.length > 0) {
     lines = lines.concat(
-      filteredContributors.map(contributor => ({
+      internalContributors.map(contributor => ({
         type: LineType.Contributor,
         contributor,
       }))
@@ -213,7 +228,6 @@ type Line =
 
 type ContributorSubListProps = {
   lines?: Line[];
-  loading: boolean;
 } & ShowMoreProps;
 
 const List = forwardRef<HTMLDivElement>((props, ref) => {
@@ -239,7 +253,6 @@ function VirtualizedContributorSubList({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
-  loading,
 }: ContributorSubListProps) {
   const { T } = useIntl();
   const loadMore = useCallback(() => {
@@ -297,7 +310,6 @@ function VirtualizedContributorSubList({
                   <ToRewardDetailsTooltip positionStrategy="fixed" />
                 </>
               )}
-              {loading && <Spinner className="mx-auto my-4" />}
             </Combobox.Option>
           );
         } else if (line.type === LineType.Separator) {

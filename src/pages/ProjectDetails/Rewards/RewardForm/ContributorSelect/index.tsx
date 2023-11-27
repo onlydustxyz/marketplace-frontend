@@ -46,7 +46,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
 
   const { data: searchedUsers, isLoading: isUsersSearchLoading } = UsersApi.queries.useUsersSearchByLogin({
     params: { login: debouncedSearch, externalSearchOnly: "true" },
-    options: { enabled: debouncedSearch !== "" },
+    options: { enabled: debouncedSearch.length >= 3 },
   });
 
   const { queryParams } = useQueryParamsSorting({
@@ -63,7 +63,10 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     hasNextPage,
     isFetchingNextPage,
   } = ProjectApi.queries.useProjectContributorsInfiniteList({
-    params: { projectId, queryParams },
+    params: {
+      projectId,
+      queryParams: typeof queryParams === "object" ? { ...queryParams, login: debouncedSearch } : {},
+    },
   });
 
   const contributors = ProjectContributors?.pages.flatMap(({ contributors }) => contributors) ?? [];
@@ -86,15 +89,11 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     };
   });
 
-  const filteredContributors = internalContributors.filter(
-    contributor => !search || (search && contributor.login?.toLowerCase().startsWith(search.toLowerCase()))
-  );
-
   const filteredExternalContributors: Contributor[] = sortListByLogin(searchedUsers?.externalContributors)
     ?.slice(0, 5)
     .filter(
       contributor =>
-        !filteredContributors
+        !internalContributors
           .map(filteredContributor => filteredContributor.login?.toLocaleLowerCase())
           .includes(contributor.login.toLocaleLowerCase())
     )
@@ -113,7 +112,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
           filteredExternalContributors?.find(contributor => contributor.login === selectedGithubHandle)
       );
     }
-  }, [selectedGithubHandle, contributor, filteredContributors, filteredExternalContributors, internalContributors]);
+  }, [selectedGithubHandle, contributor, internalContributors, filteredExternalContributors, internalContributors]);
 
   return (
     <View
@@ -122,7 +121,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
         setSelectedGithubHandle,
         search,
         setSearch,
-        filteredContributors,
+        internalContributors,
         filteredExternalContributors,
         isSearchGithubUsersByHandleSubstringQueryLoading: isUsersSearchLoading || isProjectContributorsLoading,
         contributor,
