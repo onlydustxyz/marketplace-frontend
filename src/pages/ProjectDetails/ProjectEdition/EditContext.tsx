@@ -261,13 +261,15 @@ export function EditProvider({ children, project }: EditContextProps) {
         form.reset(form.getValues());
 
         // Replace the current path on the history stack if different
-        const newPathname = `${generatePath(RoutePaths.ProjectDetails, {
+        const newPathname = `${generatePath(RoutePaths.ProjectDetailsEdit, {
           projectKey: data.projectSlug,
         })}`;
 
-        await queryClient.prefetchQuery({ queryKey: MeApi.tags.all });
-        await queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
+        // Navigate before invalidating queries so the new data can use the updated params
         navigate(newPathname, { replace: true, state: location.state });
+
+        queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+        queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
       },
     },
   });
