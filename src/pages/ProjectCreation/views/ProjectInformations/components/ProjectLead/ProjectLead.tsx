@@ -61,7 +61,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
     });
   };
 
-  const SelectedLeads = useMemo(
+  const selectedLeads = useMemo(
     () => [
       <FieldProjectLeadItem key={user?.id} avatar={user?.avatarUrl ?? ""} isYou label={user?.login ?? ""} />,
       ...(value?.toKeep || [])
@@ -87,6 +87,10 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
     [value, user]
   );
 
+  const selectedLeadsIds = useMemo(() => {
+    return [...(value?.toKeep ?? []), ...(value?.invited ?? [])].map(({ githubUserId }) => githubUserId);
+  }, [value]);
+
   function handleChange(leader: SelectedLeadType[]) {
     onChange?.({
       invited: [...uniqWith(leader, (arrVal, othVal) => arrVal.githubUserId === othVal.githubUserId)],
@@ -95,8 +99,11 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
   }
 
   const comboboxMultiData: ItemType<SelectedLeadType>[] = [
-    { data: data?.internalContributors || [] },
-    { label: "External", data: data?.externalContributors || [] },
+    { data: (data?.internalContributors ?? []).filter(({ githubUserId }) => !selectedLeadsIds.includes(githubUserId)) },
+    {
+      label: "External",
+      data: (data?.externalContributors ?? []).filter(({ githubUserId }) => !selectedLeadsIds.includes(githubUserId)),
+    },
   ];
 
   return (
@@ -126,7 +133,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
             multiple
           />
         </div>
-        <div className="flex flex-wrap gap-3">{SelectedLeads}</div>
+        <div className="flex flex-wrap gap-3">{selectedLeads}</div>
         <FieldInfoMessage icon={({ className }) => <InformationLine className={className} />}>
           {T("project.details.create.informations.form.fields.projectLead.info")}
         </FieldInfoMessage>
