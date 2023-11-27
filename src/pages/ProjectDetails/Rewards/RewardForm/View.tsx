@@ -111,7 +111,9 @@ const View: React.FC<Props> = ({
     if (!unpaidContributions) return;
 
     const filteredTypedContributions = filterUnpaidContributionsByType(type, unpaidContributions);
-    const filteredTypedContributionsIds = filteredTypedContributions.map(({ id }) => id);
+    const filteredTypedContributionsIds = filteredTypedContributions
+      .map(({ contributionId }) => contributionId)
+      .filter((contributionId): contributionId is string => contributionId !== undefined);
     ignoreContribution({ contributionsToIgnore: [...filteredTypedContributionsIds] });
   };
 

@@ -51,7 +51,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
   const { ignore: ignoreContribution, unignore: unignoreContribution } = useIgnoredContributions(projectId);
 
   const addAndUnignoreContribution = (contribution: RewardableItem) => {
-    if (contribution.ignored && contribution.id) unignoreContribution(contribution.id);
+    if (contribution.ignored && contribution.contributionId) unignoreContribution(contribution.contributionId);
     const workItem = contributionToWorkItem(contribution);
     workItem && addWorkItem(workItem);
   };
@@ -72,8 +72,12 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
       addWorkItem={addWorkItem}
       addContribution={addAndUnignoreContribution}
       contributorId={contributorId}
-      ignoreContribution={(contribution: RewardableItem) => contribution.id && ignoreContribution(contribution.id)}
-      unignoreContribution={(contribution: RewardableItem) => contribution.id && unignoreContribution(contribution.id)}
+      ignoreContribution={(contribution: RewardableItem) =>
+        contribution.contributionId && ignoreContribution(contribution.contributionId)
+      }
+      unignoreContribution={(contribution: RewardableItem) =>
+        contribution.contributionId && unignoreContribution(contribution.contributionId)
+      }
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
