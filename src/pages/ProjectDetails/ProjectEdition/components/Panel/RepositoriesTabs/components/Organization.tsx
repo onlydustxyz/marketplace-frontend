@@ -6,6 +6,7 @@ import { Repository } from "./Repository";
 import InformationLine from "src/icons/InformationLine";
 import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
+import { sortBy } from "lodash";
 
 export interface OrganizationProps {
   organization: UseGithubOrganizationsResponse;
@@ -22,7 +23,9 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
 
   const repositories = useMemo(() => {
     if (unInstalledRepo?.length) {
-      return unInstalledRepo.map(repo => <Repository key={repo.id} organization={organization} repository={repo} />);
+      return sortBy(unInstalledRepo, "name").map(repo => (
+        <Repository key={repo.id} organization={organization} repository={repo} />
+      ));
     }
 
     return (
