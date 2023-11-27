@@ -905,6 +905,7 @@
           "title": "Which repositories will you need?",
           "description": "Only repositories from organisation where github app is installed are listed. ",
           "search": "Search repository",
+          "placeholder": "No repositories available",
           "form": {
             "error_count": "Please select at least one repo",
             "counter": "__selected__/__total__ repos selected"
