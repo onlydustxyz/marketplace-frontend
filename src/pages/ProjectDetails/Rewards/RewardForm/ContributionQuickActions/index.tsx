@@ -1,7 +1,9 @@
 import TagButton from "src/components/TagButton/TagButton";
 import { GithubContributionShortenTypeLabel, GithubContributionType } from "src/types";
-import QuickActionsMenu from "../AutoAdd/QuickActionsMenu";
+import ActionMenu from "../AutoAdd/ActionMenu";
 import { useIntl } from "src/hooks/useIntl";
+import EyeOffLine from "src/icons/EyeOffLine";
+import AddLine from "src/icons/AddLine";
 
 interface ContributionQuickActionsProps {
   remainingCount: number;
@@ -36,28 +38,32 @@ export default function ContributionQuickActions({
   const shortenTypeLabel = getShortenTypeLabel(contributionType);
   if (remainingCount > 0) {
     return (
-      <QuickActionsMenu
-        add={{
-          label: T("project.details.rewards.quickActions.add", {
-            count: remainingCount,
-            type: shortenTypeLabel,
-          }),
-          onClick: () => onAutoAdd(contributionType),
-        }}
-        ignore={{
-          label: T("project.details.rewards.quickActions.ignore", {
-            count: remainingCount,
-            type: shortenTypeLabel,
-          }),
-          onClick: () => onAutoIgnore(contributionType),
-        }}
+      <ActionMenu
+        actions={[
+          {
+            label: T("project.details.rewards.quickActions.add", {
+              count: remainingCount,
+              type: shortenTypeLabel,
+            }),
+            onClick: () => onAutoAdd(contributionType),
+            icon: <AddLine />,
+          },
+          {
+            label: T("project.details.rewards.quickActions.ignore", {
+              count: remainingCount,
+              type: shortenTypeLabel,
+            }),
+            onClick: () => onAutoIgnore(contributionType),
+            icon: <EyeOffLine />,
+          },
+        ]}
       >
         <TagButton>
           <IconComponent className="text-spacePurple-500" />
           <div className="hidden sm:inline">{T(tooltipLong, { count: remainingCount })}</div>
           <div className="visible sm:hidden">{T(tooltipShort, { count: remainingCount })}</div>
         </TagButton>
-      </QuickActionsMenu>
+      </ActionMenu>
     );
   }
   return null;
