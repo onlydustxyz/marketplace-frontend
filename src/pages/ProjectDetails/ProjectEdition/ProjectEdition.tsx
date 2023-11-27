@@ -2,7 +2,7 @@ import { PropsWithChildren, useContext, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Button, { ButtonOnBackground, ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import { FormStatus } from "src/components/FormStatus/FormStatus";
 import Loader from "src/components/Loader";
@@ -115,6 +115,7 @@ function SafeProjectEdition() {
           size={ButtonSize.Md}
           htmlType="submit"
           disabled={!form?.formState.isDirty || !form?.formState.isValid || form?.formState.isSubmitting}
+          onBackground={ButtonOnBackground.Blue}
         >
           {T("project.details.edit.save")}
           <ArrowRightSLine className="-mr-2 text-2xl" />
