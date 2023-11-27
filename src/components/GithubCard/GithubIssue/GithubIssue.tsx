@@ -25,7 +25,7 @@ function getIssueStatusDate(issue: Partial<GithubIssueFragment & RewardableItem>
     case GithubIssueStatus.Completed:
     case ContributionStatus.Completed:
     case ContributionStatus.Cancelled:
-      return issue.lastUpdateAt ? new Date(issue.lastUpdateAt) : new Date();
+      return issue.completedAt ? new Date(issue.completedAt) : new Date();
     case GithubIssueStatus.Open:
     default:
       return new Date(issue.createdAt);

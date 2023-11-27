@@ -22,7 +22,7 @@ function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment & 
   switch (codeReview?.status) {
     case GithubCodeReviewStatus.Completed:
     case ContributionStatus.Completed:
-      return codeReview.lastUpdateAt ? new Date(codeReview.lastUpdateAt) : new Date();
+      return codeReview.completedAt ? new Date(codeReview.completedAt) : new Date();
     case GithubCodeReviewStatus.Pending:
     default:
       return new Date(codeReview.githubPullRequest?.createdAt ?? codeReview.createdAt);
