@@ -874,7 +874,7 @@
           "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project?",
-        "syncOganizations": "Sync orgs",
+        "syncOganizations": "Resync organisations",
         "startPopOver": {
           "title": "Resume project creation?",
           "description": "If you decide to start over all your previous changes will be lost.",
@@ -903,8 +903,10 @@
           "installedOrganizationEmpty": "Not installed on any organization.",
           "availableOrganizationEmpty": "You have no organization available.",
           "githubAppInformation": {
-            "title": "If you are missing any GitHub organizations, you can edit your configuration by clicking below.",
-            "button": "Edit my configuration"
+            "title": "Githbub Settings",
+            "description": "If you are missing any GitHub organizations, you can either edit your configuration or resync your organisations by clicking above.",
+            "button": "Edit my configurations",
+            "syncButton": "Resync organisations"
           }
         },
         "repository": {

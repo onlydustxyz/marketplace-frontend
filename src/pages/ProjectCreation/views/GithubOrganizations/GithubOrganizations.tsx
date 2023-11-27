@@ -7,6 +7,7 @@ import OrganizationList from "./components/OrganizationList";
 import GithubLogo from "src/icons/GithubLogo";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { OAuthGithubConfigLink } from "src/utils/githubSetupLink";
+import InformationLine from "src/icons/InformationLine";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();
@@ -15,6 +16,7 @@ export const GithubOrganizationPage = () => {
     installedRepos,
     organizations,
     organizationsLoading,
+    PoolingFeedback,
   } = useContext(CreateProjectContext);
 
   const installedOrganizations = organizations.filter(org => org.installed);
@@ -47,18 +49,25 @@ export const GithubOrganizationPage = () => {
           loading={organizationsLoading}
         />
       </Card>
-      <div className="card-light mt-6 flex w-full flex-col items-center justify-start gap-6 rounded-2xl border p-4">
-        <div className="flex flex-row items-center justify-center gap-0.5">
-          <p className="mt-3 text-center text-gray-500">
-            {T("project.details.create.organizations.githubAppInformation.title")}
+      <div className="card-light mt-8 flex w-full flex-col items-start justify-start gap-6 rounded-2xl border bg-transparent p-5">
+        <p className="text-center font-walsheim text-sm font-medium uppercase">
+          {T("project.details.create.organizations.githubAppInformation.title")}
+        </p>
+        <div className="center flex w-full items-center gap-5">
+          <a href={OAuthGithubConfigLink} target="_blank" rel="noopener noreferrer" className="w-full">
+            <Button type={ButtonType.Secondary} size={ButtonSize.Sm} className="w-full">
+              <GithubLogo />
+              {T("project.details.create.organizations.githubAppInformation.button")}
+            </Button>
+          </a>
+          {PoolingFeedback}
+        </div>
+        <div className="flex flex-row items-start justify-start gap-2">
+          <InformationLine className="text-base leading-4 text-spaceBlue-200" />
+          <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
+            {T("project.details.create.organizations.githubAppInformation.description")}
           </p>
         </div>
-        <a href={OAuthGithubConfigLink} target="_blank" rel="noopener noreferrer">
-          <Button type={ButtonType.Secondary} size={ButtonSize.Sm}>
-            <GithubLogo />
-            {T("project.details.create.organizations.githubAppInformation.button")}
-          </Button>
-        </a>
       </div>
     </MultiStepsForm>
   );

@@ -56,7 +56,7 @@ export const usePoolingFeedback = ({
   };
   const Ui = useMemo(() => {
     if (ui.customComponents) {
-      return ui.customComponents;
+      return ui.customComponents({ isSyncing: isRefetching || isLoading });
     }
 
     return (
