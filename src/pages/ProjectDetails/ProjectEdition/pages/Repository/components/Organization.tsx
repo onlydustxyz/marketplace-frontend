@@ -10,6 +10,7 @@ import GithubLogo from "src/icons/GithubLogo";
 import { withTooltip } from "src/components/Tooltip";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
 import { EditContext } from "../../../EditContext";
+import { sortBy } from "lodash";
 
 type RepositoryOrganizationType = {
   organization: UseGithubOrganizationsResponse;
@@ -72,7 +73,7 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
         avatarSrc={organization?.avatarUrl || ""}
       >
         <div className="grid grid-flow-row grid-cols-1 gap-x-5 gap-y-5 lg:grid-cols-2 xl:grid-cols-3">
-          {installedReposData.map(repo => (
+          {sortBy(installedReposData, "name").map(repo => (
             <Repository key={repo.name} organization={organization} repository={repo} />
           ))}
         </div>
