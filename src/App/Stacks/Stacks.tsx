@@ -4,7 +4,6 @@ import { TestStack } from "./Test";
 import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
 
 export const Stacks = () => {
-  // {//pierre /* 16590657 */}
   return (
     <>
       <ReactStackprovider>
