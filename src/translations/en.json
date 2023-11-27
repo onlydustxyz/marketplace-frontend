@@ -26,6 +26,12 @@
     "you": "You",
     "pendingInvite": "Pending invite"
   },
+  "forms": {
+    "error": {
+      "require": "Please fill __fieldName__ ",
+      "invalid": "Please provide a valid __fieldName__"
+    }
+  },
   "contribution": {
     "review": {
       "status": {

@@ -17,6 +17,7 @@ import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import MeApi from "src/api/me";
 import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
+import { ZodUtils } from "src/utils/Zod";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -70,33 +71,51 @@ export const EditContext = createContext<Edit>({
   },
 });
 
-const validationSchema = z.object({
-  logoUrl: z.string().nullish(),
-  inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
-  isLookingForContributors: z.boolean().nullish().optional(),
-  longDescription: z.string().min(1),
-  moreInfos: z.array(
-    z.object({
-      url: z.string().trim().optional(),
-      value: z.string().optional(),
-    })
-  ),
-  name: z.string().min(1),
-  githubRepos: z.array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() })).min(1),
-  projectLeadsToKeep: z.array(z.string()).min(1),
-  shortDescription: z.string().min(1),
-  rewardSettings: z.object({
-    ignorePullRequests: z.boolean().nullish().optional(),
-    ignoreIssues: z.boolean().nullish().optional(),
-    ignoreCodeReviews: z.boolean().nullish().optional(),
-    ignoreContributionsBefore: z.coerce.date().optional(),
-  }),
-});
-
 const SESSION_KEY = "edit-project-";
 
 export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
+
+  const validationSchema = z.object({
+    logoUrl: z.string().nullish(),
+    inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
+    isLookingForContributors: z.boolean().nullish().optional(),
+    longDescription: z
+      .string(
+        ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the long description  of the project" }))
+      )
+      .min(1),
+    moreInfos: z
+      .array(
+        z.object({
+          url: z
+            .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the information url" })))
+            .trim()
+            .min(1),
+          value: z
+            .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the information label" })))
+            .min(1),
+        })
+      )
+      .min(0),
+    name: z
+      .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the name of the project" })))
+      .min(1),
+    githubRepos: z.array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() })).min(1),
+    projectLeadsToKeep: z.array(z.string()).min(1),
+    shortDescription: z
+      .string(
+        ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the short description of the project" }))
+      )
+      .min(1),
+    rewardSettings: z.object({
+      ignorePullRequests: z.boolean().nullish().optional(),
+      ignoreIssues: z.boolean().nullish().optional(),
+      ignoreCodeReviews: z.boolean().nullish().optional(),
+      ignoreContributionsBefore: z.coerce.date().optional(),
+    }),
+  });
+
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
@@ -106,7 +125,8 @@ export function EditProvider({ children, project }: EditContextProps) {
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
 
   const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
-    limites: 5,
+    // limites: 5,
+    limites: 1,
     delays: 3000,
   });
 
@@ -168,6 +188,8 @@ export function EditProvider({ children, project }: EditContextProps) {
     },
     resolver: zodResolver(validationSchema),
   });
+
+  console.log("form", form.formState.isValid, form.formState.errors);
 
   const mergeOrganization = useMemo(() => {
     const merged = (project.organizations || [])?.map(projectOrg => {
@@ -277,6 +299,10 @@ export function EditProvider({ children, project }: EditContextProps) {
     const githubRepoIds = githubRepos.map(repo => repo.id);
     updateProject({ ...rest, githubRepoIds });
   };
+
+  useEffect(() => {
+    form.trigger();
+  }, []);
 
   return (
     <EditContext.Provider
