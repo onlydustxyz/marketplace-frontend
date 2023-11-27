@@ -129,10 +129,10 @@ export function Information() {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   errorMessage={(error as any)?.[0]?.url?.message}
                   onChange={event => {
-                    if (!event.target.value && !value?.[0].value) {
-                      onChangeField([]);
-                    } else {
+                    if (event.target.value || value?.[0].value) {
                       onChangeField([{ ...(value?.[0] || {}), url: event.target.value }]);
+                    } else {
+                      onChangeField([]);
                     }
                   }}
                   startIcon={({ className }) => <Link className={className} />}
@@ -146,10 +146,10 @@ export function Information() {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   errorMessage={(error as any)?.[0]?.value?.message}
                   onChange={event => {
-                    if (!event.target.value && !value?.[0].url) {
-                      onChangeField([]);
-                    } else {
+                    if (event.target.value || value?.[0].url) {
                       onChangeField([{ ...(value?.[0] || {}), value: event.target.value }]);
+                    } else {
+                      onChangeField([]);
                     }
                   }}
                 />,
