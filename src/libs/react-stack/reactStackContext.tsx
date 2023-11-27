@@ -115,10 +115,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [stacks, history]
   );
 
-  // debounce(() => {
-  //   close();
-  // }, 300),
-
   const debounceHistory = useCallback(
     debounce(
       (
@@ -169,6 +165,8 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   );
 
   const closeAll = useCallback(() => {
+    /** TODO remove duplicate panels here */
+    /** TODO delay the close */
     history.state.forEach(panel => {
       stacks.state[panel.name].setValue(prev => {
         return {
