@@ -30,10 +30,9 @@ function getPullRequestStatusDate(pullRequest: Partial<RewardableItem & GithubPu
   switch (pullRequest.status) {
     case GithubPullRequestStatus.Closed:
     case ContributionStatus.Cancelled:
-      return new Date(pullRequest.closedAt);
     case GithubPullRequestStatus.Merged:
     case ContributionStatus.Completed:
-      return new Date(pullRequest.mergedAt);
+      return pullRequest.completedAt ? new Date(pullRequest.completedAt) : new Date();
     case GithubPullRequestStatus.Open:
     default:
       return new Date(pullRequest.createdAt);
