@@ -5,7 +5,7 @@ export interface UsePoolingFeedbackProps {
   onForcePooling: () => void;
   ui: {
     label: string;
-    customComponents?: React.ReactElement;
+    customComponents?: (props: { isSyncing: boolean }) => React.ReactElement;
   };
 }
 export interface UsePoolingProps {

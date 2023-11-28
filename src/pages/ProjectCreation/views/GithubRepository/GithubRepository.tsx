@@ -9,9 +9,9 @@ import { useRepositoryCount } from "./hooks/useRepositoryCount";
 import { FormInformationCount } from "./components/FormInformationCount";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
 import { useIntl } from "src/hooks/useIntl";
-import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 import { CreateProjectContext } from "../../ProjectCreation.context";
 import { sortBy } from "lodash";
+import { VerticalListItemDrop } from "src/components/New/Cards/VerticalListItemDrop";
 
 export const GithubRepositoryPage = () => {
   const { T } = useIntl();
@@ -66,11 +66,12 @@ export const GithubRepositoryPage = () => {
               {filteredOrganizations.length > 0 ? (
                 filteredOrganizations.map(organization =>
                   organization.repos.length ? (
-                    <VerticalListItemCard
+                    <VerticalListItemDrop
                       key={organization.login}
                       title={organization.name || organization.login || ""}
                       avatarAlt={organization.login || ""}
                       avatarSrc={organization.avatarUrl || ""}
+                      variant="BLUE"
                     >
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
                         {(sortBy(organization.repos, "name") || []).map(repo => (
@@ -105,7 +106,7 @@ export const GithubRepositoryPage = () => {
                           </label>
                         ))}
                       </div>
-                    </VerticalListItemCard>
+                    </VerticalListItemDrop>
                   ) : null
                 )
               ) : (

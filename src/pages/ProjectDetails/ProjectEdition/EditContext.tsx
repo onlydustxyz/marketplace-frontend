@@ -86,7 +86,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
 
   const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
-    limites: 1,
+    limites: 4,
     delays: 3000,
   });
 
@@ -156,6 +156,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         return {
           ...findInMe,
           ...projectOrg,
+          installed: findInMe.installed,
           isCurrentUserAdmin: findInMe.isCurrentUserAdmin,
           repos: uniqWith([...(projectOrg.repos || []), ...(findInMe.repos || [])], (arr, oth) => arr.id === oth.id),
         };
