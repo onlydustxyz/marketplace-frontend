@@ -150,8 +150,8 @@ function SafeProjectEdition() {
 
 export default function ProjectEdition() {
   const { refetchOnWindowFocus, refetchInterval, onRefetching } = usePooling({
-    limites: 1,
-    delays: 5000,
+    limites: 2,
+    delays: 2500,
   });
 
   const { projectKey = "" } = useParams<{ projectKey: string }>();
