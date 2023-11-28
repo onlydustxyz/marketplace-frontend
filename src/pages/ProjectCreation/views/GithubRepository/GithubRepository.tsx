@@ -27,7 +27,10 @@ export const GithubRepositoryPage = () => {
   const selectedReposCounts = useRepositoryCount(organizations, selectedRepos);
   const footerRightElement = FormInformationCount(selectedReposCounts.selected, selectedReposCounts.total);
   const filterOrganizationBySearch = useRepositorySearch(search);
-  const filteredOrganizations = useMemo(() => filterOrganizationBySearch(organizations), [organizations]);
+  const filteredOrganizations = useMemo(
+    () => filterOrganizationBySearch(organizations),
+    [organizations, filterOrganizationBySearch]
+  );
   const isSelected = useCallback(
     (repoId: number) => !!selectedRepos.find(repo => repo.repoId === repoId),
     [selectedRepos]
