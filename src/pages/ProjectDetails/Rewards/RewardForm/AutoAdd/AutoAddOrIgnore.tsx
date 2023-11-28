@@ -10,14 +10,14 @@ import { RewardableWorkItem } from "../WorkItemSidePanel/WorkItems/WorkItems";
 import { RewardableItem } from "src/api/Project/queries";
 import ContributionQuickActions from "../ContributionQuickActions";
 
-type AutoAddProps = {
+type AutoAddOrIgnoreProps = {
   unpaidContributions: RewardableItem[];
   workItems: RewardableWorkItem[];
   onAutoAdd: (type: GithubContributionType) => void;
   onAutoIgnore: (type: GithubContributionType) => void;
 };
 
-export function AutoAdd({ unpaidContributions, workItems, onAutoAdd, onAutoIgnore }: AutoAddProps) {
+export function AutoAddOrIgnore({ unpaidContributions, workItems, onAutoAdd, onAutoIgnore }: AutoAddOrIgnoreProps) {
   const { T } = useIntl();
 
   const getWorkItemsCount = (workItemType: WorkItemType) =>

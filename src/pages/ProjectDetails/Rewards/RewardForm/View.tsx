@@ -17,7 +17,7 @@ import {
 import Title from "src/pages/ProjectDetails/Title";
 import { GithubContributionType } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
-import { AutoAdd } from "./AutoAdd/AutoAdd";
+import { AutoAddOrIgnore } from "./AutoAdd/AutoAddOrIgnore";
 import { WorkItem } from "./WorkItem";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
@@ -190,7 +190,7 @@ const View: React.FC<Props> = ({
                     </div>
 
                     {unpaidContributions?.length ? (
-                      <AutoAdd
+                      <AutoAddOrIgnore
                         unpaidContributions={unpaidContributions}
                         onAutoAdd={handleAutoAdd}
                         onAutoIgnore={handleAutoIgnore}
