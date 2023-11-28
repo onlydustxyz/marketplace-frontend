@@ -145,6 +145,22 @@ const useProjectContributorsInfiniteList = ({
   );
 };
 
+type UseCompletedRewardableItemsResponse = components["schemas"]["AllRewardableItemsResponse"];
+export type CompletedRewardableItem = components["schemas"]["AllRewardableItemsResponse"];
+
+const useCompletedRewardableItems = ({
+  params,
+  options = {},
+}: UseQueryProps<UseCompletedRewardableItemsResponse, { projectId?: string; githubUserId?: string }>) => {
+  return useBaseQuery<UseCompletedRewardableItemsResponse>({
+    resourcePath: API_PATH.PROJECT_COMPLETED_REWARDABLE_ITEMS(params?.projectId ?? ""),
+    enabled: !!params?.projectId && !!params?.githubUserId,
+    queryParams: { githubUserId: params?.githubUserId ?? "" },
+    tags: PROJECT_TAGS.completed_rewardable_items(params?.projectId ?? "", params?.githubUserId ?? ""),
+    ...options,
+  });
+};
+
 export default {
   useGetProjectBySlug,
   useGetProjectContributionDetail,
@@ -152,4 +168,5 @@ export default {
   useRewardableItemsInfiniteList,
   useRewardableItemsQueryParams,
   useProjectContributorsInfiniteList,
+  useCompletedRewardableItems,
 };

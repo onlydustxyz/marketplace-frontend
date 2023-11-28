@@ -5,13 +5,12 @@ import GitMergeLine from "src/icons/GitMergeLine";
 import { useIntl } from "src/hooks/useIntl";
 import { GithubContributionType } from "src/types";
 import { WorkItemType } from "src/__generated/graphql";
-import { filterUnpaidContributionsByType } from "src/pages/ProjectDetails/Rewards/RewardForm/utils";
 import { RewardableWorkItem } from "../WorkItemSidePanel/WorkItems/WorkItems";
-import { RewardableItem } from "src/api/Project/queries";
+import { CompletedRewardableItem } from "src/api/Project/queries";
 import ContributionQuickActions from "../ContributionQuickActions";
 
 type AutoAddOrIgnoreProps = {
-  unpaidContributions: RewardableItem[];
+  unpaidContributions: CompletedRewardableItem;
   workItems: RewardableWorkItem[];
   onAutoAdd: (type: GithubContributionType) => void;
   onAutoIgnore: (type: GithubContributionType) => void;
@@ -24,16 +23,12 @@ export function AutoAddOrIgnore({ unpaidContributions, workItems, onAutoAdd, onA
     workItems.filter(({ type }: { type: WorkItemType }) => type === workItemType).length;
 
   const remainingPullRequests =
-    filterUnpaidContributionsByType(GithubContributionType.PullRequest, unpaidContributions).length -
-    getWorkItemsCount(WorkItemType.PullRequest);
+    unpaidContributions?.rewardablePullRequests.length - getWorkItemsCount(WorkItemType.PullRequest);
 
-  const remainingIssues =
-    filterUnpaidContributionsByType(GithubContributionType.Issue, unpaidContributions).length -
-    getWorkItemsCount(WorkItemType.Issue);
+  const remainingIssues = unpaidContributions?.rewardableIssues.length - getWorkItemsCount(WorkItemType.Issue);
 
   const remainingCodeReviews =
-    filterUnpaidContributionsByType(GithubContributionType.CodeReview, unpaidContributions).length -
-    getWorkItemsCount(WorkItemType.CodeReview);
+    unpaidContributions?.rewardableCodeReviews.length - getWorkItemsCount(WorkItemType.CodeReview);
 
   const hasItems = remainingPullRequests || remainingIssues || remainingCodeReviews;
 
