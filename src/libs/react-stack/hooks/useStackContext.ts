@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ReactStackContext } from "../reactStackContext";
+import { ReactStackContext } from "../context/stack.context";
 
 export const useStackContext = () => {
   const context = useContext(ReactStackContext);

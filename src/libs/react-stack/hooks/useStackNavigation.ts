@@ -5,14 +5,21 @@ export interface StackNavigateFunction<P extends StacksParams> {
   (params?: P): void;
 }
 
-export const useStackNavigation = <P extends StacksParams>(name: string): StackNavigateFunction<P> => {
+export const useStackNavigation = <P extends StacksParams>(
+  name: string
+): [StackNavigateFunction<P>, (id?: string) => void] => {
   const {
-    stackMethods: { open },
+    stackMethods: { open, close },
   } = useStackContext();
 
-  return (params?: P) => {
-    open(name, params);
-  };
+  return [
+    (params?: P) => {
+      open(name, params);
+    },
+    (panelId?: string) => {
+      close(name, panelId);
+    },
+  ];
 };
 
 export default useStackNavigation;

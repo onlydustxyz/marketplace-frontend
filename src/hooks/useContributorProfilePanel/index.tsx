@@ -1,6 +1,6 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useState } from "react";
-import ContributorProfileSidePanel from "./ContributorProfileSidePanel";
-import SidePanel from "src/components/SidePanel";
+import { createContext, PropsWithChildren, useCallback, useContext } from "react";
+import { useStackNavigation } from "src/libs/react-stack";
+import { StackRoute, StackRouterParams } from "src/App/Stacks";
 
 type ContributorProfilePanel = {
   open: (githubUserId: number) => void;
@@ -9,20 +9,24 @@ type ContributorProfilePanel = {
 const ContributorProfilePanelContext = createContext<ContributorProfilePanel | null>(null);
 
 export const ContributorProfilePanelProvider = ({ children }: PropsWithChildren) => {
-  const [githubUserId, setGithubUserId] = useState<number>();
-  const [open, setOpen] = useState(false);
+  //   const [githubUserId, setGithubUserId] = useState<number>();
+  //   const [open, setOpen] = useState(false);
+  const [openProfilePanel] = useStackNavigation<StackRouterParams["ContributorProfile"]>(StackRoute.ContributorProfile);
 
   const openSidePanel = useCallback((githubUserId: number) => {
-    setGithubUserId(githubUserId);
-    setOpen(true);
+    // setGithubUserId(githubUserId);
+    // setOpen(true);
+    if (githubUserId) {
+      openProfilePanel({ githubUserId });
+    }
   }, []);
 
   return (
     <ContributorProfilePanelContext.Provider value={{ open: openSidePanel }}>
       {children}
-      <SidePanel open={open} setOpen={setOpen}>
+      {/* <SidePanel open={open} setOpen={setOpen}>
         {githubUserId && <ContributorProfileSidePanel githubUserId={githubUserId} setOpen={setOpen} />}
-      </SidePanel>
+      </SidePanel> */}
     </ContributorProfilePanelContext.Provider>
   );
 };

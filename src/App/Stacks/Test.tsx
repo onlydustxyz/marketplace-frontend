@@ -6,7 +6,7 @@ import { useStackController, useStackNavigation } from "src/libs/react-stack";
 export const TestStack = () => {
   const { open: open2, close: close2 } = useStackController({ name: "modal-2" });
   const { open: open3, close: close3 } = useStackController({ name: "modal-3" });
-  const navigateStack = useStackNavigation<StackRouterParams["modal1"]>(StackRoute.modal1);
+  const [navigateStack] = useStackNavigation<StackRouterParams["modal1"]>(StackRoute.modal1);
 
   return (
     <div className="flex flex-row gap-2">

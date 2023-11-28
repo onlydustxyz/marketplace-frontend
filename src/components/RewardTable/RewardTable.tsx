@@ -1,9 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { ComponentProps, useState } from "react";
-import SidePanel from "src/components/SidePanel";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { RewardSidePanelAsLeader } from "src/components/UserRewardTable/RewardSidePanel";
 import { viewportConfig } from "src/config";
 import useInfiniteRewardsList, { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
 import { useMediaQuery } from "usehooks-ts";
@@ -11,6 +9,8 @@ import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
 import MeApi from "src/api/me";
+import { useStackNavigation } from "src/libs/react-stack";
+import { StackRoute, StackRouterParams } from "src/App/Stacks";
 
 type Options = ComponentProps<typeof Headers> &
   Pick<
@@ -30,25 +30,33 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [selectedReward, setSelectedReward] = useState<RewardPageItemType | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  const [openRewardPanel, closeRewardPanel] = useStackNavigation<StackRouterParams["Reward"]>(StackRoute.Reward);
 
   const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch, refetchBudgets } = options;
-
-  const onRewardClick = (reward: RewardPageItemType) => {
-    setSelectedReward(reward);
-    setSidePanelOpen(true);
-  };
-
   function handleCancelReward() {
     try {
       // TODO refactor mutateReward in RewardSidePanelAsLeader and add invalidate query directly inside the mutation query
       queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
       setSidePanelOpen(false);
+      closeRewardPanel();
       refetchBudgets();
       refetch();
     } catch (e) {
       console.error(e);
     }
   }
+
+  const onRewardClick = (reward: RewardPageItemType) => {
+    setSelectedReward(reward);
+    if (reward.id) {
+      openRewardPanel({
+        rewardId: reward.id,
+        projectId,
+        onRewardCancel: handleCancelReward,
+      });
+    }
+    // setSidePanelOpen(true);
+  };
 
   return (
     <>
@@ -67,7 +75,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
         </div>
       )}
 
-      <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
+      {/* <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
         {selectedReward && (
           <RewardSidePanelAsLeader
             projectId={projectId}
@@ -75,7 +83,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
             onRewardCancel={handleCancelReward}
           />
         )}
-      </SidePanel>
+      </SidePanel> */}
     </>
   );
 }

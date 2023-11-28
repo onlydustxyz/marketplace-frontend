@@ -23,7 +23,7 @@ export type IReactStackContext = {
     getStack: (name: string) => RefSubscriptionInterface<StackInterface<AnyParams>> | null;
     getPanel: (name: string, id: string) => RefSubscriptionInterface<StackPanelInterface> | null;
     open: (name: string, params?: StacksParams) => void;
-    close: (name: string, panelId: string) => void;
+    close: (name?: string, panelId?: string) => void;
     closeLast: () => void;
   };
 };

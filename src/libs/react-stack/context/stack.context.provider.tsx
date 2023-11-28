@@ -35,10 +35,10 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   };
 
   const getPanelFromStackName = (name: string) => {
-    const stack = stacks.state[name].state;
+    const stack = stacks.state[name];
     const lastPanelInHistory = getLastPanelInHistory(name);
-    const id = lastPanelInHistory?.panelId || stack.defaultPanelId;
-    const panel = stack.panels[id];
+    const id = lastPanelInHistory?.panelId || stack.state.defaultPanelId;
+    const panel = stack.state.panels[id];
 
     return { panel, id, stack };
   };
@@ -118,7 +118,9 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       stack.setValue(prev => {
         return {
           ...prev,
-          panels: (prev.panels = Object.fromEntries(Object.entries(prev.panels).filter(([key]) => key !== panelId))),
+          panels: (prev.panels = Object.fromEntries(
+            Object.entries(prev.panels).filter(([key]) => key !== panelId || key === prev.defaultPanelId)
+          )),
         };
       });
     }, 300),
@@ -206,16 +208,26 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         };
       });
       updateHistory({ name: panel.state.name, panelId: panel.state.id, event: "open", params });
+      return { name: panel.state.name, panelId: panel.state.id };
     } else {
       const panelId = uuidv4();
       registerPanel({ name: panel.state.name, panelId, params });
       updateHistory({ name: panel.state.name, panelId, event: "open", params });
+      return { name: panel.state.name, panelId };
     }
   };
 
-  const onClose = useCallback(
+  const onCloseByPanelId = useCallback(
     (name: string, panelId: string) => {
       const { panel, stack } = getPanelFromStackNameAndPanelId(name, panelId);
+      removePanel(panel, stack);
+    },
+    [stacks]
+  );
+
+  const onCloseLastCopy = useCallback(
+    (name: string) => {
+      const { panel, stack } = getPanelFromStackName(name);
       removePanel(panel, stack);
     },
     [stacks]
@@ -231,6 +243,19 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       removePanel(panel, stack);
     }
   }, [stacks]);
+
+  const onClose = useCallback(
+    (name?: string, panelId?: string) => {
+      if (name && panelId) {
+        onCloseByPanelId(name, panelId);
+      } else if (name) {
+        onCloseLastCopy(name);
+      } else {
+        onCloseLastPanel();
+      }
+    },
+    [stacks]
+  );
 
   const closeAll = useCallback(() => {
     history.state.forEach(panel => {

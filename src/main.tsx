@@ -28,7 +28,8 @@ import { SidePanelProvider } from "./hooks/useSidePanel";
 import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
 import { ToasterProvider } from "./hooks/useToaster";
 import { CommandsProvider } from "./providers/Commands";
-import { Stacks } from "./App/Stacks/Stacks";
+import { Stacks } from "./App/Stacks";
+import { StackProvider } from "./libs/react-stack";
 
 if (config.GTM_ID) {
   TagManager.initialize({
@@ -52,24 +53,26 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                   <QueryClientProvider client={queryClient}>
                     <CommandsProvider>
                       <AuthProvider>
-                        <SidePanelStackProvider>
-                          <SidePanelProvider>
-                            <ContributorProfilePanelProvider>
-                              <RewardDetailPanelProvider>
-                                <ContributionDetailPanelProvider>
-                                  {config.MAINTENANCE ? (
-                                    <Maintenance />
-                                  ) : (
-                                    <OnboardingProvider>
-                                      <Stacks />
-                                      <App />
-                                    </OnboardingProvider>
-                                  )}
-                                </ContributionDetailPanelProvider>
-                              </RewardDetailPanelProvider>
-                            </ContributorProfilePanelProvider>
-                          </SidePanelProvider>
-                        </SidePanelStackProvider>
+                        <StackProvider>
+                          <SidePanelStackProvider>
+                            <SidePanelProvider>
+                              <ContributorProfilePanelProvider>
+                                <RewardDetailPanelProvider>
+                                  <ContributionDetailPanelProvider>
+                                    {config.MAINTENANCE ? (
+                                      <Maintenance />
+                                    ) : (
+                                      <OnboardingProvider>
+                                        <Stacks />
+                                        <App />
+                                      </OnboardingProvider>
+                                    )}
+                                  </ContributionDetailPanelProvider>
+                                </RewardDetailPanelProvider>
+                              </ContributorProfilePanelProvider>
+                            </SidePanelProvider>
+                          </SidePanelStackProvider>
+                        </StackProvider>
                       </AuthProvider>
                     </CommandsProvider>
                   </QueryClientProvider>
