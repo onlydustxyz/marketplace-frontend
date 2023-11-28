@@ -74,12 +74,7 @@ export const EditPanel = () => {
             {T("project.details.edit.panel.title")}
           </div>
           <div className="mb-6 w-full px-2 md:border-b md:border-greyscale-50/8">
-            <Tabs
-              tabs={tabItems}
-              showMobile
-              mobileTitle={T("project.details.edit.panel.title")}
-              rightElement={<div className="mb-1 flex w-full items-center justify-end">{PoolingFeedback}</div>}
-            />
+            <Tabs tabs={tabItems} showMobile mobileTitle={T("project.details.edit.panel.title")} />
           </div>
           <div className="scrollbar-sm flex-1 overflow-auto px-2">
             {ActiveTab}
