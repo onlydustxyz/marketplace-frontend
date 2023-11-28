@@ -193,7 +193,6 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                     />
                     <span>
                       {T(getGithubStatusToken(contribution.type as GithubContributionType, contribution.githubStatus), {
-                        // TODO potential issue here
                         date: displayRelativeDate(contribution?.completedAt ?? ""),
                       })}
                     </span>
