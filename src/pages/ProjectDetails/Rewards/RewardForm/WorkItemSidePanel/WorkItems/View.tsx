@@ -113,11 +113,11 @@ export default function View({
         </div>
       );
     }
-    
+
     if (error) {
       return <ErrorState />;
     }
-    
+
     if (contributions.length > 0 && contributor) {
       return (
         <VirtualizedIssueList
@@ -134,10 +134,10 @@ export default function View({
           }}
         />
       );
-    } 
-    
-      // This component needs a github indexedAt prop that we delete for now until backend fix it
-      return <EmptyState />;
+    }
+
+    // This component needs a github indexedAt prop that we delete for now until backend fix it
+    return <EmptyState />;
   };
 
   return (
