@@ -11,15 +11,15 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { WorkItemType } from "src/__generated/graphql";
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
+import { Contributor } from "../types";
 
 type Props = {
   projectId: string;
   open: boolean;
   setOpen: (value: boolean) => void;
-  contributorId: number;
-  contributorHandle: string;
   workItems: RewardableWorkItem[];
   addWorkItem: (workItem: RewardableWorkItem) => void;
+  contributor: Contributor;
 };
 
 enum Tabs {
@@ -29,14 +29,7 @@ enum Tabs {
   Other = "Other",
 }
 
-export default function WorkItemSidePanel({
-  projectId,
-  contributorId,
-  contributorHandle,
-  workItems,
-  addWorkItem,
-  ...props
-}: Props) {
+export default function WorkItemSidePanel({ projectId, workItems, addWorkItem, contributor, ...props }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -79,14 +72,14 @@ export default function WorkItemSidePanel({
         </div>
 
         {selectedTab === Tabs.Other ? (
-          <OtherWorkForm projectId={projectId} contributorHandle={contributorHandle} addWorkItem={addWorkItem} />
+          <OtherWorkForm projectId={projectId} contributorHandle={contributor.login} addWorkItem={addWorkItem} />
         ) : (
           <WorkItems
             projectId={projectId}
-            contributorId={contributorId}
             workItems={workItems}
             addWorkItem={addWorkItem}
             type={WorkItemType[selectedTab]}
+            contributor={contributor}
           />
         )}
       </div>

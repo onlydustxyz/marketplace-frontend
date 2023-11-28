@@ -55,7 +55,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     },
   });
 
-  const { watch, setValue, control, handleSubmit } = formMethods;
+  const { watch, setValue, control } = formMethods;
   const workKind = watch("workKind");
 
   const defaultTitle = T("reward.form.contributions.other.issue.defaultTitle", {
@@ -109,13 +109,11 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
 
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    handleSubmit(() =>
-      createOtherWork({
-        githubRepoId: selectedRepo?.id || 0,
-        title: title || defaultTitle,
-        description,
-      })
-    );
+    createOtherWork({
+      githubRepoId: selectedRepo?.id || 0,
+      title: title || defaultTitle,
+      description,
+    });
     e.stopPropagation();
   };
 

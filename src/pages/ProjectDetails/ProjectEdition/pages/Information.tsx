@@ -19,6 +19,7 @@ import { RewardableContributionsField } from "../RewardableContributionsField";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import AddLine from "src/icons/AddLine";
 import DeleteBinLine from "src/icons/DeleteBinLine";
+import Draggable from "src/icons/Draggable";
 
 export function Information() {
   const { T } = useIntl();
@@ -51,7 +52,7 @@ export function Information() {
     <Flex direction="col" gap={8} className="w-full">
       <Flex
         direction="col"
-        className="border-card-light w-full divide-y divide-card-border-light [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*]:py-4"
+        className="border-card-light w-full divide-y divide-card-border-light [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*]:py-6"
       >
         <Controller
           name="name"
@@ -62,6 +63,7 @@ export function Information() {
               {...props.fieldState}
               label={T("project.details.edit.informations.fields.name.label")}
               placeholder={T("project.details.edit.informations.fields.name.placeholder")}
+              errorMessage={props.fieldState.error?.message}
               infoMessage={{
                 children: T("project.details.edit.informations.fields.name.info"),
                 icon: ({ className }) => <InformationLine className={className} />,
@@ -76,6 +78,7 @@ export function Information() {
             <FieldInput
               {...props.field}
               {...props.fieldState}
+              errorMessage={props.fieldState.error?.message}
               label={T("project.details.edit.informations.fields.short.label")}
             />
           )}
@@ -87,8 +90,10 @@ export function Information() {
             <FieldTextarea
               {...props.field}
               {...props.fieldState}
+              errorMessage={props.fieldState.error?.message}
               rows={4}
               label={T("project.details.edit.informations.fields.long.label")}
+              autogrow
             />
           )}
         />
@@ -113,7 +118,7 @@ export function Information() {
         <Controller
           name="moreInfos"
           control={form?.control}
-          render={({ field: { onChange, value } }) => {
+          render={({ field: { onChange, value }, fieldState: { error } }) => {
             return (
               <Flex className="w-full flex-col gap-2">
                 <Flex className="w-full items-center justify-between pb-4">
@@ -126,7 +131,7 @@ export function Information() {
                     onClick={() => {
                       const moreInfos = [...(form?.getValues("moreInfos") || [])];
                       moreInfos.push({ url: "", value: "" });
-                      form?.setValue("moreInfos", moreInfos, { shouldDirty: true, shouldValidate: true });
+                      form?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: false });
                     }}
                   >
                     <AddLine className="text-body-m" />
@@ -136,12 +141,15 @@ export function Information() {
 
                 <Flex className="w-full flex-col gap-4">
                   {value?.map((item, index) => (
-                    <Flex key={"moreInfo" + index} className="w-full items-center gap-2">
+                    <Flex key={"moreInfo" + index} className="w-full items-baseline justify-center gap-2">
+                      <Draggable />
                       <FieldInput
                         key={"moreInfos.url-" + index}
                         name={"moreInfos.url-" + index}
                         value={item.url}
-                        fieldClassName="flex-1"
+                        fieldClassName="w-full"
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        errorMessage={(error as any)?.[index]?.url?.message}
                         onChange={event => {
                           const updatedValue = value.map((item, i) =>
                             i === index ? { ...item, url: event.target.value } : item
@@ -156,7 +164,9 @@ export function Information() {
                         name={"moreInfos.value-" + index}
                         value={item.value}
                         placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
-                        fieldClassName=" w-1/3 max-w-full"
+                        fieldClassName="w-1/3"
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        errorMessage={(error as any)?.[index]?.value?.message}
                         onChange={event => {
                           const updatedValue = value.map((item, i) =>
                             i === index ? { ...item, value: event.target.value } : item
@@ -166,10 +176,11 @@ export function Information() {
                       />
                       {value.length > 1 ? (
                         <button
+                          className="w-3"
                           onClick={() => {
                             const moreInfos = [...(form?.getValues("moreInfos") || [])];
                             moreInfos.splice(index, 1);
-                            form?.setValue("moreInfos", moreInfos, { shouldDirty: true, shouldValidate: true });
+                            form?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: false });
                           }}
                         >
                           <DeleteBinLine />

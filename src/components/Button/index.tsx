@@ -12,9 +12,9 @@ export enum ButtonSize {
 }
 
 export enum ButtonType {
-  Primary = "primary",
-  Secondary = "secondary",
-  Ternary = "ternary",
+  Primary = "type-primary",
+  Secondary = "type-secondary",
+  Ternary = "type-ternary",
 }
 
 export enum Width {
@@ -23,57 +23,79 @@ export enum Width {
 }
 
 export enum ButtonAccentColor {
-  Purple = "purple",
-  Orange = "orange",
+  Purple = "accent-purple",
+  Orange = "accent-orange",
+}
+
+export enum ButtonOnBackground {
+  Default = "bg-default",
+  Blue = "bg-blue",
 }
 
 const variants: Record<
   ButtonType,
-  Record<ButtonAccentColor, Record<"default" | "pressed", string>> & Record<"default" | "disabled" | "pressed", string>
+  Record<ButtonAccentColor, Record<"default" | "pressed", string>> &
+    Record<ButtonOnBackground, Record<"disabled", string>> &
+    Record<"default" | "pressed", string>
 > = {
   [ButtonType.Primary]: {
     [ButtonAccentColor.Purple]: {
       default:
-        "active:bg-spacePurple-50 active:text-spacePurple-900 active:outline-spacePurple-800 focus:bg-spacePurple-50 focus:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900",
+        "active:bg-spacePurple-50 active:text-spacePurple-900 active:outline-spacePurple-800 focus-visible:bg-spacePurple-50 focus-visible:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900",
       pressed: "bg-spacePurple-50 text-spacePurple-900 outline-spacePurple-800",
     },
     [ButtonAccentColor.Orange]: {
       default:
-        "active:bg-orange-50 active:text-orange-900 active:outline-orange-800 focus:bg-orange-50 focus:text-orange-900 hover:bg-orange-50 hover:text-orange-900",
+        "active:bg-orange-50 active:text-orange-900 active:outline-orange-800 focus-visible:bg-orange-50 focus-visible:text-orange-900 hover:bg-orange-50 hover:text-orange-900",
       pressed: "bg-orange-50 text-orange-900 outline-orange-800",
     },
+    [ButtonOnBackground.Default]: {
+      disabled: "shadow-none bg-greyscale-700 text-greyscale-200",
+    },
+    [ButtonOnBackground.Blue]: {
+      disabled: "shadow-none bg-spaceBlue-600 text-spaceBlue-200",
+    },
     default: "active:shadow-none active:outline active:outline-4 bg-greyscale-50 text-spaceBlue-900 shadow-bottom-sm",
-    disabled: "shadow-none bg-greyscale-700 text-greyscale-500",
     pressed: "shadow-none outline outline-4",
   },
   [ButtonType.Secondary]: {
     [ButtonAccentColor.Purple]: {
       default:
-        "focus:border-spacePurple-200 focus:text-spacePurple-100 hover:border-spacePurple-200 hover:text-spacePurple-100 active:border-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-200",
+        "focus-visible:border-spacePurple-200 focus-visible:text-spacePurple-100 hover:border-spacePurple-200 hover:text-spacePurple-100 active:border-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-200",
       pressed: "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-200",
     },
     [ButtonAccentColor.Orange]: {
       default:
-        "focus:border-orange-200 focus:text-orange-100 hover:border-orange-200 hover:text-orange-100 active:border-orange-400 active:bg-orange-900 active:text-orange-200",
+        "focus-visible:border-orange-200 focus-visible:text-orange-100 hover:border-orange-200 hover:text-orange-100 active:border-orange-400 active:bg-orange-900 active:text-orange-200",
       pressed: "border-orange-400 bg-orange-900 text-orange-200",
     },
+    [ButtonOnBackground.Default]: {
+      disabled: "border bg-card-background-medium border-card-border-light text-greyscale-600",
+    },
+    [ButtonOnBackground.Blue]: {
+      disabled: "border bg-card-background-base text-greyscale-50 border-greyscale-50",
+    },
     default: "border drop-shadow-bottom-sm bg-white/5 text-greyscale-50",
-    disabled: "border-greyscale-50/8 bg-white/2 text-greyscale-50/8",
     pressed: "",
   },
   [ButtonType.Ternary]: {
     [ButtonAccentColor.Purple]: {
       default:
-        "text-spacePurple-500 focus:text-spacePurple-400 hover:text-spacePurple-400 active:text-spacePurple-400 active:bg-spacePurple-900",
+        "text-spacePurple-500 focus-visible:text-spacePurple-400 hover:text-spacePurple-400 active:text-spacePurple-400 active:bg-spacePurple-900",
       pressed: "text-spacePurple-400 bg-spacePurple-900",
     },
     [ButtonAccentColor.Orange]: {
       default:
-        "text-orange-500 focus:text-orange-400 hover:text-orange-400 active:text-orange-400 active:bg-orange-900",
+        "text-orange-500 focus-visible:text-orange-400 hover:text-orange-400 active:text-orange-400 active:bg-orange-900",
       pressed: "text-orange-400 bg-orange-900",
     },
-    default: "focus:bg-white/5 hover:bg-white/5",
-    disabled: "text-greyscale-600",
+    [ButtonOnBackground.Default]: {
+      disabled: "text-greyscale-600",
+    },
+    [ButtonOnBackground.Blue]: {
+      disabled: "text-greyscale-600",
+    },
+    default: "focus-visible:bg-white/5 hover:bg-white/5",
     pressed: "",
   },
 };
@@ -88,6 +110,7 @@ type ButtonProps = PropsWithChildren<
     iconOnly?: boolean;
     pressed?: boolean;
     accentColor?: ButtonAccentColor;
+    onBackground?: ButtonOnBackground;
   } & Omit<ComponentPropsWithoutRef<"button">, "type">
 >;
 
@@ -104,14 +127,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       className,
       accentColor = ButtonAccentColor.Purple,
+      onBackground = ButtonOnBackground.Default,
       ...otherButtonProps
     },
     ref
   ) => {
     function getVariantStyles() {
       if (disabled) {
-        // Disabled styles per type
-        return variants[type].disabled;
+        // Disabled styles per type and per background
+        return variants[type][onBackground].disabled;
       }
 
       // Default styles per type and per accent color

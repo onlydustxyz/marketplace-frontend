@@ -1,7 +1,7 @@
 import { ReactElement, forwardRef, useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { GithubUserFragment, WorkItemType, useGithubUserByIdQuery } from "src/__generated/graphql";
+import { WorkItemType, useGithubUserByIdQuery } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -22,6 +22,7 @@ import { ShowMore } from "src/components/Table/ShowMore";
 import EmptyState from "../EmptyState";
 import Skeleton from "src/components/Skeleton";
 import ErrorState from "src/components/ErrorState";
+import { Contributor } from "../../types";
 
 export const tabNames = {
   [WorkItemType.Issue]: "issues",
@@ -43,7 +44,7 @@ type Props = {
   addContribution: (contribution: RewardableItem) => void;
   ignoreContribution: (contribution: RewardableItem) => void;
   unignoreContribution: (contribution: RewardableItem) => void;
-  contributorId: number;
+  contributor: Contributor;
   setIncludeIgnoredItems: (value: boolean) => void;
   loading: boolean;
   error: boolean;
@@ -57,7 +58,7 @@ export default function View({
   addContribution,
   ignoreContribution,
   unignoreContribution,
-  contributorId,
+  contributor,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -69,7 +70,7 @@ export default function View({
   const { resetField } = useFormContext();
   const { data } = useGithubUserByIdQuery({
     variables: {
-      githubUserId: contributorId,
+      githubUserId: contributor.githubUserId,
     },
   });
 
@@ -140,7 +141,12 @@ export default function View({
           </div>
         </div>
         {addOtherIssueEnabled && type !== WorkItemType.CodeReview && (
-          <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} contributorId={contributorId} />
+          <OtherIssueInput
+            projectId={projectId}
+            type={type}
+            addWorkItem={addWorkItem}
+            contributorId={contributor.githubUserId}
+          />
         )}
         {searchEnabled && (
           <FormInput
@@ -170,7 +176,7 @@ export default function View({
             addContribution: addContributionWithToast,
             ignoreContribution,
             unignoreContribution,
-            contributor: data?.githubUsersByPk,
+            contributor,
             tabName,
             fetchNextPage,
             hasNextPage,
@@ -219,7 +225,7 @@ function getWorkItem(type: WorkItemType, props: RewardItemType): ReactElement | 
 
 interface VirtualizedIssueListProps {
   contributions: RewardableItem[];
-  contributor: GithubUserFragment;
+  contributor: Contributor;
   addContribution: (contribution: RewardableItem) => void;
   ignoreContribution: (contribution: RewardableItem) => void;
   unignoreContribution: (contribution: RewardableItem) => void;

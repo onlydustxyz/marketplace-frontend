@@ -24,7 +24,20 @@
     "back": "Back",
     "publish": "Publish",
     "you": "You",
-    "pendingInvite": "Pending invite"
+    "pendingInvite": "Pending invite",
+    "commits": "Commits",
+    "periods": {
+      "lastMonth": "Last month",
+      "last6Months": "Last 6 months",
+      "lastYear": "Last year",
+      "forever": "Forever"
+    }
+  },
+  "forms": {
+    "error": {
+      "require": "Please fill __fieldName__ ",
+      "invalid": "Please provide a valid __fieldName__"
+    }
   },
   "contribution": {
     "review": {
@@ -857,8 +870,16 @@
           "title": "Reward contributor"
         },
         "title": "Rewards",
-        "autoAdd": {
-          "label": "AUTO-ADD"
+        "quickActions": {
+          "label": "QUICK ACTIONS",
+          "add": {
+            "many": "Add __count__ __type__s",
+            "one": "Add 1 __type__"
+          },
+          "ignore": {
+            "many": "Ignore __count__ __type__s",
+            "one": "Ignore 1 __type__"
+          }
         }
       },
       "create": {
@@ -868,7 +889,7 @@
           "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project?",
-        "syncOganizations": "Synchronize your organization",
+        "syncOganizations": "Resync organisations",
         "startPopOver": {
           "title": "Resume project creation?",
           "description": "If you decide to start over all your previous changes will be lost.",
@@ -897,16 +918,19 @@
           "installedOrganizationEmpty": "Not installed on any organization.",
           "availableOrganizationEmpty": "You have no organization available.",
           "githubAppInformation": {
-            "title": "If you are missing any GitHub organizations, you can edit your configuration by clicking below.",
-            "button": "Edit my configuration"
+            "title": "Githbub Settings",
+            "description": "If you are missing any GitHub organizations, you can either edit your configuration or resync your organisations by clicking above.",
+            "button": "Edit my configurations",
+            "syncButton": "Resync organisations"
           }
         },
         "repository": {
           "title": "Which repositories will you need?",
           "description": "Only repositories from organisation where github app is installed are listed. ",
           "search": "Search repository",
+          "placeholder": "No repositories available",
           "form": {
-            "error_count": "Please select at least one repo to continue.",
+            "error_count": "Please select at least one repo",
             "counter": "__selected__/__total__ repos selected"
           }
         },
@@ -915,7 +939,7 @@
           "success": "Only repositories from organisation where github app is installed are listed. ",
           "search": "Search repository",
           "form": {
-            "error_count": "Please select at least one repo to continue.",
+            "error_count": "Please select at least one repo",
             "counter": "__selected__/__total__ repos selected",
             "fields": {
               "name": {
@@ -972,6 +996,9 @@
         }
       },
       "edit": {
+        "errors": {
+          "informations": "Your project configuration has errors"
+        },
         "title": "Edit project",
         "tabs": {
           "general": "General",
@@ -993,7 +1020,9 @@
           "repositories": {
             "noRepositoriesToAdd": "All repositories from this organisation have been added to your project.",
             "fixGithubApp": "Fix configuration on Github",
-            "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration"
+            "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration",
+            "title": "Add desired repositories",
+            "description": "You can add as many repositories as you want from the following list."
           }
         },
         "toasts": {
@@ -1046,7 +1075,7 @@
           "removeRepository": "Remove repository",
           "error": "An error occurred, please try again later.",
           "empty": {
-            "title": "No repositories added on your project",
+            "title": "No repositories added on your project. Please add at least one.",
             "message": "You’ll need to install a github app on every organisation hosting repositories."
           }
         }

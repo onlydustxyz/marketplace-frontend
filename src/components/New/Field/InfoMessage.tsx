@@ -4,6 +4,7 @@ import { cn } from "src/utils/cn";
 export enum Variant {
   Default,
   Blue,
+  Error,
 }
 
 const variants = {
@@ -14,6 +15,10 @@ const variants = {
   [Variant.Blue]: {
     icon: "text-spaceBlue-200",
     text: "text-spaceBlue-200",
+  },
+  [Variant.Error]: {
+    icon: "text-orange-500",
+    text: "text-orange-500",
   },
 };
 

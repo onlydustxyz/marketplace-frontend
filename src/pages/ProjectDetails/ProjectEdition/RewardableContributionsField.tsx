@@ -1,3 +1,4 @@
+import sub from "date-fns/sub";
 import { ComponentProps, forwardRef } from "react";
 import { components } from "src/__generated/api";
 import EyeCheckLine from "src/assets/icons/EyeCheckLine";
@@ -93,6 +94,30 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
             <Datepicker
               value={value?.ignoreContributionsBefore ? new Date(value.ignoreContributionsBefore) : undefined}
               onChange={handleDateChange}
+              periods={[
+                {
+                  label: T("common.periods.lastMonth"),
+                  value: sub(new Date(), {
+                    months: 1,
+                  }),
+                },
+                {
+                  label: T("common.periods.last6Months"),
+                  value: sub(new Date(), {
+                    months: 6,
+                  }),
+                },
+                {
+                  label: T("common.periods.lastYear"),
+                  value: sub(new Date(), {
+                    years: 1,
+                  }),
+                },
+                {
+                  label: T("common.periods.forever"),
+                  value: new Date(0),
+                },
+              ]}
             />
           </div>
         </Flex>

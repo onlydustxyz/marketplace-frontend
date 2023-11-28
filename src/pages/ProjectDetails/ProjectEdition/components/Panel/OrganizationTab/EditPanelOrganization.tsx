@@ -15,10 +15,10 @@ export const EditPanelOrganization = () => {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <div className="pb-2 font-belwe text-2xl font-normal text-greyscale-50">
+        <div className="text-title-s pb-2 font-normal text-greyscale-50">
           {T("project.details.create.organizations.title")}
         </div>
-        <div className="font-walsheim text-base font-normal text-spaceBlue-100">
+        <div className="text-body-s font-walsheim font-normal text-spaceBlue-100">
           {T("project.details.create.organizations.description")}
         </div>
       </div>

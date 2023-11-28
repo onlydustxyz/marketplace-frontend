@@ -76,6 +76,5 @@ export function formatRewardItemToGithubCodeReview(
     },
     status: item.status,
     submittedAt: item.createdAt,
-    outcome: item.codeReviewOutcome,
   } as GithubCodeReviewFragment;
 }

@@ -44,9 +44,6 @@ export const ProjectCreation = () => {
       <SafeProjectCreation />
     </CreateProjectProvider>
   );
-
-  //   TODO LOADING ?
-  return null;
 };
 
 export default ProjectCreation;
