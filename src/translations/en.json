@@ -1007,9 +1007,6 @@
           "discard": "Discard changes",
           "save": "Save changes"
         },
-        "form": {
-          "invalid": "Your project configuration has errors"
-        },
         "save": "Save changes",
         "panel": {
           "title": "Add repositories",
