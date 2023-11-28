@@ -58,7 +58,7 @@ export default function ContributionQuickActions({
           },
         ]}
       >
-        <TagButton>
+        <TagButton as="span">
           <IconComponent className="text-spacePurple-500" />
           <div className="hidden sm:inline">{T(tooltipLong, { count: remainingCount })}</div>
           <div className="visible sm:hidden">{T(tooltipShort, { count: remainingCount })}</div>
