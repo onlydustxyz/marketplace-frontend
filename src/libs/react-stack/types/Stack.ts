@@ -1,14 +1,10 @@
 import { MutableRefObject } from "react"
 import { RefSubscriptionInterface } from "../../react-subscriber/types/RefSubscription"
 
-export interface StackRouter {
-  name: string
-
-}
-
+export type StacksParams = object | undefined
 export type StackPosition = "front" | "back" | "hidden" | "front-stacked"
 export interface renderChildren {
-    params: any
+    params: StacksParams
 }
 export interface StackOptionalInterface {
   children: (props: renderChildren) => React.ReactElement
@@ -23,7 +19,7 @@ export interface StackPanelInterface {
   id: string
   position: StackPosition
   name: string
-  params?: any
+  params?: StacksParams
 }
 
 export interface StackInterface {
@@ -31,7 +27,7 @@ export interface StackInterface {
     defaultPanelId: string
     defaultPanel: RefSubscriptionInterface<StackPanelInterface>
     panels: {
-        [key: string]: RefSubscriptionInterface<StackPanelInterface>
+      [key: string]: RefSubscriptionInterface<StackPanelInterface>
     }
 }
 

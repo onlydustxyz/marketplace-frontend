@@ -3,11 +3,26 @@ import ReactStackprovider from "src/libs/react-stack/reactStackContext";
 import { TestStack } from "./Test";
 import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
 
+export interface StackRouter {
+  modal1: {
+    githubUserId: string;
+  };
+  modal2: {
+    id: string;
+  };
+}
+
+export enum StackRoute {
+  modal1 = "modal-1",
+  modal2 = "modal-2",
+  modal3 = "modal-3",
+}
+
 export const Stacks = () => {
   return (
     <>
       <ReactStackprovider>
-        <Register name="modal-1">
+        <Register name={StackRoute.modal1}>
           {({ params }) => (
             <>
               <TestStack />
@@ -15,7 +30,7 @@ export const Stacks = () => {
             </>
           )}
         </Register>
-        <Register name="modal-2">
+        <Register name={StackRoute.modal2}>
           {() => (
             <>
               <div>Modal2</div>
@@ -23,7 +38,7 @@ export const Stacks = () => {
             </>
           )}
         </Register>
-        <Register name="modal-3">
+        <Register name={StackRoute.modal3}>
           {() => (
             <>
               <div>Modal3</div>

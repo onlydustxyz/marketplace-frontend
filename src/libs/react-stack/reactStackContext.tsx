@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect } from "react";
-import { StackInterface, StackPanelInterface, StackPosition, StacksInterface } from "./types/Stack";
+import { StackInterface, StackPanelInterface, StackPosition, StacksInterface, StacksParams } from "./types/Stack";
 import { useRefSubscription } from "../react-subscriber/useRefSubscription";
 import { RefSubscriptionInterface } from "../react-subscriber/types/RefSubscription";
 import { Subscribe } from "../react-subscriber";
@@ -17,7 +17,7 @@ export type panelEvent = "open" | "close";
 export interface History {
   name: string;
   panelId: string;
-  params?: any;
+  params?: StacksParams;
 }
 
 type IReactStackContext = {
@@ -29,7 +29,7 @@ type IReactStackContext = {
     register: (stack: RefSubscriptionInterface<StackInterface>) => void;
     getStack: (name: string) => RefSubscriptionInterface<StackInterface> | null;
     getPanel: (name: string, id: string) => RefSubscriptionInterface<StackPanelInterface> | null;
-    open: (name: string, params?: any) => void;
+    open: (name: string, params?: StacksParams) => void;
     close: (name: string) => void;
     closeLast: () => void;
   };
@@ -67,7 +67,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   );
 
   const registerPanel = useCallback(
-    (name: string, panelId: string, params?: any) => {
+    (name: string, panelId: string, params?: StacksParams) => {
       if (stacks.state[name]) {
         const defaultPanel = Object.assign({}, stacks.state[name].state.defaultPanel);
         stacks.state[name].setValue(prev => ({
@@ -145,7 +145,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   );
 
   const updateHistory = useCallback(
-    (name: string, panelId: string, event: panelEvent, params?: any) => {
+    (name: string, panelId: string, event: panelEvent, params?: StacksParams) => {
       let currentHistory = [...history.state];
       if (event === "close") {
         currentHistory = currentHistory.filter(item => item.panelId !== panelId);
@@ -181,7 +181,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   }, [stacks]);
 
   const openPanel = useCallback(
-    (panel: RefSubscriptionInterface<StackPanelInterface>, params?: any) => {
+    (panel: RefSubscriptionInterface<StackPanelInterface>, params?: StacksParams) => {
       if (panel.state.open === false) {
         panel.setValue(prev => {
           return {
@@ -241,7 +241,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   );
 
   const togglePanel = useCallback(
-    (name: string, event: panelEvent, params?: any) => {
+    (name: string, event: panelEvent, params?: StacksParams) => {
       if (stacks.state[name]) {
         const lastPanelInHistory = history.state.findLast(p => p.name === name);
         const defaultPanelId = lastPanelInHistory?.panelId || stacks.state[name].state.defaultPanelId;
@@ -306,7 +306,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
           closeLast,
           getStack,
           getPanel,
-          open: (name: string, params?: any) => togglePanel(name, "open", params),
+          open: (name: string, params?: StacksParams) => togglePanel(name, "open", params),
           close: (name: string) => togglePanel(name, "close"),
         },
       }}
