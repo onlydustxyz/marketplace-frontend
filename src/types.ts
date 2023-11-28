@@ -158,6 +158,12 @@ export enum GithubContributionType {
   CodeReview = "CODE_REVIEW",
 }
 
+export enum GithubContributionShortenTypeLabel {
+  Issue = "Issue",
+  PullRequest = "PR",
+  CodeReview = "Code Review",
+}
+
 export enum GithubPullRequestDraft {
   Draft = "DRAFT",
 }

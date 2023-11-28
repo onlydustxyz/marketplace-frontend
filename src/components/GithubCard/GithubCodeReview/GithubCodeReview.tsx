@@ -19,14 +19,11 @@ export enum Action {
 }
 
 function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment & RewardableItem>) {
-  const status = codeReview?.status?.toUpperCase();
-
-  switch (status) {
+  switch (codeReview?.status) {
     case GithubCodeReviewStatus.Completed:
     case ContributionStatus.Completed:
-      return new Date(codeReview.submittedAt);
+      return codeReview.completedAt ? new Date(codeReview.completedAt) : new Date();
     case GithubCodeReviewStatus.Pending:
-    case ContributionStatus.InProgress:
     default:
       return new Date(codeReview.githubPullRequest?.createdAt ?? codeReview.createdAt);
   }
