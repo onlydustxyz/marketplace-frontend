@@ -1,4 +1,4 @@
-import { PropsWithChildren, useContext, useMemo, useState } from "react";
+import { PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
@@ -23,6 +23,7 @@ import CloseLine from "src/icons/CloseLine";
 import Title from "../Title";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
+import { usePooling } from "src/hooks/usePooling/usePooling";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -146,8 +147,24 @@ function SafeProjectEdition() {
 }
 
 export default function ProjectEdition() {
+  const { refetchOnWindowFocus, refetchInterval, onRefetching } = usePooling({
+    limites: 2,
+    delays: 2500,
+  });
+
   const { projectKey = "" } = useParams<{ projectKey: string }>();
-  const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
+  const { data, isLoading, isError, isRefetching } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+    options: {
+      retry: 1,
+      refetchOnWindowFocus,
+      refetchInterval,
+    },
+  });
+
+  useEffect(() => {
+    onRefetching(isRefetching);
+  }, [isRefetching]);
 
   if (isLoading) {
     return (
