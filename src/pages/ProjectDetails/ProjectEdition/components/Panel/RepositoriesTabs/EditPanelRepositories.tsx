@@ -30,9 +30,11 @@ export const EditPanelRepositories = () => {
         onChange={e => setSearch(e.target.value)}
         startIcon={({ className }) => <SearchLine className={className} />}
       />
+      {/* <div className="w-full"> */}
       {filterOrganizationBySearch(installedOrganization).map(organization => (
         <Organization key={organization.id} organization={organization} />
       ))}
+      {/* </div> */}
     </Flex>
   );
 };
