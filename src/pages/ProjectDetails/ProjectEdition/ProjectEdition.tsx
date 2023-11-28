@@ -124,11 +124,7 @@ function SafeProjectEdition() {
           >
             <FormStatus
               {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
-              errorMessage={
-                form?.formState?.errors?.githubRepos
-                  ? T("project.details.edit.errors.repos")
-                  : T("project.details.edit.errors.informations")
-              }
+              errorMessage={T("project.details.edit.errors.informations")}
             />
             <Button
               size={ButtonSize.Md}
