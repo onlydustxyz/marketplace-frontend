@@ -33,17 +33,17 @@ impl Repository for dbclient::Client {
 			.into_iter()
 			.map(|assignee| {
 				Contribution::new(
-					issue.repo_id,
-					assignee,
-					ContributionType::Issue,
-					issue.id.into(),
-					match issue.status {
+                    issue.repo_id,
+                    assignee,
+                    ContributionType::ISSUE,
+                    issue.id.into(),
+                    match issue.status {
 						GithubIssueStatus::Completed => ContributionStatus::Complete,
 						GithubIssueStatus::Open => ContributionStatus::InProgress,
 						GithubIssueStatus::Cancelled => ContributionStatus::Canceled,
 					},
-					issue.created_at,
-					issue.closed_at,
+                    issue.created_at,
+                    issue.closed_at,
 				)
 			})
 			.collect();
@@ -53,9 +53,9 @@ impl Repository for dbclient::Client {
 		connection
 			.transaction(|connection| {
 				delete_all_contributions_for_details(
-					connection,
-					DetailsId::from(issue.id),
-					ContributionType::Issue,
+                    connection,
+                    DetailsId::from(issue.id),
+                    ContributionType::ISSUE,
 				)?;
 
 				diesel::insert_into(contributions::table)
@@ -99,7 +99,7 @@ fn refresh_contributions_from_commits(
 			Contribution::new(
 				pull_request.inner.repo_id,
 				commit.author_id,
-				ContributionType::PullRequest,
+				ContributionType::PULL_REQUEST,
 				pull_request.inner.id.into(),
 				pull_request.inner.status.into(),
 				pull_request.inner.created_at,
@@ -109,7 +109,7 @@ fn refresh_contributions_from_commits(
 		.chain(std::iter::once(Contribution::new(
 			pull_request.inner.repo_id,
 			pull_request.inner.author_id,
-			ContributionType::PullRequest,
+			ContributionType::PULL_REQUEST,
 			pull_request.inner.id.into(),
 			pull_request.inner.status.into(),
 			pull_request.inner.created_at,
@@ -124,7 +124,7 @@ fn refresh_contributions_from_commits(
 			delete_all_contributions_for_details(
 				connection,
 				DetailsId::from(pull_request.inner.id),
-				ContributionType::PullRequest,
+				ContributionType::PULL_REQUEST,
 			)?;
 
 			diesel::insert_into(contributions::table)
@@ -145,7 +145,7 @@ fn update_contributions_status(
 ) -> Result<()> {
 	diesel::update(contributions::table)
 		.filter(contributions::details_id.eq(DetailsId::from(pull_request.inner.id)))
-		.filter(contributions::type_.eq(ContributionType::PullRequest))
+		.filter(contributions::type_.eq(ContributionType::PULL_REQUEST))
 		.set((
 			contributions::status.eq::<ContributionStatus>(pull_request.inner.status.into()),
 			contributions::closed_at.eq(pull_request.inner.closed_at),
@@ -169,7 +169,7 @@ fn refresh_contributions_from_reviews(
 		let contribution = Contribution::new(
 			pull_request.inner.repo_id,
 			review.reviewer_id,
-			ContributionType::CodeReview,
+			ContributionType::CODE_REVIEW,
 			review
 				.id
 				.parse::<GithubCodeReviewId>()

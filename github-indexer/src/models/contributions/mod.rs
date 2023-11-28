@@ -107,10 +107,10 @@ where
 			user_id,
 			type_,
 			details_id: match type_ {
-				ContributionType::Issue => DetailsId::Issue(details_id.parse::<u64>()?.into()),
-				ContributionType::PullRequest =>
+				ContributionType::ISSUE => DetailsId::Issue(details_id.parse::<u64>()?.into()),
+				ContributionType::PULL_REQUEST =>
 					DetailsId::PullRequest(details_id.parse::<u64>()?.into()),
-				ContributionType::CodeReview => DetailsId::CodeReview(details_id.parse()?),
+				ContributionType::CODE_REVIEW => DetailsId::CodeReview(details_id.parse()?),
 			},
 			status,
 			created_at,
@@ -131,7 +131,7 @@ mod tests {
 		let contribution = Contribution::new(
 			GithubRepoId::from(485838614_u64),
 			GithubUserId::from(99273364_u64),
-			ContributionType::PullRequest,
+			ContributionType::PULL_REQUEST,
 			DetailsId::PullRequest(1111346398_u64.into()),
 			ContributionStatus::InProgress,
 			"2023-09-06T00:00:00".parse().unwrap(),

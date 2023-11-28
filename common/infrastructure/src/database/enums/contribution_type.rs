@@ -6,9 +6,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Hash, Deserialize, DbEnum)]
 #[ExistingTypePath = "crate::database::schema::sql_types::ContributionType"]
 pub enum ContributionType {
-	Issue,
-	PullRequest,
-	CodeReview,
+	ISSUE,
+	PULL_REQUEST,
+	CODE_REVIEW,
 }
 
 impl Display for ContributionType {
@@ -17,9 +17,9 @@ impl Display for ContributionType {
 			f,
 			"{}",
 			match self {
-				ContributionType::Issue => "ISSUE",
-				ContributionType::PullRequest => "PULL_REQUEST",
-				ContributionType::CodeReview => "CODE_REVIEW",
+				ContributionType::ISSUE => "ISSUE",
+				ContributionType::PULL_REQUEST => "PULL_REQUEST",
+				ContributionType::CODE_REVIEW => "CODE_REVIEW",
 			}
 		)
 	}

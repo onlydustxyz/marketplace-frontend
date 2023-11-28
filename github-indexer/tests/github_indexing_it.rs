@@ -199,7 +199,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::Issue);
+				assert_eq!(contribution.type_, ContributionType::ISSUE);
 				assert_eq!(contribution.user_id, users::ofux().id);
 				assert_eq!(
 					contribution.details_id,
@@ -212,7 +212,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.type_, ContributionType::PULL_REQUEST);
 				assert_eq!(contribution.user_id, users::ofux().id);
 				assert_eq!(
 					contribution.details_id,
@@ -223,7 +223,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.type_, ContributionType::PULL_REQUEST);
 				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(
 					contribution.details_id,
@@ -236,7 +236,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.type_, ContributionType::PULL_REQUEST);
 				assert_eq!(contribution.user_id, users::ofux().id);
 				assert_eq!(
 					contribution.details_id,
@@ -248,7 +248,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.type_, ContributionType::PULL_REQUEST);
 				assert_eq!(contribution.user_id, users::alex().id);
 				assert_eq!(
 					contribution.details_id,
@@ -262,7 +262,7 @@ impl<'a> Test<'a> {
 				{
 					let contribution = contributions.pop().unwrap();
 					assert_eq!(contribution.repo_id, repos::marketplace().id);
-					assert_eq!(contribution.type_, ContributionType::PullRequest);
+					assert_eq!(contribution.type_, ContributionType::PULL_REQUEST);
 					assert_eq!(contribution.user_id, users::stan().id);
 					assert_eq!(
 						contribution.details_id,
@@ -275,7 +275,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.type_, ContributionType::PULL_REQUEST);
 				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(
 					contribution.details_id,
@@ -288,7 +288,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.type_, ContributionType::CODE_REVIEW);
 				assert_eq!(contribution.user_id, users::ofux().id);
 				assert_eq!(contribution.status, ContributionStatus::Complete);
 			}
@@ -297,7 +297,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.type_, ContributionType::CODE_REVIEW);
 				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
@@ -306,7 +306,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.type_, ContributionType::CODE_REVIEW);
 				assert_eq!(contribution.user_id, users::alex().id);
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
@@ -315,7 +315,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.type_, ContributionType::CODE_REVIEW);
 				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(contribution.status, ContributionStatus::Complete);
 			}
@@ -324,7 +324,7 @@ impl<'a> Test<'a> {
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.type_, ContributionType::CODE_REVIEW);
 				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
