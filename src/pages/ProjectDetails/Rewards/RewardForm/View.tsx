@@ -133,6 +133,28 @@ const View: React.FC<Props> = ({
     clearWorkItems();
   }, [contributor]);
 
+  const renderAutoAddOrIgnore = () => {
+    if (isCompletedContributionsLoading) {
+      return <Skeleton variant="quickActions" />;
+    } else if (
+      !isCompletedContributionsLoading &&
+      (unpaidContributions?.rewardablePullRequests ||
+        unpaidContributions?.rewardableIssues ||
+        unpaidContributions?.rewardableCodeReviews)
+    ) {
+      return (
+        <AutoAddOrIgnore
+          unpaidContributions={unpaidContributions}
+          onAutoAdd={handleAutoAdd}
+          onAutoIgnore={handleAutoIgnore}
+          workItems={workItems}
+        />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <>
       {isXl && (
@@ -197,19 +219,7 @@ const View: React.FC<Props> = ({
                       {T("reward.form.contributions.subTitle")}
                     </div>
 
-                    {isCompletedContributionsLoading ? (
-                      <Skeleton variant="quickActions" />
-                    ) : !isCompletedContributionsLoading &&
-                      (unpaidContributions?.rewardablePullRequests ||
-                        unpaidContributions?.rewardableIssues ||
-                        unpaidContributions?.rewardableCodeReviews) ? (
-                      <AutoAddOrIgnore
-                        unpaidContributions={unpaidContributions}
-                        onAutoAdd={handleAutoAdd}
-                        onAutoIgnore={handleAutoIgnore}
-                        workItems={workItems}
-                      />
-                    ) : null}
+                    {renderAutoAddOrIgnore()}
 
                     {workItems.map(workItem => (
                       <WorkItem
