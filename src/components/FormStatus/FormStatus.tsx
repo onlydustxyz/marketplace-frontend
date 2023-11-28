@@ -23,7 +23,7 @@ export function FormStatus({ isDirty, isValid }: FormStatusType) {
           })}
         >
           <ErrorWarningLine />
-          {isValid ? T("profile.form.saveStatus.unsaved") : T("profile.form.saveStatus.invalid")}
+          {isValid ? T("profile.form.saveStatus.unsaved") : T("project.details.edit.form.invalid")}
         </Flex>
       ) : (
         <Flex className="items-center gap-1">

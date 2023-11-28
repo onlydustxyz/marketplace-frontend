@@ -94,7 +94,7 @@ function SafeProjectEdition() {
       </Flex>
 
       <WrapperComponent
-        className=" flex h-[calc(100%-80px)] w-full flex-col overflow-hidden"
+        className="flex h-[calc(100%-80px)] w-full flex-col overflow-hidden"
         padded={false}
         withBg={false}
       >

@@ -989,6 +989,9 @@
           "discard": "Discard changes",
           "save": "Save changes"
         },
+        "form": {
+          "invalid": "Your project configuration has errors"
+        },
         "save": "Save changes",
         "panel": {
           "title": "Add repositories",
@@ -1052,7 +1055,7 @@
           "removeRepository": "Remove repository",
           "error": "An error occurred, please try again later.",
           "empty": {
-            "title": "No repositories added on your project",
+            "title": "No repositories added on your project. Please add at least one.",
             "message": "You’ll need to install a github app on every organisation hosting repositories."
           }
         }
