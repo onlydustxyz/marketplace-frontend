@@ -105,6 +105,37 @@ export default function View({
     setIncludeIgnoredItems(showIgnoredItems);
   }, [showIgnoredItems]);
 
+  const renderVirtualizedIssueList = () => {
+    if (loading && !error) {
+      return (
+        <div className="mr-1.5 mt-1">
+          <Skeleton variant="rewardableItems" />
+        </div>
+      );
+    } else if (!loading && error) {
+      return <ErrorState />;
+    } else if (contributions.length > 0 && contributor) {
+      return (
+        <VirtualizedIssueList
+          {...{
+            contributions: contributions as RewardableItem[],
+            addContribution: addContributionWithToast,
+            ignoreContribution,
+            unignoreContribution,
+            contributor,
+            tabName,
+            fetchNextPage,
+            hasNextPage,
+            isFetchingNextPage,
+          }}
+        />
+      );
+    } else {
+      // This component needs a github indexedAt prop that we delete for now until backend fix it
+      return <EmptyState />;
+    }
+  };
+
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
       <div className="flex flex-col gap-3 pt-8">
@@ -157,30 +188,7 @@ export default function View({
           />
         )}
       </div>
-      {loading && !error ? (
-        <div className="mr-1.5 mt-1">
-          <Skeleton variant="rewardableItems" />
-        </div>
-      ) : !loading && error ? (
-        <ErrorState />
-      ) : contributions.length > 0 && contributor ? (
-        <VirtualizedIssueList
-          {...{
-            contributions: contributions as RewardableItem[],
-            addContribution: addContributionWithToast,
-            ignoreContribution,
-            unignoreContribution,
-            contributor,
-            tabName,
-            fetchNextPage,
-            hasNextPage,
-            isFetchingNextPage,
-          }}
-        />
-      ) : (
-        // This component need a github indexedAt prop that we delete for now until backend fix it
-        <EmptyState />
-      )}
+      {renderVirtualizedIssueList()}
     </div>
   );
 }
