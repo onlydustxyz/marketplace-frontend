@@ -11,10 +11,10 @@ export const PROJECT_TAGS = {
     { projectId, contributionId },
   ],
   rewardable_items: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "rewardable-items", { projectId }],
-  completed_rewardable_items: (projectId: string, githubUserId: string) => [
+  completed_rewardable_items: (projectId: string) => [
     RESSOURCE_TAGS.PROJECTS,
     "completed-rewardable-items",
-    { projectId, githubUserId },
+    { projectId },
   ],
   other_works: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "other-works", { projectId }],
   contributors: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributors", { projectId }],

@@ -53,8 +53,8 @@ const RewardForm: React.FC = () => {
       try {
         await refetch();
         showToaster(T("reward.form.sent"));
-        // refetch PaymentRequests to display MyRewards
-        queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+        queryClient.invalidateQueries({ queryKey: [MeApi.tags.all, ProjectApi.tags.completed_rewardable_items] });
+        // DELETE ME : this is maybe useless, need to check an clean after all the tech revamp is done
         await client.refetchQueries({ include: ["GetPaymentRequestIds"] });
         navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
       } catch (e) {

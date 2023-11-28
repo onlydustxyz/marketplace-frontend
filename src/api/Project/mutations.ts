@@ -48,7 +48,10 @@ const useIgnoreUnignoreContribution = ({
 }: UseMutationProps<void, { projectId?: string }, UseIgnoreUnignoreContributionBody>) => {
   return useBaseMutation<UseIgnoreUnignoreContributionBody, void>({
     resourcePath: API_PATH.PROJECT_IGNORE_UNIGNORE_CONTRIBUTIONS(params?.projectId || ""),
-    invalidatesTags: [{ queryKey: PROJECT_TAGS.rewardable_items(params?.projectId || ""), exact: false }],
+    invalidatesTags: [
+      { queryKey: PROJECT_TAGS.rewardable_items(params?.projectId || ""), exact: false },
+      { queryKey: PROJECT_TAGS.completed_rewardable_items(params?.projectId || ""), exact: false },
+    ],
     method: "PATCH",
     ...options,
   });

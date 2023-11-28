@@ -156,7 +156,7 @@ const useCompletedRewardableItems = ({
     resourcePath: API_PATH.PROJECT_COMPLETED_REWARDABLE_ITEMS(params?.projectId ?? ""),
     enabled: !!params?.projectId && !!params?.githubUserId,
     queryParams: { githubUserId: params?.githubUserId ?? "" },
-    tags: PROJECT_TAGS.completed_rewardable_items(params?.projectId ?? "", params?.githubUserId ?? ""),
+    tags: PROJECT_TAGS.completed_rewardable_items(params?.projectId ?? ""),
     ...options,
   });
 };
