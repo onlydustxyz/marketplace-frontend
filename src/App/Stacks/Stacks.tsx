@@ -1,4 +1,4 @@
-import Register from "src/libs/react-stack/components/Register";
+import RegisterStack from "src/libs/react-stack/components/RegisterStack";
 import ReactStackprovider from "src/libs/react-stack/reactStackContext";
 import { TestStack } from "./Test";
 import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
@@ -18,34 +18,38 @@ export enum StackRoute {
   modal3 = "modal-3",
 }
 
+export interface Modal1StackParams {
+  githubUserId: number;
+}
+
 export const Stacks = () => {
   return (
     <>
       <ReactStackprovider>
-        <Register name={StackRoute.modal1}>
+        <RegisterStack<Modal1StackParams> name={StackRoute.modal1}>
           {({ params }) => (
             <>
               <TestStack />
-              <ContributorProfileSidePanel githubUserId={params?.id} setOpen={() => null} />
+              <ContributorProfileSidePanel githubUserId={params?.githubUserId} setOpen={() => null} />
             </>
           )}
-        </Register>
-        <Register name={StackRoute.modal2}>
+        </RegisterStack>
+        <RegisterStack name={StackRoute.modal2}>
           {() => (
             <>
               <div>Modal2</div>
               <TestStack />
             </>
           )}
-        </Register>
-        <Register name={StackRoute.modal3}>
+        </RegisterStack>
+        <RegisterStack name={StackRoute.modal3}>
           {() => (
             <>
               <div>Modal3</div>
               <TestStack />
             </>
           )}
-        </Register>
+        </RegisterStack>
         <TestStack />
       </ReactStackprovider>
     </>

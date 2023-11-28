@@ -1,43 +1,45 @@
-import { MutableRefObject } from "react"
-import { RefSubscriptionInterface } from "../../react-subscriber/types/RefSubscription"
+import { MutableRefObject } from "react";
+import { RefSubscriptionInterface } from "../../react-subscriber/types/RefSubscription";
 
-export type StacksParams = object | undefined
-export type StackPosition = "front" | "back" | "hidden" | "front-stacked"
-export interface renderChildren {
-    params: StacksParams
-}
-export interface StackOptionalInterface {
-  children: (props: renderChildren) => React.ReactElement
-  name: string
-  open?: boolean
-  position?: StackPosition
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type StacksParams = { [key: string]: any };
 
-export interface StackPanelInterface {
-  children: (props: renderChildren) => React.ReactElement
-  open: boolean
-  id: string
-  position: StackPosition
-  name: string
-  params?: StacksParams
+export type StackPosition = "front" | "back" | "hidden" | "front-stacked";
+export interface renderChildren<P extends StacksParams = StacksParams> {
+  params: P;
+}
+export interface StackOptionalInterface<P extends StacksParams = StacksParams> {
+  children: (props: renderChildren<P>) => React.ReactElement;
+  name: string;
+  open?: boolean;
+  position?: StackPosition;
 }
 
-export interface StackInterface {
-    name: string
-    defaultPanelId: string
-    defaultPanel: RefSubscriptionInterface<StackPanelInterface>
-    panels: {
-      [key: string]: RefSubscriptionInterface<StackPanelInterface>
-    }
+export interface StackPanelInterface<P extends StacksParams = StacksParams> {
+  children: (props: renderChildren<P>) => React.ReactElement;
+  open: boolean;
+  id: string;
+  position: StackPosition;
+  name: string;
+  params: P;
+}
+
+export interface StackInterface<P extends StacksParams = StacksParams> {
+  name: string;
+  defaultPanelId: string;
+  defaultPanel: RefSubscriptionInterface<StackPanelInterface<P>>;
+  panels: {
+    [key: string]: RefSubscriptionInterface<StackPanelInterface<P>>;
+  };
 }
 
 export type UpdateStackInterface = {
-    open: boolean
+  open: boolean;
+};
+
+export interface StacksInterface<P extends StacksParams = StacksParams> {
+  [key: string]: RefSubscriptionInterface<StackInterface<P>>;
 }
 
-export interface StacksInterface {
-  [key: string]: RefSubscriptionInterface<StackInterface>
-}
-
-export type StackRefInterface = MutableRefObject<StackInterface>
-export type StacksRefInterface = MutableRefObject<StacksInterface>
+export type StackRefInterface = MutableRefObject<StackInterface>;
+export type StacksRefInterface = MutableRefObject<StacksInterface>;

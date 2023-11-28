@@ -26,8 +26,8 @@ type IReactStackContext = {
   history: RefSubscriptionInterface<History[]>;
   stackMethods: {
     closeAll: () => void;
-    register: (stack: RefSubscriptionInterface<StackInterface>) => void;
-    getStack: (name: string) => RefSubscriptionInterface<StackInterface> | null;
+    register: (stack: RefSubscriptionInterface<any>) => void;
+    getStack: (name: string) => RefSubscriptionInterface<any> | null;
     getPanel: (name: string, id: string) => RefSubscriptionInterface<StackPanelInterface> | null;
     open: (name: string, params?: StacksParams) => void;
     close: (name: string) => void;

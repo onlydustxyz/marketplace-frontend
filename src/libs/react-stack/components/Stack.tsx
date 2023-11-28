@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { Panel } from "./Panel";
 import { RefSubscriptionInterface, useSubscribe } from "src/libs/react-subscriber";
-import { StackInterface } from "../types/Stack";
+import { StackInterface, StacksParams } from "../types/Stack";
 
-export interface StackProps {
-  stackRef: RefSubscriptionInterface<StackInterface>;
+export interface StackProps<P extends StacksParams> {
+  stackRef: RefSubscriptionInterface<StackInterface<P>>;
 }
 
-export const Stack = ({ stackRef }: StackProps) => {
+export const Stack = <P extends StacksParams>({ stackRef }: StackProps<P>) => {
   const stack = useSubscribe(stackRef || undefined);
   const panelsKeys = useMemo(() => Object.keys(stack?.panels || []), [stack]);
 

@@ -1,3 +1,3 @@
-import { StackOptionalInterface } from "./Stack"
+import { StackOptionalInterface, StacksParams } from "./Stack";
 
-export type RegisterStackProps = StackOptionalInterface
+export type RegisterStackProps<P extends StacksParams> = StackOptionalInterface<P>;

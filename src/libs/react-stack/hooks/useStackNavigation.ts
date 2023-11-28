@@ -1,17 +1,17 @@
 import UseStackContext from "./useStackContext";
 
-export interface UseControllerProps {
-  name: string;
+export interface StackNavigateFunction {
+  (name: string, params?: object): void;
 }
 
-const UseStackNavigation = () => {
+const useStackNavigation = (): StackNavigateFunction => {
   const {
-    stackMethods: { open, close },
+    stackMethods: { open },
   } = UseStackContext();
 
-  return <P extends object>(name: string, params: P) => {
+  return (name: string, params?: object) => {
     open(name, params);
   };
 };
 
-export default UseStackNavigation;
+export default useStackNavigation;

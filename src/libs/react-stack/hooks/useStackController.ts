@@ -1,15 +1,16 @@
+import { StacksParams } from "../types/Stack";
 import UseStackContext from "./useStackContext";
 
-export interface UseControllerProps {
+export interface UseStackControllerProps {
   name: string;
 }
 
-const UseController = ({ name }: UseControllerProps) => {
+const useStackController = ({ name }: UseStackControllerProps) => {
   const {
     stackMethods: { open, close },
   } = UseStackContext();
 
-  const handleOpen = (params?: any) => {
+  const handleOpen = (params?: StacksParams) => {
     open(name, params);
   };
 
@@ -20,4 +21,4 @@ const UseController = ({ name }: UseControllerProps) => {
   return { open: handleOpen, close: handleClose };
 };
 
-export default UseController;
+export default useStackController;
