@@ -58,6 +58,12 @@ function SectionTitle({ title, rightAction }: TitleProps) {
   );
 }
 
+const contributionsKeyMap: Record<GithubContributionType, keyof CompletedRewardableItem> = {
+  [GithubContributionType.Issue]: "rewardableIssues",
+  [GithubContributionType.PullRequest]: "rewardablePullRequests",
+  [GithubContributionType.CodeReview]: "rewardableCodeReviews",
+};
+
 const View: React.FC<Props> = ({
   projectBudget,
   onWorkItemsChange,
@@ -81,12 +87,6 @@ const View: React.FC<Props> = ({
 
   const handleAutoAdd = (type: GithubContributionType) => {
     if (!unpaidContributions) return;
-
-    const contributionsKeyMap: Record<GithubContributionType, keyof CompletedRewardableItem> = {
-      [GithubContributionType.Issue]: "rewardableIssues",
-      [GithubContributionType.PullRequest]: "rewardablePullRequests",
-      [GithubContributionType.CodeReview]: "rewardableCodeReviews",
-    };
 
     const filteredTypedContributions = unpaidContributions[contributionsKeyMap[type]];
     const workItems = filteredTypedContributions.map(
@@ -117,12 +117,6 @@ const View: React.FC<Props> = ({
 
   const handleAutoIgnore = (type: GithubContributionType) => {
     if (!unpaidContributions) return;
-
-    const contributionsKeyMap: Record<GithubContributionType, keyof CompletedRewardableItem> = {
-      [GithubContributionType.Issue]: "rewardableIssues",
-      [GithubContributionType.PullRequest]: "rewardablePullRequests",
-      [GithubContributionType.CodeReview]: "rewardableCodeReviews",
-    };
 
     const filteredTypedContributions = unpaidContributions[contributionsKeyMap[type]];
     const filteredTypedContributionsIds = filteredTypedContributions
