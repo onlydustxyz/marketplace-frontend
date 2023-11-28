@@ -137,7 +137,7 @@ const View: React.FC<Props> = ({
     if (isCompletedContributionsLoading) {
       return <Skeleton variant="quickActions" />;
     }
-    
+
     if (
       !isCompletedContributionsLoading &&
       (unpaidContributions?.rewardablePullRequests ||
