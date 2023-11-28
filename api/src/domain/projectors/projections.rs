@@ -8,6 +8,7 @@ use domain::{
 	ProjectEvent, SubscriberCallbackError,
 };
 use infrastructure::dbclient::{ImmutableRepository, Repository};
+use olog::IntoField;
 use rust_decimal::Decimal;
 use tracing::instrument;
 
@@ -85,21 +86,26 @@ impl EventListener<Event> for Projector {
 					duration_worked,
 					requested_at,
 				} => {
-					self.payment_request_repository.upsert(PaymentRequest {
-						id: payment_id,
-						project_id,
-						requestor_id,
-						recipient_id,
-						amount: *amount.amount(),
-						currency: amount.currency().try_into()?,
-						requested_at,
-						invoice_received_at: None,
-						hours_worked: duration_worked
-							.and_then(|duration_worked| {
-								i32::try_from(duration_worked.num_hours()).ok()
-							})
-							.unwrap_or(0),
-					})?;
+					self.payment_request_repository
+						.upsert(PaymentRequest {
+							id: payment_id,
+							project_id,
+							requestor_id,
+							recipient_id,
+							amount: *amount.amount(),
+							currency: amount.currency().try_into()?,
+							requested_at,
+							invoice_received_at: None,
+							hours_worked: duration_worked
+								.and_then(|duration_worked| {
+									i32::try_from(duration_worked.num_hours()).ok()
+								})
+								.unwrap_or(0),
+						})
+						.map_err(|e| {
+							olog::error!(error = e.to_field(), "payment_request_repository.upsert");
+							e
+						})?;
 
 					reason.work_items.into_iter().try_for_each(
 						|work_item| -> Result<(), SubscriberCallbackError> {
@@ -109,22 +115,53 @@ impl EventListener<Event> for Projector {
 								| PaymentWorkItem::PullRequest { repo_id, .. } => repo_id,
 							};
 
-							self.work_item_repository.try_insert(
-								(project_id, payment_id, recipient_id, work_item).into(),
-							)?;
+							self.work_item_repository
+								.try_insert(
+									(project_id, payment_id, recipient_id, work_item).into(),
+								)
+								.map_err(|e| {
+									olog::error!(
+										error = e.to_field(),
+										"error work_item_repository.try_insert"
+									);
+									e
+								})?;
 
-							self.github_repo_index_repository.start_indexing(repo_id)?;
+							self.github_repo_index_repository.start_indexing(repo_id).map_err(
+								|e| {
+									olog::error!(
+										error = e.to_field(),
+										"github_repo_index_repository.start_indexing"
+									);
+									e
+								},
+							)?;
 							Ok(())
 						},
 					)?;
 
-					self.github_user_index_repository.try_insert(GithubUserIndex {
-						user_id: recipient_id,
-						..Default::default()
-					})?;
+					self.github_user_index_repository
+						.try_insert(GithubUserIndex {
+							user_id: recipient_id,
+							..Default::default()
+						})
+						.map_err(|e| {
+							olog::error!(
+								error = e.to_field(),
+								"github_user_index_repository.try_insert"
+							);
+							e
+						})?;
 
 					self.projects_rewarded_users_repository
-						.increase_user_reward_count_for_project(&project_id, &recipient_id)?;
+						.increase_user_reward_count_for_project(&project_id, &recipient_id)
+						.map_err(|e| {
+							olog::error!(
+								error = e.to_field(),
+								"increase_user_reward_count_for_project"
+							);
+							e
+						})?;
 				},
 				PaymentEvent::Cancelled { id: payment_id } => {
 					let payment_request = self.payment_request_repository.find_by_id(payment_id)?;
