@@ -6,6 +6,7 @@ import { useIgnoredContributions } from "./useIgnoredContributions";
 import ProjectApi from "src/api/Project";
 import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
 import { useFormContext } from "react-hook-form";
+import { Contributor } from "../../types";
 
 export interface RewardableWorkItem {
   type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;
@@ -18,19 +19,19 @@ export interface RewardableWorkItem {
 type Props = {
   type: WorkItemType;
   projectId: string;
-  contributorId: number;
+  contributor: Contributor;
   workItems: RewardableWorkItem[];
   addWorkItem: (workItem: RewardableWorkItem) => void;
 };
 
-export function WorkItems({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
+export function WorkItems({ type, projectId, workItems, addWorkItem, contributor }: Props) {
   const { watch } = useFormContext();
   const tabName = tabNames[type];
   const search = watch(`search-${tabName}`);
 
   const { queryParams, setIncludeIgnoredItems } = useRewardableItemsQueryParams({
     type,
-    githubUserId: contributorId,
+    githubUserId: contributor.githubUserId,
     search,
     ignoredItemsIncluded: false,
   });
@@ -71,7 +72,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
       type={type}
       addWorkItem={addWorkItem}
       addContribution={addAndUnignoreContribution}
-      contributorId={contributorId}
+      contributor={contributor}
       ignoreContribution={(contribution: RewardableItem) =>
         contribution.contributionId && ignoreContribution(contribution.contributionId)
       }

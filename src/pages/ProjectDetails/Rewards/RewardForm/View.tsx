@@ -223,8 +223,7 @@ const View: React.FC<Props> = ({
                 setOpen={setSidePanelOpen}
                 workItems={workItems}
                 addWorkItem={addWorkItem}
-                contributorHandle={contributor.login}
-                contributorId={contributor.githubUserId}
+                contributor={contributor}
               />
             )}
           </div>
