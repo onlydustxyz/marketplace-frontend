@@ -123,6 +123,8 @@ export enum GithubPullRequestStatus {
   Merged = "MERGED",
   Open = "OPEN",
   Closed = "CLOSED",
+  Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
 }
 
 export enum GithubIssueStatus {
