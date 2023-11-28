@@ -1,8 +1,8 @@
+import { components } from "src/__generated/api";
 import { WorkItem } from "src/__generated/graphql";
-import { Contributor as ContributorBase } from "src/types";
 import { BudgetCurrencyType } from "src/utils/money";
 
-export type Contributor = ContributorBase & {
+export type Contributor = components["schemas"]["ContributorSearchItemResponse"] & {
   unpaidCompletedContributions: number;
   unpaidMergedPullsCount?: number;
   unpaidCompletedIssuesCount?: number;

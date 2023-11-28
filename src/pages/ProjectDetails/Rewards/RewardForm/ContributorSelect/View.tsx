@@ -51,6 +51,8 @@ export default function ContributorSelectView({
 }: ContributorSelectViewProps) {
   const { T } = useIntl();
 
+  const contributorLines = buildContributorLines(search, internalContributors, filteredExternalContributors);
+
   const renderOptionsContent = () => {
     if (isSearchGithubUsersByHandleSubstringQueryLoading) {
       return <Spinner className="mx-auto mb-6 mt-4" />;
@@ -95,8 +97,6 @@ export default function ContributorSelectView({
     return <div />;
   };
 
-  const contributorLines = buildContributorLines(search, internalContributors, filteredExternalContributors);
-
   return (
     <Combobox value={selectedGithubHandle} onChange={setSelectedGithubHandle}>
       {({ open }) => (
@@ -140,7 +140,7 @@ export default function ContributorSelectView({
                         {selectedGithubHandle}
                       </div>
                     )}
-                    {contributor?.userId && <img src={onlyDustLogo} className="ml-1.5 w-3.5" />}
+                    {contributor?.isRegistered && <img src={onlyDustLogo} className="ml-1.5 w-3.5" />}
                   </div>
                   <ArrowDownSLine />
                 </div>
@@ -292,7 +292,7 @@ function VirtualizedContributorSubList({
               value={contributor.login}
               className="flex items-center justify-between p-2 ui-active:cursor-pointer ui-active:bg-white/4"
             >
-              <Contributor contributor={contributor} userId={contributor.userId} />
+              <Contributor contributor={contributor} />
               {contributor.unpaidCompletedContributions > 0 && (
                 <>
                   <Badge

@@ -86,6 +86,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       unpaidCompletedIssuesCount: completedUnpaidIssueCount,
       unpaidCompletedCodeReviewsCount: completedUnpaidCodeReviewCount,
       userId: c.login,
+      isRegistered: c.isRegistered,
     };
   });
 
@@ -103,6 +104,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       avatarUrl: c.avatarUrl,
       unpaidCompletedContributions: 0,
       userId: c.login,
+      isRegistered: c.isRegistered,
     }));
 
   useEffect(() => {

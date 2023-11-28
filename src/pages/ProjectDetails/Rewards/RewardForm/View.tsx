@@ -75,7 +75,7 @@ const View: React.FC<Props> = ({
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
-  const displayCallout = contributor && !contributor.userId;
+  const displayCallout = contributor && !contributor.isRegistered;
 
   const handleAutoAdd = (type: GithubContributionType) => {
     if (!unpaidContributions) return;
