@@ -13,6 +13,7 @@ import GitMergeLine from "src/icons/GitMergeLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Refresh from "src/icons/Refresh";
 import { GithubContributionType } from "src/types";
+import { cn } from "src/utils/cn";
 
 export type Filters = {
   types: GithubContributionType[];
@@ -112,11 +113,10 @@ export function ContributionFilter({
             type={ButtonType.Secondary}
             size={ButtonSize.Sm}
             pressed={open}
-            className={
-              filters.types.length || filters.projects.length || filters.repos.length
-                ? "border-spacePurple-200 text-spacePurple-100"
-                : ""
-            }
+            className={cn({
+              "border-spacePurple-200 text-spacePurple-100":
+                filters.types.length || filters.projects.length || filters.repos.length,
+            })}
           >
             <FilterIcon /> {T("filter.title")}
           </Popover.Button>
