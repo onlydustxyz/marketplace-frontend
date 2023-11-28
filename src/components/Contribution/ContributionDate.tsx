@@ -22,6 +22,8 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubPullRequestStatus.Closed]: "contributions.tooltip.dateClosed",
     [GithubPullRequestStatus.Merged]: "contributions.tooltip.dateMerged",
     [GithubPullRequestDraft.Draft]: "contributions.tooltip.dateOpened",
+    [GithubPullRequestStatus.Completed]: "contributions.tooltip.dateClosed",
+    [GithubPullRequestStatus.Cancelled]: "contributions.tooltip.dateClosed",
   },
   [GithubContributionType.Issue]: {
     [GithubIssueStatus.Open]: "contributions.tooltip.dateAssigned",

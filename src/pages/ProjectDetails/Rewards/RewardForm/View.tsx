@@ -22,15 +22,15 @@ import { WorkItem } from "./WorkItem";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
-import { filterUnpaidContributionsByType } from "./utils";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { BudgetCurrencyType } from "src/utils/money";
 import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
 import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
 import { Controller, useFormContext } from "react-hook-form";
-import { RewardableItem } from "src/api/Project/queries";
+import { CompletedRewardableItem } from "src/api/Project/queries";
 import ProjectApi from "src/api/Project";
 import useMutationAlert from "src/api/useMutationAlert";
+import Skeleton from "src/components/Skeleton";
 
 interface Props {
   projectId: string;
@@ -39,8 +39,9 @@ interface Props {
   onWorkItemsChange: (workItems: RewardableWorkItem[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
-  unpaidContributions: RewardableItem[] | null | undefined;
+  unpaidContributions: CompletedRewardableItem;
   isCreateProjectRewardLoading?: boolean;
+  isCompletedContributionsLoading?: boolean;
 }
 
 type TitleProps = {
@@ -57,6 +58,12 @@ function SectionTitle({ title, rightAction }: TitleProps) {
   );
 }
 
+const contributionsKeyMap: Record<GithubContributionType, keyof CompletedRewardableItem> = {
+  [GithubContributionType.Issue]: "rewardableIssues",
+  [GithubContributionType.PullRequest]: "rewardablePullRequests",
+  [GithubContributionType.CodeReview]: "rewardableCodeReviews",
+};
+
 const View: React.FC<Props> = ({
   projectBudget,
   onWorkItemsChange,
@@ -66,6 +73,7 @@ const View: React.FC<Props> = ({
   unpaidContributions,
   isCreateProjectRewardLoading,
   preferredCurrency,
+  isCompletedContributionsLoading,
 }) => {
   const { control, setValue } = useFormContext();
   const { T } = useIntl();
@@ -80,7 +88,7 @@ const View: React.FC<Props> = ({
   const handleAutoAdd = (type: GithubContributionType) => {
     if (!unpaidContributions) return;
 
-    const filteredTypedContributions = filterUnpaidContributionsByType(type, unpaidContributions);
+    const filteredTypedContributions = unpaidContributions[contributionsKeyMap[type]];
     const workItems = filteredTypedContributions.map(
       contribution => contributionToWorkItem(contribution) as RewardableWorkItem
     );
@@ -110,7 +118,7 @@ const View: React.FC<Props> = ({
   const handleAutoIgnore = (type: GithubContributionType) => {
     if (!unpaidContributions) return;
 
-    const filteredTypedContributions = filterUnpaidContributionsByType(type, unpaidContributions);
+    const filteredTypedContributions = unpaidContributions[contributionsKeyMap[type]];
     const filteredTypedContributionsIds = filteredTypedContributions
       .map(({ contributionId }) => contributionId)
       .filter((contributionId): contributionId is string => contributionId !== undefined);
@@ -124,6 +132,30 @@ const View: React.FC<Props> = ({
   useEffect(() => {
     clearWorkItems();
   }, [contributor]);
+
+  const renderAutoAddOrIgnore = () => {
+    if (isCompletedContributionsLoading) {
+      return <Skeleton variant="quickActions" />;
+    }
+    
+    if (
+      !isCompletedContributionsLoading &&
+      (unpaidContributions?.rewardablePullRequests ||
+        unpaidContributions?.rewardableIssues ||
+        unpaidContributions?.rewardableCodeReviews)
+    ) {
+      return (
+        <AutoAddOrIgnore
+          unpaidContributions={unpaidContributions}
+          onAutoAdd={handleAutoAdd}
+          onAutoIgnore={handleAutoIgnore}
+          workItems={workItems}
+        />
+      );
+    }
+
+    return null;
+  };
 
   return (
     <>
@@ -189,14 +221,7 @@ const View: React.FC<Props> = ({
                       {T("reward.form.contributions.subTitle")}
                     </div>
 
-                    {unpaidContributions?.length ? (
-                      <AutoAddOrIgnore
-                        unpaidContributions={unpaidContributions}
-                        onAutoAdd={handleAutoAdd}
-                        onAutoIgnore={handleAutoIgnore}
-                        workItems={workItems}
-                      />
-                    ) : null}
+                    {renderAutoAddOrIgnore()}
 
                     {workItems.map(workItem => (
                       <WorkItem

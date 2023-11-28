@@ -1,7 +1,7 @@
 import { ReactElement, forwardRef, useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { WorkItemType, useGithubUserByIdQuery } from "src/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -68,12 +68,6 @@ export default function View({
 }: Props) {
   const { T } = useIntl();
   const { resetField } = useFormContext();
-  const { data } = useGithubUserByIdQuery({
-    variables: {
-      githubUserId: contributor.githubUserId,
-    },
-  });
-
   const tabName = tabNames[type];
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
@@ -110,6 +104,41 @@ export default function View({
   useEffect(() => {
     setIncludeIgnoredItems(showIgnoredItems);
   }, [showIgnoredItems]);
+
+  const renderVirtualizedIssueList = () => {
+    if (loading) {
+      return (
+        <div className="mr-1.5 mt-1">
+          <Skeleton variant="rewardableItems" />
+        </div>
+      );
+    }
+    
+    if (error) {
+      return <ErrorState />;
+    }
+    
+    if (contributions.length > 0 && contributor) {
+      return (
+        <VirtualizedIssueList
+          {...{
+            contributions: contributions as RewardableItem[],
+            addContribution: addContributionWithToast,
+            ignoreContribution,
+            unignoreContribution,
+            contributor,
+            tabName,
+            fetchNextPage,
+            hasNextPage,
+            isFetchingNextPage,
+          }}
+        />
+      );
+    } 
+    
+      // This component needs a github indexedAt prop that we delete for now until backend fix it
+      return <EmptyState />;
+  };
 
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
@@ -163,29 +192,7 @@ export default function View({
           />
         )}
       </div>
-      {loading && !error ? (
-        <div className="mr-1.5 mt-1">
-          <Skeleton variant="rewardableItems" />
-        </div>
-      ) : !loading && error ? (
-        <ErrorState />
-      ) : contributions.length > 0 && data?.githubUsersByPk ? (
-        <VirtualizedIssueList
-          {...{
-            contributions: contributions as RewardableItem[],
-            addContribution: addContributionWithToast,
-            ignoreContribution,
-            unignoreContribution,
-            contributor,
-            tabName,
-            fetchNextPage,
-            hasNextPage,
-            isFetchingNextPage,
-          }}
-        />
-      ) : (
-        <EmptyState indexedAt={data?.githubRepos[0].indexedAt} />
-      )}
+      {renderVirtualizedIssueList()}
     </div>
   );
 }
