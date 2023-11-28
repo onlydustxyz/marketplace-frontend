@@ -1,16 +1,17 @@
 import { PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Button, { ButtonOnBackground, ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import { FormStatus } from "src/components/FormStatus/FormStatus";
+import Loader from "src/components/Loader";
 import { Flex } from "src/components/New/Layout/Flex";
+import Center from "src/components/Utils/Center";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
-import CloseLine from "src/icons/CloseLine";
 import FileListLine from "src/icons/FileListLine";
 import { cn } from "src/utils/cn";
-import Title from "../Title";
 import { EditContext, EditProvider } from "./EditContext";
 import { Information } from "./pages/Information";
 import { Repository } from "./pages/Repository/Repository";
@@ -18,11 +19,12 @@ import { Tabs } from "src/components/Tabs/Tabs";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
-import { useFormState } from "react-hook-form";
+import CloseLine from "src/icons/CloseLine";
+import Title from "../Title";
+import { useMediaQuery } from "usehooks-ts";
+import { viewportConfig } from "src/config";
 import { usePooling } from "src/hooks/usePooling/usePooling";
-import Center from "src/components/Utils/Center";
-import ErrorFallback from "src/ErrorFallback";
-import Loader from "src/components/Loader";
+import { useFormState } from "react-hook-form";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -44,6 +46,9 @@ function SafeProjectEdition() {
   const { form, project } = useContext(EditContext);
   const { errors } = useFormState({ control: form?.control });
   const errorsKeys = Object.keys(errors || {});
+
+  const is2Xl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints["2xl"]}px)`);
+  const WrapperComponent = is2Xl ? Card : Flex;
 
   const hasGeneralValidationTabError = useMemo(() => {
     if (!errorsKeys.length) {
@@ -97,53 +102,58 @@ function SafeProjectEdition() {
   );
 
   return (
-    <Flex className="h-full w-full flex-col">
-      <Flex className="w-full flex-col">
-        <Flex className="items-center px-4 py-6 xl:px-8">
-          <Link to="../">
-            <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
-              <CloseLine />
-            </Button>
-          </Link>
-          <Title>
-            <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
-          </Title>
-        </Flex>
+    <Flex className="mx-auto h-full max-w-7xl flex-col">
+      <Flex className="items-center px-4 py-6 xl:px-8 2xl:px-0">
+        <Link to="../">
+          <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
+            <CloseLine />
+          </Button>
+        </Link>
+        <Title>
+          <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
+        </Title>
+      </Flex>
 
-        <header className="z-10 w-full border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 ">
+      <WrapperComponent className="flex w-full flex-1 flex-col overflow-hidden" padded={false} withBg={false}>
+        <header className="z-10 w-full border-b border-greyscale-50/20 bg-card-background-base px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 2xl:rounded-t-2xl">
           <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} />
         </header>
-      </Flex>
 
-      <Flex className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}>
-        {activeTab === TabsType.General ? (
-          <Card>
-            <Information />
-          </Card>
-        ) : (
-          <Repository />
-        )}
-      </Flex>
-
-      <Flex
-        justify="between"
-        item="center"
-        gap={4}
-        className="max-h-[88px] w-full items-center border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
-      >
-        <FormStatus
-          {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
-          errorMessage={T("project.details.edit.errors.informations")}
-        />
-        <Button
-          size={ButtonSize.Md}
-          htmlType="submit"
-          disabled={!form?.formState.isDirty || !form?.formState.isValid || form?.formState.isSubmitting}
+        <Flex
+          className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}
         >
-          {T("project.details.edit.save")}
-          <ArrowRightSLine className="-mr-2 text-2xl" />
-        </Button>
-      </Flex>
+          {activeTab === TabsType.General ? (
+            <Card className="bg-card-background-base">
+              <Information />
+            </Card>
+          ) : (
+            <Repository />
+          )}
+        </Flex>
+
+        <Flex className="w-full border-t border-card-border-light bg-card-background-base shadow-medium xl:rounded-b-2xl">
+          <Flex
+            justify="between"
+            item="center"
+            gap={4}
+            className="h-full w-full items-center bg-card-background-light px-6 py-5"
+          >
+            <FormStatus
+              {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
+              errorMessage={T("project.details.edit.errors.informations")}
+            />
+            <Button
+              size={ButtonSize.Md}
+              htmlType="submit"
+              disabled={!form?.formState.isDirty || !form?.formState.isValid || form?.formState.isSubmitting}
+              onBackground={ButtonOnBackground.Blue}
+            >
+              {T("project.details.edit.save")}
+              <ArrowRightSLine className="-mr-2 text-2xl" />
+            </Button>
+          </Flex>
+        </Flex>
+      </WrapperComponent>
     </Flex>
   );
 }

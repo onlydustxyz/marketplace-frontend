@@ -49,7 +49,7 @@ export function Information() {
     <Flex direction="col" gap={8} className="w-full">
       <Flex
         direction="col"
-        className="border-card-light w-full divide-y divide-card-border-light [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*]:py-4"
+        className="border-card-light w-full divide-y divide-card-border-light [&>*:first-child]:pt-0 [&>*:last-child]:pb-0 [&>*]:py-6"
       >
         <Controller
           name="name"
@@ -90,6 +90,7 @@ export function Information() {
               errorMessage={props.fieldState.error?.message}
               rows={4}
               label={T("project.details.edit.informations.fields.long.label")}
+              autogrow
             />
           )}
         />

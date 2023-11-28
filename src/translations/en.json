@@ -24,7 +24,13 @@
     "back": "Back",
     "publish": "Publish",
     "you": "You",
-    "pendingInvite": "Pending invite"
+    "pendingInvite": "Pending invite",
+    "periods": {
+      "lastMonth": "Last month",
+      "last6Months": "Last 6 months",
+      "lastYear": "Last year",
+      "forever": "Forever"
+    }
   },
   "forms": {
     "error": {
@@ -1067,7 +1073,7 @@
           "removeRepository": "Remove repository",
           "error": "An error occurred, please try again later.",
           "empty": {
-            "title": "No repositories added on your project",
+            "title": "No repositories added on your project. Please add at least one.",
             "message": "You’ll need to install a github app on every organisation hosting repositories."
           }
         }
