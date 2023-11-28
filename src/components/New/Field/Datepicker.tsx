@@ -1,4 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
+import isSameDay from "date-fns/isSameDay";
 import { DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
@@ -7,13 +8,19 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB } from "src/utils/date";
 
+type Period = {
+  label: string;
+  value: Date;
+};
+
 type Props = {
   value?: Date;
   onChange: DayPickerSingleProps["onSelect"];
   isElevated?: boolean;
+  periods?: Period[];
 };
 
-export function Datepicker({ value, isElevated = false, onChange }: Props) {
+export function Datepicker({ value, isElevated = false, onChange, periods }: Props) {
   const { T } = useIntl();
 
   function renderCalendar() {
@@ -21,6 +28,12 @@ export function Datepicker({ value, isElevated = false, onChange }: Props) {
   }
 
   function renderPlaceholder() {
+    const selectedPeriod = periods?.find(period => {
+      return value ? isSameDay(period.value, value) : false;
+    });
+
+    if (selectedPeriod) return selectedPeriod.label;
+
     return value ? getFormattedDateGB(new Date(value)) : T("form.singleDatePlaceholder");
   }
 
@@ -64,7 +77,25 @@ export function Datepicker({ value, isElevated = false, onChange }: Props) {
               isElevated ? "bg-greyscale-800" : "bg-greyscale-900"
             )}
           >
-            <Popover.Panel>{renderCalendar()}</Popover.Panel>
+            <Popover.Panel>
+              {periods?.length ? (
+                <div className="border-b border-greyscale-50/8 font-walsheim">
+                  {periods?.map(({ label, value }) => {
+                    return (
+                      <button
+                        key={label}
+                        type="button"
+                        className="w-full px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
+                        onClick={e => onChange?.(value, value, {}, e)}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : null}
+              {renderCalendar()}
+            </Popover.Panel>
           </Transition>
         </>
       )}

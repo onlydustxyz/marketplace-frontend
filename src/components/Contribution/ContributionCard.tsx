@@ -19,7 +19,7 @@ export function ContributionCard({ contribution }: { contribution: ContributionT
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1 text-spaceBlue-200">
           <TimeLine className="text-base leading-none" />
-          <span className="text-xs leading-none">{displayRelativeDate(date ?? "")}</span>
+          <span className="text-xs leading-none first-letter:uppercase">{displayRelativeDate(date ?? "")}</span>
         </div>
 
         {ContributionLinked({ contribution }) ? (

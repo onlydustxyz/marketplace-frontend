@@ -86,7 +86,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
 
   const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
-    limites: 1,
+    limites: 4,
     delays: 3000,
   });
 
@@ -156,6 +156,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         return {
           ...findInMe,
           ...projectOrg,
+          installed: findInMe.installed,
           isCurrentUserAdmin: findInMe.isCurrentUserAdmin,
           repos: uniqWith([...(projectOrg.repos || []), ...(findInMe.repos || [])], (arr, oth) => arr.id === oth.id),
         };
@@ -241,13 +242,15 @@ export function EditProvider({ children, project }: EditContextProps) {
         form.reset(form.getValues());
 
         // Replace the current path on the history stack if different
-        const newPathname = `${generatePath(RoutePaths.ProjectDetails, {
+        const newPathname = `${generatePath(RoutePaths.ProjectDetailsEdit, {
           projectKey: data.projectSlug,
         })}`;
 
-        await queryClient.prefetchQuery({ queryKey: MeApi.tags.all });
-        await queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
+        // Navigate before invalidating queries so the new data can use the updated params
         navigate(newPathname, { replace: true, state: location.state });
+
+        queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+        queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
       },
     },
   });

@@ -56,14 +56,14 @@ export const usePoolingFeedback = ({
   };
   const Ui = useMemo(() => {
     if (ui.customComponents) {
-      return ui.customComponents;
+      return ui.customComponents({ isSyncing: isRefetching || isLoading });
     }
 
     return (
       <Button
-        type={ButtonType.Ternary}
+        type={ButtonType.Secondary}
         size={ButtonSize.Sm}
-        className={cn("ml-2 min-w-max", isRefetching || isLoading ? "text-spacePurple-300" : "")}
+        className={cn("w-full", (isRefetching || isLoading) && "border-spacePurple-500 text-spacePurple-500")}
         onClick={onTriggerRefecth}
       >
         <SyncLine className={cn(isRefetching || isLoading ? "animate-spin text-spacePurple-300" : "")} />

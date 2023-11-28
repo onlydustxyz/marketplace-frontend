@@ -41,17 +41,14 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         <button
           className="truncate break-all text-left hover:underline"
           onClick={() => {
-            if (id && contribution.project?.id)
-              open({ contributionId: id, projectId: contribution.project.id }, githubHtmlUrl);
+            if (id && project?.id) open({ contributionId: id, projectId: project.id }, githubHtmlUrl);
           }}
         >
           {githubTitle}
         </button>
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
-        {rewardIds?.length ? (
-          <ContributionReward contributionId={id} projectId={project.id} rewardIds={rewardIds} />
-        ) : null}
+        {rewardIds?.length ? <ContributionReward contributionId={id} rewardIds={rewardIds} /> : null}
         {renderReview()}
       </div>
     </div>
