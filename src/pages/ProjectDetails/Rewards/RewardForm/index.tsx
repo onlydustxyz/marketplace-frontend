@@ -110,9 +110,9 @@ const RewardForm: React.FC = () => {
           return {
             id: workItem.id || "",
             repoId:
-              Number(workItem.githubIssue?.id) ||
-              Number(workItem.githubPullRequest?.id) ||
-              Number(workItem.githubCodeReview?.id) ||
+              Number(workItem.githubIssue?.repoId) ||
+              Number(workItem.githubPullRequest?.repoId) ||
+              Number(workItem.githubCodeReview?.repoId) ||
               0,
             number:
               workItem.githubIssue?.number ||
