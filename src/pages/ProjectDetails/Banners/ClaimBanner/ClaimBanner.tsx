@@ -13,8 +13,6 @@ import FeedbackButton from "src/App/Layout/Header/FeedbackButton";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
-import SyncLine from "src/icons/SyncLine";
-import { cn } from "src/utils/cn";
 import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
 
 export default function ClaimBanner() {
@@ -54,12 +52,6 @@ export default function ClaimBanner() {
     fetch: refetch,
     ui: {
       label: T("project.details.create.syncOganizations"),
-      customComponents: ({ isSyncing }) => (
-        <Button type={ButtonType.Secondary} size={ButtonSize.Sm} className="w-full">
-          <SyncLine className={cn(isSyncing ? "animate-spin text-spacePurple-300" : "")} />
-          {T("project.details.create.syncOganizations")}
-        </Button>
-      ),
     },
   });
 

@@ -17,9 +17,6 @@ import MeApi from "src/api/me";
 import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useEditValidationSchema } from "./hooks/useValidationSchema";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import SyncLine from "src/icons/SyncLine";
-import { cn } from "src/utils/cn";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -113,12 +110,6 @@ export function EditProvider({ children, project }: EditContextProps) {
     fetch: refetch,
     ui: {
       label: T("project.details.create.syncOganizations"),
-      customComponents: ({ isSyncing }) => (
-        <Button type={ButtonType.Secondary} size={ButtonSize.Sm} className="w-full">
-          <SyncLine className={cn(isSyncing ? "animate-spin text-spacePurple-300" : "")} />
-          {T("project.details.create.syncOganizations")}
-        </Button>
-      ),
     },
   });
 

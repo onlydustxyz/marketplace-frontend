@@ -18,9 +18,6 @@ import { StorageInterface } from "src/hooks/useStorage/Storage";
 import MeApi from "src/api/me";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { cn } from "src/utils/cn";
-import SyncLine from "src/icons/SyncLine";
 
 /**
  * @interface CreateContextProps
@@ -141,12 +138,6 @@ export function CreateProjectProvider({
     fetch: refetch,
     ui: {
       label: T("project.details.create.syncOganizations"),
-      customComponents: ({ isSyncing }) => (
-        <Button type={ButtonType.Secondary} size={ButtonSize.Sm} className="w-full">
-          <SyncLine className={cn(isSyncing ? "animate-spin text-spacePurple-300" : "")} />
-          {T("project.details.create.syncOganizations")}
-        </Button>
-      ),
     },
   });
 

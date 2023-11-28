@@ -60,12 +60,7 @@ export const usePoolingFeedback = ({
     }
 
     return (
-      <Button
-        type={ButtonType.Ternary}
-        size={ButtonSize.Sm}
-        className={cn("ml-2 min-w-max", isRefetching || isLoading ? "text-spacePurple-300" : "")}
-        onClick={onTriggerRefecth}
-      >
+      <Button type={ButtonType.Secondary} size={ButtonSize.Sm} className="w-full" onClick={onTriggerRefecth}>
         <SyncLine className={cn(isRefetching || isLoading ? "animate-spin text-spacePurple-300" : "")} />
         {ui.label}
       </Button>
