@@ -38,7 +38,6 @@ export default function SubmitProject() {
   };
 
   const onClick = () => {
-    console.log("onClick", modalOpened);
     if (canResume) {
       toggleModal();
     } else {
