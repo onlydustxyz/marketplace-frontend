@@ -41,12 +41,12 @@ const variants: Record<
   [ButtonType.Primary]: {
     [ButtonAccentColor.Purple]: {
       default:
-        "active:bg-spacePurple-50 active:text-spacePurple-900 active:outline-spacePurple-800 focus:bg-spacePurple-50 focus:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900",
+        "active:bg-spacePurple-50 active:text-spacePurple-900 active:outline-spacePurple-800 focus-visible:bg-spacePurple-50 focus-visible:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900",
       pressed: "bg-spacePurple-50 text-spacePurple-900 outline-spacePurple-800",
     },
     [ButtonAccentColor.Orange]: {
       default:
-        "active:bg-orange-50 active:text-orange-900 active:outline-orange-800 focus:bg-orange-50 focus:text-orange-900 hover:bg-orange-50 hover:text-orange-900",
+        "active:bg-orange-50 active:text-orange-900 active:outline-orange-800 focus-visible:bg-orange-50 focus-visible:text-orange-900 hover:bg-orange-50 hover:text-orange-900",
       pressed: "bg-orange-50 text-orange-900 outline-orange-800",
     },
     [ButtonOnBackground.Default]: {
@@ -61,12 +61,12 @@ const variants: Record<
   [ButtonType.Secondary]: {
     [ButtonAccentColor.Purple]: {
       default:
-        "focus:border-spacePurple-200 focus:text-spacePurple-100 hover:border-spacePurple-200 hover:text-spacePurple-100 active:border-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-200",
+        "focus-visible:border-spacePurple-200 focus-visible:text-spacePurple-100 hover:border-spacePurple-200 hover:text-spacePurple-100 active:border-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-200",
       pressed: "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-200",
     },
     [ButtonAccentColor.Orange]: {
       default:
-        "focus:border-orange-200 focus:text-orange-100 hover:border-orange-200 hover:text-orange-100 active:border-orange-400 active:bg-orange-900 active:text-orange-200",
+        "focus-visible:border-orange-200 focus-visible:text-orange-100 hover:border-orange-200 hover:text-orange-100 active:border-orange-400 active:bg-orange-900 active:text-orange-200",
       pressed: "border-orange-400 bg-orange-900 text-orange-200",
     },
     [ButtonOnBackground.Default]: {
@@ -81,12 +81,12 @@ const variants: Record<
   [ButtonType.Ternary]: {
     [ButtonAccentColor.Purple]: {
       default:
-        "text-spacePurple-500 focus:text-spacePurple-400 hover:text-spacePurple-400 active:text-spacePurple-400 active:bg-spacePurple-900",
+        "text-spacePurple-500 focus-visible:text-spacePurple-400 hover:text-spacePurple-400 active:text-spacePurple-400 active:bg-spacePurple-900",
       pressed: "text-spacePurple-400 bg-spacePurple-900",
     },
     [ButtonAccentColor.Orange]: {
       default:
-        "text-orange-500 focus:text-orange-400 hover:text-orange-400 active:text-orange-400 active:bg-orange-900",
+        "text-orange-500 focus-visible:text-orange-400 hover:text-orange-400 active:text-orange-400 active:bg-orange-900",
       pressed: "text-orange-400 bg-orange-900",
     },
     [ButtonOnBackground.Default]: {
@@ -95,7 +95,7 @@ const variants: Record<
     [ButtonOnBackground.Blue]: {
       disabled: "text-greyscale-600",
     },
-    default: "focus:bg-white/5 hover:bg-white/5",
+    default: "focus-visible:bg-white/5 hover:bg-white/5",
     pressed: "",
   },
 };
