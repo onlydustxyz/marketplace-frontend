@@ -1,5 +1,5 @@
 import { StacksParams } from "../types/Stack";
-import UseStackContext from "./useStackContext";
+import useStackContext from "./useStackContext";
 
 export interface UseStackControllerProps {
   name: string;
@@ -8,7 +8,7 @@ export interface UseStackControllerProps {
 const useStackController = ({ name }: UseStackControllerProps) => {
   const {
     stackMethods: { open, close },
-  } = UseStackContext();
+  } = useStackContext();
 
   const handleOpen = (params?: StacksParams) => {
     open(name, params);

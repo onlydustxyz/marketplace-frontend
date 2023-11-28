@@ -1,8 +1,14 @@
 import { createContext, useCallback, useEffect } from "react";
-import { StackInterface, StackPanelInterface, StackPosition, StacksInterface, StacksParams } from "./types/Stack";
+import {
+  AnyParams,
+  StackInterface,
+  StackPanelInterface,
+  StackPosition,
+  StacksInterface,
+  StacksParams,
+} from "./types/Stack";
 import { useRefSubscription } from "../react-subscriber/useRefSubscription";
 import { RefSubscriptionInterface } from "../react-subscriber/types/RefSubscription";
-import { Subscribe } from "../react-subscriber";
 import { v4 as uuidv4 } from "uuid";
 import { UnsafeCreateRefSubscription } from "../react-subscriber/createRefSubscription";
 import { createPortal } from "react-dom";
@@ -26,8 +32,8 @@ type IReactStackContext = {
   history: RefSubscriptionInterface<History[]>;
   stackMethods: {
     closeAll: () => void;
-    register: (stack: RefSubscriptionInterface<any>) => void;
-    getStack: (name: string) => RefSubscriptionInterface<any> | null;
+    register: (stack: RefSubscriptionInterface<StackInterface<AnyParams>>) => void;
+    getStack: (name: string) => RefSubscriptionInterface<StackInterface<AnyParams>> | null;
     getPanel: (name: string, id: string) => RefSubscriptionInterface<StackPanelInterface> | null;
     open: (name: string, params?: StacksParams) => void;
     close: (name: string) => void;
@@ -79,7 +85,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
               position: "hidden",
               id: panelId,
               name,
-              params,
+              params: params || {},
               children: defaultPanel.state.children,
             }),
           },
@@ -188,7 +194,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
             ...prev,
             open: true,
             position: history.state.length === 1 ? "front" : "front-stacked",
-            params,
+            params: params || {},
           };
         });
         updateHistory(panel.state.name, panel.state.id, "open", params);
@@ -318,8 +324,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         </div>,
         document.body
       )}
-      <Subscribe to={stacks}>{newValue => <>{console.log("Store", newValue)}</>}</Subscribe>
-      <Subscribe to={history}>{newValue => <>{console.log("History", newValue)}</>}</Subscribe>
     </ReactStackContext.Provider>
   );
 }

@@ -1,9 +1,9 @@
 import { useSubscribe } from "src/libs/react-subscriber";
-import UseStackContext from "../hooks/useStackContext";
+import useStackContext from "../hooks/useStackContext";
 import { BackDrop } from "../ui/BackDrop";
 
 export const History = () => {
-  const stackContext = UseStackContext();
+  const stackContext = useStackContext();
   const {
     stackMethods: { closeAll },
   } = stackContext;

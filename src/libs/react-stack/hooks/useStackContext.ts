@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ReactStackContext } from "../reactStackContext";
 
-const UseStackContext = () => {
+const useStackContext = () => {
   const context = useContext(ReactStackContext);
 
   if (!context) {
@@ -11,4 +11,4 @@ const UseStackContext = () => {
   return context;
 };
 
-export default UseStackContext;
+export default useStackContext;

@@ -3,7 +3,7 @@ import { StackPanelInterface, StacksParams } from "../types/Stack";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import SidePanel from "../ui/Panel";
-import UseStackContext from "../hooks/useStackContext";
+import useStackContext from "../hooks/useStackContext";
 
 export interface PanelProps<P extends StacksParams> {
   panelRef: RefSubscriptionInterface<StackPanelInterface<P>>;
@@ -12,7 +12,7 @@ export interface PanelProps<P extends StacksParams> {
 export const Panel = <P extends StacksParams>({ panelRef }: PanelProps<P>) => {
   const {
     stackMethods: { closeLast },
-  } = UseStackContext();
+  } = useStackContext();
   const panel = useSubscribe(panelRef || undefined);
   const [domContainer, setDomContainer] = useState<HTMLElement | null>(null);
 

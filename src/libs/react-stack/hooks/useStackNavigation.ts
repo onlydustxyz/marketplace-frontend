@@ -1,4 +1,4 @@
-import UseStackContext from "./useStackContext";
+import useStackContext from "./useStackContext";
 
 export interface StackNavigateFunction {
   (name: string, params?: object): void;
@@ -7,7 +7,7 @@ export interface StackNavigateFunction {
 const useStackNavigation = (): StackNavigateFunction => {
   const {
     stackMethods: { open },
-  } = UseStackContext();
+  } = useStackContext();
 
   return (name: string, params?: object) => {
     open(name, params);

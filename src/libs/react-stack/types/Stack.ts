@@ -3,7 +3,8 @@ import { RefSubscriptionInterface } from "../../react-subscriber/types/RefSubscr
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type StacksParams = { [key: string]: any };
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyParams = any;
 export type StackPosition = "front" | "back" | "hidden" | "front-stacked";
 export interface renderChildren<P extends StacksParams = StacksParams> {
   params: P;
