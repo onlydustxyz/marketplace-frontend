@@ -4,10 +4,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { useContext } from "react";
 import { CreateProjectContext } from "../../ProjectCreation.context";
 import OrganizationList from "./components/OrganizationList";
-import GithubLogo from "src/icons/GithubLogo";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { OAuthGithubConfigLink } from "src/utils/githubSetupLink";
-import InformationLine from "src/icons/InformationLine";
+import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();
@@ -49,25 +46,13 @@ export const GithubOrganizationPage = () => {
           loading={organizationsLoading}
         />
       </Card>
-      <div className="card-light mt-8 flex w-full flex-col items-start justify-start gap-6 rounded-2xl border bg-transparent p-5">
-        <p className="text-center font-walsheim text-sm font-medium uppercase">
-          {T("project.details.create.organizations.githubAppInformation.title")}
-        </p>
-        <div className="center flex w-full items-center gap-5">
-          <a href={OAuthGithubConfigLink} target="_blank" rel="noopener noreferrer" className="w-full">
-            <Button type={ButtonType.Secondary} size={ButtonSize.Sm} className="w-full">
-              <GithubLogo />
-              {T("project.details.create.organizations.githubAppInformation.button")}
-            </Button>
-          </a>
-          {PoolingFeedback}
-        </div>
-        <div className="flex flex-row items-start justify-start gap-2">
-          <InformationLine className="text-base leading-4 text-spaceBlue-200" />
-          <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
-            {T("project.details.create.organizations.githubAppInformation.description")}
-          </p>
-        </div>
+      <div className="mt-6">
+        <GithubSyncSettings
+          title={T("project.details.create.organizations.githubAppInformation.title")}
+          settingsButton={T("project.details.create.organizations.githubAppInformation.button")}
+          message={T("project.details.create.organizations.githubAppInformation.description")}
+          PoolingFeedback={PoolingFeedback}
+        />
       </div>
     </MultiStepsForm>
   );

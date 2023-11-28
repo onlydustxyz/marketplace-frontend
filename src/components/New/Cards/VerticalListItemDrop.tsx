@@ -45,7 +45,6 @@ export const VerticalListItemDrop: FC<VerticalListItemDropProps> = ({
     >
       {({ open }) => (
         <>
-          {/* <Disclosure.Button className="sticky -left-0 top-0 z-10 w-[calc(100%+1rem+1rem)] -translate-x-4 border-l border-r border-card-border-light bg-greyscale-900 px-4 py-4"> */}
           <Disclosure.Button className={cn("sticky -left-0 top-0 z-10 bg-greyscale-900", !open && "rounded-b-2xl")}>
             <div
               className={cn(
@@ -83,7 +82,7 @@ export const VerticalListItemDrop: FC<VerticalListItemDropProps> = ({
           >
             <Disclosure.Panel
               className={cn(
-                "w-full rounded-b-2xl border-l border-r border-card-border-light p-4",
+                "w-full rounded-b-2xl border-l border-r border-card-border-light p-4 pt-0",
                 ChildrenContainerProps.className
               )}
             >
@@ -93,18 +92,5 @@ export const VerticalListItemDrop: FC<VerticalListItemDropProps> = ({
         </>
       )}
     </Disclosure>
-    // <div className={cn("flex w-full flex-col", ContainerClassName)} {...RestContainerProps}>
-    //   <div className="sticky -left-0 top-0 z-10 w-[calc(100%+1rem+1rem)] -translate-x-4 bg-greyscale-900 px-4 py-4">
-    //     <Flex className="items-center justify-between rounded-2xl border border-card-border-light bg-greyscale-900 p-4">
-    //       <Flex justify="start" item="center" gap={2}>
-    //         {avatarComponent || <Avatar src={avatarSrc} alt={avatarAlt} size="6" shape="square" {...AvatarProps} />}
-    //         {titleComponent || <p className=" text-sm font-medium uppercase">{title}</p>}
-    //       </Flex>
-
-    //       {actionComponent}
-    //     </Flex>
-    //   </div>
-    //   <div className={cn("w-full", ChildrenContainerProps.className)}>{children}</div>
-    // </div>
   );
 };
