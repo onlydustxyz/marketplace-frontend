@@ -83,7 +83,7 @@ function SafeProjectEdition() {
 
   return (
     <Flex className="mx-auto h-full max-w-7xl flex-col">
-      <Flex className="h-[80px] items-center px-4 py-6 xl:px-8 2xl:px-0">
+      <Flex className="items-center px-4 py-6 xl:px-8 2xl:px-0">
         <Link to="../">
           <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
             <CloseLine />
@@ -94,11 +94,7 @@ function SafeProjectEdition() {
         </Title>
       </Flex>
 
-      <WrapperComponent
-        className="flex h-[calc(100%-80px)] w-full flex-col overflow-hidden"
-        padded={false}
-        withBg={false}
-      >
+      <WrapperComponent className="flex w-full flex-1 flex-col overflow-hidden" padded={false} withBg={false}>
         <header className="z-10 w-full border-b border-greyscale-50/20 bg-card-background-base px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 2xl:rounded-t-2xl">
           <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} />
         </header>
@@ -115,12 +111,12 @@ function SafeProjectEdition() {
           )}
         </Flex>
 
-        <Flex className="max-h-[88px] w-full border-t border-card-border-light bg-card-background-base shadow-medium xl:rounded-b-2xl">
+        <Flex className="w-full border-t border-card-border-light bg-card-background-base shadow-medium xl:rounded-b-2xl">
           <Flex
             justify="between"
             item="center"
             gap={4}
-            className="h-full w-full items-center bg-card-background-light p-6"
+            className="h-full w-full items-center bg-card-background-light px-6 py-5"
           >
             <FormStatus
               {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
