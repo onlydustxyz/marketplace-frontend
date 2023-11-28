@@ -11,6 +11,7 @@ import { ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 import { CommitsTooltip } from "./CommitsTooltip";
+import { RewardableItem } from "src/api/Project/queries";
 
 export enum GithubPullRequestStatus {
   Merged = "MERGED",
@@ -25,7 +26,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getPullRequestStatusDate(pullRequest: GithubPullRequestWithCommitsFragment) {
+function getPullRequestStatusDate(pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>) {
   switch (pullRequest.status) {
     case GithubPullRequestStatus.Closed:
     case ContributionStatus.Cancelled:
@@ -34,7 +35,6 @@ function getPullRequestStatusDate(pullRequest: GithubPullRequestWithCommitsFragm
     case ContributionStatus.Completed:
       return new Date(pullRequest.mergedAt);
     case GithubPullRequestStatus.Open:
-    case ContributionStatus.InProgress:
     default:
       return new Date(pullRequest.createdAt);
   }
@@ -45,7 +45,7 @@ export type GithubPullRequestProps = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  pullRequest: GithubPullRequestWithCommitsFragment;
+  pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
   contributor?: GithubUserFragment;
@@ -63,8 +63,8 @@ export default function GithubPullRequest({
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest.htmlUrl ?? "");
 
-  const userCommits = pullRequest?.userCommitsCount?.aggregate?.count;
-  const commitsCount = pullRequest?.commitsCount?.aggregate?.count;
+  const userCommits = pullRequest?.userCommitsCount?.aggregate?.count || pullRequest?.userCommitsCount || 0;
+  const commitsCount = pullRequest?.commitsCount?.aggregate?.count || pullRequest?.commitsCount || 0;
 
   return pullRequest ? (
     <Card
@@ -106,7 +106,7 @@ export default function GithubPullRequest({
           </div>
           <div className="inline-flex flex-row items-center gap-1">
             <GitRepositoryLine />
-            {repoName}
+            {repoName || pullRequest.repoName}
           </div>
 
           <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">

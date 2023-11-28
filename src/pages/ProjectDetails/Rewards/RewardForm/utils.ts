@@ -1,17 +1,17 @@
 import { filter } from "lodash";
-import { ContributionFragment } from "src/__generated/graphql";
-import { GithubContributionType } from "src/types";
+import { ContributionStatus, GithubContributionType } from "src/types";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import { RewardableItem } from "src/api/Project/queries";
 
 export const filterUnpaidContributionsByType = (
   type: GithubContributionType,
-  contributions: ContributionFragment[]
-): ContributionFragment[] => {
+  contributions: RewardableItem[]
+): RewardableItem[] => {
   return filter(contributions, {
-    status: "complete",
+    status: ContributionStatus.Completed,
     type,
     ignored: false,
-  }) as ContributionFragment[];
+  });
 };
 
 type BudgetT = ProjectBudgetType["budgets"];

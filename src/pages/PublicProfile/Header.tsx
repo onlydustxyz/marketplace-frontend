@@ -5,7 +5,6 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import LinkIcon from "src/icons/Link";
 import { useNavigate } from "react-router-dom";
-import { linkClickHandlerFactory } from "src/utils/clickHandler";
 import Tooltip from "src/components/Tooltip";
 
 type Props = {
@@ -19,13 +18,15 @@ export default function Header({ userLogin }: Props) {
   return (
     <div className="flex items-center md:py-6">
       <div className="flex w-full justify-between bg-white/8 px-4 py-3 md:rounded-full">
-        <div
+        <a
           className="flex cursor-pointer items-center gap-3"
-          onClick={linkClickHandlerFactory("https://onlydust.xyz")}
+          href="https://onlydust.xyz"
+          target="_blank"
+          rel="noreferrer"
         >
           <img className="h-9 w-9" src={onlyDustLogoWhite} alt={T("images.onlyDustLogo")} />
           <img className="mt-1 h-6" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
-        </div>
+        </a>
         <div className="flex gap-3">
           <div className="hidden md:block">
             <Button

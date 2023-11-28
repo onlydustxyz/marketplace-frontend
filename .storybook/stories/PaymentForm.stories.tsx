@@ -12,6 +12,13 @@ import withSuspense from "../decorators/withSuspense";
 import withCommandProvider from "../decorators/withCommandProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import withQueryClientProvider from "../decorators/withQueryClientProvider";
+import withAuthProvider from "../decorators/withAuthProvider";
+import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
+import withTokenSetProvider from "../decorators/withTokenSetProvider";
+
+
+const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
 const mockBudgets: ProjectBudgetType = {
   initialDollarsEquivalent: 120000,
@@ -188,8 +195,12 @@ export default {
       },
     }),
     withSuspense,
+    withAuthProvider({ userId: USER_ID }),
     withCommandProvider,
     withContributorProfilePanelProvider,
+    withQueryClientProvider,
+    withTokenSetProvider,
+    withImpersonationClaimsProvider,
   ],
 };
 

@@ -8,9 +8,10 @@ import Flex from "../Utils/Flex";
 type FormStatusType = {
   isDirty?: boolean;
   isValid?: boolean;
+  errorMessage?: string;
 };
 
-export function FormStatus({ isDirty, isValid }: FormStatusType) {
+export function FormStatus({ isDirty, isValid, errorMessage }: FormStatusType) {
   const { T } = useIntl();
 
   return (
@@ -23,7 +24,7 @@ export function FormStatus({ isDirty, isValid }: FormStatusType) {
           })}
         >
           <ErrorWarningLine />
-          {isValid ? T("profile.form.saveStatus.unsaved") : T("profile.form.saveStatus.invalid")}
+          {isValid ? T("profile.form.saveStatus.unsaved") : errorMessage || T("profile.form.saveStatus.invalid")}
         </Flex>
       ) : (
         <Flex className="items-center gap-1">

@@ -1,5 +1,5 @@
 import { useIntl } from "src/hooks/useIntl";
-import { WorkItems } from "./WorkItems/WorkItems";
+import { RewardableWorkItem, WorkItems } from "./WorkItems/WorkItems";
 import SidePanel from "src/components/SidePanel";
 import { useState } from "react";
 import Tab from "./Tab";
@@ -9,7 +9,7 @@ import OtherWorkForm from "./OtherWorkForm";
 import DiscussLine from "src/icons/DiscussLine";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { WorkItemFragment, WorkItemType } from "src/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 
 type Props = {
@@ -18,8 +18,8 @@ type Props = {
   setOpen: (value: boolean) => void;
   contributorId: number;
   contributorHandle: string;
-  workItems: WorkItemFragment[];
-  addWorkItem: (workItem: WorkItemFragment) => void;
+  workItems: RewardableWorkItem[];
+  addWorkItem: (workItem: RewardableWorkItem) => void;
 };
 
 enum Tabs {

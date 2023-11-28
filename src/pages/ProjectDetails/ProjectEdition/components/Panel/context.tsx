@@ -9,6 +9,11 @@ interface EditPanelContextProps {
   project: UseGetProjectBySlugResponse;
 }
 
+export enum TabsType {
+  Orgs = "Orgs",
+  Repos = "Repos",
+}
+
 type EditPanelType = {
   open: () => void;
   close: () => void;
@@ -16,6 +21,10 @@ type EditPanelType = {
   isOpen: boolean;
   isLoading: boolean;
   project?: UseGetProjectBySlugResponse;
+  tabs: {
+    activeTab: TabsType;
+    setActiveTab: (tab: TabsType) => void;
+  };
 };
 
 export const EditPanelContext = createContext<EditPanelType>({
@@ -25,10 +34,15 @@ export const EditPanelContext = createContext<EditPanelType>({
   isOpen: false,
   isLoading: false,
   project: undefined,
+  tabs: {
+    activeTab: TabsType.Repos,
+    setActiveTab: () => null,
+  },
 });
 
 export function EditPanelProvider({ children, openOnLoad, isLoading, project }: EditPanelContextProps) {
   const [open, setOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabsType>(TabsType.Repos);
 
   const openSidePanel = useCallback(() => {
     setOpen(true);
@@ -45,6 +59,7 @@ export function EditPanelProvider({ children, openOnLoad, isLoading, project }: 
   useEffect(() => {
     if (!open && openOnLoad) {
       setOpen(openOnLoad);
+      setActiveTab(TabsType.Orgs);
     }
   }, [openOnLoad]);
 
@@ -56,6 +71,10 @@ export function EditPanelProvider({ children, openOnLoad, isLoading, project }: 
         open: openSidePanel,
         toggle: toggleSidePanel,
         close: closeSidePanel,
+        tabs: {
+          activeTab,
+          setActiveTab,
+        },
       }}
     >
       {children}

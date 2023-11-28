@@ -9,7 +9,7 @@ type OutletContext = {
 
 export default function Rewards() {
   const { project } = useOutletContext<OutletContext>();
-  const { id: projectId, slug: projectKey, createdAt } = project;
+  const { id: projectId, slug: projectKey, createdAt, repos } = project;
 
   const {
     data: projectBudget,
@@ -31,6 +31,7 @@ export default function Rewards() {
         project,
         refetchBudgets,
         createdAt,
+        repos,
       }}
     />
   );

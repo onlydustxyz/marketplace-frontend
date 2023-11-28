@@ -21,6 +21,7 @@ import { Tabs } from "src/components/Tabs/Tabs";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
+import { useFormState } from "react-hook-form";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -40,6 +41,20 @@ function SafeProjectEdition() {
     installation_id || initialTab === TabsType.Repos ? TabsType.Repos : TabsType.General
   );
   const { form, project } = useContext(EditContext);
+  const { errors } = useFormState({ control: form?.control });
+  const errorsKeys = Object.keys(errors || {});
+
+  const hasGeneralValidationTabError = useMemo(() => {
+    if (!errorsKeys.length) {
+      return false;
+    }
+
+    if (errorsKeys.length === 1 && errorsKeys?.[0] === "githubRepos") {
+      return false;
+    }
+
+    return true;
+  }, [errorsKeys]);
 
   const tabs = useMemo(
     () => [
@@ -50,7 +65,11 @@ function SafeProjectEdition() {
         },
         children: (
           <TabContents>
-            <FileListLine />
+            {hasGeneralValidationTabError && activeTab !== TabsType.General ? (
+              <ErrorWarningLine className="text-orange-500" />
+            ) : (
+              <FileListLine />
+            )}
             {T("project.details.edit.tabs.general")}
           </TabContents>
         ),
@@ -62,7 +81,8 @@ function SafeProjectEdition() {
         },
         children: (
           <TabContents>
-            {hasUnauthorizedInGithubRepo(project?.repos) && activeTab !== TabsType.Repos ? (
+            {(hasUnauthorizedInGithubRepo(project?.repos) || errorsKeys?.includes("githubRepos")) &&
+            activeTab !== TabsType.Repos ? (
               <ErrorWarningLine className="text-orange-500" />
             ) : (
               <GitRepositoryLine />
@@ -72,7 +92,7 @@ function SafeProjectEdition() {
         ),
       },
     ],
-    [activeTab]
+    [activeTab, errorsKeys, hasGeneralValidationTabError]
   );
 
   return (
@@ -110,7 +130,14 @@ function SafeProjectEdition() {
         gap={4}
         className="max-h-[88px] w-full items-center border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
       >
-        <FormStatus {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }} />
+        <FormStatus
+          {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
+          errorMessage={
+            form?.formState?.errors?.githubRepos
+              ? T("project.details.edit.errors.repos")
+              : T("project.details.edit.errors.informations")
+          }
+        />
         <Button
           size={ButtonSize.Md}
           htmlType="submit"

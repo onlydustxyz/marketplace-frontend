@@ -1,8 +1,8 @@
 import SidePanel from "src/components/SidePanel";
 import { EditPanelOrganization } from "./OrganizationTab/EditPanelOrganization";
 import { EditPanelRepositories } from "./RepositoriesTabs/EditPanelRepositories";
-import { PropsWithChildren, useContext, useMemo, useState } from "react";
-import { EditPanelContext } from "./context";
+import { PropsWithChildren, useContext, useMemo } from "react";
+import { EditPanelContext, TabsType } from "./context";
 import { Flex } from "src/components/New/Layout/Flex";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { useIntl } from "src/hooks/useIntl";
@@ -13,11 +13,6 @@ import GithubLogo from "src/icons/GithubLogo";
 import { OAuthGithubConfigLink } from "src/utils/githubSetupLink";
 import { EditContext } from "../../EditContext";
 
-enum TabsType {
-  Orgs = "Orgs",
-  Repos = "Repos",
-}
-
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
 }
@@ -25,8 +20,12 @@ function TabContents({ children }: PropsWithChildren) {
 export const EditPanel = () => {
   const { T } = useIntl();
   const { PoolingFeedback } = useContext(EditContext);
-  const { isOpen, toggle } = useContext(EditPanelContext);
-  const [activeTab, setActiveTab] = useState<TabsType>(TabsType.Orgs);
+  const {
+    isOpen,
+    toggle,
+    tabs: { activeTab, setActiveTab },
+  } = useContext(EditPanelContext);
+
   const tabItems = useMemo(
     () => [
       {

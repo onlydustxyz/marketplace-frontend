@@ -7,7 +7,6 @@ import ProjectApi from "src/api/Project";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-import { z } from "zod";
 import { EditPanelProvider } from "./components/Panel/context";
 import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 import { FieldProjectLeadValue } from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
@@ -17,6 +16,7 @@ import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import MeApi from "src/api/me";
 import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
+import { useEditValidationSchema } from "./hooks/useValidationSchema";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -70,33 +70,13 @@ export const EditContext = createContext<Edit>({
   },
 });
 
-const validationSchema = z.object({
-  logoUrl: z.string().nullish(),
-  inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
-  isLookingForContributors: z.boolean().nullish().optional(),
-  longDescription: z.string().min(1),
-  moreInfo: z.array(
-    z.object({
-      url: z.string().trim().optional(),
-      value: z.string().optional(),
-    })
-  ),
-  name: z.string().min(1),
-  githubRepos: z.array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() })).min(1),
-  projectLeadsToKeep: z.array(z.string()).min(1),
-  shortDescription: z.string().min(1),
-  rewardSettings: z.object({
-    ignorePullRequests: z.boolean().nullish().optional(),
-    ignoreIssues: z.boolean().nullish().optional(),
-    ignoreCodeReviews: z.boolean().nullish().optional(),
-    ignoreContributionsBefore: z.coerce.date().optional(),
-  }),
-});
-
 const SESSION_KEY = "edit-project-";
 
 export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
+
+  const validationSchema = useEditValidationSchema();
+
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
@@ -106,7 +86,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
 
   const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
-    limites: 5,
+    limites: 1,
     delays: 3000,
   });
 
@@ -155,12 +135,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       logoUrl: project.logoUrl,
       shortDescription: project.shortDescription,
       longDescription: project.longDescription,
-      moreInfo: [
-        {
-          url: project.moreInfoUrl,
-          value: project.moreInfoUrl, // more info name
-        },
-      ],
+      moreInfos: project.moreInfos,
       githubRepos: (project.repos || []).map(repo => ({
         id: repo.id,
         isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
@@ -282,6 +257,10 @@ export function EditProvider({ children, project }: EditContextProps) {
     const githubRepoIds = githubRepos.map(repo => repo.id);
     updateProject({ ...rest, githubRepoIds });
   };
+
+  useEffect(() => {
+    form.trigger();
+  }, []);
 
   return (
     <EditContext.Provider

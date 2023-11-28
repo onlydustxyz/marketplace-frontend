@@ -10,6 +10,9 @@ import {
   GetProjectPendingContributorsQueryResult,
 } from "src/__generated/graphql";
 import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const TEST_USER: ContributorFragment = {
   __typename: "UserProfiles",
@@ -69,15 +72,17 @@ describe('"ContributorSelect" component', () => {
   beforeEach(() => {
     contributor = null;
     renderWithIntl(
-      <VirtuosoMockContext.Provider value={{ viewportHeight: 1000, itemHeight: 36 }}>
-        <ContributorSelect
-          projectId={TEST_PROJECT_ID}
-          contributor={contributor}
-          setContributor={newContributor => {
-            contributor = newContributor;
-          }}
-        />
-      </VirtuosoMockContext.Provider>,
+      <QueryClientProvider client={queryClient}>
+        <VirtuosoMockContext.Provider value={{ viewportHeight: 1000, itemHeight: 36 }}>
+          <ContributorSelect
+            projectId={TEST_PROJECT_ID}
+            contributor={contributor}
+            setContributor={newContributor => {
+              contributor = newContributor;
+            }}
+          />
+        </VirtuosoMockContext.Provider>
+      </QueryClientProvider>,
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: graphQlMocks,

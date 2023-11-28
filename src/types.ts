@@ -182,12 +182,9 @@ export interface Leader {
   htmlUrl: string | null;
   avatarUrl: string;
 }
-export interface Sponsor {
-  id: string | null;
-  name: string | null;
-  url: string | null;
-  logoUrl: string | null;
-}
+
+export type Sponsor = components["schemas"]["SponsorResponse"];
+
 export interface Technologies {
   [key: string]: number;
 }
@@ -223,6 +220,7 @@ export interface Project {
   longDescription?: string;
   logoUrl: string;
   moreInfoUrl: string;
+  moreInfo?: { url: string; value: string }[];
   hiring: boolean;
   visibility: string;
   repoCount: number;

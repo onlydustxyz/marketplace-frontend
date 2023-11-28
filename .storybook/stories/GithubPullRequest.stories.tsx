@@ -5,8 +5,9 @@ import GithubPullRequest, {
   GithubPullRequestProps,
   GithubPullRequestStatus,
 } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
+import { RewardableItem } from "src/api/Project/queries";
 
-const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
+const pullRequests: Record<string, Partial<RewardableItem & GithubPullRequestWithCommitsFragment>> = {
   closed: {
     id: "123",
     repoId: 123456,
@@ -24,8 +25,6 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
       id: 123,
       user: { id: 233 },
     },
-    commitsCount: { aggregate: { count: 3 } },
-    userCommitsCount: { aggregate: { count: 1 } },
     contributorDetails: [
       {
         author: {
@@ -56,8 +55,6 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
       id: 123,
       user: { id: 233 },
     },
-    commitsCount: { aggregate: { count: 3 } },
-    userCommitsCount: { aggregate: { count: 1 } },
     contributorDetails: [
       {
         author: {
@@ -87,8 +84,6 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
       id: 123,
       user: { id: 233 },
     },
-    commitsCount: { aggregate: { count: 3 } },
-    userCommitsCount: { aggregate: { count: 1 } },
     contributorDetails: [
       {
         author: {
@@ -118,8 +113,6 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
       id: 123,
       user: { id: 233 },
     },
-    commitsCount: { aggregate: { count: 3 } },
-    userCommitsCount: { aggregate: { count: 1 } },
     contributorDetails: [
       {
         author: {

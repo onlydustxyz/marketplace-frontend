@@ -3,13 +3,13 @@ import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { GithubRepoFragment } from "src/__generated/graphql";
 import { withTooltip } from "src/components/Tooltip";
+import { components } from "src/__generated/api";
 
 type Props = {
-  repos: GithubRepoFragment[];
-  repo: GithubRepoFragment;
-  setRepo: (repo: GithubRepoFragment) => void;
+  repos: components["schemas"]["GithubRepoResponse"][];
+  repo: components["schemas"]["GithubRepoResponse"];
+  setRepo: (repo: components["schemas"]["GithubRepoResponse"]) => void;
 };
 
 export default function RepoSelect({ repos, repo, setRepo }: Props) {

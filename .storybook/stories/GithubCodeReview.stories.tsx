@@ -2,8 +2,9 @@ import { daysFromNow } from "src/utils/date";
 import { GithubCodeReviewFragment } from "src/__generated/graphql";
 import GithubCodeReview, { Action } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import { ComponentProps } from "react";
+import { RewardableItem } from "src/api/Project/queries";
 
-const codeReviews: Record<string, GithubCodeReviewFragment> = {
+const codeReviews: Record<string, Partial<GithubCodeReviewFragment & RewardableItem>> = {
   pending: {
     id: "123",
     status: "PENDING",

@@ -6,9 +6,32 @@ export default {
   component: FilterPanel,
 };
 
+const availableTechnologies = ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"];
+
+const availableSponsors = [
+  {
+    id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    logoUrl: "",
+    name: "StarkNet Foundation",
+    url: "https://www.starknet.io/en",
+  },
+  {
+    id: "3fa85f64-5717-4562-b3fc-2c963f66a456",
+    logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8506434858363286425.png",
+    name: "Ethereum Foundation",
+    url: "https://ethereum.org",
+  },
+  {
+    id: "3fa85f64-5717-4562-b3fc-2c963f66a123",
+    logoUrl: "",
+    name: "Theodo",
+    url: "https://www.theodo.fr/",
+  },
+];
+
 const allProjectsArgs = {
-  availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
-  availableSponsors: ["StarkNet Foundation", "Ethereum Foundation", "Theodo"],
+  availableTechnologies,
+  availableSponsors,
   isProjectLeader: false,
 };
 
@@ -23,8 +46,8 @@ export const AllProjects = {
 };
 
 const allProjectsForProjectLeaderArgs = {
-  availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
-  availableSponsors: ["StarkNet Foundation", "Ethereum Foundation", "Theodo"],
+  availableTechnologies,
+  availableSponsors,
   isProjectLeader: true,
 };
 
@@ -39,8 +62,8 @@ export const AllProjectsForProjectLeader = {
 };
 
 const myProjectsArgs = {
-  availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
-  availableSponsors: ["StarkNet Foundation", "Ethereum Foundation", "Theodo"],
+  availableTechnologies,
+  availableSponsors,
   isProjectLeader: true,
 };
 

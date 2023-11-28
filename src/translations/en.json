@@ -26,6 +26,12 @@
     "you": "You",
     "pendingInvite": "Pending invite"
   },
+  "forms": {
+    "error": {
+      "require": "Please fill __fieldName__ ",
+      "invalid": "Please provide a valid __fieldName__"
+    }
+  },
   "contribution": {
     "review": {
       "status": {
@@ -383,6 +389,7 @@
           "externalUsers": "EXTERNAL USERS",
           "fallback": {
             "noUser": "No user found",
+            "error": "An error occurred, please try again later.",
             "typeMoreCharacters": "Type 3 or more characters to display external users"
           },
           "placeholder": "Search by Github handle"
@@ -459,6 +466,7 @@
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
           "success": "Issue created and contribution added",
+          "error": "The issue could not be created!",
           "tab": "Other work",
           "tabShort": "Other",
           "title": "Describe the work",
@@ -479,6 +487,10 @@
         "emptyState": {
           "title": "Nothing to show",
           "subtitle": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh."
+        },
+        "ignoreUnignoreContribution": {
+          "success": "The contribution was successfully __action__",
+          "error": "The contribution could not be __action__"
         }
       },
       "leftToSpend": "Left to spend",
@@ -597,6 +609,7 @@
     }
   },
   "profile": {
+    "whatsapp": "Whatsapp",
     "editButton": "Edit profile",
     "error": {
       "notFound": "This user does not exist"
@@ -861,7 +874,7 @@
           "error": "An error occurred, please try again later."
         },
         "description": "Managing an open source project?",
-        "syncOganizations": "Synchronize your organization",
+        "syncOganizations": "Sync orgs",
         "startPopOver": {
           "title": "Resume project creation?",
           "description": "If you decide to start over all your previous changes will be lost.",
@@ -898,8 +911,9 @@
           "title": "Which repositories will you need?",
           "description": "Only repositories from organisation where github app is installed are listed. ",
           "search": "Search repository",
+          "placeholder": "No repositories available",
           "form": {
-            "error_count": "Please select at least one repo to continue.",
+            "error_count": "Please select at least one repo",
             "counter": "__selected__/__total__ repos selected"
           }
         },
@@ -908,7 +922,7 @@
           "success": "Only repositories from organisation where github app is installed are listed. ",
           "search": "Search repository",
           "form": {
-            "error_count": "Please select at least one repo to continue.",
+            "error_count": "Please select at least one repo",
             "counter": "__selected__/__total__ repos selected",
             "fields": {
               "name": {
@@ -964,6 +978,10 @@
         }
       },
       "edit": {
+        "errors": {
+          "informations": "Please fill in the required information.",
+          "repos": "Please select at least one repo."
+        },
         "title": "Edit project",
         "tabs": {
           "general": "General",
@@ -985,7 +1003,9 @@
           "repositories": {
             "noRepositoriesToAdd": "All repositories from this organisation have been added to your project.",
             "fixGithubApp": "Fix configuration on Github",
-            "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration"
+            "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration",
+            "title": "Add desired repositories",
+            "description": "You can add as many repositories as you want from the following list."
           }
         },
         "toasts": {

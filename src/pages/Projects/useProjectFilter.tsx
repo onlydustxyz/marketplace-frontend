@@ -1,5 +1,6 @@
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useReducer } from "react";
 import { useLocalStorage } from "react-use";
+import { Sponsor } from "src/types";
 
 export enum Ownership {
   All = "All",
@@ -9,7 +10,7 @@ export enum Ownership {
 export interface ProjectFilter {
   ownership: Ownership;
   technologies: string[];
-  sponsors: string[];
+  sponsors: Sponsor[];
 }
 
 enum ActionType {
@@ -24,8 +25,12 @@ type Action =
       type: ActionType.Clear;
     }
   | {
-      type: ActionType.SetTechnologies | ActionType.SetSponsors;
+      type: ActionType.SetTechnologies;
       values: string[];
+    }
+  | {
+      type: ActionType.SetSponsors;
+      values: Sponsor[];
     }
   | {
       type: ActionType.SetOwnership;
@@ -59,7 +64,7 @@ type Context = {
   clear: () => void;
   setOwnership: (ownership: Ownership) => void;
   setTechnologies: (technologies: string[]) => void;
-  setSponsors: (sponsors: string[]) => void;
+  setSponsors: (sponsors: Sponsor[]) => void;
 };
 
 export const ProjectFilterContext = createContext<Context | null>(null);
@@ -81,7 +86,7 @@ export function ProjectFilterProvider({ children }: PropsWithChildren) {
     []
   );
   const setSponsors = useCallback(
-    (sponsors: string[]) => dispatch({ type: ActionType.SetSponsors, values: sponsors }),
+    (sponsors: Sponsor[]) => dispatch({ type: ActionType.SetSponsors, values: sponsors }),
     []
   );
 

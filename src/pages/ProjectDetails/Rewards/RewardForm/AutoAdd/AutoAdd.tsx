@@ -6,12 +6,14 @@ import GitMergeLine from "src/icons/GitMergeLine";
 import { useIntl } from "src/hooks/useIntl";
 import { GithubContributionType } from "src/types";
 import TagButton from "src/components/TagButton/TagButton";
-import { ContributionFragment, WorkItemFragment, WorkItemType } from "src/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import { filterUnpaidContributionsByType } from "src/pages/ProjectDetails/Rewards/RewardForm/utils";
+import { RewardableWorkItem } from "../WorkItemSidePanel/WorkItems/WorkItems";
+import { RewardableItem } from "src/api/Project/queries";
 
 type AutoAddProps = {
-  unpaidContributions: ContributionFragment[];
-  workItems: WorkItemFragment[];
+  unpaidContributions: RewardableItem[];
+  workItems: RewardableWorkItem[];
   onAutoAdd: (type: GithubContributionType) => void;
 };
 

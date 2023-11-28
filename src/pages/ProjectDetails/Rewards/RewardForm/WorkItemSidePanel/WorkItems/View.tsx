@@ -1,14 +1,7 @@
-import { filter, some } from "lodash";
-import { ReactElement, forwardRef, useEffect, useState } from "react";
+import { ReactElement, forwardRef, useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import {
-  ContributionFragment,
-  GithubUserFragment,
-  WorkItemFragment,
-  WorkItemType,
-  useGithubUserByIdQuery,
-} from "src/__generated/graphql";
+import { GithubUserFragment, WorkItemType, useGithubUserByIdQuery } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -20,29 +13,41 @@ import { useShowToaster } from "src/hooks/useToaster";
 import EyeOffLine from "src/icons/EyeOffLine";
 import Link from "src/icons/Link";
 import SearchLine from "src/icons/SearchLine";
-import EmptyState from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/EmptyState";
 import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
-import useFilteredContributions from "./useFilteredWorkItems";
-import { contributionToWorkItem } from "./WorkItems";
+import { RewardableWorkItem, contributionToWorkItem } from "./WorkItems";
 import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
+import { RewardableItem } from "src/api/Project/queries";
+import { ShowMore } from "src/components/Table/ShowMore";
+import EmptyState from "../EmptyState";
+import Skeleton from "src/components/Skeleton";
+import ErrorState from "src/components/ErrorState";
 
-const tabNames = {
+export const tabNames = {
   [WorkItemType.Issue]: "issues",
   [WorkItemType.PullRequest]: "pullRequests",
   [WorkItemType.CodeReview]: "codeReviews",
 };
 
+type ShowMoreProps = {
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+};
+
 type Props = {
   projectId: string;
-  contributions: ContributionFragment[];
+  contributions: RewardableItem[];
   type: WorkItemType;
-  addWorkItem: (workItem: WorkItemFragment) => void;
-  addContribution: (contribution: ContributionFragment) => void;
-  ignoreContribution: (contribution: ContributionFragment) => void;
-  unignoreContribution: (contribution: ContributionFragment) => void;
+  addWorkItem: (workItem: RewardableWorkItem) => void;
+  addContribution: (contribution: RewardableItem) => void;
+  ignoreContribution: (contribution: RewardableItem) => void;
+  unignoreContribution: (contribution: RewardableItem) => void;
   contributorId: number;
-};
+  setIncludeIgnoredItems: (value: boolean) => void;
+  loading: boolean;
+  error: boolean;
+} & ShowMoreProps;
 
 export default function View({
   projectId,
@@ -53,9 +58,15 @@ export default function View({
   ignoreContribution,
   unignoreContribution,
   contributorId,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  setIncludeIgnoredItems,
+  loading,
+  error,
 }: Props) {
   const { T } = useIntl();
-  const { watch, resetField } = useFormContext();
+  const { resetField } = useFormContext();
   const { data } = useGithubUserByIdQuery({
     variables: {
       githubUserId: contributorId,
@@ -76,7 +87,7 @@ export default function View({
   };
   const showToaster = useShowToaster();
 
-  const addContributionWithToast = (item: ContributionFragment) => {
+  const addContributionWithToast = (item: RewardableItem) => {
     addContribution(item);
     showToaster(T(`reward.form.contributions.${tabName}.addedToaster`));
   };
@@ -89,15 +100,15 @@ export default function View({
   const { control } = useForm({
     defaultValues: { [showIgnoredItemsName]: false },
   });
+
   const showIgnoredItems = useWatch({
     control,
-    name: showIgnoredItemsName,
+    name: "show-ignored-items",
   });
 
-  const visibleIssues = showIgnoredItems ? contributions : filter(contributions, { ignored: false });
-
-  const searchPattern = watch(`search-${tabName}`);
-  const filteredContributions = useFilteredContributions({ pattern: searchPattern, contributions: visibleIssues });
+  useEffect(() => {
+    setIncludeIgnoredItems(showIgnoredItems);
+  }, [showIgnoredItems]);
 
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
@@ -113,24 +124,20 @@ export default function View({
                 testId={`add-other-${tabName}-toggle`}
               />
             ) : null}
-            {contributions.length > 0 && (
-              <Toggle
-                enabled={searchEnabled}
-                setEnabled={setSearchEnabled}
-                icon={<SearchLine />}
-                label={T(`reward.form.contributions.${tabName}.search`)}
-                testId="search-toggle"
-              />
-            )}
+            <Toggle
+              enabled={searchEnabled && !loading}
+              setEnabled={setSearchEnabled}
+              icon={<SearchLine />}
+              label={T(`reward.form.contributions.${tabName}.search`)}
+              testId="search-toggle"
+            />
           </div>
-          {some(contributions, { ignored: true }) && (
-            <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
-              <EyeOffLine />
+          <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
+            <EyeOffLine />
 
-              <div className="inline lg:hidden xl:flex">{T("reward.form.contributions.showIgnored")}</div>
-              <FormToggle name={showIgnoredItemsName} control={control} />
-            </div>
-          )}
+            <div className="inline lg:hidden xl:flex">{T("reward.form.contributions.showIgnored")}</div>
+            <FormToggle name={showIgnoredItemsName} control={control} />
+          </div>
         </div>
         {addOtherIssueEnabled && type !== WorkItemType.CodeReview && (
           <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} contributorId={contributorId} />
@@ -150,16 +157,24 @@ export default function View({
           />
         )}
       </div>
-
-      {filteredContributions.length > 0 && data?.githubUsersByPk ? (
+      {loading && !error ? (
+        <div className="mr-1.5 mt-1">
+          <Skeleton variant="rewardableItems" />
+        </div>
+      ) : !loading && error ? (
+        <ErrorState />
+      ) : contributions.length > 0 && data?.githubUsersByPk ? (
         <VirtualizedIssueList
           {...{
-            contributions: filteredContributions as ContributionFragment[],
+            contributions: contributions as RewardableItem[],
             addContribution: addContributionWithToast,
             ignoreContribution,
             unignoreContribution,
             contributor: data?.githubUsersByPk,
             tabName,
+            fetchNextPage,
+            hasNextPage,
+            isFetchingNextPage,
           }}
         />
       ) : (
@@ -203,11 +218,11 @@ function getWorkItem(type: WorkItemType, props: RewardItemType): ReactElement | 
 }
 
 interface VirtualizedIssueListProps {
-  contributions: ContributionFragment[];
+  contributions: RewardableItem[];
   contributor: GithubUserFragment;
-  addContribution: (contribution: ContributionFragment) => void;
-  ignoreContribution: (contribution: ContributionFragment) => void;
-  unignoreContribution: (contribution: ContributionFragment) => void;
+  addContribution: (contribution: RewardableItem) => void;
+  ignoreContribution: (contribution: RewardableItem) => void;
+  unignoreContribution: (contribution: RewardableItem) => void;
   tabName: string;
 }
 
@@ -218,11 +233,36 @@ const VirtualizedIssueList = ({
   ignoreContribution,
   unignoreContribution,
   tabName,
-}: VirtualizedIssueListProps) => {
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+}: VirtualizedIssueListProps & ShowMoreProps) => {
+  const loadMore = useCallback(() => {
+    if (!isFetchingNextPage && hasNextPage) {
+      return fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage]);
+
+  const Footer = () => {
+    if (hasNextPage) {
+      return (
+        <div className="my-4">
+          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
+        </div>
+      );
+    }
+    return <></>;
+  };
+
   return (
     <Virtuoso
       data={contributions}
-      components={{ Scroller, List: ListBuilder(tabName) }}
+      endReached={loadMore}
+      components={{
+        Scroller,
+        List: ListBuilder(tabName),
+        Footer,
+      }}
       itemContent={(_, contribution) => {
         const workItem = contributionToWorkItem(contribution);
         if (!workItem) return;

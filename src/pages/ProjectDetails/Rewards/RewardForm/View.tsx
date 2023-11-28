@@ -3,7 +3,6 @@ import { useIntl } from "src/hooks/useIntl";
 import ContributorSelect from "src/pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ContributionFragment, WorkItemFragment } from "src/__generated/graphql";
 import addContributionImg from "src/assets/img/add-contribution.png";
 import pickContributorImg from "src/assets/img/pick-contributor.png";
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
@@ -11,7 +10,10 @@ import Callout from "src/components/Callout";
 import { viewportConfig } from "src/config";
 import Add from "src/icons/Add";
 import CloseLine from "src/icons/CloseLine";
-import { contributionToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
+import {
+  RewardableWorkItem,
+  contributionToWorkItem,
+} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import Title from "src/pages/ProjectDetails/Title";
 import { GithubContributionType } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
@@ -26,15 +28,16 @@ import { BudgetCurrencyType } from "src/utils/money";
 import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
 import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
 import { Controller, useFormContext } from "react-hook-form";
+import { RewardableItem } from "src/api/Project/queries";
 
 interface Props {
   projectId: string;
   projectBudget: ProjectBudgetType;
   preferredCurrency?: BudgetCurrencyType;
-  onWorkItemsChange: (workItems: WorkItemFragment[]) => void;
+  onWorkItemsChange: (workItems: RewardableWorkItem[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
-  unpaidContributions: ContributionFragment[] | null | undefined;
+  unpaidContributions: RewardableItem[] | null | undefined;
   isCreateProjectRewardLoading?: boolean;
 }
 
@@ -77,7 +80,7 @@ const View: React.FC<Props> = ({
 
     const filteredTypedContributions = filterUnpaidContributionsByType(type, unpaidContributions);
     const workItems = filteredTypedContributions.map(
-      contribution => contributionToWorkItem(contribution) as WorkItemFragment
+      contribution => contributionToWorkItem(contribution) as RewardableWorkItem
     );
 
     addWorkItem(workItems);

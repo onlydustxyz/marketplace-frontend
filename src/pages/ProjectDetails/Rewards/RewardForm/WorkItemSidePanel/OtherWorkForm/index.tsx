@@ -3,20 +3,15 @@ import { FormEventHandler, useEffect, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import { useIntl } from "src/hooks/useIntl";
-import { useShowToaster } from "src/hooks/useToaster";
 import CheckLine from "src/icons/CheckLine";
 import isDefined from "src/utils/isDefined";
-import {
-  CreateAndCloseIssueMutationVariables,
-  GithubRepoFragment,
-  WorkItemFragment,
-  useCreateAndCloseIssueMutation,
-  useGetProjectReposQuery,
-} from "src/__generated/graphql";
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";
 import Title from "./Title";
-import { issueToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
+import {
+  RewardableWorkItem,
+  issueToWorkItem,
+} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import DraftLine from "src/icons/DraftLine";
 import TeamLine from "src/icons/TeamLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
@@ -27,11 +22,15 @@ import { OtherWork } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { liveIssueToCached } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/OtherIssueInput";
+import ProjectApi from "src/api/Project";
+import useMutationAlert from "src/api/useMutationAlert";
+import { useOutletContext } from "react-router-dom";
+import { components } from "src/__generated/api";
 
 type Props = {
   projectId: string;
   contributorHandle: string;
-  addWorkItem: (workItem: WorkItemFragment) => void;
+  addWorkItem: (workItem: RewardableWorkItem) => void;
 };
 
 export default function OtherWorkForm({ projectId, contributorHandle, addWorkItem }: Props) {
@@ -46,7 +45,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
   ];
   const defaultWorkKind = workKinds[0].label;
 
-  const [selectedRepo, setSelectedRepo] = useState<GithubRepoFragment | null>();
+  const [selectedRepo, setSelectedRepo] = useState<components["schemas"]["GithubRepoResponse"] | null>();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
@@ -64,17 +63,19 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     author: contributorHandle,
   });
 
-  const { data } = useGetProjectReposQuery({
-    variables: { projectId },
-  });
+  const context = useOutletContext<{
+    projectId: string;
+    projectKey: string;
+    repos?: components["schemas"]["GithubRepoResponse"][];
+  }>();
 
-  const repos = sortBy(data?.projects[0]?.githubRepos.map(repo => repo.repo) || [], "name").filter(isDefined);
+  const projectRepos = context?.repos || [];
+
+  const repos = sortBy(projectRepos, "name").filter(isDefined);
 
   useEffect(() => {
     if (!selectedRepo) setSelectedRepo(repos[0]);
   }, [selectedRepo, repos]);
-
-  const showToaster = useShowToaster();
 
   const clearForm = () => {
     setTitle("");
@@ -82,24 +83,39 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     setValue("workKind", defaultWorkKind);
   };
 
-  const [createIssue, { loading }] = useCreateAndCloseIssueMutation({
-    variables: {
-      projectId,
-      githubRepoId: selectedRepo?.id,
-      title: title || defaultTitle,
-      description,
-    } as CreateAndCloseIssueMutationVariables,
-    context: { graphqlErrorDisplay: "toaster" },
-    onCompleted: data => {
-      clearForm();
-      addWorkItem(issueToWorkItem(liveIssueToCached(data.createAndCloseIssue)));
-      showToaster(T("reward.form.contributions.other.success"));
+  const {
+    mutate: createOtherWork,
+    isPending,
+    ...restcreateOtherWorkMutation
+  } = ProjectApi.mutations.useCreateOtherWorks({
+    params: { projectId },
+    options: {
+      onSuccess: data => {
+        clearForm();
+        addWorkItem(issueToWorkItem(liveIssueToCached(data)));
+      },
+    },
+  });
+
+  useMutationAlert({
+    mutation: restcreateOtherWorkMutation,
+    success: {
+      message: T("reward.form.contributions.other.success"),
+    },
+    error: {
+      message: T("reward.form.contributions.other.error"),
     },
   });
 
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    handleSubmit(() => createIssue())(e);
+    handleSubmit(() =>
+      createOtherWork({
+        githubRepoId: selectedRepo?.id || 0,
+        title: title || defaultTitle,
+        description,
+      })
+    );
     e.stopPropagation();
   };
 
@@ -118,10 +134,10 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
           </div>
         </div>
         <div className="flex flex-row justify-between gap-8 border-t border-greyscale-50/8 bg-white/2 p-4 xl:px-6 xl:py-8">
-          {selectedRepo && <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />}
+          {selectedRepo ? <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} /> : <div />}
           <Button
             width={Width.Fit}
-            disabled={!workKind || !description || loading || !selectedRepo?.hasIssues}
+            disabled={!workKind || !description || isPending || !selectedRepo?.hasIssues}
             htmlType="submit"
           >
             {isXl && <CheckLine />}

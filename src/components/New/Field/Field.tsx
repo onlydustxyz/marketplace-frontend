@@ -1,12 +1,14 @@
 import { FC, ReactNode } from "react";
 import { cn } from "src/utils/cn";
 import { FieldLabel } from "./Label";
-import { FieldInfoMessage, FieldInfoMessageProps } from "./InfoMessage";
+import { FieldInfoMessage, FieldInfoMessageProps, Variant } from "./InfoMessage";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 export interface FieldProps {
   name: string;
   label?: React.ReactElement | string;
   placeholder?: string;
+  errorMessage?: string;
   children: React.ReactElement;
   infoMessage?: FieldInfoMessageProps;
   fieldClassName?: string;
@@ -21,6 +23,7 @@ export const Field: FC<FieldProps> = ({
   infoMessage,
   children,
   outerEndIcon,
+  errorMessage,
   outerStartIcon,
 }) => {
   return (
@@ -32,6 +35,11 @@ export const Field: FC<FieldProps> = ({
         {outerEndIcon && outerEndIcon({ className: "w-3.5 h-3.5 text-spaceBlue-200" })}
       </div>
       {infoMessage && <FieldInfoMessage {...infoMessage} />}
+      {!!errorMessage && (
+        <FieldInfoMessage variant={Variant.Error} icon={({ className }) => <ErrorWarningLine className={className} />}>
+          {errorMessage}
+        </FieldInfoMessage>
+      )}
     </div>
   );
 };
