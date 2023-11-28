@@ -5,7 +5,7 @@ export interface UseStackControllerProps {
   name: string;
 }
 
-const useStackController = ({ name }: UseStackControllerProps) => {
+export const useStackController = ({ name }: UseStackControllerProps) => {
   const {
     stackMethods: { open, close },
   } = useStackContext();
@@ -14,8 +14,8 @@ const useStackController = ({ name }: UseStackControllerProps) => {
     open(name, params);
   };
 
-  const handleClose = () => {
-    close(name);
+  const handleClose = (id: string) => {
+    close(name, id);
   };
 
   return { open: handleOpen, close: handleClose };

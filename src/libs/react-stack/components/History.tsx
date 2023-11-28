@@ -26,5 +26,4 @@ export const History = () => {
       ))}
     </div>
   );
-  //
 };

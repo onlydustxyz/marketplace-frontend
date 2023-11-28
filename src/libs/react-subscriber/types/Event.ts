@@ -1,9 +1,9 @@
 export enum Events {
   REGISTER = "REGISTER",
   UPDATE = "UPDATE",
-  ALL = "ALL"
+  ALL = "ALL",
 }
 
-export type EventType = Events.REGISTER | Events.ALL | Events.UPDATE
+export type EventType = Events.REGISTER | Events.ALL | Events.UPDATE;
 
-export type RefSubscriptionListenerInterface<TRef> = (value: TRef) => void
+export type RefSubscriptionListenerInterface<TRef> = (value: TRef) => void;

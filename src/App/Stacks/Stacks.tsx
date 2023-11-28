@@ -1,11 +1,10 @@
-import RegisterStack from "src/libs/react-stack/components/RegisterStack";
-import ReactStackprovider from "src/libs/react-stack/reactStackContext";
 import { TestStack } from "./Test";
 import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
+import { RegisterStack, StackProvider } from "src/libs/react-stack";
 
-export interface StackRouter {
+export interface StackRouterParams {
   modal1: {
-    githubUserId: string;
+    githubUserId: number;
   };
   modal2: {
     id: string;
@@ -18,15 +17,11 @@ export enum StackRoute {
   modal3 = "modal-3",
 }
 
-export interface Modal1StackParams {
-  githubUserId: number;
-}
-
 export const Stacks = () => {
   return (
     <>
-      <ReactStackprovider>
-        <RegisterStack<Modal1StackParams> name={StackRoute.modal1}>
+      <StackProvider>
+        <RegisterStack<StackRouterParams["modal1"]> name={StackRoute.modal1}>
           {({ params }) => (
             <>
               <TestStack />
@@ -51,7 +46,7 @@ export const Stacks = () => {
           )}
         </RegisterStack>
         <TestStack />
-      </ReactStackprovider>
+      </StackProvider>
     </>
   );
 };

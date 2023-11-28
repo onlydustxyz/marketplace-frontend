@@ -1,79 +1,20 @@
-import { createContext, useCallback, useEffect } from "react";
-import {
-  AnyParams,
-  StackInterface,
-  StackPanelInterface,
-  StackPosition,
-  StacksInterface,
-  StacksParams,
-} from "./types/Stack";
-import { useRefSubscription } from "../react-subscriber/useRefSubscription";
-import { RefSubscriptionInterface } from "../react-subscriber/types/RefSubscription";
+import { useCallback, useEffect } from "react";
+import { StackInterface, StackPanelInterface, StackPosition, StacksInterface, StacksParams } from "../types/Stack";
 import { v4 as uuidv4 } from "uuid";
-import { UnsafeCreateRefSubscription } from "../react-subscriber/createRefSubscription";
 import { createPortal } from "react-dom";
-import { History } from "./components/History";
 import { debounce } from "lodash";
-interface reactStackContextProps {
-  children: React.ReactNode;
-}
-
-export type panelEvent = "open" | "close";
-
-export interface History {
-  name: string;
-  panelId: string;
-  params?: StacksParams;
-}
-
-type IReactStackContext = {
-  stacks: [];
-  stackStore: RefSubscriptionInterface<StacksInterface>;
-  history: RefSubscriptionInterface<History[]>;
-  stackMethods: {
-    closeAll: () => void;
-    register: (stack: RefSubscriptionInterface<StackInterface<AnyParams>>) => void;
-    getStack: (name: string) => RefSubscriptionInterface<StackInterface<AnyParams>> | null;
-    getPanel: (name: string, id: string) => RefSubscriptionInterface<StackPanelInterface> | null;
-    open: (name: string, params?: StacksParams) => void;
-    close: (name: string, panelId: string) => void;
-    closeLast: () => void;
-  };
-};
-
-export const ReactStackContext = createContext<IReactStackContext>({
-  stacks: [],
-  stackStore: {} as RefSubscriptionInterface<StacksInterface>,
-  history: {} as RefSubscriptionInterface<History[]>,
-  stackMethods: {
-    closeAll: () => null,
-    register: () => null,
-    getStack: () => null,
-    getPanel: () => null,
-    open: () => null,
-    close: () => null,
-    closeLast: () => null,
-  },
-});
-
-type RegisterStack = RefSubscriptionInterface<StackInterface>;
-
-interface RegisterPanel {
-  name: string;
-  panelId: string;
-  params?: StacksParams;
-}
-
-interface UpdateHistory {
-  name: string;
-  panelId: string;
-  event: panelEvent;
-  params?: StacksParams;
-}
-
-interface UpdatePanelOrder {
-  history: History[];
-}
+import {
+  History,
+  RegisterPanel,
+  RegisterStack,
+  UpdateHistory,
+  UpdatePanelOrder,
+  reactStackContextProps,
+} from "./stack.context.type";
+import { RefSubscriptionInterface, useRefSubscription } from "src/libs/react-subscriber";
+import { UnsafeCreateRefSubscription } from "src/libs/react-subscriber/createRefSubscription";
+import { ReactStackContext } from "./stack.context";
+import { History as HistoryComponent } from "../components/History";
 
 export default function ReactStackprovider({ children }: reactStackContextProps) {
   const [stacks, setStacks] = useRefSubscription<StacksInterface>({});
@@ -343,7 +284,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       {createPortal(
         <div data-stack-root="true" id="stack-panel-root">
           {children}
-          <History />
+          <HistoryComponent />
         </div>,
         document.body
       )}

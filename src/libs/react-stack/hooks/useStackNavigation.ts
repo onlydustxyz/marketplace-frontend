@@ -1,15 +1,16 @@
+import { StacksParams } from "../types/Stack";
 import useStackContext from "./useStackContext";
 
-export interface StackNavigateFunction {
-  (name: string, params?: object): void;
+export interface StackNavigateFunction<P extends StacksParams> {
+  (params?: P): void;
 }
 
-const useStackNavigation = (): StackNavigateFunction => {
+export const useStackNavigation = <P extends StacksParams>(name: string): StackNavigateFunction<P> => {
   const {
     stackMethods: { open },
   } = useStackContext();
 
-  return (name: string, params?: object) => {
+  return (params?: P) => {
     open(name, params);
   };
 };

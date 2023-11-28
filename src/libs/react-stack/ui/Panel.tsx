@@ -33,6 +33,7 @@ export default function SidePanel({
 
   const debounceOpen = useCallback(
     debounce(newOpen => {
+      console.log("newOpen", open);
       setDebouncedOpen(newOpen);
     }, 10),
     []

@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { RegisterStackProps } from "../types/RegisterStack";
-import { StackInterface, StackPanelInterface, StacksParams } from "../types/Stack";
+
+import { RegisterStackProps, StackInterface, StackPanelInterface, StacksParams } from "../types/Stack";
 import { useRefSubscription } from "../../react-subscriber/useRefSubscription";
 import { v4 as uuidv4 } from "uuid";
 import useStackContext from "./useStackContext";
 
-const useStackRegister = <P extends StacksParams>(props: RegisterStackProps<P>) => {
+export const useStackRegister = <P extends StacksParams>(props: RegisterStackProps<P>) => {
   const {
     stackMethods: { register, getStack },
   } = useStackContext();
