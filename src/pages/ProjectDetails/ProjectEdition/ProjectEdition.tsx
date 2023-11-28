@@ -10,10 +10,8 @@ import { Flex } from "src/components/New/Layout/Flex";
 import Center from "src/components/Utils/Center";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
-import CloseLine from "src/icons/CloseLine";
 import FileListLine from "src/icons/FileListLine";
 import { cn } from "src/utils/cn";
-import Title from "../Title";
 import { EditContext, EditProvider } from "./EditContext";
 import { Information } from "./pages/Information";
 import { Repository } from "./pages/Repository/Repository";
@@ -21,6 +19,10 @@ import { Tabs } from "src/components/Tabs/Tabs";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
+import CloseLine from "src/icons/CloseLine";
+import Title from "../Title";
+import { useMediaQuery } from "usehooks-ts";
+import { viewportConfig } from "src/config";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -40,6 +42,9 @@ function SafeProjectEdition() {
     installation_id || initialTab === TabsType.Repos ? TabsType.Repos : TabsType.General
   );
   const { form, project } = useContext(EditContext);
+
+  const is2Xl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints["2xl"]}px)`);
+  const WrapperComponent = is2Xl ? Card : Flex;
 
   const tabs = useMemo(
     () => [
@@ -76,51 +81,59 @@ function SafeProjectEdition() {
   );
 
   return (
-    <Flex className="h-full w-full flex-col">
-      <Flex className="w-full flex-col">
-        <Flex className="items-center px-4 py-6 xl:px-8">
-          <Link to="../">
-            <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
-              <CloseLine />
-            </Button>
-          </Link>
-          <Title>
-            <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
-          </Title>
-        </Flex>
+    <Flex className="mx-auto h-full max-w-7xl flex-col">
+      <Flex className="h-[80px] items-center px-4 py-6 xl:px-8 2xl:px-0">
+        <Link to="../">
+          <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
+            <CloseLine />
+          </Button>
+        </Link>
+        <Title>
+          <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
+        </Title>
+      </Flex>
 
-        <header className="z-10 w-full border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 ">
+      <WrapperComponent
+        className=" flex h-[calc(100%-80px)] w-full flex-col overflow-hidden"
+        padded={false}
+        withBg={false}
+      >
+        <header className="z-10 w-full border-b border-greyscale-50/20 bg-card-background-base px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 2xl:rounded-t-2xl">
           <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} />
         </header>
-      </Flex>
 
-      <Flex className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}>
-        {activeTab === TabsType.General ? (
-          <Card>
-            <Information />
-          </Card>
-        ) : (
-          <Repository />
-        )}
-      </Flex>
-
-      <Flex
-        justify="between"
-        item="center"
-        gap={4}
-        className="max-h-[88px] w-full items-center border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
-      >
-        <FormStatus {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }} />
-        <Button
-          size={ButtonSize.Md}
-          htmlType="submit"
-          disabled={!form?.formState.isDirty || !form?.formState.isValid || form?.formState.isSubmitting}
-          onBackground={ButtonOnBackground.Blue}
+        <Flex
+          className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}
         >
-          {T("project.details.edit.save")}
-          <ArrowRightSLine className="-mr-2 text-2xl" />
-        </Button>
-      </Flex>
+          {activeTab === TabsType.General ? (
+            <Card className="bg-card-background-base">
+              <Information />
+            </Card>
+          ) : (
+            <Repository />
+          )}
+        </Flex>
+
+        <Flex className="max-h-[88px] w-full border-t border-card-border-light bg-card-background-base shadow-medium xl:rounded-b-2xl">
+          <Flex
+            justify="between"
+            item="center"
+            gap={4}
+            className="h-full w-full items-center bg-card-background-light p-6"
+          >
+            <FormStatus {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }} />
+            <Button
+              size={ButtonSize.Md}
+              htmlType="submit"
+              disabled={!form?.formState.isDirty || !form?.formState.isValid || form?.formState.isSubmitting}
+              onBackground={ButtonOnBackground.Blue}
+            >
+              {T("project.details.edit.save")}
+              <ArrowRightSLine className="-mr-2 text-2xl" />
+            </Button>
+          </Flex>
+        </Flex>
+      </WrapperComponent>
     </Flex>
   );
 }
