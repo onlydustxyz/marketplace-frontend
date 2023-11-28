@@ -10,7 +10,7 @@ enum Variants {
   BLUE = "BLUE",
 }
 
-export type Variant = "DEFAULT" | "BLUE";
+export type Variant = `${Variants}`;
 
 export interface VerticalListItemDropProps extends PropsWithChildren {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;
