@@ -136,7 +136,9 @@ const View: React.FC<Props> = ({
   const renderAutoAddOrIgnore = () => {
     if (isCompletedContributionsLoading) {
       return <Skeleton variant="quickActions" />;
-    } else if (
+    }
+    
+    if (
       !isCompletedContributionsLoading &&
       (unpaidContributions?.rewardablePullRequests ||
         unpaidContributions?.rewardableIssues ||
