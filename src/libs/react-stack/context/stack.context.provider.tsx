@@ -17,23 +17,46 @@ import { ReactStackContext } from "./stack.context";
 import { History as HistoryComponent } from "../components/History";
 
 export default function ReactStackprovider({ children }: reactStackContextProps) {
+  /* -------------------------------------------------------------------------- */
+  /*                                STACKS STORE                                */
+  /* -------------------------------------------------------------------------- */
   const [stacks, setStacks] = useRefSubscription<StacksInterface>({});
+
+  /* -------------------------------------------------------------------------- */
+  /*                                HISTORY STORE                               */
+  /* -------------------------------------------------------------------------- */
   const [history, setHistory] = useRefSubscription<History[]>([]);
 
   /* -------------------------------------------------------------------------- */
   /*                                    UTILS                                   */
   /* -------------------------------------------------------------------------- */
 
+  /**
+   * Retrieves the last panel in the history with the specified name.
+   * @param name - The name of the panel to search for.
+   * @returns The last panel in the history with the specified name, or undefined if not found.
+   */
   const getLastPanelInHistory = (name: string) => {
     return history.state.findLast(p => p.name === name);
   };
 
+  /**
+   * Retrieves the stack and panel object based on the given stack name and panel ID.
+   * @param name - The name of the stack.
+   * @param id - The ID of the panel.
+   * @returns An object containing the stack and panel.
+   */
   const getPanelFromStackNameAndPanelId = (name: string, id: string) => {
     const stack = stacks.state[name];
     const panel = stack.state.panels[id];
     return { stack, panel };
   };
 
+  /**
+   * Retrieves the panel information from the stack context based on the given name.
+   * @param name - The name of the stack.
+   * @returns An object containing the panel, panel ID, and stack.
+   */
   const getPanelFromStackName = (name: string) => {
     const stack = stacks.state[name];
     const lastPanelInHistory = getLastPanelInHistory(name);
@@ -46,6 +69,11 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   /* -------------------------------------------------------------------------- */
   /*                                  REGISTER                                  */
   /* -------------------------------------------------------------------------- */
+  /**
+   * Registers a stack in the context provider.
+   * If the stack with the same name already exists, it will not be registered.
+   * @param stack - The stack to register.
+   */
   const registerStack = (stack: RegisterStack) => {
     if (!stacks.state[stack.state.name]) {
       setStacks(prev => ({
@@ -59,6 +87,13 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   /*                            PANEL REF MANAGEMENT                            */
   /* -------------------------------------------------------------------------- */
 
+  /**
+   * Registers a panel in the stack context provider.
+   *
+   * @param name - The name of the stack.
+   * @param panelId - The ID of the panel.
+   * @param params - Optional parameters for the panel.
+   */
   const registerPanel = ({ name, panelId, params }: RegisterPanel) => {
     const stack = stacks.state[name];
 
@@ -81,6 +116,12 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     }
   };
 
+  /**
+   * Removes a panel from a selected stack.
+   *
+   * @param panel - The panel to be removed.
+   * @param stack - The stack containing the panel.
+   */
   const removePanel = (
     panel: RefSubscriptionInterface<StackPanelInterface>,
     stack: RefSubscriptionInterface<StackInterface>
@@ -106,6 +147,11 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   /*                                  DEBOUNCE                                  */
   /* -------------------------------------------------------------------------- */
 
+  /**
+   * Debounces the update of the history state.
+   *
+   * @param {Array<{ name: string; panelId: string }>} newHistory - The new history to set.
+   */
   const debounceHistory = useCallback(
     debounce((newHistory: { name: string; panelId: string }[]) => {
       setHistory(() => newHistory);
@@ -113,6 +159,12 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [history]
   );
 
+  /**
+   * Debounces the removal of a panel from the stack.
+   *
+   * @param {RefSubscriptionInterface<StackInterface>} stack - The stack reference.
+   * @param {string} panelId - The ID of the panel to be removed.
+   */
   const debounceRemove = useCallback(
     debounce((stack: RefSubscriptionInterface<StackInterface>, panelId: string) => {
       stack.setValue(prev => {
@@ -127,6 +179,11 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [history]
   );
 
+  /**
+   * Debounces the closing of all panels in the stack context provider.
+   *
+   * @param history - The history state object.
+   */
   const debounceCloseAll = useCallback(
     debounce(() => {
       history.state.forEach(panel => {
@@ -146,6 +203,18 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   /*                                   HISTORY                                  */
   /* -------------------------------------------------------------------------- */
 
+  /**
+   * Updates the history state based on the provided parameters.
+   * If the event is "close", removes the panel with the specified panelId from the history state.
+   * If the panel with the specified panelId exists in the stacks state, adds it to the history state.
+   * Finally, updates the panel order based on the updated history state.
+   *
+   * @param {UpdateHistory} options - The options for updating the history state.
+   * @param {string} options.name - The name of the panel.
+   * @param {string} options.panelId - The ID of the panel.
+   * @param {string} options.event - The event type ("close" or any other value).
+   * @param {any} options.params - Additional parameters for the panel.
+   */
   const updateHistory = ({ name, panelId, event, params }: UpdateHistory) => {
     let updatedHistory = [...history.state];
 
@@ -169,6 +238,10 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   /*                                  ORDERING                                  */
   /* -------------------------------------------------------------------------- */
 
+  /**
+   * Updates the order of panels in the stack context provider.
+   * @param {UpdatePanelOrder} options - The options for updating the panel order.
+   */
   const updatePanelOrder = ({ history }: UpdatePanelOrder) => {
     const frontPanel = history.at(-1);
     const backPanel = history.at(-2);
@@ -195,6 +268,15 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   /* -------------------------------------------------------------------------- */
   /*                                PANEL OPENING                               */
   /* -------------------------------------------------------------------------- */
+  /**
+   * Open a panel with the specified name and parameters.
+   * If the panel is already open, a new panel with a unique ID will be registered.
+   * Updates the history and returns the name and ID of the opened panel.
+   *
+   * @param name - The name of the panel to open.
+   * @param params - Optional parameters for the panel.
+   * @returns An object containing the name and ID of the opened panel.
+   */
   const openPanel = (name: string, params?: StacksParams) => {
     const { panel } = getPanelFromStackName(name);
 
@@ -217,6 +299,12 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     }
   };
 
+  /**
+   * Closes a panel by its name and panel ID.
+   *
+   * @param name - The name of the panel.
+   * @param panelId - The ID of the panel.
+   */
   const onCloseByPanelId = useCallback(
     (name: string, panelId: string) => {
       const { panel, stack } = getPanelFromStackNameAndPanelId(name, panelId);
@@ -225,6 +313,11 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [stacks]
   );
 
+  /**
+   * Handle the closing of the last copy in the stack.
+   *
+   * @param name - The name of the stack.
+   */
   const onCloseLastCopy = useCallback(
     (name: string) => {
       const { panel, stack } = getPanelFromStackName(name);
@@ -233,6 +326,11 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [stacks]
   );
 
+  /**
+   * Callback function that is called when the last panel is closed.
+   * It retrieves the last history element, extracts the stack name and panel ID,
+   * and removes the corresponding panel from the stack.
+   */
   const onCloseLastPanel = useCallback(() => {
     const lastHistoryElement = history.state.at(-1);
     if (lastHistoryElement) {
@@ -244,6 +342,14 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     }
   }, [stacks]);
 
+  /**
+   * Callback function to handle the closing of a stack panel.
+   * If both `name` and `panelId` are provided, it calls `onCloseByPanelId` function.
+   * If only `name` is provided, it calls `onCloseLastCopy` function.
+   * If neither `name` nor `panelId` are provided, it calls `onCloseLastPanel` function.
+   * @param name - The name of the stack panel.
+   * @param panelId - The ID of the stack panel.
+   */
   const onClose = useCallback(
     (name?: string, panelId?: string) => {
       if (name && panelId) {
@@ -257,6 +363,9 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [stacks]
   );
 
+  /**
+   * Closes all panels in the stack.
+   */
   const closeAll = useCallback(() => {
     history.state.forEach(panel => {
       stacks.state[panel.name].state.panels[panel.panelId].setValue(prev => {
@@ -271,6 +380,11 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     debounceCloseAll();
   }, [stacks]);
 
+  /**
+   * Retrieves the stack with the specified name from the stacks state.
+   * @param name - The name of the stack to retrieve.
+   * @returns The stack with the specified name, or null if it doesn't exist.
+   */
   const getStack = useCallback(
     (name: string) => {
       return stacks.state[name] || null;
@@ -278,6 +392,12 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [stacks]
   );
 
+  /**
+   * Retrieves a panel from the stack context based on its name and ID.
+   * @param name - The name of the stack.
+   * @param id - The ID of the panel.
+   * @returns The panel object if found, otherwise null.
+   */
   const getPanel = useCallback(
     (name: string, id: string) => {
       return stacks.state[name]?.state.panels[id] || null;

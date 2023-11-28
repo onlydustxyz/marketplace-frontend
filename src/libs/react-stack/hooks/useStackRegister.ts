@@ -5,6 +5,12 @@ import { useRefSubscription } from "../../react-subscriber/useRefSubscription";
 import { v4 as uuidv4 } from "uuid";
 import useStackContext from "./useStackContext";
 
+/**
+ * Custom hook for registering a stack.
+ * @template P - The type of the stack parameters.
+ * @param {RegisterStackProps<P>} props - The props for registering the stack.
+ * @returns {StackInterface<P>} - The registered stack.
+ */
 export const useStackRegister = <P extends StacksParams>(props: RegisterStackProps<P>) => {
   const {
     stackMethods: { register, getStack },

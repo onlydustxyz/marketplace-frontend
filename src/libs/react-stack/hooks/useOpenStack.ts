@@ -4,6 +4,10 @@ export interface StackOpenFunction {
   (name: string, params?: object): void;
 }
 
+/**
+ * Open with name and params a stack.
+ * @returns {StackOpenFunction} The function to open a stack.
+ */
 export const useOpenStack = (): StackOpenFunction => {
   const {
     stackMethods: { open },

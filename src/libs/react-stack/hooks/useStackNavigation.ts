@@ -5,6 +5,13 @@ export interface StackNavigateFunction<P extends StacksParams> {
   (params?: P): void;
 }
 
+/**
+ * Custom hook for stack navigation.
+ *
+ * @template P - The type of the stack parameters.
+ * @param {string} name - The name of the stack.
+ * @returns {[StackNavigateFunction<P>, (id?: string) => void]} - An array containing the stack navigate function and the close function.
+ */
 export const useStackNavigation = <P extends StacksParams>(
   name: string
 ): [StackNavigateFunction<P>, (id?: string) => void] => {
