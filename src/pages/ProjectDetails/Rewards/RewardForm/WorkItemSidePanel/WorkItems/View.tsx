@@ -106,15 +106,19 @@ export default function View({
   }, [showIgnoredItems]);
 
   const renderVirtualizedIssueList = () => {
-    if (loading && !error) {
+    if (loading) {
       return (
         <div className="mr-1.5 mt-1">
           <Skeleton variant="rewardableItems" />
         </div>
       );
-    } else if (!loading && error) {
+    }
+    
+    if (error) {
       return <ErrorState />;
-    } else if (contributions.length > 0 && contributor) {
+    }
+    
+    if (contributions.length > 0 && contributor) {
       return (
         <VirtualizedIssueList
           {...{
@@ -130,10 +134,10 @@ export default function View({
           }}
         />
       );
-    } else {
+    } 
+    
       // This component needs a github indexedAt prop that we delete for now until backend fix it
       return <EmptyState />;
-    }
   };
 
   return (
