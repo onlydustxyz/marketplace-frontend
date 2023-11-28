@@ -30,6 +30,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { CompletedRewardableItem } from "src/api/Project/queries";
 import ProjectApi from "src/api/Project";
 import useMutationAlert from "src/api/useMutationAlert";
+import Skeleton from "src/components/Skeleton";
 
 interface Props {
   projectId: string;
@@ -40,6 +41,7 @@ interface Props {
   setContributor: (contributor: Contributor | null | undefined) => void;
   unpaidContributions: CompletedRewardableItem;
   isCreateProjectRewardLoading?: boolean;
+  isCompletedContributionsLoading?: boolean;
 }
 
 type TitleProps = {
@@ -65,6 +67,7 @@ const View: React.FC<Props> = ({
   unpaidContributions,
   isCreateProjectRewardLoading,
   preferredCurrency,
+  isCompletedContributionsLoading,
 }) => {
   const { control, setValue } = useFormContext();
   const { T } = useIntl();
@@ -200,9 +203,12 @@ const View: React.FC<Props> = ({
                       {T("reward.form.contributions.subTitle")}
                     </div>
 
-                    {unpaidContributions?.rewardablePullRequests.length ||
-                    unpaidContributions?.rewardableIssues.length ||
-                    unpaidContributions?.rewardableCodeReviews.length ? (
+                    {isCompletedContributionsLoading ? (
+                      <Skeleton variant="quickActions" />
+                    ) : !isCompletedContributionsLoading &&
+                      (unpaidContributions?.rewardablePullRequests ||
+                        unpaidContributions?.rewardableIssues ||
+                        unpaidContributions?.rewardableCodeReviews) ? (
                       <AutoAddOrIgnore
                         unpaidContributions={unpaidContributions}
                         onAutoAdd={handleAutoAdd}

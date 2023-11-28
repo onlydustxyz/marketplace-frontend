@@ -79,15 +79,19 @@ const RewardForm: React.FC = () => {
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
   const {
-    data: contributionItems,
-    // isLoading,
-    // isError,
+    data: completedContributions,
+    isLoading: isCompletedContributionsLoading,
+    isError: isCompletedContributionsError,
   } = ProjectApi.queries.useCompletedRewardableItems({
     params: { projectId, githubUserId: contributor?.githubUserId.toString() },
     options: { enabled: !!contributor?.githubUserId },
   });
 
-  const contributions = contributionItems;
+  if (isCompletedContributionsError) {
+    showToaster(T("state.errorFetchingNamedItem", { item: "contributions" }), { isError: true });
+  }
+
+  const contributions = completedContributions;
 
   const { handleSubmit } = formMethods;
 
@@ -145,6 +149,7 @@ const RewardForm: React.FC = () => {
               setContributor={setContributor}
               unpaidContributions={contributions as CompletedRewardableItem}
               isCreateProjectRewardLoading={isCreateProjectRewardLoading}
+              isCompletedContributionsLoading={isCompletedContributionsLoading}
             />
           ) : (
             <Loader />

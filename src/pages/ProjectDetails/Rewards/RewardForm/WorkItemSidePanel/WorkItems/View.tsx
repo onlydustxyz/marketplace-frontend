@@ -1,7 +1,7 @@
 import { ReactElement, forwardRef, useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { WorkItemType, useGithubUserByIdQuery } from "src/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -68,12 +68,6 @@ export default function View({
 }: Props) {
   const { T } = useIntl();
   const { resetField } = useFormContext();
-  const { data } = useGithubUserByIdQuery({
-    variables: {
-      githubUserId: contributor.githubUserId,
-    },
-  });
-
   const tabName = tabNames[type];
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
@@ -169,7 +163,7 @@ export default function View({
         </div>
       ) : !loading && error ? (
         <ErrorState />
-      ) : contributions.length > 0 && data?.githubUsersByPk ? (
+      ) : contributions.length > 0 && contributor ? (
         <VirtualizedIssueList
           {...{
             contributions: contributions as RewardableItem[],
@@ -184,7 +178,8 @@ export default function View({
           }}
         />
       ) : (
-        <EmptyState indexedAt={data?.githubRepos[0].indexedAt} />
+        // This component need a github indexedAt prop that we delete for now until backend fix it
+        <EmptyState />
       )}
     </div>
   );

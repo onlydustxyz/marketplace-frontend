@@ -486,7 +486,8 @@
         "title": "Contributions",
         "emptyState": {
           "title": "Nothing to show",
-          "subtitle": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh."
+          "subtitle": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh.",
+          "timelessSubtitle": "Last synced with Github a few minutes ago.\nIt can take up to 5 minutes before the next refresh."
         },
         "ignoreUnignoreContribution": {
           "success": "The contribution was successfully __action__",
@@ -1176,6 +1177,7 @@
       "title": "We're under maintenance"
     },
     "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
+    "errorFetchingNamedItem": "An error occurred while fetching __item__",
     "loading": "Loading...",
     "success": "Success !"
   },
