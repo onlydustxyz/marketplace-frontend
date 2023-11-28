@@ -1,13 +1,10 @@
-import { PropsWithChildren, useContext, useMemo, useState } from "react";
+import { PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import { FormStatus } from "src/components/FormStatus/FormStatus";
-import Loader from "src/components/Loader";
 import { Flex } from "src/components/New/Layout/Flex";
-import Center from "src/components/Utils/Center";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CloseLine from "src/icons/CloseLine";
@@ -22,6 +19,10 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useFormState } from "react-hook-form";
+import { usePooling } from "src/hooks/usePooling/usePooling";
+import Center from "src/components/Utils/Center";
+import ErrorFallback from "src/ErrorFallback";
+import Loader from "src/components/Loader";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -148,8 +149,24 @@ function SafeProjectEdition() {
 }
 
 export default function ProjectEdition() {
+  const { refetchOnWindowFocus, refetchInterval, onRefetching } = usePooling({
+    limites: 1,
+    delays: 5000,
+  });
+
   const { projectKey = "" } = useParams<{ projectKey: string }>();
-  const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
+  const { data, isLoading, isError, isRefetching } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+    options: {
+      retry: 1,
+      refetchOnWindowFocus,
+      refetchInterval,
+    },
+  });
+
+  useEffect(() => {
+    onRefetching(isRefetching);
+  }, [isRefetching]);
 
   if (isLoading) {
     return (
