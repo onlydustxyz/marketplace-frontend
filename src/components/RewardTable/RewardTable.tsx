@@ -30,7 +30,9 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [selectedReward, setSelectedReward] = useState<RewardPageItemType | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const [openRewardPanel, closeRewardPanel] = useStackNavigation<StackRouterParams["Reward"]>(StackRoute.Reward);
+  const [openRewardPanel, closeRewardPanel] = useStackNavigation<StackRouterParams["ProjectReward"]>(
+    StackRoute.ProjectReward
+  );
 
   const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch, refetchBudgets } = options;
   function handleCancelReward() {

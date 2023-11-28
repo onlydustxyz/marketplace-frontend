@@ -1,20 +1,24 @@
-import { RewardSidePanelAsLeader } from "src/components/UserRewardTable/RewardSidePanel";
+import RewardSidePanel, { RewardSidePanelAsLeader } from "src/components/UserRewardTable/RewardSidePanel";
 import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
 import { RegisterStack } from "src/libs/react-stack";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
-  Reward = "reward",
+  ProjectReward = "project-reward",
+  MyReward = "my-reward",
 }
 
 export interface StackRouterParams {
   ContributorProfile: {
     githubUserId: number;
   };
-  Reward: {
+  ProjectReward: {
     projectId: string;
     rewardId: string;
     onRewardCancel: () => void;
+  };
+  MyReward: {
+    rewardId: string;
   };
 }
 
@@ -24,8 +28,11 @@ export const Stacks = () => {
       <RegisterStack<StackRouterParams["ContributorProfile"]> name={StackRoute.ContributorProfile}>
         {({ params }) => <ContributorProfileSidePanel {...params} setOpen={() => null} />}
       </RegisterStack>
-      <RegisterStack<StackRouterParams["Reward"]> name={StackRoute.Reward}>
+      <RegisterStack<StackRouterParams["ProjectReward"]> name={StackRoute.ProjectReward}>
         {({ params }) => <RewardSidePanelAsLeader {...params} />}
+      </RegisterStack>
+      <RegisterStack<StackRouterParams["MyReward"]> name={StackRoute.MyReward}>
+        {({ params }) => <RewardSidePanel isMine {...params} />}
       </RegisterStack>
     </>
   );
