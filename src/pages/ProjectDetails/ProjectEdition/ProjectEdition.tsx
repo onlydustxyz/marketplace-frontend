@@ -24,6 +24,7 @@ import Title from "../Title";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 import { usePooling } from "src/hooks/usePooling/usePooling";
+import { useFormState } from "react-hook-form";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -43,9 +44,23 @@ function SafeProjectEdition() {
     installation_id || initialTab === TabsType.Repos ? TabsType.Repos : TabsType.General
   );
   const { form, project } = useContext(EditContext);
+  const { errors } = useFormState({ control: form?.control });
+  const errorsKeys = Object.keys(errors || {});
 
   const is2Xl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints["2xl"]}px)`);
   const WrapperComponent = is2Xl ? Card : Flex;
+
+  const hasGeneralValidationTabError = useMemo(() => {
+    if (!errorsKeys.length) {
+      return false;
+    }
+
+    if (errorsKeys.length === 1 && errorsKeys?.[0] === "githubRepos") {
+      return false;
+    }
+
+    return true;
+  }, [errorsKeys]);
 
   const tabs = useMemo(
     () => [
@@ -56,7 +71,11 @@ function SafeProjectEdition() {
         },
         children: (
           <TabContents>
-            <FileListLine />
+            {hasGeneralValidationTabError && activeTab !== TabsType.General ? (
+              <ErrorWarningLine className="text-orange-500" />
+            ) : (
+              <FileListLine />
+            )}
             {T("project.details.edit.tabs.general")}
           </TabContents>
         ),
@@ -68,7 +87,8 @@ function SafeProjectEdition() {
         },
         children: (
           <TabContents>
-            {hasUnauthorizedInGithubRepo(project?.repos) && activeTab !== TabsType.Repos ? (
+            {(hasUnauthorizedInGithubRepo(project?.repos) || errorsKeys?.includes("githubRepos")) &&
+            activeTab !== TabsType.Repos ? (
               <ErrorWarningLine className="text-orange-500" />
             ) : (
               <GitRepositoryLine />
@@ -78,7 +98,7 @@ function SafeProjectEdition() {
         ),
       },
     ],
-    [activeTab]
+    [activeTab, errorsKeys, hasGeneralValidationTabError]
   );
 
   return (
