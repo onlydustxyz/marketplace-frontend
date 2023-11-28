@@ -32,6 +32,12 @@
       "forever": "Forever"
     }
   },
+  "forms": {
+    "error": {
+      "require": "Please fill __fieldName__ ",
+      "invalid": "Please provide a valid __fieldName__"
+    }
+  },
   "contribution": {
     "review": {
       "status": {
@@ -863,8 +869,16 @@
           "title": "Reward contributor"
         },
         "title": "Rewards",
-        "autoAdd": {
-          "label": "AUTO-ADD"
+        "quickActions": {
+          "label": "QUICK ACTIONS",
+          "add": {
+            "many": "Add __count__ __type__s",
+            "one": "Add 1 __type__"
+          },
+          "ignore": {
+            "many": "Ignore __count__ __type__s",
+            "one": "Ignore 1 __type__"
+          }
         }
       },
       "create": {
@@ -978,6 +992,10 @@
         }
       },
       "edit": {
+        "errors": {
+          "informations": "Please fill in the required information.",
+          "repos": "Please select at least one repo."
+        },
         "title": "Edit project",
         "tabs": {
           "general": "General",
@@ -1002,7 +1020,9 @@
           "repositories": {
             "noRepositoriesToAdd": "All repositories from this organisation have been added to your project.",
             "fixGithubApp": "Fix configuration on Github",
-            "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration"
+            "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration",
+            "title": "Add desired repositories",
+            "description": "You can add as many repositories as you want from the following list."
           }
         },
         "toasts": {

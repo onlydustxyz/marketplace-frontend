@@ -121,7 +121,14 @@ function SafeProjectEdition() {
             gap={4}
             className="h-full w-full items-center bg-card-background-light p-6"
           >
-            <FormStatus {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }} />
+            <FormStatus
+              {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
+              errorMessage={
+                form?.formState?.errors?.githubRepos
+                  ? T("project.details.edit.errors.repos")
+                  : T("project.details.edit.errors.informations")
+              }
+            />
             <Button
               size={ButtonSize.Md}
               htmlType="submit"

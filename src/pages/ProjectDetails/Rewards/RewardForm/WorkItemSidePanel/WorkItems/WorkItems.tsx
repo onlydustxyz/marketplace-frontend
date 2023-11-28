@@ -6,6 +6,7 @@ import { useIgnoredContributions } from "./useIgnoredContributions";
 import ProjectApi from "src/api/Project";
 import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
 import { useFormContext } from "react-hook-form";
+import { Contributor } from "../../types";
 
 export interface RewardableWorkItem {
   type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;
@@ -18,19 +19,19 @@ export interface RewardableWorkItem {
 type Props = {
   type: WorkItemType;
   projectId: string;
-  contributorId: number;
+  contributor: Contributor;
   workItems: RewardableWorkItem[];
   addWorkItem: (workItem: RewardableWorkItem) => void;
 };
 
-export function WorkItems({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
+export function WorkItems({ type, projectId, workItems, addWorkItem, contributor }: Props) {
   const { watch } = useFormContext();
   const tabName = tabNames[type];
   const search = watch(`search-${tabName}`);
 
   const { queryParams, setIncludeIgnoredItems } = useRewardableItemsQueryParams({
     type,
-    githubUserId: contributorId,
+    githubUserId: contributor.githubUserId,
     search,
     ignoredItemsIncluded: false,
   });
@@ -51,7 +52,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
   const { ignore: ignoreContribution, unignore: unignoreContribution } = useIgnoredContributions(projectId);
 
   const addAndUnignoreContribution = (contribution: RewardableItem) => {
-    if (contribution.ignored && contribution.id) unignoreContribution(contribution.id);
+    if (contribution.ignored && contribution.contributionId) unignoreContribution(contribution.contributionId);
     const workItem = contributionToWorkItem(contribution);
     workItem && addWorkItem(workItem);
   };
@@ -71,9 +72,13 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
       type={type}
       addWorkItem={addWorkItem}
       addContribution={addAndUnignoreContribution}
-      contributorId={contributorId}
-      ignoreContribution={(contribution: RewardableItem) => contribution.id && ignoreContribution(contribution.id)}
-      unignoreContribution={(contribution: RewardableItem) => contribution.id && unignoreContribution(contribution.id)}
+      contributor={contributor}
+      ignoreContribution={(contribution: RewardableItem) =>
+        contribution.contributionId && ignoreContribution(contribution.contributionId)
+      }
+      unignoreContribution={(contribution: RewardableItem) =>
+        contribution.contributionId && unignoreContribution(contribution.contributionId)
+      }
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}

@@ -21,6 +21,7 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
       <div
         className={cn(
           "flex w-full items-center gap-2 rounded-lg border border-greyscale-50/8 bg-white/5 px-3 py-2 text-sm leading-none focus-within:border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500",
+          rest.errorMessage && "border-orange-500",
           className
         )}
       >
