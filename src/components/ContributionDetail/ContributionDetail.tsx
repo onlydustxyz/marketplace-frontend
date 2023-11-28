@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
@@ -6,20 +7,24 @@ import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { RewardCard } from "src/components/ContributionDetail/RewardCard";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
-import { TooltipPosition, Variant } from "src/components/Tooltip";
+import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
+import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
+import GitCommitLine from "src/icons/GitCommitLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import TimeLine from "src/icons/TimeLine";
-import type { GithubContributionType } from "src/types";
+import { GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
+import { CommitsTooltip } from "../GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
+  const { user } = useAuth();
   const { open: openRewardPanel } = useRewardDetailPanel();
 
   const {
@@ -51,6 +56,84 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
       return (
         <div className="flex h-full items-center justify-center">
           <p>{T("contributions.panel.empty")}</p>
+        </div>
+      );
+    }
+
+    function renderContributionInfo() {
+      if (!contribution) return null;
+
+      const { commitsCount, githubAuthor, id, type, userCommitsCount } = contribution;
+
+      const infos: JSX.Element[] = [];
+
+      if (type === GithubContributionType.PullRequest && commitsCount && userCommitsCount) {
+        const tooltipId = `contribution-detail-${id}`;
+
+        infos.push(
+          <>
+            <div id={tooltipId} className="flex items-center gap-1">
+              <GitCommitLine className="text-base leading-none" />
+              {`${userCommitsCount}/${commitsCount} ${T("common.commits").toLowerCase()}`}
+            </div>
+
+            <Tooltip anchorId={tooltipId} clickable>
+              <CommitsTooltip
+                pullRequest={{
+                  author: {
+                    login: githubAuthor.login,
+                    avatarUrl: githubAuthor.avatarUrl,
+                    id: githubAuthor.githubUserId,
+                    htmlUrl: githubAuthor.htmlUrl,
+                    user: null,
+                  },
+                }}
+                userCommits={userCommitsCount}
+                commitsCount={commitsCount}
+                contributorLogin={user?.login ?? ""}
+              />
+            </Tooltip>
+          </>
+        );
+      }
+
+      if (type === GithubContributionType.Issue) {
+        infos.push(
+          <div className="flex items-center gap-1">
+            <DiscussLine className="text-base leading-none" />
+            {T("comments", { count: contribution.commentsCount })}
+          </div>
+        );
+      }
+
+      if (contribution.links.length) {
+        infos.push(
+          <>
+            <div className="flex items-center gap-1">
+              <ArrowRightUpLine className="text-base leading-none" />
+              {T("contributions.panel.contribution.linkedTo")}
+            </div>
+            <ContributionLinked
+              contribution={contribution}
+              tooltipProps={{
+                position: TooltipPosition.Bottom,
+                variant: Variant.Default,
+              }}
+            />
+          </>
+        );
+      }
+
+      return (
+        <div className="flex items-center gap-1 text-sm leading-none text-greyscale-300">
+          {infos.map((info, i) => {
+            return (
+              <Fragment key={i}>
+                {i > 0 ? <div>|</div> : null}
+                {info}
+              </Fragment>
+            );
+          })}
         </div>
       );
     }
@@ -110,36 +193,14 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                     />
                     <span>
                       {T(getGithubStatusToken(contribution.type as GithubContributionType, contribution.githubStatus), {
+                        // TODO potential issue here
                         date: displayRelativeDate(contribution?.completedAt ?? ""),
                       })}
                     </span>
                   </div>
                 </div>
 
-                <div>
-                  <div className="flex items-center gap-1 text-sm leading-none text-greyscale-300">
-                    <div className="flex items-center gap-1">
-                      <DiscussLine className="text-base leading-none" />
-                      {T("comments", { count: contribution.commentsCount })}
-                    </div>
-                    {contribution.links.length ? (
-                      <>
-                        <div>|</div>
-                        <div className="flex items-center gap-1">
-                          <ArrowRightUpLine className="text-base leading-none" />
-                          {T("contributions.panel.contribution.linkedTo")}
-                        </div>
-                        <ContributionLinked
-                          contribution={contribution}
-                          tooltipProps={{
-                            position: TooltipPosition.Bottom,
-                            variant: Variant.Default,
-                          }}
-                        />
-                      </>
-                    ) : null}
-                  </div>
-                </div>
+                {renderContributionInfo()}
               </div>
             </div>
           </div>
