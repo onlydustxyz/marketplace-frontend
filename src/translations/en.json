@@ -981,8 +981,7 @@
       },
       "edit": {
         "errors": {
-          "informations": "Please fill in the required information.",
-          "repos": "Please select at least one repo."
+          "informations": "Your project configuration has errors"
         },
         "title": "Edit project",
         "tabs": {

@@ -23,7 +23,7 @@ export const useEditValidationSchema = () => {
             .min(1),
           value: z
             .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the information label" })))
-            .min(1),
+            .nullable(),
         })
       )
       .min(0),

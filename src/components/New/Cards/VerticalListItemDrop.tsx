@@ -5,6 +5,13 @@ import { cn } from "src/utils/cn";
 import { Disclosure, Transition } from "@headlessui/react";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 
+enum Variants {
+  DEFAULT = "DEFAULT",
+  BLUE = "BLUE",
+}
+
+export type Variant = "DEFAULT" | "BLUE";
+
 export interface VerticalListItemDropProps extends PropsWithChildren {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;
   ContainerProps?: Partial<ComponentProps<typeof Disclosure>>;
@@ -17,6 +24,7 @@ export interface VerticalListItemDropProps extends PropsWithChildren {
   title: string;
   avatarSrc: string;
   avatarAlt: string;
+  variant?: Variant;
 }
 
 export const VerticalListItemDrop: FC<VerticalListItemDropProps> = ({
@@ -27,6 +35,7 @@ export const VerticalListItemDrop: FC<VerticalListItemDropProps> = ({
   actionComponent,
   children,
   ChildrenContainerProps = {},
+  variant = Variants.DEFAULT,
   title,
   avatarAlt,
   avatarSrc,
@@ -45,14 +54,26 @@ export const VerticalListItemDrop: FC<VerticalListItemDropProps> = ({
     >
       {({ open }) => (
         <>
-          <Disclosure.Button className={cn("sticky -left-0 top-0 z-10 bg-greyscale-900", !open && "rounded-b-2xl")}>
+          <Disclosure.Button
+            className={cn(
+              "sticky -left-0 top-0 z-10 bg-greyscale-900",
+              !open && "rounded-b-2xl",
+              variant === Variants.BLUE && "bg-card-background-base"
+            )}
+          >
             <div
               className={cn(
                 "rounded-t-2xl border-l border-r border-t border-card-border-light bg-greyscale-900 px-4 py-4 transition-all duration-150",
-                !open && "rounded-b-2xl"
+                !open && "rounded-b-2xl",
+                variant === Variants.BLUE && "bg-card-background-base"
               )}
             >
-              <Flex className="items-center justify-between bg-greyscale-900">
+              <Flex
+                className={cn(
+                  "items-center justify-between bg-greyscale-900",
+                  variant === Variants.BLUE && "bg-card-background-base"
+                )}
+              >
                 <Flex justify="start" item="center" gap={2}>
                   {avatarComponent || (
                     <Avatar src={avatarSrc} alt={avatarAlt} size="6" shape="square" {...AvatarProps} />
