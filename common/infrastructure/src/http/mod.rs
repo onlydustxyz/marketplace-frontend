@@ -28,8 +28,17 @@ impl Client {
 		Ok(url)
 	}
 
-	pub async fn post<R: DeserializeOwned>(&self, path: String) -> Result<R> {
-		let response = self.client.post(self.url(path)?).send().await?.error_for_status()?;
+	pub async fn post<R: DeserializeOwned>(
+		&self,
+		path: String,
+		body: Option<serde_json::Value>,
+	) -> Result<R> {
+		let mut request = self.client.post(self.url(path)?);
+		if let Some(body) = body {
+			request = request.body(body.to_string());
+		}
+
+		let response = request.send().await?.error_for_status()?;
 		let json = response.json().await?;
 		Ok(json)
 	}

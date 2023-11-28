@@ -8,12 +8,12 @@ use crate::domain::services::indexer;
 #[async_trait]
 impl indexer::Service for http::Client {
 	async fn index_repo(&self, repo_id: GithubRepoId) -> Result<()> {
-		self.post::<serde_json::Value>(format!("repo/{repo_id}")).await?;
+		self.post::<serde_json::Value>(format!("repo/{repo_id}"), None).await?;
 		Ok(())
 	}
 
 	async fn index_user(&self, user_id: GithubUserId) -> Result<()> {
-		self.post::<serde_json::Value>(format!("user/{user_id}")).await?;
+		self.post::<serde_json::Value>(format!("user/{user_id}"), None).await?;
 		Ok(())
 	}
 
@@ -22,7 +22,7 @@ impl indexer::Service for http::Client {
 		repo_id: GithubRepoId,
 		issue_number: GithubIssueNumber,
 	) -> Result<()> {
-		self.post::<serde_json::Value>(format!("repo/{repo_id}/issue/{issue_number}"))
+		self.post::<serde_json::Value>(format!("repo/{repo_id}/issue/{issue_number}"), None)
 			.await?;
 		Ok(())
 	}
@@ -32,7 +32,7 @@ impl indexer::Service for http::Client {
 		repo_id: GithubRepoId,
 		pr_number: GithubPullRequestNumber,
 	) -> Result<()> {
-		self.post::<serde_json::Value>(format!("repo/{repo_id}/pull_request/{pr_number}"))
+		self.post::<serde_json::Value>(format!("repo/{repo_id}/pull_request/{pr_number}"), None)
 			.await?;
 		Ok(())
 	}
@@ -49,9 +49,10 @@ impl indexer::Service for http::Client {
 		}
 
 		let response: Response = self
-			.post(format!(
-				"repo/{repo_owner}/{repo_name}/pull_request/{pr_number}"
-			))
+			.post(
+				format!("repo/{repo_owner}/{repo_name}/pull_request/{pr_number}"),
+				None,
+			)
 			.await?;
 
 		Ok(response.id)
