@@ -28,7 +28,7 @@ export function Repository() {
       <div className="flex flex-col gap-2 rounded-2xl border border-orange-500 bg-orange-900 px-6 py-8 shadow-light">
         <p className="text-title-s text-center text-white">{T("project.details.edit.repositories.empty.title")}</p>
         <p className="text-body-s flex items-center justify-center gap-1 text-orange-500">
-          <InfoIcon />
+          <InfoIcon className="text-orange-500" />
           {T("project.details.edit.repositories.empty.message")}
         </p>
       </div>

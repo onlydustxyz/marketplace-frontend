@@ -13,6 +13,7 @@ import FeedbackButton from "src/App/Layout/Header/FeedbackButton";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
+import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
 
 export default function ClaimBanner() {
   const { T } = useIntl();
@@ -161,7 +162,7 @@ export default function ClaimBanner() {
               <div className="text-body-m font-normal text-spaceBlue-100">{T("project.claim.panel.content")}</div>
             </div>
             <div className="my-6 h-[1px] w-full bg-card-border-medium" />
-            <div className="scrollbar-sm flex-1 overflow-auto px-2 pb-24">
+            <div className="scrollbar-sm flex flex-1 flex-col gap-6 overflow-auto px-2 pb-24">
               <div className="flex w-full flex-col items-start justify-start gap-3">
                 {project?.organizations?.map(org => (
                   <ClaimBannerOrganization
@@ -172,16 +173,8 @@ export default function ClaimBanner() {
                   />
                 ))}
               </div>
-              <div className="mt-6">
-                <div className="flex flex-row items-center justify-start gap-0.5">
-                  <InformationLine className="text-base leading-4 text-spaceBlue-200" />
-                  <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
-                    {T("project.claim.panel.info.title")}
-                  </p>
-                </div>
-                <p className="text-body-m mb-4 mt-2 font-walsheim font-normal text-gray-50">
-                  {T("project.claim.panel.info.message")}
-                </p>
+              <div className="card-light flex w-full flex-col items-start justify-start gap-6 rounded-2xl border bg-transparent p-5">
+                <p className="font-walsheim text-sm font-medium uppercase">{T("project.claim.panel.info.title")}</p>
                 <FeedbackButton
                   customButton={
                     <Button type={ButtonType.Secondary} size={ButtonSize.Sm}>
@@ -190,14 +183,27 @@ export default function ClaimBanner() {
                     </Button>
                   }
                 />
+                <div className="flex flex-row items-start justify-start gap-2">
+                  <InformationLine className="text-base leading-4 text-spaceBlue-200" />
+                  <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
+                    {T("project.claim.panel.info.message")}
+                  </p>
+                </div>
               </div>
+
+              <GithubSyncSettings
+                title={T("project.details.create.organizations.githubAppInformation.title")}
+                settingsButton={T("project.details.create.organizations.githubAppInformation.button")}
+                message={T("project.details.create.organizations.githubAppInformation.description")}
+                PoolingFeedback={PoolingFeedback}
+              />
             </div>
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
             <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
-              {PoolingFeedback}
+              {/* // empty div to keep the flex layout */}
+              {restMutation.isPending ? <Spinner /> : <div />}
               <div className="flex items-center justify-end gap-5 ">
-                {restMutation.isPending ? <Spinner /> : null}
                 <Button
                   type={ButtonType.Secondary}
                   size={ButtonSize.Md}

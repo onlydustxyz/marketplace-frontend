@@ -34,7 +34,7 @@ export const Field: FC<FieldProps> = ({
         {children}
         {outerEndIcon && outerEndIcon({ className: "w-3.5 h-3.5 text-spaceBlue-200" })}
       </div>
-      {infoMessage && <FieldInfoMessage {...infoMessage} />}
+      {!errorMessage && infoMessage && <FieldInfoMessage {...infoMessage} />}
       {!!errorMessage && (
         <FieldInfoMessage variant={Variant.Error} icon={({ className }) => <ErrorWarningLine className={className} />}>
           {errorMessage}
