@@ -5,20 +5,18 @@ use chrono::Duration;
 use derive_more::Constructor;
 use domain::{
 	AggregateRepository, Amount, Budget, CommandId, Currency, DomainError, Event, GithubUserId,
-	Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId, Publisher, UserId,
+	Payment, PaymentId, PaymentReason, Project, ProjectId, Publisher, UserId,
 };
-use futures::future::try_join_all;
 use rust_decimal::Decimal;
 use tracing::instrument;
 
-use crate::domain::{services::indexer, Publishable};
+use crate::domain::Publishable;
 
 #[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<Event>>,
 	project_repository: AggregateRepository<Project>,
 	budget_repository: AggregateRepository<Budget>,
-	github_indexer_service: Arc<dyn indexer::Service>,
 }
 
 impl Usecase {
@@ -56,36 +54,6 @@ impl Usecase {
 			hours_worked.map(|hours_worked| Duration::hours(hours_worked as i64)),
 			reason.clone(),
 		);
-
-		let mut handles: Vec<_> = reason
-			.work_items
-			.into_iter()
-			.flat_map(|work_item| match work_item {
-				PaymentWorkItem::Issue {
-					repo_id, number, ..
-				} => {
-					vec![
-						self.github_indexer_service.index_repo(repo_id),
-						self.github_indexer_service.index_issue(repo_id, number),
-					]
-				},
-				PaymentWorkItem::PullRequest {
-					repo_id, number, ..
-				}
-				| PaymentWorkItem::CodeReview {
-					repo_id, number, ..
-				} => {
-					vec![
-						self.github_indexer_service.index_repo(repo_id),
-						self.github_indexer_service.index_pull_request_by_repo_id(repo_id, number),
-					]
-				},
-			})
-			.collect();
-
-		handles.push(self.github_indexer_service.index_user(recipient_id));
-
-		try_join_all(handles).await.map_err(DomainError::InternalError)?;
 
 		let command_id = CommandId::new();
 
