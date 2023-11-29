@@ -1,13 +1,13 @@
 import Card from "src/components/Card";
-import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import isDefined from "src/utils/isDefined";
 import Section, { SectionIcon } from "./Section";
 import Contributor from "src/components/Contributor";
 import Sponsor from "./Sponsor";
-import { Leader, Sponsor as SponsorType, TopContributor } from "src/types";
+import { Leader, MoreInfos, Sponsor as SponsorType, TopContributor } from "src/types";
 import Flex from "src/components/Utils/Flex";
+import ExternalLink from "src/components/ExternalLink";
 
 const filterLeadsByLogin = (leads?: Leader[]) => leads?.filter(lead => isDefined(lead?.login)) || [];
 
@@ -15,8 +15,7 @@ interface Props {
   leads?: Leader[];
   invitedLeads?: Leader[];
   sponsors: SponsorType[];
-  moreInfoLink: string | null;
-  moreInfoName: string | null;
+  moreInfos: MoreInfos[];
   topContributors: TopContributor[];
   totalContributorsCount: number;
   showPendingInvites: boolean;
@@ -26,8 +25,7 @@ export default function OverviewPanel({
   leads,
   invitedLeads,
   sponsors,
-  moreInfoLink,
-  moreInfoName,
+  moreInfos,
   topContributors,
   totalContributorsCount,
   showPendingInvites,
@@ -103,14 +101,22 @@ export default function OverviewPanel({
           </div>
         </Section>
       )}
-      {moreInfoLink && (
+
+      {moreInfos.length && (
         <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
-          <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
-            <ExternalLink
-              text={moreInfoName || moreInfoLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
-              url={moreInfoLink}
-            />
-          </div>
+          <ul
+            data-testid="more-info-link"
+            className="space-y-2 overflow-hidden text-sm font-semibold text-spacePurple-500"
+          >
+            {moreInfos.map(moreInfo => (
+              <li key={moreInfo.url} className="">
+                <ExternalLink
+                  text={moreInfo.value || moreInfo.url.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
+                  url={moreInfo.url}
+                />
+              </li>
+            ))}
+          </ul>
         </Section>
       )}
     </Card>
