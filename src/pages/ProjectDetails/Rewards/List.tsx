@@ -1,7 +1,7 @@
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
-import Button, { ButtonSize, Width } from "src/components/Button";
+import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import ProjectRewardTableFallback from "src/components/ProjectRewardTableFallback";
 import { Fields } from "src/components/RewardTable/Headers";
@@ -83,6 +83,7 @@ const RewardList: React.FC = () => {
               width={Width.Fit}
               size={ButtonSize.Sm}
               disabled={isRewardDisabled}
+              onBackground={ButtonOnBackground.Blue}
               onClick={() => {
                 return navigate(
                   generatePath(
