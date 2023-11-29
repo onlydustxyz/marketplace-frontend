@@ -50,6 +50,13 @@ export function ContributionBadge({
     [GithubContributionType.Issue]: T("contributions.tooltip.badgeIssue"),
   };
 
+  const statusClassnames =
+    status && githubStatus !== GithubPullRequestDraft.Draft
+      ? contributionIconVariants.contributionStatus[status]
+      : contributionIconVariants.status[type][
+          githubStatus as keyof typeof contributionIconVariants.status[GithubContributionType]
+        ];
+
   return (
     <>
       {withTooltip ? (
@@ -91,11 +98,7 @@ export function ContributionBadge({
             "border border-dashed": isExternal,
             "border-0.5 border-solid": !isExternal,
           },
-          status && githubStatus !== GithubPullRequestDraft.Draft
-            ? contributionIconVariants.contributionStatus[status]
-            : contributionIconVariants.status[type][
-                githubStatus as keyof typeof contributionIconVariants.status[GithubContributionType]
-              ]
+          statusClassnames
         )}
         {...ComponentProps}
       >
