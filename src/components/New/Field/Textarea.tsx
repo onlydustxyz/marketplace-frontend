@@ -19,14 +19,14 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
   const textAreaContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (textAreaContainerRef.current) {
+    if (autogrow && textAreaContainerRef.current) {
       const textareaEl = textAreaContainerRef.current.querySelector("textarea");
       if (textareaEl) {
         textareaEl.style.height = ""; // This line is required to allow the text area to resize when the user deletes text
         textareaEl.style.height = textareaEl.scrollHeight + "px";
       }
     }
-  }, [value, textAreaContainerRef]);
+  }, [autogrow, value, textAreaContainerRef]);
 
   return (
     <Field {...rest}>
@@ -42,10 +42,11 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
           value={value ?? ""}
           onBlur={onBlur}
           onChange={onChange}
+          placeholder={rest.placeholder}
           onFocus={onFocus}
           rows={rows}
           ref={ref}
-          className="scrollbar-sm w-full bg-transparent text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
+          className="scrollbar-sm w-full bg-transparent font-walsheim text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
         />
       </div>
     </Field>
