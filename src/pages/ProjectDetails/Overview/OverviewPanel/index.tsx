@@ -8,6 +8,7 @@ import Contributor from "src/components/Contributor";
 import Sponsor from "./Sponsor";
 import { Leader, Sponsor as SponsorType, TopContributor } from "src/types";
 import Flex from "src/components/Utils/Flex";
+import { useAuth } from "src/hooks/useAuth";
 
 const filterLeadsByLogin = (leads?: Leader[]) => leads?.filter(lead => isDefined(lead?.login)) || [];
 
@@ -33,6 +34,7 @@ export default function OverviewPanel({
   showPendingInvites,
 }: Props) {
   const { T } = useIntl();
+  const { isLoggedIn } = useAuth();
 
   const projectLeads = filterLeadsByLogin(leads);
   const projectInvitedLeads = filterLeadsByLogin(invitedLeads);
@@ -106,10 +108,16 @@ export default function OverviewPanel({
       {moreInfoLink && (
         <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
           <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
-            <ExternalLink
-              text={moreInfoName || moreInfoLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
-              url={moreInfoLink}
-            />
+            {isLoggedIn && (
+              <>
+                <ExternalLink
+                  text={moreInfoName || moreInfoLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
+                  url={moreInfoLink}
+                />
+              </>
+            ) : (
+
+            )}
           </div>
         </Section>
       )}
