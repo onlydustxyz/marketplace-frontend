@@ -23,6 +23,7 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubIssueStatus.Cancelled]: "githubIssue.status.canceled",
   },
   [GithubContributionType.CodeReview]: {
+    [GithubCodeReviewStatus.Open]: "githubCodeReview.status.open",
     [GithubCodeReviewStatus.Approved]: "githubCodeReview.status.approved",
     [GithubCodeReviewStatus.ChangeRequested]: "githubCodeReview.status.changeRequested",
     [GithubCodeReviewStatus.Commented]: "githubCodeReview.status.commented",
