@@ -138,6 +138,7 @@ export enum GithubCodeReviewStatus {
   ChangeRequested = "CHANGES_REQUESTED",
   Commented = "COMMENTED",
   Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
   Dismissed = "DISMISSED",
   Pending = "PENDING",
 }

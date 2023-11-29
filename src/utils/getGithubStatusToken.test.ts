@@ -38,13 +38,13 @@ describe("getGithubStatusToken", () => {
 
   it("should get the token for a completed issue", () => {
     expect(getGithubStatusToken(GithubContributionType.Issue, GithubIssueStatus.Completed)).toBe(
-      "githubIssue.status.closed"
+      "githubIssue.status.completed"
     );
   });
 
-  it("should get the token for a closed issue", () => {
+  it("should get the token for a canceled issue", () => {
     expect(getGithubStatusToken(GithubContributionType.Issue, GithubIssueStatus.Cancelled)).toBe(
-      "githubIssue.status.closed"
+      "githubIssue.status.canceled"
     );
   });
 
@@ -54,9 +54,9 @@ describe("getGithubStatusToken", () => {
     );
   });
 
-  it("should get the token for an approved code review", () => {
+  it("should get the token for an completed code review", () => {
     expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Completed)).toBe(
-      "githubCodeReview.status.approved"
+      "githubCodeReview.status.completed"
     );
   });
 
