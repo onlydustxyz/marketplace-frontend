@@ -42,6 +42,7 @@ type ContributionDateProps = {
   id: string;
   type: GithubContributionType;
   status: GithubStatus;
+  contributionStatus?: ComponentProps<typeof ContributionIcon>["contributionStatus"];
   date: Date;
   withIcon?: boolean;
   tooltipProps?: ComponentProps<typeof Tooltip>;
@@ -51,6 +52,7 @@ export function ContributionDate({
   id,
   type,
   status,
+  contributionStatus,
   date,
   withIcon = false,
   tooltipProps = {
@@ -67,7 +69,7 @@ export function ContributionDate({
     <>
       <Tooltip id={tooltipId} clickable {...rest}>
         <div className={cn("flex items-center gap-2", className)}>
-          <ContributionIcon type={type} status={status} />
+          <ContributionIcon type={type} status={status} contributionStatus={contributionStatus} />
           {T(tokens[type][status as keyof typeof tokens[GithubContributionType]] ?? "", {
             date: getFormattedDateGB(date),
             time: getFormattedTimeUS(date),
@@ -78,7 +80,12 @@ export function ContributionDate({
       <div data-tooltip-id={tooltipId} className="flex items-center gap-1">
         {withIcon ? (
           <>
-            <ContributionIcon type={type} status={status} size={withIcon ? Sizes.xs : undefined} />
+            <ContributionIcon
+              type={type}
+              status={status}
+              contributionStatus={contributionStatus}
+              size={withIcon ? Sizes.xs : undefined}
+            />
             <span className="first-letter:uppercase">
               {T(getGithubStatusToken(type, status), { date: displayRelativeDate(date) })}
             </span>

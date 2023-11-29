@@ -193,6 +193,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                         <ContributionIcon
                           type={contribution.type as GithubContributionType}
                           status={contribution.githubStatus}
+                          contributionStatus={contribution.status}
                         />
                         <span>
                           {T(
