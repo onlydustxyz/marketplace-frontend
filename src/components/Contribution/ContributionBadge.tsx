@@ -7,7 +7,7 @@ import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-import { Contribution, GithubContributionType, GithubPullRequestDraft } from "src/types";
+import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
 
 export enum ContributionBadgeSizes {
   Xs = "text-xs",
@@ -51,7 +51,7 @@ export function ContributionBadge({
   };
 
   const statusClassnames =
-    status && githubStatus !== GithubPullRequestDraft.Draft
+    status && githubStatus !== GithubPullRequestStatus.Draft
       ? contributionIconVariants.contributionStatus[status]
       : contributionIconVariants.status[type][
           githubStatus as keyof typeof contributionIconVariants.status[GithubContributionType]

@@ -164,13 +164,9 @@ export enum GithubContributionShortenTypeLabel {
   CodeReview = "Code Review",
 }
 
-export enum GithubPullRequestDraft {
-  Draft = "DRAFT",
-}
-
 type GithubPullRequestTypeStatusDict<T> = Record<
   GithubContributionType.PullRequest,
-  Record<GithubPullRequestStatus | GithubPullRequestDraft, T>
+  Record<GithubPullRequestStatus, T>
 >;
 
 type GithubIssueTypeStatusDict<T> = Record<GithubContributionType.Issue, Record<GithubIssueStatus, T>>;
