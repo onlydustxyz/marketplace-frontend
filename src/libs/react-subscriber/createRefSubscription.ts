@@ -2,6 +2,14 @@ import { RefSubscriptionInterface, RefSubscriptionSubscriberInterface } from "./
 import { EventEmitter } from "events";
 import { Events } from "./types/Event";
 
+/**
+ * Creates a subscription object with a reference to a value of type T.
+ * The subscription object allows registering event listeners, emitting events, and updating the value.
+ *
+ * @template T - The type of the value.
+ * @param value - The initial value.
+ * @returns The subscription object.
+ */
 export const UnsafeCreateRefSubscription = <T>(value: T): RefSubscriptionInterface<T> => {
   const store: RefSubscriptionInterface<T> = {
     state: value,

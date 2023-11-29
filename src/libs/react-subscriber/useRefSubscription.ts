@@ -3,6 +3,12 @@ import { RefSubscriptionInterface, RefSubscriptionSubscriberInterface } from "./
 import { EventEmitter } from "events";
 import { Events } from "./types/Event";
 
+/**
+ * Custom hook that creates a subscription to a value using useRef.
+ * @template T The type of the value being subscribed to.
+ * @param {T} value The initial value of the subscription.
+ * @returns {[RefSubscriptionInterface<T>, (newvalue: T | ((prev: T) => T)) => void]} An array containing the subscription object and a function to update the value.
+ */
 export const useRefSubscription = <T>(
   value: T
 ): [RefSubscriptionInterface<T>, (newvalue: T | ((prev: T) => T)) => void] => {
