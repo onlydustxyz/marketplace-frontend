@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FocusEventHandler, Ref, forwardRef } from "react";
+import { ChangeEventHandler, FocusEventHandler, Ref, forwardRef, useEffect, useRef } from "react";
 import { Field, FieldProps } from "./Field";
 import { cn } from "src/utils/cn";
 
@@ -16,6 +16,17 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
   { onBlur, rows = 3, onFocus, onChange, className, value, autogrow = false, ...rest }: FieldTextareaProps,
   ref: Ref<HTMLTextAreaElement>
 ) {
+  const textAreaContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (autogrow && textAreaContainerRef.current) {
+      const textareaEl = textAreaContainerRef.current.querySelector("textarea");
+      if (textareaEl) {
+        textareaEl.style.height = textareaEl.scrollHeight + "px";
+      }
+    }
+  }, [value, textAreaContainerRef, autogrow]);
+
   return (
     <Field {...rest}>
       <div
@@ -24,21 +35,13 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
           rest.errorMessage && "border-orange-500",
           className
         )}
+        ref={textAreaContainerRef}
       >
         <textarea
           value={value ?? ""}
           onBlur={onBlur}
           onChange={onChange}
           onFocus={onFocus}
-          onInput={
-            autogrow
-              ? e => {
-                  const { currentTarget } = e;
-                  currentTarget.style.height = "";
-                  currentTarget.style.height = currentTarget.scrollHeight + "px";
-                }
-              : undefined
-          }
           rows={rows}
           ref={ref}
           className="scrollbar-sm w-full bg-transparent text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
