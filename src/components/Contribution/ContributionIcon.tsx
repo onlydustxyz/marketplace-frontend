@@ -13,12 +13,10 @@ import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
-  GithubPullRequestDraft,
   GithubPullRequestStatus,
   GithubStatus,
   GithubTypeStatusDict,
 } from "src/types";
-import EyeOffLine from "src/icons/EyeOffLine";
 
 export enum Sizes {
   xs = "w-3 h-3 text-xs leading-none",
@@ -32,9 +30,7 @@ export const variants: { status: GithubTypeStatusDict<string> } = {
       [GithubPullRequestStatus.Open]: "text-github-green-light border-github-green",
       [GithubPullRequestStatus.Closed]: "text-github-red-light border-github-red",
       [GithubPullRequestStatus.Merged]: "text-github-purple-light border-github-purple",
-      [GithubPullRequestDraft.Draft]: "text-github-grey-light border-github-grey",
-      [GithubPullRequestStatus.Completed]: "text-github-purple-light border-github-purple",
-      [GithubPullRequestStatus.Cancelled]: "text-github-red-light border-github-red",
+      [GithubPullRequestStatus.Draft]: "text-github-grey-light border-github-grey",
     },
     [GithubContributionType.Issue]: {
       [GithubIssueStatus.Open]: "text-github-green-light border-github-green",
@@ -45,8 +41,6 @@ export const variants: { status: GithubTypeStatusDict<string> } = {
       [GithubCodeReviewStatus.Approved]: "text-github-purple-light border-github-purple",
       [GithubCodeReviewStatus.ChangeRequested]: "text-github-purple-light border-github-purple",
       [GithubCodeReviewStatus.Commented]: "text-github-green-light border-github-green",
-      [GithubCodeReviewStatus.Completed]: "text-github-purple-light border-github-purple",
-      [GithubCodeReviewStatus.Cancelled]: "text-github-red-light border-github-red",
       [GithubCodeReviewStatus.Dismissed]: "text-github-grey-light border-github-grey",
       [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
     },
@@ -83,9 +77,7 @@ export function ContributionIcon({
       [GithubPullRequestStatus.Open]: <GitPullRequestLine className={size} />,
       [GithubPullRequestStatus.Closed]: <PrClosed className={size} />,
       [GithubPullRequestStatus.Merged]: <GitMergeLine className={size} />,
-      [GithubPullRequestDraft.Draft]: <PrDraft className={size} />,
-      [GithubPullRequestStatus.Completed]: <GitMergeLine className={size} />,
-      [GithubPullRequestStatus.Cancelled]: <PrClosed className={size} />,
+      [GithubPullRequestStatus.Draft]: <PrDraft className={size} />,
     },
     [GithubContributionType.Issue]: {
       [GithubIssueStatus.Open]: <IssueOpenIcon size={size} />,
@@ -96,8 +88,6 @@ export function ContributionIcon({
       [GithubCodeReviewStatus.Approved]: <CodeReviewCheckIcon className={size} />,
       [GithubCodeReviewStatus.ChangeRequested]: <CodeReviewCheckIcon className={size} />,
       [GithubCodeReviewStatus.Commented]: <EyeLine className={size} />,
-      [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className={size} />,
-      [GithubCodeReviewStatus.Cancelled]: <EyeOffLine className={size} />,
       [GithubCodeReviewStatus.Dismissed]: <IssueCancelled className={size} />,
       [GithubCodeReviewStatus.Pending]: <EyeLine className={size} />,
     },

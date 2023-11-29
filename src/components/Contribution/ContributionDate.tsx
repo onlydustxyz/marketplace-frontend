@@ -6,7 +6,6 @@ import { useIntl } from "src/hooks/useIntl";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
-  GithubPullRequestDraft,
   GithubPullRequestStatus,
   GithubStatus,
   GithubTypeStatusDict,
@@ -21,9 +20,7 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubPullRequestStatus.Open]: "contributions.tooltip.dateOpened",
     [GithubPullRequestStatus.Closed]: "contributions.tooltip.dateClosed",
     [GithubPullRequestStatus.Merged]: "contributions.tooltip.dateMerged",
-    [GithubPullRequestDraft.Draft]: "contributions.tooltip.dateOpened",
-    [GithubPullRequestStatus.Completed]: "contributions.tooltip.dateCompleted",
-    [GithubPullRequestStatus.Cancelled]: "contributions.tooltip.dateCanceled",
+    [GithubPullRequestStatus.Draft]: "contributions.tooltip.dateOpened",
   },
   [GithubContributionType.Issue]: {
     [GithubIssueStatus.Open]: "contributions.tooltip.dateAssigned",
@@ -34,8 +31,6 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubCodeReviewStatus.Approved]: "contributions.tooltip.dateApproved",
     [GithubCodeReviewStatus.ChangeRequested]: "contributions.tooltip.dateChangeRequested",
     [GithubCodeReviewStatus.Commented]: "contributions.tooltip.dateCommented",
-    [GithubCodeReviewStatus.Completed]: "contributions.tooltip.dateCompleted",
-    [GithubCodeReviewStatus.Cancelled]: "contributions.tooltip.dateCanceled",
     [GithubCodeReviewStatus.Dismissed]: "contributions.tooltip.dateDismissed",
     [GithubCodeReviewStatus.Pending]: "contributions.tooltip.dateAssigned",
   },
