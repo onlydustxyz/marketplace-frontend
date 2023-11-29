@@ -152,6 +152,7 @@ export function ContributionTable({
               id={lineId}
               type={type as GithubContributionType}
               status={githubStatus}
+              contributionStatus={status}
               date={new Date(lineDate ?? "")}
               tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.Bottom }}
             />
