@@ -14,7 +14,6 @@ import { useLocalStorage } from "usehooks-ts";
 import { reorderBudgets } from "./utils";
 import { BudgetCurrencyType } from "src/utils/money";
 import ErrorFallback from "src/ErrorFallback";
-import { useApolloClient } from "@apollo/client";
 import { useQueryClient } from "@tanstack/react-query";
 import MeApi from "src/api/me";
 import { CompletedRewardableItem } from "src/api/Project/queries";
@@ -27,7 +26,6 @@ const RewardForm: React.FC = () => {
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
-  const client = useApolloClient();
 
   const { projectId, projectKey } = useOutletContext<{
     projectId: string;
@@ -54,8 +52,6 @@ const RewardForm: React.FC = () => {
         await refetch();
         showToaster(T("reward.form.sent"));
         queryClient.invalidateQueries({ queryKey: [MeApi.tags.all, ProjectApi.tags.completed_rewardable_items] });
-        // DELETE ME : this is maybe useless, need to check an clean after all the tech revamp is done
-        await client.refetchQueries({ include: ["GetPaymentRequestIds"] });
         navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
       } catch (e) {
         console.error(e);
