@@ -11,7 +11,7 @@ import {
   useUpdateUserProfileMutation,
 } from "src/__generated/graphql";
 import Badge, { BadgeSize } from "src/components/Badge";
-import Button, { ButtonSize, Width } from "src/components/Button";
+import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import ContactInformations from "src/components/ContactInformations";
 import MarkdownPreview from "src/components/MarkdownPreview";
@@ -117,6 +117,7 @@ export default function Overview() {
 
               <Button
                 disabled={isRewardDisabled}
+                onBackground={ButtonOnBackground.Blue}
                 size={ButtonSize.Sm}
                 {...withTooltip(T("contributor.table.noBudgetLeft"), {
                   visible: isRewardDisabled,
@@ -359,6 +360,7 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
                       width={Width.Full}
                       disabled={submitDisabled}
                       htmlType="submit"
+                      onBackground={ButtonOnBackground.Blue}
                     >
                       {T("applications.applyButton")}
                     </Button>
@@ -375,6 +377,7 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
                 size={ButtonSize.Md}
                 width={Width.Full}
                 disabled={alreadyApplied}
+                onBackground={ButtonOnBackground.Blue}
                 onClick={() => {
                   if (!contactInfoProvided) {
                     setContactInfoRequested(true);
