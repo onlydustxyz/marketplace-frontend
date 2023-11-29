@@ -14,72 +14,24 @@ import {
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { RewardableItem } from "src/api/Project/queries";
 import ProjectApi from "src/api/Project";
+import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
 
 type Props = {
   projectId: string;
   type: WorkItemType;
   addWorkItem: (workItem: RewardableWorkItem) => void;
-  contributorId: number;
 };
 
-export default function OtherIssueInput({ type, addWorkItem, contributorId, projectId }: Props) {
+export default function OtherIssueInput({ type, addWorkItem, projectId }: Props) {
   const { T } = useIntl();
   const inputName = type === WorkItemType.Issue ? "otherIssueLink" : "otherPullRequestLink";
   const tKey = type === WorkItemType.Issue ? "issues" : "pullRequests";
-
-  // const [fetchIssue] = useFetchIssueLazyQuery({
-  //   onCompleted: data => {
-  //     if (data.fetchIssue) {
-  //       addWorkItem(issueToWorkItem(liveIssueToCached(data.fetchIssue as unknown as RewardableItem)));
-  //       resetField(inputName);
-  //     } else {
-  //       setError(inputName, {
-  //         type: "validate",
-  //         message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
-  //       });
-  //     }
-  //   },
-  //   onError: () =>
-  //     setError(inputName, {
-  //       type: "validate",
-  //       message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
-  //     }),
-  //   context: {
-  //     graphqlErrorDisplay: "none",
-  //   },
-  // });
-
-  // const [fetchPullRequest] = useFetchPullRequestLazyQuery({
-  //   onCompleted: data => {
-  //     if (data.fetchPullRequest) {
-  //       addWorkItem(pullRequestToWorkItem(data.fetchPullRequest.githubPullRequest as unknown as RewardableItem));
-  //       resetField(inputName);
-  //     } else {
-  //       setError(inputName, {
-  //         type: "validate",
-  //         message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
-  //       });
-  //     }
-  //   },
-  //   onError: () =>
-  //     setError(inputName, {
-  //       type: "validate",
-  //       message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
-  //     }),
-  //   context: {
-  //     graphqlErrorDisplay: "none",
-  //   },
-  // });
 
   const { watch, setError, resetField } = useFormContext();
   const { errors } = useFormState({ name: inputName });
   const otherIssueLink = watch(inputName);
   const error = errors[inputName];
-
-  // const { repoOwner, repoName, issueNumber } = useMemo(
-  //   () => (type === WorkItemType.Issue ? parseIssueLink(otherIssueLink) : parsePullRequestLink(otherIssueLink)),
-  //   [otherIssueLink]
-  // );
 
   const {
     mutate: createOtherPullRequest,
@@ -101,6 +53,16 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId, proj
     },
   });
 
+  useMutationAlert({
+    mutation: restcreateOtherPullRequestMutation,
+    success: {
+      message: T("reward.form.contributions.other.success", { item: "Pull request" }),
+    },
+    error: {
+      message: T("reward.form.contributions.other.error", { item: "Pull request" }),
+    },
+  });
+
   const {
     mutate: createOtherIssue,
     isPending: isPendingIssueCreation,
@@ -118,6 +80,16 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId, proj
           message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
         });
       },
+    },
+  });
+
+  useMutationAlert({
+    mutation: restcreateOtherIssueMutation,
+    success: {
+      message: T("reward.form.contributions.other.success", { item: "Issue" }),
+    },
+    error: {
+      message: T("reward.form.contributions.other.error", { item: "Issue" }),
     },
   });
 
@@ -161,7 +133,11 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId, proj
       >
         <div onClick={validateOtherIssue} data-testid={`add-other-${tKey}-btn`}>
           <Button size={ButtonSize.LgLowHeight} type={ButtonType.Secondary} disabled={!otherIssueLink || !!error}>
-            {T("reward.form.contributions.add")}
+            {isPendingPullRequestCreation || isPendingIssueCreation ? (
+              <Spinner className="mx-[0.125rem]" />
+            ) : (
+              T("reward.form.contributions.add")
+            )}
           </Button>
         </div>
       </Input>
