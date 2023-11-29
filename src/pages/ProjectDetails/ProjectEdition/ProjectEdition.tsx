@@ -120,7 +120,9 @@ function SafeProjectEdition() {
         </header>
 
         <Flex
-          className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}
+          className={cn(
+            "scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-4 lg:p-6"
+          )}
         >
           {activeTab === TabsType.General ? (
             <Card className="bg-card-background-base">
@@ -136,7 +138,7 @@ function SafeProjectEdition() {
             justify="between"
             item="center"
             gap={4}
-            className="h-full w-full items-center bg-card-background-light px-6 py-5"
+            className="h-full w-full flex-col items-center bg-card-background-light px-6 py-5 lg:flex-row"
           >
             <FormStatus
               {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
@@ -147,6 +149,7 @@ function SafeProjectEdition() {
               htmlType="submit"
               disabled={!form?.formState.isDirty || !form?.formState.isValid || form?.formState.isSubmitting}
               onBackground={ButtonOnBackground.Blue}
+              className="w-full lg:w-auto"
             >
               {T("project.details.edit.save")}
               <ArrowRightSLine className="-mr-2 text-2xl" />

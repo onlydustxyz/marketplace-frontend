@@ -14,7 +14,7 @@ export const GithubSyncSettings = ({ title, message, settingsButton, PoolingFeed
   return (
     <div className="card-light flex w-full flex-col items-start justify-start gap-6 rounded-2xl border bg-transparent p-5">
       <p className="font-walsheim text-sm font-medium uppercase">{title}</p>
-      <div className="center flex w-full items-center gap-5">
+      <div className="center flex w-full flex-col items-center gap-5 lg:flex-row">
         <a href={OAuthGithubConfigLink} target="_blank" rel="noopener noreferrer" className="w-full">
           <Button type={ButtonType.Secondary} size={ButtonSize.Sm} className="w-full">
             <GithubLogo />

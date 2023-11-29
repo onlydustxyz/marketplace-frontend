@@ -68,7 +68,7 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
       }}
     >
       <Flex className="flex-col gap-4 md:flex-row md:items-center">
-        <Flex className="gap-3">
+        <Flex className="gap-3 max-sm:flex-wrap">
           {typeOptions.map(option => (
             <div className="flex" key={option.value}>
               <FormOption
