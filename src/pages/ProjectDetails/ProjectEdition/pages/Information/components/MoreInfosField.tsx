@@ -55,21 +55,28 @@ export function MoreInfosField({ onChange, value, form, error }: MoreInfosFieldP
     });
   }
 
+  function addLink() {
+    const moreInfos = [...(form?.getValues("moreInfos") || [])];
+    moreInfos.push({ url: "", value: "" });
+    form?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: false });
+  }
+
+  function deleteLink(index: number) {
+    const moreInfos = [...(form?.getValues("moreInfos") || [])];
+    moreInfos.splice(index, 1);
+    form?.setValue("moreInfos", moreInfos, {
+      shouldDirty: true,
+      shouldValidate: false,
+    });
+  }
+
   return (
     <Flex className="w-full flex-col gap-2">
       <Flex className="w-full items-center justify-between pb-2">
         <div className="font-walsheim text-sm font-medium text-spaceBlue-200">
           {T("project.details.edit.informations.fields.moreInfo.label")}
         </div>
-        <Button
-          type={ButtonType.Secondary}
-          size={ButtonSize.Xs}
-          onClick={() => {
-            const moreInfos = [...(form?.getValues("moreInfos") || [])];
-            moreInfos.push({ url: "", value: "" });
-            form?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: false });
-          }}
-        >
+        <Button type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={addLink}>
           <AddLine className="text-body-m" />
           {T("project.details.create.informations.form.fields.moreInfo.add")}
         </Button>
@@ -120,14 +127,7 @@ export function MoreInfosField({ onChange, value, form, error }: MoreInfosFieldP
                         size={ButtonSize.MdRounded}
                         iconOnly
                         className="h-8 w-8 justify-center p-2 text-snow"
-                        onClick={() => {
-                          const moreInfos = [...(form?.getValues("moreInfos") || [])];
-                          moreInfos.splice(index, 1);
-                          form?.setValue("moreInfos", moreInfos, {
-                            shouldDirty: true,
-                            shouldValidate: false,
-                          });
-                        }}
+                        onClick={() => deleteLink(index)}
                       >
                         <DeleteBinLine />
                       </Button>
