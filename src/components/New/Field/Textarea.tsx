@@ -19,13 +19,13 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
   const textAreaContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (autogrow && textAreaContainerRef.current) {
+    if (textAreaContainerRef.current) {
       const textareaEl = textAreaContainerRef.current.querySelector("textarea");
       if (textareaEl) {
         textareaEl.style.height = textareaEl.scrollHeight + "px";
       }
     }
-  }, [value, textAreaContainerRef, autogrow]);
+  }, [value, textAreaContainerRef]);
 
   return (
     <Field {...rest}>
