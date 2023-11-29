@@ -22,6 +22,7 @@ export const FieldTextarea = forwardRef(function FieldTextarea(
     if (textAreaContainerRef.current) {
       const textareaEl = textAreaContainerRef.current.querySelector("textarea");
       if (textareaEl) {
+        textareaEl.style.height = ""; // This line is required to allow the text area to resize when the user deletes text
         textareaEl.style.height = textareaEl.scrollHeight + "px";
       }
     }
