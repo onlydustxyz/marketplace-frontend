@@ -6,7 +6,6 @@ import { useIntl } from "src/hooks/useIntl";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
-  GithubPullRequestDraft,
   GithubPullRequestStatus,
   GithubStatus,
   GithubTypeStatusDict,
@@ -21,9 +20,7 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubPullRequestStatus.Open]: "contributions.tooltip.dateOpened",
     [GithubPullRequestStatus.Closed]: "contributions.tooltip.dateClosed",
     [GithubPullRequestStatus.Merged]: "contributions.tooltip.dateMerged",
-    [GithubPullRequestDraft.Draft]: "contributions.tooltip.dateOpened",
-    [GithubPullRequestStatus.Completed]: "contributions.tooltip.dateCompleted",
-    [GithubPullRequestStatus.Cancelled]: "contributions.tooltip.dateCanceled",
+    [GithubPullRequestStatus.Draft]: "contributions.tooltip.dateOpened",
   },
   [GithubContributionType.Issue]: {
     [GithubIssueStatus.Open]: "contributions.tooltip.dateAssigned",
@@ -31,14 +28,11 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubIssueStatus.Cancelled]: "contributions.tooltip.dateCanceled",
   },
   [GithubContributionType.CodeReview]: {
-    [GithubCodeReviewStatus.Open]: "contributions.tooltip.dateOpened",
     [GithubCodeReviewStatus.Approved]: "contributions.tooltip.dateApproved",
     [GithubCodeReviewStatus.ChangeRequested]: "contributions.tooltip.dateChangeRequested",
     [GithubCodeReviewStatus.Commented]: "contributions.tooltip.dateCommented",
-    [GithubCodeReviewStatus.Completed]: "contributions.tooltip.dateCompleted",
-    [GithubCodeReviewStatus.Cancelled]: "contributions.tooltip.dateCanceled",
     [GithubCodeReviewStatus.Dismissed]: "contributions.tooltip.dateDismissed",
-    [GithubCodeReviewStatus.Pending]: "contributions.tooltip.dateAssigned",
+    [GithubCodeReviewStatus.Pending]: "contributions.tooltip.datePending",
   },
 };
 
@@ -46,6 +40,7 @@ type ContributionDateProps = {
   id: string;
   type: GithubContributionType;
   status: GithubStatus;
+  contributionStatus?: ComponentProps<typeof ContributionIcon>["contributionStatus"];
   date: Date;
   withIcon?: boolean;
   tooltipProps?: ComponentProps<typeof Tooltip>;
@@ -55,6 +50,7 @@ export function ContributionDate({
   id,
   type,
   status,
+  contributionStatus,
   date,
   withIcon = false,
   tooltipProps = {
@@ -71,7 +67,7 @@ export function ContributionDate({
     <>
       <Tooltip id={tooltipId} clickable {...rest}>
         <div className={cn("flex items-center gap-2", className)}>
-          <ContributionIcon type={type} status={status} />
+          <ContributionIcon type={type} status={status} contributionStatus={contributionStatus} />
           {T(tokens[type][status as keyof typeof tokens[GithubContributionType]] ?? "", {
             date: getFormattedDateGB(date),
             time: getFormattedTimeUS(date),
@@ -82,7 +78,12 @@ export function ContributionDate({
       <div data-tooltip-id={tooltipId} className="flex items-center gap-1">
         {withIcon ? (
           <>
-            <ContributionIcon type={type} status={status} size={withIcon ? Sizes.xs : undefined} />
+            <ContributionIcon
+              type={type}
+              status={status}
+              contributionStatus={contributionStatus}
+              size={withIcon ? Sizes.xs : undefined}
+            />
             <span className="first-letter:uppercase">
               {T(getGithubStatusToken(type, status), { date: displayRelativeDate(date) })}
             </span>
