@@ -1109,7 +1109,7 @@
       },
       "banners": {
         "missingGithubAppInstall": {
-          "message": "We identified multiple issues on your project. Please fix them to be able to reward contributors.",
+          "message": "To continue rewarding your contributors, please install the Only Dust Github app for the following organisation(s).",
           "button": "Edit project",
           "org": "Connect the Github app for the __org__ organisation"
         }

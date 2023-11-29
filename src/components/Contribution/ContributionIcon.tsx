@@ -14,7 +14,6 @@ import {
   ContributionStatus,
   GithubCodeReviewStatus,
   GithubContributionType,
-  GithubPullRequestDraft,
   GithubPullRequestStatus,
   GithubStatus,
   GithubTypeStatusDict,
@@ -106,7 +105,7 @@ export function ContributionIcon({
   };
 
   const statusClassnames =
-    contributionStatus && status !== GithubPullRequestDraft.Draft
+    contributionStatus && status !== GithubPullRequestStatus.Draft
       ? variants.contributionStatus[contributionStatus]
       : variants.status[type][status as keyof typeof variants.status[GithubContributionType]];
 
