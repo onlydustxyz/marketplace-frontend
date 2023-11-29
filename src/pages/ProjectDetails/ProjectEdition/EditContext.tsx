@@ -157,12 +157,15 @@ export function EditProvider({ children, project }: EditContextProps) {
           ...findInMe,
           ...projectOrg,
           installed: findInMe.installed,
+          installationId: findInMe.installationId,
+          isPersonal: findInMe.isPersonal,
           isCurrentUserAdmin: findInMe.isCurrentUserAdmin,
           repos: uniqWith([...(projectOrg.repos || []), ...(findInMe.repos || [])], (arr, oth) => arr.id === oth.id),
         };
       }
       return projectOrg;
     });
+
     return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
   }, [organizationsData, project]);
 
