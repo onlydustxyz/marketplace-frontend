@@ -16,9 +16,15 @@ import withQueryClientProvider from "../decorators/withQueryClientProvider";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
 import withTokenSetProvider from "../decorators/withTokenSetProvider";
+import { components } from "src/__generated/api";
+import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
+import { CompletedRewardableItem } from "src/api/Project/queries";
+import withToasterProvider from "../decorators/withToasterProvider";
 
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
+
+type ContributorMockType = components["schemas"]["ContributorPageItemResponse"]
 
 const mockBudgets: ProjectBudgetType = {
   initialDollarsEquivalent: 120000,
@@ -50,7 +56,6 @@ const mockBudgets: ProjectBudgetType = {
 
 const projectId = "yolo";
 const BERNARDSTANISLAS: ContributorFragment = {
-  __typename: "UserProfiles",
   githubUserId: 4435377,
   login: "bernardstanislas",
   avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
@@ -132,6 +137,74 @@ const TDELABRO: ContributorFragment = {
   completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 
+const contributorMock:Contributor = {
+  avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
+  githubUserId: 123456,
+  isRegistered: true,
+  login: "string",
+  unpaidCompletedContributions: 2,
+}
+
+const unpaidContributions:CompletedRewardableItem = {
+  rewardableCodeReviews: [
+    {
+      commentsCount: 0,
+      commitsCount: 0,
+      completedAt: "2023-11-28T11:02:11.779Z",
+      contributionId: "string",
+      createdAt: "2023-11-28T11:02:11.779Z",
+      htmlUrl: "string",
+      id: "string",
+      ignored: false,
+      number: 0,
+      repoId: 650626566,
+      repoName: "string",
+      status: "COMPLETED",
+      title: "string",
+      type: "CODE_REVIEW",
+      userCommitsCount: 0
+    }
+  ],
+  rewardableIssues: [
+    {
+      commentsCount: 0,
+      commitsCount: 0,
+      completedAt: "2023-11-28T11:02:11.779Z",
+      contributionId: "string",
+      createdAt: "2023-11-28T11:02:11.779Z",
+      htmlUrl: "string",
+      id: "string",
+      ignored: false,
+      number: 0,
+      repoId: 650626566,
+      repoName: "string",
+      status: "COMPLETED",
+      title: "string",
+      type: "CODE_REVIEW",
+      userCommitsCount: 0
+    }
+  ],
+  rewardablePullRequests: [
+    {
+      commentsCount: 0,
+      commitsCount: 0,
+      completedAt: "2023-11-28T11:02:11.779Z",
+      contributionId: "string",
+      createdAt: "2023-11-28T11:02:11.779Z",
+      htmlUrl: "string",
+      id: "string",
+      ignored: false,
+      number: 0,
+      repoId: 650626566,
+      repoName: "string",
+      status: "CANCELLED",
+      title: "string",
+      type: "CODE_REVIEW",
+      userCommitsCount: 0
+    }
+  ]
+}
+
 const mocks = [
   {
     request: {
@@ -174,7 +247,7 @@ const args = {
   },
   unpaidPRs: [],
   requestNewPaymentMutationLoading: false,
-  unpaidContributions: null,
+  unpaidContributions: unpaidContributions,
 };
 
 export default {
@@ -201,13 +274,25 @@ export default {
     withQueryClientProvider,
     withTokenSetProvider,
     withImpersonationClaimsProvider,
+    withToasterProvider,
   ],
 };
 
 export const Default = {
   render: () => (
     <div className="flex flex-col gap-6">
-      <RewardForm projectBudget={mockBudgets} {...args} />
+      <RewardForm 
+      projectBudget={mockBudgets} 
+      onWorkItemsChange={() => {
+        return;
+      }} 
+      projectId="123" 
+      contributor={contributorMock} 
+      setContributor={() => {
+        return;
+      }} 
+      unpaidContributions={unpaidContributions}
+      />
     </div>
   ),
 

@@ -123,6 +123,8 @@ export enum GithubPullRequestStatus {
   Merged = "MERGED",
   Open = "OPEN",
   Closed = "CLOSED",
+  Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
 }
 
 export enum GithubIssueStatus {
@@ -132,10 +134,12 @@ export enum GithubIssueStatus {
 }
 
 export enum GithubCodeReviewStatus {
+  Open = "OPEN",
   Approved = "APPROVED",
   ChangeRequested = "CHANGES_REQUESTED",
   Commented = "COMMENTED",
   Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
   Dismissed = "DISMISSED",
   Pending = "PENDING",
 }
