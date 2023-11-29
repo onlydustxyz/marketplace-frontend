@@ -134,7 +134,6 @@ export enum GithubIssueStatus {
 }
 
 export enum GithubCodeReviewStatus {
-  Open = "OPEN",
   Approved = "APPROVED",
   ChangeRequested = "CHANGES_REQUESTED",
   Commented = "COMMENTED",

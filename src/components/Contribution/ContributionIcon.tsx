@@ -42,7 +42,6 @@ export const variants: { status: GithubTypeStatusDict<string> } = {
       [GithubIssueStatus.Cancelled]: "text-github-grey-light border-github-grey",
     },
     [GithubContributionType.CodeReview]: {
-      [GithubCodeReviewStatus.Open]: "text-github-green-light border-github-green",
       [GithubCodeReviewStatus.Approved]: "text-github-purple-light border-github-purple",
       [GithubCodeReviewStatus.ChangeRequested]: "text-github-purple-light border-github-purple",
       [GithubCodeReviewStatus.Commented]: "text-github-green-light border-github-green",
@@ -94,7 +93,6 @@ export function ContributionIcon({
       [GithubIssueStatus.Cancelled]: <IssueCancelled className={size} />,
     },
     [GithubContributionType.CodeReview]: {
-      [GithubCodeReviewStatus.Open]: <IssueOpenIcon size={size} />,
       [GithubCodeReviewStatus.Approved]: <CodeReviewCheckIcon className={size} />,
       [GithubCodeReviewStatus.ChangeRequested]: <CodeReviewCheckIcon className={size} />,
       [GithubCodeReviewStatus.Commented]: <EyeLine className={size} />,

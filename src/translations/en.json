@@ -295,7 +295,6 @@
     "status": {
       "pending": "Pending review",
       "approved": "Approved __date__",
-      "open": "Open __date__",
       "completed": "Completed __date__",
       "canceled": "Canceled __date__",
       "changeRequested": "Change requested __date__",

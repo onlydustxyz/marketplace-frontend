@@ -31,7 +31,6 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubIssueStatus.Cancelled]: "contributions.tooltip.dateCanceled",
   },
   [GithubContributionType.CodeReview]: {
-    [GithubCodeReviewStatus.Open]: "contributions.tooltip.dateOpened",
     [GithubCodeReviewStatus.Approved]: "contributions.tooltip.dateApproved",
     [GithubCodeReviewStatus.ChangeRequested]: "contributions.tooltip.dateChangeRequested",
     [GithubCodeReviewStatus.Commented]: "contributions.tooltip.dateCommented",
