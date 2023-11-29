@@ -1,4 +1,3 @@
-import { cn } from "src/utils/cn";
 import { GithubIssueStatus } from "src/__generated/graphql";
 import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
@@ -9,8 +8,10 @@ import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import EyeLine from "src/icons/EyeLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
+import { cn } from "src/utils/cn";
 
 import {
+  ContributionStatus,
   GithubCodeReviewStatus,
   GithubContributionType,
   GithubPullRequestStatus,
@@ -24,7 +25,10 @@ export enum Sizes {
   md = "w-4 h-4 text-base leading-none",
 }
 
-export const variants: { status: GithubTypeStatusDict<string> } = {
+export const variants: {
+  status: GithubTypeStatusDict<string>;
+  contributionStatus: Record<ContributionStatus, string>;
+} = {
   status: {
     [GithubContributionType.PullRequest]: {
       [GithubPullRequestStatus.Open]: "text-github-green-light border-github-green",
@@ -44,6 +48,11 @@ export const variants: { status: GithubTypeStatusDict<string> } = {
       [GithubCodeReviewStatus.Dismissed]: "text-github-grey-light border-github-grey",
       [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
     },
+  },
+  contributionStatus: {
+    [ContributionStatus.InProgress]: "text-github-green-light border-github-green",
+    [ContributionStatus.Completed]: "text-github-purple-light border-github-purple",
+    [ContributionStatus.Cancelled]: "text-github-red-light border-github-red",
   },
 };
 
@@ -67,10 +76,12 @@ export function ContributionIcon({
   type,
   status,
   size = Sizes.md,
+  contributionStatus,
 }: {
   type: GithubContributionType;
   status: GithubStatus;
   size?: Sizes;
+  contributionStatus?: `${ContributionStatus}`;
 }) {
   const icons: GithubTypeStatusDict<JSX.Element> = {
     [GithubContributionType.PullRequest]: {
@@ -93,17 +104,15 @@ export function ContributionIcon({
     },
   };
 
+  const statusClassnames =
+    contributionStatus && status !== GithubPullRequestDraft.Draft
+      ? variants.contributionStatus[contributionStatus]
+      : variants.status[type][status as keyof typeof variants.status[GithubContributionType]];
+
   // Even though a type and status should always be defined, in development sometimes they aren't and makes the component crash.
-  return (
-    <div
-      className={cn(
-        "leading-none",
-        type && status
-          ? variants.status[type][status as keyof typeof variants.status[GithubContributionType]]
-          : undefined
-      )}
-    >
-      {type && status ? icons[type][status as keyof typeof icons[GithubContributionType]] : null}
+  return type && status ? (
+    <div className={cn("leading-none", statusClassnames)}>
+      {icons[type][status as keyof typeof icons[GithubContributionType]]}
     </div>
-  );
+  ) : null;
 }

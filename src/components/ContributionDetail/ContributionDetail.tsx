@@ -185,18 +185,30 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                       })}
                     </span>
                   </div>
-                  <div>|</div>
-                  <div className="flex items-center gap-1">
-                    <ContributionIcon
-                      type={contribution.type as GithubContributionType}
-                      status={contribution.githubStatus}
-                    />
-                    <span>
-                      {T(getGithubStatusToken(contribution.type as GithubContributionType, contribution.githubStatus), {
-                        date: displayRelativeDate(contribution?.completedAt ?? ""),
-                      })}
-                    </span>
-                  </div>
+
+                  {contribution.type !== GithubContributionType.CodeReview ? (
+                    <>
+                      <div>|</div>
+                      <div className="flex items-center gap-1">
+                        <ContributionIcon
+                          type={contribution.type as GithubContributionType}
+                          status={contribution.githubStatus}
+                          contributionStatus={contribution.status}
+                        />
+                        <span>
+                          {T(
+                            getGithubStatusToken(
+                              contribution.type as GithubContributionType,
+                              contribution.githubStatus
+                            ),
+                            {
+                              date: displayRelativeDate(contribution.completedAt ?? ""),
+                            }
+                          )}
+                        </span>
+                      </div>
+                    </>
+                  ) : null}
                 </div>
 
                 {renderContributionInfo()}
