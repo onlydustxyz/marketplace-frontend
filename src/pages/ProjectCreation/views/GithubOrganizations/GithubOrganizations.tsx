@@ -17,7 +17,8 @@ export const GithubOrganizationPage = () => {
   } = useContext(CreateProjectContext);
 
   const installedOrganizations = organizations.filter(org => org.installed);
-  const availableOrganizations = organizations.filter(org => !org.installed);
+  const availableOrganizations = organizations.filter(org => !org.installed && org.isCurrentUserAdmin);
+
   return (
     <MultiStepsForm
       title={T("project.details.create.organizations.title")}

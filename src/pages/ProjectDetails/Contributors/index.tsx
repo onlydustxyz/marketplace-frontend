@@ -2,7 +2,7 @@ import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
 import { components } from "src/__generated/api";
-import Button, { ButtonSize } from "src/components/Button";
+import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
@@ -98,6 +98,7 @@ export default function Contributors() {
               <Button
                 size={ButtonSize.Sm}
                 disabled={noBudget}
+                onBackground={ButtonOnBackground.Blue}
                 onClick={() =>
                   navigate(
                     generatePath(

@@ -6,7 +6,7 @@ import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
 import { useIntl } from "src/hooks/useIntl";
 import InformationLine from "src/icons/InformationLine";
 import RewardBudgetDetails from "./Details/RewardBudgetDetails";
-import Button from "src/components/Button";
+import Button, { ButtonOnBackground } from "src/components/Button";
 import { Width } from "src/components/Button";
 import CheckLine from "src/icons/CheckLine";
 import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
@@ -115,7 +115,12 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
         />
       </div>
       <div className="flex w-full flex-col px-6 pb-6 pt-4">
-        <Button width={Width.Full} disabled={!canRewards || props.loading} htmlType="submit">
+        <Button
+          width={Width.Full}
+          disabled={!canRewards || props.loading}
+          htmlType="submit"
+          onBackground={ButtonOnBackground.Blue}
+        >
           <CheckLine />
           {T("rewardBudget.submit")}
         </Button>

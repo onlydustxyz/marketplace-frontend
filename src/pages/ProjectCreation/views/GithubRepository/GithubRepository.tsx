@@ -31,6 +31,7 @@ export const GithubRepositoryPage = () => {
     () => filterOrganizationBySearch(organizations),
     [organizations, filterOrganizationBySearch]
   );
+
   const isSelected = useCallback(
     (repoId: number) => !!selectedRepos.find(repo => repo.repoId === repoId),
     [selectedRepos]
@@ -67,15 +68,17 @@ export const GithubRepositoryPage = () => {
           render={() => (
             <>
               {filteredOrganizations.length > 0 ? (
-                filteredOrganizations.map(organization =>
-                  organization.repos.length ? (
-                    <VerticalListItemDrop
-                      key={organization.login}
-                      title={organization.name || organization.login || ""}
-                      avatarAlt={organization.login || ""}
-                      avatarSrc={organization.avatarUrl || ""}
-                      variant="BLUE"
-                    >
+                filteredOrganizations.map(organization => (
+                  <VerticalListItemDrop
+                    key={organization.login}
+                    title={organization.name || organization.login || ""}
+                    avatarAlt={organization.login || ""}
+                    avatarSrc={organization.avatarUrl || ""}
+                    variant="BLUE"
+                  >
+                    {organization.repos.length === 0 ? (
+                      <p className="text-body-s mb-2">{T("project.details.create.repository.placeholder")}</p>
+                    ) : (
                       <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
                         {(sortBy(organization.repos, "name") || []).map(repo => (
                           <label
@@ -109,9 +112,9 @@ export const GithubRepositoryPage = () => {
                           </label>
                         ))}
                       </div>
-                    </VerticalListItemDrop>
-                  ) : null
-                )
+                    )}
+                  </VerticalListItemDrop>
+                ))
               ) : (
                 <p className="text-body-s mb-2">{T("project.details.create.repository.placeholder")}</p>
               )}

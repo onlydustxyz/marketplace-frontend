@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
@@ -60,14 +59,3 @@ export default function Header() {
     />
   );
 }
-
-gql`
-  query GetPaymentRequestIds($githubUserId: bigint!) {
-    githubUsersByPk(id: $githubUserId) {
-      ...GithubUserId
-      paymentRequests {
-        ...PaymentRequestId
-      }
-    }
-  }
-`;
