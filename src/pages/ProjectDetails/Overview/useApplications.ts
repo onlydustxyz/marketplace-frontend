@@ -3,7 +3,6 @@ import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
-import { contextWithCacheHeaders } from "src/utils/headers";
 
 export default function useApplications(projectId: string, projectSlug: string) {
   const { user } = useAuth();
@@ -11,7 +10,6 @@ export default function useApplications(projectId: string, projectSlug: string) 
 
   const { data, refetch } = useGetProjectApplicationsQuery({
     variables: { projectId },
-    ...contextWithCacheHeaders,
   });
 
   const { mutate: applyProjectMutation, ...restMutation } = MeApi.mutations.useApplyProject({
