@@ -16,6 +16,7 @@ import { RewardableItem } from "src/api/Project/queries";
 import ProjectApi from "src/api/Project";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { GithubContributionShortenTypeLabel } from "src/types";
 
 type Props = {
   projectId: string;
@@ -56,10 +57,10 @@ export default function OtherIssueInput({ type, addWorkItem, projectId }: Props)
   useMutationAlert({
     mutation: restcreateOtherPullRequestMutation,
     success: {
-      message: T("reward.form.contributions.other.success", { item: "Pull request" }),
+      message: T("reward.form.contributions.other.success", { item: GithubContributionShortenTypeLabel.PullRequest }),
     },
     error: {
-      message: T("reward.form.contributions.other.error", { item: "Pull request" }),
+      message: T("reward.form.contributions.other.error", { item: GithubContributionShortenTypeLabel.PullRequest }),
     },
   });
 
@@ -86,10 +87,10 @@ export default function OtherIssueInput({ type, addWorkItem, projectId }: Props)
   useMutationAlert({
     mutation: restcreateOtherIssueMutation,
     success: {
-      message: T("reward.form.contributions.other.success", { item: "Issue" }),
+      message: T("reward.form.contributions.other.success", { item: GithubContributionShortenTypeLabel.Issue }),
     },
     error: {
-      message: T("reward.form.contributions.other.error", { item: "Issue" }),
+      message: T("reward.form.contributions.other.error", { item: GithubContributionShortenTypeLabel.Issue }),
     },
   });
 
