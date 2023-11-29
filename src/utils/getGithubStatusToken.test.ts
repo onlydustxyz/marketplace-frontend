@@ -1,10 +1,5 @@
 import { GithubIssueStatus } from "src/__generated/graphql";
-import {
-  GithubCodeReviewStatus,
-  GithubContributionType,
-  GithubPullRequestDraft,
-  GithubPullRequestStatus,
-} from "src/types";
+import { GithubCodeReviewStatus, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { getGithubStatusToken } from "./getGithubStatusToken";
 
 describe("getGithubStatusToken", () => {
@@ -27,7 +22,7 @@ describe("getGithubStatusToken", () => {
   });
 
   it("should get the token for a draft PR", () => {
-    expect(getGithubStatusToken(GithubContributionType.PullRequest, GithubPullRequestDraft.Draft)).toBe(
+    expect(getGithubStatusToken(GithubContributionType.PullRequest, GithubPullRequestStatus.Draft)).toBe(
       "githubPullRequest.status.open"
     );
   });
@@ -55,8 +50,8 @@ describe("getGithubStatusToken", () => {
   });
 
   it("should get the token for an completed code review", () => {
-    expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Completed)).toBe(
-      "githubCodeReview.status.completed"
+    expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Commented)).toBe(
+      "githubCodeReview.status.commented"
     );
   });
 

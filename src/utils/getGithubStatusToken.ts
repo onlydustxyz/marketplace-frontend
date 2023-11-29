@@ -2,7 +2,6 @@ import { GithubIssueStatus } from "src/__generated/graphql";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
-  GithubPullRequestDraft,
   GithubPullRequestStatus,
   GithubStatus,
   GithubTypeStatusDict,
@@ -13,9 +12,7 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubPullRequestStatus.Open]: "githubPullRequest.status.open",
     [GithubPullRequestStatus.Closed]: "githubPullRequest.status.closed",
     [GithubPullRequestStatus.Merged]: "githubPullRequest.status.merged",
-    [GithubPullRequestDraft.Draft]: "githubPullRequest.status.open",
-    [GithubPullRequestStatus.Completed]: "githubPullRequest.status.completed",
-    [GithubPullRequestStatus.Cancelled]: "githubPullRequest.status.canceled",
+    [GithubPullRequestStatus.Draft]: "githubPullRequest.status.open",
   },
   [GithubContributionType.Issue]: {
     [GithubIssueStatus.Open]: "githubIssue.status.open",
@@ -23,12 +20,9 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubIssueStatus.Cancelled]: "githubIssue.status.canceled",
   },
   [GithubContributionType.CodeReview]: {
-    [GithubCodeReviewStatus.Open]: "githubCodeReview.status.open",
     [GithubCodeReviewStatus.Approved]: "githubCodeReview.status.approved",
     [GithubCodeReviewStatus.ChangeRequested]: "githubCodeReview.status.changeRequested",
     [GithubCodeReviewStatus.Commented]: "githubCodeReview.status.commented",
-    [GithubCodeReviewStatus.Completed]: "githubCodeReview.status.completed",
-    [GithubCodeReviewStatus.Cancelled]: "githubCodeReview.status.canceled",
     [GithubCodeReviewStatus.Dismissed]: "githubCodeReview.status.dismissed",
     [GithubCodeReviewStatus.Pending]: "githubCodeReview.status.pending",
   },

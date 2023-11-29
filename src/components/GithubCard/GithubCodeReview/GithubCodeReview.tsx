@@ -20,10 +20,13 @@ export enum Action {
 
 function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment & RewardableItem>) {
   switch (codeReview?.status) {
-    case GithubCodeReviewStatus.Completed:
+    case GithubCodeReviewStatus.Approved:
+    case GithubCodeReviewStatus.Dismissed:
     case ContributionStatus.Completed:
       return codeReview.completedAt ? new Date(codeReview.completedAt) : new Date();
     case GithubCodeReviewStatus.Pending:
+    case GithubCodeReviewStatus.ChangeRequested:
+    case GithubCodeReviewStatus.Commented:
     default:
       return new Date(codeReview.githubPullRequest?.createdAt ?? codeReview.createdAt);
   }
