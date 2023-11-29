@@ -505,6 +505,7 @@
       "remainingBudget": "Remaining budget",
       "cancelled": "Reward cancelled",
       "sent": "Reward successfully granted",
+      "error":"An error occurred while creating the reward!",
       "steps": {
         "days": {
           "many": "days",

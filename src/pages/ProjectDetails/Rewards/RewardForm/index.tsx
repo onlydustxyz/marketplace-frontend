@@ -61,6 +61,9 @@ const RewardForm: React.FC = () => {
         console.error(e);
       }
     },
+    onError: () => {
+      showToaster(T("reward.form.error"), { isError: true });
+    },
   });
 
   const [preferredCurrency, setPreferredCurrency] = useLocalStorage<BudgetCurrencyType | undefined>(
