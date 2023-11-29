@@ -10,7 +10,7 @@ export const EditPanelOrganization = () => {
   const { organizations } = useContext(EditContext);
 
   const installedOrganizations = organizations.filter(org => org.installed);
-  const availableOrganizations = organizations.filter(org => !org.installed);
+  const availableOrganizations = organizations.filter(org => !org.installed && org.isCurrentUserAdmin);
 
   return (
     <div className="flex flex-col gap-6">
