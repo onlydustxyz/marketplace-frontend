@@ -9,9 +9,10 @@ import { Contribution as ContributionT, GithubContributionType, GithubPullReques
 type Props = {
   contribution: ContributionT;
   isMobile?: boolean;
+  isMine?: boolean;
 };
 
-export function Contribution({ contribution, isMobile = false }: Props) {
+export function Contribution({ contribution, isMobile = false, isMine = false }: Props) {
   const { open } = useContributionDetailPanel();
 
   const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
@@ -37,7 +38,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
       })}
     >
       <div className={cn("flex items-center gap-2 font-walsheim", isMobile ? "w-full" : "min-w-0")}>
-        <ContributionBadge contribution={contribution} />
+        <ContributionBadge contribution={contribution} isMine={isMine} />
         <button
           className="truncate break-all text-left hover:underline"
           onClick={() => {
