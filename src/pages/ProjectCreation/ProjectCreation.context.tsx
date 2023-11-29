@@ -185,7 +185,7 @@ export function CreateProjectProvider({
     createProject({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
-      moreInfos: [moreInfo],
+      moreInfos: moreInfo ? [moreInfo] : undefined,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
     });
   };
