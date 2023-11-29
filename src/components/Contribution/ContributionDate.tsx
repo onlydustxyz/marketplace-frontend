@@ -32,7 +32,7 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubCodeReviewStatus.ChangeRequested]: "contributions.tooltip.dateChangeRequested",
     [GithubCodeReviewStatus.Commented]: "contributions.tooltip.dateCommented",
     [GithubCodeReviewStatus.Dismissed]: "contributions.tooltip.dateDismissed",
-    [GithubCodeReviewStatus.Pending]: "contributions.tooltip.dateAssigned",
+    [GithubCodeReviewStatus.Pending]: "contributions.tooltip.datePending",
   },
 };
 
