@@ -1,5 +1,4 @@
 import { Controller } from "react-hook-form";
-import { FieldCombined } from "src/components/New/Field/Combined";
 import { FieldProjectLead } from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
@@ -7,7 +6,6 @@ import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
 import InformationLine from "src/icons/InformationLine";
-import Link from "src/icons/Link";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { useContext } from "react";
 import ProjectApi from "src/api/Project";
@@ -15,6 +13,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Button, { ButtonOnBackground } from "src/components/Button";
 import CheckLine from "src/icons/CheckLine";
 import { CreateProjectContext } from "../../ProjectCreation.context";
+import { MoreInfosField } from "src/pages/ProjectDetails/ProjectEdition/pages/Information/components/MoreInfosField";
 
 export const ProjectInformationsPage = () => {
   const { T } = useIntl();
@@ -112,36 +111,9 @@ export const ProjectInformationsPage = () => {
             )}
           />
           <Controller
-            name="moreInfo"
+            name="moreInfos"
             control={form.control}
-            render={({ field: { onChange, value } }) => (
-              <FieldCombined
-                onChange={onChange}
-                name="moreInfo"
-                label={T("project.details.create.informations.form.fields.moreInfo.label")}
-                className="gap-2"
-              >
-                {onChangeField => [
-                  <FieldInput
-                    key="moreInfo.url"
-                    name="moreInfo.url"
-                    value={value?.url}
-                    fieldClassName="flex-1"
-                    placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLink")}
-                    onChange={event => onChangeField({ ...value, url: event.target.value })}
-                    startIcon={({ className }) => <Link className={className} />}
-                  />,
-                  <FieldInput
-                    key="moreInfo.value"
-                    name="moreInfo.value"
-                    value={value?.value}
-                    placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
-                    fieldClassName="w-[180px] max-w-full"
-                    onChange={event => onChangeField({ ...value, value: event.target.value })}
-                  />,
-                ]}
-              </FieldCombined>
-            )}
+            render={({ field: { onChange, value } }) => <MoreInfosField {...{ onChange, value, form }} />}
           />
           <Controller
             name="projectLeads"

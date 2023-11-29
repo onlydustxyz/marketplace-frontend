@@ -7,7 +7,6 @@ import { FieldInput } from "src/components/New/Field/Input";
 import Flex from "src/components/Utils/Flex";
 import AddLine from "src/icons/AddLine";
 import DeleteBinLine from "src/icons/DeleteBinLine";
-import { EditFormData } from "../../../EditContext";
 import Draggable from "src/icons/Draggable";
 import { cn } from "src/utils/cn";
 import Link from "src/icons/Link";
@@ -35,16 +34,23 @@ type SortableMoreInfos = MoreInfos & { id: string };
 type MoreInfosFieldProps = {
   onChange: (...event: unknown[]) => void;
   value?: MoreInfos[];
+  error?: ControllerFieldState["error"];
+};
+
+type EditFormData = MoreInfosFieldProps & {
   form?: UseFormReturn<EditFormData, unknown>;
-  error: ControllerFieldState["error"];
+};
+
+type CreateFormData = MoreInfosFieldProps & {
+  form?: UseFormReturn<CreateFormData, unknown>;
 };
 
 // react-sortable-list expects an id for each item, so we need to add it
-function decodeValues(values: EditFormData["moreInfos"]): SortableMoreInfos[] {
+function decodeValues(values: MoreInfos[] | undefined): SortableMoreInfos[] {
   return values?.map((item, index) => ({ ...item, id: (index + 1).toString() })) || [];
 }
 
-export function MoreInfosField({ onChange, value, form, error }: MoreInfosFieldProps) {
+export function MoreInfosField({ onChange, value, form, error }: EditFormData | CreateFormData) {
   const { T } = useIntl();
 
   function reorderMoreInfos(reOrder: (items: SortableItemProps[]) => MoreInfos[]) {
