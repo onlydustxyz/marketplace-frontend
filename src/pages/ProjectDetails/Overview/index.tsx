@@ -345,7 +345,7 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
           {T("project.hiring").toUpperCase()}
         </div>
         {isLoggedIn ? (
-          contactInfoRequested && !contactInfoProvided && !alreadyApplied ? (
+          contactInfoRequested && !contactInfoProvided ? (
             <FormProvider {...formMethods}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-4 rounded-xl border border-orange-500 p-4">
