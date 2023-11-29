@@ -242,7 +242,6 @@ export function EditProvider({ children, project }: EditContextProps) {
       onSuccess: async (data, queryClient) => {
         showToaster(T("form.toast.success"));
         clearSession();
-        form.reset(form.getValues());
 
         // Replace the current path on the history stack if different
         const newPathname = `${generatePath(RoutePaths.ProjectDetailsEdit, {
@@ -262,6 +261,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     const { githubRepos, ...rest } = formData;
     const githubRepoIds = githubRepos.map(repo => repo.id);
     updateProject({ ...rest, githubRepoIds });
+    form.reset(form.getValues());
   };
 
   useEffect(() => {
