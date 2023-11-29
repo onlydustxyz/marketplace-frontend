@@ -11,7 +11,7 @@ export const useEditValidationSchema = () => {
     isLookingForContributors: z.boolean().nullish().optional(),
     longDescription: z
       .string(
-        ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the long description  of the project" }))
+        ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the long description of the project" }))
       )
       .min(1),
     moreInfos: z
@@ -21,9 +21,7 @@ export const useEditValidationSchema = () => {
             .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the information url" })))
             .trim()
             .min(1),
-          value: z
-            .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the information label" })))
-            .nullable(),
+          value: z.string().nullable(),
         })
       )
       .min(0),

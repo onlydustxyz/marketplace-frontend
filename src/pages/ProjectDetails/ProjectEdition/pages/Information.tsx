@@ -144,8 +144,6 @@ export function Information() {
                   value={value?.[0]?.value}
                   placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
                   fieldClassName=" w-1/3 max-w-full"
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  errorMessage={(error as any)?.[0]?.value?.message}
                   onChange={event => {
                     if (event.target.value || value?.[0].url) {
                       onChangeField([{ ...(value?.[0] || {}), value: event.target.value }]);
