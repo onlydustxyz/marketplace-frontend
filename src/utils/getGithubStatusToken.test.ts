@@ -55,8 +55,8 @@ describe("getGithubStatusToken", () => {
   });
 
   it("should get the token for an completed code review", () => {
-    expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Completed)).toBe(
-      "githubCodeReview.status.completed"
+    expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Commented)).toBe(
+      "githubCodeReview.status.commented"
     );
   });
 

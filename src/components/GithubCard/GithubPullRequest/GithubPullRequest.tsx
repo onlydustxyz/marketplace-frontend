@@ -7,17 +7,11 @@ import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitCommitLine from "src/icons/GitCommitLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { ContributionStatus, GithubContributionType } from "src/types";
+import { ContributionStatus, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 import { CommitsTooltip } from "./CommitsTooltip";
 import { RewardableItem } from "src/api/Project/queries";
-
-export enum GithubPullRequestStatus {
-  Merged = "MERGED",
-  Open = "OPEN",
-  Closed = "CLOSED",
-}
 
 export enum Action {
   Add = "add",
@@ -29,11 +23,12 @@ export enum Action {
 function getPullRequestStatusDate(pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>) {
   switch (pullRequest.status) {
     case GithubPullRequestStatus.Closed:
-    case ContributionStatus.Cancelled:
     case GithubPullRequestStatus.Merged:
+    case ContributionStatus.Cancelled:
     case ContributionStatus.Completed:
       return pullRequest.completedAt ? new Date(pullRequest.completedAt) : new Date();
     case GithubPullRequestStatus.Open:
+    case GithubPullRequestStatus.Draft:
     default:
       return new Date(pullRequest.createdAt);
   }
