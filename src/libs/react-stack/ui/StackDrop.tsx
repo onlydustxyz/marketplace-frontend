@@ -1,8 +1,10 @@
 import { Transition } from "@headlessui/react";
 import { debounce } from "lodash";
 import { Fragment, useCallback, useEffect, useState } from "react";
+import { usePlacement } from "../hooks/usePlacement";
 
 export const StackDrop = ({ show }: { show: boolean }) => {
+  const { placement } = usePlacement();
   const [debouncedShow, setDebouncedShow] = useState(false);
 
   const debounceShow = useCallback(

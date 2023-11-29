@@ -6,12 +6,12 @@ import { cn } from "src/utils/cn";
 import { StackDrop } from "./StackDrop";
 import { debounce } from "lodash";
 import { BackClick } from "./BackClick";
+import { usePlacement } from "../hooks/usePlacement";
 
 type Props = {
   open: boolean;
   close: () => void;
   action?: ReactElement;
-  placement?: "right" | "bottom";
   hasCloseButton?: boolean;
   front?: boolean;
   back?: boolean;
@@ -22,13 +22,13 @@ export default function SidePanel({
   open,
   close,
   action,
-  placement = "right",
   children,
   front,
   back,
   stacked,
   hasCloseButton = true,
 }: Props) {
+  const { placement } = usePlacement();
   const [debouncedOpen, setDebouncedOpen] = useState(false);
 
   const debounceOpen = useCallback(
@@ -64,7 +64,7 @@ export default function SidePanel({
   }[placement];
 
   const PanelBackStyle: CSSProperties = {
-    transform: "translateX(-40px) scale(0.99)",
+    transform: placement === "bottom" ? "translateY(-40px) scale(0.99)" : "translateX(-40px) scale(0.99)",
     transition: "ease-in 300ms transform",
     backdropFilter: "blur(2px)",
   };
@@ -86,7 +86,8 @@ export default function SidePanel({
             className={cn(
               {
                 "inset-y-0 right-0 h-[calc(100dvh)] lg:w-[680px] lg:max-w-[80%]": placement === "right",
-                "inset-x-0 bottom-0 max-h-[calc(100dvh)] overflow-y-auto rounded-t-2xl": placement === "bottom",
+                // "inset-x-0 bottom-0 max-h-[calc(100dvh)] overflow-y-auto rounded-t-2xl": placement === "bottom",
+                "inset-x-0 bottom-0 h-[calc(100dvh-40px)] rounded-t-2xl": placement === "bottom",
               },
               "fixed w-full bg-greyscale-900 shadow-panel"
             )}
