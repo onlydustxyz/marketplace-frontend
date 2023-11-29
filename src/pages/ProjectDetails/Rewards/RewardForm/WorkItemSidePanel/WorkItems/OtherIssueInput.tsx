@@ -1,17 +1,11 @@
 import { cn } from "src/utils/cn";
-import { useMemo } from "react";
 import { useFormContext, useFormState } from "react-hook-form";
-import { WorkItemType, useFetchIssueLazyQuery, useFetchPullRequestLazyQuery } from "src/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
 import Link from "src/icons/Link";
-import {
-  REGEX_VALID_GITHUB_ISSUE_URL,
-  REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-  parseIssueLink,
-  parsePullRequestLink,
-} from "src/utils/github";
+import { REGEX_VALID_GITHUB_ISSUE_URL, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/utils/github";
 import {
   RewardableWorkItem,
   issueToWorkItem,
@@ -19,90 +13,92 @@ import {
 } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { RewardableItem } from "src/api/Project/queries";
+import ProjectApi from "src/api/Project";
+import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
+import { GithubContributionShortenTypeLabel } from "src/types";
 
 type Props = {
   projectId: string;
   type: WorkItemType;
   addWorkItem: (workItem: RewardableWorkItem) => void;
-  contributorId: number;
 };
 
-export default function OtherIssueInput({ type, addWorkItem, contributorId }: Props) {
+export default function OtherIssueInput({ type, addWorkItem, projectId }: Props) {
   const { T } = useIntl();
   const inputName = type === WorkItemType.Issue ? "otherIssueLink" : "otherPullRequestLink";
   const tKey = type === WorkItemType.Issue ? "issues" : "pullRequests";
-
-  const [fetchIssue] = useFetchIssueLazyQuery({
-    onCompleted: data => {
-      if (data.fetchIssue) {
-        addWorkItem(issueToWorkItem(liveIssueToCached(data.fetchIssue as unknown as RewardableItem)));
-        resetField(inputName);
-      } else {
-        setError(inputName, {
-          type: "validate",
-          message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
-        });
-      }
-    },
-    onError: () =>
-      setError(inputName, {
-        type: "validate",
-        message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
-      }),
-    context: {
-      graphqlErrorDisplay: "none",
-    },
-  });
-
-  const [fetchPullRequest] = useFetchPullRequestLazyQuery({
-    onCompleted: data => {
-      if (data.fetchPullRequest) {
-        addWorkItem(pullRequestToWorkItem(data.fetchPullRequest.githubPullRequest as unknown as RewardableItem));
-        resetField(inputName);
-      } else {
-        setError(inputName, {
-          type: "validate",
-          message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
-        });
-      }
-    },
-    onError: () =>
-      setError(inputName, {
-        type: "validate",
-        message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
-      }),
-    context: {
-      graphqlErrorDisplay: "none",
-    },
-  });
 
   const { watch, setError, resetField } = useFormContext();
   const { errors } = useFormState({ name: inputName });
   const otherIssueLink = watch(inputName);
   const error = errors[inputName];
 
-  const { repoOwner, repoName, issueNumber } = useMemo(
-    () => (type === WorkItemType.Issue ? parseIssueLink(otherIssueLink) : parsePullRequestLink(otherIssueLink)),
-    [otherIssueLink]
-  );
-
-  const validateOtherIssue = () =>
-    type === WorkItemType.Issue
-      ? fetchIssue({
-          variables: {
-            repoOwner,
-            repoName,
-            issueNumber,
-          },
-        })
-      : fetchPullRequest({
-          variables: {
-            repoOwner,
-            repoName,
-            prNumber: issueNumber,
-            githubUserId: contributorId,
-          },
+  const {
+    mutate: createOtherPullRequest,
+    isPending: isPendingPullRequestCreation,
+    ...restcreateOtherPullRequestMutation
+  } = ProjectApi.mutations.useCreateOtherPullRequest({
+    params: { projectId },
+    options: {
+      onSuccess: data => {
+        addWorkItem(pullRequestToWorkItem(data));
+        resetField(inputName);
+      },
+      onError: () => {
+        setError(inputName, {
+          type: "validate",
+          message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
         });
+      },
+    },
+  });
+
+  useMutationAlert({
+    mutation: restcreateOtherPullRequestMutation,
+    success: {
+      message: T("reward.form.contributions.other.success", { item: GithubContributionShortenTypeLabel.PullRequest }),
+    },
+    error: {
+      message: T("reward.form.contributions.other.error", { item: GithubContributionShortenTypeLabel.PullRequest }),
+    },
+  });
+
+  const {
+    mutate: createOtherIssue,
+    isPending: isPendingIssueCreation,
+    ...restcreateOtherIssueMutation
+  } = ProjectApi.mutations.useCreateOtherIssue({
+    params: { projectId },
+    options: {
+      onSuccess: data => {
+        addWorkItem(issueToWorkItem(liveIssueToCached(data)));
+        resetField(inputName);
+      },
+      onError: () => {
+        setError(inputName, {
+          type: "validate",
+          message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
+        });
+      },
+    },
+  });
+
+  useMutationAlert({
+    mutation: restcreateOtherIssueMutation,
+    success: {
+      message: T("reward.form.contributions.other.success", { item: GithubContributionShortenTypeLabel.Issue }),
+    },
+    error: {
+      message: T("reward.form.contributions.other.error", { item: GithubContributionShortenTypeLabel.Issue }),
+    },
+  });
+
+  const validateOtherIssue = () => {
+    type === WorkItemType.Issue
+      ? createOtherIssue({ githubIssueHtmlUrl: otherIssueLink })
+      : createOtherPullRequest({ githubPullRequestHtmlUrl: otherIssueLink });
+  };
 
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-greyscale-50/12 p-4">
@@ -138,7 +134,11 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId }: Pr
       >
         <div onClick={validateOtherIssue} data-testid={`add-other-${tKey}-btn`}>
           <Button size={ButtonSize.LgLowHeight} type={ButtonType.Secondary} disabled={!otherIssueLink || !!error}>
-            {T("reward.form.contributions.add")}
+            {isPendingPullRequestCreation || isPendingIssueCreation ? (
+              <Spinner className="mx-[0.125rem]" />
+            ) : (
+              T("reward.form.contributions.add")
+            )}
           </Button>
         </div>
       </Input>

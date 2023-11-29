@@ -170,12 +170,7 @@ export default function View({
           </div>
         </div>
         {addOtherIssueEnabled && type !== WorkItemType.CodeReview && (
-          <OtherIssueInput
-            projectId={projectId}
-            type={type}
-            addWorkItem={addWorkItem}
-            contributorId={contributor.githubUserId}
-          />
+          <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} />
         )}
         {searchEnabled && (
           <FormInput
