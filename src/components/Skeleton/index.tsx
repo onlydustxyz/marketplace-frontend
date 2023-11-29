@@ -1,4 +1,3 @@
-import React from "react";
 import SkeletonCard from "./SkeletonCard";
 import SkeletonFilters from "./SkeletonFilters";
 import SkeletonHeader from "./SkeletonHeader";
@@ -12,6 +11,7 @@ import SkeletonRewardsList from "./SkeletonRewardsList";
 import SkeletonInvoice from "./SkeletonInvoice";
 import SkeletonOrganizationItem from "./SkeletonOrganizationItem";
 import SkeletonRewardableItems from "./SkeletonRewardableItems";
+import SkeletonQuickActions from "./SkeletonQuickActions";
 
 type SkeletonVariant =
   | "card"
@@ -26,7 +26,8 @@ type SkeletonVariant =
   | "earnedRewards"
   | "rewardsList"
   | "invoice"
-  | "organizationItem";
+  | "organizationItem"
+  | "quickActions";
 
 interface SkeletonProps {
   variant: SkeletonVariant;
@@ -46,6 +47,7 @@ const VARIANT_COMPONENTS = {
   rewardsList: SkeletonRewardsList,
   invoice: SkeletonInvoice,
   organizationItem: SkeletonOrganizationItem,
+  quickActions: SkeletonQuickActions,
 };
 
 export default function Skeleton({ variant }: SkeletonProps) {

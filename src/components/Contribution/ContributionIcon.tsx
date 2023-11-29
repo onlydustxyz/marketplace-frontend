@@ -32,6 +32,8 @@ export const variants: { status: GithubTypeStatusDict<string> } = {
       [GithubPullRequestStatus.Closed]: "text-github-red-light border-github-red",
       [GithubPullRequestStatus.Merged]: "text-github-purple-light border-github-purple",
       [GithubPullRequestDraft.Draft]: "text-github-grey-light border-github-grey",
+      [GithubPullRequestStatus.Completed]: "text-github-red-light border-github-red",
+      [GithubPullRequestStatus.Cancelled]: "text-github-red-light border-github-red",
     },
     [GithubContributionType.Issue]: {
       [GithubIssueStatus.Open]: "text-github-green-light border-github-green",
@@ -80,6 +82,8 @@ export function ContributionIcon({
       [GithubPullRequestStatus.Closed]: <PrClosed className={size} />,
       [GithubPullRequestStatus.Merged]: <GitMergeLine className={size} />,
       [GithubPullRequestDraft.Draft]: <PrDraft className={size} />,
+      [GithubPullRequestStatus.Completed]: <PrClosed className={size} />,
+      [GithubPullRequestStatus.Cancelled]: <PrClosed className={size} />,
     },
     [GithubContributionType.Issue]: {
       [GithubIssueStatus.Open]: <IssueOpenIcon size={size} />,
