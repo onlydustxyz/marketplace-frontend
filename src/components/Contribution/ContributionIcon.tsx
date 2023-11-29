@@ -14,6 +14,7 @@ import {
   ContributionStatus,
   GithubCodeReviewStatus,
   GithubContributionType,
+  GithubPullRequestDraft,
   GithubPullRequestStatus,
   GithubStatus,
   GithubTypeStatusDict,
