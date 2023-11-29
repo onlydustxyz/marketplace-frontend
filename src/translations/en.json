@@ -997,7 +997,7 @@
         "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
         "usdInfo": "Dollar equivalent at today's date",
         "budget": {
-          "total": "Total budget",
+          "total": "Remaining budget",
           "dollars": "Dollars budget",
           "ether": "Ether budget",
           "stark": "Stark budget",
