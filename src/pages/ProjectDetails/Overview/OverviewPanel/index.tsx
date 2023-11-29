@@ -9,6 +9,10 @@ import Sponsor from "./Sponsor";
 import { Leader, Sponsor as SponsorType, TopContributor } from "src/types";
 import Flex from "src/components/Utils/Flex";
 import { useAuth } from "src/hooks/useAuth";
+import FakeExternalLink from "./FakeExternalLink";
+import Telegram from "src/assets/icons/Telegram";
+import DiscordFill from "src/icons/DiscordFill";
+import TwitterFill from "src/icons/TwitterFill";
 
 const filterLeadsByLogin = (leads?: Leader[]) => leads?.filter(lead => isDefined(lead?.login)) || [];
 
@@ -108,7 +112,7 @@ export default function OverviewPanel({
       {moreInfoLink && (
         <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
           <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
-            {isLoggedIn && (
+            {isLoggedIn ? (
               <>
                 <ExternalLink
                   text={moreInfoName || moreInfoLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
@@ -116,7 +120,20 @@ export default function OverviewPanel({
                 />
               </>
             ) : (
-
+              <div className="flex flex-col gap-2">
+                <FakeExternalLink
+                  text={T("common.channel.telegram")}
+                  icon={({ className }) => <Telegram className={className} size={16} />}
+                />
+                <FakeExternalLink
+                  text={T("common.channel.discord")}
+                  icon={({ className }) => <DiscordFill className={className} />}
+                />
+                <FakeExternalLink
+                  text={T("common.channel.twitter")}
+                  icon={({ className }) => <TwitterFill className={className} />}
+                />
+              </div>
             )}
           </div>
         </Section>
