@@ -10,6 +10,7 @@ import GitMergeLine from "src/icons/GitMergeLine";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import { cn } from "src/utils/cn";
 
+import EyeOffLine from "src/icons/EyeOffLine";
 import {
   ContributionStatus,
   GithubCodeReviewStatus,
@@ -99,8 +100,22 @@ export function ContributionIcon({
       [GithubCodeReviewStatus.Approved]: <CodeReviewCheckIcon className={size} />,
       [GithubCodeReviewStatus.ChangeRequested]: <CodeReviewCheckIcon className={size} />,
       [GithubCodeReviewStatus.Commented]: <EyeLine className={size} />,
-      [GithubCodeReviewStatus.Dismissed]: <IssueCancelled className={size} />,
+      [GithubCodeReviewStatus.Dismissed]: <EyeOffLine className={size} />,
       [GithubCodeReviewStatus.Pending]: <EyeLine className={size} />,
+    },
+  };
+
+  const contributionStatusIcons = {
+    [ContributionStatus.InProgress]: icons,
+    [ContributionStatus.Completed]: icons,
+    [ContributionStatus.Cancelled]: {
+      ...icons,
+      // If a contribution has been cancelled we want to force the code review icon, ignoring it's Github status.
+      [GithubContributionType.CodeReview]: Object.fromEntries(
+        Object.entries(icons[GithubContributionType.CodeReview]).map(([key]) => {
+          return [key, <EyeOffLine key={key} className={size} />];
+        })
+      ),
     },
   };
 
@@ -112,7 +127,9 @@ export function ContributionIcon({
   // Even though a type and status should always be defined, in development sometimes they aren't and makes the component crash.
   return type && status ? (
     <div className={cn("leading-none", statusClassnames)}>
-      {icons[type][status as keyof typeof icons[GithubContributionType]]}
+      {contributionStatus
+        ? contributionStatusIcons[contributionStatus][type][status as keyof typeof icons[GithubContributionType]]
+        : icons[type][status as keyof typeof icons[GithubContributionType]]}
     </div>
   ) : null;
 }
