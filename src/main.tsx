@@ -63,8 +63,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                                       <Maintenance />
                                     ) : (
                                       <OnboardingProvider>
-                                        <Stacks />
                                         <App />
+                                        <Stacks />
                                       </OnboardingProvider>
                                     )}
                                   </ContributionDetailPanelProvider>

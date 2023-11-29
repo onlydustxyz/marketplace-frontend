@@ -33,7 +33,6 @@ export default function SidePanel({
 
   const debounceOpen = useCallback(
     debounce(newOpen => {
-      console.log("newOpen", open);
       setDebouncedOpen(newOpen);
     }, 10),
     []
@@ -86,7 +85,6 @@ export default function SidePanel({
             className={cn(
               {
                 "inset-y-0 right-0 h-[calc(100dvh)] lg:w-[680px] lg:max-w-[80%]": placement === "right",
-                // "inset-x-0 bottom-0 max-h-[calc(100dvh)] overflow-y-auto rounded-t-2xl": placement === "bottom",
                 "inset-x-0 bottom-0 h-[calc(100dvh-40px)] rounded-t-2xl": placement === "bottom",
               },
               "fixed w-full bg-greyscale-900 shadow-panel"
