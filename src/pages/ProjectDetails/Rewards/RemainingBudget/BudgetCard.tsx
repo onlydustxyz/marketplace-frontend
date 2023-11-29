@@ -38,6 +38,7 @@ interface Props {
     remaining: number;
     currency: BudgetCurrencyType;
     initialDollarsEquivalent?: number;
+    remainingDollarsEquivalent?: number;
   };
   className?: string;
 }
@@ -62,8 +63,8 @@ export function BudgetCard({ budget, className }: Props) {
               {...withTooltip(T("project.details.remainingBudget.usdInfo"))}
             >
               ~
-              {budget.initialDollarsEquivalent
-                ? formatMoneyAmount({ amount: budget.initialDollarsEquivalent, currency: Currency.USD })
+              {budget.remainingDollarsEquivalent
+                ? formatMoneyAmount({ amount: budget.remainingDollarsEquivalent, currency: Currency.USD })
                 : null}
             </div>
           ) : null}
