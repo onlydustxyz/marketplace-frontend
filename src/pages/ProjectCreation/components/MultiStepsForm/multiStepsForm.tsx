@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { MultiStepsFormProps } from "./multiStepsForm.type";
-import Button, { ButtonType } from "src/components/Button";
+import Button, { ButtonOnBackground, ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import { Flex } from "src/components/New/Layout/Flex";
@@ -54,7 +54,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
             </Button>
           )}
           {next && (
-            <Button disabled={nextDisabled} onClick={next}>
+            <Button disabled={nextDisabled} onBackground={ButtonOnBackground.Blue} onClick={next}>
               {T("common.next")}
               <ArrowRightSLine className="-mr-2 text-2xl" />
             </Button>

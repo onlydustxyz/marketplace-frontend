@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ProjectRewardsRoutePaths } from "src/App";
 import CurrencyLine from "src/icons/CurrencyLine";
 import { useT } from "talkr";
-import Button, { ButtonSize, Width } from "src/components/Button";
+import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import { withTooltip } from "src/components/Tooltip";
 
 interface Props {
@@ -27,7 +27,7 @@ const ProjectRewardTableFallback = ({ disabled = false }: Props) => {
       </div>
       {disabled ? (
         <div {...withTooltip(T("project.details.tableFallback.disabledButtonTooltip"))}>
-          <Button size={ButtonSize.Lg} disabled>
+          <Button size={ButtonSize.Lg} disabled onBackground={ButtonOnBackground.Blue}>
             <CurrencyLine />
             <span>{T("project.details.tableFallback.newReward")}</span>
           </Button>
