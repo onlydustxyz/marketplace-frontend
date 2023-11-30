@@ -5,6 +5,8 @@ import { ContributionReview, ReviewStateStatuses } from "src/components/Contribu
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
+import { useStackNavigation } from "src/libs/react-stack";
+import { StackRoute, StackRouterParams } from "src/App/Stacks";
 
 type Props = {
   contribution: ContributionT;
@@ -13,6 +15,7 @@ type Props = {
 
 export function Contribution({ contribution, isMobile = false }: Props) {
   const { open } = useContributionDetailPanel();
+  const [openContributionPanel] = useStackNavigation<StackRouterParams["Contribution"]>(StackRoute.Contribution);
 
   const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
     contribution;
@@ -41,7 +44,8 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         <button
           className="truncate break-all text-left hover:underline"
           onClick={() => {
-            if (id && project?.id) open({ contributionId: id, projectId: project.id }, githubHtmlUrl);
+            // if (id && project?.id) open({ contributionId: id, projectId: project.id }, githubHtmlUrl);
+            if (id && project?.id) openContributionPanel({ contributionId: id, projectId: project.id, githubHtmlUrl });
           }}
         >
           {githubTitle}
