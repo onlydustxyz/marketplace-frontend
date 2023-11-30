@@ -3,8 +3,6 @@ import { FieldLabel } from "src/components/New/Field/Label";
 import { debounce, uniqWith } from "lodash";
 import { FieldProjectLeadItem } from "./ProjectLeadItem";
 import { useAuth } from "src/hooks/useAuth";
-import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
-import InformationLine from "src/icons/InformationLine";
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
 import UsersApi from "src/api/Users";
 import { useIntl } from "src/hooks/useIntl";
@@ -134,9 +132,6 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
           />
         </div>
         <div className="flex flex-wrap gap-3">{selectedLeads}</div>
-        <FieldInfoMessage icon={({ className }) => <InformationLine className={className} />}>
-          {T("project.details.create.informations.form.fields.projectLead.info")}
-        </FieldInfoMessage>
       </div>
     </div>
   );

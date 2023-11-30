@@ -25,6 +25,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 import { usePooling } from "src/hooks/usePooling/usePooling";
 import { useFormState } from "react-hook-form";
+import { Spinner } from "src/components/Spinner/Spinner";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -43,7 +44,7 @@ function SafeProjectEdition() {
   const [activeTab, setActiveTab] = useState<TabsType>(
     installation_id || initialTab === TabsType.Repos ? TabsType.Repos : TabsType.General
   );
-  const { form, project } = useContext(EditContext);
+  const { form, project, isSubmitting } = useContext(EditContext);
   const { errors } = useFormState({ control: form?.control });
   const errorsKeys = Object.keys(errors || {});
 
@@ -115,12 +116,14 @@ function SafeProjectEdition() {
       </Flex>
 
       <WrapperComponent className="flex w-full flex-1 flex-col overflow-hidden" padded={false} withBg={false}>
-        <header className="z-10 w-full border-b border-greyscale-50/20 bg-card-background-base px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 2xl:rounded-t-2xl">
+        <header className="z-10 w-full border-b border-greyscale-50/20 bg-card-background-base px-4 pb-4 pt-7 shadow-2xl md:px-8 md:pb-0 md:pt-8 2xl:rounded-t-2xl">
           <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} />
         </header>
 
         <Flex
-          className={cn("scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-6")}
+          className={cn(
+            "scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-4 lg:p-6"
+          )}
         >
           {activeTab === TabsType.General ? (
             <Card className="bg-card-background-base">
@@ -136,7 +139,7 @@ function SafeProjectEdition() {
             justify="between"
             item="center"
             gap={4}
-            className="h-full w-full items-center bg-card-background-light px-6 py-5"
+            className="h-full w-full flex-col items-center bg-card-background-light px-6 py-5 lg:flex-row"
           >
             <FormStatus
               {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
@@ -145,9 +148,11 @@ function SafeProjectEdition() {
             <Button
               size={ButtonSize.Md}
               htmlType="submit"
-              disabled={!form?.formState.isDirty || !form?.formState.isValid || form?.formState.isSubmitting}
+              disabled={!form?.formState.isDirty || !form?.formState.isValid || isSubmitting}
               onBackground={ButtonOnBackground.Blue}
+              className="w-full lg:w-auto"
             >
+              {isSubmitting ? <Spinner /> : null}
               {T("project.details.edit.save")}
               <ArrowRightSLine className="-mr-2 text-2xl" />
             </Button>

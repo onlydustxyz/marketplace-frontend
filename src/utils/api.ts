@@ -18,12 +18,12 @@ export function formatRewardItemToGithubPullRequest(item: components["schemas"][
     htmlUrl: item.githubUrl,
     userCommitsCount: {
       aggregate: {
-        count: item.userCommitsCount,
+        count: item.userCommitsCount || 0,
       },
     },
     commitsCount: {
       aggregate: {
-        count: item.commitsCount,
+        count: item.commitsCount || 0,
       },
     },
     repoId: null,

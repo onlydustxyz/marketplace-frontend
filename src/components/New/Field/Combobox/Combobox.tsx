@@ -5,6 +5,7 @@ import { cn } from "src/utils/cn";
 import { ComboboxState } from "./ComboboxState";
 import { ItemType, MultiList } from "./MultiList";
 import { SingleList } from "./SingleList";
+import { useRef } from "react";
 
 type Props<T> = {
   renderItem: ({ item, selected, active }: { item: T; selected: boolean; active: boolean }) => JSX.Element;
@@ -67,12 +68,23 @@ export function Combobox<T extends Record<string, unknown>>({
   isMultiList,
   variant = Variant.Default,
 }: SingleListProps<T> | MultiListProps<T>) {
+  const comboboxButtonRef = useRef<HTMLButtonElement>(null);
   return (
-    <HeadlessCombobox value={selected} onChange={onChange} multiple={multiple as false}>
+    <HeadlessCombobox
+      value={selected}
+      onChange={e => {
+        onChange(e as unknown as T & T[]);
+        if (comboboxButtonRef.current) {
+          comboboxButtonRef.current.click();
+        }
+      }}
+      multiple={multiple as false}
+    >
       {({ open }) => (
         <div className="z-1 relative">
           <HeadlessCombobox.Button
             as="div"
+            ref={comboboxButtonRef}
             className={cn(
               "group relative z-30 flex items-center gap-3 overflow-hidden rounded-lg border px-2.5 py-1.5",
               open

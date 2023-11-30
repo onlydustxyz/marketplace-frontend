@@ -107,7 +107,6 @@ export default function Overview() {
 
   return (
     <>
-      <StillFetchingBanner createdAt={project?.createdAt} />
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
@@ -139,6 +138,7 @@ export default function Overview() {
           ) : null}
         </div>
       </Title>
+      <StillFetchingBanner createdAt={project?.createdAt} />
       {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}

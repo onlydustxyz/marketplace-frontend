@@ -90,7 +90,6 @@ const validationSchema = z.object({
       })
     )
     .min(0),
-
   name: z.string().min(1),
   shortDescription: z.string().min(1),
 });
@@ -266,7 +265,7 @@ export function CreateProjectProvider({
         currentStep,
         installedRepos,
         organizationsLoading: isLoading && !organizationsData?.length,
-        organizations: organizationsData || [],
+        organizations: (organizationsData || []).sort((a, b) => a.login.localeCompare(b.login)),
         PoolingFeedback,
         helpers: {
           saveInSession: onSaveInSession,

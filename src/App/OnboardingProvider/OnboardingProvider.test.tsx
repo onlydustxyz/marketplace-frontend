@@ -1,5 +1,5 @@
 import { describe, it, vi } from "vitest";
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import { GetOnboardingStateDocument } from "src/__generated/graphql";
@@ -8,6 +8,9 @@ import OnboardingProvider from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { RoutePaths } from "..";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
@@ -91,52 +94,51 @@ describe("Terms and conditions wrapper", () => {
     window.localStorage.clear();
   });
 
-  it("shouldn't render its children if the terms and conditions haven't been accepted", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
-    renderWithIntl(
+  const NestedProviders = (
+    <QueryClientProvider client={queryClient}>
       <OnboardingProvider>
         <div>NOT TO BE DISPLAYED</div>
-      </OnboardingProvider>,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          route: `${RoutePaths.Projects}`,
-          mocks: graphQlMocksWithNoAcceptanceDate,
-          context: {},
-        }),
-      }
-    );
+      </OnboardingProvider>
+    </QueryClientProvider>
+  );
+
+  it("shouldn't render its children if the terms and conditions haven't been accepted", async () => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
+    renderWithIntl(NestedProviders, {
+      wrapper: MemoryRouterProviderFactory({
+        route: `${RoutePaths.Projects}`,
+        mocks: graphQlMocksWithNoAcceptanceDate,
+        context: {},
+      }),
+    });
     const element = screen.queryByText("NOT TO BE DISPLAYED");
-    await waitForElementToBeRemoved(element);
+    await waitFor(() => {
+      waitForElementToBeRemoved(element);
+    });
   });
 
   it("shouldn't render its children if the terms and conditions have been accepted before the last modification date", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
-    renderWithIntl(
-      <OnboardingProvider>
-        <div>NOT TO BE DISPLAYED</div>
-      </OnboardingProvider>,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocksWithInvalidAcceptanceDate,
-        }),
-      }
-    );
+    renderWithIntl(NestedProviders, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: graphQlMocksWithInvalidAcceptanceDate,
+      }),
+    });
     const element = screen.queryByText("NOT TO BE DISPLAYED");
-    await waitForElementToBeRemoved(element);
+    await waitFor(() => {
+      waitForElementToBeRemoved(element);
+    });
   });
 
   it("should render its children if the terms and conditions have been accepted after the last modification date", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
-    renderWithIntl(
-      <OnboardingProvider>
-        <div>TO BE DISPLAYED</div>
-      </OnboardingProvider>,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocksWithValidAcceptanceDate,
-        }),
-      }
-    );
-    await screen.findByText("TO BE DISPLAYED");
+    renderWithIntl(NestedProviders, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: graphQlMocksWithValidAcceptanceDate,
+      }),
+    });
+    await waitFor(() => {
+      screen.findByText("TO BE DISPLAYED");
+    });
   });
 });

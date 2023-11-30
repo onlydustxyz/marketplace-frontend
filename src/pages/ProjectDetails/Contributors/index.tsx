@@ -88,7 +88,6 @@ export default function Contributors() {
 
   return (
     <>
-      <StillFetchingBanner createdAt={project?.createdAt} />
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.contributors.title")}
@@ -119,6 +118,7 @@ export default function Contributors() {
           ) : null}
         </div>
       </Title>
+      <StillFetchingBanner createdAt={project?.createdAt} />
       {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}

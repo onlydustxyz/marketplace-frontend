@@ -1,6 +1,6 @@
 import useFilteredWorkItems from "./useFilteredWorkItems";
-import { GithubPullRequestStatus } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import { RewardableItem } from "src/api/Project/queries";
+import { GithubPullRequestStatus } from "src/types";
 
 const workItems: RewardableItem[] = [
   {

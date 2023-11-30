@@ -7,7 +7,7 @@ import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-import { Contribution, GithubContributionType } from "src/types";
+import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
 
 export enum ContributionBadgeSizes {
   Xs = "text-xs",
@@ -24,20 +24,23 @@ export function ContributionBadge({
     position: TooltipPosition.Bottom,
     variant: Variant.Blue,
   },
+  isMine = false,
 }: {
   contribution: Pick<
     Contribution,
     "githubNumber" | "githubTitle" | "githubBody" | "githubHtmlUrl" | "githubAuthor" | "githubStatus" | "type"
-  >;
+  > & { status?: Contribution["status"] };
   withTooltip?: boolean;
   asLink?: boolean;
   size?: ContributionBadgeSizes;
   tooltipProps?: React.ComponentProps<typeof Tooltip>;
+  isMine?: boolean;
 }) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
 
-  const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
+  const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, status, type } =
+    contribution;
   const Component = asLink ? "a" : "div";
   const ComponentProps = asLink ? { href: githubHtmlUrl, target: "_blank", rel: "noopener noreferrer" } : {};
   const isExternal = githubAuthor && githubUserId !== githubAuthor.githubUserId;
@@ -48,6 +51,13 @@ export function ContributionBadge({
     [GithubContributionType.CodeReview]: T("contributions.tooltip.badgeCodeReview"),
     [GithubContributionType.Issue]: T("contributions.tooltip.badgeIssue"),
   };
+
+  const statusClassnames =
+    status && githubStatus !== GithubPullRequestStatus.Draft
+      ? contributionIconVariants.contributionStatus[status]
+      : contributionIconVariants.status[type][
+          githubStatus as keyof typeof contributionIconVariants.status[GithubContributionType]
+        ];
 
   return (
     <>
@@ -61,7 +71,11 @@ export function ContributionBadge({
               </div>
             ) : null}
             <div className="flex gap-2">
-              <ContributionIcon type={type as GithubContributionType} status={githubStatus} />
+              <ContributionIcon
+                type={type as GithubContributionType}
+                status={githubStatus}
+                contributionStatus={status}
+              />
               <div className="flex max-w-sm flex-col items-start justify-start gap-2">
                 <span className="line-clamp-2 text-sm font-medium leading-4">
                   <ExternalLink
@@ -81,21 +95,18 @@ export function ContributionBadge({
         data-tooltip-id={withTooltip ? tooltipId : undefined}
         className={cn(
           "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim",
+          isExternal && !isMine ? "border border-dashed" : "border-0.5 border-solid",
           {
             "hover:bg-whiteFakeOpacity-8": withTooltip || asLink,
-            "border border-dashed": isExternal,
-            "border-0.5 border-solid": !isExternal,
           },
-          contributionIconVariants.status[type][
-            githubStatus as keyof typeof contributionIconVariants.status[GithubContributionType]
-          ]
+          statusClassnames
         )}
         {...ComponentProps}
       >
-        <ContributionIcon type={type as GithubContributionType} status={githubStatus} />
+        <ContributionIcon type={type as GithubContributionType} status={githubStatus} contributionStatus={status} />
         <div className="flex">
           <span className={cn("leading-none", size)}>{githubNumber}</span>
-          {isExternal ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
+          {isExternal && !isMine ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
         </div>
       </Component>
     </>
