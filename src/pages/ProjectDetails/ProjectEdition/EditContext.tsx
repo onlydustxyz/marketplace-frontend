@@ -147,7 +147,10 @@ export function EditProvider({ children, project }: EditContextProps) {
       inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
       projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
-      rewardSettings: project.rewardSettings,
+      rewardSettings: {
+        ...project.rewardSettings,
+        ignoreContributionsBefore: project.rewardSettings?.ignoreContributionsBefore ?? project.createdAt,
+      },
     },
     resolver: zodResolver(validationSchema),
   });
