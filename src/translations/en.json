@@ -481,11 +481,11 @@
             "submitButton": "Create issue",
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
-          "work":{
+          "work": {
             "success": "Other work created and contribution added",
             "error": "The other work could not be created!"
           },
-          "contribution":{
+          "contribution": {
             "success": "Contribution added",
             "error": "The contribution could not be added!"
           },

@@ -1,6 +1,6 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import Button, { ButtonType } from "src/components/Button";
-import BaseCard from "src/components/Card";
+import { Flex } from "src/components/New/Layout/Flex";
 import Tag, { TagSize } from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
@@ -17,6 +17,7 @@ type Props = {
   prev?: () => void;
   next?: () => void;
   submit?: boolean;
+  footerRightElement?: ReactNode;
 } & PropsWithChildren;
 
 export default function Card({
@@ -29,32 +30,59 @@ export default function Card({
   next,
   submit,
   children,
+  footerRightElement,
 }: Props) {
   const { T } = useIntl();
 
   return (
-    <div className="flex min-h-[670px] w-fit flex-col rounded-2xl bg-mosaic bg-contain pt-1.5 outline outline-1 outline-greyscale-50/8">
-      <BaseCard
-        className="flex flex-1 flex-col justify-between gap-12 divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-2"
-        padded={false}
-      >
-        <div className="flex flex-col gap-8 px-8 pb-28 pt-16 xl:px-12 xl:pb-0">
-          <div className="flex flex-col gap-4 xl:w-[600px]">
-            <div className="font-walsheim text-base font-normal text-spaceBlue-100">{`${step}/${stepCount}`}</div>
-            {_private && (
-              <Tag size={TagSize.Small}>
-                <div className="flex flex-row items-center gap-2 text-orange-400">
-                  <LockFill />
-                  {T("onboarding.privateNotice")}
-                </div>
-              </Tag>
-            )}
-            <div className="font-belwe text-2xl font-normal text-greyscale-50">{title}</div>
-            <div className="font-walsheim text-base font-normal text-spaceBlue-100">{description}</div>
-          </div>
-          <div className="flex h-full flex-col gap-6">{children}</div>
+    <div className="relative flex max-h-full w-full max-w-full flex-col overflow-hidden bg-card-background-base md:w-[688px] md:rounded-2xl">
+      <div className="hidden w-full bg-mosaic bg-cover pb-1.5 md:block" />
+
+      <div className="flex flex-col gap-4 bg-card-background-base p-12 pb-5">
+        <div className="font-walsheim text-base font-normal text-spaceBlue-100">{`${step}/${stepCount}`}</div>
+        {_private && (
+          <Tag size={TagSize.Small}>
+            <div className="flex flex-row items-center gap-2 text-orange-400">
+              <LockFill />
+              {T("onboarding.privateNotice")}
+            </div>
+          </Tag>
+        )}
+        <div className="font-belwe text-2xl font-normal text-greyscale-50">{title}</div>
+        <div className="font-walsheim text-base font-normal text-spaceBlue-100">{description}</div>
+      </div>
+      <div className="flex flex-1 flex-col overflow-auto px-3">
+        <div className="overflow-auto scrollbar-thin scrollbar-thumb-spaceBlue-600 scrollbar-thumb-rounded scrollbar-w-1.5">
+          <div className="px-9 pb-4">{children}</div>
         </div>
-        <div className="fixed inset-x-0 bottom-0 z-10 flex w-full flex-row items-center justify-end gap-6 bg-whiteFakeOpacity-2 p-6 xl:relative xl:rounded-b-2xl xl:bg-white/2">
+      </div>
+
+      {/* <div className="flex flex-col gap-8 px-8 pb-28 pt-16 xl:px-12 xl:pb-0">
+        <div className="flex flex-col gap-4 xl:w-[600px]">
+          <div className="font-walsheim text-base font-normal text-spaceBlue-100">{`${step}/${stepCount}`}</div>
+          {_private && (
+            <Tag size={TagSize.Small}>
+              <div className="flex flex-row items-center gap-2 text-orange-400">
+                <LockFill />
+                {T("onboarding.privateNotice")}
+              </div>
+            </Tag>
+          )}
+          <div className="font-belwe text-2xl font-normal text-greyscale-50">{title}</div>
+          <div className="font-walsheim text-base font-normal text-spaceBlue-100">{description}</div>
+        </div>
+        <div className="flex h-full flex-col gap-6">{children}</div>
+      </div> */}
+      <Flex
+        justify="between"
+        item="center"
+        gap={4}
+        className="z-10 flex w-full border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
+      >
+        <Flex justify="start" item="center">
+          {footerRightElement ? footerRightElement : null}
+        </Flex>
+        <Flex justify="end" item="center" gap={6}>
           {prev && (
             <Button type={ButtonType.Secondary} onClick={prev}>
               <ArrowLeftSLine className="-ml-2 text-2xl" />
@@ -72,8 +100,11 @@ export default function Card({
               <CheckLine className="-ml-1 text-2xl" /> {T("onboarding.submitButton")}
             </Button>
           )}
-        </div>
-      </BaseCard>
+        </Flex>
+      </Flex>
+      {/* <div className="fixed inset-x-0 bottom-0 z-10 flex w-full flex-row items-center justify-end gap-6 bg-whiteFakeOpacity-2 p-6 xl:relative xl:rounded-b-2xl xl:bg-white/2">
+
+      </div> */}
     </div>
   );
 }
