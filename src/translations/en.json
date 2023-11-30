@@ -481,11 +481,11 @@
             "submitButton": "Create issue",
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
-          "work":{
+          "work": {
             "success": "Other work created and contribution added",
             "error": "The other work could not be created!"
           },
-          "contribution":{
+          "contribution": {
             "success": "Contribution added",
             "error": "The contribution could not be added!"
           },
@@ -514,6 +514,10 @@
         "ignoreUnignoreContribution": {
           "success": "The contribution was successfully __action__",
           "error": "The contribution could not be __action__"
+        },
+        "ignoreUnignoreContributions": {
+          "success": "The contributions was successfully __action__",
+          "error": "The contributions could not be __action__"
         }
       },
       "leftToSpend": "Left to spend",
@@ -595,7 +599,7 @@
         "title": "Reward #__id__",
         "to": "to",
         "you": "(you)",
-        "contributions": "Included in reward",
+        "contributions": "Contributions included in reward",
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
         "rewardItems": {
           "error": "An error occurred, please try again later."
@@ -1116,9 +1120,8 @@
       },
       "banners": {
         "missingGithubAppInstall": {
-          "message": "To continue rewarding your contributors, please install the Only Dust Github app on your organisations.",
-          "button": "Edit project",
-          "org": "Connect the Github app for the __org__ organisation"
+          "message": "To continue rewarding your contributors, please install the Only Dust Github app.",
+          "button": "Edit project"
         }
       }
     },
@@ -1140,7 +1143,7 @@
       "view": "View invite"
     },
     "missingGithubAppInstall": {
-      "message": "To continue rewarding your contributors, please install the Only Dust Github app on your organisations.",
+      "message": "To continue rewarding your contributors, please install the Only Dust Github app.",
       "button": "Edit project"
     }
   },

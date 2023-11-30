@@ -104,6 +104,7 @@ export function CreateProjectProvider({
   reposStorage,
 }: CreateContextProps) {
   const { T } = useIntl();
+  const [enableAutoSaved, setEnableAutoSaved] = useState<boolean>(true);
   const [installedRepos, setInstalledRepos] = useState<number[]>(initialInstalledRepo || []);
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
@@ -180,6 +181,7 @@ export function CreateProjectProvider({
   };
 
   const onSubmit = () => {
+    setEnableAutoSaved(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { search, projectLeads, selectedRepos, ...formData } = form.getValues();
     createProject({
@@ -282,7 +284,9 @@ export function CreateProjectProvider({
       <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
         <form className="flex h-full items-center justify-center md:p-6" onSubmit={form.handleSubmit(onSubmit)}>
           {children}
-          <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_CREATE_PROJECT_FORM} />
+          {enableAutoSaved && (
+            <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_CREATE_PROJECT_FORM} />
+          )}
         </form>
       </Background>
     </CreateProjectContext.Provider>
