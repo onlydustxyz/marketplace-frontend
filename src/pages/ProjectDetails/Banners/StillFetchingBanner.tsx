@@ -15,13 +15,13 @@ export default function StillFetchingBanner({ createdAt }: StillFetchingBannerPr
   const { T } = useIntl();
   const canDisplay = shouldDisplayBanner(createdAt);
 
-  //   if (!createdAt) {
-  //     return null;
-  //   }
+  if (!createdAt) {
+    return null;
+  }
 
-  //   if (!canDisplay) {
-  //     return null;
-  //   }
+  if (!canDisplay) {
+    return null;
+  }
 
   return (
     <ShinnyBanner
