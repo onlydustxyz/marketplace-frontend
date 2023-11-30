@@ -514,6 +514,10 @@
         "ignoreUnignoreContribution": {
           "success": "The contribution was successfully __action__",
           "error": "The contribution could not be __action__"
+        },
+        "ignoreUnignoreContributions": {
+          "success": "The contributions was successfully __action__",
+          "error": "The contributions could not be __action__"
         }
       },
       "leftToSpend": "Left to spend",
