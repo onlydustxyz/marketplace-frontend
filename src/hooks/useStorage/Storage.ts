@@ -59,7 +59,8 @@ export class StorageClass<T> implements StorageInterface<T> {
       this.value = this.initialValue;
       this.callback?.(this.value);
       return this.value;
-    } catch {
+    } catch (err) {
+      console.log("err", err);
       return this.initialValue;
     }
   };
