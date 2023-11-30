@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { BrowserRouter } from "react-router-dom";
 import { HasuraUserRole } from "src/types";
@@ -11,6 +11,9 @@ import { MockedProvider } from "@apollo/client/testing";
 import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider } from "src/hooks/useTokenSet";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { ToasterProvider } from "src/hooks/useToaster";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 expect.extend(matchers);
 
@@ -37,9 +40,8 @@ describe('"ProtectedRoute" component', () => {
     window.localStorage.clear();
   });
 
-  it("should display its child element when there is a token in the local storage", () => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
-    renderWithIntl(
+  const NestedProviders = (
+    <QueryClientProvider client={queryClient}>
       <MockedProvider>
         <ToasterProvider>
           <TokenSetProvider>
@@ -50,14 +52,25 @@ describe('"ProtectedRoute" component', () => {
             </ImpersonationClaimsProvider>
           </TokenSetProvider>
         </ToasterProvider>
-      </MockedProvider>,
-      { wrapper: BrowserRouter }
-    );
-    expect(screen.queryByText(CHILD_ELEMENT_TEXT)).toBeInTheDocument();
+      </MockedProvider>
+    </QueryClientProvider>
+  );
+
+  it("should display its child element when there is a token in the local storage", async () => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+    renderWithIntl(NestedProviders, { wrapper: BrowserRouter });
+    await waitFor(() => {
+      screen.findByText(CHILD_ELEMENT_TEXT);
+    });
   });
 
-  it("should not display its child element when there is no token in the local storage", () => {
+  it("should not display its child element when there is no token in the local storage", async () => {
     window.localStorage.clear();
-    expect(screen.queryByText(CHILD_ELEMENT_TEXT)).not.toBeInTheDocument();
+    renderWithIntl(NestedProviders, { wrapper: BrowserRouter });
+    expect(
+      await waitFor(() => {
+        screen.findByText(CHILD_ELEMENT_TEXT);
+      })
+    ).not.toBeTruthy();
   });
 });

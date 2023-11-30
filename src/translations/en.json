@@ -481,8 +481,14 @@
             "submitButton": "Create issue",
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
-          "success": "Issue created and contribution added",
-          "error": "The issue could not be created!",
+          "work":{
+            "success": "Other work created and contribution added",
+            "error": "The other work could not be created!"
+          },
+          "contribution":{
+            "success": "Contribution added",
+            "error": "The contribution could not be added!"
+          },
           "tab": "Other work",
           "tabShort": "Other",
           "title": "Describe the work",
@@ -1109,7 +1115,7 @@
       },
       "banners": {
         "missingGithubAppInstall": {
-          "message": "We identified multiple issues on your project. Please fix them to be able to reward contributors.",
+          "message": "To continue rewarding your contributors, please install the Only Dust Github app on your organisations.",
           "button": "Edit project",
           "org": "Connect the Github app for the __org__ organisation"
         }
@@ -1133,7 +1139,7 @@
       "view": "View invite"
     },
     "missingGithubAppInstall": {
-      "message": "We identified multiple errors on your project. Please fix them to be able to reward contributors.",
+      "message": "To continue rewarding your contributors, please install the Only Dust Github app on your organisations.",
       "button": "Edit project"
     }
   },

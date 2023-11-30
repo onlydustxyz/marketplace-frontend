@@ -8,6 +8,9 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { AcceptTermsAndConditionsDocument, GetOnboardingStateDocument } from "src/__generated/graphql";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
@@ -69,9 +72,14 @@ const mocks = [
 ];
 
 describe("Terms and Conditions page", () => {
+  const NestedProviders = (
+    <QueryClientProvider client={queryClient}>
+      <TermsAndConditions />
+    </QueryClientProvider>
+  );
   it("the terms and conditions should be clickable", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
-    renderWithIntl(<TermsAndConditions />, { wrapper: MemoryRouterProviderFactory({ mocks }) });
+    renderWithIntl(NestedProviders, { wrapper: MemoryRouterProviderFactory({ mocks }) });
     await userEvent.click(await screen.findByText("Let’s get reading!"));
     await screen.findByText("Summary of our Terms & Conditions");
     // this button should be disabled
