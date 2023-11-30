@@ -246,5 +246,5 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
     );
   }
 
-  return <div className="h-full px-6 py-8">{renderContent()}</div>;
+  return <div className="h-full px-6 py-8 pt-16 lg:pt-8">{renderContent()}</div>;
 }
