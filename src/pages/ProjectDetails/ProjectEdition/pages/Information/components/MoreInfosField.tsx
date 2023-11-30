@@ -9,9 +9,9 @@ import AddLine from "src/icons/AddLine";
 import DeleteBinLine from "src/icons/DeleteBinLine";
 import Draggable from "src/icons/Draggable";
 import { cn } from "src/utils/cn";
-import Link from "src/icons/Link";
 import { useIntl } from "src/hooks/useIntl";
 import { MoreInfos } from "src/types";
+import { SocialIcon } from "./SocialIcon";
 
 const DragHandler = (
   props: JSX.IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>
@@ -111,7 +111,7 @@ export function MoreInfosField({ onChange, value, form, error }: EditFormData | 
 
                         onChange(updatedValue);
                       }}
-                      startIcon={({ className }) => <Link className={className} />}
+                      startIcon={({ className }) => <SocialIcon search={item.url} className={className} />}
                     />
                     <FieldInput
                       name={"moreInfos.value-" + index}

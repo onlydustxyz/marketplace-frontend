@@ -8,6 +8,7 @@ import Sponsor from "./Sponsor";
 import { Leader, MoreInfos, Sponsor as SponsorType, TopContributor } from "src/types";
 import Flex from "src/components/Utils/Flex";
 import ExternalLink from "src/components/ExternalLink";
+import { SocialIcon } from "../../ProjectEdition/pages/Information/components/SocialIcon";
 
 const filterLeadsByLogin = (leads?: Leader[]) => leads?.filter(lead => isDefined(lead?.login)) || [];
 
@@ -109,7 +110,8 @@ export default function OverviewPanel({
             className="space-y-2 overflow-hidden text-sm font-semibold text-spacePurple-500"
           >
             {moreInfos.map(moreInfo => (
-              <li key={moreInfo.url} className="">
+              <li key={moreInfo.url} className="flex">
+                <SocialIcon search={moreInfo.url} className="mr-1 inline-block h-4 w-4 text-spacePurple-500" />
                 <ExternalLink
                   text={moreInfo.value || moreInfo.url.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
                   url={moreInfo.url}
