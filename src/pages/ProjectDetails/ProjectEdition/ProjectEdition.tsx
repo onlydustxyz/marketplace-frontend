@@ -116,7 +116,7 @@ function SafeProjectEdition() {
       </Flex>
 
       <WrapperComponent className="flex w-full flex-1 flex-col overflow-hidden" padded={false} withBg={false}>
-        <header className="z-10 w-full border-b border-greyscale-50/20 bg-card-background-base px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8 2xl:rounded-t-2xl">
+        <header className="z-10 w-full border-b border-greyscale-50/20 bg-card-background-base px-4 pb-4 pt-7 shadow-2xl md:px-8 md:pb-0 md:pt-8 2xl:rounded-t-2xl">
           <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} />
         </header>
 
