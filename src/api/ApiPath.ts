@@ -22,6 +22,9 @@ export const API_PATH = {
   PROJECT_IGNORE_UNIGNORE_CONTRIBUTIONS: (projectId: string) =>
     BASE_API_V1(`projects/${projectId}/ignored-contributions`),
   PROJECT_CREATE_OTHER_WORKS: (projectId: string) => BASE_API_V1(`projects/${projectId}/rewardable-items/other-works`),
+  PROJECT_CREATE_OTHER_PULL_REQUEST: (projectId: string) =>
+    BASE_API_V1(`projects/${projectId}/rewardable-items/other-pull-requests`),
+  PROJECT_CREATE_OTHER_ISSUE: (projectId: string) => BASE_API_V1(`projects/${projectId}/rewardable-items/other-issues`),
   PROJECT_CONTRIBUTORS: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributors`),
 
   /* --------------------------------- USERS -------------------------------- */

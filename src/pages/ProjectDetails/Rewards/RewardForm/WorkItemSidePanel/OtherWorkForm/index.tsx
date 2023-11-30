@@ -100,10 +100,10 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
   useMutationAlert({
     mutation: restcreateOtherWorkMutation,
     success: {
-      message: T("reward.form.contributions.other.success"),
+      message: T("reward.form.contributions.other.success", { item: T("reward.form.contributions.other.tab") }),
     },
     error: {
-      message: T("reward.form.contributions.other.error"),
+      message: T("reward.form.contributions.other.error", { item: T("reward.form.contributions.other.tab") }),
     },
   });
 
