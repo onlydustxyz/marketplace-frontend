@@ -266,7 +266,7 @@ export function CreateProjectProvider({
         currentStep,
         installedRepos,
         organizationsLoading: isLoading && !organizationsData?.length,
-        organizations: organizationsData || [],
+        organizations: (organizationsData || []).sort((a, b) => a.login.localeCompare(b.login)),
         PoolingFeedback,
         helpers: {
           saveInSession: onSaveInSession,

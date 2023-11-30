@@ -166,7 +166,9 @@ export function EditProvider({ children, project }: EditContextProps) {
       return projectOrg;
     });
 
-    return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
+    return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id).sort((a, b) =>
+      a.login.localeCompare(b.login)
+    );
   }, [organizationsData, project]);
 
   const onAddRepository = (organizationId: number, repoId: number) => {
