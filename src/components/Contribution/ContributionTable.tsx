@@ -161,7 +161,7 @@ export function ContributionTable({
             <ContributionProjectRepo project={project} repo={repo} />
           </Cell>
           <Cell height={CellHeight.Compact}>
-            <Contribution contribution={contribution} />
+            <Contribution contribution={contribution} isMine />
           </Cell>
           <Cell className="justify-end gap-1" height={CellHeight.Compact}>
             {ContributionLinked({ contribution }) ? <ContributionLinked contribution={contribution} /> : "-"}

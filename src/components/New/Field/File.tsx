@@ -62,7 +62,7 @@ export const FieldImage = forwardRef(function FieldImage<F extends string | File
   return (
     <Field {...rest}>
       <div
-        className={cn("flex w-full gap-3", {
+        className={cn("flex w-full gap-3 max-sm:flex-col", {
           "pointer-events-none": upload?.loading,
         })}
       >

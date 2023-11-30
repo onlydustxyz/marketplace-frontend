@@ -481,11 +481,11 @@
             "submitButton": "Create issue",
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
-          "work":{
+          "work": {
             "success": "Other work created and contribution added",
             "error": "The other work could not be created!"
           },
-          "contribution":{
+          "contribution": {
             "success": "Contribution added",
             "error": "The contribution could not be added!"
           },
@@ -595,7 +595,7 @@
         "title": "Reward #__id__",
         "to": "to",
         "you": "(you)",
-        "contributions": "Included in reward",
+        "contributions": "Contributions included in reward",
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
         "rewardItems": {
           "error": "An error occurred, please try again later."
@@ -970,7 +970,7 @@
               },
               "long": {
                 "label": "Long description",
-                "placeholder": "A project about dust."
+                "placeholder": "Within the OnlyDust galaxy, you're the stardust that shapes the future. Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach."
               },
               "logo": {
                 "label": "Project visual",
