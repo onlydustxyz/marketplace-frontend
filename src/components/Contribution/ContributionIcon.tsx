@@ -112,7 +112,7 @@ export function ContributionIcon({
       ...icons,
       // If a contribution has been cancelled we want to force the code review icon, ignoring it's Github status.
       [GithubContributionType.CodeReview]: Object.fromEntries(
-        Object.entries(icons[GithubContributionType.CodeReview]).map(([key]) => {
+        Object.keys(icons[GithubContributionType.CodeReview]).map(key => {
           return [key, <EyeOffLine key={key} className={size} />];
         })
       ),
