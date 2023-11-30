@@ -104,12 +104,12 @@ const View: React.FC<Props> = ({
   useMutationAlert({
     mutation: restignoreContributionMutation,
     success: {
-      message: T("reward.form.contributions.ignoreUnignoreContribution.success", {
+      message: T("reward.form.contributions.ignoreUnignoreContributions.success", {
         action: "ignored",
       }),
     },
     error: {
-      message: T("reward.form.contributions.ignoreUnignoreContribution.error", {
+      message: T("reward.form.contributions.ignoreUnignoreContributions.error", {
         action: "ignored",
       }),
     },
