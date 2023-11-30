@@ -13,11 +13,11 @@ export default function ContributorProfileSidePanel({ githubUserId, setOpen }: P
   const { data: gqlProfile } = useUserProfile({ githubUserId });
   const { data: restFulProfile } = useRestfulProfile({ githubUserId });
 
-  return gqlProfile && restFulProfile ? (
+  return restFulProfile ? (
     <View
       isOwn={currentUserGithubId === restFulProfile.githubUserId}
       restFulProfile={restFulProfile}
-      gqlProfile={gqlProfile.profile}
+      gqlProfile={gqlProfile?.profile}
       setOpen={setOpen}
     />
   ) : null;
