@@ -25,6 +25,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 import { usePooling } from "src/hooks/usePooling/usePooling";
 import { useFormState } from "react-hook-form";
+import { Spinner } from "src/components/Spinner/Spinner";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -43,7 +44,7 @@ function SafeProjectEdition() {
   const [activeTab, setActiveTab] = useState<TabsType>(
     installation_id || initialTab === TabsType.Repos ? TabsType.Repos : TabsType.General
   );
-  const { form, project } = useContext(EditContext);
+  const { form, project, isSubmitting } = useContext(EditContext);
   const { errors } = useFormState({ control: form?.control });
   const errorsKeys = Object.keys(errors || {});
 
@@ -147,10 +148,11 @@ function SafeProjectEdition() {
             <Button
               size={ButtonSize.Md}
               htmlType="submit"
-              disabled={!form?.formState.isDirty || !form?.formState.isValid || form?.formState.isSubmitting}
+              disabled={!form?.formState.isDirty || !form?.formState.isValid || isSubmitting}
               onBackground={ButtonOnBackground.Blue}
               className="w-full lg:w-auto"
             >
+              {isSubmitting ? <Spinner /> : null}
               {T("project.details.edit.save")}
               <ArrowRightSLine className="-mr-2 text-2xl" />
             </Button>

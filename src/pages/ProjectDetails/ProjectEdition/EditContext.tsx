@@ -39,6 +39,7 @@ type Edit = {
     addRepository: (organizationId: number, repoId: number) => void;
     removeRepository: (organizationId: number, repoId: number) => void;
   };
+  isSubmitting: boolean;
 };
 
 export interface EditFormDataRepos {
@@ -68,6 +69,7 @@ export const EditContext = createContext<Edit>({
     run: () => null,
     inGithubWorkflow: false,
   },
+  isSubmitting: false,
 });
 
 const SESSION_KEY = "edit-project-";
@@ -238,10 +240,11 @@ export function EditProvider({ children, project }: EditContextProps) {
     formStorage.removeValue();
   }, []);
 
-  const { mutate: updateProject } = ProjectApi.mutations.useUpdateProject({
+  const { mutate: updateProject, isPending: isSubmitting } = ProjectApi.mutations.useUpdateProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
       onSuccess: async (data, queryClient) => {
+        form.reset(form.getValues());
         showToaster(T("form.toast.success"));
         clearSession();
 
@@ -263,7 +266,6 @@ export function EditProvider({ children, project }: EditContextProps) {
     const { githubRepos, ...rest } = formData;
     const githubRepoIds = githubRepos.map(repo => repo.id);
     updateProject({ ...rest, githubRepoIds });
-    form.reset(form.getValues());
   };
 
   useEffect(() => {
@@ -288,6 +290,7 @@ export function EditProvider({ children, project }: EditContextProps) {
           inGithubWorkflow,
           run: runGithubWorkflow,
         },
+        isSubmitting,
       }}
     >
       <EditPanelProvider openOnLoad={!!installation_id} isLoading={false} project={project}>
