@@ -40,5 +40,5 @@ export const Panel = <P extends StacksParams>({ panelRef }: PanelProps<P>) => {
       domContainer
     );
   }
-  return <></>;
+  return null;
 };

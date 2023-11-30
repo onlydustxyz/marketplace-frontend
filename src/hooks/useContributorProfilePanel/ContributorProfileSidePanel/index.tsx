@@ -5,10 +5,9 @@ import useRestfulProfile from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 type Props = {
   githubUserId: number;
-  setOpen: (value: boolean) => void;
 };
 
-export default function ContributorProfileSidePanel({ githubUserId, setOpen }: Props) {
+export default function ContributorProfileSidePanel({ githubUserId }: Props) {
   const { githubUserId: currentUserGithubId } = useAuth();
   const { data: gqlProfile } = useUserProfile({ githubUserId });
   const { data: restFulProfile } = useRestfulProfile({ githubUserId });
@@ -18,7 +17,6 @@ export default function ContributorProfileSidePanel({ githubUserId, setOpen }: P
       isOwn={currentUserGithubId === restFulProfile.githubUserId}
       restFulProfile={restFulProfile}
       gqlProfile={gqlProfile.profile}
-      setOpen={setOpen}
     />
   ) : null;
 }

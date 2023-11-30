@@ -20,5 +20,5 @@ export const Stack = <P extends StacksParams>({ stackRef }: StackProps<P>) => {
       </>
     );
   }
-  return <div>name: {stack?.name}</div>;
+  return null;
 };

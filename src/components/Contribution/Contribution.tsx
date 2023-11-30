@@ -5,8 +5,7 @@ import { ContributionReview, ReviewStateStatuses } from "src/components/Contribu
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
-import { useStackNavigation } from "src/libs/react-stack";
-import { StackRoute, StackRouterParams } from "src/App/Stacks";
+import { useStackContribution } from "src/App/Stacks";
 import Button, { ButtonSize, ButtonType } from "../Button";
 import GithubLogo from "src/icons/GithubLogo";
 import { useIntl } from "src/hooks/useIntl";
@@ -19,7 +18,7 @@ type Props = {
 export function Contribution({ contribution, isMobile = false }: Props) {
   const { T } = useIntl();
   const { open } = useContributionDetailPanel();
-  const [openContributionPanel] = useStackNavigation<StackRouterParams["Contribution"]>(StackRoute.Contribution);
+  const [openContributionPanel] = useStackContribution();
 
   const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
     contribution;

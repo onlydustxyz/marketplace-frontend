@@ -11,7 +11,7 @@ export const History = () => {
   const portalContainer = document.querySelector("#stack-panel-root");
 
   if (!portalContainer) {
-    return <></>;
+    return null;
   }
 
   return (

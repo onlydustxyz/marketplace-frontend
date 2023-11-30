@@ -25,7 +25,7 @@ export const Stacks = () => {
           {({ params }) => (
             <>
               <TestStack />
-              <ContributorProfileSidePanel githubUserId={params?.githubUserId} setOpen={() => null} />
+              <ContributorProfileSidePanel githubUserId={params?.githubUserId} />
             </>
           )}
         </RegisterStack>

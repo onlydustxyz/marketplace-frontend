@@ -1,7 +1,7 @@
 import { ContributionDetail } from "src/components/ContributionDetail/ContributionDetail";
 import RewardSidePanel, { RewardSidePanelAsLeader } from "src/components/UserRewardTable/RewardSidePanel";
 import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
-import { RegisterStack } from "src/libs/react-stack";
+import { RegisterStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
 
 export enum StackRoute {
@@ -32,7 +32,7 @@ export const Stacks = () => {
   return (
     <>
       <RegisterStack<StackRouterParams["ContributorProfile"]> name={StackRoute.ContributorProfile}>
-        {({ params }) => <ContributorProfileSidePanel {...params} setOpen={() => null} />}
+        {({ params }) => <ContributorProfileSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack<StackRouterParams["ProjectReward"]> name={StackRoute.ProjectReward}>
         {({ params }) => <RewardSidePanelAsLeader {...params} />}
@@ -45,4 +45,20 @@ export const Stacks = () => {
       </RegisterStack>
     </>
   );
+};
+
+export const useStackProjectReward = () => {
+  return useStackNavigation<StackRouterParams["ProjectReward"]>(StackRoute.ProjectReward);
+};
+
+export const useStackContribution = () => {
+  return useStackNavigation<StackRouterParams["Contribution"]>(StackRoute.Contribution);
+};
+
+export const useStackMyReward = () => {
+  return useStackNavigation<StackRouterParams["MyReward"]>(StackRoute.MyReward);
+};
+
+export const useStackContributorProfile = () => {
+  return useStackNavigation<StackRouterParams["ContributorProfile"]>(StackRoute.ContributorProfile);
 };

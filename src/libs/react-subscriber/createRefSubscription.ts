@@ -10,7 +10,7 @@ import { Events } from "./types/Event";
  * @param value - The initial value.
  * @returns The subscription object.
  */
-export const UnsafeCreateRefSubscription = <T>(value: T): RefSubscriptionInterface<T> => {
+export const unsafeCreateRefSubscription = <T>(value: T): RefSubscriptionInterface<T> => {
   const store: RefSubscriptionInterface<T> = {
     state: value,
     emitter: new EventEmitter(),

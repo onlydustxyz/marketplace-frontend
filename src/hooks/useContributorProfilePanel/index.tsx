@@ -1,6 +1,5 @@
 import { createContext, PropsWithChildren, useCallback, useContext } from "react";
-import { useStackNavigation } from "src/libs/react-stack";
-import { StackRoute, StackRouterParams } from "src/App/Stacks";
+import { useStackContributorProfile } from "src/App/Stacks";
 
 type ContributorProfilePanel = {
   open: (githubUserId: number) => void;
@@ -11,7 +10,7 @@ const ContributorProfilePanelContext = createContext<ContributorProfilePanel | n
 export const ContributorProfilePanelProvider = ({ children }: PropsWithChildren) => {
   //   const [githubUserId, setGithubUserId] = useState<number>();
   //   const [open, setOpen] = useState(false);
-  const [openProfilePanel] = useStackNavigation<StackRouterParams["ContributorProfile"]>(StackRoute.ContributorProfile);
+  const [openProfilePanel] = useStackContributorProfile();
 
   const openSidePanel = useCallback((githubUserId: number) => {
     // setGithubUserId(githubUserId);

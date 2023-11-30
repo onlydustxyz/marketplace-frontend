@@ -12,7 +12,7 @@ import {
   reactStackContextProps,
 } from "./stack.context.type";
 import { RefSubscriptionInterface, useRefSubscription } from "src/libs/react-subscriber";
-import { UnsafeCreateRefSubscription } from "src/libs/react-subscriber/createRefSubscription";
+import { unsafeCreateRefSubscription } from "src/libs/react-subscriber/createRefSubscription";
 import { ReactStackContext } from "./stack.context";
 import { History as HistoryComponent } from "../components/History";
 
@@ -103,7 +103,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         ...prev,
         panels: {
           ...prev.panels,
-          [panelId]: UnsafeCreateRefSubscription<StackPanelInterface>({
+          [panelId]: unsafeCreateRefSubscription<StackPanelInterface>({
             open: true,
             position: "hidden",
             id: panelId,
