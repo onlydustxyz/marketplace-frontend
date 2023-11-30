@@ -82,10 +82,13 @@ const validationSchema = z.object({
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
-  moreInfo: z.object({
-    url: z.string().min(1),
-    value: z.string().min(1),
-  }),
+  moreInfo: z
+    .object({
+      url: z.string().min(1),
+      value: z.string().nullable().optional(),
+    })
+    .nullable()
+    .optional(),
 
   name: z.string().min(1),
   shortDescription: z.string().min(1),
@@ -182,7 +185,7 @@ export function CreateProjectProvider({
     createProject({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
-      moreInfos: [moreInfo],
+      moreInfos: moreInfo ? [moreInfo] : undefined,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
     });
   };
@@ -263,7 +266,7 @@ export function CreateProjectProvider({
         currentStep,
         installedRepos,
         organizationsLoading: isLoading && !organizationsData?.length,
-        organizations: organizationsData || [],
+        organizations: (organizationsData || []).sort((a, b) => a.login.localeCompare(b.login)),
         PoolingFeedback,
         helpers: {
           saveInSession: onSaveInSession,

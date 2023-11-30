@@ -7,6 +7,7 @@ import { cn } from "src/utils/cn";
 export interface VerticalListItemCardProps extends PropsWithChildren {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;
   ContainerProps?: Partial<ComponentProps<typeof Card>>;
+  headerClassName?: string;
   ChildrenContainerProps?: {
     className?: string;
   };
@@ -29,6 +30,7 @@ export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
   title,
   avatarAlt,
   avatarSrc,
+  headerClassName,
 }) => {
   const { className: ContainerClassName, ...RestContainerProps } = ContainerProps;
 
@@ -38,7 +40,7 @@ export const VerticalListItemCard: FC<VerticalListItemCardProps> = ({
       fullWidth
       {...RestContainerProps}
     >
-      <Flex className="items-center justify-between">
+      <Flex className={cn("items-center justify-between", headerClassName)}>
         <Flex justify="start" item="center" gap={2}>
           {avatarComponent || <Avatar src={avatarSrc} alt={avatarAlt} size="6" shape="square" {...AvatarProps} />}
           {titleComponent || <p className=" text-sm font-medium uppercase">{title}</p>}
