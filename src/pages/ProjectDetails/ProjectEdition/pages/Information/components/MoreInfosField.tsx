@@ -12,6 +12,7 @@ import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
 import { MoreInfos } from "src/types";
 import { SocialIcon } from "./SocialIcon";
+import { EditFormData } from "../../../EditContext";
 
 const DragHandler = (
   props: JSX.IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>
@@ -34,11 +35,11 @@ type SortableMoreInfos = MoreInfos & { id: string };
 type MoreInfosFieldProps = {
   onChange: (...event: unknown[]) => void;
   value?: MoreInfos[];
-  error?: ControllerFieldState["error"];
 };
 
 type EditFormData = MoreInfosFieldProps & {
   form?: UseFormReturn<EditFormData, unknown>;
+  error?: ControllerFieldState["error"];
 };
 
 type CreateFormData = MoreInfosFieldProps & {
