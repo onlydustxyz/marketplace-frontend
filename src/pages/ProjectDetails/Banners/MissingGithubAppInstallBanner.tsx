@@ -23,8 +23,8 @@ export function MissingGithubAppInstallBanner({
         <div className="font-walsheim text-white">
           <p className="mb-1 font-medium">{T("project.details.banners.missingGithubAppInstall.message")}</p>
           <ul className="list-inside list-disc text-sm">
-            {orgs.map(({ id, name }) => (
-              <li key={id}>{name}</li>
+            {orgs.map(({ id, name, login }) => (
+              <li key={id}>{name || login}</li>
             ))}
           </ul>
         </div>
