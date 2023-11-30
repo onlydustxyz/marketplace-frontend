@@ -1,3 +1,4 @@
+import { useFloating, autoUpdate, flip } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
 import isSameDay from "date-fns/isSameDay";
 import { DayPickerSingleProps } from "react-day-picker";
@@ -22,6 +23,11 @@ type Props = {
 
 export function Datepicker({ value, isElevated = false, onChange, periods }: Props) {
   const { T } = useIntl();
+  const { refs, floatingStyles, placement } = useFloating({
+    middleware: [flip()],
+    whileElementsMounted: autoUpdate,
+    transform: false,
+  });
 
   function renderCalendar() {
     return <Calendar mode="single" selected={value} onSelect={onChange} />;
@@ -42,6 +48,7 @@ export function Datepicker({ value, isElevated = false, onChange, periods }: Pro
       {({ open }) => (
         <>
           <Popover.Button
+            ref={refs.setReference}
             className={cn(
               "flex w-full items-center gap-6 rounded-xl border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 text-greyscale-50 shadow-lg",
               {
@@ -66,16 +73,20 @@ export function Datepicker({ value, isElevated = false, onChange, periods }: Pro
           </Popover.Button>
 
           <Transition
+            ref={refs.setFloating}
+            style={{ ...floatingStyles, right: "-6px" }}
             enter="transition duration-100 ease-out"
             enterFrom="transform scale-95 opacity-0"
             enterTo="transform scale-100 opacity-100"
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
-            className={cn(
-              "absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 overflow-hidden rounded-xl border border-greyscale-50/8 shadow-lg",
-              isElevated ? "bg-greyscale-800" : "bg-greyscale-900"
-            )}
+            className={cn("z-10 overflow-hidden rounded-xl border border-greyscale-50/8 shadow-lg", {
+              "bg-greyscale-800": isElevated,
+              "bg-greyscale-900": !isElevated,
+              "origin-top translate-y-1.5": placement === "bottom",
+              "origin-bottom -translate-y-1.5": placement === "top",
+            })}
           >
             <Popover.Panel>
               {periods?.length ? (
