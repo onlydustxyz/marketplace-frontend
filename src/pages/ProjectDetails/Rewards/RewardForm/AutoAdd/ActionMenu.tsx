@@ -25,7 +25,7 @@ export default function ActionMenu({ actions, children, disabled }: Props) {
         leaveTo="transform scale-95 opacity-0"
         className="relative z-10"
       >
-        <Menu.Items className="absolute -left-6 -top-12 z-40 w-auto min-w-max origin-top-right rounded-xl bg-greyscale-900 p-2 font-walsheim text-sm font-normal shadow-medium outline-none focus:outline-none">
+        <Menu.Items className="absolute -top-12 right-0 z-40 w-auto min-w-max origin-top-right rounded-xl bg-greyscale-900 p-2 font-walsheim text-sm font-normal shadow-medium outline-none focus:outline-none">
           {actions.map((action, index) => (
             <div key={index} className="cursor-pointer rounded p-2 hover:bg-white/5">
               <Menu.Item as="button" type="button" onClick={action.onClick}>

@@ -481,8 +481,14 @@
             "submitButton": "Create issue",
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
-          "success": "__item__ created and contribution added",
-          "error": "The __item__ could not be created!",
+          "work": {
+            "success": "Other work created and contribution added",
+            "error": "The other work could not be created!"
+          },
+          "contribution": {
+            "success": "Contribution added",
+            "error": "The contribution could not be added!"
+          },
           "tab": "Other work",
           "tabShort": "Other",
           "title": "Describe the work",
@@ -589,7 +595,7 @@
         "title": "Reward #__id__",
         "to": "to",
         "you": "(you)",
-        "contributions": "Included in reward",
+        "contributions": "Contributions included in reward",
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
         "rewardItems": {
           "error": "An error occurred, please try again later."
@@ -964,7 +970,7 @@
               },
               "long": {
                 "label": "Long description",
-                "placeholder": "A project about dust."
+                "placeholder": "Within the OnlyDust galaxy, you're the stardust that shapes the future. Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach."
               },
               "logo": {
                 "label": "Project visual",
@@ -1109,7 +1115,7 @@
       },
       "banners": {
         "missingGithubAppInstall": {
-          "message": "To continue rewarding your contributors, please install the Only Dust Github app for the following organisation(s).",
+          "message": "To continue rewarding your contributors, please install the Only Dust Github app on your organisations.",
           "button": "Edit project",
           "org": "Connect the Github app for the __org__ organisation"
         }
@@ -1133,7 +1139,7 @@
       "view": "View invite"
     },
     "missingGithubAppInstall": {
-      "message": "We identified multiple errors on your project. Please fix them to be able to reward contributors.",
+      "message": "To continue rewarding your contributors, please install the Only Dust Github app on your organisations.",
       "button": "Edit project"
     }
   },

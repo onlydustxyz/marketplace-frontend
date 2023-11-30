@@ -22,13 +22,15 @@ export const GithubRepositoryPage = () => {
     formFn: { addRepository, removeRepository },
   } = useContext(CreateProjectContext);
 
+  const installedOrganizations = organizations.filter(org => org.installed);
+
   const selectedRepos = form.watch("selectedRepos") || [];
   const search = form.watch("search");
   const selectedReposCounts = useRepositoryCount(organizations, selectedRepos);
   const footerRightElement = FormInformationCount(selectedReposCounts.selected, selectedReposCounts.total);
   const filterOrganizationBySearch = useRepositorySearch(search);
   const filteredOrganizations = useMemo(
-    () => filterOrganizationBySearch(organizations),
+    () => filterOrganizationBySearch(installedOrganizations),
     [organizations, filterOrganizationBySearch]
   );
 

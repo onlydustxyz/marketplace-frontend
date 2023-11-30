@@ -57,8 +57,8 @@ export default function GithubPullRequest({
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest.htmlUrl ?? "");
 
-  const userCommits = pullRequest?.userCommitsCount?.aggregate?.count || pullRequest?.userCommitsCount || 0;
-  const commitsCount = pullRequest?.commitsCount?.aggregate?.count || pullRequest?.commitsCount || 0;
+  const userCommits = pullRequest?.userCommitsCount?.aggregate?.count ?? pullRequest?.userCommitsCount ?? 0;
+  const commitsCount = pullRequest?.commitsCount?.aggregate?.count ?? pullRequest?.commitsCount ?? 0;
 
   return pullRequest ? (
     <Card
