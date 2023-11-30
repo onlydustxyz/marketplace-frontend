@@ -56,23 +56,6 @@ export default function Card({
           <div className="px-9 pb-4">{children}</div>
         </div>
       </div>
-
-      {/* <div className="flex flex-col gap-8 px-8 pb-28 pt-16 xl:px-12 xl:pb-0">
-        <div className="flex flex-col gap-4 xl:w-[600px]">
-          <div className="font-walsheim text-base font-normal text-spaceBlue-100">{`${step}/${stepCount}`}</div>
-          {_private && (
-            <Tag size={TagSize.Small}>
-              <div className="flex flex-row items-center gap-2 text-orange-400">
-                <LockFill />
-                {T("onboarding.privateNotice")}
-              </div>
-            </Tag>
-          )}
-          <div className="font-belwe text-2xl font-normal text-greyscale-50">{title}</div>
-          <div className="font-walsheim text-base font-normal text-spaceBlue-100">{description}</div>
-        </div>
-        <div className="flex h-full flex-col gap-6">{children}</div>
-      </div> */}
       <Flex
         justify="between"
         item="center"
@@ -102,9 +85,6 @@ export default function Card({
           )}
         </Flex>
       </Flex>
-      {/* <div className="fixed inset-x-0 bottom-0 z-10 flex w-full flex-row items-center justify-end gap-6 bg-whiteFakeOpacity-2 p-6 xl:relative xl:rounded-b-2xl xl:bg-white/2">
-
-      </div> */}
     </div>
   );
 }
