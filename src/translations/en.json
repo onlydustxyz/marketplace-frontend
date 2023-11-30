@@ -925,6 +925,9 @@
         "totalSpentAmountInUsd": "GRANTED",
         "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend"
       },
+      "contributions": {
+        "title": "Contributions"
+      },
       "rewards": {
         "new": {
           "title": "Reward contributor"
