@@ -7,8 +7,6 @@ import TwitterFill from "src/icons/TwitterFill";
 import WhatsappFill from "src/icons/WhatsappFill";
 
 const getSocialIcon = (searchString: string, className?: string) => {
-  if (!searchString) return undefined;
-
   const socialIcons = {
     ["t.me/"]: <Telegram className={className} />,
     ["discord.com/"]: <DiscordFill className={className} />,
