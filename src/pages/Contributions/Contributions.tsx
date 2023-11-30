@@ -155,9 +155,6 @@ export default function Contributions() {
       title: T("contributions.inProgress.title"),
       description: T("contributions.inProgress.description"),
       icon: className => <ProgressCircle className={className} />,
-      onHeaderClick: () => {
-        updateActiveTab(AllTabs.InProgress);
-      },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
       sort: sort[ContributionStatus.InProgress],
       onSort: sort => {
@@ -173,7 +170,7 @@ export default function Contributions() {
         {
           queryParams: {
             statuses: ContributionStatus.InProgress,
-            ...(sort.IN_PROGRESS.sort !== TableColumns.Linked ? sort.IN_PROGRESS : {}),
+            ...sort.IN_PROGRESS,
             ...filterQueryParams,
           },
         },
@@ -184,9 +181,6 @@ export default function Contributions() {
       title: T("contributions.completed.title"),
       description: T("contributions.completed.description"),
       icon: className => <CheckboxCircleLine className={className} />,
-      onHeaderClick: () => {
-        updateActiveTab(AllTabs.Completed);
-      },
       sort: sort[ContributionStatus.Completed],
       onSort: sort => {
         setSort(prevState => {
@@ -202,7 +196,7 @@ export default function Contributions() {
         {
           queryParams: {
             statuses: ContributionStatus.Completed,
-            ...(sort.COMPLETED.sort !== TableColumns.Linked ? sort.COMPLETED : {}),
+            ...sort.COMPLETED,
             ...filterQueryParams,
           },
         },
@@ -213,9 +207,6 @@ export default function Contributions() {
       title: T("contributions.canceled.title"),
       description: T("contributions.canceled.description"),
       icon: className => <CancelCircleLine className={className} />,
-      onHeaderClick: () => {
-        updateActiveTab(AllTabs.Cancelled);
-      },
       sort: sort[ContributionStatus.Cancelled],
       onSort: sort => {
         setSort(prevState => {
@@ -231,7 +222,7 @@ export default function Contributions() {
         {
           queryParams: {
             statuses: ContributionStatus.Cancelled,
-            ...(sort.CANCELLED.sort !== TableColumns.Linked ? sort.CANCELLED : {}),
+            ...sort.CANCELLED,
             ...filterQueryParams,
           },
         },

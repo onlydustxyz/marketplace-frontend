@@ -48,7 +48,10 @@ const useIgnoreUnignoreContribution = ({
 }: UseMutationProps<void, { projectId?: string }, UseIgnoreUnignoreContributionBody>) => {
   return useBaseMutation<UseIgnoreUnignoreContributionBody, void>({
     resourcePath: API_PATH.PROJECT_IGNORE_UNIGNORE_CONTRIBUTIONS(params?.projectId || ""),
-    invalidatesTags: [{ queryKey: PROJECT_TAGS.rewardable_items(params?.projectId || ""), exact: false }],
+    invalidatesTags: [
+      { queryKey: PROJECT_TAGS.rewardable_items(params?.projectId || ""), exact: false },
+      { queryKey: PROJECT_TAGS.completed_rewardable_items(params?.projectId || ""), exact: false },
+    ],
     method: "PATCH",
     ...options,
   });
@@ -69,10 +72,48 @@ const useCreateOtherWorks = ({
   });
 };
 
+export type UseCreateOtherPullRequestBody = components["schemas"]["AddOtherPullRequestRequest"];
+export type UseCreateOtherPullRequestResponse = components["schemas"]["RewardableItemResponse"];
+
+const useCreateOtherPullRequest = ({
+  params,
+  options = {},
+}: UseMutationProps<UseCreateOtherPullRequestResponse, { projectId?: string }, UseCreateOtherPullRequestBody>) => {
+  return useBaseMutation<UseCreateOtherPullRequestBody, UseCreateOtherPullRequestResponse>({
+    resourcePath: API_PATH.PROJECT_CREATE_OTHER_PULL_REQUEST(params?.projectId || ""),
+    invalidatesTags: [
+      { queryKey: PROJECT_TAGS.rewardable_items(params?.projectId || ""), exact: false },
+      { queryKey: PROJECT_TAGS.completed_rewardable_items(params?.projectId || ""), exact: false },
+    ],
+    method: "POST",
+    ...options,
+  });
+};
+
+export type UseCreateOtherIssueBody = components["schemas"]["AddOtherIssueRequest"];
+export type UseCreateOtherIssueResponse = components["schemas"]["RewardableItemResponse"];
+
+const useCreateOtherIssue = ({
+  params,
+  options = {},
+}: UseMutationProps<UseCreateOtherIssueResponse, { projectId?: string }, UseCreateOtherIssueBody>) => {
+  return useBaseMutation<UseCreateOtherIssueBody, UseCreateOtherIssueResponse>({
+    resourcePath: API_PATH.PROJECT_CREATE_OTHER_ISSUE(params?.projectId || ""),
+    invalidatesTags: [
+      { queryKey: PROJECT_TAGS.rewardable_items(params?.projectId || ""), exact: false },
+      { queryKey: PROJECT_TAGS.completed_rewardable_items(params?.projectId || ""), exact: false },
+    ],
+    method: "POST",
+    ...options,
+  });
+};
+
 export default {
   useCreateProject,
   useUpdateProject,
   useUploadLogo,
   useIgnoreUnignoreContribution,
   useCreateOtherWorks,
+  useCreateOtherPullRequest,
+  useCreateOtherIssue,
 };

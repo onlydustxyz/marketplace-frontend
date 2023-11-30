@@ -16,6 +16,7 @@ interface Props {
   invitedLeads?: Leader[];
   sponsors: SponsorType[];
   moreInfoLink: string | null;
+  moreInfoName: string | null;
   topContributors: TopContributor[];
   totalContributorsCount: number;
   showPendingInvites: boolean;
@@ -26,6 +27,7 @@ export default function OverviewPanel({
   invitedLeads,
   sponsors,
   moreInfoLink,
+  moreInfoName,
   topContributors,
   totalContributorsCount,
   showPendingInvites,
@@ -104,7 +106,10 @@ export default function OverviewPanel({
       {moreInfoLink && (
         <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
           <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
-            <ExternalLink text={moreInfoLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")} url={moreInfoLink} />
+            <ExternalLink
+              text={moreInfoName || moreInfoLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
+              url={moreInfoLink}
+            />
           </div>
         </Section>
       )}

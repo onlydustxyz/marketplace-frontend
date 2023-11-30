@@ -1,7 +1,7 @@
 import { ReactElement, forwardRef, useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { GithubUserFragment, WorkItemType, useGithubUserByIdQuery } from "src/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -22,6 +22,7 @@ import { ShowMore } from "src/components/Table/ShowMore";
 import EmptyState from "../EmptyState";
 import Skeleton from "src/components/Skeleton";
 import ErrorState from "src/components/ErrorState";
+import { Contributor } from "../../types";
 
 export const tabNames = {
   [WorkItemType.Issue]: "issues",
@@ -43,7 +44,7 @@ type Props = {
   addContribution: (contribution: RewardableItem) => void;
   ignoreContribution: (contribution: RewardableItem) => void;
   unignoreContribution: (contribution: RewardableItem) => void;
-  contributorId: number;
+  contributor: Contributor;
   setIncludeIgnoredItems: (value: boolean) => void;
   loading: boolean;
   error: boolean;
@@ -57,7 +58,7 @@ export default function View({
   addContribution,
   ignoreContribution,
   unignoreContribution,
-  contributorId,
+  contributor,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -67,12 +68,6 @@ export default function View({
 }: Props) {
   const { T } = useIntl();
   const { resetField } = useFormContext();
-  const { data } = useGithubUserByIdQuery({
-    variables: {
-      githubUserId: contributorId,
-    },
-  });
-
   const tabName = tabNames[type];
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
@@ -110,6 +105,41 @@ export default function View({
     setIncludeIgnoredItems(showIgnoredItems);
   }, [showIgnoredItems]);
 
+  const renderVirtualizedIssueList = () => {
+    if (loading) {
+      return (
+        <div className="mr-1.5 mt-1">
+          <Skeleton variant="rewardableItems" />
+        </div>
+      );
+    }
+
+    if (error) {
+      return <ErrorState />;
+    }
+
+    if (contributions.length > 0 && contributor) {
+      return (
+        <VirtualizedIssueList
+          {...{
+            contributions: contributions as RewardableItem[],
+            addContribution: addContributionWithToast,
+            ignoreContribution,
+            unignoreContribution,
+            contributor,
+            tabName,
+            fetchNextPage,
+            hasNextPage,
+            isFetchingNextPage,
+          }}
+        />
+      );
+    }
+
+    // This component needs a github indexedAt prop that we delete for now until backend fix it
+    return <EmptyState />;
+  };
+
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
       <div className="flex flex-col gap-3 pt-8">
@@ -140,7 +170,7 @@ export default function View({
           </div>
         </div>
         {addOtherIssueEnabled && type !== WorkItemType.CodeReview && (
-          <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} contributorId={contributorId} />
+          <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} />
         )}
         {searchEnabled && (
           <FormInput
@@ -157,29 +187,7 @@ export default function View({
           />
         )}
       </div>
-      {loading && !error ? (
-        <div className="mr-1.5 mt-1">
-          <Skeleton variant="rewardableItems" />
-        </div>
-      ) : !loading && error ? (
-        <ErrorState />
-      ) : contributions.length > 0 && data?.githubUsersByPk ? (
-        <VirtualizedIssueList
-          {...{
-            contributions: contributions as RewardableItem[],
-            addContribution: addContributionWithToast,
-            ignoreContribution,
-            unignoreContribution,
-            contributor: data?.githubUsersByPk,
-            tabName,
-            fetchNextPage,
-            hasNextPage,
-            isFetchingNextPage,
-          }}
-        />
-      ) : (
-        <EmptyState indexedAt={data?.githubRepos[0].indexedAt} />
-      )}
+      {renderVirtualizedIssueList()}
     </div>
   );
 }
@@ -219,7 +227,7 @@ function getWorkItem(type: WorkItemType, props: RewardItemType): ReactElement | 
 
 interface VirtualizedIssueListProps {
   contributions: RewardableItem[];
-  contributor: GithubUserFragment;
+  contributor: Contributor;
   addContribution: (contribution: RewardableItem) => void;
   ignoreContribution: (contribution: RewardableItem) => void;
   unignoreContribution: (contribution: RewardableItem) => void;

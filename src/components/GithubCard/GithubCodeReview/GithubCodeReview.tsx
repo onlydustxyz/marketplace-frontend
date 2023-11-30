@@ -7,7 +7,7 @@ import { GithubActionButton } from "src/components/GithubCard/GithubActionButton
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { GithubCodeReviewStatus, ContributionStatus, GithubContributionType, GithubCodeReviewOutcome } from "src/types";
+import { GithubCodeReviewStatus, ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 
@@ -19,35 +19,16 @@ export enum Action {
 }
 
 function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment & RewardableItem>) {
-  const status = codeReview?.status?.toUpperCase();
-
-  switch (status) {
-    case GithubCodeReviewStatus.Completed:
+  switch (codeReview?.status) {
+    case GithubCodeReviewStatus.Approved:
+    case GithubCodeReviewStatus.Dismissed:
     case ContributionStatus.Completed:
-      return new Date(codeReview.submittedAt);
+      return codeReview.completedAt ? new Date(codeReview.completedAt) : new Date();
     case GithubCodeReviewStatus.Pending:
-    case ContributionStatus.InProgress:
+    case GithubCodeReviewStatus.ChangeRequested:
+    case GithubCodeReviewStatus.Commented:
     default:
       return new Date(codeReview.githubPullRequest?.createdAt ?? codeReview.createdAt);
-  }
-}
-
-function getStatus(codeReview: Partial<GithubCodeReviewFragment & RewardableItem>) {
-  const status = codeReview.status?.toUpperCase();
-  const outcome = codeReview.outcome?.toUpperCase();
-
-  switch (status) {
-    case GithubCodeReviewStatus.Completed:
-    case ContributionStatus.Completed:
-    case ContributionStatus.Cancelled:
-      return outcome === GithubCodeReviewOutcome.ChangeRequested
-        ? GithubCodeReviewStatus.ChangeRequested
-        : GithubCodeReviewStatus.Completed;
-
-    case GithubCodeReviewStatus.Pending:
-    case ContributionStatus.InProgress:
-    default:
-      return GithubCodeReviewStatus.Pending;
   }
 }
 
@@ -103,7 +84,7 @@ export default function GithubCodeReview({
             <ContributionDate
               id={codeReview.id as string}
               type={GithubContributionType.CodeReview}
-              status={getStatus(codeReview) as GithubCodeReviewStatus}
+              status={codeReview.status as GithubCodeReviewStatus}
               date={getCodeReviewStatusDate(codeReview)}
               tooltipProps={{
                 variant: Variant.Default,

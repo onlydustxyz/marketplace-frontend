@@ -11,7 +11,7 @@ import {
   useUpdateUserProfileMutation,
 } from "src/__generated/graphql";
 import Badge, { BadgeSize } from "src/components/Badge";
-import Button, { ButtonSize, Width } from "src/components/Button";
+import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import Card from "src/components/Card";
 import ContactInformations from "src/components/ContactInformations";
@@ -68,7 +68,8 @@ export default function Overview() {
   const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
   const sponsors = project?.sponsors || [];
-  const moreInfoLink = project?.moreInfoUrl || null;
+  const moreInfoLink = project?.moreInfos?.[0]?.url || null;
+  const moreInfoName = project?.moreInfos?.[0]?.value || null;
   const topContributors = project?.topContributors || [];
   const totalContributorsCount = project?.contributorCount || 0;
   const leads = project?.leaders;
@@ -117,6 +118,7 @@ export default function Overview() {
 
               <Button
                 disabled={isRewardDisabled}
+                onBackground={ButtonOnBackground.Blue}
                 size={ButtonSize.Sm}
                 {...withTooltip(T("contributor.table.noBudgetLeft"), {
                   visible: isRewardDisabled,
@@ -159,6 +161,7 @@ export default function Overview() {
               {...{
                 sponsors,
                 moreInfoLink,
+                moreInfoName,
                 topContributors,
                 totalContributorsCount,
                 leads,
@@ -208,6 +211,7 @@ export default function Overview() {
               {...{
                 sponsors,
                 moreInfoLink,
+                moreInfoName,
                 topContributors,
                 totalContributorsCount,
                 leads,
@@ -357,6 +361,7 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
                       width={Width.Full}
                       disabled={submitDisabled}
                       htmlType="submit"
+                      onBackground={ButtonOnBackground.Blue}
                     >
                       {T("applications.applyButton")}
                     </Button>
@@ -373,6 +378,7 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
                 size={ButtonSize.Md}
                 width={Width.Full}
                 disabled={alreadyApplied}
+                onBackground={ButtonOnBackground.Blue}
                 onClick={() => {
                   if (!contactInfoProvided) {
                     setContactInfoRequested(true);

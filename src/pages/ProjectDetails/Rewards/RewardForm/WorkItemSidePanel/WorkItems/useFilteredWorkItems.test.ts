@@ -1,6 +1,6 @@
 import useFilteredWorkItems from "./useFilteredWorkItems";
-import { GithubPullRequestStatus } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import { RewardableItem } from "src/api/Project/queries";
+import { GithubPullRequestStatus } from "src/types";
 
 const workItems: RewardableItem[] = [
   {
@@ -8,15 +8,14 @@ const workItems: RewardableItem[] = [
     id: "123",
     contributionId: "c4d0054d149e151439a28934aa83c62f46510cee1f36ec65be4cf8a15d7c0f4b",
     title: "My pull Request",
-    githubUrl: "https://github.com/onlydustxyz/marketplace-frontend/pull/1419",
     createdAt: "2023-11-21T10:47:22Z",
-    lastUpdateAt: "2023-11-21T10:47:47Z",
+    completedAt: "2023-11-21T10:47:47Z",
     repoName: "marketplace-frontend",
+    repoId: 1234,
     type: "PULL_REQUEST",
     commitsCount: 1,
     userCommitsCount: 1,
     commentsCount: 0,
-    codeReviewOutcome: "APPROVED",
     status: GithubPullRequestStatus.Merged,
     ignored: false,
     htmlUrl: "",

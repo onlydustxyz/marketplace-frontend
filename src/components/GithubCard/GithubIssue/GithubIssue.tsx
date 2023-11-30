@@ -1,4 +1,4 @@
-import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
+import { GithubIssueFragment } from "src/__generated/graphql";
 import { RewardableItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
@@ -8,7 +8,7 @@ import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitCommentLine from "src/icons/GitCommentLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { ContributionStatus, GithubContributionType } from "src/types";
+import { ContributionStatus, GithubContributionType, GithubIssueStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { parseIssueLink } from "src/utils/github";
 
@@ -25,7 +25,7 @@ function getIssueStatusDate(issue: Partial<GithubIssueFragment & RewardableItem>
     case GithubIssueStatus.Completed:
     case ContributionStatus.Completed:
     case ContributionStatus.Cancelled:
-      return new Date(issue.closedAt);
+      return issue.completedAt ? new Date(issue.completedAt) : new Date();
     case GithubIssueStatus.Open:
     default:
       return new Date(issue.createdAt);

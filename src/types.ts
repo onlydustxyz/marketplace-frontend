@@ -120,9 +120,10 @@ export enum GithubIssueType {
 }
 
 export enum GithubPullRequestStatus {
-  Merged = "MERGED",
   Open = "OPEN",
+  Merged = "MERGED",
   Closed = "CLOSED",
+  Draft = "DRAFT",
 }
 
 export enum GithubIssueStatus {
@@ -132,12 +133,11 @@ export enum GithubIssueStatus {
 }
 
 export enum GithubCodeReviewStatus {
+  Pending = "PENDING",
+  Commented = "COMMENTED",
   Approved = "APPROVED",
   ChangeRequested = "CHANGES_REQUESTED",
-  Commented = "COMMENTED",
-  Completed = "COMPLETED",
   Dismissed = "DISMISSED",
-  Pending = "PENDING",
 }
 
 export enum GithubPullRequestReviewState {
@@ -158,13 +158,15 @@ export enum GithubContributionType {
   CodeReview = "CODE_REVIEW",
 }
 
-export enum GithubPullRequestDraft {
-  Draft = "DRAFT",
+export enum GithubContributionShortenTypeLabel {
+  Issue = "Issue",
+  PullRequest = "PR",
+  CodeReview = "Code Review",
 }
 
 type GithubPullRequestTypeStatusDict<T> = Record<
   GithubContributionType.PullRequest,
-  Record<GithubPullRequestStatus | GithubPullRequestDraft, T>
+  Record<GithubPullRequestStatus, T>
 >;
 
 type GithubIssueTypeStatusDict<T> = Record<GithubContributionType.Issue, Record<GithubIssueStatus, T>>;
@@ -220,6 +222,7 @@ export interface Project {
   longDescription?: string;
   logoUrl: string;
   moreInfoUrl: string;
+  moreInfo?: { url: string; value: string }[];
   hiring: boolean;
   visibility: string;
   repoCount: number;

@@ -9,7 +9,6 @@ const mockRewardItem: components["schemas"]["RewardItemResponse"] = {
   authorAvatarUrl: "string",
   authorGithubUrl: "string",
   authorLogin: "string",
-  codeReviewOutcome: "APPROVED",
   commentsCount: 0,
   commitsCount: 0,
   createdAt: "2023-10-26T13:56:28.717Z",
@@ -94,7 +93,6 @@ describe("formatDate", () => {
       },
       status: mockRewardItem.status,
       submittedAt: mockRewardItem.createdAt,
-      outcome: mockRewardItem.codeReviewOutcome,
     });
   });
 });

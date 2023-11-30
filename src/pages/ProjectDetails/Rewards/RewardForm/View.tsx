@@ -17,18 +17,20 @@ import {
 import Title from "src/pages/ProjectDetails/Title";
 import { GithubContributionType } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
-import { AutoAdd } from "./AutoAdd/AutoAdd";
+import { AutoAddOrIgnore } from "./AutoAdd/AutoAddOrIgnore";
 import { WorkItem } from "./WorkItem";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
-import { filterUnpaidContributionsByType } from "./utils";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { BudgetCurrencyType } from "src/utils/money";
 import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
 import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
 import { Controller, useFormContext } from "react-hook-form";
-import { RewardableItem } from "src/api/Project/queries";
+import { CompletedRewardableItem } from "src/api/Project/queries";
+import ProjectApi from "src/api/Project";
+import useMutationAlert from "src/api/useMutationAlert";
+import Skeleton from "src/components/Skeleton";
 
 interface Props {
   projectId: string;
@@ -37,8 +39,9 @@ interface Props {
   onWorkItemsChange: (workItems: RewardableWorkItem[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
-  unpaidContributions: RewardableItem[] | null | undefined;
+  unpaidContributions: CompletedRewardableItem;
   isCreateProjectRewardLoading?: boolean;
+  isCompletedContributionsLoading?: boolean;
 }
 
 type TitleProps = {
@@ -55,6 +58,12 @@ function SectionTitle({ title, rightAction }: TitleProps) {
   );
 }
 
+const contributionsKeyMap: Record<GithubContributionType, keyof CompletedRewardableItem> = {
+  [GithubContributionType.Issue]: "rewardableIssues",
+  [GithubContributionType.PullRequest]: "rewardablePullRequests",
+  [GithubContributionType.CodeReview]: "rewardableCodeReviews",
+};
+
 const View: React.FC<Props> = ({
   projectBudget,
   onWorkItemsChange,
@@ -64,6 +73,7 @@ const View: React.FC<Props> = ({
   unpaidContributions,
   isCreateProjectRewardLoading,
   preferredCurrency,
+  isCompletedContributionsLoading,
 }) => {
   const { control, setValue } = useFormContext();
   const { T } = useIntl();
@@ -73,17 +83,46 @@ const View: React.FC<Props> = ({
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
-  const displayCallout = contributor && !contributor.userId;
+  const displayCallout = contributor && !contributor.isRegistered;
 
   const handleAutoAdd = (type: GithubContributionType) => {
     if (!unpaidContributions) return;
 
-    const filteredTypedContributions = filterUnpaidContributionsByType(type, unpaidContributions);
+    const filteredTypedContributions = unpaidContributions[contributionsKeyMap[type]];
     const workItems = filteredTypedContributions.map(
       contribution => contributionToWorkItem(contribution) as RewardableWorkItem
     );
 
     addWorkItem(workItems);
+  };
+
+  const { mutate: ignoreContribution, ...restignoreContributionMutation } =
+    ProjectApi.mutations.useIgnoreUnignoreContribution({
+      params: { projectId },
+    });
+
+  useMutationAlert({
+    mutation: restignoreContributionMutation,
+    success: {
+      message: T("reward.form.contributions.ignoreUnignoreContribution.success", {
+        action: "ignored",
+      }),
+    },
+    error: {
+      message: T("reward.form.contributions.ignoreUnignoreContribution.error", {
+        action: "ignored",
+      }),
+    },
+  });
+
+  const handleAutoIgnore = (type: GithubContributionType) => {
+    if (!unpaidContributions) return;
+
+    const filteredTypedContributions = unpaidContributions[contributionsKeyMap[type]];
+    const filteredTypedContributionsIds = filteredTypedContributions
+      .map(({ contributionId }) => contributionId)
+      .filter((contributionId): contributionId is string => contributionId !== undefined);
+    ignoreContribution({ contributionsToIgnore: [...filteredTypedContributionsIds] });
   };
 
   useEffect(() => {
@@ -93,6 +132,30 @@ const View: React.FC<Props> = ({
   useEffect(() => {
     clearWorkItems();
   }, [contributor]);
+
+  const renderAutoAddOrIgnore = () => {
+    if (isCompletedContributionsLoading) {
+      return <Skeleton variant="quickActions" />;
+    }
+
+    if (
+      !isCompletedContributionsLoading &&
+      (unpaidContributions?.rewardablePullRequests ||
+        unpaidContributions?.rewardableIssues ||
+        unpaidContributions?.rewardableCodeReviews)
+    ) {
+      return (
+        <AutoAddOrIgnore
+          unpaidContributions={unpaidContributions}
+          onAutoAdd={handleAutoAdd}
+          onAutoIgnore={handleAutoIgnore}
+          workItems={workItems}
+        />
+      );
+    }
+
+    return null;
+  };
 
   return (
     <>
@@ -153,18 +216,12 @@ const View: React.FC<Props> = ({
                       </div>
                     }
                   />
-                  <div className="mx-4 flex flex-col gap-3 pt-4" data-testid="added-work-items">
+                  <div className="relative z-0 mx-4 flex flex-col gap-3 pt-4" data-testid="added-work-items">
                     <div className="text-sm text-greyscale-300 xl:text-base">
                       {T("reward.form.contributions.subTitle")}
                     </div>
 
-                    {unpaidContributions?.length ? (
-                      <AutoAdd
-                        unpaidContributions={unpaidContributions}
-                        onAutoAdd={handleAutoAdd}
-                        workItems={workItems}
-                      />
-                    ) : null}
+                    {renderAutoAddOrIgnore()}
 
                     {workItems.map(workItem => (
                       <WorkItem
@@ -191,8 +248,7 @@ const View: React.FC<Props> = ({
                 setOpen={setSidePanelOpen}
                 workItems={workItems}
                 addWorkItem={addWorkItem}
-                contributorHandle={contributor.login}
-                contributorId={contributor.githubUserId}
+                contributor={contributor}
               />
             )}
           </div>

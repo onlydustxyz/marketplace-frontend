@@ -27,7 +27,7 @@ export function TotalBudgetCard({ budget, className }: Props) {
           {T("project.details.remainingBudget.budget.total")}
         </div>
         <div className="flex flex-wrap items-center font-belwe text-2xl text-greyscale-50">
-          {formatMoneyAmount({ amount: budget.initialAmount, currency: Currency.USD })}
+          {formatMoneyAmount({ amount: budget.remaining, currency: Currency.USD })}
         </div>
         <div className="flex items-center gap-2">
           <RewardBudgetBar total={budget.initialAmount} remaining={budget.remaining} spending={0} />

@@ -11,6 +11,13 @@ export const PROJECT_TAGS = {
     { projectId, contributionId },
   ],
   rewardable_items: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "rewardable-items", { projectId }],
+  completed_rewardable_items: (projectId: string) => [
+    RESSOURCE_TAGS.PROJECTS,
+    "completed-rewardable-items",
+    { projectId },
+  ],
   other_works: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "other-works", { projectId }],
+  other_pull_requests: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "other-pull-requests", { projectId }],
+  other_issues: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "other-issues", { projectId }],
   contributors: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributors", { projectId }],
 };

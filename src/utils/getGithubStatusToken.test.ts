@@ -1,10 +1,5 @@
 import { GithubIssueStatus } from "src/__generated/graphql";
-import {
-  GithubCodeReviewStatus,
-  GithubContributionType,
-  GithubPullRequestDraft,
-  GithubPullRequestStatus,
-} from "src/types";
+import { GithubCodeReviewStatus, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { getGithubStatusToken } from "./getGithubStatusToken";
 
 describe("getGithubStatusToken", () => {
@@ -27,7 +22,7 @@ describe("getGithubStatusToken", () => {
   });
 
   it("should get the token for a draft PR", () => {
-    expect(getGithubStatusToken(GithubContributionType.PullRequest, GithubPullRequestDraft.Draft)).toBe(
+    expect(getGithubStatusToken(GithubContributionType.PullRequest, GithubPullRequestStatus.Draft)).toBe(
       "githubPullRequest.status.open"
     );
   });
@@ -38,13 +33,13 @@ describe("getGithubStatusToken", () => {
 
   it("should get the token for a completed issue", () => {
     expect(getGithubStatusToken(GithubContributionType.Issue, GithubIssueStatus.Completed)).toBe(
-      "githubIssue.status.closed"
+      "githubIssue.status.completed"
     );
   });
 
-  it("should get the token for a closed issue", () => {
+  it("should get the token for a canceled issue", () => {
     expect(getGithubStatusToken(GithubContributionType.Issue, GithubIssueStatus.Cancelled)).toBe(
-      "githubIssue.status.closed"
+      "githubIssue.status.canceled"
     );
   });
 
@@ -54,9 +49,9 @@ describe("getGithubStatusToken", () => {
     );
   });
 
-  it("should get the token for an approved code review", () => {
-    expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Completed)).toBe(
-      "githubCodeReview.status.approved"
+  it("should get the token for an completed code review", () => {
+    expect(getGithubStatusToken(GithubContributionType.CodeReview, GithubCodeReviewStatus.Commented)).toBe(
+      "githubCodeReview.status.commented"
     );
   });
 

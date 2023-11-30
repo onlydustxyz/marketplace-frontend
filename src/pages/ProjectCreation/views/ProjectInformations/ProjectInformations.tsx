@@ -12,7 +12,7 @@ import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsF
 import { useContext } from "react";
 import ProjectApi from "src/api/Project";
 import { useIntl } from "src/hooks/useIntl";
-import Button from "src/components/Button";
+import Button, { ButtonOnBackground } from "src/components/Button";
 import CheckLine from "src/icons/CheckLine";
 import { CreateProjectContext } from "../../ProjectCreation.context";
 
@@ -41,7 +41,11 @@ export const ProjectInformationsPage = () => {
       step={3}
       stepCount={3}
       submitButton={
-        <Button htmlType="submit" disabled={!form.formState?.isValid || form.formState.isSubmitting}>
+        <Button
+          htmlType="submit"
+          onBackground={ButtonOnBackground.Blue}
+          disabled={!form.formState?.isValid || form.formState.isSubmitting}
+        >
           <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
         </Button>
       }

@@ -14,12 +14,11 @@ import { useLocalStorage } from "usehooks-ts";
 import { reorderBudgets } from "./utils";
 import { BudgetCurrencyType } from "src/utils/money";
 import ErrorFallback from "src/ErrorFallback";
-import { useApolloClient } from "@apollo/client";
 import { useQueryClient } from "@tanstack/react-query";
 import MeApi from "src/api/me";
-import ProjectApi from "src/api/Project";
-import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
+import { CompletedRewardableItem } from "src/api/Project/queries";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
+import ProjectApi from "src/api/Project";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -27,7 +26,6 @@ const RewardForm: React.FC = () => {
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
-  const client = useApolloClient();
 
   const { projectId, projectKey } = useOutletContext<{
     projectId: string;
@@ -53,13 +51,14 @@ const RewardForm: React.FC = () => {
       try {
         await refetch();
         showToaster(T("reward.form.sent"));
-        // refetch PaymentRequests to display MyRewards
-        queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
-        await client.refetchQueries({ include: ["GetPaymentRequestIds"] });
+        queryClient.invalidateQueries({ queryKey: [MeApi.tags.all, ProjectApi.tags.completed_rewardable_items] });
         navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
       } catch (e) {
         console.error(e);
       }
+    },
+    onError: () => {
+      showToaster(T("reward.form.error"), { isError: true });
     },
   });
 
@@ -78,25 +77,20 @@ const RewardForm: React.FC = () => {
 
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
-  const { queryParams } = useRewardableItemsQueryParams({
-    githubUserId: contributor?.githubUserId,
-    ignoredItemsIncluded: true,
-  });
-
-  // TODO waiting for new endpoint or fix the current one
   const {
-    data: contributionItems,
-    // isLoading,
-    // isError,
-  } = ProjectApi.queries.useRewardableItemsInfiniteList({
-    // WE need to fetch all the contributions to be able to AUTO-ADD them all in one click
-    // It's the reason that we set pageSize to 1000 assuming that there will never be more than 1000 contributions
-    // and in the case there are more than 1000 contributions, we assume this limitation for performance reasons
-    params: { projectId, queryParams, pageSize: 1000 },
+    data: completedContributions,
+    isLoading: isCompletedContributionsLoading,
+    isError: isCompletedContributionsError,
+  } = ProjectApi.queries.useCompletedRewardableItems({
+    params: { projectId, githubUserId: contributor?.githubUserId.toString() },
     options: { enabled: !!contributor?.githubUserId },
   });
 
-  const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
+  if (isCompletedContributionsError) {
+    showToaster(T("state.errorFetchingNamedItem", { item: "contributions" }), { isError: true });
+  }
+
+  const contributions = completedContributions;
 
   const { handleSubmit } = formMethods;
 
@@ -115,9 +109,9 @@ const RewardForm: React.FC = () => {
           return {
             id: workItem.id || "",
             repoId:
-              Number(workItem.githubIssue?.id) ||
-              Number(workItem.githubPullRequest?.id) ||
-              Number(workItem.githubCodeReview?.id) ||
+              Number(workItem.githubIssue?.repoId) ||
+              Number(workItem.githubPullRequest?.repoId) ||
+              Number(workItem.githubCodeReview?.repoId) ||
               0,
             number:
               workItem.githubIssue?.number ||
@@ -152,8 +146,9 @@ const RewardForm: React.FC = () => {
               onWorkItemsChange={onWorkItemsChange}
               contributor={contributor}
               setContributor={setContributor}
-              unpaidContributions={contributions as RewardableItem[] | null | undefined}
+              unpaidContributions={contributions as CompletedRewardableItem}
               isCreateProjectRewardLoading={isCreateProjectRewardLoading}
+              isCompletedContributionsLoading={isCompletedContributionsLoading}
             />
           ) : (
             <Loader />

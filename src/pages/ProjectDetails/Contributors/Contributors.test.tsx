@@ -20,7 +20,12 @@ const project: ComponentProps<typeof View>["project"] = {
   hiring: false,
   visibility: "PUBLIC",
   contributorCount: 3,
-  moreInfoUrl: "www.onlydust.xyz",
+  moreInfos: [
+    {
+      url: "www.onlydust.xyz",
+      value: "onlydust",
+    },
+  ],
   leaders: [
     {
       githubUserId: 498695724,

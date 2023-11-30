@@ -31,7 +31,12 @@ const currentProject: Project = {
   shortDescription: "Second best project ever",
   longDescription: "Second best project ever long desc",
   logoUrl: "",
-  moreInfoUrl: "http://barbicane.fr/",
+  moreInfos: [
+    {
+      url: "www.onlydust.xyz",
+      value: "onlydust",
+    },
+  ],
   hiring: true,
   visibility: "PUBLIC",
   contributorCount: 1,
@@ -128,7 +133,12 @@ const otherProject: Project = {
   shortDescription: "Second best project ever",
   longDescription: "Second best project ever long desc",
   logoUrl: "",
-  moreInfoUrl: "http://barbicane.fr/",
+  moreInfos: [
+    {
+      url: "www.onlydust.xyz",
+      value: "onlydust",
+    },
+  ],
   hiring: true,
   visibility: "PUBLIC",
   contributorCount: 1,

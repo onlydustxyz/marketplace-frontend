@@ -1,11 +1,12 @@
 import { FC, useContext, useMemo } from "react";
-import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { Repository } from "./Repository";
 import InformationLine from "src/icons/InformationLine";
 import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
+import { sortBy } from "lodash";
+import { VerticalListItemDrop } from "src/components/New/Cards/VerticalListItemDrop";
 
 export interface OrganizationProps {
   organization: UseGithubOrganizationsResponse;
@@ -22,7 +23,9 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
 
   const repositories = useMemo(() => {
     if (unInstalledRepo?.length) {
-      return unInstalledRepo.map(repo => <Repository key={repo.id} organization={organization} repository={repo} />);
+      return sortBy(unInstalledRepo, "name").map(repo => (
+        <Repository key={repo.id} organization={organization} repository={repo} />
+      ));
     }
 
     return (
@@ -37,7 +40,7 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
 
   return (
     <div className="w-full">
-      <VerticalListItemCard
+      <VerticalListItemDrop
         ContainerProps={{ className: "bg-transparent" }}
         key={organization.name || organization?.login}
         title={organization?.name || organization?.login || ""}
@@ -47,7 +50,7 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
         <Flex justify="start" item="start" className="w-full gap-3" direction="col">
           {repositories}
         </Flex>
-      </VerticalListItemCard>
+      </VerticalListItemDrop>
     </div>
   );
 };
