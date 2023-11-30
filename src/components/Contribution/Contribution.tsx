@@ -7,6 +7,9 @@ import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { useStackNavigation } from "src/libs/react-stack";
 import { StackRoute, StackRouterParams } from "src/App/Stacks";
+import Button, { ButtonSize, ButtonType } from "../Button";
+import GithubLogo from "src/icons/GithubLogo";
+import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
   contribution: ContributionT;
@@ -14,6 +17,7 @@ type Props = {
 };
 
 export function Contribution({ contribution, isMobile = false }: Props) {
+  const { T } = useIntl();
   const { open } = useContributionDetailPanel();
   const [openContributionPanel] = useStackNavigation<StackRouterParams["Contribution"]>(StackRoute.Contribution);
 
@@ -44,8 +48,21 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         <button
           className="truncate break-all text-left hover:underline"
           onClick={() => {
-            // if (id && project?.id) open({ contributionId: id, projectId: project.id }, githubHtmlUrl);
-            if (id && project?.id) openContributionPanel({ contributionId: id, projectId: project.id, githubHtmlUrl });
+            if (id && project?.id)
+              openContributionPanel({
+                contributionId: id,
+                projectId: project.id,
+                panelProps: {
+                  action: (
+                    <a href={githubHtmlUrl} target="_blank" rel="noreferrer">
+                      <Button size={ButtonSize.Sm} type={ButtonType.Secondary}>
+                        <GithubLogo className="text-base leading-none" />
+                        {T("contributions.panel.githubLink")}
+                      </Button>
+                    </a>
+                  ),
+                },
+              });
           }}
         >
           {githubTitle}

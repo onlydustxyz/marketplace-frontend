@@ -2,6 +2,7 @@ import { ContributionDetail } from "src/components/ContributionDetail/Contributi
 import RewardSidePanel, { RewardSidePanelAsLeader } from "src/components/UserRewardTable/RewardSidePanel";
 import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
 import { RegisterStack } from "src/libs/react-stack";
+import { StacksParams } from "src/libs/react-stack/types/Stack";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
@@ -9,7 +10,6 @@ export enum StackRoute {
   MyReward = "my-reward",
   Contribution = "contribution",
 }
-
 export interface StackRouterParams {
   ContributorProfile: {
     githubUserId: number;
@@ -25,8 +25,7 @@ export interface StackRouterParams {
   Contribution: {
     contributionId: string;
     projectId: string;
-    githubHtmlUrl: string;
-  };
+  } & StacksParams;
 }
 
 export const Stacks = () => {

@@ -1,8 +1,14 @@
+import { ReactElement } from "react-markdown/lib/react-markdown";
 import { RefSubscriptionInterface } from "../../react-subscriber/types/RefSubscription";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type anyType = any;
-export type StacksParams = { [key: string]: anyType };
+export type StacksParams = {
+  [key: string]: anyType;
+  panelProps?: {
+    action?: ReactElement;
+  };
+};
 export type AnyParams = anyType;
 
 /**

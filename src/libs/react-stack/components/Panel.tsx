@@ -33,6 +33,7 @@ export const Panel = <P extends StacksParams>({ panelRef }: PanelProps<P>) => {
         back={panel?.position === "back"}
         front={panel?.position === "front" || panel?.position === "front-stacked"}
         stacked={panel?.position === "front-stacked"}
+        {...(panelRef.state.params?.panelProps || {})}
       >
         {panelRef.state.children({ params: panelRef.state.params })}
       </SidePanel>,

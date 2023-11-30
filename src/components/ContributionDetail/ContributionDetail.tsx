@@ -10,7 +10,6 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
-import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
 import GitCommitLine from "src/icons/GitCommitLine";
@@ -21,11 +20,14 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { CommitsTooltip } from "../GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
+import { useStackNavigation } from "src/libs/react-stack";
+import { StackRoute, StackRouterParams } from "src/App/Stacks";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
   const { user } = useAuth();
-  const { open: openRewardPanel } = useRewardDetailPanel();
+  //   const { open: openRewardPanel } = useRewardDetailPanel();
+  const [openRewardPanel] = useStackNavigation<StackRouterParams["MyReward"]>(StackRoute.MyReward);
 
   const {
     data: contribution,
@@ -231,7 +233,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                       reward={reward}
                       onClick={() => {
                         if (reward.id) {
-                          openRewardPanel({ rewardId: reward.id, isMine: true });
+                          openRewardPanel({ rewardId: reward.id });
                         }
                       }}
                     />
