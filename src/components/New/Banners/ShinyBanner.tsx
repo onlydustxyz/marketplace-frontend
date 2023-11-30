@@ -20,21 +20,21 @@ type ButtonT = {
   size?: ButtonSize;
 };
 
-interface ShinnyBannerProps {
+interface ShinyBannerProps {
   icon?: React.ReactNode;
   description: string;
   button?: ButtonT;
   size?: CalloutSizes;
 }
 
-export default function ShinnyBanner({ icon, description, button, size = CalloutSizes.Medium }: ShinnyBannerProps) {
+export default function ShinyBanner({ icon, description, button, size = CalloutSizes.Medium }: ShinyBannerProps) {
   return (
     <div
       className={cn(
         "relative z-10 overflow-hidden rounded-[15px]",
         "flex w-full items-center justify-center",
         "before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen before:animate-spin-invert-slow before:bg-multi-color-gradient",
-        "after:absolute after:left-[1px] after:top-[1px] after:-z-[1] after:h-[calc(100%-2px)] after:w-[calc(100%-2px)] after:rounded-[15px] after:bg-card-background-base",
+        "after:absolute after:left-px after:top-px after:-z-[1] after:h-[calc(100%-2px)] after:w-[calc(100%-2px)] after:rounded-[15px] after:bg-card-background-base",
         "before:animate-glow-border-slow",
         {
           "min-h-[60px] p-3": size === CalloutSizes.Small,

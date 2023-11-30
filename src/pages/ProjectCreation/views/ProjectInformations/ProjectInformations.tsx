@@ -89,7 +89,6 @@ export const ProjectInformationsPage = () => {
                 {...props.field}
                 {...props.fieldState}
                 rows={10}
-                className="min"
                 placeholder={T("project.details.create.informations.form.fields.long.placeholder")}
                 label={T("project.details.create.informations.form.fields.long.label")}
               />

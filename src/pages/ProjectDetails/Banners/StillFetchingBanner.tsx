@@ -1,7 +1,7 @@
 import { useIntl } from "src/hooks/useIntl";
 import Loader2Line from "src/icons/Loader2Line";
 import dayjs from "dayjs";
-import ShinnyBanner from "src/components/New/Banners/ShinnyBanner";
+import ShinnyBanner from "src/components/New/Banners/ShinyBanner";
 
 type StillFetchingBannerProps = {
   createdAt: string;
