@@ -119,6 +119,7 @@ const config: Config = {
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",
+        "pulse-grow-slow": "pulse-grow 3s ease-in-out infinite alternate",
         "spin-medium": "spin 2s ease-in-out infinite",
         wave: "wave 20s ease infinite",
       },
@@ -126,6 +127,14 @@ const config: Config = {
         "spin-invert": {
           from: { transform: "rotate(0.0deg)" },
           to: { transform: "rotate(-360.0deg)" },
+        },
+        "pulse-grow": {
+          "0%": {
+            transform: "scale(1)",
+          },
+          "100%": {
+            transform: "scale(1.005)",
+          },
         },
         wave: {
           "0%": {

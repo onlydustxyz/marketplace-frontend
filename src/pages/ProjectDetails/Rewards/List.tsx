@@ -72,7 +72,6 @@ const RewardList: React.FC = () => {
 
   return rewards ? (
     <>
-      <StillFetchingBanner createdAt={createdAt} />
       <div className="flex items-center justify-between">
         <Title>{T("project.details.rewards.title")}</Title>
         {!hasOrgsWithUnauthorizedRepos ? (
@@ -102,6 +101,7 @@ const RewardList: React.FC = () => {
           </Flex>
         ) : null}
       </div>
+      <StillFetchingBanner createdAt={createdAt} />
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
