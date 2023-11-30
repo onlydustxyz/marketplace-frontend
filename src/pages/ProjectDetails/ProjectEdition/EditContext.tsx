@@ -17,6 +17,7 @@ import MeApi from "src/api/me";
 import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useEditValidationSchema } from "./hooks/useValidationSchema";
+import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -78,7 +79,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
 
   const validationSchema = useEditValidationSchema();
-
+  const lastAddedRepoStorage = useProjectDetailsLastAddedRepoStorage();
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
@@ -146,7 +147,10 @@ export function EditProvider({ children, project }: EditContextProps) {
       inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
       projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
-      rewardSettings: project.rewardSettings,
+      rewardSettings: {
+        ...project.rewardSettings,
+        ignoreContributionsBefore: project.rewardSettings?.ignoreContributionsBefore ?? project.createdAt,
+      },
     },
     resolver: zodResolver(validationSchema),
   });
@@ -244,6 +248,9 @@ export function EditProvider({ children, project }: EditContextProps) {
     params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
       onSuccess: async (data, queryClient) => {
+        if (form.formState.dirtyFields.githubRepos) {
+          lastAddedRepoStorage.setValue(new Date().toISOString());
+        }
         form.reset(form.getValues());
         showToaster(T("form.toast.success"));
         clearSession();

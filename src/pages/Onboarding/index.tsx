@@ -85,72 +85,76 @@ export default function Onboarding() {
       <SEO />
       <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <FormProvider {...methods}>
-          <form id="onboarding-form" className="flex justify-center px-2 xl:pb-4" onSubmit={handleSubmit(onSubmit)}>
-            {step === 0 && (
-              <Intro
-                skip={() =>
-                  updateUserMutation({
-                    hasSeenOnboardingWizard: true,
-                  })
-                }
-                start={next}
-              />
-            )}
-            {step === 1 && (
-              <Card
-                step={step}
-                stepCount={MAX_STEP}
-                title={T("onboarding.technologies.title")}
-                description={T("onboarding.technologies.description")}
-                prev={prev}
-                next={next}
-              >
-                <Controller
-                  name="languages"
-                  render={({ field: { value, onChange } }) => (
-                    <TechnologiesSelect technologies={value} setTechnologies={onChange} />
-                  )}
+          <div className="mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-2 pb-6 text-greyscale-50 md:p-6">
+            <form id="onboarding-form" className="flex justify-center px-2 xl:pb-4" onSubmit={handleSubmit(onSubmit)}>
+              {step === 0 && (
+                <Intro
+                  skip={() =>
+                    updateUserMutation({
+                      hasSeenOnboardingWizard: true,
+                    })
+                  }
+                  start={next}
                 />
-              </Card>
-            )}
-            {step === 2 && (
-              <Card
-                step={step}
-                stepCount={MAX_STEP}
-                title={T("onboarding.timeAllocation.title")}
-                description={T("onboarding.timeAllocation.description")}
-                private
-                prev={prev}
-                next={next}
-              >
-                <FormSelect
-                  name="weeklyAllocatedTime"
-                  options={Object.entries(weeklyTimeAllocations).map(([value, label]) => ({ value, label }))}
-                  control={control}
-                  size={Size.Lg}
-                />
-                <FormToggle
-                  name="lookingForAJob"
-                  control={control}
-                  label={T("onboarding.timeAllocation.lookingForAJob")}
-                />
-              </Card>
-            )}
-            {step === 3 && (
-              <Card
-                step={step}
-                stepCount={MAX_STEP}
-                title={T("onboarding.contact.title")}
-                description={T("onboarding.contact.description")}
-                prev={prev}
-                submit
-              >
-                <BaseCard className="bg-white/2">
-                  <ContactInformations />
-                </BaseCard>
-              </Card>
-            )}
-          </form>
+              )}
+              {step === 1 && (
+                <Card
+                  step={step}
+                  stepCount={MAX_STEP}
+                  title={T("onboarding.technologies.title")}
+                  description={T("onboarding.technologies.description")}
+                  prev={prev}
+                  next={next}
+                >
+                  <Controller
+                    name="languages"
+                    render={({ field: { value, onChange } }) => (
+                      <TechnologiesSelect technologies={value} setTechnologies={onChange} />
+                    )}
+                  />
+                </Card>
+              )}
+              {step === 2 && (
+                <Card
+                  step={step}
+                  stepCount={MAX_STEP}
+                  title={T("onboarding.timeAllocation.title")}
+                  description={T("onboarding.timeAllocation.description")}
+                  private
+                  prev={prev}
+                  next={next}
+                >
+                  <div className="flex flex-col gap-6 pt-1">
+                    <FormSelect
+                      name="weeklyAllocatedTime"
+                      options={Object.entries(weeklyTimeAllocations).map(([value, label]) => ({ value, label }))}
+                      control={control}
+                      size={Size.Lg}
+                    />
+                    <FormToggle
+                      name="lookingForAJob"
+                      control={control}
+                      label={T("onboarding.timeAllocation.lookingForAJob")}
+                    />
+                  </div>
+                </Card>
+              )}
+              {step === 3 && (
+                <Card
+                  step={step}
+                  stepCount={MAX_STEP}
+                  title={T("onboarding.contact.title")}
+                  description={T("onboarding.contact.description")}
+                  prev={prev}
+                  submit
+                >
+                  <BaseCard className="bg-white/2">
+                    <ContactInformations />
+                  </BaseCard>
+                </Card>
+              )}
+            </form>
+          </div>
         </FormProvider>
       </Background>
     </>

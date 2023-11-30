@@ -84,7 +84,7 @@ const validationSchema = z.object({
   longDescription: z.string().min(1),
   moreInfo: z
     .object({
-      url: z.string().min(1),
+      url: z.string().nullable().optional(),
       value: z.string().nullable().optional(),
     })
     .nullable()
@@ -104,6 +104,7 @@ export function CreateProjectProvider({
   reposStorage,
 }: CreateContextProps) {
   const { T } = useIntl();
+  const [enableAutoSaved, setEnableAutoSaved] = useState<boolean>(true);
   const [installedRepos, setInstalledRepos] = useState<number[]>(initialInstalledRepo || []);
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
@@ -180,6 +181,7 @@ export function CreateProjectProvider({
   };
 
   const onSubmit = () => {
+    setEnableAutoSaved(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { search, projectLeads, selectedRepos, moreInfo, ...formData } = form.getValues();
     createProject({
@@ -283,7 +285,9 @@ export function CreateProjectProvider({
       <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
         <form className="flex h-full items-center justify-center md:p-6" onSubmit={form.handleSubmit(onSubmit)}>
           {children}
-          <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_CREATE_PROJECT_FORM} />
+          {enableAutoSaved && (
+            <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_CREATE_PROJECT_FORM} />
+          )}
         </form>
       </Background>
     </CreateProjectContext.Provider>
