@@ -481,8 +481,14 @@
             "submitButton": "Create issue",
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
-          "success": "__item__ created and contribution added",
-          "error": "The __item__ could not be created!",
+          "work":{
+            "success": "Other work created and contribution added",
+            "error": "The other work could not be created!"
+          },
+          "contribution":{
+            "success": "Contribution added",
+            "error": "The contribution could not be added!"
+          },
           "tab": "Other work",
           "tabShort": "Other",
           "title": "Describe the work",
