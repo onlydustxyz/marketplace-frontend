@@ -234,6 +234,10 @@
       "zero": "repositories",
       "one": "__count__ repository",
       "many": "__count__ repositories"
+    },
+    "contributor": {
+      "title": "Contributor",
+      "placeholder": "Search users"
     }
   },
   "currencies": {

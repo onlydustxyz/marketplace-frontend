@@ -6,7 +6,7 @@ import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
-import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
+import { Filters } from "src/components/Contribution/ContributionFilter";
 import { ContributionTable, TableColumns, TableSort } from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { withTooltip } from "src/components/Tooltip";
@@ -21,6 +21,7 @@ import { isInArray } from "src/utils/isInArray";
 import { useLocalStorage } from "usehooks-ts";
 import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
+import { Filter } from "./Filter";
 
 enum AllTabs {
   All = "ALL_CONTRIBUTIONS",
@@ -51,9 +52,10 @@ const initialSort: Record<ContributionStatus, TableSort> = {
 };
 
 const initialFilters: Filters = {
-  types: [],
-  projects: [],
+  dateRange: [],
   repos: [],
+  contributors: [],
+  types: [],
 };
 
 export default function Contributions() {
@@ -75,18 +77,17 @@ export default function Contributions() {
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "contributions-table-filters",
+    "project-contributions-table-filters",
     JSON.stringify(initialFilters)
   );
   const filtersState = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
-  const [{ types, projects, repos }] = filtersState;
+  const [{ types, repos }] = filtersState;
 
-  const projectIds = projects.map(({ id }) => String(id));
   const repoIds = repos.map(({ id }) => String(id));
 
   const filterQueryParams = {
     types: types.join(","),
-    projects: projectIds.join(","),
+    projects: "",
     repositories: repoIds.join(","),
   };
 
@@ -94,13 +95,8 @@ export default function Contributions() {
 
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
 
-  const { data: projectsData } = MeApi.queries.useMyContributedProjects({
-    params: { repositories: repoIds.length ? repoIds.join(",") : "" },
-  });
-  const contributedProjects = projectsData?.projects ?? [];
-
   const { data: reposData } = MeApi.queries.useMyContributedRepos({
-    params: { projects: projectIds.length ? projectIds.join(",") : "" },
+    params: { projects: "" },
   });
   const contributedRepos = reposData?.repos ?? [];
 
@@ -290,9 +286,8 @@ export default function Contributions() {
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
                   <div className="hidden -translate-y-3 lg:block">
-                    <ContributionFilter
+                    <Filter
                       state={filtersState}
-                      projects={contributedProjects}
                       repos={contributedRepos}
                       onChange={newState => {
                         setFiltersStorage(JSON.stringify(newState));
