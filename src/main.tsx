@@ -22,7 +22,6 @@ import Maintenance from "./Maintenance";
 import SEO from "./components/SEO";
 import config from "./config";
 import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePanel";
-import { RewardDetailPanelProvider } from "./hooks/useRewardDetailPanel";
 import { SessionProvider } from "./hooks/useSession";
 import { SidePanelProvider } from "./hooks/useSidePanel";
 import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
@@ -57,18 +56,16 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                           <SidePanelStackProvider>
                             <SidePanelProvider>
                               <ContributorProfilePanelProvider>
-                                <RewardDetailPanelProvider>
-                                  <ContributionDetailPanelProvider>
-                                    {config.MAINTENANCE ? (
-                                      <Maintenance />
-                                    ) : (
-                                      <OnboardingProvider>
-                                        <App />
-                                        <Stacks />
-                                      </OnboardingProvider>
-                                    )}
-                                  </ContributionDetailPanelProvider>
-                                </RewardDetailPanelProvider>
+                                <ContributionDetailPanelProvider>
+                                  {config.MAINTENANCE ? (
+                                    <Maintenance />
+                                  ) : (
+                                    <OnboardingProvider>
+                                      <App />
+                                      <Stacks />
+                                    </OnboardingProvider>
+                                  )}
+                                </ContributionDetailPanelProvider>
                               </ContributorProfilePanelProvider>
                             </SidePanelProvider>
                           </SidePanelStackProvider>

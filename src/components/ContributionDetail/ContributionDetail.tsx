@@ -24,7 +24,7 @@ import { useStackMyReward } from "src/App/Stacks";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
-  const { user } = useAuth();
+  const { user, githubUserId } = useAuth();
   const [openRewardPanel] = useStackMyReward();
 
   const {
@@ -224,7 +224,11 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                       reward={reward}
                       onClick={() => {
                         if (reward.id) {
-                          openRewardPanel({ rewardId: reward.id, projectId: contribution.project.id });
+                          openRewardPanel({
+                            rewardId: reward.id,
+                            projectId: contribution.project.id,
+                            ...(reward.to.githubUserId === githubUserId ? { isMine: true } : {}),
+                          });
                         }
                       }}
                     />

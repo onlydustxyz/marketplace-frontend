@@ -9,22 +9,23 @@ import { StacksParams } from "src/libs/react-stack/types/Stack";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
-  ProjectReward = "project-reward",
-  MyReward = "my-reward",
+  ProjectLeaderReward = "project-leader-reward",
+  Reward = "reward",
   Contribution = "contribution",
 }
 export interface StackRouterParams {
   ContributorProfile: {
     githubUserId: number;
   };
-  ProjectReward: {
+  ProjectLeaderReward: {
     projectId: string;
     rewardId: string;
     onRewardCancel: () => void;
   };
-  MyReward: {
+  Reward: {
     rewardId: string;
     projectId: string;
+    isMine?: true;
   };
   Contribution: {
     contributionId: string;
@@ -39,11 +40,11 @@ export const Stacks = () => {
       <RegisterStack<StackRouterParams["ContributorProfile"]> name={StackRoute.ContributorProfile}>
         {({ params }) => <ContributorProfileSidePanel {...params} />}
       </RegisterStack>
-      <RegisterStack<StackRouterParams["ProjectReward"]> name={StackRoute.ProjectReward}>
+      <RegisterStack<StackRouterParams["ProjectLeaderReward"]> name={StackRoute.ProjectLeaderReward}>
         {({ params }) => <RewardSidePanelAsLeader {...params} />}
       </RegisterStack>
-      <RegisterStack<StackRouterParams["MyReward"]> name={StackRoute.MyReward}>
-        {({ params }) => <RewardSidePanel {...params} isMine />}
+      <RegisterStack<StackRouterParams["Reward"]> name={StackRoute.Reward}>
+        {({ params }) => <RewardSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack<StackRouterParams["Contribution"]> name={StackRoute.Contribution}>
         {({ params }) => <ContributionDetail {...params} />}
@@ -52,8 +53,9 @@ export const Stacks = () => {
   );
 };
 
+// TODO : rename this into ProjectLeaderReward
 export const useStackProjectReward = () => {
-  return useStackNavigation<StackRouterParams["ProjectReward"]>(StackRoute.ProjectReward);
+  return useStackNavigation<StackRouterParams["ProjectLeaderReward"]>(StackRoute.ProjectLeaderReward);
 };
 
 export const useStackContribution = (): [
@@ -88,7 +90,7 @@ export const useStackContribution = (): [
 };
 
 export const useStackMyReward = () => {
-  return useStackNavigation<StackRouterParams["MyReward"]>(StackRoute.MyReward);
+  return useStackNavigation<StackRouterParams["Reward"]>(StackRoute.Reward);
 };
 
 export const useStackContributorProfile = () => {

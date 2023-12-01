@@ -1,8 +1,8 @@
 import { Fragment } from "react";
+import { useStackMyReward } from "src/App/Stacks";
 import { ContributionAttribute } from "src/components/Contribution/ContributionAttribute";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import Medal2Fill from "src/icons/Medal2Fill";
 import { Contribution } from "src/types";
 import { formatPaymentId } from "src/utils/formatPaymentId";
@@ -10,15 +10,18 @@ import { formatPaymentId } from "src/utils/formatPaymentId";
 export function ContributionReward({
   contributionId,
   rewardIds,
+  projectId,
+  isMine,
 }: {
   contributionId: Contribution["id"];
+  projectId: string;
+  isMine: boolean;
   rewardIds: Contribution["rewardIds"];
 }) {
   const { T } = useIntl();
   const count = rewardIds.length;
   const tooltipId = `${contributionId}-${rewardIds?.[0] ?? "rewards"}`;
-
-  const { open } = useRewardDetailPanel();
+  const [openRewardPanel] = useStackMyReward();
 
   return (
     <>
@@ -34,7 +37,7 @@ export function ContributionReward({
                   type="button"
                   className="hover:underline"
                   onClick={() => {
-                    open({ rewardId, isMine: true });
+                    openRewardPanel({ rewardId, projectId, ...(isMine ? { isMine: true } : {}) });
                   }}
                 >
                   {formatPaymentId(rewardId)}
@@ -51,7 +54,7 @@ export function ContributionReward({
         onClick={() => {
           if (count === 1) {
             const [rewardId] = rewardIds;
-            open({ rewardId, isMine: true });
+            openRewardPanel({ rewardId, projectId, ...(isMine ? { isMine: true } : {}) });
           }
         }}
       >
