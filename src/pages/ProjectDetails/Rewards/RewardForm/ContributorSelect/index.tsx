@@ -85,7 +85,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       unpaidMergedPullsCount: completedUnpaidPullRequestCount,
       unpaidCompletedIssuesCount: completedUnpaidIssueCount,
       unpaidCompletedCodeReviewsCount: completedUnpaidCodeReviewCount,
-      userId: c.login,
+      htmlUrl: c.htmlUrl,
       isRegistered: c.isRegistered,
     };
   });
@@ -103,7 +103,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       login: c.login,
       avatarUrl: c.avatarUrl,
       unpaidCompletedContributions: 0,
-      userId: c.login,
+      htmlUrl: c.htmlUrl,
       isRegistered: c.isRegistered,
     }));
 
