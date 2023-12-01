@@ -8,13 +8,9 @@ type ContributorProfilePanel = {
 const ContributorProfilePanelContext = createContext<ContributorProfilePanel | null>(null);
 
 export const ContributorProfilePanelProvider = ({ children }: PropsWithChildren) => {
-  //   const [githubUserId, setGithubUserId] = useState<number>();
-  //   const [open, setOpen] = useState(false);
   const [openProfilePanel] = useStackContributorProfile();
 
   const openSidePanel = useCallback((githubUserId: number) => {
-    // setGithubUserId(githubUserId);
-    // setOpen(true);
     if (githubUserId) {
       openProfilePanel({ githubUserId });
     }
@@ -23,9 +19,6 @@ export const ContributorProfilePanelProvider = ({ children }: PropsWithChildren)
   return (
     <ContributorProfilePanelContext.Provider value={{ open: openSidePanel }}>
       {children}
-      {/* <SidePanel open={open} setOpen={setOpen}>
-        {githubUserId && <ContributorProfileSidePanel githubUserId={githubUserId} setOpen={setOpen} />}
-      </SidePanel> */}
     </ContributorProfilePanelContext.Provider>
   );
 };

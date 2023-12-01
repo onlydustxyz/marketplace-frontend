@@ -28,7 +28,6 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
 
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [selectedReward, setSelectedReward] = useState<RewardPageItemType | null>(null);
-  const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const [openRewardPanel, closeRewardPanel] = useStackProjectReward();
 
@@ -37,7 +36,6 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
     try {
       // TODO refactor mutateReward in RewardSidePanelAsLeader and add invalidate query directly inside the mutation query
       queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
-      setSidePanelOpen(false);
       closeRewardPanel();
       refetchBudgets();
       refetch();
@@ -55,7 +53,6 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
         onRewardCancel: handleCancelReward,
       });
     }
-    // setSidePanelOpen(true);
   };
 
   return (
@@ -74,16 +71,6 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
           <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
         </div>
       )}
-
-      {/* <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
-        {selectedReward && (
-          <RewardSidePanelAsLeader
-            projectId={projectId}
-            rewardId={selectedReward.id}
-            onRewardCancel={handleCancelReward}
-          />
-        )}
-      </SidePanel> */}
     </>
   );
 }

@@ -3,7 +3,6 @@ import { cn } from "src/utils/cn";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview, ReviewStateStatuses } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
-import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { useStackContribution } from "src/App/Stacks";
 
@@ -14,7 +13,6 @@ type Props = {
 };
 
 export function Contribution({ contribution, isMobile = false, isMine = false }: Props) {
-  const { open } = useContributionDetailPanel();
   const [openContributionPanel] = useStackContribution();
 
   const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =

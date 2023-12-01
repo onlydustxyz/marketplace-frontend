@@ -10,16 +10,14 @@ const UserRewardTable: React.FC = () => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
-  //   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
-  const [openPanel] = useStackMyReward();
+  const [openRewardPanel] = useStackMyReward();
 
   const onRewardClick = (reward: MyRewardType) => {
     setSelectedReward(reward);
     if (reward.id) {
-      openPanel({ rewardId: reward.id, projectId: reward.projectId });
+      openRewardPanel({ rewardId: reward.id, projectId: reward.projectId });
     }
-    // setSidePanelOpen(true);
   };
 
   return (
@@ -29,9 +27,6 @@ const UserRewardTable: React.FC = () => {
       ) : (
         <MobileUserRewardList onRewardClick={onRewardClick} />
       )}
-      {/* <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
-        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} isMine />}
-      </SidePanel> */}
     </>
   );
 };

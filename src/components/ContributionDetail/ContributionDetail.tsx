@@ -25,7 +25,6 @@ import { useStackMyReward } from "src/App/Stacks";
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
   const { user } = useAuth();
-  //   const { open: openRewardPanel } = useRewardDetailPanel();
   const [openRewardPanel] = useStackMyReward();
 
   const {
