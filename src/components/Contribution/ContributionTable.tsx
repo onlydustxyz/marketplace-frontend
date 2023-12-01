@@ -154,7 +154,7 @@ export function ContributionTable({
               status={githubStatus}
               contributionStatus={status}
               date={new Date(lineDate ?? "")}
-              tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.Bottom }}
+              tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
             />
           </Cell>
           <Cell height={CellHeight.Compact}>
