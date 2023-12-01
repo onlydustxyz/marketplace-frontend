@@ -232,7 +232,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                       reward={reward}
                       onClick={() => {
                         if (reward.id) {
-                          openRewardPanel({ rewardId: reward.id });
+                          openRewardPanel({ rewardId: reward.id, projectId: contribution.project.id });
                         }
                       }}
                     />

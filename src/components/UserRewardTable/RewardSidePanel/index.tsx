@@ -13,7 +13,13 @@ export default function RewardSidePanel({
   isMine,
 }: ComponentProps<typeof View>) {
   return isMine ? (
-    <View rewardId={rewardId} onRewardCancel={onRewardCancel} projectLeaderView={projectLeaderView} isMine={isMine} />
+    <View
+      rewardId={rewardId}
+      onRewardCancel={onRewardCancel}
+      projectLeaderView={projectLeaderView}
+      isMine={isMine}
+      projectId={projectId}
+    />
   ) : (
     <View
       projectId={projectId}

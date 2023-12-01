@@ -44,6 +44,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
 import { RewardableItem } from "src/api/Project/queries";
+import { useStackContribution } from "src/App/Stacks";
 
 enum Align {
   Top = "top",
@@ -62,7 +63,7 @@ type ProjectProps = {
 } & Props;
 
 type MyProps = {
-  projectId?: never;
+  projectId?: never | string;
   isMine: true;
 } & Props;
 
@@ -75,7 +76,7 @@ export default function View({
 }: ProjectProps | MyProps) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
-
+  const [openStackContribution] = useStackContribution();
   const {
     data,
     isLoading: loading,
@@ -138,6 +139,10 @@ export default function View({
                           RewardableItem & GithubPullRequestWithCommitsFragment
                         >
                       }
+                      onCardClick={() => {
+                        console.log("ICICI", projectId);
+                        openStackContribution({ contributionId: item.id, projectId, githubHtmlUrl: item.githubUrl });
+                      }}
                       contributor={data?.to as GithubUserFragment}
                     />
                   );
@@ -154,6 +159,12 @@ export default function View({
                   return (
                     <GithubCodeReview
                       key={item.id}
+                      onCardClick={() => {
+                        // https://develop-api.onlydust.com/api/v1/projects/79c544b6-4957-42b7-92ae-12dcfda575d8/contributions/b1cc7bf998dd7588735fdac505749a8431007b7cb494c0b2b73b9722caa91bcc
+                        // https://develop-api.onlydust.com/api/v1/projects/79c544b6-4957-42b7-92ae-12dcfda575d8/contributions/edb7b5c21e79aeb892b3aca2e501331b545cb3938f5734eba7767ea629ec9d2c
+                        console.log("ICICI", projectId);
+                        openStackContribution({ contributionId: item.id, projectId, githubHtmlUrl: item.githubUrl });
+                      }}
                       codeReview={
                         formatRewardItemToGithubCodeReview(item) as Partial<GithubCodeReviewFragment & RewardableItem>
                       }

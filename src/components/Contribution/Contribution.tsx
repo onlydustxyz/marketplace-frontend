@@ -6,8 +6,6 @@ import { ContributionReward } from "src/components/Contribution/ContributionRewa
 import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { useStackContribution } from "src/App/Stacks";
-import Button, { ButtonSize, ButtonType } from "../Button";
-import GithubLogo from "src/icons/GithubLogo";
 import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
@@ -51,16 +49,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
               openContributionPanel({
                 contributionId: id,
                 projectId: project.id,
-                panelProps: {
-                  action: (
-                    <a href={githubHtmlUrl} target="_blank" rel="noreferrer">
-                      <Button size={ButtonSize.Sm} type={ButtonType.Secondary}>
-                        <GithubLogo className="text-base leading-none" />
-                        {T("contributions.panel.githubLink")}
-                      </Button>
-                    </a>
-                  ),
-                },
+                githubHtmlUrl,
               });
           }}
         >

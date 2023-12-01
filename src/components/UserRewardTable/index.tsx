@@ -17,7 +17,7 @@ const UserRewardTable: React.FC = () => {
   const onRewardClick = (reward: MyRewardType) => {
     setSelectedReward(reward);
     if (reward.id) {
-      openPanel({ rewardId: reward.id });
+      openPanel({ rewardId: reward.id, projectId: reward.projectId });
     }
     // setSidePanelOpen(true);
   };

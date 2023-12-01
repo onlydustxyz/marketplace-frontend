@@ -38,6 +38,7 @@ export type GithubPullRequestProps = {
   action?: Action;
   secondaryAction?: Action;
   onClick?: () => void;
+  onCardClick?: () => void;
   onSecondaryClick?: () => void;
   pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>;
   ignored?: boolean;
@@ -54,73 +55,77 @@ export default function GithubPullRequest({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
   contributor,
+  onCardClick,
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest.htmlUrl ?? "");
 
   const userCommits = pullRequest?.userCommitsCount?.aggregate?.count ?? pullRequest?.userCommitsCount ?? 0;
   const commitsCount = pullRequest?.commitsCount?.aggregate?.count ?? pullRequest?.commitsCount ?? 0;
-
   return pullRequest ? (
-    <Card
-      padded={false}
-      className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {
-        "mt-1": addMarginTopForVirtuosoDisplay,
-      })}
-      withBg={false}
-    >
-      {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
-      <div className="flex w-full flex-col gap-2 font-walsheim">
-        <div className="flex text-sm font-medium text-greyscale-50">
-          <GithubLink url={pullRequest.htmlUrl ?? ""} text={`#${pullRequest.number} · ${pullRequest.title}`} />
-        </div>
-        <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
-          <div className="flex flex-row items-center gap-1">
-            <ContributionCreationDate
-              id={pullRequest.id}
-              type={GithubContributionType.PullRequest}
-              date={new Date(pullRequest.createdAt)}
-              tooltipProps={{
-                variant: Variant.Default,
-                position: TooltipPosition.Bottom,
-              }}
-            />
+    <div className={cn("w-full", onCardClick && "cursor-pointer")} onClick={onCardClick}>
+      <Card
+        padded={false}
+        className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {
+          "mt-1": addMarginTopForVirtuosoDisplay,
+        })}
+        withBg={false}
+      >
+        {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
+        <div className="flex w-full flex-col gap-2 font-walsheim">
+          <div className="flex text-sm font-medium text-greyscale-50">
+            <GithubLink url={pullRequest.htmlUrl ?? ""} text={`#${pullRequest.number} · ${pullRequest.title}`} />
           </div>
-          <div className="flex flex-row items-center gap-1">
-            <ContributionDate
-              id={pullRequest.id}
-              type={GithubContributionType.PullRequest}
-              status={pullRequest.status as GithubPullRequestStatus}
-              date={getPullRequestStatusDate(pullRequest)}
-              tooltipProps={{
-                variant: Variant.Default,
-                position: TooltipPosition.Bottom,
-              }}
-              withIcon
-            />
-          </div>
-          <div className="inline-flex flex-row items-center gap-1">
-            <GitRepositoryLine />
-            {repoName || pullRequest.repoName}
-          </div>
+          <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
+            <div className="flex flex-row items-center gap-1">
+              <ContributionCreationDate
+                id={pullRequest.id}
+                type={GithubContributionType.PullRequest}
+                date={new Date(pullRequest.createdAt)}
+                tooltipProps={{
+                  variant: Variant.Default,
+                  position: TooltipPosition.Bottom,
+                }}
+              />
+            </div>
+            <div className="flex flex-row items-center gap-1">
+              <ContributionDate
+                id={pullRequest.id}
+                type={GithubContributionType.PullRequest}
+                status={pullRequest.status as GithubPullRequestStatus}
+                date={getPullRequestStatusDate(pullRequest)}
+                tooltipProps={{
+                  variant: Variant.Default,
+                  position: TooltipPosition.Bottom,
+                }}
+                withIcon
+              />
+            </div>
+            <div className="inline-flex flex-row items-center gap-1">
+              <GitRepositoryLine />
+              {repoName || pullRequest.repoName}
+            </div>
 
-          <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">
-            <GitCommitLine />
-            {userCommits + "/" + commitsCount}
+            <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">
+              <GitCommitLine />
+              {userCommits + "/" + commitsCount}
 
-            {pullRequest?.author ? (
-              <Tooltip anchorId={pullRequest?.id} clickable>
-                <CommitsTooltip
-                  pullRequest={pullRequest}
-                  userCommits={userCommits}
-                  commitsCount={commitsCount}
-                  contributorLogin={contributor?.login ?? ""}
-                />
-              </Tooltip>
-            ) : null}
+              {pullRequest?.author ? (
+                <Tooltip anchorId={pullRequest?.id} clickable>
+                  <CommitsTooltip
+                    pullRequest={pullRequest}
+                    userCommits={userCommits}
+                    commitsCount={commitsCount}
+                    contributorLogin={contributor?.login ?? ""}
+                  />
+                </Tooltip>
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
-      {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
-    </Card>
+        {secondaryAction && (
+          <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />
+        )}
+      </Card>
+    </div>
   ) : null;
 }
