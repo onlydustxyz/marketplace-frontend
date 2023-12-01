@@ -18,7 +18,7 @@ export default function ContributorProfileSidePanel({ githubUserId, setOpen }: P
   const { data: gqlProfile } = useUserProfile({ githubUserId });
   const { data: restFulProfile, isError, isLoading } = useRestfulProfile({ githubUserId });
 
-  if (isError && !isLoading) {
+  if (isError) {
     showToaster(T("profile.error.cantFetch"), { isError: true });
     return (
       <div className="m-4 mt-12">
