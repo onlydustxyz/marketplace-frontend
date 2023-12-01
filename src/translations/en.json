@@ -640,7 +640,8 @@
     "whatsapp": "Whatsapp",
     "editButton": "Edit profile",
     "error": {
-      "notFound": "This user does not exist"
+      "notFound": "This user does not exist",
+      "cantFetch": "We were unable to fetch this profile, please try again later."
     },
     "joinedAt": "Joined in __joinedAt__",
     "firstContributedAt": "Contributed first on __firstContributedAt__",

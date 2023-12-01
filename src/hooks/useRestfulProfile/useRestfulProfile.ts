@@ -23,5 +23,6 @@ export default function useRestfulProfile({ githubUserLogin, githubUserId }: IdP
     pathParam: `${githubUserId || githubUserLogin}`,
     method: "GET",
     enabled: !!githubUserId || !!githubUserLogin,
+    retry: 1,
   });
 }
