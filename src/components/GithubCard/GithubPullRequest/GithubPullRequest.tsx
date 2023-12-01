@@ -1,4 +1,4 @@
-import { GithubPullRequestWithCommitsFragment, GithubUserFragment } from "src/__generated/graphql";
+import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
@@ -43,7 +43,7 @@ export type GithubPullRequestProps = {
   pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
-  contributor?: GithubUserFragment;
+  contributorLogin?: string;
 };
 
 export default function GithubPullRequest({
@@ -54,7 +54,7 @@ export default function GithubPullRequest({
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
-  contributor,
+  contributorLogin,
   onCardClick,
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest.htmlUrl ?? "");
@@ -115,7 +115,7 @@ export default function GithubPullRequest({
                     pullRequest={pullRequest}
                     userCommits={userCommits}
                     commitsCount={commitsCount}
-                    contributorLogin={contributor?.login ?? ""}
+                    contributorLogin={contributorLogin ?? ""}
                   />
                 </Tooltip>
               ) : null}

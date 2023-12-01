@@ -10,7 +10,7 @@ import { useCloseStack } from "src/libs/react-stack";
 
 type Props = {
   userProfile: Profile;
-  gqlProfile: UserProfileFragment & OwnUserProfileDetailsFragment; // use this for the completion score, should be revamp when we revamp the edit profile
+  gqlProfile?: UserProfileFragment & OwnUserProfileDetailsFragment; // use this for the completion score, should be revamp when we revamp the edit profile
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
 };

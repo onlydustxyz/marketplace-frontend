@@ -51,8 +51,7 @@ const RewardList: React.FC = () => {
   });
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
-  const isRewardDisabled = !projectBudget?.remainingDollarsEquivalent || rewards.length === 0;
-
+  const isRewardDisabled = !projectBudget?.remainingDollarsEquivalent;
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
@@ -73,7 +72,6 @@ const RewardList: React.FC = () => {
 
   return rewards ? (
     <>
-      <StillFetchingBanner createdAt={createdAt} />
       <div className="flex items-center justify-between">
         <Title>{T("project.details.rewards.title")}</Title>
         {!hasOrgsWithUnauthorizedRepos ? (
@@ -103,6 +101,7 @@ const RewardList: React.FC = () => {
           </Flex>
         ) : null}
       </div>
+      <StillFetchingBanner createdAt={createdAt} />
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}

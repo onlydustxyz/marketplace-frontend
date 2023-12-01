@@ -23,6 +23,7 @@
     "@datadog/browser-logs": "^4.16.1",
     "@datadog/browser-rum": "^4.34.1",
     "@datadog/datadog-ci": "^2.4.0",
+    "@floating-ui/react-dom": "^2.0.4",
     "@headlessui/tailwindcss": "^0.2.0",
     "@hookform/resolvers": "^3.3.2",
     "@tag0/use-text-width": "^1.2.0",

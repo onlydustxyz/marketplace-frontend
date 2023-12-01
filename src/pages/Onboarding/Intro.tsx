@@ -12,16 +12,15 @@ export default function Intro({ start, skip }: Props) {
   const { T } = useIntl();
 
   return (
-    <div className="px-4 pt-10">
+    <div className="pb-6 pt-16">
       <Card
-        fullWidth={true}
+        className="relative mx-auto flex flex-col items-center justify-between gap-7 px-12 pb-12 pt-20 xl:px-24"
         padded={false}
-        className="relative flex flex-col items-center bg-white/2 p-12 pt-[72px] xl:w-fit"
       >
         <div className="absolute -top-10">
           <OnlyDustLogo width={OnlyDustLogoWidth.Large} />
         </div>
-        <div className="flex flex-col items-center gap-6 xl:w-[592px]">
+        <div className="flex flex-col items-center gap-6">
           <div className="text-center font-belwe text-3xl font-normal text-greyscale-50">
             {T("onboarding.intro.title")}
           </div>

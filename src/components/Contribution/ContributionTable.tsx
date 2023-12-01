@@ -154,14 +154,14 @@ export function ContributionTable({
               status={githubStatus}
               contributionStatus={status}
               date={new Date(lineDate ?? "")}
-              tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.Bottom }}
+              tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
             />
           </Cell>
           <Cell height={CellHeight.Compact}>
             <ContributionProjectRepo project={project} repo={repo} />
           </Cell>
           <Cell height={CellHeight.Compact}>
-            <Contribution contribution={contribution} />
+            <Contribution contribution={contribution} isMine />
           </Cell>
           <Cell className="justify-end gap-1" height={CellHeight.Compact}>
             {ContributionLinked({ contribution }) ? <ContributionLinked contribution={contribution} /> : "-"}

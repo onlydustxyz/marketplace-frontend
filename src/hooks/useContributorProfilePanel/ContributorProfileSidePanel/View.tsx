@@ -6,7 +6,7 @@ import EditView from "./EditView";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 type Props = {
-  gqlProfile: UserProfileFragment & OwnUserProfileDetailsFragment; // we don't want to update the edit form with reste for now
+  gqlProfile?: UserProfileFragment & OwnUserProfileDetailsFragment; // we don't want to update the edit form with reste for now
   restFulProfile: Profile; // we don't want to update the edit form with reste for now
   isOwn?: boolean;
 };
@@ -14,7 +14,7 @@ type Props = {
 export default function View({ isOwn, restFulProfile, gqlProfile }: Props) {
   const [editMode, setEditMode] = useState(false);
 
-  return editMode ? (
+  return editMode && gqlProfile ? (
     <EditView profile={gqlProfile} restFulProfile={restFulProfile} setEditMode={setEditMode} />
   ) : (
     <ReadOnlyView userProfile={restFulProfile} setEditMode={setEditMode} isOwn={isOwn} gqlProfile={gqlProfile} />

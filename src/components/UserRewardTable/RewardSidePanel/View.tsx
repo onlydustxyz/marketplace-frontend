@@ -7,7 +7,6 @@ import {
   GithubCodeReviewFragment,
   GithubIssueFragment,
   GithubPullRequestWithCommitsFragment,
-  GithubUserFragment,
 } from "src/__generated/graphql";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
@@ -150,7 +149,7 @@ export default function View({
                             }
                           : undefined
                       }
-                      contributor={data?.to as GithubUserFragment}
+                      contributorLogin={data?.to.login}
                     />
                   );
                 }
@@ -276,12 +275,12 @@ export default function View({
                     <Contributor
                       contributor={{
                         login: data.from.login ?? "",
-                        githubUserId: data.from.id ?? 0,
+                        githubUserId: data.from.githubUserId ?? 0,
                         avatarUrl: null,
                       }}
                       clickable
                     />
-                    {data.from.id === githubUserId && T("reward.table.detailsPanel.you")}
+                    {data.from.githubUserId === githubUserId && T("reward.table.detailsPanel.you")}
                   </div>
                 </Details>
               ) : null}
@@ -293,12 +292,12 @@ export default function View({
                     <Contributor
                       contributor={{
                         login: data.to.login ?? "",
-                        githubUserId: data.to.id ?? 0,
+                        githubUserId: data.to.githubUserId ?? 0,
                         avatarUrl: null,
                       }}
                       clickable
                     />
-                    {data.to.id === githubUserId && T("reward.table.detailsPanel.you")}
+                    {data.to.githubUserId === githubUserId && T("reward.table.detailsPanel.you")}
                   </div>
                 </Details>
               ) : null}

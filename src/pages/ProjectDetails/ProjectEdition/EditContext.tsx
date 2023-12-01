@@ -17,6 +17,7 @@ import MeApi from "src/api/me";
 import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useEditValidationSchema } from "./hooks/useValidationSchema";
+import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -39,6 +40,7 @@ type Edit = {
     addRepository: (organizationId: number, repoId: number) => void;
     removeRepository: (organizationId: number, repoId: number) => void;
   };
+  isSubmitting: boolean;
 };
 
 export interface EditFormDataRepos {
@@ -68,6 +70,7 @@ export const EditContext = createContext<Edit>({
     run: () => null,
     inGithubWorkflow: false,
   },
+  isSubmitting: false,
 });
 
 const SESSION_KEY = "edit-project-";
@@ -76,7 +79,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
 
   const validationSchema = useEditValidationSchema();
-
+  const lastAddedRepoStorage = useProjectDetailsLastAddedRepoStorage(project.slug);
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
@@ -144,7 +147,10 @@ export function EditProvider({ children, project }: EditContextProps) {
       inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
       projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
-      rewardSettings: project.rewardSettings,
+      rewardSettings: {
+        ...project.rewardSettings,
+        ignoreContributionsBefore: project.rewardSettings?.ignoreContributionsBefore ?? project.createdAt,
+      },
     },
     resolver: zodResolver(validationSchema),
   });
@@ -157,13 +163,18 @@ export function EditProvider({ children, project }: EditContextProps) {
           ...findInMe,
           ...projectOrg,
           installed: findInMe.installed,
+          installationId: findInMe.installationId,
+          isPersonal: findInMe.isPersonal,
           isCurrentUserAdmin: findInMe.isCurrentUserAdmin,
           repos: uniqWith([...(projectOrg.repos || []), ...(findInMe.repos || [])], (arr, oth) => arr.id === oth.id),
         };
       }
       return projectOrg;
     });
-    return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id);
+
+    return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id).sort((a, b) =>
+      a.login.localeCompare(b.login)
+    );
   }, [organizationsData, project]);
 
   const onAddRepository = (organizationId: number, repoId: number) => {
@@ -233,13 +244,16 @@ export function EditProvider({ children, project }: EditContextProps) {
     formStorage.removeValue();
   }, []);
 
-  const { mutate: updateProject } = ProjectApi.mutations.useUpdateProject({
+  const { mutate: updateProject, isPending: isSubmitting } = ProjectApi.mutations.useUpdateProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
       onSuccess: async (data, queryClient) => {
+        if (form.formState.dirtyFields.githubRepos) {
+          lastAddedRepoStorage.setValue(new Date().toISOString());
+        }
+        form.reset(form.getValues());
         showToaster(T("form.toast.success"));
         clearSession();
-        form.reset(form.getValues());
 
         // Replace the current path on the history stack if different
         const newPathname = `${generatePath(RoutePaths.ProjectDetailsEdit, {
@@ -283,6 +297,7 @@ export function EditProvider({ children, project }: EditContextProps) {
           inGithubWorkflow,
           run: runGithubWorkflow,
         },
+        isSubmitting,
       }}
     >
       <EditPanelProvider openOnLoad={!!installation_id} isLoading={false} project={project}>

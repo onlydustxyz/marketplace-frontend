@@ -6,15 +6,14 @@ import { ContributionReward } from "src/components/Contribution/ContributionRewa
 import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { useStackContribution } from "src/App/Stacks";
-import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
   contribution: ContributionT;
   isMobile?: boolean;
+  isMine?: boolean;
 };
 
-export function Contribution({ contribution, isMobile = false }: Props) {
-  const { T } = useIntl();
+export function Contribution({ contribution, isMobile = false, isMine = false }: Props) {
   const { open } = useContributionDetailPanel();
   const [openContributionPanel] = useStackContribution();
 
@@ -41,7 +40,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
       })}
     >
       <div className={cn("flex items-center gap-2 font-walsheim", isMobile ? "w-full" : "min-w-0")}>
-        <ContributionBadge contribution={contribution} />
+        <ContributionBadge contribution={contribution} isMine={isMine} />
         <button
           className="truncate break-all text-left hover:underline"
           onClick={() => {

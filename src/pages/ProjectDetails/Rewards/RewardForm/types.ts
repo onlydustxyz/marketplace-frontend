@@ -2,7 +2,7 @@ import { components } from "src/__generated/api";
 import { WorkItem } from "src/__generated/graphql";
 import { BudgetCurrencyType } from "src/utils/money";
 
-export type Contributor = components["schemas"]["ContributorSearchItemResponse"] & {
+export type Contributor = components["schemas"]["ContributorResponse"] & {
   unpaidCompletedContributions: number;
   unpaidMergedPullsCount?: number;
   unpaidCompletedIssuesCount?: number;

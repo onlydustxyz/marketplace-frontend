@@ -65,12 +65,15 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode, gq
     <div className="flex flex-col gap-6">
       {!isPublic && (
         <div className="z-20 -mr-4 flex flex-row gap-2 self-end">
-          {isOwn && (
-            <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
-              <PencilLine />
-              {T("profile.editButton")}
-            </Button>
-          )}
+          {
+            // Edit mode requires gqlProfile, so don't show the button if undefined
+            isOwn && gqlProfile && (
+              <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
+                <PencilLine />
+                {T("profile.editButton")}
+              </Button>
+            )
+          }
           <Link
             to={generatePath(RoutePaths.PublicProfile, {
               userLogin: profile.login || "",
