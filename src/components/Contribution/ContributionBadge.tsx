@@ -97,7 +97,7 @@ export function ContributionBadge({
           "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim",
           isExternal && !isMine ? "border border-dashed" : "border-0.5 border-solid",
           {
-            "hover:bg-whiteFakeOpacity-8": withTooltip || asLink,
+            "hover:bg-card-background-heavy": withTooltip || asLink,
           },
           statusClassnames
         )}

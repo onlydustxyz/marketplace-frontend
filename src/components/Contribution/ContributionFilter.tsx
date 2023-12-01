@@ -132,7 +132,7 @@ export function ContributionFilter({
           >
             <Popover.Panel
               static
-              className="absolute right-0 z-10 flex translate-y-1.5 flex-col divide-y divide-greyscale-50/8 rounded-2xl border border-greyscale-50/12 bg-whiteFakeOpacity-8 shadow-xl"
+              className="absolute right-0 z-10 flex translate-y-1.5 flex-col divide-y divide-card-border-light rounded-2xl border border-card-border-medium bg-greyscale-900 shadow-xl"
             >
               <div className="flex justify-between px-6 py-3">
                 <p className="font-belwe text-base text-greyscale-50">{T("filter.title")}</p>

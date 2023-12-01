@@ -111,14 +111,11 @@ export function ContributionTable({
       <div className="flex flex-col gap-2">
         {contributions?.map(contribution => {
           return (
-            <div
+            <ContributionCard
               key={`${contribution.id}-${contribution.project.name}`}
-              className={cn("rounded-xl", {
-                "bg-whiteFakeOpacity-5/95 lg:bg-none": !fullTable,
-              })}
-            >
-              <ContributionCard contribution={contribution} />
-            </div>
+              contribution={contribution}
+              className={cn({ "bg-card-background-light": fullTable })}
+            />
           );
         })}
 
@@ -146,7 +143,7 @@ export function ContributionTable({
       const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
 
       return (
-        <Line key={lineId}>
+        <Line key={lineId} className="border-card-border-light">
           <Cell height={CellHeight.Compact}>
             <ContributionDate
               id={lineId}
@@ -175,21 +172,21 @@ export function ContributionTable({
     <ContributionTableSkeleton />
   ) : (
     <section
-      className={cn("overflow-hidden rounded-2xl border-greyscale-50/8", {
-        "border bg-whiteFakeOpacity-5/95 shadow-2xl": fullTable,
-        "lg:border lg:bg-whiteFakeOpacity-5/95 lg:shadow-2xl": !fullTable,
+      className={cn("overflow-hidden rounded-2xl border-card-border-medium", {
+        "border bg-card-background-base shadow-heavy": fullTable,
+        "lg:border lg:bg-card-background-base lg:shadow-heavy": !fullTable,
       })}
     >
       {fullTable ? (
         <header
-          className={cn("flex items-center justify-between gap-6 bg-white/2 px-6 py-4", {
+          className={cn("flex items-start justify-between gap-6 bg-card-background-light px-6 py-4 md:items-center", {
             "cursor-pointer": hasContributions,
-            "border-b border-greyscale-50/8": !collapsed && hasContributions,
+            "border-b border-card-border-light": !collapsed && hasContributions,
           })}
           onClick={hasContributions ? () => setCollapsed(prevState => !prevState) : undefined}
         >
           <div className="flex items-start gap-3">
-            <div className="rounded-lg bg-white/5 p-3 leading-none text-greyscale-50">
+            <div className="rounded-lg bg-card-background-medium p-3 leading-none text-greyscale-50">
               {icon("h-5 w-5 text-xl leading-none text-base")}
             </div>
             <div className="font-walsheim">
@@ -226,6 +223,7 @@ export function ContributionTable({
           >
             <Table
               id={id}
+              theadClassName="border-card-border-medium"
               headers={
                 <HeaderLine>
                   <HeaderCell

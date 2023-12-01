@@ -24,7 +24,7 @@ export function MobileShowMore({
       <button
         type="button"
         onClick={onClick}
-        className="flex w-full items-center justify-center rounded-xl border border-greyscale-50 bg-white/5 px-4 py-3.5 font-walsheim font-medium leading-none text-greyscale-50 shadow-lg"
+        className="flex w-full items-center justify-center rounded-xl border border-greyscale-50 bg-card-background-medium px-4 py-3.5 font-walsheim font-medium leading-none text-greyscale-50 shadow-lg"
         disabled={loading}
       >
         {loading ? (

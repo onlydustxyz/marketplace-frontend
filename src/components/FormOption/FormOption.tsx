@@ -31,7 +31,7 @@ export const FormOption = forwardRef(function FormOption<T extends ElementType =
       ref={ref}
       className={cn(
         // Base styles
-        "flex cursor-pointer select-none items-center gap-1 whitespace-nowrap border font-walsheim font-normal !leading-none text-snow",
+        "flex cursor-pointer select-none items-center gap-1 whitespace-nowrap border font-walsheim font-normal !leading-none text-snow shadow-heavy",
 
         // ProfileRadioGroup styles
         "peer-checked:border-spacePurple-500 peer-checked:bg-spacePurple-900 peer-checked:outline-double peer-checked:outline-1 peer-checked:outline-spacePurple-500",
@@ -46,8 +46,8 @@ export const FormOption = forwardRef(function FormOption<T extends ElementType =
         },
 
         {
-          "border-greyscale-50/8 bg-white/8": variant === Variant.Default,
-          "border-greyscale-50/8": variant === Variant.Transparent,
+          "border-card-border-light bg-card-background-heavy": variant === Variant.Default,
+          "border-card-border-light": variant === Variant.Transparent,
           "border-spacePurple-500 bg-spacePurple-900 outline-double outline-1 outline-spacePurple-500":
             variant === Variant.Active,
         },

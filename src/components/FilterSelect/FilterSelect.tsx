@@ -55,7 +55,7 @@ export function FilterSelect<T extends Item>({
             <>
               <Listbox.Button
                 className={cn(
-                  "flex w-full items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 text-greyscale-50 shadow-lg",
+                  "flex w-full items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
                   {
                     "border-spacePurple-500 bg-spacePurple-900 text-spacePurple-200 outline-double outline-1 outline-spacePurple-500":
                       open,
@@ -85,14 +85,16 @@ export function FilterSelect<T extends Item>({
                 leave="transition duration-75 ease-out"
                 leaveFrom="transform scale-100 opacity-100"
                 leaveTo="transform scale-95 opacity-0"
-                className="absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 overflow-hidden rounded-2xl border border-greyscale-50/12 bg-whiteFakeOpacity-8 shadow-lg"
+                className="absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 overflow-hidden rounded-2xl border border-card-border-light bg-card-background-medium shadow-medium"
               >
-                <Listbox.Options className="max-h-60 divide-y divide-greyscale-50/8 overflow-auto bg-white/5 py-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+                <Listbox.Options className="max-h-60 divide-y divide-card-border-light overflow-auto bg-greyscale-800 py-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                   {items.map(item => (
                     <Listbox.Option key={item.id} value={item}>
                       {({ selected, active }) => (
                         <div
-                          className={cn("flex cursor-pointer items-center gap-3 px-4 py-2", { "bg-white/2": active })}
+                          className={cn("flex cursor-pointer items-center gap-3 px-4 py-2", {
+                            "bg-card-background-heavy": active,
+                          })}
                         >
                           {typeof item.image !== "undefined" ? (
                             <RoundedImage
