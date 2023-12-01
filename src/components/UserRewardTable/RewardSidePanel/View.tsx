@@ -139,10 +139,17 @@ export default function View({
                           RewardableItem & GithubPullRequestWithCommitsFragment
                         >
                       }
-                      onCardClick={() => {
-                        console.log("ICICI", projectId);
-                        openStackContribution({ contributionId: item.id, projectId, githubHtmlUrl: item.githubUrl });
-                      }}
+                      onCardClick={
+                        item.contributionId
+                          ? () => {
+                              openStackContribution({
+                                contributionId: item.contributionId,
+                                projectId,
+                                githubHtmlUrl: item.githubUrl,
+                              });
+                            }
+                          : undefined
+                      }
                       contributor={data?.to as GithubUserFragment}
                     />
                   );
@@ -152,6 +159,17 @@ export default function View({
                     <GithubIssue
                       key={item.id}
                       issue={formatRewardItemToGithubIssue(item) as Partial<GithubIssueFragment & RewardableItem>}
+                      onCardClick={
+                        item.contributionId
+                          ? () => {
+                              openStackContribution({
+                                contributionId: item.contributionId,
+                                projectId,
+                                githubHtmlUrl: item.githubUrl,
+                              });
+                            }
+                          : undefined
+                      }
                     />
                   );
                 }
@@ -159,12 +177,17 @@ export default function View({
                   return (
                     <GithubCodeReview
                       key={item.id}
-                      onCardClick={() => {
-                        // https://develop-api.onlydust.com/api/v1/projects/79c544b6-4957-42b7-92ae-12dcfda575d8/contributions/b1cc7bf998dd7588735fdac505749a8431007b7cb494c0b2b73b9722caa91bcc
-                        // https://develop-api.onlydust.com/api/v1/projects/79c544b6-4957-42b7-92ae-12dcfda575d8/contributions/edb7b5c21e79aeb892b3aca2e501331b545cb3938f5734eba7767ea629ec9d2c
-                        console.log("ICICI", projectId);
-                        openStackContribution({ contributionId: item.id, projectId, githubHtmlUrl: item.githubUrl });
-                      }}
+                      onCardClick={
+                        item.contributionId
+                          ? () => {
+                              openStackContribution({
+                                contributionId: item.contributionId,
+                                projectId,
+                                githubHtmlUrl: item.githubUrl,
+                              });
+                            }
+                          : undefined
+                      }
                       codeReview={
                         formatRewardItemToGithubCodeReview(item) as Partial<GithubCodeReviewFragment & RewardableItem>
                       }
