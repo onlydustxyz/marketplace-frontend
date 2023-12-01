@@ -312,7 +312,7 @@ export interface OrganizationSessionStorageInterface extends useInstallationById
   organization: Organization;
 }
 
-export type Contribution = components["schemas"]["ContributionPageItemResponse"];
+export type Contribution = components["schemas"]["UserContributionPageItemResponse"];
 export type ContributionDetail = components["schemas"]["ContributionDetailsResponse"];
 
 export enum ContributionStatus {
@@ -321,7 +321,7 @@ export enum ContributionStatus {
   Cancelled = "CANCELLED",
 }
 
-export type GithubStatus = components["schemas"]["ContributionPageItemResponse"]["githubStatus"];
+export type GithubStatus = components["schemas"]["UserContributionPageItemResponse"]["githubStatus"];
 
 export enum Visibility {
   Public = "PUBLIC",
