@@ -22,6 +22,8 @@ import { useLocalStorage } from "usehooks-ts";
 import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { Filter } from "./Filter";
+import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 
 enum AllTabs {
   All = "ALL_CONTRIBUTIONS",
@@ -69,6 +71,7 @@ export default function Contributions() {
   const isRewardDisabled = !remainingBudget;
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
+  const isProjectLeader = useProjectLeader({ id: project.id });
 
   // -------------------
 
@@ -276,6 +279,9 @@ export default function Contributions() {
           </Flex>
         ) : null}
       </div>
+      {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
+        <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
+      ) : null}
       <div className="h-full overflow-y-auto">
         <div className="h-full w-full overflow-y-auto rounded-3xl bg-contributions bg-right-top bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
           <div className="relative min-h-full">
