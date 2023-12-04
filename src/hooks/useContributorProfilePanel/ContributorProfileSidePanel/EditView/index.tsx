@@ -22,7 +22,6 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "src/utils/cn";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
-import { useQueryClient } from "@tanstack/react-query";
 import MeApi from "src/api/me";
 import { useShowToaster } from "src/hooks/useToaster";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
@@ -39,7 +38,7 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   // Get QueryClient from the context
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const formMethods = useForm<UserProfileInfo>({
     defaultValues: fromFragment(profile),
@@ -80,8 +79,19 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
   const updateCompletionScore = () => {
     const score = (value: string | number | null, score: number) => (value && value !== "" ? score : 0);
 
-    const { bio, email, discord, githubHandle, linkedin, location, telegram, whatsapp, twitter, languages, website } =
-      getValues();
+    const {
+      bio,
+      email,
+      discord,
+      githubHandle,
+      linkedin,
+      location,
+      telegram,
+      whatsapp,
+      twitter,
+      technologies,
+      website,
+    } = getValues();
 
     setCompletionScore(
       score(profile.avatarUrl, 5) +
@@ -96,7 +106,7 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
         score(twitter, 5) +
         score(discord, 5) +
         score(linkedin, 5) +
-        score(Object.keys(languages).length, 10)
+        score(Object.keys(technologies).length, 10)
     );
   };
 
@@ -175,7 +185,7 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
                   subtitle={T("profile.edit.sections.technologies.subtitle")}
                 >
                   <Controller
-                    name="languages"
+                    name="technologies"
                     render={({ field: { value, onChange } }) => (
                       <TechnologiesSelect technologies={value} setTechnologies={onChange} />
                     )}

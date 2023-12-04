@@ -39,7 +39,7 @@ export type UserProfileInfo = {
   isDiscordPublic: boolean;
   linkedin: string;
   isLinkedInPublic: boolean;
-  languages: LanguageMap;
+  technologies: LanguageMap;
   weeklyAllocatedTime: components["schemas"]["PrivateUserProfileResponse"]["allocatedTimeToContribute"];
   lookingForAJob: boolean;
   cover: ProfileCover;
@@ -76,7 +76,7 @@ export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileI
   linkedin: profile?.contacts?.find(contact => contact.channel === Channel.LinkedIn)?.contact ?? "",
   isLinkedInPublic:
     profile?.contacts?.find(contact => contact.channel === Channel.LinkedIn)?.visibility === "public" ?? true,
-  languages: profile?.technologies ?? {},
+  technologies: profile?.technologies ?? {},
   weeklyAllocatedTime: profile?.allocatedTimeToContribute ?? AllocatedTime.None,
   lookingForAJob: profile?.isLookingForAJob ?? false,
   cover: translateProfileCover(profile?.cover || "") ?? ProfileCover.Blue,
@@ -112,7 +112,7 @@ export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileB
       visibility: profile.isLinkedInPublic ? "public" : "private",
     },
   ],
-  technologies: profile.languages,
+  technologies: profile.technologies,
   location: profile.location,
   isLookingForAJob: profile.lookingForAJob,
   website: profile.website,
