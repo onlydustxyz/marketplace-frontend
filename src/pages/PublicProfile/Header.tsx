@@ -33,9 +33,9 @@ export default function Header({ userLogin }: Props) {
               id="copy-profile-url-btn"
               type={ButtonType.Secondary}
               size={ButtonSize.MdRounded}
-              onClick={() =>
-                navigator.clipboard.writeText(`${window.location.protocol}://${window.location.host}/u/${userLogin}`)
-              }
+              onClick={() => {
+                navigator.clipboard.writeText(`${window.location.protocol}//${window.location.host}/u/${userLogin}`);
+              }}
             >
               <LinkIcon className="text-xl" />
               {T("publicProfile.copyUrl")}

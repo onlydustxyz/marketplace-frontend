@@ -12,7 +12,6 @@ import {
 } from "src/__generated/graphql";
 import Badge, { BadgeSize } from "src/components/Badge";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
-import Callout from "src/components/Callout";
 import Card from "src/components/Card";
 import ContactInformations from "src/components/ContactInformations";
 import MarkdownPreview from "src/components/MarkdownPreview";
@@ -37,7 +36,6 @@ import { Action, SessionMethod, useSession, useSessionDispatch } from "src/hooks
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import LockFill from "src/icons/LockFill";
-import RecordCircleLine from "src/icons/RecordCircleLine";
 import Title from "src/pages/ProjectDetails/Title";
 import { HasuraUserRole } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
@@ -53,6 +51,7 @@ import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
+import User3Line from "src/icons/User3Line";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -336,10 +335,10 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
   const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
 
   return (
-    <Callout>
+    <Card className="p-4 lg:p-4">
       <div className="flex flex-col gap-3">
         <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-medium text-spaceBlue-200">
-          <RecordCircleLine />
+          <User3Line />
           {T("project.hiring").toUpperCase()}
         </div>
         {isLoggedIn ? (
@@ -400,7 +399,10 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
             </Button>
           </a>
         )}
+        <p className="text-body-s text-spaceBlue-200">
+          {alreadyApplied ? T("applications.informations_already_apply") : T("applications.informations")}
+        </p>
       </div>
-    </Callout>
+    </Card>
   );
 }
