@@ -10,7 +10,7 @@ export function ContributionLinked({
   asLink = false,
   tooltipProps = {
     position: TooltipPosition.Bottom,
-    variant: Variant.Blue,
+    variant: Variant.Default,
   },
 }: {
   contribution: ComponentProps<typeof ContributionBadge>["contribution"] & Pick<Contribution, "id" | "links">;

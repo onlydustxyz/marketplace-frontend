@@ -12,8 +12,8 @@ export function formatRewardItemToGithubPullRequest(item: components["schemas"][
     number: item.number,
     title: item.title,
     createdAt: item.createdAt,
-    closedAt: item.lastUpdateAt,
-    mergedAt: item.lastUpdateAt,
+    closedAt: item.completedAt,
+    mergedAt: item.completedAt,
     status: item.status,
     htmlUrl: item.githubUrl,
     userCommitsCount: {
@@ -41,7 +41,7 @@ export function formatRewardItemToGithubIssue(item: components["schemas"]["Rewar
   return {
     id: item.id,
     createdAt: item.createdAt,
-    closedAt: item.lastUpdateAt,
+    closedAt: item.completedAt,
     number: item.number,
     title: item.title,
     htmlUrl: item.githubUrl,

@@ -21,10 +21,9 @@ import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { CompletedRewardableItem } from "src/api/Project/queries";
 import withToasterProvider from "../decorators/withToasterProvider";
 
-
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
-type ContributorMockType = components["schemas"]["ContributorPageItemResponse"]
+type ContributorMockType = components["schemas"]["ContributorPageItemResponse"];
 
 const mockBudgets: ProjectBudgetType = {
   initialDollarsEquivalent: 120000,
@@ -137,15 +136,16 @@ const TDELABRO: ContributorFragment = {
   completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 
-const contributorMock:Contributor = {
+const contributorMock: Contributor = {
   avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
   githubUserId: 123456,
   isRegistered: true,
   login: "string",
   unpaidCompletedContributions: 2,
-}
+  htmlUrl: "",
+};
 
-const unpaidContributions:CompletedRewardableItem = {
+const unpaidContributions: CompletedRewardableItem = {
   rewardableCodeReviews: [
     {
       commentsCount: 0,
@@ -162,8 +162,8 @@ const unpaidContributions:CompletedRewardableItem = {
       status: "COMPLETED",
       title: "string",
       type: "CODE_REVIEW",
-      userCommitsCount: 0
-    }
+      userCommitsCount: 0,
+    },
   ],
   rewardableIssues: [
     {
@@ -181,8 +181,8 @@ const unpaidContributions:CompletedRewardableItem = {
       status: "COMPLETED",
       title: "string",
       type: "CODE_REVIEW",
-      userCommitsCount: 0
-    }
+      userCommitsCount: 0,
+    },
   ],
   rewardablePullRequests: [
     {
@@ -200,10 +200,10 @@ const unpaidContributions:CompletedRewardableItem = {
       status: "CANCELLED",
       title: "string",
       type: "CODE_REVIEW",
-      userCommitsCount: 0
-    }
-  ]
-}
+      userCommitsCount: 0,
+    },
+  ],
+};
 
 const mocks = [
   {
@@ -281,17 +281,17 @@ export default {
 export const Default = {
   render: () => (
     <div className="flex flex-col gap-6">
-      <RewardForm 
-      projectBudget={mockBudgets} 
-      onWorkItemsChange={() => {
-        return;
-      }} 
-      projectId="123" 
-      contributor={contributorMock} 
-      setContributor={() => {
-        return;
-      }} 
-      unpaidContributions={unpaidContributions}
+      <RewardForm
+        projectBudget={mockBudgets}
+        onWorkItemsChange={() => {
+          return;
+        }}
+        projectId="123"
+        contributor={contributorMock}
+        setContributor={() => {
+          return;
+        }}
+        unpaidContributions={unpaidContributions}
       />
     </div>
   ),

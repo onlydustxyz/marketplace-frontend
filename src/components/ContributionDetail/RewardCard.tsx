@@ -75,7 +75,7 @@ export function RewardCard({
             className="text-spacePurple-300 hover:text-spacePurple-200"
             onClick={e => {
               e.stopPropagation();
-              if (reward.from.id) openProfilePanel(reward.from.id);
+              if (reward.from.githubUserId) openProfilePanel(reward.from.githubUserId);
             }}
           >
             {reward.from.login}

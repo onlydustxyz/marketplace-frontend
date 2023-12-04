@@ -79,7 +79,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
 
   const validationSchema = useEditValidationSchema();
-  const lastAddedRepoStorage = useProjectDetailsLastAddedRepoStorage();
+  const lastAddedRepoStorage = useProjectDetailsLastAddedRepoStorage(project.slug);
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
@@ -147,7 +147,10 @@ export function EditProvider({ children, project }: EditContextProps) {
       inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
       projectLeadsToKeep: project.leaders.map(leader => leader.id),
       projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
-      rewardSettings: project.rewardSettings,
+      rewardSettings: {
+        ...project.rewardSettings,
+        ignoreContributionsBefore: project.rewardSettings?.ignoreContributionsBefore ?? project.createdAt,
+      },
     },
     resolver: zodResolver(validationSchema),
   });
