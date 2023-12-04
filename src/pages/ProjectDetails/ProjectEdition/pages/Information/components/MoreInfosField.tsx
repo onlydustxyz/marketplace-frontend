@@ -1,5 +1,4 @@
-import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
-import { ClassAttributes, Dispatch, HTMLAttributes, SetStateAction } from "react";
+import { ClassAttributes, HTMLAttributes } from "react";
 import { ControllerFieldState, UseFormReturn } from "react-hook-form";
 import Button, { ButtonType, ButtonSize } from "src/components/Button";
 import { FieldInput } from "src/components/New/Field/Input";
@@ -12,6 +11,8 @@ import { useIntl } from "src/hooks/useIntl";
 import { MoreInfos } from "src/types";
 import { SocialIcon } from "./SocialIcon";
 import { EditFormData } from "../../../EditContext";
+import { SortableList } from "src/components/New/Sortable/SortableList";
+import { v4 as uuidv4 } from "uuid";
 import { CreateFormData } from "src/pages/ProjectCreation/types/ProjectCreationType";
 
 const DragHandler = (
@@ -30,57 +31,36 @@ const DragHandler = (
   </div>
 );
 
-type SortableMoreInfos = MoreInfos & { id: string };
-
 type MoreInfosFieldProps = {
   onChange: (...event: unknown[]) => void;
   value?: MoreInfos[];
   error?: ControllerFieldState["error"];
 };
 
-type EditFormProps = MoreInfosFieldProps & {
-  form?: UseFormReturn<EditFormData, unknown>;
+type FormProps = MoreInfosFieldProps & {
+  form: UseFormReturn<EditFormData | CreateFormData, unknown>;
 };
 
-type CreateFormProps = MoreInfosFieldProps & {
-  form?: UseFormReturn<CreateFormData, unknown>;
-};
-
-type FormUnionProps = UseFormReturn<EditFormData | CreateFormData, unknown>;
-
-// react-sortable-list expects an id for each item, so we need to add it
-function decodeValues(values: MoreInfos[] | undefined): SortableMoreInfos[] {
-  return values?.map((item, index) => ({ ...item, id: (index + 1).toString() })) || [];
-}
-
-// TS is getting tangled up with moreInfos generics, so we need to cast the type
-function getMoreInfos(formValues?: EditFormData | CreateFormData) {
-  return formValues?.moreInfos || [];
-}
-
-export function MoreInfosField({ onChange, value, form, error }: EditFormProps | CreateFormProps) {
+export function MoreInfosField({ onChange, value, form, error }: FormProps) {
   const { T } = useIntl();
 
-  function reorderMoreInfos(reOrder: (items: SortableItemProps[]) => SortableMoreInfos[]) {
-    const moreInfos = decodeValues(getMoreInfos(form?.getValues()));
-    const reorderedValues = reOrder(moreInfos).map(({ id: _, ...rest }) => rest);
-
-    (form as FormUnionProps)?.setValue("moreInfos", reorderedValues, {
+  function reorderMoreInfos(items: MoreInfos[]) {
+    form?.setValue("moreInfos", items, {
       shouldDirty: true,
       shouldValidate: true,
     });
   }
 
   function addLink() {
-    const moreInfos = getMoreInfos(form?.getValues());
-    moreInfos.push({ url: "", value: "" });
-    (form as FormUnionProps)?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: false });
+    const moreInfos = form?.getValues("moreInfos") || [];
+    moreInfos.push({ url: "", value: "", id: uuidv4() });
+    form?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: false });
   }
 
   function deleteLink(index: number) {
-    const moreInfos = getMoreInfos(form?.getValues());
+    const moreInfos = form?.getValues("moreInfos") || [];
     moreInfos.splice(index, 1);
-    (form as FormUnionProps)?.setValue("moreInfos", moreInfos, {
+    form?.setValue("moreInfos", moreInfos, {
       shouldDirty: true,
       shouldValidate: false,
     });
@@ -100,57 +80,55 @@ export function MoreInfosField({ onChange, value, form, error }: EditFormProps |
 
       <Flex className="w-full flex-col gap-4">
         <SortableList
-          items={decodeValues(value)}
-          setItems={reorderMoreInfos as unknown as Dispatch<SetStateAction<SortableItemProps[]>>}
+          items={value || []}
+          onChange={reorderMoreInfos}
+          itemProps={{ DragHandler, className: "flex w-full items-center" }}
         >
-          {({ items }: { items: SortableItemProps[] }) => (
+          {({ item, items, index }) => (
             <div className="w-full space-y-4">
-              {items.map((item: SortableItemProps, index) => (
-                <SortableItem id={item.id} key={item.id} DragHandler={DragHandler} className="flex w-full items-center">
-                  <Flex key={"moreInfo" + index} className="w-full items-baseline justify-center gap-2">
-                    <FieldInput
-                      name={"moreInfos.url-" + index}
-                      value={item.url}
-                      fieldClassName="w-full"
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      errorMessage={(error as any)?.[index]?.url?.message}
-                      onChange={event => {
-                        const updatedValue = items.map((item, i) =>
-                          i === index ? { ...item, url: event.target.value } : item
-                        );
+              <Flex key={"moreInfo" + item.id} className="w-full items-baseline justify-center gap-2">
+                <FieldInput
+                  name={"moreInfos.url-" + index}
+                  value={item.url}
+                  fieldClassName="w-full"
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  errorMessage={(error as any)?.[index]?.url?.message}
+                  onChange={event => {
+                    console.log("event.target.value", event.target.value);
+                    const updatedValue = items.map((item, i) =>
+                      i === index ? { ...item, url: event.target.value } : item
+                    );
 
-                        onChange(updatedValue);
-                      }}
-                      startIcon={({ className }) => <SocialIcon search={item.url} className={className} />}
-                    />
-                    <FieldInput
-                      name={"moreInfos.value-" + index}
-                      value={item.value}
-                      placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
-                      fieldClassName="w-1/3"
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      errorMessage={(error as any)?.[index]?.value?.message}
-                      onChange={event => {
-                        const updatedValue = items.map((item, i) =>
-                          i === index ? { ...item, value: event.target.value } : item
-                        );
-                        onChange(updatedValue);
-                      }}
-                    />
-                    {items.length > 1 ? (
-                      <Button
-                        type={ButtonType.Ternary}
-                        size={ButtonSize.MdRounded}
-                        iconOnly
-                        className="h-8 w-8 justify-center p-2 text-snow"
-                        onClick={() => deleteLink(index)}
-                      >
-                        <DeleteBinLine />
-                      </Button>
-                    ) : null}
-                  </Flex>
-                </SortableItem>
-              ))}
+                    onChange(updatedValue);
+                  }}
+                  startIcon={({ className }) => <SocialIcon search={item.url} className={className} />}
+                />
+                <FieldInput
+                  name={"moreInfos.value-" + index}
+                  value={item.value}
+                  placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
+                  fieldClassName="w-1/3"
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  errorMessage={(error as any)?.[index]?.value?.message}
+                  onChange={event => {
+                    const updatedValue = items.map((item, i) =>
+                      i === index ? { ...item, value: event.target.value } : item
+                    );
+                    onChange(updatedValue);
+                  }}
+                />
+                {items.length > 1 ? (
+                  <Button
+                    type={ButtonType.Ternary}
+                    size={ButtonSize.MdRounded}
+                    iconOnly
+                    className="h-8 w-8 justify-center p-2 text-snow"
+                    onClick={() => deleteLink(index)}
+                  >
+                    <DeleteBinLine />
+                  </Button>
+                ) : null}
+              </Flex>
             </div>
           )}
         </SortableList>

@@ -18,6 +18,8 @@ import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useEditValidationSchema } from "./hooks/useValidationSchema";
 import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
+import { MoreInfos } from "src/types";
+import { v4 as uuidv4 } from "uuid";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -48,10 +50,11 @@ export interface EditFormDataRepos {
   orgId: number;
 }
 
-export type EditFormData = components["schemas"]["UpdateProjectRequest"] & {
+export type EditFormData = Omit<components["schemas"]["UpdateProjectRequest"], "moreInfos"> & {
   projectLeads: FieldProjectLeadValue;
   selectedRepos: EditFormDataRepos[];
   githubRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
+  moreInfos: MoreInfos[];
 };
 
 export const EditContext = createContext<Edit>({
@@ -138,7 +141,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       logoUrl: project.logoUrl,
       shortDescription: project.shortDescription,
       longDescription: project.longDescription,
-      moreInfos: project.moreInfos,
+      moreInfos: project.moreInfos.map(info => ({ ...info, id: uuidv4() })),
       githubRepos: (project.repos || []).map(repo => ({
         id: repo.id,
         isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
@@ -154,6 +157,9 @@ export function EditProvider({ children, project }: EditContextProps) {
     },
     resolver: zodResolver(validationSchema),
   });
+
+  const test = validationSchema.safeParse(form.getValues());
+  console.log("VALIDATION", test);
 
   const mergeOrganization = useMemo(() => {
     const merged = (project.organizations || [])?.map(projectOrg => {

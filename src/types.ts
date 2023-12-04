@@ -187,6 +187,7 @@ export interface Leader {
 export interface MoreInfos {
   url: string;
   value?: string;
+  id: string;
 }
 
 export type Sponsor = components["schemas"]["SponsorResponse"];
