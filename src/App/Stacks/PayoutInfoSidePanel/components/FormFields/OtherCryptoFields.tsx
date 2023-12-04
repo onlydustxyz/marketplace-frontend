@@ -8,8 +8,8 @@ import StarknetIcon from "src/assets/icons/Starknet";
 import { APTOS_WALLET, ETH_WALLET_OR_ENS_ADDRESS, OPTIMISM_WALLET, STARKNET_WALLET } from "src/utils/regex";
 import Aptos from "src/assets/icons/Aptos";
 import EthereumIcon from "src/assets/icons/Ethereum";
-import { RequiredFieldsType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/usePayoutInfoValidation";
-import { ProfileType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/types";
+import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
+import { ProfileType } from "src/App/Stacks/PayoutInfoSidePanel/types";
 import { PreferredMethod } from "src/types";
 
 export function OtherCryptoFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {

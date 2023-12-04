@@ -18,7 +18,7 @@ import { parseFlag } from "src/utils/parseFlag";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import { Fields } from "src/components/UserRewardTable/Headers";
 import MeApi from "src/api/me";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks";
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 
 type Props = {
   avatarUrl: string | null;

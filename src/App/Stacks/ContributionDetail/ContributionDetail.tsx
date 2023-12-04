@@ -5,7 +5,7 @@ import ProjectApi from "src/api/Project";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
-import { RewardCard } from "src/components/ContributionDetail/RewardCard";
+import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
@@ -18,9 +18,9 @@ import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
-import { CommitsTooltip } from "../GithubCard/GithubPullRequest/CommitsTooltip";
+import { CommitsTooltip } from "../../../components/GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
-import { useStackReward } from "src/App/Stacks";
+import { useStackReward } from "src/App/Stacks/Stacks";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();

@@ -1,12 +1,12 @@
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { ContributionDetail } from "src/components/ContributionDetail/ContributionDetail";
-import RewardSidePanel, { RewardSidePanelAsLeader } from "src/components/UserRewardTable/RewardSidePanel";
-import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
+import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
+import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
+import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
-import PayoutInfoSidePanel from "./Layout/Header/ProfileButton/PayoutInfoSidePanel/PayoutInfoSidePanel";
+import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
@@ -56,7 +56,6 @@ export const Stacks = () => {
   );
 };
 
-// TODO : rename this into ProjectLeaderReward
 export const useStackPayoutInfo = () => {
   return useStackNavigation(StackRoute.PayoutInfo);
 };

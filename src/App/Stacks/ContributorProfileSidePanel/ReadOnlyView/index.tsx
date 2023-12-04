@@ -1,4 +1,4 @@
-import Header from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
+import Header from "src/App/Stacks/ContributorProfileSidePanel/Header";
 import IntroSection from "./IntroSection";
 import TechnologiesSection from "./TechnologiesSection";
 import StatsSection from "./StatsSection";

@@ -9,7 +9,7 @@ import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
 import MeApi from "src/api/me";
-import { useStackProjecRewardAsLead } from "src/App/Stacks";
+import { useStackProjecRewardAsLead } from "src/App/Stacks/Stacks";
 
 type Options = ComponentProps<typeof Headers> &
   Pick<

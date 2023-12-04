@@ -43,7 +43,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
 import { RewardableItem } from "src/api/Project/queries";
-import { useStackContribution } from "src/App/Stacks";
+import { useStackContribution } from "src/App/Stacks/Stacks";
 
 enum Align {
   Top = "top",

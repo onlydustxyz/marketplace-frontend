@@ -7,7 +7,7 @@ import {
   UserProfileFragment,
 } from "src/__generated/graphql";
 import { LanguageMap } from "src/types";
-import { translateProfileCover } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
+import { translateProfileCover } from "src/App/Stacks/ContributorProfileSidePanel/utils";
 
 export type UserProfileInfo = {
   location: string;

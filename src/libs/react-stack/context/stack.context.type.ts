@@ -7,7 +7,7 @@ export interface reactStackContextProps {
 
 export type panelEvent = "open" | "close";
 
-export interface History {
+export interface HistoryStore {
   name: string;
   panelId: string;
   params?: StacksParams;
@@ -16,7 +16,7 @@ export interface History {
 export type IReactStackContext = {
   stacks: [];
   stackStore: RefSubscriptionInterface<StacksInterface>;
-  history: RefSubscriptionInterface<History[]>;
+  history: RefSubscriptionInterface<HistoryStore[]>;
   stackMethods: {
     closeAll: () => void;
     register: (stack: RefSubscriptionInterface<StackInterface<AnyParams>>) => void;
@@ -44,5 +44,5 @@ export interface UpdateHistory {
 }
 
 export interface UpdatePanelOrder {
-  newHistoryStore: History[];
+  newHistoryStore: HistoryStore[];
 }

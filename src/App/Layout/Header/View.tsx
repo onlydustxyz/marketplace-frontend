@@ -13,7 +13,7 @@ import { useOnboarding } from "src/App/OnboardingProvider";
 import { useAuth } from "src/hooks/useAuth";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { useStackContributorProfile } from "src/App/Stacks";
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 
 interface HeaderViewProps {
   menuItems: {

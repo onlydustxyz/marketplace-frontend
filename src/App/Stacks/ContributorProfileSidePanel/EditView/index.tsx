@@ -11,7 +11,7 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import CheckLine from "src/icons/CheckLine";
 import Button, { ButtonSize } from "src/components/Button";
 import Tag, { TagSize } from "src/components/Tag";
-import Header from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
+import Header from "src/App/Stacks/ContributorProfileSidePanel/Header";
 import Card from "./Card";
 import { Section } from "./Section";
 import Input, { Size } from "src/components/FormInput";

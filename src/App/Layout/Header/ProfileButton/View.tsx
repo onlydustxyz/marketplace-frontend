@@ -10,7 +10,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useSidePanel } from "src/hooks/useSidePanel";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks";
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 
 type Props = {
   avatarUrl: string | null;

@@ -4,7 +4,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { MyRewardType } from "./Line";
 import DesktopUserRewardList from "./DesktopUserRewardList";
 import MobileUserRewardList from "./MobileUserRewardList";
-import { useStackReward } from "src/App/Stacks";
+import { useStackReward } from "src/App/Stacks/Stacks";
 
 const UserRewardTable: React.FC = () => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);

@@ -13,7 +13,7 @@ import DiscordFill from "src/icons/DiscordFill";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import PencilLine from "src/icons/PencilLine";
 import ExternalLink from "src/components/ExternalLink";
-import { parseWebsite } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
+import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { cn } from "src/utils/cn";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";

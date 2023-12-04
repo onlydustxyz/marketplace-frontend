@@ -1,5 +1,5 @@
 import Card from "src/components/Card";
-import ContributionGraph from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/ContributionGraph";
+import ContributionGraph from "src/App/Stacks/ContributorProfileSidePanel/ReadOnlyView/ContributionGraph";
 import { ContributionCountFragment } from "src/__generated/graphql";
 
 export default {

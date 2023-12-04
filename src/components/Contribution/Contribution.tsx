@@ -4,7 +4,7 @@ import { ContributionBadge } from "src/components/Contribution/ContributionBadge
 import { ContributionReview, ReviewStateStatuses } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
-import { useStackContribution } from "src/App/Stacks";
+import { useStackContribution } from "src/App/Stacks/Stacks";
 import { useAuth } from "src/hooks/useAuth";
 
 type Props = {

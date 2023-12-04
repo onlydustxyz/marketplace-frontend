@@ -1,4 +1,4 @@
-import ConfirmationModal from "src/components/UserRewardTable/RewardSidePanel/ConfirmationModal";
+import ConfirmationModal from "src/App/Stacks/RewardSidePanel/ConfirmationModal";
 
 export default {
   title: "ConfirmationModal",

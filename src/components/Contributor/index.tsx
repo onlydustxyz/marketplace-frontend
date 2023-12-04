@@ -4,7 +4,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { ContributorT } from "src/types";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { cn } from "src/utils/cn";
-import { useStackContributorProfile } from "src/App/Stacks";
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 
 type Props = {
   contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered">;

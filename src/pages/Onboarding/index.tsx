@@ -14,11 +14,7 @@ import {
 } from "src/__generated/graphql";
 import FormSelect, { Size } from "src/components/FormSelect";
 import ContactInformations from "src/components/ContactInformations";
-import {
-  UserProfileInfo,
-  fromFragment,
-  toVariables,
-} from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
+import { UserProfileInfo, fromFragment, toVariables } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { useAuth } from "src/hooks/useAuth";
 import BaseCard from "src/components/Card";
 import SEO from "src/components/SEO";

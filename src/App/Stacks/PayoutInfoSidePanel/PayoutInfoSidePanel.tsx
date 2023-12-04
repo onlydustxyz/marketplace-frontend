@@ -10,7 +10,7 @@ import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
 import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
 import { PreferredMethod } from "src/types";
 import MeApi from "src/api/me";
-import { useStackPayoutInfo } from "src/App/Stacks";
+import { useStackPayoutInfo } from "src/App/Stacks/Stacks";
 
 export default function PayoutInfoSidePanel() {
   const { T } = useIntl();

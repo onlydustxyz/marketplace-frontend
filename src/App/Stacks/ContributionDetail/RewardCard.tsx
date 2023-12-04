@@ -6,9 +6,9 @@ import { ContributionDetail } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
-import PayoutStatus from "../PayoutStatus/PayoutStatus";
-import { AvailableConversion } from "../Currency/AvailableConversion";
-import { useStackContributorProfile } from "src/App/Stacks";
+import PayoutStatus from "../../../components/PayoutStatus/PayoutStatus";
+import { AvailableConversion } from "../../../components/Currency/AvailableConversion";
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 
 export function RewardCard({
   reward,

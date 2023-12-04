@@ -25,7 +25,7 @@ import { SidePanelProvider } from "./hooks/useSidePanel";
 import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
 import { ToasterProvider } from "./hooks/useToaster";
 import { CommandsProvider } from "./providers/Commands";
-import { Stacks } from "./App/Stacks";
+import { Stacks } from "./App/Stacks/Stacks";
 import { StackProvider } from "./libs/react-stack";
 
 if (config.GTM_ID) {

@@ -1,6 +1,6 @@
 import { OwnUserProfileDetailsFragment, ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
-import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/View";
+import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel/View";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";

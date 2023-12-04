@@ -4,9 +4,9 @@ import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { BIC_REGEXP } from "src/utils/regex";
 import IBANParser from "iban";
-import { RequiredFieldsType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/usePayoutInfoValidation";
+import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
 import { PreferredMethod } from "src/types";
-import { ProfileType } from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/types";
+import { ProfileType } from "src/App/Stacks/PayoutInfoSidePanel/types";
 
 export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();

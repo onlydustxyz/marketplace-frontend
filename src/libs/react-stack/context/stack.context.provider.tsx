@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { createPortal } from "react-dom";
 import { debounce } from "lodash";
 import {
-  History,
+  HistoryStore,
   RegisterPanel,
   RegisterStack,
   UpdateHistory,
@@ -25,7 +25,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   /* -------------------------------------------------------------------------- */
   /*                                HISTORY STORE                               */
   /* -------------------------------------------------------------------------- */
-  const [historyStore, setHistory] = useRefSubscription<History[]>([]);
+  const [historyStore, setHistory] = useRefSubscription<HistoryStore[]>([]);
 
   /* -------------------------------------------------------------------------- */
   /*                                    UTILS                                   */
@@ -37,6 +37,9 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @returns The last panel in the history with the specified name, or undefined if not found.
    */
   const getLastPanelInHistory = (name: string) => {
+    // Property 'findLast' does not exist on type 'HistoryStore[]'. when running TSC but it's working fine
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return historyStore.state.findLast(p => p.name === name);
   };
 

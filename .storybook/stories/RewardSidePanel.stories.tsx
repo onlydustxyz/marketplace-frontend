@@ -6,7 +6,7 @@ import {
   WorkItemType,
 } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
-import View, { Props } from "src/components/UserRewardTable/RewardSidePanel/View";
+import View, { Props } from "src/App/Stacks/RewardSidePanel/View";
 import { PaymentStatus } from "src/types";
 import { daysFromNow } from "src/utils/date";
 import withAuthProvider from "../decorators/withAuthProvider";
