@@ -4,7 +4,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 interface Props {
-  text?: string | null;
+  text?: string;
   icon?: ({ className }: { className?: string }) => ReactNode;
 }
 

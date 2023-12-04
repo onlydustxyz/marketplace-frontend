@@ -113,12 +113,10 @@ export default function OverviewPanel({
         <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
           <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
             {isLoggedIn ? (
-              <>
-                <ExternalLink
-                  text={moreInfoName || moreInfoLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
-                  url={moreInfoLink}
-                />
-              </>
+              <ExternalLink
+                text={moreInfoName || moreInfoLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
+                url={moreInfoLink}
+              />
             ) : (
               <div className="flex flex-col gap-2">
                 <FakeExternalLink
