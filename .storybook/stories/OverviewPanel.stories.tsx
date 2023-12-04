@@ -1,9 +1,10 @@
+import withAuthProvider from ".storybook/decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import OverviewPanel from "src/pages/ProjectDetails/Overview/OverviewPanel";
 
 export default {
   title: "OverviewPanel",
-  decorators: [withContributorProfilePanelProvider],
+  decorators: [withAuthProvider(), withContributorProfilePanelProvider],
 };
 
 export const Default = {
