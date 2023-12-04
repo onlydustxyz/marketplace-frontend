@@ -65,19 +65,19 @@ export default function SidePanel({
   }[placement];
 
   const BottomStyle: CSSProperties = {
-    height: placement === "bottom" && !stacked && !back && !hidden ? "calc(100dvh - 40px)" : "calc(100dvh - 80px)",
+    height: !stacked && !back && !hidden ? "calc(100dvh - 40px)" : "calc(100dvh - 80px)",
   };
 
   const PanelBackStyle: CSSProperties = {
     transform: placement === "bottom" ? "translateY(-40px) scale(0.99)" : "translateX(-40px) scale(0.99)",
     transition: "ease-in 300ms all",
     backdropFilter: "blur(2px)",
-    ...BottomStyle,
+    ...(placement === "bottom" ? BottomStyle : {}),
   };
 
   const BasePanelStyle: CSSProperties = {
     transition: "ease-out 300ms all",
-    ...BottomStyle,
+    ...(placement === "bottom" ? BottomStyle : {}),
   };
 
   console.log("stacked", stacked, placement === "bottom" && !stacked && !back);

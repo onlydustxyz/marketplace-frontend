@@ -7,11 +7,10 @@ import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import User3Line from "src/icons/User3Line";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useSidePanel } from "src/hooks/useSidePanel";
-import { useStackContributorProfile } from "src/App/Stacks";
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks";
 
 type Props = {
   avatarUrl: string | null;
@@ -27,7 +26,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsI
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
+  const [openPayoutInfo] = useStackPayoutInfo();
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
@@ -82,7 +81,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsI
                   <User3Line className="text-xl" />
                   <div className="grow">{T("navbar.profile.publicProfile")}</div>
                 </MenuItem>
-                <MenuItem onClick={() => setPayoutInfoSidePanelOpen(true)}>
+                <MenuItem onClick={openPayoutInfo}>
                   <MoneyDollarCircleLine className="text-xl" />
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
@@ -109,7 +108,6 @@ const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsI
           </Menu.Items>
         </Transition>
       </Menu>
-      <PayoutInfoSidePanel open={payoutInfoSidePanelOpen} setOpen={setPayoutInfoSidePanelOpen} />
     </div>
   );
 };

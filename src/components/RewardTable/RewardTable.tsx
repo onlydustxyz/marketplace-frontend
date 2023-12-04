@@ -9,7 +9,7 @@ import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
 import MeApi from "src/api/me";
-import { useStackProjectReward } from "src/App/Stacks";
+import { useStackProjecRewardAsLead } from "src/App/Stacks";
 
 type Options = ComponentProps<typeof Headers> &
   Pick<
@@ -29,7 +29,7 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [selectedReward, setSelectedReward] = useState<RewardPageItemType | null>(null);
 
-  const [openRewardPanel, closeRewardPanel] = useStackProjectReward();
+  const [openRewardPanel, closeRewardPanel] = useStackProjecRewardAsLead();
 
   const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch, refetchBudgets } = options;
   function handleCancelReward() {

@@ -6,9 +6,11 @@ import { useIntl } from "src/hooks/useIntl";
 import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
+import PayoutInfoSidePanel from "./Layout/Header/ProfileButton/PayoutInfoSidePanel/PayoutInfoSidePanel";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
+  PayoutInfo = "payout-info",
   ProjectLeaderReward = "project-leader-reward",
   Reward = "reward",
   Contribution = "contribution",
@@ -49,12 +51,17 @@ export const Stacks = () => {
       <RegisterStack<StackRouterParams["Contribution"]> name={StackRoute.Contribution}>
         {({ params }) => <ContributionDetail {...params} />}
       </RegisterStack>
+      <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
     </>
   );
 };
 
 // TODO : rename this into ProjectLeaderReward
-export const useStackProjectReward = () => {
+export const useStackPayoutInfo = () => {
+  return useStackNavigation(StackRoute.PayoutInfo);
+};
+
+export const useStackProjecRewardAsLead = () => {
   return useStackNavigation<StackRouterParams["ProjectLeaderReward"]>(StackRoute.ProjectLeaderReward);
 };
 

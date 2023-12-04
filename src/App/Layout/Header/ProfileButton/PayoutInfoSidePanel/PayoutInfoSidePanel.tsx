@@ -2,7 +2,6 @@ import IBANParser from "iban";
 import { useEffect } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { components } from "src/__generated/api";
-import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
@@ -11,16 +10,12 @@ import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
 import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
 import { PreferredMethod } from "src/types";
 import MeApi from "src/api/me";
+import { useStackPayoutInfo } from "src/App/Stacks";
 
-type Props = {
-  open: boolean;
-  setOpen: (value: boolean) => void;
-};
-
-export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
+export default function PayoutInfoSidePanel() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-
+  const [_, close] = useStackPayoutInfo();
   const { data: user } = MeApi.queries.useGetMyPayoutInfo({});
 
   const { mutate: userPayoutInformation, isPending: userPayoutInformationIsPending } = MeApi.mutations.usePayoutInfo({
@@ -28,7 +23,7 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
       onSuccess: (_, queryClient) => {
         showToaster(T("profile.form.success"));
         queryClient.invalidateQueries();
-        setOpen(false);
+        close();
       },
     },
   });
@@ -65,27 +60,25 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     usePayoutInfoValidation(user);
 
   return (
-    <SidePanel open={open} setOpen={setOpen}>
-      <div className="flex h-full flex-col">
-        <div className="mx-6 border-b border-b-greyscale-50/8 pb-4 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
-          {T("navbar.profile.payoutInfo")}
-        </div>
-
-        <FormProvider {...formMethods}>
-          <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
-            <PayoutInfoSidePanelView
-              saveButtonDisabled={userPayoutInformationIsPending || !isDirty}
-              unsavedChanges={isDirty}
-              isContactInfoComplete={isContactInfoComplete}
-              isContactInfoValid={isContactInfoValid}
-              isPaymentInfoValid={isPaymentInfoValid}
-              isPayoutInfoComplete={isPayoutInfoComplete}
-              requiredFields={requiredFields}
-            />
-          </form>
-        </FormProvider>
+    <div className="flex h-full flex-col">
+      <div className="mx-6 border-b border-b-greyscale-50/8 pb-4 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
+        {T("navbar.profile.payoutInfo")}
       </div>
-    </SidePanel>
+
+      <FormProvider {...formMethods}>
+        <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
+          <PayoutInfoSidePanelView
+            saveButtonDisabled={userPayoutInformationIsPending || !isDirty}
+            unsavedChanges={isDirty}
+            isContactInfoComplete={isContactInfoComplete}
+            isContactInfoValid={isContactInfoValid}
+            isPaymentInfoValid={isPaymentInfoValid}
+            isPayoutInfoComplete={isPayoutInfoComplete}
+            requiredFields={requiredFields}
+          />
+        </form>
+      </FormProvider>
+    </div>
   );
 }
 

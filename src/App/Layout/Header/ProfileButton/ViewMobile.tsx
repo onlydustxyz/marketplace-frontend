@@ -15,11 +15,10 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
 import { parseFlag } from "src/utils/parseFlag";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import { Fields } from "src/components/UserRewardTable/Headers";
 import MeApi from "src/api/me";
-import { useStackContributorProfile } from "src/App/Stacks";
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks";
 
 type Props = {
   avatarUrl: string | null;
@@ -39,10 +38,9 @@ export default function ViewMobile({
 }: Props) {
   const { T } = useIntl();
 
-  const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
-
+  const [openPayoutInfo] = useStackPayoutInfo();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { queryParams } = useQueryParamsSorting({
@@ -119,12 +117,21 @@ export default function ViewMobile({
                 {githubUserId && (
                   <button
                     className="flex items-center gap-3 p-4"
-                    onClick={() => openContributorProfilePanel({ githubUserId })}
+                    onClick={() => {
+                      setPanelOpen(false);
+                      openContributorProfilePanel({ githubUserId });
+                    }}
                   >
                     <User3Line className="text-xl" /> {T("navbar.profile.publicProfile")}
                   </button>
                 )}
-                <button className="flex items-center gap-3 p-4" onClick={() => setPayoutInfoSidePanelOpen(true)}>
+                <button
+                  className="flex items-center gap-3 p-4"
+                  onClick={() => {
+                    setPanelOpen(false);
+                    openPayoutInfo();
+                  }}
+                >
                   <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </button>
@@ -143,7 +150,6 @@ export default function ViewMobile({
             </Button>
           </div>
         </div>
-        <PayoutInfoSidePanel open={payoutInfoSidePanelOpen} setOpen={setPayoutInfoSidePanelOpen} />
       </SidePanel>
     </>
   );
