@@ -2,7 +2,9 @@
   "applications": {
     "notYetAppliedTooltip": "Increase your chance of being contacted by filling out your Telegram on your profile",
     "appliedTooltip": "Thanks for showing your interest!",
-    "applyButton": "Show interest",
+    "applyButton": "Get in touch",
+    "informations": "Should your profile align with the requirements of the project, we will reach out to you using one of your provided contact details.",
+    "informations_already_apply": "You have already requested connection.",
     "connectToApplyButton": "Connect to show interest",
     "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
     "contactNeeded": "Please share at least one way to reach you out in case it's a match."
