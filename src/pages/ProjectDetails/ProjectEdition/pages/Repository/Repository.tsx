@@ -18,7 +18,11 @@ export function Repository() {
       return (
         <div className="flex flex-col gap-6">
           {organizations.map(organization => (
-            <RepositoryOrganization key={organization.id} organization={organization} installedRepos={installedRepos} />
+            <RepositoryOrganization
+              key={organization.githubUserId}
+              organization={organization}
+              installedRepos={installedRepos}
+            />
           ))}
         </div>
       );

@@ -15,8 +15,8 @@ export const Repository: FC<RepositoryProps> = ({ organization, repository }) =>
   const { formHelpers } = useContext(EditContext);
 
   const onClick = () => {
-    if (organization.id && repository.id) {
-      formHelpers.addRepository(organization.id, repository.id);
+    if (organization.githubUserId && repository.id) {
+      formHelpers.addRepository(organization.githubUserId, repository.id);
     }
   };
 

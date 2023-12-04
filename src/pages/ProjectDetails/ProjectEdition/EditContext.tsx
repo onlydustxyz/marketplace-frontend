@@ -180,7 +180,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const onAddRepository = (organizationId: number, repoId: number) => {
     const githubRepos = [...(form.getValues("githubRepos") || [])];
 
-    const findOrganization = mergeOrganization.find(org => org.id === organizationId);
+    const findOrganization = mergeOrganization.find(org => org.githubUserId === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
@@ -192,7 +192,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const onRemoveRepository = (organizationId: number, repoId: number) => {
     const githubRepos = [...(form.getValues("githubRepos") || [])];
-    const findOrganization = mergeOrganization.find(org => org.id === organizationId);
+    const findOrganization = mergeOrganization.find(org => org.githubUserId === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {

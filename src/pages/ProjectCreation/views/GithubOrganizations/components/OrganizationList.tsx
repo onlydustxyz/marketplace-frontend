@@ -35,7 +35,7 @@ export default function OrganizationList({
 
           return (
             <HorizontalListItemCard
-              disabled={installatedRepo.includes(org.id) || !org.isCurrentUserAdmin}
+              disabled={installatedRepo.includes(org.githubUserId) || !org.isCurrentUserAdmin}
               key={`${org.login}+${index}`}
               avatarUrl={org.avatarUrl ?? ""}
               title={org.name || org.login || ""}

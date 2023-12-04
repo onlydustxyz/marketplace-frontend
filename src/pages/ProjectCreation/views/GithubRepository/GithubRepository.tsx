@@ -96,9 +96,9 @@ export const GithubRepositoryPage = () => {
                                   fieldClassName={"inline-flex w-auto"}
                                   onChange={() => {
                                     if (!isSelected(repo.id)) {
-                                      addRepository({ repoId: repo.id, orgId: organization.id });
+                                      addRepository({ repoId: repo.id, orgId: organization.githubUserId });
                                     } else {
-                                      removeRepository({ repoId: repo.id, orgId: organization.id });
+                                      removeRepository({ repoId: repo.id, orgId: organization.githubUserId });
                                     }
                                   }}
                                 />
