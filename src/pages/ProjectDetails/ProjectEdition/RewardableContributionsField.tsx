@@ -92,6 +92,7 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
           </span>
           <div className="w-60">
             <Datepicker
+              mode="single"
               value={value?.ignoreContributionsBefore ? new Date(value.ignoreContributionsBefore) : undefined}
               onChange={handleDateChange}
               periods={[

@@ -1,7 +1,7 @@
 import { useFloating, autoUpdate, flip } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
-import isSameDay from "date-fns/isSameDay";
-import { DayPickerSingleProps } from "react-day-picker";
+import { isSameDay } from "date-fns";
+import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
@@ -9,19 +9,33 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB } from "src/utils/date";
 
-type Period = {
-  label: string;
-  value: Date;
+type Props = {
+  isElevated?: boolean;
 };
 
-type Props = {
+type SingleProps = Props & {
+  mode: "single";
   value?: Date;
   onChange: DayPickerSingleProps["onSelect"];
-  isElevated?: boolean;
-  periods?: Period[];
+  periods?: {
+    label: string;
+    value: Date;
+  }[];
 };
 
-export function Datepicker({ value, isElevated = false, onChange, periods }: Props) {
+type RangeProps = Props & {
+  mode: "range";
+  value?: DateRange;
+  onChange: DayPickerRangeProps["onSelect"];
+  periods?: {
+    label: string;
+    value: DateRange;
+  }[];
+};
+
+// Do not spread props due to this Typescript limitation
+// https://stackoverflow.com/questions/69023997/typescript-discriminated-union-narrowing-not-working
+export function Datepicker({ isElevated = false, ...props }: SingleProps | RangeProps) {
   const { T } = useIntl();
   const { refs, floatingStyles, placement } = useFloating({
     middleware: [flip()],
@@ -30,17 +44,35 @@ export function Datepicker({ value, isElevated = false, onChange, periods }: Pro
   });
 
   function renderCalendar() {
-    return <Calendar mode="single" selected={value} onSelect={onChange} />;
+    if (props.mode === "range") {
+      return <Calendar mode="range" selected={props.value} onSelect={props.onChange} />;
+    }
+
+    return <Calendar mode="single" selected={props.value} onSelect={props.onChange} />;
   }
 
   function renderPlaceholder() {
-    const selectedPeriod = periods?.find(period => {
-      return value ? isSameDay(period.value, value) : false;
+    if (props.mode === "range") {
+      const selectedPeriod = props.periods?.find(period => {
+        return props.value?.from && props.value?.to && period.value.from && period.value.to
+          ? isSameDay(period.value.from, props.value.from) && isSameDay(period.value.to, props.value.to)
+          : false;
+      });
+
+      if (selectedPeriod) return selectedPeriod.label;
+
+      return props.value?.from && props.value?.to
+        ? `${getFormattedDateGB(new Date(props.value.from))} - ${getFormattedDateGB(new Date(props.value.to))}`
+        : T("form.dateRangePlaceholder");
+    }
+
+    const selectedPeriod = props.periods?.find(period => {
+      return props.value ? isSameDay(period.value, props.value) : false;
     });
 
     if (selectedPeriod) return selectedPeriod.label;
 
-    return value ? getFormattedDateGB(new Date(value)) : T("form.singleDatePlaceholder");
+    return props.value ? getFormattedDateGB(new Date(props.value)) : T("form.singleDatePlaceholder");
   }
 
   return (
@@ -89,15 +121,15 @@ export function Datepicker({ value, isElevated = false, onChange, periods }: Pro
             })}
           >
             <Popover.Panel>
-              {periods?.length ? (
+              {props.periods?.length ? (
                 <div className="border-b border-greyscale-50/8 font-walsheim">
-                  {periods?.map(({ label, value }) => {
+                  {props.periods?.map(({ label, value }) => {
                     return (
                       <button
                         key={label}
                         type="button"
                         className="w-full px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
-                        onClick={e => onChange?.(value, value, {}, e)}
+                        onClick={e => props.onChange?.(value, value, {}, e)}
                       >
                         {label}
                       </button>

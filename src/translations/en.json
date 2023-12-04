@@ -32,7 +32,11 @@
       "lastMonth": "Last month",
       "last6Months": "Last 6 months",
       "lastYear": "Last year",
-      "forever": "Forever"
+      "forever": "Forever",
+      "thisWeek": "This week",
+      "thisMonth": "This month",
+      "thisYear": "This year",
+      "allTime": "All time"
     },
     "channel": {
       "telegram": "Telegram",
@@ -238,6 +242,10 @@
     "contributor": {
       "title": "Contributor",
       "placeholder": "Search users"
+    },
+    "date": {
+      "title": "Date",
+      "placeholder": "Select a date"
     }
   },
   "currencies": {

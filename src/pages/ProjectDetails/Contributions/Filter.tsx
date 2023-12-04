@@ -1,11 +1,14 @@
 import { Popover, Transition } from "@headlessui/react";
+import { startOfMonth, startOfWeek, startOfYear } from "date-fns";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { DateRange } from "react-day-picker";
 import { UseMyContributedReposResponse } from "src/api/me/queries";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { FilterSelect, Item } from "src/components/FilterSelect/FilterSelect";
 import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
+import { Datepicker } from "src/components/New/Field/Datepicker";
 import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
 import GitMergeLine from "src/icons/GitMergeLine";
@@ -15,7 +18,7 @@ import { GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 
 export type Filters = {
-  dateRange: [Date, Date] | never[];
+  dateRange: DateRange;
   repos: Item[];
   contributors: string[]; // Contributor ids
   types: GithubContributionType[];
@@ -38,7 +41,10 @@ export function Filter({
   useEffect(() => {
     setShowClear(
       Boolean(
-        filters.dateRange.length === 2 || filters.types.length || filters.contributors.length || filters.repos.length
+        (filters.dateRange.from && filters.dateRange.to) ||
+          filters.types.length ||
+          filters.contributors.length ||
+          filters.repos.length
       )
     );
   }, [filters, setShowClear]);
@@ -85,9 +91,19 @@ export function Filter({
     });
   }
 
+  function updateDate(dateRange: DateRange) {
+    setFilters(prevState => {
+      const newState = { ...prevState, dateRange };
+
+      onChange?.(newState);
+
+      return newState;
+    });
+  }
+
   function resetFilters() {
     const newState = {
-      dateRange: [],
+      dateRange: { from: undefined, to: undefined },
       repos: [],
       contributors: [],
       types: [],
@@ -108,7 +124,7 @@ export function Filter({
             pressed={open}
             className={cn({
               "border-spacePurple-200 text-spacePurple-100":
-                filters.dateRange.length === 2 ||
+                (filters.dateRange.from && filters.dateRange.to) ||
                 filters.types.length ||
                 filters.contributors.length ||
                 filters.repos.length,
@@ -138,6 +154,42 @@ export function Filter({
                     {T("filter.clearButton")}
                   </Button>
                 ) : null}
+              </div>
+
+              <div className="px-6 py-3">
+                <div className="flex flex-col gap-2">
+                  <label className="font-walsheim text-sm font-medium uppercase text-spaceBlue-200">
+                    {T("filter.date.title")}
+                  </label>
+                  <div>
+                    <Datepicker
+                      mode="range"
+                      value={filters.dateRange}
+                      onChange={value => {
+                        if (value) updateDate(value);
+                      }}
+                      periods={[
+                        {
+                          label: T("common.periods.thisWeek"),
+                          value: { from: startOfWeek(new Date()), to: new Date() },
+                        },
+                        {
+                          label: T("common.periods.thisMonth"),
+                          value: { from: startOfMonth(new Date()), to: new Date() },
+                        },
+                        {
+                          label: T("common.periods.thisYear"),
+                          value: { from: startOfYear(new Date()), to: new Date() },
+                        },
+                        {
+                          label: T("common.periods.allTime"),
+                          value: { from: new Date(0), to: new Date() },
+                        },
+                      ]}
+                      isElevated
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="px-6 py-3">

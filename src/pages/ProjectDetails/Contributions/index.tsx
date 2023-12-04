@@ -6,7 +6,7 @@ import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
-import { Filters } from "src/components/Contribution/ContributionFilter";
+import { Filters } from "./Filter";
 import { ContributionTable, TableColumns, TableSort } from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { withTooltip } from "src/components/Tooltip";
@@ -54,7 +54,7 @@ const initialSort: Record<ContributionStatus, TableSort> = {
 };
 
 const initialFilters: Filters = {
-  dateRange: [],
+  dateRange: { from: undefined, to: undefined },
   repos: [],
   contributors: [],
   types: [],
