@@ -8,11 +8,6 @@ export const History = () => {
     stackMethods: { closeAll },
   } = stackContext;
   const history = useSubscribe(stackContext.history);
-  const portalContainer = document.querySelector("#stack-panel-root");
-
-  if (!portalContainer) {
-    return null;
-  }
 
   return (
     <div data-stack-history-root="true" id="stack-panel-history-root">
