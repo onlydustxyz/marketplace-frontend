@@ -16,6 +16,7 @@ type Props = {
   front?: boolean;
   back?: boolean;
   stacked?: boolean;
+  hidden?: boolean;
 } & PropsWithChildren;
 
 export default function SidePanel({
@@ -26,6 +27,7 @@ export default function SidePanel({
   front,
   back,
   stacked,
+  hidden,
   hasCloseButton = true,
 }: Props) {
   const { placement } = usePlacement();
@@ -62,15 +64,23 @@ export default function SidePanel({
     },
   }[placement];
 
+  const BottomStyle: CSSProperties = {
+    height: placement === "bottom" && !stacked && !back && !hidden ? "calc(100dvh - 40px)" : "calc(100dvh - 80px)",
+  };
+
   const PanelBackStyle: CSSProperties = {
     transform: placement === "bottom" ? "translateY(-40px) scale(0.99)" : "translateX(-40px) scale(0.99)",
-    transition: "ease-in 300ms transform",
+    transition: "ease-in 300ms all",
     backdropFilter: "blur(2px)",
+    ...BottomStyle,
   };
 
   const BasePanelStyle: CSSProperties = {
-    transition: "ease-out 300ms transform",
+    transition: "ease-out 300ms all",
+    ...BottomStyle,
   };
+
+  console.log("stacked", stacked, placement === "bottom" && !stacked && !back);
 
   return (
     <Transition.Root show={debouncedOpen} as={Fragment}>
@@ -85,7 +95,7 @@ export default function SidePanel({
             className={cn(
               {
                 "inset-y-0 right-0 h-[calc(100dvh)] lg:w-[680px] lg:max-w-[80%]": placement === "right",
-                "inset-x-0 bottom-0 h-[calc(100dvh-40px)] rounded-t-2xl": placement === "bottom",
+                "inset-x-0 bottom-0 rounded-t-2xl": placement === "bottom",
               },
               "fixed w-full bg-greyscale-900 shadow-panel"
             )}
