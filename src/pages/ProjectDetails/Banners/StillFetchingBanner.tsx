@@ -21,7 +21,7 @@ export default function StillFetchingBanner({ createdAt }: StillFetchingBannerPr
   const { T } = useIntl();
   const params = useParams();
   const isProjectLeader = useProjectLeader({ slug: params.projectKey });
-  const { getValue } = useProjectDetailsLastAddedRepoStorage();
+  const { getValue } = useProjectDetailsLastAddedRepoStorage(params.projectKey || "");
   const canDisplay = shouldDisplayBanner(createdAt) || shouldDisplayBanner(getValue());
 
   if (!isProjectLeader) {

@@ -56,7 +56,7 @@ export default function AllProjects({
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       technologies.length > 0 ? ["technologies", technologies.join(",")] : null,
-      sponsors.length > 0 ? ["sponsor", sponsors.map(({ id }) => id).join(",")] : null,
+      sponsors.length > 0 ? ["sponsorId", sponsors.map(({ id }) => id).join(",")] : null,
       search ? ["search", search] : null,
       sorting ? ["sort", sorting] : null,
       ownership ? ["mine", String(ownership === "Mine")] : null,

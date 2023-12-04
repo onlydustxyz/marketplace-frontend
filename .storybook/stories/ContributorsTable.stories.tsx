@@ -33,6 +33,7 @@ const mockContributors: ComponentProps<typeof ContributorsTable>["contributors"]
     issueToReward: 11,
     codeReviewToReward: 359,
     isRegistered: true,
+    htmlUrl: "",
   },
   {
     githubUserId: 33089347,
@@ -55,6 +56,7 @@ const mockContributors: ComponentProps<typeof ContributorsTable>["contributors"]
     issueToReward: undefined,
     codeReviewToReward: undefined,
     isRegistered: false,
+    htmlUrl: "",
   },
   {
     githubUserId: 786640,
@@ -77,6 +79,7 @@ const mockContributors: ComponentProps<typeof ContributorsTable>["contributors"]
     issueToReward: 3,
     codeReviewToReward: 8,
     isRegistered: true,
+    htmlUrl: "",
   },
   {
     githubUserId: 4391003,
@@ -99,6 +102,7 @@ const mockContributors: ComponentProps<typeof ContributorsTable>["contributors"]
     issueToReward: undefined,
     codeReviewToReward: undefined,
     isRegistered: true,
+    htmlUrl: "",
   },
 ];
 

@@ -79,7 +79,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
 
   const validationSchema = useEditValidationSchema();
-  const lastAddedRepoStorage = useProjectDetailsLastAddedRepoStorage();
+  const lastAddedRepoStorage = useProjectDetailsLastAddedRepoStorage(project.slug);
   const navigate = useNavigate();
   const showToaster = useShowToaster();
   const location = useLocation();
