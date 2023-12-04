@@ -89,15 +89,16 @@ export default function Contributors() {
   return (
     <>
       <Title>
-        <div className="flex flex-row items-center justify-between gap-2">
+        <div className="flex flex-col items-start justify-start gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-2">
           {T("project.details.contributors.title")}
           {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
-            <Flex className="gap-2">
+            <Flex className="w-full justify-start gap-2 lg:w-auto lg:justify-end">
               <EditProjectButton projectKey={projectKey} />
               <Button
                 size={ButtonSize.Sm}
                 disabled={noBudget}
                 onBackground={ButtonOnBackground.Blue}
+                className="flex-1 lg:flex-initial"
                 onClick={() =>
                   navigate(
                     generatePath(

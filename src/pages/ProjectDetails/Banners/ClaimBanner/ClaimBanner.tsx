@@ -81,7 +81,9 @@ export default function ClaimBanner() {
       }
 
       const findMyOrganizationInProject = project?.organizations?.filter(org =>
-        myOrganizations.find(meOrg => meOrg.id === org.id && (org.installed || meOrg.isCurrentUserAdmin))
+        myOrganizations.find(
+          meOrg => meOrg.githubUserId === org.githubUserId && (org.installed || meOrg.isCurrentUserAdmin)
+        )
       );
 
       if (!findMyOrganizationInProject?.length) {
@@ -104,7 +106,7 @@ export default function ClaimBanner() {
         return true;
       }
 
-      return !!myOrganizations?.find(myOrg => myOrg.id === org.id && myOrg.installed);
+      return !!myOrganizations?.find(myOrg => myOrg.githubUserId === org.githubUserId && myOrg.installed);
     });
 
     return isAllOrganizationInstalled || false;
@@ -166,7 +168,7 @@ export default function ClaimBanner() {
               <div className="flex w-full flex-col items-start justify-start gap-3">
                 {project?.organizations?.map(org => (
                   <ClaimBannerOrganization
-                    key={org.id}
+                    key={org.githubUserId}
                     organization={org}
                     myOrganizations={myOrganizations || []}
                     project={project}

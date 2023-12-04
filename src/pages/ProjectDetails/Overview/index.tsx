@@ -67,8 +67,7 @@ export default function Overview() {
   const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
   const sponsors = project?.sponsors || [];
-  const moreInfoLink = project?.moreInfos?.[0]?.url || null;
-  const moreInfoName = project?.moreInfos?.[0]?.value || null;
+  const moreInfos = project?.moreInfos || [];
   const topContributors = project?.topContributors || [];
   const totalContributorsCount = project?.contributorCount || 0;
   const leads = project?.leaders;
@@ -108,15 +107,16 @@ export default function Overview() {
   return (
     <>
       <Title>
-        <div className="flex flex-row items-center justify-between gap-2">
+        <div className="flex flex-col items-start justify-start gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-2">
           {T("project.details.overview.title")}
           {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
-            <Flex className="justify-end gap-2">
+            <Flex className="w-full justify-start gap-2 lg:w-auto lg:justify-end">
               <EditProjectButton projectKey={projectSlug} />
 
               <Button
                 disabled={isRewardDisabled}
                 onBackground={ButtonOnBackground.Blue}
+                className="flex-1 lg:flex-initial"
                 size={ButtonSize.Sm}
                 {...withTooltip(T("contributor.table.noBudgetLeft"), {
                   visible: isRewardDisabled,
@@ -159,8 +159,7 @@ export default function Overview() {
             <OverviewPanel
               {...{
                 sponsors,
-                moreInfoLink,
-                moreInfoName,
+                moreInfos,
                 topContributors,
                 totalContributorsCount,
                 leads,
@@ -209,8 +208,7 @@ export default function Overview() {
             <OverviewPanel
               {...{
                 sponsors,
-                moreInfoLink,
-                moreInfoName,
+                moreInfos,
                 topContributors,
                 totalContributorsCount,
                 leads,
