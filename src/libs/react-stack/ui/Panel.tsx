@@ -80,8 +80,6 @@ export default function SidePanel({
     ...(placement === "bottom" ? BottomStyle : {}),
   };
 
-  console.log("stacked", stacked, placement === "bottom" && !stacked && !back);
-
   return (
     <Transition.Root show={debouncedOpen} as={Fragment}>
       <div className="relative isolate z-50">
