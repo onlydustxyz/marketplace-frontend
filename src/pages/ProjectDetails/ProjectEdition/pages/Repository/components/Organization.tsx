@@ -40,6 +40,7 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
         })}
         target="_blank"
         rel="noopener noreferrer"
+        className="self-end lg:self-start"
       >
         <Button
           type={ButtonType.Secondary}
@@ -71,6 +72,7 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
         actionComponent={hasUnauthorizedRepos ? components.action : undefined}
         avatarAlt={organization?.name || organization?.login || ""}
         avatarSrc={organization?.avatarUrl || ""}
+        headerClassName="lg:flex-row lg:gap-0 flex-col-reverse gap-4 items-start"
       >
         <div className="grid grid-flow-row grid-cols-1 gap-x-5 gap-y-5 lg:grid-cols-2 xl:grid-cols-3">
           {sortBy(installedReposData, "name").map(repo => (

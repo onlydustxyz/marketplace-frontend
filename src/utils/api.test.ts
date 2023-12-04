@@ -15,7 +15,7 @@ const mockRewardItem: components["schemas"]["RewardItemResponse"] = {
   githubAuthorId: 0,
   githubUrl: "string",
   id: "string",
-  lastUpdateAt: "2023-10-26T13:56:28.717Z",
+  completedAt: "2023-10-26T13:56:28.717Z",
   number: 0,
   repoName: "string",
   status: "CANCELLED",
@@ -31,8 +31,8 @@ describe("formatDate", () => {
       number: mockRewardItem.number,
       title: mockRewardItem.title,
       createdAt: mockRewardItem.createdAt,
-      closedAt: mockRewardItem.lastUpdateAt,
-      mergedAt: mockRewardItem.lastUpdateAt,
+      closedAt: mockRewardItem.completedAt,
+      mergedAt: mockRewardItem.completedAt,
       status: mockRewardItem.status,
       htmlUrl: mockRewardItem.githubUrl,
       userCommitsCount: {
@@ -60,7 +60,7 @@ describe("formatDate", () => {
     expect(formatRewardItemToGithubIssue(mockRewardItem)).toEqual({
       id: mockRewardItem.id,
       createdAt: mockRewardItem.createdAt,
-      closedAt: mockRewardItem.lastUpdateAt,
+      closedAt: mockRewardItem.completedAt,
       number: mockRewardItem.number,
       title: mockRewardItem.title,
       htmlUrl: mockRewardItem.githubUrl,

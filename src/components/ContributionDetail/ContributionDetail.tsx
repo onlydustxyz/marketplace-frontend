@@ -16,7 +16,7 @@ import DiscussLine from "src/icons/DiscussLine";
 import GitCommitLine from "src/icons/GitCommitLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import TimeLine from "src/icons/TimeLine";
-import { GithubContributionType } from "src/types";
+import { ContributionStatus, GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { CommitsTooltip } from "../GithubCard/GithubPullRequest/CommitsTooltip";
@@ -190,10 +190,15 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                     <ContributionIcon
                       type={contribution.type as GithubContributionType}
                       status={contribution.githubStatus}
+                      contributionStatus={contribution.status}
                     />
                     <span>
                       {T(getGithubStatusToken(contribution.type as GithubContributionType, contribution.githubStatus), {
-                        date: displayRelativeDate(contribution?.completedAt ?? ""),
+                        date: displayRelativeDate(
+                          (contribution.status === ContributionStatus.InProgress
+                            ? contribution.createdAt
+                            : contribution.completedAt) ?? new Date()
+                        ),
                       })}
                     </span>
                   </div>

@@ -2,8 +2,8 @@ import { cn } from "src/utils/cn";
 import { ForwardedRef, PropsWithChildren, forwardRef } from "react";
 
 export enum BackgroundRoundedBorders {
-  Full = "rounded-3xl",
-  Right = "rounded-r-3xl",
+  Full = "lg:rounded-3xl",
+  Right = "lg:rounded-r-3xl",
 }
 
 type Props = {

@@ -12,18 +12,18 @@ export function formatRewardItemToGithubPullRequest(item: components["schemas"][
     number: item.number,
     title: item.title,
     createdAt: item.createdAt,
-    closedAt: item.lastUpdateAt,
-    mergedAt: item.lastUpdateAt,
+    closedAt: item.completedAt,
+    mergedAt: item.completedAt,
     status: item.status,
     htmlUrl: item.githubUrl,
     userCommitsCount: {
       aggregate: {
-        count: item.userCommitsCount,
+        count: item.userCommitsCount || 0,
       },
     },
     commitsCount: {
       aggregate: {
-        count: item.commitsCount,
+        count: item.commitsCount || 0,
       },
     },
     repoId: null,
@@ -41,7 +41,7 @@ export function formatRewardItemToGithubIssue(item: components["schemas"]["Rewar
   return {
     id: item.id,
     createdAt: item.createdAt,
-    closedAt: item.lastUpdateAt,
+    closedAt: item.completedAt,
     number: item.number,
     title: item.title,
     htmlUrl: item.githubUrl,

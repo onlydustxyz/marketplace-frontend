@@ -120,11 +120,10 @@ export enum GithubIssueType {
 }
 
 export enum GithubPullRequestStatus {
-  Merged = "MERGED",
   Open = "OPEN",
+  Merged = "MERGED",
   Closed = "CLOSED",
-  Completed = "COMPLETED",
-  Cancelled = "CANCELLED",
+  Draft = "DRAFT",
 }
 
 export enum GithubIssueStatus {
@@ -134,14 +133,11 @@ export enum GithubIssueStatus {
 }
 
 export enum GithubCodeReviewStatus {
-  Open = "OPEN",
+  Pending = "PENDING",
+  Commented = "COMMENTED",
   Approved = "APPROVED",
   ChangeRequested = "CHANGES_REQUESTED",
-  Commented = "COMMENTED",
-  Completed = "COMPLETED",
-  Cancelled = "CANCELLED",
   Dismissed = "DISMISSED",
-  Pending = "PENDING",
 }
 
 export enum GithubPullRequestReviewState {
@@ -168,13 +164,9 @@ export enum GithubContributionShortenTypeLabel {
   CodeReview = "Code Review",
 }
 
-export enum GithubPullRequestDraft {
-  Draft = "DRAFT",
-}
-
 type GithubPullRequestTypeStatusDict<T> = Record<
   GithubContributionType.PullRequest,
-  Record<GithubPullRequestStatus | GithubPullRequestDraft, T>
+  Record<GithubPullRequestStatus, T>
 >;
 
 type GithubIssueTypeStatusDict<T> = Record<GithubContributionType.Issue, Record<GithubIssueStatus, T>>;
@@ -320,7 +312,7 @@ export interface OrganizationSessionStorageInterface extends useInstallationById
   organization: Organization;
 }
 
-export type Contribution = components["schemas"]["ContributionPageItemResponse"];
+export type Contribution = components["schemas"]["UserContributionPageItemResponse"];
 export type ContributionDetail = components["schemas"]["ContributionDetailsResponse"];
 
 export enum ContributionStatus {
@@ -329,7 +321,7 @@ export enum ContributionStatus {
   Cancelled = "CANCELLED",
 }
 
-export type GithubStatus = components["schemas"]["ContributionPageItemResponse"]["githubStatus"];
+export type GithubStatus = components["schemas"]["UserContributionPageItemResponse"]["githubStatus"];
 
 export enum Visibility {
   Public = "PUBLIC",

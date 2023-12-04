@@ -1,8 +1,9 @@
 import { PropsWithChildren, useState } from "react";
-import Button, { Width } from "src/components/Button";
+import Button, { ButtonOnBackground, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import TermsAndConditionsCheckBox from "./Checkbox";
 import { useSidePanel } from "src/hooks/useSidePanel";
+import { Flex } from "src/components/New/Layout/Flex";
 
 interface TermsAndConditionsMainCardProps {
   handleAcceptTermsAndConditions: () => void;
@@ -16,17 +17,18 @@ export default function TermsAndConditionsMainCard({
 
   return (
     <>
-      <div className="mt-6 rounded-2xl bg-mosaic bg-contain pt-1.5 outline outline-greyscale-50/8 xl:mt-20">
-        <Card
-          className="mb-5 flex flex-col items-center justify-between gap-7 divide-y divide-greyscale-50/12 bg-whiteFakeOpacity-2 pb-40 pt-12 xl:pb-0"
-          padded={false}
-        >
-          <div className="flex flex-col items-center justify-between gap-4 px-6 xl:px-12">
-            <div className="text-center font-belwe text-3xl">Summary of our Terms & Conditions</div>
-            <div className="text-center">
-              <p>To use Only Dust, you must accept and comply with our Terms and Conditions.</p>
-              <p>Here’s a summary of our responsibilities and your commitments.</p>
-            </div>
+      <div className="hidden w-full bg-mosaic bg-cover pb-1.5 md:block" />
+      <div className="flex flex-col gap-4 bg-card-background-base p-12 pb-5">
+        <div className="text-center font-belwe text-3xl">Summary of our Terms & Conditions</div>
+        <div className="text-center">
+          <p>To use Only Dust, you must accept and comply with our Terms and Conditions.</p>
+          <p>Here’s a summary of our responsibilities and your commitments.</p>
+        </div>
+      </div>
+
+      <div className="flex flex-1 flex-col overflow-auto px-3">
+        <div className="overflow-auto scrollbar-thin scrollbar-thumb-spaceBlue-600 scrollbar-thumb-rounded scrollbar-w-1.5">
+          <div className="flex flex-col gap-4 px-9 pb-4">
             <Section title="About us">
               <div className="pt-3 text-sm">
                 Only Dust is a platform provided by Wagmi SAS (“Us”, “We”, “Our”) that allows the reward of open source
@@ -41,7 +43,7 @@ export default function TermsAndConditionsMainCard({
                   You can either be a contributor or a project leader. Contributors are developers and project leaders
                   are those who manage contributors and projects.
                 </p>
-                <p>
+                <div>
                   In both cases, You must:
                   <ul className="mb-4 ml-6 list-disc">
                     <li>Properly use our platform and refrain from all fraudulent activity; </li>
@@ -55,7 +57,7 @@ export default function TermsAndConditionsMainCard({
                   also decide the amount of funds that You want to allocate to each of the contributors that You manage.
                   If You act for a company, you must comply with additional requirements so please read carefully Our
                   Terms and Conditions.
-                </p>
+                </div>
               </div>
             </Section>
             <Section title="Our responsibilities">
@@ -90,32 +92,39 @@ export default function TermsAndConditionsMainCard({
               </div>
             </Section>
           </div>
-          <div className="ring-none fixed bottom-0 flex w-full flex-col items-center justify-between gap-7 rounded-b-xl bg-whiteFakeOpacity-2 px-6 py-6 xl:relative xl:bg-white/4">
-            <div className="flex flex-row items-center gap-3">
-              <TermsAndConditionsCheckBox {...{ checked, setChecked }} />
-              <p>
-                I agree to the{" "}
-                <span onClick={() => openFullTermsAndConditions()} className="inline cursor-pointer underline">
-                  full terms & conditions
-                </span>{" "}
-                & the{" "}
-                <span onClick={() => openPrivacyPolicy()} className="inline cursor-pointer underline">
-                  privacy policy
-                </span>
-              </p>
-            </div>
-            <Button
-              id="accept-tac-btn"
-              data-testid="accept-tac-btn"
-              onClick={() => handleAcceptTermsAndConditions()}
-              width={Width.Full}
-              disabled={!checked}
-            >
-              Confirm
-            </Button>
-          </div>
-        </Card>
+        </div>
       </div>
+
+      <Flex
+        justify="between"
+        item="center"
+        gap={4}
+        className="z-10 flex w-full flex-col border-t border-card-border-light bg-card-background-base p-6 shadow-medium xl:rounded-b-2xl"
+      >
+        <div className="flex flex-row items-center gap-3">
+          <TermsAndConditionsCheckBox {...{ checked, setChecked }} />
+          <p>
+            I agree to the{" "}
+            <span onClick={() => openFullTermsAndConditions()} className="inline cursor-pointer underline">
+              full terms & conditions
+            </span>{" "}
+            & the{" "}
+            <span onClick={() => openPrivacyPolicy()} className="inline cursor-pointer underline">
+              privacy policy
+            </span>
+          </p>
+        </div>
+        <Button
+          id="accept-tac-btn"
+          data-testid="accept-tac-btn"
+          onClick={() => handleAcceptTermsAndConditions()}
+          width={Width.Full}
+          disabled={!checked}
+          onBackground={ButtonOnBackground.Blue}
+        >
+          Confirm
+        </Button>
+      </Flex>
     </>
   );
 }
@@ -125,7 +134,7 @@ interface SectionProps extends PropsWithChildren {
 }
 
 const Section = ({ title, children }: SectionProps) => (
-  <Card className="text-walsheim flex flex-col items-start justify-between divide-y divide-greyscale-50/12 bg-whiteFakeOpacity-5">
+  <Card className="w-full rounded-2xl border border-greyscale-50/8 p-4 font-walsheim shadow-md lg:p-6" withBg={false}>
     <div className="pb-2 text-lg font-medium">{title}</div>
     {children}
   </Card>

@@ -9,7 +9,7 @@ import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__genera
 
 type Props = {
   userProfile: Profile;
-  gqlProfile: UserProfileFragment & OwnUserProfileDetailsFragment; // use this for the completion score, should be revamp when we revamp the edit profile
+  gqlProfile?: UserProfileFragment & OwnUserProfileDetailsFragment; // use this for the completion score, should be revamp when we revamp the edit profile
   setOpen: (value: boolean) => void;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
