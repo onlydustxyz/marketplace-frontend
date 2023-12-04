@@ -16,7 +16,7 @@ export const History = () => {
 
   return (
     <div data-stack-history-root="true" id="stack-panel-history-root">
-      {history?.length && <BackDrop onClick={closeAll} />}
+      {history?.length ? <BackDrop onClick={closeAll} /> : null}
       {history?.map(h => (
         <div
           key={`history-item-${h.name}-${h.panelId}`}
