@@ -192,7 +192,7 @@ export function CreateProjectProvider({
   };
 
   const isOrgsExist = (orgId: number) => {
-    return !!(organizationsData || [])?.find(org => org.id === orgId);
+    return !!(organizationsData || [])?.find(org => org.githubUserId === orgId);
   };
 
   const addRepository = (data: CreateFormDataRepos) => {
