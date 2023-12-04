@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import ProjectApi from "src/api/Project";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
@@ -13,7 +13,7 @@ import {
   FieldProjectLead,
   SelectedLeadType,
 } from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
-import { EditContext } from "../../EditContext";
+import { EditContext, EditFormData } from "../../EditContext";
 import { RewardableContributionsField } from "../../RewardableContributionsField";
 import { MoreInfosField } from "./components/MoreInfosField";
 
@@ -115,7 +115,10 @@ export function Information() {
           name="moreInfos"
           control={form?.control}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <MoreInfosField {...{ onChange, value, form, error }} />
+            <MoreInfosField
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              {...{ onChange, value, form: form as UseFormReturn<EditFormData, unknown> as any, error }}
+            />
           )}
         />
 

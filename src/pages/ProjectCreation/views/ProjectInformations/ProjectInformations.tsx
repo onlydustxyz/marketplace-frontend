@@ -1,4 +1,4 @@
-import { Controller } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { FieldProjectLead } from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
@@ -14,6 +14,7 @@ import Button, { ButtonOnBackground } from "src/components/Button";
 import CheckLine from "src/icons/CheckLine";
 import { CreateProjectContext } from "../../ProjectCreation.context";
 import { MoreInfosField } from "src/pages/ProjectDetails/ProjectEdition/pages/Information/components/MoreInfosField";
+import { CreateFormData } from "../../types/ProjectCreationType";
 
 export const ProjectInformationsPage = () => {
   const { T } = useIntl();
@@ -114,7 +115,10 @@ export const ProjectInformationsPage = () => {
           <Controller
             name="moreInfos"
             control={form.control}
-            render={({ field: { onChange, value } }) => <MoreInfosField {...{ onChange, value, form }} />}
+            render={({ field: { onChange, value } }) => (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              <MoreInfosField {...{ onChange, value, form: form as UseFormReturn<CreateFormData, unknown> as any }} />
+            )}
           />
           <Controller
             name="projectLeads"
