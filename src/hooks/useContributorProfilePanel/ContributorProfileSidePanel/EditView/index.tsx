@@ -26,6 +26,7 @@ import MeApi from "src/api/me";
 import { useShowToaster } from "src/hooks/useToaster";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { calculateFormCompletionScore, calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
+import useMutationAlert from "src/api/useMutationAlert";
 
 type Props = {
   profile: UseGetMyProfileInfoResponse;
@@ -53,16 +54,27 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
     [AllocatedTime.GreaterThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
   };
 
-  const { mutate: updateUserProfileInfo, isPending: userProfilInformationIsPending } = MeApi.mutations.useUpdateProfile(
-    {
-      options: {
-        onSuccess: () => {
-          showToaster(T("profile.form.success"));
-          setEditMode(false);
-        },
+  const {
+    mutate: updateUserProfileInfo,
+    isPending: userProfilInformationIsPending,
+    ...restUpdateProfileMutation
+  } = MeApi.mutations.useUpdateProfile({
+    options: {
+      onSuccess: () => {
+        setEditMode(false);
       },
-    }
-  );
+    },
+  });
+
+  useMutationAlert({
+    mutation: restUpdateProfileMutation,
+    success: {
+      message: T("profile.form.success"),
+    },
+    error: {
+      message: T("profile.form.error"),
+    },
+  });
 
   const updateCompletionScore = () => {
     const formValues = getValues();

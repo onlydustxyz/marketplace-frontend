@@ -5,7 +5,7 @@ import { UseUpdateProfileBody } from "src/api/me/mutations";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { components } from "src/__generated/api";
 
-enum Channel {
+export enum Channel {
   Discord = "DISCORD",
   Email = "EMAIL",
   LinkedIn = "LINKEDIN",
@@ -45,42 +45,36 @@ export type UserProfileInfo = {
   cover: ProfileCover;
 };
 
-export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileInfo => ({
-  bio: profile?.bio ?? "",
-  location: profile?.location ?? "",
-  website: profile?.website ?? "",
-  githubHandle: profile?.login ?? "",
-  isGithubHandlePublic: true,
-  email: profile?.contacts?.find(contact => contact.channel === Channel.Email)?.contact ?? "",
-  isEmailPublic: profile?.contacts?.find(contact => contact.channel === Channel.Email)?.visibility === "public" ?? true,
-  telegram:
-    profile?.contacts
-      ?.find(contact => contact.channel === Channel.Telegram)
-      ?.contact?.split("/")
-      .at(-1) ?? "",
-  isTelegramPublic:
-    profile?.contacts?.find(contact => contact.channel === Channel.Telegram)?.visibility === "public" ?? true,
-  whatsapp: profile?.contacts?.find(contact => contact.channel === Channel.Whatsapp)?.contact ?? "",
-  isWhatsappPublic:
-    profile?.contacts?.find(contact => contact.channel === Channel.Whatsapp)?.visibility === "public" ?? true,
-  twitter:
-    profile?.contacts
-      ?.find(contact => contact.channel === Channel.Twitter)
-      ?.contact?.split("/")
-      .at(-1) ?? "",
-  isTwitterPublic:
-    profile?.contacts?.find(contact => contact.channel === Channel.Twitter)?.visibility === "public" ?? true,
-  discord: profile?.contacts?.find(contact => contact.channel === Channel.Discord)?.contact ?? "",
-  isDiscordPublic:
-    profile?.contacts?.find(contact => contact.channel === Channel.Discord)?.visibility === "public" ?? true,
-  linkedin: profile?.contacts?.find(contact => contact.channel === Channel.LinkedIn)?.contact ?? "",
-  isLinkedInPublic:
-    profile?.contacts?.find(contact => contact.channel === Channel.LinkedIn)?.visibility === "public" ?? true,
-  technologies: profile?.technologies ?? {},
-  weeklyAllocatedTime: profile?.allocatedTimeToContribute ?? AllocatedTime.None,
-  lookingForAJob: profile?.isLookingForAJob ?? false,
-  cover: translateProfileCover(profile?.cover || "") ?? ProfileCover.Blue,
-});
+export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileInfo => {
+  const getContactInfo = (channel: Channel) => profile?.contacts?.find(contact => contact.channel === channel)?.contact;
+
+  const isContactPublic = (channel: Channel) =>
+    profile?.contacts?.find(contact => contact.channel === channel)?.visibility === "public" ?? true;
+
+  return {
+    bio: profile?.bio ?? "",
+    location: profile?.location ?? "",
+    website: profile?.website ?? "",
+    githubHandle: profile?.login ?? "",
+    isGithubHandlePublic: true,
+    email: getContactInfo(Channel.Email) ?? "",
+    isEmailPublic: isContactPublic(Channel.Email),
+    telegram: getContactInfo(Channel.Telegram)?.split("/").at(-1) ?? "",
+    isTelegramPublic: isContactPublic(Channel.Telegram),
+    whatsapp: getContactInfo(Channel.Whatsapp) ?? "",
+    isWhatsappPublic: isContactPublic(Channel.Whatsapp),
+    twitter: getContactInfo(Channel.Twitter)?.split("/").at(-1) ?? "",
+    isTwitterPublic: isContactPublic(Channel.Twitter),
+    discord: getContactInfo(Channel.Discord) ?? "",
+    isDiscordPublic: isContactPublic(Channel.Discord),
+    linkedin: getContactInfo(Channel.LinkedIn) ?? "",
+    isLinkedInPublic: isContactPublic(Channel.LinkedIn),
+    technologies: profile?.technologies ?? {},
+    weeklyAllocatedTime: profile?.allocatedTimeToContribute ?? AllocatedTime.None,
+    lookingForAJob: profile?.isLookingForAJob ?? false,
+    cover: translateProfileCover(profile?.cover || "") ?? ProfileCover.Blue,
+  };
+};
 
 export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileBody => ({
   bio: profile.bio,

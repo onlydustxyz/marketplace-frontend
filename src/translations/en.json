@@ -754,6 +754,7 @@
       "send": "Save payout info",
       "done": "Done",
       "success": "Changes saved",
+      "error": "An error occurred while saving your changes",
       "disabledEther": "Edit the address above if you want to perform changes",
       "technologies": {
         "supportedTooltip": "Increase your chance of matching a project by choosing featured technologies.",
