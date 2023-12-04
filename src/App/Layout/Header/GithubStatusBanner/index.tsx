@@ -11,13 +11,15 @@ export function GithubStatusBanner() {
   const location = useLocation();
 
   const marginRoutes = [RoutePaths.Contributions];
-  const addMargin = marginRoutes.some(route => route === location.pathname);
+  const shouldAddMargin = marginRoutes.some(route => route === location.pathname);
 
   const { data } = ExternalApi.queries.useGithubStatus();
 
   if (data && (data.status.indicator === "major" || data.status.indicator === "critical")) {
     return (
-      <div className={cn("flex items-center justify-between gap-8 bg-orange-900 px-8 py-4", { "mb-4": addMargin })}>
+      <div
+        className={cn("flex items-center justify-between gap-8 bg-orange-900 px-8 py-4", { "mb-4": shouldAddMargin })}
+      >
         <div className="flex items-center gap-2">
           <div>
             <GithubWarning />
