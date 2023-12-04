@@ -67,8 +67,7 @@ export default function Overview() {
   const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
   const sponsors = project?.sponsors || [];
-  const moreInfoLink = project?.moreInfos?.[0]?.url || null;
-  const moreInfoName = project?.moreInfos?.[0]?.value || null;
+  const moreInfos = project?.moreInfos || [];
   const topContributors = project?.topContributors || [];
   const totalContributorsCount = project?.contributorCount || 0;
   const leads = project?.leaders;
@@ -159,8 +158,7 @@ export default function Overview() {
             <OverviewPanel
               {...{
                 sponsors,
-                moreInfoLink,
-                moreInfoName,
+                moreInfos,
                 topContributors,
                 totalContributorsCount,
                 leads,
@@ -209,8 +207,7 @@ export default function Overview() {
             <OverviewPanel
               {...{
                 sponsors,
-                moreInfoLink,
-                moreInfoName,
+                moreInfos,
                 topContributors,
                 totalContributorsCount,
                 leads,
