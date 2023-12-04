@@ -25,7 +25,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   /* -------------------------------------------------------------------------- */
   /*                                HISTORY STORE                               */
   /* -------------------------------------------------------------------------- */
-  const [history, setHistory] = useRefSubscription<History[]>([]);
+  const [historyStore, setHistory] = useRefSubscription<History[]>([]);
 
   /* -------------------------------------------------------------------------- */
   /*                                    UTILS                                   */
@@ -37,7 +37,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @returns The last panel in the history with the specified name, or undefined if not found.
    */
   const getLastPanelInHistory = (name: string) => {
-    return history.state.findLast(p => p.name === name);
+    return historyStore.state.findLast(p => p.name === name);
   };
 
   /**
@@ -128,7 +128,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
   ) => {
     const { name, id } = { ...panel.state };
     if (panel.state.open === true) {
-      if (history.state.at(-1)?.panelId === panel.state.id) {
+      if (historyStore.state.at(-1)?.panelId === panel.state.id) {
         panel.setValue(prev => {
           return {
             ...prev,
@@ -186,7 +186,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const debounceCloseAll = useCallback(
     debounce(() => {
-      history.state.forEach(panel => {
+      historyStore.state.forEach(panel => {
         stacks.state[panel.name].setValue(prev => {
           return {
             ...prev,
@@ -194,7 +194,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
           };
         });
       });
-      history.setValue([]);
+      historyStore.setValue([]);
     }, 300),
     [history]
   );
@@ -216,7 +216,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @param {any} options.params - Additional parameters for the panel.
    */
   const updateHistory = ({ name, panelId, event, params }: UpdateHistory) => {
-    let updatedHistory = [...history.state];
+    let updatedHistory = [...historyStore.state];
 
     if (event === "close") {
       updatedHistory = updatedHistory.filter(item => item.panelId !== panelId);
@@ -227,11 +227,11 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       if (panelExists) {
         updatedHistory = [...updatedHistory, { name, panelId }];
         setHistory(prev => [...prev, { name, panelId, params }]);
-        updatedHistory = history.state;
+        updatedHistory = historyStore.state;
       }
     }
 
-    updatePanelOrder({ history: updatedHistory });
+    updatePanelOrder({ newHistoryStore: updatedHistory });
   };
 
   /* -------------------------------------------------------------------------- */
@@ -242,16 +242,16 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * Updates the order of panels in the stack context provider.
    * @param {UpdatePanelOrder} options - The options for updating the panel order.
    */
-  const updatePanelOrder = ({ history }: UpdatePanelOrder) => {
-    const frontPanel = history.at(-1);
-    const backPanel = history.at(-2);
+  const updatePanelOrder = ({ newHistoryStore }: UpdatePanelOrder) => {
+    const frontPanel = newHistoryStore.at(-1);
+    const backPanel = newHistoryStore.at(-2);
 
-    history.forEach(panel => {
+    newHistoryStore.forEach(panel => {
       let position: StackPosition = "hidden";
       const panelRef = stacks.state[panel.name]?.state.panels[panel.panelId];
 
       if (panel.panelId === frontPanel?.panelId) {
-        position = history.length === 1 ? "front" : "front-stacked";
+        position = newHistoryStore.length === 1 ? "front" : "front-stacked";
       } else if (panel.panelId === backPanel?.panelId) {
         position = "back";
       }
@@ -285,7 +285,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         return {
           ...prev,
           open: true,
-          position: history.state.length === 1 ? "front" : "front-stacked",
+          position: historyStore.state.length === 1 ? "front" : "front-stacked",
           params: params || {},
         };
       });
@@ -332,7 +332,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * and removes the corresponding panel from the stack.
    */
   const onCloseLastPanel = useCallback(() => {
-    const lastHistoryElement = history.state.at(-1);
+    const lastHistoryElement = historyStore.state.at(-1);
     if (lastHistoryElement) {
       const stackName = lastHistoryElement.name;
       const panelId = lastHistoryElement.panelId;
@@ -367,7 +367,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * Closes all panels in the stack.
    */
   const closeAll = useCallback(() => {
-    history.state.forEach(panel => {
+    historyStore.state.forEach(panel => {
       stacks.state[panel.name].state.panels[panel.panelId].setValue(prev => {
         return {
           ...prev,
@@ -414,7 +414,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       value={{
         stacks: [],
         stackStore: stacks,
-        history,
+        history: historyStore,
         stackMethods: {
           register: registerStack,
           closeAll,

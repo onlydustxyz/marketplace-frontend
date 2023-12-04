@@ -44,5 +44,5 @@ export interface UpdateHistory {
 }
 
 export interface UpdatePanelOrder {
-  history: History[];
+  newHistoryStore: History[];
 }
