@@ -62,11 +62,11 @@ function getMoreInfos(formValues?: EditFormData | CreateFormData) {
 export function MoreInfosField({ onChange, value, form, error }: EditFormProps | CreateFormProps) {
   const { T } = useIntl();
 
-  function reorderMoreInfos(reOrder: (items: SortableItemProps[]) => MoreInfos[]) {
-    const moreInfos = getMoreInfos(form?.getValues());
-    const values = decodeValues(moreInfos);
+  function reorderMoreInfos(reOrder: (items: SortableItemProps[]) => SortableMoreInfos[]) {
+    const moreInfos = decodeValues(getMoreInfos(form?.getValues()));
+    const reorderedValues = reOrder(moreInfos).map(({ id: _, ...rest }) => rest);
 
-    (form as FormUnionProps)?.setValue("moreInfos", reOrder(values), {
+    (form as FormUnionProps)?.setValue("moreInfos", reorderedValues, {
       shouldDirty: true,
       shouldValidate: true,
     });
