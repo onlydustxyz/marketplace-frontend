@@ -1,10 +1,12 @@
-import withAuthProvider from ".storybook/decorators/withAuthProvider";
+import withAuthProvider from "../decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import OverviewPanel from "src/pages/ProjectDetails/Overview/OverviewPanel";
 
+const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
+
 export default {
   title: "OverviewPanel",
-  decorators: [withAuthProvider(), withContributorProfilePanelProvider],
+  decorators: [withAuthProvider({ userId: USER_ID }), withContributorProfilePanelProvider],
 };
 
 export const Default = {
