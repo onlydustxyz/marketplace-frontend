@@ -17,7 +17,7 @@ import ContactInformations from "src/components/ContactInformations";
 import {
   UserProfileInfo,
   fromFragment,
-  toVariables,
+  mapFormDataToSchema,
 } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import { useAuth } from "src/hooks/useAuth";
 import BaseCard from "src/components/Card";
@@ -59,7 +59,7 @@ export default function Onboarding() {
     },
   });
 
-  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
+  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: mapFormDataToSchema(formData) });
 
   const profile = data?.userProfiles.at(0);
 

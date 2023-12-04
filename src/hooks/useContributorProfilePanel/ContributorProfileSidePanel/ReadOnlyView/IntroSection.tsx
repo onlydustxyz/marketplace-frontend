@@ -19,15 +19,14 @@ import { cn } from "src/utils/cn";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import CompletionBar from "src/components/CompletionBar";
 import WhatsappFill from "src/icons/WhatsappFill";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { components } from "src/__generated/api";
-import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__generated/graphql";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 type Props = {
   profile: Profile;
-  gqlProfile?: UserProfileFragment & OwnUserProfileDetailsFragment; // use this for the completion score, should be revamp when we revamp the edit profile
+  myProfile?: UseGetMyProfileInfoResponse;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
   isPublic?: boolean;
@@ -35,7 +34,7 @@ type Props = {
 
 type ContactChannelType = components["schemas"]["ContactInformation"]["channel"];
 
-export default function IntroSection({ isOwn, isPublic, profile, setEditMode, gqlProfile }: Props) {
+export default function IntroSection({ isOwn, isPublic, profile, setEditMode, myProfile }: Props) {
   const { T } = useIntl();
 
   const website = parseWebsite(profile.website);
@@ -65,15 +64,12 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode, gq
     <div className="flex flex-col gap-6">
       {!isPublic && (
         <div className="z-20 -mr-4 flex flex-row gap-2 self-end">
-          {
-            // Edit mode requires gqlProfile, so don't show the button if undefined
-            isOwn && gqlProfile && (
-              <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
-                <PencilLine />
-                {T("profile.editButton")}
-              </Button>
-            )
-          }
+          {isOwn && myProfile && (
+            <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
+              <PencilLine />
+              {T("profile.editButton")}
+            </Button>
+          )}
           <Link
             to={generatePath(RoutePaths.PublicProfile, {
               userLogin: profile.login || "",
@@ -105,14 +101,16 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode, gq
           </div>
         )}
       </div>
-      {gqlProfile && gqlProfile?.completionScore !== undefined && gqlProfile.completionScore < 95 ? (
+      {/* TODO completion score will be returned in /me endpoint */}
+
+      {/* {myProfile && myProfile?.completionScore !== undefined && myProfile.completionScore < 95 ? (
         <div className="flex w-full flex-col gap-2 rounded-2xl bg-completion-gradient px-5 py-4">
           <div className="font-walsheim text-sm font-medium text-greyscale-50">
-            {T("profile.completion", { completion: gqlProfile.completionScore.toString() })}
+            {T("profile.completion", { completion: myProfile.completionScore.toString() })}
           </div>
-          <CompletionBar completionScore={gqlProfile.completionScore} />
+          <CompletionBar completionScore={myProfile.completionScore} />
         </div>
-      ) : null}
+      ) : null} */}
       {(profile.bio || profile.location || profile.createdAt) && (
         <div className="flex flex-col gap-4 font-walsheim font-normal">
           {profile.bio && (

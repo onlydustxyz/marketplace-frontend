@@ -26,7 +26,7 @@ import { useAuth } from "src/hooks/useAuth";
 import {
   UserProfileInfo,
   fromFragment,
-  toVariables,
+  mapFormDataToSchema,
 } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
 import { useIntl } from "src/hooks/useIntl";
@@ -336,7 +336,7 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
 
   const submitDisabled = !isDirty || !isValid || loading;
 
-  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
+  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: mapFormDataToSchema(formData) });
 
   return (
     <Callout>

@@ -1,12 +1,4 @@
-import {
-  AllocatedTime,
-  OwnUserProfileDetailsFragment,
-  OwnUserProfileDocument,
-  UserProfileFragment,
-  useUpdateUserProfileMutation,
-} from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
-
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import CheckLine from "src/icons/CheckLine";
 import Button, { ButtonSize } from "src/components/Button";
@@ -18,7 +10,7 @@ import Input, { Size } from "src/components/FormInput";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
-import { UserProfileInfo, fromFragment, toVariables } from "./types";
+import { AllocatedTime, UserProfileInfo, fromFragment, mapFormDataToSchema } from "./types";
 import ContactInformations from "src/components/ContactInformations";
 import TechnologiesSelect from "src/components/TechnologiesSelect";
 import FormSelect from "src/components/FormSelect";
@@ -31,15 +23,19 @@ import { useMediaQuery } from "usehooks-ts";
 import { cn } from "src/utils/cn";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { useQueryClient } from "@tanstack/react-query";
+import MeApi from "src/api/me";
+import { useShowToaster } from "src/hooks/useToaster";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 type Props = {
-  profile: UserProfileFragment & OwnUserProfileDetailsFragment; // we don't want to revamp the edit mode for now
+  profile: UseGetMyProfileInfoResponse; // we don't want to revamp the edit mode for now
   restFulProfile: Profile; // we don't want to revamp the edit mode for now
   setEditMode: (value: boolean) => void;
 };
 
 export default function EditView({ profile, setEditMode, restFulProfile }: Props) {
   const { T } = useIntl();
+  const showToaster = useShowToaster();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   // Get QueryClient from the context
@@ -51,24 +47,35 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
   });
   const { handleSubmit, formState, control, getValues } = formMethods;
   const { isDirty, isValid } = formState;
-  const [completionScore, setCompletionScore] = useState(profile.completionScore);
+  const [completionScore, setCompletionScore] = useState(profile?.completionScore); // The completion score will be added in /me endpoint
 
   const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {
     [AllocatedTime.None]: T("profile.form.weeklyAllocatedTime.none"),
     [AllocatedTime.LessThanOneDay]: T("profile.form.weeklyAllocatedTime.lessThan1Day"),
     [AllocatedTime.OneToThreeDays]: T("profile.form.weeklyAllocatedTime.1to3days"),
-    [AllocatedTime.MoreThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
+    [AllocatedTime.GreaterThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
   };
 
-  const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
-    context: { graphqlErrorDisplay: "toaster" },
-    refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
-    awaitRefetchQueries: true,
-    onCompleted: () => {
-      setEditMode(false);
-      queryClient.invalidateQueries({ queryKey: ["resftullProfile", profile.githubUserId] });
-    },
-  });
+  // const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
+  //   context: { graphqlErrorDisplay: "toaster" },
+  //   refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
+  //   awaitRefetchQueries: true,
+  //   onCompleted: () => {
+  //     setEditMode(false);
+  //     queryClient.invalidateQueries({ queryKey: ["resftullProfile", profile.githubUserId] });
+  //   },
+  // });
+
+  const { mutate: updateUserProfileInfo, isPending: userProfilInformationIsPending } = MeApi.mutations.useUpdateProfile(
+    {
+      options: {
+        onSuccess: () => {
+          showToaster(T("profile.form.success"));
+          setEditMode(false);
+        },
+      },
+    }
+  );
 
   const updateCompletionScore = () => {
     const score = (value: string | number | null, score: number) => (value && value !== "" ? score : 0);
@@ -93,7 +100,7 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
     );
   };
 
-  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
+  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo(mapFormDataToSchema(formData));
 
   return (
     <FormProvider {...formMethods}>
@@ -237,7 +244,7 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
               <Button
                 size={ButtonSize.Md}
                 htmlType="submit"
-                disabled={loading || !isValid}
+                disabled={userProfilInformationIsPending || !isValid}
                 data-testid="profile-form-submit-button"
               >
                 <CheckLine />

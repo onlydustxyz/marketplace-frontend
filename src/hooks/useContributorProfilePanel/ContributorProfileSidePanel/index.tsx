@@ -1,6 +1,5 @@
 import View from "./View";
 import { useAuth } from "src/hooks/useAuth";
-import useUserProfile from "./useUserProfile";
 import useRestfulProfile from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -15,7 +14,6 @@ export default function ContributorProfileSidePanel({ githubUserId, setOpen }: P
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const { githubUserId: currentUserGithubId } = useAuth();
-  const { data: gqlProfile } = useUserProfile({ githubUserId });
   const { data: restFulProfile, isError } = useRestfulProfile({ githubUserId });
 
   if (isError) {
@@ -31,7 +29,6 @@ export default function ContributorProfileSidePanel({ githubUserId, setOpen }: P
     <View
       isOwn={currentUserGithubId === restFulProfile.githubUserId}
       restFulProfile={restFulProfile}
-      gqlProfile={gqlProfile?.profile}
       setOpen={setOpen}
     />
   ) : null;
