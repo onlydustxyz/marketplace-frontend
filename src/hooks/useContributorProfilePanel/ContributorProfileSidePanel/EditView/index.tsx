@@ -25,10 +25,11 @@ import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import MeApi from "src/api/me";
 import { useShowToaster } from "src/hooks/useToaster";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+import { calculateFormCompletionScore, calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 
 type Props = {
-  profile: UseGetMyProfileInfoResponse; // we don't want to revamp the edit mode for now
-  restFulProfile: Profile; // we don't want to revamp the edit mode for now
+  profile: UseGetMyProfileInfoResponse;
+  restFulProfile: Profile;
   setEditMode: (value: boolean) => void;
 };
 
@@ -37,16 +38,13 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
   const showToaster = useShowToaster();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  // Get QueryClient from the context
-  // const queryClient = useQueryClient();
-
   const formMethods = useForm<UserProfileInfo>({
     defaultValues: fromFragment(profile),
     mode: "onChange",
   });
   const { handleSubmit, formState, control, getValues } = formMethods;
   const { isDirty, isValid } = formState;
-  const [completionScore, setCompletionScore] = useState(profile?.completionScore); // The completion score will be added in /me endpoint
+  const [completionScore, setCompletionScore] = useState(calculateUserCompletionScore(profile));
 
   const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {
     [AllocatedTime.None]: T("profile.form.weeklyAllocatedTime.none"),
@@ -54,16 +52,6 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
     [AllocatedTime.OneToThreeDays]: T("profile.form.weeklyAllocatedTime.1to3days"),
     [AllocatedTime.GreaterThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
   };
-
-  // const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
-  //   context: { graphqlErrorDisplay: "toaster" },
-  //   refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
-  //   awaitRefetchQueries: true,
-  //   onCompleted: () => {
-  //     setEditMode(false);
-  //     queryClient.invalidateQueries({ queryKey: ["resftullProfile", profile.githubUserId] });
-  //   },
-  // });
 
   const { mutate: updateUserProfileInfo, isPending: userProfilInformationIsPending } = MeApi.mutations.useUpdateProfile(
     {
@@ -77,37 +65,8 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
   );
 
   const updateCompletionScore = () => {
-    const score = (value: string | number | null, score: number) => (value && value !== "" ? score : 0);
-
-    const {
-      bio,
-      email,
-      discord,
-      githubHandle,
-      linkedin,
-      location,
-      telegram,
-      whatsapp,
-      twitter,
-      technologies,
-      website,
-    } = getValues();
-
-    setCompletionScore(
-      score(profile.avatarUrl, 5) +
-        score(githubHandle, 10) +
-        score(location, 10) +
-        score(bio, 20) +
-        score(website, 10) +
-        score(githubHandle, 5) +
-        score(email, 5) +
-        score(telegram, 5) +
-        score(whatsapp, 5) +
-        score(twitter, 5) +
-        score(discord, 5) +
-        score(linkedin, 5) +
-        score(Object.keys(technologies).length, 10)
-    );
+    const formValues = getValues();
+    setCompletionScore(calculateFormCompletionScore({ ...formValues, avatarUrl: profile.avatarUrl || "" }));
   };
 
   const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo(mapFormDataToSchema(formData));
