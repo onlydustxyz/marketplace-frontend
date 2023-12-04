@@ -12,8 +12,7 @@ export function formatRewardItemToGithubPullRequest(item: components["schemas"][
     number: item.number,
     title: item.title,
     createdAt: item.createdAt,
-    closedAt: item.completedAt,
-    mergedAt: item.completedAt,
+    completedAt: item.completedAt,
     status: item.status,
     htmlUrl: item.githubUrl,
     userCommitsCount: {
@@ -34,21 +33,21 @@ export function formatRewardItemToGithubPullRequest(item: components["schemas"][
       htmlUrl: item.authorGithubUrl,
       user: null,
     },
-  } as GithubPullRequestWithCommitsFragment;
+  } as unknown as GithubPullRequestWithCommitsFragment;
 }
 
 export function formatRewardItemToGithubIssue(item: components["schemas"]["RewardItemResponse"]) {
   return {
     id: item.id,
     createdAt: item.createdAt,
-    closedAt: item.completedAt,
+    completedAt: item.completedAt,
     number: item.number,
     title: item.title,
     htmlUrl: item.githubUrl,
     status: item.status,
     commentsCount: item.commentsCount,
     repoId: null,
-  } as GithubIssueFragment;
+  } as unknown as GithubIssueFragment;
 }
 
 export function formatRewardItemToGithubCodeReview(
@@ -76,5 +75,6 @@ export function formatRewardItemToGithubCodeReview(
     },
     status: item.status,
     submittedAt: item.createdAt,
-  } as GithubCodeReviewFragment;
+    completedAt: item.completedAt,
+  } as unknown as GithubCodeReviewFragment;
 }

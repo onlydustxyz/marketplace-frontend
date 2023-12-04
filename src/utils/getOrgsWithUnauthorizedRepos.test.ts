@@ -42,13 +42,11 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
   ],
   organizations: [
     {
-      id: 98735558,
       githubUserId: 98735558,
       login: "onlydustxyz",
       avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
       htmlUrl: "https://github.com/onlydustxyz",
       name: "OnlyDust",
-      owner: "onlydustxyz",
       isCurrentUserAdmin: true,
       repos: [
         {

@@ -157,7 +157,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const mergeOrganization = useMemo(() => {
     const merged = (project.organizations || [])?.map(projectOrg => {
-      const findInMe = (organizationsData || []).find(meOrg => meOrg.id === projectOrg.id);
+      const findInMe = (organizationsData || []).find(meOrg => meOrg.githubUserId === projectOrg.githubUserId);
       if (findInMe) {
         return {
           ...findInMe,
@@ -172,15 +172,16 @@ export function EditProvider({ children, project }: EditContextProps) {
       return projectOrg;
     });
 
-    return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id).sort((a, b) =>
-      a.login.localeCompare(b.login)
-    );
+    return uniqWith(
+      [...(merged || []), ...(organizationsData || [])],
+      (arr, oth) => arr.githubUserId === oth.githubUserId
+    ).sort((a, b) => a.login.localeCompare(b.login));
   }, [organizationsData, project]);
 
   const onAddRepository = (organizationId: number, repoId: number) => {
     const githubRepos = [...(form.getValues("githubRepos") || [])];
 
-    const findOrganization = mergeOrganization.find(org => org.id === organizationId);
+    const findOrganization = mergeOrganization.find(org => org.githubUserId === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
@@ -192,7 +193,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const onRemoveRepository = (organizationId: number, repoId: number) => {
     const githubRepos = [...(form.getValues("githubRepos") || [])];
-    const findOrganization = mergeOrganization.find(org => org.id === organizationId);
+    const findOrganization = mergeOrganization.find(org => org.githubUserId === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {

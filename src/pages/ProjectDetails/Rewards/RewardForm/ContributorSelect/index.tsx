@@ -28,7 +28,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     location.state?.recipientGithubLogin || null
   );
 
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>(location.state?.recipientGithubLogin || "");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
   const debounceSearch = useCallback(
