@@ -58,7 +58,6 @@ function getMoreInfos(formValues?: EditFormData | CreateFormData) {
   return formValues?.moreInfos || [];
 }
 
-// export function MoreInfosField({ onChange, value, form, error }: EditFormProps | CreateFormProps) {
 export function MoreInfosField({ onChange, value, form, error }: EditFormProps | CreateFormProps) {
   const { T } = useIntl();
 
