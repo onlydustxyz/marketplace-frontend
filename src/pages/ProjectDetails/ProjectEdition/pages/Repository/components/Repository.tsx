@@ -41,7 +41,7 @@ export function Repository({ organization, repository }: RepositoryType) {
               type={ButtonType.Secondary}
               accentColor={!repository.isAuthorizedInGithubApp ? ButtonAccentColor.Orange : ButtonAccentColor.Purple}
               onClick={() => {
-                handleRemoveRepo(organization.id, repository.id);
+                handleRemoveRepo(organization.githubUserId, repository.id);
               }}
               iconOnly
             >
