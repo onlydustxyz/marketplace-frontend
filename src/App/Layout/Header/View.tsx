@@ -10,10 +10,10 @@ import { useIntl } from "src/hooks/useIntl";
 import CompletionBar from "src/components/CompletionBar";
 import axeCoin from "src/assets/img/axe-coin.webp";
 import { useOnboarding } from "src/App/OnboardingProvider";
-import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useAuth } from "src/hooks/useAuth";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import { useStackContributorProfile } from "src/App/Stacks";
 
 interface HeaderViewProps {
   menuItems: {
@@ -40,7 +40,7 @@ export default function HeaderView({
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const { onboardingInProgress } = useOnboarding();
-  const { open: openContributorProfilePanel } = useContributorProfilePanel();
+  const [openContributorProfilePanel] = useStackContributorProfile();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   return (
@@ -96,7 +96,7 @@ export default function HeaderView({
                 githubUserId ? (
                   <div
                     className="flex w-48 cursor-pointer flex-col gap-2"
-                    onClick={() => openContributorProfilePanel(githubUserId)}
+                    onClick={() => openContributorProfilePanel({ githubUserId })}
                   >
                     <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
                       <img src={axeCoin} className="h-4 w-4" />

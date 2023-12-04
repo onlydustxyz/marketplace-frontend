@@ -13,7 +13,6 @@ import "src/assets/css/index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
-import { ContributionDetailPanelProvider } from "src/hooks/useContributionDetailPanel";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
@@ -21,7 +20,6 @@ import ErrorFallback from "./ErrorFallback";
 import Maintenance from "./Maintenance";
 import SEO from "./components/SEO";
 import config from "./config";
-import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePanel";
 import { SessionProvider } from "./hooks/useSession";
 import { SidePanelProvider } from "./hooks/useSidePanel";
 import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
@@ -55,18 +53,14 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                         <StackProvider>
                           <SidePanelStackProvider>
                             <SidePanelProvider>
-                              <ContributorProfilePanelProvider>
-                                <ContributionDetailPanelProvider>
-                                  {config.MAINTENANCE ? (
-                                    <Maintenance />
-                                  ) : (
-                                    <OnboardingProvider>
-                                      <App />
-                                      <Stacks />
-                                    </OnboardingProvider>
-                                  )}
-                                </ContributionDetailPanelProvider>
-                              </ContributorProfilePanelProvider>
+                              {config.MAINTENANCE ? (
+                                <Maintenance />
+                              ) : (
+                                <OnboardingProvider>
+                                  <App />
+                                  <Stacks />
+                                </OnboardingProvider>
+                              )}
                             </SidePanelProvider>
                           </SidePanelStackProvider>
                         </StackProvider>

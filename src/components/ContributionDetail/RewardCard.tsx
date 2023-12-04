@@ -1,6 +1,5 @@
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
-import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import TimeLine from "src/icons/TimeLine";
 import { ContributionDetail } from "src/types";
@@ -9,6 +8,7 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 import PayoutStatus from "../PayoutStatus/PayoutStatus";
 import { AvailableConversion } from "../Currency/AvailableConversion";
+import { useStackContributorProfile } from "src/App/Stacks";
 
 export function RewardCard({
   reward,
@@ -18,7 +18,7 @@ export function RewardCard({
   onClick?: () => void;
 }) {
   const { T } = useIntl();
-  const { open: openProfilePanel } = useContributorProfilePanel();
+  const [openProfilePanel] = useStackContributorProfile();
 
   return (
     <article
@@ -75,7 +75,7 @@ export function RewardCard({
             className="text-spacePurple-300 hover:text-spacePurple-200"
             onClick={e => {
               e.stopPropagation();
-              if (reward.from.githubUserId) openProfilePanel(reward.from.githubUserId);
+              if (reward.from.githubUserId) openProfilePanel({ githubUserId: reward.from.githubUserId });
             }}
           >
             {reward.from.login}

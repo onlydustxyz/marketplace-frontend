@@ -4,14 +4,14 @@ import { useMediaQuery } from "usehooks-ts";
 import { MyRewardType } from "./Line";
 import DesktopUserRewardList from "./DesktopUserRewardList";
 import MobileUserRewardList from "./MobileUserRewardList";
-import { useStackMyReward } from "src/App/Stacks";
+import { useStackReward } from "src/App/Stacks";
 
 const UserRewardTable: React.FC = () => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
 
-  const [openRewardPanel] = useStackMyReward();
+  const [openRewardPanel] = useStackReward();
 
   const onRewardClick = (reward: MyRewardType) => {
     setSelectedReward(reward);

@@ -150,9 +150,6 @@ export const Default = {
       }}
     >
       <ContributorProfileSidePanel
-        setOpen={() => {
-          return;
-        }}
         gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
         restFulProfile={mockRestFulProfile}
       />
@@ -172,9 +169,6 @@ export const Own = {
       }}
     >
       <ContributorProfileSidePanel
-        setOpen={() => {
-          return;
-        }}
         gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
         restFulProfile={mockRestFulProfile}
         isOwn
@@ -195,9 +189,6 @@ export const NotSignedUp = {
       }}
     >
       <ContributorProfileSidePanel
-        setOpen={() => {
-          return;
-        }}
         gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
         restFulProfile={mockRestFulProfile}
       />
@@ -217,9 +208,6 @@ export const Minimalist = {
       }}
     >
       <ContributorProfileSidePanel
-        setOpen={() => {
-          return;
-        }}
         gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
         restFulProfile={mockRestFulProfile}
       />

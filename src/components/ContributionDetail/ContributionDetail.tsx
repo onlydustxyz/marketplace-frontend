@@ -20,12 +20,12 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { CommitsTooltip } from "../GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
-import { useStackMyReward } from "src/App/Stacks";
+import { useStackReward } from "src/App/Stacks";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
   const { user, githubUserId } = useAuth();
-  const [openRewardPanel] = useStackMyReward();
+  const [openRewardPanel] = useStackReward();
 
   const {
     data: contribution,

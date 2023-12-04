@@ -1,9 +1,7 @@
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import OverviewPanel from "src/pages/ProjectDetails/Overview/OverviewPanel";
 
 export default {
   title: "OverviewPanel",
-  decorators: [withContributorProfilePanelProvider],
 };
 
 export const Default = {

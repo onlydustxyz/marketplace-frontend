@@ -89,7 +89,7 @@ export const useStackContribution = (): [
   return [handleOpen, close];
 };
 
-export const useStackMyReward = () => {
+export const useStackReward = () => {
   return useStackNavigation<StackRouterParams["Reward"]>(StackRoute.Reward);
 };
 

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useStackMyReward } from "src/App/Stacks";
+import { useStackReward } from "src/App/Stacks";
 import { ContributionAttribute } from "src/components/Contribution/ContributionAttribute";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
@@ -21,7 +21,7 @@ export function ContributionReward({
   const { T } = useIntl();
   const count = rewardIds.length;
   const tooltipId = `${contributionId}-${rewardIds?.[0] ?? "rewards"}`;
-  const [openRewardPanel] = useStackMyReward();
+  const [openRewardPanel] = useStackReward();
 
   return (
     <>

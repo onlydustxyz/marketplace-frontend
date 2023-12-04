@@ -5,7 +5,6 @@ import { RoutePaths } from "src/App";
 import Dot from "src/assets/icons/Dot";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SidePanel from "src/components/SidePanel";
-import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
@@ -20,6 +19,7 @@ import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import { Fields } from "src/components/UserRewardTable/Headers";
 import MeApi from "src/api/me";
+import { useStackContributorProfile } from "src/App/Stacks";
 
 type Props = {
   avatarUrl: string | null;
@@ -41,7 +41,7 @@ export default function ViewMobile({
 
   const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
-  const { open: openContributorProfilePanel } = useContributorProfilePanel();
+  const [openContributorProfilePanel] = useStackContributorProfile();
 
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
@@ -119,7 +119,7 @@ export default function ViewMobile({
                 {githubUserId && (
                   <button
                     className="flex items-center gap-3 p-4"
-                    onClick={() => openContributorProfilePanel(githubUserId)}
+                    onClick={() => openContributorProfilePanel({ githubUserId })}
                   >
                     <User3Line className="text-xl" /> {T("navbar.profile.publicProfile")}
                   </button>
