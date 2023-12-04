@@ -117,7 +117,6 @@ export default function HeaderView({
         </div>
       </div>
 
-      {/* TODO add condition */}
       <GithubStatusBanner />
     </>
   );
