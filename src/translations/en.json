@@ -33,6 +33,12 @@
       "last6Months": "Last 6 months",
       "lastYear": "Last year",
       "forever": "Forever"
+    },
+    "channel": {
+      "telegram": "Telegram",
+      "discord": "Discord",
+      "twitter": "Twitter",
+      "preventAnonymousTooltips": "Connect to Onlydust to access more info links"
     }
   },
   "forms": {
