@@ -88,6 +88,7 @@ export const ProjectInformationsPage = () => {
               <FieldTextarea
                 {...props.field}
                 {...props.fieldState}
+                rows={10}
                 placeholder={T("project.details.create.informations.form.fields.long.placeholder")}
                 label={T("project.details.create.informations.form.fields.long.label")}
               />

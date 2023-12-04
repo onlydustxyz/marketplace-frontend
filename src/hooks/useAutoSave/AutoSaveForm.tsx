@@ -7,14 +7,17 @@ export interface AutoSaveFormProps<T extends FieldValues> extends UseAutoSavePro
 }
 
 export const AutoSaveForm = <T extends FieldValues>({ form, ...rest }: AutoSaveFormProps<T>) => {
-  const { watch } = form;
+  const {
+    watch,
+    formState: { isSubmitting, isSubmitted },
+  } = form;
   const watched = watch();
   const autoSave = useAutosave<T>(rest);
 
   useEffect(() => {
-    if (watched) {
+    if (watched && !isSubmitting && !isSubmitted) {
       autoSave(form.getValues());
     }
-  }, [watched]);
+  }, [watched, isSubmitting, isSubmitted]);
   return null;
 };

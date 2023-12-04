@@ -3,9 +3,9 @@ import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
 import GithubPullRequest, {
   Action,
   GithubPullRequestProps,
-  GithubPullRequestStatus,
 } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import { RewardableItem } from "src/api/Project/queries";
+import { GithubPullRequestStatus } from "src/types";
 
 const pullRequests: Record<string, Partial<RewardableItem & GithubPullRequestWithCommitsFragment>> = {
   closed: {

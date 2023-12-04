@@ -94,6 +94,7 @@
       "dateAssigned": "Assigned on __date__ at __time__ GMT",
       "dateApproved": "Approved on __date__ at __time__ GMT",
       "dateDismissed": "Dismissed on __date__ at __time__ GMT",
+      "datePending": "Pending review on __date__ at __time__ GMT",
       "dateCommented": "Commented on __date__ at __time__ GMT",
       "dateChangeRequested": "Change requested on __date__ at __time__ GMT",
       "badgePullRequest": "Pull request from",
@@ -297,7 +298,6 @@
     "status": {
       "pending": "Pending review",
       "approved": "Approved __date__",
-      "open": "Open __date__",
       "completed": "Completed __date__",
       "canceled": "Canceled __date__",
       "changeRequested": "Change requested __date__",
@@ -483,8 +483,14 @@
             "submitButton": "Create issue",
             "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
-          "success": "Issue created and contribution added",
-          "error": "The issue could not be created!",
+          "work": {
+            "success": "Other work created and contribution added",
+            "error": "The other work could not be created!"
+          },
+          "contribution": {
+            "success": "Contribution added",
+            "error": "The contribution could not be added!"
+          },
           "tab": "Other work",
           "tabShort": "Other",
           "title": "Describe the work",
@@ -510,6 +516,10 @@
         "ignoreUnignoreContribution": {
           "success": "The contribution was successfully __action__",
           "error": "The contribution could not be __action__"
+        },
+        "ignoreUnignoreContributions": {
+          "success": "The contributions was successfully __action__",
+          "error": "The contributions could not be __action__"
         }
       },
       "leftToSpend": "Left to spend",
@@ -591,7 +601,7 @@
         "title": "Reward #__id__",
         "to": "to",
         "you": "(you)",
-        "contributions": "Included in reward",
+        "contributions": "Contributions included in reward",
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
         "rewardItems": {
           "error": "An error occurred, please try again later."
@@ -632,7 +642,8 @@
     "whatsapp": "Whatsapp",
     "editButton": "Edit profile",
     "error": {
-      "notFound": "This user does not exist"
+      "notFound": "This user does not exist",
+      "cantFetch": "We were unable to fetch this profile, please try again later."
     },
     "joinedAt": "Joined in __joinedAt__",
     "firstContributedAt": "Contributed first on __firstContributedAt__",
@@ -966,7 +977,7 @@
               },
               "long": {
                 "label": "Long description",
-                "placeholder": "A project about dust."
+                "placeholder": "Within the OnlyDust galaxy, you're the stardust that shapes the future. Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach."
               },
               "logo": {
                 "label": "Project visual",
@@ -1111,9 +1122,8 @@
       },
       "banners": {
         "missingGithubAppInstall": {
-          "message": "We identified multiple issues on your project. Please fix them to be able to reward contributors.",
-          "button": "Edit project",
-          "org": "Connect the Github app for the __org__ organisation"
+          "message": "To continue rewarding your contributors, please install the Only Dust Github app.",
+          "button": "Edit project"
         }
       }
     },
@@ -1135,7 +1145,7 @@
       "view": "View invite"
     },
     "missingGithubAppInstall": {
-      "message": "We identified multiple errors on your project. Please fix them to be able to reward contributors.",
+      "message": "To continue rewarding your contributors, please install the Only Dust Github app.",
       "button": "Edit project"
     }
   },

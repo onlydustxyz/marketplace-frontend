@@ -20,7 +20,18 @@ export function AutoAddOrIgnore({ unpaidContributions, workItems, onAutoAdd, onA
   const { T } = useIntl();
 
   const getWorkItemsCount = (workItemType: WorkItemType) =>
-    workItems.filter(({ type }: { type: WorkItemType }) => type === workItemType).length;
+    workItems.filter(({ type, githubIssue, githubPullRequest, githubCodeReview }: RewardableWorkItem) => {
+      if (type !== workItemType) return false;
+
+      const typeToItemMap = {
+        [WorkItemType.Issue]: githubIssue,
+        [WorkItemType.PullRequest]: githubPullRequest,
+        [WorkItemType.CodeReview]: githubCodeReview,
+      };
+
+      const relevantItem = typeToItemMap[type];
+      return relevantItem && relevantItem.contributionId != null;
+    }).length;
 
   const remainingPullRequests =
     unpaidContributions?.rewardablePullRequests.length - getWorkItemsCount(WorkItemType.PullRequest);
