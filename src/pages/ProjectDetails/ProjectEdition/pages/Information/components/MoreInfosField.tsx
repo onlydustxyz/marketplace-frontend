@@ -1,7 +1,6 @@
 import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 import { ClassAttributes, Dispatch, HTMLAttributes, SetStateAction } from "react";
 import { ControllerFieldState, UseFormReturn } from "react-hook-form";
-
 import Button, { ButtonType, ButtonSize } from "src/components/Button";
 import { FieldInput } from "src/components/New/Field/Input";
 import Flex from "src/components/Utils/Flex";
@@ -13,6 +12,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { MoreInfos } from "src/types";
 import { SocialIcon } from "./SocialIcon";
 import { EditFormData } from "../../../EditContext";
+import { CreateFormData } from "src/pages/ProjectCreation/types/ProjectCreationType";
 
 const DragHandler = (
   props: JSX.IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>
@@ -35,43 +35,53 @@ type SortableMoreInfos = MoreInfos & { id: string };
 type MoreInfosFieldProps = {
   onChange: (...event: unknown[]) => void;
   value?: MoreInfos[];
-};
-
-type EditFormData = MoreInfosFieldProps & {
-  form?: UseFormReturn<EditFormData, unknown>;
   error?: ControllerFieldState["error"];
 };
 
-type CreateFormData = MoreInfosFieldProps & {
+type EditFormProps = MoreInfosFieldProps & {
+  form?: UseFormReturn<EditFormData, unknown>;
+};
+
+type CreateFormProps = MoreInfosFieldProps & {
   form?: UseFormReturn<CreateFormData, unknown>;
 };
+
+type FormUnionProps = UseFormReturn<EditFormData | CreateFormData, unknown>;
 
 // react-sortable-list expects an id for each item, so we need to add it
 function decodeValues(values: MoreInfos[] | undefined): SortableMoreInfos[] {
   return values?.map((item, index) => ({ ...item, id: (index + 1).toString() })) || [];
 }
 
-export function MoreInfosField({ onChange, value, form, error }: EditFormData | CreateFormData) {
+// TS is getting tangled up with moreInfos generics, so we need to cast the type
+function getMoreInfos(formValues?: EditFormData | CreateFormData) {
+  return formValues?.moreInfos || [];
+}
+
+// export function MoreInfosField({ onChange, value, form, error }: EditFormProps | CreateFormProps) {
+export function MoreInfosField({ onChange, value, form, error }: EditFormProps | CreateFormProps) {
   const { T } = useIntl();
 
   function reorderMoreInfos(reOrder: (items: SortableItemProps[]) => MoreInfos[]) {
-    const values = decodeValues(form?.getValues("moreInfos"));
-    form?.setValue("moreInfos", reOrder(values), {
+    const moreInfos = getMoreInfos(form?.getValues());
+    const values = decodeValues(moreInfos);
+
+    (form as FormUnionProps)?.setValue("moreInfos", reOrder(values), {
       shouldDirty: true,
       shouldValidate: true,
     });
   }
 
   function addLink() {
-    const moreInfos = [...(form?.getValues("moreInfos") || [])];
+    const moreInfos = getMoreInfos(form?.getValues());
     moreInfos.push({ url: "", value: "" });
-    form?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: false });
+    (form as FormUnionProps)?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: false });
   }
 
   function deleteLink(index: number) {
-    const moreInfos = [...(form?.getValues("moreInfos") || [])];
+    const moreInfos = getMoreInfos(form?.getValues());
     moreInfos.splice(index, 1);
-    form?.setValue("moreInfos", moreInfos, {
+    (form as FormUnionProps)?.setValue("moreInfos", moreInfos, {
       shouldDirty: true,
       shouldValidate: false,
     });
