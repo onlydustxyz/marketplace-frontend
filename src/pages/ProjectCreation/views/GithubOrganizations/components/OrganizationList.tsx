@@ -26,7 +26,7 @@ export default function OrganizationList({
       <ul className="flex flex-col gap-3 py-4 pb-6">
         {organizations.map((org, index) => {
           const linkUrl = getGithubSetupLink({
-            id: org.id,
+            id: org.githubUserId,
             login: org.login,
             installationId: org.installationId,
             installed: org.installed,

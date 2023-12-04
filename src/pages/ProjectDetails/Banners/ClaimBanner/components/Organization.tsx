@@ -26,7 +26,7 @@ export default function ClaimBannerOrganization({
   );
 
   const githubLink = getGithubSetupLink({
-    id: organization.id,
+    id: organization.githubUserId,
     login: organization.login,
     installationId: organization.installationId,
     installed: organization.installed,

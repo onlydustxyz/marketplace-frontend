@@ -31,7 +31,7 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
     action: (
       <a
         href={getGithubSetupLink({
-          id: organization.id,
+          id: organization.githubUserId,
           login: organization.login,
           installationId: organization.installationId,
           installed: organization.installed,
