@@ -157,7 +157,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const mergeOrganization = useMemo(() => {
     const merged = (project.organizations || [])?.map(projectOrg => {
-      const findInMe = (organizationsData || []).find(meOrg => meOrg.id === projectOrg.id);
+      const findInMe = (organizationsData || []).find(meOrg => meOrg.githubUserId === projectOrg.githubUserId);
       if (findInMe) {
         return {
           ...findInMe,
@@ -172,9 +172,10 @@ export function EditProvider({ children, project }: EditContextProps) {
       return projectOrg;
     });
 
-    return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id).sort((a, b) =>
-      a.login.localeCompare(b.login)
-    );
+    return uniqWith(
+      [...(merged || []), ...(organizationsData || [])],
+      (arr, oth) => arr.githubUserId === oth.githubUserId
+    ).sort((a, b) => a.login.localeCompare(b.login));
   }, [organizationsData, project]);
 
   const onAddRepository = (organizationId: number, repoId: number) => {
