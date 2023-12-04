@@ -33,6 +33,7 @@ describe("formatDate", () => {
       createdAt: mockRewardItem.createdAt,
       closedAt: mockRewardItem.completedAt,
       mergedAt: mockRewardItem.completedAt,
+      completedAt: mockRewardItem.completedAt,
       status: mockRewardItem.status,
       htmlUrl: mockRewardItem.githubUrl,
       userCommitsCount: {
@@ -61,6 +62,7 @@ describe("formatDate", () => {
       id: mockRewardItem.id,
       createdAt: mockRewardItem.createdAt,
       closedAt: mockRewardItem.completedAt,
+      completedAt: mockRewardItem.completedAt,
       number: mockRewardItem.number,
       title: mockRewardItem.title,
       htmlUrl: mockRewardItem.githubUrl,
@@ -82,6 +84,7 @@ describe("formatDate", () => {
         status: null,
         closedAt: null,
         mergedAt: null,
+        completedAt: null,
         id: null,
         author: {
           id: null,

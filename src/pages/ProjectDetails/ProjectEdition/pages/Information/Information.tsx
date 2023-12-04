@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { Controller } from "react-hook-form";
 import ProjectApi from "src/api/Project";
-import { FieldCombined } from "src/components/New/Field/Combined";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
@@ -10,13 +9,13 @@ import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import InformationLine from "src/icons/InformationLine";
-import Link from "src/icons/Link";
 import {
   FieldProjectLead,
   SelectedLeadType,
 } from "src/pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
-import { EditContext } from "../EditContext";
-import { RewardableContributionsField } from "../RewardableContributionsField";
+import { EditContext } from "../../EditContext";
+import { RewardableContributionsField } from "../../RewardableContributionsField";
+import { MoreInfosField } from "./components/MoreInfosField";
 
 export function Information() {
   const { T } = useIntl();
@@ -111,51 +110,15 @@ export function Information() {
             />
           )}
         />
+
         <Controller
           name="moreInfos"
           control={form?.control}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <FieldCombined
-              onChange={onChange}
-              name="moreInfos"
-              label={T("project.details.edit.informations.fields.moreInfo.label")}
-              className="gap-2"
-            >
-              {onChangeField => [
-                <FieldInput
-                  key="moreInfos.url"
-                  name="moreInfos.url"
-                  value={value?.[0]?.url}
-                  fieldClassName="flex-1"
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  errorMessage={(error as any)?.[0]?.url?.message}
-                  onChange={event => {
-                    if (event.target.value || value?.[0].value) {
-                      onChangeField([{ ...(value?.[0] || {}), url: event.target.value }]);
-                    } else {
-                      onChangeField([]);
-                    }
-                  }}
-                  startIcon={({ className }) => <Link className={className} />}
-                />,
-                <FieldInput
-                  key="moreInfos.value"
-                  name="moreInfos.value"
-                  value={value?.[0]?.value}
-                  placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
-                  fieldClassName=" w-1/3 max-w-full"
-                  onChange={event => {
-                    if (event.target.value || value?.[0].url) {
-                      onChangeField([{ ...(value?.[0] || {}), value: event.target.value }]);
-                    } else {
-                      onChangeField([]);
-                    }
-                  }}
-                />,
-              ]}
-            </FieldCombined>
+            <MoreInfosField {...{ onChange, value, form, error }} />
           )}
         />
+
         <Controller
           name="projectLeads"
           control={form?.control}

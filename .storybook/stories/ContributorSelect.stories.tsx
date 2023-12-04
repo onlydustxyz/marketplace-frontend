@@ -17,6 +17,7 @@ const filteredContributors: Contributor[] = [
     isRegistered: true,
     unpaidMergedPullsCount: 3,
     unpaidCompletedContributions: 0,
+    htmlUrl: "",
   },
   {
     githubUserId: 2222,
@@ -25,6 +26,7 @@ const filteredContributors: Contributor[] = [
     isRegistered: false,
     unpaidMergedPullsCount: 0,
     unpaidCompletedContributions: 0,
+    htmlUrl: "",
   },
   {
     githubUserId: 3333,
@@ -33,6 +35,7 @@ const filteredContributors: Contributor[] = [
     isRegistered: true,
     unpaidMergedPullsCount: 10,
     unpaidCompletedContributions: 0,
+    htmlUrl: "",
   },
 ];
 
@@ -44,6 +47,7 @@ const filteredExternalContributors: Contributor[] = [
     unpaidMergedPullsCount: 0,
     isRegistered: true,
     unpaidCompletedContributions: 0,
+    htmlUrl: "",
   },
   {
     githubUserId: 5555,
@@ -52,6 +56,7 @@ const filteredExternalContributors: Contributor[] = [
     unpaidMergedPullsCount: 0,
     isRegistered: false,
     unpaidCompletedContributions: 0,
+    htmlUrl: "",
   },
   {
     githubUserId: 6666,
@@ -60,6 +65,7 @@ const filteredExternalContributors: Contributor[] = [
     unpaidMergedPullsCount: 0,
     isRegistered: true,
     unpaidCompletedContributions: 0,
+    htmlUrl: "",
   },
 ];
 

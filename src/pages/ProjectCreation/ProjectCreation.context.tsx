@@ -82,14 +82,14 @@ const validationSchema = z.object({
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
-  moreInfo: z
-    .object({
-      url: z.string().nullable().optional(),
-      value: z.string().nullable().optional(),
-    })
-    .nullable()
-    .optional(),
-
+  moreInfos: z
+    .array(
+      z.object({
+        url: z.string().trim().min(1),
+        value: z.string().nullable(),
+      })
+    )
+    .min(0),
   name: z.string().min(1),
   shortDescription: z.string().min(1),
 });
@@ -183,17 +183,16 @@ export function CreateProjectProvider({
   const onSubmit = () => {
     setEnableAutoSaved(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { search, projectLeads, selectedRepos, moreInfo, ...formData } = form.getValues();
+    const { search, projectLeads, selectedRepos, ...formData } = form.getValues();
     createProject({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
-      moreInfos: moreInfo ? [moreInfo] : undefined,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
     });
   };
 
   const isOrgsExist = (orgId: number) => {
-    return !!(organizationsData || [])?.find(org => org.id === orgId);
+    return !!(organizationsData || [])?.find(org => org.githubUserId === orgId);
   };
 
   const addRepository = (data: CreateFormDataRepos) => {

@@ -21,12 +21,12 @@ export default function ClaimBannerOrganization({
 }: ClaimBannerOrganizationProps) {
   const { T } = useIntl();
   const myOrganization = useMemo(
-    () => myOrganizations.find(org => org.id === organization.id && org.isCurrentUserAdmin),
+    () => myOrganizations.find(org => org.githubUserId === organization.githubUserId && org.isCurrentUserAdmin),
     [myOrganizations, organization]
   );
 
   const githubLink = getGithubSetupLink({
-    id: organization.id,
+    id: organization.githubUserId,
     login: organization.login,
     installationId: organization.installationId,
     installed: organization.installed,

@@ -63,9 +63,8 @@ const currentProject: Project = {
   ],
   organizations: [
     {
-      id: 58205251,
+      githubUserId: 58205251,
       isCurrentUserAdmin: true,
-      owner: "Barbicane-fr",
       login: "owner-id",
       avatarUrl: "https://avatars.githubusercontent.com/u/58205251?v=4",
       htmlUrl: "https://github.com/Barbicane-fr",
@@ -165,9 +164,8 @@ const otherProject: Project = {
   ],
   organizations: [
     {
-      id: 58205251,
+      githubUserId: 58205251,
       login: "Barbicane-fr",
-      owner: "owner-id",
       avatarUrl: "https://avatars.githubusercontent.com/u/58205251?v=4",
       htmlUrl: "https://github.com/Barbicane-fr",
       name: "Barbicane",

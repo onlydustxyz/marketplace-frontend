@@ -31,7 +31,7 @@ export const EditPanelRepositories = () => {
         startIcon={({ className }) => <SearchLine className={className} />}
       />
       {filterOrganizationBySearch(installedOrganization).map(organization => (
-        <Organization key={organization.id} organization={organization} />
+        <Organization key={organization.githubUserId} organization={organization} />
       ))}
     </Flex>
   );
