@@ -21,6 +21,7 @@ import SEO from "src/components/SEO";
 import MeApi from "src/api/me";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import Flex from "src/components/Utils/Flex";
 
 const MAX_STEP = 3;
 
@@ -79,9 +80,9 @@ export default function Onboarding() {
   return (
     <>
       <SEO />
-      <Background roundedBorders={BackgroundRoundedBorders.Full}>
-        <FormProvider {...methods}>
-          <div className="mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-2 pb-6 text-greyscale-50 md:p-6">
+      <Background roundedBorders={BackgroundRoundedBorders.Full}  innerClassName="h-full flex justify-center items-center">
+        <FormProvider {...methods} >
+          <div className="flex max-w-7xl px-2 pb-6 text-greyscale-50 md:p-6 h-full">
             <form id="onboarding-form" className="flex justify-center px-2 xl:pb-4" onSubmit={handleSubmit(onSubmit)}>
               {step === 0 && (
                 <Intro
