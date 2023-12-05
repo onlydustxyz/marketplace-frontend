@@ -1,4 +1,4 @@
-import PayoutInfoSidePanel from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/PayoutInfoSidePanel";
+import PayoutInfoSidePanel from "src/App/Stacks/PayoutInfoSidePanel/PayoutInfoSidePanel";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
@@ -11,12 +11,5 @@ export default {
 };
 
 export const Default = {
-  render: () => (
-    <PayoutInfoSidePanel
-      open={true}
-      setOpen={() => {
-        return;
-      }}
-    />
-  ),
+  render: () => <PayoutInfoSidePanel />,
 };

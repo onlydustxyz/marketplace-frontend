@@ -22,12 +22,8 @@ import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
 import config, { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
-import {
-  UserProfileInfo,
-  fromFragment,
-  toVariables,
-} from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
-import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
+import { UserProfileInfo, fromFragment, toVariables } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
+import useUserProfile from "src/App/Stacks/ContributorProfileSidePanel/useUserProfile";
 import { useIntl } from "src/hooks/useIntl";
 import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";

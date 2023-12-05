@@ -7,11 +7,10 @@ import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import User3Line from "src/icons/User3Line";
-import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useSidePanel } from "src/hooks/useSidePanel";
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 
 type Props = {
   avatarUrl: string | null;
@@ -27,9 +26,9 @@ const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsI
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
+  const [openPayoutInfo] = useStackPayoutInfo();
 
-  const { open: openContributorProfileSidePanel } = useContributorProfilePanel();
+  const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   return (
@@ -78,11 +77,11 @@ const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsI
                 <MenuItem secondary disabled>
                   {T("navbar.profile.title").toUpperCase()}
                 </MenuItem>
-                <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel(githubUserId)}>
+                <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel({ githubUserId })}>
                   <User3Line className="text-xl" />
                   <div className="grow">{T("navbar.profile.publicProfile")}</div>
                 </MenuItem>
-                <MenuItem onClick={() => setPayoutInfoSidePanelOpen(true)}>
+                <MenuItem onClick={openPayoutInfo}>
                   <MoneyDollarCircleLine className="text-xl" />
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
@@ -109,7 +108,6 @@ const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsI
           </Menu.Items>
         </Transition>
       </Menu>
-      <PayoutInfoSidePanel open={payoutInfoSidePanelOpen} setOpen={setPayoutInfoSidePanelOpen} />
     </div>
   );
 };

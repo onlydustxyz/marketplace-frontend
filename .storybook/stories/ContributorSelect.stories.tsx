@@ -1,4 +1,3 @@
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import { ComponentStory } from "@storybook/react";
 
 import ContributorSelectView from "src/pages/ProjectDetails/Rewards/RewardForm/ContributorSelect/View";
@@ -6,7 +5,6 @@ import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 
 export default {
   title: "ContributorsSelect",
-  decorators: [withContributorProfilePanelProvider],
 };
 
 const filteredContributors: Contributor[] = [
