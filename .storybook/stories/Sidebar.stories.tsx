@@ -25,6 +25,8 @@ const availableTabs: ProjectDetailsTab[] = [
 const currentProject: Project = {
   id: "b692a29f-4e4f-4607-aece-054f562b13cf",
   slug: "baribicane",
+  indexedAt: "2023-11-09T16:23:38.223Z",
+  indexingComplete: true,
   name: "Baribicane",
   remainingUsdBudget: 0,
   createdAt: "2023-11-09T16:23:38.223Z",
@@ -125,6 +127,8 @@ const currentProject: Project = {
 
 const otherProject: Project = {
   id: "b692a29f-4e4f-4607-aece-054f562b13cf",
+  indexedAt: "2023-11-09T16:23:38.223Z",
+  indexingComplete: true,
   slug: "baribicane",
   name: "Baribicane",
   remainingUsdBudget: 0,
