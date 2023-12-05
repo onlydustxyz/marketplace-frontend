@@ -10,7 +10,6 @@ import {
 } from "src/__generated/graphql";
 import withSuspense from "../decorators/withSuspense";
 import withCommandProvider from "../decorators/withCommandProvider";
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import withQueryClientProvider from "../decorators/withQueryClientProvider";
 import withAuthProvider from "../decorators/withAuthProvider";
@@ -270,7 +269,6 @@ export default {
     withSuspense,
     withAuthProvider({ userId: USER_ID }),
     withCommandProvider,
-    withContributorProfilePanelProvider,
     withQueryClientProvider,
     withTokenSetProvider,
     withImpersonationClaimsProvider,
