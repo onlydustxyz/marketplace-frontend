@@ -5,7 +5,6 @@ import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/component
 import { useIntl } from "src/hooks/useIntl";
 import GithubWarning from "src/icons/GithubWarning";
 import { cn } from "src/utils/cn";
-import { parseFlag } from "src/utils/parseFlag";
 
 export function GithubStatusBanner() {
   const { T } = useIntl();
@@ -16,10 +15,7 @@ export function GithubStatusBanner() {
 
   const { data } = ExternalApi.queries.useGithubStatus();
 
-  if (
-    parseFlag("VITE_FLAG_ALLOW_GITHUB_STATUS_BANNER") ||
-    (data && (data.status.indicator === "major" || data.status.indicator === "critical"))
-  ) {
+  if (data && (data.status.indicator === "major" || data.status.indicator === "critical")) {
     return (
       <div
         className={cn("flex items-center justify-between gap-8 bg-orange-900 px-8 py-4", { "mb-4": shouldAddMargin })}
