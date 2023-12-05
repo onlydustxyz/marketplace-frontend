@@ -15,7 +15,7 @@ import { useStackPayoutInfo } from "src/App/Stacks/Stacks";
 export default function PayoutInfoSidePanel() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const [_, close] = useStackPayoutInfo();
+  const [, close] = useStackPayoutInfo();
   const { data: user } = MeApi.queries.useGetMyPayoutInfo({});
 
   const { mutate: userPayoutInformation, isPending: userPayoutInformationIsPending } = MeApi.mutations.usePayoutInfo({

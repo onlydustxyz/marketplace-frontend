@@ -54,6 +54,8 @@ export type Props = {
   rewardId: string;
   projectLeaderView?: boolean;
   onRewardCancel?: UseMutateFunction<unknown, Error, unknown, unknown>;
+  projectId: string;
+  isMine?: boolean;
 };
 
 type ProjectProps = {
@@ -66,13 +68,7 @@ type MyProps = {
   isMine: true;
 } & Props;
 
-export default function View({
-  projectId,
-  rewardId,
-  onRewardCancel,
-  projectLeaderView,
-  isMine,
-}: ProjectProps | MyProps) {
+export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView, isMine }: Props) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const [openStackContribution] = useStackContribution();

@@ -21,7 +21,7 @@ export default function ProjectsSection({ projects, setOpen }: Props) {
         {projects.map(project =>
           isXl ? (
             <Link
-              onClick={() => setOpen?.()}
+              onClick={setOpen}
               key={project.id}
               to={generatePath(RoutePaths.ProjectDetails, { projectKey: project.slug || "" })}
             >

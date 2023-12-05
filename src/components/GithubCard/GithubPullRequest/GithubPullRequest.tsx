@@ -62,7 +62,12 @@ export default function GithubPullRequest({
   const userCommits = pullRequest?.userCommitsCount?.aggregate?.count ?? pullRequest?.userCommitsCount ?? 0;
   const commitsCount = pullRequest?.commitsCount?.aggregate?.count ?? pullRequest?.commitsCount ?? 0;
   return pullRequest ? (
-    <div className={cn("w-full", onCardClick && "cursor-pointer")} onClick={onCardClick}>
+    <div
+      className={cn("w-full", {
+        "cursor-pointer": onCardClick,
+      })}
+      onClick={onCardClick}
+    >
       <Card
         padded={false}
         className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {

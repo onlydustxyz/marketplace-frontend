@@ -56,7 +56,12 @@ export default function GithubIssue({
   const { repoName } = parseIssueLink(issue.htmlUrl ?? "");
 
   return (
-    <div className={cn("w-full", onCardClick && "cursor-pointer")} onClick={onCardClick}>
+    <div
+      className={cn("w-full", {
+        "cursor-pointer": onCardClick,
+      })}
+      onClick={onCardClick}
+    >
       <Card
         padded={false}
         className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light", {
