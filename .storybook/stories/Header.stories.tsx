@@ -3,13 +3,12 @@ import Header from "src/App/Layout/Header/View";
 import { responsiveChromatic } from "src/test/utils";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 
 export default {
   title: "Header",
   component: Header,
   parameters: responsiveChromatic,
-  decorators: [withRouter, withAuthProvider(), withContributorProfilePanelProvider],
+  decorators: [withRouter, withAuthProvider()],
 };
 
 const args = {
