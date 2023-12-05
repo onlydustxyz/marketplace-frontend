@@ -6,11 +6,10 @@ import {
   WorkItemType,
 } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
-import View, { Props } from "src/components/UserRewardTable/RewardSidePanel/View";
+import View, { Props } from "src/App/Stacks/RewardSidePanel/View";
 import { PaymentStatus } from "src/types";
 import { daysFromNow } from "src/utils/date";
 import withAuthProvider from "../decorators/withAuthProvider";
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
 
 // TODO this story is obsolete, needs work after multitoken
@@ -31,7 +30,7 @@ const statuses = {
 export default {
   title: "RewardSidePanel",
   component: View,
-  decorators: [withSidePanelStackProvider, withContributorProfilePanelProvider, withAuthProvider],
+  decorators: [withSidePanelStackProvider, withAuthProvider],
 };
 
 const issues: GithubIssueFragment[] = range(1, 50).map(id => ({

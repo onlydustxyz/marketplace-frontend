@@ -11,7 +11,6 @@ import {
   GetProjectPendingContributorsQueryResult,
 } from "src/__generated/graphql";
 import { VirtuosoMockContext } from "react-virtuoso";
-import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const TEST_CONTRIBUTOR: ContributorFragment = {
@@ -83,9 +82,7 @@ describe('"RewardForm" component', () => {
     renderWithIntl(
       <VirtuosoMockContext.Provider value={{ viewportHeight: 1000, itemHeight: 36 }}>
         <QueryClientProvider client={queryClient}>
-          <ContributorProfilePanelProvider>
-            <RewardForm />
-          </ContributorProfilePanelProvider>
+          <RewardForm />
         </QueryClientProvider>
       </VirtuosoMockContext.Provider>,
       {

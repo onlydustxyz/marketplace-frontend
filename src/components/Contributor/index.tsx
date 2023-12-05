@@ -4,7 +4,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { ContributorT } from "src/types";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { cn } from "src/utils/cn";
-import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 
 type Props = {
   contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered">;
@@ -14,7 +14,7 @@ type Props = {
 
 export default function Contributor({ className, contributor, clickable }: Props) {
   const { T } = useIntl();
-  const { open } = useContributorProfilePanel();
+  const [open] = useStackContributorProfile();
 
   return (
     <div
@@ -22,7 +22,7 @@ export default function Contributor({ className, contributor, clickable }: Props
       onClick={e => {
         if (clickable) {
           e.preventDefault();
-          open(contributor.githubUserId);
+          open({ githubUserId: contributor.githubUserId });
         }
       }}
     >

@@ -36,6 +36,7 @@ export type GithubIssueProps = {
   action?: Action;
   secondaryAction?: Action;
   onClick?: () => void;
+  onCardClick?: () => void;
   onSecondaryClick?: () => void;
   issue: Partial<GithubIssueFragment & RewardableItem>;
   ignored?: boolean;
@@ -47,6 +48,7 @@ export default function GithubIssue({
   secondaryAction,
   issue,
   onClick,
+  onCardClick,
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
@@ -54,54 +56,63 @@ export default function GithubIssue({
   const { repoName } = parseIssueLink(issue.htmlUrl ?? "");
 
   return (
-    <Card
-      padded={false}
-      className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light", {
-        "mt-1": addMarginTopForVirtuosoDisplay,
+    <div
+      className={cn("w-full", {
+        "cursor-pointer": onCardClick,
       })}
-      withBg={false}
+      onClick={onCardClick}
     >
-      {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
-      <div className="flex w-full flex-col gap-2 font-walsheim">
-        <div className="flex text-sm font-medium text-greyscale-50">
-          <GithubLink url={issue.htmlUrl ?? ""} text={`#${issue.number} · ${issue.title}`} />
+      <Card
+        padded={false}
+        className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light", {
+          "mt-1": addMarginTopForVirtuosoDisplay,
+        })}
+        withBg={false}
+      >
+        {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
+        <div className="flex w-full flex-col gap-2 font-walsheim">
+          <div className="flex text-sm font-medium text-greyscale-50">
+            <GithubLink url={issue.htmlUrl ?? ""} text={`#${issue.number} · ${issue.title}`} />
+          </div>
+          <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
+            <div className="flex flex-row items-center gap-1">
+              <ContributionCreationDate
+                id={issue.id}
+                type={GithubContributionType.Issue}
+                date={new Date(issue.createdAt)}
+                tooltipProps={{
+                  variant: Variant.Default,
+                  position: TooltipPosition.Bottom,
+                }}
+              />
+            </div>
+            <div className="flex flex-row items-center gap-1">
+              <ContributionDate
+                id={issue.id}
+                type={GithubContributionType.Issue}
+                status={issue.status as GithubIssueStatus}
+                date={getIssueStatusDate(issue)}
+                tooltipProps={{
+                  variant: Variant.Default,
+                  position: TooltipPosition.Bottom,
+                }}
+                withIcon
+              />
+            </div>
+            <div className="flex flex-row items-center gap-1">
+              <GitRepositoryLine />
+              {repoName}
+            </div>
+            <div className="flex flex-row items-center gap-1">
+              <GitCommentLine />
+              {issue.commentsCount}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
-          <div className="flex flex-row items-center gap-1">
-            <ContributionCreationDate
-              id={issue.id}
-              type={GithubContributionType.Issue}
-              date={new Date(issue.createdAt)}
-              tooltipProps={{
-                variant: Variant.Default,
-                position: TooltipPosition.Bottom,
-              }}
-            />
-          </div>
-          <div className="flex flex-row items-center gap-1">
-            <ContributionDate
-              id={issue.id}
-              type={GithubContributionType.Issue}
-              status={issue.status as GithubIssueStatus}
-              date={getIssueStatusDate(issue)}
-              tooltipProps={{
-                variant: Variant.Default,
-                position: TooltipPosition.Bottom,
-              }}
-              withIcon
-            />
-          </div>
-          <div className="flex flex-row items-center gap-1">
-            <GitRepositoryLine />
-            {repoName}
-          </div>
-          <div className="flex flex-row items-center gap-1">
-            <GitCommentLine />
-            {issue.commentsCount}
-          </div>
-        </div>
-      </div>
-      {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
-    </Card>
+        {secondaryAction && (
+          <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />
+        )}
+      </Card>
+    </div>
   );
 }

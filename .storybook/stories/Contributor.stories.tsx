@@ -1,11 +1,9 @@
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import Contributor from "src/components/Contributor";
 import { ContributorT } from "src/types";
 
 export default {
   title: "Contributor",
   component: Contributor,
-  decorators: [withContributorProfilePanelProvider],
 };
 
 const contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered"> = {
