@@ -993,7 +993,8 @@
               "moreInfo": {
                 "label": "More info",
                 "placeholderLink": "Link",
-                "placeholderLabel": "Label"
+                "placeholderLabel": "Label",
+                "add": "Add link"
               },
               "jobs": {
                 "label": "Accept new applications",
@@ -1227,5 +1228,9 @@
   "dataFetching": {
     "dataContext": "This component must be used within a DataSwitch component"
   },
-  "showMore": "Show more"
+  "showMore": "Show more",
+  "githubStatusBanner": {
+    "message": "Github is experiencing service issues. Onlydust features may be affected until the incident is resolved.",
+    "button": "View Github status"
+  }
 }

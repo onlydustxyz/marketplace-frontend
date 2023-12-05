@@ -46,7 +46,12 @@ export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
   };
 
   return isEditProjectEnabled ? (
-    <Button type={ButtonType.Secondary} size={ButtonSize.Sm} className="bg-spaceBlue-900" onClick={startProjectEdition}>
+    <Button
+      type={ButtonType.Secondary}
+      size={ButtonSize.Sm}
+      className="flex-1 bg-spaceBlue-900 lg:flex-initial"
+      onClick={startProjectEdition}
+    >
       {T("project.details.edit.title")}
     </Button>
   ) : null;

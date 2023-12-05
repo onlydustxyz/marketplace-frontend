@@ -13,7 +13,7 @@ import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import FileListLine from "src/icons/FileListLine";
 import { cn } from "src/utils/cn";
 import { EditContext, EditProvider } from "./EditContext";
-import { Information } from "./pages/Information";
+import { Information } from "./pages/Information/Information";
 import { Repository } from "./pages/Repository/Repository";
 import { Tabs } from "src/components/Tabs/Tabs";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
