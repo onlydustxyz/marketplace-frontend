@@ -9,7 +9,8 @@ export namespace ClaimUtils {
       }
     }
 
-    return false;
+    // return false;
+    return true;
   };
 
   export const canSubmit = ({

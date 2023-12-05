@@ -6,7 +6,7 @@ import { useIntl } from "src/hooks/useIntl";
 import ClaimBannerOrganization from "./components/Organization";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
+import { usePooling } from "src/hooks/usePooling/usePooling";
 import { useStackGithubWorkflowClaim } from "../../Stacks";
 import { ClaimUtils } from "./claim.utils";
 
@@ -17,20 +17,15 @@ export default function ClaimSidePanel({ projectSlug }: ClaimSidePanelProps) {
   const { T } = useIntl();
   const { data: project, isSuccess } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectSlug } });
   const [, closePanel] = useStackGithubWorkflowClaim();
-  const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
+  const { refetchOnWindowFocus, refetchInterval, onRefetching } = usePooling({
     limites: 4,
     delays: 3000,
   });
 
-  const {
-    data: myOrganizations,
-    isRefetching,
-    isLoading,
-    refetch,
-  } = MeApi.queries.useGithubOrganizations({
+  const { data: myOrganizations, isRefetching } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
-      //   enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
+      // enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
       enabled: isSuccess,
       refetchOnWindowFocus,
       refetchInterval,
@@ -40,16 +35,6 @@ export default function ClaimSidePanel({ projectSlug }: ClaimSidePanelProps) {
   useEffect(() => {
     onRefetching(isRefetching);
   }, [isRefetching]);
-
-  const PoolingFeedback = usePoolingFeedback({
-    onForcePooling,
-    isLoading,
-    isRefetching,
-    fetch: refetch,
-    ui: {
-      label: T("project.details.create.syncOganizations"),
-    },
-  });
 
   const { mutate: claimProjectMutation, ...restMutation } = MeApi.mutations.useClaimProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
