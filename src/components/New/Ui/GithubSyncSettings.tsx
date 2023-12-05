@@ -21,7 +21,7 @@ export const GithubSyncSettings = ({ title, message, settingsButton, PoolingFeed
             {settingsButton}
           </Button>
         </a>
-        {PoolingFeedback}
+        {PoolingFeedback ? PoolingFeedback : null}
       </div>
       <div className="flex flex-row items-start justify-start gap-2">
         <InformationLine className="text-base leading-4 text-spaceBlue-200" />

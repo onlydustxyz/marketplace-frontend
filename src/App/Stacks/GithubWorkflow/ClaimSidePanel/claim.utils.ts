@@ -1,0 +1,38 @@
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
+
+export namespace ClaimUtils {
+  export const canDisplay = ({ project }: { project?: UseGetProjectBySlugResponse }) => {
+    if (project) {
+      if (project.leaders.length === 0 && project.invitedLeaders.length === 0) {
+        return true;
+      }
+    }
+
+    // TODO Fake condition return false instead of true
+    // return false;
+    return true;
+  };
+
+  export const canSubmit = ({
+    project,
+    organizations,
+  }: {
+    project?: UseGetProjectBySlugResponse;
+    organizations?: UseGithubOrganizationsResponse[];
+  }) => {
+    if (!canDisplay({ project })) {
+      return false;
+    }
+
+    const isAllOrganizationInstalled = project?.organizations?.every(org => {
+      if (org.installed) {
+        return true;
+      }
+
+      return !!organizations?.find(myOrg => myOrg.githubUserId === org.githubUserId && myOrg.installed);
+    });
+
+    return isAllOrganizationInstalled || false;
+  };
+}
