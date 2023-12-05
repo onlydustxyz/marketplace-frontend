@@ -1,4 +1,4 @@
-import { useFloating, autoUpdate, flip } from "@floating-ui/react-dom";
+import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
 import { isSameDay } from "date-fns";
 import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
@@ -7,7 +7,7 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
-import { getFormattedDateGB } from "src/utils/date";
+import { getFormattedDateGB, parseDateRangeString, parseDateString } from "src/utils/date";
 
 type Props = {
   isElevated?: boolean;
@@ -45,17 +45,24 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
 
   function renderCalendar() {
     if (props.mode === "range") {
-      return <Calendar mode="range" selected={props.value} onSelect={props.onChange} />;
+      // Sometimes date strings are passed instead of date objects
+      const selected = parseDateRangeString(props.value);
+
+      return <Calendar mode="range" selected={selected} onSelect={props.onChange} />;
     }
 
-    return <Calendar mode="single" selected={props.value} onSelect={props.onChange} />;
+    // Sometimes date strings are passed instead of date objects
+    const selected = parseDateString(props.value);
+
+    return <Calendar mode="single" selected={selected} onSelect={props.onChange} />;
   }
 
   function renderPlaceholder() {
     if (props.mode === "range") {
       const selectedPeriod = props.periods?.find(period => {
         return props.value?.from && props.value?.to && period.value.from && period.value.to
-          ? isSameDay(period.value.from, props.value.from) && isSameDay(period.value.to, props.value.to)
+          ? isSameDay(period.value.from, new Date(props.value.from)) &&
+              isSameDay(period.value.to, new Date(props.value.to))
           : false;
       });
 
@@ -67,7 +74,7 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
     }
 
     const selectedPeriod = props.periods?.find(period => {
-      return props.value ? isSameDay(period.value, props.value) : false;
+      return props.value ? isSameDay(period.value, new Date(props.value)) : false;
     });
 
     if (selectedPeriod) return selectedPeriod.label;
@@ -129,7 +136,22 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
                         key={label}
                         type="button"
                         className="w-full px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
-                        onClick={e => props.onChange?.(value, value, {}, e)}
+                        onClick={e => {
+                          if (props.mode === "single" && value instanceof Date) {
+                            props.onChange?.(value, value, {}, e);
+                          }
+
+                          // Not ideal, but got to please Typescript
+                          if (
+                            props.mode === "range" &&
+                            "from" in value &&
+                            "to" in value &&
+                            value.from instanceof Date &&
+                            value.to instanceof Date
+                          ) {
+                            props.onChange?.(value, value.from, {}, e);
+                          }
+                        }}
                       >
                         {label}
                       </button>

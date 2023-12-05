@@ -171,7 +171,7 @@ export function Filter({
                       periods={[
                         {
                           label: T("common.periods.thisWeek"),
-                          value: { from: startOfWeek(new Date()), to: new Date() },
+                          value: { from: startOfWeek(new Date(), { weekStartsOn: 1 }), to: new Date() },
                         },
                         {
                           label: T("common.periods.thisMonth"),
