@@ -429,9 +429,9 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         },
       }}
     >
+      {children}
       {createPortal(
         <div data-stack-root="true" id="stack-panel-root">
-          {children}
           <HistoryComponent />
         </div>,
         document.body
