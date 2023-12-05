@@ -1,4 +1,3 @@
-import { ProfileCover } from "src/__generated/graphql";
 import { LanguageMap } from "src/types";
 import { translateProfileCover } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
 import { UseUpdateProfileBody } from "src/api/me/mutations";
@@ -19,6 +18,13 @@ export enum AllocatedTime {
   GreaterThanThreeDays = "GREATER_THAN_THREE_DAYS",
   None = "NONE",
   OneToThreeDays = "ONE_TO_THREE_DAYS",
+}
+
+export enum ProfileCover {
+  Blue = "BLUE",
+  Cyan = "CYAN",
+  Magenta = "MAGENTA",
+  Yellow = "YELLOW",
 }
 
 export type UserProfileInfo = {

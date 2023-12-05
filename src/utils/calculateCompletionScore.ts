@@ -28,7 +28,7 @@ function calculateUserCompletionScore(userProfile: UseGetMyProfileInfoResponse) 
   );
 }
 
-type FormValuesProps = {
+export type FormValuesProps = {
   avatarUrl: string;
 } & UserProfileInfo;
 
