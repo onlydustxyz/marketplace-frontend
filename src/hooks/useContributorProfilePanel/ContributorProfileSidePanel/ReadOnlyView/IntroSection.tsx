@@ -23,6 +23,8 @@ import WhatsappFill from "src/icons/WhatsappFill";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { components } from "src/__generated/api";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
+import CompletionBar from "src/components/CompletionBar";
 
 type Props = {
   profile: Profile;
@@ -59,6 +61,8 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode, my
   const discord = findContact("DISCORD");
   const linkedin = findContact("LINKEDIN");
   const whatsapp = findContact("WHATSAPP");
+
+  const completionScore = myProfile ? calculateUserCompletionScore(myProfile) : undefined;
 
   return (
     <div className="flex flex-col gap-6">
@@ -101,16 +105,15 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode, my
           </div>
         )}
       </div>
-      {/* TODO completion score will be returned in /me endpoint */}
 
-      {/* {myProfile && myProfile?.completionScore !== undefined && myProfile.completionScore < 95 ? (
+      {completionScore !== undefined && completionScore < 95 ? (
         <div className="flex w-full flex-col gap-2 rounded-2xl bg-completion-gradient px-5 py-4">
           <div className="font-walsheim text-sm font-medium text-greyscale-50">
-            {T("profile.completion", { completion: myProfile.completionScore.toString() })}
+            {T("profile.completion", { completion: completionScore.toString() })}
           </div>
-          <CompletionBar completionScore={myProfile.completionScore} />
+          <CompletionBar completionScore={completionScore} />
         </div>
-      ) : null} */}
+      ) : null}
       {(profile.bio || profile.location || profile.createdAt) && (
         <div className="flex flex-col gap-4 font-walsheim font-normal">
           {profile.bio && (

@@ -23,7 +23,6 @@ import { useMediaQuery } from "usehooks-ts";
 import { cn } from "src/utils/cn";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import MeApi from "src/api/me";
-import { useShowToaster } from "src/hooks/useToaster";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { calculateFormCompletionScore, calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import useMutationAlert from "src/api/useMutationAlert";
@@ -36,7 +35,6 @@ type Props = {
 
 export default function EditView({ profile, setEditMode, restFulProfile }: Props) {
   const { T } = useIntl();
-  const showToaster = useShowToaster();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const formMethods = useForm<UserProfileInfo>({

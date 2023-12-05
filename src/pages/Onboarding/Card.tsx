@@ -1,6 +1,7 @@
 import { PropsWithChildren, ReactNode } from "react";
 import Button, { ButtonType } from "src/components/Button";
 import { Flex } from "src/components/New/Layout/Flex";
+import { Spinner } from "src/components/Spinner/Spinner";
 import Tag, { TagSize } from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
@@ -18,6 +19,7 @@ type Props = {
   next?: () => void;
   submit?: boolean;
   footerRightElement?: ReactNode;
+  loading?: boolean;
 } & PropsWithChildren;
 
 export default function Card({
@@ -31,6 +33,7 @@ export default function Card({
   submit,
   children,
   footerRightElement,
+  loading,
 }: Props) {
   const { T } = useIntl();
 
@@ -80,7 +83,8 @@ export default function Card({
           )}
           {submit && (
             <Button htmlType="submit">
-              <CheckLine className="-ml-1 text-2xl" /> {T("onboarding.submitButton")}
+              {loading ? <Spinner /> : <CheckLine className="-ml-1 text-2xl" />}
+              {T("onboarding.submitButton")}
             </Button>
           )}
         </Flex>
