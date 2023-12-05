@@ -94,7 +94,6 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   errorMessage={(error as any)?.[index]?.url?.message}
                   onChange={event => {
-                    console.log("event.target.value", event.target.value);
                     const updatedValue = items.map((item, i) =>
                       i === index ? { ...item, url: event.target.value } : item
                     );
