@@ -65,7 +65,12 @@ export const Default = {
             url: "https://ethereum.org/en/foundation/",
           },
         ],
-        moreInfos: [{ url: "https://keep-starknet-strange.github.io/madara/madara/index.html", value: "Starknet !" }],
+        moreInfos: [
+          {
+            url: "https://keep-starknet-strange.github.io/madara/madara/index.html",
+            value: "Starknet !",
+          },
+        ],
       }}
     />
   ),
@@ -144,7 +149,12 @@ export const WithPendingInvites = {
             url: "https://ethereum.org/en/foundation/",
           },
         ],
-        moreInfos: [{ url: "https://keep-starknet-strange.github.io/madara/madara/index.html", value: "Starknet !" }],
+        moreInfos: [
+          {
+            url: "https://keep-starknet-strange.github.io/madara/madara/index.html",
+            value: "Starknet !",
+          },
+        ],
       }}
     />
   ),

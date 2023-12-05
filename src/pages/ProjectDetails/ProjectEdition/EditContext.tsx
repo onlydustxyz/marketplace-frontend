@@ -18,8 +18,9 @@ import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useEditValidationSchema } from "./hooks/useValidationSchema";
 import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
-import { MoreInfos } from "src/types";
+
 import { v4 as uuidv4 } from "uuid";
+import { MoreInfosField } from "src/types";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
@@ -54,7 +55,7 @@ export type EditFormData = Omit<components["schemas"]["UpdateProjectRequest"], "
   projectLeads: FieldProjectLeadValue;
   selectedRepos: EditFormDataRepos[];
   githubRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
-  moreInfos: MoreInfos[];
+  moreInfos: MoreInfosField[];
 };
 
 export const EditContext = createContext<Edit>({
