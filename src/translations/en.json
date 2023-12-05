@@ -974,8 +974,9 @@
           "installedOrganizationEmpty": "Not installed on any organization.",
           "availableOrganizationEmpty": "You have no organization available.",
           "githubAppInformation": {
-            "title": "Githbub Settings",
-            "description": "If you are missing any GitHub organizations, you can either edit your configuration or resync your organisations by clicking above.",
+            "title": "Github Settings",
+            "description": "Missing an organisation? Edit your configuration and make sure the desired organisations are granted.",
+            "showButton": "Show me how.",
             "button": "Edit my configurations",
             "syncButton": "Resync organisations"
           }
@@ -1075,7 +1076,8 @@
           },
           "repositories": {
             "noRepositoriesToAdd": "All repositories from this organisation have been added to your project.",
-            "fixGithubApp": "Fix configuration on Github",
+            "grantPermissions": "Grant permissions",
+            "installGithubApp": "Install Github app",
             "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration",
             "title": "Add desired repositories",
             "description": "You can add as many repositories as you want from the following list."

@@ -25,13 +25,13 @@ export default function ClaimBanner() {
   };
 
   useEffect(() => {
-    if (searchParams?.get("claim_callback")) {
+    if (searchParams?.get("claim_callback") && projectKey) {
       searchParams.delete("claim_callback");
       close();
-      openClaimPanel();
+      openClaimPanel({ projectSlug: projectKey });
       setSearchParams(searchParams);
     }
-  }, [searchParams]);
+  }, [searchParams, projectKey]);
 
   if (!canDisplay) {
     return null;
