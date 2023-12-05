@@ -8,12 +8,13 @@ import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import DiscordFill from "src/icons/DiscordFill";
 import TwitterFill from "src/icons/TwitterFill";
-import { Leader, MoreInfos, Sponsor as SponsorType, TopContributor } from "src/types";
+import { Leader, Sponsor as SponsorType, TopContributor } from "src/types";
 import isDefined from "src/utils/isDefined";
 import { SocialIcon } from "../../ProjectEdition/pages/Information/components/SocialIcon";
 import FakeExternalLink from "./FakeExternalLink";
 import Section, { SectionIcon } from "./Section";
 import Sponsor from "./Sponsor";
+import { components } from "src/__generated/api";
 
 const filterLeadsByLogin = (leads?: Leader[]) => leads?.filter(lead => isDefined(lead?.login)) || [];
 
@@ -21,7 +22,7 @@ interface Props {
   leads?: Leader[];
   invitedLeads?: Leader[];
   sponsors: SponsorType[];
-  moreInfos: MoreInfos[];
+  moreInfos: components["schemas"]["MoreInfo"][];
   topContributors: TopContributor[];
   totalContributorsCount: number;
   showPendingInvites: boolean;

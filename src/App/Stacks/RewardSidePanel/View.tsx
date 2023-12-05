@@ -58,16 +58,6 @@ export type Props = {
   isMine?: boolean;
 };
 
-type ProjectProps = {
-  projectId: string;
-  isMine?: never;
-} & Props;
-
-type MyProps = {
-  projectId?: never | string;
-  isMine: true;
-} & Props;
-
 export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView, isMine }: Props) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
