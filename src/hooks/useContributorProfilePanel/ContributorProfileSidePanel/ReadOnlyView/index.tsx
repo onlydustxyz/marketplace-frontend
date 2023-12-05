@@ -9,7 +9,7 @@ import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 type Props = {
   userProfile: Profile;
-  myProfile?: UseGetMyProfileInfoResponse; // use this for the completion score, should be revamp when we revamp the edit profile
+  myProfile?: UseGetMyProfileInfoResponse;
   setOpen: (value: boolean) => void;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
