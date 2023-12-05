@@ -9,9 +9,7 @@ export namespace ClaimUtils {
       }
     }
 
-    // TODO Fake condition return false instead of true
-    // return false;
-    return true;
+    return false;
   };
 
   export const canSubmit = ({

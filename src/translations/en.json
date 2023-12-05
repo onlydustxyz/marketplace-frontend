@@ -977,7 +977,7 @@
             "title": "Github Settings",
             "description": "Missing an organisation? Edit your configuration and make sure the desired organisations are granted.",
             "showButton": "Show me how.",
-            "button": "Edit my configurations",
+            "button": "Edit configuration",
             "syncButton": "Resync organisations"
           }
         },
