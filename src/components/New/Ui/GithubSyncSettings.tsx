@@ -23,9 +23,9 @@ export const GithubSyncSettings = ({
     <div className="card-light flex w-full flex-col items-start justify-start gap-6 rounded-2xl border bg-transparent p-5">
       <div className="flex w-full flex-col items-start justify-start gap-2">
         <p className="font-walsheim text-sm font-medium uppercase">{title}</p>
-        <p className="text-body-s-bold font-walsheim font-normal text-spaceBlue-200">
+        <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
           {message}
-          <span className="cursor-pointer text-spacePurple-500" onClick={openTutorialPanel}>
+          <span className="text-body-s-bold cursor-pointer font-bold text-spacePurple-500" onClick={openTutorialPanel}>
             &nbsp;{showButton}
           </span>
         </p>

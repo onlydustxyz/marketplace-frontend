@@ -8,7 +8,6 @@ import { useIntl } from "src/hooks/useIntl";
 import GlobalLine from "src/icons/GlobalLine";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { EditContext } from "../../EditContext";
-import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
 import { RegisterStack } from "src/libs/react-stack";
 
 function TabContents({ children }: PropsWithChildren) {
@@ -72,18 +71,7 @@ export const SafeEditPanel = () => {
         <div className="mb-6 w-full px-2 md:border-b md:border-greyscale-50/8">
           <Tabs tabs={tabItems} showMobile mobileTitle={T("project.details.edit.panel.title")} />
         </div>
-        <div className="scrollbar-sm flex-1 overflow-auto px-2">
-          {ActiveTab}
-          <div className="mt-6">
-            <GithubSyncSettings
-              title={T("project.details.create.organizations.githubAppInformation.title")}
-              settingsButton={T("project.details.create.organizations.githubAppInformation.button")}
-              message={T("project.details.create.organizations.githubAppInformation.description")}
-              showButton={T("project.details.create.organizations.githubAppInformation.showButton")}
-              PoolingFeedback={PoolingFeedback}
-            />
-          </div>
-        </div>
+        <div className="scrollbar-sm flex-1 overflow-auto px-2">{ActiveTab}</div>
       </div>
     </div>
   );
