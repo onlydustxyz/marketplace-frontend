@@ -159,9 +159,6 @@ export function EditProvider({ children, project }: EditContextProps) {
     resolver: zodResolver(validationSchema),
   });
 
-  const test = validationSchema.safeParse(form.getValues());
-  console.log("VALIDATION", test);
-
   const mergeOrganization = useMemo(() => {
     const merged = (project.organizations || [])?.map(projectOrg => {
       const findInMe = (organizationsData || []).find(meOrg => meOrg.githubUserId === projectOrg.githubUserId);
