@@ -54,7 +54,7 @@ export default function OverviewPanel({
 
   return (
     <Card fullWidth={false} className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0" padded={false}>
-      {projectLeads.length > 0 && (
+      {projectLeads.length > 0 ? (
         <Section
           testId="project-leads"
           icon={SectionIcon.Star}
@@ -74,8 +74,8 @@ export default function OverviewPanel({
               ))}
           </div>
         </Section>
-      )}
-      {totalContributorsCount > 0 && (
+      ) : null}
+      {totalContributorsCount > 0 ? (
         <Section
           icon={SectionIcon.User}
           title={T("project.details.overview.contributors", { count: totalContributorsCount })}
@@ -95,8 +95,8 @@ export default function OverviewPanel({
             <div data-testid="contributors-count">{totalContributorsCount}</div>
           </div>
         </Section>
-      )}
-      {sponsors?.length > 0 && (
+      ) : null}
+      {sponsors?.length > 0 ? (
         <Section
           testId="sponsors"
           icon={SectionIcon.Service}
@@ -108,9 +108,9 @@ export default function OverviewPanel({
             ))}
           </div>
         </Section>
-      )}
+      ) : null}
 
-      {moreInfos.length && (
+      {moreInfos.length > 0 ? (
         <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
           <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
             {isLoggedIn ? (
@@ -146,7 +146,7 @@ export default function OverviewPanel({
             )}
           </div>
         </Section>
-      )}
+      ) : null}
     </Card>
   );
 }
