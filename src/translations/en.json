@@ -89,6 +89,8 @@
     "table": {
       "date": "Date",
       "projectRepo": "Project / Repository",
+      "repo": "Repository",
+      "contributor": "Contributor",
       "contribution": "Contribution",
       "comments": "Comments",
       "linkedTo": "Linked to",

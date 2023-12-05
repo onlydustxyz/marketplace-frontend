@@ -4,36 +4,44 @@ import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App
 import { OrderBy } from "src/__generated/graphql";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
+import IssueOpen from "src/assets/icons/IssueOpen";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
-import { Filters } from "./Filter";
-import { ContributionTable, TableColumns, TableSort } from "src/components/Contribution/ContributionTable";
+import { ContributionTable, HeaderCell, type TableSort } from "src/components/Contribution/ContributionTable";
+import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
+import TimeLine from "src/icons/TimeLine";
 import Title from "src/pages/ProjectDetails/Title";
 import { ContributionStatus } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { isInArray } from "src/utils/isInArray";
 import { useLocalStorage } from "usehooks-ts";
+import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
-import { Filter } from "./Filter";
-import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import TimeLine from "src/icons/TimeLine";
-import Folder3Line from "src/icons/Folder3Line";
-import { HeaderCellWidth } from "src/components/Table/HeaderCell";
-import IssueOpen from "src/assets/icons/IssueOpen";
+import { Filter, Filters } from "./Filter";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import User3Line from "src/icons/User3Line";
 
 enum AllTabs {
   All = "ALL_CONTRIBUTIONS",
   InProgress = "IN_PROGRESS",
   Completed = "COMPLETED",
   Cancelled = "CANCELLED",
+}
+
+enum TableColumns {
+  Date = "CREATED_AT",
+  Repo = "REPO_NAME",
+  Contributor = "CONTRIBUTOR_LOGIN",
+  Contribution = "GITHUB_NUMBER_TITLE",
+  Linked = "LINKS_COUNT",
 }
 
 const tabValues = Object.values(AllTabs);
@@ -76,36 +84,6 @@ export default function Contributions() {
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
   const isProjectLeader = useProjectLeader({ id: project.id });
-
-  const headerCells = [
-    {
-      sort: TableColumns.Date,
-      icon: <TimeLine />,
-      label: T("contributions.table.date"),
-    },
-    {
-      sort: TableColumns.Project,
-      icon: <Folder3Line />,
-      label: T("contributions.table.projectRepo"),
-      width: HeaderCellWidth.Quarter,
-    },
-    {
-      sort: TableColumns.Id,
-      icon: <StackLine />,
-      label: T("contributions.table.contribution"),
-      width: HeaderCellWidth.Half,
-    },
-    {
-      sort: TableColumns.Linked,
-      icon: (
-        <span>
-          <IssueOpen className="h-3 w-3" />
-        </span>
-      ),
-      label: T("contributions.table.linkedTo"),
-      className: "justify-end",
-    },
-  ];
 
   // -------------------
 
@@ -201,6 +179,40 @@ export default function Contributions() {
           {T("contributions.nav.canceled")}
         </TabContents>
       ),
+    },
+  ];
+
+  const headerCells: HeaderCell[] = [
+    {
+      sort: TableColumns.Date,
+      icon: <TimeLine />,
+      label: T("contributions.table.date"),
+    },
+    {
+      sort: TableColumns.Repo,
+      icon: <GitRepositoryLine />,
+      label: T("contributions.table.repo"),
+    },
+    {
+      sort: TableColumns.Contributor,
+      icon: <User3Line />,
+      label: T("contributions.table.contributor"),
+    },
+    {
+      sort: TableColumns.Contribution,
+      icon: <StackLine />,
+      label: T("contributions.table.contribution"),
+      width: HeaderCellWidth.Third,
+    },
+    {
+      sort: TableColumns.Linked,
+      icon: (
+        <span>
+          <IssueOpen className="h-3 w-3" />
+        </span>
+      ),
+      label: T("contributions.table.linkedTo"),
+      className: "justify-end",
     },
   ];
 

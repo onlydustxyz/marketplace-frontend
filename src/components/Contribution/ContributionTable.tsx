@@ -23,26 +23,14 @@ import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 import { MobileShowMore } from "./MobileShowMore";
 
-export enum TableColumns {
-  Date = "CREATED_AT",
-  Project = "PROJECT_REPO_NAME",
-  Id = "GITHUB_NUMBER_TITLE",
-  Linked = "LINKS_COUNT",
-}
-
-export type TableSort = {
-  sort: TableColumns;
-  direction: OrderBy.Asc | OrderBy.Desc;
-};
-
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
 }
 
-function TableText({ children }: PropsWithChildren) {
+function TableText({ children, colSpan }: PropsWithChildren<{ colSpan: number }>) {
   return (
     <tr>
-      <td colSpan={4}>
+      <td colSpan={colSpan}>
         <div className="pt-6">
           <Message>{children}</Message>
         </div>
@@ -50,6 +38,31 @@ function TableText({ children }: PropsWithChildren) {
     </tr>
   );
 }
+
+export type TableSort = {
+  sort: string; // Would like to use a generic here, but couldn't get it to play nice. Maybe come back to this later.
+  direction: OrderBy.Asc | OrderBy.Desc;
+};
+
+export type HeaderCell = {
+  sort: string;
+  icon: ReactNode;
+  label: string;
+  width?: HeaderCellWidth;
+  className?: string;
+};
+
+type Props = {
+  description: string;
+  fullTable?: boolean;
+  headerCells: HeaderCell[];
+  icon: (className: string) => ReactNode;
+  id: string;
+  onSort: (sort: TableSort) => void;
+  queryProps: Parameters<typeof MeApi.queries.useMyContributions>;
+  sort: TableSort;
+  title: string;
+};
 
 export function ContributionTable({
   description,
@@ -61,29 +74,14 @@ export function ContributionTable({
   queryProps,
   sort,
   title,
-}: {
-  description: string;
-  fullTable?: boolean;
-  headerCells: {
-    sort: TableColumns;
-    icon: ReactNode;
-    label: string;
-    width?: HeaderCellWidth;
-    className?: string;
-  }[];
-  icon(className: string): ReactNode;
-  id: string;
-  onSort: (sort: TableSort) => void;
-  queryProps: Parameters<typeof MeApi.queries.useMyContributions>;
-  sort: TableSort;
-  title: string;
-}) {
+}: Props) {
   const { T } = useIntl();
   const [collapsed, setCollapsed] = useState(false);
 
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
 
+  const nbColumns = headerCells.length;
   const sortDirection = sort.direction === OrderBy.Asc ? "up" : "down";
   const newSortDirection = sort.direction === OrderBy.Asc ? OrderBy.Desc : OrderBy.Asc;
 
@@ -134,11 +132,11 @@ export function ContributionTable({
 
   function renderDesktopContent() {
     if (isError) {
-      return <TableText>{T("contributions.table.error")}</TableText>;
+      return <TableText colSpan={nbColumns}>{T("contributions.table.error")}</TableText>;
     }
 
     if (!hasContributions) {
-      return <TableText>{T("contributions.table.empty")}</TableText>;
+      return <TableText colSpan={nbColumns}>{T("contributions.table.empty")}</TableText>;
     }
 
     return contributions?.map(contribution => {
@@ -148,6 +146,7 @@ export function ContributionTable({
 
       return (
         <Line key={lineId} className="border-card-border-light">
+          {/* TODO extract cell rendering */}
           <Cell height={CellHeight.Compact}>
             <ContributionDate
               id={lineId}

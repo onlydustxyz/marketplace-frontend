@@ -7,7 +7,7 @@ import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
-import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
+import { ContributionTable, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import { Tabs } from "src/components/Tabs/Tabs";
@@ -24,6 +24,13 @@ enum AllTabs {
   InProgress = "IN_PROGRESS",
   Completed = "COMPLETED",
   Cancelled = "CANCELLED",
+}
+
+enum TableColumns {
+  Date = "CREATED_AT",
+  Project = "PROJECT_REPO_NAME",
+  Id = "GITHUB_NUMBER_TITLE",
+  Linked = "LINKS_COUNT",
 }
 
 const tabValues = Object.values(AllTabs);

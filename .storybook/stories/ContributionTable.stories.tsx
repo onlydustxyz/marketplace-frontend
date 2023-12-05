@@ -2,7 +2,7 @@ import { ComponentProps } from "react";
 import { OrderBy } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
-import { ContributionTable, TableColumns } from "src/components/Contribution/ContributionTable";
+import { ContributionTable } from "src/components/Contribution/ContributionTable";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
@@ -26,6 +26,13 @@ export default {
     withQueryClientProvider,
   ],
 };
+
+enum TableColumns {
+  Date = "CREATED_AT",
+  Project = "PROJECT_REPO_NAME",
+  Id = "GITHUB_NUMBER_TITLE",
+  Linked = "LINKS_COUNT",
+}
 
 const defaultProps: ComponentProps<typeof ContributionTable> = {
   id: "in_progress_contributions_table",
