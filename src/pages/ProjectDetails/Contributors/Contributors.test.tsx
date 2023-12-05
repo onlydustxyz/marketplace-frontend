@@ -12,6 +12,8 @@ import { renderWithIntl } from "src/test/utils";
 
 const project: ComponentProps<typeof View>["project"] = {
   id: "test-project-id",
+  indexedAt: "2023-11-09T16:23:38.223Z",
+  indexingComplete: true,
   slug: "performance-test-with-a-very-long-name",
   name: "Performance test with a very long name",
   shortDescription: "Do not create issue on this one as it is linked with real projects !",
