@@ -13,9 +13,7 @@ import { architecture } from "src/assets/technologies/architecture";
 import { web3 } from "src/assets/technologies/web3";
 import { ClassAttributes, HTMLAttributes } from "react";
 import StylizedCombobox, { EMPTY_OPTION_ID, Option, RenderProps } from "src/components/StylizedCombobox";
-import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 import Draggable from "src/icons/Draggable";
-import CloseLine from "src/icons/CloseLine";
 import { cn } from "src/utils/cn";
 import { useShowToaster } from "src/hooks/useToaster";
 import Add from "src/icons/Add";
@@ -23,6 +21,9 @@ import { useAllTechnologiesQuery, useSuggestTechnologyMutation } from "src/__gen
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { withTooltip } from "src/components/Tooltip";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
+import { SortableItemProps, SortableList } from "../New/Sortable/SortableList";
+import CloseLine from "src/icons/CloseLine";
+import Flex from "../Utils/Flex";
 
 type Props = {
   technologies: LanguageMap;
@@ -30,6 +31,7 @@ type Props = {
 };
 
 type LanguageOption = { isSupported: boolean } & Option;
+type SelectedTechnologyProps = (SortableItemProps & { value: string })[];
 
 export default function TechnologiesSelect({ technologies = {}, setTechnologies }: Props) {
   const { T } = useIntl();
@@ -83,7 +85,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
   };
 
   const setSelectedLanguages = async (
-    setter: SortableItemProps[] | ((prev: SortableItemProps[]) => SortableItemProps[])
+    setter: SelectedTechnologyProps | ((prev: SelectedTechnologyProps) => SelectedTechnologyProps)
   ) => {
     const languages = typeof setter === "function" ? setter(selectedLanguages) : setter;
     const suggestion = languages.find(l => l.id === EMPTY_OPTION_ID);
@@ -132,42 +134,35 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
         emptyStateHeight={52}
       />
       {selectedLanguages.length > 0 && (
-        <div className="mt-4 flex flex-col gap-2">
-          <SortableList items={selectedLanguages} setItems={setSelectedLanguages}>
-            {({ items }: { items: SortableItemProps[] }) => (
-              <>
-                {items.map((item: SortableItemProps, index) => (
-                  <SortableItem
-                    key={item.id}
-                    id={item.id}
-                    DragHandler={DragHandler}
-                    className="flex h-7 font-walsheim text-greyscale-50"
-                  >
-                    <div
-                      className={cn(
-                        "flex w-fit items-center justify-center gap-1 pr-2",
-                        "rounded-full rounded-l-none border border-l-0 border-greyscale-50/8 bg-white/2 text-sm"
-                      )}
-                      data-technology={item.id}
-                    >
-                      <div className="flex h-4 w-4 cursor-default items-center justify-center rounded bg-white/5 text-xs">
-                        {index + 1}
-                      </div>
-                      <div className="cursor-default">{item.displayValue}</div>
-                      <button
-                        onClick={() =>
-                          setSelectedLanguages(selectedLanguages.filter(language => language.id !== item.id))
-                        }
-                      >
-                        <CloseLine />
-                      </button>
-                    </div>
-                  </SortableItem>
-                ))}
-              </>
+        <Flex className="mt-2 flex-col gap-1">
+          <SortableList
+            items={selectedLanguages || []}
+            onChange={setSelectedLanguages}
+            itemProps={{ DragHandler, className: "flex h-7 w-full" }}
+          >
+            {({ item, index }) => (
+              <Flex
+                key={item.id}
+                className={cn(
+                  "font-walsheim text-greyscale-50",
+                  "flex w-fit items-center justify-center pr-2",
+                  "rounded-full rounded-l-none border border-l-0 border-greyscale-50/8 bg-white/2 text-sm"
+                )}
+                data-technology={item.id}
+              >
+                <div className="mr-2 flex w-4 cursor-default items-center justify-center rounded bg-white/5 text-xs">
+                  {index + 1}
+                </div>
+                <div className="cursor-default">{item.displayValue}</div>
+                <button
+                  onClick={() => setSelectedLanguages(selectedLanguages.filter(language => language.id !== item.id))}
+                >
+                  <CloseLine />
+                </button>
+              </Flex>
             )}
           </SortableList>
-        </div>
+        </Flex>
       )}
     </>
   );
