@@ -13,11 +13,7 @@ type Props = {
 export default function View({ isOwn, restFulProfile, setOpen }: Props) {
   const [editMode, setEditMode] = useState(false);
 
-  const {
-    data: myProfileInfo,
-    isLoading: myProfileInfoLoading,
-    isError: myProfileInfoError,
-  } = MeApi.queries.useGetMyProfileInfo({});
+  const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
   return editMode && myProfileInfo ? (
     <EditView profile={myProfileInfo} restFulProfile={restFulProfile} setEditMode={setEditMode} />
