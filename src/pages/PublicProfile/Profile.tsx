@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import Header from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
-import IntroSection from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/IntroSection";
-import ProjectsSection from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/ProjectsSection";
-import StatsSection from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/StatsSection";
-import TechnologiesSection from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/TechnologiesSection";
+import Header from "src/App/Stacks/ContributorProfileSidePanel/Header";
+import IntroSection from "src/App/Stacks/ContributorProfileSidePanel/ReadOnlyView/IntroSection";
+import ProjectsSection from "src/App/Stacks/ContributorProfileSidePanel/ReadOnlyView/ProjectsSection";
+import StatsSection from "src/App/Stacks/ContributorProfileSidePanel/ReadOnlyView/StatsSection";
+import TechnologiesSection from "src/App/Stacks/ContributorProfileSidePanel/ReadOnlyView/TechnologiesSection";
 import { Profile as ProfileType } from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 type Props = {

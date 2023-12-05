@@ -38,7 +38,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
       <ContactInformation
         name="telegram"
         placeholder={T("profile.form.contactInfo.telegram")}
-        icon={<Telegram size={16} />}
+        icon={<Telegram size={16} className="fill-greyscale-400" />}
         visibilityName="isTelegramPublic"
         options={{
           pattern: {

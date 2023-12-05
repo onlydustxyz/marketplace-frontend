@@ -19,6 +19,9 @@ import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling"
 import { useEditValidationSchema } from "./hooks/useValidationSchema";
 import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
 
+import { v4 as uuidv4 } from "uuid";
+import { MoreInfosField } from "src/types";
+
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;
   children: React.ReactNode;
@@ -48,10 +51,11 @@ export interface EditFormDataRepos {
   orgId: number;
 }
 
-export type EditFormData = components["schemas"]["UpdateProjectRequest"] & {
+export type EditFormData = Omit<components["schemas"]["UpdateProjectRequest"], "moreInfos"> & {
   projectLeads: FieldProjectLeadValue;
   selectedRepos: EditFormDataRepos[];
   githubRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
+  moreInfos: MoreInfosField[];
 };
 
 export const EditContext = createContext<Edit>({
@@ -138,7 +142,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       logoUrl: project.logoUrl,
       shortDescription: project.shortDescription,
       longDescription: project.longDescription,
-      moreInfos: project.moreInfos,
+      moreInfos: project.moreInfos.map(info => ({ ...info, id: uuidv4() })),
       githubRepos: (project.repos || []).map(repo => ({
         id: repo.id,
         isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
@@ -157,7 +161,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const mergeOrganization = useMemo(() => {
     const merged = (project.organizations || [])?.map(projectOrg => {
-      const findInMe = (organizationsData || []).find(meOrg => meOrg.id === projectOrg.id);
+      const findInMe = (organizationsData || []).find(meOrg => meOrg.githubUserId === projectOrg.githubUserId);
       if (findInMe) {
         return {
           ...findInMe,
@@ -172,15 +176,16 @@ export function EditProvider({ children, project }: EditContextProps) {
       return projectOrg;
     });
 
-    return uniqWith([...(merged || []), ...(organizationsData || [])], (arr, oth) => arr.id === oth.id).sort((a, b) =>
-      a.login.localeCompare(b.login)
-    );
+    return uniqWith(
+      [...(merged || []), ...(organizationsData || [])],
+      (arr, oth) => arr.githubUserId === oth.githubUserId
+    ).sort((a, b) => a.login.localeCompare(b.login));
   }, [organizationsData, project]);
 
   const onAddRepository = (organizationId: number, repoId: number) => {
     const githubRepos = [...(form.getValues("githubRepos") || [])];
 
-    const findOrganization = mergeOrganization.find(org => org.id === organizationId);
+    const findOrganization = mergeOrganization.find(org => org.githubUserId === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {
@@ -192,7 +197,7 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const onRemoveRepository = (organizationId: number, repoId: number) => {
     const githubRepos = [...(form.getValues("githubRepos") || [])];
-    const findOrganization = mergeOrganization.find(org => org.id === organizationId);
+    const findOrganization = mergeOrganization.find(org => org.githubUserId === organizationId);
     if (findOrganization) {
       const findRepo = (findOrganization.repos || []).find(repo => repo.id === repoId);
       if (findRepo) {

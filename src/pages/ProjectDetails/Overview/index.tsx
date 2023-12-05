@@ -6,7 +6,6 @@ import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import Badge, { BadgeSize } from "src/components/Badge";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
-import Callout from "src/components/Callout";
 import Card from "src/components/Card";
 import ContactInformations from "src/components/ContactInformations";
 import MarkdownPreview from "src/components/MarkdownPreview";
@@ -22,7 +21,7 @@ import {
   UserProfileInfo,
   fromFragment,
   mapFormDataToSchema,
-} from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
+} from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { useIntl } from "src/hooks/useIntl";
 import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
@@ -31,7 +30,6 @@ import { Action, SessionMethod, useSession, useSessionDispatch } from "src/hooks
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import LockFill from "src/icons/LockFill";
-import RecordCircleLine from "src/icons/RecordCircleLine";
 import Title from "src/pages/ProjectDetails/Title";
 import { HasuraUserRole } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
@@ -52,6 +50,7 @@ import { useShowToaster } from "src/hooks/useToaster";
 import isContactInfoProvided from "src/utils/isContactInfoProvided";
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
+import User3Line from "src/icons/User3Line";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -68,8 +67,7 @@ export default function Overview() {
   const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
   const sponsors = project?.sponsors || [];
-  const moreInfoLink = project?.moreInfos?.[0]?.url || null;
-  const moreInfoName = project?.moreInfos?.[0]?.value || null;
+  const moreInfos = project?.moreInfos || [];
   const topContributors = project?.topContributors || [];
   const totalContributorsCount = project?.contributorCount || 0;
   const leads = project?.leaders;
@@ -112,15 +110,16 @@ export default function Overview() {
   return (
     <>
       <Title>
-        <div className="flex flex-row items-center justify-between gap-2">
+        <div className="flex flex-col items-start justify-start gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-2">
           {T("project.details.overview.title")}
           {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
-            <Flex className="justify-end gap-2">
+            <Flex className="w-full justify-start gap-2 lg:w-auto lg:justify-end">
               <EditProjectButton projectKey={projectSlug} />
 
               <Button
                 disabled={isRewardDisabled}
                 onBackground={ButtonOnBackground.Blue}
+                className="flex-1 lg:flex-initial"
                 size={ButtonSize.Sm}
                 {...withTooltip(T("contributor.table.noBudgetLeft"), {
                   visible: isRewardDisabled,
@@ -163,8 +162,7 @@ export default function Overview() {
             <OverviewPanel
               {...{
                 sponsors,
-                moreInfoLink,
-                moreInfoName,
+                moreInfos,
                 topContributors,
                 totalContributorsCount,
                 leads,
@@ -213,8 +211,7 @@ export default function Overview() {
             <OverviewPanel
               {...{
                 sponsors,
-                moreInfoLink,
-                moreInfoName,
+                moreInfos,
                 topContributors,
                 totalContributorsCount,
                 leads,
@@ -358,10 +355,10 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
   };
 
   return (
-    <Callout>
+    <Card className="p-4 lg:p-4">
       <div className="flex flex-col gap-3">
         <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-medium text-spaceBlue-200">
-          <RecordCircleLine />
+          <User3Line />
           {T("project.hiring").toUpperCase()}
         </div>
         {isLoggedIn ? (
@@ -422,7 +419,10 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
             </Button>
           </a>
         )}
+        <p className="text-body-s text-spaceBlue-200">
+          {alreadyApplied ? T("applications.informations_already_apply") : T("applications.informations")}
+        </p>
       </div>
-    </Callout>
+    </Card>
   );
 }

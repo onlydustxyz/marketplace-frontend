@@ -184,6 +184,11 @@ export interface Leader {
   htmlUrl: string | null;
   avatarUrl: string;
 }
+export interface MoreInfosField {
+  url: string;
+  value?: string;
+  id: string;
+}
 
 export type Sponsor = components["schemas"]["SponsorResponse"];
 

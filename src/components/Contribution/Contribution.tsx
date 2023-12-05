@@ -3,8 +3,9 @@ import { cn } from "src/utils/cn";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview, ReviewStateStatuses } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
-import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
+import { useStackContribution } from "src/App/Stacks/Stacks";
+import { useAuth } from "src/hooks/useAuth";
 
 type Props = {
   contribution: ContributionT;
@@ -13,8 +14,8 @@ type Props = {
 };
 
 export function Contribution({ contribution, isMobile = false, isMine = false }: Props) {
-  const { open } = useContributionDetailPanel();
-
+  const [openContributionPanel] = useStackContribution();
+  const { githubUserId } = useAuth();
   const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
     contribution;
 
@@ -42,14 +43,26 @@ export function Contribution({ contribution, isMobile = false, isMine = false }:
         <button
           className="truncate break-all text-left hover:underline"
           onClick={() => {
-            if (id && project?.id) open({ contributionId: id, projectId: project.id }, githubHtmlUrl);
+            if (id && project?.id)
+              openContributionPanel({
+                contributionId: id,
+                projectId: project.id,
+                githubHtmlUrl,
+              });
           }}
         >
           {githubTitle}
         </button>
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
-        {rewardIds?.length ? <ContributionReward contributionId={id} rewardIds={rewardIds} /> : null}
+        {rewardIds?.length ? (
+          <ContributionReward
+            contributionId={id}
+            rewardIds={rewardIds}
+            projectId={project.id}
+            isMine={contribution.githubAuthor.githubUserId === githubUserId}
+          />
+        ) : null}
         {renderReview()}
       </div>
     </div>

@@ -13,7 +13,7 @@ import {
   UserProfileInfo,
   fromFragment,
   mapFormDataToSchema,
-} from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
+} from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import BaseCard from "src/components/Card";
 import SEO from "src/components/SEO";
 import MeApi from "src/api/me";

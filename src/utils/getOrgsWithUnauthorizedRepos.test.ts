@@ -5,6 +5,8 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
   slug: "bug-fix-mickael",
   name: "Bug fix Mickael",
   createdAt: "2023-09-04T13:52:03.05Z",
+  indexedAt: "2023-11-09T16:23:38.223Z",
+  indexingComplete: true,
   shortDescription: "Lorem Ipsumdd Test",
   longDescription:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ...",
@@ -42,13 +44,11 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
   ],
   organizations: [
     {
-      id: 98735558,
       githubUserId: 98735558,
       login: "onlydustxyz",
       avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
       htmlUrl: "https://github.com/onlydustxyz",
       name: "OnlyDust",
-      owner: "onlydustxyz",
       isCurrentUserAdmin: true,
       repos: [
         {

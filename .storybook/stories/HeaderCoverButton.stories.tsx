@@ -1,5 +1,5 @@
 import { ComponentStory } from "@storybook/react";
-import HeaderCoverButton from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/HeaderCoverButton";
+import HeaderCoverButton from "src/App/Stacks/ContributorProfileSidePanel/EditView/HeaderCoverButton";
 import { ProfileCover } from "src/__generated/graphql";
 
 export default {

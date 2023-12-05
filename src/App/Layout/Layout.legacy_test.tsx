@@ -14,7 +14,6 @@ import { useRoles } from "src/hooks/useAuth/useRoles";
 import { HasuraUserRole } from "src/types";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { GetPaymentRequestIdsDocument, GetPaymentRequestIdsQueryResult } from "src/__generated/graphql";
-import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
 
@@ -176,9 +175,7 @@ const renderTest = () => {
               <AuthProvider>
                 <SidePanelStackProvider>
                   <SidePanelProvider>
-                    <ContributorProfilePanelProvider>
-                      <Layout />
-                    </ContributorProfilePanelProvider>
+                    <Layout />
                   </SidePanelProvider>
                 </SidePanelStackProvider>
               </AuthProvider>

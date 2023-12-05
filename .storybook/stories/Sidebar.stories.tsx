@@ -25,6 +25,8 @@ const availableTabs: ProjectDetailsTab[] = [
 const currentProject: Project = {
   id: "b692a29f-4e4f-4607-aece-054f562b13cf",
   slug: "baribicane",
+  indexedAt: "2023-11-09T16:23:38.223Z",
+  indexingComplete: true,
   name: "Baribicane",
   remainingUsdBudget: 0,
   createdAt: "2023-11-09T16:23:38.223Z",
@@ -63,10 +65,8 @@ const currentProject: Project = {
   ],
   organizations: [
     {
-      id: 58205251,
       githubUserId: 58205251,
       isCurrentUserAdmin: true,
-      owner: "Barbicane-fr",
       login: "owner-id",
       avatarUrl: "https://avatars.githubusercontent.com/u/58205251?v=4",
       htmlUrl: "https://github.com/Barbicane-fr",
@@ -127,6 +127,8 @@ const currentProject: Project = {
 
 const otherProject: Project = {
   id: "b692a29f-4e4f-4607-aece-054f562b13cf",
+  indexedAt: "2023-11-09T16:23:38.223Z",
+  indexingComplete: true,
   slug: "baribicane",
   name: "Baribicane",
   remainingUsdBudget: 0,
@@ -166,10 +168,8 @@ const otherProject: Project = {
   ],
   organizations: [
     {
-      id: 58205251,
       githubUserId: 58205251,
       login: "Barbicane-fr",
-      owner: "owner-id",
       avatarUrl: "https://avatars.githubusercontent.com/u/58205251?v=4",
       htmlUrl: "https://github.com/Barbicane-fr",
       name: "Barbicane",

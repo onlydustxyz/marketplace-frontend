@@ -1,7 +1,6 @@
 import { ComponentProps } from "react";
 import ProfileButton from "src/App/Layout/Header/ProfileButton/View";
 import withAuthProvider from "../decorators/withAuthProvider";
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
 import withSidePanelProvider from "../decorators/withSidePanelProvider";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
@@ -14,7 +13,6 @@ export default {
     withAuthProvider,
     withToasterProvider,
     withMockedProvider(),
-    withContributorProfilePanelProvider,
     withSidePanelProvider,
     withSidePanelStackProvider,
   ],

@@ -2,11 +2,8 @@ import { ComponentProps } from "react";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
-import withContributionDetailPanelProvider from "../decorators/withContributionDetailPanelProvider";
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
 import withQueryClientProvider from "../decorators/withQueryClientProvider";
-import withRewardDetailPanelProvider from "../decorators/withRewardDetailPanelProvider";
 import withTokenSetProvider from "../decorators/withTokenSetProvider";
 import { contribution } from "../mocks/contribution";
 
@@ -21,9 +18,6 @@ export default {
     withTokenSetProvider,
     withImpersonationClaimsProvider,
     withQueryClientProvider,
-    withRewardDetailPanelProvider,
-    withContributorProfilePanelProvider,
-    withContributionDetailPanelProvider,
   ],
 };
 
