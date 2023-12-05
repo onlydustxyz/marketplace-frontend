@@ -313,8 +313,6 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
     Channel.LinkedIn,
   ]);
 
-  console.log("contactInfoProvided", contactInfoProvided);
-
   const [contactInfoRequested, setContactInfoRequested] = useState(false);
 
   const formMethods = useForm<UserProfileInfo>({
@@ -333,22 +331,13 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
     }
   }, []);
 
-  // const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
-  //   context: { graphqlErrorDisplay: "toaster" },
-  //   refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
-  //   awaitRefetchQueries: true,
-  //   onCompleted: applyToProject,
-  // });
-
   const {
     mutate: updateUserProfileInfo,
     isPending: userProfilInformationIsPending,
     ...restUpdateProfileMutation
   } = MeApi.mutations.useUpdateProfile({
     options: {
-      onSuccess: () => {
-        applyToProject;
-      },
+      onSuccess: applyToProject,
     },
   });
 
@@ -364,7 +353,9 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
 
   const submitDisabled = !isDirty || !isValid || userProfilInformationIsPending;
 
-  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo(mapFormDataToSchema(formData));
+  const onSubmit = (formData: UserProfileInfo) => {
+    updateUserProfileInfo(mapFormDataToSchema(formData));
+  };
 
   return (
     <Callout>
