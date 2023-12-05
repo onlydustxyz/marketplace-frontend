@@ -6,6 +6,6 @@ import { useMediaQuery } from "usehooks-ts";
  * @returns An object containing the placement ("right" or "bottom") and a boolean indicating if the device is mobile.
  */
 export const usePlacement = (): { placement: "right" | "bottom"; isMobile: boolean } => {
-  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
   return { placement: isXl ? "right" : "bottom", isMobile: !isXl };
 };

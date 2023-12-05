@@ -92,8 +92,8 @@ export default function SidePanel({
           <div
             className={cn(
               {
-                "inset-y-0 right-0 h-[calc(100dvh)] lg:w-[680px] lg:max-w-[80%]": placement === "right",
-                "bottom-0 right-0 rounded-t-2xl": placement === "bottom",
+                "bottom-0 right-0 h-[calc(100dvh)] md:w-[680px] md:max-w-[80%]": placement === "right",
+                "bottom-0 right-0 rounded-t-2xl md:rounded-none": placement === "bottom",
               },
               "fixed w-full bg-greyscale-900 shadow-panel"
             )}
