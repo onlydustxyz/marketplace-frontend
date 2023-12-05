@@ -76,7 +76,10 @@ export default function Contributions() {
   // -------------------
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
+  const [sortStorage, setSortStorage] = useLocalStorage(
+    "project-contributions-table-sort",
+    JSON.stringify(initialSort)
+  );
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
