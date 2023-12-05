@@ -8,6 +8,10 @@ import withMockedProvider from "../decorators/withMockedProvider";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
 import withToasterProvider from "../decorators/withToasterProvider";
 import withTokenSetProvider from "../decorators/withTokenSetProvider";
+import withAuthProvider from "../decorators/withAuthProvider";
+import withQueryClientProvider from "../decorators/withQueryClientProvider";
+
+const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
 export default {
   title: "ContributorProfileSidePanel",
@@ -19,6 +23,8 @@ export default {
     withTokenSetProvider,
     withImpersonationClaimsProvider,
     withMockedProvider(),
+    withAuthProvider({ userId: USER_ID }),
+    withQueryClientProvider,
   ],
 };
 
@@ -153,7 +159,6 @@ export const Default = {
         setOpen={() => {
           return;
         }}
-        gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
         restFulProfile={mockRestFulProfile}
       />
     </SidePanel>
@@ -175,7 +180,6 @@ export const Own = {
         setOpen={() => {
           return;
         }}
-        gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
         restFulProfile={mockRestFulProfile}
         isOwn
       />
@@ -198,7 +202,6 @@ export const NotSignedUp = {
         setOpen={() => {
           return;
         }}
-        gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
         restFulProfile={mockRestFulProfile}
       />
     </SidePanel>
@@ -220,7 +223,6 @@ export const Minimalist = {
         setOpen={() => {
           return;
         }}
-        gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
         restFulProfile={mockRestFulProfile}
       />
     </SidePanel>
