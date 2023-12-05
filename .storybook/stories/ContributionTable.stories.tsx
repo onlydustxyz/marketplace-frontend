@@ -1,7 +1,12 @@
 import { ComponentProps } from "react";
 import { OrderBy } from "src/__generated/graphql";
+import IssueOpen from "src/assets/icons/IssueOpen";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionTable, TableColumns } from "src/components/Contribution/ContributionTable";
+import { HeaderCellWidth } from "src/components/Table/HeaderCell";
+import Folder3Line from "src/icons/Folder3Line";
+import StackLine from "src/icons/StackLine";
+import TimeLine from "src/icons/TimeLine";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
@@ -36,6 +41,35 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
     alert("Sorting");
   },
   queryProps: [{}, {}],
+  headerCells: [
+    {
+      sort: TableColumns.Date,
+      icon: <TimeLine />,
+      label: "Date",
+    },
+    {
+      sort: TableColumns.Project,
+      icon: <Folder3Line />,
+      label: "Project/Repo",
+      width: HeaderCellWidth.Quarter,
+    },
+    {
+      sort: TableColumns.Id,
+      icon: <StackLine />,
+      label: "Contribution",
+      width: HeaderCellWidth.Half,
+    },
+    {
+      sort: TableColumns.Linked,
+      icon: (
+        <span>
+          <IssueOpen className="h-3 w-3" />
+        </span>
+      ),
+      label: "Linked to",
+      className: "justify-end",
+    },
+  ],
 };
 
 export const Default = {

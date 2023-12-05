@@ -24,6 +24,10 @@ import { EditProjectButton } from "../components/EditProjectButton";
 import { Filter } from "./Filter";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
+import TimeLine from "src/icons/TimeLine";
+import Folder3Line from "src/icons/Folder3Line";
+import { HeaderCellWidth } from "src/components/Table/HeaderCell";
+import IssueOpen from "src/assets/icons/IssueOpen";
 
 enum AllTabs {
   All = "ALL_CONTRIBUTIONS",
@@ -72,6 +76,36 @@ export default function Contributions() {
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
   const isProjectLeader = useProjectLeader({ id: project.id });
+
+  const headerCells = [
+    {
+      sort: TableColumns.Date,
+      icon: <TimeLine />,
+      label: T("contributions.table.date"),
+    },
+    {
+      sort: TableColumns.Project,
+      icon: <Folder3Line />,
+      label: T("contributions.table.projectRepo"),
+      width: HeaderCellWidth.Quarter,
+    },
+    {
+      sort: TableColumns.Id,
+      icon: <StackLine />,
+      label: T("contributions.table.contribution"),
+      width: HeaderCellWidth.Half,
+    },
+    {
+      sort: TableColumns.Linked,
+      icon: (
+        <span>
+          <IssueOpen className="h-3 w-3" />
+        </span>
+      ),
+      label: T("contributions.table.linkedTo"),
+      className: "justify-end",
+    },
+  ];
 
   // -------------------
 
@@ -196,6 +230,7 @@ export default function Contributions() {
           },
         },
       ],
+      headerCells,
     },
     {
       id: "completed_contributions_table",
@@ -222,6 +257,7 @@ export default function Contributions() {
           },
         },
       ],
+      headerCells,
     },
     {
       id: "canceled_contributions_table",
@@ -248,6 +284,7 @@ export default function Contributions() {
           },
         },
       ],
+      headerCells,
     },
   ];
 

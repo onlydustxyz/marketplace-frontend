@@ -1,7 +1,6 @@
 import { PropsWithChildren, ReactNode, useState } from "react";
 import { OrderBy } from "src/__generated/graphql";
 import MeApi from "src/api/me";
-import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
@@ -16,9 +15,6 @@ import { TooltipPosition, Variant as TooltipVariant } from "src/components/Toolt
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
-import Folder3Line from "src/icons/Folder3Line";
-import StackLine from "src/icons/StackLine";
-import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import { ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
@@ -58,6 +54,7 @@ function TableText({ children }: PropsWithChildren) {
 export function ContributionTable({
   description,
   fullTable = true,
+  headerCells,
   icon,
   id,
   onSort,
@@ -67,6 +64,13 @@ export function ContributionTable({
 }: {
   description: string;
   fullTable?: boolean;
+  headerCells: {
+    sort: TableColumns;
+    icon: ReactNode;
+    label: string;
+    width?: HeaderCellWidth;
+    className?: string;
+  }[];
   icon(className: string): ReactNode;
   id: string;
   onSort: (sort: TableSort) => void;
@@ -226,65 +230,24 @@ export function ContributionTable({
               theadClassName="border-card-border-medium"
               headers={
                 <HeaderLine>
-                  <HeaderCell
-                    horizontalMargin
-                    onClick={() => {
-                      onSort({
-                        sort: TableColumns.Date,
-                        direction: newSortDirection,
-                      });
-                    }}
-                  >
-                    <TimeLine />
-                    <span>{T("contributions.table.date")}</span>
-                    <SortingArrow direction={sortDirection} visible={sort.sort === TableColumns.Date} />
-                  </HeaderCell>
-                  <HeaderCell
-                    width={HeaderCellWidth.Quarter}
-                    horizontalMargin
-                    onClick={() => {
-                      onSort({
-                        sort: TableColumns.Project,
-                        direction: newSortDirection,
-                      });
-                    }}
-                  >
-                    <Folder3Line />
-                    <span>{T("contributions.table.projectRepo")}</span>
-                    <SortingArrow direction={sortDirection} visible={sort.sort === TableColumns.Project} />
-                  </HeaderCell>
-                  <HeaderCell
-                    width={HeaderCellWidth.Half}
-                    horizontalMargin
-                    onClick={() => {
-                      onSort({
-                        sort: TableColumns.Id,
-                        direction: newSortDirection,
-                      });
-                    }}
-                  >
-                    <StackLine />
-                    <span>{T("contributions.table.contribution")}</span>
-                    <SortingArrow direction={sortDirection} visible={sort.sort === TableColumns.Id} />
-                  </HeaderCell>
-                  <HeaderCell
-                    horizontalMargin
-                    className="justify-end"
-                    onClick={() => {
-                      onSort({
-                        sort: TableColumns.Linked,
-                        direction: newSortDirection,
-                      });
-                    }}
-                  >
-                    <span>
-                      <IssueOpen className="h-3 w-3" />
-                    </span>
-                    <span>{T("contributions.table.linkedTo")}</span>
-                    {sort.sort === TableColumns.Linked ? (
-                      <SortingArrow direction={sortDirection} visible={true} />
-                    ) : null}
-                  </HeaderCell>
+                  {headerCells.map(cell => (
+                    <HeaderCell
+                      key={cell.sort}
+                      onClick={() => {
+                        onSort({
+                          sort: cell.sort,
+                          direction: newSortDirection,
+                        });
+                      }}
+                      width={cell.width}
+                      className={cell.className}
+                      horizontalMargin
+                    >
+                      {cell.icon}
+                      <span>{cell.label}</span>
+                      {sort.sort === cell.sort ? <SortingArrow direction={sortDirection} visible /> : null}
+                    </HeaderCell>
+                  ))}
                 </HeaderLine>
               }
             >

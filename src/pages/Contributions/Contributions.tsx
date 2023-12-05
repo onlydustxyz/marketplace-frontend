@@ -4,14 +4,18 @@ import { useLocalStorage } from "react-use";
 import { OrderBy } from "src/__generated/graphql";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
+import IssueOpen from "src/assets/icons/IssueOpen";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
+import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
+import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus } from "src/types";
 import { isInArray } from "src/utils/isInArray";
 
@@ -149,6 +153,36 @@ export default function Contributions() {
     },
   ];
 
+  const headerCells = [
+    {
+      sort: TableColumns.Date,
+      icon: <TimeLine />,
+      label: T("contributions.table.date"),
+    },
+    {
+      sort: TableColumns.Project,
+      icon: <Folder3Line />,
+      label: T("contributions.table.projectRepo"),
+      width: HeaderCellWidth.Quarter,
+    },
+    {
+      sort: TableColumns.Id,
+      icon: <StackLine />,
+      label: T("contributions.table.contribution"),
+      width: HeaderCellWidth.Half,
+    },
+    {
+      sort: TableColumns.Linked,
+      icon: (
+        <span>
+          <IssueOpen className="h-3 w-3" />
+        </span>
+      ),
+      label: T("contributions.table.linkedTo"),
+      className: "justify-end",
+    },
+  ];
+
   const tableItems: Array<ComponentProps<typeof ContributionTable> & { show: boolean }> = [
     {
       id: "in_progress_contributions_table",
@@ -175,6 +209,7 @@ export default function Contributions() {
           },
         },
       ],
+      headerCells,
     },
     {
       id: "completed_contributions_table",
@@ -201,6 +236,7 @@ export default function Contributions() {
           },
         },
       ],
+      headerCells,
     },
     {
       id: "canceled_contributions_table",
@@ -227,6 +263,7 @@ export default function Contributions() {
           },
         },
       ],
+      headerCells,
     },
   ];
 
