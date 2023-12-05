@@ -8,7 +8,7 @@ import DeleteBinLine from "src/icons/DeleteBinLine";
 import Draggable from "src/icons/Draggable";
 import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
-import { MoreInfosField } from "src/types";
+import { MoreInfosField as MoreInfosFieldType } from "src/types";
 import { SocialIcon } from "./SocialIcon";
 import { EditFormData } from "../../../EditContext";
 import { SortableList } from "src/components/New/Sortable/SortableList";
@@ -33,7 +33,7 @@ const DragHandler = (
 
 type MoreInfosFieldProps = {
   onChange: (...event: unknown[]) => void;
-  value?: MoreInfosField[];
+  value?: MoreInfosFieldType[];
   error?: ControllerFieldState["error"];
 };
 
@@ -44,7 +44,7 @@ type FormProps = MoreInfosFieldProps & {
 export function MoreInfosField({ onChange, value, form, error }: FormProps) {
   const { T } = useIntl();
 
-  function reorderMoreInfos(items: MoreInfosField[]) {
+  function reorderMoreInfos(items: MoreInfosFieldType[]) {
     form?.setValue("moreInfos", items, {
       shouldDirty: true,
       shouldValidate: true,
