@@ -156,9 +156,6 @@ export const Default = {
       }}
     >
       <ContributorProfileSidePanel
-        setOpen={() => {
-          return;
-        }}
         restFulProfile={mockRestFulProfile}
       />
     </SidePanel>
@@ -177,9 +174,6 @@ export const Own = {
       }}
     >
       <ContributorProfileSidePanel
-        setOpen={() => {
-          return;
-        }}
         restFulProfile={mockRestFulProfile}
         isOwn
       />
@@ -199,9 +193,6 @@ export const NotSignedUp = {
       }}
     >
       <ContributorProfileSidePanel
-        setOpen={() => {
-          return;
-        }}
         restFulProfile={mockRestFulProfile}
       />
     </SidePanel>
@@ -220,9 +211,6 @@ export const Minimalist = {
       }}
     >
       <ContributorProfileSidePanel
-        setOpen={() => {
-          return;
-        }}
         restFulProfile={mockRestFulProfile}
       />
     </SidePanel>

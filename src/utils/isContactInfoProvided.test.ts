@@ -1,4 +1,4 @@
-import { Channel } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
+import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import isContactInfoProvided from "./isContactInfoProvided";
 
 const userProfile = {

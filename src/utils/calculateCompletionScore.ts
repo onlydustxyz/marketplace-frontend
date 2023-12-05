@@ -1,5 +1,5 @@
+import { UserProfileInfo } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
-import { UserProfileInfo } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import { ArrayElement } from "src/types";
 
 type Channel = ArrayElement<NonNullable<UseGetMyProfileInfoResponse["contacts"]>>["channel"];

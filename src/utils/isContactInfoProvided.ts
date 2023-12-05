@@ -1,4 +1,4 @@
-import { Channel } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
+import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 export default function isContactInfoProvided(profile: Profile, channels: Channel | Channel[]) {

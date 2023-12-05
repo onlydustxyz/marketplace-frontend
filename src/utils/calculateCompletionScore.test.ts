@@ -1,7 +1,4 @@
-import {
-  AllocatedTime,
-  ProfileCover,
-} from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
+import { AllocatedTime, ProfileCover } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import {
   FormValuesProps,
   calculateFormCompletionScore,
