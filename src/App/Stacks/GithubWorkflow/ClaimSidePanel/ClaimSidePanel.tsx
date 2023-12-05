@@ -25,8 +25,7 @@ export default function ClaimSidePanel({ projectSlug }: ClaimSidePanelProps) {
   const { data: myOrganizations, isRefetching } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
-      // enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
-      enabled: isSuccess,
+      enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
       refetchOnWindowFocus,
       refetchInterval,
     },

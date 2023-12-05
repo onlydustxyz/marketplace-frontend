@@ -10,7 +10,7 @@ export interface GithubSyncSettingsProps {
   settingsButton: string;
   PoolingFeedback?: React.ReactElement;
 }
-// showButton
+
 export const GithubSyncSettings = ({
   title,
   message,
