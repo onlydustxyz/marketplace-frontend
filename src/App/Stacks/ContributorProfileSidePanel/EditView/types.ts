@@ -49,6 +49,7 @@ export type UserProfileInfo = {
   weeklyAllocatedTime: components["schemas"]["PrivateUserProfileResponse"]["allocatedTimeToContribute"];
   lookingForAJob: boolean;
   cover: ProfileCover;
+  avatarUrl?: string;
 };
 
 export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileInfo => {
@@ -88,6 +89,7 @@ export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileI
 export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileBody => {
   const {
     bio,
+    avatarUrl,
     lookingForAJob,
     cover,
     location,
@@ -123,6 +125,7 @@ export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileB
     website,
     allocatedTimeToContribute: weeklyAllocatedTime as AllocatedTime,
     cover,
+    ...(avatarUrl ? { avatarUrl } : {}),
   };
 };
 

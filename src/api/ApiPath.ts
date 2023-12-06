@@ -44,4 +44,5 @@ export const API_PATH = {
   ME_APPLY_TO_PROJECT: BASE_API_V1("me/applications"),
   MY_PAYOUT_INFO: BASE_API_V1("me/payout-info"),
   ME_PROFILE: BASE_API_V1("me/profile"),
+  ME_PROFILE_PICTURE: BASE_API_V1("me/profile/avatar"),
 };
