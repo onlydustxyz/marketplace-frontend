@@ -10,7 +10,7 @@ interface OrganizationListProps {
   emptyListFallBackText: string;
   loading?: boolean;
   installatedRepo: number[];
-  disabledTooltip: string;
+  disabledTooltip?: string;
 }
 
 export default function OrganizationList({
