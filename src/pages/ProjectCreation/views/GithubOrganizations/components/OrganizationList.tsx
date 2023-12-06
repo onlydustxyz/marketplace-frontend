@@ -1,7 +1,6 @@
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import SkeletonOrganizationList from "src/components/Skeleton/SkeletonOrganizationList";
-import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
@@ -21,8 +20,6 @@ export default function OrganizationList({
   loading,
   disabledTooltip,
 }: OrganizationListProps) {
-  const { T } = useIntl();
-
   if (loading || organizations.length) {
     return (
       <ul className="flex flex-col gap-3 py-4 pb-6">
