@@ -75,10 +75,7 @@ export type UseUpdateProfileResponse = components["schemas"]["PrivateUserProfile
 const useUpdateProfile = ({ options = {} }: UseMutationProps<UseUpdateProfileResponse, UseUpdateProfileBody>) => {
   return useBaseMutation<UseUpdateProfileBody, UseUpdateProfileResponse>({
     resourcePath: API_PATH.ME_PROFILE,
-    invalidatesTags: [
-      { queryKey: MeApi.tags.all, exact: false },
-      { queryKey: ["resftullProfile"], exact: false },
-    ],
+    invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
     method: "PUT",
     ...options,
   });

@@ -52,16 +52,19 @@ export type UserProfileInfo = {
 };
 
 export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileInfo => {
-  const getContactInfo = (channel: Channel) => profile?.contacts?.find(contact => contact.channel === channel)?.contact;
+  const { bio, location, website, login, contacts, technologies, allocatedTimeToContribute, isLookingForAJob, cover } =
+    profile;
+
+  const getContactInfo = (channel: Channel) => contacts?.find(contact => contact.channel === channel)?.contact;
 
   const isContactPublic = (channel: Channel) =>
-    profile?.contacts?.find(contact => contact.channel === channel)?.visibility === "public" ?? true;
+    contacts?.find(contact => contact.channel === channel)?.visibility === "public" ?? true;
 
   return {
-    bio: profile?.bio ?? "",
-    location: profile?.location ?? "",
-    website: profile?.website ?? "",
-    githubHandle: profile?.login ?? "",
+    bio: bio ?? "",
+    location: location ?? "",
+    website: website ?? "",
+    githubHandle: login ?? "",
     isGithubHandlePublic: true,
     email: getContactInfo(Channel.Email) ?? "",
     isEmailPublic: isContactPublic(Channel.Email),
@@ -75,10 +78,10 @@ export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileI
     isDiscordPublic: isContactPublic(Channel.Discord),
     linkedin: getContactInfo(Channel.LinkedIn) ?? "",
     isLinkedInPublic: isContactPublic(Channel.LinkedIn),
-    technologies: profile?.technologies ?? {},
-    weeklyAllocatedTime: profile?.allocatedTimeToContribute ?? AllocatedTime.None,
-    lookingForAJob: profile?.isLookingForAJob ?? false,
-    cover: translateProfileCover(profile?.cover || "") ?? ProfileCover.Blue,
+    technologies: technologies ?? {},
+    weeklyAllocatedTime: allocatedTimeToContribute ?? AllocatedTime.None,
+    lookingForAJob: isLookingForAJob ?? false,
+    cover: translateProfileCover(cover || "") ?? ProfileCover.Blue,
   };
 };
 
