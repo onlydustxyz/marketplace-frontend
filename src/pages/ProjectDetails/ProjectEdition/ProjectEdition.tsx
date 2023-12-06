@@ -26,6 +26,8 @@ import { viewportConfig } from "src/config";
 import { usePooling } from "src/hooks/usePooling/usePooling";
 import { useFormState } from "react-hook-form";
 import { Spinner } from "src/components/Spinner/Spinner";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
+import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -104,6 +106,7 @@ function SafeProjectEdition() {
 
   return (
     <Flex className="mx-auto h-full max-w-7xl flex-col">
+      {!project?.indexingComplete ? <StillFetchingBanner className="mt-4" size={CalloutSizes.Small} /> : null}
       <Flex className="items-center px-4 py-6 xl:px-8 2xl:px-0">
         <Link to="../">
           <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
