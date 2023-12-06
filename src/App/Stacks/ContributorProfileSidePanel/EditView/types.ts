@@ -31,7 +31,7 @@ export type UserProfileInfo = {
   location: string;
   bio: string;
   website: string;
-  githubHandle: string;
+  login: string;
   isGithubHandlePublic: boolean;
   email: string;
   isEmailPublic: boolean;
@@ -64,7 +64,7 @@ export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileI
     bio: bio ?? "",
     location: location ?? "",
     website: website ?? "",
-    githubHandle: login ?? "",
+    login: login ?? "",
     isGithubHandlePublic: true,
     email: getContactInfo(Channel.Email) ?? "",
     isEmailPublic: isContactPublic(Channel.Email),

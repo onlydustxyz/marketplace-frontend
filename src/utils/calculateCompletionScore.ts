@@ -3,14 +3,34 @@ import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { ArrayElement } from "src/types";
 
 type Channel = ArrayElement<NonNullable<UseGetMyProfileInfoResponse["contacts"]>>["channel"];
-type ScorableFields = "avatarUrl" | "login" | "location" | "bio" | "website" | "technologies";
+type UserScorableFields = "avatarUrl" | "login" | "location" | "bio" | "website" | "technologies";
+type FormScorableFields =
+  | "avatarUrl"
+  | "login"
+  | "location"
+  | "bio"
+  | "website"
+  | "email"
+  | "telegram"
+  | "whatsapp"
+  | "twitter"
+  | "discord"
+  | "linkedin"
+  | "technologies";
+type ScoreFields = UserScorableFields | FormScorableFields | Channel;
 
-const userScoreDictionary: Record<ScorableFields | Channel, number> = {
+const scoreDictionary: Record<ScoreFields, number> = {
   avatarUrl: 5,
   login: 15,
   location: 10,
   bio: 20,
   website: 10,
+  email: 5,
+  telegram: 5,
+  whatsapp: 5,
+  twitter: 5,
+  discord: 5,
+  linkedin: 5,
   technologies: 10,
   EMAIL: 5,
   TELEGRAM: 5,
@@ -21,15 +41,13 @@ const userScoreDictionary: Record<ScorableFields | Channel, number> = {
 };
 
 function calculateUserCompletionScore(userProfile: UseGetMyProfileInfoResponse) {
-  const scoreByExistence = (fieldName: ScorableFields) => (userProfile[fieldName] ? userScoreDictionary[fieldName] : 0);
-
+  const scoreByExistence = (fieldName: UserScorableFields) => (userProfile[fieldName] ? scoreDictionary[fieldName] : 0);
   const scoreContact = (channel: Channel) =>
     userProfile.contacts?.some(contact => contact.channel === channel && contact.contact)
-      ? userScoreDictionary[channel]
+      ? scoreDictionary[channel]
       : 0;
-
   const scoreTechnologies = () =>
-    Object.keys(userProfile.technologies ?? {}).length ? userScoreDictionary.technologies : 0;
+    Object.keys(userProfile.technologies ?? {}).length ? scoreDictionary.technologies : 0;
 
   return (
     scoreByExistence("avatarUrl") +
@@ -51,44 +69,15 @@ export type FormValuesProps = {
   avatarUrl: string;
 } & UserProfileInfo;
 
-type FormScorableFields =
-  | "avatarUrl"
-  | "githubHandle"
-  | "location"
-  | "bio"
-  | "website"
-  | "email"
-  | "telegram"
-  | "whatsapp"
-  | "twitter"
-  | "discord"
-  | "linkedin"
-  | "technologies";
-
-const formScoreDictionary: Record<FormScorableFields, number> = {
-  avatarUrl: 5,
-  githubHandle: 15,
-  location: 10,
-  bio: 20,
-  website: 10,
-  email: 5,
-  telegram: 5,
-  whatsapp: 5,
-  twitter: 5,
-  discord: 5,
-  linkedin: 5,
-  technologies: 10,
-};
-
 function calculateFormCompletionScore(formValues: FormValuesProps) {
   const score = (fieldName: FormScorableFields) =>
-    formValues[fieldName] && formValues[fieldName] !== "" ? formScoreDictionary[fieldName] : 0;
+    formValues[fieldName] && formValues[fieldName] !== "" ? scoreDictionary[fieldName] : 0;
   const scoreTechnologies = () =>
-    Object.keys(formValues.technologies ?? {}).length ? formScoreDictionary.technologies : 0;
+    Object.keys(formValues.technologies ?? {}).length ? scoreDictionary.technologies : 0;
 
   return (
     score("avatarUrl") +
-    score("githubHandle") +
+    score("login") +
     score("location") +
     score("bio") +
     score("website") +

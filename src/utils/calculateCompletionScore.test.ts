@@ -95,7 +95,7 @@ describe("calculateUserCompletionScore", () => {
   it("should return the correct completion score", () => {
     const formValues: FormValuesProps = {
       avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
-      githubHandle: "ofux",
+      login: "ofux",
       location: "Paris, France",
       bio: "Contributing to awesome open source projects.",
       website: "https://ofux.dev",
@@ -123,7 +123,7 @@ describe("calculateUserCompletionScore", () => {
     // Calculate the expected score based on the provided userProfile
     const expectedScore =
       5 + // avatarUrl exists
-      15 + // githubHandle exists
+      15 + // login exists
       10 + // location exists
       20 + // bio exists
       10 + // website exists
