@@ -1,3 +1,4 @@
+import { ReactElement } from "react-markdown/lib/react-markdown";
 import Button, { ButtonSize } from "src/components/Button";
 import { cn } from "src/utils/cn";
 
@@ -24,10 +25,17 @@ interface RainbowBannerProps {
   icon?: React.ReactNode;
   description: string;
   button?: ButtonT;
+  customButton?: ReactElement;
   size?: CalloutSizes;
 }
 
-export default function RainbowBanner({ icon, description, button, size = CalloutSizes.Medium }: RainbowBannerProps) {
+export default function RainbowBanner({
+  icon,
+  description,
+  button,
+  customButton,
+  size = CalloutSizes.Medium,
+}: RainbowBannerProps) {
   return (
     <div
       className={cn(
@@ -43,7 +51,7 @@ export default function RainbowBanner({ icon, description, button, size = Callou
       {icon && <div>{icon}</div>}
 
       <div
-        className={cn("flex flex-1 text-left font-walsheim text-base sm:flex-auto", {
+        className={cn("flex flex-1 text-left font-walsheim text-base", {
           "text-sm": size === CalloutSizes.Small,
           "text-md": size === CalloutSizes.Medium,
           "text-lg": size === CalloutSizes.Large,
@@ -52,6 +60,7 @@ export default function RainbowBanner({ icon, description, button, size = Callou
         {description}
       </div>
 
+      {customButton ? customButton : null}
       {button && (
         <Button size={button.size || ButtonSizes[size]} onClick={button.onClick}>
           {button.icon ? button.icon : null}
