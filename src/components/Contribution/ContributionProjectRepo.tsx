@@ -2,15 +2,9 @@ import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import { Contribution } from "src/types";
+import { ShortProject, ShortRepo } from "src/types";
 
-export function ContributionProjectRepo({
-  project,
-  repo,
-}: {
-  project: Contribution["project"];
-  repo: Contribution["repo"];
-}) {
+export function ContributionProjectRepo({ project, repo }: { project: ShortProject; repo: ShortRepo }) {
   return (
     <div className="flex items-center gap-3">
       <RoundedImage

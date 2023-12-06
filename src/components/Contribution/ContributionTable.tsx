@@ -1,27 +1,21 @@
 import { PropsWithChildren, ReactNode, useState } from "react";
 import { OrderBy } from "src/__generated/graphql";
-import MeApi from "src/api/me";
-import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
-import { ContributionDate } from "src/components/Contribution/ContributionDate";
-import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
-import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
 import Table from "src/components/Table";
-import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
-import Line from "src/components/Table/Line";
-import { TooltipPosition, Variant as TooltipVariant } from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
-import { ContributionStatus, GithubContributionType } from "src/types";
+import { Contribution as ContributionT } from "src/types";
 import { cn } from "src/utils/cn";
 import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 import { MobileShowMore } from "./MobileShowMore";
+import MeApi from "src/api/me";
+import ProjectApi from "src/api/Project";
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
@@ -53,25 +47,29 @@ export type HeaderCell = {
 };
 
 type Props = {
+  bodyRow: (contribution?: ContributionT) => ReactNode;
   description: string;
   fullTable?: boolean;
   headerCells: HeaderCell[];
   icon: (className: string) => ReactNode;
   id: string;
   onSort: (sort: TableSort) => void;
-  queryProps: Parameters<typeof MeApi.queries.useMyContributions>;
+  query: ReturnType<
+    typeof MeApi.queries.useMyContributions | typeof ProjectApi.queries.useProjectContributionsInfiniteList
+  >;
   sort: TableSort;
   title: string;
 };
 
 export function ContributionTable({
+  bodyRow,
   description,
   fullTable = true,
   headerCells,
   icon,
   id,
   onSort,
-  queryProps,
+  query,
   sort,
   title,
 }: Props) {
@@ -85,11 +83,13 @@ export function ContributionTable({
   const sortDirection = sort.direction === OrderBy.Asc ? "up" : "down";
   const newSortDirection = sort.direction === OrderBy.Asc ? OrderBy.Desc : OrderBy.Asc;
 
-  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = MeApi.queries.useMyContributions(
-    ...queryProps
-  );
+  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = query;
 
-  const contributions = data?.pages?.flatMap(({ contributions }) => contributions);
+  const contributions = data?.pages?.flatMap(data => {
+    if ("contributions" in data) {
+      return data.contributions;
+    }
+  });
   const hasContributions = Boolean(contributions?.length);
 
   function renderMobileContent() {
@@ -112,13 +112,23 @@ export function ContributionTable({
     return (
       <div className="flex flex-col gap-2">
         {contributions?.map(contribution => {
-          return (
-            <ContributionCard
-              key={`${contribution.id}-${contribution.project.name}`}
-              contribution={contribution}
-              className={cn({ "bg-card-background-light": fullTable })}
-            />
-          );
+          if (contribution) {
+            let key = contribution.id;
+
+            if ("project" in contribution) {
+              key = `${contribution.id}-${contribution.project.name}`;
+            }
+
+            return (
+              <ContributionCard
+                key={key}
+                contribution={contribution}
+                className={cn({ "bg-card-background-light": fullTable })}
+              />
+            );
+          }
+
+          return null;
         })}
 
         {hasNextPage ? (
@@ -139,36 +149,7 @@ export function ContributionTable({
       return <TableText colSpan={nbColumns}>{T("contributions.table.empty")}</TableText>;
     }
 
-    return contributions?.map(contribution => {
-      const { createdAt, completedAt, githubStatus, id, project, repo, status, type } = contribution;
-      const lineId = `${id}-${project.id}`;
-      const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
-
-      return (
-        <Line key={lineId} className="border-card-border-light">
-          {/* TODO extract cell rendering */}
-          <Cell height={CellHeight.Compact}>
-            <ContributionDate
-              id={lineId}
-              type={type as GithubContributionType}
-              status={githubStatus}
-              contributionStatus={status}
-              date={new Date(lineDate ?? "")}
-              tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
-            />
-          </Cell>
-          <Cell height={CellHeight.Compact}>
-            <ContributionProjectRepo project={project} repo={repo} />
-          </Cell>
-          <Cell height={CellHeight.Compact}>
-            <Contribution contribution={contribution} isMine />
-          </Cell>
-          <Cell className="justify-end gap-1" height={CellHeight.Compact}>
-            {ContributionLinked({ contribution }) ? <ContributionLinked contribution={contribution} /> : "-"}
-          </Cell>
-        </Line>
-      );
-    });
+    return contributions?.map(bodyRow);
   }
 
   return isLoading ? (

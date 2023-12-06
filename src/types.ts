@@ -330,7 +330,7 @@ export enum ContributionStatus {
   Cancelled = "CANCELLED",
 }
 
-export type GithubStatus = components["schemas"]["ContributionPageItemResponse"]["githubStatus"];
+export type GithubStatus = Contribution["githubStatus"];
 
 export enum Visibility {
   Public = "PUBLIC",

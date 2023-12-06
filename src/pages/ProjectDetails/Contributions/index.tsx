@@ -7,18 +7,24 @@ import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
+import { Contribution } from "src/components/Contribution/Contribution";
+import { ContributionDate } from "src/components/Contribution/ContributionDate";
+import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionTable, HeaderCell, type TableSort } from "src/components/Contribution/ContributionTable";
+import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import { Tabs } from "src/components/Tabs/Tabs";
-import { withTooltip } from "src/components/Tooltip";
+import { TooltipPosition, Variant as TooltipVariant, withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
+import User3Line from "src/icons/User3Line";
 import Title from "src/pages/ProjectDetails/Title";
-import { ContributionStatus } from "src/types";
+import { ContributionStatus, GithubContributionType, Contribution as ContributionT } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { isInArray } from "src/utils/isInArray";
 import { useLocalStorage } from "usehooks-ts";
@@ -26,8 +32,8 @@ import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstal
 import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { Filter, Filters } from "./Filter";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import User3Line from "src/icons/User3Line";
+import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
+import Line from "src/components/Table/Line";
 
 enum AllTabs {
   All = "ALL_CONTRIBUTIONS",
@@ -216,6 +222,38 @@ export default function Contributions() {
     },
   ];
 
+  const bodyRow = (contribution?: ContributionT) => {
+    if (!contribution) return null;
+
+    const { createdAt, completedAt, githubStatus, id, repo, status, type } = contribution;
+    const lineId = "project" in contribution ? `${id}-${contribution.project.id}` : id;
+    const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
+
+    return (
+      <Line key={lineId} className="border-card-border-light">
+        <Cell height={CellHeight.Compact}>
+          <ContributionDate
+            id={lineId}
+            type={type as GithubContributionType}
+            status={githubStatus}
+            contributionStatus={status}
+            date={new Date(lineDate ?? "")}
+            tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
+          />
+        </Cell>
+        <Cell height={CellHeight.Compact}>
+          {"project" in contribution ? <ContributionProjectRepo project={contribution.project} repo={repo} /> : null}
+        </Cell>
+        <Cell height={CellHeight.Compact}>
+          <Contribution contribution={contribution} isMine />
+        </Cell>
+        <Cell className="justify-end gap-1" height={CellHeight.Compact}>
+          {ContributionLinked({ contribution }) ? <ContributionLinked contribution={contribution} /> : "-"}
+        </Cell>
+      </Line>
+    );
+  };
+
   const tableItems: Array<ComponentProps<typeof ContributionTable> & { show: boolean }> = [
     {
       id: "in_progress_contributions_table",
@@ -233,7 +271,9 @@ export default function Contributions() {
           return state;
         });
       },
-      queryProps: [
+      headerCells,
+      bodyRow,
+      query: MeApi.queries.useMyContributions(
         {
           queryParams: {
             statuses: ContributionStatus.InProgress,
@@ -241,8 +281,8 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-      ],
-      headerCells,
+        { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress) }
+      ),
     },
     {
       id: "completed_contributions_table",
@@ -260,7 +300,9 @@ export default function Contributions() {
         });
       },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
-      queryProps: [
+      headerCells,
+      bodyRow,
+      query: MeApi.queries.useMyContributions(
         {
           queryParams: {
             statuses: ContributionStatus.Completed,
@@ -268,8 +310,8 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-      ],
-      headerCells,
+        { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed) }
+      ),
     },
     {
       id: "canceled_contributions_table",
@@ -287,7 +329,9 @@ export default function Contributions() {
         });
       },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
-      queryProps: [
+      headerCells,
+      bodyRow,
+      query: MeApi.queries.useMyContributions(
         {
           queryParams: {
             statuses: ContributionStatus.Cancelled,
@@ -295,8 +339,8 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-      ],
-      headerCells,
+        { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled) }
+      ),
     },
   ];
 
