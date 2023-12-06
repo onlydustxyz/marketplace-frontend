@@ -134,7 +134,7 @@ export default function Overview() {
           ) : null}
         </div>
       </Title>
-      <StillFetchingBanner createdAt={project?.createdAt} />
+      {!project.indexingComplete ? <StillFetchingBanner /> : null}
       {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}

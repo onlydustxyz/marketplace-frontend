@@ -25,9 +25,16 @@ interface ShinyBannerProps {
   description: string;
   button?: ButtonT;
   size?: CalloutSizes;
+  className?: string;
 }
 
-export default function ShinyBanner({ icon, description, button, size = CalloutSizes.Medium }: ShinyBannerProps) {
+export default function ShinyBanner({
+  icon,
+  description,
+  button,
+  size = CalloutSizes.Medium,
+  className,
+}: ShinyBannerProps) {
   return (
     <div
       className={cn(
@@ -40,7 +47,8 @@ export default function ShinyBanner({ icon, description, button, size = CalloutS
           "min-h-[60px] p-3": size === CalloutSizes.Small,
           "min-h-[80px] p-4": size === CalloutSizes.Medium,
           "min-h-[96px] p-5": size === CalloutSizes.Large,
-        }
+        },
+        className
       )}
     >
       <div className="flex w-full animate-pulse-grow-slow items-center justify-center gap-3">

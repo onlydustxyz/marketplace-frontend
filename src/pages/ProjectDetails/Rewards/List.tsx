@@ -102,7 +102,7 @@ const RewardList: React.FC = () => {
           </Flex>
         ) : null}
       </div>
-      <StillFetchingBanner createdAt={createdAt} />
+      {!project.indexingComplete ? <StillFetchingBanner /> : null}
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
