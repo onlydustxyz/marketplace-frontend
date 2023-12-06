@@ -25,6 +25,7 @@ import MeApi from "src/api/me";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { calculateFormCompletionScore, calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
 
 type Props = {
   myProfile: UseGetMyProfileInfoResponse;
@@ -224,7 +225,7 @@ export default function EditView({ myProfile, setEditMode }: Props) {
                 disabled={userProfilInformationIsPending || !isValid}
                 data-testid="profile-form-submit-button"
               >
-                <CheckLine />
+                {userProfilInformationIsPending ? <Spinner /> : <CheckLine />}
                 {T("profile.form.done")}
               </Button>
             </div>
