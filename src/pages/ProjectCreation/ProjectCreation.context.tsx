@@ -183,11 +183,12 @@ export function CreateProjectProvider({
   const onSubmit = () => {
     setEnableAutoSaved(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { search, projectLeads, selectedRepos, ...formData } = form.getValues();
+    const { search, projectLeads, selectedRepos, moreInfos, ...formData } = form.getValues();
     createProject({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
+      moreInfos: (moreInfos || []).map(info => ({ url: info.url, value: info.value })),
     });
   };
 
