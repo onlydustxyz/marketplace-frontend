@@ -17,16 +17,16 @@ export namespace ClaimUtils {
     project?: UseGetProjectBySlugResponse;
     organizations?: UseGithubOrganizationsResponse[];
   }) => {
-    if (!canDisplay({ project })) {
+    if (!organizations || !canDisplay({ project })) {
       return false;
     }
 
     const isAllOrganizationInstalled = project?.organizations?.every(org => {
-      if (org.installed) {
+      if (org.installed && organizations?.find(myOrg => myOrg.githubUserId === org.githubUserId && myOrg.installed)) {
         return true;
       }
 
-      return !!organizations?.find(myOrg => myOrg.githubUserId === org.githubUserId && myOrg.installed);
+      return false;
     });
 
     return isAllOrganizationInstalled || false;
