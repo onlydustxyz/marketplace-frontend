@@ -20,6 +20,7 @@ export type IReactStackContext = {
   stackMethods: {
     closeAll: () => void;
     register: (stack: RefSubscriptionInterface<StackInterface<AnyParams>>) => void;
+    unRegister: (name: string) => void;
     getStack: (name: string) => RefSubscriptionInterface<StackInterface<AnyParams>> | null;
     getPanel: (name: string, id: string) => RefSubscriptionInterface<StackPanelInterface> | null;
     open: (name: string, params?: StacksParams) => void;

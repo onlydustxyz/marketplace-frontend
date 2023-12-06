@@ -8,12 +8,13 @@ import { useIntl } from "src/hooks/useIntl";
 import GlobalLine from "src/icons/GlobalLine";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { RegisterStack } from "src/libs/react-stack";
+import { EditContext } from "../../EditContext";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
 }
 
-export const EDIT_PANEL_NAME = "project-edit-panel";
+export const EDIT_PANEL_NAME = (id: string) => `project-edit-panel-${id}`;
 
 export const SafeEditPanel = () => {
   const { T } = useIntl();
@@ -76,5 +77,10 @@ export const SafeEditPanel = () => {
 };
 
 export const EditPanel = () => {
-  return <RegisterStack name={EDIT_PANEL_NAME}>{() => <SafeEditPanel />}</RegisterStack>;
+  const { project } = useContext(EditContext);
+  return (
+    <RegisterStack unRegisterOnUnMount name={EDIT_PANEL_NAME(project?.id || "")}>
+      {() => <SafeEditPanel />}
+    </RegisterStack>
+  );
 };
