@@ -34,7 +34,7 @@ export default function TutorialSidePanel() {
         </div>
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-        <div className="flex h-auto w-full items-center justify-end  gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
+        <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
           <Button type={ButtonType.Primary} size={ButtonSize.Md} onClick={onClose}>
             {T("project.githubLinkTutorial.close")}
           </Button>

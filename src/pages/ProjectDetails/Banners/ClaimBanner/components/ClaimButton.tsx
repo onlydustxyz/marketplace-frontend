@@ -9,6 +9,7 @@ import {
 import { useIntl } from "src/hooks/useIntl";
 import { useLoginUrl, useLoginUrlStorage } from "src/hooks/useLoginUrl/useLoginUrl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
+import MagicLine from "src/icons/MagicLine";
 
 type ClaimButton = { projectKey: string; callback: () => void };
 
@@ -20,25 +21,29 @@ export function ClaimButton({ projectKey, callback }: ClaimButton) {
   const dispatchSession = useSessionDispatch();
 
   const startprojectClaim = async () => {
-    const hasRequirePermission = await getPermission(GITHUB_PERMISSIONS.READ_ORG);
-    if (hasRequirePermission) {
-      callback();
-    } else {
-      dispatchSession({
-        method: SessionMethod.SetVisitedPageBeforeLogin,
-        value: generatePath(`${RoutePaths.ProjectDetails}`, {
-          projectKey,
-        }),
-      });
-      loginUrlStorage.setValue(`${GITHUB_PERMISSIONS.USER_EMAIL},${GITHUB_PERMISSIONS.READ_ORG}`);
-      const login_url = getLoginUrl();
-      window.location.replace(login_url);
+    try {
+      const hasRequirePermission = await getPermission(GITHUB_PERMISSIONS.READ_ORG);
+      if (hasRequirePermission) {
+        callback();
+      } else {
+        dispatchSession({
+          method: SessionMethod.SetVisitedPageBeforeLogin,
+          value: generatePath(`${RoutePaths.ProjectDetails}`, {
+            projectKey,
+          }),
+        });
+        loginUrlStorage.setValue(`${GITHUB_PERMISSIONS.USER_EMAIL},${GITHUB_PERMISSIONS.READ_ORG}`);
+        const login_url = getLoginUrl();
+        window.location.replace(login_url);
+      }
+    } catch {
+      // do nothing
     }
   };
 
   return (
     <Button type={ButtonType.Primary} size={ButtonSize.Sm} onClick={startprojectClaim}>
-      <i className="ri-magic-line text-xl font-normal text-black" />
+      <MagicLine className="text-xl font-normal text-black" />
       {T("project.claim.banner.button")}
     </Button>
   );

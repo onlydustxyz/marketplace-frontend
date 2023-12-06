@@ -25,9 +25,13 @@ export const GithubSyncSettings = ({
         <p className="font-walsheim text-sm font-medium uppercase">{title}</p>
         <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">
           {message}
-          <span className="text-body-s-bold cursor-pointer font-bold text-spacePurple-500" onClick={openTutorialPanel}>
-            &nbsp;{showButton}
-          </span>
+          &nbsp;
+          <button
+            className="text-body-s-bold cursor-pointer font-bold text-spacePurple-500"
+            onClick={openTutorialPanel}
+          >
+            {showButton}
+          </button>
         </p>
       </div>
       <div className="center flex w-full flex-col items-center gap-5 lg:flex-row">

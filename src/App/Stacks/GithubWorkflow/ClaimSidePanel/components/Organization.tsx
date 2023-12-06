@@ -15,6 +15,13 @@ export interface ClaimBannerOrganizationProps {
   organization: components["schemas"]["GithubOrganizationResponse"];
   myOrganizations: UseGithubOrganizationsResponse[];
 }
+
+enum organizationStatusEnum {
+  installed = "installed",
+  shouldGrant = "shouldGrant",
+  shouldInstall = "shouldInstall",
+}
+
 export default function ClaimBannerOrganization({
   organization,
   myOrganizations,
@@ -37,15 +44,15 @@ export default function ClaimBannerOrganization({
     isClaim: true,
   });
 
-  const organizationStatus: "installed" | "shouldGrant" | "shouldInstall" = useMemo(() => {
+  const organizationStatus: organizationStatusEnum = useMemo(() => {
     if (myOrganization && !organization.installed && !myOrganization.installed) {
-      return "shouldInstall";
+      return organizationStatusEnum.shouldInstall;
     }
     if (!myOrganization && !organization.installed) {
-      return "shouldGrant";
+      return organizationStatusEnum.shouldGrant;
     }
 
-    return "installed";
+    return organizationStatusEnum.installed;
   }, [myOrganization, organization]);
 
   return (
@@ -56,7 +63,7 @@ export default function ClaimBannerOrganization({
           <p className="text-body-m">{organization.name || organization.login}</p>
         </div>
         <div>
-          {organizationStatus === "shouldInstall" ? (
+          {organizationStatus === organizationStatusEnum.shouldInstall ? (
             <a href={githubLink}>
               <Button type={ButtonType.Primary} size={ButtonSize.Sm}>
                 <GithubLogo />
@@ -65,7 +72,7 @@ export default function ClaimBannerOrganization({
             </a>
           ) : null}
 
-          {organizationStatus === "shouldGrant" ? (
+          {organizationStatus === organizationStatusEnum.shouldGrant ? (
             <Button
               type={ButtonType.Secondary}
               size={ButtonSize.Sm}
@@ -75,7 +82,7 @@ export default function ClaimBannerOrganization({
               {T("project.claim.panel.grantButton")}
             </Button>
           ) : null}
-          {organizationStatus === "installed" ? (
+          {organizationStatus === organizationStatusEnum.installed ? (
             <CheckLine className=" text-base leading-6 text-spacePurple-500" />
           ) : null}
         </div>

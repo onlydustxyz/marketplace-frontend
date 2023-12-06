@@ -7,7 +7,6 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { useIntl } from "src/hooks/useIntl";
 import GlobalLine from "src/icons/GlobalLine";
 import { Tabs } from "src/components/Tabs/Tabs";
-import { EditContext } from "../../EditContext";
 import { RegisterStack } from "src/libs/react-stack";
 
 function TabContents({ children }: PropsWithChildren) {
@@ -18,7 +17,6 @@ export const EDIT_PANEL_NAME = "project-edit-panel";
 
 export const SafeEditPanel = () => {
   const { T } = useIntl();
-  const { PoolingFeedback } = useContext(EditContext);
   const {
     tabs: { activeTab, setActiveTab },
   } = useContext(EditPanelContext);

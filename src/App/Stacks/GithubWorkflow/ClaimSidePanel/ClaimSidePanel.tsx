@@ -86,7 +86,7 @@ export default function ClaimSidePanel({ projectSlug }: ClaimSidePanelProps) {
           <div className="text-title-s pb-2 font-normal text-greyscale-50">{T("project.claim.panel.subTitle")}</div>
           <div className="text-body-m font-normal text-spaceBlue-100">{T("project.claim.panel.content")}</div>
         </div>
-        <div className="my-6 h-[1px] w-full bg-card-border-medium" />
+        <div className="my-6 h-px w-full bg-card-border-medium" />
         <div className="scrollbar-sm flex flex-1 flex-col gap-6 overflow-auto px-2 pb-24">
           <div className="flex w-full flex-col items-start justify-start gap-3">
             {project?.organizations?.map(org => (
