@@ -30,7 +30,7 @@ const RewardList: React.FC = () => {
     refetchBudgets: () => void;
   }>();
 
-  const { id: projectId, slug: projectKey, createdAt } = project;
+  const { id: projectId, slug: projectKey } = project;
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
