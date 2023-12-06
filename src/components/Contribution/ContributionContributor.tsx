@@ -1,16 +1,18 @@
 import { ContributorResponse } from "src/types";
 import { Avatar } from "../New/Avatar";
 import { IMAGES } from "src/assets/img";
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 
 export function ContributionContributor({ contributor }: { contributor: ContributorResponse }) {
   const { avatarUrl, login, isRegistered, githubUserId } = contributor;
+
+  const [openContributorProfile] = useStackContributorProfile();
 
   return (
     <button
       className="flex items-center gap-2"
       onClick={() => {
-        // TODO
-        alert("open profile for " + githubUserId);
+        openContributorProfile({ githubUserId });
       }}
     >
       <Avatar src={avatarUrl} alt={login} />
