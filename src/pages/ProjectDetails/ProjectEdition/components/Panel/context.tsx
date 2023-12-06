@@ -1,6 +1,7 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-import { EditPanel } from ".";
+import { EDIT_PANEL_NAME, EditPanel } from ".";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+import { useStackNavigation } from "src/libs/react-stack";
 
 interface EditPanelContextProps {
   openOnLoad: boolean;
@@ -18,7 +19,6 @@ type EditPanelType = {
   open: () => void;
   close: () => void;
   toggle: (value: boolean) => void;
-  isOpen: boolean;
   isLoading: boolean;
   project?: UseGetProjectBySlugResponse;
   tabs: {
@@ -31,7 +31,6 @@ export const EditPanelContext = createContext<EditPanelType>({
   open: () => null,
   close: () => null,
   toggle: () => null,
-  isOpen: false,
   isLoading: false,
   project: undefined,
   tabs: {
@@ -40,25 +39,22 @@ export const EditPanelContext = createContext<EditPanelType>({
   },
 });
 
-export function EditPanelProvider({ children, openOnLoad, isLoading, project }: EditPanelContextProps) {
-  const [open, setOpen] = useState(false);
+export function EditPanelProvider({ children, openOnLoad, isLoading }: EditPanelContextProps) {
   const [activeTab, setActiveTab] = useState<TabsType>(TabsType.Repos);
-
-  const openSidePanel = useCallback(() => {
-    setOpen(true);
-  }, []);
-
-  const closeSidePanel = useCallback(() => {
-    setOpen(false);
-  }, []);
+  const [openSidePanel, closeSidePanel] = useStackNavigation(EDIT_PANEL_NAME);
 
   const toggleSidePanel = useCallback((value: boolean) => {
-    setOpen(value);
+    if (value) {
+      openSidePanel();
+    } else {
+      closeSidePanel();
+    }
   }, []);
 
   useEffect(() => {
-    if (!open && openOnLoad) {
-      setOpen(openOnLoad);
+    if (openOnLoad) {
+      closeSidePanel();
+      openSidePanel();
       setActiveTab(TabsType.Orgs);
     }
   }, [openOnLoad]);
@@ -66,7 +62,6 @@ export function EditPanelProvider({ children, openOnLoad, isLoading, project }: 
   return (
     <EditPanelContext.Provider
       value={{
-        isOpen: open && !!project,
         isLoading,
         open: openSidePanel,
         toggle: toggleSidePanel,

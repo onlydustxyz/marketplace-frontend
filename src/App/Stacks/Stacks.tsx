@@ -7,6 +7,8 @@ import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
 import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
+import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
+import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
@@ -14,6 +16,8 @@ export enum StackRoute {
   ProjectLeaderReward = "project-leader-reward",
   Reward = "reward",
   Contribution = "contribution",
+  GithubWorkflowClaim = "github-workflow-claim",
+  GithubWorkflowTutorial = "github-workflow-tutorial",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -34,6 +38,9 @@ export interface StackRouterParams {
     projectId: string;
     githubHtmlUrl: string;
   } & StacksParams;
+  GithubWorkflowClaim: {
+    projectSlug: string;
+  };
 }
 
 export const Stacks = () => {
@@ -51,6 +58,10 @@ export const Stacks = () => {
       <RegisterStack<StackRouterParams["Contribution"]> name={StackRoute.Contribution}>
         {({ params }) => <ContributionDetail {...params} />}
       </RegisterStack>
+      <RegisterStack<StackRouterParams["GithubWorkflowClaim"]> name={StackRoute.GithubWorkflowClaim}>
+        {({ params }) => <ClaimSidePanel {...params} />}
+      </RegisterStack>
+      <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
     </>
   );
@@ -101,4 +112,12 @@ export const useStackReward = () => {
 
 export const useStackContributorProfile = () => {
   return useStackNavigation<StackRouterParams["ContributorProfile"]>(StackRoute.ContributorProfile);
+};
+
+export const useStackGithubWorkflowClaim = () => {
+  return useStackNavigation<StackRouterParams["GithubWorkflowClaim"]>(StackRoute.GithubWorkflowClaim);
+};
+
+export const useStackGithubWorkflowTutorial = () => {
+  return useStackNavigation(StackRoute.GithubWorkflowTutorial);
 };
