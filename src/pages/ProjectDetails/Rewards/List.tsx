@@ -30,7 +30,7 @@ const RewardList: React.FC = () => {
     refetchBudgets: () => void;
   }>();
 
-  const { id: projectId, slug: projectKey, createdAt } = project;
+  const { id: projectId, slug: projectKey } = project;
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -72,14 +72,14 @@ const RewardList: React.FC = () => {
 
   return rewards ? (
     <>
-      <div className="flex flex-col items-start justify-start gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-2">
+      <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Title>{T("project.details.rewards.title")}</Title>
         {!hasOrgsWithUnauthorizedRepos ? (
-          <Flex className="w-full justify-start gap-2 lg:w-auto lg:justify-end">
+          <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
             <EditProjectButton projectKey={projectKey} />
             <Button
               width={Width.Fit}
-              className="flex-1 lg:flex-initial"
+              className="flex-1 md:flex-initial"
               size={ButtonSize.Sm}
               disabled={isRewardDisabled}
               onBackground={ButtonOnBackground.Blue}
@@ -102,7 +102,7 @@ const RewardList: React.FC = () => {
           </Flex>
         ) : null}
       </div>
-      <StillFetchingBanner createdAt={createdAt} />
+      {!project.indexingComplete ? <StillFetchingBanner /> : null}
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}

@@ -87,9 +87,12 @@ export default function Onboarding() {
   return (
     <>
       <SEO />
-      <Background roundedBorders={BackgroundRoundedBorders.Full}>
+      <Background
+        roundedBorders={BackgroundRoundedBorders.Full}
+        innerClassName="h-full flex justify-center items-center"
+      >
         <FormProvider {...methods}>
-          <div className="mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-2 pb-6 text-greyscale-50 md:p-6">
+          <div className="flex h-full max-w-7xl px-2 pb-6 text-greyscale-50 md:p-6">
             <form id="onboarding-form" className="flex justify-center px-2 xl:pb-4" onSubmit={handleSubmit(onSubmit)}>
               {step === 0 && (
                 <Intro

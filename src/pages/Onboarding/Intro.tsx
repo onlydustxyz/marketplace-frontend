@@ -12,7 +12,7 @@ export default function Intro({ start, skip }: Props) {
   const { T } = useIntl();
 
   return (
-    <div className="pb-6 pt-16">
+    <div className="flex items-center justify-center">
       <Card
         className="relative mx-auto flex flex-col items-center justify-between gap-7 px-12 pb-12 pt-20 xl:px-24"
         padded={false}

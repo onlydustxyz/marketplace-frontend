@@ -7,10 +7,10 @@ import { useIntl } from "src/hooks/useIntl";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import GithubLogo from "src/icons/GithubLogo";
-import { withTooltip } from "src/components/Tooltip";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
 import { EditContext } from "../../../EditContext";
 import { sortBy } from "lodash";
+import { useStackGithubWorkflowTutorial } from "src/App/Stacks/Stacks";
 
 type RepositoryOrganizationType = {
   organization: UseGithubOrganizationsResponse;
@@ -21,14 +21,14 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
   const { T } = useIntl();
   const { project } = useContext(EditContext);
   const hasUnauthorizedRepos = hasUnauthorizedInGithubRepo(organization.repos);
-
+  const [open] = useStackGithubWorkflowTutorial();
   const components = {
     errorAvatar: (
       <div className="rounded-lg bg-orange-900 p-2 text-orange-500">
         <InfoIcon className="w-3,5 h-3.5" />
       </div>
     ),
-    action: (
+    action: organization.isCurrentUserAdmin ? (
       <a
         href={getGithubSetupLink({
           id: organization.githubUserId,
@@ -42,18 +42,16 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
         rel="noopener noreferrer"
         className="self-end lg:self-start"
       >
-        <Button
-          type={ButtonType.Secondary}
-          size={ButtonSize.Sm}
-          disabled={!organization.isCurrentUserAdmin}
-          {...withTooltip(T("project.details.edit.panel.repositories.fixGithubAppTooltip"), {
-            visible: !organization.isCurrentUserAdmin,
-          })}
-        >
+        <Button type={ButtonType.Primary} size={ButtonSize.Sm}>
           <GithubLogo />
-          {T("project.details.edit.panel.repositories.fixGithubApp")}
+          {T("project.details.edit.panel.repositories.installGithubApp")}
         </Button>
       </a>
+    ) : (
+      <Button type={ButtonType.Secondary} size={ButtonSize.Sm} onClick={open}>
+        <GithubLogo />
+        {T("project.details.edit.panel.repositories.grantPermissions")}
+      </Button>
     ),
   };
 

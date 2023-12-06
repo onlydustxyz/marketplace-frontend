@@ -89,16 +89,16 @@ export default function Contributors() {
   return (
     <>
       <Title>
-        <div className="flex flex-col items-start justify-start gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-2">
+        <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
           {T("project.details.contributors.title")}
           {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
-            <Flex className="w-full justify-start gap-2 lg:w-auto lg:justify-end">
+            <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
               <EditProjectButton projectKey={projectKey} />
               <Button
                 size={ButtonSize.Sm}
                 disabled={noBudget}
                 onBackground={ButtonOnBackground.Blue}
-                className="flex-1 lg:flex-initial"
+                className="flex-1 md:flex-initial"
                 onClick={() =>
                   navigate(
                     generatePath(
@@ -119,7 +119,8 @@ export default function Contributors() {
           ) : null}
         </div>
       </Title>
-      <StillFetchingBanner createdAt={project?.createdAt} />
+
+      {!project.indexingComplete ? <StillFetchingBanner /> : null}
       {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}

@@ -10,6 +10,7 @@ export const ReactStackContext = createContext<IReactStackContext>({
   stackMethods: {
     closeAll: () => null,
     register: () => null,
+    unRegister: () => null,
     getStack: () => null,
     getPanel: () => null,
     open: () => null,

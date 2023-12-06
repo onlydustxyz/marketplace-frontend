@@ -50,6 +50,7 @@ export const GithubOrganizationPage = () => {
       <div className="mt-6">
         <GithubSyncSettings
           title={T("project.details.create.organizations.githubAppInformation.title")}
+          showButton={T("project.details.create.organizations.githubAppInformation.showButton")}
           settingsButton={T("project.details.create.organizations.githubAppInformation.button")}
           message={T("project.details.create.organizations.githubAppInformation.description")}
           PoolingFeedback={PoolingFeedback}

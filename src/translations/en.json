@@ -836,13 +836,39 @@
         "subTitle": "First we need to verify your identity",
         "content": "Please grant Github permissions on all the following organisations.",
         "grantButton": "Grant permissions",
+        "installButton": "Install Github app",
         "submit": "Claim project",
         "cancel": "Cancel",
-        "success": "Project successfully claimed",
-        "info": {
-          "title": "What if you can’t grant permissions on all organisations?",
-          "message": "If you encounter an issue while granting permissions, or if you don’t have sufficient access rights, please contact us so we can help.",
-          "button": "Contact us"
+        "success": "Project successfully claimed"
+      }
+    },
+    "githubLinkTutorial": {
+      "title": "How to grant permissions",
+      "subTitle": "You are required to grant permissions to all organisations where you want to install the Only Dust Github app.",
+      "close": "Done",
+      "info": {
+        "title": "What if you can’t grant permissions to all organisations?",
+        "message": "If you encounter an issue while granting permissions, or if you don’t have sufficient access rights (e.g. when you can only request for permissions), please contact us so we can help.",
+        "button": "Contact us"
+      },
+      "steps": {
+        "one": {
+          "title": "1. Open your configuration page on github",
+          "button": "Open configuration page"
+        },
+        "two": {
+          "title": "2. SCROLL DOWN to organisation access",
+          "bullets": {
+            "title": "Your Github organisations are all listed in this section:",
+            "one": "the one(s) on which permissions are already granted (Organisation 1)",
+            "two": "the one(s) you need to send a request to organisation owner (Organisation 2)",
+            "three": "the one(s) you can grant yourself (Organisation 3)"
+          }
+        },
+        "three": {
+          "title": "3. GRANT PERMISSIONS to ONLY DUST",
+          "subTitle": "And you’re good to go, you can now install the Only Dust Github app.",
+          "informations": "Note you may have to re-authenticate to Github to perform this action."
         }
       }
     },
@@ -949,9 +975,10 @@
           "installedOrganizationEmpty": "Not installed on any organization.",
           "availableOrganizationEmpty": "You have no organization available.",
           "githubAppInformation": {
-            "title": "Githbub Settings",
-            "description": "If you are missing any GitHub organizations, you can either edit your configuration or resync your organisations by clicking above.",
-            "button": "Edit my configurations",
+            "title": "Github Settings",
+            "description": "Missing an organisation? Edit your configuration and make sure the desired organisations are granted.",
+            "showButton": "Show me how.",
+            "button": "Edit configuration",
             "syncButton": "Resync organisations"
           }
         },
@@ -1050,7 +1077,8 @@
           },
           "repositories": {
             "noRepositoriesToAdd": "All repositories from this organisation have been added to your project.",
-            "fixGithubApp": "Fix configuration on Github",
+            "grantPermissions": "Grant permissions",
+            "installGithubApp": "Install Github app",
             "fixGithubAppTooltip": "You don't have the correct Github permissions to fix this organization's configuration",
             "title": "Add desired repositories",
             "description": "You can add as many repositories as you want from the following list."

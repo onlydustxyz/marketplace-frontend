@@ -86,6 +86,16 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     }
   };
 
+  const unRegisterStack = (name: string) => {
+    if (stacks.state[name]) {
+      setStacks(prev => {
+        const newState = { ...prev };
+        delete newState[name];
+        return newState;
+      });
+    }
+  };
+
   /* -------------------------------------------------------------------------- */
   /*                            PANEL REF MANAGEMENT                            */
   /* -------------------------------------------------------------------------- */
@@ -420,6 +430,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         history: historyStore,
         stackMethods: {
           register: registerStack,
+          unRegister: unRegisterStack,
           closeAll,
           closeLast: onCloseLastPanel,
           getStack,
