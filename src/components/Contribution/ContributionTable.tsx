@@ -1,5 +1,7 @@
 import { PropsWithChildren, ReactNode, useState } from "react";
 import { OrderBy } from "src/__generated/graphql";
+import ProjectApi from "src/api/Project";
+import MeApi from "src/api/me";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import Table from "src/components/Table";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
@@ -14,8 +16,6 @@ import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 import { MobileShowMore } from "./MobileShowMore";
-import MeApi from "src/api/me";
-import ProjectApi from "src/api/Project";
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
@@ -87,7 +87,8 @@ export function ContributionTable({
 
   const contributions = data?.pages?.flatMap(data => {
     if ("contributions" in data) {
-      return data.contributions;
+      // TODO try to fix this cast
+      return data.contributions as ContributionT[];
     }
   });
   const hasContributions = Boolean(contributions?.length);

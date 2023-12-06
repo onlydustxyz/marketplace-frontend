@@ -156,8 +156,8 @@ interface ProjectContributionsInfiniteListParams {
 const useProjectContributionsInfiniteList = ({
   params,
   options = {},
-}: UseInfiniteBaseQueryProps<UseProjectContributorsInfiniteListResponse, ProjectContributionsInfiniteListParams>) => {
-  return useInfiniteBaseQuery<UseProjectContributorsInfiniteListResponse>(
+}: UseInfiniteBaseQueryProps<UseProjectContributionsInfiniteListResponse, ProjectContributionsInfiniteListParams>) => {
+  return useInfiniteBaseQuery<UseProjectContributionsInfiniteListResponse>(
     {
       resourcePath: API_PATH.PROJECT_CONTRIBUTIONS(params?.projectId || ""),
       tags: PROJECT_TAGS.contributions(params?.projectId || ""),
