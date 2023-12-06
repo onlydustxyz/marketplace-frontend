@@ -11,10 +11,7 @@ import useStackContext from "./useStackContext";
  * @param {RegisterStackProps<P>} props - The props for registering the stack.
  * @returns {StackInterface<P>} - The registered stack.
  */
-export const useStackRegister = <P extends StacksParams>({
-  unRegisterOnUnMount,
-  ...props
-}: RegisterStackProps<P> & { unRegisterOnUnMount?: boolean }) => {
+export const useStackRegister = <P extends StacksParams>({ unRegisterOnUnMount, ...props }: RegisterStackProps<P>) => {
   const {
     stackMethods: { register, getStack, unRegister },
   } = useStackContext();

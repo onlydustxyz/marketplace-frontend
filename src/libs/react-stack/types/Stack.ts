@@ -110,4 +110,4 @@ export interface StacksInterface<P extends StacksParams = StacksParams> {
  * @param {P} props - The props for the stack.
  * @returns {StackOptionalInterface<P>} - The registered stack props.
  */
-export type RegisterStackProps<P extends StacksParams> = StackOptionalInterface<P>;
+export type RegisterStackProps<P extends StacksParams> = StackOptionalInterface<P> & { unRegisterOnUnMount?: boolean };

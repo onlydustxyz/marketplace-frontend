@@ -14,7 +14,7 @@ function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
 }
 
-export const EDIT_PANEL_NAME = (id: string) => `project-edit-pane-${id}`;
+export const EDIT_PANEL_NAME = (id: string) => `project-edit-panel-${id}`;
 
 export const SafeEditPanel = () => {
   const { T } = useIntl();
