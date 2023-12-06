@@ -2,10 +2,12 @@ import { ComponentProps, useState } from "react";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { OrderBy } from "src/__generated/graphql";
+import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
+import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 import { ContributionTable, type TableSort } from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { withTooltip } from "src/components/Tooltip";
@@ -24,7 +26,6 @@ import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { Filter, Filters } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
-import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 
 export enum TableColumns {
   Date = "CREATED_AT",
@@ -78,6 +79,7 @@ export default function Contributions() {
   );
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
 
+  // ! TODO
   // -------------------
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
@@ -176,16 +178,17 @@ export default function Contributions() {
       },
       headerCells,
       bodyRow,
-      query: MeApi.queries.useMyContributions(
-        {
+      query: ProjectApi.queries.useProjectContributionsInfiniteList({
+        params: {
+          projectId: project.id,
           queryParams: {
             statuses: ContributionStatus.InProgress,
             ...sort.IN_PROGRESS,
             ...filterQueryParams,
           },
         },
-        { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress) }
-      ),
+        options: { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress) },
+      }),
     },
     {
       id: "completed_contributions_table",
@@ -205,16 +208,17 @@ export default function Contributions() {
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
       headerCells,
       bodyRow,
-      query: MeApi.queries.useMyContributions(
-        {
+      query: ProjectApi.queries.useProjectContributionsInfiniteList({
+        params: {
+          projectId: project.id,
           queryParams: {
             statuses: ContributionStatus.Completed,
             ...sort.COMPLETED,
             ...filterQueryParams,
           },
         },
-        { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed) }
-      ),
+        options: { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed) },
+      }),
     },
     {
       id: "canceled_contributions_table",
@@ -234,16 +238,17 @@ export default function Contributions() {
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
       headerCells,
       bodyRow,
-      query: MeApi.queries.useMyContributions(
-        {
+      query: ProjectApi.queries.useProjectContributionsInfiniteList({
+        params: {
+          projectId: project.id,
           queryParams: {
             statuses: ContributionStatus.Cancelled,
             ...sort.CANCELLED,
             ...filterQueryParams,
           },
         },
-        { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled) }
-      ),
+        options: { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled) },
+      }),
     },
   ];
 

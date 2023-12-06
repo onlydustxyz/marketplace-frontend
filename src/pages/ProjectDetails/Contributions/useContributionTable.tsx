@@ -1,20 +1,20 @@
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
+import { ContributionContributor } from "src/components/Contribution/ContributionContributor";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
-import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
 import { HeaderCell } from "src/components/Contribution/ContributionTable";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
 import { TooltipPosition, Variant as TooltipVariant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
+import User3Line from "src/icons/User3Line";
 import { ContributionStatus, Contribution as ContributionT, GithubContributionType } from "src/types";
 import { TableColumns } from "./index";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import User3Line from "src/icons/User3Line";
 
 export function useContributionTable() {
   const { T } = useIntl();
@@ -57,7 +57,7 @@ export function useContributionTable() {
     if (!contribution) return null;
 
     const { createdAt, completedAt, githubStatus, id, repo, status, type } = contribution;
-    const lineId = "project" in contribution ? `${id}-${contribution.project.id}` : id;
+    const lineId = `project-contribution-${id}`;
     const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
 
     return (
@@ -72,8 +72,9 @@ export function useContributionTable() {
             tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
           />
         </Cell>
+        <Cell height={CellHeight.Compact}>{repo.name}</Cell>
         <Cell height={CellHeight.Compact}>
-          {"project" in contribution ? <ContributionProjectRepo project={contribution.project} repo={repo} /> : null}
+          {"contributor" in contribution ? <ContributionContributor contributor={contribution.contributor} /> : null}
         </Cell>
         <Cell height={CellHeight.Compact}>
           <Contribution contribution={contribution} isMine />

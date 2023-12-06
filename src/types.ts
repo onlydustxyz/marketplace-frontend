@@ -345,3 +345,5 @@ export enum RewardDisabledReason {
 export type ShortProject = components["schemas"]["ShortProjectResponse"];
 
 export type ShortRepo = components["schemas"]["ShortGithubRepoResponse"];
+
+export type ContributorResponse = components["schemas"]["ContributorResponse"];

@@ -49,7 +49,7 @@ export function Avatar({ src, alt, shape = "circle", size = "6", className }: Av
       )}
     >
       {src ? (
-        <img src={src || onlyDustLogo} alt={alt} className="h-full w-full object-cover" />
+        <img src={src || onlyDustLogo} alt={alt} className="h-full w-full object-cover" loading="lazy" />
       ) : (
         <GalleryLine className="h-4 w-4 text-spaceBlue-300" />
       )}
