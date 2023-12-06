@@ -20,7 +20,12 @@ export function ContributionCard({ contribution, className }: { contribution: Co
         className
       )}
     >
-      <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
+      {"project" in contribution ? (
+        <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
+      ) : null}
+
+      {/* TODO render contributor */}
+
       <Contribution contribution={contribution} isMobile />
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1 text-spaceBlue-200">
