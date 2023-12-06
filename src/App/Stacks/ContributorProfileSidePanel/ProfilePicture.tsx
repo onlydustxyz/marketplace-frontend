@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler, useEffect, useRef, useState } from "react";
-import ProjectApi from "src/api/Project";
+import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import Loader from "src/assets/icons/Loader";
 import { viewportConfig } from "src/config";
@@ -24,7 +24,7 @@ const ProfilePicture = ({ editable, avatarUrl, onChange }: Props) => {
     mutate: uploadProjectLogo,
     isPending: loadingUploadLogo,
     ...restUploadMutation
-  } = ProjectApi.mutations.useUploadLogo({
+  } = MeApi.mutations.useUploadProfilePicture({
     options: {
       onSuccess: data => {
         setPreview(data.url);
