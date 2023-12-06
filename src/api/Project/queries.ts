@@ -20,6 +20,7 @@ const useGetProjectBySlug = ({
     callbackTags: result => {
       return PROJECT_TAGS.detail_by_id(result?.id || "");
     },
+    retry: 1,
     enabled: !!params?.slug,
     ...options,
   });

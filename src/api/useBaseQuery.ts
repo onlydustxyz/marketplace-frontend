@@ -25,6 +25,34 @@ export interface UseQueryProps<RESULT = unknown, PARAMS = unknown | undefined, B
   body?: BODY;
 }
 
+export enum HttpStatusStrings {
+  OK = "OK",
+  NO_CONTENT = "NO_CONTENT",
+  PARTIAL_CONTENT = "PARTIAL_CONTENT",
+  BAD_REQUEST = "BAD_REQUEST",
+  FORBIDDEN = "FORBIDDEN",
+  NOT_FOUND = "NOT_FOUND",
+  CONFLICT = "CONFLICT",
+  INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
+  NOT_IMPLEMENTED = "NOT_IMPLEMENTED",
+}
+
+function mapHttpStatusToString(statusCode: number): HttpStatusStrings | null {
+  const statusMap: { [key: number]: HttpStatusStrings } = {
+    200: HttpStatusStrings.OK,
+    204: HttpStatusStrings.NO_CONTENT,
+    206: HttpStatusStrings.PARTIAL_CONTENT,
+    400: HttpStatusStrings.BAD_REQUEST,
+    403: HttpStatusStrings.FORBIDDEN,
+    404: HttpStatusStrings.NOT_FOUND,
+    409: HttpStatusStrings.CONFLICT,
+    500: HttpStatusStrings.INTERNAL_SERVER_ERROR,
+    501: HttpStatusStrings.NOT_IMPLEMENTED,
+  };
+
+  return statusMap[statusCode] || null;
+}
+
 export function useBaseQuery<R = unknown>({
   resourcePath,
   queryParams = [],
@@ -48,7 +76,7 @@ export function useBaseQuery<R = unknown>({
             return res.json();
           }
 
-          throw new Error(res.statusText);
+          throw { status: res.status, message: res.statusText, errorType: mapHttpStatusToString(res.status) };
         })
         .then(data => {
           if (callbackTags) {
@@ -58,7 +86,7 @@ export function useBaseQuery<R = unknown>({
           return data;
         })
         .catch(e => {
-          throw new Error(e);
+          throw e;
         }),
     staleTime: 10000,
     gcTime: 0,

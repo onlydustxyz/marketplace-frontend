@@ -10,12 +10,15 @@ export default function ProjectDetails() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { pathname } = useLocation();
   const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
-  const { data, isLoading, isError } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
+  const { data, isLoading, isError, error } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
 
   if (isLoading) {
     // TODO Replace with skeleton component
     return <Loader />;
   }
+
+  console.log("error", error);
+  console.log("isError", isError);
 
   if (isError) {
     return <ErrorFallback />;
