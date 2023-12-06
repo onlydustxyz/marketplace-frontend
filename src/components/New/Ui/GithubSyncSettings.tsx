@@ -1,5 +1,6 @@
 import { useStackGithubWorkflowTutorial } from "src/App/Stacks/Stacks";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { Link } from "src/components/Link/Link";
 import GithubLogo from "src/icons/GithubLogo";
 import { OAuthGithubConfigLink } from "src/utils/githubSetupLink";
 
@@ -38,12 +39,12 @@ export const GithubSyncSettings = ({
       </div>
       <div className="center flex w-full flex-col items-center gap-5 lg:flex-row">
         {settingsButton ? (
-          <a href={OAuthGithubConfigLink} target="_blank" rel="noopener noreferrer" className="w-full">
+          <Link href={OAuthGithubConfigLink} target="_blank" rel="noopener noreferrer" className="w-full">
             <Button type={ButtonType.Secondary} size={ButtonSize.Sm} className="w-full">
               <GithubLogo />
               {settingsButton}
             </Button>
-          </a>
+          </Link>
         ) : null}
         {PoolingFeedback ? PoolingFeedback : null}
       </div>
