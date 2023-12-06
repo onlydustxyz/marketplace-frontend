@@ -11,6 +11,7 @@ interface OrganizationListProps {
   emptyListFallBackText: string;
   loading?: boolean;
   installatedRepo: number[];
+  disabledTooltip: string;
 }
 
 export default function OrganizationList({
@@ -18,6 +19,7 @@ export default function OrganizationList({
   emptyListFallBackText,
   installatedRepo,
   loading,
+  disabledTooltip,
 }: OrganizationListProps) {
   const { T } = useIntl();
 
@@ -42,7 +44,7 @@ export default function OrganizationList({
               linkUrl={linkUrl}
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
-              tooltip={T("project.details.create.organizations.tooltip")}
+              tooltip={disabledTooltip}
             />
           );
         })}
