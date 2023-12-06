@@ -85,43 +85,59 @@ export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileI
   };
 };
 
-export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileBody => ({
-  bio: profile.bio,
-  contacts: [
-    { channel: Channel.Email, contact: profile.email, visibility: profile.isEmailPublic ? "public" : "private" },
-    {
-      channel: Channel.Telegram,
-      contact: profile.telegram && `https://t.me/${sanitizeContactHandle(profile.telegram)}`,
-      visibility: profile.isTelegramPublic ? "public" : "private",
-    },
-    {
-      channel: Channel.Whatsapp,
-      contact: profile.whatsapp,
-      visibility: profile.isWhatsappPublic ? "public" : "private",
-    },
-    {
-      channel: Channel.Twitter,
-      contact: profile.twitter && `https://twitter.com/${sanitizeContactHandle(profile.twitter)}`,
-      visibility: profile.isTwitterPublic ? "public" : "private",
-    },
-    {
-      channel: Channel.Discord,
-      contact: profile.discord && sanitizeContactHandle(profile.discord),
-      visibility: profile.isDiscordPublic ? "public" : "private",
-    },
-    {
-      channel: Channel.LinkedIn,
-      contact: profile.linkedin && `https://www.linkedin.com/in/${sanitizeContactHandle(profile.linkedin)}`,
-      visibility: profile.isLinkedInPublic ? "public" : "private",
-    },
-  ],
-  technologies: profile.technologies,
-  location: profile.location,
-  isLookingForAJob: profile.lookingForAJob,
-  website: profile.website,
-  allocatedTimeToContribute: profile.weeklyAllocatedTime as AllocatedTime,
-  cover: profile.cover,
-});
+export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileBody => {
+  const {
+    bio,
+    lookingForAJob,
+    cover,
+    location,
+    website,
+    weeklyAllocatedTime,
+    email,
+    telegram,
+    whatsapp,
+    twitter,
+    discord,
+    linkedin,
+    technologies,
+    isEmailPublic,
+    isTelegramPublic,
+    isWhatsappPublic,
+    isTwitterPublic,
+    isDiscordPublic,
+    isLinkedInPublic,
+  } = profile;
+  return {
+    bio,
+    contacts: [
+      createContact(Channel.Email, email, isEmailPublic),
+      createContact(Channel.Telegram, telegram, isTelegramPublic, "https://t.me/"),
+      createContact(Channel.Whatsapp, whatsapp, isWhatsappPublic),
+      createContact(Channel.Twitter, twitter, isTwitterPublic, "https://twitter.com/"),
+      createContact(Channel.Discord, discord, isDiscordPublic),
+      createContact(Channel.LinkedIn, linkedin, isLinkedInPublic, "https://www.linkedin.com/in/"),
+    ],
+    technologies,
+    location,
+    isLookingForAJob: lookingForAJob,
+    website,
+    allocatedTimeToContribute: weeklyAllocatedTime as AllocatedTime,
+    cover,
+  };
+};
+
+function createContact(
+  channel: components["schemas"]["ContactInformation"]["channel"],
+  contact: string | null,
+  isPublic: boolean,
+  prefixUrl?: string
+): components["schemas"]["ContactInformation"] {
+  return {
+    channel,
+    contact: contact ? `${prefixUrl || ""}${sanitizeContactHandle(contact)}` : "",
+    visibility: isPublic ? "public" : "private",
+  };
+}
 
 function sanitizeContactHandle(contact: string) {
   let sanitizedContact = contact;
