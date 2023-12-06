@@ -35,6 +35,7 @@ export const GithubOrganizationPage = () => {
           organizations={installedOrganizations}
           emptyListFallBackText={T("project.details.create.organizations.installedOrganizationEmpty")}
           loading={organizationsLoading}
+          disabledTooltip={T("project.details.create.organizations.tooltipInstalledByAdmin")}
         />
       </Card>
 
@@ -45,6 +46,7 @@ export const GithubOrganizationPage = () => {
           organizations={availableOrganizations}
           emptyListFallBackText={T("project.details.create.organizations.availableOrganizationEmpty")}
           loading={organizationsLoading}
+          disabledTooltip={T("project.details.create.organizations.tooltip")}
         />
       </Card>
       <div className="mt-6">

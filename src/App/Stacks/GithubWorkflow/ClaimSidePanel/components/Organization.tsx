@@ -30,7 +30,7 @@ export default function ClaimBannerOrganization({
   const { T } = useIntl();
   const [openTutorial] = useStackGithubWorkflowTutorial();
   const myOrganization = useMemo(
-    () => myOrganizations.find(org => org.githubUserId === organization.githubUserId && org.isCurrentUserAdmin),
+    () => myOrganizations.find(org => org.githubUserId === organization.githubUserId),
     [myOrganizations, organization]
   );
 
@@ -45,10 +45,15 @@ export default function ClaimBannerOrganization({
   });
 
   const organizationStatus: organizationStatusEnum = useMemo(() => {
-    if (myOrganization && !organization.installed && !myOrganization.installed) {
+    if (myOrganization && !organization.installed && !myOrganization.installed && myOrganization.isCurrentUserAdmin) {
       return organizationStatusEnum.shouldInstall;
     }
-    if (!myOrganization && !organization.installed) {
+
+    if (myOrganization && !organization.installed && !myOrganization.installed && !myOrganization.isCurrentUserAdmin) {
+      return organizationStatusEnum.shouldGrant;
+    }
+
+    if (!myOrganization) {
       return organizationStatusEnum.shouldGrant;
     }
 
