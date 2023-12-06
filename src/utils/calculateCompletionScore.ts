@@ -3,20 +3,9 @@ import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { ArrayElement } from "src/types";
 
 type Channel = ArrayElement<NonNullable<UseGetMyProfileInfoResponse["contacts"]>>["channel"];
-type UserScorableFields = "avatarUrl" | "login" | "location" | "bio" | "website" | "technologies";
-type FormScorableFields =
-  | "avatarUrl"
-  | "login"
-  | "location"
-  | "bio"
-  | "website"
-  | "email"
-  | "telegram"
-  | "whatsapp"
-  | "twitter"
-  | "discord"
-  | "linkedin"
-  | "technologies";
+type ScorableFields = "avatarUrl" | "login" | "location" | "bio" | "website" | "technologies";
+type UserScorableFields = ScorableFields;
+type FormScorableFields = ScorableFields | Lowercase<Channel>;
 type ScoreFields = UserScorableFields | FormScorableFields | Channel;
 
 const scoreDictionary: Record<ScoreFields, number> = {
@@ -25,19 +14,26 @@ const scoreDictionary: Record<ScoreFields, number> = {
   location: 10,
   bio: 20,
   website: 10,
+
   email: 5,
-  telegram: 5,
-  whatsapp: 5,
-  twitter: 5,
-  discord: 5,
-  linkedin: 5,
-  technologies: 10,
   EMAIL: 5,
+
+  telegram: 5,
   TELEGRAM: 5,
+
+  whatsapp: 5,
   WHATSAPP: 5,
+
+  twitter: 5,
   TWITTER: 5,
+
+  discord: 5,
   DISCORD: 5,
+
+  linkedin: 5,
   LINKEDIN: 5,
+
+  technologies: 10,
 };
 
 function calculateUserCompletionScore(userProfile: UseGetMyProfileInfoResponse) {
