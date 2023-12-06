@@ -52,7 +52,7 @@ export const useStackRegister = <P extends StacksParams>({
     }
   }, [stack]);
 
-  /** un register on un mount */
+  /** un register on unMount */
   useEffect(() => {
     return () => {
       if (unRegisterOnUnMount) {
