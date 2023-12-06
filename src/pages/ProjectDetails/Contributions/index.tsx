@@ -1,59 +1,37 @@
-import { ComponentProps, PropsWithChildren, useState } from "react";
-import { generatePath, useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
+import { ComponentProps, useState } from "react";
+import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { OrderBy } from "src/__generated/graphql";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
-import IssueOpen from "src/assets/icons/IssueOpen";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
-import { Contribution } from "src/components/Contribution/Contribution";
-import { ContributionDate } from "src/components/Contribution/ContributionDate";
-import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
-import { ContributionTable, HeaderCell, type TableSort } from "src/components/Contribution/ContributionTable";
-import Cell, { CellHeight } from "src/components/Table/Cell";
-import { HeaderCellWidth } from "src/components/Table/HeaderCell";
+import { ContributionTable, type TableSort } from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
-import { TooltipPosition, Variant as TooltipVariant, withTooltip } from "src/components/Tooltip";
+import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
+import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import StackLine from "src/icons/StackLine";
-import TimeLine from "src/icons/TimeLine";
-import User3Line from "src/icons/User3Line";
 import Title from "src/pages/ProjectDetails/Title";
-import { ContributionStatus, GithubContributionType, Contribution as ContributionT } from "src/types";
+import { ContributionStatus } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
-import { isInArray } from "src/utils/isInArray";
 import { useLocalStorage } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { Filter, Filters } from "./Filter";
-import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
-import Line from "src/components/Table/Line";
+import { useContributionTable } from "./useContributionTable";
+import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 
-enum AllTabs {
-  All = "ALL_CONTRIBUTIONS",
-  InProgress = "IN_PROGRESS",
-  Completed = "COMPLETED",
-  Cancelled = "CANCELLED",
-}
-
-enum TableColumns {
+export enum TableColumns {
   Date = "CREATED_AT",
   Repo = "REPO_NAME",
   Contributor = "CONTRIBUTOR_LOGIN",
   Contribution = "GITHUB_NUMBER_TITLE",
   Linked = "LINKS_COUNT",
-}
-
-const tabValues = Object.values(AllTabs);
-
-function TabContents({ children }: PropsWithChildren) {
-  return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
 }
 
 const initialSort: Record<ContributionStatus, TableSort> = {
@@ -91,14 +69,16 @@ export default function Contributions() {
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
   const isProjectLeader = useProjectLeader({ id: project.id });
 
-  // -------------------
+  const { isActiveTab, updateActiveTab } = useContributionTabs();
+  const { headerCells, bodyRow } = useContributionTable();
 
-  const [searchParams, setSearchParams] = useSearchParams();
   const [sortStorage, setSortStorage] = useLocalStorage(
     "project-contributions-table-sort",
     JSON.stringify(initialSort)
   );
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
+
+  // -------------------
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
     "project-contributions-table-filters",
@@ -115,23 +95,12 @@ export default function Contributions() {
     repositories: repoIds.join(","),
   };
 
-  const tab = searchParams.get("tab") as typeof tabValues[number] | null;
-
-  const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
-
   const { data: reposData } = MeApi.queries.useMyContributedRepos({
     params: { projects: "" },
   });
   const contributedRepos = reposData?.repos ?? [];
 
-  function isActiveTab(tab: AllTabs) {
-    return activeTab === tab;
-  }
-
-  function updateActiveTab(tab: AllTabs) {
-    setActiveTab(tab);
-    setSearchParams({ tab });
-  }
+  // -------------------
 
   const tabItems = [
     {
@@ -139,12 +108,12 @@ export default function Contributions() {
       onClick: () => {
         updateActiveTab(AllTabs.All);
       },
-      testId: "contributions-all-contributions-tab",
+      testId: "project-contributions-all-contributions-tab",
       children: (
-        <TabContents>
+        <ContributionTabContents>
           <StackLine className="text-xl leading-none md:hidden" />
           {T("contributions.nav.allContributions")}
-        </TabContents>
+        </ContributionTabContents>
       ),
     },
     {
@@ -152,12 +121,12 @@ export default function Contributions() {
       onClick: () => {
         updateActiveTab(AllTabs.InProgress);
       },
-      testId: "contributions-in-progress-tab",
+      testId: "project-contributions-in-progress-tab",
       children: (
-        <TabContents>
+        <ContributionTabContents>
           <ProgressCircle className="h-5 w-5 md:h-4 md:w-4" />
           {T("contributions.nav.inProgress")}
-        </TabContents>
+        </ContributionTabContents>
       ),
     },
     {
@@ -165,12 +134,12 @@ export default function Contributions() {
       onClick: () => {
         updateActiveTab(AllTabs.Completed);
       },
-      testId: "contributions-completed-tab",
+      testId: "project-contributions-completed-tab",
       children: (
-        <TabContents>
+        <ContributionTabContents>
           <CheckboxCircleLine className="text-xl leading-none md:text-base" />
           {T("contributions.nav.completed")}
-        </TabContents>
+        </ContributionTabContents>
       ),
     },
     {
@@ -178,81 +147,15 @@ export default function Contributions() {
       onClick: () => {
         updateActiveTab(AllTabs.Cancelled);
       },
-      testId: "contributions-canceled-tab",
+      testId: "project-contributions-canceled-tab",
       children: (
-        <TabContents>
+        <ContributionTabContents>
           <CancelCircleLine className="h-5 w-5 md:h-4 md:w-4" />
           {T("contributions.nav.canceled")}
-        </TabContents>
+        </ContributionTabContents>
       ),
     },
   ];
-
-  const headerCells: HeaderCell[] = [
-    {
-      sort: TableColumns.Date,
-      icon: <TimeLine />,
-      label: T("contributions.table.date"),
-    },
-    {
-      sort: TableColumns.Repo,
-      icon: <GitRepositoryLine />,
-      label: T("contributions.table.repo"),
-    },
-    {
-      sort: TableColumns.Contributor,
-      icon: <User3Line />,
-      label: T("contributions.table.contributor"),
-    },
-    {
-      sort: TableColumns.Contribution,
-      icon: <StackLine />,
-      label: T("contributions.table.contribution"),
-      width: HeaderCellWidth.Third,
-    },
-    {
-      sort: TableColumns.Linked,
-      icon: (
-        <span>
-          <IssueOpen className="h-3 w-3" />
-        </span>
-      ),
-      label: T("contributions.table.linkedTo"),
-      className: "justify-end",
-    },
-  ];
-
-  const bodyRow = (contribution?: ContributionT) => {
-    if (!contribution) return null;
-
-    const { createdAt, completedAt, githubStatus, id, repo, status, type } = contribution;
-    const lineId = "project" in contribution ? `${id}-${contribution.project.id}` : id;
-    const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
-
-    return (
-      <Line key={lineId} className="border-card-border-light">
-        <Cell height={CellHeight.Compact}>
-          <ContributionDate
-            id={lineId}
-            type={type as GithubContributionType}
-            status={githubStatus}
-            contributionStatus={status}
-            date={new Date(lineDate ?? "")}
-            tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
-          />
-        </Cell>
-        <Cell height={CellHeight.Compact}>
-          {"project" in contribution ? <ContributionProjectRepo project={contribution.project} repo={repo} /> : null}
-        </Cell>
-        <Cell height={CellHeight.Compact}>
-          <Contribution contribution={contribution} isMine />
-        </Cell>
-        <Cell className="justify-end gap-1" height={CellHeight.Compact}>
-          {ContributionLinked({ contribution }) ? <ContributionLinked contribution={contribution} /> : "-"}
-        </Cell>
-      </Line>
-    );
-  };
 
   const tableItems: Array<ComponentProps<typeof ContributionTable> & { show: boolean }> = [
     {
