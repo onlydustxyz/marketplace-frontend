@@ -45,12 +45,12 @@ import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
-import useRestfulProfile, { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { useShowToaster } from "src/hooks/useToaster";
 import isContactInfoProvided from "src/utils/isContactInfoProvided";
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import User3Line from "src/icons/User3Line";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -79,7 +79,7 @@ export default function Overview() {
   const { alreadyApplied, applyToProject } = useApplications(projectId, projectSlug);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
 
-  const { data: profile, isError } = useRestfulProfile({ githubUserId: githubUserId ?? 0 });
+  const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});
 
   const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
@@ -204,8 +204,10 @@ export default function Overview() {
           </Card>
         </div>
         <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
-          {hiring && !isCurrentUserMember && profile && (
-            <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile }} />
+          {hiring && !isCurrentUserMember && myProfileInfo && (
+            <ApplyCallout
+              {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile: myProfileInfo }}
+            />
           )}
           {isMd && (
             <OverviewPanel
@@ -294,7 +296,7 @@ interface ApplyCalloutProps {
   alreadyApplied?: boolean;
   applyToProject: () => void;
   dispatchSession: Dispatch<Action>;
-  profile: Profile;
+  profile: UseGetMyProfileInfoResponse;
 }
 
 function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dispatchSession }: ApplyCalloutProps) {

@@ -3,34 +3,30 @@ import IntroSection from "./IntroSection";
 import TechnologiesSection from "./TechnologiesSection";
 import StatsSection from "./StatsSection";
 import ProjectsSection from "./ProjectsSection";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { useMemo } from "react";
-import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { useCloseStack } from "src/libs/react-stack";
+import { UserProfile } from "src/api/Users/queries";
 
 type Props = {
-  userProfile: Profile;
-  myProfile?: UseGetMyProfileInfoResponse;
+  profile: UserProfile;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
 };
 
-export default function ReadOnlyView({ userProfile, myProfile, isOwn, setEditMode }: Props) {
-  const languages = useMemo(() => Object.keys(userProfile.technologies || {}), [userProfile]);
+export default function ReadOnlyView({ profile, isOwn, setEditMode }: Props) {
+  const languages = useMemo(() => Object.keys(profile.technologies || {}), [profile]);
   const closeAll = useCloseStack();
   return (
     <div className="flex h-full flex-col">
-      <Header profile={userProfile} />
+      <Header profile={profile} />
 
       <div className="-mt-12 ml-8 mr-2 flex flex-col gap-12 pb-12 pr-6 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-        <IntroSection myProfile={myProfile} profile={userProfile} isOwn={isOwn} setEditMode={setEditMode} />
+        <IntroSection profile={profile} isOwn={isOwn} setEditMode={setEditMode} />
 
         <div className="flex flex-col gap-8">
           {languages.length > 0 && <TechnologiesSection languages={languages} />}
-          <StatsSection profile={userProfile} />
-          {userProfile?.projects?.length ? (
-            <ProjectsSection projects={userProfile.projects} setOpen={closeAll} />
-          ) : null}
+          <StatsSection profile={profile} />
+          {profile?.projects?.length ? <ProjectsSection projects={profile.projects} setOpen={closeAll} /> : null}
         </div>
       </div>
     </div>

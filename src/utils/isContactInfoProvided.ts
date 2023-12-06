@@ -1,7 +1,7 @@
 import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
+import { UserProfile } from "src/api/Users/queries";
 
-export default function isContactInfoProvided(profile: Profile, channels: Channel | Channel[]) {
+export default function isContactInfoProvided(profile: UserProfile, channels: Channel | Channel[]) {
   const channelsArray = Array.isArray(channels) ? channels : [channels];
 
   return channelsArray.some(channel => {

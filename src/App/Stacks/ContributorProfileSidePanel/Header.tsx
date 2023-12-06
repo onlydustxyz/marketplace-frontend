@@ -9,10 +9,11 @@ import { useApolloClient } from "@apollo/client";
 import Loader from "src/assets/icons/Loader";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
+import { UserProfile } from "src/api/Users/queries";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 type Props = {
-  profile: Profile;
+  profile: UserProfile | UseGetMyProfileInfoResponse;
   editable?: boolean;
   onChange?: (value: ProfileCover) => void;
   rounded?: boolean;

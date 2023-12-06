@@ -24,4 +24,24 @@ const useUsersSearchByLogin = ({
   });
 };
 
-export default { useUsersSearchByLogin };
+export type UserProfile = components["schemas"]["PublicUserProfileResponse"];
+
+const useUserProfileByGithubId = ({ params, options = {} }: UseQueryProps<UserProfile, { githubUserId?: string }>) => {
+  return useBaseQuery<UserProfile>({
+    resourcePath: API_PATH.USER_PROFILE_BY_GITHUB_ID(params?.githubUserId ?? ""),
+    enabled: !!params?.githubUserId,
+    tags: USERS_TAGS.user_profile_by_github_id(params?.githubUserId ?? ""),
+    ...options,
+  });
+};
+
+const useUserProfileByGithubLogin = ({ params, options = {} }: UseQueryProps<UserProfile, { login?: string }>) => {
+  return useBaseQuery<UserProfile>({
+    resourcePath: API_PATH.USER_PROFILE_BY_GITHUB_LOGIN(params?.login ?? ""),
+    enabled: !!params?.login,
+    tags: USERS_TAGS.user_profile_by_github_login(params?.login ?? ""),
+    ...options,
+  });
+};
+
+export default { useUsersSearchByLogin, useUserProfileByGithubId, useUserProfileByGithubLogin };

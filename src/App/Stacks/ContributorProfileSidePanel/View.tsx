@@ -1,22 +1,24 @@
 import ReadOnlyView from "./ReadOnlyView";
 import { useState } from "react";
 import EditView from "./EditView";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import MeApi from "src/api/me";
+import { UserProfile } from "src/api/Users/queries";
 
 type Props = {
-  restFulProfile: Profile;
+  userProfile: UserProfile;
   isOwn?: boolean;
 };
 
-export default function View({ isOwn, restFulProfile }: Props) {
+export default function View({ isOwn, userProfile }: Props) {
   const [editMode, setEditMode] = useState(false);
 
-  const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
+  const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({
+    options: { enabled: isOwn && editMode },
+  });
 
   return editMode && myProfileInfo ? (
-    <EditView profile={myProfileInfo} restFulProfile={restFulProfile} setEditMode={setEditMode} />
+    <EditView myProfile={myProfileInfo} setEditMode={setEditMode} />
   ) : (
-    <ReadOnlyView userProfile={restFulProfile} setEditMode={setEditMode} isOwn={isOwn} myProfile={myProfileInfo} />
+    <ReadOnlyView profile={userProfile} setEditMode={setEditMode} isOwn={isOwn} />
   );
 }

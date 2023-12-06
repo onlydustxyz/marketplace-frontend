@@ -1,9 +1,9 @@
 import View from "./View";
 import { useAuth } from "src/hooks/useAuth";
-import useRestfulProfile from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import ErrorState from "src/components/ErrorState";
+import UsersApi from "src/api/Users";
 
 type Props = {
   githubUserId: number;
@@ -13,7 +13,14 @@ export default function ContributorProfileSidePanel({ githubUserId }: Props) {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const { githubUserId: currentUserGithubId } = useAuth();
-  const { data: restFulProfile, isError } = useRestfulProfile({ githubUserId });
+
+  const {
+    data: userProfile,
+    isLoading,
+    isError,
+  } = UsersApi.queries.useUserProfileByGithubId({
+    params: { githubUserId: githubUserId.toString() },
+  });
 
   if (isError) {
     showToaster(T("profile.error.cantFetch"), { isError: true });
@@ -24,7 +31,7 @@ export default function ContributorProfileSidePanel({ githubUserId }: Props) {
     );
   }
 
-  return restFulProfile ? (
-    <View isOwn={currentUserGithubId === restFulProfile.githubUserId} restFulProfile={restFulProfile} />
+  return userProfile ? (
+    <View isOwn={currentUserGithubId === userProfile.githubUserId} userProfile={userProfile} />
   ) : null;
 }

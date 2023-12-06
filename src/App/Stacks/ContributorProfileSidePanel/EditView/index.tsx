@@ -21,29 +21,27 @@ import { useState } from "react";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "src/utils/cn";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import MeApi from "src/api/me";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { calculateFormCompletionScore, calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import useMutationAlert from "src/api/useMutationAlert";
 
 type Props = {
-  profile: UseGetMyProfileInfoResponse;
-  restFulProfile: Profile;
+  myProfile: UseGetMyProfileInfoResponse;
   setEditMode: (value: boolean) => void;
 };
 
-export default function EditView({ profile, setEditMode, restFulProfile }: Props) {
+export default function EditView({ myProfile, setEditMode }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const formMethods = useForm<UserProfileInfo>({
-    defaultValues: fromFragment(profile),
+    defaultValues: fromFragment(myProfile),
     mode: "onChange",
   });
   const { handleSubmit, formState, control, getValues } = formMethods;
   const { isDirty, isValid } = formState;
-  const [completionScore, setCompletionScore] = useState(calculateUserCompletionScore(profile));
+  const [completionScore, setCompletionScore] = useState(calculateUserCompletionScore(myProfile));
 
   const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {
     [AllocatedTime.None]: T("profile.form.weeklyAllocatedTime.none"),
@@ -76,7 +74,7 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
 
   const updateCompletionScore = () => {
     const formValues = getValues();
-    setCompletionScore(calculateFormCompletionScore({ ...formValues, avatarUrl: profile.avatarUrl || "" }));
+    setCompletionScore(calculateFormCompletionScore({ ...formValues, avatarUrl: myProfile.avatarUrl || "" }));
   };
 
   const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo(mapFormDataToSchema(formData));
@@ -95,12 +93,12 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
             <Controller
               name="cover"
               control={control}
-              render={({ field: { onChange } }) => <Header editable profile={restFulProfile} onChange={onChange} />}
+              render={({ field: { onChange } }) => <Header editable profile={myProfile} onChange={onChange} />}
             />
 
             <div className="-mt-[72px] mr-2 flex flex-col gap-6 pb-12 pl-8 pr-6 pt-[72px] scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
               <div data-testid="login" className="font-belwe text-3xl font-normal text-white">
-                {profile.login}
+                {myProfile.login}
               </div>
 
               <Card>
