@@ -1,7 +1,8 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { EDIT_PANEL_NAME, EditPanel } from ".";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { useStackNavigation } from "src/libs/react-stack";
+import { EditContext } from "../../EditContext";
 
 interface EditPanelContextProps {
   openOnLoad: boolean;
@@ -41,7 +42,8 @@ export const EditPanelContext = createContext<EditPanelType>({
 
 export function EditPanelProvider({ children, openOnLoad, isLoading }: EditPanelContextProps) {
   const [activeTab, setActiveTab] = useState<TabsType>(TabsType.Repos);
-  const [openSidePanel, closeSidePanel] = useStackNavigation(EDIT_PANEL_NAME);
+  const { project } = useContext(EditContext);
+  const [openSidePanel, closeSidePanel] = useStackNavigation(EDIT_PANEL_NAME(project?.id || ""));
 
   const toggleSidePanel = useCallback((value: boolean) => {
     if (value) {

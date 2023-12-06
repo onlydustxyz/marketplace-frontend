@@ -11,10 +11,11 @@ import useStackContext from "./useStackContext";
  * @param {RegisterStackProps<P>} props - The props for registering the stack.
  * @returns {StackInterface<P>} - The registered stack.
  */
-export const useStackRegister = <P extends StacksParams>(props: RegisterStackProps<P>) => {
+export const useStackRegister = <P extends StacksParams>({ unRegisterOnUnMount, ...props }: RegisterStackProps<P>) => {
   const {
-    stackMethods: { register, getStack },
+    stackMethods: { register, getStack, unRegister },
   } = useStackContext();
+
   const [templatePanel] = useRefSubscription<StackPanelInterface<P>>({
     open: false,
     position: "hidden",
@@ -46,6 +47,15 @@ export const useStackRegister = <P extends StacksParams>(props: RegisterStackPro
     if (!getStack(stack.state.name)) {
       register(stack);
     }
+  }, [stack]);
+
+  /** un register on unMount */
+  useEffect(() => {
+    return () => {
+      if (unRegisterOnUnMount) {
+        unRegister(props.name);
+      }
+    };
   }, [stack]);
 
   return stack;
