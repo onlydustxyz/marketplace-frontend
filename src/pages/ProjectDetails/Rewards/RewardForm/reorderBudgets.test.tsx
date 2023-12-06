@@ -40,6 +40,13 @@ const projectBudgetWithEmptyBudgetsMock: ProjectBudgetType = {
       remainingDollarsEquivalent: 5000,
       initialDollarsEquivalent: 5000,
     },
+    {
+      currency: "LORDS",
+      initialAmount: 5000,
+      remaining: 0,
+      remainingDollarsEquivalent: 5000,
+      initialDollarsEquivalent: 5000,
+    },
   ],
 };
 
@@ -77,6 +84,13 @@ const projectBudgetMock: ProjectBudgetType = {
     },
     {
       currency: "ETH",
+      initialAmount: 5000,
+      remaining: 5000,
+      remainingDollarsEquivalent: 5000,
+      initialDollarsEquivalent: 5000,
+    },
+    {
+      currency: "LORDS",
       initialAmount: 5000,
       remaining: 5000,
       remainingDollarsEquivalent: 5000,
@@ -123,6 +137,13 @@ describe("reorderBudgets", () => {
         remainingDollarsEquivalent: 5000,
         initialDollarsEquivalent: 5000,
       },
+      {
+        currency: "LORDS",
+        initialAmount: 5000,
+        remaining: 0,
+        remainingDollarsEquivalent: 5000,
+        initialDollarsEquivalent: 5000,
+      },
     ]);
   });
 
@@ -158,6 +179,13 @@ describe("reorderBudgets", () => {
       },
       {
         currency: "APT",
+        initialAmount: 5000,
+        remaining: 5000,
+        remainingDollarsEquivalent: 5000,
+        initialDollarsEquivalent: 5000,
+      },
+      {
+        currency: "LORDS",
         initialAmount: 5000,
         remaining: 5000,
         remainingDollarsEquivalent: 5000,

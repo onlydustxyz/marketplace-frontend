@@ -21,5 +21,6 @@ describe("Money", () => {
     expect(formatMoneyAmount({ amount: 123, currency: Currency.APT, notation: "compact" })).toBe("123 APT");
     expect(formatMoneyAmount({ amount: 12345, currency: Currency.ETH, notation: "compact" })).toBe("12.345k ETH");
     expect(formatMoneyAmount({ amount: 12010, currency: Currency.STARK, notation: "compact" })).toBe("12.01k STARK");
+    expect(formatMoneyAmount({ amount: 12010, currency: Currency.LORDS, notation: "compact" })).toBe("12.01k LORDS");
   });
 });

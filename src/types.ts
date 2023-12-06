@@ -64,9 +64,13 @@ export enum Currency {
   USD = "USD",
   ETH = "ETH",
   STARK = "STARK",
+  LORDS = "LORDS",
   APT = "APT",
   OP = "OP",
 }
+
+export type CurrencyUnion = `${Currency}`;
+export const CurrencyOrder = ["USD", "ETH", "STARK", "OP", "APT", "LORDS"];
 
 export enum PreferredMethod {
   Crypto = "CRYPTO",
@@ -276,7 +280,7 @@ export type ContributorT = {
   contributionToRewardCount: number | null; // not rewarded yet
   earned: {
     details?: {
-      currency: "APT" | "ETH" | "OP" | "STARK" | "USD";
+      currency: CurrencyUnion;
       totalAmount: number;
       totalDollarsEquivalent?: number;
     }[];
