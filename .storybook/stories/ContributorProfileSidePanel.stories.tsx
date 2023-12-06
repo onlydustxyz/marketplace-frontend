@@ -97,7 +97,11 @@ export const Default = {
       }}
     >
       <ContributorProfileSidePanel
-        userProfile={mockUserProfile}
+        profile={mockUserProfile}
+        setEditMode={() => {
+          return;
+        }}
+        editMode={false}
       />
     </SidePanel>
   ),
@@ -115,7 +119,11 @@ export const Own = {
       }}
     >
       <ContributorProfileSidePanel
-        userProfile={mockUserProfile}
+        profile={mockUserProfile}
+        setEditMode={() => {
+          return;
+        }}
+        editMode={false}
         isOwn
       />
     </SidePanel>
@@ -134,7 +142,11 @@ export const NotSignedUp = {
       }}
     >
       <ContributorProfileSidePanel
-        userProfile={mockUserProfile}
+        profile={mockUserProfile}
+        setEditMode={() => {
+          return;
+        }}
+        editMode={false}
       />
     </SidePanel>
   ),
@@ -152,7 +164,11 @@ export const Minimalist = {
       }}
     >
       <ContributorProfileSidePanel
-        userProfile={mockUserProfile}
+        profile={mockUserProfile}
+        setEditMode={() => {
+          return;
+        }}
+        editMode={false}
       />
     </SidePanel>
   ),
