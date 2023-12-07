@@ -11,10 +11,10 @@ import { cn } from "src/utils/cn";
 type Props = {
   contribution: ContributionT;
   isMobile?: boolean;
-  isMine?: boolean;
+  showExternal?: boolean;
 };
 
-export function Contribution({ contribution, isMobile = false, isMine = false }: Props) {
+export function Contribution({ contribution, isMobile = false, showExternal = false }: Props) {
   const { githubUserId } = useAuth();
 
   const outlet = useOutletContext<OutletContext>();
@@ -46,7 +46,7 @@ export function Contribution({ contribution, isMobile = false, isMine = false }:
       })}
     >
       <div className={cn("flex items-center gap-2 font-walsheim", isMobile ? "w-full" : "min-w-0")}>
-        <ContributionBadge contribution={contribution} isMine={isMine} />
+        <ContributionBadge contribution={contribution} showExternal={showExternal} />
         <button
           className="truncate break-all text-left hover:underline"
           onClick={() => {

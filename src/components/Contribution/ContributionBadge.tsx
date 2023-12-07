@@ -24,7 +24,7 @@ export function ContributionBadge({
     position: TooltipPosition.Bottom,
     variant: Variant.Default,
   },
-  isMine = false,
+  showExternal = false,
 }: {
   contribution: Pick<
     Contribution,
@@ -34,7 +34,7 @@ export function ContributionBadge({
   asLink?: boolean;
   size?: ContributionBadgeSizes;
   tooltipProps?: React.ComponentProps<typeof Tooltip>;
-  isMine?: boolean;
+  showExternal?: boolean;
 }) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
@@ -95,7 +95,7 @@ export function ContributionBadge({
         data-tooltip-id={withTooltip ? tooltipId : undefined}
         className={cn(
           "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim",
-          isExternal && !isMine ? "border border-dashed" : "border-0.5 border-solid",
+          isExternal && showExternal ? "border border-dashed" : "border-0.5 border-solid",
           {
             "hover:bg-card-background-heavy": withTooltip || asLink,
           },
@@ -106,7 +106,7 @@ export function ContributionBadge({
         <ContributionIcon type={type as GithubContributionType} status={githubStatus} contributionStatus={status} />
         <div className="flex">
           <span className={cn("leading-none", size)}>{githubNumber}</span>
-          {isExternal && !isMine ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
+          {isExternal && showExternal ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
         </div>
       </Component>
     </>
