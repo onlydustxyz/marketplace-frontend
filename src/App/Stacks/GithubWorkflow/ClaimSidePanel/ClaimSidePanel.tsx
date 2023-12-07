@@ -6,9 +6,10 @@ import { useIntl } from "src/hooks/useIntl";
 import ClaimBannerOrganization from "./components/Organization";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { usePooling } from "src/hooks/usePooling/usePooling";
+import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useStackGithubWorkflowClaim } from "../../Stacks";
 import { ClaimUtils } from "./claim.utils";
+import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
 
 export interface ClaimSidePanelProps {
   projectSlug: string;
@@ -17,17 +18,32 @@ export default function ClaimSidePanel({ projectSlug }: ClaimSidePanelProps) {
   const { T } = useIntl();
   const { data: project, isSuccess } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectSlug } });
   const [, closePanel] = useStackGithubWorkflowClaim();
-  const { refetchOnWindowFocus, refetchInterval, onRefetching } = usePooling({
+  const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
     limites: 4,
     delays: 3000,
   });
 
-  const { data: myOrganizations, isRefetching } = MeApi.queries.useGithubOrganizations({
+  const {
+    data: myOrganizations,
+    isRefetching,
+    isLoading,
+    refetch,
+  } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
       enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
       refetchOnWindowFocus,
       refetchInterval,
+    },
+  });
+
+  const PoolingFeedback = usePoolingFeedback({
+    onForcePooling,
+    isLoading,
+    isRefetching,
+    fetch: refetch,
+    ui: {
+      label: T("project.details.create.syncOganizations"),
     },
   });
 
@@ -97,6 +113,12 @@ export default function ClaimSidePanel({ projectSlug }: ClaimSidePanelProps) {
                 project={project}
               />
             ))}
+            <div className="mt-6 w-full">
+              <GithubSyncSettings
+                title={T("project.details.create.organizations.githubAppInformation.title")}
+                PoolingFeedback={PoolingFeedback}
+              />
+            </div>
           </div>
         </div>
       </div>

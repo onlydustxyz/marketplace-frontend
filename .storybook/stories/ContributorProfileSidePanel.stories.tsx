@@ -1,13 +1,16 @@
-import { OwnUserProfileDetailsFragment, ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel/View";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
 import withToasterProvider from "../decorators/withToasterProvider";
 import withTokenSetProvider from "../decorators/withTokenSetProvider";
+import withAuthProvider from "../decorators/withAuthProvider";
+import withQueryClientProvider from "../decorators/withQueryClientProvider";
+import { UserProfile } from "src/api/Users/queries";
+
+const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
 export default {
   title: "ContributorProfileSidePanel",
@@ -19,68 +22,12 @@ export default {
     withTokenSetProvider,
     withImpersonationClaimsProvider,
     withMockedProvider(),
+    withAuthProvider({ userId: USER_ID }),
+    withQueryClientProvider,
   ],
 };
 
-const profileFull: UserProfileFragment = {
-  __typename: "UserProfiles",
-  githubUserId: 43467246,
-  login: "AnthonyBuisset",
-  avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
-  htmlUrl: "https://github.com/AnthonyBuisset",
-  location: "Nice, France",
-  bio: "Anthony Buisset est né le 17 décembre 1991 au Mans. Il commence la pétanque à l'âge de trois ans. Il pratique d'abord ce sport au sein de sa famille, avec son grand-père et son père.",
-  createdAt: "2023-05-10T08:46:57.965219+00:00",
-  lastSeen: "2023-05-20T10:10:10.965219+00:00",
-  contactInformations: [],
-  contacts: {
-    email: { contact: "anthony@foobar.org", public: true },
-    telegram: { contact: "https://telegram.me/antho", public: true },
-    twitter: { contact: "https://twitter.com/antho", public: true },
-    discord: { contact: "ANTHO123", public: true },
-    linkedin: { contact: "https://linkedin.com/antho", public: true },
-    whatsapp: { contact: "+33612345678", public: true },
-  },
-  website: "https://antho-petanque.com",
-  cover: "cyan",
-  languages: {
-    Rust: 123,
-    Makefile: 12,
-    Typescript: 4456,
-    Python: 120,
-    Shell: 56,
-    Go: 250,
-    Cairo: 100,
-    Solidity: 20,
-  },
-  contributionCounts: [
-    { year: 2023, week: 12, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 13, pullRequestCount: 1, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 14, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 15, pullRequestCount: 2, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 16, pullRequestCount: 1, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 17, pullRequestCount: 5, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 18, pullRequestCount: 3, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 19, pullRequestCount: 4, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 20, pullRequestCount: 1, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 21, pullRequestCount: 2, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 22, pullRequestCount: 5, issueCount: 0, codeReviewCount: 3 },
-    { year: 2023, week: 23, pullRequestCount: 5, issueCount: 5, codeReviewCount: 3 },
-  ],
-  projectsLeaded: [
-    { projectId: "", assignedAt: "2023-03-15T11:00:11.674+00:00", project: {} as ProfileProjectFragment },
-  ],
-  contributionStats: [],
-  contributionStatsAggregate: {
-    aggregate: { min: { minDate: "2023-02-31T11:31:09.674+00:00" }, sum: { totalCount: 124 } },
-  },
-  paymentStats: [],
-  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 23000 } } },
-  projectsContributed: [],
-  projectsContributedAggregate: { aggregate: { count: 3 } },
-};
-
-const mockRestFulProfile: Profile = {
+const mockUserProfile: UserProfile = {
   avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
   bio: "Contributing to awesome open source projects.",
   contacts: [
@@ -150,8 +97,11 @@ export const Default = {
       }}
     >
       <ContributorProfileSidePanel
-        gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
-        restFulProfile={mockRestFulProfile}
+        profile={mockUserProfile}
+        setEditMode={() => {
+          return;
+        }}
+        editMode={false}
       />
     </SidePanel>
   ),
@@ -169,8 +119,11 @@ export const Own = {
       }}
     >
       <ContributorProfileSidePanel
-        gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
-        restFulProfile={mockRestFulProfile}
+        profile={mockUserProfile}
+        setEditMode={() => {
+          return;
+        }}
+        editMode={false}
         isOwn
       />
     </SidePanel>
@@ -189,8 +142,11 @@ export const NotSignedUp = {
       }}
     >
       <ContributorProfileSidePanel
-        gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
-        restFulProfile={mockRestFulProfile}
+        profile={mockUserProfile}
+        setEditMode={() => {
+          return;
+        }}
+        editMode={false}
       />
     </SidePanel>
   ),
@@ -208,8 +164,11 @@ export const Minimalist = {
       }}
     >
       <ContributorProfileSidePanel
-        gqlProfile={profileFull as UserProfileFragment & OwnUserProfileDetailsFragment}
-        restFulProfile={mockRestFulProfile}
+        profile={mockUserProfile}
+        setEditMode={() => {
+          return;
+        }}
+        editMode={false}
       />
     </SidePanel>
   ),

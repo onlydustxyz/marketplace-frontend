@@ -21,7 +21,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
       {!onlyEditable && (
         <>
           <ContactInformation
-            name="githubHandle"
+            name="login"
             icon={<GithubLogo className="text-greyscale-600" />}
             editDisabled
             visibilityName="isGithubHandlePublic"

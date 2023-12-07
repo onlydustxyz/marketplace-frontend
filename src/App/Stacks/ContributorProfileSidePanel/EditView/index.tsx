@@ -1,12 +1,4 @@
-import {
-  AllocatedTime,
-  OwnUserProfileDetailsFragment,
-  OwnUserProfileDocument,
-  UserProfileFragment,
-  useUpdateUserProfileMutation,
-} from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
-
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import CheckLine from "src/icons/CheckLine";
 import Button, { ButtonSize } from "src/components/Button";
@@ -18,7 +10,7 @@ import Input, { Size } from "src/components/FormInput";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
-import { UserProfileInfo, fromFragment, toVariables } from "./types";
+import { AllocatedTime, UserProfileInfo, fromFragment, mapFormDataToSchema } from "./types";
 import ContactInformations from "src/components/ContactInformations";
 import TechnologiesSelect from "src/components/TechnologiesSelect";
 import FormSelect from "src/components/FormSelect";
@@ -29,71 +21,64 @@ import { useState } from "react";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "src/utils/cn";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
-import { useQueryClient } from "@tanstack/react-query";
+import MeApi from "src/api/me";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+import { calculateFormCompletionScore, calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
+import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
 
 type Props = {
-  profile: UserProfileFragment & OwnUserProfileDetailsFragment; // we don't want to revamp the edit mode for now
-  restFulProfile: Profile; // we don't want to revamp the edit mode for now
+  myProfile: UseGetMyProfileInfoResponse;
   setEditMode: (value: boolean) => void;
 };
 
-export default function EditView({ profile, setEditMode, restFulProfile }: Props) {
+export default function EditView({ myProfile, setEditMode }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  // Get QueryClient from the context
-  const queryClient = useQueryClient();
-
   const formMethods = useForm<UserProfileInfo>({
-    defaultValues: fromFragment(profile),
+    defaultValues: fromFragment(myProfile),
     mode: "onChange",
   });
   const { handleSubmit, formState, control, getValues } = formMethods;
   const { isDirty, isValid } = formState;
-  const [completionScore, setCompletionScore] = useState(profile.completionScore);
+  const [completionScore, setCompletionScore] = useState(calculateUserCompletionScore(myProfile));
 
   const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {
     [AllocatedTime.None]: T("profile.form.weeklyAllocatedTime.none"),
     [AllocatedTime.LessThanOneDay]: T("profile.form.weeklyAllocatedTime.lessThan1Day"),
     [AllocatedTime.OneToThreeDays]: T("profile.form.weeklyAllocatedTime.1to3days"),
-    [AllocatedTime.MoreThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
+    [AllocatedTime.GreaterThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
   };
 
-  const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
-    context: { graphqlErrorDisplay: "toaster" },
-    refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
-    awaitRefetchQueries: true,
-    onCompleted: () => {
-      setEditMode(false);
-      queryClient.invalidateQueries({ queryKey: ["resftullProfile", profile.githubUserId] });
+  const {
+    mutate: updateUserProfileInfo,
+    isPending: userProfilInformationIsPending,
+    ...restUpdateProfileMutation
+  } = MeApi.mutations.useUpdateProfile({
+    options: {
+      onSuccess: () => {
+        setEditMode(false);
+      },
+    },
+  });
+
+  useMutationAlert({
+    mutation: restUpdateProfileMutation,
+    success: {
+      message: T("profile.form.success"),
+    },
+    error: {
+      message: T("profile.form.error"),
     },
   });
 
   const updateCompletionScore = () => {
-    const score = (value: string | number | null, score: number) => (value && value !== "" ? score : 0);
-
-    const { bio, email, discord, githubHandle, linkedin, location, telegram, whatsapp, twitter, languages, website } =
-      getValues();
-
-    setCompletionScore(
-      score(profile.avatarUrl, 5) +
-        score(githubHandle, 10) +
-        score(location, 10) +
-        score(bio, 20) +
-        score(website, 10) +
-        score(githubHandle, 5) +
-        score(email, 5) +
-        score(telegram, 5) +
-        score(whatsapp, 5) +
-        score(twitter, 5) +
-        score(discord, 5) +
-        score(linkedin, 5) +
-        score(Object.keys(languages).length, 10)
-    );
+    const formValues = getValues();
+    setCompletionScore(calculateFormCompletionScore({ ...formValues, avatarUrl: myProfile.avatarUrl || "" }));
   };
 
-  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
+  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo(mapFormDataToSchema(formData));
 
   return (
     <FormProvider {...formMethods}>
@@ -109,12 +94,21 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
             <Controller
               name="cover"
               control={control}
-              render={({ field: { onChange } }) => <Header editable profile={restFulProfile} onChange={onChange} />}
+              render={({ field: { onChange } }) => (
+                <Header
+                  editable
+                  profile={myProfile}
+                  onChange={onChange}
+                  onChangeProfilePicture={url => {
+                    formMethods.setValue("avatarUrl", url, { shouldDirty: true, shouldValidate: true });
+                  }}
+                />
+              )}
             />
 
             <div className="-mt-[72px] mr-2 flex flex-col gap-6 pb-12 pl-8 pr-6 pt-[72px] scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
               <div data-testid="login" className="font-belwe text-3xl font-normal text-white">
-                {profile.login}
+                {myProfile.login}
               </div>
 
               <Card>
@@ -168,7 +162,7 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
                   subtitle={T("profile.edit.sections.technologies.subtitle")}
                 >
                   <Controller
-                    name="languages"
+                    name="technologies"
                     render={({ field: { value, onChange } }) => (
                       <TechnologiesSelect technologies={value} setTechnologies={onChange} />
                     )}
@@ -237,10 +231,10 @@ export default function EditView({ profile, setEditMode, restFulProfile }: Props
               <Button
                 size={ButtonSize.Md}
                 htmlType="submit"
-                disabled={loading || !isValid}
+                disabled={userProfilInformationIsPending || !isValid}
                 data-testid="profile-form-submit-button"
               >
-                <CheckLine />
+                {userProfilInformationIsPending ? <Spinner /> : <CheckLine />}
                 {T("profile.form.done")}
               </Button>
             </div>

@@ -19,23 +19,22 @@ import { cn } from "src/utils/cn";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import CompletionBar from "src/components/CompletionBar";
 import WhatsappFill from "src/icons/WhatsappFill";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { components } from "src/__generated/api";
-import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__generated/graphql";
+import CompletionBar from "src/components/CompletionBar";
+import { UserProfile } from "src/api/Users/queries";
+import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 
 type Props = {
-  profile: Profile;
-  gqlProfile?: UserProfileFragment & OwnUserProfileDetailsFragment; // use this for the completion score, should be revamp when we revamp the edit profile
+  profile: UserProfile;
   setEditMode: (value: boolean) => void;
+  completionScore?: number | undefined;
   isOwn?: boolean;
-  isPublic?: boolean;
 };
 
 type ContactChannelType = components["schemas"]["ContactInformation"]["channel"];
 
-export default function IntroSection({ isOwn, isPublic, profile, setEditMode, gqlProfile }: Props) {
+export default function IntroSection({ isOwn, profile, setEditMode }: Props) {
   const { T } = useIntl();
 
   const website = parseWebsite(profile.website);
@@ -61,35 +60,33 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode, gq
   const linkedin = findContact("LINKEDIN");
   const whatsapp = findContact("WHATSAPP");
 
+  const completionScore = isOwn && profile ? calculateUserCompletionScore(profile) : undefined;
+
   return (
     <div className="flex flex-col gap-6">
-      {!isPublic && (
-        <div className="z-20 -mr-4 flex flex-row gap-2 self-end">
-          {
-            // Edit mode requires gqlProfile, so don't show the button if undefined
-            isOwn && gqlProfile && (
-              <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
-                <PencilLine />
-                {T("profile.editButton")}
-              </Button>
-            )
-          }
-          <Link
-            to={generatePath(RoutePaths.PublicProfile, {
-              userLogin: profile.login || "",
-            })}
-            target="_blank"
-            data-testid="open-public-profile-btn"
-          >
-            <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
-              <ExternalLinkLine />
-            </Button>
-          </Link>
-        </div>
-      )}
+      <div className="z-20 -mr-4 flex flex-row gap-2 self-end">
+        {isOwn && (
+          <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
+            <PencilLine />
+            {T("profile.editButton")}
+          </Button>
+        )}
+        <Link
+          to={generatePath(RoutePaths.PublicProfile, {
+            userLogin: profile.login || "",
+          })}
+          target="_blank"
+          data-testid="open-public-profile-btn"
+        >
+          <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
+            <ExternalLinkLine />
+          </Button>
+        </Link>
+      </div>
+
       <div
         className={cn("flex flex-col gap-2", {
-          "mt-6": isPublic,
+          "mt-6": !isOwn,
         })}
       >
         <div data-testid="login" className="font-belwe text-3xl font-normal text-white">
@@ -105,12 +102,13 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode, gq
           </div>
         )}
       </div>
-      {gqlProfile && gqlProfile?.completionScore !== undefined && gqlProfile.completionScore < 95 ? (
+
+      {isOwn && completionScore && completionScore < 95 ? (
         <div className="flex w-full flex-col gap-2 rounded-2xl bg-completion-gradient px-5 py-4">
           <div className="font-walsheim text-sm font-medium text-greyscale-50">
-            {T("profile.completion", { completion: gqlProfile.completionScore.toString() })}
+            {T("profile.completion", { completion: completionScore })}
           </div>
-          <CompletionBar completionScore={gqlProfile.completionScore} />
+          <CompletionBar completionScore={completionScore} />
         </div>
       ) : null}
       {(profile.bio || profile.location || profile.createdAt) && (

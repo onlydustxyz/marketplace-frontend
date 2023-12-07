@@ -10,11 +10,11 @@ import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 import ArrowRightLine from "src/icons/ArrowRightLine";
 import { AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { useMemo } from "react";
+import { UserProfile } from "src/api/Users/queries";
 
 type Props = {
-  profile: Profile;
+  profile: UserProfile;
 };
 
 export default function StatsSection({ profile }: Props) {
