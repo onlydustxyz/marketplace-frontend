@@ -5,6 +5,8 @@ import ProjectApi from "src/api/Project";
 import Loader from "src/components/Loader";
 import SEO from "src/components/SEO";
 import View from "./View";
+import { HttpStatusStrings } from "src/api/query.utils";
+import { FetchError } from "src/api/query.type";
 
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<{ projectKey: string }>();
@@ -17,21 +19,19 @@ export default function ProjectDetails() {
     return <Loader />;
   }
 
-  console.log("error", error);
-  console.log("isError", isError);
+  if (isError && error instanceof Error && "errorType" in error) {
+    const typedError = error as FetchError;
 
-  if (isError) {
+    if (typedError.errorType === HttpStatusStrings.NOT_FOUND) {
+      return <Navigate to={RoutePaths.NotFound} />;
+    }
     return <ErrorFallback />;
   }
 
-  if (!data) {
-    return <Navigate to={RoutePaths.NotFound} />;
-  }
-
-  return (
+  return data ? (
     <>
       <SEO title={`${data.name} — OnlyDust`} />
       <View project={data} loading={isLoading} error={isError} padded={!isProjectEdition} />
     </>
-  );
+  ) : null;
 }

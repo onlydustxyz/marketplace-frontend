@@ -2,7 +2,7 @@ import { QueryClient, QueryObserverOptions, QueryOptions, useMutation, useQueryC
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
-import { mapHttpStatusToString } from "./query.utils";
+import { createFetchError, mapHttpStatusToString } from "./query.utils";
 
 interface UseBaseUploaderOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
@@ -62,7 +62,7 @@ export function useBaseUploader<Response = unknown>({
             }
           }
 
-          throw { status: res.status, message: res.statusText, errorType: mapHttpStatusToString(res.status) };
+          throw createFetchError(res, mapHttpStatusToString);
         })
         .catch(e => {
           console.log("Error!!", e);

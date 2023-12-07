@@ -1,3 +1,5 @@
+import { FetchError } from "./query.type";
+
 export enum HttpStatusStrings {
   BAD_REQUEST = "BAD_REQUEST",
   FORBIDDEN = "FORBIDDEN",
@@ -19,3 +21,14 @@ export function mapHttpStatusToString(statusCode: number): HttpStatusStrings | n
 
   return statusMap[statusCode] || null;
 }
+
+export const createFetchError = (
+  res: Response,
+  mapHttpStatusToString: (statusCode: number) => HttpStatusStrings | null
+): FetchError => {
+  const error = new Error(res.statusText) as FetchError;
+  error.status = res.status;
+  error.message = res.statusText;
+  error.errorType = mapHttpStatusToString(res.status);
+  return error;
+};

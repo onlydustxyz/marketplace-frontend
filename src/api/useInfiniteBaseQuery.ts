@@ -2,7 +2,7 @@ import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 import { UseInfiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
-import { mapHttpStatusToString } from "./query.utils";
+import { createFetchError, mapHttpStatusToString } from "./query.utils";
 
 export interface useInfiniteBaseQueryProps {
   resourcePath: string;
@@ -69,7 +69,7 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
             return res.json();
           }
 
-          throw { status: res.status, message: res.statusText, errorType: mapHttpStatusToString(res.status) };
+          throw createFetchError(res, mapHttpStatusToString);
         })
         .catch(e => {
           throw e;
