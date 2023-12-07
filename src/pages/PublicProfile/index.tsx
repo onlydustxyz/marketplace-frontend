@@ -8,14 +8,17 @@ import { RoutePaths } from "src/App";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 import SEO from "src/components/SEO";
-import useRestfulProfile from "src/hooks/useRestfulProfile/useRestfulProfile";
+import UsersApi from "src/api/Users";
 
 const PublicProfilePage = () => {
   const { userLogin } = useParams();
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
-  const { data: userProfile, isLoading } = useRestfulProfile({ githubUserLogin: userLogin ?? "" });
+
+  const { data: userProfile, isLoading } = UsersApi.queries.useUserProfileByGithubLogin({
+    params: { login: userLogin },
+  });
 
   if (!userProfile && !isLoading) {
     showToaster(T("profile.error.notFound"), { isError: true });

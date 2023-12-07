@@ -4,12 +4,6 @@ import { Dispatch, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import {
-  OwnUserProfileDetailsFragment,
-  OwnUserProfileDocument,
-  UserProfileFragment,
-  useUpdateUserProfileMutation,
-} from "src/__generated/graphql";
 import Badge, { BadgeSize } from "src/components/Badge";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
@@ -22,8 +16,12 @@ import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
 import config, { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
-import { UserProfileInfo, fromFragment, toVariables } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
-import useUserProfile from "src/App/Stacks/ContributorProfileSidePanel/useUserProfile";
+import {
+  Channel,
+  UserProfileInfo,
+  fromFragment,
+  mapFormDataToSchema,
+} from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { useIntl } from "src/hooks/useIntl";
 import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
@@ -47,10 +45,16 @@ import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
 import useApplications from "./useApplications";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
+import { useShowToaster } from "src/hooks/useToaster";
+import isContactInfoProvided from "src/utils/isContactInfoProvided";
+import MeApi from "src/api/me";
+import useMutationAlert from "src/api/useMutationAlert";
 import User3Line from "src/icons/User3Line";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 export default function Overview() {
   const { T } = useIntl();
+  const showToaster = useShowToaster();
   const { project } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId, roles } = useAuth();
   const { lastVisitedProjectId } = useSession();
@@ -75,8 +79,7 @@ export default function Overview() {
   const { alreadyApplied, applyToProject } = useApplications(projectId, projectSlug);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
 
-  const { data: userProfileData } = useUserProfile({ githubUserId });
-  const profile = userProfileData?.profile;
+  const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});
 
   const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
@@ -99,6 +102,10 @@ export default function Overview() {
     () => project.organizations?.flatMap(({ repos }) => repos).length ?? 0,
     [project.organizations]
   );
+
+  if (isError) {
+    showToaster(T("profile.error.cantFetch"), { isError: true });
+  }
 
   return (
     <>
@@ -197,8 +204,10 @@ export default function Overview() {
           </Card>
         </div>
         <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
-          {hiring && !isCurrentUserMember && profile && (
-            <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile }} />
+          {hiring && !isCurrentUserMember && myProfileInfo && (
+            <ApplyCallout
+              {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile: myProfileInfo }}
+            />
           )}
           {isMd && (
             <OverviewPanel
@@ -287,20 +296,21 @@ interface ApplyCalloutProps {
   alreadyApplied?: boolean;
   applyToProject: () => void;
   dispatchSession: Dispatch<Action>;
-  profile: UserProfileFragment & OwnUserProfileDetailsFragment;
+  profile: UseGetMyProfileInfoResponse;
 }
 
 function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dispatchSession }: ApplyCalloutProps) {
   const { T } = useIntl();
   const getLoginUrl = useLoginUrl();
   const login_url = useMemo(() => getLoginUrl(), []);
-  const contactInfoProvided = Boolean(
-    profile.contacts.telegram?.contact ||
-      profile.contacts.whatsapp?.contact ||
-      profile.contacts.twitter?.contact ||
-      profile.contacts.discord?.contact ||
-      profile.contacts.linkedin?.contact
-  );
+
+  const contactInfoProvided = isContactInfoProvided(profile, [
+    Channel.Telegram,
+    Channel.Whatsapp,
+    Channel.Twitter,
+    Channel.Discord,
+    Channel.LinkedIn,
+  ]);
 
   const [contactInfoRequested, setContactInfoRequested] = useState(false);
 
@@ -320,16 +330,31 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
     }
   }, []);
 
-  const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
-    context: { graphqlErrorDisplay: "toaster" },
-    refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
-    awaitRefetchQueries: true,
-    onCompleted: applyToProject,
+  const {
+    mutate: updateUserProfileInfo,
+    isPending: userProfilInformationIsPending,
+    ...restUpdateProfileMutation
+  } = MeApi.mutations.useUpdateProfile({
+    options: {
+      onSuccess: applyToProject,
+    },
   });
 
-  const submitDisabled = !isDirty || !isValid || loading;
+  useMutationAlert({
+    mutation: restUpdateProfileMutation,
+    success: {
+      message: T("profile.form.success"),
+    },
+    error: {
+      message: T("profile.form.error"),
+    },
+  });
 
-  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
+  const submitDisabled = !isDirty || !isValid || userProfilInformationIsPending;
+
+  const onSubmit = (formData: UserProfileInfo) => {
+    updateUserProfileInfo(mapFormDataToSchema(formData));
+  };
 
   return (
     <Card className="p-4 lg:p-4">

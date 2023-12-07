@@ -3,6 +3,7 @@ import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { PROJECT_TAGS } from "../Project/tags";
 import MeApi from ".";
 import { components } from "src/__generated/api";
+import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
 
 export type UseUpdateMeMeBody = components["schemas"]["PatchMeContract"];
 
@@ -69,4 +70,32 @@ const useApplyProject = ({
   });
 };
 
-export default { useAcceptProjectLeaderInvitation, useClaimProject, usePayoutInfo, useApplyProject, useUpdateMe };
+export type UseUpdateProfileBody = components["schemas"]["UserProfileRequest"];
+export type UseUpdateProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
+
+const useUpdateProfile = ({ options = {} }: UseMutationProps<UseUpdateProfileResponse, UseUpdateProfileBody>) => {
+  return useBaseMutation<UseUpdateProfileBody, UseUpdateProfileResponse>({
+    resourcePath: API_PATH.ME_PROFILE,
+    invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
+    method: "PUT",
+    ...options,
+  });
+};
+
+const useUploadProfilePicture = ({ options = {} }: UseUploaderProps<{ url: string }, undefined>) => {
+  return useBaseUploader<{ url: string }>({
+    resourcePath: API_PATH.ME_PROFILE_PICTURE,
+    method: "POST",
+    ...options,
+  });
+};
+
+export default {
+  useAcceptProjectLeaderInvitation,
+  useClaimProject,
+  usePayoutInfo,
+  useApplyProject,
+  useUpdateMe,
+  useUpdateProfile,
+  useUploadProfilePicture,
+};

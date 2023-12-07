@@ -1,19 +1,37 @@
-import {
-  AllocatedTime,
-  Channel,
-  OwnUserProfileDetailsFragment,
-  ProfileCover,
-  UpdateUserProfileMutationVariables,
-  UserProfileFragment,
-} from "src/__generated/graphql";
 import { LanguageMap } from "src/types";
-import { translateProfileCover } from "src/App/Stacks/ContributorProfileSidePanel/utils";
+import { UseUpdateProfileBody } from "src/api/me/mutations";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+import { components } from "src/__generated/api";
+import { translateProfileCover } from "../utils";
+
+export enum Channel {
+  Discord = "DISCORD",
+  Email = "EMAIL",
+  LinkedIn = "LINKEDIN",
+  Telegram = "TELEGRAM",
+  Twitter = "TWITTER",
+  Whatsapp = "WHATSAPP",
+}
+
+export enum AllocatedTime {
+  LessThanOneDay = "LESS_THAN_ONE_DAY",
+  GreaterThanThreeDays = "GREATER_THAN_THREE_DAYS",
+  None = "NONE",
+  OneToThreeDays = "ONE_TO_THREE_DAYS",
+}
+
+export enum ProfileCover {
+  Blue = "BLUE",
+  Cyan = "CYAN",
+  Magenta = "MAGENTA",
+  Yellow = "YELLOW",
+}
 
 export type UserProfileInfo = {
   location: string;
   bio: string;
   website: string;
-  githubHandle: string;
+  login: string;
   isGithubHandlePublic: boolean;
   email: string;
   isEmailPublic: boolean;
@@ -27,73 +45,102 @@ export type UserProfileInfo = {
   isDiscordPublic: boolean;
   linkedin: string;
   isLinkedInPublic: boolean;
-  languages: LanguageMap;
-  weeklyAllocatedTime: AllocatedTime;
+  technologies: LanguageMap;
+  weeklyAllocatedTime: components["schemas"]["PrivateUserProfileResponse"]["allocatedTimeToContribute"];
   lookingForAJob: boolean;
   cover: ProfileCover;
+  avatarUrl?: string;
 };
 
-export const fromFragment = (fragment: UserProfileFragment & OwnUserProfileDetailsFragment): UserProfileInfo => ({
-  bio: fragment.bio ?? "",
-  location: fragment.location ?? "",
-  website: fragment.website ?? "",
-  githubHandle: fragment.login ?? "",
-  isGithubHandlePublic: true,
-  email: fragment.contacts.email?.contact || "",
-  isEmailPublic: fragment.contacts.email?.public ?? false,
-  telegram: fragment.contacts.telegram?.contact?.split("/").at(-1) ?? "",
-  isTelegramPublic: fragment.contacts.telegram?.public ?? true,
-  whatsapp: fragment.contacts.whatsapp?.contact ?? "",
-  isWhatsappPublic: fragment.contacts.whatsapp?.public ?? true,
-  twitter: fragment.contacts.twitter?.contact?.split("/").at(-1) ?? "",
-  isTwitterPublic: fragment.contacts.twitter?.public ?? true,
-  discord: fragment.contacts.discord?.contact ?? "",
-  isDiscordPublic: fragment.contacts.discord?.public ?? true,
-  linkedin: fragment.contacts.linkedin?.contact?.split("/").at(-1) ?? "",
-  isLinkedInPublic: fragment.contacts.linkedin?.public ?? true,
-  languages: fragment.languages ?? {},
-  weeklyAllocatedTime: translateTimeAllocation(fragment.weeklyAllocatedTime) ?? AllocatedTime.None,
-  lookingForAJob: fragment.lookingForAJob ?? false,
-  cover: translateProfileCover(fragment.cover) ?? ProfileCover.Blue,
-});
+export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileInfo => {
+  const { bio, location, website, login, contacts, technologies, allocatedTimeToContribute, isLookingForAJob, cover } =
+    profile;
 
-export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutationVariables => ({
-  bio: profile.bio,
-  contactInformations: [
-    { channel: Channel.Email, contact: profile.email, public: profile.isEmailPublic },
-    {
-      channel: Channel.Telegram,
-      contact: profile.telegram && `https://t.me/${sanitizeContactHandle(profile.telegram)}`,
-      public: profile.isTelegramPublic,
-    },
-    {
-      channel: Channel.Whatsapp,
-      contact: profile.whatsapp,
-      public: profile.isWhatsappPublic,
-    },
-    {
-      channel: Channel.Twitter,
-      contact: profile.twitter && `https://twitter.com/${sanitizeContactHandle(profile.twitter)}`,
-      public: profile.isTwitterPublic,
-    },
-    {
-      channel: Channel.Discord,
-      contact: profile.discord && sanitizeContactHandle(profile.discord),
-      public: profile.isDiscordPublic,
-    },
-    {
-      channel: Channel.LinkedIn,
-      contact: profile.linkedin && `https://www.linkedin.com/in/${sanitizeContactHandle(profile.linkedin)}`,
-      public: profile.isLinkedInPublic,
-    },
-  ],
-  languages: Object.entries(profile.languages).map(([name, weight]) => ({ name, weight })),
-  location: profile.location,
-  lookingForAJob: profile.lookingForAJob,
-  website: profile.website,
-  weeklyAllocatedTime: profile.weeklyAllocatedTime,
-  cover: profile.cover,
-});
+  const getContactInfo = (channel: Channel) => contacts?.find(contact => contact.channel === channel)?.contact;
+
+  const isContactPublic = (channel: Channel) =>
+    contacts?.find(contact => contact.channel === channel)?.visibility === "public" ?? true;
+
+  return {
+    bio: bio ?? "",
+    location: location ?? "",
+    website: website ?? "",
+    login: login ?? "",
+    isGithubHandlePublic: true,
+    email: getContactInfo(Channel.Email) ?? "",
+    isEmailPublic: isContactPublic(Channel.Email),
+    telegram: getContactInfo(Channel.Telegram)?.split("/").at(-1) ?? "",
+    isTelegramPublic: isContactPublic(Channel.Telegram),
+    whatsapp: getContactInfo(Channel.Whatsapp) ?? "",
+    isWhatsappPublic: isContactPublic(Channel.Whatsapp),
+    twitter: getContactInfo(Channel.Twitter)?.split("/").at(-1) ?? "",
+    isTwitterPublic: isContactPublic(Channel.Twitter),
+    discord: getContactInfo(Channel.Discord) ?? "",
+    isDiscordPublic: isContactPublic(Channel.Discord),
+    linkedin: getContactInfo(Channel.LinkedIn) ?? "",
+    isLinkedInPublic: isContactPublic(Channel.LinkedIn),
+    technologies: technologies ?? {},
+    weeklyAllocatedTime: allocatedTimeToContribute ?? AllocatedTime.None,
+    lookingForAJob: isLookingForAJob ?? false,
+    cover: translateProfileCover(cover || "") ?? ProfileCover.Blue,
+  };
+};
+
+export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileBody => {
+  const {
+    bio,
+    avatarUrl,
+    lookingForAJob,
+    cover,
+    location,
+    website,
+    weeklyAllocatedTime,
+    email,
+    telegram,
+    whatsapp,
+    twitter,
+    discord,
+    linkedin,
+    technologies,
+    isEmailPublic,
+    isTelegramPublic,
+    isWhatsappPublic,
+    isTwitterPublic,
+    isDiscordPublic,
+    isLinkedInPublic,
+  } = profile;
+  return {
+    bio,
+    contacts: [
+      createContact(Channel.Email, email, isEmailPublic),
+      createContact(Channel.Telegram, telegram, isTelegramPublic, "https://t.me/"),
+      createContact(Channel.Whatsapp, whatsapp, isWhatsappPublic),
+      createContact(Channel.Twitter, twitter, isTwitterPublic, "https://twitter.com/"),
+      createContact(Channel.Discord, discord, isDiscordPublic),
+      createContact(Channel.LinkedIn, linkedin, isLinkedInPublic, "https://www.linkedin.com/in/"),
+    ],
+    technologies,
+    location,
+    isLookingForAJob: lookingForAJob,
+    website,
+    allocatedTimeToContribute: weeklyAllocatedTime as AllocatedTime,
+    cover,
+    ...(avatarUrl ? { avatarUrl } : {}),
+  };
+};
+
+function createContact(
+  channel: components["schemas"]["ContactInformation"]["channel"],
+  contact: string | null,
+  isPublic: boolean,
+  prefixUrl?: string
+): components["schemas"]["ContactInformation"] {
+  return {
+    channel,
+    contact: contact ? `${prefixUrl || ""}${sanitizeContactHandle(contact)}` : "",
+    visibility: isPublic ? "public" : "private",
+  };
+}
 
 function sanitizeContactHandle(contact: string) {
   let sanitizedContact = contact;
@@ -108,18 +155,3 @@ function sanitizeContactHandle(contact: string) {
   }
   return sanitizedContact;
 }
-
-const translateTimeAllocation = (timeAllocation: string): AllocatedTime | undefined => {
-  switch (timeAllocation) {
-    case "none":
-      return AllocatedTime.None;
-    case "lt1day":
-      return AllocatedTime.LessThanOneDay;
-    case "1to3days":
-      return AllocatedTime.OneToThreeDays;
-    case "gt3days":
-      return AllocatedTime.MoreThanThreeDays;
-    default:
-      return undefined;
-  }
-};

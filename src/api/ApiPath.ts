@@ -29,6 +29,8 @@ export const API_PATH = {
 
   /* --------------------------------- USERS -------------------------------- */
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),
+  USER_PROFILE_BY_GITHUB_LOGIN: (githubLogin: string) => BASE_API_V1(`users/login/${githubLogin}`),
+  USER_PROFILE_BY_GITHUB_ID: (githubId: string) => BASE_API_V1(`users/${githubId}`),
 
   /* ----------------------------------- ME ----------------------------------- */
   MY_CONTRIBUTIONS: BASE_API_V1("me/contributions"),
@@ -41,4 +43,6 @@ export const API_PATH = {
   MY_CLAIM: (projectId: string) => BASE_API_V1(`me/project-claims/${projectId}`),
   ME_APPLY_TO_PROJECT: BASE_API_V1("me/applications"),
   MY_PAYOUT_INFO: BASE_API_V1("me/payout-info"),
+  ME_PROFILE: BASE_API_V1("me/profile"),
+  ME_PROFILE_PICTURE: BASE_API_V1("me/profile/avatar"),
 };

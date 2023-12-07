@@ -11,7 +11,7 @@ interface Props {
     message?: string;
     default?: boolean;
   };
-  success: {
+  success?: {
     message: string;
   };
 }

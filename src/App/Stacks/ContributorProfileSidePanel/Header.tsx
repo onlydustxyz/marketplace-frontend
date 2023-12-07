@@ -1,49 +1,24 @@
 import { cn } from "src/utils/cn";
-import { useRef, useState } from "react";
 import { ProfileCover } from "src/__generated/graphql";
-import PencilLine from "src/icons/PencilLine";
 import HeaderCoverButton from "./EditView/HeaderCoverButton";
-import FileInput from "./EditView/FileInput";
-import useUploadProfilePicture from "./useProfilePictureUpload";
-import { useApolloClient } from "@apollo/client";
-import Loader from "src/assets/icons/Loader";
-import { useMediaQuery } from "usehooks-ts";
-import { viewportConfig } from "src/config";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
+import { UserProfile } from "src/api/Users/queries";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+import ProfilePicture from "./ProfilePicture";
 
 type Props = {
-  profile: Profile;
+  profile: UserProfile | UseGetMyProfileInfoResponse;
   editable?: boolean;
   onChange?: (value: ProfileCover) => void;
+  onChangeProfilePicture?: (value: string) => void;
   rounded?: boolean;
 };
 
-export default function Header({ profile, editable, onChange, rounded }: Props) {
+export default function Header({ profile, editable, onChange, onChangeProfilePicture, rounded }: Props) {
   const { avatarUrl, cover } = profile;
-  const [uploading, setUploading] = useState(false);
-
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const uploadProfilePicture = useUploadProfilePicture();
-  const { cache } = useApolloClient();
-
-  const onProfilePictureChange = async (picture: File) => {
-    setUploading(true);
-    const url = await uploadProfilePicture(picture);
-    setUploading(false);
-    cache.modify({
-      id: cache.identify(profile),
-      fields: {
-        avatarUrl: () => url,
-      },
-    });
-  };
 
   const handleClick = (value: ProfileCover) => {
     onChange && onChange(value);
   };
-
-  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   return (
     <div className="z-10">
@@ -80,37 +55,7 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
           </div>
         )}
       </div>
-
-      {avatarUrl && (
-        <div
-          className={cn("relative w-fit", { "cursor-pointer": editable })}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          {uploading && (
-            <div className="absolute ml-8 flex h-24 w-24 items-center justify-center rounded-full bg-spaceBlue-800/50">
-              <Loader className="animate-spin" />
-            </div>
-          )}
-          <img
-            src={avatarUrl}
-            className={cn("-mt-12 ml-8 h-24 w-24 rounded-full", {
-              "outline outline-4 outline-greyscale-50/12": isXl,
-            })}
-            data-testid="avatarUrl"
-          />
-          {editable && !uploading && (
-            <>
-              <PencilLine
-                className="absolute bottom-0 right-0
-            flex h-6 w-6 items-center rounded-full bg-greyscale-50
-            p-1 text-base text-spaceBlue-900
-            shadow-bottom-sm outline outline-2 outline-black"
-              />
-              {editable && <FileInput ref={fileInputRef} setFile={onProfilePictureChange} />}
-            </>
-          )}
-        </div>
-      )}
+      <ProfilePicture editable={editable} avatarUrl={avatarUrl} onChange={onChangeProfilePicture} />
     </div>
   );
 }

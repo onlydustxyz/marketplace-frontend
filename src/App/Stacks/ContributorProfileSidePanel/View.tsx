@@ -1,22 +1,19 @@
-import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__generated/graphql";
-
 import ReadOnlyView from "./ReadOnlyView";
-import { useState } from "react";
 import EditView from "./EditView";
-import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
+import { UserProfile } from "src/api/Users/queries";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 type Props = {
-  gqlProfile?: UserProfileFragment & OwnUserProfileDetailsFragment; // we don't want to update the edit form with reste for now
-  restFulProfile: Profile; // we don't want to update the edit form with reste for now
+  profile: UserProfile | UseGetMyProfileInfoResponse;
   isOwn?: boolean;
+  setEditMode: (value: boolean) => void;
+  editMode: boolean;
 };
 
-export default function View({ isOwn, restFulProfile, gqlProfile }: Props) {
-  const [editMode, setEditMode] = useState(false);
-
-  return editMode && gqlProfile ? (
-    <EditView profile={gqlProfile} restFulProfile={restFulProfile} setEditMode={setEditMode} />
+export default function View({ isOwn, profile, editMode, setEditMode }: Props) {
+  return editMode ? (
+    <EditView myProfile={profile} setEditMode={setEditMode} />
   ) : (
-    <ReadOnlyView userProfile={restFulProfile} setEditMode={setEditMode} isOwn={isOwn} gqlProfile={gqlProfile} />
+    <ReadOnlyView profile={profile} setEditMode={setEditMode} isOwn={isOwn} />
   );
 }
