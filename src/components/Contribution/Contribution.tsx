@@ -16,7 +16,10 @@ type Props = {
 
 export function Contribution({ contribution, isMobile = false, isMine = false }: Props) {
   const { githubUserId } = useAuth();
-  const { project: outletProject } = useOutletContext<OutletContext>();
+
+  const outlet = useOutletContext<OutletContext>();
+  const { project: outletProject } = outlet ?? {};
+
   const [openContributionPanel] = useStackContribution();
 
   const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, rewardIds, type } = contribution;
