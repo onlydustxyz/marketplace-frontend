@@ -254,13 +254,14 @@ export default function Contributions() {
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Title>{T("project.details.contributions.title")}</Title>
         {!hasOrgsWithUnauthorizedRepos ? (
-          <Flex className="gap-2">
+          <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
             <EditProjectButton projectKey={projectKey} />
             <Button
               width={Width.Fit}
+              className="flex-1 md:flex-initial"
               size={ButtonSize.Sm}
               disabled={isRewardDisabled}
               onBackground={ButtonOnBackground.Blue}
