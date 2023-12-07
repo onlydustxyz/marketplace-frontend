@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { screen, waitFor } from "@testing-library/react";
-import { ComponentProps } from "react";
 import { MemoryRouter } from "react-router-dom";
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { AuthProvider } from "src/hooks/useAuth";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { ToasterProvider } from "src/hooks/useToaster";
@@ -10,7 +10,7 @@ import View from "src/pages/ProjectDetails/View";
 import ApolloWrapper from "src/providers/ApolloWrapper";
 import { renderWithIntl } from "src/test/utils";
 
-const project: ComponentProps<typeof View>["project"] = {
+const project: UseGetProjectBySlugResponse = {
   id: "test-project-id",
   indexedAt: "2023-11-09T16:23:38.223Z",
   indexingComplete: true,
@@ -147,7 +147,7 @@ describe("Contributors page", () => {
               <ApolloWrapper>
                 <AuthProvider>
                   <QueryClientProvider client={queryClient}>
-                    <View project={project} loading={false} error={null} />
+                    <View />
                   </QueryClientProvider>
                 </AuthProvider>
               </ApolloWrapper>

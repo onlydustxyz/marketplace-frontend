@@ -1,6 +1,6 @@
 import SampleApi from ".";
 import useMutationAlert from "src/api/useMutationAlert";
-import UseQueriesError from "src/api/useQueriesError";
+import { UseQueriesError } from "src/api/useQueriesError";
 
 export const Test = () => {
   const { data, ...query } = SampleApi.queries.useProjectSampleByIdQuery({
