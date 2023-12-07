@@ -171,6 +171,7 @@ export function useInfiniteRestfulData<R extends ResponseData>(
     initialPageParam,
     getNextPageParam,
     refetchInterval,
+    staleTime: 10000,
     refetchIntervalInBackground,
     enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
     ...restQueryOptions,
