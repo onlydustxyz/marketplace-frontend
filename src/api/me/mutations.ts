@@ -3,6 +3,7 @@ import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { PROJECT_TAGS } from "../Project/tags";
 import MeApi from ".";
 import { components } from "src/__generated/api";
+import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
 
 export type UseUpdateMeMeBody = components["schemas"]["PatchMeContract"];
 
@@ -81,6 +82,14 @@ const useUpdateProfile = ({ options = {} }: UseMutationProps<UseUpdateProfileRes
   });
 };
 
+const useUploadProfilePicture = ({ options = {} }: UseUploaderProps<{ url: string }, undefined>) => {
+  return useBaseUploader<{ url: string }>({
+    resourcePath: API_PATH.ME_PROFILE_PICTURE,
+    method: "POST",
+    ...options,
+  });
+};
+
 export default {
   useAcceptProjectLeaderInvitation,
   useClaimProject,
@@ -88,4 +97,5 @@ export default {
   useApplyProject,
   useUpdateMe,
   useUpdateProfile,
+  useUploadProfilePicture,
 };
