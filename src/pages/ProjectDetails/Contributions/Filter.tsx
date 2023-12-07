@@ -1,10 +1,12 @@
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import MeApi from "src/api/me";
-import { Item } from "src/components/FilterSelect/FilterSelect";
 import { Filter } from "src/components/New/Filter/Filter";
+import { FilterContributorSelect } from "src/components/New/Filter/FilterContributorSelect";
 import FilterDatepicker from "src/components/New/Filter/FilterDatepicker";
 import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
+import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { GithubContributionType } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
@@ -12,7 +14,7 @@ import { useLocalStorage } from "usehooks-ts";
 type Filters = {
   dateRange: DateRange;
   repos: Item[];
-  contributors: string[]; // Contributor ids
+  contributors: Item[];
   types: GithubContributionType[];
 };
 
@@ -51,12 +53,12 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
     const { from: fromDate, to: toDate } = dateRange;
 
     if (fromDate && toDate) {
-      filterQueryParams.fromDate = fromDate instanceof Date ? fromDate.toISOString() : fromDate;
-      filterQueryParams.toDate = toDate instanceof Date ? toDate.toISOString() : toDate;
+      filterQueryParams.fromDate = fromDate instanceof Date ? format(fromDate, "yyyy-MM-dd") : fromDate;
+      filterQueryParams.toDate = toDate instanceof Date ? format(toDate, "yyyy-MM-dd") : toDate;
     }
 
     onChange(filterQueryParams);
-  }, [filters, onChange]);
+  }, [filters]);
 
   const hasActiveFilters = Boolean(
     (filters.dateRange.from && filters.dateRange.to) ||
@@ -94,9 +96,9 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
     setFilters(prevState => updateState(prevState, { repos }));
   }
 
-  //   function updateContributors(contributors: Item[]) {
-  //     setFilters(prevState => updateState(prevState, { contributors }));
-  //   }
+  function updateContributors(contributors: Item[]) {
+    setFilters(prevState => updateState(prevState, { contributors }));
+  }
 
   function updateTypes(type: GithubContributionType) {
     setFilters(prevState => {
@@ -116,7 +118,7 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
         selected={filters.repos}
         onChange={updateRepos}
       />
-      {/* <FilterContributorSelect contributors={} selected={filters.contributors} onChange={updateContributors} /> */}
+      <FilterContributorSelect contributors={[]} selected={filters.contributors} onChange={updateContributors} />
       <FilterTypeOptions selected={filters.types} onChange={updateTypes} />
     </Filter>
   );

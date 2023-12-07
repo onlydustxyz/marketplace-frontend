@@ -1,34 +1,33 @@
-import { FilterSelect, Item } from "src/components/FilterSelect/FilterSelect";
+import { FilterField } from "src/components/New/Filter/FilterField";
+import { FilterSelect, Item } from "src/components/New/Filter/FilterSelect";
 import { useIntl } from "src/hooks/useIntl";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import SearchLine from "src/icons/SearchLine";
 
 export function FilterContributorSelect({
   contributors,
   selected,
   onChange,
-  multiple = false,
 }: {
   contributors: Item[];
   selected: Item[];
   onChange: (contributors: Item[]) => void;
-  multiple?: boolean;
 }) {
   const { T } = useIntl();
 
   return (
-    <FilterSelect
-      label={T("filter.contributor.title")}
-      // TOOD update icon
-      icon={className => <GitRepositoryLine className={className} />}
-      tokens={{ zero: "filter.contributor.all", other: "filter.contributor" }}
-      items={contributors}
-      multiple={multiple}
-      selected={selected}
-      onChange={value => {
-        const contributors = Array.isArray(value) ? value : [value];
-        onChange(contributors);
-      }}
-      disabled={contributors.length <= 1}
-    />
+    <FilterField label={T("filter.contributor.title")}>
+      <FilterSelect
+        icon={className => <SearchLine className={className} />}
+        tokens={{ zero: "filter.contributor.all", other: "filter.contributor" }}
+        items={contributors}
+        multiple
+        selected={selected}
+        onChange={value => {
+          const contributors = Array.isArray(value) ? value : [value];
+          onChange(contributors);
+        }}
+        disabled={contributors.length <= 1}
+      />
+    </FilterField>
   );
 }

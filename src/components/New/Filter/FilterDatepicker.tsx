@@ -1,8 +1,8 @@
 import { startOfMonth, startOfWeek, startOfYear } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { Datepicker } from "src/components/New/Field/Datepicker";
+import { FilterField } from "src/components/New/Filter/FilterField";
 import { useIntl } from "src/hooks/useIntl";
-import { FilterLabel } from "./FilterLabel";
 
 export default function FilterDatepicker({
   selected,
@@ -14,7 +14,7 @@ export default function FilterDatepicker({
   const { T } = useIntl();
 
   return (
-    <FilterLabel label={T("filter.date.title")}>
+    <FilterField label={T("filter.date.title")}>
       <Datepicker
         mode="range"
         value={selected}
@@ -41,6 +41,6 @@ export default function FilterDatepicker({
         ]}
         isElevated
       />
-    </FilterLabel>
+    </FilterField>
   );
 }

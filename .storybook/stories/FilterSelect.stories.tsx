@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { FilterSelect } from "src/components/FilterSelect/FilterSelect";
+import { FilterSelect } from "src/components/New/Filter/FilterSelect";
 import FolderLine from "src/icons/FolderLine";
 
 export default {
@@ -23,7 +23,6 @@ const items = [
 ];
 
 const defaultProps: ComponentProps<typeof FilterSelect> = {
-  label: "Label",
   icon: className => <FolderLine className={className} />,
   tokens: { zero: "filter.project.all", other: "filter.project" },
   items,

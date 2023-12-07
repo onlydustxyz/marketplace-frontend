@@ -4,7 +4,7 @@ import { OrderBy } from "src/__generated/graphql";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
-import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
+import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 import { ContributionTable, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
@@ -13,8 +13,8 @@ import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import { ContributionStatus } from "src/types";
+import { ContributionsFilter, FilterQueryParams } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
-import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 
 export enum TableColumns {
   Date = "CREATED_AT",
@@ -38,12 +38,6 @@ const initialSort: Record<ContributionStatus, TableSort> = {
   },
 };
 
-const initialFilters: Filters = {
-  types: [],
-  projects: [],
-  repos: [],
-};
-
 export default function Contributions() {
   const { T } = useIntl();
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
@@ -51,31 +45,7 @@ export default function Contributions() {
   const { isActiveTab, updateActiveTab } = useContributionTabs();
   const { headerCells, bodyRow } = useContributionTable();
 
-  const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "contributions-table-filters",
-    JSON.stringify(initialFilters)
-  );
-  const filtersState = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
-  const [{ types, projects, repos }] = filtersState;
-
-  const projectIds = projects.map(({ id }) => String(id));
-  const repoIds = repos.map(({ id }) => String(id));
-
-  const filterQueryParams = {
-    types: types.join(","),
-    projects: projectIds.join(","),
-    repositories: repoIds.join(","),
-  };
-
-  const { data: projectsData } = MeApi.queries.useMyContributedProjects({
-    params: { repositories: repoIds.length ? repoIds.join(",") : "" },
-  });
-  const contributedProjects = projectsData?.projects ?? [];
-
-  const { data: reposData } = MeApi.queries.useMyContributedRepos({
-    params: { projects: projectIds.length ? projectIds.join(",") : "" },
-  });
-  const contributedRepos = reposData?.repos ?? [];
+  const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
 
   const tabItems = [
     {
@@ -159,7 +129,7 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-        { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress) }
+        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) && Boolean(filterQueryParams) }
       ),
     },
     {
@@ -188,7 +158,7 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-        { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed) }
+        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) && Boolean(filterQueryParams) }
       ),
     },
     {
@@ -217,7 +187,7 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-        { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled) }
+        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) && Boolean(filterQueryParams) }
       ),
     },
   ];
@@ -235,14 +205,7 @@ export default function Contributions() {
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
                   <div className="hidden -translate-y-3 lg:block">
-                    <ContributionFilter
-                      state={filtersState}
-                      projects={contributedProjects}
-                      repos={contributedRepos}
-                      onChange={newState => {
-                        setFiltersStorage(JSON.stringify(newState));
-                      }}
-                    />
+                    <ContributionsFilter onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)} />
                   </div>
                 </div>
               </header>

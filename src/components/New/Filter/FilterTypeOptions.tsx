@@ -1,10 +1,10 @@
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
+import { FilterField } from "src/components/New/Filter/FilterField";
 import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import { GithubContributionType } from "src/types";
-import { FilterLabel } from "./FilterLabel";
 
 export function FilterTypeOptions({
   selected,
@@ -34,7 +34,7 @@ export function FilterTypeOptions({
   ];
 
   return (
-    <FilterLabel label={T("filter.type.title")}>
+    <FilterField label={T("filter.type.title")}>
       <div className="flex gap-2">
         {typeOptions.map(option => (
           <div className="flex" key={option.value}>
@@ -52,6 +52,6 @@ export function FilterTypeOptions({
           </div>
         ))}
       </div>
-    </FilterLabel>
+    </FilterField>
   );
 }
