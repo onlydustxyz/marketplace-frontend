@@ -45,4 +45,6 @@ export const API_PATH = {
   MY_PAYOUT_INFO: BASE_API_V1("me/payout-info"),
   ME_PROFILE: BASE_API_V1("me/profile"),
   ME_PROFILE_PICTURE: BASE_API_V1("me/profile/avatar"),
+  /* ------------------------------ TECHNOLOGIES ------------------------------ */
+  TECHNOLOGIES: BASE_API_V1("technologies"),
 };
