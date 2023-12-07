@@ -21,7 +21,6 @@ import { RewardableItem } from "src/api/Project/queries";
 import { ShowMore } from "src/components/Table/ShowMore";
 import EmptyState from "../EmptyState";
 import Skeleton from "src/components/Skeleton";
-import ErrorState from "src/components/ErrorState";
 import { Contributor } from "../../types";
 import { useOutletContext } from "react-router-dom";
 import { OutletContext } from "src/pages/ProjectDetails/View";
@@ -49,7 +48,6 @@ type Props = {
   contributor: Contributor;
   setIncludeIgnoredItems: (value: boolean) => void;
   loading: boolean;
-  error: boolean;
 } & ShowMoreProps;
 
 export default function View({
@@ -66,7 +64,6 @@ export default function View({
   isFetchingNextPage,
   setIncludeIgnoredItems,
   loading,
-  error,
 }: Props) {
   const { T } = useIntl();
   const { resetField } = useFormContext();
@@ -115,10 +112,6 @@ export default function View({
           <Skeleton variant="rewardableItems" />
         </div>
       );
-    }
-
-    if (error) {
-      return <ErrorState />;
     }
 
     if (contributions.length > 0 && contributor) {
