@@ -1,19 +1,13 @@
-import { ComponentProps, useEffect, useState } from "react";
-import { DateRange } from "react-day-picker";
+import { ComponentProps, useState } from "react";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { OrderBy } from "src/__generated/graphql";
 import ProjectApi from "src/api/Project";
-import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 import { ContributionTable, type TableSort } from "src/components/Contribution/ContributionTable";
-import { Item } from "src/components/FilterSelect/FilterSelect";
-import { Filter } from "src/components/New/Filter/Filter";
-import FilterDatepicker from "src/components/New/Filter/FilterDatepicker";
-import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
@@ -23,14 +17,14 @@ import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import Title from "src/pages/ProjectDetails/Title";
-import { ContributionStatus, GithubContributionType } from "src/types";
+import { ContributionStatus } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useLocalStorage } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
+import { FilterQueryParams, ProjectContributionsFilter } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
-import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 
 export enum TableColumns {
   Date = "CREATED_AT",
@@ -55,20 +49,6 @@ const initialSort: Record<ContributionStatus, TableSort> = {
   },
 };
 
-type Filters = {
-  dateRange: DateRange;
-  repos: Item[];
-  contributors: string[]; // Contributor ids
-  types: GithubContributionType[];
-};
-
-const initialFilters: Filters = {
-  dateRange: { from: undefined, to: undefined },
-  repos: [],
-  contributors: [],
-  types: [],
-};
-
 export default function Contributions() {
   const { T } = useIntl();
   const navigate = useNavigate();
@@ -91,100 +71,7 @@ export default function Contributions() {
   );
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
 
-  // ! TODO
-  // -------------------
-
-  const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "project-contributions-table-filters",
-    JSON.stringify(initialFilters)
-  );
-  const [filters, setFilters] = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
-
-  const { dateRange, repos, contributors, types } = filters;
-
-  const [hasActiveFilters, setHasActiveFilters] = useState(false);
-
-  useEffect(() => {
-    setHasActiveFilters(
-      Boolean(
-        (filters.dateRange.from && filters.dateRange.to) ||
-          filters.types.length ||
-          filters.contributors.length ||
-          filters.repos.length
-      )
-    );
-  }, [filters, setHasActiveFilters]);
-
-  const repoIds = repos.map(({ id }) => String(id));
-
-  const filterQueryParams = {
-    types: types.join(","),
-    projects: "",
-    repositories: repoIds.join(","),
-  };
-
-  const { data: reposData } = MeApi.queries.useMyContributedRepos({
-    params: { projects: "" },
-  });
-  const contributedRepos = reposData?.repos ?? [];
-
-  // -------------------
-
-  function updateType(type: GithubContributionType) {
-    setFilters(prevState => {
-      const types = prevState.types.includes(type)
-        ? prevState.types.filter(t => t !== type)
-        : [...prevState.types, type];
-
-      const newState = { ...prevState, types };
-
-      setFiltersStorage(JSON.stringify(newState));
-
-      return newState;
-    });
-  }
-
-  function updateRepos(repos: Item[]) {
-    setFilters(prevState => {
-      const newState = { ...prevState, repos };
-
-      setFiltersStorage(JSON.stringify(newState));
-
-      return newState;
-    });
-  }
-
-  //   function updateContributors(repos: Item[]) {
-  //     setFilters(prevState => {
-  //       const newState = { ...prevState, contributors };
-
-  //       setFiltersStorage(JSON.stringify(newState));
-
-  //       return newState;
-  //     });
-  //   }
-
-  function updateDate(dateRange: DateRange) {
-    setFilters(prevState => {
-      const newState = { ...prevState, dateRange };
-
-      setFiltersStorage(JSON.stringify(newState));
-
-      return newState;
-    });
-  }
-
-  function resetFilters() {
-    const newState = {
-      dateRange: { from: undefined, to: undefined },
-      repos: [],
-      contributors: [],
-      types: [],
-    };
-
-    setFilters(newState);
-    setFiltersStorage(JSON.stringify(newState));
-  }
+  const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
 
   const tabItems = [
     {
@@ -269,7 +156,9 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-        options: { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress) },
+        options: {
+          enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) && Boolean(filterQueryParams),
+        },
       }),
     },
     {
@@ -299,7 +188,9 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-        options: { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed) },
+        options: {
+          enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) && Boolean(filterQueryParams),
+        },
       }),
     },
     {
@@ -329,7 +220,9 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-        options: { enabled: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled) },
+        options: {
+          enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) && Boolean(filterQueryParams),
+        },
       }),
     },
   ];
@@ -379,18 +272,9 @@ export default function Contributions() {
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
                   <div className="hidden -translate-y-3 lg:block">
-                    <Filter isActive={hasActiveFilters} onClear={resetFilters}>
-                      <>
-                        <FilterDatepicker selected={dateRange} onChange={updateDate} />
-                        <FilterRepoSelect
-                          repos={contributedRepos.map(({ id, name }) => ({ id, label: name }))}
-                          selected={repos}
-                          onChange={updateRepos}
-                        />
-                        {/* <FilterContributorSelect contributors={} selected={contributors} onChange={updateContributors} /> */}
-                        <FilterTypeOptions selected={types} onChange={updateType} />
-                      </>
-                    </Filter>
+                    <ProjectContributionsFilter
+                      onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)}
+                    />
                   </div>
                 </div>
               </header>
