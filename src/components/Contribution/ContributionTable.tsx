@@ -15,7 +15,6 @@ import { cn } from "src/utils/cn";
 import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
-import { MobileShowMore } from "./MobileShowMore";
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
@@ -133,8 +132,8 @@ export function ContributionTable({
         })}
 
         {hasNextPage ? (
-          <div className="px-3 py-3.5">
-            <MobileShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={!fullTable} />
+          <div className="py-2">
+            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={!fullTable} />
           </div>
         ) : null}
       </div>
