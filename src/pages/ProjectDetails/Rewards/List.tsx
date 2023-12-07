@@ -60,14 +60,7 @@ const RewardList: React.FC = () => {
   }
 
   if (isRewardsLoading) {
-    return (
-      <>
-        <div className="max-w-[15%]">
-          <Skeleton variant="counter" />
-        </div>
-        <Skeleton variant="contributorList" />
-      </>
-    );
+    return <Skeleton variant="projectRewards" />;
   }
 
   return rewards ? (

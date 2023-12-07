@@ -12,6 +12,9 @@ import SkeletonInvoice from "./SkeletonInvoice";
 import SkeletonOrganizationItem from "./SkeletonOrganizationItem";
 import SkeletonRewardableItems from "./SkeletonRewardableItems";
 import SkeletonQuickActions from "./SkeletonQuickActions";
+import SkeletonProjectSidebar from "./SkeletonProjectSidebar";
+import SkeletonProjectOverview from "./SkeletonProjectOverview";
+import SkeletonProjectRewards from "./SkeletonProjectRewards";
 
 type SkeletonVariant =
   | "card"
@@ -27,7 +30,10 @@ type SkeletonVariant =
   | "rewardsList"
   | "invoice"
   | "organizationItem"
-  | "quickActions";
+  | "quickActions"
+  | "projectSidebar"
+  | "projectOverview"
+  | "projectRewards";
 
 interface SkeletonProps {
   variant: SkeletonVariant;
@@ -48,6 +54,9 @@ const VARIANT_COMPONENTS = {
   invoice: SkeletonInvoice,
   organizationItem: SkeletonOrganizationItem,
   quickActions: SkeletonQuickActions,
+  projectSidebar: SkeletonProjectSidebar,
+  projectOverview: SkeletonProjectOverview,
+  projectRewards: SkeletonProjectRewards,
 };
 
 export default function Skeleton({ variant }: SkeletonProps) {

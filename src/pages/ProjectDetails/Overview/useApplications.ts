@@ -4,12 +4,13 @@ import useMutationAlert from "src/api/useMutationAlert";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 
-export default function useApplications(projectId: string, projectSlug: string) {
+export default function useApplications(projectId: string | undefined, projectSlug: string) {
   const { user } = useAuth();
   const { T } = useIntl();
 
   const { data, refetch } = useGetProjectApplicationsQuery({
     variables: { projectId },
+    skip: !projectId,
   });
 
   const { mutate: applyProjectMutation, ...restMutation } = MeApi.mutations.useApplyProject({
@@ -34,6 +35,6 @@ export default function useApplications(projectId: string, projectSlug: string) 
   return {
     applications: data?.projects[0]?.applications,
     alreadyApplied: data?.projects[0]?.applications.some(a => a.applicantId === user?.id),
-    applyToProject: () => applyProjectMutation({ projectId }),
+    applyToProject: () => (projectId ? applyProjectMutation({ projectId }) : undefined),
   };
 }

@@ -30,6 +30,7 @@ import ProjectCreation from "src/pages/ProjectCreation/ProjectCreation";
 import ProtectedByFlag from "./ProtectedByFlag";
 import ProtectedByGithub from "./ProtectedByGithub";
 import { GITHUB_PERMISSIONS } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
+import Skeleton from "src/components/Skeleton";
 
 export enum RoutePaths {
   Home = "/",
@@ -67,27 +68,54 @@ function App() {
   const projectRoutes: RouteObject[] = [
     {
       index: true,
-      element: <ProjectDetailsOverview />,
+      element: (
+        <Suspense fallback={<Skeleton variant="projectOverview" />}>
+          <ProjectDetailsOverview />
+        </Suspense>
+      ),
     },
     {
       path: ProjectRoutePaths.Contributors,
-      element: <ProjectDetailsContributors />,
+      element: (
+        <Suspense
+          fallback={
+            <>
+              <div className="max-w-[15%]">
+                <Skeleton variant="counter" />
+              </div>
+              <Skeleton variant="contributorList" />
+            </>
+          }
+        >
+          <ProjectDetailsContributors />
+        </Suspense>
+      ),
     },
     {
       path: ProjectRoutePaths.Rewards,
       element: (
         <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProjectDetailsRewards />
+          <Suspense fallback={<Skeleton variant="projectRewards" />}>
+            <ProjectDetailsRewards />
+          </Suspense>
         </ProtectedRoute>
       ),
       children: [
         {
           index: true,
-          element: <ProjectDetailsRewardsList />,
+          element: (
+            <Suspense fallback={<Skeleton variant="projectRewards" />}>
+              <ProjectDetailsRewardsList />
+            </Suspense>
+          ),
         },
         {
           path: ProjectRewardsRoutePaths.New,
-          element: <ProjectDetailsRewardForm />,
+          element: (
+            <Suspense fallback={<Skeleton variant="projectRewards" />}>
+              <ProjectDetailsRewardForm />
+            </Suspense>
+          ),
         },
       ],
     },

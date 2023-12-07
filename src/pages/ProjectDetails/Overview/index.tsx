@@ -2,7 +2,7 @@ import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { sortBy } from "lodash";
 import { Dispatch, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import Badge, { BadgeSize } from "src/components/Badge";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
@@ -39,7 +39,6 @@ import { useMediaQuery } from "usehooks-ts";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
-import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
 import GithubRepoDetails from "./GithubRepoDetails";
 import OverviewPanel from "./OverviewPanel";
@@ -51,19 +50,23 @@ import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import User3Line from "src/icons/User3Line";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+import ProjectApi from "src/api/Project";
+import Skeleton from "src/components/Skeleton";
 
 export default function Overview() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const { project } = useOutletContext<OutletContext>();
+  const navigate = useNavigate();
+  const dispatchSession = useSessionDispatch();
+
+  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+  });
   const { isLoggedIn, githubUserId, roles } = useAuth();
   const { lastVisitedProjectId } = useSession();
 
-  const navigate = useNavigate();
-  const dispatchSession = useSessionDispatch();
-  const projectId = project?.id;
   const projectName = project?.name;
-  const projectSlug = project?.slug;
   const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
   const sponsors = project?.sponsors || [];
@@ -72,40 +75,44 @@ export default function Overview() {
   const totalContributorsCount = project?.contributorCount || 0;
   const leads = project?.leaders;
   const invitedLeads = project?.invitedLeaders;
-  const languages = getTopTechnologies(project?.technologies);
+  const languages = getTopTechnologies(project?.technologies || {});
   const hiring = project?.hiring;
-  const isProjectLeader = useProjectLeader({ id: projectId });
+  const isProjectLeader = useProjectLeader({ id: project?.id });
 
-  const { alreadyApplied, applyToProject } = useApplications(projectId, projectSlug);
-  const { isCurrentUserMember } = useProjectVisibility(projectId);
+  const { alreadyApplied, applyToProject } = useApplications(project?.id, projectKey);
+  const { isCurrentUserMember } = useProjectVisibility(project?.id);
 
   const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});
 
-  const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
+  const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
   useEffect(() => {
-    if (projectId && projectId !== lastVisitedProjectId && isProjectLeader) {
-      dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: projectId });
+    if (project?.id && project?.id !== lastVisitedProjectId && isProjectLeader) {
+      dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: project?.id });
     }
-  }, [projectId, isProjectLeader]);
+  }, [project?.id, isProjectLeader]);
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = !remainingBudget;
 
-  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
   const showPendingInvites = isProjectLeader || roles.includes(HasuraUserRole.Admin);
 
   const nbRepos = useMemo(
-    () => project.organizations?.flatMap(({ repos }) => repos).length ?? 0,
-    [project.organizations]
+    () => project?.organizations?.flatMap(({ repos }) => repos).length ?? 0,
+    [project?.organizations]
   );
 
   if (isError) {
     showToaster(T("profile.error.cantFetch"), { isError: true });
   }
+
+  if (isLoading) return <Skeleton variant="projectOverview" />;
+
+  if (!project) return null;
 
   return (
     <>
@@ -114,7 +121,7 @@ export default function Overview() {
           {T("project.details.overview.title")}
           {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
-              <EditProjectButton projectKey={projectSlug} />
+              <EditProjectButton projectKey={project.slug} />
 
               <Button
                 disabled={isRewardDisabled}
@@ -129,7 +136,7 @@ export default function Overview() {
                     generatePath(
                       `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
                       {
-                        projectKey: projectSlug,
+                        projectKey: project.slug,
                       }
                     )
                   )
@@ -146,9 +153,9 @@ export default function Overview() {
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
       <ProjectLeadInvitation
-        projectId={projectId}
+        projectId={project.id}
         size={CalloutSizes.Large}
-        projectSlug={projectSlug}
+        projectSlug={project.slug}
         isInvited={isInvited}
         projectName={project?.name}
       />

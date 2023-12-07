@@ -162,6 +162,20 @@ const useCompletedRewardableItems = ({
   });
 };
 
+type UseProjectBudgetResponse = components["schemas"]["ProjectBudgetsResponse"];
+
+const useProjectBudget = ({
+  params,
+  options = {},
+}: UseQueryProps<UseProjectBudgetResponse, { projectId?: string }>) => {
+  return useBaseQuery<UseProjectBudgetResponse>({
+    resourcePath: API_PATH.PROJECT_BUDGET(params?.projectId ?? ""),
+    enabled: !!params?.projectId,
+    tags: PROJECT_TAGS.budgets(params?.projectId ?? ""),
+    ...options,
+  });
+};
+
 export default {
   useGetProjectBySlug,
   useGetProjectContributionDetail,
@@ -170,4 +184,5 @@ export default {
   useRewardableItemsQueryParams,
   useProjectContributorsInfiniteList,
   useCompletedRewardableItems,
+  useProjectBudget,
 };

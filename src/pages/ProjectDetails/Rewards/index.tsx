@@ -1,37 +1,43 @@
-import { Outlet, useOutletContext } from "react-router-dom";
-import { components } from "src/__generated/api";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-
-type OutletContext = {
-  project: components["schemas"]["ProjectResponse"];
-};
+import { Outlet, useParams } from "react-router-dom";
+import ProjectApi from "src/api/Project";
+import Skeleton from "src/components/Skeleton";
+import { useIntl } from "src/hooks/useIntl";
+import { useShowToaster } from "src/hooks/useToaster";
 
 export default function Rewards() {
-  const { project } = useOutletContext<OutletContext>();
-  const { id: projectId, slug: projectKey, createdAt, repos } = project;
+  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { T } = useIntl();
+  const showToaster = useShowToaster();
+  const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+  });
 
   const {
     data: projectBudget,
     isLoading: isBudgetLoading,
+    isError: isBudgetError,
     refetch: refetchBudgets,
-  } = useRestfulData({
-    resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
-    pathParam: { projectId },
-    method: "GET",
+  } = ProjectApi.queries.useProjectBudget({
+    params: { projectId: project?.id },
   });
+
+  if (isBudgetError) {
+    showToaster(T("reward.budgets.error"), { isError: true });
+  }
+
+  if (isLoadingProject) return <Skeleton variant="projectRewards" />;
 
   return (
     <Outlet
       context={{
         isBudgetLoading,
         projectBudget,
-        projectId,
+        projectId: project?.id,
         projectKey,
         project,
         refetchBudgets,
-        createdAt,
-        repos,
+        createdAt: project?.createdAt,
+        repos: project?.repos,
       }}
     />
   );

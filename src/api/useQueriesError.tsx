@@ -1,9 +1,15 @@
 import Button from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
+import { FetchError } from "./query.type";
+import { Navigate } from "react-router-dom";
+import { RoutePaths } from "src/App";
+import { HttpStatusStrings } from "./query.utils";
+import ErrorFallback from "src/ErrorFallback";
 
 interface Props {
   queries: {
     isError?: boolean;
+    error?: Error | FetchError;
     refetch: () => void;
   };
   errorLabel?: string;
@@ -27,7 +33,7 @@ interface Props {
  *
  * @returns {React.ReactElement | null} - The rendered component or null if there's no error.
  */
-export const UseQueriesError = ({ queries, errorComponent, errorLabel }: Props) => {
+const UseQueriesError = ({ queries, errorComponent, errorLabel }: Props) => {
   const { T } = useIntl();
 
   if (!queries?.isError) return null;
@@ -37,4 +43,26 @@ export const UseQueriesError = ({ queries, errorComponent, errorLabel }: Props) 
   return <Button onClick={queries.refetch}>{errorLabel || T("common.retry")}</Button>;
 };
 
-export default UseQueriesError;
+function useQueriesErrorBehavior({ queries, errorLabel, errorComponent }: Props): React.ReactElement | null {
+  const { T } = useIntl();
+
+  if (queries.isError) {
+    const isErrorTyped = queries.error instanceof Error && "errorType" in queries.error;
+    const typedError = isErrorTyped ? (queries.error as FetchError) : null;
+
+    if (typedError?.errorType === HttpStatusStrings.NOT_FOUND) {
+      return <Navigate to={RoutePaths.NotFound} />;
+    } else if (typedError) {
+      return <ErrorFallback />;
+    }
+
+    if (errorComponent) {
+      return errorComponent({ refetch: queries.refetch });
+    }
+    return <Button onClick={queries.refetch}>{errorLabel || T("common.retry")}</Button>;
+  }
+
+  return null;
+}
+
+export { UseQueriesError, useQueriesErrorBehavior };

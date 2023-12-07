@@ -4,7 +4,7 @@ import { useInfiniteRestfulData } from "src/hooks/useRestfulData/useRestfulData"
 import { QueryParams } from "src/utils/getEndpointUrl";
 
 interface UseInfiniteContributorsProps {
-  projectId: string;
+  projectId: string | undefined;
   queryParams?: QueryParams;
 }
 
@@ -16,6 +16,6 @@ export default function useInfiniteContributorList({ projectId, queryParams }: U
       pathParam: projectId,
       queryParams,
     },
-    { queryKey: ["contributors", projectId, queryParams] }
+    { queryKey: ["contributors", projectId, queryParams], enabled: !!projectId }
   );
 }

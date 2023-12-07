@@ -20,4 +20,5 @@ export const PROJECT_TAGS = {
   other_pull_requests: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "other-pull-requests", { projectId }],
   other_issues: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "other-issues", { projectId }],
   contributors: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributors", { projectId }],
+  budgets: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "budgets", { projectId }],
 };
