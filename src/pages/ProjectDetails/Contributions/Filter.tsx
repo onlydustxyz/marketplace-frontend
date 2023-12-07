@@ -1,7 +1,8 @@
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
-import MeApi from "src/api/me";
+import { useOutletContext } from "react-router-dom";
+import ProjectApi from "src/api/Project";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterContributorSelect } from "src/components/New/Filter/FilterContributorSelect";
 import FilterDatepicker from "src/components/New/Filter/FilterDatepicker";
@@ -10,6 +11,7 @@ import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { GithubContributionType } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
+import { OutletContext } from "../View";
 
 type Filters = {
   dateRange: DateRange;
@@ -34,6 +36,10 @@ export type FilterQueryParams = {
 };
 
 export function ProjectContributionsFilter({ onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void }) {
+  const {
+    project: { slug = "" },
+  } = useOutletContext<OutletContext>();
+
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
     "project-contributions-table-filters",
     JSON.stringify(initialFilters)
@@ -67,9 +73,8 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
       filters.repos.length
   );
 
-  // TODO update query
-  const { data: reposData } = MeApi.queries.useMyContributedRepos({
-    params: { projects: "" },
+  const { data: reposData } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug },
   });
   const contributedRepos = reposData?.repos ?? [];
 
