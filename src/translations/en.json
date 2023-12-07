@@ -836,8 +836,8 @@
       },
       "panel": {
         "title": "Claim project",
-        "subTitle": "First we need to verify your identity",
-        "content": "Please grant Github permissions on all the following organisations.",
+        "subTitle": "First we need to authenticate you as project lead.",
+        "content": "Please install the Only Dust Github app on the following organisations.",
         "grantButton": "Grant permissions",
         "installButton": "Install Github app",
         "submit": "Claim project",
@@ -968,6 +968,7 @@
           "description": "Please install the github app on the desired github organisation(s) containing the repositories you want to add.",
           "installAnotherOrgs": "Install to another organization",
           "tooltip": "You have already sent an installation request to organization owner.",
+          "tooltipInstalledByAdmin": "Github app installed by an organisation admin",
           "installedOn": {
             "many": "Installed on __count__ organizations",
             "one": "Installed on 1 organization",

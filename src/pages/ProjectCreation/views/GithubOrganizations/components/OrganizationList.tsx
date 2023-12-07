@@ -1,7 +1,6 @@
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import SkeletonOrganizationList from "src/components/Skeleton/SkeletonOrganizationList";
-import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
@@ -11,6 +10,7 @@ interface OrganizationListProps {
   emptyListFallBackText: string;
   loading?: boolean;
   installatedRepo: number[];
+  disabledTooltip?: string;
 }
 
 export default function OrganizationList({
@@ -18,9 +18,8 @@ export default function OrganizationList({
   emptyListFallBackText,
   installatedRepo,
   loading,
+  disabledTooltip,
 }: OrganizationListProps) {
-  const { T } = useIntl();
-
   if (loading || organizations.length) {
     return (
       <ul className="flex flex-col gap-3 py-4 pb-6">
@@ -42,7 +41,7 @@ export default function OrganizationList({
               linkUrl={linkUrl}
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
-              tooltip={T("project.details.create.organizations.tooltip")}
+              tooltip={disabledTooltip}
             />
           );
         })}

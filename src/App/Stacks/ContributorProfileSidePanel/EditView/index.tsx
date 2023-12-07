@@ -94,7 +94,16 @@ export default function EditView({ myProfile, setEditMode }: Props) {
             <Controller
               name="cover"
               control={control}
-              render={({ field: { onChange } }) => <Header editable profile={myProfile} onChange={onChange} />}
+              render={({ field: { onChange } }) => (
+                <Header
+                  editable
+                  profile={myProfile}
+                  onChange={onChange}
+                  onChangeProfilePicture={url => {
+                    formMethods.setValue("avatarUrl", url, { shouldDirty: true, shouldValidate: true });
+                  }}
+                />
+              )}
             />
 
             <div className="-mt-[72px] mr-2 flex flex-col gap-6 pb-12 pl-8 pr-6 pt-[72px] scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">

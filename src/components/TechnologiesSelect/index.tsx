@@ -11,19 +11,20 @@ import { databases } from "src/assets/technologies/databases";
 import { ai } from "src/assets/technologies/ai";
 import { architecture } from "src/assets/technologies/architecture";
 import { web3 } from "src/assets/technologies/web3";
-import { ClassAttributes, HTMLAttributes } from "react";
+import { ClassAttributes, HTMLAttributes, useState } from "react";
 import StylizedCombobox, { EMPTY_OPTION_ID, Option, RenderProps } from "src/components/StylizedCombobox";
 import Draggable from "src/icons/Draggable";
 import { cn } from "src/utils/cn";
-import { useShowToaster } from "src/hooks/useToaster";
 import Add from "src/icons/Add";
-import { useAllTechnologiesQuery, useSuggestTechnologyMutation } from "src/__generated/graphql";
+import { useAllTechnologiesQuery } from "src/__generated/graphql";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { withTooltip } from "src/components/Tooltip";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { SortableItemProps, SortableList } from "../New/Sortable/SortableList";
 import CloseLine from "src/icons/CloseLine";
 import Flex from "../Utils/Flex";
+import TechnologiesApi from "src/api/Technologies";
+import useMutationAlert from "src/api/useMutationAlert";
 
 type Props = {
   technologies: LanguageMap;
@@ -35,9 +36,21 @@ type SelectedTechnologyProps = (SortableItemProps & { value: string })[];
 
 export default function TechnologiesSelect({ technologies = {}, setTechnologies }: Props) {
   const { T } = useIntl();
-
+  const [suggestionValue, setSuggestionValue] = useState("");
   const supportedTechnologiesQuery = useAllTechnologiesQuery({
     ...contextWithCacheHeaders,
+  });
+
+  const { mutate: suggestTechnology, ...restMutation } = TechnologiesApi.mutations.useAddTechnology({});
+
+  useMutationAlert({
+    mutation: restMutation,
+    success: {
+      message: T("profile.form.technologies.suggestion.success", { technology: suggestionValue }),
+    },
+    error: {
+      default: true,
+    },
   });
 
   const supportedTechnologies =
@@ -72,15 +85,10 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
       isSupported: supportedTechnologies.includes(language.toLowerCase()),
     }));
 
-  const showToaster = useShowToaster();
-
-  const [suggestTechnology] = useSuggestTechnologyMutation();
-
   const sendSuggestion = async (suggestion: string) => {
+    setSuggestionValue(suggestion);
     suggestTechnology({
-      variables: { suggestion },
-      context: { graphqlErrorDisplay: "toaster" },
-      onCompleted: () => showToaster(T("profile.form.technologies.suggestion.success", { technology: suggestion })),
+      technology: suggestion,
     });
   };
 
