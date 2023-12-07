@@ -2,6 +2,7 @@ import { QueryClient, QueryObserverOptions, QueryOptions, useMutation, useQueryC
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
+import { mapHttpStatusToString } from "./query.utils";
 
 interface UseBaseMutationOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
@@ -58,11 +59,11 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
               throw new Error("Invalid JSON response");
             }
           } else {
-            throw new Error(`${res.status}`);
+            throw { status: res.status, message: res.statusText, errorType: mapHttpStatusToString(res.status) };
           }
         })
         .catch(e => {
-          throw new Error(e);
+          throw e;
         });
     },
     onSuccess: async (result: Response) => {

@@ -2,6 +2,7 @@ import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 import { UseInfiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
+import { mapHttpStatusToString } from "./query.utils";
 
 export interface useInfiniteBaseQueryProps {
   resourcePath: string;
@@ -68,10 +69,10 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
             return res.json();
           }
 
-          throw new Error(res.statusText);
+          throw { status: res.status, message: res.statusText, errorType: mapHttpStatusToString(res.status) };
         })
         .catch(e => {
-          throw new Error(e);
+          throw e;
         }),
     select: data => {
       // Make sure to return an object that includes the `pages` and `pageParams` properties
