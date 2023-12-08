@@ -24,7 +24,7 @@ import { useStackReward } from "src/App/Stacks/Stacks";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
-  const { user, githubUserId } = useAuth();
+  const { githubUserId } = useAuth();
   const [openRewardPanel] = useStackReward();
 
   const {
@@ -90,7 +90,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                 }}
                 userCommits={userCommitsCount}
                 commitsCount={commitsCount}
-                contributorLogin={user?.login ?? ""}
+                contributorLogin={contribution.contributor.login}
               />
             </Tooltip>
           </>
