@@ -1,3 +1,5 @@
+import { useMatch } from "react-router-dom";
+import { RoutePaths } from "src/App";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
@@ -8,12 +10,10 @@ import { ContributionStatus, Contribution as ContributionT } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import Contributor from "../Contributor";
-import { useMatch } from "react-router-dom";
-import { RoutePaths } from "src/App";
 
 export function ContributionCard({ contribution, className }: { contribution: ContributionT; className?: string }) {
   const { T } = useIntl();
-  const isMyContributions = useMatch(`${RoutePaths.Contributions}/*`);
+  const isMyContribution = Boolean(useMatch(`${RoutePaths.Contributions}/*`));
 
   const date =
     contribution.status === ContributionStatus.InProgress ? contribution.createdAt : contribution.completedAt;
@@ -25,7 +25,7 @@ export function ContributionCard({ contribution, className }: { contribution: Co
         className
       )}
     >
-      {isMyContributions ? (
+      {isMyContribution ? (
         <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
       ) : (
         <Contributor contributor={contribution.contributor} clickable />

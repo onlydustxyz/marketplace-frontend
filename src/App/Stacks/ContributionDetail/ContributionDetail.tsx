@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Link, generatePath } from "react-router-dom";
+import { Link, generatePath, useMatch } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
@@ -26,6 +26,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const [openRewardPanel] = useStackReward();
+  const isMyContribution = Boolean(useMatch(`${RoutePaths.Contributions}/*`));
 
   const {
     data: contribution,
@@ -63,7 +64,8 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
     function renderContributionInfo() {
       if (!contribution) return null;
 
-      const { commitsCount, githubAuthor, id, type, userCommitsCount } = contribution;
+      const { commentsCount, commitsCount, contributor, githubAuthor, id, links, type, userCommitsCount } =
+        contribution;
 
       const infos: JSX.Element[] = [];
 
@@ -90,7 +92,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                 }}
                 userCommits={userCommitsCount}
                 commitsCount={commitsCount}
-                contributorLogin={contribution.contributor.login}
+                contributorLogin={contributor.login}
               />
             </Tooltip>
           </>
@@ -101,12 +103,12 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
         infos.push(
           <div className="flex items-center gap-1">
             <DiscussLine className="text-base leading-none" />
-            {T("comments", { count: contribution.commentsCount })}
+            {T("comments", { count: commentsCount })}
           </div>
         );
       }
 
-      if (contribution.links.length) {
+      if (links.length) {
         infos.push(
           <>
             <div className="flex items-center gap-1">
@@ -119,6 +121,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                 position: TooltipPosition.Bottom,
                 variant: Variant.Default,
               }}
+              showExternal={isMyContribution}
             />
           </>
         );
