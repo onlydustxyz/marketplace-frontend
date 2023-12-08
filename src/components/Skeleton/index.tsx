@@ -1,4 +1,5 @@
 import SkeletonCard from "./SkeletonCard";
+import SkeletonTitle from "./SkeletonTitle";
 import SkeletonFilters from "./SkeletonFilters";
 import SkeletonHeader from "./SkeletonHeader";
 import SkeletonSearch from "./SkeletonSearch";
@@ -20,6 +21,7 @@ import SkeletonProjectRemainingBudgets from "./SkeletonProjectRemainingBudgets";
 import SkeletonSubmitProject from "./SkeletonSubmitProject";
 
 type SkeletonVariant =
+  | "title"
   | "card"
   | "filters"
   | "header"
@@ -46,6 +48,7 @@ interface SkeletonProps {
 }
 
 const VARIANT_COMPONENTS = {
+  title: SkeletonTitle,
   card: SkeletonCard,
   filters: SkeletonFilters,
   header: SkeletonHeader,
