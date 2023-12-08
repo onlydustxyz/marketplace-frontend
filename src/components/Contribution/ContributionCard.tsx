@@ -21,11 +21,9 @@ export function ContributionCard({ contribution, className }: { contribution: Co
         className
       )}
     >
-      {"project" in contribution ? (
-        <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
-      ) : null}
-
-      {"contributor" in contribution ? <Contributor contributor={contribution.contributor} /> : null}
+      {/* TODO toggle either one depending if it's my list or a project list */}
+      <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
+      <Contributor contributor={contribution.contributor} />
 
       <Contribution contribution={contribution} isMobile />
 

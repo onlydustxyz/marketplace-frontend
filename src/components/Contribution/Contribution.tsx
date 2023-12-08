@@ -1,10 +1,8 @@
-import { useOutletContext } from "react-router-dom";
 import { useStackContribution } from "src/App/Stacks/Stacks";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview, ReviewStateStatuses } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import { useAuth } from "src/hooks/useAuth";
-import { OutletContext } from "src/pages/ProjectDetails/View";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { cn } from "src/utils/cn";
 
@@ -16,15 +14,10 @@ type Props = {
 
 export function Contribution({ contribution, isMobile = false, showExternal = false }: Props) {
   const { githubUserId } = useAuth();
-
-  const outlet = useOutletContext<OutletContext>();
-  const { project: outletProject } = outlet ?? {};
-
   const [openContributionPanel] = useStackContribution();
 
-  const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, rewardIds, type } = contribution;
-
-  const project = "project" in contribution ? contribution.project : outletProject;
+  const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
+    contribution;
 
   function renderReview() {
     if (

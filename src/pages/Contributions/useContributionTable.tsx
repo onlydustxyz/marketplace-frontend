@@ -52,7 +52,7 @@ export function useContributionTable() {
     if (!contribution) return null;
 
     const { createdAt, completedAt, githubStatus, id, repo, status, type } = contribution;
-    const lineId = "project" in contribution ? `${id}-${contribution.project.id}` : id;
+    const lineId = `${id}-${contribution.project.id}`;
     const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
 
     return (
@@ -68,7 +68,7 @@ export function useContributionTable() {
           />
         </Cell>
         <Cell height={CellHeight.Compact}>
-          {"project" in contribution ? <ContributionProjectRepo project={contribution.project} repo={repo} /> : null}
+          <ContributionProjectRepo project={contribution.project} repo={repo} />
         </Cell>
         <Cell height={CellHeight.Compact}>
           <Contribution contribution={contribution} />

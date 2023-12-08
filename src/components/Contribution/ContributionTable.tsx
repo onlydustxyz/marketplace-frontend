@@ -84,12 +84,7 @@ export function ContributionTable({
 
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = query;
 
-  const contributions = data?.pages?.flatMap(data => {
-    if ("contributions" in data) {
-      // TODO try to fix this cast
-      return data.contributions as ContributionT[];
-    }
-  });
+  const contributions = data?.pages?.flatMap(data => data.contributions);
   const hasContributions = Boolean(contributions?.length);
 
   function renderMobileContent() {
@@ -111,25 +106,13 @@ export function ContributionTable({
 
     return (
       <div className="flex flex-col gap-2">
-        {contributions?.map(contribution => {
-          if (contribution) {
-            let key = contribution.id;
-
-            if ("project" in contribution) {
-              key = `${contribution.id}-${contribution.project.name}`;
-            }
-
-            return (
-              <ContributionCard
-                key={key}
-                contribution={contribution}
-                className={cn({ "bg-card-background-light": fullTable })}
-              />
-            );
-          }
-
-          return null;
-        })}
+        {contributions?.map(contribution => (
+          <ContributionCard
+            key={`${contribution.id}-${contribution.project.name}`}
+            contribution={contribution}
+            className={cn({ "bg-card-background-light": fullTable })}
+          />
+        ))}
 
         {hasNextPage ? (
           <div className="py-2">
