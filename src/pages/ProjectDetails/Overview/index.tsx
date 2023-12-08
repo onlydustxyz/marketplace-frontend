@@ -63,6 +63,7 @@ export default function Overview() {
   const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
   });
+
   const { isLoggedIn, githubUserId, roles } = useAuth();
   const { lastVisitedProjectId } = useSession();
 

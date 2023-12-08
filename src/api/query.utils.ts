@@ -1,5 +1,8 @@
 import { FetchError } from "./query.type";
 
+/**
+ * Enum representing string values for various HTTP status codes.
+ */
 export enum HttpStatusStrings {
   BAD_REQUEST = "BAD_REQUEST",
   UNAUTHORIZED = "UNAUTHORIZED",
@@ -11,10 +14,16 @@ export enum HttpStatusStrings {
   UNHANDLED_ERROR = "UNHANDLED_ERROR",
 }
 
+/**
+ * Maps HTTP status codes to corresponding strings as defined in HttpStatusStrings.
+ *
+ * @param {number} statusCode - The HTTP status code to be mapped.
+ * @returns {HttpStatusStrings} The mapped string representation of the status code.
+ */
 export function mapHttpStatusToString(statusCode: number): HttpStatusStrings {
   const statusMap: { [key: number]: HttpStatusStrings } = {
     400: HttpStatusStrings.BAD_REQUEST,
-    401: HttpStatusStrings.FORBIDDEN,
+    401: HttpStatusStrings.UNAUTHORIZED,
     403: HttpStatusStrings.FORBIDDEN,
     404: HttpStatusStrings.NOT_FOUND,
     409: HttpStatusStrings.CONFLICT,
@@ -25,6 +34,13 @@ export function mapHttpStatusToString(statusCode: number): HttpStatusStrings {
   return statusMap[statusCode] || HttpStatusStrings.UNHANDLED_ERROR;
 }
 
+/**
+ * Creates a FetchError object based on the given response and status mapper function.
+ *
+ * @param {Response} res - The response object from the fetch API.
+ * @param {(statusCode: number) => HttpStatusStrings} mapHttpStatusToString - Function to map status codes to strings.
+ * @returns {FetchError} A FetchError object containing error details.
+ */
 export const createFetchError = (
   res: Response,
   mapHttpStatusToString: (statusCode: number) => HttpStatusStrings

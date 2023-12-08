@@ -43,6 +43,20 @@ const UseQueriesError = ({ queries, errorComponent, errorLabel }: Props) => {
   return <Button onClick={queries.refetch}>{errorLabel || T("common.retry")}</Button>;
 };
 
+/**
+ * Custom hook for handling query errors with specific behaviors based on error types.
+ *
+ * This hook is designed to handle errors for React Query queries. It checks if an error occurred,
+ * and based on the error type, it returns different React elements to handle these errors.
+ * This includes rendering a custom error component, a navigation redirect, or a default error fallback.
+ *
+ * @param {Props} props - The hook's props.
+ * @param {object} props.queries - An object containing query-related information.
+ * @param {string} [props.errorLabel] - A label for the retry button if a custom error component is not provided.
+ * @param {function} [props.errorComponent] - An optional custom error component for rendering the error state.
+ *
+ * @returns {React.ReactElement | null} - A React element to render based on the error type, or null if no error.
+ */
 function useQueriesErrorBehavior({ queries, errorLabel, errorComponent }: Props): React.ReactElement | null {
   const { T } = useIntl();
 
@@ -50,12 +64,15 @@ function useQueriesErrorBehavior({ queries, errorLabel, errorComponent }: Props)
     const isErrorTyped = queries.error instanceof Error && "errorType" in queries.error;
     const typedError = isErrorTyped ? (queries.error as FetchError) : null;
 
+    // Navigate to NotFound page for HttpStatusStrings.NOT_FOUND
     if (typedError?.errorType === HttpStatusStrings.NOT_FOUND) {
       return <Navigate to={RoutePaths.NotFound} />;
     } else if (typedError) {
+      // Return a generic ErrorFallback for other types of errors
       return <ErrorFallback />;
     }
 
+    // Return a custom error component or a default retry button
     if (errorComponent) {
       return errorComponent({ refetch: queries.refetch });
     }
