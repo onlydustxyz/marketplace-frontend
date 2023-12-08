@@ -14,7 +14,7 @@ type Props = {
   avatarSize?: ComponentProps<typeof Avatar>["size"];
 };
 
-export default function Contributor({ contributor, clickable, className, avatarSize }: Props) {
+export default function Contributor({ contributor, clickable, className, avatarSize = "5" }: Props) {
   const { T } = useIntl();
   const [open] = useStackContributorProfile();
 

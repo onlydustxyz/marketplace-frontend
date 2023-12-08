@@ -32,7 +32,6 @@ export function CommitsTooltip({
               avatarUrl: pullRequest?.author?.avatarUrl ?? "",
               githubUserId: pullRequest?.author?.id,
             }}
-            avatarSize="5"
             clickable
           />
         </div>
