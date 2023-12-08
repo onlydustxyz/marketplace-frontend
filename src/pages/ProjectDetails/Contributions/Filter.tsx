@@ -82,10 +82,11 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
   });
   const repos = reposData?.repos ?? [];
 
-  const { data: contributorsData } = ProjectApi.queries.useProjectContributorsInfiniteList({
-    params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
-    options: { enabled: Boolean(project?.id) },
-  });
+  const { data: contributorsData, isLoading: contributorsLoading } =
+    ProjectApi.queries.useProjectContributorsInfiniteList({
+      params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
+      options: { enabled: Boolean(project?.id) },
+    });
   const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
 
   function resetFilters() {
@@ -137,6 +138,7 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
         onChange={updateContributors}
         queryState={contributorsQueryState}
         uniqueKey="githubUserId"
+        isLoading={contributorsLoading}
       />
       <FilterTypeOptions selected={filters.types} onChange={updateTypes} />
     </Filter>

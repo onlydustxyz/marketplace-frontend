@@ -12,12 +12,14 @@ export function FilterContributorCombobox<T extends ContributorResponse>({
   onChange,
   queryState,
   uniqueKey,
+  isLoading,
 }: {
   contributors: T[];
   selected: T[];
   onChange: (value: T[]) => void;
   queryState: ComponentProps<typeof FilterCombobox>["queryState"];
   uniqueKey: keyof T;
+  isLoading?: boolean;
 }) {
   const { T } = useIntl();
 
@@ -44,6 +46,7 @@ export function FilterContributorCombobox<T extends ContributorResponse>({
         renderItem={({ item }) => <Contributor contributor={item} />}
         uniqueKey={uniqueKey}
         placeholder={renderPlaceholder()}
+        isLoading={isLoading}
       />
     </FilterField>
   );
