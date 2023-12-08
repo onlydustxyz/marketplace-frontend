@@ -1,5 +1,5 @@
 import { ComponentProps, useState } from "react";
-import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { OrderBy } from "src/__generated/graphql";
 import ProjectApi from "src/api/Project";
@@ -13,7 +13,6 @@ import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { useIntl } from "src/hooks/useIntl";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import Title from "src/pages/ProjectDetails/Title";
@@ -21,7 +20,6 @@ import { ContributionStatus } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useLocalStorage } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
-import { OutletContext } from "../View";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { FilterQueryParams, ProjectContributionsFilter } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
@@ -52,15 +50,16 @@ const initialSort: Record<ContributionStatus, TableSort> = {
 export default function Contributions() {
   const { T } = useIntl();
   const navigate = useNavigate();
+  const { projectKey = "" } = useParams<{ projectKey?: string }>();
 
-  const { project } = useOutletContext<OutletContext>();
-  const { slug: projectKey } = project;
+  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+  });
 
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = !remainingBudget;
-  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
-  const isProjectLeader = useProjectLeader({ id: project.id });
 
   const { isActiveTab, updateActiveTab } = useContributionTabs();
   const { headerCells, bodyRow } = useContributionTable();
@@ -149,7 +148,7 @@ export default function Contributions() {
       bodyRow,
       query: ProjectApi.queries.useProjectContributionsInfiniteList({
         params: {
-          projectId: project.id,
+          projectId: project?.id ?? "",
           queryParams: {
             statuses: ContributionStatus.InProgress,
             ...sort.IN_PROGRESS,
@@ -181,7 +180,7 @@ export default function Contributions() {
       bodyRow,
       query: ProjectApi.queries.useProjectContributionsInfiniteList({
         params: {
-          projectId: project.id,
+          projectId: project?.id ?? "",
           queryParams: {
             statuses: ContributionStatus.Completed,
             ...sort.COMPLETED,
@@ -213,7 +212,7 @@ export default function Contributions() {
       bodyRow,
       query: ProjectApi.queries.useProjectContributionsInfiniteList({
         params: {
-          projectId: project.id,
+          projectId: project?.id ?? "",
           queryParams: {
             statuses: ContributionStatus.Cancelled,
             ...sort.CANCELLED,
@@ -259,7 +258,7 @@ export default function Contributions() {
           </Flex>
         ) : null}
       </div>
-      {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
+      {project && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
       <div className="h-full overflow-y-auto">
