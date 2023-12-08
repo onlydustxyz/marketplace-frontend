@@ -1,6 +1,5 @@
 import { Outlet, useMatch } from "react-router-dom";
 import { Toaster } from "src/components/Toaster";
-// import Header from "./Header";
 import Tooltip from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
