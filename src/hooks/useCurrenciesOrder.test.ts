@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { renderHook } from "@testing-library/react-hooks";
 import { useCurrenciesOrder, useCurrenciesOrderCurrency } from "./useCurrenciesOrder";
+import { CurrencyOrder } from "src/types";
 
 describe("useCurrenciesOrder", () => {
   it("Order currency", () => {
@@ -10,12 +11,13 @@ describe("useCurrenciesOrder", () => {
       { currency: "USD" },
       { currency: "ETH" },
       { currency: "OP" },
+      { currency: "LORDS" },
     ];
 
     const { result } = renderHook(() => useCurrenciesOrder({ currencies }));
     const sortedCurrencies = result.current;
 
-    expect(sortedCurrencies.map(currency => currency.currency)).toEqual(["USD", "ETH", "STARK", "OP", "APT"]);
+    expect(sortedCurrencies.map(currency => currency.currency)).toEqual(CurrencyOrder);
   });
 
   it("Handle empty array", () => {

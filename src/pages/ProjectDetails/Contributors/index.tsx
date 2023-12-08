@@ -42,8 +42,7 @@ export default function Contributors() {
 
   const isProjectLeader = useProjectLeader({ id: projectId });
 
-  const remainingBudget = project?.remainingUsdBudget;
-  const noBudget = !remainingBudget;
+  const noBudget = !project?.hasRemainingBudget;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;

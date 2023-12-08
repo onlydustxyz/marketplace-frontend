@@ -11,11 +11,13 @@ import { cn } from "src/utils/cn";
 import { EarningCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { ReactElement } from "react";
 import { useIntl } from "src/hooks/useIntl";
+import Lords from "src/assets/icons/Lords";
 
 const earningName: Record<Currency, string> = {
   [Currency.USD]: "reward.details.earning.dolarEarnings",
   [Currency.ETH]: "reward.details.earning.etherEarnings",
   [Currency.STARK]: "reward.details.earning.starkEarnings",
+  [Currency.LORDS]: "reward.details.earning.lordsEarnings",
   [Currency.OP]: "reward.details.earning.optimismEarnings",
   [Currency.APT]: "reward.details.earning.aptosEarnings",
 };
@@ -24,6 +26,7 @@ const earningIcons: Record<Currency, ReactElement> = {
   [Currency.USD]: <DollarCurrency />,
   [Currency.ETH]: <Ethereum className="h-4 w-4" />,
   [Currency.STARK]: <Starknet />,
+  [Currency.LORDS]: <Lords className="h-4 w-4" />,
   [Currency.OP]: <Optimism />,
   [Currency.APT]: <Aptos />,
 };

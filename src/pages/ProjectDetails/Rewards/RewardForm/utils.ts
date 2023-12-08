@@ -1,5 +1,5 @@
 import { filter } from "lodash";
-import { ContributionStatus, GithubContributionType } from "src/types";
+import { ContributionStatus, CurrencyOrder, GithubContributionType } from "src/types";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { RewardableItem } from "src/api/Project/queries";
 
@@ -17,7 +17,7 @@ export const filterUnpaidContributionsByType = (
 type BudgetT = ProjectBudgetType["budgets"];
 
 export function reorderBudgets(projectBudget: ProjectBudgetType): ProjectBudgetType {
-  const order = ["USD", "ETH", "STARK", "OP", "APT"];
+  const order = CurrencyOrder;
 
   const sortedBudgets = projectBudget.budgets.sort((a: BudgetT[number], b: BudgetT[number]) => {
     if (a.remaining === 0 && b.remaining === 0) {

@@ -53,6 +53,13 @@ const defaultProps: ComponentProps<typeof RewardBudget> = {
       remainingDollarsEquivalent: undefined,
       initialDollarsEquivalent: undefined,
     },
+    {
+      currency: "LORDS",
+      initialAmount: 10,
+      remaining: 5,
+      remainingDollarsEquivalent: undefined,
+      initialDollarsEquivalent: undefined,
+    },
   ],
 };
 
@@ -91,6 +98,13 @@ const With0RemainingCurrencyCurrencyProps: ComponentProps<typeof RewardBudget> =
     },
     {
       currency: "STARK",
+      initialAmount: 10,
+      remaining: 0,
+      remainingDollarsEquivalent: undefined,
+      initialDollarsEquivalent: undefined,
+    },
+    {
+      currency: "LORDS",
       initialAmount: 10,
       remaining: 0,
       remainingDollarsEquivalent: undefined,
