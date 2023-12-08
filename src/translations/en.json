@@ -239,9 +239,10 @@
   "currencies": {
     "currency": {
       "APT": "Aptos",
-      "ETH": "Ether",
+      "ETH": "Ethereum",
       "OP": "Optimism",
       "STARK": "Stark",
+      "LORDS": "Lords",
       "USD": "Dollars"
     },
     "amount_placeholder": {
@@ -249,6 +250,7 @@
       "ETH": "0.3 ETH",
       "OP": "350 OPT",
       "STARK": "100 Stark",
+      "LORDS": "100 Lords",
       "USD": "500$"
     },
     "network": {
@@ -256,6 +258,7 @@
       "ETH": "Ethereum",
       "OP": "Optimism",
       "STARK": "Stark chain",
+      "LORDS": "Lords",
       "USD": "IBAN/BIC",
       "label": "Reward granted on __currency__ network.",
       "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
@@ -637,6 +640,7 @@
       "dolarEarnings": "Dollar earnings",
       "etherEarnings": "Ether earnings",
       "starkEarnings": "Stark earnings",
+      "lordsEarnings": "Lords earnings",
       "optimismEarnings": "Optimism earnings",
       "aptosEarnings": "Aptos earnings",
       "usdInfoEarnings": "Dollar equivalent at today's date across all your earnings",
@@ -1053,6 +1057,7 @@
           "dollars": "Dollars budget",
           "ether": "Ether budget",
           "stark": "Stark budget",
+          "lords": "Lords budget",
           "aptos": "Aptos budget",
           "optimism": "Optimism budget"
         }

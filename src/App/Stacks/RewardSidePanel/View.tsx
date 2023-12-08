@@ -228,6 +228,8 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                   <span>
                     {data.currency === Currency.USD
                       ? T("currencies.network.label_dollar")
+                      : data.currency === Currency.LORDS
+                      ? T("currencies.network.label", { currency: T(`currencies.currency.${Currency.ETH}`) })
                       : T("currencies.network.label", { currency: T(`currencies.currency.${data.currency}`) })}
                   </span>
                 </div>

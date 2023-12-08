@@ -52,8 +52,7 @@ export default function Contributors() {
 
   const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
-  const remainingBudget = project?.remainingUsdBudget;
-  const noBudget = !remainingBudget;
+  const noBudget = !project?.hasRemainingBudget;
 
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;

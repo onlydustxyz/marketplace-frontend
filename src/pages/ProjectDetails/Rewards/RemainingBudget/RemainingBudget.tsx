@@ -2,6 +2,7 @@ import { components } from "src/__generated/api";
 import { BudgetCard } from "./BudgetCard";
 import { TotalBudgetCard } from "./TotalBudgetCard";
 import Skeleton from "src/components/Skeleton";
+import { CurrencyOrder } from "src/types";
 
 export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];
 
@@ -19,7 +20,7 @@ export function RemainingBudget({ projectBudget, isLoading }: RemainingBudgetPro
     return null;
   }
 
-  const currencyOrder = ["USD", "ETH", "STARK", "OP", "APT"];
+  const currencyOrder = CurrencyOrder;
 
   const sortedBudgets = projectBudget.budgets
     .filter(budget => currencyOrder.includes(budget.currency))

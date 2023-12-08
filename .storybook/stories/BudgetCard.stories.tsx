@@ -36,6 +36,12 @@ export const Stark = {
   ),
 };
 
+export const Lords = {
+  render: (args: ComponentProps<typeof BudgetCard>) => (
+    <BudgetCard {...{ otherBudgets, budget: { ...otherBudgets.budget, currency: Currency.LORDS } }} {...args} />
+  ),
+};
+
 export const Aptos = {
   render: (args: ComponentProps<typeof BudgetCard>) => (
     <BudgetCard {...{ otherBudgets, budget: { ...otherBudgets.budget, currency: Currency.APT } }} {...args} />

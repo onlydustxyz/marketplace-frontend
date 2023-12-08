@@ -13,11 +13,13 @@ import { LeftToSpend } from "./LeftToSpend";
 import { ReactElement } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import RewardBudgetBar from "src/components/RewardBudget/BudgetBar/RewardBudgetBar";
+import Lords from "src/assets/icons/Lords";
 
 const budgetName: Record<Currency, string> = {
   [Currency.USD]: "project.details.remainingBudget.budget.dollars",
   [Currency.ETH]: "project.details.remainingBudget.budget.ether",
   [Currency.STARK]: "project.details.remainingBudget.budget.stark",
+  [Currency.LORDS]: "project.details.remainingBudget.budget.lords",
   [Currency.OP]: "project.details.remainingBudget.budget.optimism",
   [Currency.APT]: "project.details.remainingBudget.budget.aptos",
 };
@@ -25,6 +27,7 @@ const budgetName: Record<Currency, string> = {
 const budgetIcons: Record<Currency, ReactElement> = {
   [Currency.USD]: <DollarCurrency />,
   [Currency.ETH]: <Ethereum className="h-4 w-4" />,
+  [Currency.LORDS]: <Lords className="h-4 w-4" />,
   [Currency.STARK]: <Starknet />,
   [Currency.OP]: <Optimism />,
   [Currency.APT]: <Aptos />,

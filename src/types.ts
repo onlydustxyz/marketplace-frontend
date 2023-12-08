@@ -64,9 +64,13 @@ export enum Currency {
   USD = "USD",
   ETH = "ETH",
   STARK = "STARK",
+  LORDS = "LORDS",
   APT = "APT",
   OP = "OP",
 }
+
+export type CurrencyUnion = `${Currency}`;
+export const CurrencyOrder = ["USD", "ETH", "STARK", "OP", "APT", "LORDS"];
 
 export enum PreferredMethod {
   Crypto = "CRYPTO",
@@ -276,7 +280,7 @@ export type ContributorT = {
   contributionToRewardCount: number | null; // not rewarded yet
   earned: {
     details?: {
-      currency: "APT" | "ETH" | "OP" | "STARK" | "USD";
+      currency: CurrencyUnion;
       totalAmount: number;
       totalDollarsEquivalent?: number;
     }[];
@@ -317,7 +321,7 @@ export interface OrganizationSessionStorageInterface extends useInstallationById
   organization: Organization;
 }
 
-export type Contribution = components["schemas"]["UserContributionPageItemResponse"];
+export type Contribution = components["schemas"]["ContributionPageItemResponse"];
 export type ContributionDetail = components["schemas"]["ContributionDetailsResponse"];
 
 export enum ContributionStatus {
@@ -326,7 +330,7 @@ export enum ContributionStatus {
   Cancelled = "CANCELLED",
 }
 
-export type GithubStatus = components["schemas"]["UserContributionPageItemResponse"]["githubStatus"];
+export type GithubStatus = components["schemas"]["ContributionPageItemResponse"]["githubStatus"];
 
 export enum Visibility {
   Public = "PUBLIC",
