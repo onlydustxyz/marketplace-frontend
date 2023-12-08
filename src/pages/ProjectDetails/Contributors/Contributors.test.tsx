@@ -130,7 +130,7 @@ const project: ComponentProps<typeof View>["project"] = {
     Assembly: 56732,
     Python: 6840986,
   },
-  remainingUsdBudget: 99250.0,
+  hasRemainingBudget: true,
   invitedLeaders: [],
   createdAt: "",
 };

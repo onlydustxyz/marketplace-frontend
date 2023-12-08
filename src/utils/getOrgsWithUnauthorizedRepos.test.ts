@@ -96,7 +96,7 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
   technologies: {
     Rust: 23314,
   },
-  remainingUsdBudget: 6800,
+  hasRemainingBudget: true,
   rewardSettings: {
     ignorePullRequests: true,
     ignoreIssues: false,
