@@ -20,7 +20,13 @@ export default function Layout() {
   return (
     <div className="flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
       {!hideHeader && (
-        <Suspense fallback={<Skeleton variant="header" />}>
+        <Suspense
+          fallback={
+            <div className="px-6 py-4 ">
+              <Skeleton variant="header" />
+            </div>
+          }
+        >
           <Header />
         </Suspense>
       )}

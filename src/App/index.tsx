@@ -33,6 +33,7 @@ import Skeleton from "src/components/Skeleton";
 import ProjectsLoader from "./Loaders/ProjectsLoader";
 import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import Loader from "src/components/Loader";
+import RewardLoader from "./Loaders/RewardsLoader";
 
 export enum RoutePaths {
   Home = "/",
@@ -166,18 +167,7 @@ function App() {
           path: RoutePaths.Rewards,
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <Suspense
-                fallback={
-                  <div className="h-full">
-                    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
-                      <Skeleton variant="title" />
-                      <Skeleton variant="invoice" />
-                      <Skeleton variant="earnedRewards" />
-                      <Skeleton variant="rewards" />
-                    </div>
-                  </div>
-                }
-              >
+              <Suspense fallback={<RewardLoader />}>
                 <Rewards />
               </Suspense>
             </ProtectedRoute>
