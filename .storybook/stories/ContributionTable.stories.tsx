@@ -108,7 +108,7 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
           {"project" in contribution ? <ContributionProjectRepo project={contribution.project} repo={repo} /> : null}
         </Cell>
         <Cell height={CellHeight.Compact}>
-          <Contribution contribution={contribution} isMine />
+          <Contribution contribution={contribution} />
         </Cell>
         <Cell className="justify-end gap-1" height={CellHeight.Compact}>
           {ContributionLinked({ contribution }) ? <ContributionLinked contribution={contribution} /> : "-"}
