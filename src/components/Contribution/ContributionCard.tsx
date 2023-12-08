@@ -8,9 +8,13 @@ import { ContributionStatus, Contribution as ContributionT } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import Contributor from "../Contributor";
+import { useMatch } from "react-router-dom";
+import { RoutePaths } from "src/App";
 
 export function ContributionCard({ contribution, className }: { contribution: ContributionT; className?: string }) {
   const { T } = useIntl();
+  const isMyContributions = useMatch(`${RoutePaths.Contributions}/*`);
+
   const date =
     contribution.status === ContributionStatus.InProgress ? contribution.createdAt : contribution.completedAt;
 
@@ -21,9 +25,11 @@ export function ContributionCard({ contribution, className }: { contribution: Co
         className
       )}
     >
-      {/* TODO toggle either one depending if it's my list or a project list */}
-      <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
-      <Contributor contributor={contribution.contributor} />
+      {isMyContributions ? (
+        <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
+      ) : (
+        <Contributor contributor={contribution.contributor} clickable />
+      )}
 
       <Contribution contribution={contribution} isMobile />
 
