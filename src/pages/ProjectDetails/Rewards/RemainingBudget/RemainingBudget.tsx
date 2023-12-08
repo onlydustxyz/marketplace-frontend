@@ -1,14 +1,24 @@
 import { components } from "src/__generated/api";
 import { BudgetCard } from "./BudgetCard";
 import { TotalBudgetCard } from "./TotalBudgetCard";
+import Skeleton from "src/components/Skeleton";
 
 export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];
 
 type RemainingBudgetProps = {
   projectBudget: ProjectBudgetType;
+  isLoading?: boolean;
 };
 
-export function RemainingBudget({ projectBudget }: RemainingBudgetProps) {
+export function RemainingBudget({ projectBudget, isLoading }: RemainingBudgetProps) {
+  if (isLoading) {
+    return <Skeleton variant="projectRemainingBudgets" />;
+  }
+
+  if (!projectBudget) {
+    return null;
+  }
+
   const currencyOrder = ["USD", "ETH", "STARK", "OP", "APT"];
 
   const sortedBudgets = projectBudget.budgets

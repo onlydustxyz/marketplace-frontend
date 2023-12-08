@@ -61,7 +61,7 @@ export function useBaseQuery<R = unknown>({
         .catch(e => {
           throw e;
         }),
-    staleTime: 10000,
+    staleTime: 20000,
     gcTime: 0,
     refetchInterval: false,
     refetchIntervalInBackground: false,

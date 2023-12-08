@@ -65,7 +65,6 @@ export function useBaseUploader<Response = unknown>({
           throw createFetchError(res, mapHttpStatusToString);
         })
         .catch(e => {
-          console.log("Error!!", e);
           throw e;
         });
     },

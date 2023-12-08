@@ -112,7 +112,7 @@ function App() {
         {
           path: ProjectRewardsRoutePaths.New,
           element: (
-            <Suspense fallback={<Skeleton variant="projectRewards" />}>
+            <Suspense fallback={<Skeleton variant="projectRewardForm" />}>
               <ProjectDetailsRewardForm />
             </Suspense>
           ),

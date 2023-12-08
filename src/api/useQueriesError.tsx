@@ -9,7 +9,7 @@ import ErrorFallback from "src/ErrorFallback";
 interface Props {
   queries: {
     isError?: boolean;
-    error?: Error | FetchError;
+    error?: FetchError;
     refetch: () => void;
   };
   errorLabel?: string;

@@ -8,6 +8,7 @@ import { cn } from "src/utils/cn";
 import ProjectApi from "src/api/Project";
 import { useQueriesErrorBehavior } from "src/api/useQueriesError";
 import SEO from "src/components/SEO";
+import { FetchError } from "src/api/query.type";
 
 export type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -25,7 +26,7 @@ export default function View({ padded = true }: Props) {
 
   const errorHandlingComponent = useQueriesErrorBehavior({
     queries: {
-      error: restProjectBySlugQueries.error as Error | undefined,
+      error: restProjectBySlugQueries.error as FetchError,
       isError: restProjectBySlugQueries.isError,
       refetch: restProjectBySlugQueries.refetch,
     },

@@ -15,6 +15,8 @@ import SkeletonQuickActions from "./SkeletonQuickActions";
 import SkeletonProjectSidebar from "./SkeletonProjectSidebar";
 import SkeletonProjectOverview from "./SkeletonProjectOverview";
 import SkeletonProjectRewards from "./SkeletonProjectRewards";
+import SkeletonProjectRewardForm from "./SkeletonProjectRewardForm";
+import SkeletonProjectRemainingBudgets from "./SkeletonProjectRemainingBudgets";
 
 type SkeletonVariant =
   | "card"
@@ -33,7 +35,9 @@ type SkeletonVariant =
   | "quickActions"
   | "projectSidebar"
   | "projectOverview"
-  | "projectRewards";
+  | "projectRewards"
+  | "projectRewardForm"
+  | "projectRemainingBudgets";
 
 interface SkeletonProps {
   variant: SkeletonVariant;
@@ -57,6 +61,8 @@ const VARIANT_COMPONENTS = {
   projectSidebar: SkeletonProjectSidebar,
   projectOverview: SkeletonProjectOverview,
   projectRewards: SkeletonProjectRewards,
+  projectRewardForm: SkeletonProjectRewardForm,
+  projectRemainingBudgets: SkeletonProjectRemainingBudgets,
 };
 
 export default function Skeleton({ variant }: SkeletonProps) {

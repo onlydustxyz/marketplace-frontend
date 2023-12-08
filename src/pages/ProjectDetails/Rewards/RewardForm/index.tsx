@@ -9,7 +9,6 @@ import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import Loader from "src/components/Loader";
 import { useLocalStorage } from "usehooks-ts";
 import { reorderBudgets } from "./utils";
 import { BudgetCurrencyType } from "src/utils/money";
@@ -19,6 +18,7 @@ import MeApi from "src/api/me";
 import { CompletedRewardableItem } from "src/api/Project/queries";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 import ProjectApi from "src/api/Project";
+import Skeleton from "src/components/Skeleton";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -130,6 +130,10 @@ const RewardForm: React.FC = () => {
     return <ErrorFallback />;
   }
 
+  if (isBudgetLoading) {
+    return <Skeleton variant="projectRewardForm" />;
+  }
+
   return (
     <>
       <FormProvider {...formMethods}>
@@ -138,7 +142,7 @@ const RewardForm: React.FC = () => {
           onSubmit={handleSubmit(onValidSubmit)}
           className="flex w-full flex-col justify-between gap-6"
         >
-          {!isBudgetLoading && projectBudget?.remainingDollarsEquivalent && projectBudget?.initialDollarsEquivalent ? (
+          {projectBudget?.remainingDollarsEquivalent && projectBudget?.initialDollarsEquivalent ? (
             <View
               projectBudget={reorderBudgets(projectBudget)}
               preferredCurrency={preferredCurrency}
@@ -150,9 +154,7 @@ const RewardForm: React.FC = () => {
               isCreateProjectRewardLoading={isCreateProjectRewardLoading}
               isCompletedContributionsLoading={isCompletedContributionsLoading}
             />
-          ) : (
-            <Loader />
-          )}
+          ) : null}
         </form>
       </FormProvider>
     </>

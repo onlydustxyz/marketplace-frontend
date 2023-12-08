@@ -99,7 +99,7 @@ const RewardList: React.FC = () => {
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
-      {!isBudgetLoading && projectBudget ? <RemainingBudget projectBudget={projectBudget} /> : null}
+      {<RemainingBudget projectBudget={projectBudget} isLoading={isBudgetLoading} />}
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
         <div className="w-full">
           {rewards.length > 0 ? (
