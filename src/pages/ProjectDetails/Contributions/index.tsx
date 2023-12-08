@@ -56,8 +56,7 @@ export default function Contributions() {
     params: { slug: projectKey },
   });
 
-  const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = !remainingBudget;
+  const isRewardDisabled = !project?.hasRemainingBudget;
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
