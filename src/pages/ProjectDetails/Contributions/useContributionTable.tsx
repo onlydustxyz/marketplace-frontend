@@ -1,6 +1,5 @@
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
-import { ContributionContributor } from "src/components/Contribution/ContributionContributor";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { HeaderCell } from "src/components/Contribution/ContributionTable";
@@ -15,6 +14,7 @@ import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
 import { ContributionStatus, Contribution as ContributionT, GithubContributionType } from "src/types";
 import { TableColumns } from "./index";
+import Contributor from "src/components/Contributor";
 
 export function useContributionTable() {
   const { T } = useIntl();
@@ -74,7 +74,7 @@ export function useContributionTable() {
         </Cell>
         <Cell height={CellHeight.Compact}>{repo.name}</Cell>
         <Cell height={CellHeight.Compact}>
-          {"contributor" in contribution ? <ContributionContributor contributor={contribution.contributor} /> : null}
+          {"contributor" in contribution ? <Contributor contributor={contribution.contributor} clickable /> : null}
         </Cell>
         <Cell height={CellHeight.Compact}>
           <Contribution contribution={contribution} />

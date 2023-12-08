@@ -23,16 +23,19 @@ export function CommitsTooltip({
       <span className="gap-1 text-sm text-greyscale-200">
         {T("reward.form.contributions.pullRequests.tooltip.createdBy")}
 
-        <Contributor
-          className="ml-1 flex-row-reverse text-sm"
-          key={pullRequest?.author?.id}
-          contributor={{
-            login: pullRequest?.author?.login ?? "",
-            avatarUrl: pullRequest?.author?.avatarUrl ?? "",
-            githubUserId: pullRequest?.author?.id,
-          }}
-          clickable
-        />
+        <div className="inline-flex">
+          <Contributor
+            className="ml-1 flex-row-reverse text-sm"
+            key={pullRequest?.author?.id}
+            contributor={{
+              login: pullRequest?.author?.login ?? "",
+              avatarUrl: pullRequest?.author?.avatarUrl ?? "",
+              githubUserId: pullRequest?.author?.id,
+            }}
+            avatarSize="5"
+            clickable
+          />
+        </div>
       </span>
 
       <span className="text-sm">

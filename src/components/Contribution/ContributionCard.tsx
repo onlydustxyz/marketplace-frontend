@@ -7,7 +7,7 @@ import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, Contribution as ContributionT } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { ContributionContributor } from "./ContributionContributor";
+import Contributor from "../Contributor";
 
 export function ContributionCard({ contribution, className }: { contribution: ContributionT; className?: string }) {
   const { T } = useIntl();
@@ -25,7 +25,7 @@ export function ContributionCard({ contribution, className }: { contribution: Co
         <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
       ) : null}
 
-      {"contributor" in contribution ? <ContributionContributor contributor={contribution.contributor} /> : null}
+      {"contributor" in contribution ? <Contributor contributor={contribution.contributor} /> : null}
 
       <Contribution contribution={contribution} isMobile />
 

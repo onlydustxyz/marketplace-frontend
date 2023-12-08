@@ -67,7 +67,7 @@ export function ContributionBadge({
             {isExternal ? (
               <div className="flex items-center justify-center text-sm">
                 <span className="text-spaceBlue-200">{tokens[type]}</span>
-                <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} clickable />
+                <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} avatarSize="5" clickable />
               </div>
             ) : null}
             <div className="flex gap-2">
