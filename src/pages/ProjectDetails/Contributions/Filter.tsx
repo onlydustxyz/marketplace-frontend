@@ -4,18 +4,18 @@ import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import { Filter } from "src/components/New/Filter/Filter";
-import { FilterContributorSelect } from "src/components/New/Filter/FilterContributorSelect";
+import { FilterContributorCombobox } from "src/components/New/Filter/FilterContributorCombobox";
 import FilterDatepicker from "src/components/New/Filter/FilterDatepicker";
 import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
-import { GithubContributionType } from "src/types";
+import { ContributorResponse, GithubContributionType } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
 
 type Filters = {
   dateRange: DateRange;
   repos: Item[];
-  contributors: Item[];
+  contributors: ContributorResponse[];
   types: GithubContributionType[];
 };
 
@@ -37,10 +37,17 @@ export type FilterQueryParams = {
 export function ProjectContributionsFilter({ onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void }) {
   const { projectKey = "" } = useParams<{ projectKey?: string }>();
 
+  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+  });
+
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
     "project-contributions-table-filters",
     JSON.stringify(initialFilters)
   );
+
+  const contributorsQueryState = useState<string>();
+  const [contributorsQuery] = contributorsQueryState;
 
   const [filters, setFilters] = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
 
@@ -49,7 +56,7 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
 
     const filterQueryParams: FilterQueryParams = {
       repositories: repos.map(({ id }) => String(id)).join(","),
-      contributorIds: contributors.map(({ id }) => String(id)).join(","),
+      contributorIds: contributors.map(({ githubUserId }) => String(githubUserId)).join(","),
       types: types.join(","),
     };
 
@@ -73,9 +80,13 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
   const { data: reposData } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
   });
-  const contributedRepos = reposData?.repos ?? [];
+  const repos = reposData?.repos ?? [];
 
-  // TODO contributors query
+  const { data: contributorsData } = ProjectApi.queries.useProjectContributorsInfiniteList({
+    params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
+    options: { enabled: Boolean(project?.id) },
+  });
+  const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
 
   function resetFilters() {
     setFilters(initialFilters);
@@ -98,7 +109,7 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
     setFilters(prevState => updateState(prevState, { repos }));
   }
 
-  function updateContributors(contributors: Item[]) {
+  function updateContributors(contributors: ContributorResponse[]) {
     setFilters(prevState => updateState(prevState, { contributors }));
   }
 
@@ -116,11 +127,17 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
     <Filter isActive={hasActiveFilters} onClear={resetFilters}>
       <FilterDatepicker selected={filters.dateRange} onChange={updateDate} />
       <FilterRepoSelect
-        repos={contributedRepos.map(({ id, name }) => ({ id, label: name }))}
+        repos={repos.map(({ id, name }) => ({ id, label: name }))}
         selected={filters.repos}
         onChange={updateRepos}
       />
-      <FilterContributorSelect contributors={[]} selected={filters.contributors} onChange={updateContributors} />
+      <FilterContributorCombobox<ContributorResponse>
+        contributors={contributors}
+        selected={filters.contributors}
+        onChange={updateContributors}
+        queryState={contributorsQueryState}
+        uniqueKey="githubUserId"
+      />
       <FilterTypeOptions selected={filters.types} onChange={updateTypes} />
     </Filter>
   );

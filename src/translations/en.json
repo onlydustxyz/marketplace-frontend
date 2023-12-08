@@ -203,6 +203,7 @@
   },
   "filter": {
     "clearButton": "Clear all",
+    "empty": "Nothing here",
     "ownership": {
       "all": "All projects",
       "mine": "Mine only"
@@ -243,7 +244,10 @@
     },
     "contributor": {
       "title": "Contributor",
-      "placeholder": "Search users"
+      "placeholder": "Search by Github handle",
+      "zero": "contributors",
+      "one": "__count__ contributor",
+      "many": "__count__ contributors"
     },
     "date": {
       "title": "Date",
