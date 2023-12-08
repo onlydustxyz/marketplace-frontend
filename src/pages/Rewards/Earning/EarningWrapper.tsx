@@ -54,11 +54,11 @@ export function EarningWrapper() {
     totalDollarsEquivalent: 0,
   };
 
-  const lordsEarnings = details?.find(detail => detail.currency === "LORDS") || {
-    currency: Currency.LORDS,
-    totalAmount: 0,
-    totalDollarsEquivalent: 0,
-  };
+  // const lordsEarnings = details?.find(detail => detail.currency === "LORDS") || {
+  //   currency: Currency.LORDS,
+  //   totalAmount: 0,
+  //   totalDollarsEquivalent: 0,
+  // };
   const optimismEarnings = details?.find(detail => detail.currency === "OP") || {
     currency: Currency.OP,
     totalAmount: 0,
@@ -76,7 +76,8 @@ export function EarningWrapper() {
       <EarningCard key={usdEarnings.currency} amount={usdEarnings} />
       <EarningCard key={etherEarningDetails.currency} amount={etherEarningDetails} />
       <EarningCard key={starkEarnings.currency} amount={starkEarnings} />
-      <EarningCard key={starkEarnings.currency} amount={lordsEarnings} />
+      {/* we hide this new currency for now until we have better UI */}
+      {/* <EarningCard key={lordsEarnings.currency} amount={lordsEarnings} /> */}
       <EarningCard key={optimismEarnings.currency} amount={optimismEarnings} />
       <EarningCard key={aptosEarnings.currency} amount={aptosEarnings} />
     </div>

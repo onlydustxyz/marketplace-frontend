@@ -52,4 +52,11 @@ export const contribution: Contribution = {
     },
   ],
   rewardIds: ["880819f1-2ab9-406d-9bf1-3012b6f565bc", "35234563456345-2ab9-406d-9bf1-3012b6f565bc"],
+  contributor: {
+    avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
+    githubUserId: 5160414,
+    htmlUrl: "",  
+    login: "haydencleary",
+    isRegistered: true,
+  }
 };
