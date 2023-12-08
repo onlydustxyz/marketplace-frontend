@@ -16,7 +16,6 @@ const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Re
 const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
 const ProjectDetailsEdit = lazy(() => import("src/pages/ProjectDetails/ProjectEdition/ProjectEdition"));
 
-import LoaderFallback from "src/components/Loader";
 import { NotFound } from "src/components/NotFound";
 import ErrorTrigger from "src/pages/ErrorTrigger";
 import ImpersonationPage from "src/pages/Impersonation";
@@ -31,6 +30,9 @@ import ProtectedByFlag from "./ProtectedByFlag";
 import ProtectedByGithub from "./ProtectedByGithub";
 import { GITHUB_PERMISSIONS } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 import Skeleton from "src/components/Skeleton";
+import ProjectsLoader from "./Loaders/ProjectsLoader";
+import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
+import Loader from "src/components/Loader";
 
 export enum RoutePaths {
   Home = "/",
@@ -146,7 +148,11 @@ function App() {
       children: [
         {
           path: RoutePaths.Projects,
-          element: <Projects />,
+          element: (
+            <Suspense fallback={<ProjectsLoader />}>
+              <Projects />
+            </Suspense>
+          ),
         },
         {
           path: RoutePaths.TermsAndConditions,
@@ -195,7 +201,11 @@ function App() {
         },
         {
           path: RoutePaths.ProjectDetails,
-          element: <ProjectDetails />,
+          element: (
+            <Suspense fallback={<ProjectDetailsLoader />}>
+              <ProjectDetails />
+            </Suspense>
+          ),
           children: projectRoutes,
         },
         {
@@ -222,7 +232,7 @@ function App() {
     <Suspense
       fallback={
         <div className="h-[calc(100dvh)]">
-          <LoaderFallback />
+          <Loader />
         </div>
       }
     >

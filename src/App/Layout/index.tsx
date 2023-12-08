@@ -1,10 +1,14 @@
 import { Outlet, useMatch } from "react-router-dom";
 import { Toaster } from "src/components/Toaster";
-import Header from "./Header";
+// import Header from "./Header";
 import Tooltip from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { RoutePaths } from "..";
+import { Suspense, lazy } from "react";
+import Skeleton from "src/components/Skeleton";
+
+const Header = lazy(() => import("./Header"));
 
 export default function Layout() {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -15,7 +19,11 @@ export default function Layout() {
 
   return (
     <div className="flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
-      {!hideHeader && <Header />}
+      {!hideHeader && (
+        <Suspense fallback={<Skeleton variant="header" />}>
+          <Header />
+        </Suspense>
+      )}
       <Outlet />
       <Toaster />
       {/* Hide tooltips on mobile */}
