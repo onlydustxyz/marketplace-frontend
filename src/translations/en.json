@@ -239,7 +239,7 @@
   "currencies": {
     "currency": {
       "APT": "Aptos",
-      "ETH": "Ether",
+      "ETH": "Ethereum",
       "OP": "Optimism",
       "STARK": "Stark",
       "LORDS": "Lords",
