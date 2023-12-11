@@ -138,7 +138,7 @@ const RewardForm: React.FC = () => {
           onSubmit={handleSubmit(onValidSubmit)}
           className="flex w-full flex-col justify-between gap-6"
         >
-          {!isBudgetLoading && projectBudget?.remainingDollarsEquivalent && projectBudget?.initialDollarsEquivalent ? (
+          {!isBudgetLoading && projectBudget?.budgets?.some(budget => budget.remaining > 0) ? (
             <View
               projectBudget={reorderBudgets(projectBudget)}
               preferredCurrency={preferredCurrency}
