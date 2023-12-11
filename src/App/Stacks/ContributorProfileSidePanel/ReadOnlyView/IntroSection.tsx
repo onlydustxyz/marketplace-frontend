@@ -30,11 +30,12 @@ type Props = {
   setEditMode: (value: boolean) => void;
   completionScore?: number | undefined;
   isOwn?: boolean;
+  isPublic?: boolean;
 };
 
 type ContactChannelType = components["schemas"]["ContactInformation"]["channel"];
 
-export default function IntroSection({ isOwn, profile, setEditMode }: Props) {
+export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: Props) {
   const { T } = useIntl();
 
   const website = parseWebsite(profile.website);
@@ -64,25 +65,27 @@ export default function IntroSection({ isOwn, profile, setEditMode }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="z-20 -mr-4 flex flex-row gap-2 self-end">
-        {isOwn && (
-          <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
-            <PencilLine />
-            {T("profile.editButton")}
-          </Button>
-        )}
-        <Link
-          to={generatePath(RoutePaths.PublicProfile, {
-            userLogin: profile.login || "",
-          })}
-          target="_blank"
-          data-testid="open-public-profile-btn"
-        >
-          <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
-            <ExternalLinkLine />
-          </Button>
-        </Link>
-      </div>
+      {!isPublic ? (
+        <div className="z-20 -mr-4 flex flex-row gap-2 self-end">
+          {isOwn && (
+            <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
+              <PencilLine />
+              {T("profile.editButton")}
+            </Button>
+          )}
+          <Link
+            to={generatePath(RoutePaths.PublicProfile, {
+              userLogin: profile.login || "",
+            })}
+            target="_blank"
+            data-testid="open-public-profile-btn"
+          >
+            <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
+              <ExternalLinkLine />
+            </Button>
+          </Link>
+        </div>
+      ) : null}
 
       <div
         className={cn("flex flex-col gap-2", {
