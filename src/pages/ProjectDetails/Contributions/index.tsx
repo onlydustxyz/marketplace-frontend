@@ -1,19 +1,27 @@
 import { ComponentProps, useState } from "react";
-import { useLocalStorage } from "react-use";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
+import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { OrderBy } from "src/__generated/graphql";
-import MeApi from "src/api/me";
+import ProjectApi from "src/api/Project";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
+import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
-import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
+import { withTooltip } from "src/components/Tooltip";
+import Flex from "src/components/Utils/Flex";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
+import Title from "src/pages/ProjectDetails/Title";
 import { ContributionStatus } from "src/types";
-import { ContributionsFilter, FilterQueryParams } from "./Filter";
+import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
+import { useLocalStorage } from "usehooks-ts";
+import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
+import { EditProjectButton } from "../components/EditProjectButton";
+import { FilterQueryParams, ProjectContributionsFilter } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
 
 const initialSort: Record<ContributionStatus, TableSort> = {
@@ -33,10 +41,25 @@ const initialSort: Record<ContributionStatus, TableSort> = {
 
 export default function Contributions() {
   const { T } = useIntl();
-  const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
-  const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
+  const navigate = useNavigate();
+  const { projectKey = "" } = useParams<{ projectKey?: string }>();
+
+  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+  });
+
+  const isRewardDisabled = !project?.hasRemainingBudget;
+  const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
+  const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
+
   const { isActiveTab, updateActiveTab } = useContributionTabs();
   const { headerCells, bodyRow } = useContributionTable();
+
+  const [sortStorage, setSortStorage] = useLocalStorage(
+    "project-contributions-table-sort",
+    JSON.stringify(initialSort)
+  );
+  const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
 
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
 
@@ -46,7 +69,7 @@ export default function Contributions() {
       onClick: () => {
         updateActiveTab(AllTabs.All);
       },
-      testId: "contributions-all-contributions-tab",
+      testId: "project-contributions-all-contributions-tab",
       children: (
         <ContributionTabContents>
           <StackLine className="text-xl leading-none md:hidden" />
@@ -59,7 +82,7 @@ export default function Contributions() {
       onClick: () => {
         updateActiveTab(AllTabs.InProgress);
       },
-      testId: "contributions-in-progress-tab",
+      testId: "project-contributions-in-progress-tab",
       children: (
         <ContributionTabContents>
           <ProgressCircle className="h-5 w-5 md:h-4 md:w-4" />
@@ -72,7 +95,7 @@ export default function Contributions() {
       onClick: () => {
         updateActiveTab(AllTabs.Completed);
       },
-      testId: "contributions-completed-tab",
+      testId: "project-contributions-completed-tab",
       children: (
         <ContributionTabContents>
           <CheckboxCircleLine className="text-xl leading-none md:text-base" />
@@ -85,7 +108,7 @@ export default function Contributions() {
       onClick: () => {
         updateActiveTab(AllTabs.Cancelled);
       },
-      testId: "contributions-canceled-tab",
+      testId: "project-contributions-canceled-tab",
       children: (
         <ContributionTabContents>
           <CancelCircleLine className="h-5 w-5 md:h-4 md:w-4" />
@@ -114,16 +137,19 @@ export default function Contributions() {
       },
       headerCells,
       bodyRow,
-      query: MeApi.queries.useMyContributions(
-        {
+      query: ProjectApi.queries.useProjectContributionsInfiniteList({
+        params: {
+          projectId: project?.id ?? "",
           queryParams: {
             statuses: ContributionStatus.InProgress,
             ...sort.IN_PROGRESS,
             ...filterQueryParams,
           },
         },
-        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) && Boolean(filterQueryParams) }
-      ),
+        options: {
+          enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) && Boolean(filterQueryParams),
+        },
+      }),
     },
     {
       id: "completed_contributions_table",
@@ -143,16 +169,19 @@ export default function Contributions() {
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
       headerCells,
       bodyRow,
-      query: MeApi.queries.useMyContributions(
-        {
+      query: ProjectApi.queries.useProjectContributionsInfiniteList({
+        params: {
+          projectId: project?.id ?? "",
           queryParams: {
             statuses: ContributionStatus.Completed,
             ...sort.COMPLETED,
             ...filterQueryParams,
           },
         },
-        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) && Boolean(filterQueryParams) }
-      ),
+        options: {
+          enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) && Boolean(filterQueryParams),
+        },
+      }),
     },
     {
       id: "canceled_contributions_table",
@@ -172,37 +201,74 @@ export default function Contributions() {
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
       headerCells,
       bodyRow,
-      query: MeApi.queries.useMyContributions(
-        {
+      query: ProjectApi.queries.useProjectContributionsInfiniteList({
+        params: {
+          projectId: project?.id ?? "",
           queryParams: {
             statuses: ContributionStatus.Cancelled,
             ...sort.CANCELLED,
             ...filterQueryParams,
           },
         },
-        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) && Boolean(filterQueryParams) }
-      ),
+        options: {
+          enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) && Boolean(filterQueryParams),
+        },
+      }),
     },
   ];
 
   return (
     <>
-      <SEO />
-      <div className="h-full overflow-y-auto px-6 pb-6">
+      <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
+        <Title>{T("project.details.contributions.title")}</Title>
+        {!hasOrgsWithUnauthorizedRepos ? (
+          <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
+            <EditProjectButton projectKey={projectKey} />
+            <Button
+              width={Width.Fit}
+              className="flex-1 md:flex-initial"
+              size={ButtonSize.Sm}
+              disabled={isRewardDisabled}
+              onBackground={ButtonOnBackground.Blue}
+              onClick={() => {
+                return navigate(
+                  generatePath(
+                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                    {
+                      projectKey,
+                    }
+                  )
+                );
+              }}
+              {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                visible: isRewardDisabled,
+              })}
+            >
+              <span>{T("project.details.remainingBudget.newReward")}</span>
+            </Button>
+          </Flex>
+        ) : null}
+      </div>
+      {project && hasOrgsWithUnauthorizedRepos ? (
+        <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
+      ) : null}
+      <div className="h-full overflow-y-auto">
         <div className="h-full w-full overflow-y-auto rounded-3xl bg-contributions bg-right-top bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
           <div className="relative min-h-full">
             <div className="bg-transparency-gradiant absolute inset-0" />
             <div className="relative z-10">
-              <header className="sticky top-0 z-10 border-b border-card-border-heavy bg-card-background-base px-4 pb-4 pt-7 shadow-heavy md:px-8 md:pb-0 md:pt-8">
+              <header className="sticky top-0 z-10 border-b border-card-border-heavy bg-card-background-base px-4 pb-4 pt-7 shadow-heavy md:pb-0 md:pt-8">
                 <div className="flex items-center justify-between md:px-4">
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
                   <div className="hidden -translate-y-3 lg:block">
-                    <ContributionsFilter onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)} />
+                    <ProjectContributionsFilter
+                      onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)}
+                    />
                   </div>
                 </div>
               </header>
-              <div className="flex flex-col gap-4 px-2 py-3 md:px-4 md:py-6 lg:px-8">
+              <div className="flex flex-col gap-4 px-2 py-3 md:px-3 md:py-6">
                 {tableItems.map(({ show, ...restProps }) =>
                   show ? (
                     <ContributionTable key={restProps.id} {...restProps} fullTable={isActiveTab(AllTabs.All)} />

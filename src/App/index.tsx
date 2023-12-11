@@ -11,6 +11,7 @@ const Rewards = lazy(() => import("src/pages/Rewards"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
 const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/Contributors"));
+const ProjectDetailsContributions = lazy(() => import("src/pages/ProjectDetails/Contributions"));
 const ProjectDetailsRewards = lazy(() => import("src/pages/ProjectDetails/Rewards"));
 const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Rewards/List"));
 const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
@@ -60,6 +61,7 @@ export enum ProjectRoutePaths {
   Contributors = "contributors",
   Rewards = "rewards",
   Edit = "edit",
+  Contributions = "contributions",
 }
 
 export enum ProjectRewardsRoutePaths {
@@ -94,6 +96,12 @@ function App() {
         </Suspense>
       ),
     },
+    parseFlag("VITE_FLAG_ALLOW_PROJECT_CONTRIBUTIONS")
+      ? {
+          path: ProjectRoutePaths.Contributions,
+          element: <ProjectDetailsContributions />,
+        }
+      : {},
     {
       path: ProjectRoutePaths.Rewards,
       element: (

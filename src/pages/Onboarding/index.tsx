@@ -92,7 +92,7 @@ export default function Onboarding() {
         innerClassName="h-full flex justify-center items-center"
       >
         <FormProvider {...methods}>
-          <div className="flex h-full max-w-7xl px-2 pb-6 text-greyscale-50 md:p-6">
+          <div className="flex h-full max-w-7xl flex-col items-center justify-center px-2 pb-6 text-greyscale-50 md:p-6">
             <form id="onboarding-form" className="flex justify-center px-2 xl:pb-4" onSubmit={handleSubmit(onSubmit)}>
               {step === 0 && (
                 <Intro
@@ -113,12 +113,14 @@ export default function Onboarding() {
                   prev={prev}
                   next={next}
                 >
-                  <Controller
-                    name="technologies"
-                    render={({ field: { value, onChange } }) => (
-                      <TechnologiesSelect technologies={value} setTechnologies={onChange} />
-                    )}
-                  />
+                  <div className="flex flex-col gap-4 pb-4">
+                    <Controller
+                      name="technologies"
+                      render={({ field: { value, onChange } }) => (
+                        <TechnologiesSelect technologies={value} setTechnologies={onChange} />
+                      )}
+                    />
+                  </div>
                 </Card>
               )}
               {step === 2 && (

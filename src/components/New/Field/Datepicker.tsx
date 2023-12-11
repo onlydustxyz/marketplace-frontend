@@ -1,27 +1,42 @@
-import { useFloating, autoUpdate, flip } from "@floating-ui/react-dom";
+import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
-import isSameDay from "date-fns/isSameDay";
-import { DayPickerSingleProps } from "react-day-picker";
+import { isSameDay } from "date-fns";
+import { useMemo } from "react";
+import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
-import { getFormattedDateGB } from "src/utils/date";
-
-type Period = {
-  label: string;
-  value: Date;
-};
+import { getFormattedDateGB, parseDateRangeString, parseDateString } from "src/utils/date";
 
 type Props = {
-  value?: Date;
-  onChange: DayPickerSingleProps["onSelect"];
   isElevated?: boolean;
-  periods?: Period[];
 };
 
-export function Datepicker({ value, isElevated = false, onChange, periods }: Props) {
+type SingleProps = Props & {
+  mode: "single";
+  value?: Date;
+  onChange: DayPickerSingleProps["onSelect"];
+  periods?: {
+    label: string;
+    value: Date;
+  }[];
+};
+
+type RangeProps = Props & {
+  mode: "range";
+  value?: DateRange;
+  onChange: DayPickerRangeProps["onSelect"];
+  periods?: {
+    label: string;
+    value: DateRange;
+  }[];
+};
+
+// Do not spread props due to this Typescript limitation
+// https://stackoverflow.com/questions/69023997/typescript-discriminated-union-narrowing-not-working
+export function Datepicker({ isElevated = false, ...props }: SingleProps | RangeProps) {
   const { T } = useIntl();
   const { refs, floatingStyles, placement } = useFloating({
     middleware: [flip()],
@@ -29,18 +44,55 @@ export function Datepicker({ value, isElevated = false, onChange, periods }: Pro
     transform: false,
   });
 
+  const selectionIsValid = useMemo(() => {
+    if (props.mode === "range") {
+      // Sometimes date strings are passed instead of date objects
+      const selected = parseDateRangeString(props.value);
+
+      return Boolean(selected?.from) && Boolean(selected?.to);
+    }
+
+    // Sometimes date strings are passed instead of date objects
+    return Boolean(parseDateString(props.value));
+  }, [props.mode, props.value]);
+
   function renderCalendar() {
-    return <Calendar mode="single" selected={value} onSelect={onChange} />;
+    if (props.mode === "range") {
+      // Sometimes date strings are passed instead of date objects
+      const selected = parseDateRangeString(props.value);
+
+      return <Calendar mode="range" selected={selected} onSelect={props.onChange} />;
+    }
+
+    // Sometimes date strings are passed instead of date objects
+    const selected = parseDateString(props.value);
+
+    return <Calendar mode="single" selected={selected} onSelect={props.onChange} />;
   }
 
   function renderPlaceholder() {
-    const selectedPeriod = periods?.find(period => {
-      return value ? isSameDay(period.value, value) : false;
+    if (props.mode === "range") {
+      const selectedPeriod = props.periods?.find(period => {
+        return props.value?.from && props.value?.to && period.value.from && period.value.to
+          ? isSameDay(period.value.from, new Date(props.value.from)) &&
+              isSameDay(period.value.to, new Date(props.value.to))
+          : false;
+      });
+
+      if (selectedPeriod) return selectedPeriod.label;
+
+      return props.value?.from && props.value?.to
+        ? `${getFormattedDateGB(new Date(props.value.from))} - ${getFormattedDateGB(new Date(props.value.to))}`
+        : T("form.dateRangePlaceholder");
+    }
+
+    const selectedPeriod = props.periods?.find(period => {
+      return props.value ? isSameDay(period.value, new Date(props.value)) : false;
     });
 
     if (selectedPeriod) return selectedPeriod.label;
 
-    return value ? getFormattedDateGB(new Date(value)) : T("form.singleDatePlaceholder");
+    return props.value ? getFormattedDateGB(new Date(props.value)) : T("form.singleDatePlaceholder");
   }
 
   return (
@@ -50,26 +102,20 @@ export function Datepicker({ value, isElevated = false, onChange, periods }: Pro
           <Popover.Button
             ref={refs.setReference}
             className={cn(
-              "flex w-full items-center gap-6 rounded-xl border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 text-greyscale-50 shadow-lg",
+              "flex w-full items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg",
               {
-                "border-spacePurple-500 bg-spacePurple-900 text-spacePurple-200 outline-double outline-1 outline-spacePurple-500":
+                "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                   open,
+                "text-spaceBlue-200": !open && !selectionIsValid,
+                "text-greyScale-50": !open && selectionIsValid,
               }
             )}
           >
             <span className="flex flex-1 items-center gap-2">
-              <CalendarEventLine
-                className={cn("text-base leading-none", {
-                  "text-spacePurple-500": open,
-                })}
-              />
+              <CalendarEventLine className="text-base leading-none" />
               <span className="font-walsheim text-sm leading-none">{renderPlaceholder()}</span>
             </span>
-            <ArrowDownSLine
-              className={cn("text-xl leading-none text-spaceBlue-200", {
-                "text-spacePurple-300": open,
-              })}
-            />
+            <ArrowDownSLine className="text-xl leading-none" />
           </Popover.Button>
 
           <Transition
@@ -89,15 +135,30 @@ export function Datepicker({ value, isElevated = false, onChange, periods }: Pro
             })}
           >
             <Popover.Panel>
-              {periods?.length ? (
+              {props.periods?.length ? (
                 <div className="border-b border-greyscale-50/8 font-walsheim">
-                  {periods?.map(({ label, value }) => {
+                  {props.periods?.map(({ label, value }) => {
                     return (
                       <button
                         key={label}
                         type="button"
                         className="w-full px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
-                        onClick={e => onChange?.(value, value, {}, e)}
+                        onClick={e => {
+                          if (props.mode === "single" && value instanceof Date) {
+                            props.onChange?.(value, value, {}, e);
+                          }
+
+                          // Not ideal, but got to please Typescript
+                          if (
+                            props.mode === "range" &&
+                            "from" in value &&
+                            "to" in value &&
+                            value.from instanceof Date &&
+                            value.to instanceof Date
+                          ) {
+                            props.onChange?.(value, value.from, {}, e);
+                          }
+                        }}
                       >
                         {label}
                       </button>

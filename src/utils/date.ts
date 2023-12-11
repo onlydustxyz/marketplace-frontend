@@ -1,6 +1,8 @@
+import { parseISO } from "date-fns";
 import dayjs from "dayjs";
-import weekOfYear from "dayjs/plugin/weekOfYear";
 import utc from "dayjs/plugin/utc";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import { DateRange } from "react-day-picker";
 
 export const formatDate = (date: Date) => new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(date);
 export const formatDateTime = (date: Date) =>
@@ -20,3 +22,33 @@ export const weekNumber = (date: Date) => dayjs.utc(date).week();
 export const getFormattedDateGB = (date: Date) => new Intl.DateTimeFormat("en-GB", { dateStyle: "short" }).format(date);
 // American time format HH:MM AM/PM
 export const getFormattedTimeUS = (date: Date) => new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(date);
+
+/**
+ * Parses a date string or Date object and returns a Date object.
+ * If the input is undefined or null, returns undefined.
+ * @param date - The date string or Date object to parse.
+ * @returns The parsed Date object.
+ */
+export function parseDateString(date?: Date | string) {
+  if (!date) return undefined;
+
+  if (date instanceof Date) return date;
+
+  return parseISO(date);
+}
+
+/**
+ * Parses a date range string and returns a DateRange object.
+ * @param dateRange - The date range string or object containing "from" and "to" properties.
+ * @returns The parsed DateRange object or undefined if the input is empty.
+ */
+export function parseDateRangeString(
+  dateRange?: DateRange | Partial<Record<"from" | "to", string>>
+): DateRange | undefined {
+  if (!dateRange) return undefined;
+
+  return {
+    from: dateRange.from ? parseDateString(dateRange.from) : undefined,
+    to: dateRange.to ? parseDateString(dateRange.to) : undefined,
+  };
+}

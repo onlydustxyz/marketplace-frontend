@@ -8,7 +8,7 @@ export default {
 export const Default = {
   render: () => (
     <div className="w-60">
-      <Datepicker value={new Date()} onChange={Function.prototype()} />
+      <Datepicker mode="single" value={new Date()} onChange={Function.prototype()} />
     </div>
   ),
 };
