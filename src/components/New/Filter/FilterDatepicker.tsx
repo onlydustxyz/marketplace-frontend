@@ -4,7 +4,7 @@ import { Datepicker } from "src/components/New/Field/Datepicker";
 import { FilterField } from "src/components/New/Filter/FilterField";
 import { useIntl } from "src/hooks/useIntl";
 
-export default function FilterDatepicker({
+export function FilterDatepicker({
   selected,
   onChange,
 }: {

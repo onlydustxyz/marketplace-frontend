@@ -5,12 +5,16 @@ import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterContributorCombobox } from "src/components/New/Filter/FilterContributorCombobox";
-import FilterDatepicker from "src/components/New/Filter/FilterDatepicker";
+import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { ContributorResponse, GithubContributionType } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
+
+function formatDateQueryParam(value: Date | string) {
+  return format(value instanceof Date ? value : new Date(value), "yyyy-MM-dd");
+}
 
 type Filters = {
   dateRange: DateRange;
@@ -63,8 +67,8 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
     const { from: fromDate, to: toDate } = dateRange;
 
     if (fromDate && toDate) {
-      filterQueryParams.fromDate = fromDate instanceof Date ? format(fromDate, "yyyy-MM-dd") : fromDate;
-      filterQueryParams.toDate = toDate instanceof Date ? format(toDate, "yyyy-MM-dd") : toDate;
+      filterQueryParams.fromDate = formatDateQueryParam(fromDate);
+      filterQueryParams.toDate = formatDateQueryParam(toDate);
     }
 
     onChange(filterQueryParams);
