@@ -27,7 +27,6 @@ import { usePooling } from "src/hooks/usePooling/usePooling";
 import { useFormState } from "react-hook-form";
 import { Spinner } from "src/components/Spinner/Spinner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
-import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -118,7 +117,7 @@ function SafeProjectEdition() {
           </Title>
         </Flex>
 
-        {!project?.indexingComplete ? <StillFetchingBanner size={CalloutSizes.Small} /> : null}
+        {!project?.indexingComplete ? <StillFetchingBanner /> : null}
       </Flex>
 
       <WrapperComponent className="flex w-full flex-1 flex-col overflow-hidden" padded={false} withBg={false}>

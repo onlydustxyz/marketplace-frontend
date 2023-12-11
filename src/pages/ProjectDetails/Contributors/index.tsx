@@ -121,9 +121,11 @@ export default function Contributors() {
       </Title>
 
       {!project?.indexingComplete ? <StillFetchingBanner /> : null}
+
       {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
+
       <ProjectLeadInvitation
         projectId={project.id}
         size={CalloutSizes.Large}
