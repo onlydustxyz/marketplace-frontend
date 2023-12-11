@@ -51,7 +51,7 @@ import User3Line from "src/icons/User3Line";
 
 export default function Overview() {
   const { T } = useIntl();
-  const { project } = useOutletContext<OutletContext>();
+  const { project, projectBudget } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId, roles } = useAuth();
   const { lastVisitedProjectId } = useSession();
 
@@ -88,7 +88,7 @@ export default function Overview() {
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const remainingBudget = project?.remainingUsdBudget;
+  const remainingBudget = projectBudget?.budgets?.some(budget => budget.remaining > 0);
   const isRewardDisabled = !remainingBudget;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);

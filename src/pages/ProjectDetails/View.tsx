@@ -7,9 +7,13 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import ProjectsSidebar from "./Sidebar";
 import { cn } from "src/utils/cn";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { ProjectBudgetType } from "./Rewards/RemainingBudget/RemainingBudget";
 
 export type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
+  projectBudget: ProjectBudgetType;
 };
 interface Props {
   project: components["schemas"]["ProjectResponse"];
@@ -20,8 +24,14 @@ interface Props {
 
 export default function View({ project, padded = true }: Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const { data: projectBudget } = useRestfulData({
+    resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
+    pathParam: { projectId: project.id },
+    method: "GET",
+  });
   const outletContext = {
     project,
+    projectBudget,
   };
 
   const { id, slug } = project;

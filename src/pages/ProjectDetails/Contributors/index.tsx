@@ -25,9 +25,11 @@ import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstal
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
+import { ProjectBudgetType } from "../Rewards/RemainingBudget/RemainingBudget";
 
 type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
+  projectBudget: ProjectBudgetType;
 };
 
 export default function Contributors() {
@@ -35,14 +37,14 @@ export default function Contributors() {
   const { githubUserId } = useAuth();
   const navigate = useNavigate();
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
-  const { project } = useOutletContext<OutletContext>();
+  const { project, projectBudget } = useOutletContext<OutletContext>();
 
   const { id: projectId, slug: projectKey } = project;
   const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
   const isProjectLeader = useProjectLeader({ id: projectId });
 
-  const remainingBudget = project?.remainingUsdBudget;
+  const remainingBudget = projectBudget?.budgets?.some(budget => budget.remaining > 0);
   const noBudget = !remainingBudget;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
