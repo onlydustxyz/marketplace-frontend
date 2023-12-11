@@ -11,7 +11,6 @@ const Rewards = lazy(() => import("src/pages/Rewards"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
 const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/Contributors"));
-const ProjectDetailsRewards = lazy(() => import("src/pages/ProjectDetails/Rewards"));
 const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Rewards/List"));
 const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
 const ProjectDetailsEdit = lazy(() => import("src/pages/ProjectDetails/ProjectEdition/ProjectEdition"));
@@ -96,28 +95,25 @@ function App() {
     },
     {
       path: ProjectRoutePaths.Rewards,
-      element: (
-        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <Suspense fallback={<Skeleton variant="projectRewards" />}>
-            <ProjectDetailsRewards />
-          </Suspense>
-        </ProtectedRoute>
-      ),
       children: [
         {
           index: true,
           element: (
-            <Suspense fallback={<Skeleton variant="projectRewards" />}>
-              <ProjectDetailsRewardsList />
-            </Suspense>
+            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+              <Suspense fallback={<Skeleton variant="projectRewards" />}>
+                <ProjectDetailsRewardsList />
+              </Suspense>
+            </ProtectedRoute>
           ),
         },
         {
           path: ProjectRewardsRoutePaths.New,
           element: (
-            <Suspense fallback={<Skeleton variant="projectRewardForm" />}>
-              <ProjectDetailsRewardForm />
-            </Suspense>
+            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+              <Suspense fallback={<Skeleton variant="projectRewardForm" />}>
+                <ProjectDetailsRewardForm />
+              </Suspense>
+            </ProtectedRoute>
           ),
         },
       ],
