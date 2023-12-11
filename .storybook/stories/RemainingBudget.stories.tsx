@@ -49,11 +49,11 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof RemainingBudget> = {
-  projectBudget: mockBudgets,
+  projectId: "79c544b6-4957-42b7-92ae-12dcfda575d8",
 };
 
 const ethereumProps: ComponentProps<typeof RemainingBudget> = {
-  projectBudget: mockBudgetsWithEther,
+  projectId: "79c544b6-4957-42b7-92ae-12dcfda575d8",
 };
 
 export const Default = {

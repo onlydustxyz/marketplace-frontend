@@ -10,12 +10,10 @@ import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
 import MeApi from "src/api/me";
 import { useStackProjecRewardAsLead } from "src/App/Stacks/Stacks";
+import ProjectApi from "src/api/Project";
 
 type Options = ComponentProps<typeof Headers> &
-  Pick<
-    ReturnType<typeof useInfiniteRewardsList>,
-    "fetchNextPage" | "hasNextPage" | "isFetchingNextPage" | "refetch"
-  > & { refetchBudgets: () => void };
+  Pick<ReturnType<typeof useInfiniteRewardsList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage" | "refetch">;
 
 type RewardTableProps = {
   rewards: RewardPageItemType[];
@@ -31,13 +29,14 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
 
   const [openRewardPanel, closeRewardPanel] = useStackProjecRewardAsLead();
 
-  const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch, refetchBudgets } = options;
+  const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage, refetch } = options;
   function handleCancelReward() {
     try {
       // TODO refactor mutateReward in RewardSidePanelAsLeader and add invalidate query directly inside the mutation query
-      queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+      queryClient.invalidateQueries({
+        queryKey: [MeApi.tags.all, ProjectApi.tags.budgets(projectId ?? "")],
+      });
       closeRewardPanel();
-      refetchBudgets();
       refetch();
     } catch (e) {
       console.error(e);
