@@ -139,7 +139,7 @@ export default function View({
       );
     }
 
-    return <EmptyState indexedAt={project.indexedAt} />;
+    return <EmptyState type={type} />;
   };
 
   return (
