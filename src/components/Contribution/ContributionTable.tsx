@@ -144,9 +144,11 @@ export function ContributionTable({
     return contributions?.map(bodyRow);
   }
 
-  return isLoading ? (
-    <ContributionTableSkeleton />
-  ) : (
+  if (isLoading) {
+    return <ContributionTableSkeleton />;
+  }
+
+  return (
     <section
       className={cn("overflow-hidden rounded-2xl border-card-border-medium", {
         "border bg-card-background-base shadow-heavy": fullTable,
