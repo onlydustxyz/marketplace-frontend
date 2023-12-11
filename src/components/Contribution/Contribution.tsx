@@ -41,7 +41,7 @@ export function Contribution({ contribution, isMobile = false, showExternal = fa
       <div className={cn("flex items-center gap-2 font-walsheim", isMobile ? "w-full" : "min-w-0")}>
         <ContributionBadge contribution={contribution} showExternal={showExternal} />
         <button
-          className="truncate break-all text-left hover:underline"
+          className="truncate break-all text-left text-sm hover:underline"
           onClick={() => {
             if (id && project?.id)
               openContributionPanel({
