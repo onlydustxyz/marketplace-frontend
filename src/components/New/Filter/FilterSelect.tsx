@@ -84,12 +84,12 @@ export function FilterSelect<T extends Item>({
               />
             </Listbox.Button>
             <Transition
-              enter="transition duration-100 ease-out"
-              enterFrom="transform scale-95 opacity-0"
-              enterTo="transform scale-100 opacity-100"
-              leave="transition duration-75 ease-out"
-              leaveFrom="transform scale-100 opacity-100"
-              leaveTo="transform scale-95 opacity-0"
+              enter="transform transition duration-100 ease-out"
+              enterFrom="scale-95 opacity-0"
+              enterTo="scale-100 opacity-100"
+              leave="transform transition duration-75 ease-out"
+              leaveFrom="scale-100 opacity-100"
+              leaveTo="scale-95 opacity-0"
               className="absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 overflow-hidden rounded-2xl border border-card-border-light bg-card-background-medium shadow-medium"
             >
               <Listbox.Options className="max-h-60 divide-y divide-card-border-light overflow-auto bg-greyscale-800 py-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
