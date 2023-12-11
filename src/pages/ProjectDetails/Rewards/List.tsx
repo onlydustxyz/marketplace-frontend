@@ -29,6 +29,8 @@ const RewardList: React.FC = () => {
     params: { slug: projectKey },
   });
 
+  console.log(!!project?.id, project?.id);
+
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
     isAscending: false,
@@ -61,7 +63,7 @@ const RewardList: React.FC = () => {
     return <Skeleton variant="projectRewards" />;
   }
 
-  return project?.id && rewards ? (
+  return project && rewards ? (
     <>
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Title>{T("project.details.rewards.title")}</Title>
