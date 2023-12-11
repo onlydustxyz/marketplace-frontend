@@ -55,7 +55,7 @@ import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 export default function Overview() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const { project } = useOutletContext<OutletContext>();
+  const { project, projectBudget } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId, roles } = useAuth();
   const { lastVisitedProjectId } = useSession();
 
@@ -91,7 +91,8 @@ export default function Overview() {
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const isRewardDisabled = !project?.hasRemainingBudget;
+  const remainingBudget = projectBudget?.budgets?.some(budget => budget.remaining > 0);
+  const isRewardDisabled = !remainingBudget;
 
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;

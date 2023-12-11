@@ -51,7 +51,8 @@ const RewardList: React.FC = () => {
   });
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
-  const isRewardDisabled = !project?.hasRemainingBudget;
+  const isRewardDisabled = !projectBudget?.budgets?.some(budget => budget.remaining > 0);
+
   const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
