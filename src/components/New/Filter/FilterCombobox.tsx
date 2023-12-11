@@ -112,7 +112,8 @@ export function FilterCombobox<T>({
               "aria-hidden": "true",
               className: cn("order-first leading-none peer-focus-within:text-spacePurple-500", {
                 "text-spacePurple-500": open,
-                "text-greyscale-50": !open,
+                "text-spaceBlue-200": !open && selected.length === 0,
+                "text-greyscale-50": !open && selected.length,
               }),
             })}
 
