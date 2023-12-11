@@ -519,8 +519,7 @@
         "title": "Contributions",
         "emptyState": {
           "title": "Nothing to show",
-          "subtitle": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh.",
-          "timelessSubtitle": "Last synced with Github a few minutes ago.\nIt can take up to 5 minutes before the next refresh."
+          "subtitle": "We continuously search for new __itemType__, but please note that there may be a delay of up to 5 minutes before the next update occurs."
         },
         "ignoreUnignoreContribution": {
           "success": "The contribution was successfully __action__",
