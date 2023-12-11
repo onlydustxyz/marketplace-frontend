@@ -1,6 +1,7 @@
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
 import { isSameDay } from "date-fns";
+import { useMemo } from "react";
 import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
@@ -42,6 +43,18 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
     whileElementsMounted: autoUpdate,
     transform: false,
   });
+
+  const selectionIsValid = useMemo(() => {
+    if (props.mode === "range") {
+      // Sometimes date strings are passed instead of date objects
+      const selected = parseDateRangeString(props.value);
+
+      return Boolean(selected?.from) && Boolean(selected?.to);
+    }
+
+    // Sometimes date strings are passed instead of date objects
+    return Boolean(parseDateString(props.value));
+  }, [props.mode, props.value]);
 
   function renderCalendar() {
     if (props.mode === "range") {
@@ -89,26 +102,20 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
           <Popover.Button
             ref={refs.setReference}
             className={cn(
-              "flex w-full items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 text-greyscale-50 shadow-lg",
+              "flex w-full items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg",
               {
-                "border-spacePurple-500 bg-spacePurple-900 text-spacePurple-200 outline-double outline-1 outline-spacePurple-500":
+                "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                   open,
+                "text-spaceBlue-200": !open && !selectionIsValid,
+                "text-greyScale-50": !open && selectionIsValid,
               }
             )}
           >
             <span className="flex flex-1 items-center gap-2">
-              <CalendarEventLine
-                className={cn("text-base leading-none", {
-                  "text-spacePurple-500": open,
-                })}
-              />
+              <CalendarEventLine className="text-base leading-none" />
               <span className="font-walsheim text-sm leading-none">{renderPlaceholder()}</span>
             </span>
-            <ArrowDownSLine
-              className={cn("text-xl leading-none text-spaceBlue-200", {
-                "text-spacePurple-300": open,
-              })}
-            />
+            <ArrowDownSLine className="text-xl leading-none" />
           </Popover.Button>
 
           <Transition
