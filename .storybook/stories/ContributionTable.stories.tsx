@@ -83,7 +83,7 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
 
     const { createdAt, completedAt, githubStatus, id, repo, status, type } = contribution;
     const lineId = `${id}-${contribution.project.id}`;
-    const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
+    const lineDate = (status === ContributionStatus.InProgress ? createdAt : completedAt) ?? 0;
 
     return (
       <Line key={lineId} className="border-card-border-light">
@@ -93,7 +93,7 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
             type={type as GithubContributionType}
             status={githubStatus}
             contributionStatus={status}
-            date={new Date(lineDate ?? "")}
+            date={new Date(lineDate)}
             tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
           />
         </Cell>
