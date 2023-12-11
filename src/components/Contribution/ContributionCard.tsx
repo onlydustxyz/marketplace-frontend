@@ -28,7 +28,9 @@ export function ContributionCard({ contribution, className }: { contribution: Co
       {isMyContribution ? (
         <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
       ) : (
-        <Contributor contributor={contribution.contributor} clickable />
+        <div className="inline-flex">
+          <Contributor contributor={contribution.contributor} clickable />
+        </div>
       )}
 
       <Contribution contribution={contribution} isMobile />
