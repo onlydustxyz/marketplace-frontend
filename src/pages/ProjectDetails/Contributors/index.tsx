@@ -1,7 +1,6 @@
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
-import { components } from "src/__generated/api";
 import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
@@ -25,12 +24,7 @@ import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstal
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
-import { ProjectBudgetType } from "../Rewards/RemainingBudget/RemainingBudget";
-
-type OutletContext = {
-  project: components["schemas"]["ProjectResponse"];
-  projectBudget: ProjectBudgetType;
-};
+import { OutletContext } from "../View";
 
 export default function Contributors() {
   const { T } = useIntl();
