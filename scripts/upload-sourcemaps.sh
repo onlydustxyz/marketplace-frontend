@@ -13,3 +13,4 @@ else
         --release-version=$VITE_ENV
     echo "Done uploading sourcemaps for $SERVICE version $VITE_ENV"
 fi
+
