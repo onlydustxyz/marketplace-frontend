@@ -1,4 +1,4 @@
-import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
@@ -17,20 +17,19 @@ import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedR
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
-import { ProjectBudgetType, RemainingBudget } from "./RemainingBudget/RemainingBudget";
+import { RemainingBudget } from "./RemainingBudget/RemainingBudget";
+import ProjectApi from "src/api/Project";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
   const navigate = useNavigate();
+  const { projectKey = "" } = useParams<{ projectKey: string }>();
 
-  const { project, projectBudget, isBudgetLoading, refetchBudgets } = useOutletContext<{
-    project: Parameters<typeof getOrgsWithUnauthorizedRepos>[0];
-    projectBudget: ProjectBudgetType;
-    isBudgetLoading: boolean;
-    refetchBudgets: () => void;
-  }>();
+  const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+  });
 
-  const { id: projectId, slug: projectKey } = project;
+  console.log(!!project?.id, project?.id);
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -46,31 +45,25 @@ const RewardList: React.FC = () => {
     isFetchingNextPage,
     refetch,
   } = useInfiniteRewardsList({
-    projectId,
+    projectId: project?.id || "",
+    enabled: !!project?.id,
     queryParams,
   });
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
   const isRewardDisabled = !project?.hasRemainingBudget;
-  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
   if (error) {
     return <ErrorFallback />;
   }
 
-  if (isRewardsLoading) {
-    return (
-      <>
-        <div className="max-w-[15%]">
-          <Skeleton variant="counter" />
-        </div>
-        <Skeleton variant="contributorList" />
-      </>
-    );
+  if (isRewardsLoading || isLoadingProject) {
+    return <Skeleton variant="projectRewards" />;
   }
 
-  return rewards ? (
+  return project && rewards ? (
     <>
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Title>{T("project.details.rewards.title")}</Title>
@@ -106,7 +99,7 @@ const RewardList: React.FC = () => {
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
-      {!isBudgetLoading && projectBudget ? <RemainingBudget projectBudget={projectBudget} /> : null}
+      {<RemainingBudget projectId={project.id} />}
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
         <div className="w-full">
           {rewards.length > 0 ? (
@@ -120,9 +113,8 @@ const RewardList: React.FC = () => {
                   sortField,
                   isFetchingNextPage,
                   refetch,
-                  refetchBudgets,
                 }}
-                projectId={projectId}
+                projectId={project.id}
               />
             </Card>
           ) : (

@@ -1,4 +1,5 @@
 import SkeletonCard from "./SkeletonCard";
+import SkeletonTitle from "./SkeletonTitle";
 import SkeletonFilters from "./SkeletonFilters";
 import SkeletonHeader from "./SkeletonHeader";
 import SkeletonSearch from "./SkeletonSearch";
@@ -12,8 +13,15 @@ import SkeletonInvoice from "./SkeletonInvoice";
 import SkeletonOrganizationItem from "./SkeletonOrganizationItem";
 import SkeletonRewardableItems from "./SkeletonRewardableItems";
 import SkeletonQuickActions from "./SkeletonQuickActions";
+import SkeletonProjectSidebar from "./SkeletonProjectSidebar";
+import SkeletonProjectOverview from "./SkeletonProjectOverview";
+import SkeletonProjectRewards from "./SkeletonProjectRewards";
+import SkeletonProjectRewardForm from "./SkeletonProjectRewardForm";
+import SkeletonProjectRemainingBudgets from "./SkeletonProjectRemainingBudgets";
+import SkeletonSubmitProject from "./SkeletonSubmitProject";
 
 type SkeletonVariant =
+  | "title"
   | "card"
   | "filters"
   | "header"
@@ -27,13 +35,20 @@ type SkeletonVariant =
   | "rewardsList"
   | "invoice"
   | "organizationItem"
-  | "quickActions";
+  | "quickActions"
+  | "projectSidebar"
+  | "projectOverview"
+  | "projectRewards"
+  | "projectRewardForm"
+  | "projectRemainingBudgets"
+  | "submitProject";
 
 interface SkeletonProps {
   variant: SkeletonVariant;
 }
 
 const VARIANT_COMPONENTS = {
+  title: SkeletonTitle,
   card: SkeletonCard,
   filters: SkeletonFilters,
   header: SkeletonHeader,
@@ -48,6 +63,12 @@ const VARIANT_COMPONENTS = {
   invoice: SkeletonInvoice,
   organizationItem: SkeletonOrganizationItem,
   quickActions: SkeletonQuickActions,
+  projectSidebar: SkeletonProjectSidebar,
+  projectOverview: SkeletonProjectOverview,
+  projectRewards: SkeletonProjectRewards,
+  projectRewardForm: SkeletonProjectRewardForm,
+  projectRemainingBudgets: SkeletonProjectRemainingBudgets,
+  submitProject: SkeletonSubmitProject,
 };
 
 export default function Skeleton({ variant }: SkeletonProps) {

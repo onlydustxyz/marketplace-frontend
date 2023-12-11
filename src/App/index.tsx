@@ -12,12 +12,10 @@ const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
 const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/Contributors"));
 const ProjectDetailsContributions = lazy(() => import("src/pages/ProjectDetails/Contributions"));
-const ProjectDetailsRewards = lazy(() => import("src/pages/ProjectDetails/Rewards"));
 const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Rewards/List"));
 const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
 const ProjectDetailsEdit = lazy(() => import("src/pages/ProjectDetails/ProjectEdition/ProjectEdition"));
 
-import LoaderFallback from "src/components/Loader";
 import { NotFound } from "src/components/NotFound";
 import ErrorTrigger from "src/pages/ErrorTrigger";
 import ImpersonationPage from "src/pages/Impersonation";
@@ -31,6 +29,11 @@ import ProjectCreation from "src/pages/ProjectCreation/ProjectCreation";
 import ProtectedByFlag from "./ProtectedByFlag";
 import ProtectedByGithub from "./ProtectedByGithub";
 import { GITHUB_PERMISSIONS } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
+import Skeleton from "src/components/Skeleton";
+import ProjectsLoader from "./Loaders/ProjectsLoader";
+import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
+import Loader from "src/components/Loader";
+import RewardLoader from "./Loaders/RewardsLoader";
 
 export enum RoutePaths {
   Home = "/",
@@ -69,11 +72,28 @@ function App() {
   const projectRoutes: RouteObject[] = [
     {
       index: true,
-      element: <ProjectDetailsOverview />,
+      element: (
+        <Suspense fallback={<Skeleton variant="projectOverview" />}>
+          <ProjectDetailsOverview />
+        </Suspense>
+      ),
     },
     {
       path: ProjectRoutePaths.Contributors,
-      element: <ProjectDetailsContributors />,
+      element: (
+        <Suspense
+          fallback={
+            <>
+              <div className="max-w-[15%]">
+                <Skeleton variant="counter" />
+              </div>
+              <Skeleton variant="contributorList" />
+            </>
+          }
+        >
+          <ProjectDetailsContributors />
+        </Suspense>
+      ),
     },
     parseFlag("VITE_FLAG_ALLOW_PROJECT_CONTRIBUTIONS")
       ? {
@@ -83,19 +103,26 @@ function App() {
       : {},
     {
       path: ProjectRoutePaths.Rewards,
-      element: (
-        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProjectDetailsRewards />
-        </ProtectedRoute>
-      ),
       children: [
         {
           index: true,
-          element: <ProjectDetailsRewardsList />,
+          element: (
+            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+              <Suspense fallback={<Skeleton variant="projectRewards" />}>
+                <ProjectDetailsRewardsList />
+              </Suspense>
+            </ProtectedRoute>
+          ),
         },
         {
           path: ProjectRewardsRoutePaths.New,
-          element: <ProjectDetailsRewardForm />,
+          element: (
+            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+              <Suspense fallback={<Skeleton variant="projectRewardForm" />}>
+                <ProjectDetailsRewardForm />
+              </Suspense>
+            </ProtectedRoute>
+          ),
         },
       ],
     },
@@ -126,7 +153,11 @@ function App() {
       children: [
         {
           path: RoutePaths.Projects,
-          element: <Projects />,
+          element: (
+            <Suspense fallback={<ProjectsLoader />}>
+              <Projects />
+            </Suspense>
+          ),
         },
         {
           path: RoutePaths.TermsAndConditions,
@@ -140,7 +171,9 @@ function App() {
           path: RoutePaths.Rewards,
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <Rewards />
+              <Suspense fallback={<RewardLoader />}>
+                <Rewards />
+              </Suspense>
             </ProtectedRoute>
           ),
         },
@@ -175,7 +208,11 @@ function App() {
         },
         {
           path: RoutePaths.ProjectDetails,
-          element: <ProjectDetails />,
+          element: (
+            <Suspense fallback={<ProjectDetailsLoader />}>
+              <ProjectDetails />
+            </Suspense>
+          ),
           children: projectRoutes,
         },
         {
@@ -202,7 +239,7 @@ function App() {
     <Suspense
       fallback={
         <div className="h-[calc(100dvh)]">
-          <LoaderFallback />
+          <Loader />
         </div>
       }
     >

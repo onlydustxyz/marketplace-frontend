@@ -1,15 +1,42 @@
 import { components } from "src/__generated/api";
 import { BudgetCard } from "./BudgetCard";
 import { TotalBudgetCard } from "./TotalBudgetCard";
+import Skeleton from "src/components/Skeleton";
 import { CurrencyOrder } from "src/types";
+import { useShowToaster } from "src/hooks/useToaster";
+import ProjectApi from "src/api/Project";
+import { useIntl } from "src/hooks/useIntl";
 
 export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];
 
 type RemainingBudgetProps = {
-  projectBudget: ProjectBudgetType;
+  projectId: string;
 };
 
-export function RemainingBudget({ projectBudget }: RemainingBudgetProps) {
+export function RemainingBudget({ projectId }: RemainingBudgetProps) {
+  const { T } = useIntl();
+  const showToaster = useShowToaster();
+
+  const {
+    data: projectBudget,
+    isLoading: isBudgetLoading,
+    isError: isBudgetError,
+  } = ProjectApi.queries.useProjectBudget({
+    params: { projectId },
+  });
+
+  if (isBudgetError) {
+    showToaster(T("reward.budgets.error"), { isError: true });
+  }
+
+  if (isBudgetLoading) {
+    return <Skeleton variant="projectRemainingBudgets" />;
+  }
+
+  if (!projectBudget) {
+    return null;
+  }
+
   const currencyOrder = CurrencyOrder;
 
   const sortedBudgets = projectBudget.budgets

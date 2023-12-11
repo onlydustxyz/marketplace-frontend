@@ -7,6 +7,7 @@ import ProjectApi from "src/api/Project";
 import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
 import { useFormContext } from "react-hook-form";
 import { Contributor } from "../../types";
+import { NotFound } from "src/components/NotFound";
 
 export interface RewardableWorkItem {
   type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;
@@ -45,6 +46,7 @@ export function WorkItems({ type, projectId, workItems, addWorkItem, contributor
     isFetchingNextPage,
   } = ProjectApi.queries.useRewardableItemsInfiniteList({
     params: { projectId, queryParams },
+    options: { retry: 1 },
   });
 
   const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
@@ -65,6 +67,10 @@ export function WorkItems({ type, projectId, workItems, addWorkItem, contributor
     [contributions, workItems]
   );
 
+  if (isError) {
+    return <NotFound />;
+  }
+
   return (
     <View
       projectId={projectId}
@@ -84,7 +90,6 @@ export function WorkItems({ type, projectId, workItems, addWorkItem, contributor
       isFetchingNextPage={isFetchingNextPage}
       setIncludeIgnoredItems={setIncludeIgnoredItems}
       loading={isLoading}
-      error={isError}
     />
   );
 }

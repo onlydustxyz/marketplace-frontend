@@ -10,6 +10,8 @@ import {
   usePendingProjectLeader,
   useProjectLeader,
 } from "src/hooks/useProjectLeader/useProjectLeader";
+import { useParams } from "react-router-dom";
+import Skeleton from "src/components/Skeleton";
 import { parseFlag } from "src/utils/parseFlag";
 import { useMediaQuery } from "usehooks-ts";
 import View from "./View";
@@ -20,17 +22,15 @@ export type ProjectDetailsTab = {
   path: string;
 };
 
-interface Props {
-  projectId: string;
-  projectSlug: string;
-}
-
-export default function ProjectsSidebar({ projectId, projectSlug }: Props) {
-  const { data: currentProject } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectSlug } });
+export default function ProjectsSidebar() {
+  const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const isProjectLeader = useProjectLeader({ id: projectId });
-  const isPendingProjectLeader = usePendingProjectLeader({ id: projectId });
+
+  const { data: currentProject, isLoading } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
+
+  const isProjectLeader = useProjectLeader({ id: currentProject?.id });
+  const isPendingProjectLeader = usePendingProjectLeader({ id: currentProject?.id });
   const leadedProjects = useLeadProjects();
   const pendingLeadedProjects = usePendingLeadProjects();
   const sortedProject = useMemo(() => {
@@ -72,6 +72,17 @@ export default function ProjectsSidebar({ projectId, projectSlug }: Props) {
     ...(isProjectLeader ? [AvailableTabs.rewards] : []),
   ];
 
+  if (isLoading && isXl)
+    return (
+      <div
+        className={
+          "flex w-full shrink-0 flex-col gap-6 bg-white/4 bg-noise-medium p-6 font-walsheim xl:w-80 xl:rounded-l-2xl"
+        }
+      >
+        <Skeleton variant="projectSidebar" />
+      </div>
+    );
+
   if (!currentProject) return <div />;
 
   const props = {
@@ -80,6 +91,7 @@ export default function ProjectsSidebar({ projectId, projectSlug }: Props) {
     projects: sortedProject.leadedProjects,
     pendingProjects: sortedProject.pendingLeadedProjects,
     expandable: canExpand,
+    isLoading,
   };
 
   return isXl ? <View {...props} /> : <ViewMobile {...props} />;

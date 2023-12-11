@@ -20,6 +20,7 @@ const useGetProjectBySlug = ({
     callbackTags: result => {
       return PROJECT_TAGS.detail_by_id(result?.id || "");
     },
+    retry: 1,
     enabled: !!params?.slug,
     ...options,
   });
@@ -184,6 +185,20 @@ const useCompletedRewardableItems = ({
   });
 };
 
+type UseProjectBudgetResponse = components["schemas"]["ProjectBudgetsResponse"];
+
+const useProjectBudget = ({
+  params,
+  options = {},
+}: UseQueryProps<UseProjectBudgetResponse, { projectId?: string }>) => {
+  return useBaseQuery<UseProjectBudgetResponse>({
+    resourcePath: API_PATH.PROJECT_BUDGET(params?.projectId ?? ""),
+    enabled: !!params?.projectId,
+    tags: PROJECT_TAGS.budgets(params?.projectId ?? ""),
+    ...options,
+  });
+};
+
 export default {
   useGetProjectBySlug,
   useGetProjectContributionDetail,
@@ -193,4 +208,5 @@ export default {
   useProjectContributorsInfiniteList,
   useProjectContributionsInfiniteList,
   useCompletedRewardableItems,
+  useProjectBudget,
 };

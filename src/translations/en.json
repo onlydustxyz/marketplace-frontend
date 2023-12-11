@@ -663,6 +663,9 @@
       "usdInfoEarnings": "Dollar equivalent at today's date across all your earnings",
       "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
       "invoiceError": "Unable to retrieve Invoice informations. Please try again."
+    },
+    "budgets":{
+      "error": "Unable to retrieve Rewards Budgets. Please try again."
     }
   },
   "profile": {

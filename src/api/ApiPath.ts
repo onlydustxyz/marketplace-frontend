@@ -26,6 +26,7 @@ export const API_PATH = {
     BASE_API_V1(`projects/${projectId}/rewardable-items/other-pull-requests`),
   PROJECT_CREATE_OTHER_ISSUE: (projectId: string) => BASE_API_V1(`projects/${projectId}/rewardable-items/other-issues`),
   PROJECT_CONTRIBUTORS: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributors`),
+  PROJECT_BUDGET: (projectId: string) => BASE_API_V1(`projects/${projectId}/budgets`),
   PROJECT_CONTRIBUTIONS: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributions`),
 
   /* --------------------------------- USERS -------------------------------- */

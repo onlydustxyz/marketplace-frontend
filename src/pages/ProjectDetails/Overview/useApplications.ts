@@ -10,6 +10,7 @@ export default function useApplications(projectId: string, projectSlug: string) 
 
   const { data, refetch } = useGetProjectApplicationsQuery({
     variables: { projectId },
+    skip: !projectId,
   });
 
   const { mutate: applyProjectMutation, ...restMutation } = MeApi.mutations.useApplyProject({
@@ -34,6 +35,6 @@ export default function useApplications(projectId: string, projectSlug: string) 
   return {
     applications: data?.projects[0]?.applications,
     alreadyApplied: data?.projects[0]?.applications.some(a => a.applicantId === user?.id),
-    applyToProject: () => applyProjectMutation({ projectId }),
+    applyToProject: () => (projectId ? applyProjectMutation({ projectId }) : undefined),
   };
 }
