@@ -1,6 +1,5 @@
+import { WorkItemType } from "src/__generated/graphql";
 import EmptyState from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/EmptyState/index";
-
-const indexedAtMock = "2023-10-06T09:00:00.00000";
 
 export default {
   title: "EmptyState",
@@ -8,5 +7,5 @@ export default {
 };
 
 export const Default = {
-  render: () => <EmptyState indexedAt={indexedAtMock} />,
+  render: () => <EmptyState type={WorkItemType.Issue} />,
 };
