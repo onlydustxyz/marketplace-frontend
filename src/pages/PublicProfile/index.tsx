@@ -4,11 +4,12 @@ import Tooltip from "src/components/Tooltip";
 import Header from "./Header";
 import Footer from "./Footer";
 import Profile from "./Profile";
-import { RoutePaths } from "src/App";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 import SEO from "src/components/SEO";
 import UsersApi from "src/api/Users";
+import { useQueriesErrorBehavior } from "src/api/useQueriesError";
+import { FetchError } from "src/api/query.type";
 
 const PublicProfilePage = () => {
   const { userLogin } = useParams();
@@ -16,14 +17,31 @@ const PublicProfilePage = () => {
   const showToaster = useShowToaster();
   const navigate = useNavigate();
 
-  const { data: userProfile, isLoading } = UsersApi.queries.useUserProfileByGithubLogin({
+  const {
+    data: userProfile,
+    isLoading,
+    ...restUserProfileByGithubLoginQueries
+  } = UsersApi.queries.useUserProfileByGithubLogin({
     params: { login: userLogin },
+    options: { retry: 1 },
   });
 
-  if (!userProfile && !isLoading) {
-    showToaster(T("profile.error.notFound"), { isError: true });
-    navigate(RoutePaths.Home);
+  const errorHandlingComponent = useQueriesErrorBehavior({
+    queries: {
+      error: restUserProfileByGithubLoginQueries.error as FetchError,
+      isError: restUserProfileByGithubLoginQueries.isError,
+      refetch: restUserProfileByGithubLoginQueries.refetch,
+    },
+  });
+
+  if (errorHandlingComponent) {
+    return errorHandlingComponent;
   }
+
+  // if (!userProfile && !isLoading) {
+  //   showToaster(T("profile.error.notFound"), { isError: true });
+  //   navigate(RoutePaths.Home);
+  // }
 
   return userProfile && userLogin ? (
     <>
