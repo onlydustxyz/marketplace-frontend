@@ -76,7 +76,13 @@ export function FilterCombobox<T>({
   }
 
   return (
-    <Combobox value={selected} onChange={onChange} disabled={disabled} multiple>
+    <Combobox
+      value={selected}
+      onChange={onChange}
+      disabled={disabled}
+      multiple
+      by={(a, b) => a[uniqueKey] === b[uniqueKey]}
+    >
       {({ open }) => (
         <div className="relative isolate">
           <Combobox.Button
