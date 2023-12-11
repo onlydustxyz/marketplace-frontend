@@ -5,7 +5,7 @@ import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
-import { ContributionTable, type TableSort } from "src/components/Contribution/ContributionTable";
+import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
@@ -15,13 +15,6 @@ import StackLine from "src/icons/StackLine";
 import { ContributionStatus } from "src/types";
 import { ContributionsFilter, FilterQueryParams } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
-
-export enum TableColumns {
-  Date = "CREATED_AT",
-  Project = "PROJECT_REPO_NAME",
-  Contribution = "GITHUB_NUMBER_TITLE",
-  Linked = "LINKS_COUNT",
-}
 
 const initialSort: Record<ContributionStatus, TableSort> = {
   [ContributionStatus.InProgress]: {

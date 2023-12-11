@@ -2,7 +2,8 @@ import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
-import { HeaderCell } from "src/components/Contribution/ContributionTable";
+import { HeaderCell, TableColumns } from "src/components/Contribution/ContributionTable";
+import Contributor from "src/components/Contributor";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
@@ -13,8 +14,6 @@ import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
 import { ContributionStatus, Contribution as ContributionT, GithubContributionType } from "src/types";
-import { TableColumns } from "./index";
-import Contributor from "src/components/Contributor";
 
 export function useContributionTable() {
   const { T } = useIntl();

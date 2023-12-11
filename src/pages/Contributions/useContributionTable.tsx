@@ -3,7 +3,7 @@ import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
-import { HeaderCell } from "src/components/Contribution/ContributionTable";
+import { HeaderCell, TableColumns } from "src/components/Contribution/ContributionTable";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
@@ -13,7 +13,6 @@ import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, Contribution as ContributionT, GithubContributionType } from "src/types";
-import { TableColumns } from "./Contributions";
 
 export function useContributionTable() {
   const { T } = useIntl();

@@ -7,7 +7,7 @@ import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
-import { ContributionTable } from "src/components/Contribution/ContributionTable";
+import { ContributionTable, TableColumns } from "src/components/Contribution/ContributionTable";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
@@ -36,13 +36,6 @@ export default {
   ],
 };
 
-enum TableColumns {
-  Date = "CREATED_AT",
-  Project = "PROJECT_REPO_NAME",
-  Id = "GITHUB_NUMBER_TITLE",
-  Linked = "LINKS_COUNT",
-}
-
 const defaultProps: ComponentProps<typeof ContributionTable> = {
   id: "in_progress_contributions_table",
   title: "In progress",
@@ -69,7 +62,7 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
       width: HeaderCellWidth.Quarter,
     },
     {
-      sort: TableColumns.Id,
+      sort: TableColumns.Contribution,
       icon: <StackLine />,
       label: "Contribution",
       width: HeaderCellWidth.Half,

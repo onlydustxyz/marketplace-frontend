@@ -32,13 +32,22 @@ function TableText({ children, colSpan }: PropsWithChildren<{ colSpan: number }>
   );
 }
 
+export enum TableColumns {
+  Date = "CREATED_AT",
+  Project = "PROJECT_REPO_NAME",
+  Repo = "REPO_NAME",
+  Contributor = "CONTRIBUTOR_LOGIN",
+  Contribution = "GITHUB_NUMBER_TITLE",
+  Linked = "LINKS_COUNT",
+}
+
 export type TableSort = {
-  sort: string; // Would like to use a generic here, but couldn't get it to play nice. Maybe come back to this later.
+  sort: TableColumns;
   direction: OrderBy.Asc | OrderBy.Desc;
 };
 
 export type HeaderCell = {
-  sort: string;
+  sort: TableColumns;
   icon: ReactNode;
   label: string;
   width?: HeaderCellWidth;
@@ -195,7 +204,7 @@ export function ContributionTable({
                 <HeaderLine>
                   {headerCells.map(cell => (
                     <HeaderCell
-                      key={cell.sort}
+                      key={cell.sort?.toString()}
                       onClick={() => {
                         onSort({
                           sort: cell.sort,

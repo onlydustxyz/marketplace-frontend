@@ -7,7 +7,7 @@ import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
-import { ContributionTable, type TableSort } from "src/components/Contribution/ContributionTable";
+import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
@@ -23,14 +23,6 @@ import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstal
 import { EditProjectButton } from "../components/EditProjectButton";
 import { FilterQueryParams, ProjectContributionsFilter } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
-
-export enum TableColumns {
-  Date = "CREATED_AT",
-  Repo = "REPO_NAME",
-  Contributor = "CONTRIBUTOR_LOGIN",
-  Contribution = "GITHUB_NUMBER_TITLE",
-  Linked = "LINKS_COUNT",
-}
 
 const initialSort: Record<ContributionStatus, TableSort> = {
   [ContributionStatus.InProgress]: {
