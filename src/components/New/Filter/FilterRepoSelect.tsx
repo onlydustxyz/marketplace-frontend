@@ -22,10 +22,7 @@ export function FilterRepoSelect({
         items={repos}
         multiple
         selected={selected}
-        onChange={value => {
-          const repos = Array.isArray(value) ? value : [value];
-          onChange(repos);
-        }}
+        onChange={onChange}
         disabled={repos.length <= 1}
       />
     </FilterField>

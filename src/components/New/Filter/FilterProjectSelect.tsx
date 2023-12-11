@@ -22,10 +22,7 @@ export function FilterProjectSelect({
         items={projects}
         multiple
         selected={selected}
-        onChange={value => {
-          const projects = Array.isArray(value) ? value : [value];
-          onChange(projects);
-        }}
+        onChange={onChange}
         disabled={projects.length <= 1}
       />
     </FilterField>

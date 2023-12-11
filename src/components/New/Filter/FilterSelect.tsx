@@ -17,22 +17,30 @@ type Props<T> = {
   disabled?: boolean;
   icon?: (className: string) => ReactElement;
   items: T[];
-  multiple?: boolean;
-  // Would be good to use a disciminated union here
-  onChange?: (value: T | T[]) => void;
-  selected: T | T[];
   tokens: Record<"zero" | "other", string>;
+};
+
+type SingleProps<T> = Props<T> & {
+  multiple?: never;
+  onChange?: (value: T) => void;
+  selected: T;
+};
+
+type MultipleProps<T> = Props<T> & {
+  multiple?: true;
+  onChange?: (value: T[]) => void;
+  selected: T[];
 };
 
 export function FilterSelect<T extends Item>({
   disabled = false,
   icon,
   items,
-  multiple = false,
+  multiple,
   onChange,
   selected,
   tokens,
-}: Props<T>) {
+}: SingleProps<T> | MultipleProps<T>) {
   const { T } = useIntl();
 
   const renderToken = useCallback(() => {
@@ -62,13 +70,11 @@ export function FilterSelect<T extends Item>({
               )}
             >
               <span className="flex flex-1 items-center gap-2">
-                {icon
-                  ? icon(
-                      cn("text-base leading-none", {
-                        "text-spacePurple-500": open,
-                      })
-                    )
-                  : null}
+                {icon?.(
+                  cn("text-base leading-none", {
+                    "text-spacePurple-500": open,
+                  })
+                )}
                 <span className="font-walsheim text-sm leading-none">{renderToken()}</span>
               </span>
               <ArrowDownSLine
