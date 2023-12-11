@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { components } from "src/__generated/api";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Loader from "src/components/Loader";
@@ -10,10 +10,13 @@ import { cn } from "src/utils/cn";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { ProjectBudgetType } from "./Rewards/RemainingBudget/RemainingBudget";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 
 export type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
   projectBudget: ProjectBudgetType;
+  isBudgetLoading?: boolean;
+  refetchBudgets?: () => void;
 };
 interface Props {
   project: components["schemas"]["ProjectResponse"];
@@ -24,14 +27,23 @@ interface Props {
 
 export default function View({ project, padded = true }: Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const { data: projectBudget } = useRestfulData({
+  const params = useParams();
+  const isProjectLeader = useProjectLeader({ slug: params.projectKey });
+  const {
+    data: projectBudget,
+    isLoading: isBudgetLoading,
+    refetch: refetchBudgets,
+  } = useRestfulData({
     resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
     pathParam: { projectId: project.id },
     method: "GET",
+    enabled: isProjectLeader,
   });
   const outletContext = {
     project,
     projectBudget,
+    isBudgetLoading,
+    refetchBudgets,
   };
 
   const { id, slug } = project;
