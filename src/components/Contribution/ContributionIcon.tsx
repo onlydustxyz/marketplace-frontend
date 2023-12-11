@@ -40,7 +40,7 @@ export const variants: {
     [GithubContributionType.Issue]: {
       [GithubIssueStatus.Open]: "text-github-green-light border-github-green",
       [GithubIssueStatus.Completed]: "text-github-purple-light border-github-purple",
-      [GithubIssueStatus.Cancelled]: "text-github-grey-light border-github-grey",
+      [GithubIssueStatus.Cancelled]: "text-github-red-light border-github-red",
     },
     [GithubContributionType.CodeReview]: {
       [GithubCodeReviewStatus.Approved]: "text-github-purple-light border-github-purple",
