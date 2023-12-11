@@ -80,7 +80,7 @@ export default function Overview() {
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
-  const { alreadyApplied, applyToProject } = useApplications(project?.id, projectKey);
+  const { alreadyApplied, applyToProject } = useApplications(project?.id ?? "", projectKey);
   const { isCurrentUserMember } = useProjectVisibility(project?.id);
 
   const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});

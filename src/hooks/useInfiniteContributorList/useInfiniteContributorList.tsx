@@ -4,7 +4,7 @@ import { useInfiniteRestfulData } from "src/hooks/useRestfulData/useRestfulData"
 import { QueryParams } from "src/utils/getEndpointUrl";
 
 interface UseInfiniteContributorsProps {
-  projectId: string | undefined;
+  projectId: string;
   queryParams?: QueryParams;
 }
 
