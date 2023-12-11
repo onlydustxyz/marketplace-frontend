@@ -1,12 +1,18 @@
 import { useIntl } from "src/hooks/useIntl";
 import emptyStateLogo from "assets/img/empty-state.png";
-import { getFormattedTimeUS } from "src/utils/date";
+import { WorkItemType } from "src/__generated/graphql";
 
-type EmptyStateProps = {
-  indexedAt?: string;
+const itemTypes = {
+  [WorkItemType.Issue]: "project.details.edit.fields.rewardableContributions.issues",
+  [WorkItemType.PullRequest]: "project.details.edit.fields.rewardableContributions.pullRequests",
+  [WorkItemType.CodeReview]: "project.details.edit.fields.rewardableContributions.codeReviews",
 };
 
-export default function EmptyState({ indexedAt }: EmptyStateProps) {
+type EmptyStateProps = {
+  type: WorkItemType;
+};
+
+export default function EmptyState({ type }: EmptyStateProps) {
   const { T } = useIntl();
 
   return (
@@ -18,11 +24,9 @@ export default function EmptyState({ indexedAt }: EmptyStateProps) {
         {T("reward.form.contributions.emptyState.title")}
       </div>
       <div className="text-center font-walsheim text-base font-normal text-greyscale-50">
-        {indexedAt
-          ? T("reward.form.contributions.emptyState.subtitle", {
-              time: getFormattedTimeUS(new Date(indexedAt)),
-            })
-          : T("reward.form.contributions.emptyState.timelessSubtitle")}
+        {T("reward.form.contributions.emptyState.subtitle", {
+          itemType: T(itemTypes[type]).toLowerCase(),
+        })}
       </div>
     </div>
   );
