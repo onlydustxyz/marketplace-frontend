@@ -350,8 +350,8 @@
       "error": "We were unable to send the invoice, please try again later"
     },
     "text": {
-      "many": "Please send us an invoice for your __count__ pending payments",
-      "one": "Please send us an invoice for your pending payment"
+      "many": "Please send us an invoice for your __count__ pending rewards",
+      "one": "Please send us an invoice for your pending reward"
     },
     "title": "Invoice needed"
   },
@@ -519,8 +519,7 @@
         "title": "Contributions",
         "emptyState": {
           "title": "Nothing to show",
-          "subtitle": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh.",
-          "timelessSubtitle": "Last synced with Github a few minutes ago.\nIt can take up to 5 minutes before the next refresh."
+          "subtitle": "We continuously search for new __itemType__, but please note that there may be a delay of up to 5 minutes before the next update occurs."
         },
         "ignoreUnignoreContribution": {
           "success": "The contribution was successfully __action__",
@@ -560,13 +559,13 @@
       "pending": "Pending",
       "processing": "Processing",
       "tooltip": {
-        "complete": "Payment successful",
-        "invoicePending": "An invoice is required to process your payment. Please wait up to 5 days if you already sent it.",
+        "complete": "Reward successful",
+        "invoicePending": "An invoice is required to process your reward. Please wait up to 5 days if you already sent it.",
         "signupPending": "You need to sign up on OnlyDust to get paid",
         "payoutInfoMissing": "Fill in your payout information to get paid",
-        "payoutInfoMissingAsContributor": "Contributor must fill his payment information to get paid",
+        "payoutInfoMissingAsContributor": "Contributor must fill his reward information to get paid",
         "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
-        "processing": "Payment is being processed by our team, usually within 2 weeks"
+        "processing": "Reward is being processed by our team, usually within 2 weeks"
       }
     },
     "table": {
@@ -694,7 +693,7 @@
       }
     },
     "button": {
-      "payoutSettingsInvalidTooltip": "You're unable to receive payments. Click to fill up required info"
+      "payoutSettingsInvalidTooltip": "You're unable to receive rewards. Click to fill up required info"
     },
     "form": {
       "address": "Street address",
@@ -708,7 +707,7 @@
       "cancel": "Cancel",
       "city": "City",
       "companyName": "Company name",
-      "companyNeedsInvoiceCallout": "As a company, you'll need to share an invoice for each payment in order to receive the funds.",
+      "companyNeedsInvoiceCallout": "As a company, you'll need to share an invoice for each reward in order to receive the funds.",
       "companyOwnerFirstName": "First name",
       "companyOwnerLastName": "Last name",
       "completion": "__completion__% completed",
@@ -739,7 +738,7 @@
       "ibanInvalid": "Please enter a valid IBAN",
       "ibanRequired": "Your IBAN is required",
       "invalidZipcode": "Please enter a valid international Zip Code",
-      "payoutFieldRequired": "This field is required to receive payments",
+      "payoutFieldRequired": "This field is required to receive rewards",
       "alphabeticallyInvalid": "Please enter alphabetic only characters",
       "identificationNumber": "Identification number",
       "invalidEthWallet": "Please enter a valid ETH address or ENS domain",
@@ -753,8 +752,8 @@
       "optimismIdentityPlaceholder": "Optimism wallet address",
       "payoutInformation": "Payout information",
       "payoutSettings": "Payout information",
-      "payoutSettingsRequiredTag": "* required to receive payments",
-      "payoutSettingsType": "Preferred payment method",
+      "payoutSettingsRequiredTag": "* required to receive rewards",
+      "payoutSettingsType": "Preferred reward method",
       "payoutCurrenciesType": "Other currencies",
       "contactSettingsValidTag": "You're able to receive rewards",
       "payoutSettingsValidTag": "You're able to receive rewards on all networks",
@@ -781,8 +780,8 @@
       "twitter": "Twitter",
       "twitterPlaceholder": "Twitter",
       "typeOfProfile": "Profile type",
-      "usdPreferredMethod": "Preferred payment method for dollars",
-      "privacyNotice": "Your info remains private.\n We'll only use it to process payments.",
+      "usdPreferredMethod": "Preferred reward method for dollars",
+      "privacyNotice": "Your info remains private.\n We'll only use it to process rewards.",
       "weeklyAllocatedTime": {
         "title": "Weekly allocated time",
         "none": "None",
@@ -804,7 +803,7 @@
     },
     "missing": {
       "button": "Complete payout information",
-      "subtitle": "We won't be able to issue any payment until your payout information is completed",
+      "subtitle": "We won't be able to issue any reward until your payout information is completed",
       "title": "Payout information missing",
       "contact": "Missing information to receive rewards",
       "networkFull": {

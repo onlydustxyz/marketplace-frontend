@@ -23,8 +23,6 @@ import EmptyState from "../EmptyState";
 import Skeleton from "src/components/Skeleton";
 import ErrorState from "src/components/ErrorState";
 import { Contributor } from "../../types";
-import { useOutletContext } from "react-router-dom";
-import { OutletContext } from "src/pages/ProjectDetails/View";
 
 export const tabNames = {
   [WorkItemType.Issue]: "issues",
@@ -70,7 +68,6 @@ export default function View({
 }: Props) {
   const { T } = useIntl();
   const { resetField } = useFormContext();
-  const { project } = useOutletContext<OutletContext>();
   const tabName = tabNames[type];
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
@@ -139,7 +136,7 @@ export default function View({
       );
     }
 
-    return <EmptyState indexedAt={project.indexedAt} />;
+    return <EmptyState type={type} />;
   };
 
   return (
