@@ -88,8 +88,8 @@ export function FilterCombobox<T>({
           <Combobox.Button
             as="div"
             className={cn("relative z-30 flex items-center gap-2 overflow-hidden rounded-lg border px-2.5 py-1.5", {
-              "border-spacePurple-500 bg-spacePurple-900 ring-1 ring-spacePurple-500": open,
-              "border-greyscale-50/8 bg-white/5 focus-within:border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500":
+              "border-spacePurple-400 bg-spacePurple-900 ring-1 ring-spacePurple-400": open,
+              "border-greyscale-50/8 bg-white/5 focus-within:border-spacePurple-400 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-400":
                 !open,
             })}
           >
@@ -97,10 +97,10 @@ export function FilterCombobox<T>({
               className={cn(
                 "peer w-full border-none bg-transparent font-walsheim text-sm text-greyscale-50 outline-none",
                 {
-                  "focus-within:placeholder:text-spacePurple-500": !open,
+                  "focus-within:placeholder:text-spacePurple-400": !open,
                   "placeholder:text-spaceBlue-200": !open && selected.length === 0,
                   "placeholder:text-greyscale-50": !open && selected.length,
-                  "placeholder:text-spacePurple-500": open,
+                  "placeholder:text-spacePurple-400": open,
                 }
               )}
               placeholder={placeholder}
@@ -110,8 +110,8 @@ export function FilterCombobox<T>({
 
             {renderIcon({
               "aria-hidden": "true",
-              className: cn("order-first leading-none peer-focus-within:text-spacePurple-500", {
-                "text-spacePurple-500": open,
+              className: cn("order-first leading-none peer-focus-within:text-spacePurple-400", {
+                "text-spacePurple-400": open,
                 "text-spaceBlue-200": !open && selected.length === 0,
                 "text-greyscale-50": !open && selected.length,
               }),
@@ -119,8 +119,8 @@ export function FilterCombobox<T>({
 
             <ArrowDownSLine
               className={cn("text-xl leading-none", {
-                "text-spacePurple-500": open,
-                "text-spaceBlue-200 peer-focus-within:text-spacePurple-500": !open,
+                "text-spacePurple-400": open,
+                "text-spaceBlue-200 peer-focus-within:text-spacePurple-400": !open,
               })}
               aria-hidden="true"
             />

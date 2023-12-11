@@ -64,7 +64,7 @@ export function FilterSelect<T extends Item>({
               className={cn(
                 "flex w-full items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
                 {
-                  "border-spacePurple-500 bg-spacePurple-900 text-spacePurple-200 outline-double outline-1 outline-spacePurple-500":
+                  "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                     open,
                 }
               )}
@@ -79,7 +79,7 @@ export function FilterSelect<T extends Item>({
               </span>
               <ArrowDownSLine
                 className={cn("text-xl leading-none text-spaceBlue-200", {
-                  "text-spacePurple-300": open,
+                  "text-spacePurple-400": open,
                 })}
               />
             </Listbox.Button>
