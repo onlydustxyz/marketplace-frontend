@@ -146,6 +146,29 @@ const useProjectContributorsInfiniteList = ({
   );
 };
 
+export type UseProjectContributionsInfiniteListResponse = components["schemas"]["ProjectContributionPageResponse"];
+
+interface ProjectContributionsInfiniteListParams {
+  projectId: string;
+  queryParams?: QueryParams;
+  pageSize?: number;
+}
+
+const useProjectContributionsInfiniteList = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<UseProjectContributionsInfiniteListResponse, ProjectContributionsInfiniteListParams>) => {
+  return useInfiniteBaseQuery<UseProjectContributionsInfiniteListResponse>(
+    {
+      resourcePath: API_PATH.PROJECT_CONTRIBUTIONS(params?.projectId || ""),
+      tags: PROJECT_TAGS.contributions(params?.projectId || ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 10,
+    },
+    options
+  );
+};
+
 type UseCompletedRewardableItemsResponse = components["schemas"]["AllRewardableItemsResponse"];
 export type CompletedRewardableItem = components["schemas"]["AllRewardableItemsResponse"];
 
@@ -183,6 +206,7 @@ export default {
   useRewardableItemsInfiniteList,
   useRewardableItemsQueryParams,
   useProjectContributorsInfiniteList,
+  useProjectContributionsInfiniteList,
   useCompletedRewardableItems,
   useProjectBudget,
 };

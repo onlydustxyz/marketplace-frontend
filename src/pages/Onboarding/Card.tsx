@@ -55,8 +55,8 @@ export default function Card({
         <div className="font-walsheim text-base font-normal text-spaceBlue-100">{description}</div>
       </div>
       <div className="flex flex-1 flex-col overflow-auto px-3">
-        <div className="overflow-auto scrollbar-thin scrollbar-thumb-spaceBlue-600 scrollbar-thumb-rounded scrollbar-w-1.5 pt-2">
-          <div className="px-9 pb-4">{children}</div>
+        <div className="overflow-auto pt-2 scrollbar-thin scrollbar-thumb-spaceBlue-600 scrollbar-thumb-rounded scrollbar-w-1.5">
+          <div className="overflow-hidden px-9 pb-4 pt-1">{children}</div>
         </div>
       </div>
       <Flex

@@ -142,7 +142,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
         emptyStateHeight={52}
       />
       {selectedLanguages.length > 0 && (
-        <Flex className="mt-2 flex-col gap-1">
+        <Flex className="mt-2 flex-col gap-2">
           <SortableList
             items={selectedLanguages || []}
             onChange={setSelectedLanguages}

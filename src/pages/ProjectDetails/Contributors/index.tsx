@@ -46,7 +46,7 @@ export default function Contributors() {
   });
 
   const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
-    projectId: project?.id,
+    projectId: project?.id ?? "",
     queryParams,
   });
 

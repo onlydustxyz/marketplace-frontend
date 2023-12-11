@@ -93,7 +93,7 @@ export function Combobox<T extends Record<string, unknown>>({
             )}
           >
             <HeadlessCombobox.Input
-              className="peer w-full border-none bg-transparent text-sm text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
+              className="peer w-full border-none bg-transparent font-walsheim text-sm text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
               placeholder={placeholder}
               onChange={event => onQuery(event.target.value)}
               autoComplete="off"

@@ -4,7 +4,7 @@ import useMutationAlert from "src/api/useMutationAlert";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 
-export default function useApplications(projectId: string | undefined, projectSlug: string) {
+export default function useApplications(projectId: string, projectSlug: string) {
   const { user } = useAuth();
   const { T } = useIntl();
 

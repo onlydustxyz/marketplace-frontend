@@ -1,11 +1,9 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import Header from "./Header";
 import Footer from "./Footer";
 import Profile from "./Profile";
-import { useShowToaster } from "src/hooks/useToaster";
-import { useIntl } from "src/hooks/useIntl";
 import SEO from "src/components/SEO";
 import UsersApi from "src/api/Users";
 import { useQueriesErrorBehavior } from "src/api/useQueriesError";
@@ -13,15 +11,8 @@ import { FetchError } from "src/api/query.type";
 
 const PublicProfilePage = () => {
   const { userLogin } = useParams();
-  const { T } = useIntl();
-  const showToaster = useShowToaster();
-  const navigate = useNavigate();
 
-  const {
-    data: userProfile,
-    isLoading,
-    ...restUserProfileByGithubLoginQueries
-  } = UsersApi.queries.useUserProfileByGithubLogin({
+  const { data: userProfile, ...restUserProfileByGithubLoginQueries } = UsersApi.queries.useUserProfileByGithubLogin({
     params: { login: userLogin },
     options: { retry: 1 },
   });
@@ -37,11 +28,6 @@ const PublicProfilePage = () => {
   if (errorHandlingComponent) {
     return errorHandlingComponent;
   }
-
-  // if (!userProfile && !isLoading) {
-  //   showToaster(T("profile.error.notFound"), { isError: true });
-  //   navigate(RoutePaths.Home);
-  // }
 
   return userProfile && userLogin ? (
     <>

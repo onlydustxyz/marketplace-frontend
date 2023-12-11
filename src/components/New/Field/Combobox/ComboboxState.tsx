@@ -31,7 +31,7 @@ export function ComboboxState<T extends Record<string, unknown>>({
           <Spinner />
         </div>
       ) : !hasItems ? (
-        <div className="select-none text-greyscale-50">
+        <div className="select-none font-walsheim text-greyscale-50">
           {!query ? T("project.details.create.informations.form.fields.projectLead.startType") : null}
           {query !== "" ? T("project.details.create.informations.form.fields.projectLead.empty") : null}
         </div>

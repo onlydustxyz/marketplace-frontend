@@ -1,20 +1,21 @@
-import View from "./View";
 import { chain } from "lodash";
+import { useMemo } from "react";
 import { ProjectRoutePaths } from "src/App";
-import { useIntl } from "src/hooks/useIntl";
-import ViewMobile from "./ViewMobile";
+import ProjectApi from "src/api/Project";
 import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
+import { useIntl } from "src/hooks/useIntl";
 import {
   useLeadProjects,
   usePendingLeadProjects,
   usePendingProjectLeader,
   useProjectLeader,
 } from "src/hooks/useProjectLeader/useProjectLeader";
-import { useMemo } from "react";
-import ProjectApi from "src/api/Project";
 import { useParams } from "react-router-dom";
 import Skeleton from "src/components/Skeleton";
+import { parseFlag } from "src/utils/parseFlag";
+import { useMediaQuery } from "usehooks-ts";
+import View from "./View";
+import ViewMobile from "./ViewMobile";
 
 export type ProjectDetailsTab = {
   label: string;
@@ -58,11 +59,16 @@ export default function ProjectsSidebar() {
       label: T("project.details.rewards.title"),
       path: ProjectRoutePaths.Rewards,
     },
+    contributions: {
+      label: T("project.details.contributions.title"),
+      path: ProjectRoutePaths.Contributions,
+    },
   };
 
   const availableTabs = [
     AvailableTabs.overview,
     AvailableTabs.contributors,
+    ...(parseFlag("VITE_FLAG_ALLOW_PROJECT_CONTRIBUTIONS") && isProjectLeader ? [AvailableTabs.contributions] : []),
     ...(isProjectLeader ? [AvailableTabs.rewards] : []),
   ];
 
