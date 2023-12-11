@@ -32,7 +32,11 @@
       "lastMonth": "Last month",
       "last6Months": "Last 6 months",
       "lastYear": "Last year",
-      "forever": "Forever"
+      "forever": "Forever",
+      "thisWeek": "This week",
+      "thisMonth": "This month",
+      "thisYear": "This year",
+      "allTime": "All time"
     },
     "channel": {
       "telegram": "Telegram",
@@ -85,6 +89,8 @@
     "table": {
       "date": "Date",
       "projectRepo": "Project / Repository",
+      "repo": "Repository",
+      "contributor": "Contributor",
       "contribution": "Contribution",
       "comments": "Comments",
       "linkedTo": "Linked to",
@@ -197,6 +203,7 @@
   },
   "filter": {
     "clearButton": "Clear all",
+    "empty": "Nothing here",
     "ownership": {
       "all": "All projects",
       "mine": "Mine only"
@@ -234,6 +241,17 @@
       "zero": "repositories",
       "one": "__count__ repository",
       "many": "__count__ repositories"
+    },
+    "contributor": {
+      "title": "Contributor",
+      "placeholder": "Search by Github handle",
+      "zero": "contributors",
+      "one": "__count__ contributor",
+      "many": "__count__ contributors"
+    },
+    "date": {
+      "title": "Date",
+      "placeholder": "Select a date"
     }
   },
   "currencies": {
@@ -924,6 +942,9 @@
         "title": "Overview",
         "totalSpentAmountInUsd": "GRANTED",
         "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend"
+      },
+      "contributions": {
+        "title": "Contributions"
       },
       "rewards": {
         "new": {
