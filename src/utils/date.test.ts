@@ -1,4 +1,4 @@
-import { formatDate, parseDateString, parseDateRangeString } from "./date";
+import { formatDate, parseDateString, parseDateRangeString, formatDateQueryParam } from "./date";
 
 describe("formatDate", () => {
   it("should format the date", () => {
@@ -49,5 +49,17 @@ describe("parseDateRangeString", () => {
       to: undefined,
     };
     expect(parseDateRangeString(dateRange)).toEqual(expected);
+  });
+});
+
+describe("formatDateQueryParam", () => {
+  it("should format the date as a query parameter", () => {
+    const date = new Date("2023-03-13T17:20:21.198113");
+    expect(formatDateQueryParam(date)).toEqual("2023-03-13");
+  });
+
+  it("should format the date string as a query parameter", () => {
+    const dateString = "2023-03-13T17:20:21.198113";
+    expect(formatDateQueryParam(dateString)).toEqual("2023-03-13");
   });
 });
