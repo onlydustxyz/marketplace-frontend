@@ -427,8 +427,30 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [stacks]
   );
 
+  /* -------------------------------------------------------------------------- */
+  /*                                   EVENTS                                   */
+  /* -------------------------------------------------------------------------- */
+
+  const keyPressEvents = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      onCloseLastPanel();
+    }
+  };
+
+  const registerEvents = () => {
+    document.addEventListener("keydown", keyPressEvents);
+  };
+
+  const unRegisterEvents = () => {
+    document.removeEventListener("keydown", keyPressEvents);
+  };
+
   useEffect(() => {
     stacks.register();
+    registerEvents();
+    return () => {
+      unRegisterEvents();
+    };
   }, []);
 
   return (
