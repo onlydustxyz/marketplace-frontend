@@ -165,7 +165,7 @@ const useProjectContributionsInfiniteList = ({
       queryParams: params?.queryParams,
       pageSize: params?.pageSize || 10,
     },
-    options
+    { ...options, enabled: options.enabled && !!params?.projectId }
   );
 };
 
