@@ -3,7 +3,7 @@ import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { RoutePaths } from "src/App";
-import GithubLink from "src/App/Layout/Header/GithubLink";
+import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import config, { viewportConfig } from "src/config";
@@ -125,7 +125,7 @@ export default function View({
                 onClick={() =>
                   dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })
                 }
-                variant="greyNoise"
+                variant={GithubLinkVariant.GreyNoise}
               />
             </div>
           ) : null}

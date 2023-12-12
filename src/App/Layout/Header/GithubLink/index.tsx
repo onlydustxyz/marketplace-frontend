@@ -4,14 +4,14 @@ import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
 import GithubLogo, { Size } from "src/icons/GithubLogo";
 import { cn } from "src/utils/cn";
 
-const VARIANT_DEFAULT = "default";
-const VARIANT_GREY_NOISE = "greyNoise";
-
-type Variant = typeof VARIANT_DEFAULT | typeof VARIANT_GREY_NOISE;
+export enum Variant {
+  Default = "default",
+  GreyNoise = "greyNoise",
+}
 
 export default function GithubLink({
   onClick,
-  variant = VARIANT_DEFAULT,
+  variant = Variant.Default,
 }: {
   onClick?: () => void;
   variant?: Variant;
@@ -27,14 +27,14 @@ export default function GithubLink({
           className={cn(
             "relative flex w-fit items-center justify-center rounded-full before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen before:bg-multi-color-gradient hover:before:animate-spin-invert-slow",
             {
-              "bg-black hover:bg-spacePurple-900": variant === VARIANT_DEFAULT,
-              "bg-greyscale-900": variant === VARIANT_GREY_NOISE,
+              "bg-black hover:bg-spacePurple-900": variant === Variant.Default,
+              "bg-greyscale-900": variant === Variant.GreyNoise,
             }
           )}
         >
           <div
             className={cn("flex w-fit flex-row items-center gap-2 px-2 py-0.5", {
-              "bg-white/4 bg-noise-medium": variant === VARIANT_GREY_NOISE,
+              "bg-white/4 bg-noise-medium": variant === Variant.GreyNoise,
             })}
           >
             <GithubLogo size={Size.Large} />
