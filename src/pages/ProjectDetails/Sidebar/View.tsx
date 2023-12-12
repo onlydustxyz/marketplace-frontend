@@ -1,17 +1,20 @@
 import { Listbox } from "@headlessui/react";
-import UpDownChevrons from "src/assets/icons/UpDownChevrons";
-import { RoutePaths } from "src/App";
-import BackLink from "./BackLink";
-import RoundedImage, { ImageSize } from "src/components/RoundedImage";
-import { useIntl } from "src/hooks/useIntl";
-import { ProjectDetailsTab } from ".";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
-import { cn } from "src/utils/cn";
-import ProjectOption from "./ProjectOption";
-import config, { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
 import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+import { RoutePaths } from "src/App";
+import GithubLink from "src/App/Layout/Header/GithubLink";
+import UpDownChevrons from "src/assets/icons/UpDownChevrons";
+import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import config, { viewportConfig } from "src/config";
+import { useAuth } from "src/hooks/useAuth";
+import { useIntl } from "src/hooks/useIntl";
+import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
+import { cn } from "src/utils/cn";
+import { useMediaQuery } from "usehooks-ts";
+import { ProjectDetailsTab } from ".";
+import BackLink from "./BackLink";
+import ProjectOption from "./ProjectOption";
 
 interface Props {
   expandable: boolean;
@@ -30,9 +33,11 @@ export default function View({
   pendingProjects,
   projects,
 }: Props) {
+  const { isLoggedIn } = useAuth();
   const { T } = useIntl();
   const navigate = useNavigate();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const dispatchSession = useSessionDispatch();
   const currentProjectUrl = currentProject.logoUrl
     ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + currentProject.logoUrl
     : currentProject.logoUrl;
@@ -113,6 +118,17 @@ export default function View({
               {tab.label}
             </NavLink>
           ))}
+
+          {!isLoggedIn ? (
+            <div className="border-t border-card-border-medium pt-4 text-base">
+              <GithubLink
+                onClick={() =>
+                  dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })
+                }
+                variant="greyNoise"
+              />
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
