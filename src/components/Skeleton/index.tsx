@@ -20,7 +20,7 @@ import SkeletonProjectRewardForm from "./SkeletonProjectRewardForm";
 import SkeletonProjectRemainingBudgets from "./SkeletonProjectRemainingBudgets";
 import SkeletonSubmitProject from "./SkeletonSubmitProject";
 
-type SkeletonVariant =
+export type SkeletonVariant =
   | "title"
   | "card"
   | "filters"
