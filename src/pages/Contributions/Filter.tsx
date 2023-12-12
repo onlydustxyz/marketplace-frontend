@@ -54,7 +54,7 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
       repositories: repoIds.join(","),
     };
 
-    // Users lay have an old filter shape in local storage that doesn't contain dateRange
+    // Users may have an old filter shape in local storage that doesn't contain dateRange
     const { from: fromDate, to: toDate } = filters?.dateRange ?? initialFilters.dateRange;
 
     if (fromDate && toDate) {
