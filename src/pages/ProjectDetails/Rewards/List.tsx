@@ -29,8 +29,6 @@ const RewardList: React.FC = () => {
     params: { slug: projectKey },
   });
 
-  console.log(!!project?.id, project?.id);
-
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
     isAscending: false,
