@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
@@ -10,11 +9,8 @@ import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { ContributorResponse, GithubContributionType } from "src/types";
+import { formatDateQueryParam } from "src/utils/date";
 import { useLocalStorage } from "usehooks-ts";
-
-function formatDateQueryParam(value: Date | string) {
-  return format(value instanceof Date ? value : new Date(value), "yyyy-MM-dd");
-}
 
 type Filters = {
   dateRange: DateRange;
