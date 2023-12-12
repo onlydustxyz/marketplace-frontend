@@ -74,7 +74,7 @@ export const FieldImage = forwardRef(function FieldImage<F extends string | File
             )}
           >
             {!upload?.loading && preview ? (
-              <img src={preview} className="h-12 w-12 object-cover" />
+              <img src={preview} className="h-12 w-12 object-cover" loading="lazy" alt="Preview" />
             ) : (
               <>
                 {upload?.loading ? (

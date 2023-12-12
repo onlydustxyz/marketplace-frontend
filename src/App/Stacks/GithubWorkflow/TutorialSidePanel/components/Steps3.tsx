@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
-import Steps3Gif from "src/assets/img/github_tutorial_step_3.gif";
 import InformationLine from "src/icons/InformationLine";
+import { IMAGES } from "src/assets/img";
 
 export default function TutorialSidePanelSteps3() {
   const { T } = useIntl();
@@ -15,7 +15,7 @@ export default function TutorialSidePanelSteps3() {
           {T("project.githubLinkTutorial.steps.three.subTitle")}
         </p>
       </div>
-      <img src={Steps3Gif} alt="steps 2" className="h-auto w-full rounded-2xl" />
+      <img src={IMAGES.github.tutorial.step3} alt="Step 3" className="h-auto w-full rounded-2xl" loading="lazy" />
       <div className="flex flex-row items-start justify-start gap-2">
         <InformationLine className="text-base leading-4 text-spaceBlue-200" />
         <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">

@@ -8,13 +8,13 @@ import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
 import { useIntl } from "src/hooks/useIntl";
 import CompletionBar from "src/components/CompletionBar";
-import axeCoin from "src/assets/img/axe-coin.webp";
 import { useOnboarding } from "src/App/OnboardingProvider";
 import { useAuth } from "src/hooks/useAuth";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { GithubStatusBanner } from "./GithubStatusBanner";
+import { IMAGES } from "src/assets/img";
 
 interface HeaderViewProps {
   menuItems: {
@@ -101,7 +101,7 @@ export default function HeaderView({
                       onClick={() => openContributorProfilePanel({ githubUserId })}
                     >
                       <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
-                        <img src={axeCoin} className="h-4 w-4" />
+                        <img src={IMAGES.icons.axeCoin} className="h-4 w-4" loading="lazy" alt="Axe coin" />
                         {T("profile.completion", { completion: profileCompletionScore.toString() })}
                       </div>
                       <CompletionBar completionScore={profileCompletionScore} />

@@ -1,6 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { ReactElement, useCallback } from "react";
+import { IMAGES } from "src/assets/img";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
@@ -103,7 +103,7 @@ export function FilterSelect<T extends Item>({
                       >
                         {typeof item.image !== "undefined" ? (
                           <RoundedImage
-                            src={item?.image ?? onlyDustLogo}
+                            src={item?.image ?? IMAGES.logo.space}
                             alt={item.label}
                             rounding={Rounding.Corners}
                             size={ImageSize.Sm}

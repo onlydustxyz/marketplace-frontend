@@ -1,7 +1,7 @@
 import { cn } from "src/utils/cn";
 
-import underline from "assets/img/underline.png";
 import type { Tab } from "src/components/Tabs/Tabs";
+import { IMAGES } from "src/assets/img";
 
 const variants = {
   blue: {
@@ -42,7 +42,12 @@ export function DesktopView({
               {children}
             </div>
             {active ? (
-              <img className="absolute inset-x-0 bottom-0 h-1 w-full" src={underline} alt="Border underline" />
+              <img
+                className="absolute inset-x-0 bottom-0 h-1 w-full"
+                src={IMAGES.global.underline}
+                alt="Underline"
+                loading="lazy"
+              />
             ) : null}
           </button>
         );

@@ -1,6 +1,6 @@
 import { cn } from "src/utils/cn";
 import { PropsWithChildren } from "react";
-import underline from "assets/img/underline.png";
+import { IMAGES } from "src/assets/img";
 
 type Props = {
   active: boolean;
@@ -20,7 +20,14 @@ export default function Tab({ testId, active, onClick, children }: Props) {
       >
         {children}
       </div>
-      {active && <img className="absolute inset-x-0 bottom-0 h-1 w-full" src={underline} alt="underline" />}
+      {active && (
+        <img
+          className="absolute inset-x-0 bottom-0 h-1 w-full"
+          src={IMAGES.global.underline}
+          alt="Underline"
+          loading="lazy"
+        />
+      )}
     </div>
   );
 }

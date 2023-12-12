@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { cn } from "src/utils/cn";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
+import { IMAGES } from "src/assets/img";
 export enum ImageSize {
   Xxs = "Xxs",
   Xs = "xs",
@@ -37,7 +37,7 @@ export default function RoundedImage({
       return src;
     }
     if (useLogoFallback) {
-      return onlyDustLogo;
+      return IMAGES.logo.space;
     }
 
     return src;
@@ -76,9 +76,10 @@ export default function RoundedImage({
         src={srcMemo ?? ""}
         onError={e => {
           if (useLogoFallback) {
-            e.currentTarget.src = onlyDustLogo;
+            e.currentTarget.src = IMAGES.logo.space;
           }
         }}
+        loading="lazy"
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import { useIntl } from "src/hooks/useIntl";
-import Steps2Image from "src/assets/img/github_tutorial_step_2.png";
+import { IMAGES } from "src/assets/img";
 
 export default function TutorialSidePanelSteps2() {
   const { T } = useIntl();
@@ -23,7 +23,7 @@ export default function TutorialSidePanelSteps2() {
           </li>
         </ul>
       </div>
-      <img src={Steps2Image} alt="steps 2" className="h-auto w-full" />
+      <img src={IMAGES.github.tutorial.step2} alt="Step 2" className="h-auto w-full" loading="lazy" />
     </div>
   );
 }

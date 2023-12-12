@@ -2,7 +2,6 @@ import React, { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren
 import { useFormContext, UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, { BackgroundNoise, BackgroundPosition, BackgroundSize } from "src/components/ImageCard";
-import headerElementBackground from "src/assets/img/alert-bg.png";
 import { cn } from "src/utils/cn";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { Size } from ".";
@@ -11,6 +10,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 import { InputErrorDisplay } from "./types";
 import CrossIconLine from "src/assets/icons/CrossIconLine";
+import { IMAGES } from "src/assets/img";
 
 type PropsType = {
   label?: ReactNode;
@@ -144,7 +144,7 @@ const View: React.FC<PropsType> = ({
         {error?.message && errorDisplay === InputErrorDisplay.Banner && (
           <div className="flex">
             <ImageCard
-              backgroundImageUrl={headerElementBackground}
+              backgroundImageUrl={IMAGES.background.headerElement}
               backgroundPosition={BackgroundPosition.TopLeft}
               backgroundSize={BackgroundSize.Zoomed}
               backgroundNoise={BackgroundNoise.Light}
