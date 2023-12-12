@@ -1,4 +1,4 @@
-import { FilloutSliderEmbed } from "@fillout/react";
+import { FilloutStandardEmbed } from "@fillout/react";
 import { useState } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
@@ -6,6 +6,7 @@ import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/typ
 import { components } from "src/__generated/api";
 import MeApi from "src/api/me";
 import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
+import SidePanel from "src/components/SidePanel";
 import { withTooltip } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 
@@ -40,24 +41,23 @@ export function RewardProjectButton({ project }: RewardProjectButtonProps) {
         >
           {T("project.applyForBudgetButton")}
         </Button>
-        {isApplyOpen && (
-          <FilloutSliderEmbed
+
+        <SidePanel open={isApplyOpen} setOpen={setIsApplyOpen}>
+          <FilloutStandardEmbed
             filloutId="wrRsfYKaDJus"
             inheritParameters
             parameters={{
               lead_id: user?.id,
               lead_first_name: userInfo?.person?.firstname,
               lead_last_name: userInfo?.person?.lastname,
-              lead_Github: user?.login,
-              lead_Telegram: findContact(Channel.Telegram),
+              lead_github: user?.login,
+              lead_telegram: findContact(Channel.Telegram),
               lead_email: findContact(Channel.Email),
               project_id: project.id,
               project_name: project.name,
             }}
-            onClose={() => setIsApplyOpen(false)}
-            sliderDirection="right"
           />
-        )}
+        </SidePanel>
       </>
     );
   }
