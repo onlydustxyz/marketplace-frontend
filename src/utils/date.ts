@@ -1,4 +1,4 @@
-import { parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import weekOfYear from "dayjs/plugin/weekOfYear";
@@ -51,4 +51,13 @@ export function parseDateRangeString(
     from: dateRange.from ? parseDateString(dateRange.from) : undefined,
     to: dateRange.to ? parseDateString(dateRange.to) : undefined,
   };
+}
+
+/**
+ * Formats a date or string value into a query parameter string in the format "yyyy-MM-dd".
+ * @param value - The date or string value to format.
+ * @returns The formatted date string.
+ */
+export function formatDateQueryParam(value: Date | string) {
+  return format(value instanceof Date ? value : new Date(value), "yyyy-MM-dd");
 }
