@@ -9,9 +9,14 @@ import { getGithubSetupLink } from "src/utils/githubSetupLink";
 interface OrganizationListProps {
   organizations: UseGithubOrganizationsResponse[];
   emptyListFallBackText: string;
+  disabledTooltip?: string;
 }
 
-export default function OrganizationList({ organizations, emptyListFallBackText }: OrganizationListProps) {
+export default function OrganizationList({
+  organizations,
+  emptyListFallBackText,
+  disabledTooltip,
+}: OrganizationListProps) {
   const {
     githubWorklow: { run },
     project,
@@ -40,6 +45,7 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
               disabled={!org.isCurrentUserAdmin}
+              tooltip={disabledTooltip}
             />
           );
         })}
