@@ -347,3 +347,7 @@ export type ShortProject = components["schemas"]["ShortProjectResponse"];
 export type ShortRepo = components["schemas"]["ShortGithubRepoResponse"];
 
 export type ContributorResponse = components["schemas"]["ContributorResponse"];
+
+export type Money = components["schemas"]["Money"];
+
+export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];

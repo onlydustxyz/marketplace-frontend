@@ -15,14 +15,13 @@ import {
   contributionToWorkItem,
 } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import Title from "src/pages/ProjectDetails/Title";
-import { GithubContributionType } from "src/types";
+import { GithubContributionType, ProjectBudgetType } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
 import { AutoAddOrIgnore } from "./AutoAdd/AutoAddOrIgnore";
 import { WorkItem } from "./WorkItem";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
-import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { BudgetCurrencyType } from "src/utils/money";
 import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
 import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";

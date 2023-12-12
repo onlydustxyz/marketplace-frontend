@@ -664,7 +664,7 @@
       "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
       "invoiceError": "Unable to retrieve Invoice informations. Please try again."
     },
-    "budgets":{
+    "budgets": {
       "error": "Unable to retrieve Rewards Budgets. Please try again."
     }
   },
@@ -1073,13 +1073,20 @@
         "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
         "usdInfo": "Dollar equivalent at today's date",
         "budget": {
-          "total": "Remaining budget",
+          "remaining": "Remaining budget",
+          "spent": "Amount spent",
+          "sent": "Rewards sent",
+          "contributors": "Rewarded contributors",
           "dollars": "Dollars budget",
           "ether": "Ether budget",
           "stark": "Stark budget",
           "lords": "Lords budget",
           "aptos": "Aptos budget",
-          "optimism": "Optimism budget"
+          "optimism": "Optimism budget",
+          "sentRewards": {
+            "one": "for 1 contribution",
+            "many": "for __count__ contributions"
+          }
         }
       },
       "edit": {

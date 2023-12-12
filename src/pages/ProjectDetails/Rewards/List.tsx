@@ -1,6 +1,7 @@
 import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
+import ProjectApi from "src/api/Project";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import ProjectRewardTableFallback from "src/components/ProjectRewardTableFallback";
@@ -17,8 +18,7 @@ import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedR
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
-import { RemainingBudget } from "./RemainingBudget/RemainingBudget";
-import ProjectApi from "src/api/Project";
+import { Budget } from "./Budget/Budget";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
@@ -52,6 +52,16 @@ const RewardList: React.FC = () => {
   const isRewardDisabled = !project?.hasRemainingBudget;
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
+
+  const budget = {
+    remainingBudget: data?.pages[0].remainingBudget,
+    spentAmount: data?.pages[0].spentAmount,
+    sentRewards: {
+      count: data?.pages[0].sentRewardsCount,
+      total: data?.pages[0].rewardedContributionsCount,
+    },
+    rewardedContributorsCount: data?.pages[0].rewardedContributorsCount,
+  };
 
   if (error) {
     return <ErrorFallback />;
@@ -100,8 +110,7 @@ const RewardList: React.FC = () => {
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
 
-      {<RemainingBudget projectId={project.id} />}
-
+      <Budget {...budget} />
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
         <div className="w-full">
           {rewards.length > 0 ? (

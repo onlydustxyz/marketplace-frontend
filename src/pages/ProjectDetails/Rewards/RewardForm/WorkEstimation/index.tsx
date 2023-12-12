@@ -1,7 +1,7 @@
 import { useWorkEstimation } from "src/hooks/useWorkEstimation";
 import View from "./View";
-import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { BudgetCurrencyType } from "src/utils/money";
+import { ProjectBudgetType } from "src/types";
 
 interface Props {
   onChange: (amountToPay: number, currency: BudgetCurrencyType) => void;

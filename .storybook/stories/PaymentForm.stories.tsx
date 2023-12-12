@@ -10,7 +10,6 @@ import {
 } from "src/__generated/graphql";
 import withSuspense from "../decorators/withSuspense";
 import withCommandProvider from "../decorators/withCommandProvider";
-import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import withQueryClientProvider from "../decorators/withQueryClientProvider";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
@@ -19,6 +18,7 @@ import { components } from "src/__generated/api";
 import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { CompletedRewardableItem } from "src/api/Project/queries";
 import withToasterProvider from "../decorators/withToasterProvider";
+import { ProjectBudgetType } from "src/types";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
