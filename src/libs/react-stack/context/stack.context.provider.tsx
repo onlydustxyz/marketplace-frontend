@@ -69,6 +69,15 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     return { panel, id, stack };
   };
 
+  const removeActiveBlurElement = () => {
+    if (document?.activeElement) {
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement.blur) {
+        activeElement.blur();
+      }
+    }
+  };
+
   /* -------------------------------------------------------------------------- */
   /*                                  REGISTER                                  */
   /* -------------------------------------------------------------------------- */
@@ -292,7 +301,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const openPanel = (name: string, params?: StacksParams) => {
     const { panel } = getPanelFromStackName(name);
-
+    removeActiveBlurElement();
     if (panel.state.open === false) {
       panel.setValue(prev => {
         return {
