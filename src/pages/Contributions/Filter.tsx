@@ -64,7 +64,12 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
     onChange(filterQueryParams);
   }, [filters, projectIds, repoIds]);
 
-  const hasActiveFilters = Boolean(filters.types.length || filters.projects.length || filters.repos.length);
+  const hasActiveFilters = Boolean(
+    (filters.dateRange.from && filters.dateRange.to) ||
+      filters.types.length ||
+      filters.projects.length ||
+      filters.repos.length
+  );
 
   const { data: projectsData } = MeApi.queries.useMyContributedProjects({
     params: { repositories: repoIds.length ? repoIds.join(",") : "" },
