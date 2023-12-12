@@ -93,11 +93,15 @@ const RewardList: React.FC = () => {
           </Flex>
         ) : null}
       </div>
+
       {!project.indexingComplete ? <StillFetchingBanner /> : null}
+
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
+
       {<RemainingBudget projectId={project.id} />}
+
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
         <div className="w-full">
           {rewards.length > 0 ? (

@@ -148,10 +148,13 @@ export default function Overview() {
           ) : null}
         </div>
       </Title>
+
       {!project.indexingComplete ? <StillFetchingBanner /> : null}
+
       {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
+
       <ProjectLeadInvitation
         projectId={project.id}
         size={CalloutSizes.Large}

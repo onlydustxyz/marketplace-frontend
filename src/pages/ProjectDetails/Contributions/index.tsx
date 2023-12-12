@@ -23,6 +23,7 @@ import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstal
 import { EditProjectButton } from "../components/EditProjectButton";
 import { FilterQueryParams, ProjectContributionsFilter } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
 
 const initialSort: Record<ContributionStatus, TableSort> = {
   [ContributionStatus.InProgress]: {
@@ -249,9 +250,13 @@ export default function Contributions() {
           </Flex>
         ) : null}
       </div>
+
+      {!project?.indexingComplete ? <StillFetchingBanner /> : null}
+
       {project && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
+
       <div className="h-full overflow-y-auto">
         <div className="h-full w-full overflow-y-auto rounded-3xl bg-contributions bg-right-top bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
           <div className="relative min-h-full">
