@@ -2,8 +2,7 @@ import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { sortBy } from "lodash";
 import { Dispatch, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { useNavigate, useParams } from "react-router-dom";
 import Badge, { BadgeSize } from "src/components/Badge";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
@@ -52,6 +51,7 @@ import User3Line from "src/icons/User3Line";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import ProjectApi from "src/api/Project";
 import Skeleton from "src/components/Skeleton";
+import { RewardProjectButton } from "../components/RewardProjectButton";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -122,8 +122,8 @@ export default function Overview() {
           {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
               <EditProjectButton projectKey={project.slug} />
-
-              <Button
+              <RewardProjectButton project={project} />
+              {/* <Button
                 disabled={isRewardDisabled}
                 onBackground={ButtonOnBackground.Blue}
                 className="flex-1 md:flex-initial"
@@ -143,7 +143,7 @@ export default function Overview() {
                 }
               >
                 {T("project.rewardButton.full")}
-              </Button>
+              </Button> */}
             </Flex>
           ) : null}
         </div>

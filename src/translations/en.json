@@ -664,7 +664,7 @@
       "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
       "invoiceError": "Unable to retrieve Invoice informations. Please try again."
     },
-    "budgets":{
+    "budgets": {
       "error": "Unable to retrieve Rewards Budgets. Please try again."
     }
   },
@@ -1200,6 +1200,7 @@
       "full": "Reward contributor",
       "short": "Reward"
     },
+    "applyForBudgetButton": "Appply for budget",
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
