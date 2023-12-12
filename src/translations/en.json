@@ -949,6 +949,9 @@
       "contributions": {
         "title": "Contributions"
       },
+      "insights": {
+        "title": "Insights"
+      },
       "rewards": {
         "new": {
           "title": "Reward contributor"

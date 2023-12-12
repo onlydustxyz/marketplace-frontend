@@ -14,6 +14,7 @@ const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/C
 const ProjectDetailsContributions = lazy(() => import("src/pages/ProjectDetails/Contributions"));
 const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Rewards/List"));
 const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
+const ProjectDetailsInsights = lazy(() => import("src/pages/ProjectDetails/Insights"));
 const ProjectDetailsEdit = lazy(() => import("src/pages/ProjectDetails/ProjectEdition/ProjectEdition"));
 
 import { NotFound } from "src/components/NotFound";
@@ -61,6 +62,7 @@ export enum ProjectRoutePaths {
   Rewards = "rewards",
   Edit = "edit",
   Contributions = "contributions",
+  Insights = "insights",
 }
 
 export enum ProjectRewardsRoutePaths {
@@ -125,6 +127,10 @@ function App() {
           ),
         },
       ],
+    },
+    {
+      path: ProjectRoutePaths.Insights,
+      element: <ProjectDetailsInsights />,
     },
     {
       path: ProjectRoutePaths.Edit,
