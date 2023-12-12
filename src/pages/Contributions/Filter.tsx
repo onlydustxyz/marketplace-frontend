@@ -46,7 +46,7 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
   const repoIds = useMemo(() => filters.repos.map(({ id }) => String(id)), [filters]);
 
   useEffect(() => {
-    const { types, dateRange } = filters;
+    const { types } = filters;
 
     const filterQueryParams: FilterQueryParams = {
       types: types.join(","),
@@ -54,7 +54,8 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
       repositories: repoIds.join(","),
     };
 
-    const { from: fromDate, to: toDate } = dateRange;
+    // Users lay have an old filter shape in local storage that doesn't contain dateRange
+    const { from: fromDate, to: toDate } = filters?.dateRange ?? initialFilters.dateRange;
 
     if (fromDate && toDate) {
       filterQueryParams.fromDate = formatDateQueryParam(fromDate);
@@ -65,7 +66,8 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
   }, [filters, projectIds, repoIds]);
 
   const hasActiveFilters = Boolean(
-    (filters.dateRange.from && filters.dateRange.to) ||
+    // from and to may be undefined if the user hasn't got dateRange in local storage
+    (filters?.dateRange?.from && filters?.dateRange?.to) ||
       filters.types.length ||
       filters.projects.length ||
       filters.repos.length
