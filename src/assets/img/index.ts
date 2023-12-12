@@ -8,6 +8,7 @@ import circle from "./circle.webp";
 import compass from "./compass.webp";
 import contributionsBg from "./contributions-bg.webp";
 import dustBtmLeft from "./dust-btm-left.webp";
+import dustTopRight from "./dust-top-right.webp";
 import emptyState from "./empty-state.webp";
 import githubTutorialStep2 from "./github_tutorial_step_2.webp";
 import githubTutorialStep3Gif from "./github_tutorial_step_3.gif";
@@ -60,10 +61,13 @@ export const IMAGES = {
       magenta: userProfileBgMagenta,
       yellow: userProfileBgYellow,
     },
+    dust: {
+      btmLeft: dustBtmLeft,
+      topRight: dustTopRight,
+    },
     spaceCard: spaceCardBg,
     publicProfile: publicProfileBg,
     contributions: contributionsBg,
-    dustBtmLeft,
     alert: alertBg,
     space: bgSpace,
     grain: grainBackground,
