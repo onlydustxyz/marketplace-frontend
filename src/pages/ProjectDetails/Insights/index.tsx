@@ -8,6 +8,8 @@ import Flex from "src/components/Utils/Flex";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { useIntl } from "src/hooks/useIntl";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
+import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
+import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 
 export default function Insights() {
   const { T } = useIntl();
@@ -53,6 +55,22 @@ export default function Insights() {
             </Button>
           </Flex>
         ) : null}
+      </div>
+
+      <div className="h-full overflow-y-auto">
+        <div className="h-full w-full overflow-y-auto scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+          <div className="relative min-h-full">
+            <CollapsibleCard
+              title="title"
+              description="description"
+              icon={className => <CancelCircleLine className={className} />}
+              isEmpty={false}
+              hasShowMore={true}
+            >
+              Children
+            </CollapsibleCard>
+          </div>
+        </div>
       </div>
     </>
   );
