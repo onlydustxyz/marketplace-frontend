@@ -73,7 +73,7 @@ export function useContributionTable() {
         </Cell>
         <Cell height={CellHeight.Compact}>{repo.name}</Cell>
         <Cell height={CellHeight.Compact}>
-          <Contributor contributor={contribution.contributor} avatarSize="6" clickable />
+          <Contributor contributor={contribution.contributor} clickable />
         </Cell>
         <Cell height={CellHeight.Compact}>
           <Contribution contribution={contribution} />
