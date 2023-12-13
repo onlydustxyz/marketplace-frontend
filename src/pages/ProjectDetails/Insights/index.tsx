@@ -10,6 +10,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
+import TinyProfilCard from "src/components/New/Cards/TinyProfilCard";
 
 export default function Insights() {
   const { T } = useIntl();
@@ -65,9 +66,13 @@ export default function Insights() {
               description="description"
               icon={className => <CancelCircleLine className={className} />}
               isEmpty={false}
-              hasShowMore={true}
+              hasShowMore={false}
             >
-              Children
+              <TinyProfilCard
+                avatarUrl="https://avatars.githubusercontent.com/u/143011364?v=4"
+                name="Pixelfact"
+                isRegistered
+              />
             </CollapsibleCard>
           </div>
         </div>

@@ -18,7 +18,7 @@ export default function CollapsibleCard({ title, description, icon, isEmpty, has
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
   const [collapsed, setCollapsed] = useState(false);
   return (
-    <section className="overflow-hidden rounded-2xl border-card-border-medium lg:border lg:bg-card-background-base lg:shadow-heavy">
+    <section className="overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base lg:shadow-heavy">
       <header
         className={cn("flex items-start justify-between gap-6 bg-card-background-light px-6 py-4 md:items-center", {
           "cursor-pointer": !isEmpty,
@@ -46,7 +46,7 @@ export default function CollapsibleCard({ title, description, icon, isEmpty, has
         ) : null}
       </header>
       <div
-        className={cn("hidden px-4 pt-6 lg:block", isLg && hasShowMore ? "pb-0" : "pb-6", {
+        className={cn("px-4 pt-6 lg:block", isLg && hasShowMore ? "pb-0" : "pb-6", {
           "lg:hidden": collapsed,
         })}
       >

@@ -962,7 +962,10 @@
         "title": "Contributions"
       },
       "insights": {
-        "title": "Insights"
+        "title": "Insights",
+        "newcomers": {
+          "buttonLabel": "Say hello"
+        }
       },
       "rewards": {
         "new": {
