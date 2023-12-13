@@ -56,18 +56,39 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
     return Boolean(parseDateString(props.value));
   }, [props.mode, props.value]);
 
-  function renderCalendar() {
+  function renderCalendar({ close }: { close: () => void }) {
     if (props.mode === "range") {
       // Sometimes date strings are passed instead of date objects
       const selected = parseDateRangeString(props.value);
 
-      return <Calendar mode="range" selected={selected} onSelect={props.onChange} />;
+      return (
+        <Calendar
+          mode="range"
+          selected={selected}
+          onSelect={(...args) => {
+            props.onChange?.(...args);
+
+            const { from, to } = args[0] ?? {};
+
+            if (from && to) close();
+          }}
+        />
+      );
     }
 
     // Sometimes date strings are passed instead of date objects
     const selected = parseDateString(props.value);
 
-    return <Calendar mode="single" selected={selected} onSelect={props.onChange} />;
+    return (
+      <Calendar
+        mode="single"
+        selected={selected}
+        onSelect={(...args) => {
+          props.onChange?.(...args);
+          close();
+        }}
+      />
+    );
   }
 
   function renderPlaceholder() {
@@ -135,38 +156,44 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
             })}
           >
             <Popover.Panel>
-              {props.periods?.length ? (
-                <div className="border-b border-greyscale-50/8 font-walsheim">
-                  {props.periods?.map(({ label, value }) => {
-                    return (
-                      <button
-                        key={label}
-                        type="button"
-                        className="w-full px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
-                        onClick={e => {
-                          if (props.mode === "single" && value instanceof Date) {
-                            props.onChange?.(value, value, {}, e);
-                          }
+              {({ close }) => (
+                <>
+                  {props.periods?.length ? (
+                    <div className="border-b border-greyscale-50/8 font-walsheim">
+                      {props.periods?.map(({ label, value }) => {
+                        return (
+                          <button
+                            key={label}
+                            type="button"
+                            className="w-full px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
+                            onClick={e => {
+                              if (props.mode === "single" && value instanceof Date) {
+                                props.onChange?.(value, value, {}, e);
+                              }
 
-                          // Not ideal, but got to please Typescript
-                          if (
-                            props.mode === "range" &&
-                            "from" in value &&
-                            "to" in value &&
-                            value.from instanceof Date &&
-                            value.to instanceof Date
-                          ) {
-                            props.onChange?.(value, value.from, {}, e);
-                          }
-                        }}
-                      >
-                        {label}
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : null}
-              {renderCalendar()}
+                              // Not ideal, but got to please Typescript
+                              if (
+                                props.mode === "range" &&
+                                "from" in value &&
+                                "to" in value &&
+                                value.from instanceof Date &&
+                                value.to instanceof Date
+                              ) {
+                                props.onChange?.(value, value.from, {}, e);
+                              }
+
+                              close();
+                            }}
+                          >
+                            {label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                  {renderCalendar({ close })}
+                </>
+              )}
             </Popover.Panel>
           </Transition>
         </>
