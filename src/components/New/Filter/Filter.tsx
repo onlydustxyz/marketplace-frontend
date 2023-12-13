@@ -2,9 +2,11 @@ import { Popover, Transition } from "@headlessui/react";
 import { PropsWithChildren } from "react";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import Refresh from "src/icons/Refresh";
 import { cn } from "src/utils/cn";
+import { useMediaQuery } from "usehooks-ts";
 
 export function Filter({
   children,
@@ -15,6 +17,7 @@ export function Filter({
   onClear: () => void;
 }>) {
   const { T } = useIntl();
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   return (
     <Popover className="relative">
@@ -24,12 +27,14 @@ export function Filter({
             as={Button}
             type={ButtonType.Secondary}
             size={ButtonSize.Sm}
+            iconOnly={!isMd}
             pressed={open}
             className={cn({
               "border-spacePurple-200 text-spacePurple-100": isActive,
             })}
           >
-            <FilterIcon /> {T("filter.title")}
+            <FilterIcon />
+            {isMd ? T("filter.title") : null}
           </Popover.Button>
 
           <Transition
