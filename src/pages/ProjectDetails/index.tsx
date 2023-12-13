@@ -10,5 +10,5 @@ export default function ProjectDetails() {
     pathname
   );
 
-  return <View padded={!isProjectEdition} contentClassName={isProjectContributions ? "pb-0" : ""} />;
+  return <View padded={!isProjectEdition} contentClassName={isProjectContributions ? "xl:pb-0" : ""} />;
 }
