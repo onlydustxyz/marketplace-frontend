@@ -9,9 +9,11 @@ import { StacksParams } from "src/libs/react-stack/types/Stack";
 import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
+import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
+  ProjectOverview = "project-overview",
   PayoutInfo = "payout-info",
   ProjectLeaderReward = "project-leader-reward",
   Reward = "reward",
@@ -22,6 +24,9 @@ export enum StackRoute {
 export interface StackRouterParams {
   ContributorProfile: {
     githubUserId: number;
+  };
+  ProjectOverview: {
+    slug: string;
   };
   ProjectLeaderReward: {
     projectId: string;
@@ -60,6 +65,9 @@ export const Stacks = () => {
       </RegisterStack>
       <RegisterStack<StackRouterParams["GithubWorkflowClaim"]> name={StackRoute.GithubWorkflowClaim}>
         {({ params }) => <ClaimSidePanel {...params} />}
+      </RegisterStack>
+      <RegisterStack<StackRouterParams["ProjectOverview"]> name={StackRoute.ProjectOverview}>
+        {({ params }) => <ProjectOverviewSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
@@ -120,4 +128,8 @@ export const useStackGithubWorkflowClaim = () => {
 
 export const useStackGithubWorkflowTutorial = () => {
   return useStackNavigation(StackRoute.GithubWorkflowTutorial);
+};
+
+export const useStackProjectOverview = () => {
+  return useStackNavigation<StackRouterParams["ProjectOverview"]>(StackRoute.ProjectOverview);
 };
