@@ -1,7 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import MapPinLine from "src/icons/MapPinLine";
 import { formatDateShort } from "src/utils/date";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
 import GlobalLine from "src/icons/GlobalLine";
 import SocialLink from "./SocialLink";
 import GithubLogo from "src/icons/GithubLogo";
@@ -24,6 +23,7 @@ import { components } from "src/__generated/api";
 import CompletionBar from "src/components/CompletionBar";
 import { UserProfile } from "src/api/Users/queries";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
+import { IMAGES } from "src/assets/img";
 
 type Props = {
   profile: UserProfile;
@@ -129,7 +129,13 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           )}
           {profile.createdAt ? (
             <div className="flex flex-row items-center gap-2 text-base text-greyscale-300">
-              <img id={`od-logo-${profile.login}`} src={onlyDustLogo} className="h-3.5" />
+              <img
+                id={`od-logo-${profile.login}`}
+                src={IMAGES.logo.original}
+                className="h-3.5"
+                loading="lazy"
+                alt="OnlyDust"
+              />
               {T("profile.joinedAt", {
                 joinedAt: formatDateShort(new Date(profile.createdAt)),
               })}

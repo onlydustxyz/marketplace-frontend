@@ -67,6 +67,8 @@ const ProfilePicture = ({ editable, avatarUrl, onChange }: Props) => {
           "outline outline-4 outline-greyscale-50/12": isXl,
         })}
         data-testid="avatarUrl"
+        loading="lazy"
+        alt={T("profile.avatar")}
       />
       {editable && !loadingUploadLogo ? (
         <>
