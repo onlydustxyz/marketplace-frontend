@@ -23,6 +23,9 @@ export function useContributionTable() {
       sort: TableColumns.Date,
       icon: <TimeLine />,
       label: T("contributions.table.date"),
+      props: {
+        thClassName: "w-[140px]",
+      },
     },
     {
       sort: TableColumns.Repo,
@@ -38,7 +41,9 @@ export function useContributionTable() {
       sort: TableColumns.Contribution,
       icon: <StackLine />,
       label: T("contributions.table.contribution"),
-      width: HeaderCellWidth.Third,
+      props: {
+        width: HeaderCellWidth.Third,
+      },
     },
     {
       sort: TableColumns.Linked,
@@ -48,7 +53,7 @@ export function useContributionTable() {
         </span>
       ),
       label: T("contributions.table.linkedTo"),
-      className: "justify-end",
+      props: { className: "justify-end" },
     },
   ];
 

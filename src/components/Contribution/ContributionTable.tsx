@@ -1,10 +1,10 @@
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
 import { OrderBy } from "src/__generated/graphql";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import Table from "src/components/Table";
-import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
+import HeaderCell from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
@@ -50,8 +50,7 @@ export type HeaderCell = {
   sort: TableColumns;
   icon: ReactNode;
   label: string;
-  width?: HeaderCellWidth;
-  className?: string;
+  props?: Partial<ComponentProps<typeof HeaderCell>>;
 };
 
 type Props = {
@@ -213,8 +212,7 @@ export function ContributionTable({
                           direction: newSortDirection,
                         });
                       }}
-                      width={cell.width}
-                      className={cell.className}
+                      {...cell?.props}
                       horizontalMargin
                     >
                       {cell.icon}
