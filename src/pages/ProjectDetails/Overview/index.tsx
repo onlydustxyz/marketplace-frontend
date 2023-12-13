@@ -2,7 +2,7 @@ import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { sortBy } from "lodash";
 import { Dispatch, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Badge, { BadgeSize } from "src/components/Badge";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
@@ -56,7 +56,6 @@ import { RewardProjectButton } from "../components/RewardProjectButton";
 export default function Overview() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
 
   const { projectKey = "" } = useParams<{ projectKey: string }>();
@@ -95,8 +94,6 @@ export default function Overview() {
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const isRewardDisabled = !project?.hasRemainingBudget;
-
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
   const showPendingInvites = isProjectLeader || roles.includes(HasuraUserRole.Admin);
@@ -123,27 +120,6 @@ export default function Overview() {
             <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
               <EditProjectButton projectKey={project.slug} />
               <RewardProjectButton project={project} />
-              {/* <Button
-                disabled={isRewardDisabled}
-                onBackground={ButtonOnBackground.Blue}
-                className="flex-1 md:flex-initial"
-                size={ButtonSize.Sm}
-                {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                  visible: isRewardDisabled,
-                })}
-                onClick={() =>
-                  navigate(
-                    generatePath(
-                      `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                      {
-                        projectKey: project.slug,
-                      }
-                    )
-                  )
-                }
-              >
-                {T("project.rewardButton.full")}
-              </Button> */}
             </Flex>
           ) : null}
         </div>

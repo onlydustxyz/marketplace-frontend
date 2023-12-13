@@ -1,16 +1,14 @@
 import paymentLogo from "assets/img/payment.png";
-import { Link } from "react-router-dom";
-import { ProjectRewardsRoutePaths } from "src/App";
-import CurrencyLine from "src/icons/CurrencyLine";
 import { useT } from "talkr";
-import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
-import { withTooltip } from "src/components/Tooltip";
+import { RewardProjectButton } from "src/pages/ProjectDetails/components/RewardProjectButton";
+import { components } from "src/__generated/api";
+import { ButtonSize } from "../Button";
 
 interface Props {
-  disabled?: boolean;
+  project: components["schemas"]["ProjectResponse"];
 }
 
-const ProjectRewardTableFallback = ({ disabled = false }: Props) => {
+const ProjectRewardTableFallback = ({ project }: Props) => {
   const { T } = useT();
   return (
     <div className="flex w-full flex-col items-center gap-8 p-2">
@@ -25,21 +23,7 @@ const ProjectRewardTableFallback = ({ disabled = false }: Props) => {
           {T("project.details.tableFallback.send")}
         </span>
       </div>
-      {disabled ? (
-        <div {...withTooltip(T("project.details.tableFallback.disabledButtonTooltip"))}>
-          <Button size={ButtonSize.Lg} disabled onBackground={ButtonOnBackground.Blue}>
-            <CurrencyLine />
-            <span>{T("project.details.tableFallback.newReward")}</span>
-          </Button>
-        </div>
-      ) : (
-        <Link to={ProjectRewardsRoutePaths.New}>
-          <Button width={Width.Full} size={ButtonSize.Lg}>
-            <CurrencyLine />
-            <span>{T("project.details.tableFallback.newReward")}</span>
-          </Button>
-        </Link>
-      )}
+      <RewardProjectButton project={project} size={ButtonSize.Lg} />
     </div>
   );
 };
