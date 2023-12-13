@@ -4,6 +4,7 @@ import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { HeaderCell, TableColumns } from "src/components/Contribution/ContributionTable";
 import Contributor from "src/components/Contributor";
+import ExternalLink from "src/components/ExternalLink";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
@@ -23,27 +24,24 @@ export function useContributionTable() {
       sort: TableColumns.Date,
       icon: <TimeLine />,
       label: T("contributions.table.date"),
-      props: {
-        thClassName: "w-[140px]",
-      },
+      props: { thClassName: "w-[140px]" },
     },
     {
       sort: TableColumns.Repo,
       icon: <GitRepositoryLine />,
       label: T("contributions.table.repo"),
+      props: { width: HeaderCellWidth.Sixth },
     },
     {
       sort: TableColumns.Contributor,
       icon: <User3Line />,
       label: T("contributions.table.contributor"),
+      props: { width: HeaderCellWidth.Sixth },
     },
     {
       sort: TableColumns.Contribution,
       icon: <StackLine />,
       label: T("contributions.table.contribution"),
-      props: {
-        width: HeaderCellWidth.Third,
-      },
     },
     {
       sort: TableColumns.Linked,
@@ -53,7 +51,10 @@ export function useContributionTable() {
         </span>
       ),
       label: T("contributions.table.linkedTo"),
-      props: { className: "justify-end" },
+      props: {
+        className: "justify-end",
+        thClassName: "w-[130px]",
+      },
     },
   ];
 
@@ -76,7 +77,9 @@ export function useContributionTable() {
             tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
           />
         </Cell>
-        <Cell height={CellHeight.Compact}>{repo.name}</Cell>
+        <Cell height={CellHeight.Compact}>
+          <ExternalLink url={repo.htmlUrl} text={repo.name} />
+        </Cell>
         <Cell height={CellHeight.Compact}>
           <Contributor contributor={contribution.contributor} clickable />
         </Cell>
@@ -84,7 +87,11 @@ export function useContributionTable() {
           <Contribution contribution={contribution} />
         </Cell>
         <Cell className="justify-end gap-1" height={CellHeight.Compact}>
-          {ContributionLinked({ contribution }) ? <ContributionLinked contribution={contribution} /> : "-"}
+          {ContributionLinked({ contribution }) ? (
+            <ContributionLinked contribution={contribution} maxLinked={1} />
+          ) : (
+            "-"
+          )}
         </Cell>
       </Line>
     );
