@@ -5,7 +5,6 @@ import PencilLine from "src/icons/PencilLine";
 import { cn } from "src/utils/cn";
 import { Avatar } from "../Avatar";
 import { withTooltip } from "src/components/Tooltip";
-import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 
 interface HorizontalListItemCardProps {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;
@@ -18,7 +17,7 @@ interface HorizontalListItemCardProps {
   isExternalFlow?: boolean;
   disabled?: boolean;
   tooltip?: string;
-  htmlUrl: string;
+  TitleComponent?: ReactElement;
 }
 
 const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
@@ -32,10 +31,10 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
   isExternalFlow = true,
   disabled = false,
   tooltip,
-  htmlUrl,
+  TitleComponent,
 }) => {
   const { className: ContainerClassName, ...RestContainerProps } = ContainerProps;
-  console.log(title, htmlUrl);
+
   return (
     <li>
       <Card
@@ -45,9 +44,7 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
       >
         <div className="flex items-center gap-3">
           <Avatar src={avatarUrl} alt={title} size="6" shape="square" {...AvatarProps} />
-          <span className="flex-1">
-            <GithubLink url={htmlUrl} text={title} />
-          </span>
+          <span className="flex-1">{TitleComponent ? TitleComponent : title}</span>
           <a
             href={linkUrl}
             onClick={linkClick}
