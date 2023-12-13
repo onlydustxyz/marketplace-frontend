@@ -3,7 +3,6 @@ import { cn } from "src/utils/cn";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
 import Contributor from "src/components/Contributor";
@@ -13,6 +12,7 @@ import { Contributor as ContributorType } from "src/pages/ProjectDetails/Rewards
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { IMAGES } from "src/assets/img";
 
 const MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX = 240;
 const CONTRIBUTOR_SELECT_LINE_HEIGHT_PX = 36;
@@ -140,7 +140,9 @@ export default function ContributorSelectView({
                         {selectedGithubHandle}
                       </div>
                     )}
-                    {contributor?.isRegistered && <img src={onlyDustLogo} className="ml-1.5 w-3.5" />}
+                    {contributor?.isRegistered && (
+                      <img src={IMAGES.logo.original} className="ml-1.5 w-3.5" loading="lazy" alt="OnlyDust" />
+                    )}
                   </div>
                   <ArrowDownSLine />
                 </div>

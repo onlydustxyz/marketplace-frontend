@@ -12,10 +12,10 @@ import { useAuth } from "src/hooks/useAuth";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { ProfileProjectFragment } from "src/__generated/graphql";
 import { chain, find, range, slice, sortBy, unionBy } from "lodash";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import isDefined from "src/utils/isDefined";
 import { daysFromNow, weekNumber } from "src/utils/date";
+import { IMAGES } from "src/assets/img";
 
 type Project = {
   id: string;
@@ -108,7 +108,7 @@ export default function useUserProfile({
           id: project.id,
           slug: project.key,
           name: project.name,
-          logoUrl: project.logoUrl || onlyDustLogo,
+          logoUrl: project.logoUrl || IMAGES.logo.space,
           leadSince: project.leadSince,
           private: project.visibility === "PRIVATE",
           contributionCount: find(profile?.contributionStats, { projectId: project.id })?.totalCount,
