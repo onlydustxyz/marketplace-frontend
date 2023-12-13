@@ -8,7 +8,7 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
-import { getFormattedDateGB, parseDateRangeString, parseDateString } from "src/utils/date";
+import { getFormattedDateGB, getFormattedTimeDatepicker, parseDateRangeString, parseDateString } from "src/utils/date";
 
 type Props = {
   isElevated?: boolean;
@@ -103,7 +103,9 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
       if (selectedPeriod) return selectedPeriod.label;
 
       return props.value?.from && props.value?.to
-        ? `${getFormattedDateGB(new Date(props.value.from))} - ${getFormattedDateGB(new Date(props.value.to))}`
+        ? `${getFormattedTimeDatepicker(new Date(props.value.from))} - ${getFormattedTimeDatepicker(
+            new Date(props.value.to)
+          )}`
         : T("form.dateRangePlaceholder");
     }
 

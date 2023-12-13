@@ -22,6 +22,13 @@ export const weekNumber = (date: Date) => dayjs.utc(date).week();
 export const getFormattedDateGB = (date: Date) => new Intl.DateTimeFormat("en-GB", { dateStyle: "short" }).format(date);
 // American time format HH:MM AM/PM
 export const getFormattedTimeUS = (date: Date) => new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(date);
+// American date format ex Dec 13, 2023
+export const getFormattedTimeDatepicker = (date: Date) =>
+  new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(date);
 
 /**
  * Parses a date string or Date object and returns a Date object.
