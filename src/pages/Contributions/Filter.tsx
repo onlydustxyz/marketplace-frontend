@@ -122,7 +122,7 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
     <Filter isActive={hasActiveFilters} onClear={resetFilters}>
       <FilterDatepicker selected={filters.dateRange} onChange={updateDate} />
       <FilterProjectSelect
-        projects={contributedProjects.map(({ id, name }) => ({ id, label: name }))}
+        projects={contributedProjects.map(({ id, name, logoUrl }) => ({ id, label: name, image: logoUrl }))}
         selected={filters.projects}
         onChange={updateProjects}
       />
