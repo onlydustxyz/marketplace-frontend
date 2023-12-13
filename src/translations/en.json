@@ -28,6 +28,7 @@
     "you": "You",
     "pendingInvite": "Pending invite",
     "commits": "Commits",
+    "preview": "Preview",
     "periods": {
       "lastMonth": "Last month",
       "last6Months": "Last 6 months",
@@ -43,6 +44,14 @@
       "discord": "Discord",
       "twitter": "Twitter",
       "preventAnonymousTooltips": "Connect to Onlydust to access more info links"
+    },
+    "button": {
+      "underline": "Underline"
+    },
+    "icons": {
+      "atom": "Atom",
+      "axeCoin": "Axe coin",
+      "empty": "Empty"
     }
   },
   "forms": {
@@ -664,11 +673,12 @@
       "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
       "invoiceError": "Unable to retrieve Invoice informations. Please try again."
     },
-    "budgets":{
+    "budgets": {
       "error": "Unable to retrieve Rewards Budgets. Please try again."
     }
   },
   "profile": {
+    "avatar": "Avatar",
     "whatsapp": "Whatsapp",
     "editButton": "Edit profile",
     "error": {
@@ -887,12 +897,14 @@
             "one": "the one(s) on which permissions are already granted (Organisation 1)",
             "two": "the one(s) you need to send a request to organisation owner (Organisation 2)",
             "three": "the one(s) you can grant yourself (Organisation 3)"
-          }
+          },
+          "alt": "Step 2"
         },
         "three": {
           "title": "3. GRANT PERMISSIONS to ONLY DUST",
           "subTitle": "And you’re good to go, you can now install the Only Dust Github app.",
-          "informations": "Note you may have to re-authenticate to Github to perform this action."
+          "informations": "Note you may have to re-authenticate to Github to perform this action.",
+          "alt": "Step 3"
         }
       }
     },
@@ -1169,6 +1181,7 @@
         }
       },
       "sidebar": {
+        "title": "Project",
         "backToProjects": "All projects",
         "contributors": {
           "many": "__count__ contributors",
@@ -1183,7 +1196,8 @@
         "disabledButtonTooltip": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
         "newReward": "Reward contributor",
         "noRewards": "No rewards so far",
-        "send": "Give your first one!"
+        "send": "Give your first one!",
+        "payment": "Payment"
       },
       "banners": {
         "missingGithubAppInstall": {
@@ -1229,7 +1243,8 @@
     "fallback": {
       "clearFiltersButton": "Clear query",
       "subTitle": "Try changing your query",
-      "title": "Nothing to show"
+      "title": "Nothing to show",
+      "categories": "Categories"
     },
     "sorting": {
       "button": "Sort",

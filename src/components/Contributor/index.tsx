@@ -46,8 +46,10 @@ export default function Contributor({ contributor, clickable, className, avatarS
       {contributor.isRegistered ? (
         <img
           id={`od-logo-${contributor.login}`}
-          src={IMAGES.logo.gradient}
+          src={IMAGES.logo.original}
           className="w-3.5"
+          loading="lazy"
+          alt="OnlyDust"
           {...withTooltip(T("contributor.table.userRegisteredTooltip"), { className: "w-36" })}
         />
       ) : null}

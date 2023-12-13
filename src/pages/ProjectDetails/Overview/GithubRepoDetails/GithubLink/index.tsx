@@ -1,4 +1,4 @@
-import githubLogo from "assets/img/github-logo.svg";
+import { IMAGES } from "src/assets/img";
 
 interface LinkProps {
   link: string;
@@ -12,7 +12,7 @@ export default function GithubLink({ link }: LinkProps) {
       className="flex h-8 w-8 justify-center rounded-xl border border-neutral-100 bg-white/5 grayscale hover:cursor-pointer hover:opacity-60"
       rel="noreferrer"
     >
-      <img className="w-3.5 fill-neutral-100" alt="GitHub Logo" src={githubLogo} />
+      <img className="w-3.5 fill-neutral-100" alt="GitHub" src={IMAGES.svg.logos.github} loading="lazy" />
     </a>
   );
 }

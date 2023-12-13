@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import underline from "assets/img/underline.png";
 import { Link } from "react-router-dom";
+import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
 
 interface MenuItemProps {
@@ -27,7 +27,14 @@ export default function MenuItem({ path, link, state, children, activeRegex }: M
           {children}
         </Link>
       </div>
-      {active && <img className="absolute inset-x-0 bottom-0 mt-1 h-0.5 w-full" src={underline} alt="underline" />}
+      {active && (
+        <img
+          className="absolute inset-x-0 bottom-0 mt-1 h-0.5 w-full"
+          src={IMAGES.global.underline}
+          alt="Underline"
+          loading="lazy"
+        />
+      )}
     </div>
   );
 }
