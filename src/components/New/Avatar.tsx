@@ -1,6 +1,6 @@
 import GalleryLine from "src/assets/icons/GalleryLine";
 import { cn } from "src/utils/cn";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
+import { IMAGES } from "src/assets/img";
 
 const sizes = {
   "2": "w-2 h-2",
@@ -52,7 +52,7 @@ export function Avatar({ src, alt, shape = "circle", size = "6", className }: Av
       )}
     >
       {src ? (
-        <img src={src || onlyDustLogo} alt={alt} className="h-full w-full object-cover" loading="lazy" />
+        <img src={src || IMAGES.logo.space} alt={alt} className="h-full w-full object-cover" loading="lazy" />
       ) : (
         <GalleryLine className="h-4 w-4 text-spaceBlue-300" />
       )}

@@ -1,4 +1,3 @@
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import Card from "src/components//Card";
 import RoundedImage from "src/components//RoundedImage";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
@@ -19,6 +18,7 @@ import MeApi from "src/api/me";
 import ErrorFallback from "src/ErrorFallback";
 import { RoutePaths } from "src/App";
 import { Navigate } from "react-router-dom";
+import { IMAGES } from "src/assets/img";
 
 export default function MobileUserRewardList({ onRewardClick }: { onRewardClick: (reward: MyRewardType) => void }) {
   const { T } = useIntl();
@@ -59,7 +59,7 @@ export default function MobileUserRewardList({ onRewardClick }: { onRewardClick:
               id={reward.id}
               image={
                 <RoundedImage
-                  src={reward?.rewardedOnProjectLogoUrl || onlyDustLogo}
+                  src={reward?.rewardedOnProjectLogoUrl || IMAGES.logo.space}
                   alt={reward?.rewardedOnProjectName || ""}
                 />
               }

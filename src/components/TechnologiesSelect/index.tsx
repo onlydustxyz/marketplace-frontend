@@ -19,12 +19,12 @@ import Add from "src/icons/Add";
 import { useAllTechnologiesQuery } from "src/__generated/graphql";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { withTooltip } from "src/components/Tooltip";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { SortableItemProps, SortableList } from "../New/Sortable/SortableList";
 import CloseLine from "src/icons/CloseLine";
 import Flex from "../Utils/Flex";
 import TechnologiesApi from "src/api/Technologies";
 import useMutationAlert from "src/api/useMutationAlert";
+import { IMAGES } from "src/assets/img";
 
 type Props = {
   technologies: LanguageMap;
@@ -193,8 +193,10 @@ function Technology({ option }: RenderProps<LanguageOption>) {
       {option.displayValue}
       {option.isSupported && (
         <img
-          src={onlyDustLogo}
+          src={IMAGES.logo.original}
           className="h-3.5"
+          loading="lazy"
+          alt="OnlyDust"
           {...withTooltip(T("profile.form.technologies.supportedTooltip"), { className: "w-36" })}
         />
       )}
