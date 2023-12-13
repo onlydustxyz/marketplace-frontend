@@ -15,7 +15,12 @@ export default function TutorialSidePanelSteps3() {
           {T("project.githubLinkTutorial.steps.three.subTitle")}
         </p>
       </div>
-      <img src={IMAGES.github.tutorial.step3} alt="Step 3" className="h-auto w-full rounded-2xl" loading="lazy" />
+      <img
+        src={IMAGES.github.tutorial.step3}
+        alt={T("project.githubLinkTutorial.steps.three.alt")}
+        className="h-auto w-full rounded-2xl"
+        loading="lazy"
+      />
       <div className="flex flex-row items-start justify-start gap-2">
         <InformationLine className="text-base leading-4 text-spaceBlue-200" />
         <p className="text-body-s font-walsheim font-normal text-spaceBlue-200">

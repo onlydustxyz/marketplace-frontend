@@ -262,7 +262,7 @@ const View: React.FC<Props> = ({
                   src={IMAGES.global.pickContributor}
                   className="absolute bottom-0 right-0 top-0"
                   loading="lazy"
-                  alt="Pick contributor"
+                  alt={T("reward.form.contributor.title")}
                 />
               }
             />
@@ -276,7 +276,7 @@ const View: React.FC<Props> = ({
                   src={IMAGES.global.addContribution}
                   className="absolute bottom-0 right-0"
                   loading="lazy"
-                  alt="Add contribution"
+                  alt={T("reward.form.contributor.title")}
                 />
               }
             />

@@ -18,7 +18,7 @@ export default function EmptyState({ type }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center gap-2 rounded-2xl bg-white/2 p-12">
       <div className="mb-6">
-        <img src={IMAGES.icons.emptyState} loading="lazy" alt="Empty" />
+        <img src={IMAGES.icons.emptyState} loading="lazy" alt={T("common.icons.empty")} />
       </div>
       <div className="text-center font-belwe text-2xl font-normal text-greyscale-50">
         {T("reward.form.contributions.emptyState.title")}

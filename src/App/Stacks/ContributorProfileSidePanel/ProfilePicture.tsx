@@ -68,7 +68,7 @@ const ProfilePicture = ({ editable, avatarUrl, onChange }: Props) => {
         })}
         data-testid="avatarUrl"
         loading="lazy"
-        alt="Avatar"
+        alt={T("profile.avatar")}
       />
       {editable && !loadingUploadLogo ? (
         <>

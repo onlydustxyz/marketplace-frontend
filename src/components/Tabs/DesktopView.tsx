@@ -2,6 +2,7 @@ import { cn } from "src/utils/cn";
 
 import type { Tab } from "src/components/Tabs/Tabs";
 import { IMAGES } from "src/assets/img";
+import { useIntl } from "src/hooks/useIntl";
 
 const variants = {
   blue: {
@@ -27,6 +28,8 @@ export function DesktopView({
   variant: Variants;
   rightElement?: React.ReactNode;
 }) {
+  const { T } = useIntl();
+
   return (
     <div className="flex items-center gap-8">
       {tabs.map(({ active, onClick, testId, children }, i) => {
@@ -45,7 +48,7 @@ export function DesktopView({
               <img
                 className="absolute inset-x-0 bottom-0 h-1 w-full"
                 src={IMAGES.global.underline}
-                alt="Underline"
+                alt={T("common.button.underline")}
                 loading="lazy"
               />
             ) : null}

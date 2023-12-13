@@ -24,7 +24,7 @@ export default function ProjectOption({ project, isSelected, isInvited }: Props)
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-row items-center gap-5">
-          <RoundedImage src={project.logoUrl || IMAGES.logo.original} alt="Project" />
+          <RoundedImage src={project.logoUrl || IMAGES.logo.original} alt={T("project.details.sidebar.title")} />
           <div className="flex flex-1 flex-col justify-self-start truncate">
             <div className="truncate text-base font-medium">{project.name}</div>
             <div className="font-regular truncate text-sm text-slate-400">

@@ -4,6 +4,7 @@ import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import Badge, { BadgeSize } from "src/components/Badge";
 import { IMAGES } from "src/assets/img";
+import { useIntl } from "src/hooks/useIntl";
 
 export enum FilterDropDownIcon {
   Technology = "technology",
@@ -34,6 +35,8 @@ export default function FilterDropDown({
   setValue,
   dataTestId,
 }: Props) {
+  const { T } = useIntl();
+
   const [open, setOpen] = useState(true);
 
   return (
@@ -50,7 +53,7 @@ export default function FilterDropDown({
                 className="h-6 w-6"
                 src={ICONS[icon]}
                 loading="lazy"
-                alt={icon === FilterDropDownIcon.Technology ? "Technology" : "Sponsors"}
+                alt={icon === FilterDropDownIcon.Technology ? T("filter.technologies.some") : T("filter.sponsors.some")}
               />
               <span className="font-walsheim text-sm font-medium text-greyscale-50">
                 {value.length > 0 ? selectedLabel : defaultLabel}

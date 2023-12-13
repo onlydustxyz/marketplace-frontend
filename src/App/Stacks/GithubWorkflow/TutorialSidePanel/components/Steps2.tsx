@@ -23,7 +23,12 @@ export default function TutorialSidePanelSteps2() {
           </li>
         </ul>
       </div>
-      <img src={IMAGES.github.tutorial.step2} alt="Step 2" className="h-auto w-full" loading="lazy" />
+      <img
+        src={IMAGES.github.tutorial.step2}
+        alt={T("project.githubLinkTutorial.steps.two.alt")}
+        className="h-auto w-full"
+        loading="lazy"
+      />
     </div>
   );
 }

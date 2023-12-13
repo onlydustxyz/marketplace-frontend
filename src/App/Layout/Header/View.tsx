@@ -101,7 +101,12 @@ export default function HeaderView({
                       onClick={() => openContributorProfilePanel({ githubUserId })}
                     >
                       <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
-                        <img src={IMAGES.icons.axeCoin} className="h-4 w-4" loading="lazy" alt="Axe coin" />
+                        <img
+                          src={IMAGES.icons.axeCoin}
+                          className="h-4 w-4"
+                          loading="lazy"
+                          alt={T("common.icons.axeCoin")}
+                        />
                         {T("profile.completion", { completion: profileCompletionScore.toString() })}
                       </div>
                       <CompletionBar completionScore={profileCompletionScore} />

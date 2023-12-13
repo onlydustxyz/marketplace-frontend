@@ -51,7 +51,9 @@ const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsI
               visible: isMissingPayoutSettingsInfo && tooltipVisible && !menuItemsVisible,
             })}
           >
-            {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt="Avatar" />}
+            {avatarUrl && (
+              <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
+            )}
             <div className={cn({ "mr-1": !isMissingPayoutSettingsInfo })}>{login}</div>
             {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>

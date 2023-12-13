@@ -1,6 +1,7 @@
 import { cn } from "src/utils/cn";
 import { PropsWithChildren } from "react";
 import { IMAGES } from "src/assets/img";
+import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
   active: boolean;
@@ -9,6 +10,8 @@ type Props = {
 } & PropsWithChildren;
 
 export default function Tab({ testId, active, onClick, children }: Props) {
+  const { T } = useIntl();
+
   return (
     <div data-testid={testId} className="relative cursor-pointer" onClick={onClick}>
       <div
@@ -24,7 +27,7 @@ export default function Tab({ testId, active, onClick, children }: Props) {
         <img
           className="absolute inset-x-0 bottom-0 h-1 w-full"
           src={IMAGES.global.underline}
-          alt="Underline"
+          alt={T("common.button.underline")}
           loading="lazy"
         />
       )}
