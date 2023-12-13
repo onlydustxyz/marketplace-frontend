@@ -42,6 +42,7 @@ export default function OrganizationList({
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
               tooltip={disabledTooltip}
+              htmlUrl={org.htmlUrl}
             />
           );
         })}

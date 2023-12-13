@@ -35,6 +35,7 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
   htmlUrl,
 }) => {
   const { className: ContainerClassName, ...RestContainerProps } = ContainerProps;
+  console.log(title, htmlUrl);
   return (
     <li>
       <Card
