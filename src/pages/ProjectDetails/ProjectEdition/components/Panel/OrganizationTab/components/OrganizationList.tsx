@@ -22,6 +22,8 @@ export default function OrganizationList({
     project,
   } = useContext(EditContext);
 
+  console.log("Organizations: ", organizations);
+
   if (organizations.length) {
     return (
       <ul className="flex flex-col gap-2 py-4 pb-6">
@@ -46,6 +48,7 @@ export default function OrganizationList({
               isExternalFlow={org.installed}
               disabled={!org.isCurrentUserAdmin}
               tooltip={disabledTooltip}
+              htmlUrl={org.htmlUrl}
             />
           );
         })}
