@@ -252,8 +252,8 @@
       "many": "__count__ repositories"
     },
     "contributor": {
-      "title": "Contributor",
-      "placeholder": "Search by Github handle",
+      "title": "Contributors",
+      "placeholder": "Everyone",
       "zero": "contributors",
       "one": "__count__ contributor",
       "many": "__count__ contributors"
