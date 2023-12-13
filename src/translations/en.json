@@ -238,14 +238,14 @@
       "codeReview": "Code review"
     },
     "project": {
-      "title": "Project",
+      "title": "Projects",
       "all": "All projects",
       "zero": "projects",
       "one": "__count__ project",
       "many": "__count__ projects"
     },
     "repository": {
-      "title": "Repository",
+      "title": "Repositories",
       "all": "All repositories",
       "zero": "repositories",
       "one": "__count__ repository",

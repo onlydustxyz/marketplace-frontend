@@ -120,18 +120,18 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
 
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters}>
-      <FilterTypeOptions selected={filters.types} onChange={updateTypes} />
       <FilterDatepicker selected={filters.dateRange} onChange={updateDate} />
-      <FilterRepoSelect
-        repos={contributedRepos.map(({ id, name }) => ({ id, label: name }))}
-        selected={filters.repos}
-        onChange={updateRepos}
-      />
       <FilterProjectSelect
         projects={contributedProjects.map(({ id, name }) => ({ id, label: name }))}
         selected={filters.projects}
         onChange={updateProjects}
       />
+      <FilterRepoSelect
+        repos={contributedRepos.map(({ id, name }) => ({ id, label: name }))}
+        selected={filters.repos}
+        onChange={updateRepos}
+      />
+      <FilterTypeOptions selected={filters.types} onChange={updateTypes} />
     </Filter>
   );
 }
