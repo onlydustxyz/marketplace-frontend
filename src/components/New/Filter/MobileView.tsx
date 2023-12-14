@@ -55,7 +55,7 @@ export function MobileView({
         </div>
 
         <div className="p-4">
-          <Button width={ButtonWidth.Full} onClick={closePanel}>
+          <Button width={ButtonWidth.Full} size={ButtonSize.Md} onClick={closePanel}>
             {T("filter.apply")}
           </Button>
         </div>
