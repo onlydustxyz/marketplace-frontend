@@ -9,8 +9,8 @@ import { EditProjectButton } from "../components/EditProjectButton";
 import { useIntl } from "src/hooks/useIntl";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
-import CancelCircleLine from "src/assets/icons/CancelCircleLine";
-import TinyProfilCard from "src/components/New/Cards/TinyProfilCard";
+import TeamLine from "src/icons/TeamLine";
+import Newcomers from "./Newcomers";
 
 export default function Insights() {
   const { T } = useIntl();
@@ -24,6 +24,42 @@ export default function Insights() {
   const isRewardDisabled = !project?.hasRemainingBudget;
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
+
+  const newComers = {
+    title: "New contributors",
+    description: "All contrbutors that have joined one of your repositories during last month.",
+    icon: (className: string) => <TeamLine className={className} />,
+    query: ProjectApi.queries.useProjectContributorsNewcomersInfiniteList({
+      params: { projectId: project?.id ?? "" },
+    }),
+  };
+
+  const mostActives = {
+    title: "Most active contributors",
+    description: "User that we indentified as your best profiles and that would match a maintainer role.",
+    icon: (className: string) => <TeamLine className={className} />,
+    query: ProjectApi.queries.useProjectContributorsMostActivesInfiniteList({
+      params: { projectId: project?.id ?? "" },
+    }),
+  };
+
+  const staled = {
+    title: "Contributors struggling",
+    description: "User that might encounter a problem on their current task based on their latest actions.",
+    icon: (className: string) => <TeamLine className={className} />,
+    query: ProjectApi.queries.useProjectContributionsStaledInfiniteList({
+      params: { projectId: project?.id ?? "" },
+    }),
+  };
+
+  const churned = {
+    title: "Churned contributors",
+    description: "User that are inactive for a long time period and stop contributing to your project.",
+    icon: (className: string) => <TeamLine className={className} />,
+    query: ProjectApi.queries.useProjectContributorsChurnedInfiniteList({
+      params: { projectId: project?.id ?? "" },
+    }),
+  };
 
   return (
     <>
@@ -60,25 +96,16 @@ export default function Insights() {
 
       <div className="h-full overflow-y-auto">
         <div className="h-full w-full overflow-y-auto scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-          <div className="relative min-h-full">
+          <div className="relative flex min-h-full flex-col gap-6">
             <CollapsibleCard
-              title="title"
-              description="description"
-              icon={className => <CancelCircleLine className={className} />}
-              isEmpty={false}
-              hasShowMore={false}
+              key={newComers.title}
+              title={newComers.title}
+              description={newComers.description}
+              icon={newComers.icon}
+              isEmpty={!!newComers.query.hasNextPage}
+              hasShowMore={newComers.query.hasNextPage}
             >
-              <TinyProfilCard
-                avatarUrl="https://avatars.githubusercontent.com/u/143011364?v=4"
-                name="Pixelfact"
-                isRegistered
-                description="Experienced dev building products since 2018. Let’s get in touch ! "
-                location="Paris, France"
-                sinceDate={new Date("2023-12-13T16:48:49.071505Z")}
-                onAction={() => {
-                  console.log("action");
-                }}
-              />
+              <Newcomers query={newComers.query} />
             </CollapsibleCard>
           </div>
         </div>

@@ -20,7 +20,7 @@ interface Props {
   name: string;
   isRegistered?: boolean;
   onAction?: () => void;
-  description?: string;
+  bio?: string;
   location?: string;
   sinceDate?: Date;
   children?: React.ReactNode;
@@ -46,7 +46,7 @@ export default function TinyProfileCard({
   name,
   isRegistered = false,
   onAction,
-  description,
+  bio,
   location,
   sinceDate,
   children,
@@ -76,8 +76,8 @@ export default function TinyProfileCard({
             {isRegistered && <img src={IMAGES.logo.original} className="ml-1.5 w-3.5" loading="lazy" alt="OnlyDust" />}
           </div>
           {children}
-          <OptionalSection condition={!!description}>
-            <div className="text-sm font-normal text-greyscale-200">{description}</div>
+          <OptionalSection condition={!!bio}>
+            <div className="text-sm font-normal text-greyscale-200">{bio}</div>
           </OptionalSection>
           <OptionalSection condition={!!location || !!sinceDate}>
             <div className="flex flex-row justify-between gap-3">

@@ -199,8 +199,7 @@ const useProjectBudget = ({
   });
 };
 
-export type UseProjectContributorsNewcommersInfiniteListResponse =
-  components["schemas"]["ProjectNewcomersPageResponse"];
+export type UseProjectContributorsNewcomersInfiniteListResponse = components["schemas"]["ProjectNewcomersPageResponse"];
 
 interface ProjectContributorsInsightsInfiniteListParams {
   projectId: string;
@@ -208,21 +207,21 @@ interface ProjectContributorsInsightsInfiniteListParams {
   pageSize?: number;
 }
 
-const useProjectContributorsNewcommersInfiniteList = ({
+const useProjectContributorsNewcomersInfiniteList = ({
   params,
   options = {},
 }: UseInfiniteBaseQueryProps<
-  UseProjectContributorsNewcommersInfiniteListResponse,
+  UseProjectContributorsNewcomersInfiniteListResponse,
   ProjectContributorsInsightsInfiniteListParams
 >) => {
-  return useInfiniteBaseQuery<UseProjectContributorsNewcommersInfiniteListResponse>(
+  return useInfiniteBaseQuery<UseProjectContributorsNewcomersInfiniteListResponse>(
     {
-      resourcePath: API_PATH.PROJECT_CONTRIBUTORS_NEWCOMMERS(params?.projectId || ""),
-      tags: PROJECT_TAGS.contributors_newcommers(params?.projectId || ""),
+      resourcePath: API_PATH.PROJECT_INSIGHTS_CONTRIBUTORS_NEWCOMERS(params?.projectId || ""),
+      tags: PROJECT_TAGS.contributors_newcomers(params?.projectId || ""),
       queryParams: params?.queryParams,
       pageSize: params?.pageSize || 6,
     },
-    { ...options, enabled: options.enabled && !!params?.projectId }
+    { ...options, enabled: !!params?.projectId }
   );
 };
 
@@ -238,12 +237,12 @@ const useProjectContributorsMostActivesInfiniteList = ({
 >) => {
   return useInfiniteBaseQuery<UseProjectContributorsMostActivesInfiniteListResponse>(
     {
-      resourcePath: API_PATH.PROJECT_CONTRIBUTORS_MOST_ACTIVES(params?.projectId || ""),
+      resourcePath: API_PATH.PROJECT_INSIGHTS_CONTRIBUTORS_MOST_ACTIVES(params?.projectId || ""),
       tags: PROJECT_TAGS.contributors_most_actives(params?.projectId || ""),
       queryParams: params?.queryParams,
       pageSize: params?.pageSize || 5,
     },
-    { ...options, enabled: options.enabled && !!params?.projectId }
+    { ...options, enabled: !!params?.projectId }
   );
 };
 
@@ -259,12 +258,12 @@ const useProjectContributionsStaledInfiniteList = ({
 >) => {
   return useInfiniteBaseQuery<UseProjectContributionsStaledInfiniteListResponse>(
     {
-      resourcePath: API_PATH.PROJECT_CONTRIBUTIONS_STALED(params?.projectId || ""),
+      resourcePath: API_PATH.PROJECT_INSIGHTS_CONTRIBUTIONS_STALED(params?.projectId || ""),
       tags: PROJECT_TAGS.contributions_staled(params?.projectId || ""),
       queryParams: params?.queryParams,
       pageSize: params?.pageSize || 5,
     },
-    { ...options, enabled: options.enabled && !!params?.projectId }
+    { ...options, enabled: !!params?.projectId }
   );
 };
 
@@ -280,12 +279,12 @@ const useProjectContributorsChurnedInfiniteList = ({
 >) => {
   return useInfiniteBaseQuery<UseProjectContributorsChurnedInfiniteListResponse>(
     {
-      resourcePath: API_PATH.PROJECT_CONTRIBUTORS_CHURNED(params?.projectId || ""),
+      resourcePath: API_PATH.PROJECT_INSIGHTS_CONTRIBUTORS_CHURNED(params?.projectId || ""),
       tags: PROJECT_TAGS.contributors_churned(params?.projectId || ""),
       queryParams: params?.queryParams,
       pageSize: params?.pageSize || 6,
     },
-    { ...options, enabled: options.enabled && !!params?.projectId }
+    { ...options, enabled: !!params?.projectId }
   );
 };
 
@@ -299,7 +298,7 @@ export default {
   useProjectContributionsInfiniteList,
   useCompletedRewardableItems,
   useProjectBudget,
-  useProjectContributorsNewcommersInfiniteList,
+  useProjectContributorsNewcomersInfiniteList,
   useProjectContributorsMostActivesInfiniteList,
   useProjectContributionsStaledInfiniteList,
   useProjectContributorsChurnedInfiniteList,

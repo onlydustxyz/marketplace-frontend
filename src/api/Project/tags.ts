@@ -22,7 +22,7 @@ export const PROJECT_TAGS = {
   contributors: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributors", { projectId }],
   budgets: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "budgets", { projectId }],
   contributions: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributions", { projectId }],
-  contributors_newcommers: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributors-newcommers", { projectId }],
+  contributors_newcomers: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributors-newcomers", { projectId }],
   contributors_most_actives: (projectId: string) => [
     RESSOURCE_TAGS.PROJECTS,
     "contributors-most-actives",
