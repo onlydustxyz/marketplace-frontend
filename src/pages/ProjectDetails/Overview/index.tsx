@@ -1,4 +1,3 @@
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { sortBy } from "lodash";
 import { Dispatch, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -52,6 +51,7 @@ import User3Line from "src/icons/User3Line";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import ProjectApi from "src/api/Project";
 import Skeleton from "src/components/Skeleton";
+import { IMAGES } from "src/assets/img";
 
 export default function Overview() {
   const { T } = useIntl();
@@ -68,7 +68,7 @@ export default function Overview() {
   const { lastVisitedProjectId } = useSession();
 
   const projectName = project?.name;
-  const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
+  const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : IMAGES.logo.space;
   const description = project?.longDescription || LOREM_IPSUM;
   const sponsors = project?.sponsors || [];
   const moreInfos = project?.moreInfos || [];
@@ -282,6 +282,7 @@ function ProjectDescriptionCard({
           alt={projectName || ""}
           src={logoUrl}
           className="h-20 w-20 flex-shrink-0 rounded-lg bg-spaceBlue-900 object-cover"
+          loading="lazy"
         />
         <div className="flex w-full flex-col gap-1">
           <div className="flex flex-row items-center justify-between font-belwe text-2xl font-normal text-greyscale-50">

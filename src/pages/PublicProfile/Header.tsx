@@ -1,11 +1,10 @@
-import onlyDustLogoWhite from "assets/img/onlydust-logo-white.svg";
-import onlyDustTitle from "assets/img/onlydust-title.svg";
 import { RoutePaths } from "src/App";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import LinkIcon from "src/icons/Link";
 import { useNavigate } from "react-router-dom";
 import Tooltip from "src/components/Tooltip";
+import { IMAGES } from "src/assets/img";
 
 type Props = {
   userLogin: string;
@@ -24,8 +23,8 @@ export default function Header({ userLogin }: Props) {
           target="_blank"
           rel="noreferrer"
         >
-          <img className="h-9 w-9" src={onlyDustLogoWhite} alt={T("images.onlyDustLogo")} />
-          <img className="mt-1 h-6" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
+          <img className="h-9 w-9" src={IMAGES.svg.onlydust.logoWhite} alt={T("images.onlyDustLogo")} />
+          <img className="mt-1 h-6" src={IMAGES.svg.onlydust.title} alt={T("images.onlyDustTitle")} />
         </a>
         <div className="flex gap-3">
           <div className="hidden md:block">

@@ -45,7 +45,7 @@ export default function Contributions() {
   const navigate = useNavigate();
   const { projectKey = "" } = useParams<{ projectKey?: string }>();
 
-  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
+  const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
   });
 
@@ -251,7 +251,7 @@ export default function Contributions() {
         ) : null}
       </div>
 
-      {!project?.indexingComplete ? <StillFetchingBanner /> : null}
+      {!project?.indexingComplete && !isLoadingProject ? <StillFetchingBanner /> : null}
 
       {project && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
@@ -266,7 +266,7 @@ export default function Contributions() {
                 <div className="flex items-center justify-between md:px-4">
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
-                  <div className="hidden -translate-y-3 lg:block">
+                  <div className="md:-translate-y-3">
                     <ProjectContributionsFilter
                       onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)}
                     />
