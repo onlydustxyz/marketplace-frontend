@@ -1,7 +1,28 @@
+import ProjectApi from "src/api/Project";
+import { ProjectOverviewHeader } from "./components/Header";
+import { ProjectOverviewInformations } from "./components/Informations/Informations";
+
 type Props = {
   slug: string;
 };
 
 export const ProjectOverviewSidePanel = ({ slug }: Props) => {
-  return <div className="h-full px-6 py-8 pt-16 lg:pt-8">coucou, {slug}</div>;
+  const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug },
+  });
+
+  // TODO SKELLETON / LOADING
+
+  if (!project) {
+    return null;
+  }
+
+  return (
+    <div className="h-full px-6 py-8 pt-24">
+      <div className="flex flex-col gap-4">
+        <ProjectOverviewHeader project={project} />
+        <ProjectOverviewInformations project={project} />
+      </div>
+    </div>
+  );
 };
