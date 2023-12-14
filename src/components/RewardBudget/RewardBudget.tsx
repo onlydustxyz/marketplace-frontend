@@ -96,7 +96,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           >
             {selectedBudget.currency === Currency.USD
               ? T("currencies.network.label_dollar")
-              : T("currencies.network.label", { currency: T(`currencies.currency.${selectedBudget.currency}`) })}
+              : T("currencies.network.label", { currency: T(`currencies.network.${selectedBudget.currency}`) })}
           </FieldInfoMessage>
         </div>
       </div>
