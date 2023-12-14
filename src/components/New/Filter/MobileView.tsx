@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from "react";
 import FilterIcon from "src/assets/icons/FilterIcon";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Button, { ButtonSize, ButtonType, Width as ButtonWidth } from "src/components/Button";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import Refresh from "src/icons/Refresh";
@@ -17,6 +17,14 @@ export function MobileView({
   const { T } = useIntl();
   const [panelOpen, setPanelOpen] = useState(false);
 
+  function openPanel() {
+    setPanelOpen(true);
+  }
+
+  function closePanel() {
+    setPanelOpen(false);
+  }
+
   return (
     <>
       <Button
@@ -27,7 +35,7 @@ export function MobileView({
         className={cn({
           "border-spacePurple-200 text-spacePurple-100": isActive,
         })}
-        onClick={() => setPanelOpen(true)}
+        onClick={openPanel}
       >
         <FilterIcon />
       </Button>
@@ -43,8 +51,13 @@ export function MobileView({
               </Button>
             ) : null}
           </div>
-
           {children}
+        </div>
+
+        <div className="p-4">
+          <Button width={ButtonWidth.Full} onClick={closePanel}>
+            {T("filter.apply")}
+          </Button>
         </div>
       </SidePanel>
     </>

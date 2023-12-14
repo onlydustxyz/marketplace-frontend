@@ -213,6 +213,7 @@
   "filter": {
     "clearButton": "Clear all",
     "empty": "Nothing here",
+    "apply": "Apply filters",
     "ownership": {
       "all": "All projects",
       "mine": "Mine only"
