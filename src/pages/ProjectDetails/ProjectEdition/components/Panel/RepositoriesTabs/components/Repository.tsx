@@ -30,9 +30,7 @@ export const Repository: FC<RepositoryProps> = ({ organization, repository }) =>
           type={ButtonType.Secondary}
           size={ButtonSize.Sm}
           onClick={onClick}
-          {...withTooltip(T("project.details.overview.repositories.add"), {
-            visible: true,
-          })}
+          {...withTooltip(T("project.details.overview.repositories.add"))}
         >
           <AddLine className="text-base leading-none" />
         </Button>
