@@ -11,6 +11,7 @@ export const Stack = <P extends StacksParams>({ stackRef }: StackProps<P>) => {
   const stack = useSubscribe(stackRef || undefined);
   const panelsKeys = useMemo(() => Object.keys(stack?.panels || []), [stack]);
 
+  console.log("stack", stack);
   if (stack?.panels) {
     return (
       <>

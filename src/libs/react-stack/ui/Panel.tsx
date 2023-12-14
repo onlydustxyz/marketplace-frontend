@@ -12,6 +12,7 @@ type Props = {
   open: boolean;
   close: () => void;
   action?: ReactElement;
+  topLeftComponent?: ReactElement;
   hasCloseButton?: boolean;
   front?: boolean;
   back?: boolean;
@@ -23,6 +24,7 @@ export default function SidePanel({
   open,
   close,
   action,
+  topLeftComponent,
   children,
   front,
   back,
@@ -101,6 +103,9 @@ export default function SidePanel({
           >
             {front && stacked ? <BackClick onClick={onClose} /> : null}
             <div className="h-full overflow-y-auto">
+              {topLeftComponent ? (
+                <div className="absolute left-3.5 top-3.5 z-20 flex flex-row gap-2">{topLeftComponent}</div>
+              ) : null}
               {hasCloseButton && (
                 <div className="absolute right-3.5 top-3.5 z-20 flex flex-row gap-2">
                   {action}

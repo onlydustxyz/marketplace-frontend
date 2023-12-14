@@ -7,6 +7,7 @@ export type StacksParams = {
   [key: string]: anyType;
   panelProps?: {
     action?: ReactElement;
+    topLeftComponent?: ReactElement;
   };
 };
 export type AnyParams = anyType;

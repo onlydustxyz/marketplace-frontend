@@ -4,12 +4,15 @@ import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardS
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import GithubLogo from "src/icons/GithubLogo";
-import { RegisterStack, useStackNavigation } from "src/libs/react-stack";
+import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
 import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
 import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
+import EyeLine from "src/icons/EyeLine";
+import { Link, generatePath } from "react-router-dom";
+import { RoutePaths } from "..";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
@@ -27,7 +30,7 @@ export interface StackRouterParams {
   };
   ProjectOverview: {
     slug: string;
-  };
+  } & StacksParams;
   ProjectLeaderReward: {
     projectId: string;
     rewardId: string;
@@ -130,6 +133,34 @@ export const useStackGithubWorkflowTutorial = () => {
   return useStackNavigation(StackRoute.GithubWorkflowTutorial);
 };
 
-export const useStackProjectOverview = () => {
-  return useStackNavigation<StackRouterParams["ProjectOverview"]>(StackRoute.ProjectOverview);
+export const useStackProjectOverview = (): [
+  ({ slug }: Omit<StackRouterParams["ProjectOverview"], "panelProps">) => void,
+  (id?: string | undefined) => void
+] => {
+  const { T } = useIntl();
+  const closeAll = useCloseAllStack();
+  const [open, close] = useStackNavigation<StackRouterParams["ProjectOverview"]>(StackRoute.ProjectOverview);
+
+  const handleOpen = ({ slug }: Omit<StackRouterParams["ProjectOverview"], "panelProps">) => {
+    open({
+      slug,
+      panelProps: {
+        action: (
+          <Link
+            to={generatePath(RoutePaths.ProjectDetails, {
+              projectKey: slug,
+            })}
+            className="hover:underline"
+            onClick={() => closeAll()}
+          >
+            <Button size={ButtonSize.Sm} type={ButtonType.Primary}>
+              <EyeLine className="text-base leading-none" />
+              {T("project.openOverview")}
+            </Button>
+          </Link>
+        ),
+      },
+    });
+  };
+  return [handleOpen, close];
 };

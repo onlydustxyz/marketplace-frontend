@@ -664,7 +664,7 @@
       "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
       "invoiceError": "Unable to retrieve Invoice informations. Please try again."
     },
-    "budgets":{
+    "budgets": {
       "error": "Unable to retrieve Rewards Budgets. Please try again."
     }
   },
@@ -849,6 +849,7 @@
     "privacy": "Privacy"
   },
   "project": {
+    "openOverview": "View project details",
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "claim": {
       "banner": {

@@ -4,7 +4,7 @@ import TechnologiesSection from "./TechnologiesSection";
 import StatsSection from "./StatsSection";
 import ProjectsSection from "./ProjectsSection";
 import { useMemo } from "react";
-import { useCloseStack } from "src/libs/react-stack";
+import { useCloseAllStack } from "src/libs/react-stack";
 import { UserProfile } from "src/api/Users/queries";
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 
 export default function ReadOnlyView({ profile, isOwn, setEditMode }: Props) {
   const languages = useMemo(() => Object.keys(profile.technologies || {}), [profile]);
-  const closeAll = useCloseStack();
+  const closeAll = useCloseAllStack();
   return (
     <div className="flex h-full flex-col">
       <Header profile={profile} />
