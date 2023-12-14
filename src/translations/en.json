@@ -238,22 +238,22 @@
       "codeReview": "Code review"
     },
     "project": {
-      "title": "Project",
+      "title": "Projects",
       "all": "All projects",
       "zero": "projects",
       "one": "__count__ project",
       "many": "__count__ projects"
     },
     "repository": {
-      "title": "Repository",
+      "title": "Repositories",
       "all": "All repositories",
       "zero": "repositories",
       "one": "__count__ repository",
       "many": "__count__ repositories"
     },
     "contributor": {
-      "title": "Contributor",
-      "placeholder": "Search by Github handle",
+      "title": "Contributors",
+      "placeholder": "Everyone",
       "zero": "contributors",
       "one": "__count__ contributor",
       "many": "__count__ contributors"
