@@ -1,5 +1,5 @@
 import Card from "src/components/Card";
-import GithubLink from "src/pages/ProjectDetails/Overview/GithubRepoDetails/GithubLink";
+import GithubLink from "src/components/Project/Overview/OverviewRepos/GithubRepoDetails/GithubLink";
 import { useIntl } from "src/hooks/useIntl";
 import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
@@ -7,13 +7,19 @@ import { components } from "src/__generated/api";
 
 type Props = {
   githubRepo: components["schemas"]["GithubRepoResponse"];
+  withBg: boolean;
 };
 
-export default function View({ githubRepo }: Props) {
+export default function View({ githubRepo, withBg }: Props) {
   const { T } = useIntl();
 
   return (
-    <Card dataTestId={`github-repo-${githubRepo.id}`} className="flex flex-row justify-between p-3" padded={false}>
+    <Card
+      dataTestId={`github-repo-${githubRepo.id}`}
+      className="flex flex-row justify-between p-3"
+      padded={false}
+      withBg={withBg}
+    >
       <div className="flex w-5/6 flex-col justify-between gap-5 p-3 pt-5 font-walsheim font-normal text-greyscale-50">
         <div className="flex flex-col justify-start gap-2">
           <span className="text-base font-medium">{githubRepo.name}</span>

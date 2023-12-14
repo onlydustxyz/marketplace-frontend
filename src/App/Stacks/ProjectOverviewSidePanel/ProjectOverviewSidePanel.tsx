@@ -1,6 +1,7 @@
 import ProjectApi from "src/api/Project";
-import { ProjectOverviewHeader } from "./components/Header";
-import { ProjectOverviewInformations } from "./components/Informations/Informations";
+import { ProjectOverviewHeadersCard } from "./components/Header";
+import { ProjectOverviewInformations } from "./components/Informations";
+import { ProjectOverviewReposCard } from "./components/Repos";
 
 type Props = {
   slug: string;
@@ -20,8 +21,9 @@ export const ProjectOverviewSidePanel = ({ slug }: Props) => {
   return (
     <div className="h-full px-6 py-8 pt-24">
       <div className="flex flex-col gap-4">
-        <ProjectOverviewHeader project={project} />
+        <ProjectOverviewHeadersCard project={project} />
         <ProjectOverviewInformations project={project} />
+        <ProjectOverviewReposCard project={project} />
       </div>
     </div>
   );
