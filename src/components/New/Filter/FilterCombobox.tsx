@@ -97,9 +97,7 @@ export function FilterCombobox<T>({
               className={cn(
                 "peer w-full border-none bg-transparent font-walsheim text-sm text-greyscale-50 outline-none",
                 {
-                  "focus-within:placeholder:text-spacePurple-400": !open,
-                  "placeholder:text-spaceBlue-200": !open && selected.length === 0,
-                  "placeholder:text-greyscale-50": !open && selected.length,
+                  "placeholder:text-greyscale-50 focus-within:placeholder:text-spacePurple-400": !open,
                   "placeholder:text-spacePurple-400": open,
                 }
               )}
@@ -112,8 +110,7 @@ export function FilterCombobox<T>({
               "aria-hidden": "true",
               className: cn("order-first leading-none peer-focus-within:text-spacePurple-400", {
                 "text-spacePurple-400": open,
-                "text-spaceBlue-200": !open && selected.length === 0,
-                "text-greyscale-50": !open && selected.length,
+                "text-greyscale-50": !open,
               }),
             })}
 
@@ -134,7 +131,7 @@ export function FilterCombobox<T>({
             className="absolute -left-3 -right-3 -top-3 z-20 flex flex-col gap-2 rounded-xl border border-greyscale-50/12 bg-greyscale-900 p-3 shadow-heavy"
           >
             <div className="h-[34px]" />
-            <Combobox.Options className="max-h-48 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
+            <Combobox.Options className="max-h-48 w-full overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
               {renderOptions()}
             </Combobox.Options>
           </Transition>

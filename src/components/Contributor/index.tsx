@@ -5,16 +5,14 @@ import { useIntl } from "src/hooks/useIntl";
 import { ContributorT } from "src/types";
 import { cn } from "src/utils/cn";
 import { Avatar } from "../New/Avatar";
-import { ComponentProps } from "react";
 
 type Props = {
   contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered">;
   clickable?: boolean;
   className?: string;
-  avatarSize?: ComponentProps<typeof Avatar>["size"];
 };
 
-export default function Contributor({ contributor, clickable, className, avatarSize = "5" }: Props) {
+export default function Contributor({ contributor, clickable, className }: Props) {
   const { T } = useIntl();
   const [open] = useStackContributorProfile();
 
@@ -33,7 +31,7 @@ export default function Contributor({ contributor, clickable, className, avatarS
           : undefined
       }
     >
-      {contributor.avatarUrl ? <Avatar src={contributor.avatarUrl} alt={contributor.login} size={avatarSize} /> : null}
+      {contributor.avatarUrl ? <Avatar src={contributor.avatarUrl} alt={contributor.login} size="5" /> : null}
 
       <span
         className={cn({

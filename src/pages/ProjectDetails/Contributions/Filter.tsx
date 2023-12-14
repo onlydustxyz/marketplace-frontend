@@ -9,7 +9,7 @@ import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { ContributorResponse, GithubContributionType } from "src/types";
-import { formatDateQueryParam } from "src/utils/date";
+import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
 import { useLocalStorage } from "usehooks-ts";
 
 type Filters = {
@@ -20,7 +20,7 @@ type Filters = {
 };
 
 const initialFilters: Filters = {
-  dateRange: { from: undefined, to: undefined },
+  dateRange: allTime,
   repos: [],
   contributors: [],
   types: [],
@@ -71,10 +71,7 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    (filters.dateRange.from && filters.dateRange.to) ||
-      filters.types.length ||
-      filters.contributors.length ||
-      filters.repos.length
+    !isAllTime(filters.dateRange) || filters.types.length || filters.contributors.length || filters.repos.length
   );
 
   const { data: reposData } = ProjectApi.queries.useGetProjectBySlug({
