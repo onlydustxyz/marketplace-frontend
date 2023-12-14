@@ -81,7 +81,7 @@ export default function Overview() {
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
   const { alreadyApplied, applyToProject } = useApplications(project?.id ?? "", projectKey);
-  const { isCurrentUserMember } = useProjectVisibility(project?.id);
+  const { isCurrentUserMember, loading: isCurrentUserMemberLoading } = useProjectVisibility(project?.id);
 
   const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});
 
@@ -214,7 +214,7 @@ export default function Overview() {
           </Card>
         </div>
         <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
-          {hiring && !isCurrentUserMember && myProfileInfo && (
+          {hiring && !isCurrentUserMember && !isCurrentUserMemberLoading && myProfileInfo && (
             <ApplyCallout
               {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile: myProfileInfo }}
             />
