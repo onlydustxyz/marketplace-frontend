@@ -43,7 +43,7 @@ export function FilterContributorCombobox<T extends ContributorResponse>({
         onChange={onChange}
         queryState={queryState}
         renderIcon={props => <User3Line {...props} />}
-        renderItem={({ item }) => <Contributor contributor={item} avatarSize="6" />}
+        renderItem={({ item }) => <Contributor contributor={item} />}
         uniqueKey={uniqueKey}
         placeholder={renderPlaceholder()}
         isLoading={isLoading}

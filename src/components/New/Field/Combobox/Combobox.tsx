@@ -1,3 +1,4 @@
+import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Combobox as HeadlessCombobox, Transition } from "@headlessui/react";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
@@ -5,7 +6,6 @@ import { cn } from "src/utils/cn";
 import { ComboboxState } from "./ComboboxState";
 import { ItemType, MultiList } from "./MultiList";
 import { SingleList } from "./SingleList";
-import { useRef } from "react";
 
 type Props<T> = {
   renderItem: ({ item, selected, active }: { item: T; selected: boolean; active: boolean }) => JSX.Element;
@@ -68,14 +68,19 @@ export function Combobox<T extends Record<string, unknown>>({
   isMultiList,
   variant = Variant.Default,
 }: SingleListProps<T> | MultiListProps<T>) {
-  const comboboxButtonRef = useRef<HTMLButtonElement>(null);
+  const { refs, floatingStyles, placement } = useFloating<HTMLButtonElement>({
+    middleware: [flip()],
+    whileElementsMounted: autoUpdate,
+    transform: false,
+  });
+
   return (
     <HeadlessCombobox
       value={selected}
       onChange={e => {
         onChange(e as unknown as T & T[]);
-        if (comboboxButtonRef.current) {
-          comboboxButtonRef.current.click();
+        if (refs.reference.current) {
+          refs.reference.current.click();
         }
       }}
       multiple={multiple as false}
@@ -84,7 +89,7 @@ export function Combobox<T extends Record<string, unknown>>({
         <div className="z-1 relative">
           <HeadlessCombobox.Button
             as="div"
-            ref={comboboxButtonRef}
+            ref={refs.setReference}
             className={cn(
               "group relative z-30 flex items-center gap-3 overflow-hidden rounded-lg border px-2.5 py-1.5",
               open
@@ -115,16 +120,28 @@ export function Combobox<T extends Record<string, unknown>>({
             ) : null}
           </HeadlessCombobox.Button>
           <Transition
+            ref={refs.setFloating}
+            style={{
+              ...floatingStyles,
+              right: "-16px",
+              left: "-16px",
+              top: placement === "bottom" ? "-24px" : undefined,
+              bottom: placement === "top" ? "-12px" : undefined,
+            }}
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
             afterLeave={() => onQuery("")}
             className={cn(
-              "absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 p-4 shadow-heavy",
+              "z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 p-4 shadow-heavy",
+              {
+                "origin-top translate-y-1.5": placement === "bottom",
+                "origin-bottom -translate-y-1.5": placement === "top",
+              },
               variants[variant]
             )}
           >
-            <div className="h-9" />
+            {placement === "bottom" ? <div className="h-9" /> : null}
             <HeadlessCombobox.Options className="max-h-60 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
               <ComboboxState {...{ items, query, loading, isMultiList }} />
 
@@ -134,6 +151,7 @@ export function Combobox<T extends Record<string, unknown>>({
                 <SingleList {...{ items, itemKeyName, loading, renderItem }} />
               )}
             </HeadlessCombobox.Options>
+            {placement === "top" ? <div className="h-9" /> : null}
           </Transition>
         </div>
       )}

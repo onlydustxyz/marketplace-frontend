@@ -4,11 +4,11 @@ import config from "src/config";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { withTooltip } from "src/components/Tooltip";
 import LockFill from "src/icons/LockFill";
 import { useIntl } from "src/hooks/useIntl";
 import MarkdownPreview from "src/components/MarkdownPreview";
+import { IMAGES } from "src/assets/img";
 
 export interface ProjectOverviewHeaderProps {
   project: UseGetProjectBySlugResponse;
@@ -26,7 +26,7 @@ Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, eu
 
 export const ProjectOverviewHeader = ({ project, description = true }: ProjectOverviewHeaderProps) => {
   const languages = getTopTechnologies(project?.technologies || {});
-  const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
+  const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : IMAGES.logo.space;
   const { T } = useIntl();
 
   return (
@@ -35,6 +35,7 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
         <img
           alt={project.name || ""}
           src={logoUrl}
+          loading="lazy"
           className="h-20 w-20 flex-shrink-0 rounded-lg bg-spaceBlue-900 object-cover"
         />
         <div className="flex w-full flex-col gap-1">

@@ -1,5 +1,5 @@
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { components } from "src/__generated/api";
+import { IMAGES } from "src/assets/img";
 import Card from "src/components/Card";
 import PrivateTag from "src/components/PrivateTag";
 import RoundedImage from "src/components/RoundedImage";
@@ -32,7 +32,7 @@ export default function ProjectCard({ project }: { project: components["schemas"
     <Card selectable padded={false} withBg={false} className="flex h-full flex-col bg-noise-light">
       <div className="flex h-full flex-col gap-3 p-4">
         <div className="relative w-fit">
-          <RoundedImage src={logoUrl || onlyDustLogo} alt={name} />
+          <RoundedImage src={logoUrl || IMAGES.logo.space} alt={name} />
           {isPrivate && (
             <div className="absolute -bottom-2.5 -right-2.5">
               <PrivateTag />

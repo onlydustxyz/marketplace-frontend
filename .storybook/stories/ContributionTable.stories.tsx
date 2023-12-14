@@ -389,13 +389,13 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
       sort: TableColumns.Project,
       icon: <Folder3Line />,
       label: "Project/Repo",
-      width: HeaderCellWidth.Quarter,
+      props: { width: HeaderCellWidth.Quarter },
     },
     {
       sort: TableColumns.Contribution,
       icon: <StackLine />,
       label: "Contribution",
-      width: HeaderCellWidth.Half,
+      props: { width: HeaderCellWidth.Half },
     },
     {
       sort: TableColumns.Linked,
@@ -405,7 +405,7 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
         </span>
       ),
       label: "Linked to",
-      className: "justify-end",
+      props: { className: "justify-end" },
     },
   ],
   bodyRow: (contribution?: ContributionT) => {

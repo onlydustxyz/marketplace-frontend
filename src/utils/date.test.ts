@@ -1,4 +1,4 @@
-import { formatDate, parseDateString, parseDateRangeString, formatDateQueryParam } from "./date";
+import { formatDate, parseDateString, parseDateRangeString, formatDateQueryParam, isAllTime } from "./date";
 
 describe("formatDate", () => {
   it("should format the date", () => {
@@ -61,5 +61,39 @@ describe("formatDateQueryParam", () => {
   it("should format the date string as a query parameter", () => {
     const dateString = "2023-03-13T17:20:21.198113";
     expect(formatDateQueryParam(dateString)).toEqual("2023-03-13");
+  });
+});
+
+describe("isAllTime", () => {
+  it("should return true if dateRange.from and dateRange.to are equal to allTime.from and allTime.to", () => {
+    const dateRange = {
+      from: new Date(0),
+      to: new Date(),
+    };
+    expect(isAllTime(dateRange)).toBe(true);
+  });
+
+  it("should return false if dateRange.from is different from allTime.from", () => {
+    const dateRange = {
+      from: new Date("2022-01-01T00:00:00.000Z"),
+      to: new Date(),
+    };
+    expect(isAllTime(dateRange)).toBe(false);
+  });
+
+  it("should return false if dateRange.to is different from allTime.to", () => {
+    const dateRange = {
+      from: new Date(0),
+      to: new Date("2022-12-31T23:59:59.999Z"),
+    };
+    expect(isAllTime(dateRange)).toBe(false);
+  });
+
+  it("should return false if dateRange.from and dateRange.to are different from allTime.from and allTime.to", () => {
+    const dateRange = {
+      from: new Date("2022-01-01T00:00:00.000Z"),
+      to: new Date("2022-12-31T23:59:59.999Z"),
+    };
+    expect(isAllTime(dateRange)).toBe(false);
   });
 });
