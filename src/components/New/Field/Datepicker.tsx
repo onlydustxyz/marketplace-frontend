@@ -58,13 +58,11 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
 
   function renderCalendar({ close }: { close: () => void }) {
     if (props.mode === "range") {
-      // Sometimes date strings are passed instead of date objects
-      const selected = parseDateRangeString(props.value);
-
       return (
         <Calendar
           mode="range"
-          selected={selected}
+          // Sometimes date strings are passed instead of date objects
+          selected={parseDateRangeString(props.value)}
           onSelect={(...args) => {
             props.onChange?.(...args);
 
@@ -76,13 +74,11 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
       );
     }
 
-    // Sometimes date strings are passed instead of date objects
-    const selected = parseDateString(props.value);
-
     return (
       <Calendar
         mode="single"
-        selected={selected}
+        // Sometimes date strings are passed instead of date objects
+        selected={parseDateString(props.value)}
         onSelect={(...args) => {
           props.onChange?.(...args);
           close();
@@ -94,19 +90,25 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
   function renderPlaceholder() {
     if (props.mode === "range") {
       const selectedPeriod = props.periods?.find(period => {
-        return props.value?.from && props.value?.to && period.value.from && period.value.to
-          ? isSameDay(period.value.from, new Date(props.value.from)) &&
-              isSameDay(period.value.to, new Date(props.value.to))
-          : false;
+        if (props.value?.from && props.value?.to && period.value.from && period.value.to) {
+          return (
+            isSameDay(period.value.from, new Date(props.value.from)) &&
+            isSameDay(period.value.to, new Date(props.value.to))
+          );
+        }
+
+        return false;
       });
 
       if (selectedPeriod) return selectedPeriod.label;
 
-      return props.value?.from && props.value?.to
-        ? `${getFormattedTimeDatepicker(new Date(props.value.from))} - ${getFormattedTimeDatepicker(
-            new Date(props.value.to)
-          )}`
-        : T("form.dateRangePlaceholder");
+      if (props.value?.from && props.value?.to) {
+        return `${getFormattedTimeDatepicker(new Date(props.value.from))} - ${getFormattedTimeDatepicker(
+          new Date(props.value.to)
+        )}`;
+      }
+
+      return T("form.dateRangePlaceholder");
     }
 
     const selectedPeriod = props.periods?.find(period => {
