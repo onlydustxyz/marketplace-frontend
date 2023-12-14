@@ -15,9 +15,10 @@ type Props = PropsWithChildren<{
   horizontalMargin?: boolean;
   width?: HeaderCellWidth;
   className?: string;
+  thClassName?: string;
 }>;
 
-export default function HeaderCell({ onClick, children, horizontalMargin, width, className }: Props) {
+export default function HeaderCell({ onClick, children, horizontalMargin, width, className, thClassName }: Props) {
   return (
     <th
       scope="col"
@@ -27,7 +28,8 @@ export default function HeaderCell({ onClick, children, horizontalMargin, width,
           "px-3": horizontalMargin,
           "cursor-pointer": onClick,
         },
-        width
+        width,
+        thClassName
       )}
       onClick={onClick}
     >

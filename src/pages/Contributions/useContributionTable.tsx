@@ -27,13 +27,13 @@ export function useContributionTable() {
       sort: TableColumns.Project,
       icon: <Folder3Line />,
       label: T("contributions.table.projectRepo"),
-      width: HeaderCellWidth.Quarter,
+      props: { width: HeaderCellWidth.Quarter },
     },
     {
       sort: TableColumns.Contribution,
       icon: <StackLine />,
       label: T("contributions.table.contribution"),
-      width: HeaderCellWidth.Half,
+      props: { width: HeaderCellWidth.Half },
     },
     {
       sort: TableColumns.Linked,
@@ -43,7 +43,7 @@ export function useContributionTable() {
         </span>
       ),
       label: T("contributions.table.linkedTo"),
-      className: "justify-end",
+      props: { className: "justify-end" },
     },
   ];
 
