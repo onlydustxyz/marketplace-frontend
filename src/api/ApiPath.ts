@@ -28,6 +28,11 @@ export const API_PATH = {
   PROJECT_CONTRIBUTORS: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributors`),
   PROJECT_BUDGET: (projectId: string) => BASE_API_V1(`projects/${projectId}/budgets`),
   PROJECT_CONTRIBUTIONS: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributions`),
+  PROJECT_CONTRIBUTORS_NEWCOMMERS: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributors/newcommers`),
+  PROJECT_CONTRIBUTORS_MOST_ACTIVES: (projectId: string) =>
+    BASE_API_V1(`projects/${projectId}/contributors/most-actives`),
+  PROJECT_CONTRIBUTIONS_STALED: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributions/staled`),
+  PROJECT_CONTRIBUTORS_CHURNED: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributors/churned`),
 
   /* --------------------------------- USERS -------------------------------- */
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),

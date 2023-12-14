@@ -57,7 +57,7 @@ export default function TinyProfileCard({
   return (
     <div className="max-w-xs overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base shadow-heavy">
       <div className={cn("h-14 w-full shrink-0 bg-cover p-4", coverClass)}>
-        <Button className="ml-auto" type={ButtonType.Secondary} size={ButtonSize.Xs}>
+        <Button className="ml-auto" type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={onAction}>
           <SendPlane2Line />
           {T("project.details.insights.newcomers.buttonLabel")}
         </Button>

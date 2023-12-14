@@ -75,9 +75,10 @@ export default function Insights() {
                 description="Experienced dev building products since 2018. Let’s get in touch ! "
                 location="Paris, France"
                 sinceDate={new Date("2023-12-13T16:48:49.071505Z")}
-              >
-                children
-              </TinyProfilCard>
+                onAction={() => {
+                  console.log("action");
+                }}
+              />
             </CollapsibleCard>
           </div>
         </div>
