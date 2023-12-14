@@ -1,10 +1,15 @@
-import { Link, generatePath } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { ShortProject, ShortRepo } from "src/types";
 
 export function ContributionProjectRepo({ project, repo }: { project: ShortProject; repo: ShortRepo }) {
+  const [openProjectOverview] = useStackProjectOverview();
+
+  const onClickProject = () => {
+    openProjectOverview({ slug: project.slug });
+  };
+
   return (
     <div className="flex items-center gap-3">
       <RoundedImage
@@ -16,14 +21,9 @@ export function ContributionProjectRepo({ project, repo }: { project: ShortProje
       />
 
       <div className="text-sm">
-        <Link
-          to={generatePath(RoutePaths.ProjectDetails, {
-            projectKey: project.slug ?? "",
-          })}
-          className="hover:underline"
-        >
+        <button onClick={onClickProject} className="hover:underline">
           {project.name}
-        </Link>
+        </button>
         &nbsp;<span className="text-spaceBlue-300">/</span>&nbsp;
         <span className="inline-flex">
           <ExternalLink url={repo.htmlUrl} text={repo.name} />

@@ -167,15 +167,6 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                   />
                   <div className="text-sm text-greyscale-300">
                     {T("contributions.panel.contribution.forProject")}&nbsp;
-                    {/* <Link
-                      to={generatePath(RoutePaths.ProjectDetails, {
-                        projectKey: contribution.project.slug,
-                      })}
-                      className="text-spacePurple-400 hover:text-spacePurple-300"
-                      target="_blank"
-                    >
-                      {contribution.project.name}
-                    </Link> */}
                     <button
                       onClick={() => openProjectOverview({ slug: contribution.project.slug })}
                       className="text-spacePurple-400 hover:text-spacePurple-300"
