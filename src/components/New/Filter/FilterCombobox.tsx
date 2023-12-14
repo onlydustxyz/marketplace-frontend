@@ -84,7 +84,7 @@ export function FilterCombobox<T>({
       by={(a, b) => a[uniqueKey] === b[uniqueKey]}
     >
       {({ open }) => (
-        <div className="relative isolate">
+        <div className="relative isolate z-10">
           <Combobox.Button
             as="div"
             className={cn("relative z-30 flex items-center gap-2 overflow-hidden rounded-lg border px-2.5 py-1.5", {
@@ -133,7 +133,7 @@ export function FilterCombobox<T>({
             afterLeave={() => setQuery("")}
             className="absolute -left-3 -right-3 -top-3 z-20 flex flex-col gap-2 rounded-xl border border-greyscale-50/12 bg-greyscale-900 p-3 shadow-heavy"
           >
-            <div className="h-[34px]" />
+            <div className="z-30 h-[34px]" />
             <Combobox.Options className="max-h-48 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
               {renderOptions()}
             </Combobox.Options>

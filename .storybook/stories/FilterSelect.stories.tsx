@@ -23,7 +23,7 @@ const items = [
 ];
 
 const defaultProps: ComponentProps<typeof FilterSelect> = {
-  icon: className => <FolderLine className={className} />,
+  icon: (_, className) => <FolderLine className={className} />,
   tokens: { zero: "filter.project.all", other: "filter.project" },
   items,
   selected: items[0],

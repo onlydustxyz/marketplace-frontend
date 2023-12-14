@@ -19,6 +19,9 @@ import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstal
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { Budget } from "./Budget/Budget";
+import { FilterQueryParams, ProjectRewardsFilter } from "./Filter";
+import { FilterPosition } from "src/components/New/Filter/Filter";
+import { useState } from "react";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
@@ -29,11 +32,14 @@ const RewardList: React.FC = () => {
     params: { slug: projectKey },
   });
 
+  const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
+
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
     isAscending: false,
     storageKey: "projectRewardsSorting",
   });
+
   const {
     data,
     isLoading: isRewardsLoading,
@@ -45,7 +51,10 @@ const RewardList: React.FC = () => {
   } = useInfiniteRewardsList({
     projectId: project?.id || "",
     enabled: !!project?.id,
-    queryParams,
+    queryParams: {
+      ...(queryParams as object),
+      ...filterQueryParams,
+    },
   });
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
@@ -74,7 +83,10 @@ const RewardList: React.FC = () => {
   return project && rewards ? (
     <>
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
-        <Title>{T("project.details.rewards.title")}</Title>
+        <Flex className="z-10">
+          <Title className="mr-8">{T("project.details.rewards.title")}</Title>
+          <ProjectRewardsFilter onChange={setFilterQueryParams} position={FilterPosition.Left} />
+        </Flex>
         {!hasOrgsWithUnauthorizedRepos ? (
           <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
             <EditProjectButton projectKey={projectKey} />

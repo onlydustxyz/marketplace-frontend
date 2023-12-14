@@ -2,6 +2,7 @@ import { useT, TParams, tr, Talkr, Autocomplete } from "talkr";
 import en from "src/translations/en.json";
 import { PropsWithChildren } from "react";
 
+export type Intl = (key: Key, params?: TParams | undefined) => string;
 type Key = Autocomplete<typeof en>;
 
 export const IntlProvider = ({ children }: PropsWithChildren) => (

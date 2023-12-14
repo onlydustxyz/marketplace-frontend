@@ -52,7 +52,11 @@ export function BudgetCard({ budget, sentRewards, rewardedContributorsCount, typ
   const { T } = useIntl();
 
   return (
-    <Card className={cn("px-4 py-5 lg:px-4 lg:py-5", { "bg-budget bg-origin-border": type === CardTypes.Remaining })}>
+    <Card
+      className={cn("px-4 py-5 lg:px-4 lg:py-5", {
+        "bg-budget bg-origin-border": type === CardTypes.Remaining,
+      })}
+    >
       <div className="flex flex-col gap-2">
         <div className="flex items-center text-sm uppercase text-white">
           <span
@@ -63,7 +67,7 @@ export function BudgetCard({ budget, sentRewards, rewardedContributorsCount, typ
           >
             {budgets[type].icon}
           </span>
-          <div className="font-semibold">{T(budgets[type].title)}</div>
+          <div className="truncate font-semibold">{T(budgets[type].title)}</div>
         </div>
 
         <div className="flex flex-wrap items-baseline font-belwe text-2xl text-greyscale-50">

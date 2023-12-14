@@ -242,6 +242,13 @@
       "one": "__count__ repository",
       "many": "__count__ repositories"
     },
+    "currency": {
+      "title": "Currency",
+      "all": "All (dollars quivalent)",
+      "zero": "currencies",
+      "one": "__count__ currency",
+      "many": "__count__ currencies"
+    },
     "contributor": {
       "title": "Contributor",
       "placeholder": "Search by Github handle",

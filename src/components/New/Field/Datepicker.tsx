@@ -96,7 +96,7 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
   }
 
   return (
-    <Popover className="relative">
+    <Popover className="relative isolate z-20">
       {({ open }) => (
         <>
           <Popover.Button

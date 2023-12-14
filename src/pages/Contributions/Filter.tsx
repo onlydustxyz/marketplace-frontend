@@ -54,7 +54,7 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
       repositories: repoIds.join(","),
     };
 
-    const { from: fromDate, to: toDate } = dateRange;
+    const { from: fromDate, to: toDate } = dateRange || {};
 
     if (fromDate && toDate) {
       filterQueryParams.fromDate = formatDateQueryParam(fromDate);
@@ -65,7 +65,7 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
   }, [filters, projectIds, repoIds]);
 
   const hasActiveFilters = Boolean(
-    (filters.dateRange.from && filters.dateRange.to) ||
+    (filters.dateRange?.from && filters.dateRange?.to) ||
       filters.types.length ||
       filters.projects.length ||
       filters.repos.length

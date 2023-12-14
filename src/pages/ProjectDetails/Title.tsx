@@ -1,5 +1,10 @@
 import { PropsWithChildren } from "react";
+import { cn } from "src/utils/cn";
 
-export default function Title({ children }: PropsWithChildren) {
-  return <div className="font-belwe text-3xl xl:text-2xl">{children}</div>;
+type TitleProps = {
+  className?: string;
+} & PropsWithChildren;
+
+export default function Title({ children, className }: TitleProps) {
+  return <div className={cn("font-belwe text-3xl xl:text-2xl", className)}>{children}</div>;
 }

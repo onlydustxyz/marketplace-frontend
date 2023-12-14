@@ -9,13 +9,14 @@ import { cn } from "src/utils/cn";
 
 export type Item = {
   id: number | string;
-  label: string;
+  label?: string | JSX.Element;
+  value?: string;
   image?: string | null;
 };
 
 type Props<T> = {
   disabled?: boolean;
-  icon?: (className: string) => ReactElement;
+  icon?: (selected: T | T[], className: string) => ReactElement;
   items: T[];
   tokens: Record<"zero" | "other", string>;
 };
@@ -71,6 +72,7 @@ export function FilterSelect<T extends Item>({
             >
               <span className="flex flex-1 items-center gap-2">
                 {icon?.(
+                  selected,
                   cn("text-base leading-none", {
                     "text-spacePurple-500": open,
                   })
@@ -104,7 +106,7 @@ export function FilterSelect<T extends Item>({
                         {typeof item.image !== "undefined" ? (
                           <RoundedImage
                             src={item?.image ?? onlyDustLogo}
-                            alt={item.label}
+                            alt="filter item image"
                             rounding={Rounding.Corners}
                             size={ImageSize.Sm}
                           />
