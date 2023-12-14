@@ -99,7 +99,6 @@ export function FilterSelect<T extends Item>({
               leaveFrom="scale-100 opacity-100"
               leaveTo="scale-95 opacity-0"
               className={cn(
-                // "absolute -left-1.5 -right-1.5 z-10 overflow-hidden rounded-2xl border border-card-border-light bg-card-background-medium shadow-medium",
                 "-left-1.5 -right-1.5 z-10 overflow-hidden rounded-2xl border border-card-border-light bg-card-background-medium shadow-medium",
                 {
                   "origin-top translate-y-1.5": placement === "bottom",
