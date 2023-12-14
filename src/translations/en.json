@@ -285,7 +285,7 @@
       "ETH": "Ethereum",
       "OP": "Optimism",
       "STARK": "Stark chain",
-      "LORDS": "Lords",
+      "LORDS": "Ethereum",
       "USD": "IBAN/BIC",
       "label": "Reward granted on __currency__ network.",
       "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
