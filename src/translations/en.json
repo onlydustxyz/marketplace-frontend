@@ -964,7 +964,8 @@
       "insights": {
         "title": "Insights",
         "newcomers": {
-          "buttonLabel": "Say hello"
+          "buttonLabel": "Say hello",
+          "dateSince": "Since __since__"
         }
       },
       "rewards": {

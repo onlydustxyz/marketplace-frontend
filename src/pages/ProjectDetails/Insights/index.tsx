@@ -72,7 +72,12 @@ export default function Insights() {
                 avatarUrl="https://avatars.githubusercontent.com/u/143011364?v=4"
                 name="Pixelfact"
                 isRegistered
-              />
+                description="Experienced dev building products since 2018. Let’s get in touch ! "
+                location="Paris, France"
+                sinceDate={new Date("2023-12-13T16:48:49.071505Z")}
+              >
+                children
+              </TinyProfilCard>
             </CollapsibleCard>
           </div>
         </div>
