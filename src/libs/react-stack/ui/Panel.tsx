@@ -7,6 +7,7 @@ import { StackDrop } from "./StackDrop";
 import { debounce } from "lodash";
 import { BackClick } from "./BackClick";
 import { usePlacement } from "../hooks/usePlacement";
+import { Options } from "../types/Stack";
 
 type Props = {
   open: boolean;
@@ -18,6 +19,7 @@ type Props = {
   back?: boolean;
   stacked?: boolean;
   hidden?: boolean;
+  option?: Options["panel"];
 } & PropsWithChildren;
 
 export default function SidePanel({
@@ -30,6 +32,7 @@ export default function SidePanel({
   back,
   stacked,
   hidden,
+  option,
   hasCloseButton = true,
 }: Props) {
   const { placement } = usePlacement();
@@ -102,12 +105,16 @@ export default function SidePanel({
             style={back ? PanelBackStyle : BasePanelStyle}
           >
             {front && stacked ? <BackClick onClick={onClose} /> : null}
-            <div className="h-full overflow-y-auto">
+            <div
+              className={cn("relative h-full overflow-y-auto", {
+                "pt-6": !option?.noPadding,
+              })}
+            >
               {topLeftComponent ? (
-                <div className="absolute left-3.5 top-3.5 z-20 flex flex-row gap-2">{topLeftComponent}</div>
+                <div className="absolute left-6 top-6 z-20 flex flex-row gap-2">{topLeftComponent}</div>
               ) : null}
               {hasCloseButton && (
-                <div className="absolute right-3.5 top-3.5 z-20 flex flex-row gap-2">
+                <div className="absolute right-6 top-6 z-20 flex flex-row gap-2">
                   {action}
                   <Button
                     size={ButtonSize.Sm}

@@ -61,7 +61,7 @@ export default function PayoutInfoSidePanel() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="mx-6 border-b border-b-greyscale-50/8 pb-4 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
+      <div className="mx-6 border-b border-b-greyscale-50/8 pb-4 font-belwe text-2xl font-normal text-greyscale-50">
         {T("navbar.profile.payoutInfo")}
       </div>
 

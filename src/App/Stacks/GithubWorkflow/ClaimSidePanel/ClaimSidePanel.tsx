@@ -94,7 +94,7 @@ export default function ClaimSidePanel({ projectSlug }: ClaimSidePanelProps) {
 
   return (
     <div className="flex h-full flex-col justify-between">
-      <div className="flex h-full flex-col px-4 py-8">
+      <div className="flex h-full flex-col px-4 py-8 pt-0">
         <div className="mb-8 px-2 font-belwe text-2xl font-normal text-greyscale-50">
           {T("project.claim.panel.title")}
         </div>

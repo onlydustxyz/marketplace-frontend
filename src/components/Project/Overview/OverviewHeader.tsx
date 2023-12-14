@@ -1,5 +1,4 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import MarkdownPreview from "src/components/MarkdownPreview";
 import Tag, { TagSize } from "src/components/Tag";
 import config from "src/config";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
@@ -9,9 +8,11 @@ import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { withTooltip } from "src/components/Tooltip";
 import LockFill from "src/icons/LockFill";
 import { useIntl } from "src/hooks/useIntl";
+import MarkdownPreview from "src/components/MarkdownPreview";
 
 export interface ProjectOverviewHeaderProps {
   project: UseGetProjectBySlugResponse;
+  description?: boolean;
 }
 
 const LOREM_IPSUM = `
@@ -23,7 +24,7 @@ Lorem ipsum dolor sit amet, consectetur *adipiscing elit*. Sed non risus. **Susp
 Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue.
 `;
 
-export const ProjectOverviewHeader = ({ project }: ProjectOverviewHeaderProps) => {
+export const ProjectOverviewHeader = ({ project, description = true }: ProjectOverviewHeaderProps) => {
   const languages = getTopTechnologies(project?.technologies || {});
   const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const { T } = useIntl();
@@ -56,7 +57,9 @@ export const ProjectOverviewHeader = ({ project }: ProjectOverviewHeaderProps) =
           )}
         </div>
       </div>
-      <MarkdownPreview className="text-sm">{project.longDescription || LOREM_IPSUM}</MarkdownPreview>
+      {description ? (
+        <MarkdownPreview className="text-sm">{project.longDescription || LOREM_IPSUM}</MarkdownPreview>
+      ) : null}
     </>
   );
 };

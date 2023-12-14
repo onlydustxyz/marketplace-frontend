@@ -215,7 +215,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
     if (data) {
       return (
         <div className="flex h-full flex-col gap-8 overflow-hidden px-6">
-          <div className="flex flex-wrap items-center gap-3 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
+          <div className="flex flex-wrap items-center gap-3 font-belwe text-2xl font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.title", { id: pretty(data.id) })}
             {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
           </div>

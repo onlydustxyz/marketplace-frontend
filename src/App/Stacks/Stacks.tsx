@@ -54,7 +54,10 @@ export interface StackRouterParams {
 export const Stacks = () => {
   return (
     <>
-      <RegisterStack<StackRouterParams["ContributorProfile"]> name={StackRoute.ContributorProfile}>
+      <RegisterStack<StackRouterParams["ContributorProfile"]>
+        name={StackRoute.ContributorProfile}
+        option={{ panel: { noPadding: true } }}
+      >
         {({ params }) => <ContributorProfileSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack<StackRouterParams["ProjectLeaderReward"]> name={StackRoute.ProjectLeaderReward}>
