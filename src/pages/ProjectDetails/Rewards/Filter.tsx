@@ -123,16 +123,21 @@ export function ProjectRewardsFilter({
 
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position} className="min-w-[360px]">
-      <FilterDatepicker selected={filters.dateRange} onChange={updateDate} />
+      <div className="z-20">
+        <FilterDatepicker selected={filters.dateRange} onChange={updateDate} />
+      </div>
 
-      <FilterContributorCombobox<ContributorResponse>
-        contributors={contributors}
-        selected={filters.contributors}
-        onChange={updateContributors}
-        queryState={contributorsQueryState}
-        uniqueKey="githubUserId"
-        isLoading={contributorsLoading}
-      />
+      <div className="z-10">
+        <FilterContributorCombobox<ContributorResponse>
+          contributors={contributors}
+          selected={filters.contributors}
+          onChange={updateContributors}
+          queryState={contributorsQueryState}
+          uniqueKey="githubUserId"
+          isLoading={contributorsLoading}
+        />
+      </div>
+
       {projectBudget ? (
         <FilterCurrencySelect
           selected={filters.currency}
