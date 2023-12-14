@@ -5,9 +5,10 @@ import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import DiscordFill from "src/icons/DiscordFill";
 import TwitterFill from "src/icons/TwitterFill";
-import FakeExternalLink from "src/pages/ProjectDetails/Overview/OverviewPanel/FakeExternalLink";
-import Section, { SectionIcon } from "src/pages/ProjectDetails/Overview/OverviewPanel/Section";
+
+import Section, { SectionIcon } from "./OverviewSection";
 import { SocialIcon } from "src/pages/ProjectDetails/ProjectEdition/pages/Information/components/SocialIcon";
+import FakeExternalLink from "./FakeExternalLink";
 
 export interface ProjectOverviewMoreInfoProps {
   project: UseGetProjectBySlugResponse;

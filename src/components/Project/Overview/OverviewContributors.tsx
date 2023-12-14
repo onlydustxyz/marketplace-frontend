@@ -1,7 +1,7 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-import Section, { SectionIcon } from "src/pages/ProjectDetails/Overview/OverviewPanel/Section";
+import Section, { SectionIcon } from "./OverviewSection";
 
 export interface ProjectOverviewContributorProps {
   project: UseGetProjectBySlugResponse;
@@ -9,12 +9,10 @@ export interface ProjectOverviewContributorProps {
 
 export const ProjectOverviewContributor = ({ project }: ProjectOverviewContributorProps) => {
   const { T } = useIntl();
+  const contributorCount = project.contributorCount || 0;
 
-  return project.contributorCount ? (
-    <Section
-      icon={SectionIcon.User}
-      title={T("project.details.overview.contributors", { count: project.contributorCount })}
-    >
+  return contributorCount ? (
+    <Section icon={SectionIcon.User} title={T("project.details.overview.contributors", { count: contributorCount })}>
       <div className="flex flex-row items-center gap-2 text-sm font-normal text-greyscale-50">
         <div className="flex flex-row -space-x-1">
           {(project.topContributors || []).map(contributor => (
@@ -27,7 +25,7 @@ export const ProjectOverviewContributor = ({ project }: ProjectOverviewContribut
             />
           ))}
         </div>
-        <div data-testid="contributors-count">{project.contributorCount}</div>
+        <div data-testid="contributors-count">{contributorCount}</div>
       </div>
     </Section>
   ) : null;

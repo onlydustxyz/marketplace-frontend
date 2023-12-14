@@ -31,7 +31,6 @@ import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import LockFill from "src/icons/LockFill";
 import Title from "src/pages/ProjectDetails/Title";
-import { HasuraUserRole } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
@@ -64,18 +63,12 @@ export default function Overview() {
     params: { slug: projectKey },
   });
 
-  const { isLoggedIn, githubUserId, roles } = useAuth();
+  const { isLoggedIn, githubUserId } = useAuth();
   const { lastVisitedProjectId } = useSession();
 
   const projectName = project?.name;
   const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : onlyDustLogo;
   const description = project?.longDescription || LOREM_IPSUM;
-  const sponsors = project?.sponsors || [];
-  const moreInfos = project?.moreInfos || [];
-  const topContributors = project?.topContributors || [];
-  const totalContributorsCount = project?.contributorCount || 0;
-  const leads = project?.leaders;
-  const invitedLeads = project?.invitedLeaders;
   const languages = getTopTechnologies(project?.technologies || {});
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: project?.id });
@@ -99,7 +92,6 @@ export default function Overview() {
 
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
-  const showPendingInvites = isProjectLeader || roles.includes(HasuraUserRole.Admin);
 
   const nbRepos = useMemo(
     () => project?.organizations?.flatMap(({ repos }) => repos).length ?? 0,
@@ -168,19 +160,7 @@ export default function Overview() {
           <ProjectDescriptionCard
             {...{ projectName, logoUrl, visibility: project?.visibility, languages, description }}
           />
-          {!isMd && (
-            <OverviewPanel
-              {...{
-                sponsors,
-                moreInfos,
-                topContributors,
-                totalContributorsCount,
-                leads,
-                invitedLeads,
-                showPendingInvites,
-              }}
-            />
-          )}
+          {!isMd && <OverviewPanel project={project} />}
 
           <Card className="flex flex-col gap-4">
             <div className="flex flex-row items-center justify-between border-b border-greyscale-50/8 pb-2 font-walsheim text-base font-medium text-greyscale-50">
@@ -219,19 +199,7 @@ export default function Overview() {
               {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile: myProfileInfo }}
             />
           )}
-          {isMd && (
-            <OverviewPanel
-              {...{
-                sponsors,
-                moreInfos,
-                topContributors,
-                totalContributorsCount,
-                leads,
-                invitedLeads,
-                showPendingInvites,
-              }}
-            />
-          )}
+          {isMd && <OverviewPanel project={project} />}
         </div>
       </div>
     </>
