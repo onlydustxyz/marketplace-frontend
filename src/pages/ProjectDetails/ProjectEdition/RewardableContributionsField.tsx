@@ -4,7 +4,7 @@ import { components } from "src/__generated/api";
 import EyeCheckLine from "src/assets/icons/EyeCheckLine";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
-import { Datepicker } from "src/components/New/Field/Datepicker";
+import { Datepicker, Period } from "src/components/New/Field/Datepicker";
 import { Field } from "src/components/New/Field/Field";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
@@ -97,24 +97,28 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
               onChange={handleDateChange}
               periods={[
                 {
+                  id: Period.LastMonth,
                   label: T("common.periods.lastMonth"),
                   value: sub(new Date(), {
                     months: 1,
                   }),
                 },
                 {
+                  id: Period.Last6Months,
                   label: T("common.periods.last6Months"),
                   value: sub(new Date(), {
                     months: 6,
                   }),
                 },
                 {
+                  id: Period.LastYear,
                   label: T("common.periods.lastYear"),
                   value: sub(new Date(), {
                     years: 1,
                   }),
                 },
                 {
+                  id: Period.Forever,
                   label: T("common.periods.forever"),
                   value: new Date(0),
                 },

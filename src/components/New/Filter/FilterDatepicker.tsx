@@ -1,6 +1,6 @@
 import { startOfMonth, startOfWeek, startOfYear } from "date-fns";
 import { DateRange } from "react-day-picker";
-import { Datepicker } from "src/components/New/Field/Datepicker";
+import { Datepicker, Period } from "src/components/New/Field/Datepicker";
 import { FilterField } from "src/components/New/Filter/FilterField";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -23,18 +23,22 @@ export function FilterDatepicker({
         }}
         periods={[
           {
+            id: Period.ThisWeek,
             label: T("common.periods.thisWeek"),
             value: { from: startOfWeek(new Date(), { weekStartsOn: 1 }), to: new Date() },
           },
           {
+            id: Period.ThisMonth,
             label: T("common.periods.thisMonth"),
             value: { from: startOfMonth(new Date()), to: new Date() },
           },
           {
+            id: Period.ThisYear,
             label: T("common.periods.thisYear"),
             value: { from: startOfYear(new Date()), to: new Date() },
           },
           {
+            id: Period.AllTime,
             label: T("common.periods.allTime"),
             value: { from: new Date(0), to: new Date() },
           },

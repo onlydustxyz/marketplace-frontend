@@ -10,6 +10,17 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB, getFormattedTimeDatepicker, parseDateRangeString, parseDateString } from "src/utils/date";
 
+export enum Period {
+  ThisWeek = "this_week",
+  ThisMonth = "this_month",
+  LastMonth = "last_month",
+  Last6Months = "last_6_months",
+  ThisYear = "this_year",
+  LastYear = "last_year",
+  AllTime = "all_time",
+  Forever = "forever",
+}
+
 type Props = {
   isElevated?: boolean;
 };
@@ -19,6 +30,7 @@ type SingleProps = Props & {
   value?: Date;
   onChange: DayPickerSingleProps["onSelect"];
   periods?: {
+    id: Period;
     label: string;
     value: Date;
   }[];
@@ -29,6 +41,7 @@ type RangeProps = Props & {
   value?: DateRange;
   onChange: DayPickerRangeProps["onSelect"];
   periods?: {
+    id: Period;
     label: string;
     value: DateRange;
   }[];
