@@ -9,6 +9,8 @@ import { Menu, Transition } from "@headlessui/react";
 // http://localhost:5173/p/bug-fix-mickael/rewards
 // http://localhost:5173/p/mtest/rewards
 // http://localhost:5173/p/deluge
+// TODO : padding on icon button
+// TODO : small on icon on large button
 
 export const ChoiceButton = ({ choices, defaultOption, icon, ...rest }: ChoiceButtonProps) => {
   const defaultChoice = useMemo(() => {
