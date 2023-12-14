@@ -97,9 +97,7 @@ export function FilterCombobox<T>({
               className={cn(
                 "peer w-full border-none bg-transparent font-walsheim text-sm text-greyscale-50 outline-none",
                 {
-                  "focus-within:placeholder:text-spacePurple-400": !open,
-                  "placeholder:text-spaceBlue-200": !open && selected.length === 0,
-                  "placeholder:text-greyscale-50": !open && selected.length,
+                  "placeholder:text-greyscale-50 focus-within:placeholder:text-spacePurple-400": !open,
                   "placeholder:text-spacePurple-400": open,
                 }
               )}
@@ -112,8 +110,7 @@ export function FilterCombobox<T>({
               "aria-hidden": "true",
               className: cn("order-first leading-none peer-focus-within:text-spacePurple-400", {
                 "text-spacePurple-400": open,
-                "text-spaceBlue-200": !open && selected.length === 0,
-                "text-greyscale-50": !open && selected.length,
+                "text-greyscale-50": !open,
               }),
             })}
 
