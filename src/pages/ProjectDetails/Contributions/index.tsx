@@ -266,7 +266,7 @@ export default function Contributions() {
                 <div className="flex items-center justify-between md:px-4">
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
-                  <div className="hidden -translate-y-3 lg:block">
+                  <div className="md:-translate-y-3">
                     <ProjectContributionsFilter
                       onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)}
                     />

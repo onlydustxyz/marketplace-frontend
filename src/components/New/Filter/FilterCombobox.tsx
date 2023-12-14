@@ -84,7 +84,7 @@ export function FilterCombobox<T>({
       by={(a, b) => a[uniqueKey] === b[uniqueKey]}
     >
       {({ open }) => (
-        <div className="relative isolate">
+        <div className="relative isolate z-[1]">
           <Combobox.Button
             as="div"
             className={cn("relative z-30 flex items-center gap-2 overflow-hidden rounded-lg border px-2.5 py-1.5", {
