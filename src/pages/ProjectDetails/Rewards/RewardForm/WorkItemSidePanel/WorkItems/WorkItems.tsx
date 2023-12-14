@@ -41,7 +41,6 @@ export function WorkItems({ type, projectId, workItems, addWorkItem, contributor
     ignoredItemsIncluded: false,
   });
 
-  // TODO: @NeoxAzrot delete console.log et update text + check behavior on change tab, if it's what we want or not
   const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
     limites: 4,
     delays: 3000,
