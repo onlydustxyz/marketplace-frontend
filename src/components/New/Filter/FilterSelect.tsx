@@ -6,6 +6,7 @@ import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
 import { Avatar } from "../Avatar";
+import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 
 export type Item = {
   id: number | string;
@@ -44,6 +45,12 @@ export function FilterSelect<T extends Item>({
 }: SingleProps<T> | MultipleProps<T>) {
   const { T } = useIntl();
 
+  const { refs, floatingStyles, placement } = useFloating({
+    middleware: [flip()],
+    whileElementsMounted: autoUpdate,
+    transform: false,
+  });
+
   const renderToken = useCallback(() => {
     if (Array.isArray(selected)) {
       // Sometimes we have more items selected than items available in the list.
@@ -62,6 +69,7 @@ export function FilterSelect<T extends Item>({
         {({ open }) => (
           <>
             <Listbox.Button
+              ref={refs.setReference}
               className={cn(
                 "flex w-full items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
                 {
@@ -86,13 +94,21 @@ export function FilterSelect<T extends Item>({
               />
             </Listbox.Button>
             <Transition
+              ref={refs.setFloating}
+              style={{ ...floatingStyles }}
               enter="transform transition duration-100 ease-out"
               enterFrom="scale-95 opacity-0"
               enterTo="scale-100 opacity-100"
               leave="transform transition duration-75 ease-out"
               leaveFrom="scale-100 opacity-100"
               leaveTo="scale-95 opacity-0"
-              className="absolute -left-1.5 -right-1.5 z-10 origin-top translate-y-1.5 overflow-hidden rounded-2xl border border-card-border-light bg-card-background-medium shadow-medium"
+              className={cn(
+                "absolute -left-1.5 -right-1.5 z-10 overflow-hidden rounded-2xl border border-card-border-light bg-card-background-medium shadow-medium",
+                {
+                  "origin-top translate-y-1.5": placement === "bottom",
+                  "origin-bottom -translate-y-1.5": placement === "top",
+                }
+              )}
             >
               <Listbox.Options className="max-h-60 divide-y divide-card-border-light overflow-auto bg-greyscale-800 py-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                 {items.map(item => (

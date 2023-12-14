@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
-import { Filter, FilterPosition } from "src/components/New/Filter/Filter";
+import { Filter } from "src/components/New/Filter/Filter";
 import { FilterContributorCombobox } from "src/components/New/Filter/FilterContributorCombobox";
 import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySelect";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ContributorResponse, Currency } from "src/types";
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage, useMediaQuery } from "usehooks-ts";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { formatDateQueryParam } from "src/utils/date";
+import { cn } from "src/utils/cn";
+import { viewportConfig } from "src/config";
+import { FilterPosition } from "src/components/New/Filter/DesktopView";
 
 type Filters = {
   dateRange: DateRange;
@@ -38,6 +41,7 @@ export function ProjectRewardsFilter({
   position?: FilterPosition;
 }) {
   const { projectKey = "" } = useParams<{ projectKey?: string }>();
+  const isMobile = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.md}px)`);
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
@@ -138,16 +142,18 @@ export function ProjectRewardsFilter({
         />
       </div>
 
-      {projectBudget ? (
-        <FilterCurrencySelect
-          selected={filters.currency}
-          onChange={updateCurrency}
-          currencies={projectBudget.budgets.map((budget, index) => ({
-            id: index,
-            value: budget.currency,
-          }))}
-        />
-      ) : null}
+      <div className={cn({ "z-30": isMobile })}>
+        {projectBudget ? (
+          <FilterCurrencySelect
+            selected={filters.currency}
+            onChange={updateCurrency}
+            currencies={projectBudget.budgets.map((budget, index) => ({
+              id: index,
+              value: budget.currency,
+            }))}
+          />
+        ) : null}
+      </div>
     </Filter>
   );
 }
