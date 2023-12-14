@@ -1095,6 +1095,7 @@
         }
       },
       "edit": {
+        "syncContributions": "Sync contributions",
         "errors": {
           "informations": "Your project configuration has errors"
         },

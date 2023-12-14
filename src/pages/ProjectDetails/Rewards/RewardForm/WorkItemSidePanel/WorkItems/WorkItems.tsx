@@ -1,5 +1,5 @@
 import { chain } from "lodash";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { WorkItemType } from "src/__generated/graphql";
 import View, { tabNames } from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
@@ -8,6 +8,8 @@ import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/q
 import { useFormContext } from "react-hook-form";
 import { Contributor } from "../../types";
 import { NotFound } from "src/components/NotFound";
+import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
+import { useIntl } from "src/hooks/useIntl";
 
 export interface RewardableWorkItem {
   type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;
@@ -26,6 +28,8 @@ type Props = {
 };
 
 export function WorkItems({ type, projectId, workItems, addWorkItem, contributor }: Props) {
+  const { T } = useIntl();
+
   const { watch } = useFormContext();
   const tabName = tabNames[type];
   const search = watch(`search-${tabName}`);
@@ -37,17 +41,38 @@ export function WorkItems({ type, projectId, workItems, addWorkItem, contributor
     ignoredItemsIncluded: false,
   });
 
+  const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
+    limites: 4,
+    delays: 3000,
+  });
+
   const {
     data: contributionItems,
+    isRefetching,
     isLoading,
+    refetch,
     isError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
   } = ProjectApi.queries.useRewardableItemsInfiniteList({
     params: { projectId, queryParams },
-    options: { retry: 1 },
+    options: { retry: 1, refetchOnWindowFocus, refetchInterval },
   });
+
+  const PoolingFeedback = usePoolingFeedback({
+    onForcePooling,
+    isLoading,
+    isRefetching,
+    fetch: refetch,
+    ui: {
+      label: T("project.details.edit.syncContributions"),
+    },
+  });
+
+  useEffect(() => {
+    onRefetching(isRefetching);
+  }, [isRefetching]);
 
   const contributions = contributionItems?.pages.flatMap(({ rewardableItems }) => rewardableItems) ?? [];
 
@@ -90,6 +115,7 @@ export function WorkItems({ type, projectId, workItems, addWorkItem, contributor
       isFetchingNextPage={isFetchingNextPage}
       setIncludeIgnoredItems={setIncludeIgnoredItems}
       loading={isLoading}
+      PoolingFeedback={PoolingFeedback}
     />
   );
 }

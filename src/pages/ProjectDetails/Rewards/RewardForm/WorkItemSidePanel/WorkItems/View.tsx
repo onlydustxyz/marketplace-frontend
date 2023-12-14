@@ -46,6 +46,7 @@ type Props = {
   contributor: Contributor;
   setIncludeIgnoredItems: (value: boolean) => void;
   loading: boolean;
+  PoolingFeedback?: React.ReactElement;
 } & ShowMoreProps;
 
 export default function View({
@@ -62,6 +63,7 @@ export default function View({
   isFetchingNextPage,
   setIncludeIgnoredItems,
   loading,
+  PoolingFeedback,
 }: Props) {
   const { T } = useIntl();
   const { resetField } = useFormContext();
@@ -129,7 +131,7 @@ export default function View({
       );
     }
 
-    return <EmptyState type={type} />;
+    return <EmptyState type={type} PoolingFeedback={PoolingFeedback} />;
   };
 
   return (
