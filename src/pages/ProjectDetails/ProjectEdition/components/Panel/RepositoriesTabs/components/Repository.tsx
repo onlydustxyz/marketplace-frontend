@@ -6,6 +6,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { EditContext } from "src/pages/ProjectDetails/ProjectEdition/EditContext";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
+import { withTooltip } from "src/components/Tooltip";
 
 export interface RepositoryProps {
   organization: UseGithubOrganizationsResponse;
@@ -24,9 +25,18 @@ export const Repository: FC<RepositoryProps> = ({ organization, repository }) =>
   return (
     <div className="card-light w-full rounded-large border p-4 shadow-light">
       <Flex justify="start" item="start" className="gap-5">
-        <Button iconOnly type={ButtonType.Secondary} size={ButtonSize.Sm} onClick={onClick}>
+        <Button
+          iconOnly
+          type={ButtonType.Secondary}
+          size={ButtonSize.Sm}
+          onClick={onClick}
+          {...withTooltip(T("project.details.overview.repositories.add"), {
+            visible: true,
+          })}
+        >
           <AddLine className="text-base leading-none" />
         </Button>
+
         <Flex justify="start" item="start" direction="col" className="flex-1 gap-2.5 overflow-hidden">
           <div className="text-body-m-bold">
             <GithubLink url={repository.htmlUrl} text={repository.name} />

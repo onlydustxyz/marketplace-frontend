@@ -947,7 +947,8 @@
         },
         "repositories": {
           "descriptionPlaceholder": "This repository has no description",
-          "title": "Repositories"
+          "title": "Repositories",
+          "add": "Add repository"
         },
         "sponsors": {
           "many": "Sponsors",
