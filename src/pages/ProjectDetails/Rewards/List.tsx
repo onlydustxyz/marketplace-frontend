@@ -20,8 +20,8 @@ import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { Budget } from "./Budget/Budget";
 import { FilterQueryParams, ProjectRewardsFilter } from "./Filter";
-import { FilterPosition } from "src/components/New/Filter/Filter";
 import { useState } from "react";
+import { FilterPosition } from "src/components/New/Filter/DesktopView";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
