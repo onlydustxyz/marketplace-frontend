@@ -15,9 +15,10 @@ export type OutletContext = {
 };
 interface Props {
   padded?: boolean;
+  contentClassName?: string;
 }
 
-export default function View({ padded = true }: Props) {
+export default function View({ padded = true, contentClassName }: Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { data, ...restProjectBySlugQueries } = ProjectApi.queries.useGetProjectBySlug({
@@ -46,9 +47,13 @@ export default function View({ padded = true }: Props) {
           innerClassName={cn(isXl ? "h-full" : "h-auto")}
         >
           <div
-            className={cn("mx-auto flex h-full flex-1 flex-col gap-6", {
-              "max-w-7xl gap-6 px-4 py-6 xl:px-8": padded,
-            })}
+            className={cn(
+              "mx-auto flex h-full flex-1 flex-col gap-6",
+              {
+                "max-w-7xl gap-6 px-4 py-6 xl:px-8": padded,
+              },
+              contentClassName
+            )}
           >
             <Outlet />
           </div>

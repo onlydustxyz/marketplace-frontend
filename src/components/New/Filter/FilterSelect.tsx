@@ -1,11 +1,11 @@
 import { Listbox, Transition } from "@headlessui/react";
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { ReactElement, useCallback } from "react";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import { IMAGES } from "src/assets/img";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
+import { Avatar } from "../Avatar";
 
 export type Item = {
   id: number | string;
@@ -104,12 +104,7 @@ export function FilterSelect<T extends Item>({
                         })}
                       >
                         {typeof item.image !== "undefined" ? (
-                          <RoundedImage
-                            src={item?.image ?? onlyDustLogo}
-                            alt="filter item image"
-                            rounding={Rounding.Corners}
-                            size={ImageSize.Sm}
-                          />
+                          <Avatar src={item?.image ?? IMAGES.logo.space} alt="Avatar image" shape="square" />
                         ) : null}
                         <span className="flex-1 truncate font-walsheim text-sm text-greyscale-50">{item.label}</span>
                         {selected ? <CheckLine className="text-xl leading-none text-greyscale-50" /> : null}

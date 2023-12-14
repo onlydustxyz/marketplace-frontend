@@ -48,7 +48,7 @@ const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
     day: "text-xs text-greyscale-50 w-8 h-8 rounded flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-spacePurple-500",
     day_disabled: "text-greyscale-600",
     day_outside: "text-greyscale-600",
-    day_selected: "bg-spacePurple-500",
+    day_selected: "bg-spacePurple-500 !text-greyscale-50",
     day_range_start: "bg-spacePurple-500",
     day_range_end: "bg-spacePurple-500",
     day_range_middle: "!bg-spacePurple-300",

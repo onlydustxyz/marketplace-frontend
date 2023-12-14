@@ -1,5 +1,5 @@
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { components } from "src/__generated/api";
+import { IMAGES } from "src/assets/img";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage from "src/components/RoundedImage";
@@ -25,7 +25,7 @@ export default function RewardLine({ reward, onClick, selected }: Props) {
       <Cell>{displayRelativeDate(new Date(reward?.requestedAt))}</Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage
-          src={reward?.rewardedOnProjectLogoUrl || onlyDustLogo}
+          src={reward?.rewardedOnProjectLogoUrl || IMAGES.logo.space}
           alt={reward?.rewardedOnProjectName || ""}
         />
         <div className="flex flex-col justify-center truncate">

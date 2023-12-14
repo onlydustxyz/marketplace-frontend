@@ -1,11 +1,10 @@
-import onlyDustLogo from "assets/img/onlydust-logo.png";
-import onlyDustTitle from "assets/img/onlydust-title.svg";
 import { useIntl } from "src/hooks/useIntl";
 import GithubLogo from "src/icons/GithubLogo";
 import TwitterFill from "src/icons/TwitterFill";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import { IMAGES } from "src/assets/img";
 
 export default function Footer() {
   const { T } = useIntl();
@@ -20,8 +19,8 @@ export default function Footer() {
         target="_blank"
         rel="noreferrer"
       >
-        <img className="h-10 w-10" src={onlyDustLogo} alt={T("images.onlyDustLogo")} />
-        <img className="mt-1 hidden h-6 md:inline" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
+        <img className="h-10 w-10" src={IMAGES.logo.original} alt={T("images.onlyDustLogo")} />
+        <img className="mt-1 hidden h-6 md:inline" src={IMAGES.svg.onlydust.title} alt={T("images.onlyDustTitle")} />
       </a>
       <div className="flex items-center gap-3 text-spaceBlue-50">
         <div className="flex flex-row gap-1 font-walsheim text-sm font-normal">

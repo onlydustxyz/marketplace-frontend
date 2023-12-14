@@ -17,6 +17,7 @@ interface HorizontalListItemCardProps {
   isExternalFlow?: boolean;
   disabled?: boolean;
   tooltip?: string;
+  TitleComponent?: ReactElement;
 }
 
 const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
@@ -30,8 +31,10 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
   isExternalFlow = true,
   disabled = false,
   tooltip,
+  TitleComponent,
 }) => {
   const { className: ContainerClassName, ...RestContainerProps } = ContainerProps;
+
   return (
     <li>
       <Card
@@ -41,7 +44,7 @@ const HorizontalListItemCard: React.FC<HorizontalListItemCardProps> = ({
       >
         <div className="flex items-center gap-3">
           <Avatar src={avatarUrl} alt={title} size="6" shape="square" {...AvatarProps} />
-          <span className="flex-1">{title}</span>
+          <span className="flex-1">{TitleComponent ? TitleComponent : title}</span>
           <a
             href={linkUrl}
             onClick={linkClick}

@@ -9,7 +9,7 @@ import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { GithubContributionType } from "src/types";
-import { formatDateQueryParam } from "src/utils/date";
+import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
 
 export type Filters = {
   types: GithubContributionType[];
@@ -20,7 +20,7 @@ export type Filters = {
 
 const initialFilters: Filters = {
   types: [],
-  dateRange: { from: undefined, to: undefined },
+  dateRange: allTime,
   repos: [],
   projects: [],
 };
@@ -46,7 +46,7 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
   const repoIds = useMemo(() => filters.repos.map(({ id }) => String(id)), [filters]);
 
   useEffect(() => {
-    const { types, dateRange } = filters;
+    const { types } = filters;
 
     const filterQueryParams: FilterQueryParams = {
       types: types.join(","),
@@ -54,18 +54,25 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
       repositories: repoIds.join(","),
     };
 
-    const { from: fromDate, to: toDate } = dateRange || {};
+    // Users may have an old filter shape in local storage that doesn't contain dateRange
+    if (filters?.dateRange) {
+      const { from, to } = filters.dateRange;
 
-    if (fromDate && toDate) {
-      filterQueryParams.fromDate = formatDateQueryParam(fromDate);
-      filterQueryParams.toDate = formatDateQueryParam(toDate);
+      if (from && to) {
+        filterQueryParams.fromDate = formatDateQueryParam(from);
+        filterQueryParams.toDate = formatDateQueryParam(to);
+      }
+    } else {
+      // Init to all time
+      updateDate(initialFilters.dateRange);
     }
 
     onChange(filterQueryParams);
   }, [filters, projectIds, repoIds]);
 
   const hasActiveFilters = Boolean(
-    (filters.dateRange?.from && filters.dateRange?.to) ||
+    // from and to may be undefined if the user hasn't got dateRange in local storage
+    (filters?.dateRange?.from && filters?.dateRange?.to && !isAllTime(filters?.dateRange)) ||
       filters.types.length ||
       filters.projects.length ||
       filters.repos.length
@@ -118,18 +125,18 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
 
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters}>
-      <FilterTypeOptions selected={filters.types} onChange={updateTypes} />
       <FilterDatepicker selected={filters.dateRange} onChange={updateDate} />
+      <FilterProjectSelect
+        projects={contributedProjects.map(({ id, name, logoUrl }) => ({ id, label: name, image: logoUrl }))}
+        selected={filters.projects}
+        onChange={updateProjects}
+      />
       <FilterRepoSelect
         repos={contributedRepos.map(({ id, name }) => ({ id, label: name }))}
         selected={filters.repos}
         onChange={updateRepos}
       />
-      <FilterProjectSelect
-        projects={contributedProjects.map(({ id, name }) => ({ id, label: name }))}
-        selected={filters.projects}
-        onChange={updateProjects}
-      />
+      <FilterTypeOptions selected={filters.types} onChange={updateTypes} />
     </Filter>
   );
 }
