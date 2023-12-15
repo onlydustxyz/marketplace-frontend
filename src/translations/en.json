@@ -636,6 +636,7 @@
         },
         "title": "Reward #__id__",
         "to": "to",
+        "on": "on",
         "you": "(you)",
         "contributions": "Contributions included in reward",
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
