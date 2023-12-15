@@ -61,7 +61,7 @@ export function FilterCurrencySelect({
         items={items}
         selected={{
           ...selected,
-          label: T(currenciesLabel[selected.value as keyof typeof currenciesLabel].label),
+          label: <>{T(currenciesLabel[selected.value as keyof typeof currenciesLabel].label)}</>,
         }}
         onChange={onChange}
         disabled={currencies.length <= 1}
