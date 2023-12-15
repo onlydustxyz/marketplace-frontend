@@ -46,7 +46,6 @@ export function FilterCurrencySelect({
   onChange: (items: Item) => void;
 }) {
   const { T } = useIntl();
-
   const items = currencies.map(currency => ({ ...currency, label: getLabel(T, currency.value) }));
 
   return (

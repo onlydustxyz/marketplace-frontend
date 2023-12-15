@@ -7,11 +7,9 @@ import { FilterContributorCombobox } from "src/components/New/Filter/FilterContr
 import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySelect";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ContributorResponse, Currency } from "src/types";
-import { useLocalStorage, useMediaQuery } from "usehooks-ts";
+import { useLocalStorage } from "usehooks-ts";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { formatDateQueryParam } from "src/utils/date";
-import { cn } from "src/utils/cn";
-import { viewportConfig } from "src/config";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 
 type Filters = {
@@ -41,7 +39,6 @@ export function ProjectRewardsFilter({
   position?: FilterPosition;
 }) {
   const { projectKey = "" } = useParams<{ projectKey?: string }>();
-  const isMobile = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.md}px)`);
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
@@ -142,7 +139,7 @@ export function ProjectRewardsFilter({
         />
       </div>
 
-      <div className={cn({ "z-30": isMobile })}>
+      <div className="z-30 md:z-0">
         {projectBudget ? (
           <FilterCurrencySelect
             selected={filters.currency}
