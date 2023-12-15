@@ -19,6 +19,7 @@ interface Props {
   avatarUrl: string;
   name: string;
   isRegistered?: boolean;
+  actionLabel?: string;
   onAction?: () => void;
   bio?: string;
   location?: string;
@@ -60,6 +61,7 @@ export default function TinyProfileCard({
   avatarUrl,
   name,
   isRegistered = false,
+  actionLabel,
   onAction,
   bio,
   location,
@@ -74,7 +76,7 @@ export default function TinyProfileCard({
       <div className={cn("h-14 w-full shrink-0 bg-cover p-4", coverClass)}>
         <Button className="ml-auto" type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={onAction}>
           <SendPlane2Line />
-          {T("project.details.insights.newcomers.buttonLabel")}
+          {actionLabel}
         </Button>
       </div>
       <div className="-mt-6 p-4 pt-0">
@@ -91,14 +93,7 @@ export default function TinyProfileCard({
             {isRegistered && <img src={IMAGES.logo.original} className="ml-1.5 w-3.5" loading="lazy" alt="OnlyDust" />}
           </div>
           {children}
-          <OptionalSection
-            condition={!!bio}
-            fallback={
-              <div className="line-clamp-2 h-10 text-sm font-normal italic text-greyscale-200">
-                {T("project.details.insights.newcomers.descriptionPlaceholder")}
-              </div>
-            }
-          >
+          <OptionalSection condition={!!bio}>
             <div className="line-clamp-2 h-10 text-sm font-normal text-greyscale-200">{bio}</div>
           </OptionalSection>
           <OptionalSection condition={!!location || !!sinceDate}>

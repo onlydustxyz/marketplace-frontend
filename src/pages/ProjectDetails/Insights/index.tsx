@@ -10,7 +10,11 @@ import { useIntl } from "src/hooks/useIntl";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import TeamLine from "src/icons/TeamLine";
-import Newcomers from "./Newcomers";
+import NewcomersContributors from "./NewcomersContributors";
+import ChurnedContributors from "./ChurnedContributors";
+import Sparkling2Line from "src/icons/Sparkling2Line";
+import QuestionLine from "src/icons/QuestionLine";
+import LogoutCircleLine from "src/icons/LogoutCircleLine";
 
 export default function Insights() {
   const { T } = useIntl();
@@ -26,8 +30,8 @@ export default function Insights() {
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
   const newComers = {
-    title: "New contributors",
-    description: "All contrbutors that have joined one of your repositories during last month.",
+    title: T("project.details.insights.newcomers.sectionTitle"),
+    description: T("project.details.insights.newcomers.sectionSubtitle"),
     icon: (className: string) => <TeamLine className={className} />,
     query: ProjectApi.queries.useProjectContributorsNewcomersInfiniteList({
       params: { projectId: project?.id ?? "" },
@@ -35,27 +39,27 @@ export default function Insights() {
   };
 
   const mostActives = {
-    title: "Most active contributors",
-    description: "User that we indentified as your best profiles and that would match a maintainer role.",
-    icon: (className: string) => <TeamLine className={className} />,
+    title: T("project.details.insights.mostActives.sectionTitle"),
+    description: T("project.details.insights.mostActives.sectionSubtitle"),
+    icon: (className: string) => <Sparkling2Line className={className} />,
     query: ProjectApi.queries.useProjectContributorsMostActivesInfiniteList({
       params: { projectId: project?.id ?? "" },
     }),
   };
 
   const staled = {
-    title: "Contributors struggling",
-    description: "User that might encounter a problem on their current task based on their latest actions.",
-    icon: (className: string) => <TeamLine className={className} />,
+    title: T("project.details.insights.staled.sectionTitle"),
+    description: T("project.details.insights.staled.sectionSubtitle"),
+    icon: (className: string) => <QuestionLine className={className} />,
     query: ProjectApi.queries.useProjectContributionsStaledInfiniteList({
       params: { projectId: project?.id ?? "" },
     }),
   };
 
   const churned = {
-    title: "Churned contributors",
-    description: "User that are inactive for a long time period and stop contributing to your project.",
-    icon: (className: string) => <TeamLine className={className} />,
+    title: T("project.details.insights.churned.sectionTitle"),
+    description: T("project.details.insights.churned.sectionSubtitle"),
+    icon: (className: string) => <LogoutCircleLine className={className} />,
     query: ProjectApi.queries.useProjectContributorsChurnedInfiniteList({
       params: { projectId: project?.id ?? "" },
     }),
@@ -105,7 +109,17 @@ export default function Insights() {
               isEmpty={!newComers.query.data?.pages?.flatMap(data => data.contributors)?.length}
               hasShowMore={newComers.query.hasNextPage}
             >
-              <Newcomers query={newComers.query} />
+              <NewcomersContributors query={newComers.query} />
+            </CollapsibleCard>
+            <CollapsibleCard
+              key={churned.title}
+              title={churned.title}
+              description={churned.description}
+              icon={churned.icon}
+              isEmpty={!churned.query.data?.pages?.flatMap(data => data.contributors)?.length}
+              hasShowMore={churned.query.hasNextPage}
+            >
+              <ChurnedContributors query={churned.query} />
             </CollapsibleCard>
           </div>
         </div>

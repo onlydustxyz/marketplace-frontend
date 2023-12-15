@@ -969,6 +969,19 @@
           "buttonLabel": "Say hello",
           "dateSince": "Since __since__",
           "descriptionPlaceholder": "This contributor has no bio"
+        },
+        "mostActives": {
+          "sectionTitle": "Most active contributors",
+          "sectionSubtitle": "User that we indentified as your best profiles and that would match a maintainer role."
+        },
+        "staled": {
+          "sectionTitle": "Contributors struggling",
+          "sectionSubtitle": "User that might encounter a problem on their current task based on their latest actions."
+        },
+        "churned": {
+          "sectionTitle": "Churned contributors",
+          "sectionSubtitle": "User that are inactive for a long time period and stop contributing to your project.",
+          "buttonLabel": "Reactivate"
         }
       },
       "rewards": {
