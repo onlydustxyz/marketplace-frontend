@@ -1,31 +1,11 @@
 import { range } from "lodash";
-import {
-  GithubIssueFragment,
-  GithubIssueStatus,
-  PaymentRequestDetailsFragment,
-  WorkItemType,
-} from "src/__generated/graphql";
+import { GithubIssueFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
 import View, { Props } from "src/App/Stacks/RewardSidePanel/View";
-import { PaymentStatus } from "src/types";
+import { GithubIssueStatus, PaymentStatus, WorkItemType } from "src/types";
 import { daysFromNow } from "src/utils/date";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
-
-// TODO this story is obsolete, needs work after multitoken
-
-const statuses = {
-  //TODO: uncomment this when API is ready
-  //   payoutInfoMissingAsLeader: {
-  //     payoutInfoMissing: true,
-  //     projectLeaderView: true,
-  //     status: PaymentStatus.PAYMENT_INFO_MISSING,
-  //   },
-  //   payoutInfoMissing: { payoutInfoMissing: true, status: PaymentStatus.PAYMENT_INFO_MISSING },
-  pendingInvoice: { payoutInfoMissing: false, invoiceNeeded: true, status: PaymentStatus.PENDING_INVOICE },
-  processing: { payoutInfoMissing: false, status: PaymentStatus.PROCESSING },
-  complete: { payoutInfoMissing: false, status: PaymentStatus.COMPLETE },
-};
 
 export default {
   title: "RewardSidePanel",
@@ -97,7 +77,6 @@ const payment: PaymentRequestDetailsFragment = {
 const args = {
   workItemsCount: 2,
   ...payment,
-  //   ...statuses.payoutInfoMissing,
 };
 
 type CustomArgs = {

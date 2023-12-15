@@ -1,13 +1,13 @@
 import Card from "src/components/Card";
 import ContributionGraph from "src/App/Stacks/ContributorProfileSidePanel/ReadOnlyView/ContributionGraph";
-import { ContributionCountFragment } from "src/__generated/graphql";
+import { components } from "src/__generated/api";
 
 export default {
   title: "ContributionGraph",
   component: ContributionGraph,
 };
 
-const entries: ContributionCountFragment[] = [
+const entries: components["schemas"]["UserContributionStats"][] = [
   { year: 2023, week: 10, pullRequestCount: 16, issueCount: 6, codeReviewCount: 3 },
   { year: 2023, week: 11, pullRequestCount: 21, issueCount: 0, codeReviewCount: 3 },
   { year: 2023, week: 12, pullRequestCount: 18, issueCount: 4, codeReviewCount: 3 },
@@ -36,7 +36,7 @@ export const Default = {
   },
 };
 
-const fewEntries: ContributionCountFragment[] = [
+const fewEntries: components["schemas"]["UserContributionStats"][] = [
   { year: 2023, week: 10, pullRequestCount: 16, issueCount: 6, codeReviewCount: 3 },
   { year: 2023, week: 11, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
   { year: 2023, week: 12, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
