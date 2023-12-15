@@ -17,7 +17,7 @@ export function FilterProjectSelect({
   return (
     <FilterField label={T("filter.project.title")}>
       <FilterSelect
-        icon={(_, className) => <FolderLine className={className} />}
+        icon={({ className }) => <FolderLine className={className} />}
         tokens={{ zero: "filter.project.all", other: "filter.project" }}
         items={projects}
         multiple

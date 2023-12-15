@@ -17,7 +17,7 @@ export type Item = {
 
 type Props<T> = {
   disabled?: boolean;
-  icon?: (selected: T | T[], className: string) => ReactElement;
+  icon?: ({ selected, className }: { selected: T | T[]; className: string }) => ReactElement;
   items: T[];
   tokens: Record<"zero" | "other", string>;
 };
@@ -79,12 +79,10 @@ export function FilterSelect<T extends Item>({
               )}
             >
               <span className="flex flex-1 items-center gap-2">
-                {icon?.(
+                {icon?.({
                   selected,
-                  cn("text-base leading-none", {
-                    "text-spacePurple-500": open,
-                  })
-                )}
+                  className: cn("text-base leading-none", { "text-spacePurple-500": open }),
+                })}
                 <span className="font-walsheim text-sm leading-none">{renderToken()}</span>
               </span>
               <ArrowDownSLine

@@ -41,12 +41,12 @@ const getContent = (
   }
 };
 
-interface Props {
+type Props = {
   budget?: Money;
   type?: CardTypes;
   sentRewards?: { count?: number; total?: number };
   rewardedContributorsCount?: number;
-}
+};
 
 export function BudgetCard({ budget, sentRewards, rewardedContributorsCount, type = CardTypes.Remaining }: Props) {
   const { T } = useIntl();

@@ -51,10 +51,11 @@ const RewardList: React.FC = () => {
   } = useInfiniteRewardsList({
     projectId: project?.id || "",
     enabled: !!project?.id,
-    queryParams: {
-      ...(queryParams as object),
-      ...filterQueryParams,
-    },
+    queryParams,
+    // queryParams: {
+    //   ...(queryParams as object),
+    //   ...filterQueryParams,
+    // },
   });
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
@@ -83,8 +84,8 @@ const RewardList: React.FC = () => {
   return project && rewards ? (
     <>
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
-        <Flex className="z-10">
-          <Title className="mr-8">{T("project.details.rewards.title")}</Title>
+        <Flex className="z-10 gap-8">
+          <Title>{T("project.details.rewards.title")}</Title>
           <ProjectRewardsFilter onChange={setFilterQueryParams} position={FilterPosition.Left} />
         </Flex>
         {!hasOrgsWithUnauthorizedRepos ? (

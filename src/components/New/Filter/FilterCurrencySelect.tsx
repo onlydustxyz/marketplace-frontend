@@ -1,10 +1,10 @@
-import { ReactElement } from "react";
+import { ReactElement, useCallback } from "react";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { FilterField } from "src/components/New/Filter/FilterField";
 import { FilterSelect, Item } from "src/components/New/Filter/FilterSelect";
-import { useIntl, Intl } from "src/hooks/useIntl";
+import { useIntl } from "src/hooks/useIntl";
 import { Currency } from "src/types";
 import { Flex } from "../Layout/Flex";
 
@@ -18,16 +18,7 @@ function LabelIcon({ currency }: { currency: Currency }): ReactElement {
   );
 }
 
-const getLabel = (T: Intl, currency?: string) => (
-  <Flex className="items-center">
-    {currency !== Currency.USD ? (
-      <div className="mr-2 h-6 w-6">{currenciesLabel[currency as keyof typeof currenciesLabel].icon}</div>
-    ) : null}
-    {T(currenciesLabel[currency as keyof typeof currenciesLabel].label)}
-  </Flex>
-);
-
-const currenciesLabel = {
+const currenciesLabel: Record<Currency, { label: string; icon: JSX.Element }> = {
   [Currency.USD]: { label: "filter.currency.all", icon: <LabelIcon currency={Currency.USD} /> },
   [Currency.ETH]: { label: "currencies.currency.ETH", icon: <LabelIcon currency={Currency.ETH} /> },
   [Currency.APT]: { label: "currencies.currency.APT", icon: <LabelIcon currency={Currency.APT} /> },
@@ -46,12 +37,23 @@ export function FilterCurrencySelect({
   onChange: (items: Item) => void;
 }) {
   const { T } = useIntl();
-  const items = currencies.map(currency => ({ ...currency, label: getLabel(T, currency.value) }));
+
+  const getLabel = useCallback(
+    (currency: Currency) => (
+      <Flex className="items-center">
+        {currency !== Currency.USD ? <div className="mr-2 h-6 w-6">{currenciesLabel[currency].icon}</div> : null}
+        {T(currenciesLabel[currency].label)}
+      </Flex>
+    ),
+    []
+  );
+
+  const items = currencies.map(currency => ({ ...currency, label: getLabel(currency.value as Currency) }));
 
   return (
     <FilterField label={T("filter.currency.title")}>
       <FilterSelect
-        icon={selected => (
+        icon={({ selected }) => (
           <div className="h-4 w-4">
             {currenciesLabel[(selected as Item).value as keyof typeof currenciesLabel].icon}
           </div>

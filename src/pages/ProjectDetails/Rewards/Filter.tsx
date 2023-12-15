@@ -9,7 +9,7 @@ import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ContributorResponse, Currency } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
 import { Item } from "src/components/New/Filter/FilterSelect";
-import { formatDateQueryParam } from "src/utils/date";
+import { allTime, formatDateQueryParam } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 
 type Filters = {
@@ -19,7 +19,7 @@ type Filters = {
 };
 
 const initialFilters: Filters = {
-  dateRange: { from: undefined, to: undefined },
+  dateRange: allTime,
   contributors: [],
   currency: { id: 0, value: Currency.USD },
 };
@@ -123,7 +123,7 @@ export function ProjectRewardsFilter({
   }
 
   return (
-    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position} className="min-w-[360px]">
+    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
       <div className="z-20">
         <FilterDatepicker selected={filters.dateRange} onChange={updateDate} />
       </div>

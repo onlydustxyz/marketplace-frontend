@@ -5,7 +5,7 @@ type CounterProps = {
   total?: number;
 };
 
-export function Counter(props: CounterProps) {
+export function Counter(props?: CounterProps) {
   const { T } = useIntl();
   if (!props) return null;
 
