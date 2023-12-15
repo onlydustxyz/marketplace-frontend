@@ -44,6 +44,7 @@ dist-ssr
 coverage
 .nyc_output
 .vite/
+tsconfig.tsbuildinfo
 
 # Logs
 logs
@@ -75,5 +76,5 @@ lerna-debug.log*
 # Rust
 tarpaulin_target
 
-# API generated types 
+# API generated types
 src/__generated/api.d.ts
