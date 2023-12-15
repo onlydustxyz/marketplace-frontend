@@ -51,11 +51,10 @@ const RewardList: React.FC = () => {
   } = useInfiniteRewardsList({
     projectId: project?.id || "",
     enabled: !!project?.id,
-    queryParams,
-    // queryParams: {
-    //   ...(queryParams as object),
-    //   ...filterQueryParams,
-    // },
+    queryParams: {
+      ...(queryParams as URLSearchParams),
+      ...filterQueryParams,
+    },
   });
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];

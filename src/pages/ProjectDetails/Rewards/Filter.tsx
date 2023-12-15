@@ -15,7 +15,7 @@ import { FilterPosition } from "src/components/New/Filter/DesktopView";
 type Filters = {
   dateRange: DateRange;
   contributors: ContributorResponse[];
-  currency: { id: string | number; value?: string };
+  currency: { id: string | number; value: string };
 };
 
 const initialFilters: Filters = {
@@ -28,7 +28,7 @@ export type FilterQueryParams = {
   fromDate?: string;
   toDate?: string;
   contributors: string;
-  currency?: string;
+  currencies?: string;
 };
 
 export function ProjectRewardsFilter({
@@ -73,7 +73,7 @@ export function ProjectRewardsFilter({
     }
 
     if (currency) {
-      filterQueryParams.currency = currency.value;
+      filterQueryParams.currencies = currency.value;
     }
 
     onChange(filterQueryParams);
@@ -124,11 +124,11 @@ export function ProjectRewardsFilter({
 
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
-      <div className="z-20">
+      <div className="focus-within:z-10">
         <FilterDatepicker selected={filters.dateRange} onChange={updateDate} />
       </div>
 
-      <div className="z-10">
+      <div className="focus-within:z-10">
         <FilterContributorCombobox<ContributorResponse>
           contributors={contributors}
           selected={filters.contributors}
@@ -139,7 +139,7 @@ export function ProjectRewardsFilter({
         />
       </div>
 
-      <div className="z-30 md:z-0">
+      <div className="focus-within:z-10">
         {projectBudget ? (
           <FilterCurrencySelect
             selected={filters.currency}
