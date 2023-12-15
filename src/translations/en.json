@@ -972,7 +972,15 @@
         },
         "mostActives": {
           "sectionTitle": "Most active contributors",
-          "sectionSubtitle": "User that we indentified as your best profiles and that would match a maintainer role."
+          "sectionSubtitle": "User that we indentified as your best profiles and that would match a maintainer role.",
+          "table":{
+            "contributor": "Contributor",
+            "closedPrs": "Closed PRs",
+            "completedIssues": "Completed issues",
+            "codeReviews": "Code reviews",
+            "activity": "Activity (Past Mount)",
+            "buttonLabel": "Congratulate"
+          }
         },
         "staled": {
           "sectionTitle": "Contributors struggling",

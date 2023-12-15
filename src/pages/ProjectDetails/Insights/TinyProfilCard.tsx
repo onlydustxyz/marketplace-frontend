@@ -15,7 +15,7 @@ export enum ProfileCover {
 }
 
 interface Props {
-  cover?: ProfileCover;
+  cover?: `${ProfileCover}`;
   avatarUrl: string;
   name: string;
   isRegistered?: boolean;
@@ -27,7 +27,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-function getCoverClass(cover: ProfileCover): string {
+function getCoverClass(cover: `${ProfileCover}`): string {
   const coverClasses: Record<ProfileCover, string> = {
     [ProfileCover.Blue]: "bg-profile-blue",
     [ProfileCover.Cyan]: "bg-profile-cyan",

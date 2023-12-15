@@ -15,6 +15,7 @@ import ChurnedContributors from "./ChurnedContributors";
 import Sparkling2Line from "src/icons/Sparkling2Line";
 import QuestionLine from "src/icons/QuestionLine";
 import LogoutCircleLine from "src/icons/LogoutCircleLine";
+import MostActiveContributors from "./MostActiveContributors";
 
 export default function Insights() {
   const { T } = useIntl();
@@ -110,6 +111,16 @@ export default function Insights() {
               hasShowMore={newComers.query.hasNextPage}
             >
               <NewcomersContributors query={newComers.query} />
+            </CollapsibleCard>
+            <CollapsibleCard
+              key={mostActives.title}
+              title={mostActives.title}
+              description={mostActives.description}
+              icon={mostActives.icon}
+              isEmpty={!mostActives.query.data?.pages?.flatMap(data => data.contributors)?.length}
+              hasShowMore={mostActives.query.hasNextPage}
+            >
+              <MostActiveContributors query={mostActives.query} />
             </CollapsibleCard>
             <CollapsibleCard
               key={churned.title}
