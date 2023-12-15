@@ -24,7 +24,6 @@ import {
 import { useIntl } from "src/hooks/useIntl";
 import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { Action, SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
@@ -80,8 +79,7 @@ export default function Overview() {
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
-  const { alreadyApplied, applyToProject } = useApplications(project?.id ?? "", projectKey);
-  const { isCurrentUserMember, loading: isCurrentUserMemberLoading } = useProjectVisibility(project?.id);
+  const { applyToProject } = useApplications(project?.id ?? "", projectKey);
 
   const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});
 
@@ -214,9 +212,15 @@ export default function Overview() {
           </Card>
         </div>
         <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
-          {hiring && !isCurrentUserMember && !isCurrentUserMemberLoading && myProfileInfo && (
+          {hiring && !project.me?.isMember && myProfileInfo && (
             <ApplyCallout
-              {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile: myProfileInfo }}
+              {...{
+                isLoggedIn,
+                alreadyApplied: project.me?.hasApplied || false,
+                applyToProject,
+                dispatchSession,
+                profile: myProfileInfo,
+              }}
             />
           )}
           {isMd && (
