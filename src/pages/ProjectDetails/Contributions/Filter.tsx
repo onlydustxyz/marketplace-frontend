@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { sortBy } from "lodash";
+import { useEffect, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
@@ -113,6 +114,15 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
   });
   const repos = reposData?.repos ?? [];
 
+  const sortedRepos = useMemo(
+    () =>
+      sortBy(
+        repos.map(({ id, name }) => ({ id, label: name })),
+        ({ label }) => label
+      ),
+    [repos]
+  );
+
   const { data: contributorsData, isLoading: contributorsLoading } =
     ProjectApi.queries.useProjectContributorsInfiniteList({
       params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
@@ -167,12 +177,7 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
         selectedPeriod={filters.period ?? initialFilters.period}
         onPeriodChange={updatePeriod}
       />
-      <FilterRepoSelect
-        // TODO sort alphabetically
-        repos={repos.map(({ id, name }) => ({ id, label: name }))}
-        selected={filters.repos ?? initialFilters.repos}
-        onChange={updateRepos}
-      />
+      <FilterRepoSelect repos={sortedRepos} selected={filters.repos ?? initialFilters.repos} onChange={updateRepos} />
       <FilterContributorCombobox<ContributorResponse>
         contributors={contributors}
         selected={filters.contributors ?? initialFilters.contributors}
