@@ -1,13 +1,13 @@
 import { cn } from "src/utils/cn";
 
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
-import Contributor from "src/components/Contributor";
 import ExternalLink from "src/components/ExternalLink";
-import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
+import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
+import Contributor from "../Contributor";
 
 export enum ContributionBadgeSizes {
   Xs = "text-xs",
@@ -59,56 +59,58 @@ export function ContributionBadge({
           githubStatus as keyof typeof contributionIconVariants.status[GithubContributionType]
         ];
 
-  return (
-    <>
-      {withTooltip ? (
-        <Tooltip id={tooltipId} clickable {...tooltipProps}>
-          <div className="flex flex-col gap-2 text-left">
-            {isExternal ? (
-              <div className="flex items-center text-sm">
-                <span className="text-spaceBlue-200">{tokens[type]}</span>
-                <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} clickable />
-              </div>
-            ) : null}
-            <div className="flex gap-2">
-              <ContributionIcon
-                type={type as GithubContributionType}
-                status={githubStatus}
-                contributionStatus={status}
-              />
-              <div className="flex max-w-sm flex-col items-start justify-start gap-2">
-                <span className="line-clamp-2 text-sm font-medium leading-4">
-                  <ExternalLink
-                    url={githubHtmlUrl}
-                    text={`#${githubNumber} • ${githubTitle}`}
-                    anchorProps={{ className: "line-clamp-2 whitespace-pre-line" }}
-                  />
-                </span>
-                {githubBody ? <p className="line-clamp-2 break-all text-xs text-spaceBlue-200">{githubBody}</p> : null}
-              </div>
-            </div>
-          </div>
-        </Tooltip>
-      ) : null}
-
+  const renderContributionComponent = ({ hasToolTip }: { hasToolTip?: boolean }) => {
+    return (
       <Component
-        data-tooltip-id={withTooltip ? tooltipId : undefined}
+        data-tooltip-id={hasToolTip ? tooltipId : undefined}
         className={cn(
           "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim",
           isExternal && showExternal ? "border border-dashed" : "border-0.5 border-solid",
           {
-            "hover:bg-card-background-heavy": withTooltip || asLink,
+            "hover:bg-card-background-heavy": hasToolTip || asLink,
           },
           statusClassnames
         )}
         {...ComponentProps}
       >
         <ContributionIcon type={type as GithubContributionType} status={githubStatus} contributionStatus={status} />
+
         <div className="flex">
           <span className={cn("leading-none", size)}>{githubNumber}</span>
           {isExternal && showExternal ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
         </div>
       </Component>
+    );
+  };
+
+  return (
+    <>
+      {withTooltip ? (
+        <Tooltip id={tooltipId} clickable padding={PaddingVariant.Large} {...tooltipProps}>
+          <div className="flex max-w-sm flex-col gap-2 text-left">
+            <div className="flex items-center justify-between gap-2">
+              <span className="line-clamp-2 text-sm font-medium leading-4">
+                <ExternalLink
+                  url={githubHtmlUrl}
+                  text={githubTitle}
+                  anchorProps={{ className: "line-clamp-2 whitespace-pre-line" }}
+                />
+              </span>
+
+              {renderContributionComponent({})}
+            </div>
+
+            <div className="flex items-center text-xs font-medium">
+              <span className="text-spaceBlue-200">{tokens[type]}</span>
+              <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} clickable />
+            </div>
+
+            {githubBody ? <p className="line-clamp-2 break-all text-xs text-spaceBlue-200">{githubBody}</p> : null}
+          </div>
+        </Tooltip>
+      ) : null}
+
+      {renderContributionComponent({ hasToolTip: withTooltip })}
     </>
   );
 }
