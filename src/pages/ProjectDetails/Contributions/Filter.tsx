@@ -9,6 +9,7 @@ import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
+import { useDatepickerPeriods } from "src/components/New/Filter/useDatepickerPeriods";
 import { ContributorResponse, GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
 import { useLocalStorage } from "usehooks-ts";
@@ -57,9 +58,12 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
     filtersStorage ? JSON.parse(filtersStorage) : initialFilters
   );
 
+  const allPeriods = useDatepickerPeriods({ selectedPeriod: filters.period ?? initialFilters.period });
+
   useEffect(() => {
     const {
       dateRange,
+      period,
       repos = initialFilters.repos,
       contributors = initialFilters.contributors,
       types = initialFilters.types,
@@ -71,15 +75,29 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
       types: types.join(","),
     };
 
-    if (dateRange) {
-      const { from, to } = dateRange;
+    // If a predefined period is selected, use the predefined period's date range
+    if (period !== Period.Custom) {
+      const { value } = allPeriods.find(({ id }) => id === period) ?? {};
 
-      if (from && to) {
-        filterQueryParams.fromDate = formatDateQueryParam(from);
-        filterQueryParams.toDate = formatDateQueryParam(to);
+      if (value?.from && value?.to) {
+        filterQueryParams.fromDate = formatDateQueryParam(value.from);
+        filterQueryParams.toDate = formatDateQueryParam(value.to);
+
+        onChange(filterQueryParams);
+
+        // Return early to avoid updating the date range twice
+        return;
+      }
+    }
+
+    // If a custom date range is selected, use the custom date range
+    if (dateRange) {
+      if (dateRange.from && dateRange.to) {
+        filterQueryParams.fromDate = formatDateQueryParam(dateRange.from);
+        filterQueryParams.toDate = formatDateQueryParam(dateRange.to);
       }
     } else {
-      // Init to all time
+      // If no date range is selected, use all time
       updateDate(initialFilters.dateRange);
     }
 
@@ -119,6 +137,10 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
     setFilters(prevState => updateState(prevState, { dateRange }));
   }
 
+  function updatePeriod(period: Period) {
+    setFilters(prevState => updateState(prevState, { period }));
+  }
+
   function updateRepos(repos: Item[]) {
     setFilters(prevState => updateState(prevState, { repos }));
   }
@@ -139,8 +161,14 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
 
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters}>
-      <FilterDatepicker selected={filters.dateRange ?? initialFilters.dateRange} onChange={updateDate} />
+      <FilterDatepicker
+        selected={filters.dateRange ?? initialFilters.dateRange}
+        onChange={updateDate}
+        selectedPeriod={filters.period ?? initialFilters.period}
+        onPeriodChange={updatePeriod}
+      />
       <FilterRepoSelect
+        // TODO sort alphabetically
         repos={repos.map(({ id, name }) => ({ id, label: name }))}
         selected={filters.repos ?? initialFilters.repos}
         onChange={updateRepos}
