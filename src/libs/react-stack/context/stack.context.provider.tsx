@@ -301,8 +301,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const openPanel = (name: string, params?: StacksParams) => {
     const { panel } = getPanelFromStackName(name);
-    console.log("OPEN", name, params, panel.state, panel.state.open);
-    console.log("OPEN STACK", stacks.state);
     removeActiveBlurElement();
     if (panel.state.open === false) {
       panel.setValue(prev => {
@@ -313,7 +311,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
           params: params || {},
         };
       });
-      console.log("AFTER SET VALUE", panel.state);
       updateHistory({ name: panel.state.name, panelId: panel.state.id, event: "open", params });
       return { name: panel.state.name, panelId: panel.state.id };
     } else {

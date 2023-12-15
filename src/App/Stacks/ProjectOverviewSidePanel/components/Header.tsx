@@ -7,10 +7,8 @@ export interface ProjectOverviewHeaderProps {
 
 export const ProjectOverviewHeadersCard = ({ project }: ProjectOverviewHeaderProps) => {
   return (
-    <>
-      <div className="flex flex-col bg-greyscale-900 pb-6">
-        <ProjectOverviewHeader project={project} description={false} />
-      </div>
-    </>
+    <div className="flex flex-col bg-greyscale-900 pb-6">
+      <ProjectOverviewHeader project={project} description={false} />
+    </div>
   );
 };
