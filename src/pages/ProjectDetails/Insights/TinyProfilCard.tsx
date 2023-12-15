@@ -36,8 +36,23 @@ function getCoverClass(cover: ProfileCover): string {
   return coverClasses[cover] || coverClasses[ProfileCover.Blue];
 }
 
-function OptionalSection({ condition, children }: { condition: boolean; children: React.ReactNode }) {
-  return condition ? <div>{children}</div> : null;
+function OptionalSection({
+  condition,
+  children,
+  fallback,
+  className,
+}: {
+  condition: boolean;
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+  className?: string;
+}) {
+  if (condition) {
+    return <div className={className}>{children}</div>;
+  } else if (fallback) {
+    return <div className={className}>{fallback}</div>;
+  }
+  return null;
 }
 
 export default function TinyProfileCard({
@@ -55,7 +70,7 @@ export default function TinyProfileCard({
   const coverClass = getCoverClass(cover);
 
   return (
-    <div className="max-w-xs overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base shadow-heavy">
+    <div className="overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base shadow-heavy">
       <div className={cn("h-14 w-full shrink-0 bg-cover p-4", coverClass)}>
         <Button className="ml-auto" type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={onAction}>
           <SendPlane2Line />
@@ -76,8 +91,15 @@ export default function TinyProfileCard({
             {isRegistered && <img src={IMAGES.logo.original} className="ml-1.5 w-3.5" loading="lazy" alt="OnlyDust" />}
           </div>
           {children}
-          <OptionalSection condition={!!bio}>
-            <div className="text-sm font-normal text-greyscale-200">{bio}</div>
+          <OptionalSection
+            condition={!!bio}
+            fallback={
+              <div className="line-clamp-2 h-10 text-sm font-normal italic text-greyscale-200">
+                {T("project.details.insights.newcomers.descriptionPlaceholder")}
+              </div>
+            }
+          >
+            <div className="line-clamp-2 h-10 text-sm font-normal text-greyscale-200">{bio}</div>
           </OptionalSection>
           <OptionalSection condition={!!location || !!sinceDate}>
             <div className="flex flex-row justify-between gap-3">
@@ -86,14 +108,14 @@ export default function TinyProfileCard({
                   <MapPinLine /> {location}
                 </div>
               </OptionalSection>
-              <OptionalSection condition={!!sinceDate}>
-                <div className="flex flex-row items-center gap-2 font-walsheim text-xs font-normal text-spaceBlue-100">
+              <OptionalSection condition={!!sinceDate} className="flex-1">
+                <div className="flex flex-row items-center justify-end gap-2 font-walsheim text-xs font-normal text-spaceBlue-100">
                   <CalendarEventLine />
                   {/* TODO refactor using util or DateJs  */}
                   {T("project.details.insights.newcomers.dateSince", {
                     since: sinceDate?.toLocaleDateString("en-US", {
                       year: "numeric",
-                      month: "long",
+                      month: "short",
                       day: "numeric",
                     }),
                   })}

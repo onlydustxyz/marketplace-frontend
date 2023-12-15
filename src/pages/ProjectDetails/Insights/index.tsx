@@ -102,7 +102,7 @@ export default function Insights() {
               title={newComers.title}
               description={newComers.description}
               icon={newComers.icon}
-              isEmpty={!!newComers.query.hasNextPage}
+              isEmpty={!newComers.query.data?.pages?.flatMap(data => data.contributors)?.length}
               hasShowMore={newComers.query.hasNextPage}
             >
               <Newcomers query={newComers.query} />

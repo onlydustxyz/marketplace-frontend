@@ -964,8 +964,11 @@
       "insights": {
         "title": "Insights",
         "newcomers": {
+          "sectionTitle": "New contributors",
+          "sectionSubtitle": "All contrbutors that have joined one of your repositories during last month.",
           "buttonLabel": "Say hello",
-          "dateSince": "Since __since__"
+          "dateSince": "Since __since__",
+          "descriptionPlaceholder": "This contributor has no bio"
         }
       },
       "rewards": {

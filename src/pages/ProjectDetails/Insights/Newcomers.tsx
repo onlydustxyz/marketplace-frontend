@@ -1,5 +1,5 @@
 import ProjectApi from "src/api/Project";
-import TinyProfilCard from "src/components/New/Cards/TinyProfilCard";
+import TinyProfilCard from "src/pages/ProjectDetails/Insights/TinyProfilCard";
 import { ShowMore } from "src/components/Table/ShowMore";
 
 export default function Newcomers({
