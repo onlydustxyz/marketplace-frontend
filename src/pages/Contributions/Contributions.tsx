@@ -1,6 +1,5 @@
 import { ComponentProps, useState } from "react";
 import { useLocalStorage } from "react-use";
-import { OrderBy } from "src/__generated/graphql";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -12,7 +11,7 @@ import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
-import { ContributionStatus } from "src/types";
+import { ContributionStatus, OrderBy } from "src/types";
 import { ContributionsFilter, FilterQueryParams } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
 

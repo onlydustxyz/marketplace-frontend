@@ -1,7 +1,6 @@
 import { ComponentProps, useState } from "react";
 import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { OrderBy } from "src/__generated/graphql";
 import ProjectApi from "src/api/Project";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -16,7 +15,7 @@ import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import Title from "src/pages/ProjectDetails/Title";
-import { ContributionStatus } from "src/types";
+import { ContributionStatus, OrderBy } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useLocalStorage } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";

@@ -1,5 +1,5 @@
+import { ProfileCover } from "src/types";
 import { cn } from "src/utils/cn";
-import { ProfileCover } from "src/__generated/graphql";
 
 type Props = {
   active: boolean;

@@ -1,5 +1,5 @@
-import { LanguageMap } from "src/types";
-import { GithubRepoLanguagesFragment, Maybe } from "src/__generated/graphql";
+import { LanguageMap, Maybe } from "src/types";
+import { GithubRepoLanguagesFragment } from "src/__generated/graphql";
 import isDefined from "./isDefined";
 import config from "src/config";
 import { toLower } from "lodash";
