@@ -1,5 +1,6 @@
 import { ComponentProps } from "react";
 import { OrderBy } from "src/__generated/graphql";
+import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -21,8 +22,6 @@ import withAuthProvider from "../decorators/withAuthProvider";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
 import withQueryClientProvider from "../decorators/withQueryClientProvider";
 import withTokenSetProvider from "../decorators/withTokenSetProvider";
-import { contribution } from ".storybook/mocks/contribution";
-import ProjectApi from "src/api/Project";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
@@ -376,7 +375,7 @@ const defaultProps: ComponentProps<typeof ContributionTable> = {
     sort: TableColumns.Date,
     direction: OrderBy.Desc,
   },
-  onSort: sort => {
+  onSort: () => {
     alert("Sorting");
   },
   headerCells: [

@@ -40,7 +40,7 @@ const HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE = {
 
 vi.mock("axios", () => ({
   default: {
-    post: (url: string, tokenSet?: TokenSet) => ({
+    post: (_url: string, tokenSet?: TokenSet) => ({
       data: tokenSet?.refreshToken ? HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE : HASURA_TOKEN_BASIC_TEST_VALUE,
     }),
   },

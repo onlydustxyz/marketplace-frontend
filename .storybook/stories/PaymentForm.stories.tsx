@@ -1,28 +1,25 @@
 import { withRouter } from "storybook-addon-react-router-v6";
 
-import RewardForm from "src/pages/ProjectDetails/Rewards/RewardForm/View";
-import withMockedProvider from "../decorators/withMockedProvider";
-import withFormProvider from "../decorators/withFormProvider";
 import {
   ContributorFragment,
   GetProjectPendingContributorsDocument,
   GetProjectPendingContributorsQueryResult,
 } from "src/__generated/graphql";
-import withSuspense from "../decorators/withSuspense";
-import withCommandProvider from "../decorators/withCommandProvider";
-import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
-import withQueryClientProvider from "../decorators/withQueryClientProvider";
-import withAuthProvider from "../decorators/withAuthProvider";
-import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
-import withTokenSetProvider from "../decorators/withTokenSetProvider";
-import { components } from "src/__generated/api";
-import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { CompletedRewardableItem } from "src/api/Project/queries";
+import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import RewardForm from "src/pages/ProjectDetails/Rewards/RewardForm/View";
+import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
+import withAuthProvider from "../decorators/withAuthProvider";
+import withCommandProvider from "../decorators/withCommandProvider";
+import withFormProvider from "../decorators/withFormProvider";
+import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
+import withMockedProvider from "../decorators/withMockedProvider";
+import withQueryClientProvider from "../decorators/withQueryClientProvider";
+import withSuspense from "../decorators/withSuspense";
 import withToasterProvider from "../decorators/withToasterProvider";
+import withTokenSetProvider from "../decorators/withTokenSetProvider";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
-
-type ContributorMockType = components["schemas"]["ContributorPageItemResponse"];
 
 const mockBudgets: ProjectBudgetType = {
   initialDollarsEquivalent: 120000,

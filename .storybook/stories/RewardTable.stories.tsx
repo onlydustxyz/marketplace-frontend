@@ -1,10 +1,10 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ComponentProps, JSXElementConstructor } from "react";
 import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import { ToasterProvider } from "src/hooks/useToaster";
-import { PaymentStatus, PreferredMethod } from "src/types";
+import { PaymentStatus } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 const yearsFromNow = (years: number) => new Date(Date.now() - years * 365 * 24 * 3600 * 1000);
