@@ -984,7 +984,14 @@
         },
         "staled": {
           "sectionTitle": "Contributors struggling",
-          "sectionSubtitle": "User that might encounter a problem on their current task based on their latest actions."
+          "sectionSubtitle": "User that might encounter a problem on their current task based on their latest actions.",
+          "table":{
+            "contributor": "Contributor",
+            "repository": "Repository",
+            "strugglingOn": "Struggling on",
+            "reason": "Reason",
+            "buttonLabel": "Help"
+          }
         },
         "churned": {
           "sectionTitle": "Churned contributors",

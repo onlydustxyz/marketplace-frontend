@@ -1,36 +1,44 @@
 import ProjectApi from "src/api/Project";
-import TinyProfilCard from "src/pages/ProjectDetails/Insights/TinyProfilCard";
+import TinyProfilCard from "src/pages/ProjectDetails/Insights/commons/TinyProfilCard";
 import { ShowMore } from "src/components/Table/ShowMore";
-import LastContributionCard from "./LastContributionCard";
+import LastContributionCard from "./commons/LastContributionCard";
 import { useIntl } from "src/hooks/useIntl";
+import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
+import LogoutCircleLine from "src/icons/LogoutCircleLine";
 
-export default function ChurnedContributors({
-  query,
-}: {
-  query: ReturnType<typeof ProjectApi.queries.useProjectContributorsChurnedInfiniteList>;
-}) {
+export default function ChurnedContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
-  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = query;
-  const churned = data?.pages?.flatMap(data => data.contributors);
+  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    ProjectApi.queries.useProjectContributorsChurnedInfiniteList({
+      params: { projectId: projectId ?? "" },
+    });
+  const churnedContributors = data?.pages?.flatMap(data => data.contributors);
+  const hasContributors = Boolean(churnedContributors?.length);
   return (
-    <>
+    <CollapsibleCard
+      title={T("project.details.insights.churned.sectionTitle")}
+      description={T("project.details.insights.churned.sectionSubtitle")}
+      icon={<LogoutCircleLine />}
+      isEmpty={!hasContributors}
+      hasShowMore={hasNextPage}
+    >
       <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {churned?.map(churned => (
+        {churnedContributors?.map(contributor => (
           <TinyProfilCard
-            key={churned.login}
-            cover={churned.cover}
-            avatarUrl={churned.avatarUrl}
-            name={churned.login}
-            isRegistered={churned.isRegistered}
+            key={contributor.login}
+            cover={contributor.cover}
+            avatarUrl={contributor.avatarUrl}
+            name={contributor.login}
+            isRegistered={contributor.isRegistered}
             actionLabel={T("project.details.insights.churned.buttonLabel")}
             onAction={() => {
               console.log("action");
             }}
           >
             <LastContributionCard
-              lastContributionDate={churned?.lastContribution?.completedAt}
-              repoName={churned?.lastContribution?.repo?.name}
-              linkUrl={churned.lastContribution?.repo?.htmlUrl}
+              lastContributionDate={contributor?.lastContribution?.completedAt}
+              repoName={contributor?.lastContribution?.repo?.name}
+              linkUrl={contributor.lastContribution?.repo?.htmlUrl}
             />
           </TinyProfilCard>
         ))}
@@ -40,6 +48,6 @@ export default function ChurnedContributors({
           <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
         </div>
       ) : null}
-    </>
+    </CollapsibleCard>
   );
 }

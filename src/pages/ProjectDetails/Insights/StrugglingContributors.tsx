@@ -1,35 +1,35 @@
-import ProjectApi from "src/api/Project";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
-import { useMostActiveContributorsTable } from "./hooks/useMostActiveContributorsTable";
 import Table from "src/components/Table";
 import HeaderLine from "src/components/Table/HeaderLine";
 import HeaderCell from "src/components/Table/HeaderCell";
 import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder";
+import { useStrugglingContributorsTable } from "./hooks/useStrugglingContributorsTable";
+import ProjectApi from "src/api/Project";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
-import Sparkling2Line from "src/icons/Sparkling2Line";
+import QuestionLine from "src/icons/QuestionLine";
 
-export default function MostActiveContributors({ projectId }: { projectId: string | undefined }) {
+export default function StrugglingContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
-  const { headerCells, bodyRow } = useMostActiveContributorsTable();
+  const { headerCells, bodyRow } = useStrugglingContributorsTable();
   const nbColumns = headerCells.length;
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    ProjectApi.queries.useProjectContributorsMostActivesInfiniteList({
+    ProjectApi.queries.useProjectContributionsStaledInfiniteList({
       params: { projectId: projectId ?? "" },
     });
-  const mostActiveContributors = data?.pages?.flatMap(data => data.contributors);
-  const hasContributors = Boolean(mostActiveContributors?.length);
+  const staledContributions = data?.pages?.flatMap(data => data.contributions);
+  const hasContributions = Boolean(staledContributions?.length);
 
   function renderDesktopContent() {
     if (isError) {
       return <EmptyTablePlaceholder colSpan={nbColumns}>{T("contributions.table.error")}</EmptyTablePlaceholder>;
     }
 
-    if (!hasContributors) {
+    if (!hasContributions) {
       return <EmptyTablePlaceholder colSpan={nbColumns}>{T("contributions.table.empty")}</EmptyTablePlaceholder>;
     }
 
-    return mostActiveContributors?.map(bodyRow);
+    return staledContributions?.map(bodyRow);
   }
 
   if (isLoading) {
@@ -38,15 +38,15 @@ export default function MostActiveContributors({ projectId }: { projectId: strin
 
   return (
     <CollapsibleCard
-      title={T("project.details.insights.mostActives.sectionTitle")}
-      description={T("project.details.insights.mostActives.sectionSubtitle")}
-      icon={<Sparkling2Line />}
-      isEmpty={!hasContributors}
+      title={T("project.details.insights.staled.sectionTitle")}
+      description={T("project.details.insights.staled.sectionSubtitle")}
+      icon={<QuestionLine />}
+      isEmpty={!hasContributions}
       hasShowMore={hasNextPage}
     >
       <div className="">
         <Table
-          id="most-active-contributors"
+          id="struggling-contributors"
           theadClassName="border-card-border-medium"
           headers={
             <HeaderLine>

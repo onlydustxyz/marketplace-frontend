@@ -8,14 +8,10 @@ import Flex from "src/components/Utils/Flex";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { useIntl } from "src/hooks/useIntl";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
-import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
-import TeamLine from "src/icons/TeamLine";
 import NewcomersContributors from "./NewcomersContributors";
-import ChurnedContributors from "./ChurnedContributors";
-import Sparkling2Line from "src/icons/Sparkling2Line";
-import QuestionLine from "src/icons/QuestionLine";
-import LogoutCircleLine from "src/icons/LogoutCircleLine";
 import MostActiveContributors from "./MostActiveContributors";
+import StrugglingContributors from "./StrugglingContributors";
+import ChurnedContributors from "./ChurnedContributors";
 
 export default function Insights() {
   const { T } = useIntl();
@@ -29,42 +25,6 @@ export default function Insights() {
   const isRewardDisabled = !project?.hasRemainingBudget;
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
-
-  const newComers = {
-    title: T("project.details.insights.newcomers.sectionTitle"),
-    description: T("project.details.insights.newcomers.sectionSubtitle"),
-    icon: (className: string) => <TeamLine className={className} />,
-    query: ProjectApi.queries.useProjectContributorsNewcomersInfiniteList({
-      params: { projectId: project?.id ?? "" },
-    }),
-  };
-
-  const mostActives = {
-    title: T("project.details.insights.mostActives.sectionTitle"),
-    description: T("project.details.insights.mostActives.sectionSubtitle"),
-    icon: (className: string) => <Sparkling2Line className={className} />,
-    query: ProjectApi.queries.useProjectContributorsMostActivesInfiniteList({
-      params: { projectId: project?.id ?? "" },
-    }),
-  };
-
-  const staled = {
-    title: T("project.details.insights.staled.sectionTitle"),
-    description: T("project.details.insights.staled.sectionSubtitle"),
-    icon: (className: string) => <QuestionLine className={className} />,
-    query: ProjectApi.queries.useProjectContributionsStaledInfiniteList({
-      params: { projectId: project?.id ?? "" },
-    }),
-  };
-
-  const churned = {
-    title: T("project.details.insights.churned.sectionTitle"),
-    description: T("project.details.insights.churned.sectionSubtitle"),
-    icon: (className: string) => <LogoutCircleLine className={className} />,
-    query: ProjectApi.queries.useProjectContributorsChurnedInfiniteList({
-      params: { projectId: project?.id ?? "" },
-    }),
-  };
 
   return (
     <>
@@ -102,36 +62,10 @@ export default function Insights() {
       <div className="h-full overflow-y-auto">
         <div className="h-full w-full overflow-y-auto scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
           <div className="relative flex min-h-full flex-col gap-6">
-            <CollapsibleCard
-              key={newComers.title}
-              title={newComers.title}
-              description={newComers.description}
-              icon={newComers.icon}
-              isEmpty={!newComers.query.data?.pages?.flatMap(data => data.contributors)?.length}
-              hasShowMore={newComers.query.hasNextPage}
-            >
-              <NewcomersContributors query={newComers.query} />
-            </CollapsibleCard>
-            <CollapsibleCard
-              key={mostActives.title}
-              title={mostActives.title}
-              description={mostActives.description}
-              icon={mostActives.icon}
-              isEmpty={!mostActives.query.data?.pages?.flatMap(data => data.contributors)?.length}
-              hasShowMore={mostActives.query.hasNextPage}
-            >
-              <MostActiveContributors query={mostActives.query} />
-            </CollapsibleCard>
-            <CollapsibleCard
-              key={churned.title}
-              title={churned.title}
-              description={churned.description}
-              icon={churned.icon}
-              isEmpty={!churned.query.data?.pages?.flatMap(data => data.contributors)?.length}
-              hasShowMore={churned.query.hasNextPage}
-            >
-              <ChurnedContributors query={churned.query} />
-            </CollapsibleCard>
+            <NewcomersContributors projectId={project?.id} />
+            <MostActiveContributors projectId={project?.id} />
+            <StrugglingContributors projectId={project?.id} />
+            <ChurnedContributors projectId={project?.id} />
           </div>
         </div>
       </div>

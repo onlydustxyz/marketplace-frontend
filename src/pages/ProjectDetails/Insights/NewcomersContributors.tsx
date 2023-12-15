@@ -1,33 +1,41 @@
-import ProjectApi from "src/api/Project";
-import TinyProfilCard from "src/pages/ProjectDetails/Insights/TinyProfilCard";
+import TinyProfilCard from "src/pages/ProjectDetails/Insights/commons/TinyProfilCard";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
+import ProjectApi from "src/api/Project";
+import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
+import TeamLine from "src/icons/TeamLine";
 
-export default function NewcomersContributors({
-  query,
-}: {
-  query: ReturnType<typeof ProjectApi.queries.useProjectContributorsNewcomersInfiniteList>;
-}) {
+export default function NewcomersContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
-  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = query;
-  const newComers = data?.pages?.flatMap(data => data.contributors);
+  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    ProjectApi.queries.useProjectContributorsNewcomersInfiniteList({
+      params: { projectId: projectId ?? "" },
+    });
+  const newComersContributors = data?.pages?.flatMap(data => data.contributors);
+  const hasContributors = Boolean(newComersContributors?.length);
   return (
-    <>
+    <CollapsibleCard
+      title={T("project.details.insights.newcomers.sectionTitle")}
+      description={T("project.details.insights.newcomers.sectionSubtitle")}
+      icon={<TeamLine />}
+      isEmpty={!hasContributors}
+      hasShowMore={hasNextPage}
+    >
       <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {newComers?.map(newComer => (
+        {newComersContributors?.map(contributor => (
           <TinyProfilCard
-            key={newComer.login}
-            cover={newComer.cover}
-            avatarUrl={newComer.avatarUrl}
-            name={newComer.login}
-            isRegistered={newComer.isRegistered}
+            key={contributor.login}
+            cover={contributor.cover}
+            avatarUrl={contributor.avatarUrl}
+            name={contributor.login}
+            isRegistered={contributor.isRegistered}
             bio={
-              newComer?.bio === "" || newComer?.bio === null
+              contributor?.bio === "" || contributor?.bio === null
                 ? T("project.details.insights.newcomers.descriptionPlaceholder")
-                : newComer?.bio
+                : contributor?.bio
             }
-            location={newComer.location}
-            sinceDate={newComer.firstContributedAt ? new Date(newComer.firstContributedAt) : undefined}
+            location={contributor.location}
+            sinceDate={contributor.firstContributedAt ? new Date(contributor.firstContributedAt) : undefined}
             actionLabel={T("project.details.insights.newcomers.buttonLabel")}
             onAction={() => {
               console.log("action");
@@ -40,6 +48,6 @@ export default function NewcomersContributors({
           <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
         </div>
       ) : null}
-    </>
+    </CollapsibleCard>
   );
 }

@@ -7,7 +7,7 @@ import { useMediaQuery } from "usehooks-ts";
 type Props = {
   title: string;
   description: string;
-  icon: (className: string) => ReactNode;
+  icon: ReactNode;
   isEmpty?: boolean;
   hasShowMore?: boolean;
   children: React.ReactNode;
@@ -28,7 +28,8 @@ export default function CollapsibleCard({ title, description, icon, isEmpty, has
       >
         <div className="flex items-start gap-3">
           <div className="rounded-lg bg-card-background-medium p-3 leading-none text-greyscale-50">
-            {icon("h-5 w-5 text-xl leading-none text-base")}
+            <span className="h-5 w-5 text-base leading-none"></span>
+            {icon}
           </div>
           <div className="font-walsheim">
             <p className="text-base font-medium text-greyscale-50">{title}</p>
