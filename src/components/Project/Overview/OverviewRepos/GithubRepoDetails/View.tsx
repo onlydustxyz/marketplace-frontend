@@ -7,10 +7,10 @@ import { components } from "src/__generated/api";
 
 type Props = {
   githubRepo: components["schemas"]["GithubRepoResponse"];
-  withBg: boolean;
+  withBg?: boolean;
 };
 
-export default function View({ githubRepo, withBg }: Props) {
+export default function View({ githubRepo, withBg = true }: Props) {
   const { T } = useIntl();
 
   return (

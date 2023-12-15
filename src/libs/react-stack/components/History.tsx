@@ -29,8 +29,6 @@ export const History = () => {
     };
   }, [history]);
 
-  console.log("history", history);
-
   return (
     <div data-stack-history-root="true" id="stack-panel-history-root">
       {history?.length ? <BackDrop onClick={closeAll} /> : null}
