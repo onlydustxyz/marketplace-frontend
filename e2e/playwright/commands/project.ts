@@ -42,7 +42,7 @@ export const linkRepo = async (projectId: Uuid, githubRepoId: number) =>
   });
 
 export const setBudgetAllocation = async (projectId: Uuid, amount: number) => {
-  const response = await fetch(`${getEnv("VITE_API_BASE_URL")}/projects/${projectId}/budget`, {
+  const response = await fetch(`${getEnv("NEXT_PUBLIC_API_BASE_URL")}/projects/${projectId}/budget`, {
     method: "PUT",
     body: JSON.stringify({
       amount,

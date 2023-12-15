@@ -17,7 +17,7 @@ export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
   const { T } = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
-  const isEditProjectEnabled = parseFlag("VITE_CAN_EDIT_PROJECT");
+  const isEditProjectEnabled = parseFlag("NEXT_PUBLIC_CAN_EDIT_PROJECT");
   const [getPermission] = useLazyGetUserPermissions();
   const getLoginUrl = useLoginUrl();
   const loginUrlStorage = useLoginUrlStorage();

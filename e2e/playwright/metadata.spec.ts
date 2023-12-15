@@ -73,7 +73,7 @@ async function post_graphql_request({
   query: string;
   variables: unknown;
 }) {
-  return await request.post(`${process.env.VITE_HASURA_BASE_URL}/v1/graphql`, {
+  return await request.post(`${process.env.NEXT_PUBLIC_HASURA_BASE_URL}/v1/graphql`, {
     data: JSON.stringify({
       query: query,
       variables: variables,

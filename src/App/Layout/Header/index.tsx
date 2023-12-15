@@ -39,7 +39,7 @@ export default function Header() {
 
   const rewardsMenuItem = hasRewards && !onboardingInProgress ? T("navbar.rewards") : undefined;
   const contributionsMenuItem =
-    parseFlag("VITE_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId && !onboardingInProgress
+    parseFlag("NEXT_PUBLIC_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId && !onboardingInProgress
       ? T("navbar.contributions")
       : undefined;
   const projectsMenuItem =

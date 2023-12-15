@@ -17,7 +17,7 @@ test.describe("As a visitor, I", () => {
     // Projects
     await browseProjectsPage.expectProjectToBeVisible(projects.ProjectA, {
       logoSrc:
-        process.env.VITE_CLOUDFLARE_RESIZE_W_100_PREFIX +
+        process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_W_100_PREFIX +
         "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/14623987721662397761.png",
       contributors: "4 contributors",
       repositories: "2 repositories",
@@ -90,13 +90,7 @@ test.describe("As a registered user, I", () => {
     restoreDB();
   });
 
-  test("cannot access restricted projects page", async ({
-    page,
-    projects,
-    users,
-    signIn,
-    skipTermsAndConditions,
-  }) => {
+  test("cannot access restricted projects page", async ({ page, projects, users, signIn, skipTermsAndConditions }) => {
     await signIn(users.Olivier);
     await skipTermsAndConditions();
     await page.goto(`/p/${projects.ProjectA.key}/rewards`);

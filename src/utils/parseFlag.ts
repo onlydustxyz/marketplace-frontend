@@ -1,5 +1,5 @@
 export function parseFlag(flag: string) {
-  const value = import.meta.env?.[flag] ?? "";
+  const value = process.env?.[flag] ?? "";
 
   return value.toLowerCase() === "true";
 }
