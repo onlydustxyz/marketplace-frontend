@@ -1,10 +1,10 @@
 import sub from "date-fns/sub";
-import { ComponentProps, forwardRef } from "react";
+import { ComponentProps, forwardRef, useState } from "react";
 import { components } from "src/__generated/api";
 import EyeCheckLine from "src/assets/icons/EyeCheckLine";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
-import { Datepicker } from "src/components/New/Field/Datepicker";
+import { Datepicker, Period } from "src/components/New/Field/Datepicker";
 import { Field } from "src/components/New/Field/Field";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
@@ -22,6 +22,7 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
   ref: React.ForwardedRef<HTMLDivElement>
 ) {
   const { T } = useIntl();
+  const [period, setPeriod] = useState(Period.AllTime);
 
   function handleContributionChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -95,28 +96,38 @@ export const RewardableContributionsField = forwardRef(function RewardableContri
               mode="single"
               value={value?.ignoreContributionsBefore ? new Date(value.ignoreContributionsBefore) : undefined}
               onChange={handleDateChange}
+              selectedPeriod={period}
+              onPeriodChange={setPeriod}
               periods={[
                 {
+                  id: Period.LastMonth,
                   label: T("common.periods.lastMonth"),
                   value: sub(new Date(), {
                     months: 1,
                   }),
+                  isActive: period === Period.LastMonth,
                 },
                 {
+                  id: Period.Last6Months,
                   label: T("common.periods.last6Months"),
                   value: sub(new Date(), {
                     months: 6,
                   }),
+                  isActive: period === Period.Last6Months,
                 },
                 {
+                  id: Period.LastYear,
                   label: T("common.periods.lastYear"),
                   value: sub(new Date(), {
                     years: 1,
                   }),
+                  isActive: period === Period.LastYear,
                 },
                 {
+                  id: Period.Forever,
                   label: T("common.periods.forever"),
                   value: new Date(0),
+                  isActive: period === Period.Forever,
                 },
               ]}
             />
