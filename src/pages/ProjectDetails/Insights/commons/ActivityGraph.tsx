@@ -23,6 +23,7 @@ const getFirstNonZeroBar = (codeReviewCount: number, issueCount: number, pullReq
 export default function ActivityGraph({ data }: Props) {
   const { T } = useIntl();
   const maxCount = Math.max(...data.flatMap(d => [d.codeReviewCount, d.issueCount, d.pullRequestCount]));
+  console.log("yolo");
 
   return (
     <div className="flex flex-row items-end justify-end gap-1">
