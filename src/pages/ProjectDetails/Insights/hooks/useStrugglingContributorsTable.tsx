@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { components } from "src/__generated/api";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { Contribution } from "src/components/Contribution/Contribution";
 import Contributor from "src/components/Contributor";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
@@ -34,7 +35,7 @@ export function useStrugglingContributorsTable() {
     {
       icon: <User3Line />,
       label: T("project.details.insights.staled.table.contributor"),
-      width: HeaderCellWidth.Fifth,
+      width: HeaderCellWidth.Sixth,
     },
     {
       icon: <GitRepositoryLine />,
@@ -43,6 +44,7 @@ export function useStrugglingContributorsTable() {
     {
       icon: <StackLine />,
       label: T("project.details.insights.staled.table.strugglingOn"),
+      width: HeaderCellWidth.Quarter,
     },
     {
       icon: <TimeLine />,
@@ -55,7 +57,7 @@ export function useStrugglingContributorsTable() {
     },
   ];
 
-  const bodyRow = (contribution?: components["schemas"]["ProjectStaledContributionsPageItemResponse"]) => {
+  const bodyRow = (contribution?: components["schemas"]["ContributionPageItemResponse"]) => {
     if (!contribution) return null;
 
     const { id, contributor, repo } = contribution;
@@ -67,8 +69,7 @@ export function useStrugglingContributorsTable() {
         </Cell>
         <Cell height={CellHeight.Compact}>{repo?.name}</Cell>
         <Cell height={CellHeight.Compact}>
-          {/* <Contribution contribution={contribution} /> */}
-          contribution component here
+          <Contribution contribution={contribution} />
         </Cell>
 
         <Cell height={CellHeight.Compact}>reason component here</Cell>
