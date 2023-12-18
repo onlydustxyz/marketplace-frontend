@@ -50,7 +50,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
   });
 
   const supportedTechnologies =
-    (supportedTechnologiesData?.technologies || []).map(technology => technology?.toLowerCase()) || [];
+    supportedTechnologiesData?.technologies?.map(technology => technology?.toLowerCase()) ?? [];
 
   const allLanguages: LanguageOption[] = Object.keys({
     ...knownLanguages,

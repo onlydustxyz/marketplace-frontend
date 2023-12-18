@@ -21,7 +21,7 @@ export default function useApplications(projectId: string, projectSlug: string) 
   });
 
   return {
-    alreadyApplied: !!(userData?.projectsAppliedTo || [])?.find(appliedTo => appliedTo === projectId),
+    alreadyApplied: !!userData?.projectsAppliedTo?.find(appliedTo => appliedTo === projectId),
     applyToProject: () => (projectId ? applyProjectMutation({ projectId }) : undefined),
   };
 }
