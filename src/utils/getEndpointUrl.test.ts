@@ -1,4 +1,9 @@
 import { getEndpointUrl } from "./getEndpointUrl";
+import { loadEnvConfig } from "@next/env";
+
+beforeEach(() => {
+  loadEnvConfig(process.cwd());
+});
 
 describe("getEndpointUrl", () => {
   it("should generate endpoint URL with pageIndex and pageSize", () => {
