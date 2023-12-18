@@ -111,6 +111,30 @@ const config: Config = {
             heavy: "#F3F0EE33",
           },
         },
+        struggleBadge: {
+          background: {
+            red: "#360000",
+            orange: "#331D00",
+            green: "#00332E",
+          },
+          text: {
+            red: "#E84E4D",
+            orange: "#FF9000",
+            green: "#00FFE4",
+          },
+          bar: {
+            fade: {
+              red: "#E84E4D",
+              orange: "#663A00",
+              green: "#00665B",
+            },
+            solid: {
+              red: "#E84E4D",
+              orange: "#FF9000",
+              green: "#00FFE4",
+            },
+          },
+        },
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",

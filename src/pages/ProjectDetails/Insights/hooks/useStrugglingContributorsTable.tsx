@@ -12,6 +12,7 @@ import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
+import StruggleReasonBadge from "../commons/StruggleReasonBadge";
 
 // enum TableColumns {
 //   ContributorLogin = "CONTRIBUTOR_LOGIN",
@@ -40,11 +41,12 @@ export function useStrugglingContributorsTable() {
     {
       icon: <GitRepositoryLine />,
       label: T("project.details.insights.staled.table.repository"),
+      width: HeaderCellWidth.Sixth,
     },
     {
       icon: <StackLine />,
       label: T("project.details.insights.staled.table.strugglingOn"),
-      width: HeaderCellWidth.Quarter,
+      width: HeaderCellWidth.Third,
     },
     {
       icon: <TimeLine />,
@@ -54,13 +56,14 @@ export function useStrugglingContributorsTable() {
     {
       icon: <div />,
       label: "",
+      width: HeaderCellWidth.Sixth,
     },
   ];
 
   const bodyRow = (contribution?: components["schemas"]["ContributionPageItemResponse"]) => {
     if (!contribution) return null;
 
-    const { id, contributor, repo } = contribution;
+    const { id, contributor, repo, githubStatus, createdAt } = contribution;
 
     return (
       <Line key={id} className="group border-card-border-light">
@@ -72,7 +75,9 @@ export function useStrugglingContributorsTable() {
           <Contribution contribution={contribution} />
         </Cell>
 
-        <Cell height={CellHeight.Compact}>reason component here</Cell>
+        <Cell height={CellHeight.Compact}>
+          <StruggleReasonBadge date={createdAt} githubStatus={githubStatus} />
+        </Cell>
         <Cell height={CellHeight.Compact} className="invisible flex justify-end group-hover:visible">
           <Button
             type={ButtonType.Secondary}

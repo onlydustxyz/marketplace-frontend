@@ -991,6 +991,9 @@
             "strugglingOn": "Struggling on",
             "reason": "Reason",
             "buttonLabel": "Help"
+          },
+          "badge": {
+            "days": "for __days__ days"
           }
         },
         "churned": {
