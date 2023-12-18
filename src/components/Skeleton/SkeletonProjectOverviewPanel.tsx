@@ -2,7 +2,7 @@ import SkeletonEl from "../New/Skeleton/Skeleton";
 
 export default function SkeletonProjectOverviewPanel() {
   return (
-    <div className="flex w-full flex-col items-start justify-start gap-4 px-6">
+    <div className="flex h-full w-full flex-col items-start justify-start gap-4 px-6">
       <div className="flex w-full flex-row items-start justify-between gap-2">
         <div className="flex w-full flex-row items-center justify-start gap-4">
           <SkeletonEl variant="rounded" color="grey" width={80} height={80} />
@@ -16,10 +16,10 @@ export default function SkeletonProjectOverviewPanel() {
           <SkeletonEl variant="rounded" color="grey" width={32} height={32} radius={12} />
         </div>
       </div>
-      <div className="flex w-full flex-col items-start justify-start gap-4">
-        <SkeletonEl variant="rounded" color="grey" width="100%" height={64} />
-        <SkeletonEl variant="rounded" color="grey" width="100%" height={250} />
-        <SkeletonEl variant="rounded" color="grey" width="100%" height={400} />
+      <div className="flex w-full flex-1 flex-col items-start justify-start gap-4">
+        <SkeletonEl variant="rounded" color="grey" width="100%" height="20%" />
+        <SkeletonEl variant="rounded" color="grey" width="100%" height="25%" />
+        <SkeletonEl variant="rounded" color="grey" width="100%" height="40%" />
       </div>
     </div>
   );
