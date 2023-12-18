@@ -26,7 +26,6 @@ import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
 import GithubCallbackHandler from "src/pages/Callbacks/GithubCallbackHandler";
 import ProjectCreation from "src/pages/ProjectCreation/ProjectCreation";
-import ProtectedByFlag from "./ProtectedByFlag";
 import ProtectedByGithub from "./ProtectedByGithub";
 import { GITHUB_PERMISSIONS } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 import Skeleton from "src/components/Skeleton";
@@ -129,11 +128,9 @@ function App() {
       path: ProjectRoutePaths.Edit,
       element: (
         <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProtectedByFlag flag="NEXT_PUBLIC_CAN_EDIT_PROJECT">
-            <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
-              <ProjectDetailsEdit />
-            </ProtectedByGithub>
-          </ProtectedByFlag>
+          <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
+            <ProjectDetailsEdit />
+          </ProtectedByGithub>
         </ProtectedRoute>
       ),
     },
@@ -192,14 +189,12 @@ function App() {
           path: RoutePaths.ProjectCreation,
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <ProtectedByFlag flag="NEXT_PUBLIC_CAN_CREATE_PROJECT">
-                <ProtectedByGithub
-                  requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
-                  redirectTo={RoutePaths.ProjectCreation}
-                >
-                  <ProjectCreation />
-                </ProtectedByGithub>
-              </ProtectedByFlag>
+              <ProtectedByGithub
+                requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
+                redirectTo={RoutePaths.ProjectCreation}
+              >
+                <ProjectCreation />
+              </ProtectedByGithub>
             </ProtectedRoute>
           ),
         },
