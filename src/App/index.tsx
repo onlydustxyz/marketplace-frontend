@@ -176,16 +176,14 @@ function App() {
             </ProtectedRoute>
           ),
         },
-        parseFlag("NEXT_PUBLIC_FLAG_ALLOW_CONTRIBUTIONS_LIST")
-          ? {
-              path: RoutePaths.Contributions,
-              element: (
-                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-                  <Contributions />
-                </ProtectedRoute>
-              ),
-            }
-          : {},
+        {
+          path: RoutePaths.Contributions,
+          element: (
+            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+              <Contributions />
+            </ProtectedRoute>
+          ),
+        },
         {
           path: RoutePaths.Login,
           element: <Login />,
