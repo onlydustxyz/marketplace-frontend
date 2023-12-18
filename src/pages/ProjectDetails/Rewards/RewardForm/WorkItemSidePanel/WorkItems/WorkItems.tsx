@@ -1,6 +1,5 @@
 import { chain } from "lodash";
 import { useEffect, useMemo } from "react";
-import { WorkItemType } from "src/__generated/graphql";
 import View, { tabNames } from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
 import ProjectApi from "src/api/Project";
@@ -10,6 +9,7 @@ import { Contributor } from "../../types";
 import { NotFound } from "src/components/NotFound";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useIntl } from "src/hooks/useIntl";
+import { WorkItemType } from "src/types";
 
 export interface RewardableWorkItem {
   type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;

@@ -1,11 +1,11 @@
 import { ComponentProps } from "react";
-import { GithubIssueStatus } from "src/__generated/graphql";
 import { ContributionIcon, Sizes } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
+  GithubIssueStatus,
   GithubPullRequestStatus,
   GithubStatus,
   GithubTypeStatusDict,

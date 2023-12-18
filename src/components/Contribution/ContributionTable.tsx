@@ -1,5 +1,4 @@
 import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
-import { OrderBy } from "src/__generated/graphql";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -10,7 +9,7 @@ import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
-import { Contribution as ContributionT } from "src/types";
+import { Contribution as ContributionT, OrderBy } from "src/types";
 import { cn } from "src/utils/cn";
 import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";

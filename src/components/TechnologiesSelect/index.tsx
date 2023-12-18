@@ -16,8 +16,6 @@ import StylizedCombobox, { EMPTY_OPTION_ID, Option, RenderProps } from "src/comp
 import Draggable from "src/icons/Draggable";
 import { cn } from "src/utils/cn";
 import Add from "src/icons/Add";
-import { useAllTechnologiesQuery } from "src/__generated/graphql";
-import { contextWithCacheHeaders } from "src/utils/headers";
 import { withTooltip } from "src/components/Tooltip";
 import { SortableItemProps, SortableList } from "../New/Sortable/SortableList";
 import CloseLine from "src/icons/CloseLine";
@@ -37,10 +35,8 @@ type SelectedTechnologyProps = (SortableItemProps & { value: string })[];
 export default function TechnologiesSelect({ technologies = {}, setTechnologies }: Props) {
   const { T } = useIntl();
   const [suggestionValue, setSuggestionValue] = useState("");
-  const supportedTechnologiesQuery = useAllTechnologiesQuery({
-    ...contextWithCacheHeaders,
-  });
 
+  const { data: supportedTechnologiesData } = TechnologiesApi.queries.useGetTechnologies({});
   const { mutate: suggestTechnology, ...restMutation } = TechnologiesApi.mutations.useAddTechnology({});
 
   useMutationAlert({
@@ -54,7 +50,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
   });
 
   const supportedTechnologies =
-    supportedTechnologiesQuery.data?.technologies.map(({ technology }) => technology?.toLowerCase()) || [];
+    supportedTechnologiesData?.technologies?.map(technology => technology?.toLowerCase()) ?? [];
 
   const allLanguages: LanguageOption[] = Object.keys({
     ...knownLanguages,

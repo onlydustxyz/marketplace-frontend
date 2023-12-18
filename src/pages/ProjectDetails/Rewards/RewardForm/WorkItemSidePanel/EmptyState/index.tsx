@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
-import { WorkItemType } from "src/__generated/graphql";
 import { IMAGES } from "src/assets/img";
+import { WorkItemType } from "src/types";
 
 const itemTypes = {
   [WorkItemType.Issue]: "project.details.edit.fields.rewardableContributions.issues",

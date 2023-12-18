@@ -1,7 +1,7 @@
-import { GithubIssueStatus } from "src/__generated/graphql";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
+  GithubIssueStatus,
   GithubPullRequestStatus,
   GithubStatus,
   GithubTypeStatusDict,

@@ -1,6 +1,6 @@
 import { escapeRegExp, filter } from "lodash";
-import { WorkItemType } from "src/__generated/graphql";
 import { RewardableItem } from "src/api/Project/queries";
+import { WorkItemType } from "src/types";
 
 type Props = {
   pattern?: string;
