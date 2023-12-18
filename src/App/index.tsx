@@ -23,7 +23,6 @@ import Onboarding from "src/pages/Onboarding";
 import PublicProfilePage from "src/pages/PublicProfile";
 import TermsAndConditions from "src/pages/TermsAndConditions";
 import { CustomUserRole, HasuraUserRole } from "src/types";
-import { parseFlag } from "src/utils/parseFlag";
 import GithubCallbackHandler from "src/pages/Callbacks/GithubCallbackHandler";
 import ProjectCreation from "src/pages/ProjectCreation/ProjectCreation";
 import ProtectedByGithub from "./ProtectedByGithub";
@@ -93,7 +92,7 @@ function App() {
         </Suspense>
       ),
     },
-    parseFlag("NEXT_PUBLIC_FLAG_ALLOW_PROJECT_CONTRIBUTIONS")
+    process.env.NEXT_PUBLIC_FLAG_ALLOW_PROJECT_CONTRIBUTIONS === "true"
       ? {
           path: ProjectRoutePaths.Contributions,
           element: <ProjectDetailsContributions />,

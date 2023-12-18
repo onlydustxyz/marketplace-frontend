@@ -1,15 +1,14 @@
 import { PropsWithChildren } from "react";
 import { generatePath, Navigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { parseFlag } from "src/utils/parseFlag";
 
 interface ProtectedByFlagProps extends PropsWithChildren {
   redirectTo?: string;
-  flag: string;
+  isValid: boolean;
 }
 
-export default function ProtectedByFlag({ redirectTo = RoutePaths.NotFound, children, flag }: ProtectedByFlagProps) {
+export default function ProtectedByFlag({ redirectTo = RoutePaths.NotFound, children, isValid }: ProtectedByFlagProps) {
   const params = useParams();
 
-  return parseFlag(flag) ? <>{children}</> : <Navigate to={generatePath(redirectTo, params)} />;
+  return isValid ? <>{children}</> : <Navigate to={generatePath(redirectTo, params)} />;
 }
