@@ -58,7 +58,7 @@ export const useStackRegister = <P extends StacksParams>({ unRegisterOnUnMount, 
     };
   }, [stack]);
 
-  return stack;
+  return getStack(stack.state.name) || stack;
 };
 
 export default useStackRegister;
