@@ -4,14 +4,19 @@ import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardS
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import GithubLogo from "src/icons/GithubLogo";
-import { RegisterStack, useStackNavigation } from "src/libs/react-stack";
+import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
 import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
+import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
+import EyeLine from "src/icons/EyeLine";
+import { Link, generatePath } from "react-router-dom";
+import { RoutePaths } from "..";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
+  ProjectOverview = "project-overview",
   PayoutInfo = "payout-info",
   ProjectLeaderReward = "project-leader-reward",
   Reward = "reward",
@@ -23,6 +28,9 @@ export interface StackRouterParams {
   ContributorProfile: {
     githubUserId: number;
   };
+  ProjectOverview: {
+    slug: string;
+  } & StacksParams;
   ProjectLeaderReward: {
     projectId: string;
     rewardId: string;
@@ -46,7 +54,10 @@ export interface StackRouterParams {
 export const Stacks = () => {
   return (
     <>
-      <RegisterStack<StackRouterParams["ContributorProfile"]> name={StackRoute.ContributorProfile}>
+      <RegisterStack<StackRouterParams["ContributorProfile"]>
+        name={StackRoute.ContributorProfile}
+        option={{ panel: { noPadding: true } }}
+      >
         {({ params }) => <ContributorProfileSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack<StackRouterParams["ProjectLeaderReward"]> name={StackRoute.ProjectLeaderReward}>
@@ -60,6 +71,9 @@ export const Stacks = () => {
       </RegisterStack>
       <RegisterStack<StackRouterParams["GithubWorkflowClaim"]> name={StackRoute.GithubWorkflowClaim}>
         {({ params }) => <ClaimSidePanel {...params} />}
+      </RegisterStack>
+      <RegisterStack<StackRouterParams["ProjectOverview"]> name={StackRoute.ProjectOverview}>
+        {({ params }) => <ProjectOverviewSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
@@ -120,4 +134,36 @@ export const useStackGithubWorkflowClaim = () => {
 
 export const useStackGithubWorkflowTutorial = () => {
   return useStackNavigation(StackRoute.GithubWorkflowTutorial);
+};
+
+export const useStackProjectOverview = (): [
+  ({ slug }: Omit<StackRouterParams["ProjectOverview"], "panelProps">) => void,
+  (id?: string | undefined) => void
+] => {
+  const { T } = useIntl();
+  const closeAll = useCloseAllStack();
+  const [open, close] = useStackNavigation<StackRouterParams["ProjectOverview"]>(StackRoute.ProjectOverview);
+
+  const handleOpen = ({ slug }: Omit<StackRouterParams["ProjectOverview"], "panelProps">) => {
+    open({
+      slug,
+      panelProps: {
+        action: (
+          <Link
+            to={generatePath(RoutePaths.ProjectDetails, {
+              projectKey: slug,
+            })}
+            className="hover:underline"
+            onClick={() => closeAll()}
+          >
+            <Button size={ButtonSize.Sm} type={ButtonType.Primary}>
+              <EyeLine className="text-base leading-none" />
+              {T("project.openOverview")}
+            </Button>
+          </Link>
+        ),
+      },
+    });
+  };
+  return [handleOpen, close];
 };
