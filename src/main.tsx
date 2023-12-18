@@ -24,7 +24,6 @@ import { SessionProvider } from "./hooks/useSession";
 import { SidePanelProvider } from "./hooks/useSidePanel";
 import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
 import { ToasterProvider } from "./hooks/useToaster";
-import { CommandsProvider } from "./providers/Commands";
 import { Stacks } from "./App/Stacks/Stacks";
 import { StackProvider } from "./libs/react-stack";
 
@@ -48,24 +47,22 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               <ToasterProvider>
                 <ApolloWrapper>
                   <QueryClientProvider client={queryClient}>
-                    <CommandsProvider>
-                      <AuthProvider>
-                        <StackProvider>
-                          <SidePanelStackProvider>
-                            <SidePanelProvider>
-                              {config.MAINTENANCE ? (
-                                <Maintenance />
-                              ) : (
-                                <OnboardingProvider>
-                                  <App />
-                                  <Stacks />
-                                </OnboardingProvider>
-                              )}
-                            </SidePanelProvider>
-                          </SidePanelStackProvider>
-                        </StackProvider>
-                      </AuthProvider>
-                    </CommandsProvider>
+                    <AuthProvider>
+                      <StackProvider>
+                        <SidePanelStackProvider>
+                          <SidePanelProvider>
+                            {config.MAINTENANCE ? (
+                              <Maintenance />
+                            ) : (
+                              <OnboardingProvider>
+                                <App />
+                                <Stacks />
+                              </OnboardingProvider>
+                            )}
+                          </SidePanelProvider>
+                        </SidePanelStackProvider>
+                      </StackProvider>
+                    </AuthProvider>
                   </QueryClientProvider>
                 </ApolloWrapper>
               </ToasterProvider>

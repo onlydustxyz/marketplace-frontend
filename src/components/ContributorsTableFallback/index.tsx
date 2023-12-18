@@ -1,6 +1,6 @@
-import { Maybe } from "src/__generated/graphql";
 import { IMAGES } from "src/assets/img";
 import { useIntl } from "src/hooks/useIntl";
+import { Maybe } from "src/types";
 
 type Props = {
   projectName: Maybe<string>;

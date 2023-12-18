@@ -9,10 +9,8 @@ import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
 import { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
-
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import Title from "src/pages/ProjectDetails/Title";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
@@ -48,8 +46,7 @@ export default function Overview() {
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
-  const { alreadyApplied, applyToProject } = useApplications(project?.id ?? "", projectKey);
-  const { isCurrentUserMember } = useProjectVisibility(project?.id);
+  const { applyToProject } = useApplications(project?.id ?? "", projectKey);
 
   const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});
 
@@ -137,9 +134,15 @@ export default function Overview() {
           </Card>
         </div>
         <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
-          {hiring && !isCurrentUserMember && myProfileInfo && (
+          {hiring && !project.me?.isMember && myProfileInfo && (
             <ApplyCallout
-              {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile: myProfileInfo }}
+              {...{
+                isLoggedIn,
+                alreadyApplied: project.me?.hasApplied || false,
+                applyToProject,
+                dispatchSession,
+                profile: myProfileInfo,
+              }}
             />
           )}
           {isMd && <OverviewPanel project={project} />}
