@@ -36,7 +36,6 @@ import Loader from "src/components/Loader";
 import RewardLoader from "./Loaders/RewardsLoader";
 
 export enum RoutePaths {
-  Home = "/",
   Projects = "/",
   Login = "/login",
   ProjectCreation = "/p/create",
