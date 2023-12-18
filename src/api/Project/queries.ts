@@ -146,7 +146,7 @@ const useProjectContributorsInfiniteList = ({
   );
 };
 
-export type UseProjectContributionsInfiniteListResponse = components["schemas"]["ProjectContributionPageResponse"];
+export type UseProjectContributionsInfiniteListResponse = components["schemas"]["ContributionPageResponse"];
 
 interface ProjectContributionsInfiniteListParams {
   projectId: string;

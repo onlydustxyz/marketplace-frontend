@@ -22,6 +22,7 @@ import EmptyState from "../EmptyState";
 import Skeleton from "src/components/Skeleton";
 import { Contributor } from "../../types";
 import { WorkItemType } from "src/types";
+import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 
 export const tabNames = {
   [WorkItemType.Issue]: "issues",
@@ -71,6 +72,13 @@ export default function View({
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);
+
+  useSearchHotKey({
+    onPress: () => {
+      setSearchEnabled(true);
+    },
+  });
+
   const setAddOtherIssueEnabled = (value: boolean) => {
     setStateAddOtherIssueEnabled(value);
     setStateSearchEnabled(false);
