@@ -5,7 +5,7 @@ import { useMostActiveContributorsTable } from "./hooks/useMostActiveContributor
 import Table from "src/components/Table";
 import HeaderLine from "src/components/Table/HeaderLine";
 import HeaderCell from "src/components/Table/HeaderCell";
-import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder";
+import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder/EmptyTablePlaceholder";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import Sparkling2Line from "src/icons/Sparkling2Line";
 

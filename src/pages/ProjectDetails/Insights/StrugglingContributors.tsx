@@ -3,7 +3,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Table from "src/components/Table";
 import HeaderLine from "src/components/Table/HeaderLine";
 import HeaderCell from "src/components/Table/HeaderCell";
-import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder";
+import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder/EmptyTablePlaceholder";
 import { useStrugglingContributorsTable } from "./hooks/useStrugglingContributorsTable";
 import ProjectApi from "src/api/Project";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";

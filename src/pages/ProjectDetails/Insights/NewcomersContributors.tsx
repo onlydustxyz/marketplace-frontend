@@ -1,4 +1,4 @@
-import TinyProfilCard from "src/pages/ProjectDetails/Insights/commons/TinyProfilCard";
+import TinyProfilCard from "src/pages/ProjectDetails/Insights/commons/TinyProfilCard/TinyProfilCard";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
 import ProjectApi from "src/api/Project";
@@ -29,11 +29,7 @@ export default function NewcomersContributors({ projectId }: { projectId: string
             avatarUrl={contributor.avatarUrl}
             name={contributor.login}
             isRegistered={contributor.isRegistered}
-            bio={
-              contributor?.bio === "" || contributor?.bio === null
-                ? T("project.details.insights.newcomers.descriptionPlaceholder")
-                : contributor?.bio
-            }
+            bio={contributor?.bio}
             location={contributor.location}
             sinceDate={contributor.firstContributedAt ? new Date(contributor.firstContributedAt) : undefined}
             actionLabel={T("project.details.insights.newcomers.buttonLabel")}

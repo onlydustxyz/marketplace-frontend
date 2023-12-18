@@ -6,26 +6,7 @@ import { cn } from "src/utils/cn";
 import { IMAGES } from "src/assets/img";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import MapPinLine from "src/icons/MapPinLine";
-
-export enum ProfileCover {
-  Blue = "BLUE",
-  Cyan = "CYAN",
-  Magenta = "MAGENTA",
-  Yellow = "YELLOW",
-}
-
-interface Props {
-  cover?: `${ProfileCover}`;
-  avatarUrl: string;
-  name: string;
-  isRegistered?: boolean;
-  actionLabel?: string;
-  onAction?: () => void;
-  bio?: string;
-  location?: string;
-  sinceDate?: Date;
-  children?: React.ReactNode;
-}
+import { ProfileCover, Props } from "./TinyProfilCard.type";
 
 function getCoverClass(cover: `${ProfileCover}`): string {
   const coverClasses: Record<ProfileCover, string> = {
@@ -93,7 +74,14 @@ export default function TinyProfileCard({
             {isRegistered && <img src={IMAGES.logo.original} className="ml-1.5 w-3.5" loading="lazy" alt="OnlyDust" />}
           </div>
           {children}
-          <OptionalSection condition={!!bio}>
+          <OptionalSection
+            condition={!!bio}
+            fallback={
+              <div className="line-clamp-2 h-10 text-sm font-normal italic text-greyscale-200">
+                {T("project.details.insights.newcomers.descriptionPlaceholder")}
+              </div>
+            }
+          >
             <div className="line-clamp-2 h-10 text-sm font-normal text-greyscale-200">{bio}</div>
           </OptionalSection>
           <OptionalSection condition={!!location || !!sinceDate}>

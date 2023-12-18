@@ -12,15 +12,7 @@ import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
-import ActivityGraph from "../commons/ActivityGraph";
-
-// enum TableColumns {
-//   ContributorLogin = "CONTRIBUTOR_LOGIN",
-//   ClosedPrs = "CLOSED_PRS",
-//   CompletedIssues = "COMPLETED_ISSUES",
-//   CodeReviews = "CODE_REVIEWS",
-//   Activity = "ACTIVITY",
-// }
+import ActivityGraph from "../commons/ActivityGraph/ActivityGraph";
 
 type HeaderCell = {
   icon: ReactNode;

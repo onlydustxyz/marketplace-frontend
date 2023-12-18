@@ -2,12 +2,7 @@ import Card from "src/components/Card";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import StackLine from "src/icons/StackLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-
-interface LastContributionCardProps {
-  lastContributionDate: string;
-  repoName?: string;
-  linkUrl?: string;
-}
+import { LastContributionCardProps } from "./LastContributionCard.type";
 
 export default function LastContributionCard({
   lastContributionDate = "",

@@ -1,24 +1,8 @@
-import { components } from "src/__generated/api";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
-
-type Props = {
-  data: components["schemas"]["UserContributionStats"][];
-};
-
-const calculateHeight = (count: number, maxCount: number): string => {
-  if (count === 0) return "";
-  const relativeHeight = Math.ceil((count / maxCount) * 10);
-  return `h-${relativeHeight}`;
-};
-
-const getFirstNonZeroBar = (codeReviewCount: number, issueCount: number, pullRequestCount: number): string => {
-  if (pullRequestCount > 0) return "pullRequest";
-  if (issueCount > 0) return "issue";
-  if (codeReviewCount > 0) return "codeReview";
-  return "";
-};
+import { calculateHeight, getFirstNonZeroBar } from "./ActivityGraph.utils";
+import { Props } from "./ActivityGraph.type";
 
 export default function ActivityGraph({ data }: Props) {
   const { T } = useIntl();

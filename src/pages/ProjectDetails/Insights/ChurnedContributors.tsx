@@ -1,7 +1,7 @@
 import ProjectApi from "src/api/Project";
-import TinyProfilCard from "src/pages/ProjectDetails/Insights/commons/TinyProfilCard";
+import TinyProfilCard from "src/pages/ProjectDetails/Insights/commons/TinyProfilCard/TinyProfilCard";
 import { ShowMore } from "src/components/Table/ShowMore";
-import LastContributionCard from "./commons/LastContributionCard";
+import LastContributionCard from "./commons/LastContributionCard/LastContributionCard";
 import { useIntl } from "src/hooks/useIntl";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import LogoutCircleLine from "src/icons/LogoutCircleLine";
