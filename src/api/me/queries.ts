@@ -37,7 +37,7 @@ const useMyRewardsInfiniteList = (
   );
 };
 
-export type UseMyContributionsResponse = components["schemas"]["UserContributionPageResponse"];
+export type UseMyContributionsResponse = components["schemas"]["ContributionPageResponse"];
 
 const useMyContributions = (
   params: Partial<Parameters<typeof useInfiniteBaseQuery>[0]>,
