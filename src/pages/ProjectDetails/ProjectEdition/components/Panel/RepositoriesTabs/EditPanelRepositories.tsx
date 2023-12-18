@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import { EditContext } from "../../../EditContext";
 import { Organization } from "./components/Organization";
 import { Flex } from "src/components/New/Layout/Flex";
@@ -6,6 +6,7 @@ import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
 import { useIntl } from "src/hooks/useIntl";
 import { useRepositorySearch } from "./hooks/useRepositorySearch";
+import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 
 export const EditPanelRepositories = () => {
   const { T } = useIntl();
@@ -13,6 +14,10 @@ export const EditPanelRepositories = () => {
   const installedOrganization = useMemo(() => organizations.filter(org => org.installed), [organizations]);
   const [search, setSearch] = useState<string>("");
   const filterOrganizationBySearch = useRepositorySearch(search);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useSearchHotKey({ inputRef });
+
   return (
     <Flex justify="start" item="start" className="w-full gap-6" direction="col">
       <div>
@@ -29,6 +34,7 @@ export const EditPanelRepositories = () => {
         placeholder={T("project.details.create.repository.search")}
         onChange={e => setSearch(e.target.value)}
         startIcon={({ className }) => <SearchLine className={className} />}
+        ref={inputRef}
       />
       {filterOrganizationBySearch(installedOrganization).map(organization => (
         <Organization key={organization.githubUserId} organization={organization} />
