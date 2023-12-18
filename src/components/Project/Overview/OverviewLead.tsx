@@ -27,7 +27,7 @@ export const ProjectOverviewLead = ({ project }: ProjectOverviewLeadProps) => {
       title={T("project.details.overview.projectLeader", { count: filteredLeads.length })}
     >
       <div className="flex flex-row flex-wrap gap-3">
-        {(filteredLeads || []).map(lead => (
+        {filteredLeads?.map(lead => (
           <Contributor
             key={lead.id}
             contributor={{

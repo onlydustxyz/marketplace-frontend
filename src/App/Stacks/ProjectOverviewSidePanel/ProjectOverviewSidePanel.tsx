@@ -29,11 +29,11 @@ export const ProjectOverviewSidePanel = ({ slug }: Props) => {
       </div>
       <div className="flex h-full flex-auto flex-col gap-3 overflow-auto p-px pb-6 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
         <div className="flex flex-col gap-4 px-6 pr-4">
-          {project.longDescription && (
+          {project.longDescription ? (
             <div className="flex flex-col gap-4 rounded-2xl border border-card-border-light  bg-greyscale-900 px-6 py-4 shadow-medium">
               <MarkdownPreview className="text-sm">{project.longDescription}</MarkdownPreview>
             </div>
-          )}
+          ) : null}
           <ProjectOverviewInformations project={project} />
           <ProjectOverviewReposCard project={project} />
         </div>
