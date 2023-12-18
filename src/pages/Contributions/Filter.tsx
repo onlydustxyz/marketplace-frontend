@@ -5,11 +5,11 @@ import MeApi from "src/api/me";
 import { Period } from "src/components/New/Field/Datepicker";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
+import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
 import { FilterProjectSelect } from "src/components/New/Filter/FilterProjectSelect";
 import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
-import { useDatepickerPeriods } from "src/components/New/Filter/useDatepickerPeriods";
 import { GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
 

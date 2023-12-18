@@ -84,9 +84,11 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
 
   // If a period is selected use the period's value, otherwise use the custom value
   const selectedValue = useMemo(() => {
-    return props.selectedPeriod !== Period.Custom && props.periods
-      ? props.periods.find(({ id }) => id === props.selectedPeriod)?.value
-      : props.value;
+    if (props.selectedPeriod !== Period.Custom && props.periods) {
+      return props.periods.find(({ id }) => id === props.selectedPeriod)?.value;
+    }
+
+    return props.value;
   }, [props.selectedPeriod, props.periods, props.value]);
 
   // Type guard to check if selectedValue is a DateRange

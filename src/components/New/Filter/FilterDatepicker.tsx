@@ -3,7 +3,7 @@ import { DateRange } from "react-day-picker";
 import { Datepicker } from "src/components/New/Field/Datepicker";
 import { FilterField } from "src/components/New/Filter/FilterField";
 import { useIntl } from "src/hooks/useIntl";
-import { useDatepickerPeriods } from "./useDatepickerPeriods";
+import { useDatepickerPeriods } from "./FilterDatepicker.hooks";
 
 export function FilterDatepicker({
   selected,
