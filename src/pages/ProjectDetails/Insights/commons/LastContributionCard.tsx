@@ -27,7 +27,7 @@ export default function LastContributionCard({
             <div className="text-sm font-normal text-greyscale-200">Last contribution</div>
             <div className=" line-clamp-1 text-xs font-medium">
               <span>{displayRelativeDate(new Date(lastContributionDate))} on </span>
-              <span className="text-purple-300">{repoName}</span>
+              <span className="text-spacePurple-300">{repoName}</span>
             </div>
           </div>
           <ArrowRightSLine />

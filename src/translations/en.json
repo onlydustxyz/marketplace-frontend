@@ -980,6 +980,20 @@
             "codeReviews": "Code reviews",
             "activity": "Activity (Past Mount)",
             "buttonLabel": "Congratulate"
+          },
+          "tooltip": {
+            "pullRequest": {
+              "many": "__count__ PRs",
+              "one": "1 PR"
+            },
+            "issue": {
+              "many": "__count__ issues",
+              "one": "1 issue"
+            },
+            "codeReview": {
+              "many": "__count__ code reviews",
+              "one": "1 code review"
+            }
           }
         },
         "staled": {

@@ -12,6 +12,7 @@ import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
+import ActivityGraph from "../commons/ActivityGraph";
 
 // enum TableColumns {
 //   ContributorLogin = "CONTRIBUTOR_LOGIN",
@@ -67,7 +68,13 @@ export function useMostActiveContributorsTable() {
   const bodyRow = (contributor?: components["schemas"]["ProjectContributorActivityPageItemResponse"]) => {
     if (!contributor) return null;
 
-    const { completedPullRequestCount, completedIssueCount, completedCodeReviewCount, login } = contributor;
+    const {
+      completedPullRequestCount,
+      completedIssueCount,
+      completedCodeReviewCount,
+      login,
+      contributionCountPerWeeks,
+    } = contributor;
 
     return (
       <Line key={login} className="group border-card-border-light">
@@ -78,7 +85,9 @@ export function useMostActiveContributorsTable() {
         <Cell height={CellHeight.Compact}>{completedIssueCount}</Cell>
 
         <Cell height={CellHeight.Compact}>{completedCodeReviewCount}</Cell>
-        <Cell height={CellHeight.Compact}>xxx</Cell>
+        <Cell height={CellHeight.Compact}>
+          <ActivityGraph data={contributionCountPerWeeks ?? []} />
+        </Cell>
         <Cell height={CellHeight.Compact} className="invisible flex justify-end group-hover:visible">
           <Button
             type={ButtonType.Secondary}
