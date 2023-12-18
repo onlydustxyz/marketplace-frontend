@@ -1,15 +1,15 @@
-import { chain } from "lodash";
+import _ from "lodash";
 import { useEffect, useMemo } from "react";
+import { useFormContext } from "react-hook-form";
 import { WorkItemType } from "src/__generated/graphql";
-import View, { tabNames } from "./View";
-import { useIgnoredContributions } from "./useIgnoredContributions";
 import ProjectApi from "src/api/Project";
 import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
-import { useFormContext } from "react-hook-form";
-import { Contributor } from "../../types";
 import { NotFound } from "src/components/NotFound";
-import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useIntl } from "src/hooks/useIntl";
+import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
+import { Contributor } from "../../types";
+import View, { tabNames } from "./View";
+import { useIgnoredContributions } from "./useIgnoredContributions";
 
 export interface RewardableWorkItem {
   type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;
@@ -86,7 +86,7 @@ export function WorkItems({ type, projectId, workItems, addWorkItem, contributor
 
   const contributionsNotAdded = useMemo(
     () =>
-      chain(contributions)
+      _.chain(contributions)
         .differenceWith(workItems, (contribution, workItem) => contribution?.id === workItem.id)
         .value(),
     [contributions, workItems]

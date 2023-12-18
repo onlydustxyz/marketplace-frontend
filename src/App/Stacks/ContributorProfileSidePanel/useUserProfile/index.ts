@@ -1,21 +1,21 @@
 import { useQuery } from "@apollo/client";
+import _, { find, range, slice, sortBy, unionBy } from "lodash";
 import {
   ContributionCountFragment,
   OwnUserProfileDetailsFragment,
   OwnUserProfileDocument,
+  ProfileProjectFragment,
   UserProfileDocument,
   UserProfileFragment,
   UserProfileQuery,
   useUserProfileByLoginQuery,
 } from "src/__generated/graphql";
-import { useAuth } from "src/hooks/useAuth";
-import { contextWithCacheHeaders } from "src/utils/headers";
-import { ProfileProjectFragment } from "src/__generated/graphql";
-import { chain, find, range, slice, sortBy, unionBy } from "lodash";
-import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
-import isDefined from "src/utils/isDefined";
-import { daysFromNow, weekNumber } from "src/utils/date";
 import { IMAGES } from "src/assets/img";
+import { useAuth } from "src/hooks/useAuth";
+import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
+import { daysFromNow, weekNumber } from "src/utils/date";
+import { contextWithCacheHeaders } from "src/utils/headers";
+import isDefined from "src/utils/isDefined";
 
 type Project = {
   id: string;
@@ -123,7 +123,7 @@ export default function useUserProfile({
 
   const contributionCounts =
     (profile &&
-      chain(profile.contributionCounts)
+      _.chain(profile.contributionCounts)
         .unionWith(EMPTY_DATA, (e1, e2) => e1.year === e2.year && e1.week === e2.week)
         .sortBy(["year", "week"])
         .reverse()
