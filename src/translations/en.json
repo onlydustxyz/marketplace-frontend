@@ -978,21 +978,21 @@
             "closedPrs": "Closed PRs",
             "completedIssues": "Completed issues",
             "codeReviews": "Code reviews",
-            "activity": "Activity (Past Mount)",
+            "activity": "Activity",
             "buttonLabel": "Congratulate"
           },
           "tooltip": {
             "pullRequest": {
-              "many": "__count__ PRs",
-              "one": "1 PR"
+              "many": "__count__ PRs on week __week__, __year__",
+              "one": "1 PR on week __week__, __year__"
             },
             "issue": {
-              "many": "__count__ issues",
-              "one": "1 issue"
+              "many": "__count__ issues on week __week__, __year__",
+              "one": "1 issue on week __week__, __year__"
             },
             "codeReview": {
-              "many": "__count__ code reviews",
-              "one": "1 code review"
+              "many": "__count__ code reviews on week __week__, __year__",
+              "one": "1 code review on week __week__, __year__"
             }
           }
         },

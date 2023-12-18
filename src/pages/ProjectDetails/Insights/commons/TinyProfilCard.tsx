@@ -106,7 +106,6 @@ export default function TinyProfileCard({
               <OptionalSection condition={!!sinceDate} className="flex-1">
                 <div className="flex flex-row items-center justify-end gap-2 font-walsheim text-xs font-normal text-spaceBlue-100">
                   <CalendarEventLine />
-                  {/* TODO refactor using util or DateJs  */}
                   {T("project.details.insights.newcomers.dateSince", {
                     since: sinceDate?.toLocaleDateString("en-US", {
                       year: "numeric",

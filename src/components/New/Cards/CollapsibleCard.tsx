@@ -20,7 +20,7 @@ export default function CollapsibleCard({ title, description, icon, isEmpty, has
   return (
     <section className="overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base lg:shadow-heavy">
       <header
-        className={cn("flex items-start justify-between gap-6 bg-card-background-light px-6 py-4 md:items-center", {
+        className={cn("flex items-start justify-between gap-6 bg-card-background-light px-4 py-4 md:items-center", {
           "cursor-pointer": !isEmpty,
           "border-b border-card-border-light": !collapsed && !isEmpty,
         })}
