@@ -1,6 +1,6 @@
 import { ComponentStory } from "@storybook/react";
 import HeaderCoverButton from "src/App/Stacks/ContributorProfileSidePanel/EditView/HeaderCoverButton";
-import { ProfileCover } from "src/__generated/graphql";
+import { ProfileCover } from "src/types";
 
 export default {
   title: "HeaderColorButton",

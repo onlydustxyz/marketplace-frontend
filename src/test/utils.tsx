@@ -12,7 +12,6 @@ import { viewportConfig } from "src/config";
 import { SuspenseCache } from "@apollo/client";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
-import { CommandsProvider } from "src/providers/Commands";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
 import { StackProvider } from "src/libs/react-stack";
 
@@ -44,30 +43,28 @@ export const MemoryRouterProviderFactory =
                   }}
                 >
                   <MemoryRouter initialEntries={[route]}>
-                    <CommandsProvider>
-                      <SidePanelStackProvider>
-                        <SidePanelProvider>
-                          {context ? (
-                            <Routes>
-                              <Route path="/" element={<Outlet context={context} />}>
-                                <Route
-                                  index
-                                  element={
-                                    <AuthProvider>
-                                      <StackProvider>{children}</StackProvider>
-                                    </AuthProvider>
-                                  }
-                                />
-                              </Route>
-                            </Routes>
-                          ) : (
-                            <AuthProvider>
-                              <StackProvider>{children}</StackProvider>
-                            </AuthProvider>
-                          )}
-                        </SidePanelProvider>
-                      </SidePanelStackProvider>
-                    </CommandsProvider>
+                    <SidePanelStackProvider>
+                      <SidePanelProvider>
+                        {context ? (
+                          <Routes>
+                            <Route path="/" element={<Outlet context={context} />}>
+                              <Route
+                                index
+                                element={
+                                  <AuthProvider>
+                                    <StackProvider>{children}</StackProvider>
+                                  </AuthProvider>
+                                }
+                              />
+                            </Route>
+                          </Routes>
+                        ) : (
+                          <AuthProvider>
+                            <StackProvider>{children}</StackProvider>
+                          </AuthProvider>
+                        )}
+                      </SidePanelProvider>
+                    </SidePanelStackProvider>
                   </MemoryRouter>
                 </MockedProvider>
               </ImpersonationClaimsProvider>

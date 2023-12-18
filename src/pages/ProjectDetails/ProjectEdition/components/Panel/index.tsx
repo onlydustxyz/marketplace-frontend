@@ -63,7 +63,7 @@ export const SafeEditPanel = () => {
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <div className="flex h-full flex-col px-4 py-8">
+      <div className="flex h-full flex-col px-4 pb-8">
         <div className="mb-8 px-2 font-belwe text-2xl font-normal text-greyscale-50">
           {T("project.details.edit.panel.title")}
         </div>

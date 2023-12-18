@@ -286,7 +286,7 @@
       "ETH": "Ethereum",
       "OP": "Optimism",
       "STARK": "Stark chain",
-      "LORDS": "Lords",
+      "LORDS": "Ethereum",
       "USD": "IBAN/BIC",
       "label": "Reward granted on __currency__ network.",
       "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
@@ -636,6 +636,7 @@
         },
         "title": "Reward #__id__",
         "to": "to",
+        "on": "on",
         "you": "(you)",
         "contributions": "Contributions included in reward",
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
@@ -860,6 +861,7 @@
     "privacy": "Privacy"
   },
   "project": {
+    "openOverview": "View project details",
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "claim": {
       "banner": {
@@ -948,7 +950,8 @@
         },
         "repositories": {
           "descriptionPlaceholder": "This repository has no description",
-          "title": "Repositories"
+          "title": "Repositories",
+          "add": "Add repository"
         },
         "sponsors": {
           "many": "Sponsors",

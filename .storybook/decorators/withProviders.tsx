@@ -12,7 +12,6 @@ import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { ToasterProvider } from "src/hooks/useToaster";
 import ApolloWrapper from "src/providers/ApolloWrapper";
-import { CommandsProvider } from "src/providers/Commands";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
 
 type Props = {
@@ -53,18 +52,16 @@ export default function withContextProviders(props: Props = {}) {
               <ToasterProvider>
                 <ApolloWrapper>
                   <QueryClientProvider client={queryClient}>
-                    <CommandsProvider>
-                      <AuthContext.Provider value={mockedAuthValue}>
-                        <StackProvider>
-                          <SidePanelStackProvider>
-                            <SidePanelProvider>
-                              <Stacks />
-                              <Story />
-                            </SidePanelProvider>
-                          </SidePanelStackProvider>
-                        </StackProvider>
-                      </AuthContext.Provider>
-                    </CommandsProvider>
+                    <AuthContext.Provider value={mockedAuthValue}>
+                      <StackProvider>
+                        <SidePanelStackProvider>
+                          <SidePanelProvider>
+                            <Stacks />
+                            <Story />
+                          </SidePanelProvider>
+                        </SidePanelStackProvider>
+                      </StackProvider>
+                    </AuthContext.Provider>
                   </QueryClientProvider>
                 </ApolloWrapper>
               </ToasterProvider>
