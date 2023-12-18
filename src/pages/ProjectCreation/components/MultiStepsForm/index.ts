@@ -1,2 +1,2 @@
-export * from "./multiStepsForm";
-export * from "./multiStepsForm.type";
+export { default as MultiStepsForm } from "./multiStepsForm";
+export type { MultiStepsFormProps } from "./multiStepsForm.type";

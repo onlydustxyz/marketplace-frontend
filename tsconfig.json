@@ -23,6 +23,6 @@
     "incremental": true,
     "plugins": [{ "name": "next" }]
   },
-  "include": ["./src", ".storybook/**/*.tsx", "./dist/types/**/*.ts", "./next-env.d.ts"],
+  "include": ["./app", "./src", ".storybook/**/*.tsx", "./dist/types/**/*.ts", "./next-env.d.ts"],
   "exclude": ["./node_modules"]
 }

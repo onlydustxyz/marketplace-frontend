@@ -1,1 +1,1 @@
-export * from "./GithubRepository";
+export { default as GithubRepositoryPage } from "./GithubRepository";
