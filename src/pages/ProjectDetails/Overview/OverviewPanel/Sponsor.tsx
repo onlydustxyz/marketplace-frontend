@@ -1,6 +1,6 @@
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import ExternalLink from "src/components/ExternalLink";
-import { Maybe } from "src/__generated/graphql";
+import { Maybe } from "src/types";
 
 type Props = {
   name: string | null;

@@ -1,5 +1,4 @@
 import { ComponentProps } from "react";
-import { OrderBy } from "src/__generated/graphql";
 import MeApi from "src/api/me";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -15,7 +14,7 @@ import { TooltipPosition, Variant as TooltipVariant } from "src/components/Toolt
 import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
-import { ContributionStatus, Contribution as ContributionT, GithubContributionType } from "src/types";
+import { ContributionStatus, Contribution as ContributionT, GithubContributionType, OrderBy } from "src/types";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";

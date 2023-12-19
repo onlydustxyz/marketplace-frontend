@@ -1,7 +1,6 @@
 import { ReactElement, forwardRef, useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -22,6 +21,8 @@ import { ShowMore } from "src/components/Table/ShowMore";
 import EmptyState from "../EmptyState";
 import Skeleton from "src/components/Skeleton";
 import { Contributor } from "../../types";
+import { WorkItemType } from "src/types";
+import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 
 export const tabNames = {
   [WorkItemType.Issue]: "issues",
@@ -71,6 +72,13 @@ export default function View({
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);
+
+  useSearchHotKey({
+    onPress: () => {
+      setSearchEnabled(true);
+    },
+  });
+
   const setAddOtherIssueEnabled = (value: boolean) => {
     setStateAddOtherIssueEnabled(value);
     setStateSearchEnabled(false);

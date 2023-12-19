@@ -1,5 +1,5 @@
 import { RefSubscriptionInterface, useSubscribe } from "src/libs/react-subscriber";
-import { StackPanelInterface, StacksParams } from "../types/Stack";
+import { Options, StackPanelInterface, StacksParams } from "../types/Stack";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import SidePanel from "../ui/Panel";
@@ -7,9 +7,10 @@ import useStackContext from "../hooks/useStackContext";
 
 export interface PanelProps<P extends StacksParams> {
   panelRef: RefSubscriptionInterface<StackPanelInterface<P>>;
+  option?: Options["panel"];
 }
 
-export const Panel = <P extends StacksParams>({ panelRef }: PanelProps<P>) => {
+export const Panel = <P extends StacksParams>({ panelRef, option }: PanelProps<P>) => {
   const {
     stackMethods: { closeLast },
   } = useStackContext();
@@ -34,6 +35,7 @@ export const Panel = <P extends StacksParams>({ panelRef }: PanelProps<P>) => {
         front={panel?.position === "front" || panel?.position === "front-stacked"}
         stacked={panel?.position === "front-stacked"}
         hidden={panel?.position === "hidden"}
+        option={option}
         {...(panelRef.state.params?.panelProps || {})}
       >
         {panelRef.state.children({ params: panelRef.state.params })}

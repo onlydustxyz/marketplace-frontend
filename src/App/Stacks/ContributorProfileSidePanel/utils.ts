@@ -1,4 +1,4 @@
-import { ProfileCover } from "src/__generated/graphql";
+import { ProfileCover } from "src/types";
 
 export const parseWebsite = (website: string | undefined) => {
   try {
