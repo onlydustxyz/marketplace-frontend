@@ -35,6 +35,7 @@ import ProjectsLoader from "./Loaders/ProjectsLoader";
 import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import Loader from "src/components/Loader";
 import RewardLoader from "./Loaders/RewardsLoader";
+import InsightSkeleton from "src/pages/ProjectDetails/Insights/Insights.skeleton";
 
 export enum RoutePaths {
   Home = "/",
@@ -130,7 +131,15 @@ function App() {
     },
     {
       path: ProjectRoutePaths.Insights,
-      element: <ProjectDetailsInsights />,
+      element: (
+        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+          <ProtectedByFlag flag="VITE_FLAG_ALLOW_PROJECT_INSIGHTS">
+            <Suspense fallback={<InsightSkeleton />}>
+              <ProjectDetailsInsights />
+            </Suspense>
+          </ProtectedByFlag>
+        </ProtectedRoute>
+      ),
     },
     {
       path: ProjectRoutePaths.Edit,

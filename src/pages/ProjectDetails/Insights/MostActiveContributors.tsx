@@ -22,6 +22,16 @@ export default function MostActiveContributors({ projectId }: { projectId: strin
   const hasContributors = Boolean(mostActiveContributors?.length);
 
   function renderDesktopContent() {
+    if (isLoading) {
+      return (
+        <tr>
+          <td>
+            <Skeleton variant="projectInsightTableContent" />
+          </td>
+        </tr>
+      );
+    }
+
     if (isError) {
       return (
         <EmptyTablePlaceholder colSpan={nbColumns}>
@@ -39,10 +49,6 @@ export default function MostActiveContributors({ projectId }: { projectId: strin
     }
 
     return mostActiveContributors?.map(bodyRow);
-  }
-
-  if (isLoading) {
-    return <Skeleton variant="projectInsightTable" />;
   }
 
   return (

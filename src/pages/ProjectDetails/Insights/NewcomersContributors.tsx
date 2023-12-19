@@ -17,6 +17,10 @@ export default function NewcomersContributors({ projectId }: { projectId: string
   const hasContributors = Boolean(newComersContributors?.length);
 
   function renderContent() {
+    if (isLoading) {
+      return <Skeleton variant="projectInsightProfilCardContent" />;
+    }
+
     if (isError) {
       return <MessagePlaceholder>{T("project.details.insights.errorPlaceholder")}</MessagePlaceholder>;
     }
@@ -60,10 +64,6 @@ export default function NewcomersContributors({ projectId }: { projectId: string
         ) : null}
       </>
     );
-  }
-
-  if (isLoading) {
-    return <Skeleton variant="projectInsightProfilCard" />;
   }
 
   return (

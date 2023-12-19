@@ -22,6 +22,16 @@ export default function StrugglingContributors({ projectId }: { projectId: strin
   const hasContributions = Boolean(staledContributions?.length);
 
   function renderDesktopContent() {
+    if (isLoading) {
+      return (
+        <tr>
+          <td>
+            <Skeleton variant="projectInsightTableContent" />
+          </td>
+        </tr>
+      );
+    }
+
     if (isError) {
       return (
         <EmptyTablePlaceholder colSpan={nbColumns}>
@@ -39,10 +49,6 @@ export default function StrugglingContributors({ projectId }: { projectId: strin
     }
 
     return staledContributions?.map(bodyRow);
-  }
-
-  if (isLoading) {
-    return <Skeleton variant="projectInsightTable" />;
   }
 
   return (

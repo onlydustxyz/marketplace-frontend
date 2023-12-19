@@ -18,6 +18,10 @@ export default function ChurnedContributors({ projectId }: { projectId: string |
   const hasContributors = Boolean(churnedContributors?.length);
 
   function renderContent() {
+    if (isLoading) {
+      return <Skeleton variant="projectInsightProfilCardContent" />;
+    }
+
     if (isError) {
       return <MessagePlaceholder>{T("project.details.insights.errorPlaceholder")}</MessagePlaceholder>;
     }
@@ -56,10 +60,6 @@ export default function ChurnedContributors({ projectId }: { projectId: string |
         ) : null}
       </>
     );
-  }
-
-  if (isLoading) {
-    return <Skeleton variant="projectInsightProfilCard" />;
   }
 
   return (

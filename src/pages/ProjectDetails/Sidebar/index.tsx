@@ -74,7 +74,7 @@ export default function ProjectsSidebar() {
     AvailableTabs.contributors,
     ...(parseFlag("VITE_FLAG_ALLOW_PROJECT_CONTRIBUTIONS") && isProjectLeader ? [AvailableTabs.contributions] : []),
     ...(isProjectLeader ? [AvailableTabs.rewards] : []),
-    ...(isProjectLeader ? [AvailableTabs.insights] : []),
+    ...(parseFlag("VITE_FLAG_ALLOW_PROJECT_INSIGHTS") && isProjectLeader ? [AvailableTabs.insights] : []),
   ];
 
   if (isLoading && isXl)
