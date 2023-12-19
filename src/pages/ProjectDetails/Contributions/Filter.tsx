@@ -106,7 +106,10 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    !isAllTime(filters.dateRange) || filters.types?.length || filters.contributors?.length || filters.repos?.length
+    (filters.dateRange?.from && filters.dateRange?.to && !isAllTime(filters.dateRange)) ||
+      filters.types?.length ||
+      filters.contributors?.length ||
+      filters.repos?.length
   );
 
   const { data: reposData } = ProjectApi.queries.useGetProjectBySlug({
