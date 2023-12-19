@@ -986,7 +986,7 @@
         "mostActives": {
           "sectionTitle": "Most active contributors",
           "sectionSubtitle": "User that we indentified as your best profiles and that would match a maintainer role.",
-          "table":{
+          "table": {
             "contributor": "Contributor",
             "closedPrs": "Closed PRs",
             "completedIssues": "Completed issues",
@@ -1012,7 +1012,7 @@
         "staled": {
           "sectionTitle": "Contributors struggling",
           "sectionSubtitle": "User that might encounter a problem on their current task based on their latest actions.",
-          "table":{
+          "table": {
             "contributor": "Contributor",
             "repository": "Repository",
             "strugglingOn": "Struggling on",
