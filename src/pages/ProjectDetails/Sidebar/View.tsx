@@ -120,7 +120,7 @@ export default function View({
           ))}
 
           {!isLoggedIn ? (
-            <div className="border-t border-card-border-medium pt-4 text-base">
+            <div className="border-t border-card-border-medium pt-4 text-base xl:hidden">
               <GithubLink
                 onClick={() =>
                   dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })
