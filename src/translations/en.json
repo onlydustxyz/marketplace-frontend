@@ -1237,6 +1237,7 @@
       "full": "Reward contributor",
       "short": "Reward"
     },
+    "addBudgetButton": "Add budget",
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
