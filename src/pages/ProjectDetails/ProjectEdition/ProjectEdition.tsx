@@ -27,7 +27,6 @@ import { usePooling } from "src/hooks/usePooling/usePooling";
 import { useFormState } from "react-hook-form";
 import { Spinner } from "src/components/Spinner/Spinner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
-import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;
@@ -105,17 +104,20 @@ function SafeProjectEdition() {
   );
 
   return (
-    <Flex className="mx-auto h-full max-w-7xl flex-col">
-      {!project?.indexingComplete ? <StillFetchingBanner className="mt-4" size={CalloutSizes.Small} /> : null}
-      <Flex className="items-center px-4 py-6 xl:px-8 2xl:px-0">
-        <Link to="../">
-          <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
-            <CloseLine />
-          </Button>
-        </Link>
-        <Title>
-          <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
-        </Title>
+    <Flex className="mx-auto h-full max-w-7xl flex-col gap-6 pt-6">
+      <Flex className="w-full flex-col gap-6 px-4 xl:px-8 2xl:px-0">
+        <Flex className="items-center">
+          <Link to="../">
+            <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
+              <CloseLine />
+            </Button>
+          </Link>
+          <Title>
+            <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
+          </Title>
+        </Flex>
+
+        {!project?.indexingComplete ? <StillFetchingBanner /> : null}
       </Flex>
 
       <WrapperComponent className="flex w-full flex-1 flex-col overflow-hidden" padded={false} withBg={false}>

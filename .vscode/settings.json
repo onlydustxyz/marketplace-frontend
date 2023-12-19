@@ -9,5 +9,5 @@
   "[makefile]": {
     "editor.insertSpaces": false
   },
-  "rust-analyzer.showUnlinkedFileNotification": false
+  "rust-analyzer.showUnlinkedFileNotification": false,
 }

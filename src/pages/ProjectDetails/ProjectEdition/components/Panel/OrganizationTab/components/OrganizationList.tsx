@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
+import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
@@ -9,9 +10,14 @@ import { getGithubSetupLink } from "src/utils/githubSetupLink";
 interface OrganizationListProps {
   organizations: UseGithubOrganizationsResponse[];
   emptyListFallBackText: string;
+  disabledTooltip?: string;
 }
 
-export default function OrganizationList({ organizations, emptyListFallBackText }: OrganizationListProps) {
+export default function OrganizationList({
+  organizations,
+  emptyListFallBackText,
+  disabledTooltip,
+}: OrganizationListProps) {
   const {
     githubWorklow: { run },
     project,
@@ -40,6 +46,8 @@ export default function OrganizationList({ organizations, emptyListFallBackText 
               linkIcon={org.installed ? <PencilLine /> : <AddLine />}
               isExternalFlow={org.installed}
               disabled={!org.isCurrentUserAdmin}
+              tooltip={disabledTooltip}
+              TitleComponent={<GithubLink url={org.htmlUrl} text={org.name || org.login} />}
             />
           );
         })}

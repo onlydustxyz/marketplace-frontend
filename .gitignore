@@ -77,3 +77,6 @@ tarpaulin_target
 
 # API generated types 
 src/__generated/api.d.ts
+
+# VSCode settings
+.vscode/**

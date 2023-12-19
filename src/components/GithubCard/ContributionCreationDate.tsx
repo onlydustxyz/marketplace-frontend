@@ -1,8 +1,7 @@
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import { GithubIssueStatus } from "src/__generated/graphql";
 import Time from "src/icons/TimeLine";
-import { GithubCodeReviewStatus, GithubContributionType, GithubPullRequestStatus } from "src/types";
+import { GithubCodeReviewStatus, GithubContributionType, GithubIssueStatus, GithubPullRequestStatus } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { getFormattedDateGB, getFormattedTimeUS } from "src/utils/date";

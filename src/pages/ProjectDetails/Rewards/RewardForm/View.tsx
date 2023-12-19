@@ -3,8 +3,6 @@ import { useIntl } from "src/hooks/useIntl";
 import ContributorSelect from "src/pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import addContributionImg from "src/assets/img/add-contribution.png";
-import pickContributorImg from "src/assets/img/pick-contributor.png";
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import { viewportConfig } from "src/config";
@@ -15,14 +13,13 @@ import {
   contributionToWorkItem,
 } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import Title from "src/pages/ProjectDetails/Title";
-import { GithubContributionType } from "src/types";
+import { GithubContributionType, ProjectBudgetType } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
 import { AutoAddOrIgnore } from "./AutoAdd/AutoAddOrIgnore";
 import { WorkItem } from "./WorkItem";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
-import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { BudgetCurrencyType } from "src/utils/money";
 import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
 import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
@@ -31,6 +28,7 @@ import { CompletedRewardableItem } from "src/api/Project/queries";
 import ProjectApi from "src/api/Project";
 import useMutationAlert from "src/api/useMutationAlert";
 import Skeleton from "src/components/Skeleton";
+import { IMAGES } from "src/assets/img";
 
 interface Props {
   projectId: string;
@@ -257,13 +255,29 @@ const View: React.FC<Props> = ({
           {!contributor && (
             <PlaceholderWithImage
               text={T("reward.form.missingContributor")}
-              imageElement={<img width={267} src={pickContributorImg} className="absolute bottom-0 right-0 top-0" />}
+              imageElement={
+                <img
+                  width={267}
+                  src={IMAGES.global.pickContributor}
+                  className="absolute bottom-0 right-0 top-0"
+                  loading="lazy"
+                  alt={T("reward.form.contributor.title")}
+                />
+              }
             />
           )}
           {contributor && workItems.length === 0 && (
             <PlaceholderWithImage
               text={T("reward.form.missingContribution")}
-              imageElement={<img width={165} src={addContributionImg} className="absolute bottom-0 right-0" />}
+              imageElement={
+                <img
+                  width={165}
+                  src={IMAGES.global.addContribution}
+                  className="absolute bottom-0 right-0"
+                  loading="lazy"
+                  alt={T("reward.form.contributor.title")}
+                />
+              }
             />
           )}
           {contributor && workItems.length > 0 && projectBudget?.budgets && (

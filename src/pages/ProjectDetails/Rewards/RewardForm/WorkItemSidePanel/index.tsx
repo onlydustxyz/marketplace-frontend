@@ -9,9 +9,9 @@ import OtherWorkForm from "./OtherWorkForm";
 import DiscussLine from "src/icons/DiscussLine";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { WorkItemType } from "src/__generated/graphql";
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 import { Contributor } from "../types";
+import { WorkItemType } from "src/types";
 
 type Props = {
   projectId: string;

@@ -1,7 +1,6 @@
 import { ComponentProps, useState } from "react";
 import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { OrderBy } from "src/__generated/graphql";
 import ProjectApi from "src/api/Project";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -16,13 +15,14 @@ import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import Title from "src/pages/ProjectDetails/Title";
-import { ContributionStatus } from "src/types";
+import { ContributionStatus, OrderBy } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useLocalStorage } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { FilterQueryParams, ProjectContributionsFilter } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
 
 const initialSort: Record<ContributionStatus, TableSort> = {
   [ContributionStatus.InProgress]: {
@@ -44,7 +44,7 @@ export default function Contributions() {
   const navigate = useNavigate();
   const { projectKey = "" } = useParams<{ projectKey?: string }>();
 
-  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
+  const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
   });
 
@@ -249,9 +249,13 @@ export default function Contributions() {
           </Flex>
         ) : null}
       </div>
+
+      {!project?.indexingComplete && !isLoadingProject ? <StillFetchingBanner /> : null}
+
       {project && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
+
       <div className="h-full overflow-y-auto">
         <div className="h-full w-full overflow-y-auto rounded-3xl bg-contributions bg-right-top bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
           <div className="relative min-h-full">
@@ -261,7 +265,7 @@ export default function Contributions() {
                 <div className="flex items-center justify-between md:px-4">
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
-                  <div className="hidden -translate-y-3 lg:block">
+                  <div className="md:-translate-y-3">
                     <ProjectContributionsFilter
                       onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)}
                     />

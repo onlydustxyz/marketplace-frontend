@@ -21,7 +21,7 @@ export const FieldProjectLeadSelectItem: FC<FieldProjectLeadSelectItemProps> = (
       <div className="flex items-center gap-2">
         <Avatar src={avatarUrl || ""} alt={login} shape="circle" size="4" />
         <span className="block flex-1 truncate">{login}</span>
-        {isRegistered ? <Avatar src={IMAGES.logo.gradient} alt="Onlydust user" size="3.5" /> : null}
+        {isRegistered ? <Avatar src={IMAGES.logo.original} alt="Onlydust" size="3.5" /> : null}
       </div>
       {selected ? <CheckLine className="h-4 w-4" /> : null}
     </div>

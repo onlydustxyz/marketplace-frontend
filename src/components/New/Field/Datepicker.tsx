@@ -1,42 +1,67 @@
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
-import { isSameDay } from "date-fns";
 import { useMemo } from "react";
 import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CalendarEventLine from "src/icons/CalendarEventLine";
+import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
-import { getFormattedDateGB, parseDateRangeString, parseDateString } from "src/utils/date";
+import { getFormattedDateGB, getFormattedTimeDatepicker, parseDateRangeString, parseDateString } from "src/utils/date";
 
-type Props = {
+export enum Period {
+  ThisWeek = "this_week",
+  ThisMonth = "this_month",
+  LastMonth = "last_month",
+  Last6Months = "last_6_months",
+  ThisYear = "this_year",
+  LastYear = "last_year",
+  AllTime = "all_time",
+  Forever = "forever",
+  Custom = "custom",
+}
+
+type BaseProps = {
   isElevated?: boolean;
 };
 
-type SingleProps = Props & {
+type SingleProps = BaseProps & {
   mode: "single";
   value?: Date;
   onChange: DayPickerSingleProps["onSelect"];
-  periods?: {
-    label: string;
-    value: Date;
-  }[];
 };
 
-type RangeProps = Props & {
+type RangeProps = BaseProps & {
   mode: "range";
   value?: DateRange;
   onChange: DayPickerRangeProps["onSelect"];
-  periods?: {
+};
+
+type ModeProps = SingleProps | RangeProps;
+
+type WithPeriodProps = ModeProps & {
+  selectedPeriod: Period;
+  onPeriodChange: (period: Period) => void;
+  periods: {
+    id: Period;
     label: string;
-    value: DateRange;
+    value: Date | DateRange;
+    isActive: boolean;
   }[];
 };
 
+type WithoutPeriodProps = ModeProps & {
+  selectedPeriod?: never;
+  onPeriodChange?: never;
+  periods?: never;
+};
+
+type Props = WithPeriodProps | WithoutPeriodProps;
+
 // Do not spread props due to this Typescript limitation
 // https://stackoverflow.com/questions/69023997/typescript-discriminated-union-narrowing-not-working
-export function Datepicker({ isElevated = false, ...props }: SingleProps | RangeProps) {
+export function Datepicker({ isElevated = false, ...props }: Props) {
   const { T } = useIntl();
   const { refs, floatingStyles, placement } = useFloating({
     middleware: [flip()],
@@ -44,6 +69,7 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
     transform: false,
   });
 
+  // This is useful if a date range only has one of two values for example
   const selectionIsValid = useMemo(() => {
     if (props.mode === "range") {
       // Sometimes date strings are passed instead of date objects
@@ -56,41 +82,84 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
     return Boolean(parseDateString(props.value));
   }, [props.mode, props.value]);
 
-  function renderCalendar() {
-    if (props.mode === "range") {
-      // Sometimes date strings are passed instead of date objects
-      const selected = parseDateRangeString(props.value);
-
-      return <Calendar mode="range" selected={selected} onSelect={props.onChange} />;
+  // If a period is selected use the period's value, otherwise use the custom value
+  const selectedValue = useMemo(() => {
+    if (props.selectedPeriod !== Period.Custom && props.periods) {
+      return props.periods.find(({ id }) => id === props.selectedPeriod)?.value;
     }
 
-    // Sometimes date strings are passed instead of date objects
-    const selected = parseDateString(props.value);
+    return props.value;
+  }, [props.selectedPeriod, props.periods, props.value]);
 
-    return <Calendar mode="single" selected={selected} onSelect={props.onChange} />;
+  // Type guard to check if selectedValue is a DateRange
+  const selectedDateRange = useMemo(() => {
+    if (!(selectedValue instanceof Date)) {
+      return selectedValue;
+    }
+
+    return undefined;
+  }, [selectedValue]);
+
+  // Type guard to check if selectedValue is a Date
+  const selectedDate = useMemo(() => {
+    if (selectedValue instanceof Date) {
+      return selectedValue;
+    }
+
+    return undefined;
+  }, [selectedValue]);
+
+  function renderCalendar({ close }: { close: () => void }) {
+    if (props.mode === "range") {
+      return (
+        <Calendar
+          mode="range"
+          // Sometimes date strings are passed instead of date objects
+          selected={parseDateRangeString(selectedDateRange)}
+          onSelect={(...args) => {
+            props.onChange?.(...args);
+
+            const { from, to } = args[0] ?? {};
+
+            if (from && to) {
+              props.onPeriodChange?.(Period.Custom);
+              close();
+            }
+          }}
+        />
+      );
+    }
+
+    return (
+      <Calendar
+        mode="single"
+        // Sometimes date strings are passed instead of date objects
+        selected={parseDateString(selectedDate)}
+        onSelect={(...args) => {
+          props.onChange?.(...args);
+          props.onPeriodChange?.(Period.Custom);
+          close();
+        }}
+      />
+    );
   }
 
   function renderPlaceholder() {
-    if (props.mode === "range") {
-      const selectedPeriod = props.periods?.find(period => {
-        return props.value?.from && props.value?.to && period.value.from && period.value.to
-          ? isSameDay(period.value.from, new Date(props.value.from)) &&
-              isSameDay(period.value.to, new Date(props.value.to))
-          : false;
-      });
+    const selectedPeriod = props.periods?.find(({ id }) => id === props.selectedPeriod);
 
-      if (selectedPeriod) return selectedPeriod.label;
-
-      return props.value?.from && props.value?.to
-        ? `${getFormattedDateGB(new Date(props.value.from))} - ${getFormattedDateGB(new Date(props.value.to))}`
-        : T("form.dateRangePlaceholder");
+    if (selectionIsValid && selectedPeriod) {
+      return selectedPeriod.label;
     }
 
-    const selectedPeriod = props.periods?.find(period => {
-      return props.value ? isSameDay(period.value, new Date(props.value)) : false;
-    });
+    if (props.mode === "range") {
+      if (props.value?.from && props.value?.to) {
+        return `${getFormattedTimeDatepicker(new Date(props.value.from))} - ${getFormattedTimeDatepicker(
+          new Date(props.value.to)
+        )}`;
+      }
 
-    if (selectedPeriod) return selectedPeriod.label;
+      return T("form.dateRangePlaceholder");
+    }
 
     return props.value ? getFormattedDateGB(new Date(props.value)) : T("form.singleDatePlaceholder");
   }
@@ -135,38 +204,47 @@ export function Datepicker({ isElevated = false, ...props }: SingleProps | Range
             })}
           >
             <Popover.Panel>
-              {props.periods?.length ? (
-                <div className="border-b border-greyscale-50/8 font-walsheim">
-                  {props.periods?.map(({ label, value }) => {
-                    return (
-                      <button
-                        key={label}
-                        type="button"
-                        className="w-full px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
-                        onClick={e => {
-                          if (props.mode === "single" && value instanceof Date) {
-                            props.onChange?.(value, value, {}, e);
-                          }
+              {({ close }) => (
+                <>
+                  {props.periods?.length ? (
+                    <div className="divide-y divide-card-border-medium border-b border-greyscale-50/8 font-walsheim">
+                      {props.periods?.map(({ id, label, value, isActive }) => {
+                        return (
+                          <button
+                            key={id}
+                            type="button"
+                            className="flex w-full items-center justify-between px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
+                            onClick={e => {
+                              if (props.mode === "single" && value instanceof Date) {
+                                props.onChange?.(value, value, {}, e);
+                              }
 
-                          // Not ideal, but got to please Typescript
-                          if (
-                            props.mode === "range" &&
-                            "from" in value &&
-                            "to" in value &&
-                            value.from instanceof Date &&
-                            value.to instanceof Date
-                          ) {
-                            props.onChange?.(value, value.from, {}, e);
-                          }
-                        }}
-                      >
-                        {label}
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : null}
-              {renderCalendar()}
+                              // Not ideal, but got to please Typescript
+                              if (
+                                props.mode === "range" &&
+                                "from" in value &&
+                                "to" in value &&
+                                value.from instanceof Date &&
+                                value.to instanceof Date
+                              ) {
+                                props.onChange?.(value, value.from, {}, e);
+                              }
+
+                              props.onPeriodChange(id);
+
+                              close();
+                            }}
+                          >
+                            <span>{label}</span>
+                            {isActive ? <CheckLine className="text-xl leading-none" /> : null}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                  {renderCalendar({ close })}
+                </>
+              )}
             </Popover.Panel>
           </Transition>
         </>
