@@ -963,6 +963,8 @@
       },
       "insights": {
         "title": "Insights",
+        "emptyPlaceholder": "No contributors here.",
+        "errorPlaceholder": "An error occurred, please try again later.",
         "newcomers": {
           "sectionTitle": "New contributors",
           "sectionSubtitle": "All contrbutors that have joined one of your repositories during last month.",
@@ -1013,7 +1015,11 @@
         "churned": {
           "sectionTitle": "Churned contributors",
           "sectionSubtitle": "User that are inactive for a long time period and stop contributing to your project.",
-          "buttonLabel": "Reactivate"
+          "buttonLabel": "Reactivate",
+          "lastContribution": {
+            "title": "Last contribution",
+            "on": "on"
+          }
         }
       },
       "rewards": {

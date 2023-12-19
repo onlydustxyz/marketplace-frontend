@@ -5,6 +5,7 @@ import LastContributionCard from "./commons/LastContributionCard/LastContributio
 import { useIntl } from "src/hooks/useIntl";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import LogoutCircleLine from "src/icons/LogoutCircleLine";
+import MessagePlaceholder from "src/components/New/Placeholders/MessagePlaceholder";
 
 export default function ChurnedContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
@@ -14,6 +15,52 @@ export default function ChurnedContributors({ projectId }: { projectId: string |
     });
   const churnedContributors = data?.pages?.flatMap(data => data.contributors);
   const hasContributors = Boolean(churnedContributors?.length);
+
+  function renderContent() {
+    if (isError) {
+      return <MessagePlaceholder>{T("project.details.insights.errorPlaceholder")}</MessagePlaceholder>;
+    }
+
+    if (!hasContributors) {
+      return <MessagePlaceholder>{T("project.details.insights.emptyPlaceholder")}</MessagePlaceholder>;
+    }
+
+    return (
+      <>
+        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {churnedContributors?.map(contributor => (
+            <TinyProfilCard
+              key={contributor.login}
+              cover={contributor.cover}
+              avatarUrl={contributor.avatarUrl}
+              name={contributor.login}
+              isRegistered={contributor.isRegistered}
+              actionLabel={T("project.details.insights.churned.buttonLabel")}
+              onAction={() => {
+                console.log("action");
+              }}
+            >
+              <LastContributionCard
+                lastContributionDate={contributor?.lastContribution?.completedAt}
+                repoName={contributor?.lastContribution?.repo?.name}
+                linkUrl={contributor.lastContribution?.repo?.htmlUrl}
+              />
+            </TinyProfilCard>
+          ))}
+        </div>
+        {hasNextPage ? (
+          <div className="py-3">
+            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
+          </div>
+        ) : null}
+      </>
+    );
+  }
+
+  if (isLoading) {
+    return <div>skeleton</div>;
+  }
+
   return (
     <CollapsibleCard
       title={T("project.details.insights.churned.sectionTitle")}
@@ -22,32 +69,7 @@ export default function ChurnedContributors({ projectId }: { projectId: string |
       isEmpty={!hasContributors}
       hasShowMore={hasNextPage}
     >
-      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {churnedContributors?.map(contributor => (
-          <TinyProfilCard
-            key={contributor.login}
-            cover={contributor.cover}
-            avatarUrl={contributor.avatarUrl}
-            name={contributor.login}
-            isRegistered={contributor.isRegistered}
-            actionLabel={T("project.details.insights.churned.buttonLabel")}
-            onAction={() => {
-              console.log("action");
-            }}
-          >
-            <LastContributionCard
-              lastContributionDate={contributor?.lastContribution?.completedAt}
-              repoName={contributor?.lastContribution?.repo?.name}
-              linkUrl={contributor.lastContribution?.repo?.htmlUrl}
-            />
-          </TinyProfilCard>
-        ))}
-      </div>
-      {hasNextPage ? (
-        <div className="py-3">
-          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
-        </div>
-      ) : null}
+      {renderContent()}
     </CollapsibleCard>
   );
 }

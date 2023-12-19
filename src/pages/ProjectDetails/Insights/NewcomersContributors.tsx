@@ -4,6 +4,7 @@ import { useIntl } from "src/hooks/useIntl";
 import ProjectApi from "src/api/Project";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import TeamLine from "src/icons/TeamLine";
+import MessagePlaceholder from "src/components/New/Placeholders/MessagePlaceholder";
 
 export default function NewcomersContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
@@ -13,6 +14,49 @@ export default function NewcomersContributors({ projectId }: { projectId: string
     });
   const newComersContributors = data?.pages?.flatMap(data => data.contributors);
   const hasContributors = Boolean(newComersContributors?.length);
+
+  function renderContent() {
+    if (isError) {
+      return <MessagePlaceholder>{T("project.details.insights.errorPlaceholder")}</MessagePlaceholder>;
+    }
+
+    if (!hasContributors) {
+      return <MessagePlaceholder>{T("project.details.insights.emptyPlaceholder")}</MessagePlaceholder>;
+    }
+
+    return (
+      <>
+        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {newComersContributors?.map(contributor => (
+            <TinyProfilCard
+              key={contributor.login}
+              cover={contributor.cover}
+              avatarUrl={contributor.avatarUrl}
+              name={contributor.login}
+              isRegistered={contributor.isRegistered}
+              bio={contributor?.bio}
+              location={contributor.location}
+              sinceDate={contributor.firstContributedAt ? new Date(contributor.firstContributedAt) : undefined}
+              actionLabel={T("project.details.insights.newcomers.buttonLabel")}
+              onAction={() => {
+                console.log("action");
+              }}
+            />
+          ))}
+        </div>
+        {hasNextPage ? (
+          <div className="py-3">
+            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
+          </div>
+        ) : null}
+      </>
+    );
+  }
+
+  if (isLoading) {
+    return <div>skeleton</div>;
+  }
+
   return (
     <CollapsibleCard
       title={T("project.details.insights.newcomers.sectionTitle")}
@@ -21,29 +65,7 @@ export default function NewcomersContributors({ projectId }: { projectId: string
       isEmpty={!hasContributors}
       hasShowMore={hasNextPage}
     >
-      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {newComersContributors?.map(contributor => (
-          <TinyProfilCard
-            key={contributor.login}
-            cover={contributor.cover}
-            avatarUrl={contributor.avatarUrl}
-            name={contributor.login}
-            isRegistered={contributor.isRegistered}
-            bio={contributor?.bio}
-            location={contributor.location}
-            sinceDate={contributor.firstContributedAt ? new Date(contributor.firstContributedAt) : undefined}
-            actionLabel={T("project.details.insights.newcomers.buttonLabel")}
-            onAction={() => {
-              console.log("action");
-            }}
-          />
-        ))}
-      </div>
-      {hasNextPage ? (
-        <div className="py-3">
-          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
-        </div>
-      ) : null}
+      {renderContent()}
     </CollapsibleCard>
   );
 }

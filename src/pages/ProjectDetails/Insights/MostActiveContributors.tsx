@@ -22,11 +22,19 @@ export default function MostActiveContributors({ projectId }: { projectId: strin
 
   function renderDesktopContent() {
     if (isError) {
-      return <EmptyTablePlaceholder colSpan={nbColumns}>{T("contributions.table.error")}</EmptyTablePlaceholder>;
+      return (
+        <EmptyTablePlaceholder colSpan={nbColumns}>
+          {T("project.details.insights.errorPlaceholder")}
+        </EmptyTablePlaceholder>
+      );
     }
 
     if (!hasContributors) {
-      return <EmptyTablePlaceholder colSpan={nbColumns}>{T("contributions.table.empty")}</EmptyTablePlaceholder>;
+      return (
+        <EmptyTablePlaceholder colSpan={nbColumns}>
+          {T("project.details.insights.emptyPlaceholder")}
+        </EmptyTablePlaceholder>
+      );
     }
 
     return mostActiveContributors?.map(bodyRow);

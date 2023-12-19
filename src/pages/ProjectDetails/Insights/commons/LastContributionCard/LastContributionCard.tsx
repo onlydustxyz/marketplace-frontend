@@ -3,12 +3,14 @@ import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import StackLine from "src/icons/StackLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { LastContributionCardProps } from "./LastContributionCard.type";
+import { useIntl } from "src/hooks/useIntl";
 
 export default function LastContributionCard({
   lastContributionDate = "",
   repoName = "",
   linkUrl = "",
 }: LastContributionCardProps) {
+  const { T } = useIntl();
   return (
     <a href={linkUrl} target="_blank" rel="noopener noreferrer">
       <Card className="bg-card-background-light px-2 py-3 shadow-medium lg:px-2 lg:py-3">
@@ -19,9 +21,14 @@ export default function LastContributionCard({
             </div>
           </div>
           <div className="flex-1">
-            <div className="text-sm font-normal text-greyscale-200">Last contribution</div>
+            <div className="text-sm font-normal text-greyscale-200">
+              {T("project.details.insights.churned.lastContribution.title")}
+            </div>
             <div className=" line-clamp-1 text-xs font-medium">
-              <span>{displayRelativeDate(new Date(lastContributionDate))} on </span>
+              <span>
+                {displayRelativeDate(new Date(lastContributionDate))}{" "}
+                {T("project.details.insights.churned.lastContribution.on")}{" "}
+              </span>
               <span className="text-spacePurple-300">{repoName}</span>
             </div>
           </div>

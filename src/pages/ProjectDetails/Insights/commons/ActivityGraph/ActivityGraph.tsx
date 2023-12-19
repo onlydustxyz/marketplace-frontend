@@ -16,7 +16,7 @@ export default function ActivityGraph({ data }: Props) {
 
         return codeReviewCount || issueCount || pullRequestCount ? (
           <div key={index} className="flex h-10 w-3 flex-col items-end justify-end">
-            {pullRequestCount > 0 && (
+            {pullRequestCount > 0 ? (
               <div
                 className={cn(`w-full bg-spacePurple-300 ${calculateHeight(pullRequestCount, maxCount)}`, {
                   "rounded-t-sm": firstNonZeroBar === "pullRequest",
@@ -32,8 +32,8 @@ export default function ActivityGraph({ data }: Props) {
                   }
                 )}
               />
-            )}
-            {issueCount > 0 && (
+            ) : null}
+            {issueCount > 0 ? (
               <div
                 className={cn(`w-full bg-midBlue-300 ${calculateHeight(issueCount, maxCount)}`, {
                   "rounded-t-sm": firstNonZeroBar === "issue",
@@ -49,8 +49,8 @@ export default function ActivityGraph({ data }: Props) {
                   }
                 )}
               />
-            )}
-            {codeReviewCount > 0 && (
+            ) : null}
+            {codeReviewCount > 0 ? (
               <div
                 className={cn(`w-full bg-orange-300 ${calculateHeight(codeReviewCount, maxCount)}`, {
                   "rounded-t-sm": firstNonZeroBar === "codeReview",
@@ -66,7 +66,7 @@ export default function ActivityGraph({ data }: Props) {
                   }
                 )}
               />
-            )}
+            ) : null}
           </div>
         ) : null;
       })}
