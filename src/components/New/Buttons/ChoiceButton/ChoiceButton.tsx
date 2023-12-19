@@ -5,13 +5,6 @@ import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { Fragment, useMemo } from "react";
 import { Menu, Transition } from "@headlessui/react";
 
-// TEST LINK
-// http://localhost:5173/p/bug-fix-mickael/rewards
-// http://localhost:5173/p/mtest/rewards
-// http://localhost:5173/p/deluge
-// TODO : padding on icon button
-// TODO : small on icon on large button
-
 export const ChoiceButton = ({ choices, defaultOption, icon, ...rest }: ChoiceButtonProps) => {
   const defaultChoice = useMemo(() => {
     const findDefault = choices.find(choice => choice.name === defaultOption && !choice.disabled);
