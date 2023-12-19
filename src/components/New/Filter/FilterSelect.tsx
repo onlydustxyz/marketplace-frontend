@@ -6,10 +6,7 @@ import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
 import { Avatar } from "../Avatar";
-<<<<<<< HEAD
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
-=======
->>>>>>> b7a4a9ee75aab806d5e10198dd69fe495440bd4f
 
 export type Item = {
   id: number | string;
