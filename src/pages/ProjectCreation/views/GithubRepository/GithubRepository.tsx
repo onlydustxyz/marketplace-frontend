@@ -85,7 +85,7 @@ export const GithubRepositoryPage = () => {
                     {organization.repos.length === 0 ? (
                       <p className="text-body-s mb-2">{T("project.details.create.repository.placeholder")}</p>
                     ) : (
-                      <div className="grid grid-flow-row grid-cols-2 gap-x-5 gap-y-5">
+                      <div className="grid grid-flow-row grid-cols-1 gap-x-5 gap-y-5 md:grid-cols-2">
                         {(sortBy(organization.repos, "name") || []).map(repo => (
                           <label
                             key={repo.name}

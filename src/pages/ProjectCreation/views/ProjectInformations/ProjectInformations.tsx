@@ -45,6 +45,7 @@ export const ProjectInformationsPage = () => {
           htmlType="submit"
           onBackground={ButtonOnBackground.Blue}
           disabled={!form.formState?.isValid || form.formState.isSubmitting}
+          className="w-full md:w-auto"
         >
           <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
         </Button>
