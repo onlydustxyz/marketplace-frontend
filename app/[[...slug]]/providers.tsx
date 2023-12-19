@@ -7,7 +7,6 @@ import OnboardingProvider from "src/App/OnboardingProvider";
 import { Stacks } from "src/App/Stacks/Stacks";
 import ErrorFallback from "src/ErrorFallback";
 import Maintenance from "src/Maintenance";
-import SEO from "src/components/SEO";
 import config from "src/config";
 import { AuthProvider } from "src/hooks/useAuth";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
@@ -36,8 +35,6 @@ export default function Providers() {
   return (
     <IntlProvider>
       <BrowserRouter>
-        {/* TODO remove this */}
-        <SEO />
         <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
           <SessionProvider>
             <ImpersonationClaimsProvider>
