@@ -117,14 +117,17 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
           // Sometimes date strings are passed instead of date objects
           selected={parseDateRangeString(selectedDateRange)}
           onSelect={(...args) => {
-            props.onChange?.(...args);
+            // If we already have a valid date range and the user selects a new date, we want to reset the date range
+            if (selectedDateRange?.from && selectedDateRange?.to) {
+              const [, selectedDay, ...restArgs] = args;
 
-            const { from, to } = args[0] ?? {};
-
-            if (from && to) {
-              props.onPeriodChange?.(Period.Custom);
+              props.onChange?.({ from: selectedDay, to: undefined }, selectedDay, ...restArgs);
+            } else {
+              props.onChange?.(...args);
               close();
             }
+
+            props.onPeriodChange?.(Period.Custom);
           }}
         />
       );
