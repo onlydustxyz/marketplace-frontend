@@ -2,11 +2,13 @@ import { Popover, Transition } from "@headlessui/react";
 import { PropsWithChildren } from "react";
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Card from "src/components/Card";
+import { cn } from "src/utils/cn";
 
 type Props = {
   onClose: () => void;
   title: string;
   description: string;
+  className?: string;
   disabled?: boolean;
   confirm: {
     label: string;
@@ -26,6 +28,7 @@ export default function ConfirmationPopOver({
   title,
   children,
   disabled,
+  className,
 }: Props) {
   const handleCancel = () => {
     cancel.onClick();
@@ -47,7 +50,7 @@ export default function ConfirmationPopOver({
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <Popover.Panel className="absolute z-10">
+        <Popover.Panel className={cn("absolute z-10", className)}>
           <Card
             padded={false}
             fullWidth={false}

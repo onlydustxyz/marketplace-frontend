@@ -74,6 +74,7 @@ export default function SubmitProject({ className }: { className?: string }) {
         <ConfirmationPopOver
           onClose={closeModal}
           disabled={!canResume}
+          className="right-0 md:right-auto"
           confirm={{
             label: T("project.details.create.startPopOver.resume"),
             onClick: onResume,
