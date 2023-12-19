@@ -34,7 +34,15 @@ export default function NewcomersContributors({ projectId }: { projectId: string
               avatarUrl={contributor.avatarUrl}
               name={contributor.login}
               isRegistered={contributor.isRegistered}
-              bio={contributor?.bio}
+              bio={
+                contributor?.bio ? (
+                  <div className="line-clamp-2 h-10 text-sm font-normal text-greyscale-200">{contributor?.bio}</div>
+                ) : (
+                  <div className="line-clamp-2 h-10 text-sm font-normal italic text-greyscale-200">
+                    {T("project.details.insights.newcomers.descriptionPlaceholder")}
+                  </div>
+                )
+              }
               location={contributor.location}
               sinceDate={contributor.firstContributedAt ? new Date(contributor.firstContributedAt) : undefined}
               actionLabel={T("project.details.insights.newcomers.buttonLabel")}

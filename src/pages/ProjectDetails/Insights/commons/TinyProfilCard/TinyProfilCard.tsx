@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import SendPlane2Line from "src/icons/SendPlane2Line";
@@ -25,8 +25,8 @@ function OptionalSection({
   className,
 }: {
   condition: boolean;
-  children: React.ReactNode;
-  fallback?: React.ReactNode;
+  children: ReactElement;
+  fallback?: ReactElement;
   className?: string;
 }) {
   if (condition) {
@@ -74,14 +74,7 @@ export default function TinyProfileCard({
             {isRegistered && <img src={IMAGES.logo.original} className="ml-1.5 w-3.5" loading="lazy" alt="OnlyDust" />}
           </div>
           {children}
-          <OptionalSection
-            condition={!!bio}
-            fallback={
-              <div className="line-clamp-2 h-10 text-sm font-normal italic text-greyscale-200">
-                {T("project.details.insights.newcomers.descriptionPlaceholder")}
-              </div>
-            }
-          >
+          <OptionalSection condition={!!bio}>
             <div className="line-clamp-2 h-10 text-sm font-normal text-greyscale-200">{bio}</div>
           </OptionalSection>
           <OptionalSection condition={!!location || !!sinceDate}>

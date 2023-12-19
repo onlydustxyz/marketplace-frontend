@@ -1,3 +1,5 @@
+import { ReactElement } from "react-markdown/lib/react-markdown";
+
 export enum ProfileCover {
   Blue = "BLUE",
   Cyan = "CYAN",
@@ -12,8 +14,8 @@ export interface Props {
   isRegistered?: boolean;
   actionLabel?: string;
   onAction?: () => void;
-  bio?: string;
+  bio?: ReactElement;
   location?: string;
   sinceDate?: Date;
-  children?: React.ReactNode;
+  children?: ReactElement;
 }
