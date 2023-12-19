@@ -680,7 +680,11 @@
       "aptosEarnings": "Aptos earnings",
       "usdInfoEarnings": "Dollar equivalent at today's date across all your earnings",
       "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
-      "invoiceError": "Unable to retrieve Invoice informations. Please try again."
+      "invoiceError": "Unable to retrieve Invoice informations. Please try again.",
+      "amountRewarded": "Rewarded amount",
+      "amountPending": "Pending amount",
+      "receivedRewards": "Rewards received",
+      "projects": "Projects rewarding"
     },
     "budgets": {
       "error": "Unable to retrieve Rewards Budgets. Please try again."

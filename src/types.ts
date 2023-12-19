@@ -245,34 +245,6 @@ export interface Project {
   remainingUsdBudget: number;
 }
 
-export type Reward = {
-  paymentId: string;
-  paymentRequest: {
-    amount: number;
-    currency: string;
-    hoursWorked: number;
-    invoiceReceivedAt: Date | null;
-    payments: {
-      processedAt: Date;
-    }[];
-    paymentsAggregate: {
-      aggregate: {
-        sum: {
-          amount: number | null;
-        };
-      };
-    };
-    recipientId: number;
-    requestedAt: Date;
-    requestor: {
-      avatarUrl: string;
-      githubUserId: number;
-      htmlUrl: string;
-      login: string;
-    };
-  };
-};
-
 export type ContributorT = {
   avatarUrl: string | null;
   codeReviewToReward: number | null;
@@ -381,3 +353,5 @@ export enum OrderBy {
 }
 
 export type Maybe<T> = T | null;
+
+export type MyReward = components["schemas"]["MyRewardPageItemResponse"];

@@ -9,6 +9,8 @@ import { RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
 import Card from "src/components/Card";
 import Skeleton from "../Skeleton";
+import { useContext, useEffect } from "react";
+import { UserRewardsContext } from "src/pages/Rewards/context";
 
 type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;
@@ -16,6 +18,8 @@ type PropsType = {
 };
 
 export default function DesktopUserRewardList({ onRewardClick, selectedReward }: PropsType) {
+  const { setEarning } = useContext(UserRewardsContext);
+
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
     isAscending: false,
@@ -26,6 +30,10 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward }:
     MeApi.queries.useMyRewardsInfiniteList({
       queryParams,
     });
+
+  useEffect(() => {
+    data && setEarning(data);
+  }, [data]);
 
   if (error) {
     return (

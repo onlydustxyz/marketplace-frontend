@@ -1,8 +1,11 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import SEO from "src/components/SEO";
 import UserRewardTable from "src/components/UserRewardTable";
+import Flex from "src/components/Utils/Flex";
 import { useT } from "talkr";
-import { EarningWrapper } from "./Earning/EarningWrapper";
+import { UserRewardsProvider } from "./context";
+import { Earning } from "./Earning/Earning";
+import { UserRewardsFilter } from "./Filter";
 import InvoiceSubmission from "./InvoiceSubmission";
 
 export enum RewardStatus {
@@ -16,16 +19,19 @@ export default function Rewards() {
   const { T } = useT();
 
   return (
-    <>
+    <UserRewardsProvider>
       <SEO />
       <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
-          <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
+          <Flex className="items-center justify-between">
+            <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
+            <UserRewardsFilter onChange={value => console.log("value", value)} />
+          </Flex>
           <InvoiceSubmission />
-          <EarningWrapper />
+          <Earning />
           <UserRewardTable />
         </div>
       </Background>
-    </>
+    </UserRewardsProvider>
   );
 }
