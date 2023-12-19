@@ -42,7 +42,7 @@ export const ChoiceButton = ({ choices, defaultOption, icon, ...rest }: ChoiceBu
           {defaultChoice.label}
         </Button>
         {availableChoice.length > 1 && (
-          <Menu.Button>
+          <Menu.Button as="div">
             <Button
               {...rest}
               className={cn("rounded-l-none filter-none focus:outline-none")}
