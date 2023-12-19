@@ -48,7 +48,13 @@ export const ChoiceButton = ({ choices, defaultOption, icon, ...rest }: ChoiceBu
               className={cn("rounded-l-none filter-none focus:outline-none")}
               disabled={rest.disabled || defaultChoice.disabled}
             >
-              {icon || <ArrowDownSLine className="text-sm text-black" />}
+              {icon || (
+                <ArrowDownSLine
+                  className={cn("text-sm text-black", {
+                    "text-xl": rest.size !== ButtonSize.Sm && rest.size !== ButtonSize.Xs,
+                  })}
+                />
+              )}
             </Button>
           </Menu.Button>
         )}

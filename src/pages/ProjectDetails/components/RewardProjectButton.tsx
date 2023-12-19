@@ -12,6 +12,7 @@ import { useAuth } from "src/hooks/useAuth";
 
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
+import { cn } from "src/utils/cn";
 
 type RewardProjectButtonProps = { project: components["schemas"]["ProjectResponse"]; size?: ButtonSize };
 
@@ -56,7 +57,13 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
         defaultOption="reward"
         onBackground={ButtonOnBackground.Blue}
         size={size}
-        icon={<ArrowDownSLine className="text-sm text-black" />}
+        icon={
+          <ArrowDownSLine
+            className={cn("text-sm text-black", {
+              "text-xl": size !== ButtonSize.Sm && size !== ButtonSize.Xs,
+            })}
+          />
+        }
       />
 
       <SidePanel open={isApplyOpen} setOpen={setIsApplyOpen}>
