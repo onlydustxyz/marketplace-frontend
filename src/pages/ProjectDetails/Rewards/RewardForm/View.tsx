@@ -177,7 +177,12 @@ const View: React.FC<Props> = ({
               <div className={displayCallout ? "xl:h-52" : "h-24"}>
                 <SectionTitle title={T("reward.form.contributor.title")} />
                 <div className="relative z-10">
-                  <ContributorSelect projectId={projectId} contributor={contributor} setContributor={setContributor} />
+                  <ContributorSelect
+                    projectId={projectId}
+                    contributor={contributor}
+                    setContributor={setContributor}
+                    sidePanelOpened={sidePanelOpen}
+                  />
                 </div>
                 {displayCallout && (
                   <div className="mx-4 pt-24">
