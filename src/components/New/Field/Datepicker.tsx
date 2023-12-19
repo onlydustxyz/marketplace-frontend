@@ -155,10 +155,11 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
     }
 
     if (props.mode === "range") {
-      if (props.value?.from && props.value?.to) {
-        return `${getFormattedTimeDatepicker(new Date(props.value.from))} - ${getFormattedTimeDatepicker(
-          new Date(props.value.to)
-        )}`;
+      if (props.value?.from || props.value?.to) {
+        const from = props.value?.from ? getFormattedTimeDatepicker(new Date(props.value.from)) : "";
+        const to = props.value?.to ? getFormattedTimeDatepicker(new Date(props.value.to)) : "";
+
+        return `${from} - ${to}`;
       }
 
       return T("form.dateRangePlaceholder");
