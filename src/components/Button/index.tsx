@@ -100,7 +100,7 @@ const variants: Record<
   },
 };
 
-type ButtonProps = PropsWithChildren<
+export type ButtonProps = PropsWithChildren<
   {
     size?: ButtonSize;
     type?: ButtonType;
