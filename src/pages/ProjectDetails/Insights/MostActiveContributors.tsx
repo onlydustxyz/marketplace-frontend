@@ -8,6 +8,7 @@ import HeaderCell from "src/components/Table/HeaderCell";
 import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder/EmptyTablePlaceholder";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import Sparkling2Line from "src/icons/Sparkling2Line";
+import Skeleton from "src/components/Skeleton";
 
 export default function MostActiveContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
@@ -41,7 +42,7 @@ export default function MostActiveContributors({ projectId }: { projectId: strin
   }
 
   if (isLoading) {
-    return <div>skeleton</div>;
+    return <Skeleton variant="projectInsightTable" />;
   }
 
   return (

@@ -8,6 +8,7 @@ import { useStrugglingContributorsTable } from "./hooks/useStrugglingContributor
 import ProjectApi from "src/api/Project";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import QuestionLine from "src/icons/QuestionLine";
+import Skeleton from "src/components/Skeleton";
 
 export default function StrugglingContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
@@ -41,7 +42,7 @@ export default function StrugglingContributors({ projectId }: { projectId: strin
   }
 
   if (isLoading) {
-    return <div>skeleton</div>;
+    return <Skeleton variant="projectInsightTable" />;
   }
 
   return (

@@ -6,6 +6,7 @@ import { useIntl } from "src/hooks/useIntl";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import LogoutCircleLine from "src/icons/LogoutCircleLine";
 import MessagePlaceholder from "src/components/New/Placeholders/MessagePlaceholder";
+import Skeleton from "src/components/Skeleton";
 
 export default function ChurnedContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
@@ -58,7 +59,7 @@ export default function ChurnedContributors({ projectId }: { projectId: string |
   }
 
   if (isLoading) {
-    return <div>skeleton</div>;
+    return <Skeleton variant="projectInsightProfilCard" />;
   }
 
   return (

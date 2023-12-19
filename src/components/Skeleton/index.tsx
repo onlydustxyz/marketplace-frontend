@@ -19,6 +19,8 @@ import SkeletonProjectRewards from "./SkeletonProjectRewards";
 import SkeletonProjectRewardForm from "./SkeletonProjectRewardForm";
 import SkeletonProjectRemainingBudgets from "./SkeletonProjectRemainingBudgets";
 import SkeletonSubmitProject from "./SkeletonSubmitProject";
+import SkeletonProjectInsightProfilCard from "./SkeletonProjectInsightProfilCard";
+import SkeletonProjectInsightTable from "./SkeletonProjectInsightTable";
 
 export type SkeletonVariant =
   | "title"
@@ -41,7 +43,9 @@ export type SkeletonVariant =
   | "projectRewards"
   | "projectRewardForm"
   | "projectRemainingBudgets"
-  | "submitProject";
+  | "submitProject"
+  | "projectInsightProfilCard"
+  | "projectInsightTable";
 
 interface SkeletonProps {
   variant: SkeletonVariant;
@@ -69,6 +73,8 @@ const VARIANT_COMPONENTS = {
   projectRewardForm: SkeletonProjectRewardForm,
   projectRemainingBudgets: SkeletonProjectRemainingBudgets,
   submitProject: SkeletonSubmitProject,
+  projectInsightProfilCard: SkeletonProjectInsightProfilCard,
+  projectInsightTable: SkeletonProjectInsightTable,
 };
 
 export default function Skeleton({ variant }: SkeletonProps) {

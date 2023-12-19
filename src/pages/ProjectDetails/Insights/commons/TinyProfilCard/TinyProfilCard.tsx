@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import SendPlane2Line from "src/icons/SendPlane2Line";
@@ -7,35 +7,7 @@ import { IMAGES } from "src/assets/img";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import MapPinLine from "src/icons/MapPinLine";
 import { ProfileCover, Props } from "./TinyProfilCard.type";
-
-function getCoverClass(cover: `${ProfileCover}`): string {
-  const coverClasses: Record<ProfileCover, string> = {
-    [ProfileCover.Blue]: "bg-profile-blue",
-    [ProfileCover.Cyan]: "bg-profile-cyan",
-    [ProfileCover.Magenta]: "bg-profile-magenta",
-    [ProfileCover.Yellow]: "bg-profile-yellow",
-  };
-  return coverClasses[cover] || coverClasses[ProfileCover.Blue];
-}
-
-function OptionalSection({
-  condition,
-  children,
-  fallback,
-  className,
-}: {
-  condition: boolean;
-  children: ReactElement;
-  fallback?: ReactElement;
-  className?: string;
-}) {
-  if (condition) {
-    return <div className={className}>{children}</div>;
-  } else if (fallback) {
-    return <div className={className}>{fallback}</div>;
-  }
-  return null;
-}
+import { OptionalSection, getCoverClass } from "./TinyProfilCard.utils";
 
 export default function TinyProfileCard({
   cover = ProfileCover.Blue,
