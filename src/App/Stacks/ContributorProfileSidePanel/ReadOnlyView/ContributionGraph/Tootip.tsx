@@ -1,12 +1,12 @@
-import { ContributionCountFragment } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
 import { formatDate } from ".";
 import { Icon } from "./Legend";
+import { components } from "src/__generated/api";
 
 type Props = {
   active?: boolean;
   hoveredBarIndex?: number;
-  payload?: { payload: ContributionCountFragment }[];
+  payload?: { payload: components["schemas"]["UserContributionStats"] }[];
 };
 
 export default function Tooltip({ active, hoveredBarIndex, payload }: Props) {

@@ -4,9 +4,9 @@ import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { PROJECT_TAGS } from "./tags";
 import { QueryParams } from "src/utils/getEndpointUrl";
-import { WorkItemType } from "src/__generated/graphql";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
+import { WorkItemType } from "src/types";
 
 export type UseGetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
 

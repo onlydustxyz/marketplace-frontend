@@ -17,7 +17,7 @@ export function FilterRepoSelect({
   return (
     <FilterField label={T("filter.repository.title")}>
       <FilterSelect
-        icon={className => <GitRepositoryLine className={className} />}
+        icon={({ className }) => <GitRepositoryLine className={className} />}
         tokens={{ zero: "filter.repository.all", other: "filter.repository" }}
         items={repos}
         multiple

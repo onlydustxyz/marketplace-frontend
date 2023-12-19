@@ -347,3 +347,37 @@ export type ShortProject = components["schemas"]["ShortProjectResponse"];
 export type ShortRepo = components["schemas"]["ShortGithubRepoResponse"];
 
 export type ContributorResponse = components["schemas"]["ContributorResponse"];
+
+export type Money = components["schemas"]["Money"];
+
+export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];
+export enum WorkItemType {
+  CodeReview = "CODE_REVIEW",
+  Issue = "ISSUE",
+  PullRequest = "PULL_REQUEST",
+}
+
+export enum ProfileCover {
+  Blue = "BLUE",
+  Cyan = "CYAN",
+  Magenta = "MAGENTA",
+  Yellow = "YELLOW",
+}
+
+/** column ordering options */
+export enum OrderBy {
+  /** in ascending order, nulls last */
+  Asc = "ASC",
+  /** in ascending order, nulls first */
+  AscNullsFirst = "ASC_NULLS_FIRST",
+  /** in ascending order, nulls last */
+  AscNullsLast = "ASC_NULLS_LAST",
+  /** in descending order, nulls first */
+  Desc = "DESC",
+  /** in descending order, nulls first */
+  DescNullsFirst = "DESC_NULLS_FIRST",
+  /** in descending order, nulls last */
+  DescNullsLast = "DESC_NULLS_LAST",
+}
+
+export type Maybe<T> = T | null;

@@ -2,27 +2,31 @@ import { useEffect, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useLocalStorage } from "react-use";
 import MeApi from "src/api/me";
+import { Period } from "src/components/New/Field/Datepicker";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
+import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
 import { FilterProjectSelect } from "src/components/New/Filter/FilterProjectSelect";
 import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { GithubContributionType } from "src/types";
-import { formatDateQueryParam } from "src/utils/date";
+import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
 
 export type Filters = {
-  types: GithubContributionType[];
   dateRange: DateRange;
+  period: Period;
   repos: Item[];
   projects: Item[];
+  types: GithubContributionType[];
 };
 
 const initialFilters: Filters = {
-  types: [],
-  dateRange: { from: undefined, to: undefined },
+  dateRange: allTime,
+  period: Period.AllTime,
   repos: [],
   projects: [],
+  types: [],
 };
 
 export type FilterQueryParams = {
@@ -39,14 +43,19 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
     JSON.stringify(initialFilters)
   );
 
-  const [filters, setFilters] = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
+  // Type of partial Filters is required as the shape required by the state may not exist in the user's local storage
+  const [filters, setFilters] = useState<Partial<Filters>>(
+    filtersStorage ? JSON.parse(filtersStorage) : initialFilters
+  );
+
+  const allPeriods = useDatepickerPeriods({ selectedPeriod: filters.period ?? initialFilters.period });
 
   // useMemo required to avoid infinite loop in useEffect
-  const projectIds = useMemo(() => filters.projects.map(({ id }) => String(id)), [filters]);
-  const repoIds = useMemo(() => filters.repos.map(({ id }) => String(id)), [filters]);
+  const projectIds = useMemo(() => filters.projects?.map(({ id }) => String(id)), [filters]) ?? [];
+  const repoIds = useMemo(() => filters.repos?.map(({ id }) => String(id)), [filters]) ?? [];
 
   useEffect(() => {
-    const { types } = filters;
+    const { dateRange, period, types = initialFilters.types } = filters;
 
     const filterQueryParams: FilterQueryParams = {
       types: types.join(","),
@@ -54,23 +63,37 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
       repositories: repoIds.join(","),
     };
 
-    // Users may have an old filter shape in local storage that doesn't contain dateRange
-    const { from: fromDate, to: toDate } = filters?.dateRange ?? initialFilters.dateRange;
+    // If a predefined period is selected, use the predefined period's date range
+    if (period !== Period.Custom) {
+      const { value } = allPeriods.find(({ id }) => id === period) ?? {};
 
-    if (fromDate && toDate) {
-      filterQueryParams.fromDate = formatDateQueryParam(fromDate);
-      filterQueryParams.toDate = formatDateQueryParam(toDate);
+      if (value?.from && value?.to) {
+        filterQueryParams.fromDate = formatDateQueryParam(value.from);
+        filterQueryParams.toDate = formatDateQueryParam(value.to);
+
+        onChange(filterQueryParams);
+
+        // Return early to avoid updating the date range twice
+        return;
+      }
+    }
+
+    // If a custom date range is selected, use the custom date range
+    if (dateRange) {
+      if (dateRange?.from && dateRange?.to) {
+        filterQueryParams.fromDate = formatDateQueryParam(dateRange.from);
+        filterQueryParams.toDate = formatDateQueryParam(dateRange.to);
+      }
+    } else {
+      // If no date range is selected, use all time
+      updateDate(initialFilters.dateRange);
     }
 
     onChange(filterQueryParams);
   }, [filters, projectIds, repoIds]);
 
   const hasActiveFilters = Boolean(
-    // from and to may be undefined if the user hasn't got dateRange in local storage
-    (filters?.dateRange?.from && filters?.dateRange?.to) ||
-      filters.types.length ||
-      filters.projects.length ||
-      filters.repos.length
+    !isAllTime(filters?.dateRange) || filters.types?.length || filters.projects?.length || filters.repos?.length
   );
 
   const { data: projectsData } = MeApi.queries.useMyContributedProjects({
@@ -88,7 +111,7 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
     setFiltersStorage(JSON.stringify(initialFilters));
   }
 
-  function updateState(prevState: Filters, newState: Partial<Filters>) {
+  function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
     const updatedState = { ...prevState, ...newState };
 
     setFiltersStorage(JSON.stringify(updatedState));
@@ -98,9 +121,9 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
 
   function updateTypes(type: GithubContributionType) {
     setFilters(prevState => {
-      const types = prevState.types.includes(type)
+      const types = prevState.types?.includes(type)
         ? prevState.types.filter(t => t !== type)
-        : [...prevState.types, type];
+        : [...(prevState.types ?? []), type];
 
       return updateState(prevState, { types });
     });
@@ -108,6 +131,10 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
 
   function updateDate(dateRange: DateRange) {
     setFilters(prevState => updateState(prevState, { dateRange }));
+  }
+
+  function updatePeriod(period: Period) {
+    setFilters(prevState => updateState(prevState, { period }));
   }
 
   function updateRepos(repos: Item[]) {
@@ -120,18 +147,23 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
 
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters}>
-      <FilterTypeOptions selected={filters.types} onChange={updateTypes} />
-      <FilterDatepicker selected={filters.dateRange} onChange={updateDate} />
-      <FilterRepoSelect
-        repos={contributedRepos.map(({ id, name }) => ({ id, label: name }))}
-        selected={filters.repos}
-        onChange={updateRepos}
+      <FilterDatepicker
+        selected={filters.dateRange ?? initialFilters.dateRange}
+        onChange={updateDate}
+        selectedPeriod={filters.period ?? initialFilters.period}
+        onPeriodChange={updatePeriod}
       />
       <FilterProjectSelect
-        projects={contributedProjects.map(({ id, name }) => ({ id, label: name }))}
-        selected={filters.projects}
+        projects={contributedProjects.map(({ id, name, logoUrl }) => ({ id, label: name, image: logoUrl }))}
+        selected={filters.projects ?? initialFilters.projects}
         onChange={updateProjects}
       />
+      <FilterRepoSelect
+        repos={contributedRepos.map(({ id, name }) => ({ id, label: name }))}
+        selected={filters.repos ?? initialFilters.repos}
+        onChange={updateRepos}
+      />
+      <FilterTypeOptions selected={filters.types ?? initialFilters.types} onChange={updateTypes} />
     </Filter>
   );
 }

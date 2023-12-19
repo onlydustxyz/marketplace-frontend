@@ -1,6 +1,6 @@
 import { filter } from "lodash";
-import { ContributionStatus, CurrencyOrder, GithubContributionType } from "src/types";
-import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import { ContributionStatus, CurrencyOrder, GithubContributionType, ProjectBudgetType } from "src/types";
+
 import { RewardableItem } from "src/api/Project/queries";
 
 export const filterUnpaidContributionsByType = (

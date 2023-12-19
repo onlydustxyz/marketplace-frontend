@@ -7,6 +7,7 @@ export type StacksParams = {
   [key: string]: anyType;
   panelProps?: {
     action?: ReactElement;
+    topLeftComponent?: ReactElement;
   };
 };
 export type AnyParams = anyType;
@@ -111,3 +112,9 @@ export interface StacksInterface<P extends StacksParams = StacksParams> {
  * @returns {StackOptionalInterface<P>} - The registered stack props.
  */
 export type RegisterStackProps<P extends StacksParams> = StackOptionalInterface<P> & { unRegisterOnUnMount?: boolean };
+
+export interface Options {
+  panel: {
+    noPadding?: boolean;
+  };
+}

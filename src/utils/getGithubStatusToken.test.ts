@@ -1,5 +1,4 @@
-import { GithubIssueStatus } from "src/__generated/graphql";
-import { GithubCodeReviewStatus, GithubContributionType, GithubPullRequestStatus } from "src/types";
+import { GithubCodeReviewStatus, GithubContributionType, GithubIssueStatus, GithubPullRequestStatus } from "src/types";
 import { getGithubStatusToken } from "./getGithubStatusToken";
 
 describe("getGithubStatusToken", () => {

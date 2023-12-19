@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
-import { WorkItemType } from "src/__generated/graphql";
 import { IMAGES } from "src/assets/img";
+import { WorkItemType } from "src/types";
 
 const itemTypes = {
   [WorkItemType.Issue]: "project.details.edit.fields.rewardableContributions.issues",
@@ -10,9 +10,10 @@ const itemTypes = {
 
 type EmptyStateProps = {
   type: WorkItemType;
+  PoolingFeedback?: React.ReactElement;
 };
 
-export default function EmptyState({ type }: EmptyStateProps) {
+export default function EmptyState({ type, PoolingFeedback }: EmptyStateProps) {
   const { T } = useIntl();
 
   return (
@@ -28,6 +29,8 @@ export default function EmptyState({ type }: EmptyStateProps) {
           itemType: T(itemTypes[type]).toLowerCase(),
         })}
       </div>
+
+      {PoolingFeedback ? <div className="mt-5 w-full">{PoolingFeedback}</div> : null}
     </div>
   );
 }

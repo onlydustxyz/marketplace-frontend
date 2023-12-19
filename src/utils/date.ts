@@ -1,4 +1,4 @@
-import { format, parseISO } from "date-fns";
+import { format, isSameDay, parseISO } from "date-fns";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import weekOfYear from "dayjs/plugin/weekOfYear";
@@ -22,6 +22,13 @@ export const weekNumber = (date: Date) => dayjs.utc(date).week();
 export const getFormattedDateGB = (date: Date) => new Intl.DateTimeFormat("en-GB", { dateStyle: "short" }).format(date);
 // American time format HH:MM AM/PM
 export const getFormattedTimeUS = (date: Date) => new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(date);
+// American date format ex Dec 13, 2023
+export const getFormattedTimeDatepicker = (date: Date) =>
+  new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(date);
 
 /**
  * Parses a date string or Date object and returns a Date object.
@@ -61,3 +68,21 @@ export function parseDateRangeString(
 export function formatDateQueryParam(value: Date | string) {
   return format(value instanceof Date ? value : new Date(value), "yyyy-MM-dd");
 }
+
+/**
+ * Represents a date range of all time.
+ */
+export const allTime = { from: new Date(0), to: new Date() } satisfies DateRange;
+
+/**
+ * Checks if the given date range represents the "all time" range.
+ * @param dateRange - The date range to check.
+ * @returns True if the date range represents the "all time" range, false otherwise.
+ */
+export const isAllTime = (dateRange?: DateRange) => {
+  if (dateRange?.from && dateRange?.to) {
+    return isSameDay(allTime.from, new Date(dateRange.from)) && isSameDay(allTime.to, new Date(dateRange.to));
+  }
+
+  return false;
+};

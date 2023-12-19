@@ -213,6 +213,7 @@
   "filter": {
     "clearButton": "Clear all",
     "empty": "Nothing here",
+    "apply": "Apply filters",
     "ownership": {
       "all": "All projects",
       "mine": "Mine only"
@@ -238,22 +239,29 @@
       "codeReview": "Code review"
     },
     "project": {
-      "title": "Project",
+      "title": "Projects",
       "all": "All projects",
       "zero": "projects",
       "one": "__count__ project",
       "many": "__count__ projects"
     },
     "repository": {
-      "title": "Repository",
+      "title": "Repositories",
       "all": "All repositories",
       "zero": "repositories",
       "one": "__count__ repository",
       "many": "__count__ repositories"
     },
+    "currency": {
+      "title": "Currency",
+      "all": "All (dollars quivalent)",
+      "zero": "currencies",
+      "one": "__count__ currency",
+      "many": "__count__ currencies"
+    },
     "contributor": {
-      "title": "Contributor",
-      "placeholder": "Search by Github handle",
+      "title": "Contributors",
+      "placeholder": "Everyone",
       "zero": "contributors",
       "one": "__count__ contributor",
       "many": "__count__ contributors"
@@ -285,7 +293,7 @@
       "ETH": "Ethereum",
       "OP": "Optimism",
       "STARK": "Stark chain",
-      "LORDS": "Lords",
+      "LORDS": "Ethereum",
       "USD": "IBAN/BIC",
       "label": "Reward granted on __currency__ network.",
       "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
@@ -635,6 +643,7 @@
         },
         "title": "Reward #__id__",
         "to": "to",
+        "on": "on",
         "you": "(you)",
         "contributions": "Contributions included in reward",
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
@@ -859,6 +868,7 @@
     "privacy": "Privacy"
   },
   "project": {
+    "openOverview": "View project details",
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "claim": {
       "banner": {
@@ -947,7 +957,8 @@
         },
         "repositories": {
           "descriptionPlaceholder": "This repository has no description",
-          "title": "Repositories"
+          "title": "Repositories",
+          "add": "Add repository"
         },
         "sponsors": {
           "many": "Sponsors",
@@ -1146,16 +1157,24 @@
         "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
         "usdInfo": "Dollar equivalent at today's date",
         "budget": {
-          "total": "Remaining budget",
+          "remaining": "Remaining budget",
+          "spent": "Amount spent",
+          "sent": "Rewards sent",
+          "contributors": "Rewarded contributors",
           "dollars": "Dollars budget",
           "ether": "Ether budget",
           "stark": "Stark budget",
           "lords": "Lords budget",
           "aptos": "Aptos budget",
-          "optimism": "Optimism budget"
+          "optimism": "Optimism budget",
+          "sentRewards": {
+            "one": "for 1 contribution",
+            "many": "for __count__ contributions"
+          }
         }
       },
       "edit": {
+        "syncContributions": "Sync contributions",
         "errors": {
           "informations": "Your project configuration has errors"
         },

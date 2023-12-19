@@ -1,4 +1,4 @@
-import { ContributionCountFragment } from "src/__generated/graphql";
+import { components } from "src/__generated/api";
 
 type Props = {
   hoveredBarIndex?: number;
@@ -7,7 +7,7 @@ type Props = {
   y?: number;
   width?: number;
   height?: number;
-  payload?: ContributionCountFragment;
+  payload?: components["schemas"]["UserContributionStats"];
   fill?: string;
   opacity?: number;
   index?: number;
@@ -29,7 +29,7 @@ export default function Bar({
 }: Props) {
   const stripes = secondary;
 
-  const { codeReviewCount, issueCount, pullRequestCount } = payload ?? {};
+  const { codeReviewCount = 0, issueCount = 0, pullRequestCount = 0 } = payload ?? {};
 
   // The pull request bar is at the bottom so it's only rounded when it's the only one
   const pullRequestsRounded =
