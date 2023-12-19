@@ -348,6 +348,9 @@ export type ShortRepo = components["schemas"]["ShortGithubRepoResponse"];
 
 export type ContributorResponse = components["schemas"]["ContributorResponse"];
 
+export type Money = components["schemas"]["Money"];
+
+export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];
 export enum WorkItemType {
   CodeReview = "CODE_REVIEW",
   Issue = "ISSUE",

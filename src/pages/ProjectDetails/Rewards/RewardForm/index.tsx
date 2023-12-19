@@ -6,7 +6,6 @@ import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
-import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useLocalStorage } from "usehooks-ts";
@@ -19,6 +18,7 @@ import { CompletedRewardableItem } from "src/api/Project/queries";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 import ProjectApi from "src/api/Project";
 import Skeleton from "src/components/Skeleton";
+import { ProjectBudgetType } from "src/types";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
