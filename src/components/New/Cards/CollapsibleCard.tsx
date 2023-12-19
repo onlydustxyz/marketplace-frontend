@@ -17,6 +17,11 @@ export default function CollapsibleCard({ title, description, icon, isEmpty, has
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
   const [collapsed, setCollapsed] = useState(false);
+
+  const handleClick = () => {
+    if (!isEmpty) setCollapsed(prevState => !prevState);
+    return;
+  };
   return (
     <section className="overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base lg:shadow-heavy">
       <header
@@ -24,7 +29,7 @@ export default function CollapsibleCard({ title, description, icon, isEmpty, has
           "cursor-pointer": !isEmpty,
           "border-b border-card-border-light": !collapsed && !isEmpty,
         })}
-        onClick={!isEmpty ? () => setCollapsed(prevState => !prevState) : undefined}
+        onClick={handleClick}
       >
         <div className="flex items-start gap-3">
           <div className="rounded-lg bg-card-background-medium p-3 leading-none text-greyscale-50">

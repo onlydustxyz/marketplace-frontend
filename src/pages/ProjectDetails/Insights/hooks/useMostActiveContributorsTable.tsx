@@ -71,7 +71,7 @@ export function useMostActiveContributorsTable() {
     return (
       <Line key={login} className="group border-card-border-light">
         <Cell height={CellHeight.Compact}>
-          <Contributor contributor={contributor} avatarSize="6" clickable />
+          <Contributor contributor={contributor} clickable />
         </Cell>
         <Cell height={CellHeight.Compact}>{completedPullRequestCount}</Cell>
         <Cell height={CellHeight.Compact}>{completedIssueCount}</Cell>

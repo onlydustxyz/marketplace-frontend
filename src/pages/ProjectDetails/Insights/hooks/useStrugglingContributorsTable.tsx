@@ -60,7 +60,7 @@ export function useStrugglingContributorsTable() {
     return (
       <Line key={id} className="group border-card-border-light">
         <Cell height={CellHeight.Compact}>
-          <Contributor contributor={contributor} avatarSize="6" clickable />
+          <Contributor contributor={contributor} clickable />
         </Cell>
         <Cell height={CellHeight.Compact}>{repo?.name}</Cell>
         <Cell height={CellHeight.Compact}>
