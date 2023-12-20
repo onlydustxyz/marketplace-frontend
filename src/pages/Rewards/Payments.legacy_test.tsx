@@ -3,10 +3,10 @@ import { screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, Mock, vi } from "vitest";
 
 import { GetPaymentRequestsDocument, UserPaymentRequestFragment } from "e2e/playwright/__generated/graphql";
-import { WorkItemType } from "src/__generated/graphql";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import RewardsPage from ".";
+import { WorkItemType } from "src/types";
 
 // TODO delete or fix test after multitoken
 

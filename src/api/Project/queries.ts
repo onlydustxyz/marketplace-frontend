@@ -4,9 +4,9 @@ import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { PROJECT_TAGS } from "./tags";
 import { QueryParams } from "src/utils/getEndpointUrl";
-import { WorkItemType } from "src/__generated/graphql";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
+import { WorkItemType } from "src/types";
 
 export type UseGetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
 
@@ -20,6 +20,7 @@ const useGetProjectBySlug = ({
     callbackTags: result => {
       return PROJECT_TAGS.detail_by_id(result?.id || "");
     },
+    retry: 1,
     enabled: !!params?.slug,
     ...options,
   });
@@ -145,6 +146,29 @@ const useProjectContributorsInfiniteList = ({
   );
 };
 
+export type UseProjectContributionsInfiniteListResponse = components["schemas"]["ContributionPageResponse"];
+
+interface ProjectContributionsInfiniteListParams {
+  projectId: string;
+  queryParams?: QueryParams;
+  pageSize?: number;
+}
+
+const useProjectContributionsInfiniteList = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<UseProjectContributionsInfiniteListResponse, ProjectContributionsInfiniteListParams>) => {
+  return useInfiniteBaseQuery<UseProjectContributionsInfiniteListResponse>(
+    {
+      resourcePath: API_PATH.PROJECT_CONTRIBUTIONS(params?.projectId || ""),
+      tags: PROJECT_TAGS.contributions(params?.projectId || ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 10,
+    },
+    { ...options, enabled: options.enabled && !!params?.projectId }
+  );
+};
+
 type UseCompletedRewardableItemsResponse = components["schemas"]["AllRewardableItemsResponse"];
 export type CompletedRewardableItem = components["schemas"]["AllRewardableItemsResponse"];
 
@@ -161,6 +185,20 @@ const useCompletedRewardableItems = ({
   });
 };
 
+type UseProjectBudgetResponse = components["schemas"]["ProjectBudgetsResponse"];
+
+const useProjectBudget = ({
+  params,
+  options = {},
+}: UseQueryProps<UseProjectBudgetResponse, { projectId?: string }>) => {
+  return useBaseQuery<UseProjectBudgetResponse>({
+    resourcePath: API_PATH.PROJECT_BUDGET(params?.projectId ?? ""),
+    enabled: !!params?.projectId,
+    tags: PROJECT_TAGS.budgets(params?.projectId ?? ""),
+    ...options,
+  });
+};
+
 export default {
   useGetProjectBySlug,
   useGetProjectContributionDetail,
@@ -168,5 +206,7 @@ export default {
   useRewardableItemsInfiniteList,
   useRewardableItemsQueryParams,
   useProjectContributorsInfiniteList,
+  useProjectContributionsInfiniteList,
   useCompletedRewardableItems,
+  useProjectBudget,
 };

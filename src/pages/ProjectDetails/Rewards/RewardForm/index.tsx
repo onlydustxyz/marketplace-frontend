@@ -4,12 +4,11 @@ import { useCallback, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
-import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import Loader from "src/components/Loader";
 import { useLocalStorage } from "usehooks-ts";
 import { reorderBudgets } from "./utils";
 import { BudgetCurrencyType } from "src/utils/money";
@@ -19,18 +18,19 @@ import MeApi from "src/api/me";
 import { CompletedRewardableItem } from "src/api/Project/queries";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 import ProjectApi from "src/api/Project";
+import Skeleton from "src/components/Skeleton";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
+  const { projectKey = "" } = useParams<{ projectKey: string }>();
 
   const queryClient = useQueryClient();
 
-  const { projectId, projectKey } = useOutletContext<{
-    projectId: string;
-    projectKey: string;
-  }>();
+  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+  });
 
   const {
     data: projectBudget,
@@ -39,13 +39,13 @@ const RewardForm: React.FC = () => {
     refetch,
   } = useRestfulData<ProjectBudgetType>({
     resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
-    pathParam: { projectId },
+    pathParam: { projectId: project?.id || "" },
     method: "GET",
   });
 
   const { mutate: createProjectReward, isPending: isCreateProjectRewardLoading } = useMutationRestfulData({
     resourcePath: ApiResourcePaths.PROJECT_REWARDS,
-    pathParam: projectId,
+    pathParam: project?.id || "",
     method: "POST",
     onSuccess: async () => {
       try {
@@ -63,7 +63,7 @@ const RewardForm: React.FC = () => {
   });
 
   const [preferredCurrency, setPreferredCurrency] = useLocalStorage<BudgetCurrencyType | undefined>(
-    `preferredCurrency-${projectId}`,
+    `preferredCurrency-${project?.id}`,
     undefined
   );
 
@@ -82,8 +82,8 @@ const RewardForm: React.FC = () => {
     isLoading: isCompletedContributionsLoading,
     isError: isCompletedContributionsError,
   } = ProjectApi.queries.useCompletedRewardableItems({
-    params: { projectId, githubUserId: contributor?.githubUserId.toString() },
-    options: { enabled: !!contributor?.githubUserId },
+    params: { projectId: project?.id, githubUserId: contributor?.githubUserId.toString() },
+    options: { enabled: !!contributor?.githubUserId && !!project?.id },
   });
 
   if (isCompletedContributionsError) {
@@ -130,6 +130,10 @@ const RewardForm: React.FC = () => {
     return <ErrorFallback />;
   }
 
+  if (isBudgetLoading) {
+    return <Skeleton variant="projectRewardForm" />;
+  }
+
   return (
     <>
       <FormProvider {...formMethods}>
@@ -138,11 +142,11 @@ const RewardForm: React.FC = () => {
           onSubmit={handleSubmit(onValidSubmit)}
           className="flex w-full flex-col justify-between gap-6"
         >
-          {!isBudgetLoading && projectBudget?.budgets?.some(budget => budget.remaining > 0) ? (
+          {projectBudget?.remainingDollarsEquivalent && projectBudget?.initialDollarsEquivalent ? (
             <View
               projectBudget={reorderBudgets(projectBudget)}
               preferredCurrency={preferredCurrency}
-              projectId={projectId}
+              projectId={project?.id || ""}
               onWorkItemsChange={onWorkItemsChange}
               contributor={contributor}
               setContributor={setContributor}
@@ -150,9 +154,7 @@ const RewardForm: React.FC = () => {
               isCreateProjectRewardLoading={isCreateProjectRewardLoading}
               isCompletedContributionsLoading={isCompletedContributionsLoading}
             />
-          ) : (
-            <Loader />
-          )}
+          ) : null}
         </form>
       </FormProvider>
     </>

@@ -1,24 +1,13 @@
-import { useGetProjectApplicationsQuery } from "src/__generated/graphql";
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 
 export default function useApplications(projectId: string, projectSlug: string) {
-  const { user } = useAuth();
   const { T } = useIntl();
-
-  const { data, refetch } = useGetProjectApplicationsQuery({
-    variables: { projectId },
-  });
+  const { data: userData } = MeApi.queries.useGetMe({});
 
   const { mutate: applyProjectMutation, ...restMutation } = MeApi.mutations.useApplyProject({
     params: { projectSlug },
-    options: {
-      onSuccess: () => {
-        refetch();
-      },
-    },
   });
 
   useMutationAlert({
@@ -32,8 +21,7 @@ export default function useApplications(projectId: string, projectSlug: string) 
   });
 
   return {
-    applications: data?.projects[0]?.applications,
-    alreadyApplied: data?.projects[0]?.applications.some(a => a.applicantId === user?.id),
-    applyToProject: () => applyProjectMutation({ projectId }),
+    alreadyApplied: !!userData?.projectsAppliedTo?.find(appliedTo => appliedTo === projectId),
+    applyToProject: () => (projectId ? applyProjectMutation({ projectId }) : undefined),
   };
 }

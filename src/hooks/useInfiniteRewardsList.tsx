@@ -11,7 +11,7 @@ interface useInfiniteRewardsListProps {
   enabled?: boolean;
 }
 
-export default function useInfiniteRewardsList({ projectId, queryParams }: useInfiniteRewardsListProps) {
+export default function useInfiniteRewardsList({ projectId, queryParams, enabled }: useInfiniteRewardsListProps) {
   return useInfiniteRestfulData<components["schemas"]["RewardsPageResponse"]>(
     {
       resourcePath: ApiResourcePaths.PROJECT_REWARDS,
@@ -19,6 +19,6 @@ export default function useInfiniteRewardsList({ projectId, queryParams }: useIn
       pathParam: projectId,
       queryParams,
     },
-    { queryKey: ["reward-list", queryParams] }
+    { queryKey: ["reward-list", queryParams], enabled }
   );
 }

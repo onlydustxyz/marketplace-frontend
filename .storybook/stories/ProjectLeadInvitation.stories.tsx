@@ -1,7 +1,4 @@
-import { MockedResponse } from "@apollo/client/testing";
-import { GetProjectLeadInvitationsDocument, GetProjectLeadInvitationsQueryResult } from "src/__generated/graphql";
 import withAuthProvider from "../decorators/withAuthProvider";
-import withMockedProvider from "../decorators/withMockedProvider";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import withToasterProvider from "../decorators/withToasterProvider";
@@ -17,26 +14,6 @@ const GITHUB_USER_ID = 123456;
 
 const queryClient = new QueryClient();
 
-const mocks: MockedResponse[] = [
-  {
-    request: {
-      query: GetProjectLeadInvitationsDocument,
-      variables: { projectId: PROJECT_ID },
-    },
-    result: {
-      data: {
-        projects: [
-          {
-            id: PROJECT_ID,
-            name: "Kakarot",
-            pendingInvitations: [{ id: "invitation-id", githubUserId: GITHUB_USER_ID }],
-          },
-        ],
-      } as GetProjectLeadInvitationsQueryResult["data"],
-    },
-  },
-];
-
 export default {
   title: "ProjectLeadInvitation",
   component: ProjectLeadInvitation,
@@ -45,7 +22,6 @@ export default {
     withToasterProvider,
     withTokenSetProvider,
     withImpersonationClaimsProvider,
-    withMockedProvider(mocks),
     (Story: JSXElementConstructor<any>) => (
       <QueryClientProvider client={queryClient}>
         <Story />

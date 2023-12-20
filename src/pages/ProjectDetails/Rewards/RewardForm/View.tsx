@@ -3,8 +3,6 @@ import { useIntl } from "src/hooks/useIntl";
 import ContributorSelect from "src/pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import addContributionImg from "src/assets/img/add-contribution.png";
-import pickContributorImg from "src/assets/img/pick-contributor.png";
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import { viewportConfig } from "src/config";
@@ -31,6 +29,7 @@ import { CompletedRewardableItem } from "src/api/Project/queries";
 import ProjectApi from "src/api/Project";
 import useMutationAlert from "src/api/useMutationAlert";
 import Skeleton from "src/components/Skeleton";
+import { IMAGES } from "src/assets/img";
 
 interface Props {
   projectId: string;
@@ -178,7 +177,12 @@ const View: React.FC<Props> = ({
               <div className={displayCallout ? "xl:h-52" : "h-24"}>
                 <SectionTitle title={T("reward.form.contributor.title")} />
                 <div className="relative z-10">
-                  <ContributorSelect projectId={projectId} contributor={contributor} setContributor={setContributor} />
+                  <ContributorSelect
+                    projectId={projectId}
+                    contributor={contributor}
+                    setContributor={setContributor}
+                    sidePanelOpened={sidePanelOpen}
+                  />
                 </div>
                 {displayCallout && (
                   <div className="mx-4 pt-24">
@@ -257,13 +261,29 @@ const View: React.FC<Props> = ({
           {!contributor && (
             <PlaceholderWithImage
               text={T("reward.form.missingContributor")}
-              imageElement={<img width={267} src={pickContributorImg} className="absolute bottom-0 right-0 top-0" />}
+              imageElement={
+                <img
+                  width={267}
+                  src={IMAGES.global.pickContributor}
+                  className="absolute bottom-0 right-0 top-0"
+                  loading="lazy"
+                  alt={T("reward.form.contributor.title")}
+                />
+              }
             />
           )}
           {contributor && workItems.length === 0 && (
             <PlaceholderWithImage
               text={T("reward.form.missingContribution")}
-              imageElement={<img width={165} src={addContributionImg} className="absolute bottom-0 right-0" />}
+              imageElement={
+                <img
+                  width={165}
+                  src={IMAGES.global.addContribution}
+                  className="absolute bottom-0 right-0"
+                  loading="lazy"
+                  alt={T("reward.form.contributor.title")}
+                />
+              }
             />
           )}
           {contributor && workItems.length > 0 && projectBudget?.budgets && (

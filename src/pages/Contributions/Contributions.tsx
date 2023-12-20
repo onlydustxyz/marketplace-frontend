@@ -1,32 +1,19 @@
-import { ComponentProps, PropsWithChildren, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { ComponentProps, useState } from "react";
 import { useLocalStorage } from "react-use";
-import { OrderBy } from "src/__generated/graphql";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
-import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
+import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
+import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
-import { ContributionStatus } from "src/types";
-import { isInArray } from "src/utils/isInArray";
-
-enum AllTabs {
-  All = "ALL_CONTRIBUTIONS",
-  InProgress = "IN_PROGRESS",
-  Completed = "COMPLETED",
-  Cancelled = "CANCELLED",
-}
-
-const tabValues = Object.values(AllTabs);
-
-function TabContents({ children }: PropsWithChildren) {
-  return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
-}
+import { ContributionStatus, OrderBy } from "src/types";
+import { ContributionsFilter, FilterQueryParams } from "./Filter";
+import { useContributionTable } from "./useContributionTable";
 
 const initialSort: Record<ContributionStatus, TableSort> = {
   [ContributionStatus.InProgress]: {
@@ -43,56 +30,14 @@ const initialSort: Record<ContributionStatus, TableSort> = {
   },
 };
 
-const initialFilters: Filters = {
-  types: [],
-  projects: [],
-  repos: [],
-};
-
 export default function Contributions() {
   const { T } = useIntl();
-  const [searchParams, setSearchParams] = useSearchParams();
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
+  const { isActiveTab, updateActiveTab } = useContributionTabs();
+  const { headerCells, bodyRow } = useContributionTable();
 
-  const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "contributions-table-filters",
-    JSON.stringify(initialFilters)
-  );
-  const filtersState = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
-  const [{ types, projects, repos }] = filtersState;
-
-  const projectIds = projects.map(({ id }) => String(id));
-  const repoIds = repos.map(({ id }) => String(id));
-
-  const filterQueryParams = {
-    types: types.join(","),
-    projects: projectIds.join(","),
-    repositories: repoIds.join(","),
-  };
-
-  const tab = searchParams.get("tab") as typeof tabValues[number] | null;
-
-  const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
-
-  const { data: projectsData } = MeApi.queries.useMyContributedProjects({
-    params: { repositories: repoIds.length ? repoIds.join(",") : "" },
-  });
-  const contributedProjects = projectsData?.projects ?? [];
-
-  const { data: reposData } = MeApi.queries.useMyContributedRepos({
-    params: { projects: projectIds.length ? projectIds.join(",") : "" },
-  });
-  const contributedRepos = reposData?.repos ?? [];
-
-  function isActiveTab(tab: AllTabs) {
-    return activeTab === tab;
-  }
-
-  function updateActiveTab(tab: AllTabs) {
-    setActiveTab(tab);
-    setSearchParams({ tab });
-  }
+  const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
 
   const tabItems = [
     {
@@ -102,10 +47,10 @@ export default function Contributions() {
       },
       testId: "contributions-all-contributions-tab",
       children: (
-        <TabContents>
+        <ContributionTabContents>
           <StackLine className="text-xl leading-none md:hidden" />
           {T("contributions.nav.allContributions")}
-        </TabContents>
+        </ContributionTabContents>
       ),
     },
     {
@@ -115,10 +60,10 @@ export default function Contributions() {
       },
       testId: "contributions-in-progress-tab",
       children: (
-        <TabContents>
+        <ContributionTabContents>
           <ProgressCircle className="h-5 w-5 md:h-4 md:w-4" />
           {T("contributions.nav.inProgress")}
-        </TabContents>
+        </ContributionTabContents>
       ),
     },
     {
@@ -128,10 +73,10 @@ export default function Contributions() {
       },
       testId: "contributions-completed-tab",
       children: (
-        <TabContents>
+        <ContributionTabContents>
           <CheckboxCircleLine className="text-xl leading-none md:text-base" />
           {T("contributions.nav.completed")}
-        </TabContents>
+        </ContributionTabContents>
       ),
     },
     {
@@ -141,10 +86,10 @@ export default function Contributions() {
       },
       testId: "contributions-canceled-tab",
       children: (
-        <TabContents>
+        <ContributionTabContents>
           <CancelCircleLine className="h-5 w-5 md:h-4 md:w-4" />
           {T("contributions.nav.canceled")}
-        </TabContents>
+        </ContributionTabContents>
       ),
     },
   ];
@@ -166,7 +111,9 @@ export default function Contributions() {
           return state;
         });
       },
-      queryProps: [
+      headerCells,
+      bodyRow,
+      query: MeApi.queries.useMyContributions(
         {
           queryParams: {
             statuses: ContributionStatus.InProgress,
@@ -174,7 +121,8 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-      ],
+        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) && Boolean(filterQueryParams) }
+      ),
     },
     {
       id: "completed_contributions_table",
@@ -192,7 +140,9 @@ export default function Contributions() {
         });
       },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
-      queryProps: [
+      headerCells,
+      bodyRow,
+      query: MeApi.queries.useMyContributions(
         {
           queryParams: {
             statuses: ContributionStatus.Completed,
@@ -200,7 +150,8 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-      ],
+        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) && Boolean(filterQueryParams) }
+      ),
     },
     {
       id: "canceled_contributions_table",
@@ -218,7 +169,9 @@ export default function Contributions() {
         });
       },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
-      queryProps: [
+      headerCells,
+      bodyRow,
+      query: MeApi.queries.useMyContributions(
         {
           queryParams: {
             statuses: ContributionStatus.Cancelled,
@@ -226,7 +179,8 @@ export default function Contributions() {
             ...filterQueryParams,
           },
         },
-      ],
+        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) && Boolean(filterQueryParams) }
+      ),
     },
   ];
 
@@ -238,19 +192,12 @@ export default function Contributions() {
           <div className="relative min-h-full">
             <div className="bg-transparency-gradiant absolute inset-0" />
             <div className="relative z-10">
-              <header className="sticky top-0 z-10 border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl md:px-8 md:pb-0 md:pt-8">
+              <header className="sticky top-0 z-10 border-b border-card-border-heavy bg-card-background-base px-4 pb-4 pt-7 shadow-heavy md:px-8 md:pb-0 md:pt-8">
                 <div className="flex items-center justify-between md:px-4">
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
-                  <div className="hidden -translate-y-3 lg:block">
-                    <ContributionFilter
-                      state={filtersState}
-                      projects={contributedProjects}
-                      repos={contributedRepos}
-                      onChange={newState => {
-                        setFiltersStorage(JSON.stringify(newState));
-                      }}
-                    />
+                  <div className="md:-translate-y-3">
+                    <ContributionsFilter onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)} />
                   </div>
                 </div>
               </header>

@@ -28,17 +28,30 @@
     "you": "You",
     "pendingInvite": "Pending invite",
     "commits": "Commits",
+    "preview": "Preview",
     "periods": {
       "lastMonth": "Last month",
       "last6Months": "Last 6 months",
       "lastYear": "Last year",
-      "forever": "Forever"
+      "forever": "Forever",
+      "thisWeek": "This week",
+      "thisMonth": "This month",
+      "thisYear": "This year",
+      "allTime": "All time"
     },
     "channel": {
       "telegram": "Telegram",
       "discord": "Discord",
       "twitter": "Twitter",
       "preventAnonymousTooltips": "Connect to Onlydust to access more info links"
+    },
+    "button": {
+      "underline": "Underline"
+    },
+    "icons": {
+      "atom": "Atom",
+      "axeCoin": "Axe coin",
+      "empty": "Empty"
     }
   },
   "forms": {
@@ -85,6 +98,8 @@
     "table": {
       "date": "Date",
       "projectRepo": "Project / Repository",
+      "repo": "Repository",
+      "contributor": "Contributor",
       "contribution": "Contribution",
       "comments": "Comments",
       "linkedTo": "Linked to",
@@ -197,6 +212,8 @@
   },
   "filter": {
     "clearButton": "Clear all",
+    "empty": "Nothing here",
+    "apply": "Apply filters",
     "ownership": {
       "all": "All projects",
       "mine": "Mine only"
@@ -222,18 +239,29 @@
       "codeReview": "Code review"
     },
     "project": {
-      "title": "Project",
+      "title": "Projects",
       "all": "All projects",
       "zero": "projects",
       "one": "__count__ project",
       "many": "__count__ projects"
     },
     "repository": {
-      "title": "Repository",
+      "title": "Repositories",
       "all": "All repositories",
       "zero": "repositories",
       "one": "__count__ repository",
       "many": "__count__ repositories"
+    },
+    "contributor": {
+      "title": "Contributors",
+      "placeholder": "Everyone",
+      "zero": "contributors",
+      "one": "__count__ contributor",
+      "many": "__count__ contributors"
+    },
+    "date": {
+      "title": "Date",
+      "placeholder": "Select a date"
     }
   },
   "currencies": {
@@ -258,7 +286,7 @@
       "ETH": "Ethereum",
       "OP": "Optimism",
       "STARK": "Stark chain",
-      "LORDS": "Lords",
+      "LORDS": "Ethereum",
       "USD": "IBAN/BIC",
       "label": "Reward granted on __currency__ network.",
       "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
@@ -608,6 +636,7 @@
         },
         "title": "Reward #__id__",
         "to": "to",
+        "on": "on",
         "you": "(you)",
         "contributions": "Contributions included in reward",
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
@@ -645,9 +674,13 @@
       "usdInfoEarnings": "Dollar equivalent at today's date across all your earnings",
       "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
       "invoiceError": "Unable to retrieve Invoice informations. Please try again."
+    },
+    "budgets": {
+      "error": "Unable to retrieve Rewards Budgets. Please try again."
     }
   },
   "profile": {
+    "avatar": "Avatar",
     "whatsapp": "Whatsapp",
     "editButton": "Edit profile",
     "error": {
@@ -828,6 +861,7 @@
     "privacy": "Privacy"
   },
   "project": {
+    "openOverview": "View project details",
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "claim": {
       "banner": {
@@ -866,12 +900,14 @@
             "one": "the one(s) on which permissions are already granted (Organisation 1)",
             "two": "the one(s) you need to send a request to organisation owner (Organisation 2)",
             "three": "the one(s) you can grant yourself (Organisation 3)"
-          }
+          },
+          "alt": "Step 2"
         },
         "three": {
           "title": "3. GRANT PERMISSIONS to ONLY DUST",
           "subTitle": "And you’re good to go, you can now install the Only Dust Github app.",
-          "informations": "Note you may have to re-authenticate to Github to perform this action."
+          "informations": "Note you may have to re-authenticate to Github to perform this action.",
+          "alt": "Step 3"
         }
       }
     },
@@ -914,7 +950,8 @@
         },
         "repositories": {
           "descriptionPlaceholder": "This repository has no description",
-          "title": "Repositories"
+          "title": "Repositories",
+          "add": "Add repository"
         },
         "sponsors": {
           "many": "Sponsors",
@@ -924,6 +961,9 @@
         "title": "Overview",
         "totalSpentAmountInUsd": "GRANTED",
         "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend"
+      },
+      "contributions": {
+        "title": "Contributions"
       },
       "rewards": {
         "new": {
@@ -1059,6 +1099,7 @@
         }
       },
       "edit": {
+        "syncContributions": "Sync contributions",
         "errors": {
           "informations": "Your project configuration has errors"
         },
@@ -1145,6 +1186,7 @@
         }
       },
       "sidebar": {
+        "title": "Project",
         "backToProjects": "All projects",
         "contributors": {
           "many": "__count__ contributors",
@@ -1159,7 +1201,8 @@
         "disabledButtonTooltip": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
         "newReward": "Reward contributor",
         "noRewards": "No rewards so far",
-        "send": "Give your first one!"
+        "send": "Give your first one!",
+        "payment": "Payment"
       },
       "banners": {
         "missingGithubAppInstall": {
@@ -1205,7 +1248,8 @@
     "fallback": {
       "clearFiltersButton": "Clear query",
       "subTitle": "Try changing your query",
-      "title": "Nothing to show"
+      "title": "Nothing to show",
+      "categories": "Categories"
     },
     "sorting": {
       "button": "Sort",

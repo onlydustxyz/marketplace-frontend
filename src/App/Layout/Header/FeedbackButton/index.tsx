@@ -3,14 +3,27 @@ import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
 import MeApi from "src/api/me";
+import { useMemo } from "react";
 
 export default function FeedbackButton({ customButton }: { customButton?: React.ReactNode }) {
   const { user } = useAuth();
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyPayoutInfo({});
-  const { person } = data ?? {};
-  const { firstname = "", lastname = "" } = person ?? {};
+
+  const { firstname, lastname } = useMemo(() => {
+    if (data?.isCompany) {
+      return {
+        firstname: data?.company?.owner?.firstname || "",
+        lastname: data?.company?.owner?.lastname || "",
+      };
+    }
+
+    return {
+      firstname: data?.person?.firstname || "",
+      lastname: data?.person?.lastname || "",
+    };
+  }, [data]);
 
   return (
     <>

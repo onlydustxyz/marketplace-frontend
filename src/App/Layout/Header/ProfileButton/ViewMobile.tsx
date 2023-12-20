@@ -68,7 +68,7 @@ export default function ViewMobile({
           }
         )}
       >
-        {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} />}
+        {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />}
         {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
       </button>
       <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom">

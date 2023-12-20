@@ -1,10 +1,10 @@
 import { Listbox, Transition } from "@headlessui/react";
-import technologyIcon from "assets/img/technology.svg";
-import sponsorIcon from "assets/img/circle.png";
 import { cn } from "src/utils/cn";
 import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import Badge, { BadgeSize } from "src/components/Badge";
+import { IMAGES } from "src/assets/img";
+import { useIntl } from "src/hooks/useIntl";
 
 export enum FilterDropDownIcon {
   Technology = "technology",
@@ -22,8 +22,8 @@ export type Props = {
 };
 
 const ICONS = {
-  [FilterDropDownIcon.Technology]: technologyIcon,
-  [FilterDropDownIcon.Sponsors]: sponsorIcon,
+  [FilterDropDownIcon.Technology]: IMAGES.svg.technology,
+  [FilterDropDownIcon.Sponsors]: IMAGES.icons.circle,
 };
 
 export default function FilterDropDown({
@@ -35,6 +35,8 @@ export default function FilterDropDown({
   setValue,
   dataTestId,
 }: Props) {
+  const { T } = useIntl();
+
   const [open, setOpen] = useState(true);
 
   return (
@@ -47,7 +49,12 @@ export default function FilterDropDown({
             className="flex w-full items-center justify-between border-b border-greyscale-50/12 py-2 drop-shadow-bottom-sm hover:cursor-pointer"
           >
             <div className="flex items-center gap-2">
-              <img className="h-6 w-6" src={ICONS[icon]} />
+              <img
+                className="h-6 w-6"
+                src={ICONS[icon]}
+                loading="lazy"
+                alt={icon === FilterDropDownIcon.Technology ? T("filter.technologies.some") : T("filter.sponsors.some")}
+              />
               <span className="font-walsheim text-sm font-medium text-greyscale-50">
                 {value.length > 0 ? selectedLabel : defaultLabel}
               </span>

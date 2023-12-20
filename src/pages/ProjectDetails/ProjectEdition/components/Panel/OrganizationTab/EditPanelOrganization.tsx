@@ -29,6 +29,7 @@ export const EditPanelOrganization = () => {
           <OrganizationList
             organizations={installedOrganizations}
             emptyListFallBackText={T("project.details.create.organizations.installedOrganizationEmpty")}
+            disabledTooltip={T("project.details.create.organizations.tooltipInstalledByAdmin")}
           />
         </Card>
 

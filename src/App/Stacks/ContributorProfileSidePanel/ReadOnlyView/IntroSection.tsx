@@ -1,7 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import MapPinLine from "src/icons/MapPinLine";
 import { formatDateShort } from "src/utils/date";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
 import GlobalLine from "src/icons/GlobalLine";
 import SocialLink from "./SocialLink";
 import GithubLogo from "src/icons/GithubLogo";
@@ -24,17 +23,19 @@ import { components } from "src/__generated/api";
 import CompletionBar from "src/components/CompletionBar";
 import { UserProfile } from "src/api/Users/queries";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
+import { IMAGES } from "src/assets/img";
 
 type Props = {
   profile: UserProfile;
   setEditMode: (value: boolean) => void;
   completionScore?: number | undefined;
   isOwn?: boolean;
+  isPublic?: boolean;
 };
 
 type ContactChannelType = components["schemas"]["ContactInformation"]["channel"];
 
-export default function IntroSection({ isOwn, profile, setEditMode }: Props) {
+export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: Props) {
   const { T } = useIntl();
 
   const website = parseWebsite(profile.website);
@@ -64,25 +65,27 @@ export default function IntroSection({ isOwn, profile, setEditMode }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="z-20 -mr-4 flex flex-row gap-2 self-end">
-        {isOwn && (
-          <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
-            <PencilLine />
-            {T("profile.editButton")}
-          </Button>
-        )}
-        <Link
-          to={generatePath(RoutePaths.PublicProfile, {
-            userLogin: profile.login || "",
-          })}
-          target="_blank"
-          data-testid="open-public-profile-btn"
-        >
-          <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
-            <ExternalLinkLine />
-          </Button>
-        </Link>
-      </div>
+      {!isPublic ? (
+        <div className="z-20 -mr-4 flex flex-row gap-2 self-end">
+          {isOwn && (
+            <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
+              <PencilLine />
+              {T("profile.editButton")}
+            </Button>
+          )}
+          <Link
+            to={generatePath(RoutePaths.PublicProfile, {
+              userLogin: profile.login || "",
+            })}
+            target="_blank"
+            data-testid="open-public-profile-btn"
+          >
+            <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
+              <ExternalLinkLine />
+            </Button>
+          </Link>
+        </div>
+      ) : null}
 
       <div
         className={cn("flex flex-col gap-2", {
@@ -126,7 +129,13 @@ export default function IntroSection({ isOwn, profile, setEditMode }: Props) {
           )}
           {profile.createdAt ? (
             <div className="flex flex-row items-center gap-2 text-base text-greyscale-300">
-              <img id={`od-logo-${profile.login}`} src={onlyDustLogo} className="h-3.5" />
+              <img
+                id={`od-logo-${profile.login}`}
+                src={IMAGES.logo.original}
+                className="h-3.5"
+                loading="lazy"
+                alt="OnlyDust"
+              />
               {T("profile.joinedAt", {
                 joinedAt: formatDateShort(new Date(profile.createdAt)),
               })}

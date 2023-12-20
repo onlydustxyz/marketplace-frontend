@@ -17,7 +17,7 @@ import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubC
 import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
-import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { ShowMore } from "src/components/Table/ShowMore";
 import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
@@ -43,7 +43,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
 import { RewardableItem } from "src/api/Project/queries";
-import { useStackContribution } from "src/App/Stacks/Stacks";
+import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
 
 enum Align {
   Top = "top",
@@ -62,6 +62,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const [openStackContribution] = useStackContribution();
+  const [openProjectOverview] = useStackProjectOverview();
   const {
     data,
     isLoading: loading,
@@ -215,7 +216,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
     if (data) {
       return (
         <div className="flex h-full flex-col gap-8 overflow-hidden px-6">
-          <div className="flex flex-wrap items-center gap-3 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
+          <div className="flex flex-wrap items-center gap-3 font-belwe text-2xl font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.title", { id: pretty(data.id) })}
             {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
           </div>
@@ -228,9 +229,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                   <span>
                     {data.currency === Currency.USD
                       ? T("currencies.network.label_dollar")
-                      : data.currency === Currency.LORDS
-                      ? T("currencies.network.label", { currency: T(`currencies.currency.${Currency.ETH}`) })
-                      : T("currencies.network.label", { currency: T(`currencies.currency.${data.currency}`) })}
+                      : T("currencies.network.label", { currency: T(`currencies.network.${data.currency}`) })}
                   </span>
                 </div>
               </div>
@@ -286,6 +285,27 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                       clickable
                     />
                     {data.to.githubUserId === githubUserId && T("reward.table.detailsPanel.you")}
+                  </div>
+                </Details>
+              ) : null}
+              {data.project ? (
+                <Details>
+                  <RoundedImage
+                    alt={data.project.name || ""}
+                    src={data.project.logoUrl}
+                    size={ImageSize.Xxs}
+                    rounding={Rounding.Circle}
+                  />
+                  <div className="flex flex-row items-center gap-1">
+                    {T("reward.table.detailsPanel.on")}
+                    <button
+                      className="group flex items-center gap-2 truncate font-walsheim text-sm font-normal"
+                      onClick={() => openProjectOverview({ slug: data.project.slug })}
+                    >
+                      <span className={"block truncate text-spacePurple-300 group-hover:underline"}>
+                        {data.project.name}
+                      </span>
+                    </button>
                   </div>
                 </Details>
               ) : null}

@@ -69,6 +69,15 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     return { panel, id, stack };
   };
 
+  const removeActiveBlurElement = () => {
+    if (document?.activeElement) {
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement.blur) {
+        activeElement.blur();
+      }
+    }
+  };
+
   /* -------------------------------------------------------------------------- */
   /*                                  REGISTER                                  */
   /* -------------------------------------------------------------------------- */
@@ -292,7 +301,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const openPanel = (name: string, params?: StacksParams) => {
     const { panel } = getPanelFromStackName(name);
-
+    removeActiveBlurElement();
     if (panel.state.open === false) {
       panel.setValue(prev => {
         return {
@@ -418,8 +427,30 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     [stacks]
   );
 
+  /* -------------------------------------------------------------------------- */
+  /*                                   EVENTS                                   */
+  /* -------------------------------------------------------------------------- */
+
+  const keyPressEvents = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      onCloseLastPanel();
+    }
+  };
+
+  const registerEvents = () => {
+    document.addEventListener("keydown", keyPressEvents);
+  };
+
+  const unRegisterEvents = () => {
+    document.removeEventListener("keydown", keyPressEvents);
+  };
+
   useEffect(() => {
     stacks.register();
+    registerEvents();
+    return () => {
+      unRegisterEvents();
+    };
   }, []);
 
   return (

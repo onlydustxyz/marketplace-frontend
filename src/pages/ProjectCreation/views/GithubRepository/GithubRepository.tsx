@@ -2,7 +2,7 @@ import { Controller } from "react-hook-form";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { Flex } from "src/components/New/Layout/Flex";
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useContext, useMemo, useRef } from "react";
 import { FieldInput } from "src/components/New/Field/Input";
 import SearchLine from "src/icons/SearchLine";
 import { useRepositoryCount } from "./hooks/useRepositoryCount";
@@ -12,6 +12,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { CreateProjectContext } from "../../ProjectCreation.context";
 import { sortBy } from "lodash";
 import { VerticalListItemDrop } from "src/components/New/Cards/VerticalListItemDrop";
+import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 
 export const GithubRepositoryPage = () => {
   const { T } = useIntl();
@@ -21,6 +22,8 @@ export const GithubRepositoryPage = () => {
     helpers: { next, prev },
     formFn: { addRepository, removeRepository },
   } = useContext(CreateProjectContext);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  useSearchHotKey({ inputRef: searchInputRef });
 
   const installedOrganizations = organizations.filter(org => org.installed);
 
@@ -57,6 +60,7 @@ export const GithubRepositoryPage = () => {
               placeholder={T("project.details.create.repository.search")}
               {...props.field}
               {...props.fieldState}
+              ref={searchInputRef}
               startIcon={({ className }) => <SearchLine className={className} />}
             />
           )}

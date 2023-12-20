@@ -3,16 +3,17 @@ import { cn } from "src/utils/cn";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
 import Contributor from "src/components/Contributor";
 import { Virtuoso } from "react-virtuoso";
-import { forwardRef, useCallback } from "react";
+import { forwardRef, useCallback, useRef } from "react";
 import { Contributor as ContributorType } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { IMAGES } from "src/assets/img";
+import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 
 const MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX = 240;
 const CONTRIBUTOR_SELECT_LINE_HEIGHT_PX = 36;
@@ -33,6 +34,7 @@ type ContributorSelectViewProps = {
   search: string;
   setSearch: (query: string) => void;
   isError: boolean;
+  sidePanelOpened?: boolean;
 } & ShowMoreProps;
 
 export default function ContributorSelectView({
@@ -48,10 +50,18 @@ export default function ContributorSelectView({
   search,
   setSearch,
   isError,
+  sidePanelOpened,
 }: ContributorSelectViewProps) {
   const { T } = useIntl();
-
   const contributorLines = buildContributorLines(search, internalContributors, filteredExternalContributors);
+  const comboboxRef = useRef<HTMLButtonElement>(null);
+  useSearchHotKey({
+    onPress: () => {
+      if (!sidePanelOpened) {
+        comboboxRef?.current?.click?.();
+      }
+    },
+  });
 
   const renderOptionsContent = () => {
     if (isSearchGithubUsersByHandleSubstringQueryLoading) {
@@ -106,7 +116,7 @@ export default function ContributorSelectView({
               "overflow-hidden rounded-2xl outline outline-1 outline-whiteFakeOpacity-12": open,
             })}
           >
-            <Combobox.Button className="px-3 pt-4" as="div">
+            <Combobox.Button className="px-3 pt-4" as="div" ref={comboboxRef}>
               {!open && (
                 <div
                   className={cn(
@@ -140,7 +150,9 @@ export default function ContributorSelectView({
                         {selectedGithubHandle}
                       </div>
                     )}
-                    {contributor?.isRegistered && <img src={onlyDustLogo} className="ml-1.5 w-3.5" />}
+                    {contributor?.isRegistered && (
+                      <img src={IMAGES.logo.original} className="ml-1.5 w-3.5" loading="lazy" alt="OnlyDust" />
+                    )}
                   </div>
                   <ArrowDownSLine />
                 </div>

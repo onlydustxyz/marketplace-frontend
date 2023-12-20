@@ -22,7 +22,17 @@ export type AuthContextType = {
   invalidImpersonation: boolean;
 };
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>({
+  user: null,
+  login: () => null,
+  logout: async () => new Promise(() => null),
+  isLoggedIn: false,
+  roles: [],
+  ledProjectIds: [],
+  githubUserId: undefined,
+  invalidImpersonation: false,
+  impersonating: false,
+});
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();

@@ -16,6 +16,6 @@ export default function useInfiniteContributorList({ projectId, queryParams }: U
       pathParam: projectId,
       queryParams,
     },
-    { queryKey: ["contributors", projectId, queryParams] }
+    { queryKey: ["contributors", projectId, queryParams], enabled: !!projectId }
   );
 }

@@ -1,4 +1,4 @@
-import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
 import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
@@ -24,24 +24,37 @@ import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstal
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
-import { OutletContext } from "../View";
+import ProjectApi from "src/api/Project";
 
 export default function Contributors() {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const navigate = useNavigate();
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
-  const { project, projectBudget } = useOutletContext<OutletContext>();
+  const { projectKey = "" } = useParams<{ projectKey: string }>();
 
-  const { id: projectId, slug: projectKey } = project;
-  const isInvited = !!project.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
+  const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+  });
 
-  const isProjectLeader = useProjectLeader({ id: projectId });
+  const isProjectLeader = useProjectLeader({ id: project?.id });
 
-  const remainingBudget = projectBudget?.budgets?.some(budget => budget.remaining > 0);
-  const noBudget = !remainingBudget;
+  const { sorting, sortField, queryParams } = useQueryParamsSorting({
+    field: isProjectLeader ? Fields.ToRewardCount : Fields.ContributionCount,
+    isAscending: false,
+    storageKey: "projectContributorsSorting",
+  });
 
-  const orgsWithUnauthorizedRepos = getOrgsWithUnauthorizedRepos(project);
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
+    projectId: project?.id ?? "",
+    queryParams,
+  });
+
+  const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
+
+  const noBudget = !project?.hasRemainingBudget;
+
+  const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
   function getRewardDisableReason() {
@@ -54,18 +67,7 @@ export default function Contributors() {
     }
   }
 
-  const { sorting, sortField, queryParams } = useQueryParamsSorting({
-    field: isProjectLeader ? Fields.ToRewardCount : Fields.ContributionCount,
-    isAscending: false,
-    storageKey: "projectContributorsSorting",
-  });
-
-  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
-    projectId,
-    queryParams,
-  });
-
-  if (isFetching && !isFetchingNextPage) {
+  if ((isFetching && !isFetchingNextPage) || isLoadingProject) {
     return (
       <>
         <div className="max-w-[15%]">
@@ -79,6 +81,8 @@ export default function Contributors() {
   if (error) {
     return <ErrorFallback />;
   }
+
+  if (!project) return null;
 
   const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
 
@@ -116,12 +120,14 @@ export default function Contributors() {
         </div>
       </Title>
 
-      {!project.indexingComplete ? <StillFetchingBanner /> : null}
+      {!project?.indexingComplete ? <StillFetchingBanner /> : null}
+
       {isProjectLeader && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
+
       <ProjectLeadInvitation
-        projectId={projectId}
+        projectId={project.id}
         size={CalloutSizes.Large}
         projectSlug={projectKey}
         isInvited={isInvited}
@@ -136,7 +142,7 @@ export default function Contributors() {
             hasNextPage,
             isFetchingNextPage,
             isProjectLeader,
-            projectId,
+            projectId: project.id,
             projectKey,
             sorting,
             sortField,

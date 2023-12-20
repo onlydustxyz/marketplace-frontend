@@ -1,7 +1,6 @@
 import { ReactElement, forwardRef, useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -21,8 +20,9 @@ import { RewardableItem } from "src/api/Project/queries";
 import { ShowMore } from "src/components/Table/ShowMore";
 import EmptyState from "../EmptyState";
 import Skeleton from "src/components/Skeleton";
-import ErrorState from "src/components/ErrorState";
 import { Contributor } from "../../types";
+import { WorkItemType } from "src/types";
+import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 
 export const tabNames = {
   [WorkItemType.Issue]: "issues",
@@ -47,7 +47,7 @@ type Props = {
   contributor: Contributor;
   setIncludeIgnoredItems: (value: boolean) => void;
   loading: boolean;
-  error: boolean;
+  PoolingFeedback?: React.ReactElement;
 } & ShowMoreProps;
 
 export default function View({
@@ -64,7 +64,7 @@ export default function View({
   isFetchingNextPage,
   setIncludeIgnoredItems,
   loading,
-  error,
+  PoolingFeedback,
 }: Props) {
   const { T } = useIntl();
   const { resetField } = useFormContext();
@@ -72,6 +72,13 @@ export default function View({
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);
+
+  useSearchHotKey({
+    onPress: () => {
+      setSearchEnabled(true);
+    },
+  });
+
   const setAddOtherIssueEnabled = (value: boolean) => {
     setStateAddOtherIssueEnabled(value);
     setStateSearchEnabled(false);
@@ -114,10 +121,6 @@ export default function View({
       );
     }
 
-    if (error) {
-      return <ErrorState />;
-    }
-
     if (contributions.length > 0 && contributor) {
       return (
         <VirtualizedIssueList
@@ -136,7 +139,7 @@ export default function View({
       );
     }
 
-    return <EmptyState type={type} />;
+    return <EmptyState type={type} PoolingFeedback={PoolingFeedback} />;
   };
 
   return (

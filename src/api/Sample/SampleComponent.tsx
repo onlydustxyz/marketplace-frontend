@@ -1,6 +1,7 @@
 import SampleApi from ".";
 import useMutationAlert from "src/api/useMutationAlert";
-import UseQueriesError from "src/api/useQueriesError";
+import { UseQueriesError } from "src/api/useQueriesError";
+import { FetchError } from "../query.type";
 
 export const Test = () => {
   const { data, ...query } = SampleApi.queries.useProjectSampleByIdQuery({
@@ -19,7 +20,7 @@ export const Test = () => {
   useMutationAlert({ mutation: rest, success: { message: "sucess" }, error: { message: "error" } });
 
   const errorFallback = UseQueriesError({
-    queries: query,
+    queries: { isError: query.isError, error: query.error as FetchError, refetch: query.refetch },
     errorComponent(props) {
       return <p onClick={props.refetch}>Sample button</p>;
     },

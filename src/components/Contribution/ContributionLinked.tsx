@@ -12,11 +12,15 @@ export function ContributionLinked({
     position: TooltipPosition.Bottom,
     variant: Variant.Default,
   },
+  showExternal = false,
+  maxLinked = 3,
 }: {
   contribution: ComponentProps<typeof ContributionBadge>["contribution"] & Pick<Contribution, "id" | "links">;
   withTooltip?: boolean;
   asLink?: boolean;
   tooltipProps?: React.ComponentProps<typeof Tooltip>;
+  showExternal?: boolean;
+  maxLinked?: number;
 }) {
   function renderBadges({ withTooltip, asLink }: { withTooltip: boolean; asLink: boolean }) {
     if (contribution.links.length) {
@@ -29,6 +33,7 @@ export function ContributionLinked({
               withTooltip={withTooltip}
               asLink={asLink}
               tooltipProps={tooltipProps}
+              showExternal={showExternal}
             />
           ))}
         </>
@@ -40,7 +45,7 @@ export function ContributionLinked({
 
   const nbLinkedContributions = contribution.links.length;
 
-  if (nbLinkedContributions > 3) {
+  if (nbLinkedContributions > maxLinked) {
     const tooltipId = `${contribution.id}-linked-tooltip`;
 
     return (

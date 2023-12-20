@@ -25,6 +25,7 @@ export default function Profile({ userProfile }: Props) {
               setEditMode={() => {
                 return;
               }}
+              isPublic={true}
             />
             {languages.length > 0 && <TechnologiesSection languages={languages} />}
           </div>
