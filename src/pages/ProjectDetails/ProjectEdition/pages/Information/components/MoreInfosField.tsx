@@ -91,7 +91,7 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
           }}
         >
           {({ item, items, index }) => (
-            <div className={cn("w-full space-y-4", "flex flex-row items-start justify-start")}>
+            <div className={cn("w-full space-y-4", "flex flex-row items-start justify-start md:block")}>
               <Flex
                 key={"moreInfo" + item.id}
                 className={cn("w-full items-baseline justify-center gap-2", "flex-col md:flex-row")}
