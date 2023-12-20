@@ -93,7 +93,10 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
   }, [filters, projectIds, repoIds]);
 
   const hasActiveFilters = Boolean(
-    !isAllTime(filters?.dateRange) || filters.types?.length || filters.projects?.length || filters.repos?.length
+    (filters?.dateRange?.from && filters?.dateRange?.to && !isAllTime(filters?.dateRange)) ||
+      filters.types?.length ||
+      filters.projects?.length ||
+      filters.repos?.length
   );
 
   const { data: projectsData } = MeApi.queries.useMyContributedProjects({
