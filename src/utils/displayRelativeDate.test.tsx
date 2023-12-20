@@ -1,5 +1,5 @@
 import displayRelativeDate from "./displayRelativeDate";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, afterAll } from "vitest";
 
 describe("Display relative data", () => {
   afterAll(() => {
