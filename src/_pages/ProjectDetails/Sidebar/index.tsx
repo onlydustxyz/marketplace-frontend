@@ -1,4 +1,4 @@
-import { chain } from "lodash";
+import _ from "lodash";
 import { useMemo } from "react";
 import { ProjectRoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
@@ -34,8 +34,8 @@ export default function ProjectsSidebar() {
   const pendingLeadedProjects = usePendingLeadProjects();
   const sortedProject = useMemo(() => {
     return {
-      leadedProjects: chain(leadedProjects).sortBy("name").value(),
-      pendingLeadedProjects: chain(pendingLeadedProjects).sortBy("name").value(),
+      leadedProjects: _.chain(leadedProjects).sortBy("name").value(),
+      pendingLeadedProjects: _.chain(pendingLeadedProjects).sortBy("name").value(),
     };
   }, [leadedProjects, pendingLeadedProjects]);
 
