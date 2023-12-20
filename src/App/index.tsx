@@ -14,6 +14,7 @@ const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/C
 const ProjectDetailsContributions = lazy(() => import("src/pages/ProjectDetails/Contributions"));
 const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Rewards/List"));
 const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
+const ProjectDetailsInsights = lazy(() => import("src/pages/ProjectDetails/Insights"));
 const ProjectDetailsEdit = lazy(() => import("src/pages/ProjectDetails/ProjectEdition/ProjectEdition"));
 
 import { NotFound } from "src/components/NotFound";
@@ -34,6 +35,7 @@ import ProjectsLoader from "./Loaders/ProjectsLoader";
 import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import Loader from "src/components/Loader";
 import RewardLoader from "./Loaders/RewardsLoader";
+import InsightSkeleton from "src/pages/ProjectDetails/Insights/Insights.skeleton";
 
 export enum RoutePaths {
   Home = "/",
@@ -61,6 +63,7 @@ export enum ProjectRoutePaths {
   Rewards = "rewards",
   Edit = "edit",
   Contributions = "contributions",
+  Insights = "insights",
 }
 
 export enum ProjectRewardsRoutePaths {
@@ -125,6 +128,18 @@ function App() {
           ),
         },
       ],
+    },
+    {
+      path: ProjectRoutePaths.Insights,
+      element: (
+        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+          <ProtectedByFlag flag="VITE_FLAG_ALLOW_PROJECT_INSIGHTS">
+            <Suspense fallback={<InsightSkeleton />}>
+              <ProjectDetailsInsights />
+            </Suspense>
+          </ProtectedByFlag>
+        </ProtectedRoute>
+      ),
     },
     {
       path: ProjectRoutePaths.Edit,

@@ -63,6 +63,10 @@ export default function ProjectsSidebar() {
       label: T("project.details.contributions.title"),
       path: ProjectRoutePaths.Contributions,
     },
+    insights: {
+      label: T("project.details.insights.title"),
+      path: ProjectRoutePaths.Insights,
+    },
   };
 
   const availableTabs = [
@@ -70,6 +74,7 @@ export default function ProjectsSidebar() {
     AvailableTabs.contributors,
     ...(parseFlag("VITE_FLAG_ALLOW_PROJECT_CONTRIBUTIONS") && isProjectLeader ? [AvailableTabs.contributions] : []),
     ...(isProjectLeader ? [AvailableTabs.rewards] : []),
+    ...(parseFlag("VITE_FLAG_ALLOW_PROJECT_INSIGHTS") && isProjectLeader ? [AvailableTabs.insights] : []),
   ];
 
   if (isLoading && isXl)
