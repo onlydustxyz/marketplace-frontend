@@ -24,7 +24,6 @@ import Onboarding from "src/_pages/Onboarding";
 import PublicProfilePage from "src/_pages/PublicProfile";
 import TermsAndConditions from "src/_pages/TermsAndConditions";
 import { CustomUserRole, HasuraUserRole } from "src/types";
-import { parseFlag } from "src/utils/parseFlag";
 import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
 import ProtectedByFlag from "./ProtectedByFlag";
@@ -98,12 +97,10 @@ function App() {
         </Suspense>
       ),
     },
-    parseFlag("NEXT_PUBLIC_FLAG_ALLOW_PROJECT_CONTRIBUTIONS")
-      ? {
-          path: ProjectRoutePaths.Contributions,
-          element: <ProjectDetailsContributions />,
-        }
-      : {},
+    {
+      path: ProjectRoutePaths.Contributions,
+      element: <ProjectDetailsContributions />,
+    },
     {
       path: ProjectRoutePaths.Rewards,
       children: [
@@ -133,7 +130,7 @@ function App() {
       path: ProjectRoutePaths.Insights,
       element: (
         <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProtectedByFlag flag="NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS">
+          <ProtectedByFlag isValid={process.env.NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS === "true"}>
             <Suspense fallback={<InsightSkeleton />}>
               <ProjectDetailsInsights />
             </Suspense>
@@ -145,11 +142,9 @@ function App() {
       path: ProjectRoutePaths.Edit,
       element: (
         <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProtectedByFlag flag="NEXT_PUBLIC_CAN_EDIT_PROJECT">
-            <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
-              <ProjectDetailsEdit />
-            </ProtectedByGithub>
-          </ProtectedByFlag>
+          <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
+            <ProjectDetailsEdit />
+          </ProtectedByGithub>
         </ProtectedRoute>
       ),
     },
@@ -192,16 +187,14 @@ function App() {
             </ProtectedRoute>
           ),
         },
-        parseFlag("NEXT_PUBLIC_FLAG_ALLOW_CONTRIBUTIONS_LIST")
-          ? {
-              path: RoutePaths.Contributions,
-              element: (
-                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-                  <Contributions />
-                </ProtectedRoute>
-              ),
-            }
-          : {},
+        {
+          path: RoutePaths.Contributions,
+          element: (
+            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+              <Contributions />
+            </ProtectedRoute>
+          ),
+        },
         {
           path: RoutePaths.Login,
           element: <Login />,
@@ -210,14 +203,12 @@ function App() {
           path: RoutePaths.ProjectCreation,
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <ProtectedByFlag flag="NEXT_PUBLIC_CAN_CREATE_PROJECT">
-                <ProtectedByGithub
-                  requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
-                  redirectTo={RoutePaths.ProjectCreation}
-                >
-                  <ProjectCreation />
-                </ProtectedByGithub>
-              </ProtectedByFlag>
+              <ProtectedByGithub
+                requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
+                redirectTo={RoutePaths.ProjectCreation}
+              >
+                <ProjectCreation />
+              </ProtectedByGithub>
             </ProtectedRoute>
           ),
         },

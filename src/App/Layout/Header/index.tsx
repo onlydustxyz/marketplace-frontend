@@ -6,7 +6,6 @@ import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useOnboarding } from "src/App/OnboardingProvider";
-import { parseFlag } from "src/utils/parseFlag";
 import MeApi from "src/api/me";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import { Fields } from "src/components/UserRewardTable/Headers";
@@ -38,10 +37,7 @@ export default function Header() {
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
   const rewardsMenuItem = hasRewards && !onboardingInProgress ? T("navbar.rewards") : undefined;
-  const contributionsMenuItem =
-    parseFlag("NEXT_PUBLIC_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId && !onboardingInProgress
-      ? T("navbar.contributions")
-      : undefined;
+  const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.contributions") : undefined;
   const projectsMenuItem =
     (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("navbar.projects") : undefined;
 
