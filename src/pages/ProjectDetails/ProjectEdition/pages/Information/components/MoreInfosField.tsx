@@ -82,11 +82,20 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
         <SortableList
           items={value || []}
           onChange={reorderMoreInfos}
-          itemProps={{ DragHandler, className: "flex w-full items-center" }}
+          itemProps={{
+            DragHandler,
+            className: cn(
+              "flex w-full items-center",
+              "border border-card-border-light rounded-lg py-3 px-[6px] md:border-0 md:p-0"
+            ),
+          }}
         >
           {({ item, items, index }) => (
-            <div className="w-full space-y-4">
-              <Flex key={"moreInfo" + item.id} className="w-full items-baseline justify-center gap-2">
+            <div className={cn("w-full space-y-4", "flex flex-row items-start justify-start")}>
+              <Flex
+                key={"moreInfo" + item.id}
+                className={cn("w-full items-baseline justify-center gap-2", "flex-col md:flex-row")}
+              >
                 <FieldInput
                   name={"moreInfos.url-" + index}
                   value={item.url}
@@ -106,7 +115,7 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
                   name={"moreInfos.value-" + index}
                   value={item.value}
                   placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
-                  fieldClassName="w-1/3"
+                  fieldClassName={cn("w-1/3", "w-full")}
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   errorMessage={(error as any)?.[index]?.value?.message}
                   onChange={event => {
@@ -121,13 +130,22 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
                     type={ButtonType.Ternary}
                     size={ButtonSize.MdRounded}
                     iconOnly
-                    className="h-8 w-8 justify-center p-2 text-snow"
+                    className={cn("flex h-8 w-8 justify-center p-2 text-snow", "hidden md:visible")}
                     onClick={() => deleteLink(index)}
                   >
                     <DeleteBinLine />
                   </Button>
                 ) : null}
               </Flex>
+              <Button
+                type={ButtonType.Ternary}
+                size={ButtonSize.MdRounded}
+                iconOnly
+                className={cn("flex h-8 w-8 justify-center p-2 text-snow", "visible !mt-0 md:hidden")}
+                onClick={() => deleteLink(index)}
+              >
+                <DeleteBinLine />
+              </Button>
             </div>
           )}
         </SortableList>
