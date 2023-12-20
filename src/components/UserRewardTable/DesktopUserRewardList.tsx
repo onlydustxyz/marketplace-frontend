@@ -18,7 +18,7 @@ type PropsType = {
 };
 
 export default function DesktopUserRewardList({ onRewardClick, selectedReward }: PropsType) {
-  const { setEarning } = useContext(UserRewardsContext);
+  const { setEarning, filterQueryParams } = useContext(UserRewardsContext);
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -28,7 +28,10 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward }:
 
   const { data, error, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     MeApi.queries.useMyRewardsInfiniteList({
-      queryParams,
+      queryParams: {
+        ...(queryParams as URLSearchParams),
+        ...filterQueryParams,
+      },
     });
 
   useEffect(() => {

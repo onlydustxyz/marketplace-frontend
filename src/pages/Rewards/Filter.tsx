@@ -3,7 +3,6 @@ import { DateRange } from "react-day-picker";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySelect";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
-import { Currency } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
@@ -24,7 +23,7 @@ const initialFilters: Filters = {
   period: Period.AllTime,
   dateRange: allTime,
   projects: [],
-  currency: { id: 0, value: Currency.USD },
+  currency: { id: 0, value: "" },
 };
 
 export type FilterQueryParams = {
@@ -34,14 +33,8 @@ export type FilterQueryParams = {
   currencies?: string;
 };
 
-export function UserRewardsFilter({
-  onChange,
-  position,
-}: {
-  onChange: (filterQueryParams: FilterQueryParams) => void;
-  position?: FilterPosition;
-}) {
-  const { rewards } = useContext(UserRewardsContext);
+export function UserRewardsFilter({ position }: { position?: FilterPosition }) {
+  const { rewards, setFilterQueryParams } = useContext(UserRewardsContext);
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
     "project-my-rewards-table-filters",
@@ -63,6 +56,10 @@ export function UserRewardsFilter({
       projects: projectIds.join(","),
     };
 
+    if (currency) {
+      filterQueryParams.currencies = currency.value ?? "";
+    }
+
     // If a predefined period is selected, use the predefined period's date range
     if (period !== Period.Custom) {
       const { value } = allPeriods.find(({ id }) => id === period) ?? {};
@@ -71,7 +68,7 @@ export function UserRewardsFilter({
         filterQueryParams.fromDate = formatDateQueryParam(value.from);
         filterQueryParams.toDate = formatDateQueryParam(value.to);
 
-        onChange(filterQueryParams);
+        setFilterQueryParams(filterQueryParams);
 
         // Return early to avoid updating the date range twice
         return;
@@ -89,11 +86,7 @@ export function UserRewardsFilter({
       updateDate(initialFilters.dateRange);
     }
 
-    if (currency) {
-      filterQueryParams.currencies = currency.value;
-    }
-
-    onChange(filterQueryParams);
+    setFilterQueryParams(filterQueryParams);
   }, [filters]);
 
   const hasActiveFilters = Boolean(
@@ -136,8 +129,18 @@ export function UserRewardsFilter({
     );
   }
 
+  const uniqueProjects = rewards
+    ?.filter(
+      (value, index, self) => index === self.findIndex(t => t.rewardedOnProjectName === value.rewardedOnProjectName)
+    )
+    .map(reward => ({
+      id: reward.projectId,
+      label: reward.rewardedOnProjectName,
+      image: reward.rewardedOnProjectLogoUrl,
+    }));
+
   return (
-    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
+    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position} className="z-10">
       <div className="isolate focus-within:z-50">
         <FilterDatepicker
           selected={filters.dateRange ?? initialFilters.dateRange}
@@ -149,15 +152,13 @@ export function UserRewardsFilter({
 
       {rewards ? (
         <>
-          <FilterProjectSelect
-            projects={rewards.map(reward => ({
-              id: reward.projectId,
-              label: reward.rewardedOnProjectName,
-              image: reward.rewardedOnProjectLogoUrl,
-            }))}
-            selected={filters.projects ?? initialFilters.projects}
-            onChange={updateProjects}
-          />
+          <div className="focus-within:z-10">
+            <FilterProjectSelect
+              projects={uniqueProjects ?? []}
+              selected={filters.projects ?? initialFilters.projects}
+              onChange={updateProjects}
+            />
+          </div>
 
           <div className="focus-within:z-10">
             <FilterCurrencySelect

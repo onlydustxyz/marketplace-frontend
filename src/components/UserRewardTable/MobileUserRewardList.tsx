@@ -8,7 +8,7 @@ import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 import { MyRewardType } from "./Line";
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { components } from "src/__generated/api";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
@@ -19,9 +19,12 @@ import ErrorFallback from "src/ErrorFallback";
 import { RoutePaths } from "src/App";
 import { Navigate } from "react-router-dom";
 import { IMAGES } from "src/assets/img";
+import { UserRewardsContext } from "src/pages/Rewards/context";
+import { useEffect } from "react";
 
 export default function MobileUserRewardList({ onRewardClick }: { onRewardClick: (reward: MyRewardType) => void }) {
   const { T } = useIntl();
+  const { setEarning } = useContext(UserRewardsContext);
 
   const { queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -33,6 +36,10 @@ export default function MobileUserRewardList({ onRewardClick }: { onRewardClick:
     MeApi.queries.useMyRewardsInfiniteList({
       queryParams,
     });
+
+  useEffect(() => {
+    data && setEarning(data);
+  }, [data]);
 
   if (error) {
     return (

@@ -25,7 +25,7 @@ export default function Rewards() {
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
           <Flex className="items-center justify-between">
             <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
-            <UserRewardsFilter onChange={value => console.log("value", value)} />
+            <UserRewardsFilter />
           </Flex>
           <InvoiceSubmission />
           <Earning />

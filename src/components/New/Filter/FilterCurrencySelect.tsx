@@ -48,21 +48,24 @@ export function FilterCurrencySelect({
     []
   );
 
-  const items = currencies.map(currency => ({ ...currency, label: getLabel(currency.value as Currency) }));
+  const items = currencies.map(currency => ({
+    ...currency,
+    label: getLabel((currency.value || Currency.USD) as Currency),
+  }));
 
   return (
     <FilterField label={T("filter.currency.title")}>
       <FilterSelect
         icon={({ selected }) => (
           <div className="h-4 w-4">
-            {currenciesLabel[(selected as Item).value as keyof typeof currenciesLabel].icon}
+            {currenciesLabel[((selected as Item).value || Currency.USD) as keyof typeof currenciesLabel].icon}
           </div>
         )}
         tokens={{ zero: "filter.currency.all", other: "filter.currency" }}
         items={items}
         selected={{
           ...selected,
-          label: <>{T(currenciesLabel[selected.value as keyof typeof currenciesLabel].label)}</>,
+          label: <>{T(currenciesLabel[(selected.value || Currency.USD) as keyof typeof currenciesLabel].label)}</>,
         }}
         onChange={onChange}
         disabled={currencies.length <= 1}
