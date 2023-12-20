@@ -98,7 +98,7 @@ function App() {
         </Suspense>
       ),
     },
-    parseFlag("VITE_FLAG_ALLOW_PROJECT_CONTRIBUTIONS")
+    parseFlag("NEXT_PUBLIC_FLAG_ALLOW_PROJECT_CONTRIBUTIONS")
       ? {
           path: ProjectRoutePaths.Contributions,
           element: <ProjectDetailsContributions />,
@@ -133,7 +133,7 @@ function App() {
       path: ProjectRoutePaths.Insights,
       element: (
         <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProtectedByFlag flag="VITE_FLAG_ALLOW_PROJECT_INSIGHTS">
+          <ProtectedByFlag flag="NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS">
             <Suspense fallback={<InsightSkeleton />}>
               <ProjectDetailsInsights />
             </Suspense>
@@ -145,7 +145,7 @@ function App() {
       path: ProjectRoutePaths.Edit,
       element: (
         <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProtectedByFlag flag="VITE_CAN_EDIT_PROJECT">
+          <ProtectedByFlag flag="NEXT_PUBLIC_CAN_EDIT_PROJECT">
             <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
               <ProjectDetailsEdit />
             </ProtectedByGithub>
@@ -192,7 +192,7 @@ function App() {
             </ProtectedRoute>
           ),
         },
-        parseFlag("VITE_FLAG_ALLOW_CONTRIBUTIONS_LIST")
+        parseFlag("NEXT_PUBLIC_FLAG_ALLOW_CONTRIBUTIONS_LIST")
           ? {
               path: RoutePaths.Contributions,
               element: (
@@ -210,7 +210,7 @@ function App() {
           path: RoutePaths.ProjectCreation,
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <ProtectedByFlag flag="VITE_CAN_CREATE_PROJECT">
+              <ProtectedByFlag flag="NEXT_PUBLIC_CAN_CREATE_PROJECT">
                 <ProtectedByGithub
                   requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
                   redirectTo={RoutePaths.ProjectCreation}

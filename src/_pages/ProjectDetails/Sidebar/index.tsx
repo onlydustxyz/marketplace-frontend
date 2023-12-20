@@ -72,9 +72,11 @@ export default function ProjectsSidebar() {
   const availableTabs = [
     AvailableTabs.overview,
     AvailableTabs.contributors,
-    ...(parseFlag("VITE_FLAG_ALLOW_PROJECT_CONTRIBUTIONS") && isProjectLeader ? [AvailableTabs.contributions] : []),
+    ...(parseFlag("NEXT_PUBLIC_FLAG_ALLOW_PROJECT_CONTRIBUTIONS") && isProjectLeader
+      ? [AvailableTabs.contributions]
+      : []),
     ...(isProjectLeader ? [AvailableTabs.rewards] : []),
-    ...(parseFlag("VITE_FLAG_ALLOW_PROJECT_INSIGHTS") && isProjectLeader ? [AvailableTabs.insights] : []),
+    ...(parseFlag("NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS") && isProjectLeader ? [AvailableTabs.insights] : []),
   ];
 
   if (isLoading && isXl)

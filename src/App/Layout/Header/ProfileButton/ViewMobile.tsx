@@ -87,7 +87,7 @@ export default function ViewMobile({
                     <Folder3Line className="text-xl" /> {T("navbar.projects")}
                   </NavLink>
 
-                  {parseFlag("VITE_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId ? (
+                  {parseFlag("NEXT_PUBLIC_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId ? (
                     <NavLink
                       to={RoutePaths.Contributions}
                       onClick={() => setPanelOpen(false)}

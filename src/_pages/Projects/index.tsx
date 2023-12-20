@@ -55,7 +55,7 @@ export default function Projects() {
           <div className="flex h-full gap-6">
             <div className="sticky top-0 z-10 hidden shrink-0 basis-80 xl:block">
               <div className="sticky top-4">
-                {parseFlag("VITE_CAN_CREATE_PROJECT") ? <SubmitProject /> : null}
+                {parseFlag("NEXT_PUBLIC_CAN_CREATE_PROJECT") ? <SubmitProject /> : null}
                 <FilterPanel
                   isProjectLeader={!!isProjectLeader.length}
                   availableTechnologies={technologies}

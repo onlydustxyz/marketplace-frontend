@@ -11,7 +11,7 @@ export interface GetGithubSetupLinkProps {
 const baseUrl = "https://github.com/";
 
 export const OAuthGithubConfigLink = `https://github.com/settings/connections/applications/${
-  import.meta.env.VITE_GITHUB_OAUTH_APP_ID
+  import.meta.env.NEXT_PUBLIC_GITHUB_OAUTH_APP_ID
 }`;
 
 export const GithubState = {
@@ -24,15 +24,15 @@ export const GithubSetupLinks = {
   alreadyInstalledPersonnal: (props: { installationId: number }) =>
     `${baseUrl}settings/installations/${props.installationId}`,
   shouldInstall: (props: { orgId: number }) =>
-    `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${props.orgId}`,
+    `${import.meta.env.NEXT_PUBLIC_GITHUB_INSTALLATION_URL}/permissions?target_id=${props.orgId}`,
   shouldInstallOnEdit: (props: { orgId: number; projectSlug: string }) =>
-    `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${props.orgId}&state=${GithubState.edit}${
-      props.projectSlug
-    }`,
+    `${import.meta.env.NEXT_PUBLIC_GITHUB_INSTALLATION_URL}/permissions?target_id=${props.orgId}&state=${
+      GithubState.edit
+    }${props.projectSlug}`,
   shouldInstallOnClaim: (props: { orgId: number; projectSlug: string }) =>
-    `${import.meta.env.VITE_GITHUB_INSTALLATION_URL}/permissions?target_id=${props.orgId}&state=${GithubState.claim}${
-      props.projectSlug
-    }`,
+    `${import.meta.env.NEXT_PUBLIC_GITHUB_INSTALLATION_URL}/permissions?target_id=${props.orgId}&state=${
+      GithubState.claim
+    }${props.projectSlug}`,
 };
 
 export const getGithubSetupLink = ({
