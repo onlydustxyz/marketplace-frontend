@@ -52,8 +52,9 @@ export default function CollapsibleCard({ title, description, icon, isEmpty, has
         ) : null}
       </header>
       <div
-        className={cn("px-4 pt-6 lg:block", isLg && hasShowMore ? "pb-0" : "pb-6", {
-          "lg:hidden": collapsed,
+        className={cn("px-4 py-6 lg:block", {
+          "hidden lg:hidden": collapsed,
+          "pb-0": isLg && hasShowMore,
         })}
       >
         {children}
