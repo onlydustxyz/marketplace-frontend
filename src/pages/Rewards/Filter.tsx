@@ -129,18 +129,22 @@ export function UserRewardsFilter({ position }: { position?: FilterPosition }) {
     );
   }
 
-  const uniqueProjects = rewards
-    ?.filter(
-      (value, index, self) => index === self.findIndex(t => t.rewardedOnProjectName === value.rewardedOnProjectName)
-    )
-    .map(reward => ({
-      id: reward.projectId,
-      label: reward.rewardedOnProjectName,
-      image: reward.rewardedOnProjectLogoUrl,
-    }));
+  const uniqueProjects = useMemo(
+    () =>
+      rewards
+        ?.filter(
+          (value, index, self) => index === self.findIndex(t => t.rewardedOnProjectName === value.rewardedOnProjectName)
+        )
+        .map(reward => ({
+          id: reward.projectId,
+          label: reward.rewardedOnProjectName,
+          image: reward.rewardedOnProjectLogoUrl,
+        })),
+    [rewards]
+  );
 
   return (
-    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position} className="z-10">
+    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
       <div className="isolate focus-within:z-50">
         <FilterDatepicker
           selected={filters.dateRange ?? initialFilters.dateRange}
