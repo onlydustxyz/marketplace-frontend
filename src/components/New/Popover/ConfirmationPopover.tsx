@@ -18,15 +18,7 @@ type Props = {
   };
 } & PropsWithChildren;
 
-export default function ConfirmationPopOver({
-  onClose,
-  confirm,
-  cancel,
-  description,
-  title,
-  children,
-  disabled,
-}: Props) {
+export function ConfirmationPopOver({ onClose, confirm, cancel, description, title, children, disabled }: Props) {
   const handleCancel = () => {
     cancel.onClick();
     onClose();
@@ -72,3 +64,5 @@ export default function ConfirmationPopOver({
     </Popover>
   );
 }
+
+export default ConfirmationPopOver;
