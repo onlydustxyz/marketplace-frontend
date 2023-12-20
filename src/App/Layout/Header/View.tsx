@@ -37,7 +37,7 @@ export default function HeaderView({
   impersonating = false,
   profileCompletionScore,
 }: HeaderViewProps) {
-  const testing = import.meta.env.NODE_ENV === "test";
+  const testing = process.env.NODE_ENV === "test";
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const { onboardingInProgress } = useOnboarding();
