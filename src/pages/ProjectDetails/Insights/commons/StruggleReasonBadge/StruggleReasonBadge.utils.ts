@@ -10,9 +10,9 @@ const calculateDaysAgo = (dateString: string): number => {
 const getColorClass = (daysAgo: number): string => {
   if (daysAgo >= ReasonRanges.RedStatus) {
     return "bg-struggleBadge-background-red text-struggleBadge-text-red";
-  } else if (daysAgo >= ReasonRanges.OrangeStatus) {
+  } else if (daysAgo >= ReasonRanges.OrangeStatus && daysAgo < ReasonRanges.RedStatus) {
     return "bg-struggleBadge-background-orange text-struggleBadge-text-orange";
-  } else if (daysAgo < ReasonRanges.GreenStatus) {
+  } else if (daysAgo >= ReasonRanges.GreenStatus && daysAgo < ReasonRanges.OrangeStatus) {
     return "bg-struggleBadge-background-green text-struggleBadge-text-green";
   }
   return "";
