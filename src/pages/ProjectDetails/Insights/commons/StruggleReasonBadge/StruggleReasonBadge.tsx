@@ -1,16 +1,17 @@
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 import { calculateDaysAgo, getColorClass } from "./StruggleReasonBadge.utils";
-import { StruggleReasonBadgeProps } from "./StruggleReasonBadge.type";
+import { ReasonRanges, StruggleReasonBadgeProps } from "./StruggleReasonBadge.type";
 
 const Bar = ({ daysAgo, height }: { daysAgo: number; height: number }) => (
   <div
     className={cn(`h-${height} w-1`, {
-      "bg-struggleBadge-bar-solid-green": daysAgo < 10,
-      "bg-struggleBadge-bar-fade-green": daysAgo < 10 && height > 2,
-      "bg-struggleBadge-bar-solid-orange": daysAgo < 20 && daysAgo >= 10,
-      "bg-struggleBadge-bar-fade-orange": daysAgo < 20 && daysAgo >= 10 && height > 2,
-      "bg-struggleBadge-bar-solid-red": daysAgo >= 30,
+      "bg-struggleBadge-bar-solid-green": daysAgo < ReasonRanges.GreenStatus,
+      "bg-struggleBadge-bar-fade-green": daysAgo < ReasonRanges.GreenStatus && height > 2,
+      "bg-struggleBadge-bar-solid-orange": daysAgo >= ReasonRanges.GreenStatus && daysAgo < ReasonRanges.OrangeStatus,
+      "bg-struggleBadge-bar-fade-orange":
+        daysAgo >= ReasonRanges.GreenStatus && daysAgo < ReasonRanges.OrangeStatus && height > 2,
+      "bg-struggleBadge-bar-solid-red": daysAgo >= ReasonRanges.RedStatus,
     })}
   />
 );
