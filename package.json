@@ -2,10 +2,9 @@
   "name": "marketplace",
   "version": "2.0.0",
   "scripts": {
-    "dev": "vite --host",
-    "dev:develop": "yarn dev --mode develop",
-    "build": "scripts/generate-api-types.sh && tsc && vite build",
-    "preview": "vite preview",
+    "dev": "next dev",
+    "build": "scripts/generate-api-types.sh && tsc && next build",
+    "start": "next start",
     "test": "vitest",
     "lint": "eslint '**/*.{js,jsx,json,ts,tsx}' --max-warnings=0 --fix",
     "test:coverage": "vitest --coverage",
