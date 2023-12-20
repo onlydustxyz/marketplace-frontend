@@ -267,7 +267,7 @@
       "many": "__count__ contributors"
     },
     "date": {
-      "title": "Date",
+      "title": "Dates",
       "placeholder": "Select a date"
     }
   },
