@@ -283,7 +283,10 @@ export function CreateProjectProvider({
       }}
     >
       <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
-        <form className="flex h-full items-center justify-center md:p-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="flex h-full items-start justify-center overflow-auto p-2 pb-36 md:items-center md:overflow-visible md:p-6 md:pb-0"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           {children}
           {enableAutoSaved && (
             <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_CREATE_PROJECT_FORM} />

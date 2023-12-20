@@ -17,8 +17,9 @@ import {
   useLazyGetUserPermissions,
 } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 import { useLoginUrl, useLoginUrlStorage } from "src/hooks/useLoginUrl/useLoginUrl";
+import { cn } from "src/utils/cn";
 
-export default function SubmitProject() {
+export default function SubmitProject({ className }: { className?: string }) {
   const { T } = useIntl();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -67,12 +68,13 @@ export default function SubmitProject() {
   };
 
   return (
-    <Card className="mb-4 flex h-fit flex-row gap-4 p-6">
+    <Card className={cn("mb-4 flex h-fit flex-row gap-4 p-6", className)}>
       <div className="flex-1 text-sm leading-4">{T("project.details.create.description")}</div>
       <div className="relative z-10">
         <ConfirmationPopOver
           onClose={closeModal}
           disabled={!canResume}
+          className="right-0 md:right-auto"
           confirm={{
             label: T("project.details.create.startPopOver.resume"),
             onClick: onResume,

@@ -15,6 +15,7 @@ import AllProjectsFallback from "./AllProjectsFallback";
 import AllProjectLoading from "./AllProjectsLoading";
 import { Sponsor } from "src/types";
 import { uniqBy } from "lodash";
+import SubmitProject from "../SubmitProject";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -114,6 +115,9 @@ export default function AllProjects({
           </div>
         </div>
         <div className="flex grow flex-col gap-5">
+          <div className="xl:hidden">
+            <SubmitProject className="mb-0" />
+          </div>
           {projects.map((project, index) => {
             const isFirstHiringProject = index === 0 && project.hiring;
             const isLeader = isUserProjectLead(project, githubUserId);
