@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-import FullTermsAndConditionsSidePanel from "src/pages/TermsAndConditions/FullTermsAndConditionsSidePanel";
-import PrivacyPolicySidePanel from "src/pages/TermsAndConditions/PrivacyPolicySidePanel";
+import FullTermsAndConditionsSidePanel from "src/_pages/TermsAndConditions/FullTermsAndConditionsSidePanel";
+import PrivacyPolicySidePanel from "src/_pages/TermsAndConditions/PrivacyPolicySidePanel";
 
 type SidePanel = {
   openFullTermsAndConditions: () => void;

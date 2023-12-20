@@ -1,4 +1,4 @@
-import { RewardProjectButton } from "src/pages/ProjectDetails/components/RewardProjectButton";
+import { RewardProjectButton } from "src/_pages/ProjectDetails/components/RewardProjectButton";
 import { components } from "src/__generated/api";
 import { ButtonSize } from "src/components/Button";
 import { IMAGES } from "src/assets/img";
