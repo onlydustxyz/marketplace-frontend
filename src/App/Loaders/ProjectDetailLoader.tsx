@@ -4,6 +4,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "..";
 import { useMatch } from "react-router-dom";
 import { ContributionTableSkeleton } from "src/components/Contribution/ContributionTableSkeleton";
+import InsightSkeleton from "src/pages/ProjectDetails/Insights/Insights.skeleton";
 
 export default function ProjectDetailsLoader() {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -13,6 +14,7 @@ export default function ProjectDetailsLoader() {
     isProjectRewards: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}`),
     isProjectRewardForm: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRewardsRoutePaths.New}`),
     isProjectContributions: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Contributions}`),
+    isProjectInsights: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Insights}`),
   };
 
   const renderSkeleton = (variant: SkeletonVariant) => <Skeleton variant={variant} />;
@@ -37,6 +39,7 @@ export default function ProjectDetailsLoader() {
             {matches.isProjectRewards ? renderSkeleton("projectRewards") : null}
             {matches.isProjectRewardForm ? renderSkeleton("projectRewardForm") : null}
             {matches.isProjectContributions ? <ContributionTableSkeleton /> : null}
+            {matches.isProjectInsights ? <InsightSkeleton /> : null}
           </div>
         </div>
       </div>

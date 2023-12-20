@@ -1,15 +1,11 @@
-import { generatePath, useNavigate, useParams } from "react-router-dom";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { useParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
-import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
-import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
-import { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { useIntl } from "src/hooks/useIntl";
@@ -19,18 +15,16 @@ import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/
 import Title from "src/pages/ProjectDetails/Title";
 import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
-import { useMediaQuery } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import ProjectApi from "src/api/Project";
+import { RewardProjectButton } from "../components/RewardProjectButton";
 
 export default function Contributors() {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
-  const navigate = useNavigate();
-  const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
   const { projectKey = "" } = useParams<{ projectKey: string }>();
 
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
@@ -94,27 +88,7 @@ export default function Contributors() {
           {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
               <EditProjectButton projectKey={projectKey} />
-              <Button
-                size={ButtonSize.Sm}
-                disabled={noBudget}
-                onBackground={ButtonOnBackground.Blue}
-                className="flex-1 md:flex-initial"
-                onClick={() =>
-                  navigate(
-                    generatePath(
-                      `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                      {
-                        projectKey,
-                      }
-                    )
-                  )
-                }
-                {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                  visible: noBudget,
-                })}
-              >
-                {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
-              </Button>
+              <RewardProjectButton project={project} />
             </Flex>
           ) : null}
         </div>

@@ -1,15 +1,12 @@
-import { generatePath, useNavigate, useParams } from "react-router-dom";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { useParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
-import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import ProjectRewardTableFallback from "src/components/ProjectRewardTableFallback";
 import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
-import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
@@ -18,6 +15,7 @@ import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedR
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
+import { RewardProjectButton } from "../components/RewardProjectButton";
 import { Budget } from "./Budget/Budget";
 import { FilterQueryParams, ProjectRewardsFilter } from "./Filter";
 import { useState } from "react";
@@ -25,7 +23,6 @@ import { FilterPosition } from "src/components/New/Filter/DesktopView";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
-  const navigate = useNavigate();
   const { projectKey = "" } = useParams<{ projectKey: string }>();
 
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
@@ -58,7 +55,6 @@ const RewardList: React.FC = () => {
   });
 
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
-  const isRewardDisabled = !project?.hasRemainingBudget;
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
@@ -90,28 +86,7 @@ const RewardList: React.FC = () => {
         {!hasOrgsWithUnauthorizedRepos ? (
           <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
             <EditProjectButton projectKey={projectKey} />
-            <Button
-              width={Width.Fit}
-              className="flex-1 md:flex-initial"
-              size={ButtonSize.Sm}
-              disabled={isRewardDisabled}
-              onBackground={ButtonOnBackground.Blue}
-              onClick={() => {
-                return navigate(
-                  generatePath(
-                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                    {
-                      projectKey,
-                    }
-                  )
-                );
-              }}
-              {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                visible: isRewardDisabled,
-              })}
-            >
-              <span>{T("project.details.remainingBudget.newReward")}</span>
-            </Button>
+            <RewardProjectButton project={project} />
           </Flex>
         ) : null}
       </div>
@@ -143,7 +118,7 @@ const RewardList: React.FC = () => {
           ) : (
             !isRewardsLoading && (
               <Card className="p-16">
-                <ProjectRewardTableFallback disabled={isRewardDisabled} />
+                <ProjectRewardTableFallback project={project} />
               </Card>
             )
           )}

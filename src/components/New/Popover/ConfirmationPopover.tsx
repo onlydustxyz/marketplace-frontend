@@ -20,7 +20,7 @@ type Props = {
   };
 } & PropsWithChildren;
 
-export default function ConfirmationPopOver({
+export function ConfirmationPopOver({
   onClose,
   confirm,
   cancel,
@@ -75,3 +75,5 @@ export default function ConfirmationPopOver({
     </Popover>
   );
 }
+
+export default ConfirmationPopOver;

@@ -1,11 +1,8 @@
 import { useEffect } from "react";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
+import { useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
-import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
 import { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
@@ -25,6 +22,7 @@ import { useShowToaster } from "src/hooks/useToaster";
 import MeApi from "src/api/me";
 import ProjectApi from "src/api/Project";
 import Skeleton from "src/components/Skeleton";
+import { RewardProjectButton } from "../components/RewardProjectButton";
 import { ProjectOverviewRepos } from "src/components/Project/Overview/OverviewRepos/OverviewRepos";
 import { ProjectOverviewHeader } from "src/components/Project/Overview/OverviewHeader";
 import ApplyCallout from "./components/ProjectApply";
@@ -32,7 +30,6 @@ import ApplyCallout from "./components/ProjectApply";
 export default function Overview() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
 
   const { projectKey = "" } = useParams<{ projectKey: string }>();
@@ -60,8 +57,6 @@ export default function Overview() {
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const isRewardDisabled = !project?.hasRemainingBudget;
-
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
@@ -81,28 +76,7 @@ export default function Overview() {
           {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
               <EditProjectButton projectKey={project.slug} />
-
-              <Button
-                disabled={isRewardDisabled}
-                onBackground={ButtonOnBackground.Blue}
-                className="flex-1 md:flex-initial"
-                size={ButtonSize.Sm}
-                {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                  visible: isRewardDisabled,
-                })}
-                onClick={() =>
-                  navigate(
-                    generatePath(
-                      `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                      {
-                        projectKey: project.slug,
-                      }
-                    )
-                  )
-                }
-              >
-                {T("project.rewardButton.full")}
-              </Button>
+              <RewardProjectButton project={project} />
             </Flex>
           ) : null}
         </div>

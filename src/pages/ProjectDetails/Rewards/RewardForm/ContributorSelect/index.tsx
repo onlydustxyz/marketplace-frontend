@@ -18,10 +18,11 @@ enum ContributorsSortFields {
 type Props = {
   projectId: string;
   contributor?: Contributor | null | undefined;
+  sidePanelOpened?: boolean;
   setContributor: (contributor: Contributor | null | undefined) => void;
 };
 
-export default function ContributorSelect({ projectId, contributor, setContributor }: Props) {
+export default function ContributorSelect({ projectId, contributor, setContributor, sidePanelOpened }: Props) {
   const location = useLocation();
 
   const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(
@@ -131,6 +132,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
         hasNextPage,
         isFetchingNextPage,
         isError,
+        sidePanelOpened,
       }}
     />
   );
