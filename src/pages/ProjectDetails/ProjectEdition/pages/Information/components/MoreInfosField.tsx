@@ -115,7 +115,7 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
                   name={"moreInfos.value-" + index}
                   value={item.value}
                   placeholder={T("project.details.create.informations.form.fields.moreInfo.placeholderLabel")}
-                  fieldClassName={cn("w-1/3", "w-full")}
+                  fieldClassName={cn("md:w-1/3", "w-full")}
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   errorMessage={(error as any)?.[index]?.value?.message}
                   onChange={event => {

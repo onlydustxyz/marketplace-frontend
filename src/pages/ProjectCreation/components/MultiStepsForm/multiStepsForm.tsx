@@ -22,9 +22,9 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   const { T } = useIntl();
 
   return (
-    <div className="relative flex w-full max-w-full flex-col overflow-hidden rounded-2xl bg-card-background-base md:max-h-full md:w-[688px]">
+    <div className="relative flex w-full max-w-full flex-col overflow-hidden rounded-2xl bg-card-background-base max-md:min-h-full md:max-h-full md:w-[688px]">
       <div className="w-full bg-mosaic bg-cover pb-1.5" />
-      <div className="flex flex-col gap-4 bg-card-background-base p-6 pb-5 md:p-12">
+      <div className="flex flex-col gap-4 bg-card-background-base p-4 pb-5 pt-6 md:p-12">
         <div className="font-walsheim text-base font-normal text-spaceBlue-100">{`${step}/${stepCount}`}</div>
         <div className="font-belwe text-2xl font-normal text-greyscale-50">{title}</div>
         {description ? (
@@ -32,7 +32,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
         ) : null}
         {stickyChildren ? stickyChildren : <div className="h-3" />}
       </div>
-      <div className="flex w-full flex-1 flex-col overflow-visible px-6 md:w-auto md:overflow-auto md:px-3">
+      <div className="flex w-full flex-1 flex-col overflow-visible px-4 md:w-auto md:overflow-auto md:px-3">
         <div className="w-full overflow-visible scrollbar-thin scrollbar-thumb-spaceBlue-600 scrollbar-thumb-rounded scrollbar-w-1.5 md:w-auto md:overflow-auto">
           <div className="px-0 pb-4 md:px-9">{children}</div>
         </div>
