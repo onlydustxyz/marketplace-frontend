@@ -4,7 +4,7 @@ import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import TimeLine from "src/icons/TimeLine";
 import Folder3Line from "src/icons/Folder3Line";
 import FocusLine from "src/icons/FocusLine";
-import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
+import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import Amount from "src/assets/icons/Amount";
 import { SortField, Sorting } from "./useQueryParamsSorting";
 
