@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
 import { components } from "src/__generated/api";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";

@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import { getTopTechnologies, Technologies } from "./technologies";
 
 describe("getTopTechnologies", () => {

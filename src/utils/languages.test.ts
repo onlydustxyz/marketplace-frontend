@@ -1,4 +1,4 @@
-import { describe, expect } from "vitest";
+import { describe, expect, test } from "vitest";
 import { getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "./languages";
 import { LanguageMap } from "src/types";
 import { GithubRepoLanguagesFragment } from "src/__generated/graphql";

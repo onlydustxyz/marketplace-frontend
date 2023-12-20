@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from "vitest";
 import { getEndpointUrl } from "./getEndpointUrl";
 import { loadEnvConfig } from "@next/env";
 

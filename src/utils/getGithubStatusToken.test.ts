@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import { GithubIssueStatus } from "src/__generated/graphql";
 import { GithubCodeReviewStatus, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { getGithubStatusToken } from "./getGithubStatusToken";
