@@ -37,7 +37,6 @@ import RewardLoader from "./Loaders/RewardsLoader";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
 
 export enum RoutePaths {
-  Home = "/",
   Projects = "/",
   Login = "/login",
   ProjectCreation = "/p/create",
