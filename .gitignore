@@ -78,3 +78,7 @@ tarpaulin_target
 
 # API generated types
 src/__generated/api.d.ts
+
+# Next.js
+.next
+next-env.d.ts
