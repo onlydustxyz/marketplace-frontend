@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { ComponentProps } from "react";
-import { Fields } from "src/pages/ProjectDetails/Contributors/ContributorsTable/Headers";
-import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable/View";
+import { Fields } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/Headers";
+import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable/View";
 import { RewardDisabledReason } from "src/types";
 
 export default {

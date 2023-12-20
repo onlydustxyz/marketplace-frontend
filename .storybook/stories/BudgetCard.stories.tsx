@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
-import { BudgetCard } from "src/pages/ProjectDetails/Rewards/RemainingBudget/BudgetCard";
-import { TotalBudgetCard } from "src/pages/ProjectDetails/Rewards/RemainingBudget/TotalBudgetCard";
+import { BudgetCard } from "src/_pages/ProjectDetails/Rewards/RemainingBudget/BudgetCard";
+import { TotalBudgetCard } from "src/_pages/ProjectDetails/Rewards/RemainingBudget/TotalBudgetCard";
 import { Currency } from "src/types";
 
 export default {

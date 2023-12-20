@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { RemainingBudget } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import { RemainingBudget } from "src/_pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 
 export default {
   title: "RemainingBudget",

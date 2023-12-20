@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
+import { ProjectDetailsTab } from "src/_pages/ProjectDetails/Sidebar";
 import { withRouter } from "storybook-addon-react-router-v6";
-import View from "src/pages/ProjectDetails/Sidebar/View";
+import View from "src/_pages/ProjectDetails/Sidebar/View";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 type Project = UseGetProjectBySlugResponse;
 

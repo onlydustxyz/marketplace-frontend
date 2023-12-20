@@ -6,9 +6,9 @@ import {
   GetProjectPendingContributorsQueryResult,
 } from "src/__generated/graphql";
 import { CompletedRewardableItem } from "src/api/Project/queries";
-import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
-import RewardForm from "src/pages/ProjectDetails/Rewards/RewardForm/View";
-import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
+import { ProjectBudgetType } from "src/_pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import RewardForm from "src/_pages/ProjectDetails/Rewards/RewardForm/View";
+import { Contributor } from "src/_pages/ProjectDetails/Rewards/RewardForm/types";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withCommandProvider from "../decorators/withCommandProvider";
 import withFormProvider from "../decorators/withFormProvider";

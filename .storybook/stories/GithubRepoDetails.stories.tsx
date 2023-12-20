@@ -1,6 +1,6 @@
 import { ComponentStory } from "@storybook/react";
 
-import GithubRepoDetails from "src/pages/ProjectDetails/Overview/GithubRepoDetails/View";
+import GithubRepoDetails from "src/_pages/ProjectDetails/Overview/GithubRepoDetails/View";
 
 export default {
   title: "GithubRepoDetails",

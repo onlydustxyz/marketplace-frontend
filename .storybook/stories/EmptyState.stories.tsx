@@ -1,5 +1,5 @@
 import { WorkItemType } from "src/__generated/graphql";
-import EmptyState from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/EmptyState/index";
+import EmptyState from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/EmptyState/index";
 
 export default {
   title: "EmptyState",

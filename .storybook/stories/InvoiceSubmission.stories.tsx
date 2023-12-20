@@ -1,6 +1,6 @@
 import { MyRewardType as Reward } from "src/components/UserRewardTable/Line";
-import { MyPayoutInfoType } from "src/pages/Rewards/InvoiceSubmission";
-import InvoiceSubmission from "src/pages/Rewards/InvoiceSubmission/View";
+import { MyPayoutInfoType } from "src/_pages/Rewards/InvoiceSubmission";
+import InvoiceSubmission from "src/_pages/Rewards/InvoiceSubmission/View";
 import { Currency, PaymentStatus } from "src/types";
 import withToasterProvider from "../decorators/withToasterProvider";
 

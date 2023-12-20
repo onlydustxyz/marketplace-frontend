@@ -1,5 +1,5 @@
-import { ProjectFilterProvider } from "src/pages/Projects/useProjectFilter";
-import FilterPanel from "src/pages/Projects/FilterPanel/View";
+import { ProjectFilterProvider } from "src/_pages/Projects/useProjectFilter";
+import FilterPanel from "src/_pages/Projects/FilterPanel/View";
 
 export default {
   title: "FilterPanel",

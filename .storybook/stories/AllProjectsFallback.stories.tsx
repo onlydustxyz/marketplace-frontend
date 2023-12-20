@@ -1,4 +1,4 @@
-import AllProjectsFallback from "src/pages/Projects/AllProjects/AllProjectsFallback";
+import AllProjectsFallback from "src/_pages/Projects/AllProjects/AllProjectsFallback";
 
 export default {
   title: "AllProjectsFallback",

@@ -1,5 +1,5 @@
-import SortingDropdown from "src/pages/Projects/Sorting/SortingDropdown";
-import { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/sorting";
+import SortingDropdown from "src/_pages/Projects/Sorting/SortingDropdown";
+import { PROJECT_SORTINGS, Sorting } from "src/_pages/Projects/sorting";
 
 export default {
   title: "SortingDropdown",

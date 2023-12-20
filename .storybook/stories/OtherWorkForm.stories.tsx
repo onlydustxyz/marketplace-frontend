@@ -1,6 +1,6 @@
 import { MockedResponse } from "@apollo/client/testing";
 import { GetProjectReposDocument, GetProjectReposQueryResult } from "src/__generated/graphql";
-import OtherWorkForm from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/OtherWorkForm";
+import OtherWorkForm from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/OtherWorkForm";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withFormProvider from "../decorators/withFormProvider";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
@@ -60,6 +60,5 @@ export default {
 };
 
 export const Default = {
-  
   render: () => <OtherWorkForm projectId={PROJECT_ID} contributorHandle="ofux" addWorkItem={Function.prototype()} />,
 };

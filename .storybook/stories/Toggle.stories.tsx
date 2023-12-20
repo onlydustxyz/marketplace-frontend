@@ -1,5 +1,5 @@
 import Link from "src/icons/Link";
-import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle/index";
+import Toggle from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle/index";
 
 export default {
   title: "Toggle",
