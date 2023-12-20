@@ -71,7 +71,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.2",
     "@faker-js/faker": "^8.0.2",
     "@graphql-codegen/cli": "^2.16.1",
     "@graphql-codegen/introspection": "^2.2.3",
@@ -105,7 +104,6 @@
     "@vitejs/plugin-react": "^2.2.0",
     "@vitest/coverage-c8": "^0.25.1",
     "autoprefixer": "^10.4.13",
-    "babel-loader": "^9.1.0",
     "chromatic": "^6.11.4",
     "dependency-cruiser": "^12.10.1",
     "dotenv": "^16.0.3",
