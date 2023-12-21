@@ -1,4 +1,4 @@
-import { ReasonRanges } from "./StruggleReasonBadge.type";
+import { ColorClassesType, ReasonStatuses } from "./StruggleReasonBadge.type";
 
 const calculateDaysAgo = (dateString: string): number => {
   const today = new Date();
@@ -7,15 +7,25 @@ const calculateDaysAgo = (dateString: string): number => {
   return Math.floor(differenceInTime / (1000 * 3600 * 24));
 };
 
-const getColorClass = (daysAgo: number): string => {
-  if (daysAgo >= ReasonRanges.RedStatus) {
-    return "bg-struggleBadge-background-red text-struggleBadge-text-red";
-  } else if (daysAgo >= ReasonRanges.OrangeStatus) {
-    return "bg-struggleBadge-background-orange text-struggleBadge-text-orange";
-  } else if (daysAgo < ReasonRanges.GreenStatus) {
-    return "bg-struggleBadge-background-green text-struggleBadge-text-green";
+const getRangeKey = (daysAgo: number): ReasonStatuses => {
+  if (daysAgo >= ReasonStatuses.RedStatus) {
+    return ReasonStatuses.RedStatus;
+  } else if (daysAgo >= ReasonStatuses.OrangeStatus) {
+    return ReasonStatuses.OrangeStatus;
+  } else {
+    return ReasonStatuses.GreenStatus;
   }
-  return "";
 };
 
-export { calculateDaysAgo, getColorClass };
+const colorClasses: ColorClassesType = {
+  [ReasonStatuses.GreenStatus]: "bg-struggleBadge-background-green text-struggleBadge-text-green",
+  [ReasonStatuses.OrangeStatus]: "bg-struggleBadge-background-orange text-struggleBadge-text-orange",
+  [ReasonStatuses.RedStatus]: "bg-struggleBadge-background-red text-struggleBadge-text-red",
+};
+
+const getColorClass = (daysAgo: number): string => {
+  const rangeKey = getRangeKey(daysAgo);
+  return colorClasses[rangeKey as ReasonStatuses];
+};
+
+export { calculateDaysAgo, getColorClass, getRangeKey };
