@@ -3,8 +3,12 @@ export type StruggleReasonBadgeProps = {
   githubStatus: string;
 };
 
-export enum ReasonRanges {
+export enum ReasonStatuses {
   GreenStatus = 10,
   OrangeStatus = 20,
   RedStatus = 30,
 }
+
+export type ColorClassesType = {
+  [key in ReasonStatuses]: string;
+};
