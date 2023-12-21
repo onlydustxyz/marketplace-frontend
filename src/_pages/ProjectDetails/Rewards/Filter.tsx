@@ -61,7 +61,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   });
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "project-rewards-table-filters",
+    `project-rewards-table-filters-${projectKey}`,
     JSON.stringify(initialFilters)
   );
 
