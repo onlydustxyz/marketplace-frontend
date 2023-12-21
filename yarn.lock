@@ -3399,21 +3399,13 @@
     "@storybook/global" "^5.0.0"
     "@storybook/preview-api" "7.0.24"
 
-"@storybook/addon-interactions@^7.0.24":
-  version "7.0.24"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-interactions/-/addon-interactions-7.0.24.tgz#ccd2bcb48819cadb2da035d700922a84ccfc368f"
-  integrity sha512-N0BWt13T8lA+L0pAcC3xwhVMWQhrwHaXFqC6aJ1OxJb9pkA85S6Pk7VJRATDpmu9C3JO0OU3EOBB2YVVwcmD0A==
+"@storybook/addon-interactions@^7.6.6":
+  version "7.6.6"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-interactions/-/addon-interactions-7.6.6.tgz#e69bf9de4a5be55282189de905254a4d45a0b71d"
+  integrity sha512-EJWx6ciJPgv1c75tB/M4smWDpPDGM/L24v4DZxGpl1eV3oQOSQCKImG5btwoy6QcIi68ozroUHdUti/kzCKS1w==
   dependencies:
-    "@storybook/client-logger" "7.0.24"
-    "@storybook/components" "7.0.24"
-    "@storybook/core-common" "7.0.24"
-    "@storybook/core-events" "7.0.24"
     "@storybook/global" "^5.0.0"
-    "@storybook/instrumenter" "7.0.24"
-    "@storybook/manager-api" "7.0.24"
-    "@storybook/preview-api" "7.0.24"
-    "@storybook/theming" "7.0.24"
-    "@storybook/types" "7.0.24"
+    "@storybook/types" "7.6.6"
     jest-mock "^27.0.6"
     polished "^4.2.2"
     ts-dedent "^2.2.0"
@@ -3963,17 +3955,6 @@
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@storybook/global/-/global-5.0.0.tgz#b793d34b94f572c1d7d9e0f44fac4e0dbc9572ed"
   integrity sha512-FcOqPAXACP0I3oJ/ws6/rrPT9WGhu915Cg8D02a9YxLo0DE9zI+a9A5gRGvmQ09fiWPukqI8ZAEoQEdWUKMQdQ==
-
-"@storybook/instrumenter@7.0.24":
-  version "7.0.24"
-  resolved "https://registry.yarnpkg.com/@storybook/instrumenter/-/instrumenter-7.0.24.tgz#fbc81250f25b0d5f3da3a3aa9dad48cdc82642f9"
-  integrity sha512-XQ4Whq0rqW9eFMTtRpLxcl6bCf+KO3UZYcm+H63EDn9TstDyopmqv1fDg2tmJOpqLo143F8qLVC89rI7M/lO6w==
-  dependencies:
-    "@storybook/channels" "7.0.24"
-    "@storybook/client-logger" "7.0.24"
-    "@storybook/core-events" "7.0.24"
-    "@storybook/global" "^5.0.0"
-    "@storybook/preview-api" "7.0.24"
 
 "@storybook/manager-api@7.0.24", "@storybook/manager-api@^7.0.12":
   version "7.0.24"
