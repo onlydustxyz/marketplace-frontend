@@ -23,7 +23,7 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
   const { data: userInfo } = MeApi.queries.useGetMyPayoutInfo({});
   const { data: userProfile } = MeApi.queries.useGetMyProfileInfo({});
   const navigate = useNavigate();
-  const canReward = !project?.hasRemainingBudget;
+  const canReward = !!project?.hasRemainingBudget;
   const [isApplyOpen, setIsApplyOpen] = useState(false);
 
   const findContact = (channel: Channel) => {
