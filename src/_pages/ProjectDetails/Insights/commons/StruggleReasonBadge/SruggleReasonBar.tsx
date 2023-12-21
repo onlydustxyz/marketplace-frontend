@@ -19,6 +19,7 @@ export default function Bar({ daysAgo, height }: { daysAgo: number; height: numb
       "4": "bg-struggleBadge-bar-solid-red",
     },
   };
+  console.log("colorClasses", colorClasses);
 
   const rangeKey = getRangeKey(daysAgo);
   const heightKey = height.toString();
