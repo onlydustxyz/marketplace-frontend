@@ -1,4 +1,4 @@
-import { chain } from "lodash";
+import _ from "lodash";
 import { useEffect, useMemo } from "react";
 import View, { tabNames } from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
@@ -86,7 +86,7 @@ export function WorkItems({ type, projectId, workItems, addWorkItem, contributor
 
   const contributionsNotAdded = useMemo(
     () =>
-      chain(contributions)
+      _.chain(contributions)
         .differenceWith(workItems, (contribution, workItem) => contribution?.id === workItem.id)
         .value(),
     [contributions, workItems]
