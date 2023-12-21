@@ -111,6 +111,30 @@ const config: Config = {
             heavy: "#F3F0EE33",
           },
         },
+        struggleBadge: {
+          background: {
+            red: "#360000",
+            orange: "#331D00",
+            green: "#00332E",
+          },
+          text: {
+            red: "#E84E4D",
+            orange: "#FF9000",
+            green: "#00FFE4",
+          },
+          bar: {
+            fade: {
+              red: "#E84E4D",
+              orange: "#663A00",
+              green: "#00665B",
+            },
+            solid: {
+              red: "#E84E4D",
+              orange: "#FF9000",
+              green: "#00FFE4",
+            },
+          },
+        },
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",
@@ -188,6 +212,7 @@ const config: Config = {
         panel: "0px 8px 64px rgba(0, 0, 0, 0.5)",
         light: "0px 8px 32px 0px rgba(0, 0, 0, 0.16)",
         medium: "0px 8px 64px 0px rgba(0, 0, 0, 0.32)",
+        button: "0px -1px 2px 1px rgba(0, 0, 0, 0.32) inset, 0px 2px 4px 0px rgba(0, 0, 0, 0.32)",
       },
       dropShadow: {
         "bottom-sm": "0px 8px 32px rgba(0, 0, 0, 0.16)",

@@ -1,7 +1,0 @@
-mutation addSponsorToProject($projectId: Uuid!, $sponsorId: Uuid!) {
-  addSponsorToProject(projectId: $projectId, sponsorId: $sponsorId)
-}
-
-mutation removeSponsorFromProject($projectId: Uuid!, $sponsorId: Uuid!) {
-  removeSponsorFromProject(projectId: $projectId, sponsorId: $sponsorId)
-}

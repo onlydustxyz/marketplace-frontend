@@ -31,8 +31,6 @@ describe("formatDate", () => {
       number: mockRewardItem.number,
       title: mockRewardItem.title,
       createdAt: mockRewardItem.createdAt,
-      closedAt: mockRewardItem.completedAt,
-      mergedAt: mockRewardItem.completedAt,
       completedAt: mockRewardItem.completedAt,
       status: mockRewardItem.status,
       htmlUrl: mockRewardItem.githubUrl,
@@ -61,7 +59,6 @@ describe("formatDate", () => {
     expect(formatRewardItemToGithubIssue(mockRewardItem)).toEqual({
       id: mockRewardItem.id,
       createdAt: mockRewardItem.createdAt,
-      closedAt: mockRewardItem.completedAt,
       completedAt: mockRewardItem.completedAt,
       number: mockRewardItem.number,
       title: mockRewardItem.title,
@@ -84,7 +81,6 @@ describe("formatDate", () => {
         status: null,
         closedAt: null,
         mergedAt: null,
-        completedAt: null,
         id: null,
         author: {
           id: null,
@@ -94,6 +90,7 @@ describe("formatDate", () => {
           user: null,
         },
       },
+      completedAt: mockRewardItem.completedAt,
       status: mockRewardItem.status,
       submittedAt: mockRewardItem.createdAt,
     });

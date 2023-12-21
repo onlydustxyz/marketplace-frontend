@@ -4,28 +4,29 @@ import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 import Layout from "src/App/Layout";
 import ProtectedRoute from "src/App/ProtectedRoute";
 
-const Login = lazy(() => import("src/pages/Login"));
-const Projects = lazy(() => import("src/pages/Projects"));
-const Contributions = lazy(() => import("src/pages/Contributions/Contributions"));
-const Rewards = lazy(() => import("src/pages/Rewards"));
-const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
-const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
-const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/Contributors"));
-const ProjectDetailsContributions = lazy(() => import("src/pages/ProjectDetails/Contributions"));
-const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Rewards/List"));
-const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
-const ProjectDetailsEdit = lazy(() => import("src/pages/ProjectDetails/ProjectEdition/ProjectEdition"));
+const Login = lazy(() => import("src/_pages/Login"));
+const Projects = lazy(() => import("src/_pages/Projects"));
+const Contributions = lazy(() => import("src/_pages/Contributions/Contributions"));
+const Rewards = lazy(() => import("src/_pages/Rewards"));
+const ProjectDetails = lazy(() => import("src/_pages/ProjectDetails"));
+const ProjectDetailsOverview = lazy(() => import("src/_pages/ProjectDetails/Overview"));
+const ProjectDetailsContributors = lazy(() => import("src/_pages/ProjectDetails/Contributors"));
+const ProjectDetailsContributions = lazy(() => import("src/_pages/ProjectDetails/Contributions"));
+const ProjectDetailsRewardsList = lazy(() => import("src/_pages/ProjectDetails/Rewards/List"));
+const ProjectDetailsRewardForm = lazy(() => import("src/_pages/ProjectDetails/Rewards/RewardForm"));
+const ProjectDetailsInsights = lazy(() => import("src/_pages/ProjectDetails/Insights"));
+const ProjectDetailsEdit = lazy(() => import("src/_pages/ProjectDetails/ProjectEdition/ProjectEdition"));
 
 import { NotFound } from "src/components/NotFound";
-import ErrorTrigger from "src/pages/ErrorTrigger";
-import ImpersonationPage from "src/pages/Impersonation";
-import Onboarding from "src/pages/Onboarding";
-import PublicProfilePage from "src/pages/PublicProfile";
-import TermsAndConditions from "src/pages/TermsAndConditions";
+import ErrorTrigger from "src/_pages/ErrorTrigger";
+import ImpersonationPage from "src/_pages/Impersonation";
+import Onboarding from "src/_pages/Onboarding";
+import PublicProfilePage from "src/_pages/PublicProfile";
+import TermsAndConditions from "src/_pages/TermsAndConditions";
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
-import GithubCallbackHandler from "src/pages/Callbacks/GithubCallbackHandler";
-import ProjectCreation from "src/pages/ProjectCreation/ProjectCreation";
+import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
+import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
 import ProtectedByFlag from "./ProtectedByFlag";
 import ProtectedByGithub from "./ProtectedByGithub";
 import { GITHUB_PERMISSIONS } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
@@ -34,6 +35,7 @@ import ProjectsLoader from "./Loaders/ProjectsLoader";
 import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import Loader from "src/components/Loader";
 import RewardLoader from "./Loaders/RewardsLoader";
+import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
 
 export enum RoutePaths {
   Home = "/",
@@ -61,6 +63,7 @@ export enum ProjectRoutePaths {
   Rewards = "rewards",
   Edit = "edit",
   Contributions = "contributions",
+  Insights = "insights",
 }
 
 export enum ProjectRewardsRoutePaths {
@@ -125,6 +128,18 @@ function App() {
           ),
         },
       ],
+    },
+    {
+      path: ProjectRoutePaths.Insights,
+      element: (
+        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+          <ProtectedByFlag flag="VITE_FLAG_ALLOW_PROJECT_INSIGHTS">
+            <Suspense fallback={<InsightSkeleton />}>
+              <ProjectDetailsInsights />
+            </Suspense>
+          </ProtectedByFlag>
+        </ProtectedRoute>
+      ),
     },
     {
       path: ProjectRoutePaths.Edit,
