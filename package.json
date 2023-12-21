@@ -1,12 +1,6 @@
 {
   "name": "marketplace-frontend",
   "version": "2.0.0",
-  "browser": {
-    "child_process": false,
-    "fs": false,
-    "module": false,
-    "readline": false
-  },
   "scripts": {
     "dev": "next dev -p 5173",
     "build": "scripts/generate-api-types.sh && next build",
