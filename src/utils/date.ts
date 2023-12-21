@@ -86,3 +86,11 @@ export const isAllTime = (dateRange?: DateRange) => {
 
   return false;
 };
+
+export const isAllTimeFromString = (dateRange?: { from: string; to: string }) => {
+  if (dateRange?.from && dateRange?.to) {
+    return isSameDay(allTime.from, new Date(dateRange.from)) && isSameDay(allTime.to, new Date(dateRange.to));
+  }
+
+  return false;
+};

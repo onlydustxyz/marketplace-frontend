@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
@@ -35,13 +35,21 @@ export type FilterQueryParams = {
   currencies?: string;
 };
 
-export function ProjectRewardsFilter({
-  onChange,
-  position,
-}: {
-  onChange: (filterQueryParams: FilterQueryParams) => void;
-  position?: FilterPosition;
-}) {
+export type ProjectRewardsFilterRef = {
+  reset: () => void;
+  hasActiveFilters: boolean;
+};
+
+export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
+  {
+    onChange,
+    position,
+  }: {
+    onChange: (filterQueryParams: FilterQueryParams) => void;
+    position?: FilterPosition;
+  },
+  ref: React.Ref<ProjectRewardsFilterRef>
+) {
   const { projectKey = "" } = useParams<{ projectKey?: string }>();
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
@@ -108,7 +116,9 @@ export function ProjectRewardsFilter({
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    !isAllTime(filters?.dateRange) || filters.contributors?.length || filters.currency?.value
+    (filters?.dateRange?.from && filters?.dateRange?.to && !isAllTime(filters?.dateRange)) ||
+      filters.contributors?.length ||
+      filters.currency?.value !== Currency.USD
   );
 
   const { data: contributorsData, isLoading: contributorsLoading } =
@@ -154,6 +164,17 @@ export function ProjectRewardsFilter({
     );
   }
 
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        reset: resetFilters,
+        hasActiveFilters,
+      };
+    },
+    [hasActiveFilters]
+  );
+
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
       <div className="focus-within:z-10">
@@ -190,4 +211,4 @@ export function ProjectRewardsFilter({
       </div>
     </Filter>
   );
-}
+});

@@ -1277,7 +1277,12 @@
         "newReward": "Reward contributor",
         "noRewards": "No rewards so far",
         "send": "Give your first one!",
-        "payment": "Payment"
+        "payment": "Payment",
+        "withFilter": {
+          "title": "Nothing to show",
+          "message": "Please update filters to display more results.",
+          "buttonLabel": "Clear filters"
+        }
       },
       "banners": {
         "missingGithubAppInstall": {

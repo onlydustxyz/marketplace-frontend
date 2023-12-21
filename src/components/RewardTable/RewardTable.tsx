@@ -19,9 +19,10 @@ type RewardTableProps = {
   rewards: RewardPageItemType[];
   options: Options;
   projectId: string;
+  emptyFallback?: React.ReactNode;
 };
 
-export default function RewardTable({ rewards, options, projectId }: RewardTableProps) {
+export default function RewardTable({ rewards, options, projectId, emptyFallback }: RewardTableProps) {
   const queryClient = useQueryClient();
 
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -57,13 +58,17 @@ export default function RewardTable({ rewards, options, projectId }: RewardTable
   return (
     <>
       {isXl ? (
-        <Table id="reward_table" headers={<Headers sorting={sorting} sortField={sortField} />}>
+        <Table
+          id="reward_table"
+          headers={<Headers sorting={sorting} sortField={sortField} />}
+          emptyFallback={emptyFallback}
+        >
           {rewards.map(p => (
             <RewardLine key={p.id} reward={p} onClick={() => onRewardClick(p)} selected={p.id === selectedReward?.id} />
           ))}
         </Table>
       ) : (
-        <MobileRewardList rewards={rewards} onRewardClick={onRewardClick} />
+        <>{emptyFallback ? emptyFallback : <MobileRewardList rewards={rewards} onRewardClick={onRewardClick} />}</>
       )}
       {hasNextPage && (
         <div className="pt-6">
