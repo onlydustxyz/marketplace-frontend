@@ -31,7 +31,7 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
     return findContact?.contact || undefined;
   };
 
-  if (import.meta.env.VITE_CAN_ALLOW_APPLY_FOR_BUDGET !== "true") {
+  if (process.env.NEXT_PUBLIC_ALLOW_APPLY_FOR_BUDGET !== "true") {
     return (
       <Button
         disabled={canReward}
