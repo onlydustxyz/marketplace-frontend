@@ -7,7 +7,7 @@ import DiscordFill from "src/icons/DiscordFill";
 import TwitterFill from "src/icons/TwitterFill";
 
 import Section, { SectionIcon } from "./OverviewSection";
-import { SocialIcon } from "src/pages/ProjectDetails/ProjectEdition/pages/Information/components/SocialIcon";
+import { SocialIcon } from "src/_pages/ProjectDetails/ProjectEdition/pages/Information/components/SocialIcon";
 import FakeExternalLink from "./FakeExternalLink";
 
 export interface ProjectOverviewMoreInfoProps {

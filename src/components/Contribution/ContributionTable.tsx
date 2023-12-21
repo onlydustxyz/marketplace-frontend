@@ -8,7 +8,7 @@ import HeaderLine from "src/components/Table/HeaderLine";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
-import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
+import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import { Contribution as ContributionT, OrderBy } from "src/types";
 import { cn } from "src/utils/cn";
 import { useMediaQuery } from "usehooks-ts";
