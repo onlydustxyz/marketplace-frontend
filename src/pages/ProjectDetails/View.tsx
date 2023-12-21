@@ -55,7 +55,13 @@ export default function View({ padded = true, contentClassName }: Props) {
               contentClassName
             )}
           >
-            <Outlet />
+            <Outlet
+              context={{
+                projectId: data?.id,
+                projectKey,
+                repos: data?.repos,
+              }}
+            />
           </div>
         </Background>
       </div>
