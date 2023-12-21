@@ -16,6 +16,7 @@ import SkeletonQuickActions from "./SkeletonQuickActions";
 import SkeletonProjectSidebar from "./SkeletonProjectSidebar";
 import SkeletonProjectOverview from "./SkeletonProjectOverview";
 import SkeletonProjectRewards from "./SkeletonProjectRewards";
+import SkeletonProjectRewardsTable from "./SkeletonProjectRewardsTable";
 import SkeletonProjectRewardForm from "./SkeletonProjectRewardForm";
 import SkeletonProjectRemainingBudgets from "./SkeletonProjectRemainingBudgets";
 import SkeletonSubmitProject from "./SkeletonSubmitProject";
@@ -43,6 +44,7 @@ export type SkeletonVariant =
   | "projectSidebar"
   | "projectOverview"
   | "projectRewards"
+  | "projectRewardsTable"
   | "projectRewardForm"
   | "projectRemainingBudgets"
   | "submitProject"
@@ -74,6 +76,7 @@ const VARIANT_COMPONENTS = {
   projectSidebar: SkeletonProjectSidebar,
   projectOverview: SkeletonProjectOverview,
   projectRewards: SkeletonProjectRewards,
+  projectRewardsTable: SkeletonProjectRewardsTable,
   projectRewardForm: SkeletonProjectRewardForm,
   projectRemainingBudgets: SkeletonProjectRemainingBudgets,
   submitProject: SkeletonSubmitProject,

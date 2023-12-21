@@ -6,7 +6,6 @@ import ProjectRewardTableFallback from "src/components/ProjectRewardTableFallbac
 import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
@@ -20,6 +19,7 @@ import { Budget } from "./Budget/Budget";
 import { FilterQueryParams, ProjectRewardsFilter } from "./Filter";
 import { useState } from "react";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
+import Skeleton from "src/components/Skeleton";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
@@ -72,18 +72,18 @@ const RewardList: React.FC = () => {
     return <ErrorFallback />;
   }
 
-  if (isRewardsLoading || isLoadingProject) {
-    return <Skeleton variant="projectRewards" />;
-  }
-
-  return project && rewards ? (
+  //   if (isRewardsLoading || isLoadingProject) {
+  //     return <Skeleton variant="projectRewards" />;
+  //   }
+  //   project && rewards;
+  return (
     <>
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Flex className="z-10 gap-8">
           <Title>{T("project.details.rewards.title")}</Title>
           <ProjectRewardsFilter onChange={setFilterQueryParams} position={FilterPosition.Left} />
         </Flex>
-        {!hasOrgsWithUnauthorizedRepos ? (
+        {!hasOrgsWithUnauthorizedRepos && project ? (
           <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
             <EditProjectButton projectKey={projectKey} />
             <RewardProjectButton project={project} />
@@ -91,41 +91,45 @@ const RewardList: React.FC = () => {
         ) : null}
       </div>
 
-      {!project.indexingComplete ? <StillFetchingBanner /> : null}
+      {!project?.indexingComplete ? <StillFetchingBanner /> : null}
 
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
 
-      <Budget {...budget} />
-      <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
-        <div className="w-full">
-          {rewards.length > 0 ? (
-            <Card>
-              <RewardTable
-                rewards={rewards}
-                options={{
-                  fetchNextPage,
-                  hasNextPage,
-                  sorting,
-                  sortField,
-                  isFetchingNextPage,
-                  refetch,
-                }}
-                projectId={project.id}
-              />
-            </Card>
-          ) : (
-            !isRewardsLoading && (
-              <Card className="p-16">
-                <ProjectRewardTableFallback project={project} />
-              </Card>
-            )
-          )}
-        </div>
-      </div>
+      {!isRewardsLoading || !isLoadingProject ? (
+        <Skeleton variant="projectRewardsTable" />
+      ) : (
+        <>
+          <Budget {...budget} />
+          <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
+            <div className="w-full">
+              {project && rewards?.length > 0 ? (
+                <Card>
+                  <RewardTable
+                    rewards={rewards}
+                    options={{
+                      fetchNextPage,
+                      hasNextPage,
+                      sorting,
+                      sortField,
+                      isFetchingNextPage,
+                      refetch,
+                    }}
+                    projectId={project.id}
+                  />
+                </Card>
+              ) : !isRewardsLoading && !!project ? (
+                <Card className="p-16">
+                  <ProjectRewardTableFallback project={project} />
+                </Card>
+              ) : null}
+            </div>
+          </div>
+        </>
+      )}
     </>
-  ) : null;
+  );
 };
 
 export default RewardList;
