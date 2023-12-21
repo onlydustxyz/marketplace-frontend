@@ -10,7 +10,7 @@ import ErrorFallback from "src/ErrorFallback";
 import Card from "src/components/Card";
 import Skeleton from "../Skeleton";
 import { useContext, useEffect } from "react";
-import { UserRewardsContext } from "src/pages/Rewards/context";
+import { UserRewardsContext } from "src/_pages/Rewards/context";
 
 type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;

@@ -19,7 +19,7 @@ import ErrorFallback from "src/ErrorFallback";
 import { RoutePaths } from "src/App";
 import { Navigate } from "react-router-dom";
 import { IMAGES } from "src/assets/img";
-import { UserRewardsContext } from "src/pages/Rewards/context";
+import { UserRewardsContext } from "src/_pages/Rewards/context";
 import { useEffect } from "react";
 
 export default function MobileUserRewardList({ onRewardClick }: { onRewardClick: (reward: MyRewardType) => void }) {

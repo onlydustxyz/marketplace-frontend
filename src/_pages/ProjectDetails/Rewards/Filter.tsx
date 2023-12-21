@@ -8,11 +8,11 @@ import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySe
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ContributorResponse, Currency } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
-import { Item } from "src/components/New/Filter/FilterSelect";
 import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
+import { Item } from "src/components/New/Filter/FilterSelect";
 
 type Filters = {
   period: Period;

@@ -10,12 +10,13 @@ import { useIntl } from "src/hooks/useIntl";
 import { Currency, Money } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
 
-const currencyIcons: Record<Exclude<Currency, "USD">, ReactElement> = {
+const currencyIcons: Record<Money["currency"], ReactElement | null> = {
   [Currency.ETH]: <Ethereum className="h-4 w-4" />,
   [Currency.LORDS]: <Lords className="h-4 w-4" />,
   [Currency.STARK]: <Starknet />,
   [Currency.OP]: <Optimism />,
   [Currency.APT]: <Aptos />,
+  [Currency.USD]: null,
 };
 
 type Amount = {
@@ -31,9 +32,7 @@ export function Amount({ amount }: Amount) {
   return (
     <>
       <>
-        {!isUsd ? (
-          <Chip className="mr-1 h-5 w-5">{currencyIcons[amount.currency as keyof typeof currencyIcons]}</Chip>
-        ) : null}
+        {!isUsd ? <Chip className="mr-1 h-5 w-5">{currencyIcons[amount.currency]}</Chip> : null}
 
         {formatMoneyAmount({
           amount: amount.amount || amount.usdEquivalent,
