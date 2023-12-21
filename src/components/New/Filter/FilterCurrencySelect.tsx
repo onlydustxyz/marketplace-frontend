@@ -60,7 +60,7 @@ export function FilterCurrencySelect({
   const defaultCurrency = {
     value: "",
     label: <Flex className="items-center">{T("filter.currency.all")}</Flex>,
-    id: 0,
+    id: 9999,
   };
 
   const items = currencies.map(currency => ({

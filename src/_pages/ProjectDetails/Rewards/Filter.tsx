@@ -25,7 +25,7 @@ const initialFilters: Filters = {
   period: Period.AllTime,
   dateRange: allTime,
   contributors: [],
-  currency: { id: 0, value: Currency.USD },
+  currency: { id: 0, value: "" },
 };
 
 export type FilterQueryParams = {
