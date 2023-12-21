@@ -3,7 +3,7 @@ import SEO from "src/components/SEO";
 import UserRewardTable from "src/components/UserRewardTable";
 import Flex from "src/components/Utils/Flex";
 import { useT } from "talkr";
-import { UserRewardsProvider } from "./context";
+import { UserRewardsProvider } from "./context/UserRewards.provider";
 import { Earning } from "./Earning/Earning";
 import { UserRewardsFilter } from "./Filter";
 import InvoiceSubmission from "./InvoiceSubmission";

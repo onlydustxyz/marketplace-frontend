@@ -254,7 +254,7 @@
     },
     "currency": {
       "title": "Currency",
-      "all": "All (dollars quivalent)",
+      "all": "All (dollars equivalent)",
       "zero": "currencies",
       "one": "__count__ currency",
       "many": "__count__ currencies"

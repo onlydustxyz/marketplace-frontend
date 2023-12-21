@@ -12,34 +12,17 @@ import { ReactNode, useContext } from "react";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { components } from "src/__generated/api";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
-import useQueryParamsSorting from "../RewardTable/useQueryParamsSorting";
-import { Fields } from "./Headers";
-import MeApi from "src/api/me";
 import ErrorFallback from "src/ErrorFallback";
 import { RoutePaths } from "src/App";
 import { Navigate } from "react-router-dom";
 import { IMAGES } from "src/assets/img";
-import { UserRewardsContext } from "src/_pages/Rewards/context";
-import { useEffect } from "react";
+import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 
 export default function MobileUserRewardList({ onRewardClick }: { onRewardClick: (reward: MyRewardType) => void }) {
   const { T } = useIntl();
-  const { setEarning } = useContext(UserRewardsContext);
+  const { query } = useContext(UserRewardsContext);
 
-  const { queryParams } = useQueryParamsSorting({
-    field: Fields.Date,
-    isAscending: false,
-    storageKey: "myRewardsSorting",
-  });
-
-  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    MeApi.queries.useMyRewardsInfiniteList({
-      queryParams,
-    });
-
-  useEffect(() => {
-    data && setEarning(data);
-  }, [data]);
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = query ?? {};
 
   if (error) {
     return (

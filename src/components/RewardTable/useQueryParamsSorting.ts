@@ -12,6 +12,11 @@ export type Sorting<Field> = {
 };
 
 export type SortField<Field> = (field: Field) => void;
+export interface useQueryParamsSortingReturn<Field> {
+  sorting: Sorting<Field>;
+  sortField: SortField<Field>;
+  queryParams: QueryParams;
+}
 
 /*
 Ascending order means the smallest or first or earliest in the order will appear at the top of the list:

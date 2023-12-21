@@ -5,7 +5,7 @@ import { MobileView } from "./MobileView";
 export function Filter(props: ComponentProps<typeof DesktopView | typeof MobileView>) {
   return (
     <>
-      <div className="hidden md:block">
+      <div className="z-10 hidden md:block">
         <DesktopView {...props} />
       </div>
 

@@ -69,6 +69,8 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     repos?: components["schemas"]["GithubRepoResponse"][];
   }>();
 
+  console.log("context", context);
+
   const projectRepos = context?.repos || [];
 
   const repos = sortBy(projectRepos, "name").filter(isDefined);

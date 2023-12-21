@@ -9,17 +9,26 @@ import { Currency } from "src/types";
 import { Flex } from "../Layout/Flex";
 
 function LabelIcon({ currency }: { currency: Currency }): ReactElement {
-  return currency === Currency.USD ? (
-    <InfoIcon />
-  ) : (
+  return (
     <Chip className="h-full w-full">
       <CurrencyIcons className="h-full w-full" currency={currency} />
     </Chip>
   );
 }
 
+function currencyOrDefault(selected: Item) {
+  if (selected.value === "") {
+    return {
+      label: "filter.currency.all",
+      icon: <InfoIcon />,
+    };
+  }
+
+  return currenciesLabel[selected.value as Currency];
+}
+
 const currenciesLabel: Record<Currency, { label: string; icon: JSX.Element }> = {
-  [Currency.USD]: { label: "filter.currency.all", icon: <LabelIcon currency={Currency.USD} /> },
+  [Currency.USD]: { label: "currencies.currency.USD", icon: <LabelIcon currency={Currency.USD} /> },
   [Currency.ETH]: { label: "currencies.currency.ETH", icon: <LabelIcon currency={Currency.ETH} /> },
   [Currency.APT]: { label: "currencies.currency.APT", icon: <LabelIcon currency={Currency.APT} /> },
   [Currency.OP]: { label: "currencies.currency.OP", icon: <LabelIcon currency={Currency.OP} /> },
@@ -41,12 +50,18 @@ export function FilterCurrencySelect({
   const getLabel = useCallback(
     (currency: Currency) => (
       <Flex className="items-center">
-        {currency !== Currency.USD ? <div className="mr-2 h-6 w-6">{currenciesLabel[currency].icon}</div> : null}
+        <div className="mr-2 h-6 w-6">{currenciesLabel[currency].icon}</div>
         {T(currenciesLabel[currency].label)}
       </Flex>
     ),
     []
   );
+
+  const defaultCurrency = {
+    value: "",
+    label: <Flex className="items-center">{T("filter.currency.all")}</Flex>,
+    id: 0,
+  };
 
   const items = currencies.map(currency => ({
     ...currency,
@@ -56,19 +71,14 @@ export function FilterCurrencySelect({
   return (
     <FilterField label={T("filter.currency.title")}>
       <FilterSelect
-        icon={({ selected }) => (
-          <div className="h-4 w-4">
-            {currenciesLabel[((selected as Item).value || Currency.USD) as keyof typeof currenciesLabel].icon}
-          </div>
-        )}
+        icon={({ selected }) => <div className="h-4 w-4">{currencyOrDefault(selected as Item).icon}</div>}
         tokens={{ zero: "filter.currency.all", other: "filter.currency" }}
-        items={items}
+        items={[defaultCurrency, ...items]}
         selected={{
           ...selected,
-          label: <>{T(currenciesLabel[(selected.value || Currency.USD) as keyof typeof currenciesLabel].label)}</>,
+          label: <>{T(currencyOrDefault(selected as Item).label)}</>,
         }}
         onChange={onChange}
-        disabled={currencies.length <= 1}
       />
     </FilterField>
   );

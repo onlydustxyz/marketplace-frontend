@@ -1,6 +1,6 @@
 import { InfiniteData } from "@tanstack/react-query";
 import { UseMyRewardsInfiniteListResponse } from "src/api/me/queries";
-import { Earning } from "../context";
+import { Earning } from "../context/UserRewards.provider";
 
 export function getUserEarning(data: InfiniteData<UseMyRewardsInfiniteListResponse, unknown>): Earning {
   return {

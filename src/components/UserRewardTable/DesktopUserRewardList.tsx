@@ -1,16 +1,14 @@
 import Table from "src/components/Table";
-import Headers, { Fields } from "./Headers";
+import Headers from "./Headers";
 import RewardLine, { MyRewardType } from "./Line";
-import useQueryParamsSorting from "../RewardTable/useQueryParamsSorting";
-import MeApi from "src/api/me";
 import { ShowMore } from "../Table/ShowMore";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
 import Card from "src/components/Card";
 import Skeleton from "../Skeleton";
-import { useContext, useEffect } from "react";
-import { UserRewardsContext } from "src/_pages/Rewards/context";
+import { useContext } from "react";
+import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 
 type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;
@@ -18,25 +16,11 @@ type PropsType = {
 };
 
 export default function DesktopUserRewardList({ onRewardClick, selectedReward }: PropsType) {
-  const { setEarning, filterQueryParams } = useContext(UserRewardsContext);
+  const { query, dateSorting } = useContext(UserRewardsContext);
 
-  const { sorting, sortField, queryParams } = useQueryParamsSorting({
-    field: Fields.Date,
-    isAscending: false,
-    storageKey: "myRewardsSorting",
-  });
+  const { sorting, sortField } = dateSorting;
 
-  const { data, error, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    MeApi.queries.useMyRewardsInfiniteList({
-      queryParams: {
-        ...(queryParams as URLSearchParams),
-        ...filterQueryParams,
-      },
-    });
-
-  useEffect(() => {
-    data && setEarning(data);
-  }, [data]);
+  const { data, error, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = query ?? {};
 
   if (error) {
     return (

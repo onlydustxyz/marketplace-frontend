@@ -9,8 +9,8 @@ import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { UserRewardsContext } from "./context";
 import { FilterProjectSelect } from "src/components/New/Filter/FilterProjectSelect";
+import { UserRewardsContext } from "./context/UserRewards";
 
 type Filters = {
   period: Period;
@@ -37,7 +37,7 @@ export function UserRewardsFilter({ position }: { position?: FilterPosition }) {
   const { rewards, setFilterQueryParams } = useContext(UserRewardsContext);
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "project-my-rewards-table-filters",
+    "my-rewards-table-filters",
     JSON.stringify(initialFilters)
   );
 
@@ -143,6 +143,17 @@ export function UserRewardsFilter({ position }: { position?: FilterPosition }) {
     [rewards]
   );
 
+  const uniqueCurrencies = useMemo(
+    () =>
+      rewards
+        ?.filter((value, index, self) => index === self.findIndex(t => t.amount.currency === value.amount.currency))
+        .map(reward => ({
+          id: reward.amount.currency,
+          value: reward.amount.currency,
+        })),
+    [rewards]
+  );
+
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
       <div className="isolate focus-within:z-50">
@@ -168,10 +179,7 @@ export function UserRewardsFilter({ position }: { position?: FilterPosition }) {
             <FilterCurrencySelect
               selected={filters.currency ?? initialFilters.currency}
               onChange={updateCurrency}
-              currencies={rewards.map((reward, index) => ({
-                id: index,
-                value: reward.amount.currency,
-              }))}
+              currencies={uniqueCurrencies ?? []}
             />
           </div>
         </>
