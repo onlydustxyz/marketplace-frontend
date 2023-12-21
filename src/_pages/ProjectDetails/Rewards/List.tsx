@@ -91,14 +91,14 @@ const RewardList: React.FC = () => {
         ) : null}
       </div>
 
-      {!project?.indexingComplete ? <StillFetchingBanner /> : null}
+      {project && !project?.indexingComplete ? <StillFetchingBanner /> : null}
 
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
 
-      {!isRewardsLoading || !isLoadingProject ? (
-        <Skeleton variant="projectRewardsTable" />
+      {isRewardsLoading || isLoadingProject ? (
+        <Skeleton variant="projectRewards" />
       ) : (
         <>
           <Budget {...budget} />
