@@ -39,7 +39,7 @@ export default function View({ padded = true, contentClassName }: Props) {
 
   return (
     <>
-      <SEO title={`${data?.name} — OnlyDust`} />
+      {data ? <SEO title={`${data?.name} — OnlyDust`} /> : null}
       <div className="flex w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:h-0 xl:flex-row xl:gap-2 xl:p-6 xl:pt-0">
         <ProjectsSidebar />
         <Background

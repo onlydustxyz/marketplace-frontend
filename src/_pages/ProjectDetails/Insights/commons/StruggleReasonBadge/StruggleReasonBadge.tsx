@@ -1,20 +1,7 @@
 import { useIntl } from "src/hooks/useIntl";
-import { cn } from "src/utils/cn";
 import { calculateDaysAgo, getColorClass } from "./StruggleReasonBadge.utils";
-import { ReasonRanges, StruggleReasonBadgeProps } from "./StruggleReasonBadge.type";
-
-const Bar = ({ daysAgo, height }: { daysAgo: number; height: number }) => (
-  <div
-    className={cn(`h-${height} w-1`, {
-      "bg-struggleBadge-bar-solid-green": daysAgo < ReasonRanges.GreenStatus,
-      "bg-struggleBadge-bar-fade-green": daysAgo < ReasonRanges.GreenStatus && height > 2,
-      "bg-struggleBadge-bar-solid-orange": daysAgo >= ReasonRanges.GreenStatus && daysAgo < ReasonRanges.OrangeStatus,
-      "bg-struggleBadge-bar-fade-orange":
-        daysAgo >= ReasonRanges.GreenStatus && daysAgo < ReasonRanges.OrangeStatus && height > 2,
-      "bg-struggleBadge-bar-solid-red": daysAgo >= ReasonRanges.RedStatus,
-    })}
-  />
-);
+import { StruggleReasonBadgeProps } from "./StruggleReasonBadge.type";
+import Bar from "./SruggleReasonBar";
 
 export default function StruggleReasonBadge({ date, githubStatus }: StruggleReasonBadgeProps) {
   const { T } = useIntl();
