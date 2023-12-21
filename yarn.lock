@@ -3276,7 +3276,7 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.2.tgz#5981a8db18b56ba38ef0efb7d995b12aa7b51918"
   integrity sha512-sXXKG+uL9IrKqViTtao2Ws6dy0znu9sOaP1di/jKGW1M6VssO8vlpXCQcpZ+jisQ1tTFAC5Jo/EOzFbggBagFQ==
 
-"@storybook/addon-actions@7.0.24", "@storybook/addon-actions@^7.0.24":
+"@storybook/addon-actions@7.0.24":
   version "7.0.24"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-7.0.24.tgz#6bdbd8118acfc46f140207a108a5a35cc980d948"
   integrity sha512-sIPY6uH8I26KBWUb5fMYBB9xCKB02oSM8gIHzqPZ0DnW8zl+p6+dX3tAdX+XQvb9YOLJihxZ1GF1tOxFduc3Pw==
@@ -3298,7 +3298,7 @@
     ts-dedent "^2.0.0"
     uuid "^9.0.0"
 
-"@storybook/addon-actions@7.6.6":
+"@storybook/addon-actions@7.6.6", "@storybook/addon-actions@^7.6.6":
   version "7.6.6"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-7.6.6.tgz#37b183af6303db8b44a7d9e9620aaca991a51a62"
   integrity sha512-mLJip9Evb2Chj7ymKbpaybe5NgDy3Du7oSWeURPy/0qXJ2cBqHWnhZ8CTK2DasrstsUhQSJaZVXHhaENT+fn+g==
