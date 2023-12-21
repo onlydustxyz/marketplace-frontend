@@ -6,7 +6,6 @@ import ProjectRewardTableFallback from "src/components/ProjectRewardTableFallbac
 import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
@@ -17,14 +16,15 @@ import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { RewardProjectButton } from "../components/RewardProjectButton";
 import { Budget } from "./Budget/Budget";
-import { FilterQueryParams, ProjectRewardsFilter } from "./Filter";
-import { useState } from "react";
+import { FilterQueryParams, ProjectRewardsFilter, ProjectRewardsFilterRef } from "./Filter";
+import { useMemo, useRef, useState } from "react";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
+import Skeleton from "src/components/Skeleton";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
   const { projectKey = "" } = useParams<{ projectKey: string }>();
-
+  const filterRef = useRef<ProjectRewardsFilterRef>(null);
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
   });
@@ -68,22 +68,32 @@ const RewardList: React.FC = () => {
     rewardedContributorsCount: data?.pages[0].rewardedContributorsCount,
   };
 
+  const hasActiveFilters = !!filterRef?.current?.hasActiveFilters;
+
+  const emptyFallback = useMemo(
+    () =>
+      project && rewards?.length === 0 ? (
+        <ProjectRewardTableFallback
+          project={project}
+          activeFilter={hasActiveFilters}
+          activeFilterButtonEvent={filterRef.current?.reset}
+        />
+      ) : null,
+    [hasActiveFilters, filterRef, project, rewards]
+  );
+
   if (error) {
     return <ErrorFallback />;
   }
 
-  if (isRewardsLoading || isLoadingProject) {
-    return <Skeleton variant="projectRewards" />;
-  }
-
-  return project && rewards ? (
+  return (
     <>
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Flex className="z-10 gap-8">
           <Title>{T("project.details.rewards.title")}</Title>
-          <ProjectRewardsFilter onChange={setFilterQueryParams} position={FilterPosition.Left} />
+          <ProjectRewardsFilter onChange={setFilterQueryParams} position={FilterPosition.Left} ref={filterRef} />
         </Flex>
-        {!hasOrgsWithUnauthorizedRepos ? (
+        {!hasOrgsWithUnauthorizedRepos && project ? (
           <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
             <EditProjectButton projectKey={projectKey} />
             <RewardProjectButton project={project} />
@@ -91,41 +101,44 @@ const RewardList: React.FC = () => {
         ) : null}
       </div>
 
-      {!project.indexingComplete ? <StillFetchingBanner /> : null}
+      {project && !project?.indexingComplete ? <StillFetchingBanner /> : null}
 
       {hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
 
-      <Budget {...budget} />
-      <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
-        <div className="w-full">
-          {rewards.length > 0 ? (
-            <Card>
-              <RewardTable
-                rewards={rewards}
-                options={{
-                  fetchNextPage,
-                  hasNextPage,
-                  sorting,
-                  sortField,
-                  isFetchingNextPage,
-                  refetch,
-                }}
-                projectId={project.id}
-              />
-            </Card>
-          ) : (
-            !isRewardsLoading && (
-              <Card className="p-16">
-                <ProjectRewardTableFallback project={project} />
-              </Card>
-            )
-          )}
-        </div>
-      </div>
+      {isRewardsLoading || isLoadingProject ? (
+        <Skeleton variant="projectRewards" />
+      ) : (
+        <>
+          <Budget {...budget} />
+          <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
+            <div className="w-full">
+              {(project && rewards?.length > 0) || (hasActiveFilters && project) ? (
+                <Card>
+                  <RewardTable
+                    emptyFallback={emptyFallback}
+                    rewards={rewards}
+                    options={{
+                      fetchNextPage,
+                      hasNextPage,
+                      sorting,
+                      sortField,
+                      isFetchingNextPage,
+                      refetch,
+                    }}
+                    projectId={project.id}
+                  />
+                </Card>
+              ) : !isRewardsLoading && !!project ? (
+                <Card className="p-16">{emptyFallback}</Card>
+              ) : null}
+            </div>
+          </div>
+        </>
+      )}
     </>
-  ) : null;
+  );
 };
 
 export default RewardList;
