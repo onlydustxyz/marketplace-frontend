@@ -74,6 +74,10 @@ export function ProjectRewardsFilter({
       contributors: contributors?.map(({ githubUserId }) => String(githubUserId)).join(","),
     };
 
+    if (currency) {
+      filterQueryParams.currencies = currency.value;
+    }
+
     // If a predefined period is selected, use the predefined period's date range
     if (period !== Period.Custom) {
       const { value } = allPeriods.find(({ id }) => id === period) ?? {};
@@ -98,10 +102,6 @@ export function ProjectRewardsFilter({
     } else {
       // If no date range is selected, use all time
       updateDate(initialFilters.dateRange);
-    }
-
-    if (currency) {
-      filterQueryParams.currencies = currency.value;
     }
 
     onChange(filterQueryParams);
