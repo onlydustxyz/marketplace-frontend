@@ -2,7 +2,7 @@ import { ReasonStatuses } from "./StruggleReasonBadge.type";
 import { getRangeKey } from "./StruggleReasonBadge.utils";
 
 export default function Bar({ daysAgo, height }: { daysAgo: number; height: number }) {
-  const colorClasses: Record<number, Record<string, string>> = {
+  const colorClasses: Record<ReasonStatuses, Record<string, string>> = {
     [ReasonStatuses.GreenStatus]: {
       "2": "bg-struggleBadge-bar-solid-green",
       "3": "bg-struggleBadge-bar-fade-green",
