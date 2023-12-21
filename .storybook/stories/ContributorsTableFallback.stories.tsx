@@ -1,4 +1,3 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 
 export default {

@@ -8,8 +8,12 @@ const config = {
     "@storybook/addon-styling",
   ],
   framework: {
-    name: "@storybook/react-vite",
-    options: {},
+    name: "@storybook/nextjs",
+    options: {
+      builder: {
+        useSWC: true, // Enables SWC support
+      },
+    },
   },
   features: {
     storyStoreV7: true,

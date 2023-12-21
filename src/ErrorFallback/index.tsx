@@ -19,7 +19,7 @@ export default function ErrorFallback(props?: Props) {
         isFixed={isFixed}
         onBackClicked={() => {
           resetBoundary();
-          navigate(RoutePaths.Home);
+          navigate(RoutePaths.Projects);
         }}
         onRefreshClicked={() => navigate(0)}
       />,
@@ -31,7 +31,7 @@ export default function ErrorFallback(props?: Props) {
       isFixed={isFixed}
       onBackClicked={() => {
         resetBoundary();
-        navigate(RoutePaths.Home);
+        navigate(RoutePaths.Projects);
       }}
       onRefreshClicked={() => navigate(0)}
     />

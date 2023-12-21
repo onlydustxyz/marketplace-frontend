@@ -9,7 +9,6 @@ import {
 import { useIntl } from "src/hooks/useIntl";
 import { useLoginUrl, useLoginUrlStorage } from "src/hooks/useLoginUrl/useLoginUrl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import { parseFlag } from "src/utils/parseFlag";
 
 type EditProjectButtonProps = { projectKey: string };
 
@@ -17,7 +16,6 @@ export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
   const { T } = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
-  const isEditProjectEnabled = parseFlag("VITE_CAN_EDIT_PROJECT");
   const [getPermission] = useLazyGetUserPermissions();
   const getLoginUrl = useLoginUrl();
   const loginUrlStorage = useLoginUrlStorage();
@@ -45,7 +43,7 @@ export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
     }
   };
 
-  return isEditProjectEnabled ? (
+  return (
     <Button
       type={ButtonType.Secondary}
       size={ButtonSize.Sm}
@@ -54,5 +52,5 @@ export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
     >
       {T("project.details.edit.title")}
     </Button>
-  ) : null;
+  );
 }

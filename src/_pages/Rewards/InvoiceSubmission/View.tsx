@@ -131,6 +131,6 @@ export function buildHiddenFields({
       amount: paymentRequests.map(p => p.amount.total).reduce((acc, amount) => acc + amount, 0),
       currency: paymentRequests.at(0)?.amount.currency,
     }),
-    env: config.ENVIRONMENT,
+    env: config.ENVIRONMENT ?? "",
   };
 }

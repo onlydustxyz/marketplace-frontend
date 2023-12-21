@@ -29,7 +29,7 @@ export default function GithubCallbackHandler() {
   }, [searchParams, navigate]);
 
   if (!searchParams.has("installation_id") && !searchParams.has("state")) {
-    navigate(RoutePaths.Home);
+    navigate(RoutePaths.Projects);
   }
 
   return null;

@@ -13,7 +13,6 @@ import SEO from "src/components/SEO";
 import AllProjectLoading from "./AllProjects/AllProjectsLoading";
 import AllProjects from "./AllProjects";
 import SubmitProject from "./SubmitProject";
-import { parseFlag } from "src/utils/parseFlag";
 import { useLeadProjects } from "src/hooks/useProjectLeader/useProjectLeader";
 import { Sponsor } from "src/types";
 
@@ -55,7 +54,7 @@ export default function Projects() {
           <div className="flex h-full gap-6">
             <div className="sticky top-0 z-10 hidden shrink-0 basis-80 xl:block">
               <div className="sticky top-4">
-                {parseFlag("VITE_CAN_CREATE_PROJECT") ? <SubmitProject /> : null}
+                <SubmitProject />
                 <FilterPanel
                   isProjectLeader={!!isProjectLeader.length}
                   availableTechnologies={technologies}
