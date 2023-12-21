@@ -2,12 +2,12 @@
   "rust-analyzer.rustfmt.extraArgs": ["+nightly"],
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "eslint.validate": ["javascript"],
   "files.trimFinalNewlines": true,
   "[makefile]": {
     "editor.insertSpaces": false
   },
-  "rust-analyzer.showUnlinkedFileNotification": false,
+  "rust-analyzer.showUnlinkedFileNotification": false
 }

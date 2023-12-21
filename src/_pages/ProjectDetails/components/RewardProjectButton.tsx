@@ -5,9 +5,10 @@ import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App
 import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { components } from "src/__generated/api";
 import MeApi from "src/api/me";
-import { ButtonOnBackground, ButtonSize } from "src/components/Button";
+import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import { ChoiceButton } from "src/components/New/Buttons/ChoiceButton/ChoiceButton";
 import SidePanel from "src/components/SidePanel";
+import { withTooltip } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 
 import { useIntl } from "src/hooks/useIntl";
@@ -22,13 +23,36 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
   const { data: userInfo } = MeApi.queries.useGetMyPayoutInfo({});
   const { data: userProfile } = MeApi.queries.useGetMyProfileInfo({});
   const navigate = useNavigate();
-  const canReward = !!project?.hasRemainingBudget;
+  const canReward = !project?.hasRemainingBudget;
   const [isApplyOpen, setIsApplyOpen] = useState(false);
 
   const findContact = (channel: Channel) => {
     const findContact = userProfile?.contacts?.find(contact => contact.channel === channel);
     return findContact?.contact || undefined;
   };
+
+  if (import.meta.env.VITE_CAN_ALLOW_APPLY_FOR_BUDGET !== "true") {
+    return (
+      <Button
+        disabled={canReward}
+        onBackground={ButtonOnBackground.Blue}
+        className="flex-1 md:flex-initial"
+        size={size}
+        {...withTooltip(T("contributor.table.noBudgetLeft"), {
+          visible: canReward,
+        })}
+        onClick={() =>
+          navigate(
+            generatePath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`, {
+              projectKey: project.slug,
+            })
+          )
+        }
+      >
+        {T("project.rewardButton.full")}
+      </Button>
+    );
+  }
 
   return (
     <>
