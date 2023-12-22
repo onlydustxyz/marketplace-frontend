@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { FilterQueryParams } from "../Filter";
 import MeApi from "src/api/me";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import { Fields } from "src/components/UserRewardTable/Headers";
+import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import { UserRewardsContextProps } from "./UserRewards.type";
 import { UserRewardsContext } from "./UserRewards";
 
@@ -22,8 +22,11 @@ export function UserRewardsProvider({ children }: UserRewardsContextProps) {
     },
   });
 
+  const { data: projectsData } = MeApi.queries.useGetMeRewardProjects({});
+  const { data: currenciesData } = MeApi.queries.useGetMeRewardCurrencies({});
+
   const rewards = useMemo(
-    () => myRewardsInfiniteList.data?.pages.flatMap(page => page.rewards),
+    () => myRewardsInfiniteList.data?.pages.flatMap(page => page.rewards) || [],
     [myRewardsInfiniteList]
   );
 
@@ -49,6 +52,8 @@ export function UserRewardsProvider({ children }: UserRewardsContextProps) {
         setFilterQueryParams,
         dateSorting,
         query: myRewardsInfiniteList,
+        currencies: currenciesData?.currencies || [],
+        projects: projectsData?.projects || [],
       }}
     >
       {children}

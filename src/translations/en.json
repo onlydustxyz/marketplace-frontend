@@ -254,7 +254,7 @@
     },
     "currency": {
       "title": "Currency",
-      "all": "All (dollars equivalent)",
+      "all": "All currencies",
       "zero": "currencies",
       "one": "__count__ currency",
       "many": "__count__ currencies"
@@ -1353,6 +1353,17 @@
       "left": "Left to spend",
       "exceedsBudgetTooltip": "Not enough budget",
       "dollarTooltip": "Dollars equivalent at today’s date."
+    }
+  },
+  "myRewards": {
+    "tableFallback": {
+      "title": "No rewards so far",
+      "message": "Achieve your first task and get a reward!",
+      "withFilter": {
+        "title": "Nothing to show",
+        "message": "Please update filters to display more results.",
+        "buttonLabel": "Clear filters"
+      }
     }
   },
   "seniority": {

@@ -54,7 +54,7 @@ const useMyContributions = (
   );
 };
 
-export type UseMyContributedProjectsResponse = components["schemas"]["ContributedProjectsResponse"];
+export type UseMyContributedProjectsResponse = components["schemas"]["ProjectListResponse"];
 
 const useMyContributedProjects = ({
   params,
@@ -124,13 +124,41 @@ const useGetMyProfileInfo = ({ options = {} }: UseQueryProps<UseGetMyProfileInfo
   });
 };
 
+export type UseGetMeRewardCurrencies = components["schemas"]["CurrencyListResponse"];
+
+const useGetMeRewardCurrencies = ({ options = {} }: UseQueryProps<UseGetMeRewardCurrencies, undefined>) => {
+  const { isLoggedIn } = useAuth();
+
+  return useBaseQuery<UseGetMeRewardCurrencies>({
+    resourcePath: API_PATH.ME_REWARDS_CURRENCIES,
+    tags: ME_TAGS.rewarded_currencies(),
+    ...options,
+    enabled: isLoggedIn && (options.enabled === undefined ? true : options.enabled),
+  });
+};
+
+export type UseGetMeRewardProjects = components["schemas"]["ProjectListResponse"];
+
+const useGetMeRewardProjects = ({ options = {} }: UseQueryProps<UseGetMeRewardProjects, undefined>) => {
+  const { isLoggedIn } = useAuth();
+
+  return useBaseQuery<UseGetMeRewardProjects>({
+    resourcePath: API_PATH.ME_REWARDS_PROJECTS,
+    tags: ME_TAGS.rewarded_projects(),
+    ...options,
+    enabled: isLoggedIn && (options.enabled === undefined ? true : options.enabled),
+  });
+};
+
 export default {
   useGetMe,
   useMyRewardsInfiniteList,
+  useGetMeRewardProjects,
   useMyContributions,
   useMyContributedProjects,
   useMyContributedRepos,
   useGithubOrganizations,
   useGetMyPayoutInfo,
   useGetMyProfileInfo,
+  useGetMeRewardCurrencies,
 };

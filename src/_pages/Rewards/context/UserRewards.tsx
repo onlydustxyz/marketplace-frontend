@@ -20,4 +20,6 @@ export const UserRewardsContext = createContext<UserRewardsType>({
   dateSorting: {} as any,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query: {} as any as UseInfiniteQueryResult<InfiniteData<UseMyRewardsInfiniteListResponse>>,
+  currencies: [],
+  projects: [],
 });

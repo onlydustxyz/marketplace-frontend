@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { forwardRef, useContext, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySelect";
@@ -33,8 +33,16 @@ export type FilterQueryParams = {
   currencies?: string;
 };
 
-export function UserRewardsFilter({ position }: { position?: FilterPosition }) {
-  const { rewards, setFilterQueryParams } = useContext(UserRewardsContext);
+export type UserRewardsFilterRef = {
+  reset: () => void;
+  hasActiveFilters: boolean;
+};
+
+export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
+  { position }: { position?: FilterPosition },
+  ref: React.Ref<UserRewardsFilterRef>
+) {
+  const { rewards, setFilterQueryParams, currencies, projects } = useContext(UserRewardsContext);
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
     "my-rewards-table-filters",
@@ -129,29 +137,34 @@ export function UserRewardsFilter({ position }: { position?: FilterPosition }) {
     );
   }
 
-  const uniqueProjects = useMemo(
+  const projectsFilters = useMemo(
     () =>
-      rewards
-        ?.filter(
-          (value, index, self) => index === self.findIndex(t => t.rewardedOnProjectName === value.rewardedOnProjectName)
-        )
-        .map(reward => ({
-          id: reward.projectId,
-          label: reward.rewardedOnProjectName,
-          image: reward.rewardedOnProjectLogoUrl,
-        })),
+      projects.map(project => ({
+        id: project.id,
+        label: project.name,
+        image: project.logoUrl,
+      })),
     [rewards]
   );
 
-  const uniqueCurrencies = useMemo(
+  const currenciesFilters = useMemo(
     () =>
-      rewards
-        ?.filter((value, index, self) => index === self.findIndex(t => t.amount.currency === value.amount.currency))
-        .map(reward => ({
-          id: reward.amount.currency,
-          value: reward.amount.currency,
-        })),
-    [rewards]
+      currencies.map(currency => ({
+        id: currency,
+        value: currency,
+      })),
+    [currencies]
+  );
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        reset: resetFilters,
+        hasActiveFilters,
+      };
+    },
+    [hasActiveFilters]
   );
 
   return (
@@ -169,7 +182,7 @@ export function UserRewardsFilter({ position }: { position?: FilterPosition }) {
         <>
           <div className="focus-within:z-10">
             <FilterProjectSelect
-              projects={uniqueProjects ?? []}
+              projects={projectsFilters ?? []}
               selected={filters.projects ?? initialFilters.projects}
               onChange={updateProjects}
             />
@@ -179,11 +192,11 @@ export function UserRewardsFilter({ position }: { position?: FilterPosition }) {
             <FilterCurrencySelect
               selected={filters.currency ?? initialFilters.currency}
               onChange={updateCurrency}
-              currencies={uniqueCurrencies ?? []}
+              currencies={currenciesFilters ?? []}
             />
           </div>
         </>
       ) : null}
     </Filter>
   );
-}
+});

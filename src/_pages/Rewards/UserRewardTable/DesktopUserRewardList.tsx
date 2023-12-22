@@ -1,21 +1,20 @@
 import Table from "src/components/Table";
 import Headers from "./Headers";
 import RewardLine, { MyRewardType } from "./Line";
-import { ShowMore } from "../Table/ShowMore";
-import { Navigate } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { ShowMore } from "../../../components/Table/ShowMore";
 import ErrorFallback from "src/ErrorFallback";
 import Card from "src/components/Card";
-import Skeleton from "../Skeleton";
+import Skeleton from "../../../components/Skeleton";
 import { useContext } from "react";
 import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 
 type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;
   selectedReward: MyRewardType | null;
+  emptyState?: React.ReactElement;
 };
 
-export default function DesktopUserRewardList({ onRewardClick, selectedReward }: PropsType) {
+export default function DesktopUserRewardList({ onRewardClick, selectedReward, emptyState }: PropsType) {
   const { query, dateSorting } = useContext(UserRewardsContext);
 
   const { sorting, sortField } = dateSorting;
@@ -32,11 +31,6 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward }:
 
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
 
-  const hasRewards = rewards && rewards.length > 0;
-  if (!hasRewards && !isLoading && !isFetchingNextPage) {
-    return <Navigate to={RoutePaths.Projects} />;
-  }
-
   if (isLoading) {
     return <Skeleton variant="rewards" />;
   }
@@ -44,7 +38,11 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward }:
   return (
     <Card>
       <div>
-        <Table id="reward_table" headers={<Headers sorting={sorting} sortField={sortField} />}>
+        <Table
+          id="reward_table"
+          headers={<Headers sorting={sorting} sortField={sortField} />}
+          emptyFallback={rewards.length === 0 ? emptyState : undefined}
+        >
           {rewards.map(p => (
             <RewardLine
               key={p?.id}

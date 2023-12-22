@@ -8,8 +8,6 @@ import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useOnboarding } from "src/App/OnboardingProvider";
 import { parseFlag } from "src/utils/parseFlag";
 import MeApi from "src/api/me";
-import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import { Fields } from "src/components/UserRewardTable/Headers";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 
 export default function Header() {
@@ -20,24 +18,11 @@ export default function Header() {
   const { impersonationSet } = useImpersonationClaims();
   const impersonating = !!impersonationSet;
 
-  const { queryParams } = useQueryParamsSorting({
-    field: Fields.Date,
-    isAscending: false,
-    storageKey: "myRewardsSorting",
-  });
-
-  const { data, isLoading, isError } = MeApi.queries.useMyRewardsInfiniteList({
-    queryParams,
-  });
-
-  const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
-  const hasRewards = rewards.length && !isLoading && !isError;
-
   const { onboardingInProgress } = useOnboarding();
 
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
-  const rewardsMenuItem = hasRewards && !onboardingInProgress ? T("navbar.rewards") : undefined;
+  const rewardsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.rewards") : undefined;
   const contributionsMenuItem =
     parseFlag("VITE_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId && !onboardingInProgress
       ? T("navbar.contributions")
