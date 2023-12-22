@@ -23,7 +23,7 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
   const { data: userInfo } = MeApi.queries.useGetMyPayoutInfo({});
   const { data: userProfile } = MeApi.queries.useGetMyProfileInfo({});
   const navigate = useNavigate();
-  const canReward = !!project?.hasRemainingBudget;
+  const isRewardDisabled = !project?.hasRemainingBudget;
   const [isApplyOpen, setIsApplyOpen] = useState(false);
 
   const findContact = (channel: Channel) => {
@@ -34,12 +34,12 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
   if (import.meta.env.VITE_CAN_ALLOW_APPLY_FOR_BUDGET !== "true") {
     return (
       <Button
-        disabled={canReward}
+        disabled={isRewardDisabled}
         onBackground={ButtonOnBackground.Blue}
         className="flex-1 md:flex-initial"
         size={size}
         {...withTooltip(T("contributor.table.noBudgetLeft"), {
-          visible: canReward,
+          visible: isRewardDisabled,
         })}
         onClick={() =>
           navigate(
@@ -61,7 +61,7 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
           {
             name: "reward",
             label: T("project.rewardButton.full"),
-            disabled: !canReward,
+            disabled: isRewardDisabled,
             onClick: () =>
               navigate(
                 generatePath(
