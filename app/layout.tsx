@@ -1,4 +1,6 @@
+import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
+import config from "src/config";
 
 export const metadata: Metadata = {
   title: "Only Dust — Forge your developer legacy",
@@ -32,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div id="root">{children}</div>
       </body>
+      {config.GTM_ID ? <GoogleTagManager gtmId={config.GTM_ID} /> : null}
     </html>
   );
 }
