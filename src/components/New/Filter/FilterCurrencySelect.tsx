@@ -34,6 +34,7 @@ const currenciesLabel: Record<Currency, { label: string; icon: JSX.Element }> = 
   [Currency.OP]: { label: "currencies.currency.OP", icon: <LabelIcon currency={Currency.OP} /> },
   [Currency.STARK]: { label: "currencies.currency.STARK", icon: <LabelIcon currency={Currency.STARK} /> },
   [Currency.LORDS]: { label: "currencies.currency.LORDS", icon: <LabelIcon currency={Currency.LORDS} /> },
+  [Currency.USDC]: { label: "", icon: <></> },
 };
 
 export function FilterCurrencySelect({

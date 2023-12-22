@@ -67,10 +67,11 @@ export enum Currency {
   LORDS = "LORDS",
   APT = "APT",
   OP = "OP",
+  USDC = "USDC",
 }
 
 export type CurrencyUnion = `${Currency}`;
-export const CurrencyOrder = ["USD", "ETH", "STARK", "OP", "APT", "LORDS"];
+export const CurrencyOrder = ["USD", "ETH", "STARK", "OP", "APT", "LORDS", "USDC"];
 
 export enum PreferredMethod {
   Crypto = "CRYPTO",
@@ -320,8 +321,13 @@ export type ShortRepo = components["schemas"]["ShortGithubRepoResponse"];
 
 export type ContributorResponse = components["schemas"]["ContributorResponse"];
 
-type MoneyCurrency = Exclude<components["schemas"]["Money"]["currency"], "USDC">;
-export type Money = Omit<components["schemas"]["Money"], "currency"> & { currency: MoneyCurrency };
+export type Money = components["schemas"]["Money"];
+// export type Money = Omit<components["schemas"]["Money"], "currency"> & {
+// export type Money = {
+//   amount: number;
+//   usdEquivalent: number;
+//   currency: Exclude<components["schemas"]["Money"]["currency"], "USDC">;
+// };
 
 export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];
 

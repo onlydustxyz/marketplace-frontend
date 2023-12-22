@@ -17,6 +17,7 @@ const currencyIcons: Record<Money["currency"], ReactElement | null> = {
   [Currency.OP]: <Optimism />,
   [Currency.APT]: <Aptos />,
   [Currency.USD]: null,
+  [Currency.USDC]: null,
 };
 
 type Amount = {
