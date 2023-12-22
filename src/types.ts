@@ -320,7 +320,8 @@ export type ShortRepo = components["schemas"]["ShortGithubRepoResponse"];
 
 export type ContributorResponse = components["schemas"]["ContributorResponse"];
 
-export type Money = components["schemas"]["Money"];
+type MoneyCurrency = Exclude<components["schemas"]["Money"]["currency"], "USDC">;
+export type Money = Omit<components["schemas"]["Money"], "currency"> & { currency: MoneyCurrency };
 
 export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];
 
