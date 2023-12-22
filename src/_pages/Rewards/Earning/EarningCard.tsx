@@ -1,71 +1,74 @@
-import Aptos from "src/assets/icons/Aptos";
-import { DollarCurrency } from "src/assets/icons/DollarCurrency";
-import Ethereum from "src/assets/icons/Ethereum";
-import Optimism from "src/assets/icons/Optimism";
-import Starknet from "src/assets/icons/Starknet";
 import Card from "src/components/Card";
-import { Chip } from "src/components/Chip/Chip";
-import { withTooltip } from "src/components/Tooltip";
-import { Currency } from "src/types";
+import { Money } from "src/types";
 import { cn } from "src/utils/cn";
-import { EarningCurrencyType, formatMoneyAmount } from "src/utils/money";
-import { ReactElement } from "react";
 import { useIntl } from "src/hooks/useIntl";
-import Lords from "src/assets/icons/Lords";
+import HandCoinLine from "src/icons/HandCoinLine";
+import { Amount } from "./Amount";
+import { Counter } from "./Counter";
+import Loader3Line from "src/icons/Loader3Line";
+import StackLine from "src/icons/StackLine";
+import Folder from "src/icons/FolderLine";
 
-const earningName: Record<Currency, string> = {
-  [Currency.USD]: "reward.details.earning.dolarEarnings",
-  [Currency.ETH]: "reward.details.earning.etherEarnings",
-  [Currency.STARK]: "reward.details.earning.starkEarnings",
-  [Currency.LORDS]: "reward.details.earning.lordsEarnings",
-  [Currency.OP]: "reward.details.earning.optimismEarnings",
-  [Currency.APT]: "reward.details.earning.aptosEarnings",
-};
-
-const earningIcons: Record<Currency, ReactElement> = {
-  [Currency.USD]: <DollarCurrency />,
-  [Currency.ETH]: <Ethereum className="h-4 w-4" />,
-  [Currency.STARK]: <Starknet />,
-  [Currency.LORDS]: <Lords className="h-4 w-4" />,
-  [Currency.OP]: <Optimism />,
-  [Currency.APT]: <Aptos />,
-};
-
-const usdEquivalent = [Currency.ETH, Currency.OP, Currency.APT];
-
-interface Props {
-  amount: {
-    totalAmount: number;
-    currency: EarningCurrencyType;
-    totalDollarsEquivalent?: number;
-  };
-  className?: string;
+export enum CardTypes {
+  AmountRewarded,
+  AmountPending,
+  ReceivedRewards,
+  Projects,
 }
 
-export function EarningCard({ amount, className }: Props) {
+const earnings = {
+  [CardTypes.AmountRewarded]: { title: "reward.earning.amountRewarded", icon: <HandCoinLine /> },
+  [CardTypes.AmountPending]: { title: "reward.earning.amountPending", icon: <Loader3Line /> },
+  [CardTypes.ReceivedRewards]: { title: "reward.earning.receivedRewards", icon: <StackLine /> },
+  [CardTypes.Projects]: { title: "reward.earning.projects", icon: <Folder /> },
+};
+
+const getContent = (
+  type: CardTypes,
+  amount?: Money,
+  receivedRewards?: { count?: number; total?: number },
+  rewardingProjectsCount?: number
+) => {
+  switch (type) {
+    case CardTypes.ReceivedRewards:
+      return <Counter {...receivedRewards} />;
+    case CardTypes.Projects:
+      return rewardingProjectsCount || null;
+    case CardTypes.AmountPending:
+    default:
+      return <Amount amount={amount} />;
+  }
+};
+
+type Props = {
+  amount?: Money;
+  type?: CardTypes;
+  receivedRewards?: { count?: number; total?: number };
+  rewardingProjectsCount?: number;
+};
+
+export function EarningCard({
+  amount,
+  receivedRewards,
+  rewardingProjectsCount,
+  type = CardTypes.AmountRewarded,
+}: Props) {
   const { T } = useIntl();
-  const hasUsdEquivalent = usdEquivalent.includes(amount.currency as Currency);
-  const isUsd = amount.currency === Currency.USD;
 
   return (
-    <Card className={cn("p-8", className)}>
+    <Card
+      className={cn("px-4 py-5 lg:px-4 lg:py-5", {
+        "bg-budget bg-origin-border": type === CardTypes.AmountRewarded,
+      })}
+    >
       <div className="flex flex-col gap-2">
-        <div className="flex items-center text-sm text-white">{T(earningName[amount.currency])}</div>
-        <div className="flex flex-wrap items-center font-belwe text-2xl text-greyscale-50">
-          <Chip className="mr-1 h-5 w-5">{earningIcons[amount.currency]}</Chip>
-          {formatMoneyAmount({ amount: amount.totalAmount, currency: amount.currency, showCurrency: false })}
-          {!isUsd ? <div className="ml-1 mt-2 text-sm">{amount.currency}</div> : null}
+        <div className="flex items-center text-sm uppercase text-white">
+          <span className="mr-2">{earnings[type].icon}</span>
+          <div className="truncate font-semibold">{T(earnings[type].title)}</div>
+        </div>
 
-          {hasUsdEquivalent ? (
-            <div
-              className="ml-1 mt-2 font-walsheim text-xs text-spaceBlue-200"
-              {...withTooltip(T("project.details.remainingBudget.usdInfo"))}
-            >
-              {amount.totalDollarsEquivalent
-                ? `~${formatMoneyAmount({ amount: amount.totalDollarsEquivalent, currency: Currency.USD })}`
-                : null}
-            </div>
-          ) : null}
+        <div className="flex flex-wrap items-baseline font-belwe text-2xl text-greyscale-50">
+          {getContent(type, amount, receivedRewards, rewardingProjectsCount)}
         </div>
       </div>
     </Card>

@@ -10,44 +10,44 @@ import { useIntl } from "src/hooks/useIntl";
 import { Currency, Money } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
 
-const currencyIcons: Record<Exclude<Currency, "USD" | "USDC">, ReactElement> = {
+const currencyIcons: Record<Money["currency"], ReactElement | null> = {
   [Currency.ETH]: <Ethereum className="h-4 w-4" />,
   [Currency.LORDS]: <Lords className="h-4 w-4" />,
   [Currency.STARK]: <Starknet />,
   [Currency.OP]: <Optimism />,
   [Currency.APT]: <Aptos />,
+  [Currency.USD]: null,
+  [Currency.USDC]: null,
 };
 
 type Amount = {
-  budget?: Money;
+  amount?: Money;
 };
 
-export function Amount({ budget }: Amount) {
+export function Amount({ amount }: Amount) {
   const { T } = useIntl();
-  if (!budget) return null;
+  if (!amount) return null;
 
-  const isUsd = !budget?.currency || budget?.currency === Currency.USD;
+  const isUsd = !amount?.currency || amount?.currency === Currency.USD;
 
   return (
     <>
       <>
-        {!isUsd ? (
-          <Chip className="mr-1 h-5 w-5">{currencyIcons[budget.currency as keyof typeof currencyIcons]}</Chip>
-        ) : null}
+        {!isUsd ? <Chip className="mr-1 h-5 w-5">{currencyIcons[amount.currency]}</Chip> : null}
 
         {formatMoneyAmount({
-          amount: budget.amount || budget.usdEquivalent,
-          currency: budget.currency || Currency.USD,
-          showCurrency: !budget.currency || budget.currency === Currency.USD,
+          amount: amount.amount || amount.usdEquivalent,
+          currency: amount.currency || Currency.USD,
+          showCurrency: !amount.currency || amount.currency === Currency.USD,
         })}
       </>
 
-      {!isUsd && budget?.usdEquivalent ? (
+      {!isUsd && amount?.usdEquivalent ? (
         <div
           className="ml-1 mt-2 font-walsheim text-sm text-spaceBlue-50"
           {...withTooltip(T("project.details.remainingBudget.usdInfo"))}
         >
-          ~{formatMoneyAmount({ amount: budget.usdEquivalent, currency: Currency.USD })}
+          ~{formatMoneyAmount({ amount: amount.usdEquivalent, currency: Currency.USD })}
         </div>
       ) : null}
     </>

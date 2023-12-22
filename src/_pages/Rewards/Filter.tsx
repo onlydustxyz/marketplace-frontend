@@ -1,72 +1,53 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { forwardRef, useContext, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
-import { useParams } from "react-router-dom";
-import ProjectApi from "src/api/Project";
 import { Filter } from "src/components/New/Filter/Filter";
-import { FilterContributorCombobox } from "src/components/New/Filter/FilterContributorCombobox";
 import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySelect";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
-import { ContributorResponse } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
+import { Item } from "src/components/New/Filter/FilterSelect";
 import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { Item } from "src/components/New/Filter/FilterSelect";
+import { FilterProjectSelect } from "src/components/New/Filter/FilterProjectSelect";
+import { UserRewardsContext } from "./context/UserRewards";
 
 type Filters = {
   period: Period;
   dateRange: DateRange;
-  contributors: ContributorResponse[];
-  currency: { id: string | number; value: string };
+  projects: Item[];
+  currency: Item;
 };
 
 const initialFilters: Filters = {
   period: Period.AllTime,
   dateRange: allTime,
-  contributors: [],
+  projects: [],
   currency: { id: 0, value: "" },
 };
 
 export type FilterQueryParams = {
   fromDate?: string;
   toDate?: string;
-  contributors?: string;
+  projects?: string;
   currencies?: string;
 };
 
-export type ProjectRewardsFilterRef = {
+export type UserRewardsFilterRef = {
   reset: () => void;
   hasActiveFilters: boolean;
 };
 
-export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
-  {
-    onChange,
-    position,
-  }: {
-    onChange: (filterQueryParams: FilterQueryParams) => void;
-    position?: FilterPosition;
-  },
-  ref: React.Ref<ProjectRewardsFilterRef>
+export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
+  { position }: { position?: FilterPosition },
+  ref: React.Ref<UserRewardsFilterRef>
 ) {
-  const { projectKey = "" } = useParams<{ projectKey?: string }>();
-
-  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
-  });
-
-  const { data: projectBudget } = ProjectApi.queries.useProjectBudget({
-    params: { projectId: project?.id },
-  });
+  const { rewards, setFilterQueryParams, currencies, projects } = useContext(UserRewardsContext);
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    `project-rewards-table-filters-${projectKey}`,
+    "my-rewards-table-filters",
     JSON.stringify(initialFilters)
   );
-
-  const contributorsQueryState = useState<string>();
-  const [contributorsQuery] = contributorsQueryState;
 
   // Type of partial Filters is required as the shape required by the state may not exist in the user's local storage
   const [filters, setFilters] = useState<Partial<Filters>>(
@@ -74,16 +55,17 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   );
 
   const allPeriods = useDatepickerPeriods({ selectedPeriod: filters.period ?? initialFilters.period });
+  const projectIds = useMemo(() => filters.projects?.map(({ id }) => String(id)), [filters]) ?? [];
 
   useEffect(() => {
-    const { dateRange, period, contributors, currency } = filters;
+    const { dateRange, period, currency } = filters;
 
     const filterQueryParams: FilterQueryParams = {
-      contributors: contributors?.map(({ githubUserId }) => String(githubUserId)).join(","),
+      projects: projectIds.join(","),
     };
 
     if (currency) {
-      filterQueryParams.currencies = currency.value;
+      filterQueryParams.currencies = currency.value ?? "";
     }
 
     // If a predefined period is selected, use the predefined period's date range
@@ -94,7 +76,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
         filterQueryParams.fromDate = formatDateQueryParam(value.from);
         filterQueryParams.toDate = formatDateQueryParam(value.to);
 
-        onChange(filterQueryParams);
+        setFilterQueryParams(filterQueryParams);
 
         // Return early to avoid updating the date range twice
         return;
@@ -112,21 +94,12 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
       updateDate(initialFilters.dateRange);
     }
 
-    onChange(filterQueryParams);
+    setFilterQueryParams(filterQueryParams);
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    (filters?.dateRange?.from && filters?.dateRange?.to && !isAllTime(filters?.dateRange)) ||
-      filters.contributors?.length ||
-      filters.currency?.value !== ""
+    !isAllTime(filters?.dateRange) || filters.projects?.length || filters.currency?.value
   );
-
-  const { data: contributorsData, isLoading: contributorsLoading } =
-    ProjectApi.queries.useProjectContributorsInfiniteList({
-      params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
-      options: { enabled: Boolean(project?.id) },
-    });
-  const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
 
   function resetFilters() {
     setFilters(initialFilters);
@@ -149,8 +122,8 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     setFilters(prevState => updateState(prevState, { period }));
   }
 
-  function updateContributors(contributors: ContributorResponse[]) {
-    setFilters(prevState => updateState(prevState, { contributors }));
+  function updateProjects(projects: Item[]) {
+    setFilters(prevState => updateState(prevState, { projects }));
   }
 
   function updateCurrency(currency: Item) {
@@ -163,6 +136,25 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
       })
     );
   }
+
+  const projectsFilters = useMemo(
+    () =>
+      projects.map(project => ({
+        id: project.id,
+        label: project.name,
+        image: project.logoUrl,
+      })),
+    [rewards]
+  );
+
+  const currenciesFilters = useMemo(
+    () =>
+      currencies.map(currency => ({
+        id: currency,
+        value: currency,
+      })),
+    [currencies]
+  );
 
   useImperativeHandle(
     ref,
@@ -177,7 +169,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
 
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
-      <div className="focus-within:z-10">
+      <div className="isolate focus-within:z-50">
         <FilterDatepicker
           selected={filters.dateRange ?? initialFilters.dateRange}
           selectedPeriod={filters.period ?? initialFilters.period}
@@ -186,29 +178,25 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
         />
       </div>
 
-      <div className="focus-within:z-10">
-        <FilterContributorCombobox<ContributorResponse>
-          contributors={contributors}
-          selected={filters.contributors ?? initialFilters.contributors}
-          onChange={updateContributors}
-          queryState={contributorsQueryState}
-          uniqueKey="githubUserId"
-          isLoading={contributorsLoading}
-        />
-      </div>
+      {rewards ? (
+        <>
+          <div className="focus-within:z-10">
+            <FilterProjectSelect
+              projects={projectsFilters ?? []}
+              selected={filters.projects ?? initialFilters.projects}
+              onChange={updateProjects}
+            />
+          </div>
 
-      <div className="focus-within:z-10">
-        {projectBudget ? (
-          <FilterCurrencySelect
-            selected={filters.currency ?? initialFilters.currency}
-            onChange={updateCurrency}
-            currencies={projectBudget.budgets.map((budget, index) => ({
-              id: index,
-              value: budget.currency,
-            }))}
-          />
-        ) : null}
-      </div>
+          <div className="focus-within:z-10">
+            <FilterCurrencySelect
+              selected={filters.currency ?? initialFilters.currency}
+              onChange={updateCurrency}
+              currencies={currenciesFilters ?? []}
+            />
+          </div>
+        </>
+      ) : null}
     </Filter>
   );
 });

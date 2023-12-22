@@ -1,14 +1,11 @@
 import { ComponentProps, useState } from "react";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
-import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
-import { withTooltip } from "src/components/Tooltip";
 import Flex from "src/components/Utils/Flex";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { useIntl } from "src/hooks/useIntl";
@@ -23,6 +20,7 @@ import { EditProjectButton } from "../components/EditProjectButton";
 import { FilterQueryParams, ProjectContributionsFilter } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
+import { RewardProjectButton } from "../components/RewardProjectButton";
 
 const initialSort: Record<ContributionStatus, TableSort> = {
   [ContributionStatus.InProgress]: {
@@ -41,14 +39,12 @@ const initialSort: Record<ContributionStatus, TableSort> = {
 
 export default function Contributions() {
   const { T } = useIntl();
-  const navigate = useNavigate();
   const { projectKey = "" } = useParams<{ projectKey?: string }>();
 
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
   });
 
-  const isRewardDisabled = !project?.hasRemainingBudget;
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
@@ -224,28 +220,7 @@ export default function Contributions() {
         {!hasOrgsWithUnauthorizedRepos ? (
           <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
             <EditProjectButton projectKey={projectKey} />
-            <Button
-              width={Width.Fit}
-              className="flex-1 md:flex-initial"
-              size={ButtonSize.Sm}
-              disabled={isRewardDisabled}
-              onBackground={ButtonOnBackground.Blue}
-              onClick={() => {
-                return navigate(
-                  generatePath(
-                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                    {
-                      projectKey,
-                    }
-                  )
-                );
-              }}
-              {...withTooltip(T("contributor.table.noBudgetLeft"), {
-                visible: isRewardDisabled,
-              })}
-            >
-              <span>{T("project.details.remainingBudget.newReward")}</span>
-            </Button>
+            {project && <RewardProjectButton project={project} />}
           </Flex>
         ) : null}
       </div>

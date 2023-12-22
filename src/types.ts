@@ -67,10 +67,11 @@ export enum Currency {
   LORDS = "LORDS",
   APT = "APT",
   OP = "OP",
+  USDC = "USDC",
 }
 
 export type CurrencyUnion = `${Currency}`;
-export const CurrencyOrder = ["USD", "ETH", "STARK", "OP", "APT", "LORDS"];
+export const CurrencyOrder = ["USD", "ETH", "STARK", "OP", "APT", "LORDS", "USDC"];
 
 export enum PreferredMethod {
   Crypto = "CRYPTO",
@@ -245,34 +246,6 @@ export interface Project {
   remainingUsdBudget: number;
 }
 
-export type Reward = {
-  paymentId: string;
-  paymentRequest: {
-    amount: number;
-    currency: string;
-    hoursWorked: number;
-    invoiceReceivedAt: Date | null;
-    payments: {
-      processedAt: Date;
-    }[];
-    paymentsAggregate: {
-      aggregate: {
-        sum: {
-          amount: number | null;
-        };
-      };
-    };
-    recipientId: number;
-    requestedAt: Date;
-    requestor: {
-      avatarUrl: string;
-      githubUserId: number;
-      htmlUrl: string;
-      login: string;
-    };
-  };
-};
-
 export type ContributorT = {
   avatarUrl: string | null;
   codeReviewToReward: number | null;
@@ -349,6 +322,12 @@ export type ShortRepo = components["schemas"]["ShortGithubRepoResponse"];
 export type ContributorResponse = components["schemas"]["ContributorResponse"];
 
 export type Money = components["schemas"]["Money"];
+// export type Money = Omit<components["schemas"]["Money"], "currency"> & {
+// export type Money = {
+//   amount: number;
+//   usdEquivalent: number;
+//   currency: Exclude<components["schemas"]["Money"]["currency"], "USDC">;
+// };
 
 export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];
 
@@ -382,3 +361,5 @@ export enum OrderBy {
 }
 
 export type Maybe<T> = T | null;
+
+export type MyReward = components["schemas"]["MyRewardPageItemResponse"];

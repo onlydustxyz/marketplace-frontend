@@ -13,6 +13,7 @@ describe("useCurrenciesOrder", () => {
       { currency: "ETH" },
       { currency: "OP" },
       { currency: "LORDS" },
+      { currency: "USDC" },
     ];
 
     const { result } = renderHook(() => useCurrenciesOrder({ currencies }));
