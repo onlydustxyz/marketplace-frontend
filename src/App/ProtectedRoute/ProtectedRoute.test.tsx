@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, afterEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { BrowserRouter } from "react-router-dom";

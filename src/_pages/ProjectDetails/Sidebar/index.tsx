@@ -1,4 +1,4 @@
-import { chain } from "lodash";
+import _ from "lodash";
 import { useMemo } from "react";
 import { ProjectRoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
@@ -12,7 +12,6 @@ import {
 } from "src/hooks/useProjectLeader/useProjectLeader";
 import { useParams } from "react-router-dom";
 import Skeleton from "src/components/Skeleton";
-import { parseFlag } from "src/utils/parseFlag";
 import { useMediaQuery } from "usehooks-ts";
 import View from "./View";
 import ViewMobile from "./ViewMobile";
@@ -35,8 +34,8 @@ export default function ProjectsSidebar() {
   const pendingLeadedProjects = usePendingLeadProjects();
   const sortedProject = useMemo(() => {
     return {
-      leadedProjects: chain(leadedProjects).sortBy("name").value(),
-      pendingLeadedProjects: chain(pendingLeadedProjects).sortBy("name").value(),
+      leadedProjects: _.chain(leadedProjects).sortBy("name").value(),
+      pendingLeadedProjects: _.chain(pendingLeadedProjects).sortBy("name").value(),
     };
   }, [leadedProjects, pendingLeadedProjects]);
 
@@ -72,9 +71,11 @@ export default function ProjectsSidebar() {
   const availableTabs = [
     AvailableTabs.overview,
     AvailableTabs.contributors,
-    ...(parseFlag("VITE_FLAG_ALLOW_PROJECT_CONTRIBUTIONS") && isProjectLeader ? [AvailableTabs.contributions] : []),
+    ...(isProjectLeader ? [AvailableTabs.contributions] : []),
     ...(isProjectLeader ? [AvailableTabs.rewards] : []),
-    ...(parseFlag("VITE_FLAG_ALLOW_PROJECT_INSIGHTS") && isProjectLeader ? [AvailableTabs.insights] : []),
+    ...(process.env.NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS === "true" && isProjectLeader
+      ? [AvailableTabs.insights]
+      : []),
   ];
 
   if (isLoading && isXl)

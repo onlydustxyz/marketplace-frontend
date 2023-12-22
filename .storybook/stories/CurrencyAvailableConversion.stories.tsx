@@ -85,7 +85,7 @@ export const OneCurrency = {
 };
 
 export const WithWrapper = {
-  render: (args: ComponentProps<typeof AvailableConversion>) => (
+  render: () => (
     <div
       className="inline-flex rounded-full border border-white/25 bg-white/8 px-3 py-[6px]"
       data-tooltip-id="availableConversion-stories"

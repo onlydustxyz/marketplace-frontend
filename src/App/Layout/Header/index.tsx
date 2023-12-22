@@ -6,7 +6,6 @@ import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useOnboarding } from "src/App/OnboardingProvider";
-import { parseFlag } from "src/utils/parseFlag";
 import MeApi from "src/api/me";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 
@@ -23,10 +22,7 @@ export default function Header() {
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
   const rewardsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.rewards") : undefined;
-  const contributionsMenuItem =
-    parseFlag("VITE_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId && !onboardingInProgress
-      ? T("navbar.contributions")
-      : undefined;
+  const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.contributions") : undefined;
   const projectsMenuItem =
     (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("navbar.projects") : undefined;
 

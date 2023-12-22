@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { RewardBudgetUtils } from "./RewardBudget.utils";
 
 describe("Reward Budget utils", () => {

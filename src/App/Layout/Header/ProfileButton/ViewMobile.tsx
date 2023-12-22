@@ -14,7 +14,6 @@ import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
-import { parseFlag } from "src/utils/parseFlag";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
@@ -87,7 +86,7 @@ export default function ViewMobile({
                     <Folder3Line className="text-xl" /> {T("navbar.projects")}
                   </NavLink>
 
-                  {parseFlag("VITE_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId ? (
+                  {githubUserId ? (
                     <NavLink
                       to={RoutePaths.Contributions}
                       onClick={() => setPanelOpen(false)}

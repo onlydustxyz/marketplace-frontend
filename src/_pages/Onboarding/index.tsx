@@ -37,7 +37,7 @@ export default function Onboarding() {
   const { mutate: updateUserMutation } = MeApi.mutations.useUpdateMe({
     options: {
       onSuccess: () => {
-        navigate(RoutePaths.Home, { state: { onboardingWizzardCompleted: true } });
+        navigate(RoutePaths.Projects, { state: { onboardingWizzardCompleted: true } });
       },
     },
   });
