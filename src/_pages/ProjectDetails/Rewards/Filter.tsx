@@ -121,8 +121,6 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
       filters.currency?.value !== ""
   );
 
-  console.log("filteeers", filters);
-
   const { data: contributorsData, isLoading: contributorsLoading } =
     ProjectApi.queries.useProjectContributorsInfiniteList({
       params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
