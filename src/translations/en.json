@@ -276,7 +276,7 @@
       "APT": "Aptos",
       "ETH": "Ethereum",
       "OP": "Optimism",
-      "STARK": "Stark",
+      "STRK": "Stark",
       "LORDS": "Lords",
       "USD": "Dollars"
     },
@@ -284,7 +284,7 @@
       "APT": "75 APT",
       "ETH": "0.3 ETH",
       "OP": "350 OPT",
-      "STARK": "100 STRK",
+      "STRK": "100 STRK",
       "LORDS": "100 Lords",
       "USD": "500$"
     },
@@ -292,7 +292,7 @@
       "APT": "Aptos",
       "ETH": "Ethereum",
       "OP": "Optimism",
-      "STARK": "Starknet",
+      "STRK": "Starknet",
       "LORDS": "Ethereum",
       "USD": "IBAN/BIC",
       "label": "Reward granted on the __currency__ network.",
