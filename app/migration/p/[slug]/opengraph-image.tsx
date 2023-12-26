@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { ProjectImageMetadata } from "./components/image-metadata/image-metadata.tsx";
 // Route segment config
 export const runtime = "edge";
-
+import metadataBackground from "public/images/seo/metadata_background.png";
 // Image metadata
 export const alt = "About Acme";
 export const size = {
@@ -16,6 +16,7 @@ export const contentType = "image/png";
 export default async function Image() {
   // Font
   // const interSemiBold = fetch(new URL("./Inter-SemiBold.ttf", import.meta.url)).then(res => res.arrayBuffer());
+  console.log("metadataBackground", metadataBackground.src);
 
   return new ImageResponse(
     (

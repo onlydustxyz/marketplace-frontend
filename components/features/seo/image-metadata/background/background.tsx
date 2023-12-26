@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-
 export const ImageMetadataBackground = ({ children }: PropsWithChildren) => {
   return (
     <div
@@ -7,7 +6,7 @@ export const ImageMetadataBackground = ({ children }: PropsWithChildren) => {
         display: "flex",
         width: "100%",
         height: "100%",
-        // background: `url(${env_variables.METADATA_ASSETS_S3_BUCKET}/metadata_background.png)`, TODO
+        background: `url(${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/metadata_background.png)`,
         backgroundColor: "black",
       }}
     >
