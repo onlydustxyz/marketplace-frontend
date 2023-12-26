@@ -1,6 +1,6 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Skeleton from "src/components/Skeleton";
-import useScrollRestoration from "src/pages/Projects/AllProjects/useScrollRestoration";
+import useScrollRestoration from "src/_pages/Projects/AllProjects/useScrollRestoration";
 
 export default function RewardLoader() {
   const { ref } = useScrollRestoration();

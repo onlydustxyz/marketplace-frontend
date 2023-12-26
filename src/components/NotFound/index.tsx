@@ -9,7 +9,7 @@ export function NotFound() {
   const { T } = useIntl();
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-12 bg-[url('src/assets/img/not-found.webp')] bg-cover bg-center p-5">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-12 bg-[url('/images/not-found.webp')] bg-cover bg-center p-5">
       <div className="flex max-w-md flex-col items-center gap-6 text-center">
         <img src={IMAGES.svg.onlydust.logoWhite} alt="OnlyDust" className="w-12" />
         <div className="font-belwe text-2xl sm:text-3xl">
@@ -18,7 +18,7 @@ export function NotFound() {
         </div>
         <div className="font-walsheim text-base text-spaceBlue-200 sm:text-lg">{T("notFound.text")}</div>
       </div>
-      <Link to={RoutePaths.Home}>
+      <Link to={RoutePaths.Projects}>
         <Button size={ButtonSize.Lg}>
           <ArrowLeftSLine className="text-xl" /> {T("notFound.button")}
         </Button>

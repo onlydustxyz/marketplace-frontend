@@ -1,7 +1,0 @@
-query CountProcessingCommands($projectId: uuid!) {
-  commandsAggregate(where: { projectId: { _eq: $projectId }, processingCount: { _gt: 0 } }) {
-    aggregate {
-      count
-    }
-  }
-}

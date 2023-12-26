@@ -1,4 +1,4 @@
-import { chain, max, range, round } from "lodash";
+import _ from "lodash";
 import { useMemo, useState } from "react";
 import { Bar, BarChart, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { components } from "src/__generated/api";
@@ -18,7 +18,7 @@ type Props = {
 
 const MAX_CONTRIBUTION_COUNTS = 13;
 
-const EMPTY_DATA: ContributionCount[] = range(0, MAX_CONTRIBUTION_COUNTS)
+const EMPTY_DATA: ContributionCount[] = _.range(0, MAX_CONTRIBUTION_COUNTS)
   .map(c => daysFromNow(7 * c))
   .map(date => ({
     year: date.getFullYear(),
@@ -32,7 +32,7 @@ export default function ContributionGraph({ entries }: Props) {
   const { T } = useIntl();
 
   const entriesFormated = useMemo(() => {
-    return chain([...entries])
+    return _.chain([...entries])
       .unionWith(EMPTY_DATA, (e1, e2) => e1.year === e2.year && e1.week === e2.week)
       .sortBy(["year", "week"])
       .reverse()
@@ -42,9 +42,9 @@ export default function ContributionGraph({ entries }: Props) {
   }, [entries]);
 
   const maxCount =
-    max(entriesFormated.map(e => (e.codeReviewCount || 0) + (e.issueCount || 0) + (e.pullRequestCount || 0))) || 0;
+    _.max(entriesFormated.map(e => (e.codeReviewCount || 0) + (e.issueCount || 0) + (e.pullRequestCount || 0))) || 0;
   const tickStep = maxCount <= 5 ? 1 : maxCount <= 10 ? 2 : maxCount <= 20 ? 5 : 10;
-  const ticks = range(0, round(maxCount / tickStep) + 1).map(t => t * tickStep);
+  const ticks = _.range(0, _.round(maxCount / tickStep) + 1).map(t => t * tickStep);
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number>();
 
   return (

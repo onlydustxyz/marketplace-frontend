@@ -4,9 +4,9 @@ import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { PROJECT_TAGS } from "./tags";
 import { QueryParams } from "src/utils/getEndpointUrl";
-import { WorkItemType } from "src/__generated/graphql";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
+import { WorkItemType } from "src/types";
 
 export type UseGetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
 
@@ -146,7 +146,7 @@ const useProjectContributorsInfiniteList = ({
   );
 };
 
-export type UseProjectContributionsInfiniteListResponse = components["schemas"]["ProjectContributionPageResponse"];
+export type UseProjectContributionsInfiniteListResponse = components["schemas"]["ContributionPageResponse"];
 
 interface ProjectContributionsInfiniteListParams {
   projectId: string;
@@ -199,6 +199,94 @@ const useProjectBudget = ({
   });
 };
 
+export type UseProjectContributorsNewcomersInfiniteListResponse = components["schemas"]["ProjectNewcomersPageResponse"];
+
+interface ProjectContributorsInsightsInfiniteListParams {
+  projectId: string;
+  queryParams?: QueryParams;
+  pageSize?: number;
+}
+
+const useProjectContributorsNewcomersInfiniteList = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<
+  UseProjectContributorsNewcomersInfiniteListResponse,
+  ProjectContributorsInsightsInfiniteListParams
+>) => {
+  return useInfiniteBaseQuery<UseProjectContributorsNewcomersInfiniteListResponse>(
+    {
+      resourcePath: API_PATH.PROJECT_INSIGHTS_CONTRIBUTORS_NEWCOMERS(params?.projectId || ""),
+      tags: PROJECT_TAGS.contributors_newcomers(params?.projectId || ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 6,
+    },
+    { ...options, enabled: !!params?.projectId }
+  );
+};
+
+export type UseProjectContributorsMostActivesInfiniteListResponse =
+  components["schemas"]["ProjectContributorActivityPageResponse"];
+
+const useProjectContributorsMostActivesInfiniteList = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<
+  UseProjectContributorsMostActivesInfiniteListResponse,
+  ProjectContributorsInsightsInfiniteListParams
+>) => {
+  return useInfiniteBaseQuery<UseProjectContributorsMostActivesInfiniteListResponse>(
+    {
+      resourcePath: API_PATH.PROJECT_INSIGHTS_CONTRIBUTORS_MOST_ACTIVES(params?.projectId || ""),
+      tags: PROJECT_TAGS.contributors_most_actives(params?.projectId || ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 5,
+    },
+    { ...options, enabled: !!params?.projectId }
+  );
+};
+
+export type UseProjectContributionsStaledInfiniteListResponse = components["schemas"]["ContributionPageResponse"];
+
+const useProjectContributionsStaledInfiniteList = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<
+  UseProjectContributionsStaledInfiniteListResponse,
+  ProjectContributorsInsightsInfiniteListParams
+>) => {
+  return useInfiniteBaseQuery<UseProjectContributionsStaledInfiniteListResponse>(
+    {
+      resourcePath: API_PATH.PROJECT_INSIGHTS_CONTRIBUTIONS_STALED(params?.projectId || ""),
+      tags: PROJECT_TAGS.contributions_staled(params?.projectId || ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 5,
+    },
+    { ...options, enabled: !!params?.projectId }
+  );
+};
+
+export type UseProjectContributorsChurnedInfiniteListResponse =
+  components["schemas"]["ProjectChurnedContributorsPageResponse"];
+
+const useProjectContributorsChurnedInfiniteList = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<
+  UseProjectContributorsChurnedInfiniteListResponse,
+  ProjectContributorsInsightsInfiniteListParams
+>) => {
+  return useInfiniteBaseQuery<UseProjectContributorsChurnedInfiniteListResponse>(
+    {
+      resourcePath: API_PATH.PROJECT_INSIGHTS_CONTRIBUTORS_CHURNED(params?.projectId || ""),
+      tags: PROJECT_TAGS.contributors_churned(params?.projectId || ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 6,
+    },
+    { ...options, enabled: !!params?.projectId }
+  );
+};
+
 export default {
   useGetProjectBySlug,
   useGetProjectContributionDetail,
@@ -209,4 +297,8 @@ export default {
   useProjectContributionsInfiniteList,
   useCompletedRewardableItems,
   useProjectBudget,
+  useProjectContributorsNewcomersInfiniteList,
+  useProjectContributorsMostActivesInfiniteList,
+  useProjectContributionsStaledInfiniteList,
+  useProjectContributorsChurnedInfiniteList,
 };

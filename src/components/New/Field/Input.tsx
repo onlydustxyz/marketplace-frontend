@@ -14,6 +14,7 @@ export interface FieldInputProps extends Omit<FieldProps, "children"> {
   onBlur?: FocusEventHandler<HTMLInputElement>;
   startIcon?: ({ className }: { className: string }) => ReactNode;
   endIcon?: ({ className }: { className: string }) => ReactNode;
+  autoFocus?: boolean;
 }
 
 export const FieldInput = forwardRef(function FieldInput(
@@ -30,6 +31,7 @@ export const FieldInput = forwardRef(function FieldInput(
     startIcon,
     endIcon,
     placeholder,
+    autoFocus,
     ...rest
   }: FieldInputProps,
   ref: Ref<HTMLInputElement>
@@ -55,6 +57,7 @@ export const FieldInput = forwardRef(function FieldInput(
           value={value ?? ""}
           type={type}
           placeholder={placeholder}
+          autoFocus={autoFocus}
           onBlur={onBlur}
           onChange={onChange}
           onFocus={onFocus}

@@ -1,4 +1,3 @@
-import { GithubIssueStatus } from "src/__generated/graphql";
 import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
 import IssueOpen from "src/assets/icons/IssueOpen";
@@ -15,6 +14,7 @@ import {
   ContributionStatus,
   GithubCodeReviewStatus,
   GithubContributionType,
+  GithubIssueStatus,
   GithubPullRequestStatus,
   GithubStatus,
   GithubTypeStatusDict,

@@ -1,21 +1,23 @@
 import { useIntl } from "src/hooks/useIntl";
 import { formatList } from "src/utils/list";
-import { ProjectLeadFragment } from "src/__generated/graphql";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import Contributor from "src/components/Contributor";
 import PrivateTag from "src/components/PrivateTag";
 import config from "src/config";
+import { components } from "src/__generated/api";
+
+type Leaders = components["schemas"]["RegisteredUserResponse"];
 
 type Props = {
   projectId: string;
   projectName: string;
-  projectLeads: ProjectLeadFragment[];
+  projectLeads: Leaders[];
   logoUrl: string;
   private: boolean;
 };
 
-const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
+const ProjectLeads = ({ leads }: { leads: Leaders[] }) => {
   const { T } = useIntl();
   return (
     <div className="flex flex-row items-center gap-1 pt-0.5 text-sm text-spaceBlue-200">

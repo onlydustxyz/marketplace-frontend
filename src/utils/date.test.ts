@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { formatDate, parseDateString, parseDateRangeString, formatDateQueryParam, isAllTime } from "./date";
 
 describe("formatDate", () => {
@@ -65,6 +66,10 @@ describe("formatDateQueryParam", () => {
 });
 
 describe("isAllTime", () => {
+  it("should return false if dateRange undefined", () => {
+    expect(isAllTime(undefined)).toBe(false);
+  });
+
   it("should return true if dateRange.from and dateRange.to are equal to allTime.from and allTime.to", () => {
     const dateRange = {
       from: new Date(0),

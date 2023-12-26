@@ -1,5 +1,8 @@
 import { vi } from "vitest";
 import "vitest-canvas-mock";
+import { loadEnvConfig } from "@next/env";
+
+loadEnvConfig(process.cwd());
 
 Object.defineProperty(window, "scrollTo", { value: vi.fn(), writable: true });
 Object.defineProperty(window, "matchMedia", {

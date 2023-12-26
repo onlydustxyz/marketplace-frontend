@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Link, generatePath, useMatch } from "react-router-dom";
+import { useMatch } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
@@ -20,12 +20,13 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { CommitsTooltip } from "../../../components/GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
-import { useStackReward } from "src/App/Stacks/Stacks";
+import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const [openRewardPanel] = useStackReward();
+  const [openProjectOverview] = useStackProjectOverview();
   const isMyContribution = Boolean(useMatch(`${RoutePaths.Contributions}/*`));
 
   const {
@@ -166,15 +167,12 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                   />
                   <div className="text-sm text-greyscale-300">
                     {T("contributions.panel.contribution.forProject")}&nbsp;
-                    <Link
-                      to={generatePath(RoutePaths.ProjectDetails, {
-                        projectKey: contribution.project.slug,
-                      })}
+                    <button
+                      onClick={() => openProjectOverview({ slug: contribution.project.slug })}
                       className="text-spacePurple-400 hover:text-spacePurple-300"
-                      target="_blank"
                     >
                       {contribution.project.name}
-                    </Link>
+                    </button>
                     &nbsp;/&nbsp;{contribution.repo.name}
                   </div>
                 </div>
@@ -245,5 +243,5 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
     );
   }
 
-  return <div className="h-full px-6 py-8 pt-16 lg:pt-8">{renderContent()}</div>;
+  return <div className="h-full px-6 py-8 pt-12 lg:pt-0">{renderContent()}</div>;
 }
