@@ -1,45 +1,16 @@
-import { ImageResponse } from "next/og";
-import { ProjectImageMetadata } from "./components/image-metadata/image-metadata.tsx";
-// Route segment config
-export const runtime = "edge";
-import metadataBackground from "public/images/seo/metadata_background.png";
-// Image metadata
-export const alt = "About Acme";
-export const size = {
-  width: 1200,
-  height: 630,
-};
+import { ProjectImageMetadata } from "components/features/seo/image-metadata/project/image-metadata.tsx";
+import Generator from "components/features/seo/image-metadata/commons/generator/generator.tsx";
 
-export const contentType = "image/png";
-
-// Image generation
-export default async function Image() {
-  // Font
-  // const interSemiBold = fetch(new URL("./Inter-SemiBold.ttf", import.meta.url)).then(res => res.arrayBuffer());
-  console.log("metadataBackground", metadataBackground.src);
-
-  return new ImageResponse(
-    (
-      // ImageResponse JSX element
+export default async function Image(props: any) {
+  console.log("coucou2222", props);
+  // get request on project
+  return Generator({
+    children: (
       <ProjectImageMetadata
-        name="coucou"
+        name="coucou2"
         description={"coucou description"}
         imageUrl="https://avatars.githubusercontent.com/u/16590657"
       />
     ),
-    // ImageResponse options
-    {
-      // For convenience, we can re-use the exported opengraph-image
-      // size config to also set the ImageResponse's width and height.
-      ...size,
-      // fonts: [
-      //   {
-      //     name: "Inter",
-      //     data: await interSemiBold,
-      //     style: "normal",
-      //     weight: 400,
-      //   },
-      // ],
-    }
-  );
+  });
 }

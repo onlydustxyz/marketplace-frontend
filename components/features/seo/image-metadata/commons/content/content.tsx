@@ -35,6 +35,7 @@ export const ImageMetadataContent = ({ title, description }: ImageMetadataConten
 };
 
 const OnlyDustLogo = () => {
+  const logoUrl = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/logo.png`;
   return (
     <div
       style={{
@@ -43,6 +44,7 @@ const OnlyDustLogo = () => {
         alignItems: "center",
       }}
     >
+      <img src={logoUrl} alt="logo" width="54" height="54" style={{ marginRight: "16px" }} />
       <svg width="146" height="32" viewBox="0 0 500 109" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd"
