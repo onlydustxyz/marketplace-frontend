@@ -1,13 +1,11 @@
-import { cn } from "src/utils/cn";
-
-import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import ExternalLink from "src/components/ExternalLink";
 import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
-import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
+
+import { Contribution, GithubContributionType } from "src/types";
 import Contributor from "../Contributor";
+import { ContributionBadgeWithTooltip } from "./ContributionBadgeWithTooltip";
 
 export enum ContributionBadgeSizes {
   Xs = "text-xs",
@@ -39,10 +37,8 @@ export function ContributionBadge({
   const { T } = useIntl();
   const { githubUserId } = useAuth();
 
-  const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, status, type } =
-    contribution;
-  const Component = asLink ? "a" : "div";
-  const ComponentProps = asLink ? { href: githubHtmlUrl, target: "_blank", rel: "noopener noreferrer" } : {};
+  const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
+
   const isExternal = githubAuthor && githubUserId !== githubAuthor.githubUserId;
   const tooltipId = `${githubNumber}-${type}-${githubStatus}`;
 
@@ -50,37 +46,6 @@ export function ContributionBadge({
     [GithubContributionType.PullRequest]: T("contributions.tooltip.badgePullRequest"),
     [GithubContributionType.CodeReview]: T("contributions.tooltip.badgeCodeReview"),
     [GithubContributionType.Issue]: T("contributions.tooltip.badgeIssue"),
-  };
-
-  const statusClassnames =
-    status && githubStatus !== GithubPullRequestStatus.Draft
-      ? contributionIconVariants.contributionStatus[status]
-      : contributionIconVariants.status[type][
-          githubStatus as keyof typeof contributionIconVariants.status[GithubContributionType]
-        ];
-
-  const renderContributionComponent = ({ hasToolTip }: { hasToolTip?: boolean }) => {
-    return (
-      <Component
-        data-tooltip-id={hasToolTip ? tooltipId : undefined}
-        className={cn(
-          "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim",
-          isExternal && showExternal ? "border border-dashed" : "border-0.5 border-solid",
-          {
-            "hover:bg-card-background-heavy": hasToolTip || asLink,
-          },
-          statusClassnames
-        )}
-        {...ComponentProps}
-      >
-        <ContributionIcon type={type as GithubContributionType} status={githubStatus} contributionStatus={status} />
-
-        <div className="flex">
-          <span className={cn("leading-none", size)}>{githubNumber}</span>
-          {isExternal && showExternal ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
-        </div>
-      </Component>
-    );
   };
 
   return (
@@ -97,7 +62,14 @@ export function ContributionBadge({
                 />
               </span>
 
-              {renderContributionComponent({})}
+              <ContributionBadgeWithTooltip
+                contribution={contribution}
+                size={size}
+                showExternal={showExternal}
+                asLink={asLink}
+                isExternal={isExternal}
+                tooltipId={tooltipId}
+              />
             </div>
 
             <div className="flex items-center text-xs font-medium">
@@ -110,7 +82,15 @@ export function ContributionBadge({
         </Tooltip>
       ) : null}
 
-      {renderContributionComponent({ hasToolTip: withTooltip })}
+      <ContributionBadgeWithTooltip
+        contribution={contribution}
+        size={size}
+        showExternal={showExternal}
+        asLink={asLink}
+        isExternal={isExternal}
+        tooltipId={tooltipId}
+        withTooltip={withTooltip}
+      />
     </>
   );
 }
