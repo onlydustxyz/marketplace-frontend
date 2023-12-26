@@ -1,6 +1,8 @@
 import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import config from "src/config";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { ReactElement } from "react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://app.onlydust.com"),
@@ -29,12 +31,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactElement }) {
   return (
     <html lang="en">
-      <body>
-        <div id="root">{children}</div>
-      </body>
+      <UserProvider>
+        <body>
+          <div id="root">{children}</div>
+        </body>
+      </UserProvider>
       {config.GTM_ID ? <GoogleTagManager gtmId={config.GTM_ID} /> : null}
     </html>
   );
