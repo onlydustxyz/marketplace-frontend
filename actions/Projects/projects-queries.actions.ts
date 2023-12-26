@@ -9,7 +9,6 @@ async function retrieveBySlug(slug: string, options?: BaseQueriesOptions) {
   "use server";
 
   return BaseQueries<ProjectResponse>(ACTION_PATH.PROJECTS_BY_SLUG(slug), {
-    revalidate: 60,
     provideTag: [ProjectActionTags.all, ProjectActionTags.by_slug(slug)],
     ...(options || {}),
   });
