@@ -4,6 +4,7 @@ import UserRewardTable from "src/components/UserRewardTable";
 import { useT } from "talkr";
 import { EarningWrapper } from "./Earning/EarningWrapper";
 import InvoiceSubmission from "./InvoiceSubmission";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export enum RewardStatus {
   COMPLETE = "COMPLETE",
@@ -14,6 +15,12 @@ export enum RewardStatus {
 
 export default function Rewards() {
   const { T } = useT();
+
+  const { user, error, isLoading } = useUser();
+
+  console.log("user", user);
+  console.log("error", error);
+  console.log("isLoading", isLoading);
 
   return (
     <>
