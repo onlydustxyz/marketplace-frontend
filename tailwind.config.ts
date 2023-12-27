@@ -257,6 +257,7 @@ const config: Config = {
       addComponents({
         ".pseudo-outline": pseudoOutline,
         ...variantSizes.reduce((acc, size) => {
+          // @ts-ignore
           acc[`.pseudo-outline-${size}`] = {
             ...pseudoOutline,
             "&:before": {
