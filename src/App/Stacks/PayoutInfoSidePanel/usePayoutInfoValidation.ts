@@ -48,6 +48,7 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
   }, [address, city, country, postalCode, company, isCompany, person]);
 
   const isPayoutInfoComplete = useMemo(() => {
+    // TODO : remove ethName condition when backend will be ready
     if ((ethAddress || ethName) && starknetAddress && aptosAddress && optimismAddress) {
       if (isCompany) {
         return Boolean(sepaAccount?.bic && sepaAccount?.iban);
@@ -63,12 +64,16 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
     isContactInfoComplete,
     isPayoutInfoComplete,
     requiredFields: {
-      missingAptosWallet,
-      missingEthWallet,
+      //   missingAptosWallet,
+      missingAptosWallet: true,
+      //   missingEthWallet,
+      missingEthWallet: true,
       missingOptimismWallet,
-      missingSepaAccount,
+      //   missingSepaAccount,
+      missingSepaAccount: true,
       missingUsdcWallet,
-      missingStarknetWallet,
+      //   missingStarknetWallet,
+      missingStarknetWallet: true,
     },
   };
 }

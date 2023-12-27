@@ -6,8 +6,6 @@ import Tag, { TagSize } from "src/components/Tag";
 import Center from "src/components/Utils/Center";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
-import BankLine from "src/icons/BankLine";
-import BitcoinLine from "src/icons/BitcoinLine";
 import BuildingLine from "src/icons/BuildingLine";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
@@ -23,7 +21,6 @@ import ProfileRadioGroup from "./components/ProfileRadioGroup/ProfileRadioGroup"
 import { StatusTag, StatusType } from "./components/StatusTag";
 import { ProfileType } from "./types";
 import { RequiredFieldsType } from "./usePayoutInfoValidation";
-import { PreferredMethod } from "src/types";
 
 type Props = {
   payoutSettingsValid?: boolean;
@@ -51,15 +48,14 @@ export default function PayoutInfoSidePanel({
     formState: { isValid },
   } = useFormContext();
 
-  const [profileType, usdPreferredMethod] = watch(["profileType", "usdPreferredMethod"]);
-  const [ethWallet, iban, bic] = watch(["ethWallet", "iban", "bic"]);
+  const profileType = watch("profileType");
 
+  // TODO : don't understand this condition
   const shouldDisplayContactStatus =
     (isContactInfoValid && isContactInfoComplete) || (!isContactInfoValid && !isContactInfoComplete);
+  // TODO : don't understand this condition
   const shouldDisplayPayoutStatus =
     (isPaymentInfoValid && isPayoutInfoComplete) || (!isPaymentInfoValid && !isPayoutInfoComplete);
-
-  const isFiat = usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company;
 
   return (
     <Flex className="h-full min-h-0 flex-col justify-between overflow-y-auto">
@@ -96,42 +92,14 @@ export default function PayoutInfoSidePanel({
               isValid={isPaymentInfoValid && isPayoutInfoComplete}
               requiredNetworks={requiredFields}
               type={StatusType.Payment}
-              isBankWire={usdPreferredMethod === PreferredMethod.Fiat}
-              isCompany={profileType === ProfileType.Company}
-              isEthFormFilled={!!ethWallet}
-              isSepaFormFilled={!!iban && !!bic}
             />
           ) : null}
 
-          {profileType === ProfileType.Company && (
-            <Flex className="mb-6 w-fit flex-row gap-3 font-medium text-neutral-300">
-              <ProfileRadioGroup
-                label={T("profile.form.usdPreferredMethod")}
-                name="usdPreferredMethod"
-                options={[
-                  {
-                    value: PreferredMethod.Fiat,
-                    label: T("profile.form.bankWire"),
-                    icon: <BankLine className="text-xl" />,
-                  },
-                  {
-                    value: PreferredMethod.Crypto,
-                    label: T("profile.form.cryptoWire"),
-                    icon: <BitcoinLine className="text-xl" />,
-                  },
-                ]}
-              />
-            </Flex>
-          )}
-
-          {isFiat && (
-            <div className="mb-6">
-              <FiatFields {...{ requiredFields }} />
-            </div>
-          )}
-
           <ProfileContent title={T("profile.form.payoutCurrenciesType")}>
             <OtherCryptoFields {...{ requiredFields }} />
+            <div className="mt-6">
+              <FiatFields {...{ requiredFields }} />
+            </div>
           </ProfileContent>
         </Card>
 

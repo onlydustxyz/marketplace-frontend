@@ -6,7 +6,7 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
 import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
 import { useMemo } from "react";
-import { payoutInfoCombinedStatus } from "src/utils/payoutInfoStatusCombined";
+import { useFormContext } from "react-hook-form";
 
 export enum StatusType {
   Contact = "CONTACT",
@@ -28,8 +28,8 @@ function getNetworkMessage(key: string) {
     missingAptosWallet: "profile.missing.networkFull.APT",
     missingEthWallet: "profile.missing.networkFull.ETH",
     missingOptimismWallet: "profile.missing.networkFull.OP",
-    missingSepaAccount: "profile.missing.networkFull.USD", // no using but keep for typing
-    missingUsdcWallet: "profile.missing.networkFull.USD", // no using but keep for typing
+    missingSepaAccount: "profile.missing.networkFull.USD",
+    missingUsdcWallet: "profile.missing.networkFull.USD",
     missingStarknetWallet: "profile.missing.networkFull.STARK",
   };
 
@@ -40,47 +40,38 @@ type StatusTagType = {
   isValid: boolean;
   type: StatusType;
   requiredNetworks?: RequiredFieldsType;
-  isCompany?: boolean;
-  isBankWire?: boolean;
-  isEthFormFilled?: boolean;
-  isSepaFormFilled?: boolean;
 };
 
-export function StatusTag({
-  isValid,
-  type,
-  requiredNetworks,
-  isCompany,
-  isBankWire,
-  isEthFormFilled,
-  isSepaFormFilled,
-}: StatusTagType) {
+export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
   const { T } = useIntl();
-
+  const { watch } = useFormContext();
+  const [ethWallet, iban, bic, aptosWallet, starknetWallet, optimismWallet] = watch([
+    "ethWallet",
+    "iban",
+    "bic",
+    "aptosWallet",
+    "starknetWallet",
+    "optimismWallet",
+  ]);
   const networks = useMemo(() => {
-    const { missingSepaAccount, missingUsdcWallet, missingEthWallet, ...networks } = requiredNetworks || {};
-    const networkMessages = Object.entries(networks)
+    const missingSepaAccount = Boolean(requiredNetworks?.missingSepaAccount) && !iban && !bic;
+    const missingEthWallet = Boolean(requiredNetworks?.missingEthWallet) && !ethWallet;
+    const missingAptosWallet = Boolean(requiredNetworks?.missingAptosWallet) && !aptosWallet;
+    const missingStarknetWallet = Boolean(requiredNetworks?.missingStarknetWallet) && !starknetWallet;
+    const missingOptimismWallet = Boolean(requiredNetworks?.missingOptimismWallet) && !optimismWallet;
+
+    const networkMessages = Object.entries({
+      missingSepaAccount,
+      missingEthWallet,
+      missingAptosWallet,
+      missingStarknetWallet,
+      missingOptimismWallet,
+    })
       .filter(([, value]) => value)
       .map(([key]) => T(getNetworkMessage(key)));
 
-    const _missingSepaAccount = missingSepaAccount && !isSepaFormFilled;
-    const _missingEthWallet = missingEthWallet && !isEthFormFilled;
-    const _missingUsdcWallet = missingUsdcWallet && !isEthFormFilled && !isSepaFormFilled;
-
-    const { eth, iban } = payoutInfoCombinedStatus({
-      missingSepaAccount: _missingSepaAccount || false,
-      missingUsdcWallet: _missingUsdcWallet || false,
-      missingEthWallet: _missingEthWallet || false,
-      isCompany,
-      isBankWire,
-    });
-
-    return [
-      ...networkMessages,
-      ...(eth ? [T("profile.missing.networkFull.ETH")] : []),
-      ...(iban ? [T("profile.missing.networkFull.USD")] : []),
-    ];
-  }, [requiredNetworks, isCompany, isBankWire]);
+    return networkMessages;
+  }, [requiredNetworks]);
 
   const uniqueNetworks = [...new Set(networks)];
 

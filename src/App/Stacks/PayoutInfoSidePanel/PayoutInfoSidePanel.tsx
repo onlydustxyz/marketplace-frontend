@@ -34,21 +34,10 @@ export default function PayoutInfoSidePanel() {
     shouldFocusError: true,
   });
 
-  const { handleSubmit, formState, reset, watch, setValue } = formMethods;
+  const { handleSubmit, formState, reset } = formMethods;
   const { isDirty } = formState;
 
-  const profileType = watch("profileType");
   useEffect(() => reset(decodeQuery(user)), [user]);
-
-  useEffect(() => {
-    if (profileType === ProfileType.Individual) {
-      setValue("bic", "", { shouldDirty: true });
-      setValue("iban", "", { shouldDirty: true });
-    } else {
-      setValue("bic", user?.payoutSettings?.sepaAccount?.bic || "", { shouldDirty: true });
-      setValue("iban", user?.payoutSettings?.sepaAccount?.iban || "", { shouldDirty: true });
-    }
-  }, [profileType, user]);
 
   const onSubmit: SubmitHandler<FormDataType> = formData => {
     userPayoutInformation(mapFormDataToSchema(formData));
@@ -85,7 +74,7 @@ export default function PayoutInfoSidePanel() {
 type UserPayoutRequestType = components["schemas"]["UserPayoutInformationRequest"];
 
 const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
-  const isEthName = values.ethWallet.match(ENS_DOMAIN_REGEXP);
+  const isEthName = values.ethWallet.match(ENS_DOMAIN_REGEXP); // TODO : remove ethName condition when backend will be ready
   const sepaAccount = values.bic && values.iban ? { bic: values.bic, iban: values.iban } : undefined;
 
   const variables: UserPayoutRequestType = {
@@ -115,7 +104,7 @@ const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
     payoutSettings: {
       usdPreferredMethod: values.usdPreferredMethod,
       sepaAccount,
-      ethName: isEthName && values.ethWallet ? values.ethWallet : undefined,
+      ethName: isEthName && values.ethWallet ? values.ethWallet : undefined, // TODO : remove ethName condition when backend will be ready
       ethAddress: !isEthName && values.ethWallet ? values.ethWallet : undefined,
       starknetAddress: values.starknetWallet || undefined,
       optimismAddress: values.optimismWallet || undefined,
@@ -159,7 +148,7 @@ const decodeQuery = (user?: UserPayoutType): FormDataType => {
     postCode: location?.postalCode ?? "",
     city: location?.city ?? "",
     country: location?.country ?? "",
-    ethWallet: (payoutSettings?.ethAddress || payoutSettings?.ethName) ?? "",
+    ethWallet: (payoutSettings?.ethAddress || payoutSettings?.ethName) ?? "", // TODO : remove ethName condition when backend will be ready
     starknetWallet: payoutSettings?.starknetAddress ?? "",
     optimismWallet: payoutSettings?.optimismAddress ?? "",
     aptosWallet: payoutSettings?.aptosAddress ?? "",

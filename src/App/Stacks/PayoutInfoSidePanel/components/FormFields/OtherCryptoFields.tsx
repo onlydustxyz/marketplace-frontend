@@ -9,21 +9,12 @@ import { APTOS_WALLET, ETH_WALLET_OR_ENS_ADDRESS, OPTIMISM_WALLET, STARKNET_WALL
 import Aptos from "src/assets/icons/Aptos";
 import EthereumIcon from "src/assets/icons/Ethereum";
 import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
-import { ProfileType } from "src/App/Stacks/PayoutInfoSidePanel/types";
-import { PreferredMethod } from "src/types";
 
 export function OtherCryptoFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
   const { register, watch } = useFormContext();
 
-  const [usdPreferredMethod, profileType] = watch(["usdPreferredMethod", "profileType"]);
-
-  const { missingAptosWallet, missingEthWallet, missingOptimismWallet, missingStarknetWallet, missingUsdcWallet } =
-    requiredFields || {};
-
-  const isEtherRequired =
-    profileType === ProfileType.Individual ||
-    (profileType === ProfileType.Company && usdPreferredMethod === PreferredMethod.Crypto);
+  const { missingAptosWallet, missingEthWallet, missingOptimismWallet, missingStarknetWallet } = requiredFields || {};
 
   return (
     <>
@@ -44,7 +35,7 @@ export function OtherCryptoFields({ requiredFields }: { requiredFields: Required
               message: T("profile.form.invalidEthWallet"),
             },
           })}
-          showRequiredError={(missingUsdcWallet || missingEthWallet) && isEtherRequired}
+          showRequiredError={missingEthWallet}
         />
       </div>
       <Input
