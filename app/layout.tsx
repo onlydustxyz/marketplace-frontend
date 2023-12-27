@@ -1,3 +1,4 @@
+import "../src/assets/css/index.css";
 import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import config from "src/config";
