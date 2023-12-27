@@ -278,6 +278,7 @@
       "OP": "Optimism",
       "STARK": "Stark",
       "LORDS": "Lords",
+      "USDC": "USDC",
       "USD": "Dollars"
     },
     "amount_placeholder": {
@@ -286,6 +287,7 @@
       "OP": "350 OPT",
       "STARK": "100 Stark",
       "LORDS": "100 Lords",
+      "USDC": "100 USDC",
       "USD": "500$"
     },
     "network": {
@@ -294,6 +296,7 @@
       "OP": "Optimism",
       "STARK": "Stark chain",
       "LORDS": "Ethereum",
+      "USDC": "Ethereum",
       "USD": "IBAN/BIC",
       "label": "Reward granted on __currency__ network.",
       "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
