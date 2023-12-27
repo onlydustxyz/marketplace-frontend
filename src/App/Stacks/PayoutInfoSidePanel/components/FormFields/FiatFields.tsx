@@ -29,7 +29,7 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
                   return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
                 },
               }}
-              showRequiredError={missingSepaAccount} // TODO remove missingUsdcWallet
+              showRequiredError={missingSepaAccount}
               value={value && IBANParser.printFormat(value)}
               onChange={onChange}
               onBlur={() => {

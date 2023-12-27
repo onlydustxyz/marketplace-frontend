@@ -6,6 +6,7 @@ type PayoutInfoCombinedStatus = {
   isBankWire?: boolean;
 };
 
+// TODO remove this
 export const payoutInfoCombinedStatus = ({
   missingEthWallet,
   missingSepaAccount,
