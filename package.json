@@ -64,6 +64,7 @@
     "remixicon": "^3.3.0",
     "tailwind-merge": "^1.14.0",
     "tailwind-scrollbar": "^2.1.0",
+    "tailwind-variants": "^0.1.19",
     "tailwindcss": "^3.3.1",
     "talkr": "^3.3.8",
     "usehooks-ts": "^2.9.1",
