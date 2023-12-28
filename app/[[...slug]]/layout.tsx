@@ -86,6 +86,6 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
   };
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function GenericLayout({ children }: { children: React.ReactNode }) {
   return children;
 }
