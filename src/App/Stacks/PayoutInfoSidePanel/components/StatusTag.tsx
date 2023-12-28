@@ -70,12 +70,10 @@ export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
       .filter(([, value]) => value)
       .map(([key]) => T(getNetworkMessage(key)));
 
-    return networkMessages;
+    return [...new Set(networkMessages)];
   }, [requiredNetworks]);
 
-  const uniqueNetworks = [...new Set(networks)];
-
-  return type !== StatusType.Payment || uniqueNetworks.length > 0 ? (
+  return type !== StatusType.Payment || networks.length > 0 ? (
     <Box className="pb-6">
       <Tag size={TagSize.Medium} className="px-4">
         <div
@@ -90,7 +88,7 @@ export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
           ) : (
             <>
               <ErrorWarningLine className="mr-1 text-orange-500" />
-              {T(invalidMessages[type], { networks: uniqueNetworks.join(", ") })}
+              {T(invalidMessages[type], { networks: networks.join(", ") })}
             </>
           )}
         </div>

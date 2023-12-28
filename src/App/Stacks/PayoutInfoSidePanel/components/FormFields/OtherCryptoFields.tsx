@@ -12,7 +12,7 @@ import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayout
 
 export function OtherCryptoFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
-  const { register, watch } = useFormContext();
+  const { register } = useFormContext();
 
   const { missingAptosWallet, missingEthWallet, missingOptimismWallet, missingStarknetWallet } = requiredFields || {};
 
