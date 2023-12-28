@@ -10,6 +10,7 @@ interface FlexProps extends PropsWithChildren {
   alignContent?: AlignContent;
   alignItems?: AlignItems;
   className?: string;
+  as?: keyof JSX.IntrinsicElements;
 }
 
 const flexVariants = tv({
@@ -64,10 +65,11 @@ export const Flex: FC<FlexProps> = ({
   alignContent,
   alignItems,
   className,
+  as: Component = "div",
   children,
 }) => {
   return (
-    <div
+    <Component
       className={cn(
         flexVariants({
           direction,
@@ -80,6 +82,6 @@ export const Flex: FC<FlexProps> = ({
       )}
     >
       {children}
-    </div>
+    </Component>
   );
 };

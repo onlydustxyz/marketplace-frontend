@@ -1,9 +1,10 @@
 import { Flex } from "components/layout/flex/flex";
+import { Typography } from "components/layout/typography/typography";
 
 function ProjectsPage() {
   return (
     <Flex>
-      <div>ProjectsPage</div>
+      <Typography variant="title-xl">ProjectsPage</Typography>
     </Flex>
   );
 }
