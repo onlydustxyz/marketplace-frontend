@@ -13,7 +13,7 @@ import { formatMoneyAmount } from "src/utils/money";
 const currencyIcons: Record<Exclude<Currency, "USD" | "USDC">, ReactElement> = {
   [Currency.ETH]: <Ethereum className="h-4 w-4" />,
   [Currency.LORDS]: <Lords className="h-4 w-4" />,
-  [Currency.STARK]: <Starknet />,
+  [Currency.STRK]: <Starknet />,
   [Currency.OP]: <Optimism />,
   [Currency.APT]: <Aptos />,
 };
