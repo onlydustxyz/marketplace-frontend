@@ -1,6 +1,6 @@
-import Tag from "../../../../../components/ds/tag/tag.tsx";
+import Tag from "@/components/ds/tag/tag.tsx";
 import RecordCircleLine from "../../../../../src/icons/RecordCircleLine.tsx";
-import Translate from "../../../../../components/layout/translate/translate.tsx";
+import Translate from "@/components/layout/translate/translate.tsx";
 import React from "react";
 
 type Props = {
