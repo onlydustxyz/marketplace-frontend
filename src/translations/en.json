@@ -854,7 +854,7 @@
         "APT": "the Aptos network",
         "ETH": "the Ethereum network",
         "OP": "the Optimism network",
-        "STARK": "the Starknet network",
+        "STRK": "the Starknet network",
         "USD": "your bank account"
       },
       "payment": "Missing addresses to receive rewards on __networks__"

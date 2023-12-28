@@ -41,8 +41,8 @@ const mockAPTBudget = {
 
 const mockStarkBudget = {
   ...mockBudget,
-  remainingBudget: { ...mockBudget.remainingBudget, currency: Currency.STARK },
-  spentAmount: { ...mockBudget.remainingBudget, currency: Currency.STARK },
+  remainingBudget: { ...mockBudget.remainingBudget, currency: Currency.STRK },
+  spentAmount: { ...mockBudget.remainingBudget, currency: Currency.STRK },
 };
 
 const mockLordsBudget = {

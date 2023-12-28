@@ -19,7 +19,7 @@ export const CurrencyIcons: FC<CurrencyIconsProps> = ({ currency, className }) =
       return <DollarCurrency className={className} />;
     case Currency.ETH:
       return <Ethereum className={className} />;
-    case Currency.STARK:
+    case Currency.STRK:
       return <Starknet className={className} />;
     case Currency.LORDS:
       return <Lords className={className} />;

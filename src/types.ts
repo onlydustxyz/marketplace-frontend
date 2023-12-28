@@ -63,7 +63,7 @@ export type PhoneNumber = string;
 export enum Currency {
   USD = "USD",
   ETH = "ETH",
-  STARK = "STRK",
+  STRK = "STRK",
   LORDS = "LORDS",
   APT = "APT",
   OP = "OP",

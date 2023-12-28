@@ -20,7 +20,7 @@ describe("Money", () => {
   it("should be formatted in compact mode in correct Cryptos format", () => {
     expect(formatMoneyAmount({ amount: 123, currency: Currency.APT, notation: "compact" })).toBe("123 APT");
     expect(formatMoneyAmount({ amount: 12345, currency: Currency.ETH, notation: "compact" })).toBe("12.345k ETH");
-    expect(formatMoneyAmount({ amount: 12010, currency: Currency.STARK, notation: "compact" })).toBe("12.01k STRK");
+    expect(formatMoneyAmount({ amount: 12010, currency: Currency.STRK, notation: "compact" })).toBe("12.01k STRK");
     expect(formatMoneyAmount({ amount: 12010, currency: Currency.LORDS, notation: "compact" })).toBe("12.01k LORDS");
   });
 });
