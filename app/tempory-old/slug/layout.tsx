@@ -1,12 +1,14 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { sharedMetadata } from "../shared-metadata.ts";
-import { ProjectsActions } from "../../actions/Projects/projects.actions.ts";
-import { UsersActions } from "../../actions/Users/users.actions.ts";
+import { sharedMetadata } from "../../shared-metadata.ts";
+import { ProjectsActions } from "../../../actions/Projects/projects.actions.ts";
+import { UsersActions } from "../../../actions/Users/users.actions.ts";
 
 export async function generateMetadata(
-  { params }: { params: { slug: string[] } },
+  props: { params: { slug: string[] } },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  console.log("layout on ...slug : params", props);
+  const { params } = props;
   /** project metadata */
   if (params?.slug?.length > 1 && params?.slug[0] === "p" && !!params?.slug[1]) {
     const project = await ProjectsActions.queries.retrieveBySlug(params.slug[1]);
