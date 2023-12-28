@@ -3,7 +3,7 @@ import { cn } from "src/utils/cn";
 import { tv } from "tailwind-variants";
 import { AlignContent, AlignItems, Direction, JustifyContent, Wrap } from "./flex.type";
 
-export interface FlexProps extends PropsWithChildren {
+interface FlexProps extends PropsWithChildren {
   direction?: Direction;
   wrap?: Wrap;
   justifyContent?: JustifyContent;
