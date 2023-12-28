@@ -11,6 +11,7 @@ export default function HiringTag({ variant = "default", isHiring = false }: Pro
   return isHiring ? (
     <div className="absolute -top-3.5 right-3.5">
       <Tag size="small" borderColor={variant === "error" ? "orange" : undefined}>
+        {/*TODO replace with the new icon component*/}
         <RecordCircleLine />
         <Translate token="project.hiring" />
       </Tag>

@@ -5,11 +5,12 @@ function ProjectsPage() {
   return (
     <>
       <div>ProjectsPage</div>
-      {Projects.map((project, index) => {
-        const isFirstHiringProject = index === 0 && project.hiring;
-
-        return <ProjectCard key={index} project={project} isFirstHiringProject={isFirstHiringProject} />;
-      })}
+      <div className="flex grow flex-col gap-5">
+        {Projects.map((project, index) => {
+          const isFirstHiringProject = index === 0 && project.hiring;
+          return <ProjectCard key={index} project={project} isFirstHiringProject={isFirstHiringProject} />;
+        })}
+      </div>
     </>
   );
 }
