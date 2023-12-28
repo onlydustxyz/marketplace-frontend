@@ -14398,6 +14398,13 @@ tailwind-scrollbar@^2.1.0:
   resolved "https://registry.yarnpkg.com/tailwind-scrollbar/-/tailwind-scrollbar-2.1.0.tgz#46e0b8788cef75387f9d163a5ec82b8cacd66c44"
   integrity sha512-zpvY5mDs0130YzYjZKBiDaw32rygxk5RyJ4KmeHjGnwkvbjm/PszON1m4Bbt2DkMRIXlXsfNevykAESgURN4KA==
 
+tailwind-variants@^0.1.19:
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/tailwind-variants/-/tailwind-variants-0.1.19.tgz#5551a84b3ad758b5ccdfa6c048d6e461b551d57d"
+  integrity sha512-D9Yf5WqsxodnCtjZt6KifEoKwW8rTURXQV03KRKlojITQM5gV1vPVWufWNiIvd/ptC3QybYFpwmHK9cs4Ei08Q==
+  dependencies:
+    tailwind-merge "^1.14.0"
+
 tailwindcss@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.3.1.tgz#b6662fab6a9b704779e48d083a9fef5a81d2b81e"
