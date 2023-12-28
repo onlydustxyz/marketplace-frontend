@@ -1,5 +1,3 @@
-export type CustomIconsName = "dollar";
-
 export type RemixIconsName =
   | "ri-arrow-left-up-line"
   | "ri-arrow-up-line"

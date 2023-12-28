@@ -1,17 +1,18 @@
-import { FC, PropsWithChildren, useMemo } from "react";
+import { FC, PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
-import { TypographyVariant } from "./typography.type";
-import { tv } from "tailwind-variants";
 
-interface TypographyProps extends PropsWithChildren {
-  variant?: TypographyVariant;
+import { tv } from "tailwind-variants";
+import { TypographyVariants } from "./typography.type";
+import { getDefaultComponent } from "./typography.utils";
+
+interface TypographyProps extends PropsWithChildren, TypographyVariants {
   className?: string;
   as?: keyof JSX.IntrinsicElements;
 }
 
-const typographyVariants = tv({
+export const typographyVariants = tv({
   variants: {
-    font: {
+    variant: {
       "title-xl": "text-title-xl",
       "title-l": "text-title-l",
       "title-m": "text-title-m",
@@ -29,39 +30,7 @@ const typographyVariants = tv({
 });
 
 export const Typography: FC<TypographyProps> = ({ variant = "body-m", className, as, children }) => {
-  const getDefaultComponent = (variant: TypographyVariant): keyof JSX.IntrinsicElements => {
-    switch (variant) {
-      case "title-xl":
-        return "h1";
-      case "title-l":
-        return "h2";
-      case "title-m":
-        return "h3";
-      case "title-s":
-        return "h4";
-      case "body-l":
-        return "p";
-      case "body-l-bold":
-        return "p";
-      case "body-m":
-        return "p";
-      case "body-m-bold":
-        return "p";
-      case "body-s":
-        return "p";
-      case "body-s-bold":
-        return "p";
-      case "body-xs":
-        return "p";
-      case "body-xs-bold":
-        return "p";
+  const Component = as || getDefaultComponent(variant);
 
-      default:
-        return "p";
-    }
-  };
-
-  const Component = useMemo(() => as || getDefaultComponent(variant), [as, variant]);
-
-  return <Component className={cn(typographyVariants({ font: variant }), className)}>{children}</Component>;
+  return <Component className={cn(typographyVariants({ variant }), className)}>{children}</Component>;
 };

@@ -1,19 +1,14 @@
 import { FC, PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
 import { tv } from "tailwind-variants";
-import { AlignContent, AlignItems, Direction, JustifyContent, Wrap } from "./flex.type";
+import { FlexVariants } from "./flex.type";
 
-interface FlexProps extends PropsWithChildren {
-  direction?: Direction;
-  wrap?: Wrap;
-  justifyContent?: JustifyContent;
-  alignContent?: AlignContent;
-  alignItems?: AlignItems;
+interface FlexProps extends PropsWithChildren, FlexVariants {
   className?: string;
   as?: keyof JSX.IntrinsicElements;
 }
 
-const flexVariants = tv({
+export const flexVariants = tv({
   base: "flex",
   variants: {
     direction: {

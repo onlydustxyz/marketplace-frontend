@@ -1,7 +1,8 @@
 import { FC } from "react";
 import { cn } from "src/utils/cn";
-import { CustomIconsName, RemixIconsName } from "./icon.type";
 import { CustomIcon } from "./custom-icon";
+import { CustomIconsName } from "./custom-icon-names.type";
+import { RemixIconsName } from "./remix-icon-names.type";
 
 interface BaseProps {
   size?: number;

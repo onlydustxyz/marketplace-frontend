@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { CustomIconsName } from "./icon.type";
+import { CustomIconsName } from "./custom-icon-names.type";
 import { DollarIcon } from "./icons/dollar";
 
 export interface BaseProps {
