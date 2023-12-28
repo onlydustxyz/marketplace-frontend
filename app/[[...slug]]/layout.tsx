@@ -7,6 +7,7 @@ export async function generateMetadata(
   { params }: { params: { slug: string[] } },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  console.log("layout on ...slug : params", params);
   /** project metadata */
   if (params?.slug?.length > 1 && params?.slug[0] === "p" && !!params?.slug[1]) {
     const project = await ProjectsActions.queries.retrieveBySlug(params.slug[1]);
