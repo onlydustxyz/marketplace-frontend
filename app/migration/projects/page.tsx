@@ -1,7 +1,7 @@
 import ProjectCard from "./components/project-card/project-card.tsx";
 import Projects from "./_temp-mock.ts";
 
-function ProjectsPage() {
+export default function ProjectsPage() {
   return (
     <>
       <div>ProjectsPage</div>
@@ -14,5 +14,3 @@ function ProjectsPage() {
     </>
   );
 }
-
-export default ProjectsPage;
