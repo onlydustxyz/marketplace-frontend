@@ -2,6 +2,7 @@ import { components } from "../../../../../src/__generated/api";
 import React from "react";
 import Card from "../../../../../components/ds/card/card.tsx";
 import { isUserProjectLead } from "../../../../../src/utils/isUserProjectLead.ts";
+import { cn } from "../../../../../src/utils/cn.ts";
 
 type Props = {
   project: components["schemas"]["ProjectPageItemResponse"];
@@ -31,7 +32,14 @@ export default function ProjectCard({ project, isFirstHiringProject = false }: P
   const variant = isUserProjectLead(project, githubUserId) && isMissingGithubAppInstallation ? "default" : "error";
   return (
     <>
-      <Card></Card>
+      <Card
+        className={cn("relative", {
+          "bg-noise-light hover:bg-right": variant === "default",
+          "border-orange-500 bg-orange-900": variant === "error",
+        })}
+        border={isInvitedAsProjectLead ? "multiColor" : "medium"}
+        dataTestId="project-card"
+      ></Card>
     </>
   );
 }
