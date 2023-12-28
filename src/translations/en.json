@@ -274,12 +274,12 @@
   "currencies": {
     "currency": {
       "APT": "Aptos",
-      "ETH": "Ethereum",
+      "ETH": "Ether",
       "OP": "Optimism",
-      "STRK": "Stark",
+      "STRK": "StarkNet Token",
       "LORDS": "Lords",
-      "USDC": "USDC",
-      "USD": "Dollars"
+      "USDC": "USD Coin",
+      "USD": "US Dollar"
     },
     "amount_placeholder": {
       "APT": "75 APT",
