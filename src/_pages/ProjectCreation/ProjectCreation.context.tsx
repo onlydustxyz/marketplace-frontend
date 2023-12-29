@@ -230,9 +230,7 @@ export function CreateProjectProvider({
       stepStorage.setValue(step);
       setCurrentStep(step);
       if (backgroundRef?.current) {
-        console.log("ouiii before", backgroundRef.current.scrollTop);
         backgroundRef.current.scrollTop = 0;
-        console.log("ouiii", backgroundRef.current.scrollTop);
       }
     },
     [currentStep]
