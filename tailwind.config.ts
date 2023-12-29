@@ -3,9 +3,15 @@ import plugin from "tailwindcss/plugin";
 import scrollbar from "tailwind-scrollbar";
 import headlessUi from "@headlessui/tailwindcss";
 import typography from "@tailwindcss/typography";
+import { withTV } from "tailwind-variants/transformer";
 
-const config: Config = {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", "./app/**/*.{js,ts,jsx,tsx}"],
+const config: Config = withTV({
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       borderRadius: {
@@ -234,7 +240,6 @@ const config: Config = {
       },
     },
   },
-
   plugins: [
     typography,
     headlessUi,
@@ -394,6 +399,6 @@ const config: Config = {
       );
     }),
   ],
-};
+});
 
 export default config;
