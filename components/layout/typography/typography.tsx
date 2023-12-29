@@ -27,9 +27,12 @@ export const typographyVariants = tv({
       "body-xs-bold": "text-body-xs-bold",
     },
   },
+  defaultVariants: {
+    variant: "body-m",
+  },
 });
 
-export const Typography: FC<TypographyProps> = ({ variant = "body-m", className, as, children }) => {
+export const Typography: FC<TypographyProps> = ({ variant, className, as, children }) => {
   const Component = as || getDefaultComponent(variant);
 
   return <Component className={cn(typographyVariants({ variant }), className)}>{children}</Component>;
