@@ -28,8 +28,8 @@ export async function BaseQueries<RESPONSE extends object>(
   options: BaseQueriesOptions | undefined
 ): Promise<RESPONSE> {
   const { provideTag, revalidate, revalidateTag, onSuccess, onError, ...baseOptions } = options || {};
-
-  const data = await fetch(url, {
+  const queriesParams = options?.params ? new URLSearchParams(options.params) : undefined;
+  const data = await fetch(`${url}${queriesParams ? `?${queriesParams}` : ""}`, {
     cache: "no-store",
     ...(baseOptions || {}),
     next: {
