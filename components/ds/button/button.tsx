@@ -6,11 +6,12 @@ import { buttonSecondaryVariants } from "./variants/button-secondary.variants";
 import { buttonTertiaryVariants } from "./variants/button-tertiary.variants";
 
 interface ButtonProps extends PropsWithChildren, ButtonVariants {
+  onClick: () => void;
   htmlType?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   className?: string;
 }
 
-export const Button: FC<ButtonProps> = ({ htmlType = "button", className, children, ...props }) => {
+export const Button: FC<ButtonProps> = ({ onClick, htmlType = "button", className, children, ...props }) => {
   const { type = "primary", disabled } = props;
 
   return (
@@ -21,6 +22,7 @@ export const Button: FC<ButtonProps> = ({ htmlType = "button", className, childr
         type === "tertiary" && buttonTertiaryVariants({ ...props }),
         className
       )}
+      onClick={onClick}
       disabled={disabled}
       type={htmlType}
     >

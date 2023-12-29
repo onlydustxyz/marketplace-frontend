@@ -5,8 +5,9 @@ import Projects from "./_temp-mock.ts";
 
 function ProjectsPage() {
   return (
-    <Flex>
+    <Flex direction="col">
       <Typography variant="title-xl">ProjectsPage</Typography>
+
       <div className="flex grow flex-col gap-5">
         {Projects.map((project, index) => {
           const isFirstHiringProject = index === 0 && project.hiring;

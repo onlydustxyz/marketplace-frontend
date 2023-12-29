@@ -1,4 +1,4 @@
-import { components } from "../../../src/__generated/api";
+import { components } from "src/__generated/api";
 
 const Projects: components["schemas"]["ProjectPageItemResponse"][] = [
   {

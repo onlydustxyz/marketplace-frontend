@@ -1,8 +1,7 @@
-import { components } from "../../../../../src/__generated/api";
-import React from "react";
+import { components } from "src/__generated/api";
 import Card from "@/components/ds/card/card.tsx";
-import { isUserProjectLead } from "../../../../../src/utils/isUserProjectLead.ts";
-import { cn } from "../../../../../src/utils/cn.ts";
+import { isUserProjectLead } from "src/utils/isUserProjectLead.ts";
+import { cn } from "src/utils/cn.ts";
 import HiringTag from "../hiring-tag/hiring-tag.tsx";
 
 type Props = {
