@@ -3,7 +3,7 @@
 import "src/datadog";
 import dynamic from "next/dynamic";
 
-const Providers = dynamic(() => import("./providers"), { ssr: false });
+const Providers = dynamic(() => import("./providers.tsx"), { ssr: false });
 
 export default function Page() {
   return <Providers />;

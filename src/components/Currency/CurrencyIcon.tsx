@@ -7,6 +7,7 @@ import Aptos from "src/assets/icons/Aptos";
 import { DollarCurrency } from "src/assets/icons/DollarCurrency";
 import { BudgetCurrencyType } from "src/utils/money";
 import Lords from "src/assets/icons/Lords";
+import Usdc from "src/assets/icons/Usdc";
 
 export interface CurrencyIconsProps {
   currency?: BudgetCurrencyType;
@@ -19,10 +20,12 @@ export const CurrencyIcons: FC<CurrencyIconsProps> = ({ currency, className }) =
       return <DollarCurrency className={className} />;
     case Currency.ETH:
       return <Ethereum className={className} />;
-    case Currency.STARK:
+    case Currency.STRK:
       return <Starknet className={className} />;
     case Currency.LORDS:
       return <Lords className={className} />;
+    case Currency.USDC:
+      return <Usdc className={className} />;
     case Currency.OP:
       return <Optimism className={className} />;
     case Currency.APT:
