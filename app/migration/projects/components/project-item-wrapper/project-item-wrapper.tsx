@@ -10,7 +10,7 @@ type Props = {
   isFirstHiringProject?: boolean;
 };
 
-export default function ProjectCard({ project, isFirstHiringProject = false }: Props) {
+export default function ProjectItemWrapper({ project, isFirstHiringProject = false }: Props) {
   const {
     // id,
     // sponsors,
@@ -44,7 +44,9 @@ export default function ProjectCard({ project, isFirstHiringProject = false }: P
         dataTestId="project-card"
       >
         <HiringTag isHiring={hiring} variant={variant} />
-        Lorem ipsum dolor
+        <div className="flex flex-col gap-5">
+          <div className="flex w-full flex-col justify-items-center gap-4 divide-stone-100/8 font-walsheim lg:flex-row lg:gap-6 lg:divide-x"></div>
+        </div>
       </Card>
     </>
   );

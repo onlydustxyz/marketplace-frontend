@@ -10,13 +10,13 @@ type Props = {
 };
 export default function HiringTag({ variant = "default", isHiring = false }: Props) {
   return isHiring ? (
-    <div className="absolute -top-3.5 right-3.5">
+    <header className="absolute -top-3.5 right-3.5">
       <Tag size="small" borderColor={variant === "error" ? "orange" : undefined}>
         <Icon remixName="ri-record-circle-line" size={12} />
         <Typography variant="body-xs">
           <Translate token="project.hiring" />
         </Typography>
       </Tag>
-    </div>
+    </header>
   ) : null;
 }
