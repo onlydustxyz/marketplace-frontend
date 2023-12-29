@@ -7,24 +7,26 @@ export const cardVariants = tv({
   variants: {
     hasBackground: {
       true: "bg-whiteFakeOpacity-2",
-      false: "",
     },
     isFullWidth: {
       true: "w-full",
-      false: "",
     },
     hasPadding: {
       true: "p-4 lg:p-6",
-      false: "",
     },
     cursor: {
       true: "cursor-pointer",
-      false: "",
     },
     border: {
       light: "border border-greyscale-50/8",
       medium: "border border-greyscale-50/12",
       multiColor: "border-multicolored before:rounded-2xl",
     },
+  },
+  defaultVariants: {
+    hasBackground: true,
+    isFullWidth: true,
+    hasPadding: true,
+    border: "light",
   },
 });

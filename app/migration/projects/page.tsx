@@ -7,12 +7,12 @@ function ProjectsPage() {
   return (
     <Flex>
       <Typography variant="title-xl">ProjectsPage</Typography>
-        <div className="flex grow flex-col gap-5">
-            {Projects.map((project, index) => {
-                const isFirstHiringProject = index === 0 && project.hiring;
-                return <ProjectCard key={index} project={project} isFirstHiringProject={isFirstHiringProject} />;
-            })}
-        </div>
+      <div className="flex grow flex-col gap-5">
+        {Projects.map((project, index) => {
+          const isFirstHiringProject = index === 0 && project.hiring;
+          return <ProjectCard key={index} project={project} isFirstHiringProject={isFirstHiringProject} />;
+        })}
+      </div>
     </Flex>
   );
 }

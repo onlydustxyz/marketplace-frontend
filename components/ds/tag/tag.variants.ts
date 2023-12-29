@@ -18,11 +18,11 @@ export const tagVariants = tv({
     },
     isOpaque: {
       true: "bg-spaceBlue-900",
-      false: "",
     },
   },
   defaultVariants: {
     size: "small",
     borderColor: "grey",
+    isOpaque: false,
   },
 });
