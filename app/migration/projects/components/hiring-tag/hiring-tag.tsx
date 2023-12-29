@@ -1,7 +1,8 @@
 import Tag from "@/components/ds/tag/tag.tsx";
-import RecordCircleLine from "../../../../../src/icons/RecordCircleLine.tsx";
 import Translate from "@/components/layout/translate/translate.tsx";
 import React from "react";
+import { Typography } from "@/components/layout/typography/typography.tsx";
+import { Icon } from "@/components/layout/icon/icon.tsx";
 
 type Props = {
   variant?: "default" | "error";
@@ -11,9 +12,10 @@ export default function HiringTag({ variant = "default", isHiring = false }: Pro
   return isHiring ? (
     <div className="absolute -top-3.5 right-3.5">
       <Tag size="small" borderColor={variant === "error" ? "orange" : undefined}>
-        {/*TODO replace with the new icon component*/}
-        <RecordCircleLine />
-        <Translate token="project.hiring" />
+        <Icon remixName="ri-record-circle-line" size={12} />
+        <Typography variant="body-xs">
+          <Translate token="project.hiring" />
+        </Typography>
       </Tag>
     </div>
   ) : null;
