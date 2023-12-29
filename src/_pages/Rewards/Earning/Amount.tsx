@@ -4,6 +4,7 @@ import Ethereum from "src/assets/icons/Ethereum";
 import Lords from "src/assets/icons/Lords";
 import Optimism from "src/assets/icons/Optimism";
 import Starknet from "src/assets/icons/Starknet";
+import Usdc from "src/assets/icons/Usdc";
 import { Chip } from "src/components/Chip/Chip";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
@@ -13,11 +14,11 @@ import { formatMoneyAmount } from "src/utils/money";
 const currencyIcons: Record<Money["currency"], ReactElement | null> = {
   [Currency.ETH]: <Ethereum className="h-4 w-4" />,
   [Currency.LORDS]: <Lords className="h-4 w-4" />,
-  [Currency.STARK]: <Starknet />,
+  [Currency.STRK]: <Starknet />,
   [Currency.OP]: <Optimism />,
   [Currency.APT]: <Aptos />,
+  [Currency.USDC]: <Usdc className="h-4 w-4" />,
   [Currency.USD]: null,
-  [Currency.USDC]: null,
 };
 
 type Amount = {
