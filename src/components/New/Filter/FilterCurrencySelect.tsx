@@ -61,7 +61,7 @@ export function FilterCurrencySelect({
   const defaultCurrency = {
     value: "",
     label: <Flex className="items-center">{T("filter.currency.all")}</Flex>,
-    id: 9999,
+    id: 0,
   };
 
   const items = currencies.map(currency => ({

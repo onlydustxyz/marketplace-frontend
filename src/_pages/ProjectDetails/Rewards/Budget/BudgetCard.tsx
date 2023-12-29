@@ -34,7 +34,7 @@ const getContent = (
     case CardTypes.RewardsSent:
       return <Counter {...sentRewards} />;
     case CardTypes.Contributors:
-      return rewardedContributorsCount || null;
+      return rewardedContributorsCount || 0;
     case CardTypes.AmountSpent:
     default:
       return <Amount budget={budget} />;
