@@ -1,4 +1,4 @@
-import { TypographyVariants } from "./typography.type";
+import { TypographyVariants } from "./typography";
 
 export const getDefaultComponent = (variant: TypographyVariants["variant"]): keyof JSX.IntrinsicElements => {
   switch (variant) {

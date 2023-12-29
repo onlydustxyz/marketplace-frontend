@@ -1,7 +1,8 @@
 import { FC, PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
-import { tv } from "tailwind-variants";
-import { FlexVariants } from "./flex.type";
+import { VariantProps, tv } from "tailwind-variants";
+
+export type FlexVariants = VariantProps<typeof flexVariants>;
 
 interface FlexProps extends PropsWithChildren, FlexVariants {
   className?: string;
@@ -53,25 +54,12 @@ export const flexVariants = tv({
   },
 });
 
-export const Flex: FC<FlexProps> = ({
-  direction,
-  wrap,
-  justifyContent,
-  alignContent,
-  alignItems,
-  className,
-  as: Component = "div",
-  children,
-}) => {
+export const Flex: FC<FlexProps> = ({ className, as: Component = "div", children, ...props }) => {
   return (
     <Component
       className={cn(
         flexVariants({
-          direction,
-          wrap,
-          justifyContent,
-          alignContent,
-          alignItems,
+          ...props,
         }),
         className
       )}

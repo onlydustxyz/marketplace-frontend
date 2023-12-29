@@ -1,9 +1,9 @@
 import { FC, PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
-
-import { tv } from "tailwind-variants";
-import { TypographyVariants } from "./typography.type";
+import { VariantProps, tv } from "tailwind-variants";
 import { getDefaultComponent } from "./typography.utils";
+
+export type TypographyVariants = VariantProps<typeof typographyVariants>;
 
 interface TypographyProps extends PropsWithChildren, TypographyVariants {
   className?: string;
