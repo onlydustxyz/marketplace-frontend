@@ -45,6 +45,7 @@ export const createFetchError = (
   res: Response,
   mapHttpStatusToString: (statusCode: number) => HttpStatusStrings
 ): FetchError => {
+  console.log("res", res);
   const error = new Error(res.statusText) as FetchError;
   error.status = res.status;
   error.message = res.statusText;
