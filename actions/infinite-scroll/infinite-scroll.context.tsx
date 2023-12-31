@@ -1,28 +1,13 @@
+"use client";
+
 import React, { createContext, useCallback, useState } from "react";
 import { LoadMore } from "./components/LoadMore";
-
-export type BaseInfiniteScrollResultData = Array<unknown>;
-export interface BaseInfiniteScrollPagination {
-  nextPageIndex: number;
-  hasMore: boolean;
-  totalItemNumber: number;
-  totalPageNumber: number;
-}
-
-export interface BaseInfiniteScrollResultResult<RESULT extends BaseInfiniteScrollResultData>
-  extends BaseInfiniteScrollPagination {
-  data: RESULT;
-}
-interface InfiniteScrollContextProps<RESULT extends BaseInfiniteScrollResultData> extends BaseInfiniteScrollPagination {
-  children: React.ReactNode;
-  onFetchMore: (previousPagination: BaseInfiniteScrollPagination) => Promise<BaseInfiniteScrollResultResult<RESULT>>;
-}
-
-export interface InfiniteScrollReturn<RESULT extends BaseInfiniteScrollResultData>
-  extends BaseInfiniteScrollPagination {
-  result: RESULT;
-  onFetchMore: () => Promise<void>;
-}
+import { BasePaginatedParams } from "../type.actions.ts";
+import {
+  BaseInfiniteScrollResultData,
+  InfiniteScrollContextProps,
+  InfiniteScrollReturn,
+} from "./infinite-scroll.context.type.ts";
 
 export const InfiniteScrollContext = createContext<InfiniteScrollReturn<BaseInfiniteScrollResultData>>({
   result: [],
@@ -33,14 +18,18 @@ export const InfiniteScrollContext = createContext<InfiniteScrollReturn<BaseInfi
   totalPageNumber: 0,
 });
 
-export function InfiniteScrollProvider<RESULT extends BaseInfiniteScrollResultData>({
+export function InfiniteScrollProvider<
+  RESULT extends BaseInfiniteScrollResultData,
+  PARAMS extends BasePaginatedParams
+>({
   children,
+  pageSize,
   onFetchMore,
   nextPageIndex,
   hasMore,
   totalItemNumber,
   totalPageNumber,
-}: InfiniteScrollContextProps<RESULT>) {
+}: InfiniteScrollContextProps<RESULT, PARAMS>) {
   const [loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<BaseInfiniteScrollResultData>([]);
   const [nextPageIndexState, setNextPageIndexState] = useState<number>(nextPageIndex);
@@ -52,11 +41,9 @@ export function InfiniteScrollProvider<RESULT extends BaseInfiniteScrollResultDa
     if (!loading && hasMoreState) {
       setLoading(true);
       const newResult = await onFetchMore({
-        nextPageIndex: nextPageIndexState,
-        hasMore: hasMoreState,
-        totalItemNumber: totalItemNumberState,
-        totalPageNumber: totalPageNumberState,
-      });
+        pageIndex: nextPageIndexState + 1,
+        pageSize,
+      } as PARAMS);
       setResult(oldResult => [...oldResult, ...newResult.data]);
       setNextPageIndexState(newResult.nextPageIndex);
       setHasMoreState(newResult.hasMore);
