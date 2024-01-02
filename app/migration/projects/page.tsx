@@ -4,6 +4,7 @@ import { ListProjectsParams, ProjectActions_listProjects } from "../../../action
 import React from "react";
 import { LoadMore } from "@/components/layout/api/load-more/load-more.tsx";
 import { FilterProviders } from "../../../actions/context/Filters/filters.context.tsx";
+import SearchBar from "./components/search-bar/search-bar.tsx";
 
 async function ProjectsPage() {
   const paramsObject = {
@@ -23,6 +24,7 @@ async function ProjectsPage() {
 
     return (
       <div className="flex grow flex-col gap-5">
+        <SearchBar />
         {projects.projects.map(project => (
           <p className="bg-green-300 p-8" key={project.name}>
             {project.name}
@@ -46,7 +48,12 @@ async function ProjectsPage() {
   return (
     <Flex>
       <Typography variant="title-xl">ProjectsPage</Typography>
-      <FilterProviders getPage={getProjects}>{projects}</FilterProviders>
+      <FilterProviders getPage={getProjects} pageSize={10} initialPage={projects}>
+        <div className="flex grow flex-col gap-5">
+          <SearchBar />
+          {children}
+        </div>
+      </FilterProviders>
     </Flex>
   );
 }

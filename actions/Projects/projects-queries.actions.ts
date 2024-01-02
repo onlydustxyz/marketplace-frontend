@@ -18,6 +18,7 @@ export type ProjectsListResponse = components["schemas"]["ProjectPageResponse"];
 
 export interface ListProjectsParams extends BasePaginatedParams {
   sort?: string;
+  search?: string;
   mine: boolean;
 }
 export async function ProjectActions_listProjects(options?: BaseQueriesOptions<ListProjectsParams>) {
