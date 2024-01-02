@@ -39,7 +39,7 @@ export default function RainbowBanner({
   return (
     <div
       className={cn(
-        "bg-rainbow flex animate-wave items-center justify-between gap-3 overflow-hidden rounded-xl text-center font-medium",
+        "bg-rainbow relative flex animate-wave items-center justify-between gap-3 overflow-hidden rounded-xl text-center font-medium",
         "after:pointer-events-none after:absolute after:h-full after:w-full after:bg-noise-light",
         {
           "min-h-[60px] p-3": size === CalloutSizes.Small,

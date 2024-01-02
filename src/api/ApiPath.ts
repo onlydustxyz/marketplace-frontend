@@ -28,6 +28,14 @@ export const API_PATH = {
   PROJECT_CONTRIBUTORS: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributors`),
   PROJECT_BUDGET: (projectId: string) => BASE_API_V1(`projects/${projectId}/budgets`),
   PROJECT_CONTRIBUTIONS: (projectId: string) => BASE_API_V1(`projects/${projectId}/contributions`),
+  PROJECT_INSIGHTS_CONTRIBUTORS_NEWCOMERS: (projectId: string) =>
+    BASE_API_V1(`projects/${projectId}/insights/contributors/newcomers`),
+  PROJECT_INSIGHTS_CONTRIBUTORS_MOST_ACTIVES: (projectId: string) =>
+    BASE_API_V1(`projects/${projectId}/insights/contributors/most-actives`),
+  PROJECT_INSIGHTS_CONTRIBUTIONS_STALED: (projectId: string) =>
+    BASE_API_V1(`projects/${projectId}/insights/contributions/staled`),
+  PROJECT_INSIGHTS_CONTRIBUTORS_CHURNED: (projectId: string) =>
+    BASE_API_V1(`projects/${projectId}/insights/contributors/churned`),
 
   /* --------------------------------- USERS -------------------------------- */
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),
@@ -46,6 +54,8 @@ export const API_PATH = {
   ME_APPLY_TO_PROJECT: BASE_API_V1("me/applications"),
   MY_PAYOUT_INFO: BASE_API_V1("me/payout-info"),
   ME_PROFILE: BASE_API_V1("me/profile"),
+  ME_REWARDS_CURRENCIES: BASE_API_V1("me/reward-currencies"),
+  ME_REWARDS_PROJECTS: BASE_API_V1("me/rewarding-projects"),
   ME_PROFILE_PICTURE: BASE_API_V1("me/profile/avatar"),
   /* ------------------------------ TECHNOLOGIES ------------------------------ */
   TECHNOLOGIES: BASE_API_V1("technologies"),

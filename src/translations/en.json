@@ -252,6 +252,13 @@
       "one": "__count__ repository",
       "many": "__count__ repositories"
     },
+    "currency": {
+      "title": "Currency",
+      "all": "All currencies",
+      "zero": "currencies",
+      "one": "__count__ currency",
+      "many": "__count__ currencies"
+    },
     "contributor": {
       "title": "Contributors",
       "placeholder": "Everyone",
@@ -260,35 +267,38 @@
       "many": "__count__ contributors"
     },
     "date": {
-      "title": "Date",
+      "title": "Dates",
       "placeholder": "Select a date"
     }
   },
   "currencies": {
     "currency": {
       "APT": "Aptos",
-      "ETH": "Ethereum",
+      "ETH": "Ether",
       "OP": "Optimism",
-      "STARK": "Stark",
+      "STRK": "StarkNet Token",
       "LORDS": "Lords",
-      "USD": "Dollars"
+      "USDC": "USD Coin",
+      "USD": "US Dollar"
     },
     "amount_placeholder": {
       "APT": "75 APT",
       "ETH": "0.3 ETH",
       "OP": "350 OPT",
-      "STARK": "100 Stark",
+      "STRK": "100 STRK",
       "LORDS": "100 Lords",
+      "USDC": "100 USDC",
       "USD": "500$"
     },
     "network": {
       "APT": "Aptos",
       "ETH": "Ethereum",
       "OP": "Optimism",
-      "STARK": "Stark chain",
+      "STRK": "Starknet",
       "LORDS": "Ethereum",
+      "USDC": "Ethereum",
       "USD": "IBAN/BIC",
-      "label": "Reward granted on __currency__ network.",
+      "label": "Reward granted on the __currency__ network.",
       "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
     }
   },
@@ -673,7 +683,11 @@
       "aptosEarnings": "Aptos earnings",
       "usdInfoEarnings": "Dollar equivalent at today's date across all your earnings",
       "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
-      "invoiceError": "Unable to retrieve Invoice informations. Please try again."
+      "invoiceError": "Unable to retrieve Invoice information. Please try again.",
+      "amountRewarded": "Rewarded amount",
+      "amountPending": "Pending amount",
+      "receivedRewards": "Rewards received",
+      "projects": "Projects rewarding"
     },
     "budgets": {
       "error": "Unable to retrieve Rewards Budgets. Please try again."
@@ -843,7 +857,7 @@
         "APT": "the Aptos network",
         "ETH": "the Ethereum network",
         "OP": "the Optimism network",
-        "STARK": "the Stark chain network",
+        "STRK": "the Starknet network",
         "USD": "your bank account"
       },
       "payment": "Missing addresses to receive rewards on __networks__"
@@ -964,6 +978,67 @@
       },
       "contributions": {
         "title": "Contributions"
+      },
+      "insights": {
+        "title": "Insights",
+        "emptyPlaceholder": "No contributors here.",
+        "errorPlaceholder": "An error occurred, please try again later.",
+        "newcomers": {
+          "sectionTitle": "New contributors",
+          "sectionSubtitle": "All contrbutors that have joined one of your repositories during last month.",
+          "buttonLabel": "Say hello",
+          "dateSince": "Since __since__",
+          "descriptionPlaceholder": "This contributor has no bio"
+        },
+        "mostActives": {
+          "sectionTitle": "Most active contributors",
+          "sectionSubtitle": "User that we indentified as your best profiles and that would match a maintainer role.",
+          "table": {
+            "contributor": "Contributor",
+            "closedPrs": "Closed PRs",
+            "completedIssues": "Completed issues",
+            "codeReviews": "Code reviews",
+            "activity": "Activity",
+            "buttonLabel": "Congratulate"
+          },
+          "tooltip": {
+            "pullRequest": {
+              "many": "__count__ PRs on week __week__, __year__",
+              "one": "1 PR on week __week__, __year__"
+            },
+            "issue": {
+              "many": "__count__ issues on week __week__, __year__",
+              "one": "1 issue on week __week__, __year__"
+            },
+            "codeReview": {
+              "many": "__count__ code reviews on week __week__, __year__",
+              "one": "1 code review on week __week__, __year__"
+            }
+          }
+        },
+        "staled": {
+          "sectionTitle": "Contributors struggling",
+          "sectionSubtitle": "User that might encounter a problem on their current task based on their latest actions.",
+          "table": {
+            "contributor": "Contributor",
+            "repository": "Repository",
+            "strugglingOn": "Struggling on",
+            "reason": "Reason",
+            "buttonLabel": "Help"
+          },
+          "badge": {
+            "days": "for __days__ days"
+          }
+        },
+        "churned": {
+          "sectionTitle": "Churned contributors",
+          "sectionSubtitle": "User that are inactive for a long time period and stop contributing to your project.",
+          "buttonLabel": "Reactivate",
+          "lastContribution": {
+            "title": "Last contribution",
+            "on": "on"
+          }
+        }
       },
       "rewards": {
         "new": {
@@ -1089,13 +1164,20 @@
         "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
         "usdInfo": "Dollar equivalent at today's date",
         "budget": {
-          "total": "Remaining budget",
+          "remaining": "Remaining budget",
+          "spent": "Amount spent",
+          "sent": "Rewards sent",
+          "contributors": "Rewarded contributors",
           "dollars": "Dollars budget",
           "ether": "Ether budget",
           "stark": "Stark budget",
           "lords": "Lords budget",
           "aptos": "Aptos budget",
-          "optimism": "Optimism budget"
+          "optimism": "Optimism budget",
+          "sentRewards": {
+            "one": "for 1 contribution",
+            "many": "for __count__ contributions"
+          }
         }
       },
       "edit": {
@@ -1202,7 +1284,12 @@
         "newReward": "Reward contributor",
         "noRewards": "No rewards so far",
         "send": "Give your first one!",
-        "payment": "Payment"
+        "payment": "Payment",
+        "withFilter": {
+          "title": "Nothing to show",
+          "message": "Please update filters to display more results.",
+          "buttonLabel": "Clear filters"
+        }
       },
       "banners": {
         "missingGithubAppInstall": {
@@ -1219,6 +1306,7 @@
       "full": "Reward contributor",
       "short": "Reward"
     },
+    "addBudgetButton": "Add budget",
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
@@ -1268,6 +1356,17 @@
       "left": "Left to spend",
       "exceedsBudgetTooltip": "Not enough budget",
       "dollarTooltip": "Dollars equivalent at today’s date."
+    }
+  },
+  "myRewards": {
+    "tableFallback": {
+      "title": "No rewards so far",
+      "message": "Achieve your first task and get a reward!",
+      "withFilter": {
+        "title": "Nothing to show",
+        "message": "Please update filters to display more results.",
+        "buttonLabel": "Clear filters"
+      }
     }
   },
   "seniority": {

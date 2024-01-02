@@ -37,6 +37,6 @@ export function getEndpointUrl({
 
   return new URL(
     `${finalResourcePath}${urlSearchParamsStr ? `?${urlSearchParamsStr}` : ""}`,
-    `https://${import.meta.env.VITE_ONLYDUST_API_BASEPATH}`
+    `https://${process.env.NEXT_PUBLIC_ONLYDUST_API_BASEPATH}`
   ).toString();
 }

@@ -26,6 +26,7 @@ module.exports = {
     "plugin:storybook/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:@next/next/recommended",
   ],
   plugins: ["@typescript-eslint", "prettier", "unused-imports"],
   rules: {
@@ -65,6 +66,7 @@ module.exports = {
         caughtErrorsIgnorePattern: "^_",
       },
     ],
+    "@next/next/no-img-element": "off",
   },
   ignorePatterns: [
     "dist/*",

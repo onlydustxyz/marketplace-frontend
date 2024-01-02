@@ -21,7 +21,7 @@ export default function Contributor({ contributor, clickable, className }: Props
   return (
     <Component
       type={clickable ? "button" : undefined}
-      className={cn("group flex items-center gap-2 truncate font-walsheim text-sm font-normal", className)}
+      className={cn("group flex items-center gap-2 truncate font-walsheim text-xs font-medium", className)}
       onClick={
         clickable
           ? e => {
