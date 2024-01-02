@@ -6,18 +6,19 @@ interface FilterContextProps<PARAMS extends BasePaginatedParams = BasePaginatedP
   children: ReactNode;
   getPage(params: PARAMS): Promise<JSX.Element>;
   pageSize: number;
-  initialPage: JSX.Element;
 }
 
 type FilterContextReturn<PARAMS extends BasePaginatedParams = BasePaginatedParams> = {
   onChange(params: Partial<PARAMS>): Promise<JSX.Element>;
+  filteredChildren: JSX.Element | null;
 };
 
 export const FilterContext = createContext<FilterContextReturn>({
   onChange: () => new Promise(resolve => resolve(<div></div>)),
+  filteredChildren: null,
 });
 
-export function FilterProviders({ children, getPage, pageSize, initialPage }: FilterContextProps) {
+export function FilterProviders({ children, getPage, pageSize }: FilterContextProps) {
   const [currentParams, setCurrentParams] = useState<Partial<BasePaginatedParams>>({
     pageSize,
     pageIndex: 0,
@@ -26,7 +27,7 @@ export function FilterProviders({ children, getPage, pageSize, initialPage }: Fi
   const [page, setPage] = useState<JSX.Element | null>(null);
 
   const onChange = async (params: Partial<BasePaginatedParams>) => {
-    const pageData = await getPage({
+    const filteredData = await getPage({
       ...currentParams,
       ...params,
       pageIndex: 0,
@@ -35,19 +36,19 @@ export function FilterProviders({ children, getPage, pageSize, initialPage }: Fi
 
     setCurrentParams({ ...currentParams, ...params });
 
-    setPage(pageData);
+    setPage(filteredData);
 
-    return pageData;
+    return filteredData;
   };
 
   return (
     <FilterContext.Provider
       value={{
         onChange,
+        filteredChildren: page,
       }}
     >
-      {!page ? children : page}
-      {initialPage}
+      {children}
     </FilterContext.Provider>
   );
 }
