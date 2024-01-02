@@ -6,9 +6,9 @@ import "src/assets/css/index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
-import "src/datadog";
+import "src/datadog.ts";
 
-const Providers = dynamic(() => import("./providers"), { ssr: false });
+const Providers = dynamic(() => import("./providers.tsx"), { ssr: false });
 
 export default function Page() {
   return <Providers />;

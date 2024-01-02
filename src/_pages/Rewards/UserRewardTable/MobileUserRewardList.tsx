@@ -8,31 +8,25 @@ import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 import { MyRewardType } from "./Line";
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { components } from "src/__generated/api";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
-import useQueryParamsSorting from "../RewardTable/useQueryParamsSorting";
-import { Fields } from "./Headers";
-import MeApi from "src/api/me";
 import ErrorFallback from "src/ErrorFallback";
-import { RoutePaths } from "src/App";
-import { Navigate } from "react-router-dom";
 import { IMAGES } from "src/assets/img";
+import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 
-export default function MobileUserRewardList({ onRewardClick }: { onRewardClick: (reward: MyRewardType) => void }) {
+export default function MobileUserRewardList({
+  onRewardClick,
+  emptyState,
+}: {
+  onRewardClick: (reward: MyRewardType) => void;
+  emptyState?: React.ReactElement;
+}) {
   const { T } = useIntl();
+  const { query, rewards } = useContext(UserRewardsContext);
 
-  const { queryParams } = useQueryParamsSorting({
-    field: Fields.Date,
-    isAscending: false,
-    storageKey: "myRewardsSorting",
-  });
-
-  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    MeApi.queries.useMyRewardsInfiniteList({
-      queryParams,
-    });
+  const { error, fetchNextPage, hasNextPage, isFetchingNextPage } = query ?? {};
 
   if (error) {
     return (
@@ -42,45 +36,47 @@ export default function MobileUserRewardList({ onRewardClick }: { onRewardClick:
     );
   }
 
-  const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
-
-  const hasRewards = rewards && rewards.length > 0;
-  if (!hasRewards && !isFetching && !isFetchingNextPage) {
-    return <Navigate to={RoutePaths.Projects} />;
-  }
-
   return (
     <Card>
       <div className="flex flex-col gap-4">
-        {rewards.map(reward => (
-          <button onClick={() => onRewardClick(reward)} key={reward.id}>
-            <MobileUserRewardItem
-              title={reward?.rewardedOnProjectName}
-              id={reward.id}
-              image={
-                <RoundedImage
-                  src={reward?.rewardedOnProjectLogoUrl || IMAGES.logo.space}
-                  alt={reward?.rewardedOnProjectName || ""}
+        {rewards.length > 0 ? (
+          <>
+            {rewards.map(reward => (
+              <button onClick={() => onRewardClick(reward)} key={reward.id}>
+                <MobileUserRewardItem
+                  title={reward?.rewardedOnProjectName}
+                  id={reward.id}
+                  image={
+                    <RoundedImage
+                      src={reward?.rewardedOnProjectLogoUrl || IMAGES.logo.space}
+                      alt={reward?.rewardedOnProjectName || ""}
+                    />
+                  }
+                  request={T("reward.table.reward", {
+                    id: pretty(reward.id),
+                    count: reward.numberOfRewardedContributions,
+                  })}
+                  amount={reward.amount}
+                  date={new Date(reward.requestedAt)}
+                  payoutStatus={
+                    <PayoutStatus
+                      {...{
+                        id: `payout-status-${reward.id}`,
+                        status: reward.status,
+                      }}
+                    />
+                  }
                 />
-              }
-              request={T("reward.table.reward", { id: pretty(reward.id), count: reward.numberOfRewardedContributions })}
-              amount={reward.amount}
-              date={new Date(reward.requestedAt)}
-              payoutStatus={
-                <PayoutStatus
-                  {...{
-                    id: `payout-status-${reward.id}`,
-                    status: reward.status,
-                  }}
-                />
-              }
-            />
-          </button>
-        ))}
-        {hasNextPage && (
-          <div className="py-6">
-            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
-          </div>
+              </button>
+            ))}
+            {hasNextPage && (
+              <div className="py-6">
+                <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+              </div>
+            )}
+          </>
+        ) : (
+          emptyState ?? null
         )}
       </div>
     </Card>

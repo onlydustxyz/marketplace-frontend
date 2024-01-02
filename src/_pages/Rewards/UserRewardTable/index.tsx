@@ -6,7 +6,7 @@ import DesktopUserRewardList from "./DesktopUserRewardList";
 import MobileUserRewardList from "./MobileUserRewardList";
 import { useStackReward } from "src/App/Stacks/Stacks";
 
-const UserRewardTable: React.FC = () => {
+const UserRewardTable: React.FC<{ emptyState?: React.ReactElement }> = ({ emptyState }) => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
@@ -23,7 +23,7 @@ const UserRewardTable: React.FC = () => {
   return (
     <>
       {isXl ? (
-        <DesktopUserRewardList onRewardClick={onRewardClick} selectedReward={selectedReward} />
+        <DesktopUserRewardList onRewardClick={onRewardClick} selectedReward={selectedReward} emptyState={emptyState} />
       ) : (
         <MobileUserRewardList onRewardClick={onRewardClick} />
       )}

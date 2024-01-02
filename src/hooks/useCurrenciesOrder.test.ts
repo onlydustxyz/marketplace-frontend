@@ -7,12 +7,13 @@ import { CurrencyOrder } from "src/types";
 describe("useCurrenciesOrder", () => {
   it("Order currency", () => {
     const currencies: { currency: useCurrenciesOrderCurrency }[] = [
-      { currency: "STARK" },
+      { currency: "STRK" },
       { currency: "APT" },
       { currency: "USD" },
       { currency: "ETH" },
       { currency: "OP" },
       { currency: "LORDS" },
+      { currency: "USDC" },
     ];
 
     const { result } = renderHook(() => useCurrenciesOrder({ currencies }));

@@ -254,7 +254,7 @@
     },
     "currency": {
       "title": "Currency",
-      "all": "All (dollars quivalent)",
+      "all": "All currencies",
       "zero": "currencies",
       "one": "__count__ currency",
       "many": "__count__ currencies"
@@ -274,28 +274,31 @@
   "currencies": {
     "currency": {
       "APT": "Aptos",
-      "ETH": "Ethereum",
+      "ETH": "Ether",
       "OP": "Optimism",
-      "STARK": "Stark",
+      "STRK": "StarkNet Token",
       "LORDS": "Lords",
-      "USD": "Dollars"
+      "USDC": "USD Coin",
+      "USD": "US Dollar"
     },
     "amount_placeholder": {
       "APT": "75 APT",
       "ETH": "0.3 ETH",
       "OP": "350 OPT",
-      "STARK": "100 Stark",
+      "STRK": "100 STRK",
       "LORDS": "100 Lords",
+      "USDC": "100 USDC",
       "USD": "500$"
     },
     "network": {
       "APT": "Aptos",
       "ETH": "Ethereum",
       "OP": "Optimism",
-      "STARK": "Stark chain",
+      "STRK": "Starknet",
       "LORDS": "Ethereum",
+      "USDC": "Ethereum",
       "USD": "IBAN/BIC",
-      "label": "Reward granted on __currency__ network.",
+      "label": "Reward granted on the __currency__ network.",
       "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
     }
   },
@@ -680,7 +683,11 @@
       "aptosEarnings": "Aptos earnings",
       "usdInfoEarnings": "Dollar equivalent at today's date across all your earnings",
       "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
-      "invoiceError": "Unable to retrieve Invoice informations. Please try again."
+      "invoiceError": "Unable to retrieve Invoice information. Please try again.",
+      "amountRewarded": "Rewarded amount",
+      "amountPending": "Pending amount",
+      "receivedRewards": "Rewards received",
+      "projects": "Projects rewarding"
     },
     "budgets": {
       "error": "Unable to retrieve Rewards Budgets. Please try again."
@@ -850,7 +857,7 @@
         "APT": "the Aptos network",
         "ETH": "the Ethereum network",
         "OP": "the Optimism network",
-        "STARK": "the Stark chain network",
+        "STRK": "the Starknet network",
         "USD": "your bank account"
       },
       "payment": "Missing addresses to receive rewards on __networks__"
@@ -1349,6 +1356,17 @@
       "left": "Left to spend",
       "exceedsBudgetTooltip": "Not enough budget",
       "dollarTooltip": "Dollars equivalent at today’s date."
+    }
+  },
+  "myRewards": {
+    "tableFallback": {
+      "title": "No rewards so far",
+      "message": "Achieve your first task and get a reward!",
+      "withFilter": {
+        "title": "Nothing to show",
+        "message": "Please update filters to display more results.",
+        "buttonLabel": "Clear filters"
+      }
     }
   },
   "seniority": {

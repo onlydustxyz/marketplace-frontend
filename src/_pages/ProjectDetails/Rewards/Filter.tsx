@@ -6,13 +6,13 @@ import { Filter } from "src/components/New/Filter/Filter";
 import { FilterContributorCombobox } from "src/components/New/Filter/FilterContributorCombobox";
 import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySelect";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
-import { ContributorResponse, Currency } from "src/types";
+import { ContributorResponse } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
-import { Item } from "src/components/New/Filter/FilterSelect";
 import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
+import { Item } from "src/components/New/Filter/FilterSelect";
 
 type Filters = {
   period: Period;
@@ -25,7 +25,7 @@ const initialFilters: Filters = {
   period: Period.AllTime,
   dateRange: allTime,
   contributors: [],
-  currency: { id: 0, value: Currency.USD },
+  currency: { id: 0, value: "" },
 };
 
 export type FilterQueryParams = {
@@ -118,7 +118,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   const hasActiveFilters = Boolean(
     (filters?.dateRange?.from && filters?.dateRange?.to && !isAllTime(filters?.dateRange)) ||
       filters.contributors?.length ||
-      filters.currency?.value !== Currency.USD
+      filters.currency?.value !== ""
   );
 
   const { data: contributorsData, isLoading: contributorsLoading } =

@@ -16,6 +16,7 @@ import githubLogo from "./github-logo.svg";
 import grainBackground from "./grain-background.webp";
 import headerElementBackground from "./header-element-background.webp";
 import lords from "./lords.webp";
+import usdc from "./usdc.webp";
 import mosaic from "./mosaic.webp";
 import noiseHeavy from "./noise-heavy.webp";
 import noiseLight from "./noise-light.webp";
@@ -53,6 +54,7 @@ export const IMAGES = {
     atom: atom.src,
     emptyState: emptyState.src,
     lords: lords.src,
+    usdc: usdc.src,
   },
   background: {
     user: {

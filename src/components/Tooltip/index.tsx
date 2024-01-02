@@ -27,6 +27,7 @@ type TooltipProps = {
   [otherProp: string]: unknown;
   className?: string;
   delayShow?: number;
+  padding?: PaddingVariant;
 } & CommonProps &
   PropsWithChildren;
 
@@ -35,9 +36,21 @@ export enum Variant {
   Blue,
 }
 
+export enum PaddingVariant {
+  Small,
+  Medium,
+  Large,
+}
+
 const variants = {
   [Variant.Default]: "!bg-greyscale-800",
   [Variant.Blue]: "!bg-tooltip-blue",
+};
+
+const paddingVariants = {
+  [PaddingVariant.Small]: "!p-2",
+  [PaddingVariant.Medium]: "!px-3 !py-2",
+  [PaddingVariant.Large]: "!p-4",
 };
 
 export default function Tooltip({
@@ -49,6 +62,7 @@ export default function Tooltip({
   variant = Variant.Default,
   className,
   delayShow = 100,
+  padding = PaddingVariant.Medium,
   ...rest
 }: TooltipProps) {
   return createPortal(
@@ -59,9 +73,10 @@ export default function Tooltip({
       anchorSelect={anchorSelect}
       delayShow={delayShow}
       className={cn(
-        "!text-sm", // !important class is required to override react-tooltip font-size
-        "opaque rounded-lg px-3 py-2 text-center font-walsheim font-normal text-greyscale-50 shadow-md",
+        "!rounded-lg !text-sm !text-greyscale-50", // !important class is required to override some react-tooltip classes
+        "opaque text-center font-walsheim font-normal shadow-md",
         variants[variant],
+        paddingVariants[padding],
         className
       )}
       // Need to force z-index to be able to show tooltip over other components

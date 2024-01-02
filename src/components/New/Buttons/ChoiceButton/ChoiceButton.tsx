@@ -25,7 +25,7 @@ export const ChoiceButton = ({ choices, defaultOption, icon, ...rest }: ChoiceBu
   }
 
   return (
-    <Menu as="div" className="relative z-20 inline-block">
+    <Menu as="div" className="relative z-[11] inline-block">
       <div className={cn("flex items-center justify-start gap-px shadow-button")}>
         <Button
           {...rest}
