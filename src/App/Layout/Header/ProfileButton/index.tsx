@@ -8,7 +8,7 @@ import ViewMobile from "./ViewMobile";
 
 const ProfileButton = () => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const { user, logout, githubUserId } = useAuth();
+  const { user, githubUserId } = useAuth();
   const { login } = user ?? { login: "My Account" };
 
   const { data: userInfo } = MeApi.queries.useGetMe({});
@@ -23,7 +23,6 @@ const ProfileButton = () => {
     githubUserId,
     avatarUrl,
     login,
-    logout,
     isMissingPayoutSettingsInfo: payoutSettingsInvalid && !onboardingInProgress,
     hideProfileItems: onboardingInProgress,
   };

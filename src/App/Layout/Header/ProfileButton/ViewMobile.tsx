@@ -18,23 +18,17 @@ import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSort
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
+import Link from "next/link";
 
 type Props = {
   avatarUrl: string | null;
   login: string;
-  logout: () => void;
   isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
 };
 
-export default function ViewMobile({
-  avatarUrl,
-  logout,
-  isMissingPayoutSettingsInfo,
-  githubUserId,
-  hideProfileItems,
-}: Props) {
+export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, githubUserId, hideProfileItems }: Props) {
   const { T } = useIntl();
 
   const [panelOpen, setPanelOpen] = useState(false);
@@ -143,10 +137,12 @@ export default function ViewMobile({
               <div>{T("navbar.separator")}</div>
               <button onClick={openPrivacyPolicy}>{T("navbar.privacyPolicy")}</button>
             </div>
-            <Button type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={logout} data-testid="logout-button">
-              <LogoutBoxRLine className="border-greyscale-50 text-sm" />
-              {T("navbar.logout")}
-            </Button>
+            <Link href={process.env.NEXT_AUTH0_LOGOUT_URL ?? "/api/auth/logout"}>
+              <Button type={ButtonType.Secondary} size={ButtonSize.Xs} data-testid="logout-button">
+                <LogoutBoxRLine className="border-greyscale-50 text-sm" />
+                {T("navbar.logout")}
+              </Button>
+            </Link>
           </div>
         </div>
       </SidePanel>

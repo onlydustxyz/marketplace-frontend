@@ -1,27 +1,22 @@
-import { useMemo } from "react";
 import { useIntl } from "src/hooks/useIntl";
-import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
 import GithubLogo, { Size } from "src/icons/GithubLogo";
 import { cn } from "src/utils/cn";
+import Link from "next/link";
 
 export enum Variant {
   Default = "default",
   GreyNoise = "greyNoise",
 }
 
-export default function GithubLink({
-  onClick,
-  variant = Variant.Default,
-}: {
-  onClick?: () => void;
-  variant?: Variant;
-}) {
+export default function GithubLink({ variant = Variant.Default }: { variant?: Variant }) {
   const { T } = useIntl();
-  const getLoginUrl = useLoginUrl();
-  const login_url = useMemo(() => getLoginUrl(window.location.origin), []);
 
   return (
-    <a className="z-10" href={login_url} onClick={onClick} data-testid="github-signin-button">
+    <Link
+      href={process.env.NEXT_AUTH0_LOGIN_URL ?? "/api/auth/login"}
+      className="z-10"
+      data-testid="github-signin-button"
+    >
       <div className="m-px w-fit overflow-hidden rounded-full p-px blur-0 transition duration-300 hover:m-0 hover:p-0.5">
         <div
           className={cn(
@@ -42,6 +37,6 @@ export default function GithubLink({
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

@@ -11,17 +11,17 @@ import User3Line from "src/icons/User3Line";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
+import Link from "next/link";
 
 type Props = {
   avatarUrl: string | null;
   login: string;
-  logout: () => void;
   isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
 };
 
-const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
+const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
   const { T } = useIntl();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
@@ -101,10 +101,12 @@ const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsI
                     {T("navbar.privacyPolicy")}
                   </div>
                 </div>
-                <Button type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={logout} data-testid="logout-button">
-                  <LogoutBoxRLine className="border-greyscale-50 text-sm" />
-                  {T("navbar.logout")}
-                </Button>
+                <Link href={process.env.NEXT_AUTH0_LOGOUT_URL ?? "/api/auth/logout"}>
+                  <Button type={ButtonType.Secondary} size={ButtonSize.Xs} data-testid="logout-button">
+                    <LogoutBoxRLine className="border-greyscale-50 text-sm" />
+                    {T("navbar.logout")}
+                  </Button>
+                </Link>
               </div>
             </MenuItem>
           </Menu.Items>
