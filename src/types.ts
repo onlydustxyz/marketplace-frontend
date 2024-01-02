@@ -71,7 +71,7 @@ export enum Currency {
 }
 
 export type CurrencyUnion = `${Currency}`;
-export const CurrencyOrder = ["USD", "ETH", "STRK", "OP", "APT", "LORDS", "USDC"];
+export const CurrencyOrder = ["USDC", "USD", "ETH", "STRK", "OP", "APT", "LORDS"];
 
 export enum PreferredMethod {
   Crypto = "CRYPTO",
