@@ -7,9 +7,11 @@ function ProjectsPage() {
   return (
     <Flex direction="col">
       <Flex>
-        <Filters />
+        <div className="sticky top-0 z-10 hidden shrink-0 basis-80 xl:block">
+          <Filters />
+        </div>
 
-        <Flex direction="col" className="grow gap-5">
+        <Flex direction="col" className="min-w-0 grow gap-5">
           {Projects.map((project, index) => {
             const isFirstHiringProject = index === 0 && project.hiring;
             return <ProjectCard key={index} project={project} isFirstHiringProject={isFirstHiringProject} />;

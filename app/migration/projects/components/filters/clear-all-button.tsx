@@ -7,7 +7,7 @@ import { FC } from "react";
 
 export const ClearAllButton: FC = () => {
   const handleClearAll = () => {
-    console.log("clear all");
+    console.log("Clear all");
   };
 
   return (

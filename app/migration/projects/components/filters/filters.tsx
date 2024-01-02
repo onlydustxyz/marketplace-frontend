@@ -4,10 +4,13 @@ import { Typography } from "@/components/layout/typography/typography";
 import { Flex } from "@/components/layout/flex/flex";
 import Translate from "@/components/layout/translate/translate";
 import { ClearAllButton } from "./clear-all-button";
+import { Tags } from "./tags/tags";
 
 export const Filters: FC = () => {
+  const isProjectLeader = true;
+
   return (
-    <Card>
+    <Card className="flex h-fit flex-col gap-4">
       <Flex justifyContent="between" alignItems="center">
         <Typography variant="title-s">
           <Translate token="filter.title" />
@@ -15,6 +18,10 @@ export const Filters: FC = () => {
 
         <ClearAllButton />
       </Flex>
+
+      {isProjectLeader && <Tags type="global" />}
+
+      <Tags type="technologies" />
     </Card>
   );
 };
