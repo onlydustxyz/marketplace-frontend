@@ -50,10 +50,10 @@ export default function PayoutInfoSidePanel({
 
   const profileType = watch("profileType");
 
-  // TODO : don't understand this condition
+  const showIbanAndBic = profileType === ProfileType.Company;
+
   const shouldDisplayContactStatus =
     (isContactInfoValid && isContactInfoComplete) || (!isContactInfoValid && !isContactInfoComplete);
-  // TODO : don't understand this condition
   const shouldDisplayPayoutStatus =
     (isPaymentInfoValid && isPayoutInfoComplete) || (!isPaymentInfoValid && !isPayoutInfoComplete);
 
@@ -92,14 +92,17 @@ export default function PayoutInfoSidePanel({
               isValid={isPaymentInfoValid && isPayoutInfoComplete}
               requiredNetworks={requiredFields}
               type={StatusType.Payment}
+              showIbanAndBic={showIbanAndBic}
             />
           ) : null}
 
           <ProfileContent title={T("profile.form.payoutCurrenciesType")}>
             <OtherCryptoFields {...{ requiredFields }} />
-            <div className="mt-6">
-              <FiatFields {...{ requiredFields }} />
-            </div>
+            {showIbanAndBic && (
+              <div className="mt-6">
+                <FiatFields {...{ requiredFields }} />
+              </div>
+            )}
           </ProfileContent>
         </Card>
 

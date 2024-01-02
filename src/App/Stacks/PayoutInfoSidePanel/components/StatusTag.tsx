@@ -40,9 +40,10 @@ type StatusTagType = {
   isValid: boolean;
   type: StatusType;
   requiredNetworks?: RequiredFieldsType;
+  showIbanAndBic?: boolean;
 };
 
-export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
+export function StatusTag({ isValid, type, requiredNetworks, showIbanAndBic }: StatusTagType) {
   const { T } = useIntl();
   const { watch } = useFormContext();
   const [ethWallet, iban, bic, aptosWallet, starknetWallet, optimismWallet] = watch([
@@ -54,7 +55,7 @@ export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
     "optimismWallet",
   ]);
   const networks = useMemo(() => {
-    const missingSepaAccount = Boolean(requiredNetworks?.missingSepaAccount) && !iban && !bic;
+    const missingSepaAccount = Boolean(requiredNetworks?.missingSepaAccount) && !iban && !bic && showIbanAndBic;
     const missingEthWallet = Boolean(requiredNetworks?.missingEthWallet) && !ethWallet;
     const missingAptosWallet = Boolean(requiredNetworks?.missingAptosWallet) && !aptosWallet;
     const missingStarknetWallet = Boolean(requiredNetworks?.missingStarknetWallet) && !starknetWallet;

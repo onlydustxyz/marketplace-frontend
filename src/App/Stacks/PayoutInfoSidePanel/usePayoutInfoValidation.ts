@@ -51,7 +51,7 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
     // TODO : remove ethName condition when backend will be ready
     if ((ethAddress || ethName) && starknetAddress && aptosAddress && optimismAddress) {
       if (isCompany) {
-        return Boolean(sepaAccount?.bic && sepaAccount?.iban);
+        return Boolean(sepaAccount?.bic && sepaAccount?.iban); // SHOULD BE REMOVE WHEN SEPA PAIEMENT IS DONE FOR INDIVIDUAL
       }
       return true;
     }
@@ -64,16 +64,12 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
     isContactInfoComplete,
     isPayoutInfoComplete,
     requiredFields: {
-      //   missingAptosWallet,
-      missingAptosWallet: true,
-      //   missingEthWallet,
-      missingEthWallet: true,
+      missingAptosWallet,
+      missingEthWallet: missingEthWallet || missingUsdcWallet,
       missingOptimismWallet,
-      //   missingSepaAccount,
-      missingSepaAccount: true,
+      missingSepaAccount,
       missingUsdcWallet,
-      //   missingStarknetWallet,
-      missingStarknetWallet: true,
+      missingStarknetWallet,
     },
   };
 }
