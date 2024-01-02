@@ -3,7 +3,7 @@ import { Typography } from "components/layout/typography/typography";
 import { ListProjectsParams, ProjectActions_listProjects } from "../../../actions/Projects/projects-queries.actions.ts";
 import React from "react";
 import { LoadMore } from "@/components/layout/api/load-more/load-more.tsx";
-import FiltersApi from "@/components/layout/api/filters/filters.tsx";
+import { FilterProviders } from "../../../actions/context/Filters/filters.context.tsx";
 
 async function ProjectsPage() {
   const paramsObject = {
@@ -46,9 +46,7 @@ async function ProjectsPage() {
   return (
     <Flex>
       <Typography variant="title-xl">ProjectsPage</Typography>
-      <div className="flex grow flex-col gap-5">
-        <FiltersApi test={"coucou"}>{projects}</FiltersApi>
-      </div>
+      <FilterProviders getPage={getProjects}>{projects}</FilterProviders>
     </Flex>
   );
 }
