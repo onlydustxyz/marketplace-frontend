@@ -1,8 +1,6 @@
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
-import LabsPagination from "./labsPagination.tsx";
 import { ListProjectsParams, ProjectActions_listProjects } from "../../../actions/Projects/projects-queries.actions.ts";
-import { InfiniteScrollProvider } from "../../../actions/infinite-scroll/infinite-scroll.context.tsx";
 import React from "react";
 
 async function ProjectsPage() {
@@ -20,8 +18,23 @@ async function ProjectsPage() {
     });
 
     return {
-      ...projects,
-      data: projects.projects,
+      pagination: projects,
+      element: [
+        <></>,
+        // <LoadMore
+        //   key={projects.nextPageIndex}
+        //   onLoadMore={() => getProjects({ ...paramsObject, pageIndex: projects.nextPageIndex })}
+        //   loading={false}
+        // >
+        //   <>
+        //     {projects.projects.map(project => (
+        //       <p className="bg-red-300 p-8" key={project.name}>
+        //         {project.name}
+        //       </p>
+        //     ))}
+        //   </>
+        // </LoadMore>,
+      ],
     };
   }
 
@@ -31,14 +44,10 @@ async function ProjectsPage() {
     <Flex>
       <Typography variant="title-xl">ProjectsPage</Typography>
       <div className="flex grow flex-col gap-5">
-        {projects.data.map(project => (
-          <p className="bg-red-300 p-8" key={project.name}>
-            {project.name}
-          </p>
-        ))}
-        <InfiniteScrollProvider {...projects} onFetchMore={getProjects} pageSize={10}>
+        {projects.element}
+        {/* <InfiniteScrollProvider {...projects.pagination} onFetchMore={getProjects} pageSize={10}>
           <LabsPagination />
-        </InfiniteScrollProvider>
+        </InfiniteScrollProvider> */}
       </div>
     </Flex>
   );
