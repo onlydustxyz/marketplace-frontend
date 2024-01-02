@@ -14,7 +14,7 @@ export function LoadMore<PARAMS extends BasePaginatedParams = BasePaginatedParam
 }: LoadMoreProps<PARAMS>) {
   const [loading, setLoading] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
-  const [children, setChildren] = useState<JSX.Element[]>([]);
+  const [children, setChildren] = useState<JSX.Element>(<></>);
   const { T } = useIntl();
 
   const handleLoadMore = async () => {
