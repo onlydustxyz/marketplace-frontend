@@ -1,5 +1,5 @@
-import { IntlProvider } from "../../src/hooks/useIntl.tsx";
+import MigrationProviders from "./Providers.tsx";
 
 export default function MigrationLayout({ children }: { children: React.ReactNode }) {
-  return <IntlProvider>{children}</IntlProvider>;
+  return <MigrationProviders>{children}</MigrationProviders>;
 }

@@ -1,18 +1,25 @@
+"use client";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
-import ProjectCard from "./components/project-card/project-card.tsx";
-import Projects from "./_temp-mock.ts";
+import React from "react";
+import ProjectApi from "src/api/Project/index.ts";
+import { ShowMore } from "src/components/Table/ShowMore";
+import ProjectCard from "./components/project-card/project-card";
 
 function ProjectsPage() {
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    ProjectApi.queries.useInfiniteList({});
+
+  const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
   return (
-    <Flex>
+    <Flex direction="col">
       <Typography variant="title-xl">ProjectsPage</Typography>
       <div className="flex grow flex-col gap-5">
-        {Projects.map((project, index) => {
-          const isFirstHiringProject = index === 0 && project.hiring;
-          return <ProjectCard key={index} project={project} isFirstHiringProject={isFirstHiringProject} />;
-        })}
+        {projects.map(project => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
       </div>
+      {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
     </Flex>
   );
 }

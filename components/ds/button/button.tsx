@@ -5,7 +5,8 @@ import { buttonPrimaryVariants } from "./variants/button-primary.variants";
 import { buttonSecondaryVariants } from "./variants/button-secondary.variants";
 import { buttonTertiaryVariants } from "./variants/button-tertiary.variants";
 
-interface ButtonProps extends PropsWithChildren, ButtonVariants {
+type HtmlButton = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type">;
+interface ButtonProps extends PropsWithChildren, ButtonVariants, HtmlButton {
   htmlType?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   className?: string;
 }
@@ -22,6 +23,7 @@ export const Button: FC<ButtonProps> = ({ htmlType = "button", className, childr
         className
       )}
       disabled={disabled}
+      {...props}
       type={htmlType}
     >
       {children}
