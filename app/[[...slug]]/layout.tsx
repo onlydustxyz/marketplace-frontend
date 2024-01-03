@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { sharedMetadata } from "../shared-metadata.ts";
 import { ProjectsActions } from "../../actions_v1/Projects/projects.actions.ts";
-import { UsersActions } from "../../actions/Users/users.actions.ts";
+import { UsersActions } from "../../actions_v1/Users/users.actions.ts";
 
 export async function generateMetadata(
   props: { params: { slug: string[] } },
