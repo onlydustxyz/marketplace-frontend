@@ -9,5 +9,6 @@ type ClientIntlProps = {
 
 export default function Translate({ token, params }: ClientIntlProps) {
   const { T } = useIntl();
+
   return <>{T(token, params)}</>;
 }

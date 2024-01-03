@@ -4,9 +4,11 @@ import { Typography } from "@/components/layout/typography/typography";
 import { Flex } from "@/components/layout/flex/flex";
 import Translate from "@/components/layout/translate/translate";
 import { ClearAllButton } from "./clear-all-button";
-import { Tags } from "./tags/tags";
+import { FiltersDropDownContainer } from "./filters-drop-down-container";
+import { GlobalTags } from "./global-tags";
 
 export const Filters: FC = () => {
+  // TODO with request  query
   const isProjectLeader = true;
 
   return (
@@ -19,9 +21,9 @@ export const Filters: FC = () => {
         <ClearAllButton />
       </Flex>
 
-      {isProjectLeader && <Tags type="global" />}
+      {isProjectLeader && <GlobalTags />}
 
-      <Tags type="technologies" />
+      <FiltersDropDownContainer />
     </Card>
   );
 };

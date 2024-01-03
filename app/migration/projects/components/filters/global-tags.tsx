@@ -1,26 +1,30 @@
 "use client";
 
 import { SelectableTag } from "@/components/ds/selectable-tag/selectable-tag";
+import { Flex } from "@/components/layout/flex/flex";
 import { Icon } from "@/components/layout/icon/icon";
 import Translate from "@/components/layout/translate/translate";
 import { FC } from "react";
-import { GlobalTagsType } from "./tags.type";
 
 export const GlobalTags: FC = () => {
-  const handleClick = (type: GlobalTagsType) => {
-    console.log(`Global tag ${type} selected`);
+  const handleAllClick = () => {
+    console.log("Global tag all selected");
+  };
+
+  const handleMineClick = () => {
+    console.log("Global tag mine selected");
   };
 
   return (
-    <>
-      <SelectableTag selected={true} onClick={() => handleClick("all")}>
+    <Flex className="gap-2">
+      <SelectableTag selected={true} onClick={handleAllClick}>
         <Translate token="filter.ownership.all" />
       </SelectableTag>
 
-      <SelectableTag selected={false} onClick={() => handleClick("mine")}>
+      <SelectableTag selected={false} onClick={handleMineClick}>
         <Icon remixName="ri-star-line" />
         <Translate token="filter.ownership.mine" />
       </SelectableTag>
-    </>
+    </Flex>
   );
 };
