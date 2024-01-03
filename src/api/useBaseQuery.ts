@@ -4,6 +4,7 @@ import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 import { createFetchError, mapHttpStatusToString } from "./query.utils";
+import { getAccessToken } from "./getAccessToken.ts";
 
 interface UseBaseQueryOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
@@ -42,8 +43,12 @@ export function useBaseQuery<R = unknown>({
 
   return useQuery<R>({
     queryKey: [...(tags || []), resourcePath, queryParams, isImpersonating, isValidImpersonation, isLoggedIn],
-    queryFn: () =>
-      fetch(getEndpointUrl({ resourcePath, queryParams }), options)
+    queryFn: async () => {
+      console.log("start retrievedAccessToken ===>");
+      const retrievedAccessToken = await getAccessToken();
+      console.log("end retrievedAccessToken ===>", retrievedAccessToken);
+
+      return fetch(getEndpointUrl({ resourcePath, queryParams }), options)
         .then(res => {
           if (res.ok) {
             return res.json();
@@ -59,8 +64,10 @@ export function useBaseQuery<R = unknown>({
           return data;
         })
         .catch(e => {
+          console.log("error ===>", e);
           throw e;
-        }),
+        });
+    },
     staleTime: 20000,
     gcTime: 0,
     refetchInterval: false,

@@ -10,7 +10,6 @@ import InvoiceSubmission from "./InvoiceSubmission";
 import { useContext, useMemo, useRef } from "react";
 import UseRewardsEmptyState from "./Empty";
 import { UserRewardsContext } from "./context/UserRewards";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 export enum RewardStatus {
   COMPLETE = "COMPLETE",
@@ -33,11 +32,11 @@ function SafeRewards() {
     [hasActiveFilters, filterRef, rewards]
   );
 
-  const { user, error, isLoading } = useUser();
-
-  console.log("user", user);
-  console.log("error", error);
-  console.log("isLoading", isLoading);
+  // const { user, error, isLoading } = useUser();
+  // const { user: clientUser } = useAuth0();
+  //
+  // console.log("user", user);
+  // console.log("clientUser", clientUser);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
