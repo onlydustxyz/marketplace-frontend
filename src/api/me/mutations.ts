@@ -90,6 +90,18 @@ const useUploadProfilePicture = ({ options = {} }: UseUploaderProps<{ url: strin
   });
 };
 
+const useMarkInvoicesAsReceived = ({ options = {} }: UseMutationProps<unknown, unknown, unknown>) => {
+  return useBaseMutation<unknown, unknown>({
+    resourcePath: API_PATH.ME_MARK_INVOICE_AS_RECEIVED,
+    method: "POST",
+    invalidatesTags: [
+      { queryKey: MeApi.tags.rewarded_pending_invoice(), exact: false },
+      { queryKey: MeApi.tags.rewards(), exact: false },
+    ],
+    ...options,
+  });
+};
+
 export default {
   useAcceptProjectLeaderInvitation,
   useClaimProject,
@@ -98,4 +110,5 @@ export default {
   useUpdateMe,
   useUpdateProfile,
   useUploadProfilePicture,
+  useMarkInvoicesAsReceived,
 };

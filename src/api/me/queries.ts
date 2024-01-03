@@ -150,6 +150,18 @@ const useGetMeRewardProjects = ({ options = {} }: UseQueryProps<UseGetMeRewardPr
   });
 };
 
+export type UseGetMePendingInvoices = components["schemas"]["MyRewardsListResponse"];
+const useGetMePendingInvoices = ({ options = {} }: UseQueryProps<UseGetMePendingInvoices, undefined>) => {
+  const { isLoggedIn } = useAuth();
+
+  return useBaseQuery<UseGetMePendingInvoices>({
+    resourcePath: API_PATH.ME_REWARDS_PENDING_INVOICE,
+    tags: ME_TAGS.rewarded_pending_invoice(),
+    ...options,
+    enabled: isLoggedIn && (options.enabled === undefined ? true : options.enabled),
+  });
+};
+
 export default {
   useGetMe,
   useMyRewardsInfiniteList,
@@ -158,6 +170,7 @@ export default {
   useMyContributedProjects,
   useMyContributedRepos,
   useGithubOrganizations,
+  useGetMePendingInvoices,
   useGetMyPayoutInfo,
   useGetMyProfileInfo,
   useGetMeRewardCurrencies,
