@@ -7,13 +7,13 @@ import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import config, { viewportConfig } from "src/config";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 import { useMediaQuery } from "usehooks-ts";
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
 import ProjectOption from "./ProjectOption";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface Props {
   expandable: boolean;
@@ -32,7 +32,7 @@ export default function View({
   pendingProjects,
   projects,
 }: Props) {
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated } = useAuth0();
   const { T } = useIntl();
   const navigate = useNavigate();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -117,7 +117,7 @@ export default function View({
             </NavLink>
           ))}
 
-          {!isLoggedIn ? (
+          {!isAuthenticated ? (
             <div className="border-t border-card-border-medium pt-4 text-base xl:hidden">
               <GithubLink variant={GithubLinkVariant.GreyNoise} />
             </div>

@@ -9,12 +9,13 @@ import FeedbackButton from "./FeedbackButton";
 import { useIntl } from "src/hooks/useIntl";
 import CompletionBar from "src/components/CompletionBar";
 import { useOnboarding } from "src/App/OnboardingProvider";
-import { useAuth } from "src/hooks/useAuth";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { GithubStatusBanner } from "./GithubStatusBanner";
 import { IMAGES } from "src/assets/img";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "../../../utils/getGithubUserIdFromSub.ts";
 
 interface HeaderViewProps {
   menuItems: {
@@ -23,7 +24,6 @@ interface HeaderViewProps {
     [RoutePaths.Rewards]?: string;
   };
   selectedMenuItem: string;
-  isLoggedIn: boolean;
   impersonating?: boolean;
   profileCompletionScore?: number;
 }
@@ -31,13 +31,13 @@ interface HeaderViewProps {
 export default function HeaderView({
   menuItems,
   selectedMenuItem,
-  isLoggedIn,
   impersonating = false,
   profileCompletionScore,
 }: HeaderViewProps) {
   const testing = process.env.NODE_ENV === "test";
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
+  const { user, isAuthenticated } = useAuth0();
+  const githubUserId = getGithubUserIdFromSub(user?.sub);
   const { onboardingInProgress } = useOnboarding();
   const [openContributorProfilePanel] = useStackContributorProfile();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -89,7 +89,7 @@ export default function HeaderView({
             <div className="flex flex-row items-center justify-end gap-4">
               {isXl ? (
                 <>
-                  {isLoggedIn && !testing ? <FeedbackButton /> : null}
+                  {isAuthenticated && !testing ? <FeedbackButton /> : null}
                   {!onboardingInProgress &&
                   profileCompletionScore !== undefined &&
                   profileCompletionScore < 95 &&
@@ -112,7 +112,7 @@ export default function HeaderView({
                   ) : null}
                 </>
               ) : null}
-              <div className="flex text-base text-white">{!isLoggedIn ? <GithubLink /> : <ProfileButton />}</div>
+              <div className="flex text-base text-white">{!isAuthenticated ? <GithubLink /> : <ProfileButton />}</div>
             </div>
           </div>
         </div>

@@ -18,25 +18,19 @@ import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSort
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
+import { useAuth0 } from "@auth0/auth0-react";
 
 type Props = {
   avatarUrl: string | null;
   login: string;
-  logout: () => void;
   isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
 };
 
-export default function ViewMobile({
-  avatarUrl,
-  logout,
-  isMissingPayoutSettingsInfo,
-  githubUserId,
-  hideProfileItems,
-}: Props) {
+export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, githubUserId, hideProfileItems }: Props) {
   const { T } = useIntl();
-
+  const { logout } = useAuth0();
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
   const [openPayoutInfo] = useStackPayoutInfo();
@@ -143,7 +137,12 @@ export default function ViewMobile({
               <div>{T("navbar.separator")}</div>
               <button onClick={openPrivacyPolicy}>{T("navbar.privacyPolicy")}</button>
             </div>
-            <Button type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={logout} data-testid="logout-button">
+            <Button
+              type={ButtonType.Secondary}
+              size={ButtonSize.Xs}
+              onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+              data-testid="logout-button"
+            >
               <LogoutBoxRLine className="border-greyscale-50 text-sm" />
               {T("navbar.logout")}
             </Button>
