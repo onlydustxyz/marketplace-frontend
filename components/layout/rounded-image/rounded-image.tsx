@@ -25,7 +25,7 @@ const imageVariant = tv({
       xl: "h-12 w-12",
     },
     rounding: {
-      corners: "rounded-md", // Adjust these classes as needed
+      corners: "rounded-md",
       circle: "rounded-full",
     },
   },
