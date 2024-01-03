@@ -1,13 +1,26 @@
+"use client";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 import React from "react";
-import PageClient from "./page-client.tsx";
+import ProjectApi from "src/api/Project/index.ts";
+import { ShowMore } from "src/components/Table/ShowMore";
 
-async function ProjectsPage() {
+function ProjectsPage() {
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    ProjectApi.queries.useInfiniteList({});
+
+  const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
   return (
-    <Flex>
+    <Flex direction="col">
       <Typography variant="title-xl">ProjectsPage</Typography>
-      <PageClient />
+      <div className="flex grow flex-col gap-5">
+        {projects.map(project => (
+          <p className="bg-green-300 p-8" key={project.name}>
+            {project.name}
+          </p>
+        ))}
+      </div>
+      {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
     </Flex>
   );
 }
