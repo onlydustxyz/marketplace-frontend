@@ -14,8 +14,11 @@ export async function generateMetadata(
     const project = await ProjectsActions.queries.retrieveBySlug(params.slug[1]);
     return {
       ...sharedMetadata,
+      title: `${project.name} - OnlyDust`,
+      description: project.shortDescription || sharedMetadata.description,
       openGraph: {
         ...sharedMetadata.openGraph,
+        description: project.shortDescription || sharedMetadata.openGraph?.description,
         title: `${project.name} - OnlyDust`,
         images: [
           {
@@ -28,7 +31,6 @@ export async function generateMetadata(
       },
       twitter: {
         ...sharedMetadata.twitter,
-        title: `${project.name} - OnlyDust`,
         images: [
           {
             url: `${process.env.NEXT_PUBLIC_BASE_URL}/metadata/p/${project.slug}/opengraph-image`,
@@ -47,7 +49,6 @@ export async function generateMetadata(
       ...sharedMetadata,
       openGraph: {
         ...sharedMetadata.openGraph,
-        title: `${user.login} - OnlyDust`,
         images: [
           {
             url: `${process.env.NEXT_PUBLIC_BASE_URL}/metadata/u/${user.login}/opengraph-image`,
@@ -59,7 +60,6 @@ export async function generateMetadata(
       },
       twitter: {
         ...sharedMetadata.twitter,
-        title: `${user.login} - OnlyDust`,
         images: [
           {
             url: `${process.env.NEXT_PUBLIC_BASE_URL}/metadata/u/${user.login}/opengraph-image`,

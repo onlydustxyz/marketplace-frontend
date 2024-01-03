@@ -5,16 +5,11 @@ import { useIntl } from "src/hooks/useIntl";
 import { BIC_REGEXP } from "src/utils/regex";
 import IBANParser from "iban";
 import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
-import { PreferredMethod } from "src/types";
-import { ProfileType } from "src/App/Stacks/PayoutInfoSidePanel/types";
 
 export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
-  const { watch, control, trigger, clearErrors } = useFormContext();
-  const { missingSepaAccount, missingUsdcWallet } = requiredFields || {};
-
-  const [iban, bic, usdPreferredMethod, profileType] = watch(["iban", "bic", "usdPreferredMethod", "profileType"]);
-  const isFiatRequired = profileType === ProfileType.Company && usdPreferredMethod === PreferredMethod.Fiat;
+  const { control, trigger, clearErrors } = useFormContext();
+  const { missingSepaAccount } = requiredFields || {};
 
   return (
     <Flex className="flex-row gap-5">
@@ -29,12 +24,12 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
               name="iban"
               placeholder={T("profile.form.iban")}
               options={{
-                required: { value: !!bic, message: T("profile.form.ibanRequired") },
+                required: { value: !!value, message: T("profile.form.ibanRequired") },
                 validate: value => {
                   return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
                 },
               }}
-              showRequiredError={(missingSepaAccount || missingUsdcWallet) && isFiatRequired}
+              showRequiredError={missingSepaAccount}
               value={value && IBANParser.printFormat(value)}
               onChange={onChange}
               onBlur={() => {
@@ -59,12 +54,12 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
               placeholder={T("profile.form.bic")}
               options={{
                 required: {
-                  value: !!iban,
+                  value: !!value,
                   message: T("profile.form.bicRequired"),
                 },
                 pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
               }}
-              showRequiredError={(missingSepaAccount || missingUsdcWallet) && isFiatRequired}
+              showRequiredError={missingSepaAccount}
               value={value}
               onChange={onChange}
               onBlur={() => {
