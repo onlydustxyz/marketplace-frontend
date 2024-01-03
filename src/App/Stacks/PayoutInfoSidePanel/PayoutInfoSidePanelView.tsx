@@ -98,11 +98,11 @@ export default function PayoutInfoSidePanel({
 
           <ProfileContent title={T("profile.form.payoutCurrenciesType")}>
             <OtherCryptoFields {...{ requiredFields }} />
-            {showIbanAndBic && (
+            {showIbanAndBic ? (
               <div className="mt-6">
                 <FiatFields {...{ requiredFields }} />
               </div>
-            )}
+            ) : null}
           </ProfileContent>
         </Card>
 
