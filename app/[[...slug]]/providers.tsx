@@ -17,6 +17,7 @@ import { ToasterProvider } from "src/hooks/useToaster";
 import { TokenSetProvider } from "src/hooks/useTokenSet.tsx";
 import { StackProvider } from "src/libs/react-stack";
 import ApolloWrapper from "src/providers/ApolloWrapper";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 const App = dynamic(() => import("src/App"), { ssr: false });
 
@@ -27,36 +28,45 @@ export default function Providers() {
   return (
     <IntlProvider>
       <BrowserRouter>
-        <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
-          <SessionProvider>
-            <ImpersonationClaimsProvider>
-              <TokenSetProvider>
-                <ToasterProvider>
-                  <ApolloWrapper>
-                    <QueryClientProvider client={queryClient}>
-                      <AuthProvider>
-                        <StackProvider>
-                          <SidePanelStackProvider>
-                            <SidePanelProvider>
-                              {config.MAINTENANCE ? (
-                                <Maintenance />
-                              ) : (
-                                <OnboardingProvider>
-                                  <App />
-                                  <Stacks />
-                                </OnboardingProvider>
-                              )}
-                            </SidePanelProvider>
-                          </SidePanelStackProvider>
-                        </StackProvider>
-                      </AuthProvider>
-                    </QueryClientProvider>
-                  </ApolloWrapper>
-                </ToasterProvider>
-              </TokenSetProvider>
-            </ImpersonationClaimsProvider>
-          </SessionProvider>
-        </ErrorBoundary>
+        <Auth0Provider
+          domain={process.env.NEXT_PUBLIC_AUTH0_PROVIDER_DOMAIN ?? ""}
+          clientId="gfOdiFOltYYUMYeBzNpeNAjMHmb9fWoV"
+          authorizationParams={{
+            redirect_uri: window.location.origin,
+            connection: process.env.NEXT_PUBLIC_AUTH0_DEFAULT_CONNECTION_NAME,
+          }}
+        >
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
+            <SessionProvider>
+              <ImpersonationClaimsProvider>
+                <TokenSetProvider>
+                  <ToasterProvider>
+                    <ApolloWrapper>
+                      <QueryClientProvider client={queryClient}>
+                        <AuthProvider>
+                          <StackProvider>
+                            <SidePanelStackProvider>
+                              <SidePanelProvider>
+                                {config.MAINTENANCE ? (
+                                  <Maintenance />
+                                ) : (
+                                  <OnboardingProvider>
+                                    <App />
+                                    <Stacks />
+                                  </OnboardingProvider>
+                                )}
+                              </SidePanelProvider>
+                            </SidePanelStackProvider>
+                          </StackProvider>
+                        </AuthProvider>
+                      </QueryClientProvider>
+                    </ApolloWrapper>
+                  </ToasterProvider>
+                </TokenSetProvider>
+              </ImpersonationClaimsProvider>
+            </SessionProvider>
+          </ErrorBoundary>
+        </Auth0Provider>
       </BrowserRouter>
     </IntlProvider>
   );

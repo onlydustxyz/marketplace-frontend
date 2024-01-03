@@ -24,7 +24,6 @@ interface HeaderViewProps {
   };
   selectedMenuItem: string;
   isLoggedIn: boolean;
-  onLogin?: () => void;
   impersonating?: boolean;
   profileCompletionScore?: number;
 }
@@ -33,7 +32,6 @@ export default function HeaderView({
   menuItems,
   selectedMenuItem,
   isLoggedIn,
-  onLogin,
   impersonating = false,
   profileCompletionScore,
 }: HeaderViewProps) {
@@ -114,9 +112,7 @@ export default function HeaderView({
                   ) : null}
                 </>
               ) : null}
-              <div className="flex text-base text-white">
-                {!isLoggedIn ? <GithubLink onClick={onLogin} /> : <ProfileButton />}
-              </div>
+              <div className="flex text-base text-white">{!isLoggedIn ? <GithubLink /> : <ProfileButton />}</div>
             </div>
           </div>
         </div>
