@@ -1,16 +1,8 @@
 "use client";
-import React, { PropsWithChildren } from "react";
-import SearchBar from "./components/search-bar/search-bar.tsx";
-import { useFilterContext } from "../../../actions/context/Filters/filters.context.tsx";
+import React from "react";
 
-function PageClient({ children }: PropsWithChildren) {
-  const { filteredChildren } = useFilterContext();
-  return (
-    <div className="flex grow flex-col gap-5">
-      <SearchBar />
-      {filteredChildren ? filteredChildren : children}
-    </div>
-  );
+function PageClient() {
+  return <div className="flex grow flex-col gap-5">Client page</div>;
 }
 
 export default PageClient;

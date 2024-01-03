@@ -3,8 +3,6 @@ import { Typography } from "components/layout/typography/typography";
 import { ListProjectsParams, ProjectActions_listProjects } from "../../../actions/Projects/projects-queries.actions.ts";
 import React from "react";
 import { LoadMore } from "@/components/layout/api/load-more/load-more.tsx";
-import { FilterProviders } from "../../../actions/context/Filters/filters.context.tsx";
-import SearchBar from "./components/search-bar/search-bar.tsx";
 import PageClient from "./page-client.tsx";
 import ReactMarkdown from "react-markdown";
 import children = ReactMarkdown.propTypes.children;
@@ -50,9 +48,8 @@ async function ProjectsPage() {
   return (
     <Flex>
       <Typography variant="title-xl">ProjectsPage</Typography>
-      <FilterProviders getPage={getProjects} pageSize={10}>
-        <PageClient>{projects}</PageClient>
-      </FilterProviders>
+      {projects}
+      <PageClient />
     </Flex>
   );
 }
