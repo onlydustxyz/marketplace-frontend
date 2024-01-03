@@ -20,7 +20,7 @@ export const cardVariants = tv({
     border: {
       light: "border border-greyscale-50/8",
       medium: "border border-greyscale-50/12",
-      multiColor: "border-multicolored before:rounded-2xl",
+      multiColor: "border-multicolored before:rounded-2xl before:pointer-events-none",
     },
   },
   defaultVariants: {

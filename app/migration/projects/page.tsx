@@ -14,7 +14,7 @@ function ProjectsPage() {
   return (
     <Flex direction="col">
       <Typography variant="title-xl">ProjectsPage</Typography>
-      <div className="flex grow flex-col gap-5">
+      <div className="flex w-[840px] grow flex-col gap-5">
         {projects.map(project => (
           <ProjectCard key={project.id} project={project} />
         ))}

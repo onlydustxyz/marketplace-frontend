@@ -1,8 +1,10 @@
-import { Leader } from "../../types/projects.types.ts";
+"use client";
+import { Leader } from "../../../types/projects.types.ts";
 import Contributor from "@/components/features/Contributor";
-import RoundedImage from "@/components/layout/rounded-image/rounded-image";
+import RoundedImage from "@/components/layout/rounded-image/rounded-image.tsx";
 import Translate from "@/components/layout/translate/translate.tsx";
 import React from "react";
+import { TooltipPosition, withTooltip } from "../../../../../../src/components/Tooltip";
 
 export default function Leaders({ leaders }: { leaders: Leader[] }) {
   const formatLeadNames = (leaders: Leader[]) => leaders.map(leader => leader.login || "").join(", ");
@@ -32,7 +34,7 @@ export default function Leaders({ leaders }: { leaders: Leader[] }) {
           alt={leader.login || ""}
           size="xxs"
           key={leader.id}
-          src={leader.avatarUrl ? `${process.env.CLOUDFLARE_RESIZE_W_100_PREFIX}${leader.avatarUrl}` : ""}
+          src={leader.avatarUrl ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_W_100_PREFIX}${leader.avatarUrl}` : ""} // TODO refactor this
         />
       ))}
     </div>

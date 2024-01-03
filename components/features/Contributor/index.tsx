@@ -4,7 +4,7 @@ import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { ContributorT } from "src/types";
 import { cn } from "src/utils/cn";
-import { Avatar } from "../New/Avatar";
+import { Avatar } from "../../../src/components/New/Avatar.tsx";
 
 type Props = {
   contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered">;
