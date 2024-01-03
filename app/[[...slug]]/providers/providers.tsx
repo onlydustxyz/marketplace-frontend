@@ -17,7 +17,7 @@ import { ToasterProvider } from "src/hooks/useToaster";
 import { TokenSetProvider } from "src/hooks/useTokenSet.tsx";
 import { StackProvider } from "src/libs/react-stack";
 import ApolloWrapper from "src/providers/ApolloWrapper";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { Auth0ProviderWithNavigate } from "./auth0-provider-with-navigate.tsx";
 
 const App = dynamic(() => import("src/App"), { ssr: false });
 
@@ -28,14 +28,7 @@ export default function Providers() {
   return (
     <IntlProvider>
       <BrowserRouter>
-        <Auth0Provider
-          domain={process.env.NEXT_PUBLIC_AUTH0_PROVIDER_DOMAIN ?? ""}
-          clientId="gfOdiFOltYYUMYeBzNpeNAjMHmb9fWoV"
-          authorizationParams={{
-            redirect_uri: window.location.origin,
-            connection: process.env.NEXT_PUBLIC_AUTH0_DEFAULT_CONNECTION_NAME,
-          }}
-        >
+        <Auth0ProviderWithNavigate>
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
             <SessionProvider>
               <ImpersonationClaimsProvider>
@@ -66,7 +59,7 @@ export default function Providers() {
               </ImpersonationClaimsProvider>
             </SessionProvider>
           </ErrorBoundary>
-        </Auth0Provider>
+        </Auth0ProviderWithNavigate>
       </BrowserRouter>
     </IntlProvider>
   );

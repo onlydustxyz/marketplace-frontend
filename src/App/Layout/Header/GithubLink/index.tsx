@@ -11,11 +11,16 @@ export enum Variant {
 export default function GithubLink({ variant = Variant.Default }: { variant?: Variant }) {
   const { T } = useIntl();
   const { loginWithRedirect } = useAuth0();
-  // const getLoginUrl = useLoginUrl();
-  // const login_url = useMemo(() => getLoginUrl(window.location.origin), []);
+  const handleLogin = async () => {
+    await loginWithRedirect({
+      appState: {
+        returnTo: `${window.location.origin}/${window.location.pathname}`,
+      },
+    });
+  };
 
   return (
-    <button className="z-10" onClick={() => loginWithRedirect()} data-testid="github-signin-button">
+    <button className="z-10" onClick={handleLogin} data-testid="github-signin-button">
       <div className="m-px w-fit overflow-hidden rounded-full p-px blur-0 transition duration-300 hover:m-0 hover:p-0.5">
         <div
           className={cn(

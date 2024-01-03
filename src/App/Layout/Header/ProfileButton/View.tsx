@@ -25,6 +25,14 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
   const { T } = useIntl();
   const { logout } = useAuth0();
 
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
+
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [openPayoutInfo] = useStackPayoutInfo();
@@ -105,7 +113,7 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
                 <Button
                   type={ButtonType.Secondary}
                   size={ButtonSize.Xs}
-                  onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+                  onClick={handleLogout}
                   data-testid="logout-button"
                 >
                   <LogoutBoxRLine className="border-greyscale-50 text-sm" />

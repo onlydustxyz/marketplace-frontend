@@ -8,7 +8,7 @@ import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import "src/datadog.ts";
 
-const Providers = dynamic(() => import("./providers.tsx"), { ssr: false });
+const Providers = dynamic(() => import("./providers/providers.tsx"), { ssr: false });
 
 export default function Page() {
   return <Providers />;
