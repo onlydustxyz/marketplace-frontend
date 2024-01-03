@@ -23,7 +23,6 @@ const ProfileButton = () => {
     githubUserId,
     avatarUrl,
     login,
-    logout,
     isMissingPayoutSettingsInfo: payoutSettingsInvalid && !onboardingInProgress,
     hideProfileItems: onboardingInProgress,
   };
