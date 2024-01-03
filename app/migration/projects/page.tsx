@@ -4,6 +4,7 @@ import { Typography } from "components/layout/typography/typography";
 import React from "react";
 import ProjectApi from "src/api/Project/index.ts";
 import { ShowMore } from "src/components/Table/ShowMore";
+import ProjectCard from "./components/project-card/project-card";
 
 function ProjectsPage() {
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -15,9 +16,7 @@ function ProjectsPage() {
       <Typography variant="title-xl">ProjectsPage</Typography>
       <div className="flex grow flex-col gap-5">
         {projects.map(project => (
-          <p className="bg-green-300 p-8" key={project.name}>
-            {project.name}
-          </p>
+          <ProjectCard key={project.id} project={project} />
         ))}
       </div>
       {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
