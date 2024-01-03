@@ -7,7 +7,6 @@ export async function generateMetadata(
   props: { params: { slug: string[] } },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  console.log("layout on ...slug : params", props);
   const { params } = props;
   /** project metadata */
   if (params?.slug?.length > 1 && params?.slug[0] === "p" && !!params?.slug[1]) {

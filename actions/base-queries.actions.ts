@@ -1,8 +1,28 @@
 import { createFetchError, mapHttpStatusToString } from "../src/api/query.utils";
 import { revalidateTag as NextRevalidateTag } from "next/cache";
-import { BaseQueriesOptions } from "./type.actions.ts";
+import { BaseQueriesDefaultParams, BaseQueriesOptions } from "./type.actions.ts";
 
 const defaultRevalidateValue = 60;
+
+function convertParamsToURLSearchParams(params?: BaseQueriesDefaultParams) {
+  if (!params) return undefined;
+  return Object.entries(params).reduce((acc, [key, value]) => {
+    if (value !== undefined) {
+      if (typeof value === "string" || typeof value === "number") {
+        acc.append(key, value.toString());
+      }
+      if (typeof value === "boolean") {
+        if (value) {
+          acc.append(key, "true");
+        } else {
+          acc.append(key, "false");
+        }
+      }
+    }
+    return acc;
+  }, new URLSearchParams());
+}
+
 /**
  * Performs base queries to a specified URL with provided options.
  * @template RESPONSE - The expected response type.
@@ -28,12 +48,12 @@ export async function BaseQueries<RESPONSE extends object>(
   options: BaseQueriesOptions | undefined
 ): Promise<RESPONSE> {
   const { provideTag, revalidate, revalidateTag, onSuccess, onError, ...baseOptions } = options || {};
-
-  const data = await fetch(url, {
+  const queriesParams = convertParamsToURLSearchParams(options?.params);
+  const data = await fetch(`${url}${queriesParams ? `?${queriesParams}` : ""}`, {
     cache: "no-store",
     ...(baseOptions || {}),
     next: {
-      revalidate: revalidate || defaultRevalidateValue,
+      ...(revalidate ? { revalidate: revalidate || defaultRevalidateValue } : {}),
       tags: provideTag,
     },
   });
