@@ -40,13 +40,13 @@ export default function InvoiceSubmission() {
     return null;
   }
 
-  //   if (
-  //     !isRewardsPendingInvoiceLoading &&
-  //     !isRewardsPendingInvoiceError &&
-  //     rewardsPendingInvoice?.rewards?.length === 0
-  //   ) {
-  //     return null;
-  //   }
+  if (
+    !isRewardsPendingInvoiceLoading &&
+    !isRewardsPendingInvoiceError &&
+    rewardsPendingInvoice?.rewards?.length === 0
+  ) {
+    return null;
+  }
 
   return (
     <View
