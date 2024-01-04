@@ -8,6 +8,7 @@ import Loader from "src/components/Loader";
 
 export const AUTH_CODE_QUERY_KEY = "refreshToken";
 
+// TODO find out if this page is needed after Auth0 migration
 export default function Login() {
   const { login, isLoggedIn } = useAuth();
   const [searchParams] = useSearchParams();

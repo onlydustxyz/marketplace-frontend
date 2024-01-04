@@ -1,5 +1,4 @@
 import { QueryObserverOptions, QueryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "src/hooks/useAuth";
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
@@ -38,12 +37,12 @@ export function useBaseQuery<R = unknown>({
   const queryClient = useQueryClient();
 
   const { enabled, ...restQueryOptions } = queryOptions;
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated } = useAuth0();
   const { isImpersonating, isValidImpersonation } = useHttpOptions(method);
   const { getIdTokenClaims } = useAuth0();
 
   return useQuery<R>({
-    queryKey: [...(tags || []), resourcePath, queryParams, isImpersonating, isValidImpersonation, isLoggedIn],
+    queryKey: [...(tags || []), resourcePath, queryParams, isImpersonating, isValidImpersonation, isAuthenticated],
     queryFn: async () => {
       const { options } = await getHttpOptions({ method, getIdToken: getIdTokenClaims });
       return fetch(getEndpointUrl({ resourcePath, queryParams }), options)
