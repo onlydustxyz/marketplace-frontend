@@ -1,13 +1,10 @@
+// eslint-disable @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = require("fs/promises");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const prettier = require("prettier");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const i = require("@inquirer/prompts");
-// @ts-ignore
-// import * as prettier from "prettier";
-
-const readline = require("readline/promises").createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
 
 type Informations = {
   folder: string;
@@ -21,10 +18,6 @@ type Informations = {
   };
 };
 
-// function capitalizeFirstLetter(str: string) {
-//   return str.charAt(0).toUpperCase() + str.slice(1);
-// }
-//
 function kebabToPascal(str: string) {
   const words = str.split("-");
   const pascalCaseWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
@@ -45,8 +38,6 @@ async function exists(path: string) {
     return false;
   }
 }
-
-// components/features
 
 async function createIndex({ name, path, PascalName }: Informations) {
   await fs.appendFile(
@@ -159,9 +150,6 @@ async function createComponents() {
     camelName: kebabToCamel(name),
     options: { loading, variant },
   });
-
-  console.log("folder", folder, "name", name, "path", path);
-  readline.close();
 }
 
 createComponents();
