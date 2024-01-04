@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
@@ -35,6 +35,7 @@ import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import Loader from "src/components/Loader";
 import RewardLoader from "./Loaders/RewardsLoader";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
+import AuthenticationGuard from "../../components/features/guards/authentication-guard.tsx";
 
 export enum RoutePaths {
   Projects = "/",
@@ -106,21 +107,29 @@ function App() {
         {
           index: true,
           element: (
-            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-              <Suspense fallback={<Skeleton variant="projectRewards" />}>
-                <ProjectDetailsRewardsList />
-              </Suspense>
-            </ProtectedRoute>
+            <AuthenticationGuard
+              component={
+                <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+                  <Suspense fallback={<Skeleton variant="projectRewards" />}>
+                    <ProjectDetailsRewardsList />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
           ),
         },
         {
           path: ProjectRewardsRoutePaths.New,
           element: (
-            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-              <Suspense fallback={<Skeleton variant="projectRewardForm" />}>
-                <ProjectDetailsRewardForm />
-              </Suspense>
-            </ProtectedRoute>
+            <AuthenticationGuard
+              component={
+                <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+                  <Suspense fallback={<Skeleton variant="projectRewardForm" />}>
+                    <ProjectDetailsRewardForm />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
           ),
         },
       ],
@@ -128,23 +137,34 @@ function App() {
     {
       path: ProjectRoutePaths.Insights,
       element: (
-        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProtectedByFlag isValid={process.env.NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS === "true"}>
-            <Suspense fallback={<InsightSkeleton />}>
-              <ProjectDetailsInsights />
-            </Suspense>
-          </ProtectedByFlag>
-        </ProtectedRoute>
+        <AuthenticationGuard
+          component={
+            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+              <ProtectedByFlag isValid={process.env.NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS === "true"}>
+                <Suspense fallback={<InsightSkeleton />}>
+                  <ProjectDetailsInsights />
+                </Suspense>
+              </ProtectedByFlag>
+            </ProtectedRoute>
+          }
+        />
       ),
     },
     {
       path: ProjectRoutePaths.Edit,
       element: (
-        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
-            <ProjectDetailsEdit />
-          </ProtectedByGithub>
-        </ProtectedRoute>
+        <AuthenticationGuard
+          component={
+            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
+              <ProtectedByGithub
+                requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
+                redirectTo={RoutePaths.ProjectDetails}
+              >
+                <ProjectDetailsEdit />
+              </ProtectedByGithub>
+            </ProtectedRoute>
+          }
+        />
       ),
     },
   ];
@@ -179,19 +199,27 @@ function App() {
         {
           path: RoutePaths.Rewards,
           element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <Suspense fallback={<RewardLoader />}>
-                <Rewards />
-              </Suspense>
-            </ProtectedRoute>
+            <AuthenticationGuard
+              component={
+                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+                  <Suspense fallback={<RewardLoader />}>
+                    <Rewards />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
           ),
         },
         {
           path: RoutePaths.Contributions,
           element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <Contributions />
-            </ProtectedRoute>
+            <AuthenticationGuard
+              component={
+                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+                  <Contributions />
+                </ProtectedRoute>
+              }
+            />
           ),
         },
         {
@@ -201,14 +229,18 @@ function App() {
         {
           path: RoutePaths.ProjectCreation,
           element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <ProtectedByGithub
-                requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
-                redirectTo={RoutePaths.ProjectCreation}
-              >
-                <ProjectCreation />
-              </ProtectedByGithub>
-            </ProtectedRoute>
+            <AuthenticationGuard
+              component={
+                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+                  <ProtectedByGithub
+                    requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
+                    redirectTo={RoutePaths.ProjectCreation}
+                  >
+                    <ProjectCreation />
+                  </ProtectedByGithub>
+                </ProtectedRoute>
+              }
+            />
           ),
         },
         {

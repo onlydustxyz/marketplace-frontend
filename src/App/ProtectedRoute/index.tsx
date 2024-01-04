@@ -26,11 +26,7 @@ export default function ProtectedRoute({
       return false;
     }
 
-    if (requiredRole === CustomUserRole.ProjectLead && params.projectKey && !isProjectLeader) {
-      return false;
-    }
-
-    return true;
+    return !(requiredRole === CustomUserRole.ProjectLead && params.projectKey && !isProjectLeader);
   };
 
   if (isLoading) {
