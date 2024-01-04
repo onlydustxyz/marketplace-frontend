@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Card from "@/components/ds/card/card.tsx";
 import { cn } from "../../../../../src/utils/cn.ts";
 import HiringTag from "./hiring-tag/hiring-tag.tsx";
@@ -11,17 +11,38 @@ import ContributorsCounter from "./contributors-counter/contributors-counter.tsx
 import Sponsors from "./sponsors/sponsors.tsx";
 import { ProjectCardProps } from "./project-card.types.ts";
 import { Flex } from "@/components/layout/flex/flex.tsx";
+import ProjectLeadInvitationBanner from "@/components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.tsx";
+import { useIntl } from "../../../../../src/hooks/useIntl.tsx";
+import { ProjectMissingGithubBanner } from "@/components/features/project-missing-github-banner/project-missing-github-banner.tsx";
 
-export default function ProjectCard({
-  project,
-  isFirstHiringProject = false,
-  githubAppBanner,
-  isUserProjectLead,
-  invitedBanner,
-}: ProjectCardProps) {
+export default function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: ProjectCardProps) {
+  const { T } = useIntl();
   const { hiring, isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
   const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
-  const isPrivate = project.visibility === "PRIVATE"; // TODO move this logic in global utils
+  const isPrivate = project.visibility === "PRIVATE";
+
+  const InviteBanner = useMemo(() => {
+    if (project.isInvitedAsProjectLead) {
+      return (
+        <ProjectLeadInvitationBanner
+          projectName={project.name}
+          on="cards"
+          size={"s"}
+          btnLabel={T("project.projectLeadInvitation.view")}
+        />
+      );
+    }
+
+    return null;
+  }, [project]);
+
+  const MissingGithubBanner = useMemo(() => {
+    if (isUserProjectLead && project.isMissingGithubAppInstallation) {
+      return <ProjectMissingGithubBanner slug={project.slug} />;
+    }
+
+    return null;
+  }, [project, isUserProjectLead]);
 
   return (
     <Card
@@ -35,13 +56,12 @@ export default function ProjectCard({
     >
       <HiringTag isHiring={hiring} isErrorVariant={isErrorVariant} />
       <Flex direction="col" className="gap-5">
-        <Flex direction="row" className="items-stretch gap-6 divide-stone-100/8 lg:divide-x">
+        <Flex direction="col" className="items-stretch gap-6 divide-stone-100/8 lg:flex-row lg:gap-6 lg:divide-x">
           <Flex direction="col" className="min-w-0 basis-1/3 gap-y-5">
             <Highlights
               name={project.name}
               isPrivate={isPrivate}
               logoUrl={project.logoUrl}
-              // TODO REVAMP THIS COMPONENT
               leaders={<Leaders leaders={project.leaders} />}
             />
             <Technologies technologies={project.technologies} />
@@ -55,8 +75,8 @@ export default function ProjectCard({
             </Flex>
           </Flex>
         </Flex>
-        {invitedBanner ? invitedBanner : null}
-        {githubAppBanner ? githubAppBanner : null}
+        {InviteBanner}
+        {MissingGithubBanner}
       </Flex>
     </Card>
   );

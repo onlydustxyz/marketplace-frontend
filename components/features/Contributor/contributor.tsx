@@ -2,17 +2,18 @@ import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { IMAGES } from "src/assets/img";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import { ContributorT } from "src/types";
 import { cn } from "src/utils/cn";
 import { Avatar } from "../../../src/components/New/Avatar.tsx";
+import { ContributorProps } from "@/components/features/Contributor/contributor.type.ts";
 
-type Props = {
-  contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered">;
-  clickable?: boolean;
-  className?: string;
-};
-
-export default function Contributor({ contributor, clickable, className }: Props) {
+export default function Contributor({
+  githubUserId,
+  login,
+  isRegistered,
+  avatarUrl,
+  clickable,
+  className,
+}: ContributorProps) {
   const { T } = useIntl();
   const [open] = useStackContributorProfile();
 
@@ -26,24 +27,24 @@ export default function Contributor({ contributor, clickable, className }: Props
         clickable
           ? e => {
               e.preventDefault();
-              open({ githubUserId: contributor.githubUserId });
+              open({ githubUserId });
             }
           : undefined
       }
     >
-      {contributor.avatarUrl ? <Avatar src={contributor.avatarUrl} alt={contributor.login} size="5" /> : null}
+      {avatarUrl ? <Avatar src={avatarUrl} alt={login} size="5" /> : null}
 
       <span
         className={cn({
           "block truncate text-spacePurple-300 group-hover:underline": clickable,
         })}
       >
-        {contributor.login}
+        {login}
       </span>
 
-      {contributor.isRegistered ? (
+      {isRegistered ? (
         <img
-          id={`od-logo-${contributor.login}`}
+          id={`od-logo-${login}`}
           src={IMAGES.logo.original}
           className="w-3.5"
           loading="lazy"

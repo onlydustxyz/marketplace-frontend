@@ -48,7 +48,7 @@ export default function AllProjects({
 }: Props) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
-
+  console.log("githubUserId", githubUserId);
   const {
     projectFilter: { ownership, technologies, sponsors },
     clear: clearFilters,

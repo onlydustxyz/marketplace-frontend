@@ -1,16 +1,12 @@
-import { Leader } from "../../../types/projects.types.ts";
 import RoundedImage, { ImageSize } from "../../../../../../src/components/RoundedImage";
 import PrivateTag from "../../../../../../src/components/PrivateTag";
-import Leaders from "../leaders/leaders.tsx";
 import { ReactElement } from "react";
 
 type Props = {
-  // id: string;
   name: string;
   leaders: ReactElement;
   logoUrl: string;
   isPrivate: boolean;
-  // technologies: string[];
 };
 export default function Highlights({ name, logoUrl, isPrivate, leaders }: Props) {
   return (

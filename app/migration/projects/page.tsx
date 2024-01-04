@@ -6,15 +6,17 @@ import ProjectApi from "src/api/Project/index.ts";
 import { ShowMore } from "src/components/Table/ShowMore";
 import ProjectCard from "./components/project-card/project-card.tsx";
 import { isUserProjectLead } from "../../../src/utils/isUserProjectLead.ts";
-import ProjectLeadInvitationBanner from "@/components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.tsx";
-import { useIntl } from "../../../src/hooks/useIntl.tsx";
 
 function ProjectsPage() {
-  const { T } = useIntl();
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = ProjectApi.queries.useInfiniteList({});
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = ProjectApi.queries.useInfiniteList({
+    queryParams: [
+      ["mine", "true"],
+      ["sort", "RANK"],
+    ],
+  });
 
   // Todo use the retrieve user me query to get the github user id
-  const githubUserId = 123;
+  const githubUserId = 17259618;
 
   const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
   return (
@@ -26,16 +28,6 @@ function ProjectsPage() {
             key={project.id}
             project={project}
             isUserProjectLead={isUserProjectLead(project, githubUserId)}
-            invitedBanner={
-              project.isInvitedAsProjectLead && (
-                <ProjectLeadInvitationBanner
-                  projectName={project.name}
-                  on="cards"
-                  size={"s"}
-                  btnLabel={T("project.projectLeadInvitation.view")}
-                />
-              )
-            }
           />
         ))}
       </div>

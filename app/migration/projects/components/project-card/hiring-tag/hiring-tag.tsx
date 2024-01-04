@@ -11,7 +11,7 @@ type Props = {
 export default function HiringTag({ isErrorVariant, isHiring = false }: Props) {
   return isHiring ? (
     <header className="absolute -top-3.5 right-3.5">
-      <Tag size="small" borderColor={isErrorVariant ? "orange" : undefined}>
+      <Tag size="small" borderColor={isErrorVariant ? "orange" : undefined} className="bg-spaceBlue-900">
         <Icon remixName="ri-record-circle-line" size={12} />
         <Typography variant="body-xs">
           <Translate token="project.hiring" />
