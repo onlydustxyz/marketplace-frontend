@@ -14,7 +14,7 @@ export default function GithubLink({ variant = Variant.Default }: { variant?: Va
   const handleLogin = async () => {
     await loginWithRedirect({
       appState: {
-        returnTo: `${window.location.origin}/${window.location.pathname}`,
+        returnTo: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL,
       },
     });
   };

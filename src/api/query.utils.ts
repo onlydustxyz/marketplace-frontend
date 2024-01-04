@@ -1,4 +1,5 @@
 import { FetchError } from "./query.type";
+import { IdToken } from "@auth0/auth0-react";
 
 /**
  * Enum representing string values for various HTTP status codes.
@@ -51,3 +52,42 @@ export const createFetchError = (
   error.errorType = mapHttpStatusToString(res.status);
   return error;
 };
+
+type HttpOptionsTypeReturn = {
+  options: {
+    method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+    headers: {
+      Authorization?: string;
+      "Content-Type": string;
+      accept: string;
+    };
+  };
+};
+
+type HttpProps = {
+  getIdToken: () => Promise<IdToken | undefined>;
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+};
+
+export async function getHttpOptions({ getIdToken, method }: HttpProps): Promise<HttpOptionsTypeReturn> {
+  async function retrieveAccessToken() {
+    try {
+      return getIdToken();
+    } catch {
+      return null;
+    }
+  }
+
+  const idToken = await retrieveAccessToken();
+
+  const options = {
+    method,
+    headers: {
+      ...(idToken?.__raw ? { Authorization: `Bearer ${idToken?.__raw}` } : {}),
+      "Content-Type": "application/json",
+      accept: "application/json",
+    },
+  };
+
+  return { options };
+}

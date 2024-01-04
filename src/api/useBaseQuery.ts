@@ -3,7 +3,8 @@ import { useAuth } from "src/hooks/useAuth";
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
-import { createFetchError, mapHttpStatusToString } from "./query.utils";
+import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface UseBaseQueryOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
@@ -38,12 +39,14 @@ export function useBaseQuery<R = unknown>({
 
   const { enabled, ...restQueryOptions } = queryOptions;
   const { isLoggedIn } = useAuth();
-  const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
+  const { isImpersonating, isValidImpersonation } = useHttpOptions(method);
+  const { getIdTokenClaims } = useAuth0();
 
   return useQuery<R>({
     queryKey: [...(tags || []), resourcePath, queryParams, isImpersonating, isValidImpersonation, isLoggedIn],
-    queryFn: () =>
-      fetch(getEndpointUrl({ resourcePath, queryParams }), options)
+    queryFn: async () => {
+      const { options } = await getHttpOptions({ method, getIdToken: getIdTokenClaims });
+      return fetch(getEndpointUrl({ resourcePath, queryParams }), options)
         .then(res => {
           if (res.ok) {
             return res.json();
@@ -60,7 +63,8 @@ export function useBaseQuery<R = unknown>({
         })
         .catch(e => {
           throw e;
-        }),
+        });
+    },
     staleTime: 20000,
     gcTime: 0,
     refetchInterval: false,

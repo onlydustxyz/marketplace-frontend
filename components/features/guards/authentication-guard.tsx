@@ -1,11 +1,11 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import React, { ComponentType } from "react";
-import ProjectsLoader from "../../../src/App/Loaders/ProjectsLoader";
+import { ReactElement } from "react";
+import ProjectsLoader from "../../../src/App/Loaders/ProjectsLoader.tsx";
 
-export default function AuthenticationGuard({ component }: { component: React.ReactNode }) {
-  const Component = withAuthenticationRequired(component as unknown as ComponentType<object>, {
-    onRedirecting: () => <ProjectsLoader />,
-  });
+const AuthenticationGuard = ({ children }: { children: ReactElement }) => {
+  return children;
+};
 
-  return <Component />;
-}
+export default withAuthenticationRequired(AuthenticationGuard, {
+  onRedirecting: () => <ProjectsLoader />,
+});
