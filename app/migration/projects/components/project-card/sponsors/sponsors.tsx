@@ -1,10 +1,9 @@
 "use client";
 import Tag from "@/components/ds/tag/tag.tsx";
-import { TagSize } from "../../../../../../src/components/Tag";
-import { TooltipPosition, withTooltip } from "../../../../../../src/components/Tooltip";
-import RoundedImage, { ImageSize, Rounding } from "../../../../../../src/components/RoundedImage";
-import config from "../../../../../../src/config.ts";
-import { useIntl } from "../../../../../../src/hooks/useIntl.tsx";
+import { TooltipPosition, withTooltip } from "src/components/Tooltip";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import config from "src/config.ts";
+import { useIntl } from "src/hooks/useIntl.tsx";
 
 type Props = {
   sponsors: { id: string; logoUrl: string; name: string; url: string }[];
@@ -23,10 +22,7 @@ export default function Sponsors({ sponsors }: Props) {
     : "";
 
   return (
-    <Tag
-      size={TagSize.Small}
-      {...withTooltip(tooltipsContent, { position: TooltipPosition.Bottom, className: "w-fit" })}
-    >
+    <Tag size="small" {...withTooltip(tooltipsContent, { position: TooltipPosition.Bottom, className: "w-fit" })}>
       <div className="flex flex-row -space-x-1">
         {sponsors.map(sponsor => (
           <RoundedImage

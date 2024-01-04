@@ -9,6 +9,15 @@ import { TooltipPosition, withTooltip } from "../../../../../../src/components/T
 export default function Leaders({ leaders }: { leaders: Leader[] }) {
   const formatLeadNames = (leaders: Leader[]) => leaders.map(leader => leader.login || "").join(", ");
 
+  if (!leaders.length) {
+    return (
+      <div className="flex flex-row items-center gap-1 pt-0.5 text-sm text-spaceBlue-200">
+        <div className="flex flex-row gap-1 truncate whitespace-nowrap">
+          <Translate token="project.noLed" />
+        </div>
+      </div>
+    );
+  }
   const renderSingleLead = (leader: Leader) => (
     <Contributor
       contributor={{

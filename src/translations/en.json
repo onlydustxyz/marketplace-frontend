@@ -1312,6 +1312,7 @@
       "many": "__count__ project leads",
       "one": "Led by"
     },
+    "noLed": "The project is claimable",
     "projectLeadInvitation": {
       "prompt": "You've been promoted to Project Lead",
       "view": "View invite"

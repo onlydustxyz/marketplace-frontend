@@ -9,17 +9,16 @@ import Summary from "./summary/summary.tsx";
 import ReposCounter from "./repos-counter/repos-counter.tsx";
 import ContributorsCounter from "./contributors-counter/contributors-counter.tsx";
 import Sponsors from "./sponsors/sponsors.tsx";
-import ProjectLeadInvitationBanner from "@/components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.tsx";
-import { useIntl } from "../../../../../src/hooks/useIntl.tsx";
 import { ProjectCardProps } from "./project-card.types.ts";
+import { Flex } from "@/components/layout/flex/flex.tsx";
 
 export default function ProjectCard({
   project,
   isFirstHiringProject = false,
   githubAppBanner,
   isUserProjectLead,
+  invitedBanner,
 }: ProjectCardProps) {
-  const { T } = useIntl();
   const { hiring, isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
   const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
   const isPrivate = project.visibility === "PRIVATE"; // TODO move this logic in global utils
@@ -35,9 +34,9 @@ export default function ProjectCard({
       dataTestId="project-card"
     >
       <HiringTag isHiring={hiring} isErrorVariant={isErrorVariant} />
-      <div className="grid grid-cols-[33%_2fr] gap-6 divide-stone-100/8 lg:divide-x">
-        <div className="grid-row-2 grid w-full gap-y-5 overflow-hidden">
-          <div className="w-full overflow-hidden">
+      <Flex direction="col" className="gap-5">
+        <Flex direction="row" className="items-stretch gap-6 divide-stone-100/8 lg:divide-x">
+          <Flex direction="col" className="min-w-0 basis-1/3 gap-y-5">
             <Highlights
               name={project.name}
               isPrivate={isPrivate}
@@ -45,33 +44,20 @@ export default function ProjectCard({
               // TODO REVAMP THIS COMPONENT
               leaders={<Leaders leaders={project.leaders} />}
             />
-          </div>
-          <div className="w-full">
             <Technologies technologies={project.technologies} />
-          </div>
-        </div>
-        <div className="w-full lg:pl-6">
-          <div className="grid-row-2 grid w-full gap-y-4 overflow-hidden">
-            <div className="w-full overflow-hidden">
-              <Summary shortDescription={project.shortDescription} />
-            </div>
-            <div className="flex w-full flex-row flex-wrap gap-1 xl:gap-2">
+          </Flex>
+          <Flex direction="col" className="basis-2/3 items-stretch justify-center gap-4 lg:gap-4 lg:pl-6">
+            <Summary shortDescription={project.shortDescription} />
+            <Flex direction="col" className="w-full flex-row flex-wrap gap-1 xl:gap-2">
               <ReposCounter count={project.repoCount} />
               <ContributorsCounter count={project.contributorCount} />
               <Sponsors sponsors={project.sponsors} />
-            </div>
-          </div>
-        </div>
-      </div>
-      {isInvitedAsProjectLead ? (
-        <ProjectLeadInvitationBanner
-          projectName={project.name}
-          on="cards"
-          size={"s"}
-          btnLabel={T("project.projectLeadInvitation.view")}
-        />
-      ) : null}
-      {githubAppBanner ? githubAppBanner : null}
+            </Flex>
+          </Flex>
+        </Flex>
+        {invitedBanner ? invitedBanner : null}
+        {githubAppBanner ? githubAppBanner : null}
+      </Flex>
     </Card>
   );
 }

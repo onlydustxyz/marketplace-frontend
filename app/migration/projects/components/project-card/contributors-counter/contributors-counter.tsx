@@ -9,6 +9,7 @@ export default function ContributorsCounter({ count }: Props) {
   if (!count) {
     return null;
   }
+
   return (
     <Tag size="small">
       <User3Line />
