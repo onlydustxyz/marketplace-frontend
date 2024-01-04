@@ -81,6 +81,7 @@
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.13",
+    "@inquirer/prompts": "^3.3.0",
     "@next/eslint-plugin-next": "^14.0.4",
     "@playwright/test": "^1.31.2",
     "@storybook/addon-actions": "^7.6.6",
