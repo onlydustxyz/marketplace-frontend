@@ -1,6 +1,6 @@
-import RoundedImage, { ImageSize } from "../../../../../../src/components/RoundedImage";
 import PrivateTag from "../../../../../../src/components/PrivateTag";
 import { ReactElement } from "react";
+import { Thumbnail } from "@/components/ds/thumbnail";
 
 type Props = {
   name: string;
@@ -12,7 +12,7 @@ export default function Highlights({ name, logoUrl, isPrivate, leaders }: Props)
   return (
     <div className="flex items-start gap-4">
       <div className="relative flex-shrink-0">
-        <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" useLogoFallback />
+        <Thumbnail src={logoUrl} alt="Project Logo" size="xl" className="mt-1" type={"project"} />
         {isPrivate && (
           <div className="absolute -bottom-2.5 -right-2.5">
             <PrivateTag />

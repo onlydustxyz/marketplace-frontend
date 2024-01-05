@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { Thumbnail } from "./thumbnail";
 import { ThumbnailProps } from "./thumbnail.type.ts";
+import ThumbnailLoading from "@/components/ds/thumbnail/thumbnail.loading.tsx";
 
 const defaultProps: ThumbnailProps = {
   alt: "alt",
@@ -12,6 +13,12 @@ const meta: Meta<typeof Thumbnail> = {
   component: Thumbnail,
   title: "Design system/Thumbnail",
   tags: ["autodocs"],
+  parameters: {
+    backgrounds: {
+      default: "black",
+      values: [{ name: "black", value: "#0E0814" }],
+    },
+  },
 };
 
 export default meta;
@@ -26,12 +33,21 @@ export const Default: Story = {
 export const User: Story = {
   render: () => {
     return (
-      <div className="flex flex-row items-end gap-2">
-        <Thumbnail {...defaultProps} alt="" type="user" size="xs" />
-        <Thumbnail {...defaultProps} alt="" type="user" size="s" />
-        <Thumbnail {...defaultProps} alt="" type="user" size="m" />
-        <Thumbnail {...defaultProps} alt="" type="user" size="l" />
-        <Thumbnail {...defaultProps} alt="" type="user" size="xl" />
+      <div className="start flex flex-col gap-2">
+        <div className="flex flex-row items-end gap-2">
+          <Thumbnail {...defaultProps} alt="" type="user" size="xs" />
+          <Thumbnail {...defaultProps} alt="" type="user" size="s" />
+          <Thumbnail {...defaultProps} alt="" type="user" size="m" />
+          <Thumbnail {...defaultProps} alt="" type="user" size="l" />
+          <Thumbnail {...defaultProps} alt="" type="user" size="xl" />
+        </div>{" "}
+        <div className="flex flex-row items-end gap-2">
+          <ThumbnailLoading type="user" size="xs" />
+          <ThumbnailLoading type="user" size="s" />
+          <ThumbnailLoading type="user" size="m" />
+          <ThumbnailLoading type="user" size="l" />
+          <ThumbnailLoading type="user" size="xl" />
+        </div>
       </div>
     );
   },
@@ -40,12 +56,21 @@ export const User: Story = {
 export const Project: Story = {
   render: () => {
     return (
-      <div className="flex flex-row items-end gap-2">
-        <Thumbnail {...defaultProps} alt="" type="project" size="xs" />
-        <Thumbnail {...defaultProps} alt="" type="project" size="s" />
-        <Thumbnail {...defaultProps} alt="" type="project" size="m" />
-        <Thumbnail {...defaultProps} alt="" type="project" size="l" />
-        <Thumbnail {...defaultProps} alt="" type="project" size="xl" />
+      <div className="start flex flex-col gap-2">
+        <div className="flex flex-row items-end gap-2">
+          <Thumbnail {...defaultProps} alt="" type="project" size="xs" />
+          <Thumbnail {...defaultProps} alt="" type="project" size="s" />
+          <Thumbnail {...defaultProps} alt="" type="project" size="m" />
+          <Thumbnail {...defaultProps} alt="" type="project" size="l" />
+          <Thumbnail {...defaultProps} alt="" type="project" size="xl" />
+        </div>{" "}
+        <div className="flex flex-row items-end gap-2">
+          <ThumbnailLoading type="project" size="xs" />
+          <ThumbnailLoading type="project" size="s" />
+          <ThumbnailLoading type="project" size="m" />
+          <ThumbnailLoading type="project" size="l" />
+          <ThumbnailLoading type="project" size="xl" />
+        </div>
       </div>
     );
   },
