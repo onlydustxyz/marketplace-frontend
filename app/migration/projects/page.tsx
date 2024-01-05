@@ -1,25 +1,9 @@
 "use client";
 import { Flex } from "components/layout/flex/flex";
-import { Typography } from "components/layout/typography/typography";
 import React from "react";
-import ProjectApi from "src/api/Project/index.ts";
-import { ShowMore } from "src/components/Table/ShowMore";
-import ProjectCard from "./components/project-card/project-card.tsx";
-import { isUserProjectLead } from "../../../src/utils/isUserProjectLead.ts";
-import ProjectCardLoading from "./components/project-card/project-card.loading.tsx";
+import { ProjectList } from "./features/project-list";
 
 function ProjectsPage() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = ProjectApi.queries.useInfiniteList({
-    queryParams: [
-      ["mine", "true"],
-      ["sort", "RANK"],
-    ],
-  });
-
-  // Todo use the retrieve user me query to get the github user id
-  const githubUserId = 17259618;
-
-  const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
   return (
     <Flex className="w-full gap-6" direction="col">
       <div className="col-span-2 row-auto self-start bg-blue-500">SEARCH</div>
@@ -39,14 +23,7 @@ function ProjectsPage() {
             <div className="w-full self-start bg-red-300">SORT</div>
           </Flex>
           <div className="flex w-full grow flex-col gap-5">
-            {projects.map(project => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                isUserProjectLead={isUserProjectLead(project, githubUserId)}
-              />
-            ))}
-            {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
+            <ProjectList />
           </div>
         </Flex>
       </Flex>

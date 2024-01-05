@@ -7,16 +7,14 @@ export const ScrollView = forwardRef(function Background(
   ref: ForwardedRef<HTMLDivElement>
 ) {
   return (
-    <div className="flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
-      <div
-        ref={ref}
-        className={cn(
-          "h-full w-full overflow-y-auto scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5",
-          className
-        )}
-      >
-        {children}
-      </div>
+    <div
+      ref={ref}
+      className={cn(
+        "h-full w-full overflow-y-auto scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5",
+        className
+      )}
+    >
+      {children}
     </div>
   );
 });
