@@ -9,6 +9,8 @@ type ImpersonationContextType = {
   setImpersonateClaim: (claim: ImpersonateClaim) => void;
   clearImpersonateClaim: () => void;
   getImpersonateHeaders: () => Record<string, string> | undefined;
+  isImpersonating: boolean;
+  // isValidImpersonating: boolean;
 };
 
 export const ImpersonationContext = React.createContext<ImpersonationContextType | undefined>(undefined);
@@ -16,6 +18,8 @@ export const ImpersonationContext = React.createContext<ImpersonationContextType
 const ImpersonationProvider = ({ children }: PropsWithChildren) => {
   const [impersonateClaim, setImpersonateClaim, removeImpersonateClaim] =
     useLocalStorage<ImpersonateClaim>("impersonateClaim");
+
+  // const { data: userInfo } = MeApi.queries.useGetMe({});
 
   const handleSetImpersonateClaim = (claim: ImpersonateClaim) => {
     setImpersonateClaim(claim);
@@ -32,10 +36,15 @@ const ImpersonationProvider = ({ children }: PropsWithChildren) => {
     return undefined;
   }, [impersonateClaim]);
 
+  const isImpersonating = !!impersonateClaim;
+  // const isValidImpersonating = isImpersonating && userInfo?.githubUserId === Number(impersonateClaim.sub.split("|")[1]);
+
   const value = {
     setImpersonateClaim: handleSetImpersonateClaim,
     clearImpersonateClaim: handleClearImpersonateClaim,
     getImpersonateHeaders: handleGetImpersonateHeaders,
+    isImpersonating,
+    // isValidImpersonating,
   };
 
   return <ImpersonationContext.Provider value={value}>{children}</ImpersonationContext.Provider>;

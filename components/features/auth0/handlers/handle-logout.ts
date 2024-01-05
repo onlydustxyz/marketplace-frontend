@@ -2,12 +2,10 @@ import { LogoutOptions } from "@auth0/auth0-react/src/auth0-context";
 
 export default function handleLogout(
   logout: (options?: LogoutOptions) => Promise<void>,
-  getImpersonateHeaders: () => Record<string, string> | undefined,
+  isImpersonating: boolean,
   clearImpersonateClaim: () => void
 ) {
-  const impersonateHeaders = getImpersonateHeaders();
-
-  if (impersonateHeaders) {
+  if (isImpersonating) {
     clearImpersonateClaim();
     window.location.reload();
   } else {

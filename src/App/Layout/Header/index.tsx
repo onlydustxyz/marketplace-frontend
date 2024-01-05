@@ -2,20 +2,19 @@ import { useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
-import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
 
 export default function Header() {
   const location = useLocation();
   const { user } = useAuth0();
   const { T } = useIntl();
 
-  const { impersonationSet } = useImpersonationClaims();
-  const impersonating = !!impersonationSet;
+  const { isImpersonating } = useImpersonation();
 
   const { onboardingInProgress } = useOnboarding();
 
@@ -35,7 +34,7 @@ export default function Header() {
         [RoutePaths.Rewards]: rewardsMenuItem,
       }}
       selectedMenuItem={location.pathname}
-      impersonating={impersonating}
+      impersonating={isImpersonating}
       profileCompletionScore={myProfileInfo ? calculateUserCompletionScore(myProfileInfo) : undefined}
     />
   );

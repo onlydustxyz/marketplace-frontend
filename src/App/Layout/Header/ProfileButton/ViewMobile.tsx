@@ -33,7 +33,7 @@ type Props = {
 export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, githubUserId, hideProfileItems }: Props) {
   const { T } = useIntl();
   const { logout } = useAuth0();
-  const { getImpersonateHeaders, clearImpersonateClaim } = useImpersonation();
+  const { isImpersonating, clearImpersonateClaim } = useImpersonation();
 
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
@@ -144,7 +144,7 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
             <Button
               type={ButtonType.Secondary}
               size={ButtonSize.Xs}
-              onClick={() => handleLogout(logout, getImpersonateHeaders, clearImpersonateClaim)}
+              onClick={() => handleLogout(logout, isImpersonating, clearImpersonateClaim)}
               data-testid="logout-button"
             >
               <LogoutBoxRLine className="border-greyscale-50 text-sm" />

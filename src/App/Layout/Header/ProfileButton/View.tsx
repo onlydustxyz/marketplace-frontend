@@ -26,7 +26,7 @@ type Props = {
 const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
   const { T } = useIntl();
   const { logout } = useAuth0();
-  const { getImpersonateHeaders, clearImpersonateClaim } = useImpersonation();
+  const { isImpersonating, clearImpersonateClaim } = useImpersonation();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -108,7 +108,7 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
                 <Button
                   type={ButtonType.Secondary}
                   size={ButtonSize.Xs}
-                  onClick={() => handleLogout(logout, getImpersonateHeaders, clearImpersonateClaim)}
+                  onClick={() => handleLogout(logout, isImpersonating, clearImpersonateClaim)}
                   data-testid="logout-button"
                 >
                   <LogoutBoxRLine className="border-greyscale-50 text-sm" />
