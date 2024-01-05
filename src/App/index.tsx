@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
@@ -239,6 +239,10 @@ function App() {
       ],
     },
   ]);
+
+  useEffect(() => {
+    throw new Error("ErrorBoundary test");
+  }, []);
 
   return (
     <Suspense
