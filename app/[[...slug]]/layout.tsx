@@ -1,12 +1,9 @@
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import { sharedMetadata } from "../shared-metadata.ts";
 import { ProjectsActions } from "../../actions/Projects/projects.actions.ts";
 import { UsersActions } from "../../actions/Users/users.actions.ts";
 
-export async function generateMetadata(
-  props: { params: { slug: string[] } },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: { params: { slug: string[] } }): Promise<Metadata> {
   const { params } = props;
   try {
     /** project metadata */
@@ -69,31 +66,9 @@ export async function generateMetadata(
         },
       };
     }
-    const previousImages = (await parent)?.openGraph?.images || [];
-    return {
-      ...sharedMetadata,
-      openGraph: {
-        ...sharedMetadata.openGraph,
-        images: previousImages,
-      },
-      twitter: {
-        ...sharedMetadata.openGraph,
-        images: previousImages,
-      },
-    };
+    return sharedMetadata;
   } catch {
-    const previousImages = (await parent)?.openGraph?.images || [];
-    return {
-      ...sharedMetadata,
-      openGraph: {
-        ...sharedMetadata.openGraph,
-        images: previousImages,
-      },
-      twitter: {
-        ...sharedMetadata.openGraph,
-        images: previousImages,
-      },
-    };
+    return sharedMetadata;
   }
 }
 
