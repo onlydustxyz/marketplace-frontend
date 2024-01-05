@@ -2,13 +2,13 @@ import { FC, useContext, useMemo, useState } from "react";
 import { FieldLabel } from "src/components/New/Field/Label";
 import { debounce, uniqWith } from "lodash";
 import { FieldProjectLeadItem } from "./ProjectLeadItem";
-import { useAuth } from "src/hooks/useAuth";
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
 import UsersApi from "src/api/Users";
 import { useIntl } from "src/hooks/useIntl";
 import { Combobox, Variant } from "src/components/New/Field/Combobox/Combobox";
 import { ItemType } from "src/components/New/Field/Combobox/MultiList";
 import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
+import { useAuth0 } from "@auth0/auth0-react";
 
 // TODO : Doc
 /**
@@ -37,7 +37,7 @@ export interface FieldProjectLeadProps {
 }
 
 export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, value }) => {
-  const { user } = useAuth();
+  const { user } = useAuth0();
   const [query, setQuery] = useState("");
   const { project } = useContext(EditContext);
   const { T } = useIntl();
@@ -61,7 +61,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
 
   const selectedLeads = useMemo(
     () => [
-      <FieldProjectLeadItem key={user?.id} avatar={user?.avatarUrl ?? ""} isYou label={user?.login ?? ""} />,
+      <FieldProjectLeadItem key={user?.sub} avatar={user?.picture ?? ""} isYou label={user?.nickname ?? ""} />,
       ...(value?.toKeep || [])
         .filter(lead => lead.id !== user?.id)
         .map(({ githubUserId, avatarUrl, login }) => (

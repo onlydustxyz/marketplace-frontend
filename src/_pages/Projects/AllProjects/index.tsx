@@ -4,7 +4,6 @@ import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/_pages/Projects/Sorting/SortingDropdown";
 import { useProjectFilter } from "src/_pages/Projects/useProjectFilter";
@@ -16,6 +15,8 @@ import AllProjectLoading from "./AllProjectsLoading";
 import { Sponsor } from "src/types";
 import { uniqBy } from "lodash";
 import SubmitProject from "../SubmitProject";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -47,7 +48,7 @@ export default function AllProjects({
   setSponsors,
 }: Props) {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
+  const { user } = useAuth0();
 
   const {
     projectFilter: { ownership, technologies, sponsors },
@@ -120,7 +121,7 @@ export default function AllProjects({
           </div>
           {projects.map((project, index) => {
             const isFirstHiringProject = index === 0 && project.hiring;
-            const isLeader = isUserProjectLead(project, githubUserId);
+            const isLeader = isUserProjectLead(project, getGithubUserIdFromSub(user?.sub));
 
             return (
               <ProjectCard

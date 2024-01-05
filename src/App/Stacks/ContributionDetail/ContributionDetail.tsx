@@ -8,7 +8,6 @@ import { ContributionLinked } from "src/components/Contribution/ContributionLink
 import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
@@ -21,10 +20,12 @@ import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { CommitsTooltip } from "../../../components/GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
+  const { user } = useAuth0();
   const [openRewardPanel] = useStackReward();
   const [openProjectOverview] = useStackProjectOverview();
   const isMyContribution = Boolean(useMatch(`${RoutePaths.Contributions}/*`));
@@ -228,7 +229,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                           openRewardPanel({
                             rewardId: reward.id,
                             projectId: contribution.project.id,
-                            ...(reward.to.githubUserId === githubUserId ? { isMine: true } : {}),
+                            ...(reward.to.githubUserId === getGithubUserIdFromSub(user?.sub) ? { isMine: true } : {}),
                           });
                         }
                       }}

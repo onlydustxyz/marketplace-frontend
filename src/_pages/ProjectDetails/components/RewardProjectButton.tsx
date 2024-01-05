@@ -9,17 +9,17 @@ import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import { ChoiceButton } from "src/components/New/Buttons/ChoiceButton/ChoiceButton";
 import SidePanel from "src/components/SidePanel";
 import { withTooltip } from "src/components/Tooltip";
-import { useAuth } from "src/hooks/useAuth";
 
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
+import { useAuth0 } from "@auth0/auth0-react";
 
 type RewardProjectButtonProps = { project: components["schemas"]["ProjectResponse"]; size?: ButtonSize };
 
 export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardProjectButtonProps) {
   const { T } = useIntl();
-  const { user } = useAuth();
+  const { user } = useAuth0();
   const { data: userInfo } = MeApi.queries.useGetMyPayoutInfo({});
   const { data: userProfile } = MeApi.queries.useGetMyProfileInfo({});
   const navigate = useNavigate();

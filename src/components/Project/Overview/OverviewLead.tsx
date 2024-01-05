@@ -1,12 +1,11 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import Contributor from "src/components/Contributor";
 import { Flex } from "src/components/New/Layout/Flex";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import Section, { SectionIcon } from "./OverviewSection";
-import { HasuraUserRole } from "src/types";
 import isDefined from "src/utils/isDefined";
+import MeApi from "../../../api/me";
 
 export interface ProjectOverviewLeadProps {
   project: UseGetProjectBySlugResponse;
@@ -14,11 +13,11 @@ export interface ProjectOverviewLeadProps {
 
 export const ProjectOverviewLead = ({ project }: ProjectOverviewLeadProps) => {
   const { T } = useIntl();
-  const { roles } = useAuth();
+  const { data: userInfo } = MeApi.queries.useGetMe({});
   const isProjectLeader = useProjectLeader({ id: project.id });
   const filteredLeads = project.leaders?.filter(lead => isDefined(lead?.login)) || [];
   const filteredInvited = project.invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
-  const showInvited = isProjectLeader || roles.includes(HasuraUserRole.Admin);
+  const showInvited = isProjectLeader || userInfo?.isAdmin;
 
   return filteredLeads.length > 0 ? (
     <Section

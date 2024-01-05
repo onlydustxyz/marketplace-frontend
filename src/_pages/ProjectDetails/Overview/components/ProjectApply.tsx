@@ -20,13 +20,13 @@ import { handleLoginWithRedirect } from "../../../../../components/features/auth
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface ApplyCalloutProps {
-  isLoggedIn?: boolean;
+  isAuthenticated?: boolean;
   alreadyApplied?: boolean;
   applyToProject: () => void;
   profile: UseGetMyProfileInfoResponse;
 }
 
-export function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject }: ApplyCalloutProps) {
+export function ApplyCallout({ isAuthenticated, profile, alreadyApplied, applyToProject }: ApplyCalloutProps) {
   const { T } = useIntl();
   const { loginWithRedirect } = useAuth0();
 
@@ -89,7 +89,7 @@ export function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProje
           <User3Line />
           {T("project.hiring").toUpperCase()}
         </div>
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           contactInfoRequested && !contactInfoProvided ? (
             <FormProvider {...formMethods}>
               <form onSubmit={handleSubmit(onSubmit)}>
