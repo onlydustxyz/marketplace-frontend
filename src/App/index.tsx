@@ -3,7 +3,8 @@ import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
 
-const Login = lazy(() => import("src/_pages/Login"));
+// TODO delete this login page, can't find any usage of it
+// const Login = lazy(() => import("src/_pages/Login"));
 const Projects = lazy(() => import("src/_pages/Projects"));
 const Contributions = lazy(() => import("src/_pages/Contributions/Contributions"));
 const Rewards = lazy(() => import("src/_pages/Rewards"));
@@ -38,7 +39,7 @@ import LeadGuard from "../../components/features/auth0/guards/lead-guard.tsx";
 
 export enum RoutePaths {
   Projects = "/",
-  Login = "/login",
+  // Login = "/login",
   ProjectCreation = "/p/create",
   ProjectDetails = "/p/:projectKey",
   ProjectDetailsEdit = "/p/:projectKey/edit",
@@ -202,10 +203,10 @@ function App() {
             </AuthenticationGuard>
           ),
         },
-        {
-          path: RoutePaths.Login,
-          element: <Login />,
-        },
+        // {
+        //   path: RoutePaths.Login,
+        //   element: <Login />,
+        // },
         {
           path: RoutePaths.ProjectCreation,
           element: (
