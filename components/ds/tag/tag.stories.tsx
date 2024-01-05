@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Tag } from "./tag.tsx";
 import { TagProps } from "./tag.type.ts";
 import User3Line from "../../../src/icons/User3Line.tsx";
+import TagLoading from "@/components/ds/tag/tag.loading.tsx";
 
 const defaultProps: TagProps = {
   children: <span>Tag</span>,
@@ -45,6 +46,7 @@ export const Grey: Story = {
         <div className="start flex flex-col gap-4">
           <div className="row flex items-end gap-4">
             <Tag {...defaultProps} size="small" borderColor="grey" color="grey" />
+            <TagLoading {...defaultProps} size="small" borderColor="grey" color="grey" />
             <Tag {...defaultPropsWithIcon(false)} size="small" borderColor="grey" color="grey" />
           </div>
           <div className="row flex items-end gap-4">
@@ -138,6 +140,30 @@ export const Opaque: Story = {
             <Tag {...defaultProps} size="large" borderColor="grey" color="grey" isOpaque />
             <Tag {...defaultPropsWithIcon(false)} size="large" borderColor="grey" color="grey" isOpaque />
           </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const Loading: Story = {
+  render: () => {
+    return (
+      <div className="start row flex gap-6">
+        <div className="start flex flex-col gap-4">
+          <Tag {...defaultProps} size="small" borderColor="grey" color="grey" />
+          <Tag {...defaultProps} size="medium" borderColor="grey" color="grey" />
+          <Tag {...defaultProps} size="large" borderColor="grey" color="grey" />
+        </div>
+        <div className="start flex flex-col gap-4">
+          <TagLoading size="small" borderColor="grey" color="grey" />
+          <TagLoading size="medium" borderColor="grey" color="grey" />
+          <TagLoading size="large" borderColor="grey" color="grey" />
+        </div>
+        <div className="start flex flex-col gap-4">
+          <TagLoading size="small" borderColor="grey" color="grey" skeletonProps={{ color: "grey" }} />
+          <TagLoading size="medium" borderColor="grey" color="grey" skeletonProps={{ color: "grey" }} />
+          <TagLoading size="large" borderColor="grey" color="grey" skeletonProps={{ color: "grey" }} />
         </div>
       </div>
     );
