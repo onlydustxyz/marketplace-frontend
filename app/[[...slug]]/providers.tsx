@@ -24,7 +24,6 @@ const App = dynamic(() => import("src/App"), { ssr: false });
 const queryClient = new QueryClient();
 
 export default function Providers() {
-  // @ts-ignore
   return (
     <IntlProvider>
       <BrowserRouter>
