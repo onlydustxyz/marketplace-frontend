@@ -3,7 +3,7 @@ import { IMAGES } from "src/assets/img";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
-import { ContributorProps } from "@/components/features/Contributor/contributor.type.ts";
+import { ContributorProps } from "@/components/features/contributor/contributor.type.ts";
 import Thumbnail from "@/components/ds/thumbnail";
 
 export default function Contributor({

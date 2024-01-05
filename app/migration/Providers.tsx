@@ -8,9 +8,13 @@ import { StackProvider } from "../../src/libs/react-stack";
 import { Stacks } from "../../src/App/Stacks/Stacks.tsx";
 import { ToasterProvider } from "../../src/hooks/useToaster";
 import { BrowserRouter } from "react-router-dom";
+import Tooltip from "../../src/components/Tooltip";
+import { useMediaQuery } from "usehooks-ts";
+import { viewportConfig } from "../../src/config.ts";
 const queryClient = new QueryClient();
 
 export default function MigrationProviders({ children }: PropsWithChildren) {
+  const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
   return (
     <BrowserRouter>
       <IntlProvider>
@@ -21,6 +25,7 @@ export default function MigrationProviders({ children }: PropsWithChildren) {
                 <StackProvider>
                   {children}
                   <Stacks />
+                  {isSm && <Tooltip />}
                 </StackProvider>
               </ToasterProvider>
             </QueryClientProvider>
