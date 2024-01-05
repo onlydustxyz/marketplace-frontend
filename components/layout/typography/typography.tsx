@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from "react";
+import { ElementType, FC, PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
 import { VariantProps, tv } from "tailwind-variants";
 import { getDefaultComponent } from "./typography.utils";
@@ -7,24 +7,24 @@ export type TypographyVariants = VariantProps<typeof typographyVariants>;
 
 interface TypographyProps extends PropsWithChildren, TypographyVariants {
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
 }
 
 export const typographyVariants = tv({
   variants: {
     variant: {
-      "title-xl": "text-title-xl",
-      "title-l": "text-title-l",
-      "title-m": "text-title-m",
-      "title-s": "text-title-s",
-      "body-l": "text-body-l",
-      "body-l-bold": "text-body-l-bold",
-      "body-m": "text-body-m",
-      "body-m-bold": "text-body-m-bold",
-      "body-s": "text-body-s",
-      "body-s-bold": "text-body-s-bold",
-      "body-xs": "text-body-xs",
-      "body-xs-bold": "text-body-xs-bold",
+      "title-xl": "od-text-title-xl",
+      "title-l": "od-text-title-l",
+      "title-m": "od-text-title-m",
+      "title-s": "od-text-title-s",
+      "body-l": "od-text-body-l",
+      "body-l-bold": "od-text-body-l-bold",
+      "body-m": "od-text-body-m",
+      "body-m-bold": "od-text-body-m-bold",
+      "body-s": "od-text-body-s",
+      "body-s-bold": "od-text-body-s-bold",
+      "body-xs": "od-text-body-xs",
+      "body-xs-bold": "od-text-body-xs-bold",
     },
   },
   defaultVariants: {

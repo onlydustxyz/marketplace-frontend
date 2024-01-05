@@ -1,1 +1,1 @@
-export type CustomIconsName = "dollar";
+export type CustomIconsName = "dollar" | "technology";
