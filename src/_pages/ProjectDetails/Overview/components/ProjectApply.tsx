@@ -1,4 +1,4 @@
-import { Dispatch, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
@@ -11,32 +11,24 @@ import {
   mapFormDataToSchema,
 } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { useIntl } from "src/hooks/useIntl";
-import { useLoginUrl } from "src/hooks/useLoginUrl/useLoginUrl";
-import { Action, SessionMethod } from "src/hooks/useSession";
 import isContactInfoProvided from "src/utils/isContactInfoProvided";
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import User3Line from "src/icons/User3Line";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+import { handleLoginWithRedirect } from "../../../../../components/features/auth0/handlers/handle-login.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface ApplyCalloutProps {
   isLoggedIn?: boolean;
   alreadyApplied?: boolean;
   applyToProject: () => void;
-  dispatchSession: Dispatch<Action>;
   profile: UseGetMyProfileInfoResponse;
 }
 
-export function ApplyCallout({
-  isLoggedIn,
-  profile,
-  alreadyApplied,
-  applyToProject,
-  dispatchSession,
-}: ApplyCalloutProps) {
+export function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject }: ApplyCalloutProps) {
   const { T } = useIntl();
-  const getLoginUrl = useLoginUrl();
-  const login_url = useMemo(() => getLoginUrl(), []);
+  const { loginWithRedirect } = useAuth0();
 
   const contactInfoProvided = isContactInfoProvided(profile, [
     Channel.Telegram,
@@ -144,16 +136,9 @@ export function ApplyCallout({
             </div>
           )
         ) : (
-          <a
-            href={login_url}
-            onClick={() =>
-              dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })
-            }
-          >
-            <Button size={ButtonSize.Md} width={Width.Full}>
-              {T("applications.connectToApplyButton")}
-            </Button>
-          </a>
+          <Button size={ButtonSize.Md} width={Width.Full} onClick={() => handleLoginWithRedirect(loginWithRedirect)}>
+            {T("applications.connectToApplyButton")}
+          </Button>
         )}
         <p className="text-body-s text-spaceBlue-200">
           {alreadyApplied ? T("applications.informations_already_apply") : T("applications.informations")}

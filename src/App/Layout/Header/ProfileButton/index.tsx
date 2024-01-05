@@ -5,7 +5,7 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import ViewMobile from "./ViewMobile";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "../../../../utils/getGithubUserIdFromSub.ts";
+import { getGithubUserIdFromSub } from "../../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 const ProfileButton = () => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);

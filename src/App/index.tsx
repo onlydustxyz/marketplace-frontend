@@ -35,7 +35,7 @@ import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import Loader from "src/components/Loader";
 import RewardLoader from "./Loaders/RewardsLoader";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
-import AuthenticationGuard from "../../components/features/guards/authentication-guard.tsx";
+import AuthenticationGuard from "../../components/features/auth0/guards/authentication-guard.tsx";
 
 export enum RoutePaths {
   Projects = "/",

@@ -2,6 +2,7 @@ import { useIntl } from "src/hooks/useIntl";
 import GithubLogo, { Size } from "src/icons/GithubLogo";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
+import { handleLoginWithRedirect } from "../../../../../components/features/auth0/handlers/handle-login.ts";
 
 export enum Variant {
   Default = "default",
@@ -11,16 +12,13 @@ export enum Variant {
 export default function GithubLink({ variant = Variant.Default }: { variant?: Variant }) {
   const { T } = useIntl();
   const { loginWithRedirect } = useAuth0();
-  const handleLogin = async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL,
-      },
-    });
-  };
 
   return (
-    <button className="z-10" onClick={handleLogin} data-testid="github-signin-button">
+    <button
+      className="z-10"
+      onClick={() => handleLoginWithRedirect(loginWithRedirect)}
+      data-testid="github-signin-button"
+    >
       <div className="m-px w-fit overflow-hidden rounded-full p-px blur-0 transition duration-300 hover:m-0 hover:p-0.5">
         <div
           className={cn(

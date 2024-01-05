@@ -12,6 +12,7 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
+import handleLogout from "../../../../../components/features/auth0/handlers/handle-logout.ts";
 
 type Props = {
   avatarUrl: string | null;
@@ -24,14 +25,6 @@ type Props = {
 const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
   const { T } = useIntl();
   const { logout } = useAuth0();
-
-  const handleLogout = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -113,7 +106,7 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
                 <Button
                   type={ButtonType.Secondary}
                   size={ButtonSize.Xs}
-                  onClick={handleLogout}
+                  onClick={() => handleLogout(logout)}
                   data-testid="logout-button"
                 >
                   <LogoutBoxRLine className="border-greyscale-50 text-sm" />

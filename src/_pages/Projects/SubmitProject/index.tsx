@@ -16,6 +16,7 @@ import {
 } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
+import { handleLoginWithRedirect } from "../../../../components/features/auth0/handlers/handle-login.ts";
 
 export default function SubmitProject({ className }: { className?: string }) {
   const { T } = useIntl();
@@ -27,14 +28,6 @@ export default function SubmitProject({ className }: { className?: string }) {
   const toggleModal = () => setModalOpened(!modalOpened);
   const closeModal = () => setModalOpened(false);
   const canResume = useMemo(() => !!localStorage.getItem(STORAGE_KEY_CREATE_PROJECT_STEP), []);
-
-  const handleLogin = async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL,
-      },
-    });
-  };
 
   const onCancel = () => {
     clearStorage();
@@ -63,7 +56,7 @@ export default function SubmitProject({ className }: { className?: string }) {
     if (isAuthenticated && hasRequirePermission) {
       navigate(RoutePaths.ProjectCreation);
     } else {
-      await handleLogin();
+      await handleLoginWithRedirect(loginWithRedirect);
     }
   };
 

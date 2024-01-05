@@ -19,6 +19,7 @@ import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
+import handleLogout from "../../../../../components/features/auth0/handlers/handle-logout.ts";
 
 type Props = {
   avatarUrl: string | null;
@@ -31,13 +32,7 @@ type Props = {
 export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, githubUserId, hideProfileItems }: Props) {
   const { T } = useIntl();
   const { logout } = useAuth0();
-  const handleLogout = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
+
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
   const [openPayoutInfo] = useStackPayoutInfo();
@@ -144,7 +139,12 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
               <div>{T("navbar.separator")}</div>
               <button onClick={openPrivacyPolicy}>{T("navbar.privacyPolicy")}</button>
             </div>
-            <Button type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={handleLogout} data-testid="logout-button">
+            <Button
+              type={ButtonType.Secondary}
+              size={ButtonSize.Xs}
+              onClick={() => handleLogout(logout)}
+              data-testid="logout-button"
+            >
               <LogoutBoxRLine className="border-greyscale-50 text-sm" />
               {T("navbar.logout")}
             </Button>
