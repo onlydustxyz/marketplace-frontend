@@ -2,7 +2,6 @@ import { PropsWithChildren } from "react";
 import { Navigate, generatePath, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import MeApi from "src/api/me";
-import { useAuth } from "src/hooks/useAuth";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { CustomUserRole, HasuraUserRole, UserRole } from "src/types";
 
@@ -17,7 +16,7 @@ export default function ProtectedRoute({
   children,
 }: ProtectedRouteProps) {
   const { isLoading } = MeApi.queries.useGetMe({});
-  const { roles } = useAuth();
+  // const { roles } = useAuth();
   const params = useParams();
   const isProjectLeader = useProjectLeader({ slug: params.projectKey });
 
