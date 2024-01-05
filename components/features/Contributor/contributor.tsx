@@ -3,8 +3,8 @@ import { IMAGES } from "src/assets/img";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
-import { Avatar } from "../../../src/components/New/Avatar.tsx";
 import { ContributorProps } from "@/components/features/Contributor/contributor.type.ts";
+import Thumbnail from "@/components/ds/thumbnail";
 
 export default function Contributor({
   githubUserId,
@@ -32,7 +32,7 @@ export default function Contributor({
           : undefined
       }
     >
-      {avatarUrl ? <Avatar src={avatarUrl} alt={login} size="5" /> : null}
+      {avatarUrl ? <Thumbnail src={avatarUrl} alt={login} size="xs" type="user" /> : null}
 
       <span
         className={cn({

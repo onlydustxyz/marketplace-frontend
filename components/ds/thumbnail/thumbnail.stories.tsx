@@ -4,7 +4,7 @@ import { Thumbnail } from "./thumbnail";
 import { ThumbnailProps } from "./thumbnail.type.ts";
 
 const defaultProps: ThumbnailProps = {
-  alt: "ocouc",
+  alt: "alt",
   src: "https://avatars.githubusercontent.com/u/10047061?v=4",
 };
 

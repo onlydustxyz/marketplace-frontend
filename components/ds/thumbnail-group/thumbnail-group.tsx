@@ -3,7 +3,7 @@ import { cn } from "../../../src/utils/cn.ts";
 import { IMAGES } from "../../../src/assets/img";
 import GalleryLine from "../../../src/assets/icons/GalleryLine.tsx";
 import { thumbnailVariant } from "@/components/ds/thumbnail/thumbnail.variant.ts";
-export function Thumbnail({ src, alt, className, defaultSrc = true, ...props }: ThumbnailProps) {
+export function ThumbnailGroup({ src, alt, className, defaultSrc = true, ...props }: ThumbnailProps) {
   return (
     <div className={cn(thumbnailVariant({ ...props }), className)}>
       {src || defaultSrc ? (
@@ -15,4 +15,4 @@ export function Thumbnail({ src, alt, className, defaultSrc = true, ...props }: 
   );
 }
 
-export default Thumbnail;
+export default ThumbnailGroup;
