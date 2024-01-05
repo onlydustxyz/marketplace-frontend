@@ -29,7 +29,7 @@ function getNetworkMessage(key: string) {
     missingEthWallet: "profile.missing.networkFull.ETH",
     missingOptimismWallet: "profile.missing.networkFull.OP",
     missingSepaAccount: "profile.missing.networkFull.USD",
-    missingStarknetWallet: "profile.missing.networkFull.STARK",
+    missingStarknetWallet: "profile.missing.networkFull.STRK",
   };
 
   return networksMessages[key as keyof typeof networksMessages];
