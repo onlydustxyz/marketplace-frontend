@@ -6,6 +6,7 @@ import ProjectApi from "src/api/Project/index.ts";
 import { ShowMore } from "src/components/Table/ShowMore";
 import ProjectCard from "./components/project-card/project-card.tsx";
 import { isUserProjectLead } from "../../../src/utils/isUserProjectLead.ts";
+import ProjectCardLoading from "./components/project-card/project-card.loading.tsx";
 
 function ProjectsPage() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = ProjectApi.queries.useInfiniteList({
@@ -23,6 +24,7 @@ function ProjectsPage() {
     <Flex direction="col">
       <Typography variant="title-xl">ProjectsPage</Typography>
       <div className="flex w-[840px] grow flex-col gap-5">
+        <ProjectCardLoading />
         {projects.map(project => (
           <ProjectCard
             key={project.id}
