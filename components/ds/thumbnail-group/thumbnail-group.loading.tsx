@@ -6,9 +6,9 @@ import ThumbnailLoading from "@/components/ds/thumbnail/thumbnail.loading.tsx";
 export function ThumbnailGroupLoading({ skeletonProps, className, ...props }: ThumbnailGroupLoadingProps) {
   return (
     <div className={cn(thumbnailGroupVariant({ ...props }), "animate-pulse", className)}>
-      <ThumbnailLoading {...props} animate={false} />
-      <ThumbnailLoading {...props} animate={false} />
-      <ThumbnailLoading {...props} animate={false} />
+      <ThumbnailLoading {...props} skeletonProps={skeletonProps} animate={false} />
+      <ThumbnailLoading {...props} skeletonProps={skeletonProps} animate={false} />
+      <ThumbnailLoading {...props} skeletonProps={skeletonProps} animate={false} />
     </div>
   );
 }

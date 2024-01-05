@@ -2,8 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { ThumbnailGroup } from "./thumbnail-group.tsx";
 import { ThumbnailGroupProps } from "./thumbnail-group.type.ts";
-import { Thumbnail } from "@/components/ds/thumbnail";
-import ThumbnailLoading from "@/components/ds/thumbnail/thumbnail.loading.tsx";
 import ThumbnailGroupLoading from "@/components/ds/thumbnail-group/thumbnail-group.loading.tsx";
 
 const defaultProps: ThumbnailGroupProps = {
@@ -56,6 +54,13 @@ export const User: Story = {
           <ThumbnailGroupLoading type="user" size="l" />
           <ThumbnailGroupLoading type="user" size="xl" />
         </div>
+        <div className="flex flex-row items-end gap-2">
+          <ThumbnailGroupLoading type="user" size="xs" skeletonProps={{ color: "grey" }} />
+          <ThumbnailGroupLoading type="user" size="s" skeletonProps={{ color: "grey" }} />
+          <ThumbnailGroupLoading type="user" size="m" skeletonProps={{ color: "grey" }} />
+          <ThumbnailGroupLoading type="user" size="l" skeletonProps={{ color: "grey" }} />
+          <ThumbnailGroupLoading type="user" size="xl" skeletonProps={{ color: "grey" }} />
+        </div>
       </div>
     );
   },
@@ -78,6 +83,13 @@ export const Project: Story = {
           <ThumbnailGroupLoading type="project" size="m" />
           <ThumbnailGroupLoading type="project" size="l" />
           <ThumbnailGroupLoading type="project" size="xl" />
+        </div>
+        <div className="flex flex-row items-end gap-2">
+          <ThumbnailGroupLoading type="project" size="xs" skeletonProps={{ color: "grey" }} />
+          <ThumbnailGroupLoading type="project" size="s" skeletonProps={{ color: "grey" }} />
+          <ThumbnailGroupLoading type="project" size="m" skeletonProps={{ color: "grey" }} />
+          <ThumbnailGroupLoading type="project" size="l" skeletonProps={{ color: "grey" }} />
+          <ThumbnailGroupLoading type="project" size="xl" skeletonProps={{ color: "grey" }} />
         </div>
       </div>
     );

@@ -40,13 +40,20 @@ export const User: Story = {
           <Thumbnail {...defaultProps} alt="" type="user" size="m" />
           <Thumbnail {...defaultProps} alt="" type="user" size="l" />
           <Thumbnail {...defaultProps} alt="" type="user" size="xl" />
-        </div>{" "}
+        </div>
         <div className="flex flex-row items-end gap-2">
           <ThumbnailLoading type="user" size="xs" />
           <ThumbnailLoading type="user" size="s" />
           <ThumbnailLoading type="user" size="m" />
           <ThumbnailLoading type="user" size="l" />
           <ThumbnailLoading type="user" size="xl" />
+        </div>
+        <div className="flex flex-row items-end gap-2">
+          <ThumbnailLoading type="user" size="xs" skeletonProps={{ color: "grey" }} />
+          <ThumbnailLoading type="user" size="s" skeletonProps={{ color: "grey" }} />
+          <ThumbnailLoading type="user" size="m" skeletonProps={{ color: "grey" }} />
+          <ThumbnailLoading type="user" size="l" skeletonProps={{ color: "grey" }} />
+          <ThumbnailLoading type="user" size="xl" skeletonProps={{ color: "grey" }} />
         </div>
       </div>
     );
@@ -63,13 +70,20 @@ export const Project: Story = {
           <Thumbnail {...defaultProps} alt="" type="project" size="m" />
           <Thumbnail {...defaultProps} alt="" type="project" size="l" />
           <Thumbnail {...defaultProps} alt="" type="project" size="xl" />
-        </div>{" "}
+        </div>
         <div className="flex flex-row items-end gap-2">
           <ThumbnailLoading type="project" size="xs" />
           <ThumbnailLoading type="project" size="s" />
           <ThumbnailLoading type="project" size="m" />
           <ThumbnailLoading type="project" size="l" />
           <ThumbnailLoading type="project" size="xl" />
+        </div>
+        <div className="flex flex-row items-end gap-2">
+          <ThumbnailLoading type="project" size="xs" skeletonProps={{ color: "grey" }} />
+          <ThumbnailLoading type="project" size="s" skeletonProps={{ color: "grey" }} />
+          <ThumbnailLoading type="project" size="m" skeletonProps={{ color: "grey" }} />
+          <ThumbnailLoading type="project" size="l" skeletonProps={{ color: "grey" }} />
+          <ThumbnailLoading type="project" size="xl" skeletonProps={{ color: "grey" }} />
         </div>
       </div>
     );
