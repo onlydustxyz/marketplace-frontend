@@ -1,18 +1,7 @@
 "use client";
-import { createContext } from "react";
-import { UseInfiniteListResponse } from "src/api/Project/queries";
+import { createContext, useMemo } from "react";
 import ProjectApi from "src/api/Project";
-
-interface ProjectsContextProps {
-  children: React.ReactNode;
-}
-
-type ProjectContextReturn = {
-  projects: UseInfiniteListResponse["projects"];
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-};
+import { ProjectContextReturn, ProjectsContextProps } from "./project.context.type.ts";
 
 export const ProjectsContext = createContext<ProjectContextReturn>({
   projects: [],
@@ -28,7 +17,8 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
       ["sort", "RANK"],
     ],
   });
-  const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
+
+  const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
 
   return (
     <ProjectsContext.Provider
