@@ -8,7 +8,7 @@ import ErrorFallback from "src/ErrorFallback";
 import Maintenance from "src/Maintenance";
 import config from "src/config.ts";
 import { AuthProvider } from "src/hooks/useAuth";
-import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims.tsx";
+
 import { IntlProvider } from "src/hooks/useIntl.tsx";
 import { SessionProvider } from "src/hooks/useSession.tsx";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
@@ -18,6 +18,7 @@ import { TokenSetProvider } from "src/hooks/useTokenSet.tsx";
 import { StackProvider } from "src/libs/react-stack";
 import ApolloWrapper from "src/providers/ApolloWrapper";
 import { Auth0ProviderWithNavigate } from "../../components/features/auth0/providers/auth0-provider-with-navigate.tsx";
+import { ImpersonationClaimsProvider } from "../../components/features/auth0/impersonation/use-impersonation-claims-Bis.tsx";
 
 const App = dynamic(() => import("src/App"), { ssr: false });
 
