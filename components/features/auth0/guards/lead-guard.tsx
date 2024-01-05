@@ -4,7 +4,7 @@ import { useProjectLeader } from "../../../../src/hooks/useProjectLeader/useProj
 import { RoutePaths } from "../../../../src/App";
 import MeApi from "../../../../src/api/me";
 
-export default function LeadGuard({ children }: { children: ReactElement }) {
+function LeadGuard({ children }: { children: ReactElement }) {
   const { isLoading } = MeApi.queries.useGetMe({});
   const params = useParams();
   const isProjectLeader = useProjectLeader({ slug: params.projectKey });
@@ -15,3 +15,17 @@ export default function LeadGuard({ children }: { children: ReactElement }) {
 
   return isProjectLeader ? <>{children}</> : <Navigate to={generatePath(RoutePaths.NotFound, params)} />;
 }
+
+function LeadComponentGuard({ children }: { children: ReactElement }) {
+  const { isLoading } = MeApi.queries.useGetMe({});
+  const params = useParams();
+  const isProjectLeader = useProjectLeader({ slug: params.projectKey });
+
+  if (isLoading) {
+    return null;
+  }
+
+  return isProjectLeader ? <>{children}</> : null;
+}
+
+export { LeadGuard as default, LeadComponentGuard };
