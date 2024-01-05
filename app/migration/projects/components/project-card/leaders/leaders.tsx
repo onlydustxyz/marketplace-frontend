@@ -6,6 +6,7 @@ import Translate from "@/components/layout/translate/translate.tsx";
 import React, { useMemo } from "react";
 import { TooltipPosition, withTooltip } from "../../../../../../src/components/Tooltip";
 import { formatLeadNames } from "./leaders.utils.tsx";
+import { ThumbnailGroup } from "@/components/ds/thumbnail-group";
 
 export default function Leaders({ leaders }: { leaders: Leader[] }) {
   const AsOnlyOneLead = useMemo(() => {
@@ -45,6 +46,13 @@ export default function Leaders({ leaders }: { leaders: Leader[] }) {
             src={leader.avatarUrl ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_W_100_PREFIX}${leader.avatarUrl}` : ""} // TODO refactor this
           />
         ))}
+        <ThumbnailGroup
+          thumbnails={leaders.map(leader => ({
+            src: leader.avatarUrl,
+            alt: leader.login || "",
+          }))}
+          size="xs"
+        />
       </div>
     ),
     [leaders]

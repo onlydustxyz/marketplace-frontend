@@ -11,6 +11,7 @@ const config: Config = withTV({
     "./src/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./.storybook/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {

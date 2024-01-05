@@ -30,7 +30,6 @@
     "@headlessui/tailwindcss": "^0.2.0",
     "@hookform/resolvers": "^3.3.2",
     "@next/third-parties": "^14.0.4",
-    "@storybook/addon-docs": "^7.6.7",
     "@tag0/use-text-width": "^1.2.0",
     "@tailwindcss/typography": "^0.5.8",
     "@tanstack/react-query": "^5.0.0",
@@ -74,6 +73,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@storybook/addon-docs": "^7.6.7",
     "@faker-js/faker": "^8.0.2",
     "@graphql-codegen/cli": "^2.16.1",
     "@graphql-codegen/introspection": "^2.2.3",
