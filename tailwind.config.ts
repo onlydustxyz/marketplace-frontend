@@ -262,8 +262,6 @@ const config: Config = withTV({
       addComponents({
         ".pseudo-outline": pseudoOutline,
         ...variantSizes.reduce((acc, size) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
           acc[`.pseudo-outline-${size}`] = {
             ...pseudoOutline,
             "&:before": {
@@ -360,6 +358,91 @@ const config: Config = withTV({
           fontWeight: "400",
         },
         ".text-body-xs-bold": {
+          fontSize: "12px",
+          lineHeight: "16px",
+          letterSpacing: "-0.12px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+        },
+        // Should be prefix by od- because of tailwind merge in tailwind variants
+        ".od-text-title-xl": {
+          fontSize: "48px",
+          fontFamily: theme("fontFamily.belwe"),
+          fontWeight: "400",
+          lineHeight: "48px",
+          letterSpacing: "-1.632px",
+        },
+        ".od-text-title-l": {
+          fontSize: "32px",
+          fontFamily: theme("fontFamily.belwe"),
+          fontWeight: "400",
+          lineHeight: "36px",
+          letterSpacing: "-0.32px",
+        },
+        ".od-text-title-m": {
+          fontSize: "24px",
+          fontFamily: theme("fontFamily.belwe"),
+          fontWeight: "400",
+          lineHeight: "32px",
+          letterSpacing: "-0.24px",
+        },
+        ".od-text-title-s": {
+          fontSize: "16px",
+          fontFamily: theme("fontFamily.belwe"),
+          fontWeight: "400",
+          lineHeight: "20px",
+          letterSpacing: "-0.16px",
+        },
+        ".od-text-body-l": {
+          fontSize: "18px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "400",
+          lineHeight: "24px",
+          letterSpacing: "-0.18px",
+        },
+        ".od-text-body-l-bold": {
+          fontSize: "18px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+          lineHeight: "24px",
+          letterSpacing: "-0.18px",
+        },
+        ".od-text-body-m": {
+          fontSize: "16px",
+          lineHeight: "20px",
+          letterSpacing: "-0.18px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "400",
+        },
+        ".od-text-body-m-bold": {
+          fontSize: "16px",
+          lineHeight: "20px",
+          letterSpacing: "-0.16px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+        },
+        ".od-text-body-s": {
+          fontSize: "14px",
+          lineHeight: "16px",
+          letterSpacing: "-0.14px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "400",
+        },
+        ".od-text-body-s-bold": {
+          fontSize: "14px",
+          lineHeight: "16px",
+          letterSpacing: "-0.14px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+        },
+        ".od-text-body-xs": {
+          fontSize: "12px",
+          lineHeight: "16px",
+          letterSpacing: "-0.12px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "400",
+        },
+        ".od-text-body-xs-bold": {
           fontSize: "12px",
           lineHeight: "16px",
           letterSpacing: "-0.12px",

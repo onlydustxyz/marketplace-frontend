@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from "react";
+import { ElementType, FC, PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
 import { VariantProps, tv } from "tailwind-variants";
 
@@ -6,7 +6,8 @@ export type FlexVariants = VariantProps<typeof flexVariants>;
 
 interface FlexProps extends PropsWithChildren, FlexVariants {
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
+  onClick?: () => void;
 }
 
 export const flexVariants = tv({
@@ -51,10 +52,14 @@ export const flexVariants = tv({
       baseline: "items-baseline",
       stretch: "items-stretch",
     },
+    width: {
+      full: "w-full",
+      fit: "w-fit",
+    },
   },
 });
 
-export const Flex: FC<FlexProps> = ({ className, as: Component = "div", children, ...props }) => {
+export const Flex: FC<FlexProps> = ({ className, as: Component = "div", onClick, children, ...props }) => {
   return (
     <Component
       className={cn(
@@ -63,6 +68,7 @@ export const Flex: FC<FlexProps> = ({ className, as: Component = "div", children
         }),
         className
       )}
+      onClick={onClick}
     >
       {children}
     </Component>

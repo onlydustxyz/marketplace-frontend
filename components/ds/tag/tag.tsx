@@ -1,6 +1,6 @@
 import { cn } from "src/utils/cn";
-import React, { ElementType, PropsWithChildren } from "react";
-import { tagVariants, TagVariants } from "@/components/ds/tag/tag.variants.ts";
+import { ElementType, PropsWithChildren } from "react";
+import { tagVariants, TagVariants } from "./tag.variants.ts";
 
 interface TagProps extends PropsWithChildren, TagVariants {
   as?: ElementType;
