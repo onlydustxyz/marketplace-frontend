@@ -67,9 +67,14 @@ type HttpOptionsTypeReturn = {
 type HttpProps = {
   getIdToken: () => Promise<IdToken | undefined>;
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+  impersonationHeaders?: Record<string, string> | undefined;
 };
 
-export async function getHttpOptions({ getIdToken, method }: HttpProps): Promise<HttpOptionsTypeReturn> {
+export async function getHttpOptions({
+  getIdToken,
+  method,
+  impersonationHeaders,
+}: HttpProps): Promise<HttpOptionsTypeReturn> {
   async function retrieveAccessToken() {
     try {
       return getIdToken();
@@ -86,6 +91,7 @@ export async function getHttpOptions({ getIdToken, method }: HttpProps): Promise
       ...(idToken?.__raw ? { Authorization: `Bearer ${idToken?.__raw}` } : {}),
       "Content-Type": "application/json",
       accept: "application/json",
+      ...impersonationHeaders,
     },
   };
 

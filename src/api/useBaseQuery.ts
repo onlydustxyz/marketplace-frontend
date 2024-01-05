@@ -4,6 +4,7 @@ import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 interface UseBaseQueryOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
@@ -40,11 +41,16 @@ export function useBaseQuery<R = unknown>({
   const { isAuthenticated } = useAuth0();
   const { isImpersonating, isValidImpersonation } = useHttpOptions(method);
   const { getIdTokenClaims } = useAuth0();
+  const { getImpersonateHeaders } = useImpersonation();
 
   return useQuery<R>({
     queryKey: [...(tags || []), resourcePath, queryParams, isImpersonating, isValidImpersonation, isAuthenticated],
     queryFn: async () => {
-      const { options } = await getHttpOptions({ method, getIdToken: getIdTokenClaims });
+      const { options } = await getHttpOptions({
+        method,
+        getIdToken: getIdTokenClaims,
+        impersonationHeaders: getImpersonateHeaders(),
+      });
       return fetch(getEndpointUrl({ resourcePath, queryParams }), options)
         .then(res => {
           if (res.ok) {

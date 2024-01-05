@@ -3,6 +3,7 @@ import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { QueryTags } from "./query.type";
 import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 interface UseBaseMutationOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
@@ -39,11 +40,16 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
   invalidatesTags,
 }: UseBaseMutationProps<Response>) {
   const { getIdTokenClaims } = useAuth0();
+  const { getImpersonateHeaders } = useImpersonation();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (data: Payload): Promise<Response> => {
-      const { options } = await getHttpOptions({ method, getIdToken: getIdTokenClaims });
+      const { options } = await getHttpOptions({
+        method,
+        getIdToken: getIdTokenClaims,
+        impersonationHeaders: getImpersonateHeaders(),
+      });
       return fetch(getEndpointUrl({ resourcePath, queryParams }), {
         ...options,
         body: data ? JSON.stringify(data) : undefined,
