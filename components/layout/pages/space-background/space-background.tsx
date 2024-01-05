@@ -1,11 +1,14 @@
-import { SpaceBackgroundProps } from "./space-background.type.ts";
+"use client";
 import { cn } from "src/utils/cn.ts";
+import { createPortal } from "react-dom";
 
-export function SpaceBackground({ children }: SpaceBackgroundProps) {
+export function SpaceBackground() {
   return (
     <>
-      <div className={cn("absolute left-0 right-0 top-0  h-full w-full bg-space bg-no-repeat")} />
-      {children}
+      {createPortal(
+        <div className={cn("fixed left-0 right-0 top-0 -z-[1] h-full w-full bg-space bg-no-repeat")} />,
+        document.body
+      )}
     </>
   );
 }
