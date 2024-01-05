@@ -13,6 +13,7 @@ import { useSidePanel } from "src/hooks/useSidePanel";
 import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
 import handleLogout from "../../../../../components/features/auth0/handlers/handle-logout.ts";
+import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
 
 type Props = {
   avatarUrl: string | null;
@@ -25,6 +26,7 @@ type Props = {
 const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
   const { T } = useIntl();
   const { logout } = useAuth0();
+  const { getImpersonateHeaders, clearImpersonateClaim } = useImpersonation();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -106,7 +108,7 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
                 <Button
                   type={ButtonType.Secondary}
                   size={ButtonSize.Xs}
-                  onClick={() => handleLogout(logout)}
+                  onClick={() => handleLogout(logout, getImpersonateHeaders, clearImpersonateClaim)}
                   data-testid="logout-button"
                 >
                   <LogoutBoxRLine className="border-greyscale-50 text-sm" />
