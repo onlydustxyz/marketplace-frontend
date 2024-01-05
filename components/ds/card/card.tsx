@@ -1,6 +1,6 @@
-import React, { ElementType, PropsWithChildren } from "react";
+import { ElementType, PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
-import { cardVariants, CardVariants } from "@/components/ds/card/card.variants";
+import { cardVariants, CardVariants } from "./card.variants.ts";
 
 interface CardProps extends PropsWithChildren, CardVariants {
   as?: ElementType;

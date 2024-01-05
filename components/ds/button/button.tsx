@@ -7,6 +7,7 @@ import { buttonTertiaryVariants } from "./variants/button-tertiary.variants";
 
 type HtmlButton = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type">;
 interface ButtonProps extends PropsWithChildren, ButtonVariants, HtmlButton {
+  onClick: () => void;
   htmlType?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   className?: string;
 }
