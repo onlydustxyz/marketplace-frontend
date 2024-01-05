@@ -1,16 +1,13 @@
-import { ThumbnailProps } from "./thumbnail.type.ts";
 import { cn } from "../../../src/utils/cn.ts";
-import { IMAGES } from "../../../src/assets/img";
-import GalleryLine from "../../../src/assets/icons/GalleryLine.tsx";
-import { thumbnailVariant } from "@/components/ds/thumbnail/thumbnail.variant.ts";
-export function ThumbnailGroup({ src, alt, className, defaultSrc = true, ...props }: ThumbnailProps) {
+import { ThumbnailGroupProps } from "@/components/ds/thumbnail-group/thumbnail-group.type.ts";
+import React from "react";
+import { Thumbnail } from "@/components/ds/thumbnail";
+export function ThumbnailGroup({ thumbnails, className, defaultSrc = true, ...props }: ThumbnailGroupProps) {
   return (
-    <div className={cn(thumbnailVariant({ ...props }), className)}>
-      {src || defaultSrc ? (
-        <img src={src || IMAGES.logo.space} alt={alt} className="h-full w-full object-cover" loading="lazy" />
-      ) : (
-        <GalleryLine className="h-4 w-4 text-spaceBlue-300" />
-      )}
+    <div className={cn("flex flex-row -space-x-1", className)}>
+      {thumbnails.map(thumbnail => (
+        <Thumbnail {...thumbnail} {...props} defaultSrc={defaultSrc} />
+      ))}
     </div>
   );
 }

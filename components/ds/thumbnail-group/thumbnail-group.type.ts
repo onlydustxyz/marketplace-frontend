@@ -1,8 +1,11 @@
-import { ThumbnailVariant } from "./thumbnail.variant.ts";
+import { ThumbnailVariant } from "../thumbnail/thumbnail.variant.ts";
 
-export interface ThumbnailProps extends ThumbnailVariant {
-  src?: string;
-  alt: string;
+export interface ThumbnailGroupProps extends ThumbnailVariant {
   className?: string;
   defaultSrc?: boolean;
+  thumbnails: {
+    src?: string;
+    alt: string;
+    className?: string;
+  }[];
 }
