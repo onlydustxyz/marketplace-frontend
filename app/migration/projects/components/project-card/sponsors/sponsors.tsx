@@ -1,9 +1,9 @@
 "use client";
 import Tag from "@/components/ds/tag/tag.tsx";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import config from "src/config.ts";
 import { useIntl } from "src/hooks/useIntl.tsx";
+import { Thumbnail } from "@/components/ds/thumbnail";
 
 type Props = {
   sponsors: { id: string; logoUrl: string; name: string; url: string }[];
@@ -25,12 +25,12 @@ export default function Sponsors({ sponsors }: Props) {
     <Tag size="small" {...withTooltip(tooltipsContent, { position: TooltipPosition.Bottom, className: "w-fit" })}>
       <div className="flex flex-row -space-x-1">
         {sponsors.map(sponsor => (
-          <RoundedImage
+          <Thumbnail
+            size="xs"
             key={sponsor.id}
             src={sponsor.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + sponsor.logoUrl : sponsor.logoUrl || ""}
             alt={sponsor.name || ""}
-            size={ImageSize.Xxs}
-            rounding={Rounding.Circle}
+            type="user"
           />
         ))}
       </div>
