@@ -119,10 +119,10 @@ export function buildHiddenFields({
     zip_code: payoutInfo?.location?.postalCode || "",
     city: payoutInfo?.location?.city || "",
     country: payoutInfo?.location?.country || "",
-    payout_info: payoutInfo?.payoutSettings?.ethAddress?.startsWith("0x")
-      ? `ETH Address: ${payoutInfo?.payoutSettings?.ethAddress}`
-      : payoutInfo?.payoutSettings?.ethAddress
-      ? `ENS Domain: ${payoutInfo?.payoutSettings?.ethAddress}`
+    payout_info: payoutInfo?.payoutSettings?.ethWallet?.startsWith("0x")
+      ? `ETH Address: ${payoutInfo?.payoutSettings?.ethWallet}`
+      : payoutInfo?.payoutSettings?.ethWallet
+      ? `ENS Domain: ${payoutInfo?.payoutSettings?.ethWallet}`
       : formatList([
           `IBAN: ${payoutInfo?.payoutSettings?.sepaAccount?.iban}`,
           `BIC: ${payoutInfo?.payoutSettings?.sepaAccount?.bic}`,
