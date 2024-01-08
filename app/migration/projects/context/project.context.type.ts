@@ -37,7 +37,7 @@ export interface ProjectFilter {
   technologies: string[];
   sponsors: string[];
   search?: string;
-  sorting?: Sorting;
+  sorting: Sorting;
 }
 
 export enum Sorting {
