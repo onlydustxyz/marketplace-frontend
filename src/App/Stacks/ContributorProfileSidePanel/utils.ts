@@ -1,5 +1,3 @@
-import { ProfileCover } from "src/types";
-
 export const parseWebsite = (website: string | undefined) => {
   try {
     const url = new URL(website || "");
@@ -20,20 +18,5 @@ export const parseWebsite = (website: string | undefined) => {
         url: `${protocol || "https://"}${hostname}${path || ""}`,
       };
     }
-  }
-};
-
-export const translateProfileCover = (cover: string): ProfileCover | undefined => {
-  switch (cover) {
-    case "cyan":
-      return ProfileCover.Cyan;
-    case "magenta":
-      return ProfileCover.Magenta;
-    case "yellow":
-      return ProfileCover.Yellow;
-    case "blue":
-      return ProfileCover.Blue;
-    default:
-      return undefined;
   }
 };
