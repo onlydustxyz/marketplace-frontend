@@ -1,10 +1,12 @@
-import { FC } from "react";
+import { BaseHTMLAttributes, FC } from "react";
 import { cn } from "src/utils/cn";
 import { CustomIcon } from "./custom-icon";
 import { CustomIconsName } from "./custom-icon-names.type";
 import { RemixIconsName } from "./remix-icon-names.type";
 
-interface BaseProps {
+type HtmlDiv = Omit<BaseHTMLAttributes<HTMLDivElement>, "type">;
+
+interface BaseProps extends HtmlDiv {
   size?: number;
   color?: string;
   className?: string;

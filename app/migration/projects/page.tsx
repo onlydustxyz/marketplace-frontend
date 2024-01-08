@@ -6,13 +6,16 @@ import { ProjectsContext } from "./context/project.context.tsx";
 import { Typography } from "@/components/layout/typography/typography.tsx";
 import { ProjectsFilters } from "./features/filters/filters.tsx";
 import ProjectsSort from "./features/projects-sort/projects-sort.tsx";
+import ProjectSearch from "./features/project-search/project-search.tsx";
 
 function ProjectsPage() {
   const { count } = useContext(ProjectsContext);
 
   return (
     <Flex className="w-full gap-6" direction="col">
-      <div className="col-span-2 row-auto self-start">SEARCH</div>
+      <div className="w-full">
+        <ProjectSearch />
+      </div>
       <Flex className="relative w-full gap-6" direction="row">
         <div className="shrink-0 basis-80">
           <Flex className="sticky top-0 z-10 hidden w-full gap-4 bg-green-500 xl:block" direction="col">
