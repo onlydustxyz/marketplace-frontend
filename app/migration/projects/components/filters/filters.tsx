@@ -2,28 +2,22 @@ import { FC } from "react";
 import Card from "components/ds/card/card";
 import { Typography } from "@/components/layout/typography/typography";
 import { Flex } from "@/components/layout/flex/flex";
-import Translate from "@/components/layout/translate/translate";
-import { ClearAllButton } from "./clear-all-button";
-import { FiltersDropDownContainer } from "./filters-drop-down-container";
-import { GlobalTags } from "./global-tags";
+import FiltersTechnologies from "./filters-technologies/filters-technologies.tsx";
+import FiltersSponsors from "./filters-sponsors/filters-sponsors.tsx";
+import FiltersOwnership from "./filters-ownership/filters-ownership.tsx";
+import { FiltersClearAll } from "./clear-all/clear-all.tsx";
 
-export const Filters: FC = () => {
-  // TODO with request  query
-  const isProjectLeader = true;
-
+export const ProjectsFilters: FC = () => {
   return (
     <Card className="flex h-fit flex-col gap-4">
       <Flex justifyContent="between" alignItems="center">
-        <Typography variant="title-s">
-          <Translate token="filter.title" />
-        </Typography>
-
-        <ClearAllButton />
+        <Typography variant="title-s" translate={{ token: "filter.title" }} />
+        <FiltersClearAll />
       </Flex>
 
-      {isProjectLeader && <GlobalTags />}
-
-      <FiltersDropDownContainer />
+      <FiltersOwnership />
+      <FiltersTechnologies />
+      <FiltersSponsors />
     </Card>
   );
 };

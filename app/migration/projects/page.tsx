@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { ProjectList } from "./features/project-list";
 import { ProjectsContext } from "./context/project.context.tsx";
 import { Typography } from "@/components/layout/typography/typography.tsx";
-import { Filters } from "./components/filters/filters.tsx";
+import { ProjectsFilters } from "./components/filters/filters.tsx";
 
 function ProjectsPage() {
   const { count } = useContext(ProjectsContext);
@@ -20,7 +20,7 @@ function ProjectsPage() {
           >
             <div className="w-full self-start">CREATE</div>
             <div className="w-full self-start">
-              <Filters />
+              <ProjectsFilters />
             </div>
           </Flex>
         </div>
