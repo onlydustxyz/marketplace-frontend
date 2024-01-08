@@ -1,6 +1,7 @@
 import { UseInfiniteListResponse } from "src/api/Project/queries.ts";
 import { ReactNode } from "react";
-import { Sponsor } from "../../../../src/types.ts";
+import { components } from "../../../../src/__generated/api";
+import { FiltersDropDownPropsOption } from "@/components/ds/drop-down/filters-drop-down.tsx";
 
 export interface ProjectsContextProps {
   children: ReactNode;
@@ -12,11 +13,17 @@ export type ProjectContextReturn = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   count: number;
+  sponsors: components["schemas"]["SponsorResponse"][];
+  technologies: string[];
   filters: {
     values: ProjectFilter;
     isCleared: boolean;
     set: (filter: Partial<ProjectFilter>) => void;
     clear: () => void;
+    options: {
+      technologies: FiltersDropDownPropsOption[];
+      sponsors: FiltersDropDownPropsOption[];
+    };
   };
 };
 
@@ -28,7 +35,7 @@ export enum Ownership {
 export interface ProjectFilter {
   ownership: Ownership;
   technologies: string[];
-  sponsors: Sponsor[];
+  sponsors: string[];
   search?: string;
   sorting?: Sorting;
 }

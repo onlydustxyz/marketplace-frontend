@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import { ProjectList } from "./features/project-list";
 import { ProjectsContext } from "./context/project.context.tsx";
 import { Typography } from "@/components/layout/typography/typography.tsx";
+import { Filters } from "./components/filters/filters.tsx";
 
 function ProjectsPage() {
   const { count } = useContext(ProjectsContext);
@@ -18,7 +19,9 @@ function ProjectsPage() {
             direction="col"
           >
             <div className="w-full self-start">CREATE</div>
-            <div className="w-full self-start">FILTERS</div>
+            <div className="w-full self-start">
+              <Filters />
+            </div>
           </Flex>
         </div>
         <Flex className="w-full flex-1 gap-5" direction="col">

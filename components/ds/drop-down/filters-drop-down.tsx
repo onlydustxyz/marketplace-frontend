@@ -9,12 +9,13 @@ import Translate from "@/components/layout/translate/translate";
 import { Badge } from "../badge/badge";
 import Image from "next/image";
 
+export type FiltersDropDownPropsOption = { id: string; label?: string };
 interface FiltersDropDownProps {
   title: string;
   image: string;
-  options: string[];
+  options: FiltersDropDownPropsOption[];
   value: string[];
-  onChange: (value: string[]) => void;
+  onChange(value: string[]): void;
 }
 
 export const FiltersDropDown: FC<FiltersDropDownProps> = ({ title, image, options, value, onChange }) => {
@@ -22,9 +23,13 @@ export const FiltersDropDown: FC<FiltersDropDownProps> = ({ title, image, option
 
   const handleDropDownClick = () => setIsOpen(!isOpen);
 
-  const handleTagClick = (tag: string) => {
-    const newValue = value.includes(tag) ? value.filter(v => v !== tag) : [...value, tag];
-    onChange(newValue);
+  const handleTagClick = (tag: FiltersDropDownPropsOption) => {
+    const selectedOption = options.find(o => o.id === tag.id);
+    const isSelected = value.find(v => v === tag.id);
+    if (selectedOption) {
+      const newValue = isSelected ? value.filter(v => v !== tag.id) : [...value, selectedOption.id];
+      onChange(newValue);
+    }
   };
 
   return (
@@ -59,8 +64,8 @@ export const FiltersDropDown: FC<FiltersDropDownProps> = ({ title, image, option
       {isOpen && (
         <Flex wrap="wrap" width="full" className="gap-x-2 gap-y-3 py-3">
           {options.map(option => (
-            <SelectableTag key={option} selected={value.includes(option)} onClick={() => handleTagClick(option)}>
-              {option}
+            <SelectableTag key={option.id} selected={value.includes(option.id)} onClick={() => handleTagClick(option)}>
+              {option.label || option.id}
             </SelectableTag>
           ))}
         </Flex>

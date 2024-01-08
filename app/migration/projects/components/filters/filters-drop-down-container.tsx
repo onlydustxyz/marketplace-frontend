@@ -1,24 +1,20 @@
 "use client";
 
 import { FiltersDropDown } from "@/components/ds/drop-down/filters-drop-down";
-import { FC, useState } from "react";
-import Projects from "../../_temp-mock";
+import { FC, useContext } from "react";
 import { IMAGES } from "src/assets/img";
+import { ProjectsContext } from "../../context/project.context.tsx";
 
 // TODO add context
 export const FiltersDropDownContainer: FC = () => {
-  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
-  const [selectedSponsors, setSelectedSponsors] = useState<string[]>([]);
+  const { filters } = useContext(ProjectsContext);
 
-  const technologies = Object.keys(Projects[0].technologies);
-  const sponsors = Projects[0].sponsors.map(sponsor => sponsor.name);
-
-  const handleTechnologyClick = () => {
-    console.log("Technology tag selected");
+  const handleTechnologyClick = (_technologies: string[]) => {
+    filters.set({ technologies: _technologies });
   };
 
-  const handleSponsorClick = () => {
-    console.log("Sponsor tag selected");
+  const handleSponsorClick = (_sponsors: string[]) => {
+    filters.set({ sponsors: _sponsors });
   };
 
   return (
@@ -27,16 +23,16 @@ export const FiltersDropDownContainer: FC = () => {
         title="filter.technologies.all"
         // TODO change svg to webp
         image={IMAGES.svg.technology}
-        options={technologies}
-        value={selectedTechnologies}
+        options={filters.options.technologies}
+        value={filters.values.technologies || []}
         onChange={handleTechnologyClick}
       />
 
       <FiltersDropDown
         title="filter.sponsors.all"
         image={IMAGES.icons.circle}
-        options={sponsors}
-        value={selectedSponsors}
+        options={filters.options.sponsors}
+        value={filters.values.sponsors || []}
         onChange={handleSponsorClick}
       />
     </>
