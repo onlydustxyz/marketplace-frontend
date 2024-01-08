@@ -19,6 +19,6 @@ export default function useInfiniteRewardsList({ projectId, queryParams, enabled
       pathParam: projectId,
       queryParams,
     },
-    { queryKey: ["reward-list", queryParams], enabled }
+    { queryKey: ["reward-list", queryParams, { projectId }], enabled }
   );
 }
