@@ -2,7 +2,21 @@ import { LanguageMap } from "src/types";
 import { UseUpdateProfileBody } from "src/api/me/mutations";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { components } from "src/__generated/api";
-import { translateProfileCover } from "../utils";
+
+const translateProfileCover = (cover: string): ProfileCover | undefined => {
+  switch (cover) {
+    case "CYAN":
+      return ProfileCover.Cyan;
+    case "MAGENTA":
+      return ProfileCover.Magenta;
+    case "YELLOW":
+      return ProfileCover.Yellow;
+    case "BLUE":
+      return ProfileCover.Blue;
+    default:
+      return undefined;
+  }
+};
 
 export enum Channel {
   Discord = "DISCORD",
@@ -67,6 +81,7 @@ export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileI
     website: website ?? "",
     login: login ?? "",
     isGithubHandlePublic: true,
+    avatarUrl: profile.avatarUrl,
     email: getContactInfo(Channel.Email) ?? "",
     isEmailPublic: isContactPublic(Channel.Email),
     telegram: getContactInfo(Channel.Telegram)?.split("/").at(-1) ?? "",
