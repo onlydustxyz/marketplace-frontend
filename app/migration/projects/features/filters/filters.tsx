@@ -1,7 +1,7 @@
 import { FC } from "react";
-import Card from "components/ds/card/card";
-import { Typography } from "@/components/layout/typography/typography";
-import { Flex } from "@/components/layout/flex/flex";
+import Card from "@/components/ds/card/card.tsx";
+import { Typography } from "@/components/layout/typography/typography.tsx";
+import { Flex } from "@/components/layout/flex/flex.tsx";
 import FiltersTechnologies from "./filters-technologies/filters-technologies.tsx";
 import FiltersSponsors from "./filters-sponsors/filters-sponsors.tsx";
 import FiltersOwnership from "./filters-ownership/filters-ownership.tsx";

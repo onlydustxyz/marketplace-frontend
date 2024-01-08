@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { ProjectList } from "./features/project-list";
 import { ProjectsContext } from "./context/project.context.tsx";
 import { Typography } from "@/components/layout/typography/typography.tsx";
-import { ProjectsFilters } from "./components/filters/filters.tsx";
+import { ProjectsFilters } from "./features/filters/filters.tsx";
 
 function ProjectsPage() {
   const { count } = useContext(ProjectsContext);

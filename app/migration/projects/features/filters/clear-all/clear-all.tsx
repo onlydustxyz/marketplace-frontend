@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ds/button/button";
-import { Icon } from "@/components/layout/icon/icon";
-import Translate from "@/components/layout/translate/translate";
+import { Button } from "@/components/ds/button/button.tsx";
+import { Icon } from "@/components/layout/icon/icon.tsx";
+import Translate from "@/components/layout/translate/translate.tsx";
 import { FC, useContext } from "react";
 import { ProjectsContext } from "../../../context/project.context.tsx";
 
