@@ -1,9 +1,13 @@
 "use client";
 import { Flex } from "components/layout/flex/flex";
-import React from "react";
+import React, { useContext } from "react";
 import { ProjectList } from "./features/project-list";
+import { ProjectsContext } from "./context/project.context.tsx";
+import { Typography } from "@/components/layout/typography/typography.tsx";
 
 function ProjectsPage() {
+  const { count } = useContext(ProjectsContext);
+
   return (
     <Flex className="w-full gap-6" direction="col">
       <div className="col-span-2 row-auto self-start">SEARCH</div>
@@ -19,7 +23,13 @@ function ProjectsPage() {
         </div>
         <Flex className="w-full flex-1 gap-5" direction="col">
           <Flex className="w-fullgap-5" direction="row">
-            <div className="w-full self-start">COUNT</div>
+            <div className="w-full self-start">
+              <Typography
+                translate={{ token: "projects.count", params: { count: count } }}
+                variant="body-m-bold"
+                className="text-spaceBlue-200"
+              />
+            </div>
             <div className="w-full self-start">SORT</div>
           </Flex>
           <div className="flex w-full grow flex-col gap-5">

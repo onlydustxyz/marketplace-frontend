@@ -2,12 +2,14 @@ import { ElementType, FC, PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
 import { VariantProps, tv } from "tailwind-variants";
 import { getDefaultComponent } from "./typography.utils";
+import Translate, { TranslateProps } from "@/components/layout/translate/translate.tsx";
 
 export type TypographyVariants = VariantProps<typeof typographyVariants>;
 
 interface TypographyProps extends PropsWithChildren, TypographyVariants {
   className?: string;
   as?: ElementType;
+  translate?: TranslateProps;
 }
 
 export const typographyVariants = tv({
@@ -32,8 +34,17 @@ export const typographyVariants = tv({
   },
 });
 
-export const Typography: FC<TypographyProps> = ({ variant, className, as, children }) => {
+export const Typography: FC<TypographyProps> = ({ variant, className, as, children, translate }) => {
   const Component = as || getDefaultComponent(variant);
+
+  if (translate) {
+    return (
+      <Component className={cn(typographyVariants({ variant }), className)}>
+        <Translate {...translate} />
+        {children}
+      </Component>
+    );
+  }
 
   return <Component className={cn(typographyVariants({ variant }), className)}>{children}</Component>;
 };

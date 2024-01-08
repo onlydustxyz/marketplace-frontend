@@ -11,6 +11,7 @@ export type ProjectContextReturn = {
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
+  count: number;
   filters: {
     values: ProjectFilter;
     isCleared: boolean;

@@ -16,6 +16,7 @@ export const ProjectsContext = createContext<ProjectContextReturn>({
   fetchNextPage: () => null,
   hasNextPage: false,
   isFetchingNextPage: false,
+  count: 0,
   filters: {
     values: DEFAULT_PROJECTS_FILTER,
     isCleared: true,
@@ -28,7 +29,6 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
   const [storage, setStorage] = useLocalStorage(PROJECT_FILTER_KEY, DEFAULT_PROJECTS_FILTER);
   const [filters, setFilters] = useState<ProjectFilter>({ ...DEFAULT_PROJECTS_FILTER, ...storage });
   const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(DEFAULT_PROJECTS_FILTER), [filters]);
-
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
@@ -44,6 +44,8 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = ProjectApi.queries.useInfiniteList({
     queryParams: queryParams,
   });
+
+  const count = useMemo(() => data?.pages[0]?.totalItemNumber || 0, [data]);
 
   function onFilterChange(newFilter: Partial<ProjectFilter>) {
     const filtersValues = { ...filters, ...newFilter };
@@ -64,6 +66,7 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
         fetchNextPage: fetchNextPage,
         isFetchingNextPage,
         hasNextPage,
+        count: count,
         filters: {
           values: filters,
           isCleared,
