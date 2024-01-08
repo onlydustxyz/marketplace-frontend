@@ -24,9 +24,16 @@ interface RemixIconProps extends BaseProps {
 
 type IconProps = CustomIconProps | RemixIconProps;
 
-export const Icon: FC<IconProps> = ({ customName, remixName, size = 16, color = "currentColor", className }) => {
+export const Icon: FC<IconProps> = ({
+  customName,
+  remixName,
+  size = 16,
+  color = "currentColor",
+  className,
+  ...props
+}) => {
   return (
-    <span className={cn("inline-flex items-center justify-center", className)}>
+    <span className={cn("inline-flex items-center justify-center", className)} {...(props || {})}>
       {customName ? <CustomIcon name={customName} size={size} color={color} /> : null}
 
       {remixName ? (

@@ -31,6 +31,13 @@ export function SearchBar({ value, onChange, placeholder }: SearchBarProps) {
     }
   }
 
+  function onBlur() {
+    setInputFocus(false);
+  }
+  function onFocus() {
+    setInputFocus(true);
+  }
+
   return (
     <div
       className={cn("overflow-hidden rounded-full p-0.5", {
@@ -58,11 +65,11 @@ export function SearchBar({ value, onChange, placeholder }: SearchBarProps) {
             <input
               placeholder={placeholder}
               className="h-8 w-full bg-transparent font-walsheim text-lg text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
-              value={value || undefined}
+              value={value || ""}
               ref={textInput}
               onChange={onValueChange}
-              onFocus={() => setInputFocus(true)}
-              onBlur={() => setInputFocus(false)}
+              onFocus={onFocus}
+              onBlur={onBlur}
             />
             <button data-testid="clear-searchbar-button">
               <Icon
