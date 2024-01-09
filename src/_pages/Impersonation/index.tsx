@@ -13,8 +13,7 @@ const ImpersonationPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
   const { T } = useIntl();
-  const { setImpersonateClaim, clearImpersonateClaim } = useImpersonation();
-  const { isImpersonating, getImpersonateClaim } = useImpersonation();
+  const { isImpersonating, getImpersonateClaim, setImpersonateClaim, clearImpersonateClaim } = useImpersonation();
   const impersonateClaims = getImpersonateClaim();
   const { data: userInfo, isLoading } = MeApi.queries.useGetMe({});
   const [isValidImpersonation, setIsValidImpersonation] = useState(false);
