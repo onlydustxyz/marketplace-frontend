@@ -2,11 +2,11 @@
 import { Leader } from "../../../types/projects.types.ts";
 import Contributor from "@/components/features/contributor/contributor.tsx";
 import Translate from "@/components/layout/translate/translate.tsx";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { ContributorsAvatars } from "@/components/features/contributors-avatars";
 
 export default function Leaders({ leaders }: { leaders: Leader[] }) {
-  const AsOnlyOneLead = useMemo(() => {
+  const asOnlyOneLead = useMemo(() => {
     if (leaders.length === 1 && leaders[0].login) {
       const lead = leaders[0];
       return (
@@ -41,7 +41,7 @@ export default function Leaders({ leaders }: { leaders: Leader[] }) {
       {leaders.length > 0 && (
         <div className="flex flex-row gap-1 truncate whitespace-nowrap">
           <Translate token="project.ledBy" params={{ count: leaders.length }} />
-          {AsOnlyOneLead}
+          {asOnlyOneLead}
         </div>
       )}
       <ContributorsAvatars contributors={leaders} />

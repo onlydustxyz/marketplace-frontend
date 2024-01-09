@@ -1,6 +1,6 @@
 import { tv, VariantProps } from "tailwind-variants";
 import { cn } from "src/utils/cn";
-import { IMAGES } from "../../../src/assets/img";
+import { IMAGES } from "src/assets/img";
 import { ElementType, PropsWithChildren } from "react";
 
 export type RoundedImageVariants = VariantProps<typeof imageVariant>;

@@ -1,6 +1,7 @@
 "use client";
+
 import { Flex } from "components/layout/flex/flex";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { ProjectList } from "./features/project-list";
 import { ProjectsContext } from "./context/project.context.tsx";
 import { Typography } from "@/components/layout/typography/typography.tsx";
@@ -29,7 +30,7 @@ function ProjectsPage() {
           <Flex className="w-fullgap-5" direction="row">
             <div className="w-full self-start">
               <Typography
-                translate={{ token: "projects.count", params: { count: count } }}
+                translate={{ token: "projects.count", params: { count } }}
                 variant="body-m-bold"
                 className="text-spaceBlue-200"
               />

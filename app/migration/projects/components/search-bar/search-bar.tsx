@@ -1,7 +1,7 @@
 import { SearchBarProps } from "./search-bar.type.ts";
-import { cn } from "../../../../../src/utils/cn.ts";
+import { cn } from "src/utils/cn.ts";
 import { useMediaQuery } from "usehooks-ts";
-import { viewportConfig } from "../../../../../src/config.ts";
+import { viewportConfig } from "src/config.ts";
 import { ChangeEvent, PropsWithChildren, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Icon } from "@/components/layout/icon/icon.tsx";

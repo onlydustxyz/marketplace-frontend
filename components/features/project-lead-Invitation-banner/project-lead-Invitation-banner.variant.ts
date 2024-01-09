@@ -1,5 +1,5 @@
 import { tv, VariantProps } from "tailwind-variants";
-import { cn } from "../../../src/utils/cn.ts";
+import { cn } from "src/utils/cn.ts";
 
 export type ProjectLeadInvitationBannerVariants = VariantProps<typeof projectLeadInvitationBannerVariants>;
 

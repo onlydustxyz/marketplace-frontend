@@ -1,5 +1,4 @@
 import { cn } from "src/utils/cn";
-import React from "react";
 import { tagVariants } from "@/components/ds/tag/tag.variants.ts";
 import { TagProps } from "@/components/ds/tag/tag.type.ts";
 

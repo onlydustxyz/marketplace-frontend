@@ -1,6 +1,5 @@
 import React from "react";
 import Card from "@/components/ds/card/card.tsx";
-import { cn } from "../../../../../src/utils/cn.ts";
 import { Flex } from "@/components/layout/flex/flex.tsx";
 import TagLoading from "@/components/ds/tag/tag.loading.tsx";
 import ThumbnailLoading from "@/components/ds/thumbnail/thumbnail.loading.tsx";
@@ -9,7 +8,7 @@ import ThumbnailGroupLoading from "@/components/ds/thumbnail-group/thumbnail-gro
 
 export default function ProjectCardLoading() {
   return (
-    <Card className={cn("relative")} dataTestId="project-card">
+    <Card className="relative" dataTestId="project-card">
       <Flex direction="col" className="gap-5">
         <Flex direction="col" className="items-stretch gap-6 divide-stone-100/8 lg:flex-row lg:gap-6 lg:divide-x">
           <Flex direction="col" className="min-w-0 basis-1/3 gap-y-5">

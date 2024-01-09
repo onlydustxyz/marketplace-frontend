@@ -1,7 +1,7 @@
-import React, { useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Sort } from "@/components/ds/Sort/Sort.tsx";
 import { SortOption } from "@/components/ds/Sort";
-import { useIntl } from "../../../../../src/hooks/useIntl.tsx";
+import { useIntl } from "src/hooks/useIntl.tsx";
 import { ProjectsContext } from "../../context/project.context.tsx";
 import { Sorting } from "../../context/project.context.type.ts";
 function ProjectsSort() {

@@ -1,6 +1,6 @@
 import { UseInfiniteListResponse } from "src/api/Project/queries.ts";
 import { ReactNode } from "react";
-import { components } from "../../../../src/__generated/api";
+import { components } from "src/__generated/api";
 import { FiltersDropDownPropsOption } from "@/components/ds/drop-down/filters-drop-down.tsx";
 
 export interface ProjectsContextProps {

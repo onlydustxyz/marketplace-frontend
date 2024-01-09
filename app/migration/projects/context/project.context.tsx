@@ -48,7 +48,7 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
   }, [filters]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = ProjectApi.queries.useInfiniteList({
-    queryParams: queryParams,
+    queryParams,
   });
 
   const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(DEFAULT_PROJECTS_FILTER), [filters]);
@@ -80,11 +80,11 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
   return (
     <ProjectsContext.Provider
       value={{
-        projects: projects,
-        fetchNextPage: fetchNextPage,
+        projects,
+        fetchNextPage,
         isFetchingNextPage,
         hasNextPage,
-        count: count,
+        count,
         technologies,
         sponsors,
         filters: {
@@ -99,7 +99,7 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
             })),
             sponsors: sponsors.map(({ id, name }) => ({
               label: name,
-              id: id,
+              id,
             })),
           },
         },

@@ -1,5 +1,4 @@
 import { cn } from "src/utils/cn";
-import React from "react";
 import { TagLoadingProps } from "@/components/ds/tag/tag.type.ts";
 import SkeletonEl from "@/components/ds/Skeleton/Skeleton.tsx";
 

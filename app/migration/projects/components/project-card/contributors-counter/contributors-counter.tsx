@@ -5,7 +5,8 @@ import User3Line from "../../../../../../src/icons/User3Line.tsx";
 type Props = {
   count: number;
 };
-export default function ContributorsCounter({ count }: Props) {
+
+export function ContributorsCounter({ count }: Props) {
   if (!count) {
     return null;
   }
@@ -13,7 +14,7 @@ export default function ContributorsCounter({ count }: Props) {
   return (
     <Tag size="small">
       <User3Line />
-      <Translate token="project.details.contributors.count" params={{ count: count }} />
+      <Translate token="project.details.contributors.count" params={{ count }} />
     </Tag>
   );
 }

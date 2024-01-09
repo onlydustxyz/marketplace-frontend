@@ -1,4 +1,4 @@
-import PrivateTag from "../../../../../../src/components/PrivateTag";
+import PrivateTag from "src/components/PrivateTag";
 import { ReactElement } from "react";
 import { Thumbnail } from "@/components/ds/thumbnail";
 

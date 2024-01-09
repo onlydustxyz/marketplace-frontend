@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { FiltersDropDown } from "@/components/ds/drop-down/filters-drop-down.tsx";
-import { IMAGES } from "../../../../../../src/assets/img";
+import { IMAGES } from "src/assets/img";
 import { ProjectsContext } from "../../../context/project.context.tsx";
 
 function FiltersSponsors() {
   const { filters } = useContext(ProjectsContext);
 
-  const handleSponsorClick = (_sponsors: string[]) => {
-    filters.set({ sponsors: _sponsors });
+  const handleSponsorClick = (sponsors: string[]) => {
+    filters.set({ sponsors });
   };
 
   return (

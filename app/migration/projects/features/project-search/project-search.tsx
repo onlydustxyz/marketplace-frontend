@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { SearchBar } from "../../components/search-bar";
-import { useIntl } from "../../../../../src/hooks/useIntl.tsx";
+import { useIntl } from "src/hooks/useIntl.tsx";
 import { ProjectsContext } from "../../context/project.context.tsx";
 
 function ProjectSearch() {

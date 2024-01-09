@@ -1,6 +1,6 @@
 import { ScrollViewProps } from "./scroll-view.type.ts";
 import { ForwardedRef, forwardRef } from "react";
-import { cn } from "../../../../src/utils/cn.ts";
+import { cn } from "src/utils/cn.ts";
 
 export const ScrollView = forwardRef(function Background(
   { className, children }: ScrollViewProps,

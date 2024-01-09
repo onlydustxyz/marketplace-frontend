@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { ProjectsContext } from "../../../context/project.context.tsx";
 import { Flex } from "@/components/layout/flex/flex.tsx";
 import { SelectableTag } from "@/components/ds/selectable-tag/selectable-tag.tsx";

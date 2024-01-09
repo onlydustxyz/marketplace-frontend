@@ -1,4 +1,3 @@
-import React from "react";
 import { SkeletonBaseProps } from "../Skeleton.type";
 import { cn } from "src/utils/cn";
 import { useBaseSkelletonStyle } from "../Skeleton.hook";

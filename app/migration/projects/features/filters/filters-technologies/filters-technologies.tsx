@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { FiltersDropDown } from "@/components/ds/drop-down/filters-drop-down.tsx";
-import { IMAGES } from "../../../../../../src/assets/img";
+import { IMAGES } from "src/assets/img";
 import { ProjectsContext } from "../../../context/project.context.tsx";
 
 function FiltersTechnologies() {
   const { filters } = useContext(ProjectsContext);
 
-  const handleTechnologyClick = (_technologies: string[]) => {
-    filters.set({ technologies: _technologies });
+  const handleTechnologyClick = (technologies: string[]) => {
+    filters.set({ technologies });
   };
 
   return (
