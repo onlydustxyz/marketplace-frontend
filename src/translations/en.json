@@ -376,7 +376,8 @@
         "unknownUser": "Unknown user __userId__"
       }
     },
-    "banner": "Impersonation in progress!"
+    "banner": "Impersonation in progress!",
+    "invalid": "Invalid impersonation"
   },
   "invoiceSubmission": {
     "sidePanel": {

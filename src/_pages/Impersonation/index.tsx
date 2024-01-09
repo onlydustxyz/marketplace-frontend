@@ -1,58 +1,56 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { Toaster } from "src/components/Toaster";
 import { useImpersonation } from "../../../components/features/impersonation/use-impersonation.tsx";
-import 
+import { Link } from "react-router-dom";
+import Button, { ButtonSize } from "src/components/Button/index.tsx";
+import ArrowLeftSLine from "src/icons/ArrowLeftSLine.tsx";
+import { useIntl } from "src/hooks/useIntl.tsx";
+import MeApi from "src/api/me/index.ts";
+import { set } from "lodash";
 
 const ImpersonationPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  // const { setImpersonationSet, clearImpersonationSet } = useImpersonationClaims();
-  // const { invalidImpersonation, impersonating } = useAuth();
-  // const { tokenSet } = useTokenSet();
-
-  // if (!tokenSet?.accessToken) {
-  //   navigate(RoutePaths.Projects);
-  // }
-
-  // const onPasswordSubmit = (password: string) => {
-  //   if (userId) {
-  //     setImpersonationSet({ password, userId });
-  //   }
-  // };
-  const { setImpersonateClaim } = useImpersonation();
-  const {} = useIsValidImpersonation();
+  const { T } = useIntl();
+  const { setImpersonateClaim, clearImpersonateClaim } = useImpersonation();
+  const { isImpersonating, getImpersonateClaim } = useImpersonation();
+  const impersonateClaims = getImpersonateClaim();
+  const { data: userInfo, isLoading } = MeApi.queries.useGetMe({});
+  const [isValidImpersonation, setIsValidImpersonation] = useState(false);
 
   useEffect(() => {
     if (!userId) {
       navigate(RoutePaths.Projects);
     } else {
       setImpersonateClaim({ sub: `github|${userId}` });
-      navigate(RoutePaths.Projects);
+
+      if (userInfo && !isLoading) {
+        if (isImpersonating && userInfo?.githubUserId === Number(impersonateClaims?.sub.split("|")[1])) {
+          setIsValidImpersonation(true);
+          navigate(RoutePaths.Projects);
+        } else {
+          set;
+          clearImpersonateClaim();
+        }
+      }
     }
-  }, [userId]);
+  }, [userId, userInfo, isLoading, isImpersonating]);
 
-  // useEffect(() => {
-  //   if (invalidImpersonation) {
-  //     clearImpersonationSet();
-  //   }
-  // }, [invalidImpersonation]);
-
-  // useEffect(() => {
-  //   if (impersonating) {
-  //     navigate(RoutePaths.Projects);
-  //   }
-  // }, [impersonating]);
-
-  return (
+  return isValidImpersonation ? (
     <>
-      <div className="flex h-[calc(100dvh)] items-center justify-center bg-space">
-        {/* <PasswordForm onSubmit={onPasswordSubmit} /> */}coucou
+      <div className="flex h-[calc(100dvh)] flex-col items-center justify-center gap-8 bg-space">
+        <div className="flex max-w-md flex-col items-center gap-6 text-center">
+          <div className="font-walsheim text-base text-spaceBlue-200 sm:text-lg">{T("impersonation.invalid")}</div>
+        </div>
+        <Link to={RoutePaths.Projects}>
+          <Button size={ButtonSize.Lg}>
+            <ArrowLeftSLine className="text-xl" /> {T("notFound.button")}
+          </Button>
+        </Link>
       </div>
-      <Toaster />
     </>
-  );
+  ) : null;
 };
 
 export default ImpersonationPage;
