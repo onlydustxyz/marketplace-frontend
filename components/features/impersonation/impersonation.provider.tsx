@@ -7,6 +7,7 @@ type ImpersonateClaim = {
 
 type ImpersonationContextType = {
   setImpersonateClaim: (claim: ImpersonateClaim) => void;
+  getImpersonateClaim: () => ImpersonateClaim | undefined;
   clearImpersonateClaim: () => void;
   getImpersonateHeaders: () => Record<string, string> | undefined;
   isImpersonating: boolean;
@@ -25,6 +26,10 @@ const ImpersonationProvider = ({ children }: PropsWithChildren) => {
     setImpersonateClaim(claim);
   };
 
+  const handleGetImpersonateClaim = () => {
+    return impersonateClaim;
+  };
+
   const handleClearImpersonateClaim = () => {
     removeImpersonateClaim();
   };
@@ -41,6 +46,7 @@ const ImpersonationProvider = ({ children }: PropsWithChildren) => {
 
   const value = {
     setImpersonateClaim: handleSetImpersonateClaim,
+    getImpersonateClaim: handleGetImpersonateClaim,
     clearImpersonateClaim: handleClearImpersonateClaim,
     getImpersonateHeaders: handleGetImpersonateHeaders,
     isImpersonating,

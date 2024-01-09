@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { Toaster } from "src/components/Toaster";
 import { useImpersonation } from "../../../components/features/impersonation/use-impersonation.tsx";
+import 
 
 const ImpersonationPage = () => {
   const { userId } = useParams();
@@ -21,6 +22,7 @@ const ImpersonationPage = () => {
   //   }
   // };
   const { setImpersonateClaim } = useImpersonation();
+  const {} = useIsValidImpersonation();
 
   useEffect(() => {
     if (!userId) {
