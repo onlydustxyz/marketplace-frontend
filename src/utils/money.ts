@@ -27,6 +27,13 @@ export const formatMoneyAmount = ({
       })
         .format(amount)
         .replace("K", "k");
+    case Currency.USDC:
+      return `${Intl.NumberFormat("en-US", {
+        maximumFractionDigits: maximumFractionDigits({ amount, notation }),
+        notation,
+      })
+        .format(amount)
+        .replace("K", "k")}${showCurrency ? ` ${currency}` : ""}`;
     default:
       return `${Intl.NumberFormat("en-US", {
         // maximumFractionDigits: maximumFractionDigits({ amount, notation }), // keep this but we need to disable because when don't want to round for crypto
