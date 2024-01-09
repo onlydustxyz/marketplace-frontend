@@ -9,6 +9,7 @@ import ProjectApi from "src/api/Project";
 import { useQueriesErrorBehavior } from "src/api/useQueriesError";
 import SEO from "src/components/SEO";
 import { FetchError } from "src/api/query.type";
+import ErrorFallback from "../../ErrorFallback";
 
 export type OutletContext = {
   project: components["schemas"]["ProjectResponse"];
@@ -34,7 +35,7 @@ export default function View({ padded = true, contentClassName }: Props) {
   });
 
   if (errorHandlingComponent) {
-    return errorHandlingComponent;
+    return <ErrorFallback />;
   }
 
   return (

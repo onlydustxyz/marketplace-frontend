@@ -6,7 +6,6 @@ export type RequiredFieldsType = {
   missingEthWallet?: boolean;
   missingOptimismWallet?: boolean;
   missingSepaAccount?: boolean;
-  missingUsdcWallet?: boolean;
   missingStarknetWallet?: boolean;
 };
 
@@ -25,11 +24,9 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
     missingEthWallet,
     missingOptimismWallet,
     missingSepaAccount,
-    missingUsdcWallet,
     missingStarknetWallet,
     sepaAccount,
-    ethAddress,
-    ethName,
+    ethWallet,
     starknetAddress,
     aptosAddress,
     optimismAddress,
@@ -48,14 +45,14 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
   }, [address, city, country, postalCode, company, isCompany, person]);
 
   const isPayoutInfoComplete = useMemo(() => {
-    if ((ethAddress || ethName) && starknetAddress && aptosAddress && optimismAddress) {
-      if (isCompany) {
-        return Boolean(sepaAccount?.bic && sepaAccount?.iban);
-      }
-      return true;
-    }
-    return false;
-  }, [ethAddress, ethName, starknetAddress, aptosAddress, optimismAddress, sepaAccount, isCompany]);
+    return !!(
+      ethWallet &&
+      starknetAddress &&
+      aptosAddress &&
+      optimismAddress &&
+      Boolean(sepaAccount?.bic && sepaAccount?.iban)
+    );
+  }, [ethWallet, starknetAddress, aptosAddress, optimismAddress, sepaAccount, isCompany]);
 
   return {
     isContactInfoValid: Boolean(hasValidContactInfo),
@@ -67,7 +64,6 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
       missingEthWallet,
       missingOptimismWallet,
       missingSepaAccount,
-      missingUsdcWallet,
       missingStarknetWallet,
     },
   };
