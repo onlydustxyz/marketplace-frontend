@@ -74,7 +74,7 @@ const RewardBudgetDetailsRow = ({
           })}
         </p>
         <Chip solid>
-          <CurrencyIcons currency={currency} className="h-2 w-2" />
+          <CurrencyIcons currency={currency} className="h-full w-full" />
         </Chip>
       </div>
     </div>
