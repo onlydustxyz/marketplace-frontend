@@ -6,19 +6,20 @@ import {
 import { components } from "src/__generated/api";
 import MeApi from "src/api/me";
 import Skeleton from "src/components/Skeleton";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 import View from "./View";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export type MyPayoutInfoType = components["schemas"]["UserPayoutInformationResponse"];
 export type MyRewardsPendingInvoiceType = components["schemas"]["MyRewardsListResponse"];
 
 export default function InvoiceSubmission() {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
+  const { user } = useAuth0();
   const queryClient = useQueryClient();
 
   const showToaster = useShowToaster();
@@ -86,7 +87,7 @@ export default function InvoiceSubmission() {
   return (
     <View
       {...{
-        githubUserId: githubUserId || 0,
+        githubUserId: getGithubUserIdFromSub(user?.sub) || 0,
         paymentRequests: rewardsPendingInvoice?.rewards || [],
         markInvoiceAsReceived,
         payoutInfo: payoutInfo || {},

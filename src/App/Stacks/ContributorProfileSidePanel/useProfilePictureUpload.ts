@@ -1,21 +1,23 @@
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 import config from "src/config";
-import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-import { useTokenSet } from "src/hooks/useTokenSet";
 
 export default function useUploadProfilePicture() {
-  const { tokenSet } = useTokenSet();
-  const authorizationHeader = tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet?.accessToken}` } : [];
-  const { getImpersonationHeaders } = useImpersonationClaims();
+  const { getImpersonateHeaders } = useImpersonation();
+
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
   return async (picture: File) => {
+    const idToken = await getImpersonateHeaders();
     try {
       const { picture_url } = await fetch(`${config.API_BASE_URL}/users/profile_picture`, {
         method: "POST",
-        headers: { ...authorizationHeader, ...getImpersonationHeaders() },
+        headers: {
+          ...(idToken?.__raw ? { Authorization: `Bearer ${idToken?.__raw}` } : {}),
+          ...getImpersonateHeaders(),
+        },
         body: picture,
       }).then(data => data.json());
 

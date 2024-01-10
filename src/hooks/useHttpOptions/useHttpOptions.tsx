@@ -1,6 +1,6 @@
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
-import { useTokenSet } from "src/hooks/useTokenSet";
 import { validateImpersonationHeader } from "src/utils/validateImpersonationHeader";
+import { useTokenSet } from "../useTokenSet.tsx";
 
 type useHttpOptionsReturn = {
   options: {

@@ -1,8 +1,8 @@
 import { createContext, PropsWithChildren, useContext } from "react";
-import { useAuth } from "src/hooks/useAuth";
 import { generatePath, Navigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import MeApi from "src/api/me";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 type Onboarding = {
   onboardingInProgress: boolean;
@@ -11,7 +11,7 @@ type Onboarding = {
 export const OnboardingContext = createContext<Onboarding>({ onboardingInProgress: false });
 
 export default function OnboardingProvider({ children }: PropsWithChildren) {
-  const { impersonating } = useAuth();
+  const { isImpersonating } = useImpersonation();
 
   const { data, isLoading } = MeApi.queries.useGetMe({});
 
@@ -23,8 +23,8 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
 
   const skipRedirection = onboardingInProgress || !data?.id || isLoading;
 
-  const showOnboarding = !skipRedirection && !data?.hasSeenOnboardingWizard && !impersonating;
-  const showTermsAndConditions = !skipRedirection && !data?.hasAcceptedLatestTermsAndConditions && !impersonating;
+  const showOnboarding = !skipRedirection && !data?.hasSeenOnboardingWizard && !isImpersonating;
+  const showTermsAndConditions = !skipRedirection && !data?.hasAcceptedLatestTermsAndConditions && !isImpersonating;
 
   return showOnboarding ? (
     <Navigate to={generatePath(RoutePaths.Onboarding)} />
