@@ -10,10 +10,6 @@ import {
   useResetStorage,
 } from "src/_pages/ProjectCreation/hooks/useProjectCreationStorage";
 import { ProjectCreationSteps } from "src/_pages/ProjectCreation/types/ProjectCreationSteps";
-import {
-  GITHUB_PERMISSIONS,
-  useLazyGetUserPermissions,
-} from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login.ts";
@@ -22,7 +18,6 @@ export default function SubmitProject({ className }: { className?: string }) {
   const { T } = useIntl();
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
-  const [getPermission] = useLazyGetUserPermissions();
   const [modalOpened, setModalOpened] = useState(false);
   const { reset: clearStorage } = useResetStorage();
   const toggleModal = () => setModalOpened(!modalOpened);
@@ -52,8 +47,7 @@ export default function SubmitProject({ className }: { className?: string }) {
   };
 
   const startProjectCreation = async () => {
-    const hasRequirePermission = await getPermission(GITHUB_PERMISSIONS.READ_ORG);
-    if (isAuthenticated && hasRequirePermission) {
+    if (isAuthenticated) {
       navigate(RoutePaths.ProjectCreation);
     } else {
       await handleLoginWithRedirect(loginWithRedirect);
