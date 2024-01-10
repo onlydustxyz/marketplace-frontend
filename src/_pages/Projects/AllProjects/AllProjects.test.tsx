@@ -6,7 +6,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { ProjectFilterProvider } from "src/_pages/Projects/useProjectFilter";
-import { AuthProvider } from "src/hooks/useAuth";
 import ApolloWrapper from "src/providers/ApolloWrapper";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { ToasterProvider } from "src/hooks/useToaster";
@@ -42,23 +41,21 @@ describe("<AllProjects />", () => {
             <ToasterProvider>
               <ProjectFilterProvider>
                 <ApolloWrapper>
-                  <AuthProvider>
-                    <QueryClientProvider client={queryClient}>
-                      <AllProjects
-                        search=""
-                        clearSearch={jest.fn()}
-                        sorting={undefined}
-                        setSorting={jest.fn()}
-                        restoreScroll={jest.fn()}
-                        filterPanelOpen={false}
-                        setFilterPanelOpen={jest.fn()}
-                        sortingPanelOpen={false}
-                        setSortingPanelOpen={jest.fn()}
-                        setTechnologies={jest.fn()}
-                        setSponsors={jest.fn()}
-                      />
-                    </QueryClientProvider>
-                  </AuthProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <AllProjects
+                      search=""
+                      clearSearch={jest.fn()}
+                      sorting={undefined}
+                      setSorting={jest.fn()}
+                      restoreScroll={jest.fn()}
+                      filterPanelOpen={false}
+                      setFilterPanelOpen={jest.fn()}
+                      sortingPanelOpen={false}
+                      setSortingPanelOpen={jest.fn()}
+                      setTechnologies={jest.fn()}
+                      setSponsors={jest.fn()}
+                    />
+                  </QueryClientProvider>
                 </ApolloWrapper>
               </ProjectFilterProvider>
             </ToasterProvider>
