@@ -1,7 +1,6 @@
 import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
 import { PropsWithChildren, Suspense } from "react";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
-import { AuthProvider } from "src/hooks/useAuth";
 import { render, RenderOptions } from "@testing-library/react";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
@@ -48,20 +47,11 @@ export const MemoryRouterProviderFactory =
                         {context ? (
                           <Routes>
                             <Route path="/" element={<Outlet context={context} />}>
-                              <Route
-                                index
-                                element={
-                                  <AuthProvider>
-                                    <StackProvider>{children}</StackProvider>
-                                  </AuthProvider>
-                                }
-                              />
+                              <Route index element={<StackProvider>{children}</StackProvider>} />
                             </Route>
                           </Routes>
                         ) : (
-                          <AuthProvider>
-                            <StackProvider>{children}</StackProvider>
-                          </AuthProvider>
+                          <StackProvider>{children}</StackProvider>
                         )}
                       </SidePanelProvider>
                     </SidePanelStackProvider>

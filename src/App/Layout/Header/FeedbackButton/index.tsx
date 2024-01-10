@@ -1,12 +1,12 @@
 import { SliderButton } from "@typeform/embed-react";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
 import MeApi from "src/api/me";
 import { useMemo } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function FeedbackButton({ customButton }: { customButton?: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user } = useAuth0();
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyPayoutInfo({});
@@ -36,8 +36,8 @@ export default function FeedbackButton({ customButton }: { customButton?: React.
           hidden={{
             firstname,
             lastname,
-            email: user.email,
-            github: user.login,
+            email: user.email || "",
+            github: user.nickname || "",
           }}
           autoClose
           transitiveSearchParams
