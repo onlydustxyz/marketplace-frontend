@@ -43,11 +43,14 @@ export function useBaseQuery<R = unknown>({
   return useQuery<R>({
     queryKey: [...(tags || []), resourcePath, queryParams, isAuthenticated],
     queryFn: async () => {
+      console.log("get iotiions");
       const { options } = await getHttpOptions({
         method,
         getIdToken: getIdTokenClaims,
         impersonationHeaders: getImpersonateHeaders(),
       });
+
+      console.log("options", options);
       return fetch(getEndpointUrl({ resourcePath, queryParams }), options)
         .then(res => {
           if (res.ok) {
