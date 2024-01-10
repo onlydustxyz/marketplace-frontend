@@ -4,7 +4,6 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useLazyGetUserPermissions } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 
 import { useIntl } from "src/hooks/useIntl";
-import { useLoginUrl, useLoginUrlStorage } from "src/hooks/useLoginUrl/useLoginUrl";
 
 type EditProjectButtonProps = { projectKey: string };
 
@@ -13,8 +12,6 @@ export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [getPermission] = useLazyGetUserPermissions();
-  const getLoginUrl = useLoginUrl();
-  const loginUrlStorage = useLoginUrlStorage();
 
   function handleClick() {
     navigate(
