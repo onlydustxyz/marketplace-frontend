@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
@@ -7,7 +6,6 @@ import Flex from "src/components/Utils/Flex";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import Title from "src/_pages/ProjectDetails/Title";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useMediaQuery } from "usehooks-ts";
@@ -31,7 +29,6 @@ import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithu
 export default function Overview() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const dispatchSession = useSessionDispatch();
 
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
@@ -39,7 +36,6 @@ export default function Overview() {
   });
 
   const { isAuthenticated, user } = useAuth0();
-  const { lastVisitedProjectId } = useSession();
 
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: project?.id });
@@ -51,12 +47,6 @@ export default function Overview() {
   const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
-
-  useEffect(() => {
-    if (project?.id && project?.id !== lastVisitedProjectId && isProjectLeader) {
-      dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: project?.id });
-    }
-  }, [project?.id, isProjectLeader]);
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 

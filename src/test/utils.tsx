@@ -4,7 +4,6 @@ import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import { render, RenderOptions } from "@testing-library/react";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
-import { SessionProvider } from "src/hooks/useSession";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { Toaster } from "src/components/Toaster";
 import { viewportConfig } from "src/config";
@@ -29,37 +28,35 @@ export const MemoryRouterProviderFactory =
     (
       <Suspense>
         <ToasterProvider>
-          <SessionProvider>
-            <TokenSetProvider>
-              <ImpersonationClaimsProvider>
-                <MockedProvider
-                  mocks={mocks}
-                  addTypename={false}
-                  suspenseCache={suspenseCache}
-                  defaultOptions={{
-                    query: { fetchPolicy: "no-cache" },
-                    watchQuery: { fetchPolicy: "no-cache" },
-                  }}
-                >
-                  <MemoryRouter initialEntries={[route]}>
-                    <SidePanelStackProvider>
-                      <SidePanelProvider>
-                        {context ? (
-                          <Routes>
-                            <Route path="/" element={<Outlet context={context} />}>
-                              <Route index element={<StackProvider>{children}</StackProvider>} />
-                            </Route>
-                          </Routes>
-                        ) : (
-                          <StackProvider>{children}</StackProvider>
-                        )}
-                      </SidePanelProvider>
-                    </SidePanelStackProvider>
-                  </MemoryRouter>
-                </MockedProvider>
-              </ImpersonationClaimsProvider>
-            </TokenSetProvider>
-          </SessionProvider>
+          <TokenSetProvider>
+            <ImpersonationClaimsProvider>
+              <MockedProvider
+                mocks={mocks}
+                addTypename={false}
+                suspenseCache={suspenseCache}
+                defaultOptions={{
+                  query: { fetchPolicy: "no-cache" },
+                  watchQuery: { fetchPolicy: "no-cache" },
+                }}
+              >
+                <MemoryRouter initialEntries={[route]}>
+                  <SidePanelStackProvider>
+                    <SidePanelProvider>
+                      {context ? (
+                        <Routes>
+                          <Route path="/" element={<Outlet context={context} />}>
+                            <Route index element={<StackProvider>{children}</StackProvider>} />
+                          </Route>
+                        </Routes>
+                      ) : (
+                        <StackProvider>{children}</StackProvider>
+                      )}
+                    </SidePanelProvider>
+                  </SidePanelStackProvider>
+                </MemoryRouter>
+              </MockedProvider>
+            </ImpersonationClaimsProvider>
+          </TokenSetProvider>
           <Toaster />
         </ToasterProvider>
       </Suspense>
