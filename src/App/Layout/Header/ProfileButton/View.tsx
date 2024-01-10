@@ -12,7 +12,7 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
-import handleLogout from "../../../../../components/features/auth0/handlers/handle-logout.ts";
+import handleLogout from "components/features/auth0/handlers/handle-logout.ts";
 import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
 
 type Props = {
@@ -34,6 +34,10 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
+
+  const handleLogoutClick = () => {
+    handleLogout(logout, isImpersonating, clearImpersonateClaim);
+  };
 
   return (
     <div className="relative">
@@ -108,7 +112,7 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
                 <Button
                   type={ButtonType.Secondary}
                   size={ButtonSize.Xs}
-                  onClick={() => handleLogout(logout, isImpersonating, clearImpersonateClaim)}
+                  onClick={handleLogoutClick}
                   data-testid="logout-button"
                 >
                   <LogoutBoxRLine className="border-greyscale-50 text-sm" />

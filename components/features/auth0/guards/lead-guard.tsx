@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
 import { generatePath, Navigate, useParams } from "react-router-dom";
-import { useProjectLeader } from "../../../../src/hooks/useProjectLeader/useProjectLeader";
-import { RoutePaths } from "../../../../src/App";
-import MeApi from "../../../../src/api/me";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
+import { RoutePaths } from "src/App";
+import MeApi from "src/api/me";
 
 function LeadGuard({ children }: { children: ReactElement }) {
   const { isLoading } = MeApi.queries.useGetMe({});
@@ -28,4 +28,4 @@ function LeadComponentGuard({ children }: { children: ReactElement }) {
   return isProjectLeader ? <>{children}</> : null;
 }
 
-export { LeadGuard as default, LeadComponentGuard };
+export { LeadGuard, LeadComponentGuard };

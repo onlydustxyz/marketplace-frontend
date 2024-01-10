@@ -53,6 +53,10 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
 
+  const handleLogoutClick = () => {
+    handleLogout(logout, isImpersonating, clearImpersonateClaim);
+  };
+
   return (
     <>
       <button
@@ -144,7 +148,7 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
             <Button
               type={ButtonType.Secondary}
               size={ButtonSize.Xs}
-              onClick={() => handleLogout(logout, isImpersonating, clearImpersonateClaim)}
+              onClick={handleLogoutClick}
               data-testid="logout-button"
             >
               <LogoutBoxRLine className="border-greyscale-50 text-sm" />

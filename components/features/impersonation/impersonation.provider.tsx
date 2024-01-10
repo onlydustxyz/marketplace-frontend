@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback } from "react";
+import { PropsWithChildren, createContext, useCallback } from "react";
 import { useLocalStorage } from "react-use";
 
 type ImpersonateClaim = {
@@ -13,7 +13,7 @@ type ImpersonationContextType = {
   isImpersonating: boolean;
 };
 
-export const ImpersonationContext = React.createContext<ImpersonationContextType | undefined>(undefined);
+export const ImpersonationContext = createContext<ImpersonationContextType | undefined>(undefined);
 
 const ImpersonationProvider = ({ children }: PropsWithChildren) => {
   const [impersonateClaim, setImpersonateClaim, removeImpersonateClaim] =
@@ -38,14 +38,12 @@ const ImpersonationProvider = ({ children }: PropsWithChildren) => {
     return undefined;
   }, [impersonateClaim]);
 
-  const isImpersonating = !!impersonateClaim;
-
   const value = {
     setImpersonateClaim: handleSetImpersonateClaim,
     getImpersonateClaim: handleGetImpersonateClaim,
     clearImpersonateClaim: handleClearImpersonateClaim,
     getImpersonateHeaders: handleGetImpersonateHeaders,
-    isImpersonating,
+    isImpersonating: !!impersonateClaim,
   };
 
   return <ImpersonationContext.Provider value={value}>{children}</ImpersonationContext.Provider>;
