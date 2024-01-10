@@ -2,14 +2,15 @@
 
 import { Flex } from "components/layout/flex/flex";
 import { useContext } from "react";
-import { ProjectList } from "./features/project-list";
+
 import { ProjectsContext } from "./context/project.context.tsx";
 import { Typography } from "@/components/layout/typography/typography.tsx";
 import { ProjectsFilters } from "./features/filters/filters.tsx";
-import ProjectsSort from "./features/projects-sort/projects-sort.tsx";
-import ProjectSearch from "./features/project-search/project-search.tsx";
+import { ProjectsSort } from "./features/projects-sort/projects-sort.tsx";
+import { ProjectSearch } from "./features/project-search/project-search.tsx";
+import { ProjectList } from "./features/project-list/project-list.tsx";
 
-function ProjectsPage() {
+export default function ProjectsPage() {
   const { count } = useContext(ProjectsContext);
 
   return (
@@ -47,5 +48,3 @@ function ProjectsPage() {
     </Flex>
   );
 }
-
-export default ProjectsPage;

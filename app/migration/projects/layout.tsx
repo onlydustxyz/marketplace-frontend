@@ -3,7 +3,7 @@ import { SpaceBackground } from "@/components/layout/pages/space-background";
 import { ScrollView } from "@/components/layout/pages/scroll-view";
 import { ProjectsContextProvider } from "./context/project.context.tsx";
 
-function ProjectsLayout({ children }: PropsWithChildren) {
+export default function ProjectsLayout({ children }: PropsWithChildren) {
   return (
     <ProjectsContextProvider>
       <ScrollView>
@@ -13,5 +13,3 @@ function ProjectsLayout({ children }: PropsWithChildren) {
     </ProjectsContextProvider>
   );
 }
-
-export default ProjectsLayout;

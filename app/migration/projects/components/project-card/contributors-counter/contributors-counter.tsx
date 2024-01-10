@@ -1,12 +1,9 @@
-import Tag from "@/components/ds/tag/tag.tsx";
+import { Tag } from "@/components/ds/tag/tag.tsx";
 import Translate from "@/components/layout/translate/translate.tsx";
 import User3Line from "../../../../../../src/icons/User3Line.tsx";
+import { TContributorsCounter } from "./contributors-counter.types.ts";
 
-type Props = {
-  count: number;
-};
-
-export function ContributorsCounter({ count }: Props) {
+export function ContributorsCounter({ count }: TContributorsCounter.Props) {
   if (!count) {
     return null;
   }

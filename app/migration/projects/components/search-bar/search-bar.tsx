@@ -1,4 +1,4 @@
-import { SearchBarProps } from "./search-bar.type.ts";
+import { TSearchBar } from "./search-bar.types.ts";
 import { cn } from "src/utils/cn.ts";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config.ts";
@@ -6,7 +6,7 @@ import { ChangeEvent, PropsWithChildren, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Icon } from "@/components/layout/icon/icon.tsx";
 
-export function SearchBar({ value, onChange, placeholder }: SearchBarProps) {
+export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [inputFocus, setInputFocus] = useState(false);
@@ -96,5 +96,3 @@ export function SearchBar({ value, onChange, placeholder }: SearchBarProps) {
 function ResponsiveOutlineWrapper({ children, isXl }: { isXl: boolean } & PropsWithChildren) {
   return isXl ? <>{children}</> : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
 }
-
-export default SearchBar;

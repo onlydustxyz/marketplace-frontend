@@ -1,8 +1,8 @@
 import { cn } from "src/utils/cn";
 import { tagVariants } from "@/components/ds/tag/tag.variants.ts";
-import { TagProps } from "@/components/ds/tag/tag.type.ts";
+import { TTag } from "./tag.types";
 
-export function Tag({ as: Component = "div", id, testId, children, className, onClick, ...props }: TagProps) {
+export function Tag({ as: Component = "div", id, testId, children, className, onClick, ...props }: TTag.Props) {
   return (
     <Component
       data-testId={testId}
@@ -14,5 +14,3 @@ export function Tag({ as: Component = "div", id, testId, children, className, on
     </Component>
   );
 }
-
-export default Tag;

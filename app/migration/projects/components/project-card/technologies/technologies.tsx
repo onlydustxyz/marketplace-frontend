@@ -1,12 +1,10 @@
 import CodeSSlashLine from "src/icons/CodeSSlashLine.tsx";
 import { buildLanguageString } from "src/utils/languages.ts";
-import Tag from "@/components/ds/tag/tag.tsx";
+import { Tag } from "@/components/ds/tag/tag.tsx";
 import { getTopTechnologies } from "src/utils/technologies.ts";
+import { TTechnologies } from "./technologies.types";
 
-type Props = {
-  technologies: { [key: string]: number };
-};
-export default function Technologies({ technologies }: Props) {
+export function Technologies({ technologies }: TTechnologies.Props) {
   const topTechnologies = technologies ? getTopTechnologies(technologies) : [];
 
   if (!topTechnologies?.length) {

@@ -1,11 +1,11 @@
 "use client";
-import { Leader } from "../../../types/projects.types.ts";
 import Contributor from "@/components/features/contributor/contributor.tsx";
 import Translate from "@/components/layout/translate/translate.tsx";
 import { useMemo } from "react";
 import { ContributorsAvatars } from "@/components/features/contributors-avatars";
+import { TLeaders } from "./leaders.types.ts";
 
-export default function Leaders({ leaders }: { leaders: Leader[] }) {
+export function Leaders({ leaders }: TLeaders.Props) {
   const asOnlyOneLead = useMemo(() => {
     if (leaders.length === 1 && leaders[0].login) {
       const lead = leaders[0];

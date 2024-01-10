@@ -1,5 +1,6 @@
 import { tv } from "tailwind-variants";
-export const thumbnailGroupVariant = tv({
+
+export const thumbnailGroupVariants = tv({
   base: "flex flex-row -space-x-1",
   variants: {
     size: {

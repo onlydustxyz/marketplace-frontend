@@ -1,8 +1,8 @@
 import { cn } from "src/utils/cn";
-import { TagLoadingProps } from "@/components/ds/tag/tag.type.ts";
-import SkeletonEl from "@/components/ds/Skeleton/Skeleton.tsx";
+import { TTag } from "@/components/ds/tag/tag.types";
+import { SkeletonEl } from "@/components/ds/skeleton/skeleton";
 
-export function TagLoading({ className, skeletonProps, ...props }: TagLoadingProps) {
+export function TagLoading({ className, skeletonProps, ...props }: TTag.LoadingProps) {
   return (
     <SkeletonEl
       height={
@@ -17,5 +17,3 @@ export function TagLoading({ className, skeletonProps, ...props }: TagLoadingPro
     />
   );
 }
-
-export default TagLoading;

@@ -1,6 +1,4 @@
-import { tv, VariantProps } from "tailwind-variants";
-
-export type TagVariants = VariantProps<typeof tagVariants>;
+import { tv } from "tailwind-variants";
 
 export const tagVariants = tv({
   base: "xl:min-h-7 relative flex w-fit items-center justify-center gap-1 rounded-full font-walsheim font-normal text-white",

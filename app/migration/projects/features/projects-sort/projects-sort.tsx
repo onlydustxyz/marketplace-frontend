@@ -1,14 +1,15 @@
 import { useContext, useMemo } from "react";
-import { Sort } from "@/components/ds/Sort/Sort.tsx";
-import { SortOption } from "@/components/ds/Sort";
 import { useIntl } from "src/hooks/useIntl.tsx";
 import { ProjectsContext } from "../../context/project.context.tsx";
-import { Sorting } from "../../context/project.context.type.ts";
-function ProjectsSort() {
+import { Sorting } from "../../context/project.context.types.ts";
+import { TSort } from "@/components/ds/sort/sort.types.ts";
+import { Sort } from "@/components/ds/sort/sort.tsx";
+
+export function ProjectsSort() {
   const { T } = useIntl();
   const { filters } = useContext(ProjectsContext);
 
-  const options: SortOption[] = useMemo(
+  const options: TSort.Option[] = useMemo(
     () => [
       {
         label: T(`projects.sorting.${Sorting.Trending}`),
@@ -43,5 +44,3 @@ function ProjectsSort() {
     />
   );
 }
-
-export default ProjectsSort;

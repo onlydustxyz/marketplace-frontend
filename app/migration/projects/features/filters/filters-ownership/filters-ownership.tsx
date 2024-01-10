@@ -4,9 +4,9 @@ import { Flex } from "@/components/layout/flex/flex.tsx";
 import { SelectableTag } from "@/components/ds/selectable-tag/selectable-tag.tsx";
 import Translate from "@/components/layout/translate/translate.tsx";
 import { Icon } from "@/components/layout/icon/icon.tsx";
-import { Ownership } from "../../../context/project.context.type.ts";
+import { Ownership } from "../../../context/project.context.types.ts";
 
-function FiltersOwnership() {
+export function FiltersOwnership() {
   const { filters } = useContext(ProjectsContext);
   const handleAllClick = () => {
     filters.set({ ownership: Ownership.All });
@@ -36,5 +36,3 @@ function FiltersOwnership() {
     </Flex>
   );
 }
-
-export default FiltersOwnership;

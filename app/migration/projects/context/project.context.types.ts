@@ -1,7 +1,7 @@
 import { UseInfiniteListResponse } from "src/api/Project/queries.ts";
 import { ReactNode } from "react";
 import { components } from "src/__generated/api";
-import { FiltersDropDownPropsOption } from "@/components/ds/drop-down/filters-drop-down.tsx";
+import { TFiltersDropDown } from "@/components/ds/drop-down/filters-drop-down.types";
 
 export interface ProjectsContextProps {
   children: ReactNode;
@@ -21,8 +21,8 @@ export type ProjectContextReturn = {
     set: (filter: Partial<ProjectFilter>) => void;
     clear: () => void;
     options: {
-      technologies: FiltersDropDownPropsOption[];
-      sponsors: FiltersDropDownPropsOption[];
+      technologies: TFiltersDropDown.Option[];
+      sponsors: TFiltersDropDown.Option[];
     };
   };
 };

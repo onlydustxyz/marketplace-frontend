@@ -1,15 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Tag } from "./tag.tsx";
-import { TagProps } from "./tag.type.ts";
-import User3Line from "../../../src/icons/User3Line.tsx";
-import TagLoading from "@/components/ds/tag/tag.loading.tsx";
 
-const defaultProps: TagProps = {
+import User3Line from "../../../src/icons/User3Line.tsx";
+
+import { TTag } from "./tag.types.ts";
+import { TagLoading } from "./tag.loading.tsx";
+
+const defaultProps: TTag.Props = {
   children: <span>Tag</span>,
 };
 
-const defaultPropsWithIcon = (orange?: boolean): TagProps => ({
+const defaultPropsWithIcon = (orange?: boolean): TTag.Props => ({
   children: (
     <>
       <User3Line className={orange ? "text-orange-500" : ""} />

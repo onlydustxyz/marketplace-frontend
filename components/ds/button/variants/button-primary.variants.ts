@@ -1,11 +1,9 @@
-import { VariantProps, tv } from "tailwind-variants";
+import { tv } from "tailwind-variants";
 import { buttonVariants } from "./button.variants";
-
-export type ButtonPrimaryVariants = VariantProps<typeof buttonPrimaryVariants>;
 
 export const buttonPrimaryVariants = tv({
   extend: buttonVariants,
-  base: "active:shadow-none active:outline active:outline-4 bg-greyscale-50 text-spaceBlue-900 shadow-bottom-sm",
+  base: "bg-greyscale-50 text-spaceBlue-900 shadow-bottom-sm active:shadow-none active:outline active:outline-4",
   compoundVariants: [
     {
       pressed: true,
@@ -14,7 +12,7 @@ export const buttonPrimaryVariants = tv({
     {
       accentColor: "purple",
       class:
-        "active:bg-spacePurple-50 active:text-spacePurple-900 active:outline-spacePurple-800 focus-visible:bg-spacePurple-50 focus-visible:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900",
+        "focus-visible:bg-spacePurple-50 focus-visible:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900 active:bg-spacePurple-50 active:text-spacePurple-900 active:outline-spacePurple-800",
     },
     {
       accentColor: "purple",
@@ -24,7 +22,7 @@ export const buttonPrimaryVariants = tv({
     {
       accentColor: "orange",
       class:
-        "active:bg-orange-50 active:text-orange-900 active:outline-orange-800 focus-visible:bg-orange-50 focus-visible:text-orange-900 hover:bg-orange-50 hover:text-orange-900",
+        "focus-visible:bg-orange-50 focus-visible:text-orange-900 hover:bg-orange-50 hover:text-orange-900 active:bg-orange-50 active:text-orange-900 active:outline-orange-800",
     },
     {
       accentColor: "orange",
@@ -34,12 +32,12 @@ export const buttonPrimaryVariants = tv({
     {
       backgroundColor: "default",
       disabled: true,
-      class: "shadow-none bg-greyscale-700 text-greyscale-200",
+      class: "bg-greyscale-700 text-greyscale-200 shadow-none",
     },
     {
       backgroundColor: "blue",
       disabled: true,
-      class: "shadow-none bg-spaceBlue-600 text-spaceBlue-200",
+      class: "bg-spaceBlue-600 text-spaceBlue-200 shadow-none",
     },
   ],
 });

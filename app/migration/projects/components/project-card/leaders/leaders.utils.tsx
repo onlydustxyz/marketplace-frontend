@@ -1,3 +1,5 @@
-import { Leader } from "../../../types/projects.types.ts";
+import { TProjects } from "app/migration/projects/types/projects.types";
 
-export const formatLeadNames = (leaders: Leader[]) => leaders.map(leader => leader.login || "").join(", ");
+export function formatLeadNames(leaders: TProjects.Leader[]) {
+  return leaders.map(leader => leader.login || "").join(", ");
+}

@@ -1,8 +1,8 @@
-import { SkeletonBaseProps } from "../Skeleton.type";
+import { TSkeleton } from "../skeleton.types";
 import { cn } from "src/utils/cn";
-import { useBaseSkelletonStyle } from "../Skeleton.hook";
+import { useBaseSkelletonStyle } from "../skeleton.hooks";
 
-export default function SkeletonRectangular(props: SkeletonBaseProps) {
+export function SkeletonRectangular(props: TSkeleton.BaseProps) {
   const { baseClass, baseStyle } = useBaseSkelletonStyle(props);
 
   return <div className={cn(baseClass, props.className)} style={baseStyle} />;

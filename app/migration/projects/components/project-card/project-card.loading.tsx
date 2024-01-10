@@ -1,12 +1,11 @@
-import React from "react";
-import Card from "@/components/ds/card/card.tsx";
+import { Card } from "@/components/ds/card/card.tsx";
 import { Flex } from "@/components/layout/flex/flex.tsx";
-import TagLoading from "@/components/ds/tag/tag.loading.tsx";
-import ThumbnailLoading from "@/components/ds/thumbnail/thumbnail.loading.tsx";
-import SkeletonEl from "@/components/ds/Skeleton/Skeleton.tsx";
-import ThumbnailGroupLoading from "@/components/ds/thumbnail-group/thumbnail-group.loading.tsx";
+import { TagLoading } from "@/components/ds/tag/tag.loading.tsx";
+import { ThumbnailLoading } from "@/components/ds/thumbnail/thumbnail.loading.tsx";
+import { SkeletonEl } from "@/components/ds/skeleton/skeleton";
+import { ThumbnailGroupLoading } from "@/components/ds/thumbnail-group/thumbnail-group.loading.tsx";
 
-export default function ProjectCardLoading() {
+export function ProjectCardLoading() {
   return (
     <Card className="relative" dataTestId="project-card">
       <Flex direction="col" className="gap-5">

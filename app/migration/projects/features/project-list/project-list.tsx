@@ -1,4 +1,4 @@
-import ProjectCard from "../../components/project-card/project-card.tsx";
+import { ProjectCard } from "../../components/project-card/project-card.tsx";
 import { isUserProjectLead } from "src/utils/isUserProjectLead.ts";
 import { ShowMore } from "src/components/Table/ShowMore.tsx";
 import { useContext } from "react";
@@ -17,5 +17,3 @@ export function ProjectList() {
     </>
   );
 }
-
-export default ProjectList;

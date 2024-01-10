@@ -1,9 +1,7 @@
 import { Typography } from "@/components/layout/typography/typography.tsx";
+import { TSummary } from "./summary.types";
 
-type Props = {
-  shortDescription: string;
-};
-export default function Summary({ shortDescription }: Props) {
+export function Summary({ shortDescription }: TSummary.Props) {
   return (
     <Typography variant="body-m" className="ml-px line-clamp-2">
       {shortDescription}

@@ -1,12 +1,12 @@
-import { ThumbnailProps } from "./thumbnail.type.ts";
+import { TThumbnail } from "./thumbnail.types.ts";
 import { cn } from "src/utils/cn.ts";
 import { IMAGES } from "src/assets/img";
 import GalleryLine from "src/assets/icons/GalleryLine.tsx";
-import { thumbnailVariant } from "@/components/ds/thumbnail/thumbnail.variant.ts";
+import { thumbnailVariants } from "./thumbnail.variants.ts";
 
-export function Thumbnail({ src, alt, className, defaultSrc = true, ...props }: ThumbnailProps) {
+export function Thumbnail({ src, alt, className, defaultSrc = true, ...props }: TThumbnail.Props) {
   return (
-    <div className={cn(thumbnailVariant({ ...props }), className)}>
+    <div className={cn(thumbnailVariants({ ...props }), className)}>
       {src || defaultSrc ? (
         <img src={src || IMAGES.logo.space} alt={alt} className="h-full w-full object-cover" loading="lazy" />
       ) : (
@@ -15,5 +15,3 @@ export function Thumbnail({ src, alt, className, defaultSrc = true, ...props }: 
     </div>
   );
 }
-
-export default Thumbnail;

@@ -1,14 +1,8 @@
 import PrivateTag from "src/components/PrivateTag";
-import { ReactElement } from "react";
-import { Thumbnail } from "@/components/ds/thumbnail";
+import { Thumbnail } from "@/components/ds/thumbnail/thumbnail";
+import { THighlights } from "./highlights.types";
 
-type Props = {
-  name: string;
-  leaders: ReactElement;
-  logoUrl: string;
-  isPrivate: boolean;
-};
-export default function Highlights({ name, logoUrl, isPrivate, leaders }: Props) {
+export function Highlights({ name, logoUrl, isPrivate, leaders }: THighlights.Props) {
   return (
     <div className="flex items-start gap-4">
       <div className="relative flex-shrink-0">

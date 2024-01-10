@@ -1,11 +1,9 @@
-import { VariantProps, tv } from "tailwind-variants";
+import { tv } from "tailwind-variants";
 import { buttonVariants } from "./button.variants";
-
-export type ButtonSecondaryVariants = VariantProps<typeof buttonSecondaryVariants>;
 
 export const buttonSecondaryVariants = tv({
   extend: buttonVariants,
-  base: "border drop-shadow-bottom-sm bg-white/5 text-greyscale-50",
+  base: "border bg-white/5 text-greyscale-50 drop-shadow-bottom-sm",
   compoundVariants: [
     {
       accentColor: "purple",
@@ -30,12 +28,12 @@ export const buttonSecondaryVariants = tv({
     {
       backgroundColor: "default",
       disabled: true,
-      class: "border bg-card-background-medium border-card-border-light text-greyscale-600",
+      class: "border border-card-border-light bg-card-background-medium text-greyscale-600",
     },
     {
       backgroundColor: "blue",
       disabled: true,
-      class: "border bg-card-background-base text-greyscale-50 border-greyscale-50",
+      class: "border border-greyscale-50 bg-card-background-base text-greyscale-50",
     },
   ],
 });

@@ -1,9 +1,9 @@
-import { SkeletonProps } from "./Skeleton.type";
-import SkeletonCircular from "./components/Circular";
-import SkeletonRectangular from "./components/Rectangular";
-import SkeletonRounded from "./components/Rounded";
+import { TSkeleton } from "./skeleton.types";
+import { SkeletonCircular } from "./components/circular";
+import { SkeletonRectangular } from "./components/rectangular";
+import { SkeletonRounded } from "./components/rounded";
 
-export default function SkeletonEl({ variant = "rectangular", color = "blue", ...props }: SkeletonProps) {
+export function SkeletonEl({ variant = "rectangular", color = "blue", ...props }: TSkeleton.Props) {
   switch (variant) {
     case "rectangular":
       return <SkeletonRectangular {...props} color={color} />;

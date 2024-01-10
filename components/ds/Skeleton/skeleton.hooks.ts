@@ -1,12 +1,13 @@
 import { CSSProperties } from "react";
-import { SkeletonBaseProps } from "./Skeleton.type";
+import { TSkeleton } from "./skeleton.types";
 import { cn } from "src/utils/cn";
 
-export const useBaseSkelletonStyle = ({ width, height, color, radius }: SkeletonBaseProps) => {
+export function useBaseSkelletonStyle({ width, height, color, radius }: TSkeleton.BaseProps) {
   const className = cn("w-full animate-pulse", {
     "bg-greyscale-800": color === "grey",
     "bg-spaceBlue-800": color === "blue",
   });
+
   const style: CSSProperties = {
     minWidth: width || "100%",
     minHeight: height || 16,
@@ -18,4 +19,4 @@ export const useBaseSkelletonStyle = ({ width, height, color, radius }: Skeleton
   };
 
   return { baseClass: className, baseStyle: style };
-};
+}

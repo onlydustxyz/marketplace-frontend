@@ -1,14 +1,11 @@
-import Tag from "@/components/ds/tag/tag.tsx";
+import { Tag } from "@/components/ds/tag/tag.tsx";
 import Translate from "@/components/layout/translate/translate.tsx";
-import React from "react";
+
 import { Typography } from "@/components/layout/typography/typography.tsx";
 import { Icon } from "@/components/layout/icon/icon.tsx";
+import { THiringTag } from "./hiring-tag.types";
 
-type Props = {
-  isErrorVariant: boolean;
-  isHiring: boolean;
-};
-export default function HiringTag({ isErrorVariant, isHiring = false }: Props) {
+export function HiringTag({ isErrorVariant, isHiring = false }: THiringTag.Props) {
   return isHiring ? (
     <header className="absolute -top-3.5 right-3.5">
       <Tag size="small" borderColor={isErrorVariant ? "orange" : undefined} className="bg-spaceBlue-900">

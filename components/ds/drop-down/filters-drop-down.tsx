@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { useState } from "react";
 import { SelectableTag } from "../selectable-tag/selectable-tag";
 import { Icon } from "@/components/layout/icon/icon";
 import { cn } from "src/utils/cn";
@@ -8,22 +8,14 @@ import { Flex } from "@/components/layout/flex/flex";
 import Translate from "@/components/layout/translate/translate";
 import { Badge } from "../badge/badge";
 import Image from "next/image";
+import { TFiltersDropDown } from "./filters-drop-down.types";
 
-export type FiltersDropDownPropsOption = { id: string; label?: string };
-interface FiltersDropDownProps {
-  title: string;
-  image: string;
-  options: FiltersDropDownPropsOption[];
-  value: string[];
-  onChange(value: string[]): void;
-}
-
-export const FiltersDropDown: FC<FiltersDropDownProps> = ({ title, image, options, value, onChange }) => {
+export function FiltersDropDown({ title, image, options, value, onChange }: TFiltersDropDown.Props) {
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const handleDropDownClick = () => setIsOpen(!isOpen);
 
-  const handleTagClick = (tag: FiltersDropDownPropsOption) => {
+  const handleTagClick = (tag: TFiltersDropDown.Option) => {
     const selectedOption = options.find(o => o.id === tag.id);
     const isSelected = value.find(v => v === tag.id);
     if (selectedOption) {
@@ -72,4 +64,4 @@ export const FiltersDropDown: FC<FiltersDropDownProps> = ({ title, image, option
       )}
     </div>
   );
-};
+}

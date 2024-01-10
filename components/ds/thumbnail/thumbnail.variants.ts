@@ -1,8 +1,6 @@
-import { tv, VariantProps } from "tailwind-variants";
+import { tv } from "tailwind-variants";
 
-export type ThumbnailVariant = VariantProps<typeof thumbnailVariant>;
-
-export const thumbnailVariant = tv({
+export const thumbnailVariants = tv({
   base: "relative box-content flex items-center justify-center overflow-hidden border-greyscale-50/12 bg-greyscale-50/8",
   variants: {
     type: {

@@ -3,9 +3,8 @@
 import { Button } from "@/components/ds/button/button";
 import { Icon } from "@/components/layout/icon/icon";
 import Translate from "@/components/layout/translate/translate";
-import { FC } from "react";
 
-export const AddProjectModal: FC = () => {
+export function AddProjectModal() {
   const handleOpenModal = () => {
     console.log("Open modal");
   };
@@ -16,4 +15,4 @@ export const AddProjectModal: FC = () => {
       <Translate token="project.details.create.submit.button" />
     </Button>
   );
-};
+}

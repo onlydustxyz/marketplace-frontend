@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { ThumbnailGroup } from "./thumbnail-group.tsx";
-import { ThumbnailGroupProps } from "./thumbnail-group.type.ts";
-import ThumbnailGroupLoading from "@/components/ds/thumbnail-group/thumbnail-group.loading.tsx";
+import { TThumbnailGroup } from "./thumbnail-group.types.ts";
+import { ThumbnailGroupLoading } from "@/components/ds/thumbnail-group/thumbnail-group.loading.tsx";
 
-const defaultProps: ThumbnailGroupProps = {
+const defaultProps: TThumbnailGroup.Props = {
   thumbnails: [
     {
       alt: "alt",

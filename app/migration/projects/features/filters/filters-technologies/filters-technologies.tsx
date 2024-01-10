@@ -3,7 +3,7 @@ import { FiltersDropDown } from "@/components/ds/drop-down/filters-drop-down.tsx
 import { IMAGES } from "src/assets/img";
 import { ProjectsContext } from "../../../context/project.context.tsx";
 
-function FiltersTechnologies() {
+export function FiltersTechnologies() {
   const { filters } = useContext(ProjectsContext);
 
   const handleTechnologyClick = (technologies: string[]) => {
@@ -21,5 +21,3 @@ function FiltersTechnologies() {
     />
   );
 }
-
-export default FiltersTechnologies;

@@ -1,3 +1,5 @@
 import { components } from "src/__generated/api";
 
-export type Leader = components["schemas"]["RegisteredUserResponse"];
+export namespace TProjects {
+  export type Leader = components["schemas"]["RegisteredUserResponse"];
+}

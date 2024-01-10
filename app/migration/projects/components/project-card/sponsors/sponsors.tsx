@@ -1,14 +1,12 @@
 "use client";
-import Tag from "@/components/ds/tag/tag.tsx";
+import { Tag } from "@/components/ds/tag/tag.tsx";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import config from "src/config.ts";
 import { useIntl } from "src/hooks/useIntl.tsx";
-import { Thumbnail } from "@/components/ds/thumbnail";
+import { Thumbnail } from "@/components/ds/thumbnail/thumbnail";
+import { TSponsors } from "./sponsors.types";
 
-type Props = {
-  sponsors: { id: string; logoUrl: string; name: string; url: string }[];
-};
-export default function Sponsors({ sponsors }: Props) {
+export function Sponsors({ sponsors }: TSponsors.Props) {
   const { T } = useIntl();
   if (!sponsors?.length) {
     return null;

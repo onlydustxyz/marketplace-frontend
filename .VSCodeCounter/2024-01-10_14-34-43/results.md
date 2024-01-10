@@ -1,0 +1,22 @@
+# Summary
+
+Date : 2024-01-10 14:34:43
+
+Directory /Users/samilafrance/Local/OnlyDust/marketplace-frontend/components/ds/card
+
+Total : 2 files,  63 codes, 0 comments, 6 blanks, all 69 lines
+
+Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
+
+## Languages
+| language | files | code | comment | blank | total |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| TypeScript JSX | 1 | 33 | 0 | 3 | 36 |
+| TypeScript | 1 | 30 | 0 | 3 | 33 |
+
+## Directories
+| path | files | code | comment | blank | total |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| . | 2 | 63 | 0 | 6 | 69 |
+
+Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

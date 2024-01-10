@@ -3,7 +3,7 @@ import { FiltersDropDown } from "@/components/ds/drop-down/filters-drop-down.tsx
 import { IMAGES } from "src/assets/img";
 import { ProjectsContext } from "../../../context/project.context.tsx";
 
-function FiltersSponsors() {
+export function FiltersSponsors() {
   const { filters } = useContext(ProjectsContext);
 
   const handleSponsorClick = (sponsors: string[]) => {
@@ -20,5 +20,3 @@ function FiltersSponsors() {
     />
   );
 }
-
-export default FiltersSponsors;

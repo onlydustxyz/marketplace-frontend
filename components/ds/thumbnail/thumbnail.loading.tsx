@@ -1,13 +1,13 @@
-import { ThumbnailLoadingProps } from "./thumbnail.type.ts";
+import { TThumbnail } from "./thumbnail.types.ts";
 import { cn } from "src/utils/cn.ts";
-import { thumbnailVariant } from "@/components/ds/thumbnail/thumbnail.variant.ts";
-import SkeletonEl from "@/components/ds/Skeleton/Skeleton.tsx";
+import { thumbnailVariants } from "@/components/ds/thumbnail/thumbnail.variants.ts";
+import { SkeletonEl } from "@/components/ds/skeleton/skeleton.tsx";
 
-export function ThumbnailLoading({ skeletonProps, animate = true, className, ...props }: ThumbnailLoadingProps) {
+export function ThumbnailLoading({ skeletonProps, animate = true, className, ...props }: TThumbnail.LoadingProps) {
   return (
     <div
       className={cn(
-        thumbnailVariant({ ...props }),
+        thumbnailVariants({ ...props }),
         {
           "border-spaceBlue-800": skeletonProps?.color !== "grey",
           "border-greyscale-800": skeletonProps?.color === "grey",
@@ -27,5 +27,3 @@ export function ThumbnailLoading({ skeletonProps, animate = true, className, ...
     </div>
   );
 }
-
-export default ThumbnailLoading;
