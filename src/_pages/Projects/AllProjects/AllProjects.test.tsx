@@ -9,6 +9,7 @@ import { ProjectFilterProvider } from "src/_pages/Projects/useProjectFilter";
 import ApolloWrapper from "src/providers/ApolloWrapper";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { ToasterProvider } from "src/hooks/useToaster";
+import ImpersonationProvider from "components/features/impersonation/impersonation.provider";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -37,29 +38,31 @@ describe("<AllProjects />", () => {
     const { asFragment } = render(
       <Router>
         <ImpersonationClaimsProvider>
-          <TokenSetProvider>
-            <ToasterProvider>
-              <ProjectFilterProvider>
-                <ApolloWrapper>
-                  <QueryClientProvider client={queryClient}>
-                    <AllProjects
-                      search=""
-                      clearSearch={jest.fn()}
-                      sorting={undefined}
-                      setSorting={jest.fn()}
-                      restoreScroll={jest.fn()}
-                      filterPanelOpen={false}
-                      setFilterPanelOpen={jest.fn()}
-                      sortingPanelOpen={false}
-                      setSortingPanelOpen={jest.fn()}
-                      setTechnologies={jest.fn()}
-                      setSponsors={jest.fn()}
-                    />
-                  </QueryClientProvider>
-                </ApolloWrapper>
-              </ProjectFilterProvider>
-            </ToasterProvider>
-          </TokenSetProvider>
+          <ImpersonationProvider>
+            <TokenSetProvider>
+              <ToasterProvider>
+                <ProjectFilterProvider>
+                  <ApolloWrapper>
+                    <QueryClientProvider client={queryClient}>
+                      <AllProjects
+                        search=""
+                        clearSearch={jest.fn()}
+                        sorting={undefined}
+                        setSorting={jest.fn()}
+                        restoreScroll={jest.fn()}
+                        filterPanelOpen={false}
+                        setFilterPanelOpen={jest.fn()}
+                        sortingPanelOpen={false}
+                        setSortingPanelOpen={jest.fn()}
+                        setTechnologies={jest.fn()}
+                        setSponsors={jest.fn()}
+                      />
+                    </QueryClientProvider>
+                  </ApolloWrapper>
+                </ProjectFilterProvider>
+              </ToasterProvider>
+            </TokenSetProvider>
+          </ImpersonationProvider>
         </ImpersonationClaimsProvider>
       </Router>
     );

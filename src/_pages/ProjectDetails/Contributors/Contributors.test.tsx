@@ -8,6 +8,7 @@ import { TokenSetProvider } from "src/hooks/useTokenSet";
 import View from "src/_pages/ProjectDetails/View";
 import ApolloWrapper from "src/providers/ApolloWrapper";
 import { renderWithIntl } from "src/test/utils";
+import ImpersonationProvider from "components/features/impersonation/impersonation.provider";
 
 const queryClient = new QueryClient();
 
@@ -16,15 +17,17 @@ describe("Contributors page", () => {
     renderWithIntl(
       <MemoryRouter>
         <ImpersonationClaimsProvider>
-          <ToasterProvider>
-            <TokenSetProvider>
-              <ApolloWrapper>
-                <QueryClientProvider client={queryClient}>
-                  <View />
-                </QueryClientProvider>
-              </ApolloWrapper>
-            </TokenSetProvider>
-          </ToasterProvider>
+          <ImpersonationProvider>
+            <ToasterProvider>
+              <TokenSetProvider>
+                <ApolloWrapper>
+                  <QueryClientProvider client={queryClient}>
+                    <View />
+                  </QueryClientProvider>
+                </ApolloWrapper>
+              </TokenSetProvider>
+            </ToasterProvider>
+          </ImpersonationProvider>
         </ImpersonationClaimsProvider>
       </MemoryRouter>
     );
