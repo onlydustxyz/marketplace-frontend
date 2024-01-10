@@ -3,7 +3,9 @@ import { RoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
 import Link from "next/link";
 import { Button } from "@/components/ds/button/button.tsx";
-export function ProjectMissingGithubBanner({ slug = "" }: { slug: string }) {
+import { TProjectMissingGithubBanner } from "./project-missing-github-banner.types";
+
+export function ProjectMissingGithubBanner({ slug = "" }: TProjectMissingGithubBanner.Props) {
   const { T } = useIntl();
 
   return (

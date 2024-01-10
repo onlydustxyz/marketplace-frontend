@@ -3,17 +3,17 @@ import { IMAGES } from "src/assets/img";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
-import { ContributorProps } from "@/components/features/contributor/contributor.type.ts";
-import Thumbnail from "@/components/ds/thumbnail";
+import { TContributor } from "@/components/features/contributor/contributor.types";
+import { Thumbnail } from "@/components/ds/thumbnail/thumbnail";
 
-export default function Contributor({
+export function Contributor({
   githubUserId,
   login,
   isRegistered,
   avatarUrl,
   clickable,
   className,
-}: ContributorProps) {
+}: TContributor.Props) {
   const { T } = useIntl();
   const [open] = useStackContributorProfile();
 

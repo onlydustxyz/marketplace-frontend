@@ -1,6 +1,6 @@
-import { ImageMetadataContentProps } from "./content.type";
+import { TContent } from "./content.types";
 
-export const ImageMetadataContent = ({ title, description }: ImageMetadataContentProps) => {
+export function ImageMetadataContent({ title, description }: TContent.Props) {
   return (
     <div
       style={{
@@ -32,10 +32,11 @@ export const ImageMetadataContent = ({ title, description }: ImageMetadataConten
       </div>
     </div>
   );
-};
+}
 
-const OnlyDustLogo = () => {
+function OnlyDustLogo() {
   const logoUrl = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/logo.png`;
+
   return (
     <div
       style={{
@@ -85,4 +86,4 @@ const OnlyDustLogo = () => {
       </svg>
     </div>
   );
-};
+}

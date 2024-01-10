@@ -1,8 +1,9 @@
 import { ImageMetadataBackground } from "../commons/background/background";
 import { ImageMetadataContent } from "../commons/content/content";
 
-export const GenericImageMetadata = () => {
+export function GenericImageMetadata() {
   const imageUrl = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/cards.png`;
+
   return (
     <ImageMetadataBackground>
       <ImageMetadataContent
@@ -22,4 +23,4 @@ export const GenericImageMetadata = () => {
       />
     </ImageMetadataBackground>
   );
-};
+}

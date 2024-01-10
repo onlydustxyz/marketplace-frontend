@@ -3,19 +3,19 @@ import { viewportConfig } from "src/config.ts";
 import { cn } from "src/utils/cn.ts";
 import { Button } from "@/components/ds/button/button.tsx";
 import CheckLine from "src/icons/CheckLine.tsx";
-import { projectLeadInvitationBannerVariants } from "@/components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.variant.ts";
+import { projectLeadInvitationBannerVariants } from "@/components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.variants";
 import { useMemo } from "react";
 import Translate from "@/components/layout/translate/translate.tsx";
-import { ProjectLeadInvitationProps } from "@/components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.type.ts";
+import { TProjectLeadInvitationBanner } from "./project-lead-Invitation-banner.types";
 
-export default function ProjectLeadInvitationBanner({
+export function ProjectLeadInvitationBanner({
   isLoading,
   onClick,
   projectName,
   btnLabel,
   size,
   on = "cards",
-}: ProjectLeadInvitationProps) {
+}: TProjectLeadInvitationBanner.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
   const { base, title } = projectLeadInvitationBannerVariants({ size });
   // const { mutate, ...rest } = MeApi.mutations.useAcceptProjectLeaderInvitation({

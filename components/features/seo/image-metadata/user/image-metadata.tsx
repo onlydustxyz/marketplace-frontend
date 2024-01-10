@@ -1,12 +1,13 @@
-import { UserImageMetadataProps } from "./image-metadata.type.ts";
+import { TUserImageMetadata } from "./image-metadata.types.ts";
 import { ImageMetadataBackground } from "../commons/background/background";
 import { ImageMetadataContent } from "../commons/content/content";
 
-export const UserImageMetadata = ({ name, description, imageUrl }: UserImageMetadataProps) => {
+export function UserImageMetadata({ name, description, imageUrl }: TUserImageMetadata.Props) {
   const image = imageUrl || `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/project-placeholder.png`;
   const _description =
     description ||
     "Contribute to innovative projects, refine your skills and create a lasting impact in the developer community.";
+
   return (
     <ImageMetadataBackground>
       <ImageMetadataContent title={`Join ${name} on OnlyDust`} description={_description} />
@@ -26,4 +27,4 @@ export const UserImageMetadata = ({ name, description, imageUrl }: UserImageMeta
       />
     </ImageMetadataBackground>
   );
-};
+}
