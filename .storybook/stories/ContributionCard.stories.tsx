@@ -1,7 +1,6 @@
 import { ComponentProps } from "react";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { withRouter } from "storybook-addon-react-router-v6";
-import withAuthProvider from "../decorators/withAuthProvider";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
 import withQueryClientProvider from "../decorators/withQueryClientProvider";
 import withTokenSetProvider from "../decorators/withTokenSetProvider";
@@ -14,7 +13,6 @@ export default {
   component: ContributionCard,
   decorators: [
     withRouter,
-    withAuthProvider({ userId: USER_ID }),
     withTokenSetProvider,
     withImpersonationClaimsProvider,
     withQueryClientProvider,
