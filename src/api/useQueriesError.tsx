@@ -72,11 +72,7 @@ function useQueriesErrorBehavior({ queries, errorLabel, errorComponent }: Props)
       return <ErrorFallback />;
     }
 
-    // Return a custom error component or a default retry button
-    if (errorComponent) {
-      return errorComponent({ refetch: queries.refetch });
-    }
-    return <Button onClick={queries.refetch}>{errorLabel || T("common.retry")}</Button>;
+    return <ErrorFallback />;
   }
 
   return null;
