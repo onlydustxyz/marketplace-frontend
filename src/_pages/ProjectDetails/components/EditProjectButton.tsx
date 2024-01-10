@@ -1,7 +1,6 @@
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useLazyGetUserPermissions } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 
 import { useIntl } from "src/hooks/useIntl";
 
@@ -11,7 +10,6 @@ export function EditProjectButton({ projectKey }: EditProjectButtonProps) {
   const { T } = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
-  const [getPermission] = useLazyGetUserPermissions();
 
   function handleClick() {
     navigate(

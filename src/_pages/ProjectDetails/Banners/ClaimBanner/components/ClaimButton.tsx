@@ -1,5 +1,4 @@
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useLazyGetUserPermissions } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 
 import { useIntl } from "src/hooks/useIntl";
 import MagicLine from "src/icons/MagicLine";
@@ -11,7 +10,6 @@ type ClaimButton = { callback: () => void };
 export function ClaimButton({ callback }: ClaimButton) {
   const { T } = useIntl();
   const { isAuthenticated, loginWithRedirect } = useAuth0();
-  const [getPermission] = useLazyGetUserPermissions();
 
   const startprojectClaim = async () => {
     if (isAuthenticated) {
