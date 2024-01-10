@@ -1,9 +1,9 @@
-import { ME_TAGS as tags } from "./tags";
+import { MIXED_TAGS as tags } from "./tags";
 import queries from "./queries";
 
-const MeApi = {
+const MixedApi = {
   tags,
   queries,
 };
 
-export default MeApi;
+export default MixedApi;

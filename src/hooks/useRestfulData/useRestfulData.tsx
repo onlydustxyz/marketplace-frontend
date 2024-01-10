@@ -10,6 +10,8 @@ import {
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getHttpOptions } from "src/api/query.utils";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 export interface UseRestfulDataProps<R = unknown>
   extends Omit<QueryOptions<R>, "queryFn" | "staleTime" | "gcTime">,
@@ -30,8 +32,9 @@ export function useRestfulData<R = unknown>({
   ...queryOptions
 }: UseRestfulDataProps<R>) {
   const { enabled, ...restQueryOptions } = queryOptions;
-  const { isAuthenticated } = useAuth0();
-  const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
+  const { isAuthenticated, getIdTokenClaims } = useAuth0();
+  const { isImpersonating, isValidImpersonation } = useHttpOptions(method);
+  const { getImpersonateHeaders } = useImpersonation();
 
   return useQuery<R>({
     queryKey: [
@@ -43,8 +46,14 @@ export function useRestfulData<R = unknown>({
       isValidImpersonation,
       isAuthenticated,
     ],
-    queryFn: () =>
-      fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)
+    queryFn: async () => {
+      const { options } = await getHttpOptions({
+        method,
+        getIdToken: getIdTokenClaims,
+        impersonationHeaders: getImpersonateHeaders(),
+      });
+
+      return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)
         .then(res => {
           if (res.ok) {
             return res.json();
@@ -54,7 +63,8 @@ export function useRestfulData<R = unknown>({
         })
         .catch(e => {
           throw new Error(e);
-        }),
+        });
+    },
     staleTime: 0,
     gcTime: 0,
     refetchInterval: false,
@@ -73,10 +83,16 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
   onError,
   onSettled,
 }: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void; onSettled?: () => void }) {
-  const { options } = useHttpOptions(method);
+  const { getIdTokenClaims } = useAuth0();
+  const { getImpersonateHeaders } = useImpersonation();
 
   return useMutation({
-    mutationFn: (data: Payload): Promise<Response> => {
+    mutationFn: async (data: Payload): Promise<Response> => {
+      const { options } = await getHttpOptions({
+        method,
+        getIdToken: getIdTokenClaims,
+        impersonationHeaders: getImpersonateHeaders(),
+      });
       return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
         ...options,
         body: JSON.stringify(data),
@@ -136,12 +152,18 @@ export function useInfiniteRestfulData<R extends ResponseData>(
     enabled,
     ...restQueryOptions
   } = queryOptions;
-  const { options, isImpersonating, isValidImpersonation } = useHttpOptions("GET");
-
+  const { isImpersonating, isValidImpersonation } = useHttpOptions("GET");
+  const { getIdTokenClaims } = useAuth0();
+  const { getImpersonateHeaders } = useImpersonation();
   return useInfiniteQuery<R>({
     queryKey: [isImpersonating, isValidImpersonation, ...queryKey],
-    queryFn: ({ pageParam }) =>
-      fetch(
+    queryFn: async ({ pageParam }) => {
+      const { options } = await getHttpOptions({
+        method: "GET",
+        getIdToken: getIdTokenClaims,
+        impersonationHeaders: getImpersonateHeaders(),
+      });
+      return fetch(
         getEndpointUrl({
           resourcePath,
           pageParam: typeof pageParam === "number" ? pageParam : 0,
@@ -160,7 +182,8 @@ export function useInfiniteRestfulData<R extends ResponseData>(
         })
         .catch(e => {
           throw new Error(e);
-        }),
+        });
+    },
     select: data => {
       // Make sure to return an object that includes the `pages` and `pageParams` properties
       return {

@@ -1,11 +1,11 @@
 import { components } from "src/__generated/api";
 import { API_PATH } from "../ApiPath";
 import { UseQueryProps, useBaseQuery } from "../useBaseQuery";
-import { ME_TAGS } from "./tags";
 import { useAuth0 } from "@auth0/auth0-react";
+import { MIXED_TAGS } from "./tags.ts";
 
 export type UseGetRewards = components["schemas"]["RewardDetailsResponse"];
-const useGetReward = ({
+const useGetMixedReward = ({
   options = {},
   params,
 }: UseQueryProps<UseGetRewards, { isMine: boolean; projectId?: string; rewardId: string }>) => {
@@ -14,14 +14,14 @@ const useGetReward = ({
   return useBaseQuery<UseGetRewards>({
     resourcePath: params?.isMine
       ? API_PATH.ME_REWARD_DETAIL(params.rewardId)
-      : API_PATH.PROJECT_REWARD_DETAIL(params?.rewardId, params?.projectId || ""),
+      : API_PATH.PROJECT_REWARD_DETAIL(params?.rewardId || "", params?.projectId || ""),
     method: "GET",
-    tags: ME_TAGS.rewarded_pending_invoice(),
+    tags: params?.isMine ? MIXED_TAGS.me_rewards(params?.rewardId) : MIXED_TAGS.project_rewards(params?.rewardId || ""),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
   });
 };
 
 export default {
-  useGetReward,
+  useGetMixedReward,
 };
