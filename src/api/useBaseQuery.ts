@@ -1,9 +1,9 @@
 import { QueryObserverOptions, QueryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "src/hooks/useAuth";
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
-import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
-import { createFetchError, mapHttpStatusToString } from "./query.utils";
+import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 interface UseBaseQueryOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
@@ -37,13 +37,18 @@ export function useBaseQuery<R = unknown>({
   const queryClient = useQueryClient();
 
   const { enabled, ...restQueryOptions } = queryOptions;
-  const { isLoggedIn } = useAuth();
-  const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
+  const { getIdTokenClaims, isAuthenticated } = useAuth0();
+  const { getImpersonateHeaders } = useImpersonation();
 
   return useQuery<R>({
-    queryKey: [...(tags || []), resourcePath, queryParams, isImpersonating, isValidImpersonation, isLoggedIn],
-    queryFn: () =>
-      fetch(getEndpointUrl({ resourcePath, queryParams }), options)
+    queryKey: [...(tags || []), resourcePath, queryParams, isAuthenticated],
+    queryFn: async () => {
+      const { options } = await getHttpOptions({
+        method,
+        getIdToken: getIdTokenClaims,
+        impersonationHeaders: getImpersonateHeaders(),
+      });
+      return fetch(getEndpointUrl({ resourcePath, queryParams }), options)
         .then(res => {
           if (res.ok) {
             return res.json();
@@ -60,12 +65,13 @@ export function useBaseQuery<R = unknown>({
         })
         .catch(e => {
           throw e;
-        }),
+        });
+    },
     staleTime: 20000,
     gcTime: 0,
     refetchInterval: false,
     refetchIntervalInBackground: false,
-    enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
+    enabled,
     ...restQueryOptions,
   });
 }

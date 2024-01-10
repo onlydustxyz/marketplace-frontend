@@ -7,8 +7,6 @@ import "src/assets/fonts/Belwe/stylesheet.css";
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
 import withContextProviders from "./decorators/withProviders";
 
-const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
-
 const customViewports = {
   desktop: {
     name: "Desktop",
@@ -49,4 +47,4 @@ export const parameters = {
   },
 };
 
-export const decorators = [withContextProviders({ userId: USER_ID })];
+export const decorators = [withContextProviders()];

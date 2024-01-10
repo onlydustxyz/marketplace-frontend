@@ -8,7 +8,6 @@ import { ContributionLinked } from "src/components/Contribution/ContributionLink
 import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
@@ -18,13 +17,15 @@ import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
-import { CommitsTooltip } from "../../../components/GithubCard/GithubPullRequest/CommitsTooltip";
+import { CommitsTooltip } from "src/components/GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
+  const { user } = useAuth0();
   const [openRewardPanel] = useStackReward();
   const [openProjectOverview] = useStackProjectOverview();
   const isMyContribution = Boolean(useMatch(`${RoutePaths.Contributions}/*`));
@@ -219,6 +220,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
 
               <div className="flex flex-col gap-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                 {contribution.rewards.map(reward => {
+                  const isMine = reward.to.githubUserId === getGithubUserIdFromSub(user?.sub);
                   return (
                     <RewardCard
                       key={reward.id}
@@ -228,7 +230,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                           openRewardPanel({
                             rewardId: reward.id,
                             projectId: contribution.project.id,
-                            ...(reward.to.githubUserId === githubUserId ? { isMine: true } : {}),
+                            ...(isMine ? { isMine: true } : {}),
                           });
                         }
                       }}

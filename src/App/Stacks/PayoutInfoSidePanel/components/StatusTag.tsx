@@ -29,8 +29,7 @@ function getNetworkMessage(key: string) {
     missingEthWallet: "profile.missing.networkFull.ETH",
     missingOptimismWallet: "profile.missing.networkFull.OP",
     missingSepaAccount: "profile.missing.networkFull.USD",
-    missingUsdcWallet: "profile.missing.networkFull.USD",
-    missingStarknetWallet: "profile.missing.networkFull.STARK",
+    missingStarknetWallet: "profile.missing.networkFull.STRK",
   };
 
   return networksMessages[key as keyof typeof networksMessages];
@@ -40,10 +39,9 @@ type StatusTagType = {
   isValid: boolean;
   type: StatusType;
   requiredNetworks?: RequiredFieldsType;
-  showIbanAndBic?: boolean;
 };
 
-export function StatusTag({ isValid, type, requiredNetworks, showIbanAndBic }: StatusTagType) {
+export function StatusTag({ isValid, type, requiredNetworks }: StatusTagType) {
   const { T } = useIntl();
   const { watch } = useFormContext();
   const [ethWallet, iban, bic, aptosWallet, starknetWallet, optimismWallet] = watch([
@@ -55,7 +53,7 @@ export function StatusTag({ isValid, type, requiredNetworks, showIbanAndBic }: S
     "optimismWallet",
   ]);
   const networks = useMemo(() => {
-    const missingSepaAccount = Boolean(requiredNetworks?.missingSepaAccount) && !iban && !bic && showIbanAndBic;
+    const missingSepaAccount = Boolean(requiredNetworks?.missingSepaAccount) && !iban && !bic;
     const missingEthWallet = Boolean(requiredNetworks?.missingEthWallet) && !ethWallet;
     const missingAptosWallet = Boolean(requiredNetworks?.missingAptosWallet) && !aptosWallet;
     const missingStarknetWallet = Boolean(requiredNetworks?.missingStarknetWallet) && !starknetWallet;

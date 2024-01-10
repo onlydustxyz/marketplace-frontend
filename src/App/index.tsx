@@ -1,10 +1,8 @@
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
-import ProtectedRoute from "src/App/ProtectedRoute";
 
-const Login = lazy(() => import("src/_pages/Login"));
 const Projects = lazy(() => import("src/_pages/Projects"));
 const Contributions = lazy(() => import("src/_pages/Contributions/Contributions"));
 const Rewards = lazy(() => import("src/_pages/Rewards"));
@@ -23,7 +21,6 @@ import ImpersonationPage from "src/_pages/Impersonation";
 import Onboarding from "src/_pages/Onboarding";
 import PublicProfilePage from "src/_pages/PublicProfile";
 import TermsAndConditions from "src/_pages/TermsAndConditions";
-import { CustomUserRole, HasuraUserRole } from "src/types";
 import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
 import ProtectedByFlag from "./ProtectedByFlag";
@@ -35,10 +32,11 @@ import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import Loader from "src/components/Loader";
 import RewardLoader from "./Loaders/RewardsLoader";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
+import AuthenticationGuard from "components/features/auth0/guards/authentication-guard.tsx";
+import { LeadGuard } from "components/features/auth0/guards/lead-guard.tsx";
 
 export enum RoutePaths {
   Projects = "/",
-  Login = "/login",
   ProjectCreation = "/p/create",
   ProjectDetails = "/p/:projectKey",
   ProjectDetailsEdit = "/p/:projectKey/edit",
@@ -106,21 +104,25 @@ function App() {
         {
           index: true,
           element: (
-            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-              <Suspense fallback={<Skeleton variant="projectRewards" />}>
-                <ProjectDetailsRewardsList />
-              </Suspense>
-            </ProtectedRoute>
+            <AuthenticationGuard>
+              <LeadGuard>
+                <Suspense fallback={<Skeleton variant="projectRewards" />}>
+                  <ProjectDetailsRewardsList />
+                </Suspense>
+              </LeadGuard>
+            </AuthenticationGuard>
           ),
         },
         {
           path: ProjectRewardsRoutePaths.New,
           element: (
-            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-              <Suspense fallback={<Skeleton variant="projectRewardForm" />}>
-                <ProjectDetailsRewardForm />
-              </Suspense>
-            </ProtectedRoute>
+            <AuthenticationGuard>
+              <LeadGuard>
+                <Suspense fallback={<Skeleton variant="projectRewardForm" />}>
+                  <ProjectDetailsRewardForm />
+                </Suspense>
+              </LeadGuard>
+            </AuthenticationGuard>
           ),
         },
       ],
@@ -128,23 +130,27 @@ function App() {
     {
       path: ProjectRoutePaths.Insights,
       element: (
-        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProtectedByFlag isValid={process.env.NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS === "true"}>
-            <Suspense fallback={<InsightSkeleton />}>
-              <ProjectDetailsInsights />
-            </Suspense>
-          </ProtectedByFlag>
-        </ProtectedRoute>
+        <AuthenticationGuard>
+          <LeadGuard>
+            <ProtectedByFlag isValid={process.env.NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS === "true"}>
+              <Suspense fallback={<InsightSkeleton />}>
+                <ProjectDetailsInsights />
+              </Suspense>
+            </ProtectedByFlag>
+          </LeadGuard>
+        </AuthenticationGuard>
       ),
     },
     {
       path: ProjectRoutePaths.Edit,
       element: (
-        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-          <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
-            <ProjectDetailsEdit />
-          </ProtectedByGithub>
-        </ProtectedRoute>
+        <AuthenticationGuard>
+          <LeadGuard>
+            <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
+              <ProjectDetailsEdit />
+            </ProtectedByGithub>
+          </LeadGuard>
+        </AuthenticationGuard>
       ),
     },
   ];
@@ -179,36 +185,32 @@ function App() {
         {
           path: RoutePaths.Rewards,
           element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+            <AuthenticationGuard>
               <Suspense fallback={<RewardLoader />}>
                 <Rewards />
               </Suspense>
-            </ProtectedRoute>
+            </AuthenticationGuard>
           ),
         },
         {
           path: RoutePaths.Contributions,
           element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+            <AuthenticationGuard>
               <Contributions />
-            </ProtectedRoute>
+            </AuthenticationGuard>
           ),
-        },
-        {
-          path: RoutePaths.Login,
-          element: <Login />,
         },
         {
           path: RoutePaths.ProjectCreation,
           element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+            <AuthenticationGuard>
               <ProtectedByGithub
                 requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
                 redirectTo={RoutePaths.ProjectCreation}
               >
                 <ProjectCreation />
               </ProtectedByGithub>
-            </ProtectedRoute>
+            </AuthenticationGuard>
           ),
         },
         {

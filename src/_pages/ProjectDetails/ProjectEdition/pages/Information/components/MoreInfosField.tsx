@@ -54,7 +54,7 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
   function addLink() {
     const moreInfos = form?.getValues("moreInfos") || [];
     moreInfos.push({ url: "", value: "", id: uuidv4() });
-    form?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: false });
+    form?.setValue("moreInfos", moreInfos, { shouldDirty: false, shouldValidate: true });
   }
 
   function deleteLink(index: number) {
@@ -62,7 +62,7 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
     moreInfos.splice(index, 1);
     form?.setValue("moreInfos", moreInfos, {
       shouldDirty: true,
-      shouldValidate: false,
+      shouldValidate: true,
     });
   }
 

@@ -20,7 +20,6 @@ import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { ShowMore } from "src/components/Table/ShowMore";
 import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
-import { useAuth } from "src/hooks/useAuth";
 import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
@@ -44,6 +43,8 @@ import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
 import { RewardableItem } from "src/api/Project/queries";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 enum Align {
   Top = "top",
@@ -60,7 +61,7 @@ export type Props = {
 
 export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView, isMine }: Props) {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
+  const { user } = useAuth0();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
   const {
@@ -89,6 +90,8 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
   const formattedReceipt = isMine ? formatReceipt(data?.receipt) : null;
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
+
+  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   function renderRewardItems() {
     if (rewardItemsLoading) {

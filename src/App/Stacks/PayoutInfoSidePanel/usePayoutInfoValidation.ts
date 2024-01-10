@@ -45,13 +45,13 @@ export function usePayoutInfoValidation(user?: UserPayoutType): {
   }, [address, city, country, postalCode, company, isCompany, person]);
 
   const isPayoutInfoComplete = useMemo(() => {
-    if (ethWallet && starknetAddress && aptosAddress && optimismAddress) {
-      if (isCompany) {
-        return Boolean(sepaAccount?.bic && sepaAccount?.iban); // SHOULD BE REMOVE WHEN SEPA PAIEMENT IS DONE FOR INDIVIDUAL
-      }
-      return true;
-    }
-    return false;
+    return !!(
+      ethWallet &&
+      starknetAddress &&
+      aptosAddress &&
+      optimismAddress &&
+      Boolean(sepaAccount?.bic && sepaAccount?.iban)
+    );
   }, [ethWallet, starknetAddress, aptosAddress, optimismAddress, sepaAccount, isCompany]);
 
   return {

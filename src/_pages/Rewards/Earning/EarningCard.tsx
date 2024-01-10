@@ -33,7 +33,7 @@ const getContent = (
     case CardTypes.ReceivedRewards:
       return <Counter {...receivedRewards} />;
     case CardTypes.Projects:
-      return rewardingProjectsCount || null;
+      return rewardingProjectsCount || 0;
     case CardTypes.AmountPending:
     default:
       return <Amount amount={amount} />;

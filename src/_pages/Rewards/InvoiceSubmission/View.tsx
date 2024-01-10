@@ -129,7 +129,7 @@ export function buildHiddenFields({
     zip_code: payoutInfo?.location?.postalCode || "",
     city: payoutInfo?.location?.city || "",
     country: payoutInfo?.location?.country || "",
-    payout_info: payoutInfo?.payoutSettings?.ethWallet?.startsWith("0x") // TODO check this with @PierreOucif
+    payout_info: payoutInfo?.payoutSettings?.ethWallet?.startsWith("0x")
       ? `ETH Address: ${payoutInfo?.payoutSettings?.ethWallet}`
       : payoutInfo?.payoutSettings?.ethWallet
       ? `ENS Domain: ${payoutInfo?.payoutSettings?.ethWallet}`

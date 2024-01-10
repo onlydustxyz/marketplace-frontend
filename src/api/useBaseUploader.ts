@@ -1,8 +1,9 @@
 import { QueryClient, QueryObserverOptions, QueryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
-import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
-import { createFetchError, mapHttpStatusToString } from "./query.utils";
+import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 interface UseBaseUploaderOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,
@@ -38,11 +39,17 @@ export function useBaseUploader<Response = unknown>({
   onSettled,
   invalidatesTags,
 }: UseBaseUploaderProps<Response>) {
-  const { options } = useHttpOptions(method);
   const queryClient = useQueryClient();
+  const { getIdTokenClaims } = useAuth0();
+  const { getImpersonateHeaders } = useImpersonation();
 
   return useMutation({
-    mutationFn: (data: File): Promise<Response> => {
+    mutationFn: async (data: File): Promise<Response> => {
+      const { options } = await getHttpOptions({
+        method,
+        getIdToken: getIdTokenClaims,
+        impersonationHeaders: getImpersonateHeaders(),
+      });
       return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
         ...options,
         headers: {

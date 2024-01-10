@@ -7,9 +7,9 @@ import {
   useQuery,
   QueryKey,
 } from "@tanstack/react-query";
-import { useAuth } from "src/hooks/useAuth";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export interface UseRestfulDataProps<R = unknown>
   extends Omit<QueryOptions<R>, "queryFn" | "staleTime" | "gcTime">,
@@ -30,7 +30,7 @@ export function useRestfulData<R = unknown>({
   ...queryOptions
 }: UseRestfulDataProps<R>) {
   const { enabled, ...restQueryOptions } = queryOptions;
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated } = useAuth0();
   const { options, isImpersonating, isValidImpersonation } = useHttpOptions(method);
 
   return useQuery<R>({
@@ -41,7 +41,7 @@ export function useRestfulData<R = unknown>({
       queryParams,
       isImpersonating,
       isValidImpersonation,
-      isLoggedIn,
+      isAuthenticated,
     ],
     queryFn: () =>
       fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options)

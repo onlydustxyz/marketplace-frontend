@@ -4,7 +4,6 @@ import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/_pages/Projects/Sorting/SortingDropdown";
 import { useProjectFilter } from "src/_pages/Projects/useProjectFilter";
@@ -16,6 +15,8 @@ import AllProjectLoading from "./AllProjectsLoading";
 import { Sponsor } from "src/types";
 import { uniqBy } from "lodash";
 import SubmitProject from "../SubmitProject";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -47,7 +48,7 @@ export default function AllProjects({
   setSponsors,
 }: Props) {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
+  const { user } = useAuth0();
 
   const {
     projectFilter: { ownership, technologies, sponsors },
@@ -77,6 +78,7 @@ export default function AllProjects({
 
   useEffect(() => {
     if (data && !isLoading) {
+      const blackListedTech = process.env.NEXT_PUBLIC_LANGUAGES_FILTER;
       const technologies = [...new Set(data?.pages?.flatMap(({ technologies = "" }) => technologies))] ?? [];
       const sponsors = uniqBy(
         data?.pages
@@ -84,7 +86,10 @@ export default function AllProjects({
           .filter((sponsor): sponsor is Sponsor => Boolean(sponsor)),
         "id"
       );
-      setTechnologies(technologies.length ? replaceApostrophes(technologies) : []);
+
+      setTechnologies(
+        technologies.length ? replaceApostrophes(technologies.filter(item => !blackListedTech?.includes(item))) : []
+      );
       setSponsors(sponsors);
     }
   }, [data]);
@@ -98,6 +103,8 @@ export default function AllProjects({
   }
 
   const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
+
+  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   if (projects.length) {
     return (

@@ -2,9 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Card from "src/components/Card";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
-import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
 import { useMemo, useState } from "react";
 import ConfirmationPopOver from "src/components/New/Popover/ConfirmationPopover";
 import {
@@ -16,21 +14,19 @@ import {
   GITHUB_PERMISSIONS,
   useLazyGetUserPermissions,
 } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
-import { useLoginUrl, useLoginUrlStorage } from "src/hooks/useLoginUrl/useLoginUrl";
 import { cn } from "src/utils/cn";
+import { useAuth0 } from "@auth0/auth0-react";
+import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login.ts";
 
 export default function SubmitProject({ className }: { className?: string }) {
   const { T } = useIntl();
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const [getPermission] = useLazyGetUserPermissions();
   const [modalOpened, setModalOpened] = useState(false);
   const { reset: clearStorage } = useResetStorage();
   const toggleModal = () => setModalOpened(!modalOpened);
   const closeModal = () => setModalOpened(false);
-  const getLoginUrl = useLoginUrl();
-  const loginUrlStorage = useLoginUrlStorage();
-  const dispatchSession = useSessionDispatch();
   const canResume = useMemo(() => !!localStorage.getItem(STORAGE_KEY_CREATE_PROJECT_STEP), []);
 
   const onCancel = () => {
@@ -57,13 +53,10 @@ export default function SubmitProject({ className }: { className?: string }) {
 
   const startProjectCreation = async () => {
     const hasRequirePermission = await getPermission(GITHUB_PERMISSIONS.READ_ORG);
-    if (isLoggedIn && hasRequirePermission) {
+    if (isAuthenticated && hasRequirePermission) {
       navigate(RoutePaths.ProjectCreation);
     } else {
-      dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: RoutePaths.ProjectCreation });
-      loginUrlStorage.setValue(`${GITHUB_PERMISSIONS.USER_EMAIL},${GITHUB_PERMISSIONS.READ_ORG}`);
-      const login_url = getLoginUrl();
-      window.location.replace(login_url);
+      await handleLoginWithRedirect(loginWithRedirect);
     }
   };
 

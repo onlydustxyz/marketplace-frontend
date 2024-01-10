@@ -2,15 +2,14 @@ import { Controller, useFormContext } from "react-hook-form";
 import Input from "src/components/FormInput";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
-import { BIC_REGEXP } from "src/utils/regex";
 import IBANParser from "iban";
 import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
 
 export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
-  const { control, trigger, clearErrors } = useFormContext();
+  const { control, trigger, clearErrors, watch } = useFormContext();
   const { missingSepaAccount } = requiredFields || {};
-
+  const [iban, bic] = watch(["iban", "bic"]);
   return (
     <Flex className="flex-row gap-5">
       <Controller
@@ -26,7 +25,10 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
               options={{
                 required: { value: !!value, message: T("profile.form.ibanRequired") },
                 validate: value => {
-                  return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
+                  if (!value?.trim() && bic) {
+                    return T("profile.form.ibanRequired");
+                  }
+                  return true;
                 },
               }}
               showRequiredError={missingSepaAccount}
@@ -57,7 +59,12 @@ export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsT
                   value: !!value,
                   message: T("profile.form.bicRequired"),
                 },
-                pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
+                validate: value => {
+                  if (!value?.trim() && iban) {
+                    return T("profile.form.ibanRequired");
+                  }
+                  return true;
+                },
               }}
               showRequiredError={missingSepaAccount}
               value={value}
