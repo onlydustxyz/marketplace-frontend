@@ -78,6 +78,7 @@ export default function AllProjects({
 
   useEffect(() => {
     if (data && !isLoading) {
+      const blackListedTech = process.env.NEXT_PUBLIC_LANGUAGES_FILTER;
       const technologies = [...new Set(data?.pages?.flatMap(({ technologies = "" }) => technologies))] ?? [];
       const sponsors = uniqBy(
         data?.pages
@@ -85,7 +86,10 @@ export default function AllProjects({
           .filter((sponsor): sponsor is Sponsor => Boolean(sponsor)),
         "id"
       );
-      setTechnologies(technologies.length ? replaceApostrophes(technologies) : []);
+
+      setTechnologies(
+        technologies.length ? replaceApostrophes(technologies.filter(item => !blackListedTech?.includes(item))) : []
+      );
       setSponsors(sponsors);
     }
   }, [data]);

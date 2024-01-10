@@ -40,8 +40,7 @@ const payoutInfo: MyPayoutInfoType = {
   },
   payoutSettings: {
     aptosAddress: "0xa645c3bdd0dfd0c3628803075b3b133e8426061dc915ef996cc5ed4cece6d4e5",
-    ethAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-    ethName: "vitalik.eth",
+    ethWallet: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
     hasValidPayoutSettings: false,
     missingAptosWallet: false,
     missingEthWallet: false,
@@ -54,7 +53,6 @@ const payoutInfo: MyPayoutInfoType = {
       iban: "FR5417569000301995586997O41",
     },
     starknetAddress: "0x056471aa79e3daebb62185cebee14fb0088b462b04ccf6e60ec9386044bec798",
-    usdPreferredMethod: "CRYPTO",
   },
   person: {
     firstname: "John",
