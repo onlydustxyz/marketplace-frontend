@@ -7,7 +7,7 @@ import Button, { ButtonSize } from "src/components/Button/index.tsx";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine.tsx";
 import { useIntl } from "src/hooks/useIntl.tsx";
 import MeApi from "src/api/me/index.ts";
-import { set } from "lodash";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 const ImpersonationPage = () => {
   const { userId } = useParams();
@@ -23,20 +23,21 @@ const ImpersonationPage = () => {
       navigate(RoutePaths.Projects);
     } else {
       setImpersonateClaim({ sub: `github|${userId}` });
+      const claimedGithubUserId = getGithubUserIdFromSub(impersonateClaims?.sub);
 
       if (userInfo && !isLoading) {
-        if (isImpersonating && userInfo?.githubUserId === Number(impersonateClaims?.sub.split("|")[1])) {
+        if (isImpersonating && userInfo?.githubUserId === claimedGithubUserId) {
           setIsValidImpersonation(true);
           navigate(RoutePaths.Projects);
         } else {
-          set;
+          setIsValidImpersonation(false);
           clearImpersonateClaim();
         }
       }
     }
   }, [userId, userInfo, isLoading, isImpersonating]);
 
-  return isValidImpersonation ? (
+  return !isValidImpersonation ? (
     <>
       <div className="flex h-[calc(100dvh)] flex-col items-center justify-center gap-8 bg-space">
         <div className="flex max-w-md flex-col items-center gap-6 text-center">

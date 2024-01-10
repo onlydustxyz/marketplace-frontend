@@ -7,7 +7,7 @@ import { Stacks } from "src/App/Stacks/Stacks.tsx";
 import ErrorFallback from "src/ErrorFallback";
 import Maintenance from "src/Maintenance";
 import config from "src/config.ts";
-import { AuthProvider } from "src/hooks/useAuth";
+
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims.tsx";
 import { IntlProvider } from "src/hooks/useIntl.tsx";
 import { SessionProvider } from "src/hooks/useSession.tsx";
@@ -38,22 +38,20 @@ export default function Providers() {
                     <ToasterProvider>
                       <ApolloWrapper>
                         <QueryClientProvider client={queryClient}>
-                          <AuthProvider>
-                            <StackProvider>
-                              <SidePanelStackProvider>
-                                <SidePanelProvider>
-                                  {config.MAINTENANCE ? (
-                                    <Maintenance />
-                                  ) : (
-                                    <OnboardingProvider>
-                                      <App />
-                                      <Stacks />
-                                    </OnboardingProvider>
-                                  )}
-                                </SidePanelProvider>
-                              </SidePanelStackProvider>
-                            </StackProvider>
-                          </AuthProvider>
+                          <StackProvider>
+                            <SidePanelStackProvider>
+                              <SidePanelProvider>
+                                {config.MAINTENANCE ? (
+                                  <Maintenance />
+                                ) : (
+                                  <OnboardingProvider>
+                                    <App />
+                                    <Stacks />
+                                  </OnboardingProvider>
+                                )}
+                              </SidePanelProvider>
+                            </SidePanelStackProvider>
+                          </StackProvider>
                         </QueryClientProvider>
                       </ApolloWrapper>
                     </ToasterProvider>

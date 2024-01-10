@@ -1,6 +1,5 @@
 import { QueryObserverOptions, QueryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
-import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -38,13 +37,11 @@ export function useBaseQuery<R = unknown>({
   const queryClient = useQueryClient();
 
   const { enabled, ...restQueryOptions } = queryOptions;
-  const { isAuthenticated } = useAuth0();
-  const { isImpersonating, isValidImpersonation } = useHttpOptions(method);
-  const { getIdTokenClaims } = useAuth0();
+  const { getIdTokenClaims, isAuthenticated } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useQuery<R>({
-    queryKey: [...(tags || []), resourcePath, queryParams, isImpersonating, isValidImpersonation, isAuthenticated],
+    queryKey: [...(tags || []), resourcePath, queryParams, isAuthenticated],
     queryFn: async () => {
       const { options } = await getHttpOptions({
         method,
@@ -74,7 +71,7 @@ export function useBaseQuery<R = unknown>({
     gcTime: 0,
     refetchInterval: false,
     refetchIntervalInBackground: false,
-    enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
+    enabled,
     ...restQueryOptions,
   });
 }

@@ -16,7 +16,7 @@ import { Sponsor } from "src/types";
 import { uniqBy } from "lodash";
 import SubmitProject from "../SubmitProject";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -100,6 +100,8 @@ export default function AllProjects({
 
   const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
 
+  const githubUserId = getGithubUserIdFromSub(user?.sub);
+
   if (projects.length) {
     return (
       <div className="flex flex-col gap-5">
@@ -121,7 +123,7 @@ export default function AllProjects({
           </div>
           {projects.map((project, index) => {
             const isFirstHiringProject = index === 0 && project.hiring;
-            const isLeader = isUserProjectLead(project, getGithubUserIdFromSub(user?.sub));
+            const isLeader = isUserProjectLead(project, githubUserId);
 
             return (
               <ProjectCard

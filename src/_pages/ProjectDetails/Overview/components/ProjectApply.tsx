@@ -16,7 +16,7 @@ import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import User3Line from "src/icons/User3Line";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
-import { handleLoginWithRedirect } from "../../../../../components/features/auth0/handlers/handle-login.ts";
+import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface ApplyCalloutProps {
@@ -82,6 +82,10 @@ export function ApplyCallout({ isAuthenticated, profile, alreadyApplied, applyTo
     updateUserProfileInfo(mapFormDataToSchema(formData));
   };
 
+  function handleLoginClick() {
+    handleLoginWithRedirect(loginWithRedirect);
+  }
+
   return (
     <Card className="p-4 lg:p-4">
       <div className="flex flex-col gap-3">
@@ -136,7 +140,7 @@ export function ApplyCallout({ isAuthenticated, profile, alreadyApplied, applyTo
             </div>
           )
         ) : (
-          <Button size={ButtonSize.Md} width={Width.Full} onClick={() => handleLoginWithRedirect(loginWithRedirect)}>
+          <Button size={ButtonSize.Md} width={Width.Full} onClick={handleLoginClick}>
             {T("applications.connectToApplyButton")}
           </Button>
         )}

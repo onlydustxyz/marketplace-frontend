@@ -21,7 +21,7 @@ import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import ProjectApi from "src/api/Project";
 import { RewardProjectButton } from "../components/RewardProjectButton";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -45,7 +45,9 @@ export default function Contributors() {
     queryParams,
   });
 
-  const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === getGithubUserIdFromSub(user?.sub));
+  const githubUserId = getGithubUserIdFromSub(user?.sub);
+
+  const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
   const noBudget = !project?.hasRemainingBudget;
 

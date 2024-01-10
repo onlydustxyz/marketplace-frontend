@@ -12,7 +12,7 @@ import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 import View from "./View";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export type MyPayoutInfoType = components["schemas"]["UserPayoutInformationResponse"];
 export type MyRewardsPendingInvoiceType = components["schemas"]["MyRewardsListResponse"];

@@ -1,5 +1,4 @@
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
-import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 import { UseInfiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
@@ -51,12 +50,11 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
     enabled,
     ...restQueryOptions
   } = queryOptions;
-  const { isImpersonating, isValidImpersonation } = useHttpOptions("GET");
   const { getIdTokenClaims } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useInfiniteQuery<R>({
-    queryKey: [...(tags || []), isImpersonating, isValidImpersonation, queryParams],
+    queryKey: [...(tags || []), queryParams],
     queryFn: async ({ pageParam }) => {
       const { options } = await getHttpOptions({
         method: "GET",
@@ -95,7 +93,7 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
     getNextPageParam,
     refetchInterval,
     refetchIntervalInBackground,
-    enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
+    enabled,
     ...restQueryOptions,
   });
 }

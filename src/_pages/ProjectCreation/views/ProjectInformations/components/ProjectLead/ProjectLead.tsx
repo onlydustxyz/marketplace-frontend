@@ -38,6 +38,7 @@ export interface FieldProjectLeadProps {
 
 export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, value }) => {
   const { user } = useAuth0();
+  const { sub, picture = "", nickname = "" } = user || {};
   const [query, setQuery] = useState("");
   const { project } = useContext(EditContext);
   const { T } = useIntl();
@@ -61,7 +62,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
 
   const selectedLeads = useMemo(
     () => [
-      <FieldProjectLeadItem key={user?.sub} avatar={user?.picture ?? ""} isYou label={user?.nickname ?? ""} />,
+      <FieldProjectLeadItem key={sub} avatar={picture} isYou label={nickname} />,
       ...(value?.toKeep || [])
         .filter(lead => lead.id !== user?.id)
         .map(({ githubUserId, avatarUrl, login }) => (

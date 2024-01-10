@@ -16,7 +16,7 @@ import {
 } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
-import { handleLoginWithRedirect } from "../../../../components/features/auth0/handlers/handle-login.ts";
+import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login.ts";
 
 export default function SubmitProject({ className }: { className?: string }) {
   const { T } = useIntl();
