@@ -11,17 +11,18 @@ import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
 import { MyPayoutInfoType, MyRewardsPendingInvoiceType } from ".";
 import InfoIcon from "src/assets/icons/InfoIcon";
+import MeApi from "src/api/me";
+import { useShowToaster } from "src/hooks/useToaster";
 
 type Props = {
   githubUserId: number;
   paymentRequests: MyRewardsPendingInvoiceType["rewards"];
-  markInvoiceAsReceived: () => void;
   payoutInfo: MyPayoutInfoType;
 };
 
-export default function InvoiceSubmission({ paymentRequests, githubUserId, markInvoiceAsReceived, payoutInfo }: Props) {
+export default function InvoiceSubmission({ paymentRequests, githubUserId, payoutInfo }: Props) {
   const { T } = useIntl();
-
+  const showToaster = useShowToaster();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
 
@@ -29,14 +30,23 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
   const onSliderClose = useCallback(() => {
     setIsClosed(true);
   }, []);
+
   const hiddenFields = useMemo(
     () => buildHiddenFields({ paymentRequests, githubUserId, payoutInfo }),
     [paymentRequests, githubUserId, payoutInfo]
   );
 
+  const { mutate: markInvoiceAsReceived } = MeApi.mutations.useMarkInvoicesAsReceived({
+    options: {
+      onSuccess: () => {
+        showToaster(T("invoiceSubmission.toaster.success"));
+      },
+    },
+  });
+
   useEffect(() => {
     if (isClosed && isSubmitted) {
-      markInvoiceAsReceived();
+      markInvoiceAsReceived(undefined);
       setIsClosed(false);
       setIsSubmitted(false);
     }
