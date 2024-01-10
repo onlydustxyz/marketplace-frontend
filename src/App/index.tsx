@@ -3,8 +3,6 @@ import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
 
-// TODO delete this login page, can't find any usage of it
-// const Login = lazy(() => import("src/_pages/Login"));
 const Projects = lazy(() => import("src/_pages/Projects"));
 const Contributions = lazy(() => import("src/_pages/Contributions/Contributions"));
 const Rewards = lazy(() => import("src/_pages/Rewards"));
@@ -34,12 +32,11 @@ import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import Loader from "src/components/Loader";
 import RewardLoader from "./Loaders/RewardsLoader";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
-import AuthenticationGuard from "../../components/features/auth0/guards/authentication-guard.tsx";
-import LeadGuard from "../../components/features/auth0/guards/lead-guard.tsx";
+import AuthenticationGuard from "components/features/auth0/guards/authentication-guard.tsx";
+import { LeadGuard } from "components/features/auth0/guards/lead-guard.tsx";
 
 export enum RoutePaths {
   Projects = "/",
-  // Login = "/login",
   ProjectCreation = "/p/create",
   ProjectDetails = "/p/:projectKey",
   ProjectDetailsEdit = "/p/:projectKey/edit",
@@ -203,10 +200,6 @@ function App() {
             </AuthenticationGuard>
           ),
         },
-        // {
-        //   path: RoutePaths.Login,
-        //   element: <Login />,
-        // },
         {
           path: RoutePaths.ProjectCreation,
           element: (

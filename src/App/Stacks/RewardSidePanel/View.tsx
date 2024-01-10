@@ -44,7 +44,7 @@ import { SkeletonItems } from "./SkeletonItems";
 import { RewardableItem } from "src/api/Project/queries";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 enum Align {
   Top = "top",
@@ -90,6 +90,8 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
   const formattedReceipt = isMine ? formatReceipt(data?.receipt) : null;
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
+
+  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   function renderRewardItems() {
     if (rewardItemsLoading) {
@@ -268,7 +270,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                       }}
                       clickable
                     />
-                    {data.from.githubUserId === getGithubUserIdFromSub(user?.sub) && T("reward.table.detailsPanel.you")}
+                    {data.from.githubUserId === githubUserId && T("reward.table.detailsPanel.you")}
                   </div>
                 </Details>
               ) : null}
@@ -285,7 +287,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                       }}
                       clickable
                     />
-                    {data.to.githubUserId === getGithubUserIdFromSub(user?.sub) && T("reward.table.detailsPanel.you")}
+                    {data.to.githubUserId === githubUserId && T("reward.table.detailsPanel.you")}
                   </div>
                 </Details>
               ) : null}

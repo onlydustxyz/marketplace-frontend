@@ -17,11 +17,11 @@ import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
-import { CommitsTooltip } from "../../../components/GithubCard/GithubPullRequest/CommitsTooltip";
+import { CommitsTooltip } from "src/components/GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
@@ -220,6 +220,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
 
               <div className="flex flex-col gap-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                 {contribution.rewards.map(reward => {
+                  const isMine = reward.to.githubUserId === getGithubUserIdFromSub(user?.sub);
                   return (
                     <RewardCard
                       key={reward.id}
@@ -229,7 +230,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                           openRewardPanel({
                             rewardId: reward.id,
                             projectId: contribution.project.id,
-                            ...(reward.to.githubUserId === getGithubUserIdFromSub(user?.sub) ? { isMine: true } : {}),
+                            ...(isMine ? { isMine: true } : {}),
                           });
                         }
                       }}

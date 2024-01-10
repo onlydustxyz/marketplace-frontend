@@ -6,7 +6,7 @@ import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "../../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
 
 export default function Header() {
@@ -20,9 +20,10 @@ export default function Header() {
 
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
-  const rewardsMenuItem = getGithubUserIdFromSub(user?.sub) && !onboardingInProgress ? T("navbar.rewards") : undefined;
-  const contributionsMenuItem =
-    getGithubUserIdFromSub(user?.sub) && !onboardingInProgress ? T("navbar.contributions") : undefined;
+  const githubUserId = getGithubUserIdFromSub(user?.sub);
+
+  const rewardsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.rewards") : undefined;
+  const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.contributions") : undefined;
   const projectsMenuItem =
     (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("navbar.projects") : undefined;
 

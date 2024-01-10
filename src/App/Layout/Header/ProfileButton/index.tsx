@@ -9,9 +9,8 @@ const ProfileButton = () => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const { data: userInfo } = MeApi.queries.useGetMe({});
-  const githubUserId = userInfo?.githubUserId;
-  const login = userInfo?.login || "";
-  const avatarUrl = userInfo?.avatarUrl || "";
+
+  const { githubUserId, login = "", avatarUrl = "" } = userInfo || {};
 
   const { onboardingInProgress } = useOnboarding();
 
