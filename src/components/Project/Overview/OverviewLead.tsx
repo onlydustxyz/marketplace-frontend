@@ -5,7 +5,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import Section, { SectionIcon } from "./OverviewSection";
 import isDefined from "src/utils/isDefined";
-import MeApi from "../../../api/me";
+import MeApi from "src/api/me";
 
 export interface ProjectOverviewLeadProps {
   project: UseGetProjectBySlugResponse;

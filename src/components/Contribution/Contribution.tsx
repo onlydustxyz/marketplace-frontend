@@ -5,7 +5,7 @@ import { ContributionReward } from "src/components/Contribution/ContributionRewa
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "../../../components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 type Props = {
   contribution: ContributionT;
@@ -17,8 +17,19 @@ export function Contribution({ contribution, isMobile = false, showExternal = fa
   const { user } = useAuth0();
   const [openContributionPanel] = useStackContribution();
 
-  const { githubPullRequestReviewState, githubHtmlUrl, githubStatus, githubTitle, id, project, rewardIds, type } =
-    contribution;
+  const {
+    githubPullRequestReviewState,
+    githubHtmlUrl,
+    githubStatus,
+    githubTitle,
+    id,
+    project,
+    rewardIds,
+    type,
+    githubAuthor: { githubUserId },
+  } = contribution;
+
+  const isMine = githubUserId === getGithubUserIdFromSub(user?.sub);
 
   function renderReview() {
     if (
@@ -57,12 +68,7 @@ export function Contribution({ contribution, isMobile = false, showExternal = fa
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
         {rewardIds?.length ? (
-          <ContributionReward
-            contributionId={id}
-            rewardIds={rewardIds}
-            projectId={project.id}
-            isMine={contribution.githubAuthor.githubUserId === getGithubUserIdFromSub(user?.sub)}
-          />
+          <ContributionReward contributionId={id} rewardIds={rewardIds} projectId={project.id} isMine={isMine} />
         ) : null}
         {renderReview()}
       </div>
