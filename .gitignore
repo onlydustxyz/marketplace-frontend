@@ -80,7 +80,7 @@ tarpaulin_target
 src/__generated/api.d.ts
 
 # VSCode settings
-.vscode/**
+.vscode
 
 # Next.js
 .next
