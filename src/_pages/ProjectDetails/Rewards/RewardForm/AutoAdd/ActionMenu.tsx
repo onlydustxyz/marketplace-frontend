@@ -27,12 +27,16 @@ export default function ActionMenu({ actions, children, disabled }: Props) {
       >
         <Menu.Items className="absolute -top-12 right-0 z-40 w-auto min-w-max origin-top-right rounded-xl bg-greyscale-900 p-2 font-walsheim text-sm font-normal shadow-medium outline-none focus:outline-none">
           {actions.map((action, index) => (
-            <div key={index} className="cursor-pointer rounded p-2 hover:bg-white/5">
-              <Menu.Item as="button" type="button" onClick={action.onClick}>
-                {action.icon && <span className="mr-2">{action.icon}</span>}
-                {action.label}
-              </Menu.Item>
-            </div>
+            <Menu.Item
+              key={index}
+              as="button"
+              type="button"
+              className="block w-full rounded p-2 text-left hover:bg-white/5"
+              onClick={action.onClick}
+            >
+              {action.icon && <span className="mr-2">{action.icon}</span>}
+              {action.label}
+            </Menu.Item>
           ))}
         </Menu.Items>
       </Transition>
