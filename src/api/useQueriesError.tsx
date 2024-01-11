@@ -57,9 +57,7 @@ const UseQueriesError = ({ queries, errorComponent, errorLabel }: Props) => {
  *
  * @returns {React.ReactElement | null} - A React element to render based on the error type, or null if no error.
  */
-function useQueriesErrorBehavior({ queries, errorLabel, errorComponent }: Props): React.ReactElement | null {
-  const { T } = useIntl();
-
+function useQueriesErrorBehavior({ queries }: Props): React.ReactElement | null {
   if (queries.isError) {
     const isErrorTyped = queries.error instanceof Error && "errorType" in queries.error;
     const typedError = isErrorTyped ? (queries.error as FetchError) : null;
