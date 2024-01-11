@@ -74,7 +74,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "^7.6.7",
     "@faker-js/faker": "^8.0.2",
     "@graphql-codegen/cli": "^2.16.1",
     "@graphql-codegen/introspection": "^2.2.3",
@@ -87,6 +86,7 @@
     "@next/eslint-plugin-next": "^14.0.4",
     "@playwright/test": "^1.31.2",
     "@storybook/addon-actions": "^7.6.6",
+    "@storybook/addon-docs": "^7.6.7",
     "@storybook/addon-essentials": "^7.6.6",
     "@storybook/addon-interactions": "^7.6.6",
     "@storybook/addon-links": "^7.6.6",
@@ -98,6 +98,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.4.3",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/iban": "^0.0.32",
     "@types/react": "^18.0.24",
     "@types/react-currency-format": "^1.0.0",

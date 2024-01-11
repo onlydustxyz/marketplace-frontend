@@ -1,11 +1,14 @@
 "use client";
-import { Tag } from "components/ds/tag/tag";
+
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
+
+import { Tag } from "components/ds/tag/tag";
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
-import { TSponsors } from "./sponsors.types";
 import { Translate } from "components/layout/translate/translate";
+
+import { TSponsors } from "./sponsors.types";
 
 export function Sponsors({ sponsors }: TSponsors.Props) {
   const { T } = useIntl();

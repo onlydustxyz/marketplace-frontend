@@ -9,4 +9,7 @@ module.exports = {
   printWidth: 120,
   plugins: [require("prettier-plugin-tailwindcss")],
   tailwindFunctions: ["tv"],
+  importOrder: ["^app/(.*)$", "^src/(.*)$", "^components/(.*)$", "^[./]"],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
 };
