@@ -1,12 +1,10 @@
 import { FC } from "react";
-
+import { MultiStepsFormProps } from "./multiStepsForm.type";
 import Button, { ButtonOnBackground, ButtonType } from "src/components/Button";
-import { Flex } from "src/components/New/Layout/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
-
-import { MultiStepsFormProps } from "./multiStepsForm.type";
+import { Flex } from "src/components/New/Layout/Flex";
+import { useIntl } from "src/hooks/useIntl";
 
 export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   step,

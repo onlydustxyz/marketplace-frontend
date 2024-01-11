@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-
 import { UserPayoutType } from "./PayoutInfoSidePanel";
 
 export type RequiredFieldsType = {

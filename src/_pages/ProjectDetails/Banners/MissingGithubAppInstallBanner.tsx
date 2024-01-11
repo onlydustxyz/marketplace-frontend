@@ -1,5 +1,4 @@
 import { Link, generatePath } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import InfoIcon from "src/assets/icons/InfoIcon";

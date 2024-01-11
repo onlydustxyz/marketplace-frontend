@@ -1,9 +1,8 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import ExternalLink from "src/components/ExternalLink";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-
 import Section, { SectionIcon } from "./OverviewSection";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import ExternalLink from "src/components/ExternalLink";
 
 export interface ProjectOverviewSponsorsProps {
   project: UseGetProjectBySlugResponse;

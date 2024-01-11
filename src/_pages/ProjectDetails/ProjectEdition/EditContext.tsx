@@ -1,27 +1,26 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { uniqWith } from "lodash";
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
-
 import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
-import { FieldProjectLeadValue } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import ProjectApi from "src/api/Project";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import MeApi from "src/api/me";
-import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import { useIntl } from "src/hooks/useIntl";
-import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
-import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { useShowToaster } from "src/hooks/useToaster";
-import { MoreInfosField } from "src/types";
-
-import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
-import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 import { EditPanelProvider } from "./components/Panel/context";
+import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
+import { FieldProjectLeadValue } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { uniqWith } from "lodash";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
+import MeApi from "src/api/me";
+import { useSessionStorage } from "src/hooks/useStorage/useStorage";
+import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useEditValidationSchema } from "./hooks/useValidationSchema";
+import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
+
+import { v4 as uuidv4 } from "uuid";
+import { MoreInfosField } from "src/types";
 
 interface EditContextProps {
   project: UseGetProjectBySlugResponse;

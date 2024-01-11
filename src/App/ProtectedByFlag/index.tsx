@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react";
-import { Navigate, generatePath, useParams } from "react-router-dom";
-
+import { generatePath, Navigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
 
 interface ProtectedByFlagProps extends PropsWithChildren {

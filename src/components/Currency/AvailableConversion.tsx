@@ -1,16 +1,14 @@
 import { FC, useMemo } from "react";
-
 import { Chip } from "src/components/Chip/Chip";
+import { Currency } from "src/types";
+import { CurrencyIcons } from "./CurrencyIcon";
 import { Chips } from "src/components/Chips/Chips";
+import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
+import { useIntl } from "src/hooks/useIntl";
 import Tooltip from "src/components/Tooltip";
 import { TooltipPosition } from "src/components/Tooltip";
-import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
-import { useIntl } from "src/hooks/useIntl";
-import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
-import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
-
-import { CurrencyIcons } from "./CurrencyIcon";
+import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 
 // TODO : doc
 /**

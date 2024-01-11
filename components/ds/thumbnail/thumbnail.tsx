@@ -1,10 +1,8 @@
-import { IMAGES } from "src/assets/img";
-import { cn } from "src/utils/cn";
-
-import { Icon } from "components/layout/icon/icon";
-
 import { TThumbnail } from "./thumbnail.types";
+import { cn } from "src/utils/cn";
+import { IMAGES } from "src/assets/img";
 import { thumbnailVariants } from "./thumbnail.variants";
+import { Icon } from "components/layout/icon/icon";
 
 export function Thumbnail({ src, alt, className, defaultSrc = true, ...props }: TThumbnail.Props) {
   return (

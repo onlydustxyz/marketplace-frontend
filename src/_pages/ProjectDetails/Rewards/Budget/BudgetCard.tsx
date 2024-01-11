@@ -1,13 +1,12 @@
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Card from "src/components/Card";
 import { withTooltip } from "src/components/Tooltip";
+import { Money } from "src/types";
+import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import User3Line from "src/icons/User3Line";
-import { Money } from "src/types";
-import { cn } from "src/utils/cn";
-
 import { Amount } from "./Amount";
 import { Counter } from "./Counter";
 

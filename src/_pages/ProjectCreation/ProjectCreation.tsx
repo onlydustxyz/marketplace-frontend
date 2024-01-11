@@ -1,15 +1,14 @@
 import { useContext } from "react";
-
 import { CreateProjectContext, CreateProjectProvider } from "./ProjectCreation.context";
 import {
   useProjectCreationFormStorage,
   useProjectCreationInstalledReposStorage,
   useProjectCreationStepStorage,
 } from "./hooks/useProjectCreationStorage";
-import { ProjectCreationSteps } from "./types/ProjectCreationSteps";
-import { GithubOrganizationPage } from "./views/GithubOrganizations/GithubOrganizations";
-import { GithubRepositoryPage } from "./views/GithubRepository";
 import { ProjectInformationsPage } from "./views/ProjectInformations/ProjectInformations";
+import { ProjectCreationSteps } from "./types/ProjectCreationSteps";
+import { GithubRepositoryPage } from "./views/GithubRepository";
+import { GithubOrganizationPage } from "./views/GithubOrganizations/GithubOrganizations";
 
 export const SafeProjectCreation = () => {
   const { currentStep } = useContext(CreateProjectContext);

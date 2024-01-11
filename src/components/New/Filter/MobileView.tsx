@@ -1,5 +1,4 @@
 import { PropsWithChildren, useState } from "react";
-
 import FilterIcon from "src/assets/icons/FilterIcon";
 import Button, { ButtonSize, ButtonType, Width as ButtonWidth } from "src/components/Button";
 import SidePanel from "src/components/SidePanel";

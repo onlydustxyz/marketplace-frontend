@@ -1,5 +1,4 @@
 import Lottie from "react-lottie";
-
 import animationData from "./animation.json";
 
 export default function MaintenanceAnimation() {

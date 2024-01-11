@@ -1,5 +1,4 @@
 import { ComponentProps } from "react";
-
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 

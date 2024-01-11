@@ -1,7 +1,5 @@
 import { Listbox } from "@headlessui/react";
-
 import { FormOption } from "src/components/FormOption/FormOption";
-
 import { Size } from ".";
 import { Option } from "./types";
 

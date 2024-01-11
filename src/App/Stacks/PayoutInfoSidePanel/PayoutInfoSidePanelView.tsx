@@ -1,6 +1,5 @@
 import { useFormContext } from "react-hook-form";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-
 import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
 import Tag, { TagSize } from "src/components/Tag";
@@ -12,7 +11,6 @@ import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import LockFill from "src/icons/LockFill";
 import User3Line from "src/icons/User3Line";
-
 import { CompanyFields } from "./components/FormFields/CompanyFields";
 import { FiatFields } from "./components/FormFields/FiatFields";
 import { IndividualFields } from "./components/FormFields/IndividualFields";

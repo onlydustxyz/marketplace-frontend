@@ -1,15 +1,13 @@
 import { useMemo, useRef, useState } from "react";
-
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import SyncLine from "src/icons/SyncLine";
-import { cn } from "src/utils/cn";
-
 import {
   UsePoolingFeedbackProps,
   UsePoolingFeedbackReturn,
   UsePoolingProps,
   UsePoolingReturn,
 } from "./usePooling.type";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import SyncLine from "src/icons/SyncLine";
+import { cn } from "src/utils/cn";
 
 export const usePooling = ({ limites, delays }: UsePoolingProps): UsePoolingReturn => {
   const poolingCount = useRef(0);

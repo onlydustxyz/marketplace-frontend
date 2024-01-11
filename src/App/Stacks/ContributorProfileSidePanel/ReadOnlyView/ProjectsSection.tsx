@@ -1,9 +1,7 @@
 import { ComponentProps } from "react";
 import { Link, generatePath } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
-
 import ProjectCard from "./ProjectCard";
 import { Section } from "./Section";
 

@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-
 import LoaderFallback from "src/components/Loader";
 
 export type QueryResult<T, E> = {

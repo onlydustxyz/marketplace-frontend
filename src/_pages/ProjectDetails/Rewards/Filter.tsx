@@ -1,20 +1,18 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
-import { useLocalStorage } from "usehooks-ts";
-
 import ProjectApi from "src/api/Project";
-import { Period } from "src/components/New/Field/Datepicker";
-import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterContributorCombobox } from "src/components/New/Filter/FilterContributorCombobox";
 import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySelect";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
+import { ContributorResponse } from "src/types";
+import { useLocalStorage } from "usehooks-ts";
+import { allTime, formatDateQueryParam } from "src/utils/date";
+import { FilterPosition } from "src/components/New/Filter/DesktopView";
+import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
 import { Item } from "src/components/New/Filter/FilterSelect";
-import { ContributorResponse } from "src/types";
-import { allTime, formatDateQueryParam } from "src/utils/date";
-
 import { useCurrenciesOrder } from "../../../hooks/useCurrenciesOrder.ts";
 
 type Filters = {

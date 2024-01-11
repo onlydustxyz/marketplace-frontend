@@ -1,5 +1,4 @@
 import { ReactElement, useCallback } from "react";
-
 import InfoIcon from "src/assets/icons/InfoIcon";
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -7,7 +6,6 @@ import { FilterField } from "src/components/New/Filter/FilterField";
 import { FilterSelect, Item } from "src/components/New/Filter/FilterSelect";
 import { useIntl } from "src/hooks/useIntl";
 import { Currency } from "src/types";
-
 import { Flex } from "../Layout/Flex";
 
 function LabelIcon({ currency }: { currency: Currency }): ReactElement {

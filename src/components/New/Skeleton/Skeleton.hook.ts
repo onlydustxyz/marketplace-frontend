@@ -1,8 +1,6 @@
 import { CSSProperties } from "react";
-
-import { cn } from "src/utils/cn";
-
 import { SkeletonBaseProps } from "./Skeleton.type";
+import { cn } from "src/utils/cn";
 
 export const useBaseSkelletonStyle = ({ width, height, color, radius }: SkeletonBaseProps) => {
   const className = cn("w-full animate-pulse", {

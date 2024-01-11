@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-
 import { RewardBudgetUtils } from "src/components/RewardBudget/RewardBudget.utils";
 
 type Props = {

@@ -1,8 +1,6 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { Link, generatePath } from "react-router-dom";
-
-import { RoutePaths } from "src/App";
+import { generatePath, Link } from "react-router-dom";
 import { components } from "src/__generated/api";
+import { RoutePaths } from "src/App";
 import Card, { CardBorder } from "src/components/Card";
 import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
@@ -19,11 +17,10 @@ import { cn } from "src/utils/cn";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
-
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-
 import { MissingGithubAppInstall } from "../New/Project/MissingGithubAppInstall";
 import ProjectTitle from "./ProjectTitle";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 export enum Variant {
   Default = "default",

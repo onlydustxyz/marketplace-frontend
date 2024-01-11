@@ -1,11 +1,9 @@
-import { Disclosure, Transition } from "@headlessui/react";
 import { ComponentProps, FC, PropsWithChildren } from "react";
-
-import ArrowDownSLine from "src/icons/ArrowDownSLine";
-import { cn } from "src/utils/cn";
-
 import { Avatar } from "../Avatar";
 import { Flex } from "../Layout/Flex";
+import { cn } from "src/utils/cn";
+import { Disclosure, Transition } from "@headlessui/react";
+import ArrowDownSLine from "src/icons/ArrowDownSLine";
 
 enum Variants {
   DEFAULT = "DEFAULT",

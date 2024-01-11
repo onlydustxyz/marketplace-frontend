@@ -1,4 +1,5 @@
 import useStackRegister from "../hooks/useStackRegister";
+
 import { Options, RegisterStackProps, StacksParams } from "../types/Stack";
 import { Stack } from "./Stack";
 

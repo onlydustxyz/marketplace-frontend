@@ -1,6 +1,6 @@
+import { useIntl } from "src/hooks/useIntl";
 import MaintenanceAnimation from "src/assets/animations/Maintenance";
 import Button from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 
 export default function Maintenance() {
   const { T } = useIntl();

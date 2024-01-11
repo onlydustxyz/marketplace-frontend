@@ -1,6 +1,6 @@
-import { Sorting } from "src/_pages/Projects/sorting";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+import { useIntl } from "src/hooks/useIntl";
+import { Sorting } from "src/_pages/Projects/sorting";
 
 type Props = {
   all: Sorting[];

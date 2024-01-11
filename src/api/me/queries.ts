@@ -1,11 +1,9 @@
-import { useAuth0 } from "@auth0/auth0-react";
-
 import { components } from "src/__generated/api";
-
 import { API_PATH } from "../ApiPath";
 import { UseQueryProps, useBaseQuery } from "../useBaseQuery";
 import { useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { ME_TAGS } from "./tags";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export type UseGetUserMeResponse = components["schemas"]["GetMeResponse"];
 

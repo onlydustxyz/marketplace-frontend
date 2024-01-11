@@ -1,5 +1,4 @@
 import { FC } from "react";
-
 import { IMAGES } from "src/assets/img";
 import { Avatar } from "src/components/New/Avatar";
 import CheckLine from "src/icons/CheckLine";

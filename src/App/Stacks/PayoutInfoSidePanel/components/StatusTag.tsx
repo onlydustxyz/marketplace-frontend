@@ -1,13 +1,12 @@
-import { useMemo } from "react";
-import { useFormContext } from "react-hook-form";
-
-import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
 import Tag, { TagSize } from "src/components/Tag";
 import Box from "src/components/Utils/Box";
 import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
+import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
+import { useMemo } from "react";
+import { useFormContext } from "react-hook-form";
 
 export enum StatusType {
   Contact = "CONTACT",

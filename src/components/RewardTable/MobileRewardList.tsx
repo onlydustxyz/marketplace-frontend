@@ -1,10 +1,11 @@
+import { useIntl } from "src/hooks/useIntl";
+
+import { pretty } from "src/utils/id";
 import { MobileUserRewardItem } from "src/_pages/Rewards/UserRewardTable/MobileUserRewardList";
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
-import { useIntl } from "src/hooks/useIntl";
 import { PaymentStatus } from "src/types";
-import { pretty } from "src/utils/id";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 
 export default function MobileRewardList({
   rewards,

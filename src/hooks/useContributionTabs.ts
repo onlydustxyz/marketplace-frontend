@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
 import { isInArray } from "src/utils/isInArray";
 
 export enum AllTabs {

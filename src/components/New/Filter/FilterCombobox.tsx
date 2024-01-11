@@ -1,7 +1,6 @@
 import { Combobox, Transition } from "@headlessui/react";
 import { debounce } from "lodash";
 import { useState } from "react";
-
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";

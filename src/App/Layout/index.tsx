@@ -1,13 +1,11 @@
-import { Suspense, lazy } from "react";
 import { Outlet, useMatch } from "react-router-dom";
-import { useMediaQuery } from "usehooks-ts";
-
-import Skeleton from "src/components/Skeleton";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
-
+import { useMediaQuery } from "usehooks-ts";
 import { RoutePaths } from "..";
+import { Suspense, lazy } from "react";
+import Skeleton from "src/components/Skeleton";
 
 const Header = lazy(() => import("./Header"));
 

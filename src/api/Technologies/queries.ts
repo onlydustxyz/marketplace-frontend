@@ -1,6 +1,5 @@
 import { API_PATH } from "src/api/ApiPath";
 import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
-
 import { TECHNOLOGIES_TAGS } from "./tags";
 
 export type UseGetTechnologiesResponse = { technologies: string[] };

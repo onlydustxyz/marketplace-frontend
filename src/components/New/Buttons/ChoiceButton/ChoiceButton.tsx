@@ -1,11 +1,9 @@
-import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useMemo } from "react";
-
 import Button, { ButtonSize } from "src/components/Button";
-import ArrowDownSLine from "src/icons/ArrowDownSLine";
-import { cn } from "src/utils/cn";
-
 import { ChoiceButtonProps } from "./ChoiceButton.type";
+import { cn } from "src/utils/cn";
+import ArrowDownSLine from "src/icons/ArrowDownSLine";
+import { Fragment, useMemo } from "react";
+import { Menu, Transition } from "@headlessui/react";
 
 export const ChoiceButton = ({ choices, defaultOption, icon, ...rest }: ChoiceButtonProps) => {
   const defaultChoice = useMemo(() => {

@@ -1,6 +1,6 @@
-import { IMAGES } from "src/assets/img";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+import { useIntl } from "src/hooks/useIntl";
+import { IMAGES } from "src/assets/img";
 
 export enum OnlyDustLogoWidth {
   Medium = "Medium",

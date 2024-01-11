@@ -1,22 +1,30 @@
 {
-  "name": "Onlydust backend",
-  "addons": ["heroku-postgresql:standard-0", "bucketeer:hobbyist", "cloudamqp:lemur"],
-  "buildpacks": [
-    {
-      "url": "https://github.com/onlydustxyz/heroku-buildpack-rust"
+    "name": "Onlydust backend",
+    "addons": [
+        "heroku-postgresql:standard-0",
+        "bucketeer:hobbyist",
+        "cloudamqp:lemur"
+    ],
+    "buildpacks": [
+        {
+            "url": "https://github.com/onlydustxyz/heroku-buildpack-rust"
+        },
+        {
+            "url": "heroku-community/multi-procfile"
+        }
+    ],
+    "env": {
+        "ROCKET_CLI_COLORS": "false",
+        "RUST_LOG": "debug",
+        "PROFILE": "production"
     },
-    {
-      "url": "heroku-community/multi-procfile"
+    "environments": {
+        "review": {
+            "addons": [
+                "heroku-postgresql:hobby-dev",
+                "bucketeer:hobbyist",
+                "cloudamqp:lemur"
+            ]
+        }
     }
-  ],
-  "env": {
-    "ROCKET_CLI_COLORS": "false",
-    "RUST_LOG": "debug",
-    "PROFILE": "production"
-  },
-  "environments": {
-    "review": {
-      "addons": ["heroku-postgresql:hobby-dev", "bucketeer:hobbyist", "cloudamqp:lemur"]
-    }
-  }
 }

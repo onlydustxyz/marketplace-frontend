@@ -1,9 +1,8 @@
 import { Switch as HeadlessSwitch } from "@headlessui/react";
+
 import { FocusEventHandler, Ref, forwardRef } from "react";
-
-import { cn } from "src/utils/cn";
-
 import { Field, FieldProps } from "./Field";
+import { cn } from "src/utils/cn";
 
 export interface FieldSwitchProps extends Omit<FieldProps, "children"> {
   switchLabel?: string;

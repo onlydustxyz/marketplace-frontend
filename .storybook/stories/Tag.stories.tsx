@@ -1,8 +1,7 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor, PropsWithChildren } from "react";
-
-import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
 
 export default {
   title: "Tag",

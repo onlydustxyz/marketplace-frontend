@@ -1,33 +1,30 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "react-router-dom";
-import { useMediaQuery } from "usehooks-ts";
-
-import Title from "src/_pages/ProjectDetails/Title";
-import ProjectApi from "src/api/Project";
-import MeApi from "src/api/me";
 import Card from "src/components/Card";
-import { ProjectOverviewHeader } from "src/components/Project/Overview/OverviewHeader";
-import { ProjectOverviewRepos } from "src/components/Project/Overview/OverviewRepos/OverviewRepos";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
-import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import { useShowToaster } from "src/hooks/useToaster";
+import Title from "src/_pages/ProjectDetails/Title";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
-
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-
+import { useMediaQuery } from "usehooks-ts";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
-import { RewardProjectButton } from "../components/RewardProjectButton";
 import OverviewPanel from "./components/OverviewPanel";
-import ApplyCallout from "./components/ProjectApply";
 import useApplications from "./useApplications";
+import { useShowToaster } from "src/hooks/useToaster";
+import MeApi from "src/api/me";
+import ProjectApi from "src/api/Project";
+import Skeleton from "src/components/Skeleton";
+import { RewardProjectButton } from "../components/RewardProjectButton";
+import { ProjectOverviewRepos } from "src/components/Project/Overview/OverviewRepos/OverviewRepos";
+import { ProjectOverviewHeader } from "src/components/Project/Overview/OverviewHeader";
+import ApplyCallout from "./components/ProjectApply";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 export default function Overview() {
   const { T } = useIntl();

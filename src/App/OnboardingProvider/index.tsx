@@ -1,9 +1,7 @@
-import { PropsWithChildren, createContext, useContext } from "react";
-import { Navigate, generatePath, useLocation } from "react-router-dom";
-
+import { createContext, PropsWithChildren, useContext } from "react";
+import { generatePath, Navigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import MeApi from "src/api/me";
-
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 type Onboarding = {

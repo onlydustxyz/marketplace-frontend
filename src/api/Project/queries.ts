@@ -1,14 +1,12 @@
-import { debounce } from "lodash";
-import { useCallback, useEffect, useMemo, useState } from "react";
-
 import { components } from "src/__generated/api";
 import { API_PATH } from "src/api/ApiPath";
 import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
-import { WorkItemType } from "src/types";
-import { QueryParams } from "src/utils/getEndpointUrl";
-
 import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { PROJECT_TAGS } from "./tags";
+import { QueryParams } from "src/utils/getEndpointUrl";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { debounce } from "lodash";
+import { WorkItemType } from "src/types";
 
 export type UseGetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
 

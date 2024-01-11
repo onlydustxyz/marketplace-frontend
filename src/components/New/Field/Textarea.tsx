@@ -1,8 +1,6 @@
 import { ChangeEventHandler, FocusEventHandler, Ref, forwardRef, useEffect, useRef } from "react";
-
-import { cn } from "src/utils/cn";
-
 import { Field, FieldProps } from "./Field";
+import { cn } from "src/utils/cn";
 
 export interface FieldTextareaProps extends Omit<FieldProps, "children"> {
   rows?: number;

@@ -1,11 +1,11 @@
 import TinyProfilCard from "src/_pages/ProjectDetails/Insights/commons/TinyProfilCard/TinyProfilCard";
-import ProjectApi from "src/api/Project";
-import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
-import MessagePlaceholder from "src/components/New/Placeholders/MessagePlaceholder";
-import Skeleton from "src/components/Skeleton";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
+import ProjectApi from "src/api/Project";
+import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import TeamLine from "src/icons/TeamLine";
+import MessagePlaceholder from "src/components/New/Placeholders/MessagePlaceholder";
+import Skeleton from "src/components/Skeleton";
 
 export default function NewcomersContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();

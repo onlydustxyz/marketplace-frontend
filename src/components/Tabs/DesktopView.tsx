@@ -1,7 +1,8 @@
-import { IMAGES } from "src/assets/img";
-import type { Tab } from "src/components/Tabs/Tabs";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+
+import type { Tab } from "src/components/Tabs/Tabs";
+import { IMAGES } from "src/assets/img";
+import { useIntl } from "src/hooks/useIntl";
 
 const variants = {
   blue: {

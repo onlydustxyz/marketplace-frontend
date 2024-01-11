@@ -1,8 +1,7 @@
-import { components } from "src/__generated/api";
 import { useIntl } from "src/hooks/useIntl";
-
 import { formatDate } from ".";
 import { Icon } from "./Legend";
+import { components } from "src/__generated/api";
 
 type Props = {
   active?: boolean;

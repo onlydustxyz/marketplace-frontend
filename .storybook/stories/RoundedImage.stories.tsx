@@ -1,6 +1,5 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { JSXElementConstructor } from "react";
-
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 
 export default {

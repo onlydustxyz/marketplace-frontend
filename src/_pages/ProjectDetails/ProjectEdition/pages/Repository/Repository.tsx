@@ -1,12 +1,10 @@
 import { useContext, useMemo } from "react";
-
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
-
-import { EditContext } from "../../EditContext";
 import { EditPanelContext } from "../../components/Panel/context";
+import { EditContext } from "../../EditContext";
 import { RepositoryOrganization } from "./components/Organization";
 
 export function Repository() {

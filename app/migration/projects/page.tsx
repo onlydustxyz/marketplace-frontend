@@ -1,15 +1,14 @@
 "use client";
 
+import { Flex } from "components/layout/flex/flex";
 import { useContext } from "react";
 
-import { Flex } from "components/layout/flex/flex";
-import { Typography } from "components/layout/typography/typography";
-
 import { ProjectsContext } from "./context/project.context";
+import { Typography } from "components/layout/typography/typography";
 import { ProjectsFilters } from "./features/filters/filters";
-import { ProjectList } from "./features/project-list/project-list";
-import { ProjectSearch } from "./features/project-search/project-search";
 import { ProjectsSort } from "./features/projects-sort/projects-sort";
+import { ProjectSearch } from "./features/project-search/project-search";
+import { ProjectList } from "./features/project-list/project-list";
 
 export default function ProjectsPage() {
   const { count } = useContext(ProjectsContext);

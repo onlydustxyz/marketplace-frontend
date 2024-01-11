@@ -1,27 +1,25 @@
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
+import Intro from "./Intro";
+import Card from "./Card";
 import { useEffect, useState } from "react";
+import { useIntl } from "src/hooks/useIntl";
+import TechnologiesSelect from "src/components/TechnologiesSelect";
+import FormToggle from "src/components/FormToggle";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-
-import { RoutePaths } from "src/App";
+import FormSelect, { Size } from "src/components/FormSelect";
+import ContactInformations from "src/components/ContactInformations";
 import {
   AllocatedTime,
   UserProfileInfo,
   fromFragment,
   mapFormDataToSchema,
 } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
-import MeApi from "src/api/me";
-import useMutationAlert from "src/api/useMutationAlert";
-import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import BaseCard from "src/components/Card";
-import ContactInformations from "src/components/ContactInformations";
-import FormSelect, { Size } from "src/components/FormSelect";
-import FormToggle from "src/components/FormToggle";
 import SEO from "src/components/SEO";
-import TechnologiesSelect from "src/components/TechnologiesSelect";
-import { useIntl } from "src/hooks/useIntl";
-
-import Card from "./Card";
-import Intro from "./Intro";
+import MeApi from "src/api/me";
+import { useNavigate } from "react-router-dom";
+import { RoutePaths } from "src/App";
+import useMutationAlert from "src/api/useMutationAlert";
 
 const MAX_STEP = 3;
 

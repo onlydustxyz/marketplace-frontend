@@ -1,5 +1,4 @@
 import { ComponentProps } from "react";
-
 import { ShowMore } from "src/components/Table/ShowMore";
 
 export default {

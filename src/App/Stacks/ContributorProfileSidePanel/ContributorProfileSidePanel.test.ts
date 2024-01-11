@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-
 import { parseWebsite } from "./utils";
 
 describe("parseWebsite", () => {

@@ -1,14 +1,9 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { cn } from "src/utils/cn";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
-import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
-import MeApi from "src/api/me";
 import Dot from "src/assets/icons/Dot";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
@@ -19,8 +14,11 @@ import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
-import { cn } from "src/utils/cn";
-
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
+import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
+import MeApi from "src/api/me";
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
+import { useAuth0 } from "@auth0/auth0-react";
 import handleLogout from "components/features/auth0/handlers/handle-logout.ts";
 import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
 

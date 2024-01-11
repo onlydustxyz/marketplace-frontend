@@ -1,11 +1,10 @@
-import { useMediaQuery } from "usehooks-ts";
-
-import { IMAGES } from "src/assets/img";
-import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
-import { useSidePanel } from "src/hooks/useSidePanel";
 import GithubLogo from "src/icons/GithubLogo";
 import TwitterFill from "src/icons/TwitterFill";
+import { useSidePanel } from "src/hooks/useSidePanel";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
+import { IMAGES } from "src/assets/img";
 
 export default function Footer() {
   const { T } = useIntl();

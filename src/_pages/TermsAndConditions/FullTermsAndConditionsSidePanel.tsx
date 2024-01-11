@@ -1,6 +1,5 @@
 import Card from "src/components/Card";
 import SidePanel from "src/components/SidePanel";
-
 import List from "./List";
 import Paragraph from "./Paragraph";
 import ParagraphNumber from "./ParagraphNumber";

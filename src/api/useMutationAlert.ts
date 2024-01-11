@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 

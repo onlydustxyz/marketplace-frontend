@@ -1,9 +1,7 @@
-import { useAuth0 } from "@auth0/auth0-react";
-
 import { components } from "src/__generated/api";
-
 import { API_PATH } from "../ApiPath";
 import { UseQueryProps, useBaseQuery } from "../useBaseQuery";
+import { useAuth0 } from "@auth0/auth0-react";
 import { MIXED_TAGS } from "./tags.ts";
 
 export type UseGetRewards = components["schemas"]["RewardDetailsResponse"];

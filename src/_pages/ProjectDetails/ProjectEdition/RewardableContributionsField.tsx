@@ -1,6 +1,5 @@
 import sub from "date-fns/sub";
 import { ComponentProps, forwardRef, useState } from "react";
-
 import { components } from "src/__generated/api";
 import EyeCheckLine from "src/assets/icons/EyeCheckLine";
 import IssueOpen from "src/assets/icons/IssueOpen";

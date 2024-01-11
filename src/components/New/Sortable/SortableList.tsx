@@ -1,20 +1,20 @@
+import { FC } from "react";
 import {
   DndContext,
-  DragEndEvent,
+  closestCenter,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
+  DragEndEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  arrayMove,
-  horizontalListSortingStrategy,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
+  horizontalListSortingStrategy,
+  arrayMove,
 } from "@dnd-kit/sortable";
-import { FC } from "react";
 
 import { SortableItem } from "./SortableItem";
 

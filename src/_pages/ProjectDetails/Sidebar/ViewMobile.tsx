@@ -1,19 +1,17 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
-import { components } from "src/__generated/api";
-import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import BurgerIcon from "src/assets/icons/BurgerIcon";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
-import SidePanel from "src/components/SidePanel";
-import { useIntl } from "src/hooks/useIntl";
-import CloseLine from "src/icons/CloseLine";
-
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
 import View from "./View";
+import SidePanel from "src/components/SidePanel";
+import { useLocation, useNavigate } from "react-router-dom";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import CloseLine from "src/icons/CloseLine";
+import { useIntl } from "src/hooks/useIntl";
+import { components } from "src/__generated/api";
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 
 interface Props {
   expandable: boolean;

@@ -1,6 +1,5 @@
 import { ReactElement } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
-
 import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
 
 type Option = {

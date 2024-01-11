@@ -1,9 +1,8 @@
 import { cn } from "src/utils/cn";
-
-import { TButton } from "./button.types";
 import { buttonPrimaryVariants } from "./variants/button-primary.variants";
 import { buttonSecondaryVariants } from "./variants/button-secondary.variants";
 import { buttonTertiaryVariants } from "./variants/button-tertiary.variants";
+import { TButton } from "./button.types";
 
 export function Button({ type = "button", className, children, ...props }: TButton.Props) {
   const { variant = "primary", disabled } = props;

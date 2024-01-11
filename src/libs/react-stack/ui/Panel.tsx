@@ -1,15 +1,13 @@
-import { Transition } from "@headlessui/react";
-import { debounce } from "lodash";
 import { CSSProperties, Fragment, PropsWithChildren, ReactElement, useCallback, useEffect, useState } from "react";
-
+import { Transition } from "@headlessui/react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
 import { cn } from "src/utils/cn";
-
+import { StackDrop } from "./StackDrop";
+import { debounce } from "lodash";
+import { BackClick } from "./BackClick";
 import { usePlacement } from "../hooks/usePlacement";
 import { Options } from "../types/Stack";
-import { BackClick } from "./BackClick";
-import { StackDrop } from "./StackDrop";
 
 type Props = {
   open: boolean;

@@ -1,11 +1,11 @@
-import { components } from "src/__generated/api";
-import Contributor from "src/components/Contributor";
-import PrivateTag from "src/components/PrivateTag";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { formatList } from "src/utils/list";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import { TooltipPosition, withTooltip } from "src/components/Tooltip";
+import Contributor from "src/components/Contributor";
+import PrivateTag from "src/components/PrivateTag";
+import config from "src/config";
+import { components } from "src/__generated/api";
 
 type Leaders = components["schemas"]["RegisteredUserResponse"];
 

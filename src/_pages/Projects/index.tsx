@@ -1,22 +1,20 @@
-import { Suspense, useEffect, useState } from "react";
-import { useLocalStorage } from "react-use";
-import { useDebounce } from "usehooks-ts";
-
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import SEO from "src/components/SEO";
+import { DEFAULT_SORTING } from "./AllProjects";
+import FilterPanel from "./FilterPanel";
+import { ProjectFilterProvider } from "./useProjectFilter";
+import useScrollRestoration from "./AllProjects/useScrollRestoration";
+import { Suspense, useEffect, useState } from "react";
+import SearchBar from "./SearchBar";
+import { useDebounce } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
+import { SortingPanel } from "./Sorting/SortingPanel";
+import { useLocalStorage } from "react-use";
+import SEO from "src/components/SEO";
+import AllProjectLoading from "./AllProjects/AllProjectsLoading";
+import AllProjects from "./AllProjects";
+import SubmitProject from "./SubmitProject";
 import { useLeadProjects } from "src/hooks/useProjectLeader/useProjectLeader";
 import { Sponsor } from "src/types";
-
-import { DEFAULT_SORTING } from "./AllProjects";
-import AllProjects from "./AllProjects";
-import AllProjectLoading from "./AllProjects/AllProjectsLoading";
-import useScrollRestoration from "./AllProjects/useScrollRestoration";
-import FilterPanel from "./FilterPanel";
-import SearchBar from "./SearchBar";
-import { SortingPanel } from "./Sorting/SortingPanel";
-import SubmitProject from "./SubmitProject";
-import { ProjectFilterProvider } from "./useProjectFilter";
 
 export enum Sorting {
   Trending = "RANK",

@@ -1,10 +1,9 @@
-import matchers from "@testing-library/jest-dom/matchers";
-import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
-import { renderWithIntl } from "src/test/utils";
+import { screen } from "@testing-library/react";
+import matchers from "@testing-library/jest-dom/matchers";
 
 import OnlyDustLogo from ".";
+import { renderWithIntl } from "src/test/utils";
 
 expect.extend(matchers);
 

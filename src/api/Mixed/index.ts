@@ -1,5 +1,5 @@
-import queries from "./queries";
 import { MIXED_TAGS as tags } from "./tags";
+import queries from "./queries";
 
 const MixedApi = {
   tags,

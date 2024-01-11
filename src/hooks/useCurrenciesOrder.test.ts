@@ -1,10 +1,8 @@
+import { describe, expect, it } from "vitest";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { renderHook } from "@testing-library/react-hooks";
-import { describe, expect, it } from "vitest";
-
-import { CurrencyOrder } from "src/types";
-
 import { useCurrenciesOrder, useCurrenciesOrderCurrency } from "./useCurrenciesOrder";
+import { CurrencyOrder } from "src/types";
 
 describe("useCurrenciesOrder", () => {
   it("Order currency", () => {

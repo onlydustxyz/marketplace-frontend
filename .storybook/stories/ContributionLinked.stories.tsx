@@ -1,7 +1,5 @@
 import { ComponentProps } from "react";
-
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
-
 import { contribution } from "../mocks/contribution";
 
 export default {

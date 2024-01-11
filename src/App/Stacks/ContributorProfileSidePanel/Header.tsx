@@ -1,12 +1,10 @@
-import { useState } from "react";
-
+import { cn } from "src/utils/cn";
+import HeaderCoverButton from "./EditView/HeaderCoverButton";
 import { UserProfile } from "src/api/Users/queries";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
-import { ProfileCover } from "src/types";
-import { cn } from "src/utils/cn";
-
-import HeaderCoverButton from "./EditView/HeaderCoverButton";
 import ProfilePicture from "./ProfilePicture";
+import { useState } from "react";
+import { ProfileCover } from "src/types";
 
 type Props = {
   profile: UserProfile | UseGetMyProfileInfoResponse;

@@ -1,8 +1,7 @@
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-
-import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 export default function useUploadProfilePicture() {
   const { getImpersonateHeaders } = useImpersonation();

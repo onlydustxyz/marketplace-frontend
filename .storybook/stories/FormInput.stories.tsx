@@ -1,9 +1,8 @@
 import { JSXElementConstructor } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-
 import { Size } from "src/components/FormInput";
-import FormInput from "src/components/FormInput/View";
 import { InputErrorDisplay } from "src/components/FormInput/types";
+import FormInput from "src/components/FormInput/View";
 
 export default {
   title: "FormInput",

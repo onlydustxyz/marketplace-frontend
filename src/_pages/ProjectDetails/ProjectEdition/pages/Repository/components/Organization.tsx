@@ -1,18 +1,16 @@
-import { sortBy } from "lodash";
 import { useContext, useMemo } from "react";
-
-import { useStackGithubWorkflowTutorial } from "src/App/Stacks/Stacks";
+import { Repository } from "./Repository";
+import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
+import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
+import { useIntl } from "src/hooks/useIntl";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
-import { useIntl } from "src/hooks/useIntl";
 import GithubLogo from "src/icons/GithubLogo";
-import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
-
 import { EditContext } from "../../../EditContext";
-import { Repository } from "./Repository";
+import { sortBy } from "lodash";
+import { useStackGithubWorkflowTutorial } from "src/App/Stacks/Stacks";
 
 type RepositoryOrganizationType = {
   organization: UseGithubOrganizationsResponse;

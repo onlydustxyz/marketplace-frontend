@@ -1,6 +1,5 @@
-import { PropsWithChildren } from "react";
-
 import { cn } from "src/utils/cn";
+import { PropsWithChildren } from "react";
 
 export function ContributionAttribute({ className, children }: PropsWithChildren<{ className?: string }>) {
   return (

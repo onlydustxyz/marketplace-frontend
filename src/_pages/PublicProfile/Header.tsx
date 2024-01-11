@@ -1,11 +1,10 @@
-import { useNavigate } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
-import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import Tooltip from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import LinkIcon from "src/icons/Link";
+import { useNavigate } from "react-router-dom";
+import Tooltip from "src/components/Tooltip";
+import { IMAGES } from "src/assets/img";
 
 type Props = {
   userLogin: string;

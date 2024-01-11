@@ -1,15 +1,11 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { Fragment } from "react";
 import { useMatch } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
-import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
-import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
 import ProjectApi from "src/api/Project";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
-import { CommitsTooltip } from "src/components/GithubCard/GithubPullRequest/CommitsTooltip";
+import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
@@ -21,10 +17,11 @@ import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
-
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-
+import { CommitsTooltip } from "src/components/GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
+import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();

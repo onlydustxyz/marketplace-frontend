@@ -1,6 +1,5 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
-
 import FormToggle from "src/components/FormToggle/View";
 
 export default {

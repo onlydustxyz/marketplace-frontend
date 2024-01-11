@@ -11,7 +11,7 @@ import { ContributorsCounter } from "./contributors-counter/contributors-counter
 import { Sponsors } from "./sponsors/sponsors";
 import { TProjectCard } from "./project-card.types";
 import { Flex } from "components/layout/flex/flex";
-import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
+import { ProjectLeadInvitationBanner } from "components/features/project-lead-Invitation-banner/project-lead-Invitation-banner";
 import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {

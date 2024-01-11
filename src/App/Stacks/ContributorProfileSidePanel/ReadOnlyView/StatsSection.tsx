@@ -1,19 +1,17 @@
-import { useMemo } from "react";
-
-import { UserProfile } from "src/api/Users/queries";
-import Card from "src/components/Card";
-import { AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
-import { AvailableConversion } from "src/components/Currency/AvailableConversion";
-import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
-import ArrowRightLine from "src/icons/ArrowRightLine";
-import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-import { formatMoneyAmount } from "src/utils/money";
-
-import ContributionGraph from "./ContributionGraph";
 import { Section } from "./Section";
 import StatCard from "./StatCard";
+import { formatMoneyAmount } from "src/utils/money";
+import Card from "src/components/Card";
+import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
+import ContributionGraph from "./ContributionGraph";
+import { withTooltip } from "src/components/Tooltip";
+import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
+import ArrowRightLine from "src/icons/ArrowRightLine";
+import { AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import { useMemo } from "react";
+import { UserProfile } from "src/api/Users/queries";
 
 type Props = {
   profile: UserProfile;

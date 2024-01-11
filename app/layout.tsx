@@ -1,15 +1,13 @@
-import { GoogleTagManager } from "@next/third-parties/google";
-import type { Metadata } from "next";
-import { ReactNode } from "react";
 import "remixicon/fonts/remixicon.css";
-
 import "src/assets/css/index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
+import { GoogleTagManager } from "@next/third-parties/google";
+import type { Metadata } from "next";
 import config from "src/config";
-
 import { sharedMetadata } from "./shared-metadata";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = sharedMetadata;
 

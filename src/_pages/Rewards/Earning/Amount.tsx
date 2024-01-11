@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-
 import Aptos from "src/assets/icons/Aptos";
 import Ethereum from "src/assets/icons/Ethereum";
 import Lords from "src/assets/icons/Lords";

@@ -1,7 +1,6 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-
 import Section, { SectionIcon } from "./OverviewSection";
 
 export interface ProjectOverviewContributorProps {

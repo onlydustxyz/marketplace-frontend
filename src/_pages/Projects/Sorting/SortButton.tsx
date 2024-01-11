@@ -1,5 +1,5 @@
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
   panelOpen: boolean;

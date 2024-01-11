@@ -1,15 +1,14 @@
 import ProjectApi from "src/api/Project";
-import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
-import Skeleton from "src/components/Skeleton";
-import Table from "src/components/Table";
-import HeaderCell from "src/components/Table/HeaderCell";
-import HeaderLine from "src/components/Table/HeaderLine";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
-import Sparkling2Line from "src/icons/Sparkling2Line";
-
-import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder/EmptyTablePlaceholder";
 import { useMostActiveContributorsTable } from "./hooks/useMostActiveContributorsTable";
+import Table from "src/components/Table";
+import HeaderLine from "src/components/Table/HeaderLine";
+import HeaderCell from "src/components/Table/HeaderCell";
+import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder/EmptyTablePlaceholder";
+import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
+import Sparkling2Line from "src/icons/Sparkling2Line";
+import Skeleton from "src/components/Skeleton";
 
 export default function MostActiveContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();

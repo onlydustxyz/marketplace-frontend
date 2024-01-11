@@ -1,13 +1,12 @@
-import { CompletedRewardableItem } from "src/api/Project/queries";
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 import Card from "src/components/Card";
-import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import GitMergeLine from "src/icons/GitMergeLine";
+import { useIntl } from "src/hooks/useIntl";
 import { GithubContributionType, WorkItemType } from "src/types";
-
-import ContributionQuickActions from "../ContributionQuickActions";
 import { RewardableWorkItem } from "../WorkItemSidePanel/WorkItems/WorkItems";
+import { CompletedRewardableItem } from "src/api/Project/queries";
+import ContributionQuickActions from "../ContributionQuickActions";
 
 type AutoAddOrIgnoreProps = {
   unpaidContributions: CompletedRewardableItem;

@@ -1,12 +1,10 @@
-import { Navigate } from "react-router-dom";
-
-import { RoutePaths } from "src/App";
-import ErrorFallback from "src/ErrorFallback";
 import Button from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
-
 import { FetchError } from "./query.type";
+import { Navigate } from "react-router-dom";
+import { RoutePaths } from "src/App";
 import { HttpStatusStrings } from "./query.utils";
+import ErrorFallback from "src/ErrorFallback";
 
 interface Props {
   queries: {

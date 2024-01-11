@@ -1,6 +1,5 @@
-import Tag, { TagSize } from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
-
+import Tag, { TagSize } from "src/components/Tag";
 import { Section } from "./Section";
 
 type Props = {

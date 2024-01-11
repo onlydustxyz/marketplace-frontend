@@ -1,7 +1,7 @@
-import { components } from "../../src/__generated/api";
-import { BaseQueries } from "../base-queries.actions";
-import { ACTION_PATH } from "../path.actions";
 import { BaseQueriesOptions } from "../type.actions";
+import { BaseQueries } from "../base-queries.actions";
+import { components } from "../../src/__generated/api";
+import { ACTION_PATH } from "../path.actions";
 import { ProjectActionTags } from "./projects-tags.actions.ts";
 
 export type ProjectResponse = components["schemas"]["ProjectResponse"];

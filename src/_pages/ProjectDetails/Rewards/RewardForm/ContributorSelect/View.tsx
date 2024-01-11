@@ -1,20 +1,19 @@
 import { Combobox } from "@headlessui/react";
-import { forwardRef, useCallback, useRef } from "react";
-import { Virtuoso } from "react-virtuoso";
-
-import { Contributor as ContributorType } from "src/_pages/ProjectDetails/Rewards/RewardForm/types";
-import { ToRewardDetailsTooltip } from "src/_pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
-import { IMAGES } from "src/assets/img";
-import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
-import Contributor from "src/components/Contributor";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import { Spinner } from "src/components/Spinner/Spinner";
-import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
-import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
+import { cn } from "src/utils/cn";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
-import { cn } from "src/utils/cn";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import { useIntl } from "src/hooks/useIntl";
+import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
+import Contributor from "src/components/Contributor";
+import { Virtuoso } from "react-virtuoso";
+import { forwardRef, useCallback, useRef } from "react";
+import { Contributor as ContributorType } from "src/_pages/ProjectDetails/Rewards/RewardForm/types";
+import { ToRewardDetailsTooltip } from "src/_pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
+import { ShowMore } from "src/components/Table/ShowMore";
+import { Spinner } from "src/components/Spinner/Spinner";
+import { IMAGES } from "src/assets/img";
+import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 
 const MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX = 240;
 const CONTRIBUTOR_SELECT_LINE_HEIGHT_PX = 36;

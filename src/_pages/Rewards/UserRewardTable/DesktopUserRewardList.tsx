@@ -1,14 +1,12 @@
-import { useContext } from "react";
-
-import ErrorFallback from "src/ErrorFallback";
-import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
-import Card from "src/components/Card";
 import Table from "src/components/Table";
-
-import Skeleton from "../../../components/Skeleton";
-import { ShowMore } from "../../../components/Table/ShowMore";
 import Headers from "./Headers";
 import RewardLine, { MyRewardType } from "./Line";
+import { ShowMore } from "../../../components/Table/ShowMore";
+import ErrorFallback from "src/ErrorFallback";
+import Card from "src/components/Card";
+import Skeleton from "../../../components/Skeleton";
+import { useContext } from "react";
+import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 
 type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;

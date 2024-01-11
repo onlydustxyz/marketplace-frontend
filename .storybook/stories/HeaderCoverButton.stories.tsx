@@ -1,5 +1,4 @@
 import { ComponentStory } from "@storybook/react";
-
 import HeaderCoverButton from "src/App/Stacks/ContributorProfileSidePanel/EditView/HeaderCoverButton";
 import { ProfileCover } from "src/types";
 

@@ -3,9 +3,8 @@ import { IMAGES } from "src/assets/img";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
-
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { TContributor } from "components/features/contributor/contributor.types";
+import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 
 export function Contributor({
   githubUserId,

@@ -1,7 +1,6 @@
-import { useLocalStorage } from "src/hooks/useStorage/useStorage";
-
 import { ProjectCreationSteps } from "../types/ProjectCreationSteps";
 import { CreateFormData } from "../types/ProjectCreationType";
+import { useLocalStorage } from "src/hooks/useStorage/useStorage";
 
 const STORAGE_KEY = "create-project-";
 export const STORAGE_KEY_CREATE_PROJECT_FORM = `${STORAGE_KEY}form`;

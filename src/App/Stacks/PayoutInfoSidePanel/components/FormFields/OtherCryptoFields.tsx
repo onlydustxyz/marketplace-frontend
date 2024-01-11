@@ -1,15 +1,14 @@
 import { useFormContext } from "react-hook-form";
-
-import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
-import Aptos from "src/assets/icons/Aptos";
-import EthereumIcon from "src/assets/icons/Ethereum";
-import OptimismIcon from "src/assets/icons/Optimism";
-import StarknetIcon from "src/assets/icons/Starknet";
 import { Chip } from "src/components/Chip/Chip";
 import Input from "src/components/FormInput";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
+import OptimismIcon from "src/assets/icons/Optimism";
+import StarknetIcon from "src/assets/icons/Starknet";
 import { APTOS_WALLET, ETH_WALLET_OR_ENS_ADDRESS, OPTIMISM_WALLET, STARKNET_WALLET } from "src/utils/regex";
+import Aptos from "src/assets/icons/Aptos";
+import EthereumIcon from "src/assets/icons/Ethereum";
+import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
 
 export function OtherCryptoFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();

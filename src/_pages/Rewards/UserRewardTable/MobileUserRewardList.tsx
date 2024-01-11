@@ -1,22 +1,20 @@
-import { ReactNode, useContext } from "react";
-
-import ErrorFallback from "src/ErrorFallback";
-import { components } from "src/__generated/api";
-import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
-import { IMAGES } from "src/assets/img";
 import Card from "src/components//Card";
 import RoundedImage from "src/components//RoundedImage";
-import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
-import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
-
 import { MyRewardType } from "./Line";
+import { ReactNode, useContext } from "react";
+import { ShowMore } from "src/components/Table/ShowMore";
+import { components } from "src/__generated/api";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import ErrorFallback from "src/ErrorFallback";
+import { IMAGES } from "src/assets/img";
+import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 
 export default function MobileUserRewardList({
   onRewardClick,
