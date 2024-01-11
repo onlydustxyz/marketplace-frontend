@@ -59,7 +59,7 @@ export function useRestfulData<R = unknown>({
     gcTime: 0,
     refetchInterval: false,
     refetchIntervalInBackground: false,
-    enabled: enabled,
+    enabled,
     ...restQueryOptions,
   });
 }
