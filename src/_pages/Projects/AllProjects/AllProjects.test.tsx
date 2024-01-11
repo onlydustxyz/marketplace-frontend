@@ -4,10 +4,7 @@ import { render } from "@testing-library/react";
 import AllProjects from ".";
 import { BrowserRouter as Router } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { ProjectFilterProvider } from "src/_pages/Projects/useProjectFilter";
-import ApolloWrapper from "src/providers/ApolloWrapper";
-import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { ToasterProvider } from "src/hooks/useToaster";
 import ImpersonationProvider from "components/features/impersonation/impersonation.provider";
 
@@ -37,33 +34,27 @@ describe("<AllProjects />", () => {
   it("renders correctly", () => {
     const { asFragment } = render(
       <Router>
-        <ImpersonationClaimsProvider>
-          <ImpersonationProvider>
-            <TokenSetProvider>
-              <ToasterProvider>
-                <ProjectFilterProvider>
-                  <ApolloWrapper>
-                    <QueryClientProvider client={queryClient}>
-                      <AllProjects
-                        search=""
-                        clearSearch={jest.fn()}
-                        sorting={undefined}
-                        setSorting={jest.fn()}
-                        restoreScroll={jest.fn()}
-                        filterPanelOpen={false}
-                        setFilterPanelOpen={jest.fn()}
-                        sortingPanelOpen={false}
-                        setSortingPanelOpen={jest.fn()}
-                        setTechnologies={jest.fn()}
-                        setSponsors={jest.fn()}
-                      />
-                    </QueryClientProvider>
-                  </ApolloWrapper>
-                </ProjectFilterProvider>
-              </ToasterProvider>
-            </TokenSetProvider>
-          </ImpersonationProvider>
-        </ImpersonationClaimsProvider>
+        <ImpersonationProvider>
+          <ToasterProvider>
+            <ProjectFilterProvider>
+              <QueryClientProvider client={queryClient}>
+                <AllProjects
+                  search=""
+                  clearSearch={jest.fn()}
+                  sorting={undefined}
+                  setSorting={jest.fn()}
+                  restoreScroll={jest.fn()}
+                  filterPanelOpen={false}
+                  setFilterPanelOpen={jest.fn()}
+                  sortingPanelOpen={false}
+                  setSortingPanelOpen={jest.fn()}
+                  setTechnologies={jest.fn()}
+                  setSponsors={jest.fn()}
+                />
+              </QueryClientProvider>
+            </ProjectFilterProvider>
+          </ToasterProvider>
+        </ImpersonationProvider>
       </Router>
     );
     expect(asFragment()).toMatchSnapshot();

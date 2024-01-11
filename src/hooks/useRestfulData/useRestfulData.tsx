@@ -7,7 +7,6 @@ import {
   useQuery,
   QueryKey,
 } from "@tanstack/react-query";
-import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getHttpOptions } from "src/api/query.utils";
@@ -33,19 +32,10 @@ export function useRestfulData<R = unknown>({
 }: UseRestfulDataProps<R>) {
   const { enabled, ...restQueryOptions } = queryOptions;
   const { isAuthenticated, getIdTokenClaims } = useAuth0();
-  const { isImpersonating, isValidImpersonation } = useHttpOptions(method);
   const { getImpersonateHeaders } = useImpersonation();
 
   return useQuery<R>({
-    queryKey: [
-      ...(queryKey || []),
-      resourcePath,
-      pathParam,
-      queryParams,
-      isImpersonating,
-      isValidImpersonation,
-      isAuthenticated,
-    ],
+    queryKey: [...(queryKey || []), resourcePath, pathParam, queryParams, isAuthenticated],
     queryFn: async () => {
       const { options } = await getHttpOptions({
         method,
@@ -69,7 +59,7 @@ export function useRestfulData<R = unknown>({
     gcTime: 0,
     refetchInterval: false,
     refetchIntervalInBackground: false,
-    enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
+    enabled,
     ...restQueryOptions,
   });
 }
@@ -152,11 +142,10 @@ export function useInfiniteRestfulData<R extends ResponseData>(
     enabled,
     ...restQueryOptions
   } = queryOptions;
-  const { isImpersonating, isValidImpersonation } = useHttpOptions("GET");
   const { getIdTokenClaims } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
   return useInfiniteQuery<R>({
-    queryKey: [isImpersonating, isValidImpersonation, ...queryKey],
+    queryKey: [...queryKey],
     queryFn: async ({ pageParam }) => {
       const { options } = await getHttpOptions({
         method: "GET",
@@ -196,7 +185,7 @@ export function useInfiniteRestfulData<R extends ResponseData>(
     refetchInterval,
     staleTime: 10000,
     refetchIntervalInBackground,
-    enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
+    enabled,
     ...restQueryOptions,
   });
 }
