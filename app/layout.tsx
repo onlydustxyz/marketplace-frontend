@@ -7,10 +7,11 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import config from "src/config";
 import { sharedMetadata } from "./shared-metadata";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = sharedMetadata;
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
