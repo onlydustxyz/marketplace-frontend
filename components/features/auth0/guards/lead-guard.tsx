@@ -5,11 +5,11 @@ import { RoutePaths } from "src/App";
 import MeApi from "src/api/me";
 
 function LeadGuard({ children }: { children: ReactElement }) {
-  const { isLoading } = MeApi.queries.useGetMe({});
+  const { isLoading, isRefetching } = MeApi.queries.useGetMe({});
   const params = useParams();
   const isProjectLeader = useProjectLeader({ slug: params.projectKey });
 
-  if (isLoading) {
+  if (isLoading || isRefetching) {
     return null;
   }
 
