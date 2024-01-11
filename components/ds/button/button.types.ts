@@ -14,7 +14,7 @@ export namespace TButton {
   export type TertiaryVariants = VariantProps<typeof buttonTertiaryVariants>;
 
   export interface Props extends PropsWithChildren, Variants, HtmlButton {
-    onClick: () => void;
+    onClick?: () => void;
     htmlType?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
     className?: string;
   }
