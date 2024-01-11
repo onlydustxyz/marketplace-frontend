@@ -1,13 +1,9 @@
 "use client";
 
-import { useIntl, Key } from "../../../src/hooks/useIntl.tsx";
+import { useIntl } from "../../../src/hooks/useIntl.tsx";
+import { TTranslate } from "./translate.types.ts";
 
-export type TranslateProps = {
-  token: Key;
-  params?: { [key: string]: string | number };
-};
-
-export default function Translate({ token, params }: TranslateProps) {
+export function Translate({ token, params }: TTranslate.Props) {
   const { T } = useIntl();
 
   return <>{T(token, params)}</>;

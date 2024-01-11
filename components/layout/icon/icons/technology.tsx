@@ -1,7 +1,6 @@
-import { FC } from "react";
-import { BaseProps } from "../custom-icon";
+import { TCustomIcon } from "../custom-icon.types";
 
-export const TechnologyIcon: FC<BaseProps> = ({ size, color }) => {
+export function TechnologyIcon({ size, color }: TCustomIcon.BaseProps) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill={color}>
       <rect width="24" height="24" fill="url(#pattern0)" />
@@ -18,4 +17,4 @@ export const TechnologyIcon: FC<BaseProps> = ({ size, color }) => {
       </defs>
     </svg>
   );
-};
+}

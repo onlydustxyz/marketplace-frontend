@@ -1,4 +1,5 @@
 "use client";
+
 import { cn } from "src/utils/cn.ts";
 import { createPortal } from "react-dom";
 
@@ -12,5 +13,3 @@ export function SpaceBackground() {
     </>
   );
 }
-
-export default SpaceBackground;

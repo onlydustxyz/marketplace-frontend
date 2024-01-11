@@ -1,6 +1,6 @@
-import { TypographyVariants } from "./typography";
+import { TTypography } from "./typography.types";
 
-export const getDefaultComponent = (variant: TypographyVariants["variant"]): keyof JSX.IntrinsicElements => {
+export function getDefaultComponent(variant: TTypography.Variants["variant"]): keyof JSX.IntrinsicElements {
   switch (variant) {
     case "title-xl":
       return "h1";
@@ -30,4 +30,4 @@ export const getDefaultComponent = (variant: TypographyVariants["variant"]): key
     default:
       return "p";
   }
-};
+}

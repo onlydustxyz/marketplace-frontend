@@ -1,54 +1,22 @@
-import { tv, VariantProps } from "tailwind-variants";
 import { cn } from "src/utils/cn";
 import { IMAGES } from "src/assets/img";
-import { ElementType, PropsWithChildren } from "react";
+import { TRoundedImage } from "./rounded-image.types";
+import { roundedImageVariants } from "./rounded-image.variants";
 
-export type RoundedImageVariants = VariantProps<typeof imageVariant>;
-
-interface RoundedImageProps extends PropsWithChildren, RoundedImageVariants {
-  as?: ElementType;
-  src: string | null;
-  alt: string | null;
-  className?: string;
-  useLogoFallback?: boolean;
-}
-
-const imageVariant = tv({
-  base: "object-cover",
-  variants: {
-    size: {
-      xxs: "h-4 w-4",
-      xs: "h-5 w-5",
-      xm: "h-6 w-6",
-      md: "h-8 w-8",
-      lg: "h-10 w-10",
-      xl: "h-12 w-12",
-    },
-    rounding: {
-      corners: "rounded-md",
-      circle: "rounded-full",
-    },
-  },
-  defaultVariants: {
-    size: "lg",
-    rounding: "corners",
-  },
-});
-
-export default function RoundedImage({
+export function RoundedImage({
   as: Component = "span",
   src,
   alt,
   useLogoFallback,
   className,
   ...props
-}: RoundedImageProps) {
+}: TRoundedImage.Props) {
   const fallbackSrc = useLogoFallback ? IMAGES.logo.space : src;
 
   return (
     <Component className={className}>
       <img
-        className={cn(imageVariant({ ...props }), className)}
+        className={cn(roundedImageVariants({ ...props }), className)}
         alt={alt ?? ""}
         src={fallbackSrc ?? ""}
         onError={e => {
