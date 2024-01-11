@@ -8,6 +8,7 @@ import ArrowLeftSLine from "src/icons/ArrowLeftSLine.tsx";
 import { useIntl } from "src/hooks/useIntl.tsx";
 import MeApi from "src/api/me/index.ts";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import Loader from "src/components/Loader/index.tsx";
 
 const ImpersonationPage = () => {
   const { userId } = useParams();
@@ -43,6 +44,10 @@ const ImpersonationPage = () => {
       }
     }
   }, [userId, userInfo, isLoading, isImpersonating, impersonateClaims]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return !isValidImpersonation && !isLoading && isError ? (
     <>
