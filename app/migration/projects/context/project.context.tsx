@@ -73,6 +73,7 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
   /** Need this to migrate existing filter for sponsor */
   useEffect(() => {
     if (storage?.sponsors && storage.sponsors.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const anySponsor = storage.sponsors as unknown as any;
       if (anySponsor[0]?.id) {
         onFilterChange({ sponsors: storage.sponsors });
