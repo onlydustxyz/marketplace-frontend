@@ -5,8 +5,8 @@ import { Button } from "components/ds/button/button";
 import { projectLeadInvitationBannerVariants } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner.variants";
 import { useMemo } from "react";
 import { Translate } from "components/layout/translate/translate";
-import { TProjectLeadInvitationBanner } from "./project-lead-invitation-banner.types";
 import { Icon } from "components/layout/icon/icon";
+import { TProjectLeadInvitationBanner } from "./project-lead-invitation-banner.types";
 
 export function ProjectLeadInvitationBanner({
   isLoading,
