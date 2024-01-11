@@ -1,6 +1,5 @@
 import ExternalLink from "src/components/ExternalLink";
 import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
@@ -8,6 +7,8 @@ import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import Contributor from "../Contributor";
 import { cn } from "src/utils/cn";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 interface ContributionBadgeProps {
   contribution: Pick<
@@ -88,11 +89,11 @@ export function ContributionBadge({
   showExternal = false,
 }: ContributionBadgeProps) {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
+  const { user } = useAuth0();
 
   const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
 
-  const isExternal = githubAuthor && githubUserId !== githubAuthor.githubUserId;
+  const isExternal = githubAuthor && getGithubUserIdFromSub(user?.sub) !== githubAuthor.githubUserId;
   const tooltipId = `${githubNumber}-${type}-${githubStatus}`;
 
   const tokens = {

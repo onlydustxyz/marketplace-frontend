@@ -11,17 +11,18 @@ import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
 import { MyPayoutInfoType, MyRewardsPendingInvoiceType } from ".";
 import InfoIcon from "src/assets/icons/InfoIcon";
+import MeApi from "src/api/me";
+import { useShowToaster } from "src/hooks/useToaster";
 
 type Props = {
   githubUserId: number;
   paymentRequests: MyRewardsPendingInvoiceType["rewards"];
-  markInvoiceAsReceived: () => void;
   payoutInfo: MyPayoutInfoType;
 };
 
-export default function InvoiceSubmission({ paymentRequests, githubUserId, markInvoiceAsReceived, payoutInfo }: Props) {
+export default function InvoiceSubmission({ paymentRequests, githubUserId, payoutInfo }: Props) {
   const { T } = useIntl();
-
+  const showToaster = useShowToaster();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
 
@@ -29,14 +30,23 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
   const onSliderClose = useCallback(() => {
     setIsClosed(true);
   }, []);
+
   const hiddenFields = useMemo(
     () => buildHiddenFields({ paymentRequests, githubUserId, payoutInfo }),
     [paymentRequests, githubUserId, payoutInfo]
   );
 
+  const { mutate: markInvoiceAsReceived } = MeApi.mutations.useMarkInvoicesAsReceived({
+    options: {
+      onSuccess: () => {
+        showToaster(T("invoiceSubmission.toaster.success"));
+      },
+    },
+  });
+
   useEffect(() => {
     if (isClosed && isSubmitted) {
-      markInvoiceAsReceived();
+      markInvoiceAsReceived(undefined);
       setIsClosed(false);
       setIsSubmitted(false);
     }
@@ -119,10 +129,10 @@ export function buildHiddenFields({
     zip_code: payoutInfo?.location?.postalCode || "",
     city: payoutInfo?.location?.city || "",
     country: payoutInfo?.location?.country || "",
-    payout_info: payoutInfo?.payoutSettings?.ethAddress?.startsWith("0x")
-      ? `ETH Address: ${payoutInfo?.payoutSettings?.ethAddress}`
-      : payoutInfo?.payoutSettings?.ethAddress
-      ? `ENS Domain: ${payoutInfo?.payoutSettings?.ethAddress}`
+    payout_info: payoutInfo?.payoutSettings?.ethWallet?.startsWith("0x")
+      ? `ETH Address: ${payoutInfo?.payoutSettings?.ethWallet}`
+      : payoutInfo?.payoutSettings?.ethWallet
+      ? `ENS Domain: ${payoutInfo?.payoutSettings?.ethWallet}`
       : formatList([
           `IBAN: ${payoutInfo?.payoutSettings?.sepaAccount?.iban}`,
           `BIC: ${payoutInfo?.payoutSettings?.sepaAccount?.bic}`,

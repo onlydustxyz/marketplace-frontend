@@ -5,9 +5,11 @@ import CheckLine from "../../../src/icons/CheckLine";
 import { useMemo } from "react";
 import { cn } from "src/utils/cn";
 import { TSort } from "./sort.types";
+import { Translate } from "components/layout/translate/translate";
 
-export function Sort({ value, onChange, label, options }: TSort.Props) {
+export function Sort({ value, onChange, labelToken, options }: TSort.Props) {
   const selected = useMemo(() => options.find(o => o.id === value), [value, options]);
+
   function handleSortChange(newValue: string) {
     onChange(newValue);
   }
@@ -31,7 +33,9 @@ export function Sort({ value, onChange, label, options }: TSort.Props) {
           >
             <Arrow />
             <div className="flex flex-row items-center gap-1">
-              <span>{label}</span>
+              <span>
+                <Translate token={labelToken} />
+              </span>
               <span className="text-spacePurple-500">{selected?.label?.toLowerCase()}</span>
             </div>
             <ArrowDownSLine className="text-xl ui-open:rotate-180" />

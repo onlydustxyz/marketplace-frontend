@@ -1,7 +1,6 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import Telegram from "src/assets/icons/Telegram";
 import ExternalLink from "src/components/ExternalLink";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import DiscordFill from "src/icons/DiscordFill";
 import TwitterFill from "src/icons/TwitterFill";
@@ -9,6 +8,7 @@ import TwitterFill from "src/icons/TwitterFill";
 import Section, { SectionIcon } from "./OverviewSection";
 import { SocialIcon } from "src/_pages/ProjectDetails/ProjectEdition/pages/Information/components/SocialIcon";
 import FakeExternalLink from "./FakeExternalLink";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export interface ProjectOverviewMoreInfoProps {
   project: UseGetProjectBySlugResponse;
@@ -16,12 +16,12 @@ export interface ProjectOverviewMoreInfoProps {
 
 export const ProjectOverviewMoreInfo = ({ project }: ProjectOverviewMoreInfoProps) => {
   const { T } = useIntl();
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated } = useAuth0();
 
   return project.moreInfos.length > 0 ? (
     <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
       <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           <ul
             data-testid="more-info-link"
             className="space-y-2 overflow-hidden text-sm font-semibold text-spacePurple-500"

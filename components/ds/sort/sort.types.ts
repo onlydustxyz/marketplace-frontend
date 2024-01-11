@@ -5,7 +5,7 @@ export namespace TSort {
   };
 
   export interface Props {
-    label: string;
+    labelToken: string;
     options: Option[];
     value: string;
     onChange(value: string): void;

@@ -6,7 +6,6 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
-import { useAuth } from "src/hooks/useAuth";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
@@ -21,10 +20,12 @@ import { EditProjectButton } from "../components/EditProjectButton";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import ProjectApi from "src/api/Project";
 import { RewardProjectButton } from "../components/RewardProjectButton";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 export default function Contributors() {
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
+  const { user } = useAuth0();
   const { projectKey = "" } = useParams<{ projectKey: string }>();
 
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
@@ -43,6 +44,8 @@ export default function Contributors() {
     projectId: project?.id ?? "",
     queryParams,
   });
+
+  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 

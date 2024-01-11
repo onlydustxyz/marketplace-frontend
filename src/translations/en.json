@@ -43,7 +43,7 @@
       "telegram": "Telegram",
       "discord": "Discord",
       "twitter": "Twitter",
-      "preventAnonymousTooltips": "Connect to Onlydust to access more info links"
+      "preventAnonymousTooltips": "Connect to OnlyDust to access more info links"
     },
     "button": {
       "underline": "Underline"
@@ -81,7 +81,7 @@
     },
     "applied": {
       "title": "Applied",
-      "description": "Unassigned issues you have applied to, from Only Dust or directly on Github."
+      "description": "Unassigned issues you have applied to, from OnlyDust or directly on Github."
     },
     "inProgress": {
       "title": "In progress",
@@ -284,7 +284,7 @@
     "amount_placeholder": {
       "APT": "75 APT",
       "ETH": "0.3 ETH",
-      "OP": "350 OPT",
+      "OP": "350 OP",
       "STRK": "100 STRK",
       "LORDS": "100 Lords",
       "USDC": "100 USDC",
@@ -376,7 +376,8 @@
         "unknownUser": "Unknown user __userId__"
       }
     },
-    "banner": "Impersonation in progress!"
+    "banner": "Impersonation in progress!",
+    "invalid": "Invalid impersonation"
   },
   "invoiceSubmission": {
     "sidePanel": {
@@ -648,7 +649,11 @@
         "to": "to",
         "on": "on",
         "you": "(you)",
-        "contributions": "Contributions included in reward",
+        "contributions": {
+          "zero": "No contributions included in reward",
+          "one": "__count__ contribution included in reward",
+          "many": "__count__ contributions included in reward"
+        },
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
         "rewardItems": {
           "error": "An error occurred, please try again later."
@@ -748,9 +753,9 @@
       "aptosIdentityPlaceholder": "Aptos wallet address",
       "bankWire": "Bank wire",
       "bio": "Bio",
-      "bic": "BIC",
-      "bicInvalid": "Please enter a valid BIC",
-      "bicRequired": "Your BIC is required",
+      "bic": "BIC / SWIFT",
+      "bicInvalid": "Please enter a valid BIC / SWIFT",
+      "bicRequired": "Your BIC / SWIFT is required",
       "cancel": "Cancel",
       "city": "City",
       "companyName": "Company name",
@@ -781,9 +786,9 @@
       "ethIdentity": "Ethereum wallet address or ENS name",
       "ethIdentityPlaceholder": "Ethereum wallet address or ENS name",
       "firstname": "First name",
-      "iban": "IBAN",
-      "ibanInvalid": "Please enter a valid IBAN",
-      "ibanRequired": "Your IBAN is required",
+      "iban": "IBAN / Account number",
+      "ibanInvalid": "Please enter a valid IBAN / Account number",
+      "ibanRequired": "Your IBAN / Account number is required",
       "invalidZipcode": "Please enter a valid international Zip Code",
       "payoutFieldRequired": "This field is required to receive rewards",
       "alphabeticallyInvalid": "Please enter alphabetic only characters",
@@ -867,7 +872,7 @@
     "goToApp": "Go to App",
     "copyUrl": "Copy URL",
     "urlCopied": "URL copied",
-    "copyright": "© 2022 OnlyDust",
+    "copyright": "© __year__ OnlyDust",
     "separator": "·",
     "termsAndConditions": "Terms & Conditions",
     "privacyPolicy": "Privacy Policy",
@@ -882,13 +887,13 @@
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "claim": {
       "banner": {
-        "content": "Working at __projectName__ ? You’re 3 clicks away to claim access to your own project on Onlydust!",
+        "content": "Working at __projectName__ ? You’re 3 clicks away to claim access to your own project on OnlyDust!",
         "button": "Claim project"
       },
       "panel": {
         "title": "Claim project",
         "subTitle": "First we need to authenticate you as project lead.",
-        "content": "Please install the Only Dust Github app on the following organisations.",
+        "content": "Please install the OnlyDust Github app on the following organisations.",
         "grantButton": "Grant permissions",
         "installButton": "Install Github app",
         "submit": "Claim project",
@@ -898,7 +903,7 @@
     },
     "githubLinkTutorial": {
       "title": "How to grant permissions",
-      "subTitle": "You are required to grant permissions to all organisations where you want to install the Only Dust Github app.",
+      "subTitle": "You are required to grant permissions to all organisations where you want to install the OnlyDust Github app.",
       "close": "Done",
       "info": {
         "title": "What if you can’t grant permissions to all organisations?",
@@ -921,8 +926,8 @@
           "alt": "Step 2"
         },
         "three": {
-          "title": "3. GRANT PERMISSIONS to ONLY DUST",
-          "subTitle": "And you’re good to go, you can now install the Only Dust Github app.",
+          "title": "3. GRANT PERMISSIONS to ONLYDUST",
+          "subTitle": "And you’re good to go, you can now install the OnlyDust Github app.",
           "informations": "Note you may have to re-authenticate to Github to perform this action.",
           "alt": "Step 3"
         }
@@ -1296,7 +1301,7 @@
       },
       "banners": {
         "missingGithubAppInstall": {
-          "message": "To continue rewarding your contributors, please install the Only Dust Github app.",
+          "message": "To continue rewarding your contributors, please install the OnlyDust Github app.",
           "button": "Edit project"
         }
       }
@@ -1321,7 +1326,7 @@
       "view": "View invite"
     },
     "missingGithubAppInstall": {
-      "message": "To continue rewarding your contributors, please install the Only Dust Github app.",
+      "message": "To continue rewarding your contributors, please install the OnlyDust Github app.",
       "button": "Edit project"
     }
   },
@@ -1415,7 +1420,7 @@
   },
   "showMore": "Show more",
   "githubStatusBanner": {
-    "message": "Github is experiencing service issues. Onlydust features may be affected until the incident is resolved.",
+    "message": "Github is experiencing service issues. OnlyDust features may be affected until the incident is resolved.",
     "button": "View Github status"
   }
 }

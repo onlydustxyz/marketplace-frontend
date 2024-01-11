@@ -1,5 +1,5 @@
 export namespace TCustomIcon {
-  export type Names = "dollar" | "technology";
+  export type Names = "dollar" | "technology" | "gallery-line";
 
   export interface BaseProps {
     size?: number;

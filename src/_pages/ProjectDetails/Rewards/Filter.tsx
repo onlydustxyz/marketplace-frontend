@@ -8,11 +8,12 @@ import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySe
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ContributorResponse } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
-import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
+import { allTime, formatDateQueryParam } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
 import { Item } from "src/components/New/Filter/FilterSelect";
+import { useCurrenciesOrder } from "../../../hooks/useCurrenciesOrder.ts";
 
 type Filters = {
   period: Period;
@@ -59,6 +60,8 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   const { data: projectBudget } = ProjectApi.queries.useProjectBudget({
     params: { projectId: project?.id },
   });
+
+  const orderedCurrencies = useCurrenciesOrder({ currencies: projectBudget?.budgets });
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
     `project-rewards-table-filters-${projectKey}`,
@@ -116,9 +119,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    (filters?.dateRange?.from && filters?.dateRange?.to && !isAllTime(filters?.dateRange)) ||
-      filters.contributors?.length ||
-      filters.currency?.value !== ""
+    filters.period !== initialFilters.period || filters.contributors?.length || filters.currency?.value !== ""
   );
 
   const { data: contributorsData, isLoading: contributorsLoading } =
@@ -185,7 +186,6 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
           onPeriodChange={updatePeriod}
         />
       </div>
-
       <div className="focus-within:z-10">
         <FilterContributorCombobox<ContributorResponse>
           contributors={contributors}
@@ -196,14 +196,13 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
           isLoading={contributorsLoading}
         />
       </div>
-
       <div className="focus-within:z-10">
         {projectBudget ? (
           <FilterCurrencySelect
             selected={filters.currency ?? initialFilters.currency}
             onChange={updateCurrency}
-            currencies={projectBudget.budgets.map((budget, index) => ({
-              id: index,
+            currencies={orderedCurrencies.map((budget, index) => ({
+              id: index + 1,
               value: budget.currency,
             }))}
           />

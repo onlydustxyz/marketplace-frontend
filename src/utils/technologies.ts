@@ -3,11 +3,16 @@ export interface Technologies {
 }
 
 export function getTopTechnologies(technologies: Technologies): string[] {
+  const blackListedTech = process.env.NEXT_PUBLIC_LANGUAGES_FILTER;
+
   // Convert object to array of [technology, count] pairs
   const techArray: [string, number][] = Object.entries(technologies);
 
+  // Filter out blacklisted technologies
+  const filteredTechArray = techArray.filter(item => !blackListedTech?.includes(item[0]));
+
   // Sort array in descending order based on count
-  const sortedTechArray = techArray.sort((a, b) => b[1] - a[1]);
+  const sortedTechArray = filteredTechArray.sort((a, b) => b[1] - a[1]);
 
   // Take the first three items from the sorted array
   const topThree = sortedTechArray.slice(0, 3);

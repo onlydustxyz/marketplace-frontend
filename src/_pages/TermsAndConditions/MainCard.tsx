@@ -21,7 +21,7 @@ export default function TermsAndConditionsMainCard({
       <div className="flex flex-col gap-4 bg-card-background-base p-12 pb-5">
         <div className="text-center font-belwe text-3xl">Summary of our Terms & Conditions</div>
         <div className="text-center">
-          <p>To use Only Dust, you must accept and comply with our Terms and Conditions.</p>
+          <p>To use OnlyDust, you must accept and comply with our Terms and Conditions.</p>
           <p>Here’s a summary of our responsibilities and your commitments.</p>
         </div>
       </div>
@@ -31,7 +31,7 @@ export default function TermsAndConditionsMainCard({
           <div className="flex flex-col gap-4 px-9 pb-4">
             <Section title="About us">
               <div className="pt-3 text-sm">
-                Only Dust is a platform provided by Wagmi SAS (“Us”, “We”, “Our”) that allows the reward of open source
+                OnlyDust is a platform provided by Wagmi SAS (“Us”, “We”, “Our”) that allows the reward of open source
                 projects developed for blockchain ecosystems. Partners among the ecosystems give Us funds that we
                 distribute to developers (“You”, “Your”). The amount that is given to You is decided by members of the
                 open source community.

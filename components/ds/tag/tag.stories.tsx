@@ -2,10 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { Tag } from "./tag";
 
-import User3Line from "../../../src/icons/User3Line";
-
 import { TTag } from "./tag.types";
 import { TagLoading } from "./tag.loading";
+import { Icon } from "components/layout/icon/icon";
 
 const defaultProps: TTag.Props = {
   children: <span>Tag</span>,
@@ -14,7 +13,7 @@ const defaultProps: TTag.Props = {
 const defaultPropsWithIcon = (orange?: boolean): TTag.Props => ({
   children: (
     <>
-      <User3Line className={orange ? "text-orange-500" : ""} />
+      <Icon remixName="ri-user-3-line" size={14} />
       <span>Tag</span>
     </>
   ),

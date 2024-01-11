@@ -1,4 +1,4 @@
-import { format, isSameDay, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import weekOfYear from "dayjs/plugin/weekOfYear";
@@ -73,16 +73,3 @@ export function formatDateQueryParam(value: Date | string) {
  * Represents a date range of all time.
  */
 export const allTime = { from: new Date(0), to: new Date() } satisfies DateRange;
-
-/**
- * Checks if the given date range represents the "all time" range.
- * @param dateRange - The date range to check.
- * @returns True if the date range represents the "all time" range, false otherwise.
- */
-export const isAllTime = (dateRange?: DateRange) => {
-  if (dateRange?.from && dateRange?.to) {
-    return isSameDay(allTime.from, new Date(dateRange.from)) && isSameDay(allTime.to, new Date(dateRange.to));
-  }
-
-  return false;
-};

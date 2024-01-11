@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useIntl } from "src/hooks/useIntl";
 import { z } from "zod";
@@ -89,7 +89,9 @@ const validationSchema = z.object({
         value: z.string().nullable(),
       })
     )
-    .min(0),
+    .min(0)
+    .optional()
+    .nullable(),
   name: z.string().min(1),
   shortDescription: z.string().min(1),
 });
@@ -103,6 +105,7 @@ export function CreateProjectProvider({
   initialStep,
   reposStorage,
 }: CreateContextProps) {
+  const backgroundRef = useRef<HTMLFormElement | null>(null);
   const { T } = useIntl();
   const [enableAutoSaved, setEnableAutoSaved] = useState<boolean>(true);
   const [installedRepos, setInstalledRepos] = useState<number[]>(initialInstalledRepo || []);
@@ -226,6 +229,9 @@ export function CreateProjectProvider({
     (step: ProjectCreationSteps) => {
       stepStorage.setValue(step);
       setCurrentStep(step);
+      if (backgroundRef?.current) {
+        backgroundRef.current.scrollTop = 0;
+      }
     },
     [currentStep]
   );
@@ -284,6 +290,7 @@ export function CreateProjectProvider({
     >
       <Background roundedBorders={BackgroundRoundedBorders.Full} innerClassName="h-full">
         <form
+          ref={backgroundRef}
           className="flex h-full items-start justify-center overflow-auto p-2 pb-36 md:items-center md:overflow-visible md:p-6 md:pb-0"
           onSubmit={form.handleSubmit(onSubmit)}
         >

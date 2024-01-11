@@ -7,8 +7,6 @@ import { useShowToaster } from "src/hooks/useToaster";
 import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import { ProfileType } from "./types";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
-import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
-import { PreferredMethod } from "src/types";
 import MeApi from "src/api/me";
 import { useStackPayoutInfo } from "src/App/Stacks/Stacks";
 
@@ -34,21 +32,10 @@ export default function PayoutInfoSidePanel() {
     shouldFocusError: true,
   });
 
-  const { handleSubmit, formState, reset, watch, setValue } = formMethods;
+  const { handleSubmit, formState, reset } = formMethods;
   const { isDirty } = formState;
 
-  const profileType = watch("profileType");
   useEffect(() => reset(decodeQuery(user)), [user]);
-
-  useEffect(() => {
-    if (profileType === ProfileType.Individual) {
-      setValue("bic", "", { shouldDirty: true });
-      setValue("iban", "", { shouldDirty: true });
-    } else {
-      setValue("bic", user?.payoutSettings?.sepaAccount?.bic || "", { shouldDirty: true });
-      setValue("iban", user?.payoutSettings?.sepaAccount?.iban || "", { shouldDirty: true });
-    }
-  }, [profileType, user]);
 
   const onSubmit: SubmitHandler<FormDataType> = formData => {
     userPayoutInformation(mapFormDataToSchema(formData));
@@ -85,10 +72,9 @@ export default function PayoutInfoSidePanel() {
 type UserPayoutRequestType = components["schemas"]["UserPayoutInformationRequest"];
 
 const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
-  const isEthName = values.ethWallet.match(ENS_DOMAIN_REGEXP);
   const sepaAccount = values.bic && values.iban ? { bic: values.bic, iban: values.iban } : undefined;
 
-  const variables: UserPayoutRequestType = {
+  return {
     ...(values.profileType === ProfileType.Company
       ? {
           company: {
@@ -113,18 +99,14 @@ const mapFormDataToSchema = (values: FormDataType): UserPayoutRequestType => {
       country: values.country || undefined,
     },
     payoutSettings: {
-      usdPreferredMethod: values.usdPreferredMethod,
       sepaAccount,
-      ethName: isEthName && values.ethWallet ? values.ethWallet : undefined,
-      ethAddress: !isEthName && values.ethWallet ? values.ethWallet : undefined,
+      ethWallet: values.ethWallet || undefined,
       starknetAddress: values.starknetWallet || undefined,
       optimismAddress: values.optimismWallet || undefined,
       aptosAddress: values.aptosWallet || undefined,
     },
     isCompany: values.profileType === ProfileType.Company,
   };
-
-  return variables;
 };
 
 export type UserPayoutType = components["schemas"]["UserPayoutInformationResponse"];
@@ -144,7 +126,6 @@ export type FormDataType = {
   aptosWallet: string;
   iban: string;
   bic: string;
-  usdPreferredMethod: components["schemas"]["UserPayoutInformationResponsePayoutSettings"]["usdPreferredMethod"];
   profileType: ProfileType;
 };
 
@@ -159,13 +140,12 @@ const decodeQuery = (user?: UserPayoutType): FormDataType => {
     postCode: location?.postalCode ?? "",
     city: location?.city ?? "",
     country: location?.country ?? "",
-    ethWallet: (payoutSettings?.ethAddress || payoutSettings?.ethName) ?? "",
+    ethWallet: payoutSettings?.ethWallet ?? "",
     starknetWallet: payoutSettings?.starknetAddress ?? "",
     optimismWallet: payoutSettings?.optimismAddress ?? "",
     aptosWallet: payoutSettings?.aptosAddress ?? "",
     iban: payoutSettings?.sepaAccount?.iban ? IBANParser.printFormat(payoutSettings?.sepaAccount?.iban) : "",
     bic: payoutSettings?.sepaAccount?.bic ?? "",
-    usdPreferredMethod: payoutSettings?.usdPreferredMethod ?? PreferredMethod.Crypto,
     profileType: user?.isCompany ? ProfileType.Company : ProfileType.Individual,
   };
 };

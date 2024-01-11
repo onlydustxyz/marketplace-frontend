@@ -37,7 +37,7 @@ export function ProjectsSort() {
 
   return (
     <Sort
-      label={T("projects.sorting.label")}
+      labelToken="projects.sorting.label"
       value={filters.values.sorting}
       onChange={onSortChange}
       options={options}
