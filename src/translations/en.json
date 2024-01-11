@@ -868,7 +868,7 @@
     "goToApp": "Go to App",
     "copyUrl": "Copy URL",
     "urlCopied": "URL copied",
-    "copyright": "© 2022 OnlyDust",
+    "copyright": "© __year__ OnlyDust",
     "separator": "·",
     "termsAndConditions": "Terms & Conditions",
     "privacyPolicy": "Privacy Policy",
