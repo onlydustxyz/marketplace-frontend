@@ -20,7 +20,9 @@ const ImpersonationProvider = ({ children }: PropsWithChildren) => {
     useLocalStorage<ImpersonateClaim>("impersonateClaim");
 
   const handleSetImpersonateClaim = (claim: ImpersonateClaim) => {
-    setImpersonateClaim(claim);
+    if (claim.sub !== impersonateClaim?.sub) {
+      setImpersonateClaim(claim);
+    }
   };
 
   const handleGetImpersonateClaim = () => {

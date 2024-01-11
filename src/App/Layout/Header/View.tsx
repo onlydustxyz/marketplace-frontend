@@ -1,8 +1,6 @@
 import { RoutePaths } from "src/App";
-import GithubLink from "./GithubLink";
 import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
-import ProfileButton from "./ProfileButton";
 import MenuItem from "src/App/Layout/Header/MenuItem";
 import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
@@ -16,6 +14,7 @@ import { GithubStatusBanner } from "./GithubStatusBanner";
 import { IMAGES } from "src/assets/img";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { ProfileButtonDisplay } from "./ProfileButton/ProfileButtonDisplay";
 
 interface HeaderViewProps {
   menuItems: {
@@ -36,7 +35,7 @@ export default function HeaderView({
 }: HeaderViewProps) {
   const testing = process.env.NODE_ENV === "test";
   const { T } = useIntl();
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
   const githubUserId = getGithubUserIdFromSub(user?.sub);
   const { onboardingInProgress } = useOnboarding();
   const [openContributorProfilePanel] = useStackContributorProfile();
@@ -112,7 +111,7 @@ export default function HeaderView({
                   ) : null}
                 </>
               ) : null}
-              <div className="flex text-base text-white">{!isAuthenticated ? <GithubLink /> : <ProfileButton />}</div>
+              <ProfileButtonDisplay isLoading={isLoading} isAuthenticated={isAuthenticated} />
             </div>
           </div>
         </div>
