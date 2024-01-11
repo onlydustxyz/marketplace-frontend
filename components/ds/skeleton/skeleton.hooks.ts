@@ -10,11 +10,11 @@ export function useBaseSkelletonStyle({ width, height, color, radius }: TSkeleto
 
   const style: CSSProperties = {
     minWidth: width || "100%",
-    minHeight: height || 16,
+    minHeight: height || "1rem",
     maxWidth: "100%",
     maxHeight: "100%",
     width: width || "100%",
-    height: height || 16,
+    height: height || "1rem",
     ...(radius ? { borderRadius: radius } : {}),
   };
 

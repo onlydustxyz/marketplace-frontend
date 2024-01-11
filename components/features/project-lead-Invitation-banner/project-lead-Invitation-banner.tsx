@@ -2,11 +2,11 @@ import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 import { Button } from "components/ds/button/button";
-import CheckLine from "src/icons/CheckLine";
 import { projectLeadInvitationBannerVariants } from "components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.variants";
 import { useMemo } from "react";
 import { Translate } from "components/layout/translate/translate";
 import { TProjectLeadInvitationBanner } from "./project-lead-Invitation-banner.types";
+import { Icon } from "components/layout/icon/icon";
 
 export function ProjectLeadInvitationBanner({
   isLoading,
@@ -42,7 +42,7 @@ export function ProjectLeadInvitationBanner({
     <div className={cn(base())}>
       <div className={cn(title())}>{TitleContent}</div>
       <Button size={size} onClick={onClick} disabled={isLoading}>
-        {size === "l" ? <CheckLine className="text-xl font-normal text-black" /> : null}
+        {size === "l" ? <Icon remixName="ri-check-line" size={20} className="text-black" /> : null}
         {ButtonLabel}
       </Button>
     </div>

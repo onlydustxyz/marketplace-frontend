@@ -1,11 +1,9 @@
 import { Listbox, Transition } from "@headlessui/react";
-import Arrow from "../../../src/assets/icons/Arrow";
-import ArrowDownSLine from "../../../src/icons/ArrowDownSLine";
-import CheckLine from "../../../src/icons/CheckLine";
 import { useMemo } from "react";
 import { cn } from "src/utils/cn";
 import { TSort } from "./sort.types";
 import { Translate } from "components/layout/translate/translate";
+import { Icon } from "components/layout/icon/icon";
 
 export function Sort({ value, onChange, labelToken, options }: TSort.Props) {
   const selected = useMemo(() => options.find(o => o.id === value), [value, options]);
@@ -31,14 +29,14 @@ export function Sort({ value, onChange, labelToken, options }: TSort.Props) {
               }
             )}
           >
-            <Arrow />
+            <Icon customName="arrow" size={20} />
             <div className="flex flex-row items-center gap-1">
               <span>
                 <Translate token={labelToken} />
               </span>
               <span className="text-spacePurple-500">{selected?.label?.toLowerCase()}</span>
             </div>
-            <ArrowDownSLine className="text-xl ui-open:rotate-180" />
+            <Icon remixName="ri-arrow-down-s-line" size={20} className="ui-open:rotate-180" />
           </Listbox.Button>
           <div className="absolute right-0 top-full z-20 w-full">
             <Transition
@@ -57,7 +55,7 @@ export function Sort({ value, onChange, labelToken, options }: TSort.Props) {
                     className="flex flex-row items-center justify-between px-4 py-3 hover:bg-white/5"
                   >
                     <span>{option.label}</span>
-                    <CheckLine className="-my-1 hidden text-xl ui-selected:block" />
+                    <Icon remixName="ri-check-line" size={20} className="-my-1 hidden ui-selected:block" />
                   </Listbox.Option>
                 ))}
               </Listbox.Options>
