@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useImpersonation } from "../../../components/features/impersonation/use-impersonation.tsx";
@@ -14,7 +14,6 @@ const ImpersonationPage = () => {
   const { isImpersonating, getImpersonateClaim, setImpersonateClaim, clearImpersonateClaim } = useImpersonation();
   const impersonateClaims = getImpersonateClaim();
   const { data: userInfo, isLoading, isError } = MeApi.queries.useGetMe({ options: { retry: 1 } });
-  const [isValidImpersonation, setIsValidImpersonation] = useState(false);
 
   useEffect(() => {
     if (!userId) {
@@ -24,15 +23,12 @@ const ImpersonationPage = () => {
       const claimedGithubUserId = getGithubUserIdFromSub(impersonateClaims?.sub);
 
       if (isError) {
-        setIsValidImpersonation(false);
         clearImpersonateClaim();
         navigate(RoutePaths.NotFound);
       }
 
       if (userInfo && !isLoading) {
-        const isValidImpersonation = isImpersonating && userInfo?.githubUserId === claimedGithubUserId;
-        setIsValidImpersonation(isValidImpersonation);
-        if (isValidImpersonation) {
+        if (isImpersonating && userInfo?.githubUserId === claimedGithubUserId) {
           navigate(RoutePaths.Projects);
         } else {
           clearImpersonateClaim();
@@ -43,7 +39,11 @@ const ImpersonationPage = () => {
   }, [userId, userInfo, isLoading, isImpersonating, impersonateClaims]);
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div className="item-center flex h-screen justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   return <Link to={RoutePaths.Projects}>{T("impersonation.backToProjects")}</Link>;
