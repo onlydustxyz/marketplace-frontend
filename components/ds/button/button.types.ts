@@ -6,7 +6,7 @@ import { buttonSecondaryVariants } from "./variants/button-secondary.variants";
 import { buttonTertiaryVariants } from "./variants/button-tertiary.variants";
 
 export namespace TButton {
-  type HtmlButton = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type">;
+  type HtmlButton = ButtonHTMLAttributes<HTMLButtonElement>;
 
   export type Variants = VariantProps<typeof buttonVariants>;
   export type PrimaryVariants = VariantProps<typeof buttonPrimaryVariants>;
@@ -14,8 +14,6 @@ export namespace TButton {
   export type TertiaryVariants = VariantProps<typeof buttonTertiaryVariants>;
 
   export interface Props extends PropsWithChildren, Variants, HtmlButton {
-    onClick?: () => void;
-    htmlType?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
     className?: string;
   }
 }

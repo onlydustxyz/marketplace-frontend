@@ -19,7 +19,7 @@ export const buttonVariants = tv({
       xl: "rounded-xl",
       full: "rounded-full",
     },
-    type: {
+    variant: {
       primary: "",
       secondary: "",
       tertiary: "",
@@ -67,7 +67,7 @@ export const buttonVariants = tv({
   defaultVariants: {
     size: "m",
     width: "fit",
-    type: "primary",
+    variant: "primary",
     accentColor: "purple",
     backgroundColor: "default",
   },

@@ -4,20 +4,20 @@ import { buttonSecondaryVariants } from "./variants/button-secondary.variants";
 import { buttonTertiaryVariants } from "./variants/button-tertiary.variants";
 import { TButton } from "./button.types";
 
-export function Button({ htmlType = "button", className, children, ...props }: TButton.Props) {
-  const { type = "primary", disabled } = props;
+export function Button({ type = "button", className, children, ...props }: TButton.Props) {
+  const { variant = "primary", disabled } = props;
 
   return (
     <button
       className={cn(
-        type === "primary" && buttonPrimaryVariants({ ...props }),
-        type === "secondary" && buttonSecondaryVariants({ ...props }),
-        type === "tertiary" && buttonTertiaryVariants({ ...props }),
+        variant === "primary" && buttonPrimaryVariants({ ...props }),
+        variant === "secondary" && buttonSecondaryVariants({ ...props }),
+        variant === "tertiary" && buttonTertiaryVariants({ ...props }),
         className
       )}
       disabled={disabled}
       {...props}
-      type={htmlType}
+      type={type}
     >
       {children}
     </button>

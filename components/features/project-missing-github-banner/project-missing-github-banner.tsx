@@ -14,7 +14,7 @@ export function ProjectMissingGithubBanner({ slug = "" }: TProjectMissingGithubB
       </Typography>
 
       <Link href={generatePath(RoutePaths.ProjectDetailsEditRepos, { projectKey: slug })}>
-        <Button size="s" className="whitespace-nowrap" type="secondary" accentColor="orange">
+        <Button size="s" className="whitespace-nowrap" variant="secondary" accentColor="orange">
           <Translate token="project.missingGithubAppInstall.button" />
         </Button>
       </Link>

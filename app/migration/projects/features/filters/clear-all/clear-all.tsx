@@ -10,7 +10,7 @@ export function FiltersClearAll() {
   const { filters } = useContext(ProjectsContext);
 
   return (
-    <Button onClick={filters.clear} type="tertiary" size="xs">
+    <Button onClick={filters.clear} variant="tertiary" size="xs">
       <Icon remixName="ri-refresh-line" size={12} />
       <Translate token="filter.clearButton" />
     </Button>

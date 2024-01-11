@@ -2,10 +2,10 @@ import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 import { Button } from "components/ds/button/button";
-import { projectLeadInvitationBannerVariants } from "components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.variants";
+import { projectLeadInvitationBannerVariants } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner.variants";
 import { useMemo } from "react";
 import { Translate } from "components/layout/translate/translate";
-import { TProjectLeadInvitationBanner } from "./project-lead-Invitation-banner.types";
+import { TProjectLeadInvitationBanner } from "./project-lead-invitation-banner.types";
 import { Icon } from "components/layout/icon/icon";
 
 export function ProjectLeadInvitationBanner({
