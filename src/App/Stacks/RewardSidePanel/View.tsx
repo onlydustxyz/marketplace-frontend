@@ -22,8 +22,6 @@ import { ShowMore } from "src/components/Table/ShowMore";
 import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
 import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
@@ -45,6 +43,7 @@ import { RewardableItem } from "src/api/Project/queries";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import MixedApi from "../../../api/Mixed";
 
 enum Align {
   Top = "top",
@@ -64,15 +63,12 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
   const { user } = useAuth0();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
+
   const {
     data,
     isLoading: loading,
     isError,
-  } = useRestfulData<components["schemas"]["RewardDetailsResponse"]>({
-    resourcePath: isMine ? ApiResourcePaths.GET_MY_REWARD_BY_ID : ApiResourcePaths.PROJECT_REWARD,
-    pathParam: isMine ? rewardId : { projectId, rewardId },
-    method: "GET",
-  });
+  } = MixedApi.queries.useGetMixedReward({ params: { isMine: isMine || false, rewardId, projectId } });
 
   const infiniteOptions = isMine ? { isMine } : { projectId };
 

@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 
 export const sharedMetadata: Metadata = {
   metadataBase: new URL("https://app.onlydust.com"),
-  title: "Only Dust — Forge your developer legacy",
+  title: "OnlyDust — Forge your developer legacy",
   description:
     "Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach.",
   openGraph: {
-    title: "Only Dust — Forge your developer legacy",
+    title: "OnlyDust — Forge your developer legacy",
     description:
       "Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach.",
     type: "website",

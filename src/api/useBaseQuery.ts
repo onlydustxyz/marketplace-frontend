@@ -48,6 +48,7 @@ export function useBaseQuery<R = unknown>({
         getIdToken: getIdTokenClaims,
         impersonationHeaders: getImpersonateHeaders(),
       });
+
       return fetch(getEndpointUrl({ resourcePath, queryParams }), options)
         .then(res => {
           if (res.ok) {
