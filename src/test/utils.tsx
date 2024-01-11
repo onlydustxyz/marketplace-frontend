@@ -8,7 +8,6 @@ import { ToasterProvider } from "src/hooks/useToaster";
 import { Toaster } from "src/components/Toaster";
 import { viewportConfig } from "src/config";
 import { SuspenseCache } from "@apollo/client";
-import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
 import { StackProvider } from "src/libs/react-stack";
@@ -29,33 +28,31 @@ export const MemoryRouterProviderFactory =
       <Suspense>
         <ToasterProvider>
           <TokenSetProvider>
-            <ImpersonationClaimsProvider>
-              <MockedProvider
-                mocks={mocks}
-                addTypename={false}
-                suspenseCache={suspenseCache}
-                defaultOptions={{
-                  query: { fetchPolicy: "no-cache" },
-                  watchQuery: { fetchPolicy: "no-cache" },
-                }}
-              >
-                <MemoryRouter initialEntries={[route]}>
-                  <SidePanelStackProvider>
-                    <SidePanelProvider>
-                      {context ? (
-                        <Routes>
-                          <Route path="/" element={<Outlet context={context} />}>
-                            <Route index element={<StackProvider>{children}</StackProvider>} />
-                          </Route>
-                        </Routes>
-                      ) : (
-                        <StackProvider>{children}</StackProvider>
-                      )}
-                    </SidePanelProvider>
-                  </SidePanelStackProvider>
-                </MemoryRouter>
-              </MockedProvider>
-            </ImpersonationClaimsProvider>
+            <MockedProvider
+              mocks={mocks}
+              addTypename={false}
+              suspenseCache={suspenseCache}
+              defaultOptions={{
+                query: { fetchPolicy: "no-cache" },
+                watchQuery: { fetchPolicy: "no-cache" },
+              }}
+            >
+              <MemoryRouter initialEntries={[route]}>
+                <SidePanelStackProvider>
+                  <SidePanelProvider>
+                    {context ? (
+                      <Routes>
+                        <Route path="/" element={<Outlet context={context} />}>
+                          <Route index element={<StackProvider>{children}</StackProvider>} />
+                        </Route>
+                      </Routes>
+                    ) : (
+                      <StackProvider>{children}</StackProvider>
+                    )}
+                  </SidePanelProvider>
+                </SidePanelStackProvider>
+              </MemoryRouter>
+            </MockedProvider>
           </TokenSetProvider>
           <Toaster />
         </ToasterProvider>

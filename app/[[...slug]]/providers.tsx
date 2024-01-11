@@ -8,7 +8,6 @@ import ErrorFallback from "src/ErrorFallback";
 import Maintenance from "src/Maintenance";
 import config from "src/config.ts";
 
-import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims.tsx";
 import { IntlProvider } from "src/hooks/useIntl.tsx";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack.tsx";
@@ -29,30 +28,28 @@ export default function Providers() {
       <BrowserRouter>
         <Auth0ProviderWithNavigate>
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
-            <ImpersonationClaimsProvider>
-              <ImpersonationProvider>
-                <TokenSetProvider>
-                  <ToasterProvider>
-                    <QueryClientProvider client={queryClient}>
-                      <StackProvider>
-                        <SidePanelStackProvider>
-                          <SidePanelProvider>
-                            {config.MAINTENANCE ? (
-                              <Maintenance />
-                            ) : (
-                              <OnboardingProvider>
-                                <App />
-                                <Stacks />
-                              </OnboardingProvider>
-                            )}
-                          </SidePanelProvider>
-                        </SidePanelStackProvider>
-                      </StackProvider>
-                    </QueryClientProvider>
-                  </ToasterProvider>
-                </TokenSetProvider>
-              </ImpersonationProvider>
-            </ImpersonationClaimsProvider>
+            <ImpersonationProvider>
+              <TokenSetProvider>
+                <ToasterProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <StackProvider>
+                      <SidePanelStackProvider>
+                        <SidePanelProvider>
+                          {config.MAINTENANCE ? (
+                            <Maintenance />
+                          ) : (
+                            <OnboardingProvider>
+                              <App />
+                              <Stacks />
+                            </OnboardingProvider>
+                          )}
+                        </SidePanelProvider>
+                      </SidePanelStackProvider>
+                    </StackProvider>
+                  </QueryClientProvider>
+                </ToasterProvider>
+              </TokenSetProvider>
+            </ImpersonationProvider>
           </ErrorBoundary>
         </Auth0ProviderWithNavigate>
       </BrowserRouter>
