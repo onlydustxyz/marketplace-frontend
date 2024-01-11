@@ -15,7 +15,7 @@ const ImpersonationPage = () => {
   const { T } = useIntl();
   const { isImpersonating, getImpersonateClaim, setImpersonateClaim, clearImpersonateClaim } = useImpersonation();
   const impersonateClaims = getImpersonateClaim();
-  const { data: userInfo, isLoading } = MeApi.queries.useGetMe({});
+  const { data: userInfo, isLoading, isError } = MeApi.queries.useGetMe({});
   const [isValidImpersonation, setIsValidImpersonation] = useState(false);
 
   useEffect(() => {
@@ -25,6 +25,12 @@ const ImpersonationPage = () => {
       setImpersonateClaim({ sub: `github|${userId}` });
       const claimedGithubUserId = getGithubUserIdFromSub(impersonateClaims?.sub);
 
+      if (isError) {
+        setIsValidImpersonation(false);
+        clearImpersonateClaim();
+        navigate(RoutePaths.NotFound);
+      }
+
       if (userInfo && !isLoading) {
         if (isImpersonating && userInfo?.githubUserId === claimedGithubUserId) {
           setIsValidImpersonation(true);
@@ -32,12 +38,13 @@ const ImpersonationPage = () => {
         } else {
           setIsValidImpersonation(false);
           clearImpersonateClaim();
+          navigate(RoutePaths.NotFound);
         }
       }
     }
-  }, [userId, userInfo, isLoading, isImpersonating]);
+  }, [userId, userInfo, isLoading, isImpersonating, impersonateClaims]);
 
-  return !isValidImpersonation ? (
+  return !isValidImpersonation && !isLoading && isError ? (
     <>
       <div className="flex h-[calc(100dvh)] flex-col items-center justify-center gap-8 bg-space">
         <div className="flex max-w-md flex-col items-center gap-6 text-center">
