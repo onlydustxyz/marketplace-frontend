@@ -24,8 +24,6 @@ import TermsAndConditions from "src/_pages/TermsAndConditions";
 import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
 import ProtectedByFlag from "./ProtectedByFlag";
-import ProtectedByGithub from "./ProtectedByGithub";
-import { GITHUB_PERMISSIONS } from "src/hooks/useGithubUserPermissions/useGithubUserPermissions";
 import Skeleton from "src/components/Skeleton";
 import ProjectsLoader from "./Loaders/ProjectsLoader";
 import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
@@ -146,9 +144,7 @@ function App() {
       element: (
         <AuthenticationGuard>
           <LeadGuard>
-            <ProtectedByGithub requiredPermission={GITHUB_PERMISSIONS.READ_ORG} redirectTo={RoutePaths.ProjectDetails}>
-              <ProjectDetailsEdit />
-            </ProtectedByGithub>
+            <ProjectDetailsEdit />
           </LeadGuard>
         </AuthenticationGuard>
       ),
@@ -204,12 +200,7 @@ function App() {
           path: RoutePaths.ProjectCreation,
           element: (
             <AuthenticationGuard>
-              <ProtectedByGithub
-                requiredPermission={GITHUB_PERMISSIONS.READ_ORG}
-                redirectTo={RoutePaths.ProjectCreation}
-              >
-                <ProjectCreation />
-              </ProtectedByGithub>
+              <ProjectCreation />
             </AuthenticationGuard>
           ),
         },

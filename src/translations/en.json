@@ -43,7 +43,7 @@
       "telegram": "Telegram",
       "discord": "Discord",
       "twitter": "Twitter",
-      "preventAnonymousTooltips": "Connect to Onlydust to access more info links"
+      "preventAnonymousTooltips": "Connect to OnlyDust to access more info links"
     },
     "button": {
       "underline": "Underline"
@@ -81,7 +81,7 @@
     },
     "applied": {
       "title": "Applied",
-      "description": "Unassigned issues you have applied to, from Only Dust or directly on Github."
+      "description": "Unassigned issues you have applied to, from OnlyDust or directly on Github."
     },
     "inProgress": {
       "title": "In progress",
@@ -868,7 +868,7 @@
     "goToApp": "Go to App",
     "copyUrl": "Copy URL",
     "urlCopied": "URL copied",
-    "copyright": "© 2022 OnlyDust",
+    "copyright": "© __year__ OnlyDust",
     "separator": "·",
     "termsAndConditions": "Terms & Conditions",
     "privacyPolicy": "Privacy Policy",
@@ -880,13 +880,13 @@
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "claim": {
       "banner": {
-        "content": "Working at __projectName__ ? You’re 3 clicks away to claim access to your own project on Onlydust!",
+        "content": "Working at __projectName__ ? You’re 3 clicks away to claim access to your own project on OnlyDust!",
         "button": "Claim project"
       },
       "panel": {
         "title": "Claim project",
         "subTitle": "First we need to authenticate you as project lead.",
-        "content": "Please install the Only Dust Github app on the following organisations.",
+        "content": "Please install the OnlyDust Github app on the following organisations.",
         "grantButton": "Grant permissions",
         "installButton": "Install Github app",
         "submit": "Claim project",
@@ -896,7 +896,7 @@
     },
     "githubLinkTutorial": {
       "title": "How to grant permissions",
-      "subTitle": "You are required to grant permissions to all organisations where you want to install the Only Dust Github app.",
+      "subTitle": "You are required to grant permissions to all organisations where you want to install the OnlyDust Github app.",
       "close": "Done",
       "info": {
         "title": "What if you can’t grant permissions to all organisations?",
@@ -919,8 +919,8 @@
           "alt": "Step 2"
         },
         "three": {
-          "title": "3. GRANT PERMISSIONS to ONLY DUST",
-          "subTitle": "And you’re good to go, you can now install the Only Dust Github app.",
+          "title": "3. GRANT PERMISSIONS to ONLYDUST",
+          "subTitle": "And you’re good to go, you can now install the OnlyDust Github app.",
           "informations": "Note you may have to re-authenticate to Github to perform this action.",
           "alt": "Step 3"
         }
@@ -1294,7 +1294,7 @@
       },
       "banners": {
         "missingGithubAppInstall": {
-          "message": "To continue rewarding your contributors, please install the Only Dust Github app.",
+          "message": "To continue rewarding your contributors, please install the OnlyDust Github app.",
           "button": "Edit project"
         }
       }
@@ -1318,7 +1318,7 @@
       "view": "View invite"
     },
     "missingGithubAppInstall": {
-      "message": "To continue rewarding your contributors, please install the Only Dust Github app.",
+      "message": "To continue rewarding your contributors, please install the OnlyDust Github app.",
       "button": "Edit project"
     }
   },
@@ -1408,7 +1408,7 @@
   },
   "showMore": "Show more",
   "githubStatusBanner": {
-    "message": "Github is experiencing service issues. Onlydust features may be affected until the incident is resolved.",
+    "message": "Github is experiencing service issues. OnlyDust features may be affected until the incident is resolved.",
     "button": "View Github status"
   }
 }

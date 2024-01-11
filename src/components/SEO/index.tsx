@@ -6,7 +6,7 @@ type Props = {
   route?: string;
 };
 
-const DEFAULT_TITLE = "Only Dust — Forge your developer legacy";
+const DEFAULT_TITLE = "OnlyDust — Forge your developer legacy";
 export default function SEO({ title = DEFAULT_TITLE }: Props) {
   return (
     <Helmet>

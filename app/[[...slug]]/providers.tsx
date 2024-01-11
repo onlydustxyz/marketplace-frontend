@@ -10,7 +10,6 @@ import config from "src/config.ts";
 
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims.tsx";
 import { IntlProvider } from "src/hooks/useIntl.tsx";
-import { SessionProvider } from "src/hooks/useSession.tsx";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack.tsx";
 import { ToasterProvider } from "src/hooks/useToaster";
@@ -31,34 +30,32 @@ export default function Providers() {
       <BrowserRouter>
         <Auth0ProviderWithNavigate>
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
-            <SessionProvider>
-              <ImpersonationClaimsProvider>
-                <ImpersonationProvider>
-                  <TokenSetProvider>
-                    <ToasterProvider>
-                      <ApolloWrapper>
-                        <QueryClientProvider client={queryClient}>
-                          <StackProvider>
-                            <SidePanelStackProvider>
-                              <SidePanelProvider>
-                                {config.MAINTENANCE ? (
-                                  <Maintenance />
-                                ) : (
-                                  <OnboardingProvider>
-                                    <App />
-                                    <Stacks />
-                                  </OnboardingProvider>
-                                )}
-                              </SidePanelProvider>
-                            </SidePanelStackProvider>
-                          </StackProvider>
-                        </QueryClientProvider>
-                      </ApolloWrapper>
-                    </ToasterProvider>
-                  </TokenSetProvider>
-                </ImpersonationProvider>
-              </ImpersonationClaimsProvider>
-            </SessionProvider>
+            <ImpersonationClaimsProvider>
+              <ImpersonationProvider>
+                <TokenSetProvider>
+                  <ToasterProvider>
+                    <ApolloWrapper>
+                      <QueryClientProvider client={queryClient}>
+                        <StackProvider>
+                          <SidePanelStackProvider>
+                            <SidePanelProvider>
+                              {config.MAINTENANCE ? (
+                                <Maintenance />
+                              ) : (
+                                <OnboardingProvider>
+                                  <App />
+                                  <Stacks />
+                                </OnboardingProvider>
+                              )}
+                            </SidePanelProvider>
+                          </SidePanelStackProvider>
+                        </StackProvider>
+                      </QueryClientProvider>
+                    </ApolloWrapper>
+                  </ToasterProvider>
+                </TokenSetProvider>
+              </ImpersonationProvider>
+            </ImpersonationClaimsProvider>
           </ErrorBoundary>
         </Auth0ProviderWithNavigate>
       </BrowserRouter>

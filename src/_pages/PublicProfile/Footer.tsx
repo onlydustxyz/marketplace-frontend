@@ -24,7 +24,7 @@ export default function Footer() {
       </a>
       <div className="flex items-center gap-3 text-spaceBlue-50">
         <div className="flex flex-row gap-1 font-walsheim text-sm font-normal">
-          <div className="text-spaceBlue-200">{T("publicProfile.copyright")}</div>
+          <div className="text-spaceBlue-200">{T("publicProfile.copyright", { year: new Date().getFullYear() })}</div>
           <div className="text-spaceBlue-200">{T("publicProfile.separator")}</div>
           <div className="cursor-pointer" onClick={() => openFullTermsAndConditions()}>
             {T(isXl ? "publicProfile.termsAndConditions" : "publicProfile.terms")}
