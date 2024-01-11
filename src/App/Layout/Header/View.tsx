@@ -1,8 +1,6 @@
 import { RoutePaths } from "src/App";
-import GithubLink from "./GithubLink";
 import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
-import ProfileButton from "./ProfileButton";
 import MenuItem from "src/App/Layout/Header/MenuItem";
 import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
@@ -16,7 +14,7 @@ import { GithubStatusBanner } from "./GithubStatusBanner";
 import { IMAGES } from "src/assets/img";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
-import SkeletonEl from "src/components/New/Skeleton/Skeleton";
+import { ProfileButtonDisplay } from "./ProfileButton/ProfileButtonDisplay";
 
 interface HeaderViewProps {
   menuItems: {
@@ -113,15 +111,7 @@ export default function HeaderView({
                   ) : null}
                 </>
               ) : null}
-              <div className="flex text-base text-white">
-                {isLoading ? (
-                  <SkeletonEl variant="circular" color="grey" width={78} height={45} />
-                ) : !isAuthenticated ? (
-                  <GithubLink />
-                ) : (
-                  <ProfileButton />
-                )}
-              </div>
+              <ProfileButtonDisplay isLoading={isLoading} isAuthenticated={isAuthenticated} />
             </div>
           </div>
         </div>
