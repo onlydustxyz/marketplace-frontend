@@ -15,7 +15,7 @@ const ImpersonationPage = () => {
   const { T } = useIntl();
   const { isImpersonating, getImpersonateClaim, setImpersonateClaim, clearImpersonateClaim } = useImpersonation();
   const impersonateClaims = getImpersonateClaim();
-  const { data: userInfo, isLoading, isError } = MeApi.queries.useGetMe({});
+  const { data: userInfo, isLoading, isError } = MeApi.queries.useGetMe({ options: { retry: 1 } });
   const [isValidImpersonation, setIsValidImpersonation] = useState(false);
 
   useEffect(() => {
