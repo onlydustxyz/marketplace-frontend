@@ -1,3 +1,4 @@
+import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import { SortField, Sorting } from "src/components/RewardTable/useQueryParamsSorting";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
@@ -6,7 +7,6 @@ import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
-import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 
 export enum Fields {
   Date = "REQUESTED_AT",

@@ -1,6 +1,7 @@
 import { BaseHTMLAttributes } from "react";
-import { RemixIconsName } from "./remix-icon-names.types";
+
 import { TCustomIcon } from "./custom-icon.types";
+import { RemixIconsName } from "./remix-icon-names.types";
 
 export namespace TIcon {
   type HtmlDiv = BaseHTMLAttributes<HTMLDivElement>;

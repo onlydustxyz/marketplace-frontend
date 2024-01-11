@@ -1,4 +1,5 @@
 import { ComponentProps } from "react";
+
 import { ContributionIcon, Sizes } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";

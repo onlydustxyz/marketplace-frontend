@@ -1,17 +1,19 @@
-import { useNavigate } from "react-router-dom";
-import { RoutePaths } from "src/App";
-import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
-import Card from "src/components/Card";
-import { useIntl } from "src/hooks/useIntl";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useMemo, useState } from "react";
-import ConfirmationPopOver from "src/components/New/Popover/ConfirmationPopover";
+import { useNavigate } from "react-router-dom";
+
+import { RoutePaths } from "src/App";
 import {
   STORAGE_KEY_CREATE_PROJECT_STEP,
   useResetStorage,
 } from "src/_pages/ProjectCreation/hooks/useProjectCreationStorage";
 import { ProjectCreationSteps } from "src/_pages/ProjectCreation/types/ProjectCreationSteps";
+import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
+import Card from "src/components/Card";
+import ConfirmationPopOver from "src/components/New/Popover/ConfirmationPopover";
+import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login.ts";
 
 export default function SubmitProject({ className }: { className?: string }) {

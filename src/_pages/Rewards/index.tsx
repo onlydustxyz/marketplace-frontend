@@ -1,15 +1,17 @@
+import { useContext, useMemo, useRef } from "react";
+import { useT } from "talkr";
+
+import UserRewardTable from "src/_pages/Rewards/UserRewardTable";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import SEO from "src/components/SEO";
-import UserRewardTable from "src/_pages/Rewards/UserRewardTable";
 import Flex from "src/components/Utils/Flex";
-import { useT } from "talkr";
-import { UserRewardsProvider } from "./context/UserRewards.provider";
+
 import { Earning } from "./Earning/Earning";
+import UseRewardsEmptyState from "./Empty";
 import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";
 import InvoiceSubmission from "./InvoiceSubmission";
-import { useContext, useMemo, useRef } from "react";
-import UseRewardsEmptyState from "./Empty";
 import { UserRewardsContext } from "./context/UserRewards";
+import { UserRewardsProvider } from "./context/UserRewards.provider";
 
 export enum RewardStatus {
   COMPLETE = "COMPLETE",

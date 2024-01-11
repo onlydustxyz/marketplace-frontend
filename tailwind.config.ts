@@ -1,9 +1,9 @@
-import { Config } from "tailwindcss";
-import plugin from "tailwindcss/plugin";
-import scrollbar from "tailwind-scrollbar";
 import headlessUi from "@headlessui/tailwindcss";
 import typography from "@tailwindcss/typography";
+import scrollbar from "tailwind-scrollbar";
 import { withTV } from "tailwind-variants/transformer";
+import { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = withTV({
   content: [

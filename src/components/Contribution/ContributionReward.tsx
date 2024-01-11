@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+
 import { useStackReward } from "src/App/Stacks/Stacks";
 import { ContributionAttribute } from "src/components/Contribution/ContributionAttribute";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";

@@ -1,7 +1,8 @@
-import ReadOnlyView from "./ReadOnlyView";
-import EditView from "./EditView";
 import { UserProfile } from "src/api/Users/queries";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+
+import EditView from "./EditView";
+import ReadOnlyView from "./ReadOnlyView";
 
 type Props = {
   profile: UserProfile | UseGetMyProfileInfoResponse;

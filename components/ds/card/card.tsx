@@ -1,6 +1,7 @@
 import { cn } from "src/utils/cn";
-import { cardVariants } from "./card.variants";
+
 import { TCard } from "./card.types";
+import { cardVariants } from "./card.variants";
 
 export function Card({
   as: Component = "section",

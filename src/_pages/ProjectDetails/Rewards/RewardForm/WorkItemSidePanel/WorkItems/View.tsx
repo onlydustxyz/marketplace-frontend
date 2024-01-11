@@ -1,28 +1,30 @@
 import { ReactElement, forwardRef, useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
+
+import Toggle from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
+import { RewardableItem } from "src/api/Project/queries";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
+import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest, {
   GithubPullRequestProps,
 } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
+import Skeleton from "src/components/Skeleton";
+import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
+import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 import { useShowToaster } from "src/hooks/useToaster";
 import EyeOffLine from "src/icons/EyeOffLine";
 import Link from "src/icons/Link";
 import SearchLine from "src/icons/SearchLine";
-import Toggle from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
+import { WorkItemType } from "src/types";
+
+import { Contributor } from "../../types";
+import EmptyState from "../EmptyState";
 import OtherIssueInput from "./OtherIssueInput";
 import { RewardableWorkItem, contributionToWorkItem } from "./WorkItems";
-import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
-import { RewardableItem } from "src/api/Project/queries";
-import { ShowMore } from "src/components/Table/ShowMore";
-import EmptyState from "../EmptyState";
-import Skeleton from "src/components/Skeleton";
-import { Contributor } from "../../types";
-import { WorkItemType } from "src/types";
-import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 
 export const tabNames = {
   [WorkItemType.Issue]: "issues",

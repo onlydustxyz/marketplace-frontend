@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+
 import Header from "src/App/Stacks/ContributorProfileSidePanel/Header";
 import IntroSection from "src/App/Stacks/ContributorProfileSidePanel/ReadOnlyView/IntroSection";
 import ProjectsSection from "src/App/Stacks/ContributorProfileSidePanel/ReadOnlyView/ProjectsSection";

@@ -1,7 +1,26 @@
-import React, { lazy, Suspense } from "react";
+import React, { Suspense, lazy } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
+import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
+import ErrorTrigger from "src/_pages/ErrorTrigger";
+import ImpersonationPage from "src/_pages/Impersonation";
+import Onboarding from "src/_pages/Onboarding";
+import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
+import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
+import PublicProfilePage from "src/_pages/PublicProfile";
+import TermsAndConditions from "src/_pages/TermsAndConditions";
+import Loader from "src/components/Loader";
+import { NotFound } from "src/components/NotFound";
+import Skeleton from "src/components/Skeleton";
+
+import AuthenticationGuard from "components/features/auth0/guards/authentication-guard.tsx";
+import { LeadGuard } from "components/features/auth0/guards/lead-guard.tsx";
+
+import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
+import ProjectsLoader from "./Loaders/ProjectsLoader";
+import RewardLoader from "./Loaders/RewardsLoader";
+import ProtectedByFlag from "./ProtectedByFlag";
 
 const Projects = lazy(() => import("src/_pages/Projects"));
 const Contributions = lazy(() => import("src/_pages/Contributions/Contributions"));
@@ -14,24 +33,6 @@ const ProjectDetailsRewardsList = lazy(() => import("src/_pages/ProjectDetails/R
 const ProjectDetailsRewardForm = lazy(() => import("src/_pages/ProjectDetails/Rewards/RewardForm"));
 const ProjectDetailsInsights = lazy(() => import("src/_pages/ProjectDetails/Insights"));
 const ProjectDetailsEdit = lazy(() => import("src/_pages/ProjectDetails/ProjectEdition/ProjectEdition"));
-
-import { NotFound } from "src/components/NotFound";
-import ErrorTrigger from "src/_pages/ErrorTrigger";
-import ImpersonationPage from "src/_pages/Impersonation";
-import Onboarding from "src/_pages/Onboarding";
-import PublicProfilePage from "src/_pages/PublicProfile";
-import TermsAndConditions from "src/_pages/TermsAndConditions";
-import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
-import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
-import ProtectedByFlag from "./ProtectedByFlag";
-import Skeleton from "src/components/Skeleton";
-import ProjectsLoader from "./Loaders/ProjectsLoader";
-import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
-import Loader from "src/components/Loader";
-import RewardLoader from "./Loaders/RewardsLoader";
-import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
-import AuthenticationGuard from "components/features/auth0/guards/authentication-guard.tsx";
-import { LeadGuard } from "components/features/auth0/guards/lead-guard.tsx";
 
 export enum RoutePaths {
   Projects = "/",

@@ -1,23 +1,25 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
-import Card from "src/components/Card";
-import ContactInformations from "src/components/ContactInformations";
-import { withTooltip } from "src/components/Tooltip";
+
 import {
   Channel,
   UserProfileInfo,
   fromFragment,
   mapFormDataToSchema,
 } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
-import { useIntl } from "src/hooks/useIntl";
-import isContactInfoProvided from "src/utils/isContactInfoProvided";
 import MeApi from "src/api/me";
-import useMutationAlert from "src/api/useMutationAlert";
-import User3Line from "src/icons/User3Line";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+import useMutationAlert from "src/api/useMutationAlert";
+import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Button";
+import Card from "src/components/Card";
+import ContactInformations from "src/components/ContactInformations";
+import { withTooltip } from "src/components/Tooltip";
+import { useIntl } from "src/hooks/useIntl";
+import User3Line from "src/icons/User3Line";
+import isContactInfoProvided from "src/utils/isContactInfoProvided";
+
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login.ts";
-import { useAuth0 } from "@auth0/auth0-react";
 
 interface ApplyCalloutProps {
   isAuthenticated?: boolean;

@@ -1,8 +1,9 @@
 import { cn } from "src/utils/cn";
-import { getDefaultComponent } from "./typography.utils";
-import { TTypography } from "./typography.types";
-import { typographyVariants } from "./typography.variants";
+
 import { Translate } from "../translate/translate";
+import { TTypography } from "./typography.types";
+import { getDefaultComponent } from "./typography.utils";
+import { typographyVariants } from "./typography.variants";
 
 export function Typography({ variant, className, as, children, translate }: TTypography.Props) {
   const Component = as || getDefaultComponent(variant);

@@ -1,6 +1,8 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { FilloutStandardEmbed } from "@fillout/react";
 import { useState } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
+
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { components } from "src/__generated/api";
@@ -9,11 +11,9 @@ import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import { ChoiceButton } from "src/components/New/Buttons/ChoiceButton/ChoiceButton";
 import SidePanel from "src/components/SidePanel";
 import { withTooltip } from "src/components/Tooltip";
-
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
-import { useAuth0 } from "@auth0/auth0-react";
 
 type RewardProjectButtonProps = { project: components["schemas"]["ProjectResponse"]; size?: ButtonSize };
 

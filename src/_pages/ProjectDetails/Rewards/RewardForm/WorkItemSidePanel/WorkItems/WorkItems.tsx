@@ -1,15 +1,17 @@
 import _ from "lodash";
 import { useEffect, useMemo } from "react";
-import View, { tabNames } from "./View";
-import { useIgnoredContributions } from "./useIgnoredContributions";
+import { useFormContext } from "react-hook-form";
+
 import ProjectApi from "src/api/Project";
 import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
-import { useFormContext } from "react-hook-form";
-import { Contributor } from "../../types";
 import { NotFound } from "src/components/NotFound";
-import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useIntl } from "src/hooks/useIntl";
+import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { WorkItemType } from "src/types";
+
+import { Contributor } from "../../types";
+import View, { tabNames } from "./View";
+import { useIgnoredContributions } from "./useIgnoredContributions";
 
 export interface RewardableWorkItem {
   type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;

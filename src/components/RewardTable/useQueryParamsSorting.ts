@@ -1,6 +1,7 @@
 import { useMemo } from "react";
-import { QueryParams } from "src/utils/getEndpointUrl";
 import { useLocalStorage } from "usehooks-ts";
+
+import { QueryParams } from "src/utils/getEndpointUrl";
 
 type Props<Field> = {
   storageKey: string;

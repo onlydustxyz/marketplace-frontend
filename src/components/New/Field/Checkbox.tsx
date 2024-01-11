@@ -1,7 +1,9 @@
 import { FC, FocusEventHandler } from "react";
-import { Field, FieldProps } from "./Field";
-import { cn } from "src/utils/cn";
+
 import CheckLine from "src/icons/CheckLine";
+import { cn } from "src/utils/cn";
+
+import { Field, FieldProps } from "./Field";
 
 export interface FieldCheckboxProps extends Omit<FieldProps, "children"> {
   switchLabel?: string;

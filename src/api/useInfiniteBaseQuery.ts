@@ -1,9 +1,12 @@
-import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
-import { QueryTags } from "./query.type";
-import { UseInfiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
-import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
 import { useAuth0 } from "@auth0/auth0-react";
+import { UseInfiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
+
+import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
+
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
+
+import { QueryTags } from "./query.type";
+import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
 
 export interface useInfiniteBaseQueryProps {
   resourcePath: string;

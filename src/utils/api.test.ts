@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
+
 import { components } from "src/__generated/api";
+
 import {
   formatRewardItemToGithubCodeReview,
   formatRewardItemToGithubIssue,

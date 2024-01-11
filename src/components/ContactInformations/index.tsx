@@ -1,13 +1,13 @@
-import { useIntl } from "src/hooks/useIntl";
-
-import GithubLogo from "src/icons/GithubLogo";
 import Telegram from "src/assets/icons/Telegram";
-import TwitterFill from "src/icons/TwitterFill";
+import { useIntl } from "src/hooks/useIntl";
 import DiscordFill from "src/icons/DiscordFill";
+import GithubLogo from "src/icons/GithubLogo";
 import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
 import MailLine from "src/icons/MailLine";
-import ContactInformation from "./ContactInformation";
+import TwitterFill from "src/icons/TwitterFill";
 import WhatsappFill from "src/icons/WhatsappFill";
+
+import ContactInformation from "./ContactInformation";
 
 type Props = {
   onlyEditable?: boolean;

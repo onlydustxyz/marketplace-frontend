@@ -1,30 +1,32 @@
-import { useIntl } from "src/hooks/useIntl";
-import MapPinLine from "src/icons/MapPinLine";
-import { formatDateShort } from "src/utils/date";
-import GlobalLine from "src/icons/GlobalLine";
-import SocialLink from "./SocialLink";
-import GithubLogo from "src/icons/GithubLogo";
-import TwitterFill from "src/icons/TwitterFill";
+import Link from "next/link";
+import { generatePath } from "react-router-dom";
+
+import { RoutePaths } from "src/App";
+import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
+import { components } from "src/__generated/api";
+import { UserProfile } from "src/api/Users/queries";
 import Telegram from "src/assets/icons/Telegram";
+import { IMAGES } from "src/assets/img";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import CompletionBar from "src/components/CompletionBar";
+import ExternalLink from "src/components/ExternalLink";
+import MarkdownPreview from "src/components/MarkdownPreview";
+import { useIntl } from "src/hooks/useIntl";
+import DiscordFill from "src/icons/DiscordFill";
+import ExternalLinkLine from "src/icons/ExternalLinkLine";
+import GithubLogo from "src/icons/GithubLogo";
+import GlobalLine from "src/icons/GlobalLine";
 import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
 import MailLine from "src/icons/MailLine";
-import DiscordFill from "src/icons/DiscordFill";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import MapPinLine from "src/icons/MapPinLine";
 import PencilLine from "src/icons/PencilLine";
-import ExternalLink from "src/components/ExternalLink";
-import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
-import MarkdownPreview from "src/components/MarkdownPreview";
-import { cn } from "src/utils/cn";
-import ExternalLinkLine from "src/icons/ExternalLinkLine";
-import { generatePath } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import TwitterFill from "src/icons/TwitterFill";
 import WhatsappFill from "src/icons/WhatsappFill";
-import { components } from "src/__generated/api";
-import CompletionBar from "src/components/CompletionBar";
-import { UserProfile } from "src/api/Users/queries";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
-import { IMAGES } from "src/assets/img";
-import Link from "next/link";
+import { cn } from "src/utils/cn";
+import { formatDateShort } from "src/utils/date";
+
+import SocialLink from "./SocialLink";
 
 type Props = {
   profile: UserProfile;

@@ -1,7 +1,9 @@
+import { useEffect } from "react";
+
 import { useSubscribe } from "src/libs/react-subscriber";
+
 import useStackContext from "../hooks/useStackContext";
 import { BackDrop } from "../ui/BackDrop";
-import { useEffect } from "react";
 
 export const History = () => {
   const stackContext = useStackContext();

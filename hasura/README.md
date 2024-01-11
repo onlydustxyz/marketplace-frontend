@@ -24,15 +24,15 @@ docker-compose up -d
 
 Two containers are started:
 
--   graphql-engine: The hasura process
--   pg_hasura_metadata: The Hasura database for its configuration
+- graphql-engine: The hasura process
+- pg_hasura_metadata: The Hasura database for its configuration
 
 ## Modify Hasura configuration
 
 You can modify config in two ways:
 
--   Modify yaml source files and load them in your local metadata database
--   Modify database from the console (`yarn hasura start` or `make hasura/start` from root) and then export config in your yaml files
+- Modify yaml source files and load them in your local metadata database
+- Modify database from the console (`yarn hasura start` or `make hasura/start` from root) and then export config in your yaml files
 
 ### Install Hasura CLI
 
@@ -83,7 +83,7 @@ It is configured through env variables stored in `hasura/auth/config.env`.
 
 Resources:
 
--   [Openapi doc](https://editor.swagger.io/?url=https://raw.githubusercontent.com/nhost/hasura-auth/main/docs/openapi.json)
--   [JWT decoder](https://jwt.io/)
--   [List of env variable](https://github.com/nhost/hasura-auth/blob/main/docs/environment-variables.md)
--   [DB schema](https://github.com/nhost/hasura-auth/blob/main/docs/schema.md)
+- [Openapi doc](https://editor.swagger.io/?url=https://raw.githubusercontent.com/nhost/hasura-auth/main/docs/openapi.json)
+- [JWT decoder](https://jwt.io/)
+- [List of env variable](https://github.com/nhost/hasura-auth/blob/main/docs/environment-variables.md)
+- [DB schema](https://github.com/nhost/hasura-auth/blob/main/docs/schema.md)

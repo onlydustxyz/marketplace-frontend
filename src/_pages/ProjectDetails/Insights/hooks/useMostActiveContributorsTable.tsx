@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+
 import { components } from "src/__generated/api";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -12,6 +13,7 @@ import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
+
 import ActivityGraph from "../commons/ActivityGraph/ActivityGraph";
 
 type HeaderCell = {

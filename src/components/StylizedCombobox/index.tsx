@@ -1,10 +1,11 @@
 import { Combobox } from "@headlessui/react";
 import { PropsWithChildren, useState } from "react";
-import { cn } from "src/utils/cn";
-import SearchLine from "src/icons/SearchLine";
-import ArrowDownSLine from "src/icons/ArrowDownSLine";
-import { Virtuoso } from "react-virtuoso";
 import { ReactElement } from "react-markdown/lib/react-markdown";
+import { Virtuoso } from "react-virtuoso";
+
+import ArrowDownSLine from "src/icons/ArrowDownSLine";
+import SearchLine from "src/icons/SearchLine";
+import { cn } from "src/utils/cn";
 
 export type Props<T extends Option> = {
   options: T[];

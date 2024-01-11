@@ -1,7 +1,7 @@
+import { IMAGES } from "src/assets/img";
+import Button from "src/components/Button";
 import Card from "src/components/Card";
 import { useIntl } from "src/hooks/useIntl";
-import Button from "src/components/Button";
-import { IMAGES } from "src/assets/img";
 
 type Props = {
   clearFilters: () => void;

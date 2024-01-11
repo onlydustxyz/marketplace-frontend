@@ -1,9 +1,10 @@
 import { Transition } from "@headlessui/react";
-import { cn } from "src/utils/cn";
+import { useMediaQuery } from "usehooks-ts";
+
 import { viewportConfig } from "src/config";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import { useMediaQuery } from "usehooks-ts";
+import { cn } from "src/utils/cn";
 
 interface Props {
   message: string;

@@ -1,4 +1,5 @@
 import { Tooltip as ReactTooltip } from "react-tooltip";
+
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 import Tag, { TagSize } from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";

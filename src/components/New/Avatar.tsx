@@ -1,6 +1,6 @@
 import GalleryLine from "src/assets/icons/GalleryLine";
-import { cn } from "src/utils/cn";
 import { IMAGES } from "src/assets/img";
+import { cn } from "src/utils/cn";
 
 const sizes = {
   "2": "w-2 h-2",

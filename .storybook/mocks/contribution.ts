@@ -55,8 +55,8 @@ export const contribution: Contribution = {
   contributor: {
     avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
     githubUserId: 5160414,
-    htmlUrl: "",  
+    htmlUrl: "",
     login: "haydencleary",
     isRegistered: true,
-  }
+  },
 };

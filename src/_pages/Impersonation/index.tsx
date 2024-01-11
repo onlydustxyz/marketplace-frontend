@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+
 import { RoutePaths } from "src/App";
-import { useImpersonation } from "../../../components/features/impersonation/use-impersonation.tsx";
-import { useIntl } from "src/hooks/useIntl.tsx";
 import MeApi from "src/api/me/index.ts";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import Loader from "src/components/Loader/index.tsx";
+import { useIntl } from "src/hooks/useIntl.tsx";
+
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+
+import { useImpersonation } from "../../../components/features/impersonation/use-impersonation.tsx";
 
 const ImpersonationPage = () => {
   const { userId } = useParams();

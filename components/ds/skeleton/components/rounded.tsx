@@ -1,6 +1,7 @@
-import { TSkeleton } from "../skeleton.types";
 import { cn } from "src/utils/cn";
+
 import { useBaseSkelletonStyle } from "../skeleton.hooks";
+import { TSkeleton } from "../skeleton.types";
 
 export function SkeletonRounded(props: TSkeleton.BaseProps) {
   const { baseClass, baseStyle } = useBaseSkelletonStyle(props);

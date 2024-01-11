@@ -1,4 +1,5 @@
 import { ComponentProps } from "react";
+
 import { BudgetCard, CardTypes } from "src/_pages/ProjectDetails/Rewards/Budget/BudgetCard";
 import { Currency } from "src/types";
 

@@ -1,31 +1,33 @@
 import { sortBy } from "lodash";
 import { FormEventHandler, useEffect, useState } from "react";
-import Button, { Width } from "src/components/Button";
-import Callout from "src/components/Callout";
-import { useIntl } from "src/hooks/useIntl";
-import CheckLine from "src/icons/CheckLine";
-import isDefined from "src/utils/isDefined";
-import Description from "./Description";
-import RepoSelect from "./RepoSelect";
-import Title from "./Title";
+import { FormProvider, useForm } from "react-hook-form";
+import { useOutletContext } from "react-router-dom";
+import { useMediaQuery } from "usehooks-ts";
+
+import { components } from "src/__generated/api";
+import { liveIssueToCached } from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/OtherIssueInput";
 import {
   RewardableWorkItem,
   issueToWorkItem,
 } from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
-import DraftLine from "src/icons/DraftLine";
-import TeamLine from "src/icons/TeamLine";
-import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
-import MoreLine from "src/icons/MoreLine";
-import FormSelect from "src/components/FormSelect";
-import { FormProvider, useForm } from "react-hook-form";
-import { OtherWork } from "./types";
-import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
-import { liveIssueToCached } from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/OtherIssueInput";
 import ProjectApi from "src/api/Project";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useOutletContext } from "react-router-dom";
-import { components } from "src/__generated/api";
+import Button, { Width } from "src/components/Button";
+import Callout from "src/components/Callout";
+import FormSelect from "src/components/FormSelect";
+import { viewportConfig } from "src/config";
+import { useIntl } from "src/hooks/useIntl";
+import CheckLine from "src/icons/CheckLine";
+import DraftLine from "src/icons/DraftLine";
+import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
+import MoreLine from "src/icons/MoreLine";
+import TeamLine from "src/icons/TeamLine";
+import isDefined from "src/utils/isDefined";
+
+import Description from "./Description";
+import RepoSelect from "./RepoSelect";
+import Title from "./Title";
+import { OtherWork } from "./types";
 
 type Props = {
   projectId: string;

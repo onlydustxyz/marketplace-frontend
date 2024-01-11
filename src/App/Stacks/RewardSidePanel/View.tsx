@@ -1,13 +1,17 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { UseMutateFunction } from "@tanstack/react-query";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+
+import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { components } from "src/__generated/api";
 import {
   GithubCodeReviewFragment,
   GithubIssueFragment,
   GithubPullRequestWithCommitsFragment,
 } from "src/__generated/graphql";
+import { RewardableItem } from "src/api/Project/queries";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -36,14 +40,13 @@ import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { formatMoneyAmount } from "src/utils/money";
+
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+
+import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
-import { RewardableItem } from "src/api/Project/queries";
-import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-import MixedApi from "../../../api/Mixed";
 
 enum Align {
   Top = "top",

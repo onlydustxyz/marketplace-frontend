@@ -1,17 +1,19 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { Menu, Transition } from "@headlessui/react";
-import { cn } from "src/utils/cn";
 import { Fragment, PropsWithChildren, useState } from "react";
+
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import Dot from "src/assets/icons/Dot";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
+import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useSidePanel } from "src/hooks/useSidePanel";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
+import { cn } from "src/utils/cn";
+
 import handleLogout from "components/features/auth0/handlers/handle-logout.ts";
 import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
 

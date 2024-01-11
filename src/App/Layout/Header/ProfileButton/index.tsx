@@ -1,8 +1,10 @@
+import { useMediaQuery } from "usehooks-ts";
+
 import View from "src/App/Layout/Header/ProfileButton/View";
 import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
 import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
+
 import ViewMobile from "./ViewMobile";
 
 const ProfileButton = () => {

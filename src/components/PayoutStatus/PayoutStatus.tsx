@@ -1,11 +1,11 @@
+import { components } from "src/__generated/api";
 import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
+import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
-import { withTooltip } from "src/components/Tooltip";
-import { components } from "src/__generated/api";
 
 type Props = {
   status: PaymentStatusUnion;

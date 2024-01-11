@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { decodeBase64ToString } from "./stringUtils";
 
 const BASE_64_ENCODED_TEST_STRING = "dGVzdC1zdHJpbmc=";

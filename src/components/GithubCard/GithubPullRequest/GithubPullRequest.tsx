@@ -1,4 +1,5 @@
 import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
+import { RewardableItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
@@ -10,8 +11,8 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { ContributionStatus, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
+
 import { CommitsTooltip } from "./CommitsTooltip";
-import { RewardableItem } from "src/api/Project/queries";
 
 export enum Action {
   Add = "add",

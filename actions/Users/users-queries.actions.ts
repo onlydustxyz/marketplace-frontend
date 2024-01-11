@@ -1,7 +1,7 @@
-import { BaseQueriesOptions } from "../type.actions";
-import { BaseQueries } from "../base-queries.actions";
 import { components } from "../../src/__generated/api";
+import { BaseQueries } from "../base-queries.actions";
 import { ACTION_PATH } from "../path.actions";
+import { BaseQueriesOptions } from "../type.actions";
 import { UsersActionTags } from "./users-tags.actions";
 
 export type UserProfile = components["schemas"]["PublicUserProfileResponse"];

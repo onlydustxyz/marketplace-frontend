@@ -7,6 +7,7 @@ import Medal2Fill from "src/icons/Medal2Fill";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
+
 import SortingArrow from "./SortingArrow";
 
 export enum Fields {

@@ -1,7 +1,7 @@
-import { RewardProjectButton } from "src/_pages/ProjectDetails/components/RewardProjectButton";
 import { components } from "src/__generated/api";
-import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
+import { RewardProjectButton } from "src/_pages/ProjectDetails/components/RewardProjectButton";
 import { IMAGES } from "src/assets/img";
+import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 

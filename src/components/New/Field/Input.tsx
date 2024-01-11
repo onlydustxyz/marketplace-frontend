@@ -1,6 +1,8 @@
 import { ChangeEventHandler, FocusEventHandler, ReactNode, Ref, forwardRef } from "react";
-import { Field, FieldProps } from "./Field";
+
 import { cn } from "src/utils/cn";
+
+import { Field, FieldProps } from "./Field";
 
 export interface FieldInputProps extends Omit<FieldProps, "children"> {
   type?: string;

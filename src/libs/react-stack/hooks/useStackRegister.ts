@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-
-import { RegisterStackProps, StackInterface, StackPanelInterface, StacksParams } from "../types/Stack";
-import { useRefSubscription } from "../../react-subscriber/useRefSubscription";
 import { v4 as uuidv4 } from "uuid";
+
+import { useRefSubscription } from "../../react-subscriber/useRefSubscription";
+import { RegisterStackProps, StackInterface, StackPanelInterface, StacksParams } from "../types/Stack";
 import useStackContext from "./useStackContext";
 
 /**

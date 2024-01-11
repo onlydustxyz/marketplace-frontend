@@ -1,5 +1,5 @@
-import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import { IMAGES } from "src/assets/img";
+import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 

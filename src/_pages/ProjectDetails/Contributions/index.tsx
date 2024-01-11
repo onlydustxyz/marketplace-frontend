@@ -1,5 +1,8 @@
 import { ComponentProps, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useLocalStorage } from "usehooks-ts";
+
+import Title from "src/_pages/ProjectDetails/Title";
 import ProjectApi from "src/api/Project";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -11,16 +14,15 @@ import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
-import Title from "src/_pages/ProjectDetails/Title";
 import { ContributionStatus, OrderBy } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
-import { useLocalStorage } from "usehooks-ts";
+
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
+import { RewardProjectButton } from "../components/RewardProjectButton";
 import { FilterQueryParams, ProjectContributionsFilter } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
-import StillFetchingBanner from "../Banners/StillFetchingBanner";
-import { RewardProjectButton } from "../components/RewardProjectButton";
 
 const initialSort: Record<ContributionStatus, TableSort> = {
   [ContributionStatus.InProgress]: {

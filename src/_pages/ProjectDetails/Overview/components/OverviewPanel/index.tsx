@@ -1,9 +1,9 @@
-import Card from "src/components/Card";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
+import Card from "src/components/Card";
 import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
-import { ProjectOverviewSponsors } from "src/components/Project/Overview/OverviewSponsors";
+import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
 import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
+import { ProjectOverviewSponsors } from "src/components/Project/Overview/OverviewSponsors";
 
 interface Props {
   project: UseGetProjectBySlugResponse;

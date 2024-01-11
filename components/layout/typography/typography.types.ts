@@ -1,5 +1,6 @@
 import { ElementType, PropsWithChildren } from "react";
 import { VariantProps } from "tailwind-variants";
+
 import { TTranslate } from "../translate/translate.types";
 import { typographyVariants } from "./typography.variants";
 

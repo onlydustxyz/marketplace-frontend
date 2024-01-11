@@ -1,13 +1,16 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { useLocation } from "react-router-dom";
+
 import { RoutePaths } from "src/App";
-import { useIntl } from "src/hooks/useIntl";
-import View from "./View";
 import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
+import { useIntl } from "src/hooks/useIntl";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
+
+import View from "./View";
 
 export default function Header() {
   const location = useLocation();

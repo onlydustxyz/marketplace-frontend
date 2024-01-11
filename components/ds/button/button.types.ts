@@ -1,9 +1,10 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import { VariantProps } from "tailwind-variants";
-import { buttonVariants } from "./variants/button.variants";
+
 import { buttonPrimaryVariants } from "./variants/button-primary.variants";
 import { buttonSecondaryVariants } from "./variants/button-secondary.variants";
 import { buttonTertiaryVariants } from "./variants/button-tertiary.variants";
+import { buttonVariants } from "./variants/button.variants";
 
 export namespace TButton {
   type HtmlButton = ButtonHTMLAttributes<HTMLButtonElement>;

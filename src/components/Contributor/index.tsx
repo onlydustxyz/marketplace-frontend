@@ -4,6 +4,7 @@ import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { ContributorT } from "src/types";
 import { cn } from "src/utils/cn";
+
 import { Avatar } from "../New/Avatar";
 
 type Props = {

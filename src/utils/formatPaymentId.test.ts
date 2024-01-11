@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { formatPaymentId } from "./formatPaymentId";
 
 const paymentId = "93cd4cee-482b-4a10-9a65-341b6f3b3670";

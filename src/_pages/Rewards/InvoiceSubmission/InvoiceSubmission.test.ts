@@ -1,7 +1,9 @@
-import { describe, expect, it } from "vitest";
 import { range } from "lodash";
+import { describe, expect, it } from "vitest";
+
 import { MyRewardType as Reward } from "src/_pages/Rewards/UserRewardTable/Line";
 import { Currency, PaymentStatus } from "src/types";
+
 import { MyPayoutInfoType } from ".";
 import { buildHiddenFields } from "./View";
 

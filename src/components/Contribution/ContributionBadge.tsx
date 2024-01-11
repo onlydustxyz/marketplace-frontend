@@ -1,14 +1,16 @@
+import { useAuth0 } from "@auth0/auth0-react";
+
+import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import ExternalLink from "src/components/ExternalLink";
 import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-
 import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
-import Contributor from "../Contributor";
 import { cn } from "src/utils/cn";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+
+import Contributor from "../Contributor";
 
 interface ContributionBadgeProps {
   contribution: Pick<

@@ -1,3 +1,4 @@
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
@@ -6,9 +7,9 @@ import { ContributionDetail } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
-import PayoutStatus from "../../../components/PayoutStatus/PayoutStatus";
+
 import { AvailableConversion } from "../../../components/Currency/AvailableConversion";
-import { useStackContributorProfile } from "src/App/Stacks/Stacks";
+import PayoutStatus from "../../../components/PayoutStatus/PayoutStatus";
 
 export function RewardCard({
   reward,

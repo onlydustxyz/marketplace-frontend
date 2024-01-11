@@ -1,14 +1,16 @@
-import { FC, useContext, useMemo, useState } from "react";
-import { FieldLabel } from "src/components/New/Field/Label";
+import { useAuth0 } from "@auth0/auth0-react";
 import { debounce, uniqWith } from "lodash";
-import { FieldProjectLeadItem } from "./ProjectLeadItem";
-import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
+import { FC, useContext, useMemo, useState } from "react";
+
+import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
 import UsersApi from "src/api/Users";
-import { useIntl } from "src/hooks/useIntl";
 import { Combobox, Variant } from "src/components/New/Field/Combobox/Combobox";
 import { ItemType } from "src/components/New/Field/Combobox/MultiList";
-import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
-import { useAuth0 } from "@auth0/auth0-react";
+import { FieldLabel } from "src/components/New/Field/Label";
+import { useIntl } from "src/hooks/useIntl";
+
+import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
+import { FieldProjectLeadItem } from "./ProjectLeadItem";
 
 // TODO : Doc
 /**

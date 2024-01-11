@@ -2,6 +2,8 @@ import { sortBy } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
+import { useLocalStorage } from "usehooks-ts";
+
 import ProjectApi from "src/api/Project";
 import { Period } from "src/components/New/Field/Datepicker";
 import { Filter } from "src/components/New/Filter/Filter";
@@ -13,7 +15,6 @@ import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { ContributorResponse, GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam } from "src/utils/date";
-import { useLocalStorage } from "usehooks-ts";
 
 type Filters = {
   dateRange: DateRange;

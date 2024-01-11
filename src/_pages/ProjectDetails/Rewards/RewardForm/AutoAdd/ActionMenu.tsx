@@ -1,5 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
-import { ReactNode, PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 
 type ActionItem = {
   label: string;

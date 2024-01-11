@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Tag } from "./tag";
-
-import { TTag } from "./tag.types";
-import { TagLoading } from "./tag.loading";
 import { Icon } from "components/layout/icon/icon";
+
+import { Tag } from "./tag";
+import { TagLoading } from "./tag.loading";
+import { TTag } from "./tag.types";
 
 const defaultProps: TTag.Props = {
   children: <span>Tag</span>,

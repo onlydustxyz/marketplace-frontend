@@ -1,5 +1,5 @@
-import { datadogRum } from "@datadog/browser-rum";
 import { datadogLogs } from "@datadog/browser-logs";
+import { datadogRum } from "@datadog/browser-rum";
 
 if (process.env.NEXT_PUBLIC_ENV) {
   if (process.env.NEXT_PUBLIC_ENABLE_DATADOG_RUM === "true") {

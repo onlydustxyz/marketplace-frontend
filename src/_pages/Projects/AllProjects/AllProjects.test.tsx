@@ -1,12 +1,15 @@
-import { describe, expect, it } from "vitest";
-import React from "react";
-import { render } from "@testing-library/react";
-import AllProjects from ".";
-import { BrowserRouter as Router } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render } from "@testing-library/react";
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { describe, expect, it } from "vitest";
+
 import { ProjectFilterProvider } from "src/_pages/Projects/useProjectFilter";
 import { ToasterProvider } from "src/hooks/useToaster";
+
 import ImpersonationProvider from "components/features/impersonation/impersonation.provider";
+
+import AllProjects from ".";
 
 // Create a client
 const queryClient = new QueryClient();

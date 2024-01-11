@@ -1,7 +1,7 @@
-import { useIntl } from "src/hooks/useIntl";
 import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
-import Contributor from "src/components/Contributor";
 import { RewardableItem } from "src/api/Project/queries";
+import Contributor from "src/components/Contributor";
+import { useIntl } from "src/hooks/useIntl";
 
 type CommitsTooltipProps = {
   pullRequest: Partial<GithubPullRequestWithCommitsFragment & RewardableItem>;

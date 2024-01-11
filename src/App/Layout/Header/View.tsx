@@ -1,19 +1,22 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
+import { useMediaQuery } from "usehooks-ts";
+
 import { RoutePaths } from "src/App";
+import MenuItem from "src/App/Layout/Header/MenuItem";
+import { useOnboarding } from "src/App/OnboardingProvider";
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
+import { IMAGES } from "src/assets/img";
+import CompletionBar from "src/components/CompletionBar";
+import { viewportConfig } from "src/config";
+import { useIntl } from "src/hooks/useIntl";
+
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils.ts";
+
+import FeedbackButton from "./FeedbackButton";
+import { GithubStatusBanner } from "./GithubStatusBanner";
 import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
-import MenuItem from "src/App/Layout/Header/MenuItem";
-import { Link } from "react-router-dom";
-import FeedbackButton from "./FeedbackButton";
-import { useIntl } from "src/hooks/useIntl";
-import CompletionBar from "src/components/CompletionBar";
-import { useOnboarding } from "src/App/OnboardingProvider";
-import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
-import { useStackContributorProfile } from "src/App/Stacks/Stacks";
-import { GithubStatusBanner } from "./GithubStatusBanner";
-import { IMAGES } from "src/assets/img";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils.ts";
 import { ProfileButtonDisplay } from "./ProfileButton/ProfileButtonDisplay";
 
 interface HeaderViewProps {
