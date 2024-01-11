@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useImpersonation } from "../../../components/features/impersonation/use-impersonation.tsx";
-import { Link } from "react-router-dom";
-import Button, { ButtonSize } from "src/components/Button/index.tsx";
-import ArrowLeftSLine from "src/icons/ArrowLeftSLine.tsx";
 import { useIntl } from "src/hooks/useIntl.tsx";
 import MeApi from "src/api/me/index.ts";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
@@ -33,11 +30,11 @@ const ImpersonationPage = () => {
       }
 
       if (userInfo && !isLoading) {
-        if (isImpersonating && userInfo?.githubUserId === claimedGithubUserId) {
-          setIsValidImpersonation(true);
+        const isValidImpersonation = isImpersonating && userInfo?.githubUserId === claimedGithubUserId;
+        setIsValidImpersonation(isValidImpersonation);
+        if (isValidImpersonation) {
           navigate(RoutePaths.Projects);
         } else {
-          setIsValidImpersonation(false);
           clearImpersonateClaim();
           navigate(RoutePaths.NotFound);
         }
@@ -49,20 +46,7 @@ const ImpersonationPage = () => {
     return <Loader />;
   }
 
-  return !isValidImpersonation && !isLoading && isError ? (
-    <>
-      <div className="flex h-[calc(100dvh)] flex-col items-center justify-center gap-8 bg-space">
-        <div className="flex max-w-md flex-col items-center gap-6 text-center">
-          <div className="font-walsheim text-base text-spaceBlue-200 sm:text-lg">{T("impersonation.invalid")}</div>
-        </div>
-        <Link to={RoutePaths.Projects}>
-          <Button size={ButtonSize.Lg}>
-            <ArrowLeftSLine className="text-xl" /> {T("notFound.button")}
-          </Button>
-        </Link>
-      </div>
-    </>
-  ) : null;
+  return <Link to={RoutePaths.Projects}>{T("impersonation.backToProjects")}</Link>;
 };
 
 export default ImpersonationPage;
