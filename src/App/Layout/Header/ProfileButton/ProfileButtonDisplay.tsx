@@ -7,18 +7,16 @@ type ProfileButtonDisplayProps = {
   isAuthenticated: boolean;
 };
 
-function ProfileButtonDisplay({ isLoading, isAuthenticated }: ProfileButtonDisplayProps) {
-  return (
-    <div className="flex text-base text-white">
-      {isLoading ? (
-        <SkeletonEl variant="circular" color="grey" width={78} height={44} />
-      ) : !isAuthenticated ? (
-        <GithubLink />
-      ) : (
-        <ProfileButton />
-      )}
-    </div>
-  );
-}
+export function ProfileButtonDisplay({ isLoading, isAuthenticated }: ProfileButtonDisplayProps) {
+  function render() {
+    if (isLoading) {
+      return <SkeletonEl variant="circular" color="grey" width={78} height={44} />;
+    }
+    if (isAuthenticated) {
+      return <ProfileButton />;
+    }
+    return <GithubLink />;
+  }
 
-export { ProfileButtonDisplay };
+  return <div className="flex text-base text-white">{render()}</div>;
+}
