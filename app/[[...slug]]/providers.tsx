@@ -15,7 +15,6 @@ import { SidePanelStackProvider } from "src/hooks/useSidePanelStack.tsx";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { TokenSetProvider } from "src/hooks/useTokenSet.tsx";
 import { StackProvider } from "src/libs/react-stack";
-import ApolloWrapper from "src/providers/ApolloWrapper";
 import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/auth0-provider-with-navigate.tsx";
 import ImpersonationProvider from "components/features/impersonation/impersonation.provider.tsx";
 
@@ -34,24 +33,22 @@ export default function Providers() {
               <ImpersonationProvider>
                 <TokenSetProvider>
                   <ToasterProvider>
-                    <ApolloWrapper>
-                      <QueryClientProvider client={queryClient}>
-                        <StackProvider>
-                          <SidePanelStackProvider>
-                            <SidePanelProvider>
-                              {config.MAINTENANCE ? (
-                                <Maintenance />
-                              ) : (
-                                <OnboardingProvider>
-                                  <App />
-                                  <Stacks />
-                                </OnboardingProvider>
-                              )}
-                            </SidePanelProvider>
-                          </SidePanelStackProvider>
-                        </StackProvider>
-                      </QueryClientProvider>
-                    </ApolloWrapper>
+                    <QueryClientProvider client={queryClient}>
+                      <StackProvider>
+                        <SidePanelStackProvider>
+                          <SidePanelProvider>
+                            {config.MAINTENANCE ? (
+                              <Maintenance />
+                            ) : (
+                              <OnboardingProvider>
+                                <App />
+                                <Stacks />
+                              </OnboardingProvider>
+                            )}
+                          </SidePanelProvider>
+                        </SidePanelStackProvider>
+                      </StackProvider>
+                    </QueryClientProvider>
                   </ToasterProvider>
                 </TokenSetProvider>
               </ImpersonationProvider>
