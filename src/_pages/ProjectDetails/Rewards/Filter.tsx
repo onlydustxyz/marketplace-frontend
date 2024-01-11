@@ -8,7 +8,7 @@ import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySe
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ContributorResponse } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
-import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
+import { allTime, formatDateQueryParam } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
@@ -119,9 +119,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    (filters?.dateRange?.from && filters?.dateRange?.to && !isAllTime(filters?.dateRange)) ||
-      filters.contributors?.length ||
-      filters.currency?.value !== ""
+    filters.period !== initialFilters.period || filters.contributors?.length || filters.currency?.value !== ""
   );
 
   const { data: contributorsData, isLoading: contributorsLoading } =
