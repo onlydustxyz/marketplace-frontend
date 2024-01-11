@@ -3,7 +3,6 @@ import { PropsWithChildren, Suspense } from "react";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import { render, RenderOptions } from "@testing-library/react";
 import { IntlProvider } from "src/hooks/useIntl";
-import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { Toaster } from "src/components/Toaster";
 import { viewportConfig } from "src/config";
@@ -27,33 +26,31 @@ export const MemoryRouterProviderFactory =
     (
       <Suspense>
         <ToasterProvider>
-          <TokenSetProvider>
-            <MockedProvider
-              mocks={mocks}
-              addTypename={false}
-              suspenseCache={suspenseCache}
-              defaultOptions={{
-                query: { fetchPolicy: "no-cache" },
-                watchQuery: { fetchPolicy: "no-cache" },
-              }}
-            >
-              <MemoryRouter initialEntries={[route]}>
-                <SidePanelStackProvider>
-                  <SidePanelProvider>
-                    {context ? (
-                      <Routes>
-                        <Route path="/" element={<Outlet context={context} />}>
-                          <Route index element={<StackProvider>{children}</StackProvider>} />
-                        </Route>
-                      </Routes>
-                    ) : (
-                      <StackProvider>{children}</StackProvider>
-                    )}
-                  </SidePanelProvider>
-                </SidePanelStackProvider>
-              </MemoryRouter>
-            </MockedProvider>
-          </TokenSetProvider>
+          <MockedProvider
+            mocks={mocks}
+            addTypename={false}
+            suspenseCache={suspenseCache}
+            defaultOptions={{
+              query: { fetchPolicy: "no-cache" },
+              watchQuery: { fetchPolicy: "no-cache" },
+            }}
+          >
+            <MemoryRouter initialEntries={[route]}>
+              <SidePanelStackProvider>
+                <SidePanelProvider>
+                  {context ? (
+                    <Routes>
+                      <Route path="/" element={<Outlet context={context} />}>
+                        <Route index element={<StackProvider>{children}</StackProvider>} />
+                      </Route>
+                    </Routes>
+                  ) : (
+                    <StackProvider>{children}</StackProvider>
+                  )}
+                </SidePanelProvider>
+              </SidePanelStackProvider>
+            </MemoryRouter>
+          </MockedProvider>
           <Toaster />
         </ToasterProvider>
       </Suspense>
