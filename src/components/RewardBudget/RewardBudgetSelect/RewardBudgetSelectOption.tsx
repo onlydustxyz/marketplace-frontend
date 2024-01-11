@@ -46,22 +46,14 @@ export const RewardBudgetSelectOption = ({ budget, last, active }: RewardBudgetS
             </span>
             &nbsp;
             <span
-              className={cn(
-                "font-walsheim text-[10px] font-normal text-spaceBlue-200",
-                isDisabled && "text-greyscale-500"
-              )}
+              className={cn("font-walsheim text-xs font-normal text-spaceBlue-200", isDisabled && "text-greyscale-500")}
             >
               {`(${formatMoneyAmount({ amount: budget.remaining, currency: budget.currency })})`}
             </span>
           </p>
         </div>
         {budget.currency !== Currency.USD && (
-          <p
-            className={cn(
-              "font-walsheim text-[10px] font-normal text-spaceBlue-200",
-              isDisabled && "text-greyscale-500"
-            )}
-          >
+          <p className={cn("font-walsheim text-xs font-normal text-spaceBlue-200", isDisabled && "text-greyscale-500")}>
             {budget.remainingDollarsEquivalent
               ? `~${formatMoneyAmount({
                   amount: budget.remainingDollarsEquivalent,
