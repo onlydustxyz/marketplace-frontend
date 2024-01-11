@@ -1,14 +1,8 @@
-import { debounce } from "lodash";
 import { useCallback, useEffect } from "react";
-import { createPortal } from "react-dom";
-import { v4 as uuidv4 } from "uuid";
-
-import { RefSubscriptionInterface, useRefSubscription } from "src/libs/react-subscriber";
-import { unsafeCreateRefSubscription } from "src/libs/react-subscriber/createRefSubscription";
-
-import { History as HistoryComponent } from "../components/History";
 import { StackInterface, StackPanelInterface, StackPosition, StacksInterface, StacksParams } from "../types/Stack";
-import { ReactStackContext } from "./stack.context";
+import { v4 as uuidv4 } from "uuid";
+import { createPortal } from "react-dom";
+import { debounce } from "lodash";
 import {
   HistoryStore,
   RegisterPanel,
@@ -17,6 +11,10 @@ import {
   UpdatePanelOrder,
   reactStackContextProps,
 } from "./stack.context.type";
+import { RefSubscriptionInterface, useRefSubscription } from "src/libs/react-subscriber";
+import { unsafeCreateRefSubscription } from "src/libs/react-subscriber/createRefSubscription";
+import { ReactStackContext } from "./stack.context";
+import { History as HistoryComponent } from "../components/History";
 
 export default function ReactStackprovider({ children }: reactStackContextProps) {
   /* -------------------------------------------------------------------------- */

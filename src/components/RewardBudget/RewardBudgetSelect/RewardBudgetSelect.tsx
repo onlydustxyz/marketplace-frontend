@@ -1,10 +1,8 @@
-import { Listbox } from "@headlessui/react";
 import { FC, useMemo } from "react";
-
-import { WorkEstimationBudgetDetails } from "src/components/RewardBudget/RewardBudget.type";
-
+import { Listbox } from "@headlessui/react";
 import { RewardBudgetSelectOption } from "./RewardBudgetSelectOption";
 import { RewardBudgetSelectValue } from "./RewardBudgetSelectValue";
+import { WorkEstimationBudgetDetails } from "src/components/RewardBudget/RewardBudget.type";
 
 export interface RewardBudgetSelectProps {
   budgets: WorkEstimationBudgetDetails[];

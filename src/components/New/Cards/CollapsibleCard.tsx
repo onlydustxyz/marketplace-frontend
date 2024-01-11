@@ -1,9 +1,8 @@
 import { ReactNode, useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
-
 import { viewportConfig } from "src/config";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
+import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   title: string;

@@ -1,5 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-
+import { useForm, SubmitHandler } from "react-hook-form";
 import Card from "src/components/Card";
 import { useIntl } from "src/hooks/useIntl";
 

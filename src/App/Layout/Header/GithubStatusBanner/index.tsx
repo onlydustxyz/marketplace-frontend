@@ -1,5 +1,4 @@
 import { useLocation } from "react-router";
-
 import { RoutePaths } from "src/App";
 import ExternalApi from "src/api/External";
 import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/components/Button";

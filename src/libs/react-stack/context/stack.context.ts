@@ -1,9 +1,7 @@
 import { createContext } from "react";
-
-import { RefSubscriptionInterface } from "src/libs/react-subscriber";
-
-import { StacksInterface } from "../types/Stack";
 import { HistoryStore, IReactStackContext } from "./stack.context.type";
+import { RefSubscriptionInterface } from "src/libs/react-subscriber";
+import { StacksInterface } from "../types/Stack";
 
 export const ReactStackContext = createContext<IReactStackContext>({
   stacks: [],

@@ -1,6 +1,5 @@
-import { act, renderHook } from "@testing-library/react-hooks";
-import { afterEach, describe, expect, it } from "vitest";
-
+import { describe, expect, it, afterEach } from "vitest";
+import { renderHook, act } from "@testing-library/react-hooks";
 import { useStorage, useStorageSubscription } from "./useStorage";
 
 describe("useStorage", () => {

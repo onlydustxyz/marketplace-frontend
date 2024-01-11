@@ -1,7 +1,5 @@
 import { describe, expect, it } from "vitest";
-
 import { GithubCodeReviewStatus, GithubContributionType, GithubIssueStatus, GithubPullRequestStatus } from "src/types";
-
 import { getGithubStatusToken } from "./getGithubStatusToken";
 
 describe("getGithubStatusToken", () => {

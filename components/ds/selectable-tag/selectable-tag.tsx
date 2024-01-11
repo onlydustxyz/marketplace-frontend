@@ -1,5 +1,4 @@
 import { cn } from "src/utils/cn";
-
 import { TSelectableTag } from "./selectable-tag.types";
 import { selectableTagVariants } from "./selectable-tag.variants";
 

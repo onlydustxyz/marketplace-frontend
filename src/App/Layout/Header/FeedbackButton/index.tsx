@@ -1,10 +1,9 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { SliderButton } from "@typeform/embed-react";
-import { useMemo } from "react";
-
-import MeApi from "src/api/me";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
+import MeApi from "src/api/me";
+import { useMemo } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function FeedbackButton({ customButton }: { customButton?: React.ReactNode }) {
   const { user } = useAuth0();

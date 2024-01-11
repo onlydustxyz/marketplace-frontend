@@ -1,5 +1,4 @@
 import { FC, PropsWithChildren } from "react";
-
 import { cn } from "src/utils/cn";
 
 export type justify = "normal" | "start" | "end" | "center" | "between" | "around";

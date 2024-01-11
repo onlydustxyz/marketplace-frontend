@@ -1,8 +1,7 @@
-import { EventEmitter } from "events";
 import { useEffect, useRef } from "react";
-
-import { Events } from "./types/Event";
 import { RefSubscriptionInterface, RefSubscriptionSubscriberInterface } from "./types/RefSubscription";
+import { EventEmitter } from "events";
+import { Events } from "./types/Event";
 
 /**
  * Custom hook that creates a subscription to a value using useRef.

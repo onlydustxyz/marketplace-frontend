@@ -1,21 +1,39 @@
 type Mutation {
-  cancelPaymentRequest(paymentId: Uuid!): Command!
+  cancelPaymentRequest(
+    paymentId: Uuid!
+  ): Command!
 }
 
 type Mutation {
-  createAndCloseIssue(description: String!, githubRepoId: Int!, projectId: Uuid!, title: String!): GithubIssue!
+  createAndCloseIssue(
+    description: String!
+    githubRepoId: Int!
+    projectId: Uuid!
+    title: String!
+  ): GithubIssue!
 }
 
 type Query {
-  fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): GithubIssue
+  fetchIssue(
+    repoOwner: String!
+    repoName: String!
+    issueNumber: Int!
+  ): GithubIssue
 }
 
 type Query {
-  fetchPullRequest(repoOwner: String!, repoName: String!, prNumber: Int!): GithubPullRequest
+  fetchPullRequest(
+    repoOwner: String!
+    repoName: String!
+    prNumber: Int!
+  ): GithubPullRequest
 }
 
 type Mutation {
-  ignoreContribution(projectId: Uuid!, contributionId: String!): Boolean!
+  ignoreContribution(
+    projectId: Uuid!
+    contributionId: String!
+  ): Boolean!
 }
 
 type Mutation {
@@ -30,19 +48,34 @@ type Mutation {
 }
 
 type Query {
-  searchUsers(query: String!, sort: String!, order: String!, perPage: Int!, page: Int!): [GithubUser!]
+  searchUsers(
+    query: String!
+    sort: String!
+    order: String!
+    perPage: Int!
+    page: Int!
+  ): [GithubUser!]
 }
 
 type Mutation {
-  suggestTechnology(suggestion: String!): Boolean
+  suggestTechnology(
+    suggestion: String!
+  ): Boolean
 }
 
 type Mutation {
-  unignoreContribution(projectId: Uuid!, contributionId: String!): Boolean!
+  unignoreContribution(
+    projectId: Uuid!
+    contributionId: String!
+  ): Boolean!
 }
 
 type Mutation {
-  updatePayoutInfo(location: Location, identity: Identity, payoutSettings: PayoutSettings): Uuid!
+  updatePayoutInfo(
+    location: Location
+    identity: Identity
+    payoutSettings: PayoutSettings
+  ): Uuid!
 }
 
 type Mutation {
@@ -279,3 +312,4 @@ scalar EthereumAddress
 scalar EthereumName
 
 scalar Iban
+

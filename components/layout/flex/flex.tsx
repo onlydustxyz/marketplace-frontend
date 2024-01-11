@@ -1,5 +1,4 @@
 import { cn } from "src/utils/cn";
-
 import { TFlex } from "./flex.types";
 import { flexVariants } from "./flex.variants";
 

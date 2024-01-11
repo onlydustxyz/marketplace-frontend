@@ -1,11 +1,6 @@
 "use client";
-
 import { createContext, useEffect, useMemo, useState } from "react";
-import { useLocalStorage } from "react-use";
-
 import ProjectApi from "src/api/Project";
-import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
-
 import {
   DEFAULT_PROJECTS_FILTER,
   PROJECT_FILTER_KEY,
@@ -13,6 +8,8 @@ import {
   ProjectFilter,
   ProjectsContextProps,
 } from "./project.context.types";
+import { useLocalStorage } from "react-use";
+import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 
 export const ProjectsContext = createContext<ProjectContextReturn>({
   projects: [],

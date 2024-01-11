@@ -1,6 +1,4 @@
 import React, { ChangeEventHandler, useEffect, useRef, useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
-
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import Loader from "src/assets/icons/Loader";
@@ -8,6 +6,7 @@ import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import PencilLine from "src/icons/PencilLine";
 import { cn } from "src/utils/cn";
+import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   editable?: boolean;

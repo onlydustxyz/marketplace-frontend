@@ -1,6 +1,6 @@
+import Card from "src/components/Card";
 import ContributionGraph from "src/App/Stacks/ContributorProfileSidePanel/ReadOnlyView/ContributionGraph";
 import { components } from "src/__generated/api";
-import Card from "src/components/Card";
 
 export default {
   title: "ContributionGraph",

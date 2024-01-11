@@ -1,6 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
 import { PropsWithChildren } from "react";
-
 import FilterIcon from "src/assets/icons/FilterIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";

@@ -1,6 +1,5 @@
 import { LegendProps } from "recharts";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
-
 import CodeReviewIcon from "src/assets/icons/CodeReviewCheckIcon";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import GitMergeLine from "src/icons/GitMergeLine";

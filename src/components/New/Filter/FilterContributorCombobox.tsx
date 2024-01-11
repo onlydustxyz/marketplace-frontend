@@ -1,12 +1,10 @@
 import { ComponentProps } from "react";
-
 import Contributor from "src/components/Contributor";
 import { FilterField } from "src/components/New/Filter/FilterField";
 import { useIntl } from "src/hooks/useIntl";
-import User3Line from "src/icons/User3Line";
 import { ContributorResponse } from "src/types";
-
 import { FilterCombobox } from "./FilterCombobox";
+import User3Line from "src/icons/User3Line";
 
 export function FilterContributorCombobox<T extends ContributorResponse>({
   contributors,

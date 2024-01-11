@@ -1,16 +1,14 @@
-import { PropsWithChildren, useContext, useMemo } from "react";
-
-import { Flex } from "src/components/New/Layout/Flex";
-import { Tabs } from "src/components/Tabs/Tabs";
-import { useIntl } from "src/hooks/useIntl";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import GlobalLine from "src/icons/GlobalLine";
-import { RegisterStack } from "src/libs/react-stack";
-
-import { EditContext } from "../../EditContext";
 import { EditPanelOrganization } from "./OrganizationTab/EditPanelOrganization";
 import { EditPanelRepositories } from "./RepositoriesTabs/EditPanelRepositories";
+import { PropsWithChildren, useContext, useMemo } from "react";
 import { EditPanelContext, TabsType } from "./context";
+import { Flex } from "src/components/New/Layout/Flex";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import { useIntl } from "src/hooks/useIntl";
+import GlobalLine from "src/icons/GlobalLine";
+import { Tabs } from "src/components/Tabs/Tabs";
+import { RegisterStack } from "src/libs/react-stack";
+import { EditContext } from "../../EditContext";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;

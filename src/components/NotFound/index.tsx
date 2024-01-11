@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
-import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
+import { IMAGES } from "src/assets/img";
 
 export function NotFound() {
   const { T } = useIntl();

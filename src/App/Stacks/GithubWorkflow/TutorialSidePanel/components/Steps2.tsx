@@ -1,5 +1,5 @@
-import { IMAGES } from "src/assets/img";
 import { useIntl } from "src/hooks/useIntl";
+import { IMAGES } from "src/assets/img";
 
 export default function TutorialSidePanelSteps2() {
   const { T } = useIntl();

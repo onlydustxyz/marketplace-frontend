@@ -1,5 +1,4 @@
 import { ImageResponse } from "next/og";
-
 import { TGenerator } from "./generator.types";
 
 export async function Generator({ children }: TGenerator.Props) {

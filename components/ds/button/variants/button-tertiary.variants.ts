@@ -1,5 +1,4 @@
 import { tv } from "tailwind-variants";
-
 import { buttonVariants } from "./button.variants";
 
 export const buttonTertiaryVariants = tv({

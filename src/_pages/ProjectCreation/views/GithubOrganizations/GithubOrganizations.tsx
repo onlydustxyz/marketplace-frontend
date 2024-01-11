@@ -1,12 +1,10 @@
-import { useContext } from "react";
-
-import { MultiStepsForm } from "src/_pages/ProjectCreation/components/MultiStepsForm";
 import Card from "src/components/Card";
-import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
+import { MultiStepsForm } from "src/_pages/ProjectCreation/components/MultiStepsForm";
 import { useIntl } from "src/hooks/useIntl";
-
+import { useContext } from "react";
 import { CreateProjectContext } from "../../ProjectCreation.context";
 import OrganizationList from "./components/OrganizationList";
+import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
 
 export const GithubOrganizationPage = () => {
   const { T } = useIntl();

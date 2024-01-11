@@ -1,16 +1,14 @@
 import IBANParser from "iban";
 import { useEffect } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-
-import { useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import { components } from "src/__generated/api";
-import MeApi from "src/api/me";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-
 import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import { ProfileType } from "./types";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
+import MeApi from "src/api/me";
+import { useStackPayoutInfo } from "src/App/Stacks/Stacks";
 
 export default function PayoutInfoSidePanel() {
   const { T } = useIntl();

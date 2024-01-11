@@ -1,6 +1,5 @@
-import { Money } from "src/types";
-
 import { BudgetCard, CardTypes } from "./BudgetCard";
+import { Money } from "src/types";
 
 export type BudgetProps = {
   remainingBudget?: Money;

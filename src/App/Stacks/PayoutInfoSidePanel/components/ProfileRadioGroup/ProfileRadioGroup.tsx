@@ -1,6 +1,5 @@
 import { ReactElement } from "react";
 import { useFormContext } from "react-hook-form";
-
 import View from "./ProfileRadioGroupView";
 
 type Option = {

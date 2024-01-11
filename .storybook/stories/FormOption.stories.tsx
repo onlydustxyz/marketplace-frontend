@@ -1,5 +1,4 @@
 import { ComponentProps } from "react";
-
 import { FormOption, Size, Variant } from "src/components/FormOption/FormOption";
 
 export default {

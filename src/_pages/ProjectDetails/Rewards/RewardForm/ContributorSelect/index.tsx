@@ -1,13 +1,11 @@
-import { debounce } from "lodash";
 import { useCallback, useEffect, useState } from "react";
+import View from "./View";
 import { useLocation } from "react-router-dom";
-
 import { Contributor } from "src/_pages/ProjectDetails/Rewards/RewardForm/types";
 import ProjectApi from "src/api/Project";
-import UsersApi from "src/api/Users";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-
-import View from "./View";
+import { debounce } from "lodash";
+import UsersApi from "src/api/Users";
 
 enum ContributorsSortFields {
   ContributionCount = "CONTRIBUTION_COUNT",

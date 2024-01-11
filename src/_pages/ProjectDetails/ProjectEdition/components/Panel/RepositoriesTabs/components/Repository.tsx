@@ -1,13 +1,12 @@
 import { FC, useContext } from "react";
-
+import { Flex } from "src/components/New/Layout/Flex";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import AddLine from "src/icons/AddLine";
+import { useIntl } from "src/hooks/useIntl";
 import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
-import { Flex } from "src/components/New/Layout/Flex";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
-import AddLine from "src/icons/AddLine";
 
 export interface RepositoryProps {
   organization: UseGithubOrganizationsResponse;

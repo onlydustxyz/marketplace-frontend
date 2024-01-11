@@ -1,6 +1,5 @@
-import { components } from "src/__generated/api";
 import { API_PATH } from "src/api/ApiPath";
-
+import { components } from "src/__generated/api";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 
 export type UseAddTechnologyBody = components["schemas"]["SuggestTechnologyRequest"];

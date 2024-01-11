@@ -1,8 +1,8 @@
 import { cn } from "src/utils/cn.ts";
-
 import { TThumbnailGroup } from "components/ds/thumbnail-group/thumbnail-group.types";
-import { thumbnailGroupVariants } from "components/ds/thumbnail-group/thumbnail-group.variants";
+
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+import { thumbnailGroupVariants } from "components/ds/thumbnail-group/thumbnail-group.variants";
 
 export function ThumbnailGroup({ thumbnails, className, defaultSrc = true, ...props }: TThumbnailGroup.Props) {
   return (

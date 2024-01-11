@@ -1,10 +1,9 @@
-import { components } from "src/__generated/api";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
-
-import { Props } from "./ActivityGraph.type";
 import { calculateHeight, getFirstNonZeroBar } from "./ActivityGraph.utils";
+import { Props } from "./ActivityGraph.type";
+import { components } from "src/__generated/api";
 
 function ActivityGraphItem({
   weekData,

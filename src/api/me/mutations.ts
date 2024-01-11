@@ -1,9 +1,8 @@
-import { components } from "src/__generated/api";
 import { API_PATH } from "src/api/ApiPath";
-
-import MeApi from ".";
-import { PROJECT_TAGS } from "../Project/tags";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
+import { PROJECT_TAGS } from "../Project/tags";
+import MeApi from ".";
+import { components } from "src/__generated/api";
 import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
 
 export type UseUpdateMeMeBody = components["schemas"]["PatchMeContract"];

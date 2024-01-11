@@ -1,10 +1,8 @@
 import { FC, ReactNode } from "react";
-
-import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
-
-import { FieldInfoMessage, FieldInfoMessageProps, Variant } from "./InfoMessage";
 import { FieldLabel } from "./Label";
+import { FieldInfoMessage, FieldInfoMessageProps, Variant } from "./InfoMessage";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 export interface FieldProps {
   name: string;

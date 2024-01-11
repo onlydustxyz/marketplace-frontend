@@ -1,5 +1,4 @@
 import { useContext } from "react";
-
 import { ImpersonationContext } from "./impersonation.provider";
 
 export const useImpersonation = () => {

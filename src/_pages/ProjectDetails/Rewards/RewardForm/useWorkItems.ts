@@ -1,6 +1,5 @@
 import { sortBy, uniqBy } from "lodash";
 import { useCallback, useReducer } from "react";
-
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 
 type WorkItemAction =

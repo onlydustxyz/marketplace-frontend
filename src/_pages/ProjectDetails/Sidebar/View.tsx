@@ -1,21 +1,19 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { Listbox } from "@headlessui/react";
-import { NavLink, generatePath, useNavigate } from "react-router-dom";
-import { useMediaQuery } from "usehooks-ts";
-
-import { RoutePaths } from "src/App";
-import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
+import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+import { RoutePaths } from "src/App";
+import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import config, { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
-
+import { useMediaQuery } from "usehooks-ts";
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
 import ProjectOption from "./ProjectOption";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface Props {
   expandable: boolean;

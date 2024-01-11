@@ -1,5 +1,4 @@
 import { ComponentProps } from "react";
-
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import StackLine from "src/icons/StackLine";

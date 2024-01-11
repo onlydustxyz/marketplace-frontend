@@ -1,5 +1,4 @@
 import { cn } from "src/utils/cn";
-
 import { CustomIcon } from "./custom-icon";
 import { TIcon } from "./icon.types";
 

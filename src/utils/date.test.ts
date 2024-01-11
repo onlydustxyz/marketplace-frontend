@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-
-import { formatDate, formatDateQueryParam, parseDateRangeString, parseDateString } from "./date";
+import { formatDate, parseDateString, parseDateRangeString, formatDateQueryParam } from "./date";
 
 describe("formatDate", () => {
   it("should format the date", () => {

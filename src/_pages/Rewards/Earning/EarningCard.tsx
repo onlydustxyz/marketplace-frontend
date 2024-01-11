@@ -1,14 +1,13 @@
 import Card from "src/components/Card";
-import { useIntl } from "src/hooks/useIntl";
-import Folder from "src/icons/FolderLine";
-import HandCoinLine from "src/icons/HandCoinLine";
-import Loader3Line from "src/icons/Loader3Line";
-import StackLine from "src/icons/StackLine";
 import { Money } from "src/types";
 import { cn } from "src/utils/cn";
-
+import { useIntl } from "src/hooks/useIntl";
+import HandCoinLine from "src/icons/HandCoinLine";
 import { Amount } from "./Amount";
 import { Counter } from "./Counter";
+import Loader3Line from "src/icons/Loader3Line";
+import StackLine from "src/icons/StackLine";
+import Folder from "src/icons/FolderLine";
 
 export enum CardTypes {
   AmountRewarded,

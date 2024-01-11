@@ -1,15 +1,14 @@
-import { SuspenseCache } from "@apollo/client";
-import { MockedProvider, MockedResponse } from "@apollo/client/testing";
-import { RenderOptions, render } from "@testing-library/react";
-import { PropsWithChildren, Suspense } from "react";
 import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
-
+import { PropsWithChildren, Suspense } from "react";
+import { MockedProvider, MockedResponse } from "@apollo/client/testing";
+import { render, RenderOptions } from "@testing-library/react";
+import { IntlProvider } from "src/hooks/useIntl";
+import { ToasterProvider } from "src/hooks/useToaster";
 import { Toaster } from "src/components/Toaster";
 import { viewportConfig } from "src/config";
-import { IntlProvider } from "src/hooks/useIntl";
-import { SidePanelProvider } from "src/hooks/useSidePanel";
+import { SuspenseCache } from "@apollo/client";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
-import { ToasterProvider } from "src/hooks/useToaster";
+import { SidePanelProvider } from "src/hooks/useSidePanel";
 import { StackProvider } from "src/libs/react-stack";
 
 interface MemoryRouterProviderFactoryProps {

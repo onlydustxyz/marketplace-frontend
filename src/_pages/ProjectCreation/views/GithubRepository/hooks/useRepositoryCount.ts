@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 export const useRepositoryCount = (organizations: UseGithubOrganizationsResponse[], selectedRepos: unknown[]) => {

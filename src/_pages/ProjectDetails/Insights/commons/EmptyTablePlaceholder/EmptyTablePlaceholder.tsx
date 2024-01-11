@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-
 import MessagePlaceholder from "src/components/New/Placeholders/MessagePlaceholder";
 
 export default function EmptyTablePlaceholder({ children, colSpan }: PropsWithChildren<{ colSpan: number }>) {

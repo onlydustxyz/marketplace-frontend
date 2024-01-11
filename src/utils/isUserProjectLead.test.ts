@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
-
-import { components } from "src/__generated/api";
-
 import { isUserProjectLead } from "./isUserProjectLead";
+import { components } from "src/__generated/api";
 
 const project: components["schemas"]["ProjectPageItemResponse"] = {
   id: "b692a29f-4e4f-4607-aece-054f562b13cf",

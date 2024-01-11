@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 
 interface BackLinkProps extends React.PropsWithChildren {

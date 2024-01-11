@@ -1,16 +1,14 @@
 import { Outlet, useParams } from "react-router-dom";
-import { useMediaQuery } from "usehooks-ts";
-
 import { components } from "src/__generated/api";
-import ProjectApi from "src/api/Project";
-import { FetchError } from "src/api/query.type";
-import { useQueriesErrorBehavior } from "src/api/useQueriesError";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import SEO from "src/components/SEO";
 import { viewportConfig } from "src/config";
-import { cn } from "src/utils/cn";
-
+import { useMediaQuery } from "usehooks-ts";
 import ProjectsSidebar from "./Sidebar";
+import { cn } from "src/utils/cn";
+import ProjectApi from "src/api/Project";
+import { useQueriesErrorBehavior } from "src/api/useQueriesError";
+import SEO from "src/components/SEO";
+import { FetchError } from "src/api/query.type";
 
 export type OutletContext = {
   project: components["schemas"]["ProjectResponse"];

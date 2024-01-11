@@ -1,5 +1,4 @@
 import { escapeRegExp, filter } from "lodash";
-
 import { RewardableItem } from "src/api/Project/queries";
 import { WorkItemType } from "src/types";
 

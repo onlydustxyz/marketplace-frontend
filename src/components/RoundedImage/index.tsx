@@ -1,8 +1,6 @@
 import { useMemo } from "react";
-
-import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
-
+import { IMAGES } from "src/assets/img";
 export enum ImageSize {
   Xxs = "Xxs",
   Xs = "xs",

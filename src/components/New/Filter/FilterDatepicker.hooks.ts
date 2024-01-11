@@ -1,5 +1,4 @@
 import { startOfMonth, startOfWeek, startOfYear } from "date-fns";
-
 import { Period } from "src/components/New/Field/Datepicker";
 import { useIntl } from "src/hooks/useIntl";
 

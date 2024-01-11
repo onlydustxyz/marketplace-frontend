@@ -1,11 +1,9 @@
-import { useMemo } from "react";
-import { useMediaQuery } from "usehooks-ts";
-
 import { viewportConfig } from "src/config";
-
-import ProjectRewardsDesktopPlaceholder from "./Placeholders/ProjectRewardsDesktopPlaceholder";
+import { useMediaQuery } from "usehooks-ts";
 import ProjectRewardsMobilePlaceholder from "./Placeholders/ProjectRewardsMobilePlaceholder";
+import ProjectRewardsDesktopPlaceholder from "./Placeholders/ProjectRewardsDesktopPlaceholder";
 import ProjectRewardsTabletPlaceholder from "./Placeholders/ProjectRewardsTabletPlaceHolder";
+import { useMemo } from "react";
 
 export default function SkeletonSort() {
   const isDesktop = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);

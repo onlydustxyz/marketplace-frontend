@@ -8,10 +8,9 @@ import {
   ReactNode,
   forwardRef,
 } from "react";
-import { RegisterOptions, useFormContext, useFormState } from "react-hook-form";
-
-import View from "./View";
+import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import { InputErrorDisplay } from "./types";
+import View from "./View";
 
 export enum Size {
   Sm = "sm",

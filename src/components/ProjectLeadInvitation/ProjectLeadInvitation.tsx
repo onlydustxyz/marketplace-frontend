@@ -1,8 +1,7 @@
-import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
-
 import ProjectLeadInvitationView, { CalloutSizes } from "./ProjectLeadInvitationView";
+import MeApi from "src/api/me";
+import { useIntl } from "src/hooks/useIntl";
 
 interface ProjectLeadInvitationProps {
   projectId: string;

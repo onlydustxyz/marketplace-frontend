@@ -1,26 +1,24 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
-import { useLocalStorage } from "usehooks-ts";
-
-import { ProjectRoutePaths, RoutePaths } from "src/App";
-import ErrorFallback from "src/ErrorFallback";
-import ProjectApi from "src/api/Project";
-import { CompletedRewardableItem } from "src/api/Project/queries";
-import MeApi from "src/api/me";
-import Skeleton from "src/components/Skeleton";
-import { useIntl } from "src/hooks/useIntl";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { useShowToaster } from "src/hooks/useToaster";
-import { ProjectBudgetType } from "src/types";
-import { BudgetCurrencyType } from "src/utils/money";
-
-import View from "./View";
-import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
+import { useForm, FormProvider } from "react-hook-form";
 import { Contributor, Inputs } from "./types";
+import { useCallback, useState } from "react";
+import { useIntl } from "src/hooks/useIntl";
+import View from "./View";
+import { useShowToaster } from "src/hooks/useToaster";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
+import { ProjectRoutePaths, RoutePaths } from "src/App";
+import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useLocalStorage } from "usehooks-ts";
 import { reorderBudgets } from "./utils";
+import { BudgetCurrencyType } from "src/utils/money";
+import ErrorFallback from "src/ErrorFallback";
+import { useQueryClient } from "@tanstack/react-query";
+import MeApi from "src/api/me";
+import { CompletedRewardableItem } from "src/api/Project/queries";
+import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
+import ProjectApi from "src/api/Project";
+import Skeleton from "src/components/Skeleton";
+import { ProjectBudgetType } from "src/types";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();

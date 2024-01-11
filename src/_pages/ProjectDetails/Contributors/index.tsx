@@ -1,11 +1,5 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "react-router-dom";
-
 import ErrorFallback from "src/ErrorFallback";
-import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
-import { Fields } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/Headers";
-import Title from "src/_pages/ProjectDetails/Title";
-import ProjectApi from "src/api/Project";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
@@ -15,16 +9,19 @@ import Flex from "src/components/Utils/Flex";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
+import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
+import { Fields } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/Headers";
+import Title from "src/_pages/ProjectDetails/Title";
 import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
-
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-
-import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
+import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
+import ProjectApi from "src/api/Project";
 import { RewardProjectButton } from "../components/RewardProjectButton";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 export default function Contributors() {
   const { T } = useIntl();

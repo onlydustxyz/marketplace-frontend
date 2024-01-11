@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import Loader from "src/components/Loader";
 

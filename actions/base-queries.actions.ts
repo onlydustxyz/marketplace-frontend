@@ -1,6 +1,5 @@
-import { revalidateTag as NextRevalidateTag } from "next/cache";
-
 import { createFetchError, mapHttpStatusToString } from "../src/api/query.utils";
+import { revalidateTag as NextRevalidateTag } from "next/cache";
 import { BaseQueriesDefaultParams, BaseQueriesOptions } from "./type.actions.ts";
 
 const defaultRevalidateValue = 60;

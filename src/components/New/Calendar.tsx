@@ -1,7 +1,6 @@
 import { format } from "date-fns";
 import { useState } from "react";
 import { CaptionProps, DateRange, DayPicker, DayPickerBase, DayPickerProps, useNavigation } from "react-day-picker";
-
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";

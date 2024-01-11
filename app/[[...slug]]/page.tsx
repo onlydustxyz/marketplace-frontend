@@ -1,8 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
 import "src/datadog";
+import dynamic from "next/dynamic";
 
 const Providers = dynamic(() => import("./providers.tsx"), { ssr: false });
 

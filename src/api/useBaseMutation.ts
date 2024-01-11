@@ -1,12 +1,9 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { QueryClient, QueryObserverOptions, QueryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
-
-import { useImpersonation } from "components/features/impersonation/use-impersonation";
-
 import { QueryTags } from "./query.type";
 import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 interface UseBaseMutationOptions<R = unknown>
   extends Omit<QueryOptions<R>, "queryKey" | "queryFn" | "staleTime" | "gcTime">,

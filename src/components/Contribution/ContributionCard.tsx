@@ -1,5 +1,4 @@
 import { useMatch } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
@@ -10,7 +9,6 @@ import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, Contribution as ContributionT } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-
 import Contributor from "../Contributor";
 
 export function ContributionCard({ contribution, className }: { contribution: ContributionT; className?: string }) {

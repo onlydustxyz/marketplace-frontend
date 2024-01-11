@@ -1,6 +1,5 @@
-import { UseGithubOrganizationsResponse } from "src/api/me/queries";
-
 import { CreateFormDataRepos } from "../types/ProjectCreationType";
+import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 interface onSyncOrganizationsInterface {
   selectedRepos: CreateFormDataRepos[];

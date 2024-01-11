@@ -1,5 +1,4 @@
 import { generatePath, useNavigate } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
 import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";

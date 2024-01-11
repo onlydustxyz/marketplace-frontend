@@ -1,14 +1,13 @@
 import { FC } from "react";
-
-import Aptos from "src/assets/icons/Aptos";
-import { DollarCurrency } from "src/assets/icons/DollarCurrency";
+import { Currency } from "src/types";
 import Ethereum from "src/assets/icons/Ethereum";
-import Lords from "src/assets/icons/Lords";
 import Optimism from "src/assets/icons/Optimism";
 import Starknet from "src/assets/icons/Starknet";
-import Usdc from "src/assets/icons/Usdc";
-import { Currency } from "src/types";
+import Aptos from "src/assets/icons/Aptos";
+import { DollarCurrency } from "src/assets/icons/DollarCurrency";
 import { BudgetCurrencyType } from "src/utils/money";
+import Lords from "src/assets/icons/Lords";
+import Usdc from "src/assets/icons/Usdc";
 
 export interface CurrencyIconsProps {
   currency?: BudgetCurrencyType;

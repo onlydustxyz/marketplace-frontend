@@ -7,7 +7,7 @@ import { GithubActionButton } from "src/components/GithubCard/GithubActionButton
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { ContributionStatus, GithubCodeReviewStatus, GithubContributionType } from "src/types";
+import { GithubCodeReviewStatus, ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 

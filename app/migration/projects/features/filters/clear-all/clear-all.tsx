@@ -1,11 +1,9 @@
 "use client";
 
-import { useContext } from "react";
-
 import { Button } from "components/ds/button/button";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
-
+import { useContext } from "react";
 import { ProjectsContext } from "../../../context/project.context";
 
 export function FiltersClearAll() {

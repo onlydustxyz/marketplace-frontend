@@ -1,14 +1,12 @@
-import { useMemo } from "react";
-
 import Header from "src/App/Stacks/ContributorProfileSidePanel/Header";
-import { UserProfile } from "src/api/Users/queries";
-import { useCloseAllStack } from "src/libs/react-stack";
-
-import { useStackProjectOverview } from "../../Stacks";
 import IntroSection from "./IntroSection";
-import ProjectsSection from "./ProjectsSection";
-import StatsSection from "./StatsSection";
 import TechnologiesSection from "./TechnologiesSection";
+import StatsSection from "./StatsSection";
+import ProjectsSection from "./ProjectsSection";
+import { useMemo } from "react";
+import { useCloseAllStack } from "src/libs/react-stack";
+import { UserProfile } from "src/api/Users/queries";
+import { useStackProjectOverview } from "../../Stacks";
 
 type Props = {
   profile: UserProfile;

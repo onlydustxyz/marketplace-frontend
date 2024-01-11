@@ -1,20 +1,18 @@
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
-
+import { RewardBudgetSelect } from "./RewardBudgetSelect/RewardBudgetSelect";
+import { RewardBudgetProps, WorkEstimationBudgetDetails } from "./RewardBudget.type";
+import { FieldInput } from "src/components/New/Field/Input";
+import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
+import { useIntl } from "src/hooks/useIntl";
+import InformationLine from "src/icons/InformationLine";
+import RewardBudgetDetails from "./Details/RewardBudgetDetails";
 import Button, { ButtonOnBackground } from "src/components/Button";
 import { Width } from "src/components/Button";
-import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
-import { FieldInput } from "src/components/New/Field/Input";
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
-import InformationLine from "src/icons/InformationLine";
+import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
+import { RewardBudgetUtils } from "./RewardBudget.utils";
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
-
-import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
-import RewardBudgetDetails from "./Details/RewardBudgetDetails";
-import { RewardBudgetProps, WorkEstimationBudgetDetails } from "./RewardBudget.type";
-import { RewardBudgetUtils } from "./RewardBudget.utils";
-import { RewardBudgetSelect } from "./RewardBudgetSelect/RewardBudgetSelect";
 
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();

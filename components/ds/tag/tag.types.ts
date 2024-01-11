@@ -1,8 +1,7 @@
 import { ElementType, PropsWithChildren } from "react";
-import { VariantProps } from "tailwind-variants";
-
 import { tagVariants } from "components/ds/tag/tag.variants";
 
+import { VariantProps } from "tailwind-variants";
 import { TSkeleton } from "../skeleton/skeleton.types";
 
 export namespace TTag {

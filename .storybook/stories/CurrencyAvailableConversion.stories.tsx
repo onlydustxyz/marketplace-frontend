@@ -1,5 +1,4 @@
 import { ComponentProps } from "react";
-
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import Tooltip from "src/components/Tooltip";
 

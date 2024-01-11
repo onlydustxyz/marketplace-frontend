@@ -5,9 +5,11 @@ import PrClosed from "src/assets/icons/PrClosed";
 import PrDraft from "src/assets/icons/PrDraft";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import EyeLine from "src/icons/EyeLine";
-import EyeOffLine from "src/icons/EyeOffLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
+import { cn } from "src/utils/cn";
+
+import EyeOffLine from "src/icons/EyeOffLine";
 import {
   ContributionStatus,
   GithubCodeReviewStatus,
@@ -17,7 +19,6 @@ import {
   GithubStatus,
   GithubTypeStatusDict,
 } from "src/types";
-import { cn } from "src/utils/cn";
 
 export enum Sizes {
   xs = "w-3 h-3 text-xs leading-none",

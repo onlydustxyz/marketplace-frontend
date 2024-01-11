@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-
 import { cn } from "src/utils/cn";
 
 export enum HeaderCellWidth {

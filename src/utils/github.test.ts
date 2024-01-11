@@ -1,5 +1,4 @@
 import { describe, expect, test } from "vitest";
-
 import { REGEX_VALID_GITHUB_ISSUE_URL, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "./github";
 
 describe.each([

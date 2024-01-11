@@ -1,5 +1,4 @@
 import { PropsWithChildren, ReactElement } from "react";
-
 import Card from "src/components/Card";
 
 type ProfileContentProps = {

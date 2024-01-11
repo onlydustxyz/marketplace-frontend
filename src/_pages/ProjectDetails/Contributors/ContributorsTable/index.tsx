@@ -1,11 +1,9 @@
 import { ComponentProps } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
-import { useMediaQuery } from "usehooks-ts";
-
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import { viewportConfig } from "src/config";
-
+import { useMediaQuery } from "usehooks-ts";
 import View from "./View";
 import { ViewMobile } from "./ViewMobile";
 

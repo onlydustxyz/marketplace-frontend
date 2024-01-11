@@ -1,8 +1,8 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
 import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
-import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
+import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
 import { ProjectOverviewSponsors } from "src/components/Project/Overview/OverviewSponsors";
+import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
 
 export interface ProjectOverviewInformationsProps {
   project: UseGetProjectBySlugResponse;

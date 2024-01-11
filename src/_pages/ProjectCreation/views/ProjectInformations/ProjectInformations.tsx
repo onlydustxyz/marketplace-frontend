@@ -1,21 +1,19 @@
-import { useContext } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
-
-import { MultiStepsForm } from "src/_pages/ProjectCreation/components/MultiStepsForm";
 import { FieldProjectLead } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
-import { MoreInfosField } from "src/_pages/ProjectDetails/ProjectEdition/pages/Information/components/MoreInfosField";
-import ProjectApi from "src/api/Project";
-import Button, { ButtonOnBackground } from "src/components/Button";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
-import { useIntl } from "src/hooks/useIntl";
-import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
-
+import { MultiStepsForm } from "src/_pages/ProjectCreation/components/MultiStepsForm";
+import { useContext } from "react";
+import ProjectApi from "src/api/Project";
+import { useIntl } from "src/hooks/useIntl";
+import Button, { ButtonOnBackground } from "src/components/Button";
+import CheckLine from "src/icons/CheckLine";
 import { CreateProjectContext } from "../../ProjectCreation.context";
+import { MoreInfosField } from "src/_pages/ProjectDetails/ProjectEdition/pages/Information/components/MoreInfosField";
 import { CreateFormData } from "../../types/ProjectCreationType";
 
 export const ProjectInformationsPage = () => {

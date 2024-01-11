@@ -1,25 +1,22 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { uniqBy } from "lodash";
 import { useEffect, useMemo } from "react";
-
 import ErrorFallback from "src/ErrorFallback";
-import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/_pages/Projects/Sorting/SortingDropdown";
-import { useProjectFilter } from "src/_pages/Projects/useProjectFilter";
 import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
-import { Sponsor } from "src/types";
+import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/_pages/Projects/Sorting/SortingDropdown";
+import { useProjectFilter } from "src/_pages/Projects/useProjectFilter";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
-
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-
 import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";
-import SubmitProject from "../SubmitProject";
 import AllProjectsFallback from "./AllProjectsFallback";
 import AllProjectLoading from "./AllProjectsLoading";
+import { Sponsor } from "src/types";
+import { uniqBy } from "lodash";
+import SubmitProject from "../SubmitProject";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 

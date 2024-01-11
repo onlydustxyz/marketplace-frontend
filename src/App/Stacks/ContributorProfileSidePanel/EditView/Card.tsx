@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-
 import BaseCard from "src/components/Card";
 
 export default function Card({ children }: PropsWithChildren) {

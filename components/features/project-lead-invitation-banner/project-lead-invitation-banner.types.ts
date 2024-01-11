@@ -1,6 +1,5 @@
-import { VariantProps } from "tailwind-variants";
-
 import { projectLeadInvitationBannerVariants } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner.variants";
+import { VariantProps } from "tailwind-variants";
 
 export namespace TProjectLeadInvitationBanner {
   export type Variants = VariantProps<typeof projectLeadInvitationBannerVariants>;

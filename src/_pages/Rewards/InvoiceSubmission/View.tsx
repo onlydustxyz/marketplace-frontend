@@ -1,20 +1,18 @@
 import { SliderButton } from "@typeform/embed-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-
-import MeApi from "src/api/me";
-import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
 import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
-import { useShowToaster } from "src/hooks/useToaster";
 import Attachment2 from "src/icons/Attachment2";
 import { formatDate } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
-
 import { MyPayoutInfoType, MyRewardsPendingInvoiceType } from ".";
+import InfoIcon from "src/assets/icons/InfoIcon";
+import MeApi from "src/api/me";
+import { useShowToaster } from "src/hooks/useToaster";
 
 type Props = {
   githubUserId: number;

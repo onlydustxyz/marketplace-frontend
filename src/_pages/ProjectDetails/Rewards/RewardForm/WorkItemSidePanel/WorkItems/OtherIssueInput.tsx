@@ -1,22 +1,21 @@
+import { cn } from "src/utils/cn";
 import { useFormContext, useFormState } from "react-hook-form";
-
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Input from "src/components/FormInput";
+import { useIntl } from "src/hooks/useIntl";
+import Link from "src/icons/Link";
+import { REGEX_VALID_GITHUB_ISSUE_URL, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/utils/github";
 import {
   RewardableWorkItem,
   issueToWorkItem,
   pullRequestToWorkItem,
 } from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
-import ProjectApi from "src/api/Project";
-import { RewardableItem } from "src/api/Project/queries";
-import useMutationAlert from "src/api/useMutationAlert";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import Input from "src/components/FormInput";
-import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import Link from "src/icons/Link";
+import { RewardableItem } from "src/api/Project/queries";
+import ProjectApi from "src/api/Project";
+import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
 import { WorkItemType } from "src/types";
-import { cn } from "src/utils/cn";
-import { REGEX_VALID_GITHUB_ISSUE_URL, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/utils/github";
 
 type Props = {
   projectId: string;

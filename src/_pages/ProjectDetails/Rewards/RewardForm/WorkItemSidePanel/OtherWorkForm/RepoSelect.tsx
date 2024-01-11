@@ -1,11 +1,10 @@
 import { Listbox } from "@headlessui/react";
-
-import { components } from "src/__generated/api";
-import { withTooltip } from "src/components/Tooltip";
+import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { cn } from "src/utils/cn";
+import { withTooltip } from "src/components/Tooltip";
+import { components } from "src/__generated/api";
 
 type Props = {
   repos: components["schemas"]["GithubRepoResponse"][];

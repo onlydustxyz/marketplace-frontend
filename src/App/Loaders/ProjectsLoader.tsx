@@ -1,7 +1,7 @@
-import AllProjectLoading from "src/_pages/Projects/AllProjects/AllProjectsLoading";
-import useScrollRestoration from "src/_pages/Projects/AllProjects/useScrollRestoration";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Skeleton from "src/components/Skeleton";
+import AllProjectLoading from "src/_pages/Projects/AllProjects/AllProjectsLoading";
+import useScrollRestoration from "src/_pages/Projects/AllProjects/useScrollRestoration";
 
 export default function ProjectsLoader() {
   const { ref } = useScrollRestoration();

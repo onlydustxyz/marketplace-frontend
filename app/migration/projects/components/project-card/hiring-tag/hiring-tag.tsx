@@ -1,8 +1,8 @@
 import { Tag } from "components/ds/tag/tag";
-import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
-import { Typography } from "components/layout/typography/typography";
 
+import { Typography } from "components/layout/typography/typography";
+import { Icon } from "components/layout/icon/icon";
 import { THiringTag } from "./hiring-tag.types";
 
 export function HiringTag({ isErrorVariant, isHiring = false }: THiringTag.Props) {

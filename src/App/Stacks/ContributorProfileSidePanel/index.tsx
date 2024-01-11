@@ -1,15 +1,12 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { useState } from "react";
-
-import UsersApi from "src/api/Users";
-import MeApi from "src/api/me";
-import { NotFound } from "src/components/NotFound";
+import View from "./View";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-
+import UsersApi from "src/api/Users";
+import { useState } from "react";
+import MeApi from "src/api/me";
+import { NotFound } from "src/components/NotFound";
+import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-
-import View from "./View";
 
 type Props = {
   githubUserId: number;

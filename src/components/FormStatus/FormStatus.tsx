@@ -1,9 +1,8 @@
-import { useIntl } from "src/hooks/useIntl";
-import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
-
 import Tag, { TagSize } from "../Tag";
+import { useIntl } from "src/hooks/useIntl";
+import CheckLine from "src/icons/CheckLine";
 import Flex from "../Utils/Flex";
 
 type FormStatusType = {

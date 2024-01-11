@@ -1,10 +1,8 @@
 import { useContext } from "react";
-
 import { Modal } from "src/components/New/Modal";
 import { useIntl } from "src/hooks/useIntl";
-import { useNavigationBlocker } from "src/hooks/useNavigationBlocker/useNavigationBlocker";
-
 import { EditContext } from "../../EditContext";
+import { useNavigationBlocker } from "src/hooks/useNavigationBlocker/useNavigationBlocker";
 
 export const ConfirmationModal = () => {
   const { form, formHelpers, githubWorklow } = useContext(EditContext);

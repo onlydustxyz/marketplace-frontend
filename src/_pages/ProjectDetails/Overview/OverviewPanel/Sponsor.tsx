@@ -1,5 +1,5 @@
-import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import ExternalLink from "src/components/ExternalLink";
 import { Maybe } from "src/types";
 
 type Props = {

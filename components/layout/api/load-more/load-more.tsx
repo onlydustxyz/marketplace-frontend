@@ -1,14 +1,11 @@
 "use client";
-
-import { BasePaginatedParams } from "actions/type.actions";
-import { useState } from "react";
-import { InView } from "react-intersection-observer";
-
-import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
-import ArrowDownSLine from "src/icons/ArrowDownSLine";
-
 import { LoadMoreProps } from "./load-more.type";
+import { InView } from "react-intersection-observer";
+import { Spinner } from "src/components/Spinner/Spinner";
+import { useState } from "react";
+import ArrowDownSLine from "src/icons/ArrowDownSLine";
+import { BasePaginatedParams } from "actions/type.actions";
 
 export function LoadMore<PARAMS extends BasePaginatedParams = BasePaginatedParams>({
   params,

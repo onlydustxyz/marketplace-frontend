@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-
 import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";

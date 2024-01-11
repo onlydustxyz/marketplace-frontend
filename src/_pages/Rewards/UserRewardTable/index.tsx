@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
-
-import { useStackReward } from "src/App/Stacks/Stacks";
 import { viewportConfig } from "src/config";
-
-import DesktopUserRewardList from "./DesktopUserRewardList";
+import { useMediaQuery } from "usehooks-ts";
 import { MyRewardType } from "./Line";
+import DesktopUserRewardList from "./DesktopUserRewardList";
 import MobileUserRewardList from "./MobileUserRewardList";
+import { useStackReward } from "src/App/Stacks/Stacks";
 
 const UserRewardTable: React.FC<{ emptyState?: React.ReactElement }> = ({ emptyState }) => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);

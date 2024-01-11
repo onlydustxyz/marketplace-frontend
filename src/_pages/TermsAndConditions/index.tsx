@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { RoutePaths } from "src/App";
-import MeApi from "src/api/me";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import SEO from "src/components/SEO";
 
 import TermsAndConditionsMainCard from "./MainCard";
 import TermsAndConditionsPromptCard from "./PromptCard";
+import SEO from "src/components/SEO";
+import MeApi from "src/api/me";
 
 export default function TermsAndConditions() {
   const location = useLocation();
