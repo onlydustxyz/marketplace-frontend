@@ -12,11 +12,9 @@ import { Sponsors } from "./sponsors/sponsors";
 import { TProjectCard } from "./project-card.types";
 import { Flex } from "components/layout/flex/flex";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-Invitation-banner/project-lead-Invitation-banner";
-import { useIntl } from "src/hooks/useIntl";
 import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
-  const { T } = useIntl();
   const { hiring, isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
   const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
   const isPrivate = project.visibility === "PRIVATE";
@@ -28,7 +26,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           projectName={project.name}
           on="cards"
           size={"s"}
-          btnLabel={T("project.projectLeadInvitation.view")}
+          btnLabelToken="project.projectLeadInvitation.view"
         />
       );
     }

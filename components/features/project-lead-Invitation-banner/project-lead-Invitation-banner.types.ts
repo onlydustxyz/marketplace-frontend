@@ -7,7 +7,7 @@ export namespace TProjectLeadInvitationBanner {
   export interface Props extends Variants {
     projectName: string;
     isLoading?: boolean;
-    btnLabel?: string;
+    btnLabelToken?: string;
     onClick?: () => void;
     on?: "cards" | "page";
   }

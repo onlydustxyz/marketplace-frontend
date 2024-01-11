@@ -6,7 +6,6 @@ import { ProjectsContext } from "../../context/project.context";
 
 export function ProjectList() {
   const { projects, hasNextPage, fetchNextPage, isFetchingNextPage } = useContext(ProjectsContext);
-  const githubUserId = 17259618;
 
   return (
     <>

@@ -26,7 +26,7 @@ export function Leaders({ leaders }: TLeaders.Props) {
     return null;
   }, [leaders]);
 
-  // render a placeholder if no leaders
+  // Render a placeholder if no leaders
   if (!leaders.length) {
     return (
       <div className="flex flex-row items-center gap-1 pt-0.5 text-sm text-spaceBlue-200">
@@ -39,12 +39,12 @@ export function Leaders({ leaders }: TLeaders.Props) {
 
   return (
     <div className="flex flex-row items-center gap-1 pt-0.5 text-sm text-spaceBlue-200">
-      {leaders.length > 0 && (
+      {leaders.length > 0 ? (
         <div className="flex flex-row gap-1 truncate whitespace-nowrap">
           <Translate token="project.ledBy" params={{ count: leaders.length }} />
           {asOnlyOneLead}
         </div>
-      )}
+      ) : null}
       <ContributorsAvatars contributors={leaders} />
     </div>
   );

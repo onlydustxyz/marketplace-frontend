@@ -875,6 +875,9 @@
     "privacy": "Privacy"
   },
   "project": {
+    "highlights": {
+      "thumbnail": "Project logo"
+    },
     "openOverview": "View project details",
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "claim": {

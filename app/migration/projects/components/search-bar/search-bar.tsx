@@ -15,6 +15,7 @@ export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
   useHotkeys("mod+k", () => {
     textInput.current && textInput.current.focus();
   });
+
   useHotkeys(
     "esc",
     () => {
@@ -24,16 +25,13 @@ export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
   );
 
   function onValueChange(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.value) {
-      onChange(e.target.value);
-    } else {
-      onChange(null);
-    }
+    onChange(e.target.value ?? null);
   }
 
   function onBlur() {
     setInputFocus(false);
   }
+
   function onFocus() {
     setInputFocus(true);
   }
@@ -73,13 +71,12 @@ export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
             />
             <button data-testid="clear-searchbar-button">
               <Icon
-                remixName={"ri-close-line"}
-                className={cn(
-                  "text-2xl",
-                  { hidden: !inputFocus && !value },
-                  { "text-greyscale-50": !inputFocus && value },
-                  { "text-purple-200": inputFocus }
-                )}
+                remixName="ri-close-line"
+                className={cn("text-2xl", {
+                  hidden: !inputFocus && !value,
+                  "text-greyscale-50": !inputFocus && value,
+                  "text-purple-200": inputFocus,
+                })}
                 onClick={e => {
                   e.preventDefault();
                   onChange(null);
@@ -94,5 +91,5 @@ export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
 }
 
 function ResponsiveOutlineWrapper({ children, isXl }: { isXl: boolean } & PropsWithChildren) {
-  return isXl ? <>{children}</> : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
+  return isXl ? <>children</> : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
 }

@@ -8,6 +8,7 @@ import { Ownership } from "../../../context/project.context.types";
 
 export function FiltersOwnership() {
   const { filters } = useContext(ProjectsContext);
+
   const handleAllClick = () => {
     filters.set({ ownership: Ownership.All });
   };
@@ -15,13 +16,6 @@ export function FiltersOwnership() {
   const handleMineClick = () => {
     filters.set({ ownership: Ownership.Mine });
   };
-
-  // todo make this dynamic
-  const isProjectLeader = true;
-
-  if (!isProjectLeader) {
-    return null;
-  }
 
   return (
     <Flex className="gap-2">

@@ -1,19 +1,21 @@
 "use client";
 import { Tag } from "components/ds/tag/tag";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import config from "src/config.ts";
+import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { TSponsors } from "./sponsors.types";
+import { Translate } from "components/layout/translate/translate";
 
 export function Sponsors({ sponsors }: TSponsors.Props) {
   const { T } = useIntl();
+
   if (!sponsors?.length) {
     return null;
   }
 
-  const asMoreThan1Sponsor = sponsors.length > 1;
-  const tooltipsContent = asMoreThan1Sponsor
+  const hasMoreThan1Sponsor = sponsors.length > 1;
+  const tooltipsContent = hasMoreThan1Sponsor
     ? T("project.fundedBy", {
         topSponsorsString: sponsors.map(sponsor => sponsor.name).join(", "),
       })
@@ -32,7 +34,11 @@ export function Sponsors({ sponsors }: TSponsors.Props) {
           />
         ))}
       </div>
-      {sponsors.length === 1 ? sponsors.at(0)?.name : T("project.sponsorsCount", { count: sponsors.length })}
+      {sponsors.length === 1 ? (
+        sponsors.at(0)?.name
+      ) : (
+        <Translate token="project.sponsorsCount" params={{ count: sponsors.length }} />
+      )}
     </Tag>
   );
 }

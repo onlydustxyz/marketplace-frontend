@@ -67,9 +67,9 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
     setStorage(DEFAULT_PROJECTS_FILTER);
   }
 
-  /** need this to migrate existing filter for sponsor */
+  /** Need this to migrate existing filter for sponsor */
   useEffect(() => {
-    if (storage && storage.sponsors && storage.sponsors.length > 0) {
+    if (storage?.sponsors && storage.sponsors.length > 0) {
       const anySponsor = storage.sponsors as unknown as any;
       if (anySponsor[0]?.id) {
         onFilterChange({ sponsors: storage.sponsors });

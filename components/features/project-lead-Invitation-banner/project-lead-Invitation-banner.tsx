@@ -12,29 +12,12 @@ export function ProjectLeadInvitationBanner({
   isLoading,
   onClick,
   projectName,
-  btnLabel,
+  btnLabelToken,
   size,
   on = "cards",
 }: TProjectLeadInvitationBanner.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
   const { base, title } = projectLeadInvitationBannerVariants({ size });
-  // const { mutate, ...rest } = MeApi.mutations.useAcceptProjectLeaderInvitation({
-  //   params: { projectId, projectSlug },
-  // });
-  //
-  // const onAcceptInvite = () => {
-  //   mutate(null);
-  // };
-  //
-  // useMutationAlert({
-  //   mutation: rest,
-  //   success: {
-  //     message: T("projectLeadInvitation.success", { projectName }),
-  //   },
-  //   error: {
-  //     default: true,
-  //   },
-  // });
 
   const TitleContent = useMemo(() => {
     if (on === "cards") {
@@ -44,15 +27,16 @@ export function ProjectLeadInvitationBanner({
   }, [on]);
 
   const ButtonLabel = useMemo(() => {
-    if (btnLabel) {
-      return btnLabel;
+    if (btnLabelToken) {
+      return <Translate token={btnLabelToken} />;
     }
 
     if (isMd) {
       return <Translate token={"projectLeadInvitation.accept"} />;
     }
+
     return <Translate token={"projectLeadInvitation.acceptShort"} />;
-  }, [btnLabel]);
+  }, [btnLabelToken]);
 
   return (
     <div className={cn(base())}>
