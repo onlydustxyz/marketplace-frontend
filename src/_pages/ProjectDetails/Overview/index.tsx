@@ -24,7 +24,7 @@ import { ProjectOverviewRepos } from "src/components/Project/Overview/OverviewRe
 import { ProjectOverviewHeader } from "src/components/Project/Overview/OverviewHeader";
 import ApplyCallout from "./components/ProjectApply";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 export default function Overview() {
   const { T } = useIntl();

@@ -1,10 +1,9 @@
-import Card from "@/components/ds/card/card";
-import Translate from "@/components/layout/translate/translate";
-import { Typography } from "@/components/layout/typography/typography";
-import { FC } from "react";
+import { Card } from "components/ds/card/card";
+import { Translate } from "components/layout/translate/translate";
+import { Typography } from "components/layout/typography/typography";
 import { AddProjectModal } from "./add-project-modal";
 
-export const AddProject: FC = () => {
+export function AddProject() {
   return (
     <Card className="mb-4 flex items-center gap-4">
       <Typography variant="body-s">
@@ -14,4 +13,4 @@ export const AddProject: FC = () => {
       <AddProjectModal />
     </Card>
   );
-};
+}

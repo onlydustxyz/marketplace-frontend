@@ -1,6 +1,4 @@
-import { tv, VariantProps } from "tailwind-variants";
-
-export type CardVariants = VariantProps<typeof cardVariants>;
+import { tv } from "tailwind-variants";
 
 export const cardVariants = tv({
   base: "rounded-2xl font-walsheim",
@@ -20,7 +18,7 @@ export const cardVariants = tv({
     border: {
       light: "border border-greyscale-50/8",
       medium: "border border-greyscale-50/12",
-      multiColor: "border-multicolored before:rounded-2xl",
+      multiColor: "border-multicolored before:pointer-events-none before:rounded-2xl",
     },
   },
   defaultVariants: {

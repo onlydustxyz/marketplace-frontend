@@ -13,7 +13,7 @@ import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { GithubStatusBanner } from "./GithubStatusBanner";
 import { IMAGES } from "src/assets/img";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils.ts";
 import { ProfileButtonDisplay } from "./ProfileButton/ProfileButtonDisplay";
 
 interface HeaderViewProps {

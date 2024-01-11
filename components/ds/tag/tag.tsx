@@ -1,19 +1,16 @@
 import { cn } from "src/utils/cn";
-import { ElementType, PropsWithChildren } from "react";
-import { tagVariants, TagVariants } from "./tag.variants.ts";
+import { tagVariants } from "components/ds/tag/tag.variants";
+import { TTag } from "./tag.types";
 
-interface TagProps extends PropsWithChildren, TagVariants {
-  as?: ElementType;
-  id?: string;
-  testId?: string;
-  className?: string;
-  onClick?: () => void;
-}
-
-export default function Tag({ as: Component = "div", id, testId, children, className, onClick, ...props }: TagProps) {
+export function Tag({ as: Component = "div", id, testId, children, className, onClick, ...props }: TTag.Props) {
   return (
-    <Component data-testId={testId} id={id} className={cn(tagVariants({ ...props }), className)} onClick={onClick}>
-      {children}
+    <Component
+      data-testId={testId}
+      id={id}
+      className="w-fit shrink-0 overflow-hidden rounded-full p-px"
+      onClick={onClick}
+    >
+      <div className={cn(tagVariants({ ...props }), className)}>{children}</div>
     </Component>
   );
 }

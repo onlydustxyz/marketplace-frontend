@@ -1,22 +1,15 @@
-import { ElementType, PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
-import { cardVariants, CardVariants } from "./card.variants.ts";
+import { cardVariants } from "./card.variants";
+import { TCard } from "./card.types";
 
-interface CardProps extends PropsWithChildren, CardVariants {
-  as?: ElementType;
-  className?: string;
-  dataTestId?: string;
-  onClick?: () => void;
-}
-
-export default function Card({
-  as: Component = "div",
+export function Card({
+  as: Component = "section",
   className = "",
   dataTestId,
   onClick,
   children,
   ...props
-}: CardProps) {
+}: TCard.Props) {
   return (
     <Component
       className={cn(

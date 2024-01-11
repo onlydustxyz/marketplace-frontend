@@ -1,30 +1,27 @@
 "use client";
 
-import { FC, useState } from "react";
+import { useState } from "react";
 import { SelectableTag } from "../selectable-tag/selectable-tag";
-import { Icon } from "@/components/layout/icon/icon";
+import { Icon } from "components/layout/icon/icon";
 import { cn } from "src/utils/cn";
-import { Flex } from "@/components/layout/flex/flex";
-import Translate from "@/components/layout/translate/translate";
+import { Flex } from "components/layout/flex/flex";
+import { Translate } from "components/layout/translate/translate";
 import { Badge } from "../badge/badge";
 import Image from "next/image";
+import { TFiltersDropDown } from "./filters-drop-down.types";
 
-interface FiltersDropDownProps {
-  title: string;
-  image: string;
-  options: string[];
-  value: string[];
-  onChange: (value: string[]) => void;
-}
-
-export const FiltersDropDown: FC<FiltersDropDownProps> = ({ title, image, options, value, onChange }) => {
+export function FiltersDropDown({ title, image, options, value, onChange }: TFiltersDropDown.Props) {
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const handleDropDownClick = () => setIsOpen(!isOpen);
 
-  const handleTagClick = (tag: string) => {
-    const newValue = value.includes(tag) ? value.filter(v => v !== tag) : [...value, tag];
-    onChange(newValue);
+  const handleTagClick = (tag: TFiltersDropDown.Option) => {
+    const selectedOption = options.find(o => o.id === tag.id);
+    const isSelected = value.find(v => v === tag.id);
+    if (selectedOption) {
+      const newValue = isSelected ? value.filter(v => v !== tag.id) : [...value, selectedOption.id];
+      onChange(newValue);
+    }
   };
 
   return (
@@ -59,12 +56,12 @@ export const FiltersDropDown: FC<FiltersDropDownProps> = ({ title, image, option
       {isOpen && (
         <Flex wrap="wrap" width="full" className="gap-x-2 gap-y-3 py-3">
           {options.map(option => (
-            <SelectableTag key={option} selected={value.includes(option)} onClick={() => handleTagClick(option)}>
-              {option}
+            <SelectableTag key={option.id} selected={value.includes(option.id)} onClick={() => handleTagClick(option)}>
+              {option.label || option.id}
             </SelectableTag>
           ))}
         </Flex>
       )}
     </div>
   );
-};
+}

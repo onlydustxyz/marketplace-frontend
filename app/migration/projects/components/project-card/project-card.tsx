@@ -1,50 +1,81 @@
-import { components } from "src/__generated/api";
-import Card from "@/components/ds/card/card.tsx";
-import { isUserProjectLead } from "src/utils/isUserProjectLead.ts";
-import { cn } from "src/utils/cn.ts";
-import HiringTag from "../hiring-tag/hiring-tag.tsx";
+import { useMemo } from "react";
+import { Card } from "components/ds/card/card";
+import { cn } from "src/utils/cn";
+import { HiringTag } from "./hiring-tag/hiring-tag";
+import { Highlights } from "./highlights/highlights";
+import { Technologies } from "./technologies/technologies";
+import { Leaders } from "./leaders/leaders";
+import { Summary } from "./summary/summary";
+import { ReposCounter } from "./repos-counter/repos-counter";
+import { ContributorsCounter } from "./contributors-counter/contributors-counter";
+import { Sponsors } from "./sponsors/sponsors";
+import { TProjectCard } from "./project-card.types";
+import { Flex } from "components/layout/flex/flex";
+import { ProjectLeadInvitationBanner } from "components/features/project-lead-Invitation-banner/project-lead-Invitation-banner";
+import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 
-type Props = {
-  project: components["schemas"]["ProjectPageItemResponse"];
-  isFirstHiringProject?: boolean;
-};
+export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
+  const { hiring, isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
+  const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
+  const isPrivate = project.visibility === "PRIVATE";
 
-export default function ProjectCard({ project, isFirstHiringProject = false }: Props) {
-  const {
-    // id,
-    // sponsors,
-    hiring,
-    // name = "",
-    // logoUrl,
-    // visibility,
-    // shortDescription,
-    // contributorCount = 0,
-    // technologies,
-    // slug = "",
-    // leaders = [],
-    // repoCount = 0,
-    isInvitedAsProjectLead,
-    isMissingGithubAppInstallation,
-  } = project;
+  const InviteBanner = useMemo(() => {
+    if (project.isInvitedAsProjectLead) {
+      return (
+        <ProjectLeadInvitationBanner
+          projectName={project.name}
+          on="cards"
+          size={"s"}
+          btnLabelToken="project.projectLeadInvitation.view"
+        />
+      );
+    }
 
-  // Todo use the retrieve user me query to get the github user id
+    return null;
+  }, [project]);
 
-  const githubUserId = 123;
-  const variant = isUserProjectLead(project, githubUserId) && isMissingGithubAppInstallation ? "error" : "default";
+  const MissingGithubBanner = useMemo(() => {
+    if (isUserProjectLead && project.isMissingGithubAppInstallation) {
+      return <ProjectMissingGithubBanner slug={project.slug} />;
+    }
+
+    return null;
+  }, [project, isUserProjectLead]);
+
   return (
-    <>
-      <Card
-        className={cn("relative", {
-          "bg-noise-light hover:bg-right": variant === "default",
-          "border-orange-500 bg-orange-900": variant === "error",
-          "mt-3": isFirstHiringProject,
-        })}
-        border={isInvitedAsProjectLead ? "multiColor" : "medium"}
-        dataTestId="project-card"
-      >
-        <HiringTag isHiring={hiring} variant={variant} />
-        Lorem ipsum dolor
-      </Card>
-    </>
+    <Card
+      className={cn("relative", {
+        "bg-noise-light hover:bg-right": !isErrorVariant,
+        "border-orange-500 bg-orange-900": isErrorVariant,
+        "mt-3": isFirstHiringProject,
+      })}
+      border={isInvitedAsProjectLead ? "multiColor" : "medium"}
+      dataTestId="project-card"
+    >
+      <HiringTag isHiring={hiring} isErrorVariant={isErrorVariant} />
+      <Flex direction="col" className="gap-5">
+        <Flex direction="col" className="items-stretch gap-6 divide-stone-100/8 lg:flex-row lg:gap-6 lg:divide-x">
+          <Flex direction="col" className="min-w-0 basis-1/3 gap-y-5">
+            <Highlights
+              name={project.name}
+              isPrivate={isPrivate}
+              logoUrl={project.logoUrl}
+              leaders={<Leaders leaders={project.leaders} />}
+            />
+            <Technologies technologies={project.technologies} />
+          </Flex>
+          <Flex direction="col" className="basis-2/3 items-stretch justify-center gap-4 lg:gap-4 lg:pl-6">
+            <Summary shortDescription={project.shortDescription} />
+            <Flex direction="col" className="w-full flex-row flex-wrap gap-1 xl:gap-2">
+              <ReposCounter count={project.repoCount} />
+              <ContributorsCounter count={project.contributorCount} />
+              <Sponsors sponsors={project.sponsors} />
+            </Flex>
+          </Flex>
+        </Flex>
+        {InviteBanner}
+        {MissingGithubBanner}
+      </Flex>
+    </Card>
   );
 }
