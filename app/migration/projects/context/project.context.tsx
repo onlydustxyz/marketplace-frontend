@@ -9,7 +9,7 @@ import {
   ProjectsContextProps,
 } from "./project.context.types";
 import { useLocalStorage } from "react-use";
-import { useInfiniteBaseQueryProps } from "../../../../src/api/useInfiniteBaseQuery";
+import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 
 export const ProjectsContext = createContext<ProjectContextReturn>({
   projects: [],
