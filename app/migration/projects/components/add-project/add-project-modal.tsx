@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ds/button/button";
-import { Icon } from "@/components/layout/icon/icon";
-import Translate from "@/components/layout/translate/translate";
+import { Button } from "components/ds/button/button";
+import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 export function AddProjectModal() {
   const handleOpenModal = () => {

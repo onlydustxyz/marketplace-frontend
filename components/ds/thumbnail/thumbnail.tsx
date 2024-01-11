@@ -1,8 +1,8 @@
-import { TThumbnail } from "./thumbnail.types.ts";
-import { cn } from "src/utils/cn.ts";
+import { TThumbnail } from "./thumbnail.types";
+import { cn } from "src/utils/cn";
 import { IMAGES } from "src/assets/img";
-import GalleryLine from "src/assets/icons/GalleryLine.tsx";
-import { thumbnailVariants } from "./thumbnail.variants.ts";
+import GalleryLine from "src/assets/icons/GalleryLine";
+import { thumbnailVariants } from "./thumbnail.variants";
 
 export function Thumbnail({ src, alt, className, defaultSrc = true, ...props }: TThumbnail.Props) {
   return (

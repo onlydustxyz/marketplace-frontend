@@ -1,7 +1,7 @@
-import { TThumbnail } from "./thumbnail.types.ts";
-import { cn } from "src/utils/cn.ts";
-import { thumbnailVariants } from "@/components/ds/thumbnail/thumbnail.variants.ts";
-import { SkeletonEl } from "@/components/ds/skeleton/skeleton.tsx";
+import { TThumbnail } from "./thumbnail.types";
+import { cn } from "src/utils/cn";
+import { thumbnailVariants } from "components/ds/thumbnail/thumbnail.variants";
+import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
 export function ThumbnailLoading({ skeletonProps, animate = true, className, ...props }: TThumbnail.LoadingProps) {
   return (

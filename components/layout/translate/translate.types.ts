@@ -1,4 +1,4 @@
-import { Key } from "src/hooks/useIntl.tsx";
+import { Key } from "src/hooks/useIntl";
 
 export namespace TTranslate {
   export interface Props {

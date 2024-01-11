@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Tag } from "./tag.tsx";
+import { Tag } from "./tag";
 
-import User3Line from "../../../src/icons/User3Line.tsx";
+import User3Line from "../../../src/icons/User3Line";
 
-import { TTag } from "./tag.types.ts";
-import { TagLoading } from "./tag.loading.tsx";
+import { TTag } from "./tag.types";
+import { TagLoading } from "./tag.loading";
 
 const defaultProps: TTag.Props = {
   children: <span>Tag</span>,

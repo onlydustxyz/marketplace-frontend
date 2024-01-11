@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Thumbnail } from "./thumbnail";
-import { TThumbnail } from "./thumbnail.types.ts";
-import { ThumbnailLoading } from "@/components/ds/thumbnail/thumbnail.loading.tsx";
+import { TThumbnail } from "./thumbnail.types";
+import { ThumbnailLoading } from "components/ds/thumbnail/thumbnail.loading";
 
 const defaultProps: TThumbnail.Props = {
   alt: "alt",

@@ -1,5 +1,5 @@
-import { Flex } from "@/components/layout/flex/flex";
-import { Icon } from "@/components/layout/icon/icon";
+import { Flex } from "components/layout/flex/flex";
+import { Icon } from "components/layout/icon/icon";
 import { cn } from "src/utils/cn";
 import { TBadge } from "./badge.types";
 import { badgeVariants } from "./badge.variants";

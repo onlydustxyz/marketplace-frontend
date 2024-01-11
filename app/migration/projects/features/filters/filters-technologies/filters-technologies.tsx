@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { FiltersDropDown } from "@/components/ds/drop-down/filters-drop-down.tsx";
+import { FiltersDropDown } from "components/ds/drop-down/filters-drop-down";
 import { IMAGES } from "src/assets/img";
-import { ProjectsContext } from "../../../context/project.context.tsx";
+import { ProjectsContext } from "../../../context/project.context";
 
 export function FiltersTechnologies() {
   const { filters } = useContext(ProjectsContext);

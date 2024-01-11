@@ -1,4 +1,4 @@
-import { TProjectImageMetadataProps } from "./image-metadata.types.ts";
+import { TProjectImageMetadataProps } from "./image-metadata.types";
 import { ImageMetadataBackground } from "../commons/background/background";
 import { ImageMetadataContent } from "../commons/content/content";
 

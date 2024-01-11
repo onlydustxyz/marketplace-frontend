@@ -1,8 +1,8 @@
-import { ProjectCard } from "../../components/project-card/project-card.tsx";
-import { isUserProjectLead } from "src/utils/isUserProjectLead.ts";
-import { ShowMore } from "src/components/Table/ShowMore.tsx";
+import { ProjectCard } from "../../components/project-card/project-card";
+import { isUserProjectLead } from "src/utils/isUserProjectLead";
+import { ShowMore } from "src/components/Table/ShowMore";
 import { useContext } from "react";
-import { ProjectsContext } from "../../context/project.context.tsx";
+import { ProjectsContext } from "../../context/project.context";
 
 export function ProjectList() {
   const { projects, hasNextPage, fetchNextPage, isFetchingNextPage } = useContext(ProjectsContext);

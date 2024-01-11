@@ -1,9 +1,10 @@
 "use client";
-import Contributor from "@/components/features/contributor/contributor.tsx";
-import Translate from "@/components/layout/translate/translate.tsx";
+
+import { Contributor } from "components/features/contributor/contributor";
+import { Translate } from "components/layout/translate/translate";
 import { useMemo } from "react";
-import { ContributorsAvatars } from "@/components/features/contributors-avatars";
-import { TLeaders } from "./leaders.types.ts";
+import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
+import { TLeaders } from "./leaders.types";
 
 export function Leaders({ leaders }: TLeaders.Props) {
   const asOnlyOneLead = useMemo(() => {

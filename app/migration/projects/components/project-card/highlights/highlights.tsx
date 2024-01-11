@@ -1,5 +1,5 @@
 import PrivateTag from "src/components/PrivateTag";
-import { Thumbnail } from "@/components/ds/thumbnail/thumbnail";
+import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { THighlights } from "./highlights.types";
 
 export function Highlights({ name, logoUrl, isPrivate, leaders }: THighlights.Props) {

@@ -1,6 +1,6 @@
 import { VariantProps } from "tailwind-variants";
-import { thumbnailVariants } from "./thumbnail.variants.ts";
-import { TSkeleton } from "@/components/ds/skeleton/skeleton.types.ts";
+import { thumbnailVariants } from "./thumbnail.variants";
+import { TSkeleton } from "components/ds/skeleton/skeleton.types";
 
 export namespace TThumbnail {
   export type Variants = VariantProps<typeof thumbnailVariants>;

@@ -1,6 +1,6 @@
-import { TContributorsAvatars } from "./contributors-avatars.types.ts";
+import { TContributorsAvatars } from "./contributors-avatars.types";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import { ThumbnailGroup } from "@/components/ds/thumbnail-group/thumbnail-group";
+import { ThumbnailGroup } from "components/ds/thumbnail-group/thumbnail-group";
 
 export function ContributorsAvatars({ contributors, ...variant }: TContributorsAvatars.Props) {
   const formatUserNames = () => contributors.map(contributor => contributor.login || "").join(", ");

@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { SearchBar } from "../../components/search-bar/search-bar.tsx";
-import { useIntl } from "src/hooks/useIntl.tsx";
-import { ProjectsContext } from "../../context/project.context.tsx";
+import { SearchBar } from "../../components/search-bar/search-bar";
+import { useIntl } from "src/hooks/useIntl";
+import { ProjectsContext } from "../../context/project.context";
 
 export function ProjectSearch() {
   const { filters } = useContext(ProjectsContext);

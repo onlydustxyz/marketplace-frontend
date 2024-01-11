@@ -1,9 +1,9 @@
 "use client";
-import { Tag } from "@/components/ds/tag/tag.tsx";
+import { Tag } from "components/ds/tag/tag";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import config from "src/config.ts";
-import { useIntl } from "src/hooks/useIntl.tsx";
-import { Thumbnail } from "@/components/ds/thumbnail/thumbnail";
+import { useIntl } from "src/hooks/useIntl";
+import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { TSponsors } from "./sponsors.types";
 
 export function Sponsors({ sponsors }: TSponsors.Props) {

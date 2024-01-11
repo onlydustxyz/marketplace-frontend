@@ -6,7 +6,7 @@ import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import config from "src/config";
-import { sharedMetadata } from "./shared-metadata.ts";
+import { sharedMetadata } from "./shared-metadata";
 
 export const metadata: Metadata = sharedMetadata;
 

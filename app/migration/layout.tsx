@@ -1,4 +1,4 @@
-import MigrationProviders from "./Providers.tsx";
+import MigrationProviders from "./providers";
 
 export default function MigrationLayout({ children }: { children: React.ReactNode }) {
   return (

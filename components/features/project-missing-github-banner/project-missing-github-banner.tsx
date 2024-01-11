@@ -2,7 +2,7 @@ import { generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
 import Link from "next/link";
-import { Button } from "@/components/ds/button/button.tsx";
+import { Button } from "components/ds/button/button";
 import { TProjectMissingGithubBanner } from "./project-missing-github-banner.types";
 
 export function ProjectMissingGithubBanner({ slug = "" }: TProjectMissingGithubBanner.Props) {

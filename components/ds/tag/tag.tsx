@@ -1,5 +1,5 @@
 import { cn } from "src/utils/cn";
-import { tagVariants } from "@/components/ds/tag/tag.variants.ts";
+import { tagVariants } from "components/ds/tag/tag.variants";
 import { TTag } from "./tag.types";
 
 export function Tag({ as: Component = "div", id, testId, children, className, onClick, ...props }: TTag.Props) {

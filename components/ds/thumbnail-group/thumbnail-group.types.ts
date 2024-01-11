@@ -1,4 +1,4 @@
-import { TSkeleton } from "@/components/ds/skeleton/skeleton.types.ts";
+import { TSkeleton } from "components/ds/skeleton/skeleton.types";
 import { TThumbnail } from "../thumbnail/thumbnail.types";
 
 export namespace TThumbnailGroup {

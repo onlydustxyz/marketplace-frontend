@@ -1,5 +1,5 @@
 import { ElementType, PropsWithChildren } from "react";
-import { tagVariants } from "@/components/ds/tag/tag.variants.ts";
+import { tagVariants } from "components/ds/tag/tag.variants";
 
 import { VariantProps } from "tailwind-variants";
 import { TSkeleton } from "../skeleton/skeleton.types";

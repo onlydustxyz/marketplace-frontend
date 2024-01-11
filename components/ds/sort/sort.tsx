@@ -1,10 +1,10 @@
 import { Listbox, Transition } from "@headlessui/react";
-import Arrow from "../../../src/assets/icons/Arrow.tsx";
-import ArrowDownSLine from "../../../src/icons/ArrowDownSLine.tsx";
-import CheckLine from "../../../src/icons/CheckLine.tsx";
+import Arrow from "../../../src/assets/icons/Arrow";
+import ArrowDownSLine from "../../../src/icons/ArrowDownSLine";
+import CheckLine from "../../../src/icons/CheckLine";
 import { useMemo } from "react";
-import { cn } from "src/utils/cn.ts";
-import { TSort } from "./sort.types.ts";
+import { cn } from "src/utils/cn";
+import { TSort } from "./sort.types";
 
 export function Sort({ value, onChange, label, options }: TSort.Props) {
   const selected = useMemo(() => options.find(o => o.id === value), [value, options]);

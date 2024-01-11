@@ -1,19 +1,19 @@
 import { useMemo } from "react";
-import { Card } from "@/components/ds/card/card.tsx";
-import { cn } from "src/utils/cn.ts";
-import { HiringTag } from "./hiring-tag/hiring-tag.tsx";
-import { Highlights } from "./highlights/highlights.tsx";
-import { Technologies } from "./technologies/technologies.tsx";
-import { Leaders } from "./leaders/leaders.tsx";
-import { Summary } from "./summary/summary.tsx";
-import { ReposCounter } from "./repos-counter/repos-counter.tsx";
-import { ContributorsCounter } from "./contributors-counter/contributors-counter.tsx";
-import { Sponsors } from "./sponsors/sponsors.tsx";
-import { TProjectCard } from "./project-card.types.ts";
-import { Flex } from "@/components/layout/flex/flex.tsx";
-import ProjectLeadInvitationBanner from "@/components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.tsx";
-import { useIntl } from "src/hooks/useIntl.tsx";
-import { ProjectMissingGithubBanner } from "@/components/features/project-missing-github-banner/project-missing-github-banner.tsx";
+import { Card } from "components/ds/card/card";
+import { cn } from "src/utils/cn";
+import { HiringTag } from "./hiring-tag/hiring-tag";
+import { Highlights } from "./highlights/highlights";
+import { Technologies } from "./technologies/technologies";
+import { Leaders } from "./leaders/leaders";
+import { Summary } from "./summary/summary";
+import { ReposCounter } from "./repos-counter/repos-counter";
+import { ContributorsCounter } from "./contributors-counter/contributors-counter";
+import { Sponsors } from "./sponsors/sponsors";
+import { TProjectCard } from "./project-card.types";
+import { Flex } from "components/layout/flex/flex";
+import { ProjectLeadInvitationBanner } from "components/features/project-lead-Invitation-banner/project-lead-Invitation-banner";
+import { useIntl } from "src/hooks/useIntl";
+import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();

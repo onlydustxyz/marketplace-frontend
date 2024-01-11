@@ -1,10 +1,10 @@
-import { Card } from "@/components/ds/card/card.tsx";
-import { Typography } from "@/components/layout/typography/typography.tsx";
-import { Flex } from "@/components/layout/flex/flex.tsx";
-import { FiltersTechnologies } from "./filters-technologies/filters-technologies.tsx";
-import { FiltersSponsors } from "./filters-sponsors/filters-sponsors.tsx";
-import { FiltersOwnership } from "./filters-ownership/filters-ownership.tsx";
-import { FiltersClearAll } from "./clear-all/clear-all.tsx";
+import { Card } from "components/ds/card/card";
+import { Typography } from "components/layout/typography/typography";
+import { Flex } from "components/layout/flex/flex";
+import { FiltersTechnologies } from "./filters-technologies/filters-technologies";
+import { FiltersSponsors } from "./filters-sponsors/filters-sponsors";
+import { FiltersOwnership } from "./filters-ownership/filters-ownership";
+import { FiltersClearAll } from "./clear-all/clear-all";
 
 export function ProjectsFilters() {
   return (

@@ -1,7 +1,7 @@
-import CodeSSlashLine from "src/icons/CodeSSlashLine.tsx";
-import { buildLanguageString } from "src/utils/languages.ts";
-import { Tag } from "@/components/ds/tag/tag.tsx";
-import { getTopTechnologies } from "src/utils/technologies.ts";
+import CodeSSlashLine from "src/icons/CodeSSlashLine";
+import { buildLanguageString } from "src/utils/languages";
+import { Tag } from "components/ds/tag/tag";
+import { getTopTechnologies } from "src/utils/technologies";
 import { TTechnologies } from "./technologies.types";
 
 export function Technologies({ technologies }: TTechnologies.Props) {

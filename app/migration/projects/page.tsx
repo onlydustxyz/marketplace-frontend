@@ -3,12 +3,12 @@
 import { Flex } from "components/layout/flex/flex";
 import { useContext } from "react";
 
-import { ProjectsContext } from "./context/project.context.tsx";
-import { Typography } from "@/components/layout/typography/typography.tsx";
-import { ProjectsFilters } from "./features/filters/filters.tsx";
-import { ProjectsSort } from "./features/projects-sort/projects-sort.tsx";
-import { ProjectSearch } from "./features/project-search/project-search.tsx";
-import { ProjectList } from "./features/project-list/project-list.tsx";
+import { ProjectsContext } from "./context/project.context";
+import { Typography } from "components/layout/typography/typography";
+import { ProjectsFilters } from "./features/filters/filters";
+import { ProjectsSort } from "./features/projects-sort/projects-sort";
+import { ProjectSearch } from "./features/project-search/project-search";
+import { ProjectList } from "./features/project-list/project-list";
 
 export default function ProjectsPage() {
   const { count } = useContext(ProjectsContext);

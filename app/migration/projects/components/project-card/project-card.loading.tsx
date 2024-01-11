@@ -1,9 +1,9 @@
-import { Card } from "@/components/ds/card/card.tsx";
-import { Flex } from "@/components/layout/flex/flex.tsx";
-import { TagLoading } from "@/components/ds/tag/tag.loading.tsx";
-import { ThumbnailLoading } from "@/components/ds/thumbnail/thumbnail.loading.tsx";
-import { SkeletonEl } from "@/components/ds/skeleton/skeleton";
-import { ThumbnailGroupLoading } from "@/components/ds/thumbnail-group/thumbnail-group.loading.tsx";
+import { Card } from "components/ds/card/card";
+import { Flex } from "components/layout/flex/flex";
+import { TagLoading } from "components/ds/tag/tag.loading";
+import { ThumbnailLoading } from "components/ds/thumbnail/thumbnail.loading";
+import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { ThumbnailGroupLoading } from "components/ds/thumbnail-group/thumbnail-group.loading";
 
 export function ProjectCardLoading() {
   return (

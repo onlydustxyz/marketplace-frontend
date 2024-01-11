@@ -1,7 +1,7 @@
-import GitRepositoryLine from "../../../../../../src/icons/GitRepositoryLine.tsx";
-import { Tag } from "@/components/ds/tag/tag.tsx";
-import Translate from "@/components/layout/translate/translate.tsx";
-import { TReposCounter } from "./repos-counter.types.ts";
+import GitRepositoryLine from "../../../../../../src/icons/GitRepositoryLine";
+import { Tag } from "components/ds/tag/tag";
+import { Translate } from "components/layout/translate/translate";
+import { TReposCounter } from "./repos-counter.types";
 
 export function ReposCounter({ count }: TReposCounter.Props) {
   if (!count) {

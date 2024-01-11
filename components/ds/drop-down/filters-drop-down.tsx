@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { SelectableTag } from "../selectable-tag/selectable-tag";
-import { Icon } from "@/components/layout/icon/icon";
+import { Icon } from "components/layout/icon/icon";
 import { cn } from "src/utils/cn";
-import { Flex } from "@/components/layout/flex/flex";
-import Translate from "@/components/layout/translate/translate";
+import { Flex } from "components/layout/flex/flex";
+import { Translate } from "components/layout/translate/translate";
 import { Badge } from "../badge/badge";
 import Image from "next/image";
 import { TFiltersDropDown } from "./filters-drop-down.types";

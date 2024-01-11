@@ -1,11 +1,11 @@
 import { useMediaQuery } from "usehooks-ts";
-import { viewportConfig } from "src/config.ts";
-import { cn } from "src/utils/cn.ts";
-import { Button } from "@/components/ds/button/button.tsx";
-import CheckLine from "src/icons/CheckLine.tsx";
-import { projectLeadInvitationBannerVariants } from "@/components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.variants";
+import { viewportConfig } from "src/config";
+import { cn } from "src/utils/cn";
+import { Button } from "components/ds/button/button";
+import CheckLine from "src/icons/CheckLine";
+import { projectLeadInvitationBannerVariants } from "components/features/project-lead-Invitation-banner/project-lead-Invitation-banner.variants";
 import { useMemo } from "react";
-import Translate from "@/components/layout/translate/translate.tsx";
+import { Translate } from "components/layout/translate/translate";
 import { TProjectLeadInvitationBanner } from "./project-lead-Invitation-banner.types";
 
 export function ProjectLeadInvitationBanner({

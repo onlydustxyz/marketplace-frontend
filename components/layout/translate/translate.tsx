@@ -1,7 +1,7 @@
 "use client";
 
-import { useIntl } from "../../../src/hooks/useIntl.tsx";
-import { TTranslate } from "./translate.types.ts";
+import { useIntl } from "src/hooks/useIntl";
+import { TTranslate } from "./translate.types";
 
 export function Translate({ token, params }: TTranslate.Props) {
   const { T } = useIntl();

@@ -1,4 +1,4 @@
-import { RemixIconsName } from "@/components/layout/icon/remix-icon-names.type";
+import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { badgeVariants } from "./badge.variants";
 import { VariantProps } from "tailwind-variants";
 

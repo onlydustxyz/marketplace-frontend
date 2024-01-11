@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { ProjectsContext } from "../../../context/project.context.tsx";
-import { Flex } from "@/components/layout/flex/flex.tsx";
-import { SelectableTag } from "@/components/ds/selectable-tag/selectable-tag.tsx";
-import Translate from "@/components/layout/translate/translate.tsx";
-import { Icon } from "@/components/layout/icon/icon.tsx";
-import { Ownership } from "../../../context/project.context.types.ts";
+import { ProjectsContext } from "../../../context/project.context";
+import { Flex } from "components/layout/flex/flex";
+import { SelectableTag } from "components/ds/selectable-tag/selectable-tag";
+import { Translate } from "components/layout/translate/translate";
+import { Icon } from "components/layout/icon/icon";
+import { Ownership } from "../../../context/project.context.types";
 
 export function FiltersOwnership() {
   const { filters } = useContext(ProjectsContext);

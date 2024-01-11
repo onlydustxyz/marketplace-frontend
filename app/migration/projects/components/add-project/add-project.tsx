@@ -1,6 +1,6 @@
-import { Card } from "@/components/ds/card/card";
-import Translate from "@/components/layout/translate/translate";
-import { Typography } from "@/components/layout/typography/typography";
+import { Card } from "components/ds/card/card";
+import { Translate } from "components/layout/translate/translate";
+import { Typography } from "components/layout/typography/typography";
 import { AddProjectModal } from "./add-project-modal";
 
 export function AddProject() {
