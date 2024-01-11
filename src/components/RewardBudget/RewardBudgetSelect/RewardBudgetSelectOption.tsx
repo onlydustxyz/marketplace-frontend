@@ -24,36 +24,39 @@ export const RewardBudgetSelectOption = ({ budget, last, active }: RewardBudgetS
       key={budget.currency}
       disabled={isDisabled}
       value={budget}
-      className={cn("cursor-pointer border-b border-greyscale-50/12 px-4 py-[6px] hover:bg-greyscale-50/20", {
+      className={cn("cursor-pointer border-b border-greyscale-50/12 px-4 py-2.5 hover:bg-greyscale-50/20", {
         "border-b-0": last,
         "pointer-events-none": isDisabled,
       })}
     >
-      <div className="flex w-auto min-w-full flex-row items-center justify-between gap-2">
-        <div className="flex flex-row items-center justify-start gap-3">
+      <div className="flex w-auto min-w-full items-center justify-between gap-2">
+        <div className="flex items-center gap-3">
           <Chip solid>
             <CurrencyIcons currency={budget.currency} className="h-4 w-4" />
           </Chip>
-          <p className="whitespace-nowrap">
+          <div className="flex items-center gap-1 whitespace-nowrap">
             <span
-              className={cn(
-                "font-walsheim text-sm font-normal",
-                isDisabled && "text-greyscale-500",
-                active && "font-medium text-spacePurple-300"
-              )}
+              className={cn("font-walsheim text-sm font-normal leading-none", {
+                "text-greyscale-500": isDisabled,
+                "font-medium text-spacePurple-300": active,
+              })}
             >
               {T(`currencies.currency.${budget.currency}`)}
             </span>
-            &nbsp;
+
             <span
-              className={cn("font-walsheim text-xs font-normal text-spaceBlue-200", isDisabled && "text-greyscale-500")}
+              className={cn("font-walsheim text-xs font-normal leading-none text-spaceBlue-200", {
+                "text-greyscale-500": isDisabled,
+              })}
             >
               {`(${formatMoneyAmount({ amount: budget.remaining, currency: budget.currency })})`}
             </span>
-          </p>
+          </div>
         </div>
         {budget.currency !== Currency.USD && (
-          <p className={cn("font-walsheim text-xs font-normal text-spaceBlue-200", isDisabled && "text-greyscale-500")}>
+          <p
+            className={cn("font-walsheim text-xs font-normal text-spaceBlue-200", { "text-greyscale-500": isDisabled })}
+          >
             {budget.remainingDollarsEquivalent
               ? `~${formatMoneyAmount({
                   amount: budget.remainingDollarsEquivalent,
