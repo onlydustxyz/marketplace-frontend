@@ -21,8 +21,13 @@ const ImpersonationPage = () => {
       setImpersonateClaim({ sub: `github|${userId}` });
       refetch()
         .then(response => {
-          const { data: userInfo, isFetching } = response;
+          const { data: userInfo, isFetching, isError } = response;
           const claimedGithubUserId = getGithubUserIdFromSub(impersonateClaims?.sub);
+
+          if (isError) {
+            clearImpersonateClaim();
+            navigate(RoutePaths.NotFound);
+          }
 
           if (userInfo && !isFetching && claimedGithubUserId) {
             if (userInfo?.githubUserId === claimedGithubUserId) {
