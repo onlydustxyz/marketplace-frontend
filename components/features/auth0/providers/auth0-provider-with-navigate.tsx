@@ -26,6 +26,8 @@ export function Auth0ProviderWithNavigate({ children }: { children: React.ReactN
         redirect_uri: redirectUri,
         connection: connectionName,
       }}
+      cacheLocation="localstorage"
+      useRefreshTokens={true}
       // onRedirectCallback={onRedirectCallback}
     >
       {children}
