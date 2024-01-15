@@ -1,7 +1,7 @@
 import { Auth0Provider } from "@auth0/auth0-react";
 import React from "react";
 
-export const Auth0ProviderWithNavigate = ({ children }: { children: React.ReactNode }) => {
+export function Auth0ProviderWithNavigate({ children }: { children: React.ReactNode }) {
   // const navigate = useNavigate();
   const domain = process.env.NEXT_PUBLIC_AUTH0_PROVIDER_DOMAIN;
   const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
@@ -31,4 +31,4 @@ export const Auth0ProviderWithNavigate = ({ children }: { children: React.ReactN
       {children}
     </Auth0Provider>
   );
-};
+}

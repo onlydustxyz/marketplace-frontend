@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProjectFilterProvider } from "src/_pages/Projects/useProjectFilter";
 import { ToasterProvider } from "src/hooks/useToaster";
-import ImpersonationProvider from "components/features/impersonation/impersonation.provider";
+import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
 
 // Create a client
 const queryClient = new QueryClient();

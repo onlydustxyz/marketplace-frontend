@@ -5,7 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 import { ToasterProvider } from "src/hooks/useToaster";
 import View from "src/_pages/ProjectDetails/View";
 import { renderWithIntl } from "src/test/utils";
-import ImpersonationProvider from "components/features/impersonation/impersonation.provider";
+import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
 
 const queryClient = new QueryClient();
 

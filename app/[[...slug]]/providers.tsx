@@ -14,7 +14,7 @@ import { SidePanelStackProvider } from "src/hooks/useSidePanelStack.tsx";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { StackProvider } from "src/libs/react-stack";
 import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/auth0-provider-with-navigate.tsx";
-import ImpersonationProvider from "components/features/impersonation/impersonation.provider.tsx";
+import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider.tsx";
 
 const App = dynamic(() => import("src/App"), { ssr: false });
 
