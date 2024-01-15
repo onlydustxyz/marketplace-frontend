@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { useImpersonation } from "../../../components/features/impersonation/use-impersonation.tsx";
+import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
 import MeApi from "src/api/me/index.ts";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
-import { useIntl } from "../../hooks/useIntl.tsx";
+import { useIntl } from "src/hooks/useIntl.tsx";
 
 const ImpersonationPage = () => {
   const { T } = useIntl();
@@ -19,24 +19,24 @@ const ImpersonationPage = () => {
       navigate(RoutePaths.Projects);
     } else {
       setImpersonateClaim({ sub: `github|${userId}` });
-      refetch().then(response => {
-        const { data: userInfo, isFetching, isError } = response;
-        const claimedGithubUserId = getGithubUserIdFromSub(impersonateClaims?.sub);
+      refetch()
+        .then(response => {
+          const { data: userInfo, isFetching } = response;
+          const claimedGithubUserId = getGithubUserIdFromSub(impersonateClaims?.sub);
 
-        if (isError) {
+          if (userInfo && !isFetching && claimedGithubUserId) {
+            if (userInfo?.githubUserId === claimedGithubUserId) {
+              navigate(RoutePaths.Projects);
+            } else {
+              clearImpersonateClaim();
+              navigate(RoutePaths.NotFound);
+            }
+          }
+        })
+        .catch(() => {
           clearImpersonateClaim();
           navigate(RoutePaths.NotFound);
-        }
-
-        if (userInfo && !isFetching && claimedGithubUserId) {
-          if (userInfo?.githubUserId === claimedGithubUserId) {
-            navigate(RoutePaths.Projects);
-          } else {
-            clearImpersonateClaim();
-            navigate(RoutePaths.NotFound);
-          }
-        }
-      });
+        });
     }
   }, [userId, impersonateClaims]);
 
