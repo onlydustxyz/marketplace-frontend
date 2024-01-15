@@ -1,6 +1,13 @@
 import { components } from "src/__generated/api";
-import { WorkItem } from "src/__generated/graphql";
 import { BudgetCurrencyType } from "src/utils/money";
+import { WorkItemType } from "src/types.ts";
+
+export interface WorkItem {
+  id: string;
+  number: number;
+  repoId: number;
+  type: WorkItemType;
+}
 
 export type Contributor = components["schemas"]["ContributorResponse"] & {
   unpaidCompletedContributions: number;
