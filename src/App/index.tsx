@@ -32,6 +32,7 @@ import RewardLoader from "./Loaders/RewardsLoader";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
 import AuthenticationGuard from "components/features/auth0/guards/authentication-guard.tsx";
 import { LeadGuard } from "components/features/auth0/guards/lead-guard.tsx";
+import { AdminGuard } from "../../components/features/auth0/guards/admin-guard.tsx";
 
 export enum RoutePaths {
   Projects = "/",
@@ -153,7 +154,11 @@ function App() {
   const routes = useRoutes([
     {
       path: RoutePaths.Impersonation,
-      element: <ImpersonationPage />,
+      element: (
+        <AdminGuard>
+          <ImpersonationPage />
+        </AdminGuard>
+      ),
     },
     {
       path: RoutePaths.PublicProfile,
