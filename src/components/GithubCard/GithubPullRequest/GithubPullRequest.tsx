@@ -75,7 +75,7 @@ export default function GithubPullRequest({
     >
       <Card
         padded={false}
-        className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {
+        className={cn("flex gap-3 rounded-2xl p-4 shadow-light hover:bg-noise-light hover:backdrop-blur-4xl", {
           "mt-1": addMarginTopForVirtuosoDisplay,
         })}
         withBg={false}
@@ -89,8 +89,8 @@ export default function GithubPullRequest({
               <GithubLink url={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""} text={pullRequest.title} />
             </div>
           </div>
-          <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
-            <div className="flex flex-row items-center gap-1">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
+            <div className="flex items-center gap-1">
               <ContributionCreationDate
                 id={pullRequest.id ?? ""}
                 type={GithubContributionType.PullRequest}
@@ -101,7 +101,7 @@ export default function GithubPullRequest({
                 }}
               />
             </div>
-            <div className="flex flex-row items-center gap-1">
+            <div className="flex items-center gap-1">
               <ContributionDate
                 id={pullRequest.id ?? ""}
                 type={GithubContributionType.PullRequest}
@@ -114,12 +114,12 @@ export default function GithubPullRequest({
                 withIcon
               />
             </div>
-            <div className="inline-flex flex-row items-center gap-1">
+            <div className="inline-flex items-center gap-1">
               <GitRepositoryLine />
               {repoName || pullRequest.repoName}
             </div>
 
-            <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">
+            <div id={pullRequest?.id} className="flex items-center gap-1 ">
               <GitCommitLine />
               {userCommits + "/" + commitsCount}
               {pullRequest?.authorLogin ? (
