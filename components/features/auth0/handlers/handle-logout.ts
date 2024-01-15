@@ -6,7 +6,6 @@ export function handleLogout(
   isImpersonating: boolean,
   clearImpersonateClaim: () => void
 ) {
-  // Create a client
   const queryClient = new QueryClient();
   if (isImpersonating) {
     clearImpersonateClaim();
