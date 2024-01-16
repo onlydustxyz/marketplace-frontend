@@ -120,7 +120,11 @@ export default function GithubPullRequest({
               {pullRequest?.authorLogin ? (
                 <Tooltip anchorId={pullRequest?.id} clickable>
                   <CommitsTooltip
-                    pullRequest={pullRequest}
+                    author={{
+                      authorLogin: pullRequest?.authorLogin,
+                      authorAvatarUrl: pullRequest?.authorAvatarUrl,
+                      githubAuthorId: pullRequest?.githubAuthorId,
+                    }}
                     userCommits={userCommits}
                     commitsCount={commitsCount}
                     contributorLogin={contributorLogin ?? ""}
