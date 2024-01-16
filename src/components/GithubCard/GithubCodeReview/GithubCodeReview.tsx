@@ -9,6 +9,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { GithubCodeReviewStatus, ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
+import { components } from "../../../__generated/api";
 
 export enum Action {
   Add = "add",
@@ -17,7 +18,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getCodeReviewStatusDate(codeReview: RewardableItem) {
+function getCodeReviewStatusDate(codeReview: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>) {
   switch (codeReview?.status) {
     case GithubCodeReviewStatus.Approved:
     case GithubCodeReviewStatus.Dismissed:
@@ -27,7 +28,7 @@ function getCodeReviewStatusDate(codeReview: RewardableItem) {
     case GithubCodeReviewStatus.ChangeRequested:
     case GithubCodeReviewStatus.Commented:
     default:
-      return new Date(codeReview.createdAt);
+      return new Date(codeReview.createdAt ?? new Date());
   }
 }
 
@@ -37,7 +38,7 @@ export type GithubCodeReviewProps = {
   onClick?: () => void;
   onCardClick?: () => void;
   onSecondaryClick?: () => void;
-  codeReview: RewardableItem;
+  codeReview: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -52,9 +53,9 @@ export default function GithubCodeReview({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: GithubCodeReviewProps) {
-  const { title, number, htmlUrl, createdAt } = codeReview || {};
+  const { title, number, htmlUrl, githubUrl, createdAt } = codeReview || {};
 
-  const { repoName } = parsePullRequestLink(htmlUrl ?? "");
+  const { repoName } = parsePullRequestLink(htmlUrl || githubUrl || "");
 
   return (
     <div
@@ -73,14 +74,14 @@ export default function GithubCodeReview({
         {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
         <div className="flex w-full flex-col gap-3 font-walsheim">
           <div className="flex text-sm font-medium text-greyscale-50">
-            <GithubLink url={htmlUrl ?? ""} text={`#${number} · ${title}`} />
+            <GithubLink url={htmlUrl || githubUrl || ""} text={`#${number} · ${title}`} />
           </div>
           <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
             <div className="flex flex-row items-center gap-1">
               <ContributionCreationDate
                 id={codeReview.id as string}
                 type={GithubContributionType.CodeReview}
-                date={new Date(createdAt)}
+                date={new Date(createdAt ?? new Date())}
                 tooltipProps={{
                   variant: Variant.Default,
                   position: TooltipPosition.Bottom,

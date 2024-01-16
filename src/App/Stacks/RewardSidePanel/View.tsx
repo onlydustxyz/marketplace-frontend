@@ -21,7 +21,6 @@ import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
 import { Currency, GithubContributionType, PaymentStatus } from "src/types";
-import { formatRewardItemToGithubCodeReview, formatRewardItemToGithubIssue } from "src/utils/api";
 import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
@@ -34,7 +33,6 @@ import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/St
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 import MixedApi from "../../../api/Mixed";
-import { RewardableItem } from "../../../api/Project/queries.ts";
 
 enum Align {
   Top = "top",
@@ -130,7 +128,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                   return (
                     <GithubIssue
                       key={item.id}
-                      issue={formatRewardItemToGithubIssue(item)}
+                      issue={item}
                       onCardClick={
                         item.contributionId
                           ? () => {
@@ -160,7 +158,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                             }
                           : undefined
                       }
-                      codeReview={formatRewardItemToGithubCodeReview(item) as unknown as RewardableItem}
+                      codeReview={item}
                     />
                   );
                 }

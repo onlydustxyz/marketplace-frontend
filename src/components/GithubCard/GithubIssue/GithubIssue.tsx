@@ -10,6 +10,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { ContributionStatus, GithubContributionType, GithubIssueStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { parseIssueLink } from "src/utils/github";
+import { components } from "../../../__generated/api";
 
 export enum Action {
   Add = "add",
@@ -18,7 +19,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getIssueStatusDate(issue: RewardableItem) {
+function getIssueStatusDate(issue: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>) {
   switch (issue.status) {
     case GithubIssueStatus.Cancelled:
     case GithubIssueStatus.Completed:
@@ -27,7 +28,7 @@ function getIssueStatusDate(issue: RewardableItem) {
       return issue.completedAt ? new Date(issue.completedAt) : new Date();
     case GithubIssueStatus.Open:
     default:
-      return new Date(issue.createdAt);
+      return new Date(issue.createdAt ?? new Date());
   }
 }
 
@@ -37,7 +38,7 @@ export type GithubIssueProps = {
   onClick?: () => void;
   onCardClick?: () => void;
   onSecondaryClick?: () => void;
-  issue: RewardableItem;
+  issue: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -52,7 +53,7 @@ export default function GithubIssue({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: GithubIssueProps) {
-  const { repoName } = parseIssueLink(issue.htmlUrl ?? "");
+  const { repoName } = parseIssueLink(issue?.htmlUrl || issue?.githubUrl || "");
 
   return (
     <div
@@ -71,14 +72,14 @@ export default function GithubIssue({
         {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
         <div className="flex w-full flex-col gap-2 font-walsheim">
           <div className="flex text-sm font-medium text-greyscale-50">
-            <GithubLink url={issue.htmlUrl ?? ""} text={`#${issue.number} · ${issue.title}`} />
+            <GithubLink url={issue?.htmlUrl || issue?.githubUrl || ""} text={`#${issue.number} · ${issue.title}`} />
           </div>
           <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
             <div className="flex flex-row items-center gap-1">
               <ContributionCreationDate
-                id={issue.id}
+                id={issue.id ?? ""}
                 type={GithubContributionType.Issue}
-                date={new Date(issue.createdAt)}
+                date={new Date(issue.createdAt ?? new Date())}
                 tooltipProps={{
                   variant: Variant.Default,
                   position: TooltipPosition.Bottom,
@@ -87,7 +88,7 @@ export default function GithubIssue({
             </div>
             <div className="flex flex-row items-center gap-1">
               <ContributionDate
-                id={issue.id}
+                id={issue.id ?? ""}
                 type={GithubContributionType.Issue}
                 status={issue.status as GithubIssueStatus}
                 date={getIssueStatusDate(issue)}

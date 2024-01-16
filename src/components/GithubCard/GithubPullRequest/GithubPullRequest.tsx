@@ -57,7 +57,7 @@ export default function GithubPullRequest({
   contributorLogin,
   onCardClick,
 }: GithubPullRequestProps) {
-  const { repoName } = parsePullRequestLink(pullRequest?.htmlUrl ?? "");
+  const { repoName } = parsePullRequestLink(pullRequest?.htmlUrl || pullRequest?.githubUrl || "");
 
   const userCommits = pullRequest?.userCommitsCount ?? 0;
   const commitsCount = pullRequest?.commitsCount ?? 0;
@@ -79,7 +79,10 @@ export default function GithubPullRequest({
         {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
         <div className="flex w-full flex-col gap-2 font-walsheim">
           <div className="flex text-sm font-medium text-greyscale-50">
-            <GithubLink url={pullRequest.htmlUrl ?? ""} text={`#${pullRequest.number} · ${pullRequest.title}`} />
+            <GithubLink
+              url={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""}
+              text={`#${pullRequest.number} · ${pullRequest.title}`}
+            />
           </div>
           <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
             <div className="flex flex-row items-center gap-1">
