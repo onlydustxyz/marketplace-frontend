@@ -1,5 +1,5 @@
 import { FetchError } from "./query.type";
-import { IdToken } from "@auth0/auth0-react";
+import { GetTokenSilentlyOptions, GetTokenSilentlyVerboseResponse } from "@auth0/auth0-spa-js";
 
 /**
  * Enum representing string values for various HTTP status codes.
@@ -65,30 +65,34 @@ type HttpOptionsTypeReturn = {
 };
 
 type HttpProps = {
-  getIdToken: () => Promise<IdToken | undefined>;
+  getAccessToken: {
+    (options: GetTokenSilentlyOptions & { detailedResponse: true }): Promise<GetTokenSilentlyVerboseResponse>;
+    (options?: GetTokenSilentlyOptions): Promise<string>;
+    (options: GetTokenSilentlyOptions): Promise<GetTokenSilentlyVerboseResponse | string>;
+  };
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   impersonationHeaders?: Record<string, string> | undefined;
 };
 
 export async function getHttpOptions({
-  getIdToken,
+  getAccessToken,
   method,
   impersonationHeaders,
 }: HttpProps): Promise<HttpOptionsTypeReturn> {
   async function retrieveAccessToken() {
     try {
-      return getIdToken();
+      return getAccessToken();
     } catch {
       return null;
     }
   }
 
-  const idToken = await retrieveAccessToken();
+  const accessToken = await retrieveAccessToken();
 
   const options = {
     method,
     headers: {
-      ...(idToken?.__raw ? { Authorization: `Bearer ${idToken?.__raw}` } : {}),
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
       "Content-Type": "application/json",
       accept: "application/json",
       ...impersonationHeaders,

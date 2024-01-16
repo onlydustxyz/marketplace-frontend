@@ -50,7 +50,7 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
     enabled,
     ...restQueryOptions
   } = queryOptions;
-  const { getIdTokenClaims } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useInfiniteQuery<R>({
@@ -58,7 +58,7 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
     queryFn: async ({ pageParam }) => {
       const { options } = await getHttpOptions({
         method: "GET",
-        getIdToken: getIdTokenClaims,
+        getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
       });
       return fetch(
