@@ -6,6 +6,41 @@ import { Contributor } from "./types";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 import { WorkItemType } from "src/types";
 
+function getContribution(workItem: RewardableWorkItem) {
+  let contribution:
+    | RewardableWorkItem["githubIssue"]
+    | RewardableWorkItem["githubPullRequest"]
+    | RewardableWorkItem["githubCodeReview"];
+
+  switch (workItem.type) {
+    case WorkItemType.Issue:
+      contribution = workItem?.githubIssue;
+      break;
+    case WorkItemType.PullRequest:
+      contribution = workItem?.githubPullRequest;
+      break;
+    case WorkItemType.CodeReview:
+      contribution = workItem?.githubCodeReview;
+      break;
+  }
+
+  return {
+    // TODO get author info
+    githubAuthor: {
+      avatarUrl: "",
+      githubUserId: 0,
+      htmlUrl: contribution?.htmlUrl,
+      login: "",
+    },
+    githubBody: "", // TODO get this from the API
+    githubHtmlUrl: contribution?.htmlUrl,
+    githubNumber: contribution?.number,
+    githubStatus: contribution?.status,
+    githubTitle: contribution?.title,
+    type: contribution?.type,
+  };
+}
+
 export function WorkItem({
   workItem,
   contributor,
@@ -35,8 +70,9 @@ export function WorkItem({
     <Component
       key={workItem.id}
       action={GithubIssueAction.Remove}
-      onClick={action}
+      //onClick={action}
       contributor={contributor}
+      contribution={getContribution(workItem)}
       {...githubProp[workItem.type as WorkItemType]}
     />
   );
