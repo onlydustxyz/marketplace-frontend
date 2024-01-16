@@ -70,7 +70,7 @@ export function WorkItem({
     <Component
       key={workItem.id}
       action={GithubIssueAction.Remove}
-      //onClick={action}
+      onClick={action}
       contributor={contributor}
       contribution={getContribution(workItem)}
       {...githubProp[workItem.type as WorkItemType]}
