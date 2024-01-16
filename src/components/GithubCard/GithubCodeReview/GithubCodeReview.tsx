@@ -1,4 +1,3 @@
-import { GithubCodeReviewFragment } from "src/__generated/graphql";
 import { RewardableItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
@@ -18,7 +17,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment & RewardableItem>) {
+function getCodeReviewStatusDate(codeReview: RewardableItem) {
   switch (codeReview?.status) {
     case GithubCodeReviewStatus.Approved:
     case GithubCodeReviewStatus.Dismissed:
@@ -28,7 +27,7 @@ function getCodeReviewStatusDate(codeReview: Partial<GithubCodeReviewFragment & 
     case GithubCodeReviewStatus.ChangeRequested:
     case GithubCodeReviewStatus.Commented:
     default:
-      return new Date(codeReview.githubPullRequest?.createdAt ?? codeReview.createdAt);
+      return new Date(codeReview.createdAt);
   }
 }
 
@@ -38,7 +37,7 @@ export type GithubCodeReviewProps = {
   onClick?: () => void;
   onCardClick?: () => void;
   onSecondaryClick?: () => void;
-  codeReview: Partial<GithubCodeReviewFragment & RewardableItem>;
+  codeReview: RewardableItem;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -53,7 +52,7 @@ export default function GithubCodeReview({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: GithubCodeReviewProps) {
-  const { title, number, htmlUrl, createdAt } = codeReview?.githubPullRequest || codeReview || {};
+  const { title, number, htmlUrl, createdAt } = codeReview || {};
 
   const { repoName } = parsePullRequestLink(htmlUrl ?? "");
 

@@ -1,10 +1,4 @@
 import { components } from "src/__generated/api";
-import {
-  GithubCodeReviewFragment,
-  GithubIssueFragment,
-  GithubPullRequestWithCommitsFragment,
-} from "src/__generated/graphql";
-import { RewardableItem } from "src/api/Project/queries";
 
 export function formatRewardItemToGithubPullRequest(item: components["schemas"]["RewardItemResponse"]) {
   return {
@@ -15,17 +9,8 @@ export function formatRewardItemToGithubPullRequest(item: components["schemas"][
     completedAt: item.completedAt,
     status: item.status,
     htmlUrl: item.githubUrl,
-    userCommitsCount: {
-      aggregate: {
-        count: item.userCommitsCount || 0,
-      },
-    },
-    commitsCount: {
-      aggregate: {
-        count: item.commitsCount || 0,
-      },
-    },
-    repoId: null,
+    userCommitsCount: item.userCommitsCount,
+    commitsCount: item.commitsCount,
     author: {
       id: item.githubAuthorId,
       login: item.authorLogin,
@@ -33,7 +18,7 @@ export function formatRewardItemToGithubPullRequest(item: components["schemas"][
       htmlUrl: item.authorGithubUrl,
       user: null,
     },
-  } as unknown as GithubPullRequestWithCommitsFragment;
+  };
 }
 
 export function formatRewardItemToGithubIssue(item: components["schemas"]["RewardItemResponse"]) {
@@ -46,15 +31,12 @@ export function formatRewardItemToGithubIssue(item: components["schemas"]["Rewar
     htmlUrl: item.githubUrl,
     status: item.status,
     commentsCount: item.commentsCount,
-    repoId: null,
-  } as unknown as GithubIssueFragment;
+  };
 }
 
-export function formatRewardItemToGithubCodeReview(
-  item: Partial<components["schemas"]["RewardItemResponse"] & RewardableItem>
-) {
+export function formatRewardItemToGithubCodeReview(item: components["schemas"]["RewardItemResponse"]) {
   return {
-    id: item.id || null,
+    id: item.id,
     githubPullRequest: {
       number: item.number,
       title: item.title,
@@ -76,5 +58,5 @@ export function formatRewardItemToGithubCodeReview(
     status: item.status,
     submittedAt: item.createdAt,
     completedAt: item.completedAt,
-  } as unknown as GithubCodeReviewFragment;
+  };
 }

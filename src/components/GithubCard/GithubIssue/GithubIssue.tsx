@@ -1,4 +1,3 @@
-import { GithubIssueFragment } from "src/__generated/graphql";
 import { RewardableItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
@@ -19,7 +18,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getIssueStatusDate(issue: Partial<GithubIssueFragment & RewardableItem>) {
+function getIssueStatusDate(issue: RewardableItem) {
   switch (issue.status) {
     case GithubIssueStatus.Cancelled:
     case GithubIssueStatus.Completed:
@@ -38,7 +37,7 @@ export type GithubIssueProps = {
   onClick?: () => void;
   onCardClick?: () => void;
   onSecondaryClick?: () => void;
-  issue: Partial<GithubIssueFragment & RewardableItem>;
+  issue: RewardableItem;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };

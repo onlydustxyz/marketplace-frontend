@@ -1,10 +1,10 @@
 import { useIntl } from "src/hooks/useIntl";
-import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
 import Contributor from "src/components/Contributor";
-import { RewardableItem } from "src/api/Project/queries";
+import { components } from "../../../__generated/api";
+import { RewardableItem } from "../../../api/Project/queries.ts";
 
 type CommitsTooltipProps = {
-  pullRequest: Partial<GithubPullRequestWithCommitsFragment & RewardableItem>;
+  pullRequest: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>;
   userCommits?: number;
   commitsCount?: number;
   contributorLogin: string;
@@ -26,11 +26,11 @@ export function CommitsTooltip({
         <div className="inline-flex">
           <Contributor
             className="ml-1 flex-row-reverse text-sm"
-            key={pullRequest?.author?.id}
+            key={pullRequest?.githubAuthorId}
             contributor={{
-              login: pullRequest?.author?.login ?? "",
-              avatarUrl: pullRequest?.author?.avatarUrl ?? "",
-              githubUserId: pullRequest?.author?.id,
+              login: pullRequest?.authorLogin ?? "",
+              avatarUrl: pullRequest?.authorAvatarUrl ?? "",
+              githubUserId: pullRequest?.githubAuthorId ?? 0,
             }}
             clickable
           />
