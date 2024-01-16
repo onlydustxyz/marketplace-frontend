@@ -8,12 +8,13 @@ export function Auth0ProviderWithNavigate({ children }: { children: React.ReactN
   const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
   const redirectUri = process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL;
   const connectionName = process.env.NEXT_PUBLIC_AUTH0_DEFAULT_CONNECTION_NAME;
+  const audience = process.env.NEXT_PUBLIC_AUTH0_AUDIENCE;
 
   const onRedirectCallback = (appState: AppState | undefined) => {
     navigate(appState?.returnTo || window.location.pathname);
   };
 
-  if (!(domain && clientId && redirectUri)) {
+  if (!(domain && clientId && redirectUri && audience)) {
     return null;
   }
 
@@ -24,6 +25,7 @@ export function Auth0ProviderWithNavigate({ children }: { children: React.ReactN
       authorizationParams={{
         redirect_uri: redirectUri,
         connection: connectionName,
+        audience,
       }}
       cacheLocation="localstorage"
       useRefreshTokens={true}
