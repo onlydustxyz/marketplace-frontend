@@ -14,7 +14,7 @@ export function Auth0ProviderWithNavigate({ children }: { children: React.ReactN
     navigate(appState?.returnTo || window.location.pathname);
   };
 
-  if (!(domain && clientId && redirectUri)) {
+  if (!(domain && clientId && redirectUri && audience)) {
     return null;
   }
 
