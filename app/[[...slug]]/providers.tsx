@@ -18,6 +18,10 @@ import { ImpersonationProvider } from "components/features/impersonation/imperso
 
 const App = dynamic(() => import("src/App"), { ssr: false });
 
+const PostHogReact = dynamic(() => import("components/vendors/PostHogReact"), {
+  ssr: false,
+});
+
 // Create a client
 const queryClient = new QueryClient();
 
@@ -39,6 +43,7 @@ export default function Providers() {
                           <OnboardingProvider>
                             <App />
                             <Stacks />
+                            <PostHogReact />
                           </OnboardingProvider>
                         )}
                       </SidePanelProvider>

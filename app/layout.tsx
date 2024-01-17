@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import config from "src/config";
 import { sharedMetadata } from "./shared-metadata.ts";
 
-const PostHogPageView = dynamic(() => import("../components/vendors/PostHogPageView"), {
+const PostHogNext = dynamic(() => import("components/vendors/PostHogNext"), {
   ssr: false,
 });
 
@@ -14,12 +14,12 @@ export const metadata: Metadata = sharedMetadata;
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <PHProvider>
-        <body>
+      <body>
+        <PHProvider>
           <div id="root">{children}</div>
-          <PostHogPageView />
-        </body>
-      </PHProvider>
+          <PostHogNext />
+        </PHProvider>
+      </body>
       {config.GTM_ID ? <GoogleTagManager gtmId={config.GTM_ID} /> : null}
     </html>
   );
