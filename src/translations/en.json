@@ -850,7 +850,7 @@
         "invalid": "The form is invalid"
       },
       "starkIdentity": "Starknet wallet address",
-      "starkIdentityPlaceholder": "Starknet adress",
+      "starkIdentityPlaceholder": "Starknet address",
       "website": "Website"
     },
     "missing": {
