@@ -37,15 +37,16 @@ export function useBaseQuery<R = unknown>({
   const queryClient = useQueryClient();
 
   const { enabled, ...restQueryOptions } = queryOptions;
-  const { getIdTokenClaims, isAuthenticated } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useQuery<R>({
     queryKey: [...(tags || []), resourcePath, queryParams, isAuthenticated],
     queryFn: async () => {
       const { options } = await getHttpOptions({
+        isAuthenticated,
         method,
-        getIdToken: getIdTokenClaims,
+        getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
       });
 
