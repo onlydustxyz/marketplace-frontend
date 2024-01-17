@@ -18,7 +18,7 @@ import { ImpersonationProvider } from "components/features/impersonation/imperso
 
 const App = dynamic(() => import("src/App"), { ssr: false });
 
-const PostHogReact = dynamic(() => import("components/vendors/PostHogReact"), {
+const PostHogReact = dynamic(() => import("components/features/posthog/components/posthog-react"), {
   ssr: false,
 });
 

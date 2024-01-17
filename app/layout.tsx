@@ -1,11 +1,11 @@
 import { GoogleTagManager } from "@next/third-parties/google";
-import { PHProvider } from "components/providers/PHProvider.tsx";
+import { PosthogProvider } from "components/features/posthog/providers/posthog.provider";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import config from "src/config";
 import { sharedMetadata } from "./shared-metadata.ts";
 
-const PostHogNext = dynamic(() => import("components/vendors/PostHogNext"), {
+const PosthogNext = dynamic(() => import("components/features/posthog/components/posthog-next"), {
   ssr: false,
 });
 
@@ -15,10 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <PHProvider>
+        <PosthogProvider>
           <div id="root">{children}</div>
-          <PostHogNext />
-        </PHProvider>
+          <PosthogNext />
+        </PosthogProvider>
       </body>
       {config.GTM_ID ? <GoogleTagManager gtmId={config.GTM_ID} /> : null}
     </html>

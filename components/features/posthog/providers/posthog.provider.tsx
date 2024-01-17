@@ -1,7 +1,7 @@
 "use client";
 
 import posthog from "posthog-js";
-import { PostHogProvider } from "posthog-js/react";
+import { PostHogProvider as Provider } from "posthog-js/react";
 import { PropsWithChildren } from "react";
 
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
@@ -14,6 +14,6 @@ if (typeof window !== "undefined" && POSTHOG_KEY && POSTHOG_HOST) {
   });
 }
 
-export function PHProvider({ children }: PropsWithChildren) {
-  return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
+export function PosthogProvider({ children }: PropsWithChildren) {
+  return <Provider client={posthog}>{children}</Provider>;
 }
