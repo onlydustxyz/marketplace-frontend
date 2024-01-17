@@ -40,12 +40,13 @@ export function useBaseUploader<Response = unknown>({
   invalidatesTags,
 }: UseBaseUploaderProps<Response>) {
   const queryClient = useQueryClient();
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useMutation({
     mutationFn: async (data: File): Promise<Response> => {
       const { options } = await getHttpOptions({
+        isAuthenticated,
         method,
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),

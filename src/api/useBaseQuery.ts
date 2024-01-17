@@ -44,6 +44,7 @@ export function useBaseQuery<R = unknown>({
     queryKey: [...(tags || []), resourcePath, queryParams, isAuthenticated],
     queryFn: async () => {
       const { options } = await getHttpOptions({
+        isAuthenticated,
         method,
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),

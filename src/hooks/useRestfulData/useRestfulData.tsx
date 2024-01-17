@@ -38,6 +38,7 @@ export function useRestfulData<R = unknown>({
     queryKey: [...(queryKey || []), resourcePath, pathParam, queryParams, isAuthenticated],
     queryFn: async () => {
       const { options } = await getHttpOptions({
+        isAuthenticated,
         method,
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
@@ -73,12 +74,13 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
   onError,
   onSettled,
 }: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void; onSettled?: () => void }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useMutation({
     mutationFn: async (data: Payload): Promise<Response> => {
       const { options } = await getHttpOptions({
+        isAuthenticated,
         method,
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
@@ -142,12 +144,13 @@ export function useInfiniteRestfulData<R extends ResponseData>(
     enabled,
     ...restQueryOptions
   } = queryOptions;
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
   return useInfiniteQuery<R>({
     queryKey: [...queryKey],
     queryFn: async ({ pageParam }) => {
       const { options } = await getHttpOptions({
+        isAuthenticated,
         method: "GET",
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
