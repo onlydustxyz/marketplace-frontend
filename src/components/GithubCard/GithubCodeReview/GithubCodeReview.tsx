@@ -9,7 +9,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { GithubCodeReviewStatus, ContributionStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
-import { components } from "../../../__generated/api";
+import { RewardItem } from "src/hooks/useInfiniteRewardItems";
 
 export enum Action {
   Add = "add",
@@ -18,7 +18,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getCodeReviewStatusDate(codeReview: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>) {
+function getCodeReviewStatusDate(codeReview: Partial<RewardableItem & RewardItem>) {
   switch (codeReview?.status) {
     case GithubCodeReviewStatus.Approved:
     case GithubCodeReviewStatus.Dismissed:
@@ -38,7 +38,7 @@ export type GithubCodeReviewProps = {
   onClick?: () => void;
   onCardClick?: () => void;
   onSecondaryClick?: () => void;
-  codeReview: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>;
+  codeReview: Partial<RewardableItem & RewardItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };

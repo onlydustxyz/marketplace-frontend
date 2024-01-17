@@ -11,7 +11,7 @@ import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 import { CommitsTooltip } from "./CommitsTooltip";
 import { RewardableItem } from "src/api/Project/queries";
-import { components } from "../../../__generated/api";
+import { RewardItem } from "src/hooks/useInfiniteRewardItems";
 
 export enum Action {
   Add = "add",
@@ -20,7 +20,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getPullRequestStatusDate(pullRequest: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>) {
+function getPullRequestStatusDate(pullRequest: Partial<RewardableItem & RewardItem>) {
   switch (pullRequest.status) {
     case GithubPullRequestStatus.Closed:
     case GithubPullRequestStatus.Merged:
@@ -40,7 +40,7 @@ export type GithubPullRequestProps = {
   onClick?: () => void;
   onCardClick?: () => void;
   onSecondaryClick?: () => void;
-  pullRequest: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>;
+  pullRequest: Partial<RewardableItem & RewardItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
   contributorLogin?: string;

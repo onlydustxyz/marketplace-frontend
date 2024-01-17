@@ -10,7 +10,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { ContributionStatus, GithubContributionType, GithubIssueStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { parseIssueLink } from "src/utils/github";
-import { components } from "../../../__generated/api";
+import { RewardItem } from "src/hooks/useInfiniteRewardItems";
 
 export enum Action {
   Add = "add",
@@ -19,7 +19,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getIssueStatusDate(issue: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>) {
+function getIssueStatusDate(issue: Partial<RewardableItem & RewardItem>) {
   switch (issue.status) {
     case GithubIssueStatus.Cancelled:
     case GithubIssueStatus.Completed:
@@ -38,7 +38,7 @@ export type GithubIssueProps = {
   onClick?: () => void;
   onCardClick?: () => void;
   onSecondaryClick?: () => void;
-  issue: Partial<RewardableItem & components["schemas"]["RewardItemResponse"]>;
+  issue: Partial<RewardableItem & RewardItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
