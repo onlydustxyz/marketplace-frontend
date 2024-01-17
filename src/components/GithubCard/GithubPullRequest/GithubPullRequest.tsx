@@ -1,4 +1,3 @@
-import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
@@ -12,6 +11,7 @@ import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 import { CommitsTooltip } from "./CommitsTooltip";
 import { RewardableItem } from "src/api/Project/queries";
+import { RewardItem } from "src/hooks/useInfiniteRewardItems";
 
 export enum Action {
   Add = "add",
@@ -20,7 +20,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-function getPullRequestStatusDate(pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>) {
+function getPullRequestStatusDate(pullRequest: Partial<RewardableItem & RewardItem>) {
   switch (pullRequest.status) {
     case GithubPullRequestStatus.Closed:
     case GithubPullRequestStatus.Merged:
@@ -30,7 +30,7 @@ function getPullRequestStatusDate(pullRequest: Partial<RewardableItem & GithubPu
     case GithubPullRequestStatus.Open:
     case GithubPullRequestStatus.Draft:
     default:
-      return new Date(pullRequest.createdAt);
+      return new Date(pullRequest.createdAt ?? new Date());
   }
 }
 
@@ -40,7 +40,7 @@ export type GithubPullRequestProps = {
   onClick?: () => void;
   onCardClick?: () => void;
   onSecondaryClick?: () => void;
-  pullRequest: Partial<RewardableItem & GithubPullRequestWithCommitsFragment>;
+  pullRequest: Partial<RewardableItem & RewardItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
   contributorLogin?: string;
@@ -57,10 +57,11 @@ export default function GithubPullRequest({
   contributorLogin,
   onCardClick,
 }: GithubPullRequestProps) {
-  const { repoName } = parsePullRequestLink(pullRequest.htmlUrl ?? "");
+  const { repoName } = parsePullRequestLink(pullRequest?.htmlUrl || pullRequest?.githubUrl || "");
 
-  const userCommits = pullRequest?.userCommitsCount?.aggregate?.count ?? pullRequest?.userCommitsCount ?? 0;
-  const commitsCount = pullRequest?.commitsCount?.aggregate?.count ?? pullRequest?.commitsCount ?? 0;
+  const userCommits = pullRequest?.userCommitsCount ?? 0;
+  const commitsCount = pullRequest?.commitsCount ?? 0;
+
   return pullRequest ? (
     <div
       className={cn("w-full", {
@@ -78,14 +79,17 @@ export default function GithubPullRequest({
         {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
         <div className="flex w-full flex-col gap-2 font-walsheim">
           <div className="flex text-sm font-medium text-greyscale-50">
-            <GithubLink url={pullRequest.htmlUrl ?? ""} text={`#${pullRequest.number} · ${pullRequest.title}`} />
+            <GithubLink
+              url={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""}
+              text={`#${pullRequest.number} · ${pullRequest.title}`}
+            />
           </div>
           <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
             <div className="flex flex-row items-center gap-1">
               <ContributionCreationDate
-                id={pullRequest.id}
+                id={pullRequest.id ?? ""}
                 type={GithubContributionType.PullRequest}
-                date={new Date(pullRequest.createdAt)}
+                date={new Date(pullRequest.createdAt ?? new Date())}
                 tooltipProps={{
                   variant: Variant.Default,
                   position: TooltipPosition.Bottom,
@@ -94,7 +98,7 @@ export default function GithubPullRequest({
             </div>
             <div className="flex flex-row items-center gap-1">
               <ContributionDate
-                id={pullRequest.id}
+                id={pullRequest.id ?? ""}
                 type={GithubContributionType.PullRequest}
                 status={pullRequest.status as GithubPullRequestStatus}
                 date={getPullRequestStatusDate(pullRequest)}
@@ -113,11 +117,14 @@ export default function GithubPullRequest({
             <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">
               <GitCommitLine />
               {userCommits + "/" + commitsCount}
-
-              {pullRequest?.author ? (
+              {pullRequest?.authorLogin ? (
                 <Tooltip anchorId={pullRequest?.id} clickable>
                   <CommitsTooltip
-                    pullRequest={pullRequest}
+                    author={{
+                      authorLogin: pullRequest?.authorLogin,
+                      authorAvatarUrl: pullRequest?.authorAvatarUrl,
+                      githubAuthorId: pullRequest?.githubAuthorId,
+                    }}
                     userCommits={userCommits}
                     commitsCount={commitsCount}
                     contributorLogin={contributorLogin ?? ""}

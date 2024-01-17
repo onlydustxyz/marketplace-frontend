@@ -3,11 +3,6 @@ import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { components } from "src/__generated/api";
-import {
-  GithubCodeReviewFragment,
-  GithubIssueFragment,
-  GithubPullRequestWithCommitsFragment,
-} from "src/__generated/graphql";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -26,11 +21,6 @@ import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
 import { Currency, GithubContributionType, PaymentStatus } from "src/types";
-import {
-  formatRewardItemToGithubCodeReview,
-  formatRewardItemToGithubIssue,
-  formatRewardItemToGithubPullRequest,
-} from "src/utils/api";
 import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
@@ -39,7 +29,6 @@ import { formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
-import { RewardableItem } from "src/api/Project/queries";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
@@ -119,11 +108,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                   return (
                     <GithubPullRequest
                       key={item.id}
-                      pullRequest={
-                        formatRewardItemToGithubPullRequest(item) as Partial<
-                          RewardableItem & GithubPullRequestWithCommitsFragment
-                        >
-                      }
+                      pullRequest={item}
                       onCardClick={
                         item.contributionId
                           ? () => {
@@ -143,7 +128,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                   return (
                     <GithubIssue
                       key={item.id}
-                      issue={formatRewardItemToGithubIssue(item) as Partial<GithubIssueFragment & RewardableItem>}
+                      issue={item}
                       onCardClick={
                         item.contributionId
                           ? () => {
@@ -173,9 +158,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                             }
                           : undefined
                       }
-                      codeReview={
-                        formatRewardItemToGithubCodeReview(item) as Partial<GithubCodeReviewFragment & RewardableItem>
-                      }
+                      codeReview={item}
                     />
                   );
                 }
