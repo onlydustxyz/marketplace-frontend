@@ -1,8 +1,9 @@
 import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
-import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 import { QueryTags } from "./query.type";
 import { UseInfiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
-import { createFetchError, mapHttpStatusToString } from "./query.utils";
+import { createFetchError, getHttpOptions, mapHttpStatusToString } from "./query.utils";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 export interface useInfiniteBaseQueryProps {
   resourcePath: string;
@@ -49,12 +50,19 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
     enabled,
     ...restQueryOptions
   } = queryOptions;
-  const { options, isImpersonating, isValidImpersonation } = useHttpOptions("GET");
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+  const { getImpersonateHeaders } = useImpersonation();
 
   return useInfiniteQuery<R>({
-    queryKey: [...(tags || []), isImpersonating, isValidImpersonation, queryParams],
-    queryFn: ({ pageParam }) =>
-      fetch(
+    queryKey: [...(tags || []), queryParams],
+    queryFn: async ({ pageParam }) => {
+      const { options } = await getHttpOptions({
+        isAuthenticated,
+        method: "GET",
+        getAccessToken: getAccessTokenSilently,
+        impersonationHeaders: getImpersonateHeaders(),
+      });
+      return fetch(
         getEndpointUrl({
           resourcePath,
           pageParam: typeof pageParam === "number" ? pageParam : 0,
@@ -73,7 +81,8 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
         })
         .catch(e => {
           throw e;
-        }),
+        });
+    },
     select: data => {
       // Make sure to return an object that includes the `pages` and `pageParams` properties
       return {
@@ -85,7 +94,7 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
     getNextPageParam,
     refetchInterval,
     refetchIntervalInBackground,
-    enabled: isImpersonating ? isValidImpersonation && enabled : enabled,
+    enabled,
     ...restQueryOptions,
   });
 }

@@ -38,11 +38,9 @@ export default function ShinyBanner({
   return (
     <div
       className={cn(
-        "relative z-10 overflow-hidden rounded-[15px]",
-        "flex w-full items-center justify-center",
-        "before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen before:animate-spin-invert-slow before:bg-multi-color-gradient",
+        "relative z-10 flex w-full items-center justify-center overflow-hidden rounded-[15px]",
+        "before:animate-glow-border-slow before:absolute before:-z-10 before:aspect-square before:w-full before:animate-spin-invert-slow before:bg-multi-color-gradient",
         "after:absolute after:left-px after:top-px after:-z-[1] after:h-[calc(100%-2px)] after:w-[calc(100%-2px)] after:rounded-[15px] after:bg-card-background-base",
-        "before:animate-glow-border-slow",
         {
           "min-h-[60px] p-3": size === CalloutSizes.Small,
           "min-h-[80px] p-4": size === CalloutSizes.Medium,

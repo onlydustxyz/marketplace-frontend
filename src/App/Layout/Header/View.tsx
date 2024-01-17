@@ -1,20 +1,15 @@
 import { RoutePaths } from "src/App";
-import GithubLink from "./GithubLink";
 import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
-import ProfileButton from "./ProfileButton";
 import MenuItem from "src/App/Layout/Header/MenuItem";
 import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
 import { useIntl } from "src/hooks/useIntl";
-import CompletionBar from "src/components/CompletionBar";
-import { useOnboarding } from "src/App/OnboardingProvider";
-import { useAuth } from "src/hooks/useAuth";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { GithubStatusBanner } from "./GithubStatusBanner";
-import { IMAGES } from "src/assets/img";
+import { useAuth0 } from "@auth0/auth0-react";
+import { ProfileButtonDisplay } from "./ProfileButton/ProfileButtonDisplay";
 
 interface HeaderViewProps {
   menuItems: {
@@ -23,25 +18,14 @@ interface HeaderViewProps {
     [RoutePaths.Rewards]?: string;
   };
   selectedMenuItem: string;
-  isLoggedIn: boolean;
-  onLogin?: () => void;
   impersonating?: boolean;
   profileCompletionScore?: number;
 }
 
-export default function HeaderView({
-  menuItems,
-  selectedMenuItem,
-  isLoggedIn,
-  onLogin,
-  impersonating = false,
-  profileCompletionScore,
-}: HeaderViewProps) {
+export default function HeaderView({ menuItems, selectedMenuItem, impersonating = false }: HeaderViewProps) {
   const testing = process.env.NODE_ENV === "test";
   const { T } = useIntl();
-  const { githubUserId } = useAuth();
-  const { onboardingInProgress } = useOnboarding();
-  const [openContributorProfilePanel] = useStackContributorProfile();
+  const { isAuthenticated, isLoading } = useAuth0();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   return (
@@ -89,34 +73,8 @@ export default function HeaderView({
               </>
             )}
             <div className="flex flex-row items-center justify-end gap-4">
-              {isXl ? (
-                <>
-                  {isLoggedIn && !testing ? <FeedbackButton /> : null}
-                  {!onboardingInProgress &&
-                  profileCompletionScore !== undefined &&
-                  profileCompletionScore < 95 &&
-                  githubUserId ? (
-                    <div
-                      className="flex w-48 cursor-pointer flex-col gap-2"
-                      onClick={() => openContributorProfilePanel({ githubUserId })}
-                    >
-                      <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
-                        <img
-                          src={IMAGES.icons.axeCoin}
-                          className="h-4 w-4"
-                          loading="lazy"
-                          alt={T("common.icons.axeCoin")}
-                        />
-                        {T("profile.completion", { completion: profileCompletionScore.toString() })}
-                      </div>
-                      <CompletionBar completionScore={profileCompletionScore} />
-                    </div>
-                  ) : null}
-                </>
-              ) : null}
-              <div className="flex text-base text-white">
-                {!isLoggedIn ? <GithubLink onClick={onLogin} /> : <ProfileButton />}
-              </div>
+              {isXl && isAuthenticated && !testing ? <FeedbackButton /> : null}
+              <ProfileButtonDisplay isLoading={isLoading} isAuthenticated={isAuthenticated} />
             </div>
           </div>
         </div>

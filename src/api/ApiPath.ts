@@ -16,6 +16,8 @@ export const API_PATH = {
   PROJECTS_BY_SLUG: (slug: string) => BASE_API_V1(`projects/slug/${slug}`),
   PROJECT_CONTRIBUTION_DETAIL: (projectId: string, contributionId: string) =>
     BASE_API_V1(`projects/${projectId}/contributions/${contributionId}`),
+  PROJECT_REWARD_DETAIL: (rewardId: string, projectId: string) =>
+    BASE_API_V1(`projects/${projectId}/rewards/${rewardId}`),
   PROJECT_REWARDABLE_ITEMS: (projectId: string) => BASE_API_V1(`projects/${projectId}/rewardable-items`),
   PROJECT_COMPLETED_REWARDABLE_ITEMS: (projectId: string) =>
     BASE_API_V1(`projects/${projectId}/rewardable-items/all-completed`),
@@ -47,11 +49,14 @@ export const API_PATH = {
   ME_PROJECT_LEADER_INVITATIONS: (projectId: string) => BASE_API_V1(`me/project-leader-invitations/${projectId}`),
   ME: BASE_API_V1("me"),
   ME_REWARDS: BASE_API_V1("me/rewards"),
+  ME_REWARD_DETAIL: (rewardId: string) => BASE_API_V1(`me/rewards/${rewardId}`),
+  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoice"),
   ME_GITHUB_ORGANIZATIONS: BASE_API_V1("me/organizations"),
   MY_CONTRIBUTED_PROJECTS: BASE_API_V1("me/contributed-projects"),
   MY_CONTRIBUTED_REPOS: BASE_API_V1("me/contributed-repos"),
   MY_CLAIM: (projectId: string) => BASE_API_V1(`me/project-claims/${projectId}`),
   ME_APPLY_TO_PROJECT: BASE_API_V1("me/applications"),
+  ME_MARK_INVOICE_AS_RECEIVED: BASE_API_V1("me/invoices"),
   MY_PAYOUT_INFO: BASE_API_V1("me/payout-info"),
   ME_PROFILE: BASE_API_V1("me/profile"),
   ME_REWARDS_CURRENCIES: BASE_API_V1("me/reward-currencies"),

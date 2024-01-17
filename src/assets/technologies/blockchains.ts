@@ -1,4 +1,5 @@
 export const frameworks = {
+  Blockchain: true,
   DeFi: true,
   Ethereum: true,
   Foundry: true,
@@ -8,6 +9,7 @@ export const frameworks = {
   NEM: true,
   NEO: true,
   Nile: true,
+  Optimism: true,
   Protostar: true,
   Quorum: true,
   Ripple: true,

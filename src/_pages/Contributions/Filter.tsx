@@ -11,7 +11,7 @@ import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { GithubContributionType } from "src/types";
-import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
+import { allTime, formatDateQueryParam } from "src/utils/date";
 
 export type Filters = {
   dateRange: DateRange;
@@ -93,7 +93,7 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
   }, [filters, projectIds, repoIds]);
 
   const hasActiveFilters = Boolean(
-    (filters?.dateRange?.from && filters?.dateRange?.to && !isAllTime(filters?.dateRange)) ||
+    filters.period !== initialFilters.period ||
       filters.types?.length ||
       filters.projects?.length ||
       filters.repos?.length
