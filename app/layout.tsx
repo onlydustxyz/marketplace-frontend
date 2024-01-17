@@ -1,4 +1,5 @@
 import { GoogleTagManager } from "@next/third-parties/google";
+import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/auth0-provider-with-navigate";
 import { PosthogProvider } from "components/features/posthog/providers/posthog.provider";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
@@ -16,7 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <PosthogProvider>
-          <div id="root">{children}</div>
+          <Auth0ProviderWithNavigate>
+            <div id="root">{children}</div>
+          </Auth0ProviderWithNavigate>
           <PosthogNext />
         </PosthogProvider>
       </body>

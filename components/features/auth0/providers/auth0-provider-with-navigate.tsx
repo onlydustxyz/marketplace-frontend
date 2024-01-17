@@ -1,10 +1,10 @@
+"use client";
+
 import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
 import posthog from "posthog-js";
 import { ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 
 export function Auth0ProviderWithNavigate({ children }: { children: ReactNode }) {
-  const navigate = useNavigate();
   const domain = process.env.NEXT_PUBLIC_AUTH0_PROVIDER_DOMAIN;
   const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
   const redirectUri = process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL;
@@ -16,7 +16,7 @@ export function Auth0ProviderWithNavigate({ children }: { children: ReactNode })
       posthog.capture("user_logged_in");
     }
 
-    navigate(appState?.returnTo || window.location.pathname);
+    window.location.href = appState?.returnTo || window.location.pathname;
   };
 
   if (!(domain && clientId && redirectUri && audience)) {
