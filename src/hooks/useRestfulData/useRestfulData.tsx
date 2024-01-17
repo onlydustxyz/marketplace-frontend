@@ -31,15 +31,16 @@ export function useRestfulData<R = unknown>({
   ...queryOptions
 }: UseRestfulDataProps<R>) {
   const { enabled, ...restQueryOptions } = queryOptions;
-  const { isAuthenticated, getIdTokenClaims } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useQuery<R>({
     queryKey: [...(queryKey || []), resourcePath, pathParam, queryParams, isAuthenticated],
     queryFn: async () => {
       const { options } = await getHttpOptions({
+        isAuthenticated,
         method,
-        getIdToken: getIdTokenClaims,
+        getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
       });
 
@@ -73,14 +74,15 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
   onError,
   onSettled,
 }: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void; onSettled?: () => void }) {
-  const { getIdTokenClaims } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useMutation({
     mutationFn: async (data: Payload): Promise<Response> => {
       const { options } = await getHttpOptions({
+        isAuthenticated,
         method,
-        getIdToken: getIdTokenClaims,
+        getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
       });
       return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
@@ -142,14 +144,15 @@ export function useInfiniteRestfulData<R extends ResponseData>(
     enabled,
     ...restQueryOptions
   } = queryOptions;
-  const { getIdTokenClaims } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
   return useInfiniteQuery<R>({
     queryKey: [...queryKey],
     queryFn: async ({ pageParam }) => {
       const { options } = await getHttpOptions({
+        isAuthenticated,
         method: "GET",
-        getIdToken: getIdTokenClaims,
+        getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
       });
       return fetch(
