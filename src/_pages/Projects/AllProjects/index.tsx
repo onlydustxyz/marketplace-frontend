@@ -10,13 +10,14 @@ import { useProjectFilter } from "src/_pages/Projects/useProjectFilter";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";
-import AllProjectsFallback from "./AllProjectsFallback";
 import AllProjectLoading from "./AllProjectsLoading";
 import { Sponsor } from "src/types";
 import { uniqBy } from "lodash";
 import SubmitProject from "../SubmitProject";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { EmptyState } from "../../../../components/layout/placeholders/empty-state.tsx";
+import { IMAGES } from "../../../assets/img";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -54,6 +55,11 @@ export default function AllProjects({
     projectFilter: { ownership, technologies, sponsors },
     clear: clearFilters,
   } = useProjectFilter();
+
+  function handleClear() {
+    clearFilters();
+    clearSearch();
+  }
 
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
@@ -149,11 +155,12 @@ export default function AllProjects({
   }
 
   return (
-    <AllProjectsFallback
-      clearFilters={() => {
-        clearFilters();
-        clearSearch();
-      }}
+    <EmptyState
+      illustrationSrc={IMAGES.global.categories}
+      titleToken="projects.fallback.title"
+      descriptionToken="projects.fallback.subTitle"
+      actionLabelToken="projects.fallback.clearFiltersButton"
+      onAction={handleClear}
     />
   );
 }

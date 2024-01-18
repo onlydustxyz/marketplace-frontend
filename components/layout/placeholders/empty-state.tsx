@@ -1,39 +1,48 @@
-import { ReactNode } from "react";
 import { Button } from "components/ds/button/button";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+import Image from "next/image";
+import { Key } from "src/hooks/useIntl";
+import { ElementType } from "react";
 
 interface EmptyStateProps {
-  illustration: ReactNode;
-  titleToken: string;
-  descriptionToken?: string;
-  actionLabelToken?: string;
+  as?: ElementType;
+  illustrationSrc: string;
+  titleToken: Key;
+  descriptionToken?: Key;
+  actionLabelToken?: Key;
   onAction?: () => void;
 }
 
 export function EmptyState({
-  illustration,
+  as = "section",
+  illustrationSrc,
   titleToken,
   descriptionToken,
   actionLabelToken,
   onAction,
 }: EmptyStateProps) {
+  const Component = as;
   return (
-    <div className="flex flex-col items-center justify-center p-4 text-center">
-      {illustration}
-      <Typography variant="body-s">
-        <Translate token={titleToken} />
-      </Typography>
-      {descriptionToken ? (
-        <Typography variant="body-s">
-          <Translate token={descriptionToken} />
-        </Typography>
-      ) : null}
+    <Component className="flex flex-col items-center justify-center gap-6 p-6 text-center">
+      <div className="w-20">
+        <Image src={illustrationSrc} width={80} height={80} alt="Empty state picture" />
+      </div>
+      <div>
+        <Typography variant="title-l" className="mb-1 font-belwe" translate={{ token: titleToken }} />
+        {descriptionToken ? (
+          <Typography
+            variant="body-s"
+            className="font-walsheim text-spaceBlue-200"
+            translate={{ token: descriptionToken }}
+          />
+        ) : null}
+      </div>
       {actionLabelToken ? (
-        <Button size="s" className="whitespace-nowrap" variant="secondary" accentColor="orange" onClick={onAction}>
+        <Button size="m" className="whitespace-nowrap" variant="primary" accentColor="orange" onClick={onAction}>
           <Translate token={actionLabelToken} />
         </Button>
       ) : null}
-    </div>
+    </Component>
   );
 }
