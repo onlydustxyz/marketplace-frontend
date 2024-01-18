@@ -57,7 +57,7 @@ export default function GithubCodeReview({
   addMarginTopForVirtuosoDisplay = false,
   contribution,
 }: GithubCodeReviewProps) {
-  const { title, number, htmlUrl, githubUrl, createdAt } = codeReview || {};
+  const { title, htmlUrl, githubUrl, createdAt } = codeReview || {};
 
   const { repoName } = parsePullRequestLink(htmlUrl || githubUrl || "");
 
@@ -81,7 +81,7 @@ export default function GithubCodeReview({
             <ContributionBadge contribution={contribution} />
 
             <div className="flex text-sm font-medium text-greyscale-50">
-              <GithubLink url={htmlUrl || githubUrl || ""} text={`#${number} · ${title}`} />
+              <GithubLink url={htmlUrl || githubUrl || ""} text={title ?? ""} />
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
