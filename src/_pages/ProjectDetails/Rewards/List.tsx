@@ -92,6 +92,7 @@ const RewardList: React.FC = () => {
         />
       );
     }
+    return null;
   }, [hasActiveFilters, filterRef, project, rewards]);
 
   if (error) {
