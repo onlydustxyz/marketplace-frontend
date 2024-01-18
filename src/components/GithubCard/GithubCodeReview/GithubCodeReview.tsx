@@ -6,10 +6,12 @@ import { GithubActionButton } from "src/components/GithubCard/GithubActionButton
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { GithubCodeReviewStatus, ContributionStatus, GithubContributionType } from "src/types";
+import { ContributionStatus, GithubCodeReviewStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 import { RewardItem } from "src/hooks/useInfiniteRewardItems";
+import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
+import { ComponentProps } from "react";
 
 export enum Action {
   Add = "add",
@@ -41,6 +43,7 @@ export type GithubCodeReviewProps = {
   codeReview: Partial<RewardableItem & RewardItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
+  contribution: ComponentProps<typeof ContributionBadge>["contribution"];
 };
 
 export default function GithubCodeReview({
@@ -52,6 +55,7 @@ export default function GithubCodeReview({
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
+  contribution,
 }: GithubCodeReviewProps) {
   const { title, number, htmlUrl, githubUrl, createdAt } = codeReview || {};
 
@@ -66,18 +70,22 @@ export default function GithubCodeReview({
     >
       <Card
         padded={false}
-        className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light", {
+        className={cn("flex gap-3 rounded-2xl p-4 hover:bg-noise-light", {
           "mt-1": addMarginTopForVirtuosoDisplay,
         })}
         withBg={false}
       >
         {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
         <div className="flex w-full flex-col gap-3 font-walsheim">
-          <div className="flex text-sm font-medium text-greyscale-50">
-            <GithubLink url={htmlUrl || githubUrl || ""} text={`#${number} · ${title}`} />
+          <div className="flex items-center gap-2">
+            <ContributionBadge contribution={contribution} />
+
+            <div className="flex text-sm font-medium text-greyscale-50">
+              <GithubLink url={htmlUrl || githubUrl || ""} text={`#${number} · ${title}`} />
+            </div>
           </div>
-          <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
-            <div className="flex flex-row items-center gap-1">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
+            <div className="flex items-center gap-1">
               <ContributionCreationDate
                 id={codeReview.id as string}
                 type={GithubContributionType.CodeReview}
@@ -88,7 +96,7 @@ export default function GithubCodeReview({
                 }}
               />
             </div>
-            <div className="flex flex-row items-center gap-1">
+            <div className="flex items-center gap-1">
               <ContributionDate
                 id={codeReview.id as string}
                 type={GithubContributionType.CodeReview}
@@ -101,7 +109,7 @@ export default function GithubCodeReview({
                 withIcon
               />
             </div>
-            <div className="flex flex-row items-center gap-1">
+            <div className="flex items-center gap-1">
               <GitRepositoryLine />
               {repoName}
             </div>

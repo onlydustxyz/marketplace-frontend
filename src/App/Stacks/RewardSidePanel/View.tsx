@@ -189,6 +189,20 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                           : undefined
                       }
                       codeReview={item}
+                      contribution={{
+                        githubAuthor: {
+                          avatarUrl: item.authorAvatarUrl ?? "",
+                          githubUserId: item.githubAuthorId ?? 0,
+                          htmlUrl: item.githubUrl,
+                          login: item.authorLogin ?? "",
+                        },
+                        githubBody: "", // TODO get this from the API
+                        githubHtmlUrl: item.githubUrl,
+                        githubNumber: item.number,
+                        githubStatus: item.status,
+                        githubTitle: item.title,
+                        type: item.type,
+                      }}
                     />
                   );
                 }
