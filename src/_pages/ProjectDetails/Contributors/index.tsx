@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
-import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
@@ -22,6 +21,8 @@ import ProjectApi from "src/api/Project";
 import { RewardProjectButton } from "../components/RewardProjectButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { IMAGES } from "../../../assets/img";
+import { EmptyState } from "../../../../components/layout/placeholders/empty-state.tsx";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -127,7 +128,14 @@ export default function Contributors() {
           }}
         />
       )}
-      {!isFetching && contributors?.length === 0 && <ContributorsTableFallback projectName={project?.name} />}
+      {!isFetching && contributors?.length === 0 && (
+        <EmptyState
+          illustrationSrc={IMAGES.icons.atom}
+          titleToken="contributor.tableFallback.noContributor"
+          titleTokenParams={{ projectName: project?.name }}
+          descriptionToken="contributor.tableFallback.relevantProfiles"
+        />
+      )}
     </>
   );
 }

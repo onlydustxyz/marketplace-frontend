@@ -9,7 +9,9 @@ interface EmptyStateProps {
   as?: ElementType;
   illustrationSrc: string;
   titleToken: Key;
+  titleTokenParams?: Record<string, string>;
   descriptionToken?: Key;
+  descriptionTokenParams?: Record<string, string>;
   actionLabelToken?: Key;
   onAction?: () => void;
 }
@@ -18,7 +20,9 @@ export function EmptyState({
   as = "section",
   illustrationSrc,
   titleToken,
+  titleTokenParams,
   descriptionToken,
+  descriptionTokenParams,
   actionLabelToken,
   onAction,
 }: EmptyStateProps) {
@@ -26,16 +30,19 @@ export function EmptyState({
   return (
     <Component className="flex flex-col items-center justify-center gap-6 p-6 text-center">
       <div className="w-20">
-        {/*TODO replace alt value with the string translate component*/}
         <Image src={illustrationSrc} width={80} height={80} alt="Empty state picture" />
       </div>
       <div>
-        <Typography variant="title-l" className="mb-1 font-belwe" translate={{ token: titleToken }} />
+        <Typography
+          variant="title-l"
+          className="mb-1 font-belwe"
+          translate={{ token: titleToken, params: titleTokenParams }}
+        />
         {descriptionToken ? (
           <Typography
             variant="body-s"
             className="font-walsheim text-spaceBlue-200"
-            translate={{ token: descriptionToken }}
+            translate={{ token: descriptionToken, params: descriptionTokenParams }}
           />
         ) : null}
       </div>
