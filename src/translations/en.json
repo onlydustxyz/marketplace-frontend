@@ -104,6 +104,8 @@
       "comments": "Comments",
       "linkedTo": "Linked to",
       "empty": "No contributions here.",
+      "emptyTitle": "Nothing to show",
+      "emptyDescription": "No contribution __tab__",
       "error": "An error occurred, please try again later."
     },
     "tooltip": {
