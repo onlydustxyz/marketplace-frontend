@@ -3,24 +3,21 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import posthog from "posthog-js";
 import { useEffect } from "react";
-import { getGithubUserIdFromSub } from "../../auth0/utils/getGithubUserIdFromSub.util.ts";
+import MeApi from "src/api/me";
 
 export function PosthogIdentifyUser() {
   const { isAuthenticated, user } = useAuth0();
 
+  const { data } = MeApi.queries.useGetMe({});
+
   useEffect(() => {
-    if (isAuthenticated && user) {
-      // TODO get infos from /api/v1/me as well as auth0 user
-      // Get backend to add created_at to /api/v1/me
+    if (isAuthenticated && user && data) {
+      const { email } = user;
+      const { isAdmin: admin, created_at, githubUserId: github_user_id, id } = data;
 
-      console.log({ user });
-
-      const { created_at, email, name, sub } = user;
-      const github_user_id = getGithubUserIdFromSub(sub);
-
-      posthog.identify(sub, { created_at, email, github_user_id, name });
+      posthog.identify(id, { admin, created_at, email, github_user_id });
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, data]);
 
   return null;
 }

@@ -1,5 +1,7 @@
 import { GoogleTagManager } from "@next/third-parties/google";
+import { QueryProvider } from "components/features/api/providers/query-provider";
 import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/auth0-provider-with-navigate";
+import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
 import { PosthogIdentifyUser } from "components/features/posthog/components/posthog-identify-user";
 import { PosthogProvider } from "components/features/posthog/providers/posthog.provider";
 import type { Metadata } from "next";
@@ -19,8 +21,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <PosthogProvider>
           <Auth0ProviderWithNavigate>
-            <div id="root">{children}</div>
-            <PosthogIdentifyUser />
+            <ImpersonationProvider>
+              <QueryProvider>
+                <div id="root">{children}</div>
+                <PosthogIdentifyUser />
+              </QueryProvider>
+            </ImpersonationProvider>
           </Auth0ProviderWithNavigate>
           <PosthogNext />
         </PosthogProvider>

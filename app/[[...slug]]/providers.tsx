@@ -1,5 +1,3 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
 import dynamic from "next/dynamic";
 import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter } from "react-router-dom";
@@ -20,35 +18,28 @@ const PostHogReact = dynamic(() => import("components/features/posthog/component
   ssr: false,
 });
 
-// Create a client
-const queryClient = new QueryClient();
-
 export default function Providers() {
   return (
     <IntlProvider>
       <BrowserRouter>
         <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
-          <ImpersonationProvider>
-            <ToasterProvider>
-              <QueryClientProvider client={queryClient}>
-                <StackProvider>
-                  <SidePanelStackProvider>
-                    <SidePanelProvider>
-                      {config.MAINTENANCE ? (
-                        <Maintenance />
-                      ) : (
-                        <OnboardingProvider>
-                          <App />
-                          <Stacks />
-                          <PostHogReact />
-                        </OnboardingProvider>
-                      )}
-                    </SidePanelProvider>
-                  </SidePanelStackProvider>
-                </StackProvider>
-              </QueryClientProvider>
-            </ToasterProvider>
-          </ImpersonationProvider>
+          <ToasterProvider>
+            <StackProvider>
+              <SidePanelStackProvider>
+                <SidePanelProvider>
+                  {config.MAINTENANCE ? (
+                    <Maintenance />
+                  ) : (
+                    <OnboardingProvider>
+                      <App />
+                      <Stacks />
+                      <PostHogReact />
+                    </OnboardingProvider>
+                  )}
+                </SidePanelProvider>
+              </SidePanelStackProvider>
+            </StackProvider>
+          </ToasterProvider>
         </ErrorBoundary>
       </BrowserRouter>
     </IntlProvider>
