@@ -96,10 +96,12 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
     }
 
     if (rewardItems.length) {
+      const [{ totalItemNumber = 0 }] = rewardItemsData?.pages ?? [{}];
+
       return (
         <div className="flex h-full flex-col gap-3 overflow-hidden pt-8">
           <div className="font-belwe text-base font-normal text-greyscale-50">
-            {T("reward.table.detailsPanel.contributions", { count: rewardItems.length })}
+            {T("reward.table.detailsPanel.contributions", { count: totalItemNumber })}
           </div>
           <div className="flex h-0 flex-auto flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
             {rewardItems.map(item => {
