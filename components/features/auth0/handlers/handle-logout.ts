@@ -14,6 +14,7 @@ export function handleLogout(
     window.location.reload();
   } else {
     posthog.capture("user_logged_out");
+    posthog.reset();
     logout({
       logoutParams: {
         returnTo: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL || "/",
