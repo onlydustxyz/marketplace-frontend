@@ -13,7 +13,7 @@ export function PosthogIdentifyUser() {
   useEffect(() => {
     if (isAuthenticated && user && data) {
       const { email } = user;
-      const { isAdmin: admin, created_at, githubUserId: github_user_id, id } = data;
+      const { isAdmin: admin, createdAt: created_at, githubUserId: github_user_id, id } = data;
 
       posthog.identify(id, { admin, created_at, email, github_user_id });
     }
