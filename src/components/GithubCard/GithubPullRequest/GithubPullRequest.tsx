@@ -12,7 +12,7 @@ import { parsePullRequestLink } from "src/utils/github";
 import { CommitsTooltip } from "./CommitsTooltip";
 import { RewardableItem } from "src/api/Project/queries";
 import { RewardItem } from "src/hooks/useInfiniteRewardItems";
-import { ContributionBadge } from "src/components/Contribution/ContributionBadge.tsx";
+import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ComponentProps } from "react";
 
 export enum Action {
