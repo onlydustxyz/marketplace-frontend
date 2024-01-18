@@ -26,6 +26,7 @@ export function EmptyState({
   return (
     <Component className="flex flex-col items-center justify-center gap-6 p-6 text-center">
       <div className="w-20">
+        {/*TODO replace alt value with the string translate component*/}
         <Image src={illustrationSrc} width={80} height={80} alt="Empty state picture" />
       </div>
       <div>
