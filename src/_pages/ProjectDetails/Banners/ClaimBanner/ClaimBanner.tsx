@@ -40,7 +40,7 @@ export default function ClaimBanner() {
   return (
     <RainbowBanner
       description={T("project.claim.banner.content", { projectName: project?.name || "" })}
-      customButton={<ClaimButton projectKey={projectKey} callback={onBannerClick} />}
+      customButton={<ClaimButton callback={onBannerClick} />}
     />
   );
 }

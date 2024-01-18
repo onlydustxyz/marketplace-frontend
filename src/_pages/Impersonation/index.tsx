@@ -1,55 +1,51 @@
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { Toaster } from "src/components/Toaster";
-import { useAuth } from "src/hooks/useAuth";
-import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
-import { useTokenSet } from "src/hooks/useTokenSet";
-import PasswordForm from "src/_pages/Impersonation/PasswordForm";
+import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
+import MeApi from "src/api/me/index.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { useIntl } from "src/hooks/useIntl.tsx";
 
 const ImpersonationPage = () => {
+  const { T } = useIntl();
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { setImpersonationSet, clearImpersonationSet } = useImpersonationClaims();
-  const { invalidImpersonation, impersonating } = useAuth();
-  const { tokenSet } = useTokenSet();
-
-  if (!tokenSet?.accessToken) {
-    navigate(RoutePaths.Projects);
-  }
-
-  const onPasswordSubmit = (password: string) => {
-    if (userId) {
-      setImpersonationSet({ password, userId });
-    }
-  };
+  const { getImpersonateClaim, setImpersonateClaim, clearImpersonateClaim } = useImpersonation();
+  const impersonateClaims = getImpersonateClaim();
+  const { refetch } = MeApi.queries.useGetMe({ options: { retry: 1 } });
 
   useEffect(() => {
     if (!userId) {
       navigate(RoutePaths.Projects);
-    }
-  }, [userId]);
+    } else {
+      setImpersonateClaim({ sub: `github|${userId}` });
+      refetch()
+        .then(response => {
+          const { data: userInfo, isFetching, isError } = response;
+          const claimedGithubUserId = getGithubUserIdFromSub(impersonateClaims?.sub);
 
-  useEffect(() => {
-    if (invalidImpersonation) {
-      clearImpersonationSet();
-    }
-  }, [invalidImpersonation]);
+          if (isError) {
+            clearImpersonateClaim();
+            navigate(RoutePaths.NotFound);
+          }
 
-  useEffect(() => {
-    if (impersonating) {
-      navigate(RoutePaths.Projects);
+          if (userInfo && !isFetching && claimedGithubUserId) {
+            if (userInfo?.githubUserId === claimedGithubUserId) {
+              navigate(RoutePaths.Projects);
+            } else {
+              clearImpersonateClaim();
+              navigate(RoutePaths.NotFound);
+            }
+          }
+        })
+        .catch(() => {
+          clearImpersonateClaim();
+          navigate(RoutePaths.NotFound);
+        });
     }
-  }, [impersonating]);
+  }, [userId, impersonateClaims]);
 
-  return (
-    <>
-      <div className="flex h-[calc(100dvh)] items-center justify-center bg-space">
-        <PasswordForm onSubmit={onPasswordSubmit} />
-      </div>
-      <Toaster />
-    </>
-  );
+  return <Link to={RoutePaths.Projects}>{T("notFound.button")}</Link>;
 };
 
 export default ImpersonationPage;

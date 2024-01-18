@@ -1,7 +1,0 @@
-query GetProjectIdFromKey($projectKey: String!) {
-  projects(where: { key: { _eq: $projectKey } }) {
-    ...ProjectId
-    name
-    shortDescription
-  }
-}

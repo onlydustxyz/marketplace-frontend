@@ -57,26 +57,23 @@ const UseQueriesError = ({ queries, errorComponent, errorLabel }: Props) => {
  *
  * @returns {React.ReactElement | null} - A React element to render based on the error type, or null if no error.
  */
-function useQueriesErrorBehavior({ queries, errorLabel, errorComponent }: Props): React.ReactElement | null {
-  const { T } = useIntl();
-
+function useQueriesErrorBehavior({ queries }: Props): React.ReactElement | null {
   if (queries.isError) {
     const isErrorTyped = queries.error instanceof Error && "errorType" in queries.error;
     const typedError = isErrorTyped ? (queries.error as FetchError) : null;
 
     // Navigate to NotFound page for HttpStatusStrings.NOT_FOUND
-    if (typedError?.errorType === HttpStatusStrings.NOT_FOUND) {
+    if (
+      typedError?.errorType === HttpStatusStrings.NOT_FOUND ||
+      typedError?.errorType === HttpStatusStrings.FORBIDDEN
+    ) {
       return <Navigate to={RoutePaths.NotFound} />;
     } else if (typedError) {
       // Return a generic ErrorFallback for other types of errors
       return <ErrorFallback />;
     }
 
-    // Return a custom error component or a default retry button
-    if (errorComponent) {
-      return errorComponent({ refetch: queries.refetch });
-    }
-    return <Button onClick={queries.refetch}>{errorLabel || T("common.retry")}</Button>;
+    return <ErrorFallback />;
   }
 
   return null;

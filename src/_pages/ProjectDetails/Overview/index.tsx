@@ -1,14 +1,11 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import Flex from "src/components/Utils/Flex";
 import { viewportConfig } from "src/config";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import Title from "src/_pages/ProjectDetails/Title";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { useMediaQuery } from "usehooks-ts";
@@ -26,19 +23,19 @@ import { RewardProjectButton } from "../components/RewardProjectButton";
 import { ProjectOverviewRepos } from "src/components/Project/Overview/OverviewRepos/OverviewRepos";
 import { ProjectOverviewHeader } from "src/components/Project/Overview/OverviewHeader";
 import ApplyCallout from "./components/ProjectApply";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
 
 export default function Overview() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const dispatchSession = useSessionDispatch();
 
   const { projectKey = "" } = useParams<{ projectKey: string }>();
   const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
   });
 
-  const { isLoggedIn, githubUserId } = useAuth();
-  const { lastVisitedProjectId } = useSession();
+  const { isAuthenticated, user } = useAuth0();
 
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: project?.id });
@@ -47,13 +44,9 @@ export default function Overview() {
 
   const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});
 
-  const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
+  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
-  useEffect(() => {
-    if (project?.id && project?.id !== lastVisitedProjectId && isProjectLeader) {
-      dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: project?.id });
-    }
-  }, [project?.id, isProjectLeader]);
+  const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
@@ -111,10 +104,9 @@ export default function Overview() {
           {hiring && !project.me?.isMember && myProfileInfo && (
             <ApplyCallout
               {...{
-                isLoggedIn,
+                isAuthenticated,
                 alreadyApplied: project.me?.hasApplied || false,
                 applyToProject,
-                dispatchSession,
                 profile: myProfileInfo,
               }}
             />

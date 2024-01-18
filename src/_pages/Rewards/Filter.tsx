@@ -5,7 +5,7 @@ import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySe
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useLocalStorage } from "usehooks-ts";
 import { Item } from "src/components/New/Filter/FilterSelect";
-import { allTime, formatDateQueryParam, isAllTime } from "src/utils/date";
+import { allTime, formatDateQueryParam } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
@@ -98,7 +98,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    !isAllTime(filters?.dateRange) || filters.projects?.length || filters.currency?.value
+    filters.period !== initialFilters.period || filters.projects?.length || filters.currency?.value
   );
 
   function resetFilters() {
