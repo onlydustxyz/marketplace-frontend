@@ -63,7 +63,10 @@ function useQueriesErrorBehavior({ queries }: Props): React.ReactElement | null 
     const typedError = isErrorTyped ? (queries.error as FetchError) : null;
 
     // Navigate to NotFound page for HttpStatusStrings.NOT_FOUND
-    if (typedError?.errorType === HttpStatusStrings.NOT_FOUND) {
+    if (
+      typedError?.errorType === HttpStatusStrings.NOT_FOUND ||
+      typedError?.errorType === HttpStatusStrings.FORBIDDEN
+    ) {
       return <Navigate to={RoutePaths.NotFound} />;
     } else if (typedError) {
       // Return a generic ErrorFallback for other types of errors
