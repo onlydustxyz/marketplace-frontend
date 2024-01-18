@@ -21,8 +21,9 @@ import ProjectApi from "src/api/Project";
 import { RewardProjectButton } from "../components/RewardProjectButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
-import { IMAGES } from "../../../assets/img";
-import { EmptyState } from "../../../../components/layout/placeholders/empty-state.tsx";
+import { IMAGES } from "src/assets/img";
+import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
+import { Card } from "components/ds/card/card.tsx";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -129,12 +130,14 @@ export default function Contributors() {
         />
       )}
       {!isFetching && contributors?.length === 0 && (
-        <EmptyState
-          illustrationSrc={IMAGES.icons.atom}
-          titleToken="contributor.tableFallback.noContributor"
-          titleTokenParams={{ projectName: project?.name }}
-          descriptionToken="contributor.tableFallback.relevantProfiles"
-        />
+        <Card>
+          <EmptyState
+            illustrationSrc={IMAGES.global.categories}
+            titleToken="contributor.tableFallback.noContributor"
+            titleTokenParams={{ projectName: project?.name }}
+            descriptionToken="contributor.tableFallback.relevantProfiles"
+          />
+        </Card>
       )}
     </>
   );
