@@ -1,3 +1,4 @@
+import posthog from "posthog-js";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import SEO from "src/components/SEO";
 import { UserRewardTable } from "src/_pages/Rewards/UserRewardTable";
@@ -7,7 +8,7 @@ import { UserRewardsProvider } from "./context/UserRewards.provider";
 import { Earning } from "./Earning/Earning";
 import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";
 import InvoiceSubmission from "./InvoiceSubmission";
-import { useContext, useMemo, useRef } from "react";
+import { useContext, useEffect, useMemo, useRef } from "react";
 import { UserRewardsContext } from "./context/UserRewards";
 import { EmptyState } from "components/layout/placeholders/empty-state";
 import { IMAGES } from "src/assets/img";
@@ -65,6 +66,10 @@ function SafeRewards() {
 }
 
 export default function Rewards() {
+  useEffect(() => {
+    posthog.capture("reward_list_viewed");
+  }, []);
+
   return (
     <UserRewardsProvider>
       <SEO />
