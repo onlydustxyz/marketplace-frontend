@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import { ReactElement, useState } from "react";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { MyRewardType } from "./Line";

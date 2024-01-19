@@ -19,8 +19,8 @@ import { FilterQueryParams, ProjectRewardsFilter, ProjectRewardsFilterRef } from
 import { useMemo, useRef, useState } from "react";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import Skeleton from "src/components/Skeleton";
-import { IMAGES } from "../../../assets/img";
-import { EmptyState } from "../../../../components/layout/placeholders/empty-state.tsx";
+import { IMAGES } from "src/assets/img";
+import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();

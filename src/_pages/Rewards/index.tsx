@@ -9,8 +9,8 @@ import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";
 import InvoiceSubmission from "./InvoiceSubmission";
 import { useContext, useMemo, useRef } from "react";
 import { UserRewardsContext } from "./context/UserRewards";
-import { EmptyState } from "../../../components/layout/placeholders/empty-state.tsx";
-import { IMAGES } from "../../assets/img";
+import { EmptyState } from "components/layout/placeholders/empty-state";
+import { IMAGES } from "src/assets/img";
 
 export enum RewardStatus {
   COMPLETE = "COMPLETE",

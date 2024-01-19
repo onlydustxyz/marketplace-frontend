@@ -11,22 +11,13 @@ export function getDefaultComponent(variant: TTypography.Variants["variant"]): k
     case "title-s":
       return "h4";
     case "body-l":
-      return "p";
     case "body-l-bold":
-      return "p";
     case "body-m":
-      return "p";
     case "body-m-bold":
-      return "p";
     case "body-s":
-      return "p";
     case "body-s-bold":
-      return "p";
     case "body-xs":
-      return "p";
     case "body-xs-bold":
-      return "p";
-
     default:
       return "p";
   }

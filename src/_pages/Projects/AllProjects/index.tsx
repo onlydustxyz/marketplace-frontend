@@ -16,8 +16,8 @@ import { uniqBy } from "lodash";
 import SubmitProject from "../SubmitProject";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
-import { EmptyState } from "../../../../components/layout/placeholders/empty-state.tsx";
-import { IMAGES } from "../../../assets/img";
+import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
+import { IMAGES } from "src/assets/img";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
