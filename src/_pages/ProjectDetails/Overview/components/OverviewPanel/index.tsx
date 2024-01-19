@@ -16,6 +16,7 @@ export default function OverviewPanel({ project }: Props) {
       <ProjectOverviewContributor project={project} />
       <ProjectOverviewSponsors project={project} />
       <ProjectOverviewMoreInfo project={project} />
+      {/*this is a fake change*/}
     </Card>
   );
 }
