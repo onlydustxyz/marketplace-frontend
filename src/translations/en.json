@@ -104,6 +104,10 @@
       "comments": "Comments",
       "linkedTo": "Linked to",
       "empty": "No contributions here.",
+      "emptyTitle": "Nothing to show",
+      "emptyDescription": "No contribution __tab__",
+      "emptyFilteredDescription": "Please update filters to display more results.",
+      "emptyButtonLabel": "Clear filters",
       "error": "An error occurred, please try again later."
     },
     "tooltip": {
@@ -1414,5 +1418,6 @@
   "githubStatusBanner": {
     "message": "Github is experiencing service issues. OnlyDust features may be affected until the incident is resolved.",
     "button": "View Github status"
-  }
+  },
+  "emptyStatePictureFallback": "Empty State Picture"
 }
