@@ -1,4 +1,5 @@
-import { Fragment } from "react";
+import posthog from "posthog-js";
+import { Fragment, useEffect } from "react";
 import { useMatch } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
@@ -37,6 +38,12 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
   } = ProjectApi.queries.useGetProjectContributionDetail({
     params: { projectId, contributionId },
   });
+
+  useEffect(() => {
+    if (contribution) {
+      posthog.capture("contribution_viewed", { id_contribution: contribution.id, name: contribution.githubTitle });
+    }
+  }, [contribution]);
 
   function renderContent() {
     if (isLoading) {
