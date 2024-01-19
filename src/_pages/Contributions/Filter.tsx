@@ -37,6 +37,11 @@ export type FilterQueryParams = {
   projects: string;
 };
 
+export type ContributionsFilterRef = {
+  reset: () => void;
+  hasActiveFilters: boolean;
+};
+
 export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void }) {
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
     "contributions-table-filters",
