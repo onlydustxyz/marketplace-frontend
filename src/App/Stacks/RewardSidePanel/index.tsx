@@ -1,4 +1,5 @@
-import { ComponentProps } from "react";
+import posthog from "posthog-js";
+import { ComponentProps, useEffect } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import View from "./View";
@@ -12,6 +13,12 @@ export default function RewardSidePanel({
   projectLeaderView,
   isMine,
 }: ComponentProps<typeof View>) {
+  useEffect(() => {
+    if (rewardId) {
+      posthog.capture("reward_viewed", { id_reward: rewardId });
+    }
+  }, [rewardId]);
+
   return (
     <View
       rewardId={rewardId}
