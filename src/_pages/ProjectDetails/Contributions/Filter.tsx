@@ -47,7 +47,6 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
   { onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void },
   ref: React.Ref<ProjectContributionsFilterRef>
 ) {
-  // export function ProjectContributionsFilter({ onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void }) {
   const { projectKey = "" } = useParams<{ projectKey?: string }>();
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
