@@ -105,6 +105,34 @@ export function ContributionTable({
   const contributions = data?.pages?.flatMap(data => data.contributions);
   const hasContributions = Boolean(contributions?.length);
 
+  function renderEmptyFallBack() {
+    if (hasActiveFilters) {
+      return (
+        <tr>
+          <td colSpan={nbColumns}>
+            <EmptyState
+              illustrationSrc={IMAGES.global.categories}
+              titleToken="contributions.table.emptyTitle"
+              descriptionToken="contributions.table.emptyFilteredDescription"
+              actionLabelToken="contributions.table.emptyButtonLabel"
+              onAction={filterRef.current?.reset}
+            />
+          </td>
+        </tr>
+      );
+    }
+    return (
+      <Card>
+        <EmptyState
+          illustrationSrc={IMAGES.global.categories}
+          titleToken="contributions.table.emptyTitle"
+          descriptionToken="contributions.table.emptyDescription"
+          descriptionTokenParams={{ tab: activeTab ?? "" }}
+        />
+      </Card>
+    );
+  }
+
   function renderMobileContent() {
     if (isError) {
       return (
@@ -113,33 +141,8 @@ export function ContributionTable({
         </div>
       );
     }
-
     if (!hasContributions) {
-      if (hasActiveFilters) {
-        return (
-          <tr>
-            <td colSpan={nbColumns}>
-              <EmptyState
-                illustrationSrc={IMAGES.global.categories}
-                titleToken="contributions.table.emptyTitle"
-                descriptionToken="contributions.table.emptyFilteredDescription"
-                actionLabelToken="contributions.table.emptyButtonLabel"
-                onAction={filterRef.current?.reset}
-              />
-            </td>
-          </tr>
-        );
-      }
-      return (
-        <Card>
-          <EmptyState
-            illustrationSrc={IMAGES.global.categories}
-            titleToken="contributions.table.emptyTitle"
-            descriptionToken="contributions.table.emptyDescription"
-            descriptionTokenParams={{ tab: activeTab ?? "" }}
-          />
-        </Card>
-      );
+      return renderEmptyFallBack();
     }
 
     return (
@@ -167,33 +170,7 @@ export function ContributionTable({
     }
 
     if (!hasContributions) {
-      if (hasActiveFilters) {
-        return (
-          <tr>
-            <td colSpan={nbColumns}>
-              <EmptyState
-                illustrationSrc={IMAGES.global.categories}
-                titleToken="contributions.table.emptyTitle"
-                descriptionToken="contributions.table.emptyFilteredDescription"
-                actionLabelToken="contributions.table.emptyButtonLabel"
-                onAction={filterRef.current?.reset}
-              />
-            </td>
-          </tr>
-        );
-      }
-      return (
-        <tr>
-          <td colSpan={nbColumns}>
-            <EmptyState
-              illustrationSrc={IMAGES.global.categories}
-              titleToken="contributions.table.emptyTitle"
-              descriptionToken="contributions.table.emptyDescription"
-              descriptionTokenParams={{ tab: activeTab ?? "" }}
-            />
-          </td>
-        </tr>
-      );
+      return renderEmptyFallBack();
     }
 
     return contributions?.map(bodyRow);
