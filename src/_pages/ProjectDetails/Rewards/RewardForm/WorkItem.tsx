@@ -15,13 +15,13 @@ function getContribution(workItem: RewardableWorkItem) {
 
   switch (workItem.type) {
     case WorkItemType.Issue:
-      rewardableWorkItem = workItem?.githubIssue;
+      rewardableWorkItem = workItem.githubIssue;
       break;
     case WorkItemType.PullRequest:
-      rewardableWorkItem = workItem?.githubPullRequest;
+      rewardableWorkItem = workItem.githubPullRequest;
       break;
     case WorkItemType.CodeReview:
-      rewardableWorkItem = workItem?.githubCodeReview;
+      rewardableWorkItem = workItem.githubCodeReview;
       break;
   }
 
