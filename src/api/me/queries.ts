@@ -15,6 +15,7 @@ const useGetMe = ({ options = {} }: UseQueryProps<UseGetUserMeResponse, undefine
     tags: ME_TAGS.user,
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
+    refetchOnWindowFocus: false,
   });
 };
 
