@@ -11,14 +11,14 @@ import FakeExternalLink from "./FakeExternalLink";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export interface ProjectOverviewMoreInfoProps {
-  project: UseGetProjectBySlugResponse;
+  moreInfos: UseGetProjectBySlugResponse["moreInfos"];
 }
 
-export const ProjectOverviewMoreInfo = ({ project }: ProjectOverviewMoreInfoProps) => {
+export const ProjectOverviewMoreInfo = ({ moreInfos }: ProjectOverviewMoreInfoProps) => {
   const { T } = useIntl();
   const { isAuthenticated } = useAuth0();
 
-  return project.moreInfos.length > 0 ? (
+  return moreInfos.length ? (
     <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
       <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
         {isAuthenticated ? (
@@ -26,7 +26,7 @@ export const ProjectOverviewMoreInfo = ({ project }: ProjectOverviewMoreInfoProp
             data-testid="more-info-link"
             className="space-y-2 overflow-hidden text-sm font-semibold text-spacePurple-500"
           >
-            {project.moreInfos.map(moreInfo => (
+            {moreInfos.map(moreInfo => (
               <li key={moreInfo.url} className="flex">
                 <SocialIcon search={moreInfo.url} className="mr-1 inline-block h-4 w-4 text-spacePurple-500" />
                 <ExternalLink
