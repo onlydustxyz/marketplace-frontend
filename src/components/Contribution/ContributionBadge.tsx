@@ -94,6 +94,7 @@ export function ContributionBadge({
   const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
 
   const isExternal = githubAuthor && getGithubUserIdFromSub(user?.sub) !== githubAuthor.githubUserId;
+
   const tooltipId = `${githubNumber}-${type}-${githubStatus}`;
 
   const tokens = {
