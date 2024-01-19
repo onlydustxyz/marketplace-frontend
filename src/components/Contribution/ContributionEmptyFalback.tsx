@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { ContributionsFilterRef } from "../../_pages/Contributions/Filter.tsx";
-import { ProjectContributionsFilterRef } from "../../_pages/ProjectDetails/Contributions/Filter.tsx";
+import { ContributionsFilterRef } from "src/_pages/Contributions/Filter.tsx";
+import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter.tsx";
 import { IMAGES } from "src/assets/img";
 import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
 import { Card } from "components/ds/card/card.tsx";

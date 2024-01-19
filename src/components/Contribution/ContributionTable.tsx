@@ -15,8 +15,8 @@ import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 import { useContributionTabs } from "src/hooks/useContributionTabs";
-import { ContributionsFilterRef } from "../../_pages/Contributions/Filter.tsx";
-import { ProjectContributionsFilterRef } from "../../_pages/ProjectDetails/Contributions/Filter.tsx";
+import { ContributionsFilterRef } from "src/_pages/Contributions/Filter.tsx";
+import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter.tsx";
 import { ContributionEmptyFallBack } from "./ContributionEmptyFalback.tsx";
 
 function Message({ children }: PropsWithChildren) {
