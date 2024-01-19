@@ -116,7 +116,11 @@ export function ContributionBadge({
     <>
       {withTooltip ? (
         <Tooltip id={tooltipId} clickable padding={PaddingVariant.Large} {...tooltipProps}>
-          <div className="flex max-w-sm flex-col gap-2 text-left">
+          <div
+            className="flex max-w-sm flex-col gap-2 text-left"
+            // When this element is nested inside another clickable element, we don't want the click to propagate to the parent
+            onClick={e => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between gap-2">
               <span className="line-clamp-2 text-sm font-medium leading-4">
                 <ExternalLink
