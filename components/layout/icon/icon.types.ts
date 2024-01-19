@@ -8,7 +8,6 @@ export namespace TIcon {
   interface BaseProps extends HtmlDiv {
     size?: number;
     color?: string;
-    className?: string;
   }
 
   interface CustomProps extends BaseProps {

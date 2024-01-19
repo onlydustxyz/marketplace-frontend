@@ -13,7 +13,5 @@ export namespace TButton {
   export type SecondaryVariants = VariantProps<typeof buttonSecondaryVariants>;
   export type TertiaryVariants = VariantProps<typeof buttonTertiaryVariants>;
 
-  export interface Props extends PropsWithChildren, Variants, HtmlButton {
-    className?: string;
-  }
+  export interface Props extends PropsWithChildren, Variants, HtmlButton {}
 }
