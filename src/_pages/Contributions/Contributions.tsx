@@ -1,4 +1,5 @@
-import { ComponentProps, useRef, useState } from "react";
+import posthog from "posthog-js";
+import { ComponentProps, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
@@ -40,6 +41,10 @@ export default function Contributions() {
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
 
   const filterRef = useRef<ContributionsFilterRef>(null);
+
+  useEffect(() => {
+    posthog.capture("contributions_list_viewed");
+  }, []);
 
   const tabItems = [
     {
