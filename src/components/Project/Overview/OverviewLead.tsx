@@ -4,29 +4,29 @@ import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import Section, { SectionIcon } from "./OverviewSection";
-import isDefined from "src/utils/isDefined";
 import MeApi from "src/api/me";
 
 export interface ProjectOverviewLeadProps {
-  project: UseGetProjectBySlugResponse;
+  projectId: string;
+  projectLeads: UseGetProjectBySlugResponse["leaders"];
+  projectInvited: UseGetProjectBySlugResponse["invitedLeaders"];
 }
 
-export const ProjectOverviewLead = ({ project }: ProjectOverviewLeadProps) => {
+export const ProjectOverviewLead = ({ projectId, projectLeads, projectInvited }: ProjectOverviewLeadProps) => {
   const { T } = useIntl();
   const { data: userInfo } = MeApi.queries.useGetMe({});
-  const isProjectLeader = useProjectLeader({ id: project.id });
-  const filteredLeads = project.leaders?.filter(lead => isDefined(lead?.login)) || [];
-  const filteredInvited = project.invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
+  const isProjectLeader = useProjectLeader({ id: projectId });
+
   const showInvited = isProjectLeader || userInfo?.isAdmin;
 
-  return filteredLeads.length > 0 ? (
+  return (
     <Section
       testId="project-leads"
       icon={SectionIcon.Star}
-      title={T("project.details.overview.projectLeader", { count: filteredLeads.length })}
+      title={T("project.details.overview.projectLeader", { count: projectLeads.length })}
     >
       <div className="flex flex-row flex-wrap gap-3">
-        {filteredLeads?.map(lead => (
+        {projectLeads?.map(lead => (
           <Contributor
             key={lead.id}
             contributor={{
@@ -39,7 +39,7 @@ export const ProjectOverviewLead = ({ project }: ProjectOverviewLeadProps) => {
         ))}
 
         {showInvited &&
-          (filteredInvited || []).map(lead => (
+          (projectInvited || []).map(lead => (
             <Flex key={lead.login} className="gap-1">
               <Contributor
                 contributor={{
@@ -54,5 +54,5 @@ export const ProjectOverviewLead = ({ project }: ProjectOverviewLeadProps) => {
           ))}
       </div>
     </Section>
-  ) : null;
+  );
 };
