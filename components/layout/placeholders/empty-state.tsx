@@ -5,25 +5,25 @@ import Image from "next/image";
 import { Key } from "src/hooks/useIntl";
 import { ElementType } from "react";
 
+interface Token {
+  token: Key;
+  params?: Record<string, string>;
+}
 interface EmptyStateProps {
   as?: ElementType;
   illustrationSrc: string;
-  titleToken: Key;
-  titleTokenParams?: Record<string, string>;
-  descriptionToken?: Key;
-  descriptionTokenParams?: Record<string, string>;
-  actionLabelToken?: Key;
+  title: Token;
+  description?: Token;
+  actionLabel?: Token;
   onAction?: () => void;
 }
 
 export function EmptyState({
   as = "section",
   illustrationSrc,
-  titleToken,
-  titleTokenParams,
-  descriptionToken,
-  descriptionTokenParams,
-  actionLabelToken,
+  title,
+  description,
+  actionLabel,
   onAction,
 }: EmptyStateProps) {
   const Component = as;
@@ -36,19 +36,19 @@ export function EmptyState({
         <Typography
           variant="title-l"
           className="mb-1 font-belwe"
-          translate={{ token: titleToken, params: titleTokenParams }}
+          translate={{ token: title?.token, params: title?.params }}
         />
-        {descriptionToken ? (
+        {description?.token ? (
           <Typography
             variant="body-s"
             className="font-walsheim text-spaceBlue-200"
-            translate={{ token: descriptionToken, params: descriptionTokenParams }}
+            translate={{ token: description?.token, params: description?.params }}
           />
         ) : null}
       </div>
-      {actionLabelToken ? (
+      {actionLabel?.token ? (
         <Button size="m" className="whitespace-nowrap" variant="primary" accentColor="orange" onClick={onAction}>
-          <Translate token={actionLabelToken} />
+          <Translate token={actionLabel?.token} />
         </Button>
       ) : null}
     </Component>

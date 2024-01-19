@@ -157,9 +157,9 @@ export default function AllProjects({
   return (
     <EmptyState
       illustrationSrc={IMAGES.global.categories}
-      titleToken="projects.fallback.title"
-      descriptionToken="projects.fallback.subTitle"
-      actionLabelToken="projects.fallback.clearFiltersButton"
+      title={{ token: "projects.fallback.title" }}
+      description={{ token: "projects.fallback.subTitle" }}
+      actionLabel={{ token: "projects.fallback.clearFiltersButton" }}
       onAction={handleClear}
     />
   );

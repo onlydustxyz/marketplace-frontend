@@ -14,12 +14,10 @@ import { cn } from "src/utils/cn";
 import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
-import { IMAGES } from "src/assets/img";
 import { useContributionTabs } from "src/hooks/useContributionTabs";
-import { Card } from "components/ds/card/card";
 import { ContributionsFilterRef } from "../../_pages/Contributions/Filter.tsx";
 import { ProjectContributionsFilterRef } from "../../_pages/ProjectDetails/Contributions/Filter.tsx";
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { ContributionEmptyFallBack } from "./ContributionEmptyFalback.tsx";
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
@@ -105,34 +103,6 @@ export function ContributionTable({
   const contributions = data?.pages?.flatMap(data => data.contributions);
   const hasContributions = Boolean(contributions?.length);
 
-  function renderEmptyFallBack() {
-    if (hasActiveFilters) {
-      return (
-        <tr>
-          <td colSpan={nbColumns}>
-            <EmptyState
-              illustrationSrc={IMAGES.global.categories}
-              titleToken="contributions.table.emptyTitle"
-              descriptionToken="contributions.table.emptyFilteredDescription"
-              actionLabelToken="contributions.table.emptyButtonLabel"
-              onAction={filterRef.current?.reset}
-            />
-          </td>
-        </tr>
-      );
-    }
-    return (
-      <Card>
-        <EmptyState
-          illustrationSrc={IMAGES.global.categories}
-          titleToken="contributions.table.emptyTitle"
-          descriptionToken="contributions.table.emptyDescription"
-          descriptionTokenParams={{ tab: activeTab ?? "" }}
-        />
-      </Card>
-    );
-  }
-
   function renderMobileContent() {
     if (isError) {
       return (
@@ -142,7 +112,15 @@ export function ContributionTable({
       );
     }
     if (!hasContributions) {
-      return renderEmptyFallBack();
+      return (
+        <ContributionEmptyFallBack
+          isMobile={true}
+          hasActiveFilters={hasActiveFilters}
+          nbColumns={nbColumns}
+          activeTab={activeTab}
+          filterRef={filterRef}
+        />
+      );
     }
 
     return (
@@ -170,7 +148,15 @@ export function ContributionTable({
     }
 
     if (!hasContributions) {
-      return renderEmptyFallBack();
+      return (
+        <ContributionEmptyFallBack
+          isMobile={false}
+          hasActiveFilters={hasActiveFilters}
+          nbColumns={nbColumns}
+          activeTab={activeTab}
+          filterRef={filterRef}
+        />
+      );
     }
 
     return contributions?.map(bodyRow);

@@ -31,9 +31,9 @@ function SafeRewards() {
         return (
           <EmptyState
             illustrationSrc={IMAGES.global.payment}
-            titleToken="myRewards.tableFallback.withFilter.title"
-            descriptionToken="myRewards.tableFallback.withFilter.message"
-            actionLabelToken="myRewards.tableFallback.withFilter.buttonLabel"
+            title={{ token: "myRewards.tableFallback.withFilter.title" }}
+            description={{ token: "myRewards.tableFallback.withFilter.message" }}
+            actionLabel={{ token: "myRewards.tableFallback.withFilter.buttonLabel" }}
             onAction={filterRef.current?.reset}
           />
         );
@@ -41,8 +41,8 @@ function SafeRewards() {
       return (
         <EmptyState
           illustrationSrc={IMAGES.global.payment}
-          titleToken="myRewards.tableFallback.title"
-          descriptionToken="myRewards.tableFallback.message"
+          title={{ token: "myRewards.tableFallback.title" }}
+          description={{ token: "myRewards.tableFallback.message" }}
         />
       );
     }

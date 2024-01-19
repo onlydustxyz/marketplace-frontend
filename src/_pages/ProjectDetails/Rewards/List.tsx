@@ -77,9 +77,9 @@ const RewardList: React.FC = () => {
         return (
           <EmptyState
             illustrationSrc={IMAGES.global.payment}
-            titleToken="project.details.tableFallback.withFilter.title"
-            descriptionToken="project.details.tableFallback.withFilter.message"
-            actionLabelToken="project.details.tableFallback.withFilter.buttonLabel"
+            title={{ token: "project.details.tableFallback.withFilter.title" }}
+            description={{ token: "project.details.tableFallback.withFilter.message" }}
+            actionLabel={{ token: "project.details.tableFallback.withFilter.buttonLabel" }}
             onAction={filterRef.current?.reset}
           />
         );
@@ -87,8 +87,8 @@ const RewardList: React.FC = () => {
       return (
         <EmptyState
           illustrationSrc={IMAGES.global.payment}
-          titleToken="project.details.tableFallback.noRewards"
-          descriptionToken="project.details.tableFallback.send"
+          title={{ token: "project.details.tableFallback.noRewards" }}
+          description={{ token: "project.details.tableFallback.send" }}
         />
       );
     }
