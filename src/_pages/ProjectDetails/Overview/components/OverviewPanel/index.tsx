@@ -11,14 +11,17 @@ interface Props {
 }
 
 export default function OverviewPanel({ project }: Props) {
-  const ProjectLeads = project.leaders?.filter(lead => isDefined(lead?.login)) || [];
-  const ProjectInvited = project.invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
+  const { contributorCount, topContributors, leaders, invitedLeaders } = project;
+  const ProjectLeads = leaders?.filter(lead => isDefined(lead?.login)) || [];
+  const ProjectInvited = invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
   return (
     <Card fullWidth={false} className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0" padded={false}>
       {ProjectLeads.length ? (
         <ProjectOverviewLead projectId={project?.id} projectLeads={ProjectLeads} projectInvited={ProjectInvited} />
       ) : null}
-      <ProjectOverviewContributor project={project} />
+      {contributorCount ? (
+        <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
+      ) : null}
       <ProjectOverviewSponsors project={project} />
       <ProjectOverviewMoreInfo project={project} />
     </Card>
