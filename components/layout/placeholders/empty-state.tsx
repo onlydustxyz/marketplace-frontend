@@ -2,7 +2,7 @@ import { Button } from "components/ds/button/button";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 import Image from "next/image";
-import { Key } from "src/hooks/useIntl";
+import { Key, useIntl } from "src/hooks/useIntl";
 import { ElementType } from "react";
 
 interface Token {
@@ -27,10 +27,11 @@ export function EmptyState({
   onAction,
 }: EmptyStateProps) {
   const Component = as;
+  const { T } = useIntl();
   return (
     <Component className="flex flex-col items-center justify-center gap-6 p-6 text-center">
       <div className="w-20">
-        <Image src={illustrationSrc} width={80} height={80} alt="Empty state picture" />
+        <Image src={illustrationSrc} width={80} height={80} alt={T("emptyStatePictureFallback")} />
       </div>
       <div>
         <Typography
