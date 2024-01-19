@@ -8,7 +8,7 @@ export function CustomIcon({ name, ...props }: TCustomIcon.Props) {
   const customIcons: { [key in TCustomIcon.Names]: JSX.Element } = {
     dollar: <DollarIcon {...props} />,
     technology: <TechnologyIcon {...props} />,
-    "gallery-line": <GalleryLineIcon {...props} />,
+    galleryLine: <GalleryLineIcon {...props} />,
     arrow: <ArrowIcon {...props} />,
   };
 
