@@ -1,3 +1,5 @@
+import posthog from "posthog-js";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
@@ -16,6 +18,12 @@ const PublicProfilePage = () => {
     params: { login: userLogin },
     options: { retry: 1 },
   });
+
+  useEffect(() => {
+    if (userProfile) {
+      posthog.capture("contributor_viewed", { id: userProfile.id, type: "full" });
+    }
+  }, [userProfile]);
 
   const errorHandlingComponent = useQueriesErrorBehavior({
     queries: {

@@ -1,8 +1,9 @@
+import posthog from "posthog-js";
 import View from "./View";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import UsersApi from "src/api/Users";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MeApi from "src/api/me";
 import { NotFound } from "src/components/NotFound";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -30,6 +31,12 @@ export default function ContributorProfileSidePanel({ githubUserId }: Props) {
   });
 
   const profile = isMine ? myProfileInfo : userProfile;
+
+  useEffect(() => {
+    if (profile) {
+      posthog.capture("contributor_viewed", { id: profile.id, type: "panel" });
+    }
+  }, [profile]);
 
   if (isError) {
     showToaster(T("profile.error.cantFetch"), { isError: true });
