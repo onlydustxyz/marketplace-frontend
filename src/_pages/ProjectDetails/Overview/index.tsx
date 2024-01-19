@@ -1,3 +1,5 @@
+import posthog from "posthog-js";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
@@ -34,6 +36,12 @@ export default function Overview() {
   const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectKey },
   });
+
+  useEffect(() => {
+    if (project) {
+      posthog.capture("project_viewed", { id_project: project.id, type: "full" });
+    }
+  }, [project]);
 
   const { isAuthenticated, user } = useAuth0();
 

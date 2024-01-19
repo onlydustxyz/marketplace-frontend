@@ -1,3 +1,5 @@
+import posthog from "posthog-js";
+import { useEffect } from "react";
 import ProjectApi from "src/api/Project";
 import { ProjectOverviewHeadersCard } from "./components/Header";
 import { ProjectOverviewInformations } from "./components/Informations";
@@ -13,6 +15,12 @@ export const ProjectOverviewSidePanel = ({ slug }: Props) => {
   const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
+
+  useEffect(() => {
+    if (project) {
+      posthog.capture("project_viewed", { id_project: project.id, type: "panel" });
+    }
+  }, [project]);
 
   if (isLoading) {
     return <SkeletonProjectOverviewPanel />;
