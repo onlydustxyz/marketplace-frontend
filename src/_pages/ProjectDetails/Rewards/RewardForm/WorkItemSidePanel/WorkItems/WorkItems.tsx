@@ -11,13 +11,32 @@ import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling"
 import { useIntl } from "src/hooks/useIntl";
 import { WorkItemType } from "src/types";
 
-export interface RewardableWorkItem {
-  type: WorkItemType.Issue | WorkItemType.PullRequest | WorkItemType.CodeReview;
+interface RewardableBase {
   id: string;
-  githubIssue: RewardableItem | null;
-  githubPullRequest: RewardableItem | null;
-  githubCodeReview: RewardableItem | null;
 }
+
+interface RewardableIssue extends RewardableBase {
+  type: WorkItemType.Issue;
+  githubIssue: RewardableItem;
+  githubPullRequest?: never;
+  githubCodeReview?: never;
+}
+
+interface RewardablePullRequest extends RewardableBase {
+  type: WorkItemType.PullRequest;
+  githubIssue?: never;
+  githubPullRequest: RewardableItem;
+  githubCodeReview?: never;
+}
+
+interface RewardableCodeReview extends RewardableBase {
+  type: WorkItemType.CodeReview;
+  githubIssue?: never;
+  githubPullRequest?: never;
+  githubCodeReview: RewardableItem;
+}
+
+export type RewardableWorkItem = RewardableIssue | RewardablePullRequest | RewardableCodeReview;
 
 type Props = {
   type: WorkItemType;
@@ -131,26 +150,20 @@ export const contributionToWorkItem = (contribution: RewardableItem): Rewardable
   }
 };
 
-export const issueToWorkItem = (contribution: RewardableItem | null): RewardableWorkItem => ({
+export const issueToWorkItem = (contribution: RewardableItem): RewardableWorkItem => ({
   type: WorkItemType.Issue,
-  id: contribution?.id || "",
+  id: contribution.id,
   githubIssue: contribution,
-  githubPullRequest: null,
-  githubCodeReview: null,
 });
 
-export const pullRequestToWorkItem = (contribution: RewardableItem | null): RewardableWorkItem => ({
+export const pullRequestToWorkItem = (contribution: RewardableItem): RewardableWorkItem => ({
   type: WorkItemType.PullRequest,
-  id: contribution?.id || "",
-  githubIssue: null,
+  id: contribution.id,
   githubPullRequest: contribution,
-  githubCodeReview: null,
 });
 
-export const codeReviewToWorkItem = (contribution: RewardableItem | null): RewardableWorkItem => ({
+export const codeReviewToWorkItem = (contribution: RewardableItem): RewardableWorkItem => ({
   type: WorkItemType.CodeReview,
-  id: contribution?.id || "",
-  githubIssue: null,
-  githubPullRequest: null,
+  id: contribution.id,
   githubCodeReview: contribution,
 });

@@ -2,43 +2,30 @@ import { ComponentType } from "react";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
+import { rewardableItemToContribution } from "src/utils/formatToContribution";
 import { Contributor } from "./types";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 import { WorkItemType } from "src/types";
 
 function getContribution(workItem: RewardableWorkItem) {
-  let contribution:
+  let rewardableWorkItem:
     | RewardableWorkItem["githubIssue"]
     | RewardableWorkItem["githubPullRequest"]
     | RewardableWorkItem["githubCodeReview"];
 
   switch (workItem.type) {
     case WorkItemType.Issue:
-      contribution = workItem?.githubIssue;
+      rewardableWorkItem = workItem?.githubIssue;
       break;
     case WorkItemType.PullRequest:
-      contribution = workItem?.githubPullRequest;
+      rewardableWorkItem = workItem?.githubPullRequest;
       break;
     case WorkItemType.CodeReview:
-      contribution = workItem?.githubCodeReview;
+      rewardableWorkItem = workItem?.githubCodeReview;
       break;
   }
 
-  return {
-    // TODO get author info
-    githubAuthor: {
-      avatarUrl: "",
-      githubUserId: 0,
-      htmlUrl: contribution?.htmlUrl,
-      login: "",
-    },
-    githubBody: "", // TODO get this from the API
-    githubHtmlUrl: contribution?.htmlUrl,
-    githubNumber: contribution?.number,
-    githubStatus: contribution?.status,
-    githubTitle: contribution?.title,
-    type: contribution?.type,
-  };
+  return rewardableItemToContribution(rewardableWorkItem);
 }
 
 export function WorkItem({

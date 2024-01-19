@@ -26,6 +26,7 @@ import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { formatMoneyAmount } from "src/utils/money";
+import { rewardItemToContribution } from "src/utils/formatToContribution";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
@@ -123,20 +124,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                           : undefined
                       }
                       contributorLogin={data?.to.login}
-                      contribution={{
-                        githubAuthor: {
-                          avatarUrl: item.authorAvatarUrl ?? "",
-                          githubUserId: item.githubAuthorId ?? 0,
-                          htmlUrl: item.githubUrl,
-                          login: item.authorLogin ?? "",
-                        },
-                        githubBody: "", // TODO get this from the API
-                        githubHtmlUrl: item.githubUrl,
-                        githubNumber: item.number,
-                        githubStatus: item.status,
-                        githubTitle: item.title,
-                        type: item.type,
-                      }}
+                      contribution={rewardItemToContribution(item)}
                     />
                   );
                 }
@@ -156,20 +144,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                             }
                           : undefined
                       }
-                      contribution={{
-                        githubAuthor: {
-                          avatarUrl: item.authorAvatarUrl ?? "",
-                          githubUserId: item.githubAuthorId ?? 0,
-                          htmlUrl: item.githubUrl,
-                          login: item.authorLogin ?? "",
-                        },
-                        githubBody: "", // TODO get this from the API
-                        githubHtmlUrl: item.githubUrl,
-                        githubNumber: item.number,
-                        githubStatus: item.status,
-                        githubTitle: item.title,
-                        type: item.type,
-                      }}
+                      contribution={rewardItemToContribution(item)}
                     />
                   );
                 }
@@ -189,20 +164,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                           : undefined
                       }
                       codeReview={item}
-                      contribution={{
-                        githubAuthor: {
-                          avatarUrl: item.authorAvatarUrl ?? "",
-                          githubUserId: item.githubAuthorId ?? 0,
-                          htmlUrl: item.githubUrl,
-                          login: item.authorLogin ?? "",
-                        },
-                        githubBody: "", // TODO get this from the API
-                        githubHtmlUrl: item.githubUrl,
-                        githubNumber: item.number,
-                        githubStatus: item.status,
-                        githubTitle: item.title,
-                        type: item.type,
-                      }}
+                      contribution={rewardItemToContribution(item)}
                     />
                   );
                 }
