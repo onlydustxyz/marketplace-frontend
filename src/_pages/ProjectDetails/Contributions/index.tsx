@@ -248,6 +248,7 @@ export default function Contributions() {
                   <div className="md:-translate-y-3">
                     <ProjectContributionsFilter
                       onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)}
+                      ref={filterRef}
                     />
                   </div>
                 </div>

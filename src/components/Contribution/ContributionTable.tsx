@@ -15,11 +15,11 @@ import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 import { IMAGES } from "src/assets/img";
-import { EmptyState } from "components/layout/placeholders/empty-state";
 import { useContributionTabs } from "src/hooks/useContributionTabs";
-import { Card } from "components/ds/card/card.tsx";
+import { Card } from "components/ds/card/card";
 import { ContributionsFilterRef } from "../../_pages/Contributions/Filter.tsx";
 import { ProjectContributionsFilterRef } from "../../_pages/ProjectDetails/Contributions/Filter.tsx";
+import { EmptyState } from "components/layout/placeholders/empty-state";
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
@@ -91,8 +91,6 @@ export function ContributionTable({
   const [collapsed, setCollapsed] = useState(false);
   const hasActiveFilters = !!filterRef?.current?.hasActiveFilters;
 
-  console.log("filterRef", filterRef);
-
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
 
@@ -117,6 +115,21 @@ export function ContributionTable({
     }
 
     if (!hasContributions) {
+      if (hasActiveFilters) {
+        return (
+          <tr>
+            <td colSpan={nbColumns}>
+              <EmptyState
+                illustrationSrc={IMAGES.global.categories}
+                titleToken="contributions.table.emptyTitle"
+                descriptionToken="contributions.table.emptyFilteredDescription"
+                actionLabelToken="contributions.table.emptyButtonLabel"
+                onAction={filterRef.current?.reset}
+              />
+            </td>
+          </tr>
+        );
+      }
       return (
         <Card>
           <EmptyState
@@ -161,9 +174,8 @@ export function ContributionTable({
               <EmptyState
                 illustrationSrc={IMAGES.global.categories}
                 titleToken="contributions.table.emptyTitle"
-                descriptionToken="contributions.table.emptyDescription"
-                descriptionTokenParams={{ tab: activeTab ?? "" }}
-                actionLabelToken="myRewards.tableFallback.withFilter.buttonLabel"
+                descriptionToken="contributions.table.emptyFilteredDescription"
+                actionLabelToken="contributions.table.emptyButtonLabel"
                 onAction={filterRef.current?.reset}
               />
             </td>

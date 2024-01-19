@@ -106,6 +106,8 @@
       "empty": "No contributions here.",
       "emptyTitle": "Nothing to show",
       "emptyDescription": "No contribution __tab__",
+      "emptyFilteredDescription": "Please update filters to display more results.",
+      "emptyButtonLabel": "Clear filters",
       "error": "An error occurred, please try again later."
     },
     "tooltip": {
