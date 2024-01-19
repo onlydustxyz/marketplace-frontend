@@ -11,7 +11,7 @@ export interface ProjectOverviewContributorProps {
 export const ProjectOverviewContributor = ({ contributorCount, topContributors }: ProjectOverviewContributorProps) => {
   const { T } = useIntl();
 
-  return (
+  return contributorCount ? (
     <Section icon={SectionIcon.User} title={T("project.details.overview.contributors", { count: contributorCount })}>
       <div className="flex flex-row items-center gap-2 text-sm font-normal text-greyscale-50">
         <div className="flex flex-row -space-x-1">
@@ -28,5 +28,5 @@ export const ProjectOverviewContributor = ({ contributorCount, topContributors }
         <div data-testid="contributors-count">{contributorCount}</div>
       </div>
     </Section>
-  );
+  ) : null;
 };

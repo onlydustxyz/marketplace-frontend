@@ -19,7 +19,7 @@ export const ProjectOverviewLead = ({ projectId, projectLeads, projectInvited }:
 
   const showInvited = isProjectLeader || userInfo?.isAdmin;
 
-  return (
+  return projectLeads.length ? (
     <Section
       testId="project-leads"
       icon={SectionIcon.Star}
@@ -54,5 +54,5 @@ export const ProjectOverviewLead = ({ projectId, projectLeads, projectInvited }:
           ))}
       </div>
     </Section>
-  );
+  ) : null;
 };
