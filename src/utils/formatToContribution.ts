@@ -8,14 +8,13 @@ import { RewardItem } from "src/hooks/useInfiniteRewardItems.tsx";
 
 export function rewardableItemToContribution(rewardableItem: RewardableItem) {
   return {
-    // TODO get author info
     githubAuthor: {
-      avatarUrl: "",
-      githubUserId: 0,
-      htmlUrl: "",
-      login: "",
+      avatarUrl: rewardableItem.author?.avatarUrl ?? "",
+      githubUserId: rewardableItem.author?.githubUserId ?? 0,
+      htmlUrl: rewardableItem.author?.htmlUrl ?? "",
+      login: rewardableItem.author?.login ?? "",
     },
-    githubBody: "", // TODO get this from the API
+    githubBody: rewardableItem.githubBody,
     githubHtmlUrl: rewardableItem.htmlUrl,
     githubNumber: rewardableItem.number,
     githubStatus: rewardableItem.status,
@@ -36,7 +35,7 @@ export function rewardItemToContribution(rewardItem: RewardItem) {
       htmlUrl: rewardItem.authorGithubUrl ?? "",
       login: rewardItem.authorLogin ?? "",
     },
-    githubBody: "", // TODO get this from the API
+    githubBody: rewardItem.githubBody,
     githubHtmlUrl: rewardItem.githubUrl,
     githubNumber: rewardItem.number,
     githubStatus: rewardItem.status,
