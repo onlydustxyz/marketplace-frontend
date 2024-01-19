@@ -1,3 +1,4 @@
+import posthog from "posthog-js";
 import { useEffect, useMemo } from "react";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
@@ -69,6 +70,8 @@ export default function AllProjects({
       sorting ? ["sort", sorting] : null,
       ownership ? ["mine", String(ownership === "Mine")] : null,
     ].filter((param): param is string[] => Boolean(param));
+
+    posthog.capture("project_list_viewed", { technologies, sponsors: sponsors.map(({ name }) => name), ownership });
 
     return params;
   }, [technologies, sponsors, search, sorting, ownership]);
