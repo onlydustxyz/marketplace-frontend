@@ -41,6 +41,7 @@ const RewardForm: React.FC = () => {
     resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
     pathParam: { projectId: project?.id || "" },
     method: "GET",
+    enabled: !!project?.id,
   });
 
   const { mutate: createProjectReward, isPending: isCreateProjectRewardLoading } = useMutationRestfulData({
