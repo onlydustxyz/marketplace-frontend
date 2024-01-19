@@ -1,4 +1,4 @@
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
@@ -12,7 +12,7 @@ import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import { ContributionStatus, OrderBy } from "src/types";
-import { ContributionsFilter, FilterQueryParams } from "./Filter";
+import { ContributionsFilter, ContributionsFilterRef, FilterQueryParams } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
 
 const initialSort: Record<ContributionStatus, TableSort> = {
@@ -38,6 +38,8 @@ export default function Contributions() {
   const { headerCells, bodyRow } = useContributionTable();
 
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
+
+  const filterRef = useRef<ContributionsFilterRef>(null);
 
   const tabItems = [
     {
@@ -123,6 +125,7 @@ export default function Contributions() {
         },
         { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) && Boolean(filterQueryParams) }
       ),
+      filterRef,
     },
     {
       id: "completed_contributions_table",
@@ -152,6 +155,7 @@ export default function Contributions() {
         },
         { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) && Boolean(filterQueryParams) }
       ),
+      filterRef,
     },
     {
       id: "canceled_contributions_table",
@@ -181,6 +185,7 @@ export default function Contributions() {
         },
         { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) && Boolean(filterQueryParams) }
       ),
+      filterRef,
     },
   ];
 
@@ -197,7 +202,10 @@ export default function Contributions() {
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 
                   <div className="md:-translate-y-3">
-                    <ContributionsFilter onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)} />
+                    <ContributionsFilter
+                      onChange={filterQueryParams => setFilterQueryParams(filterQueryParams)}
+                      ref={filterRef}
+                    />
                   </div>
                 </div>
               </header>

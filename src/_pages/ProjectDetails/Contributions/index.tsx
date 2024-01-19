@@ -1,4 +1,4 @@
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
@@ -17,7 +17,7 @@ import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedR
 import { useLocalStorage } from "usehooks-ts";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
-import { FilterQueryParams, ProjectContributionsFilter } from "./Filter";
+import { FilterQueryParams, ProjectContributionsFilter, ProjectContributionsFilterRef } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { RewardProjectButton } from "../components/RewardProjectButton";
@@ -58,6 +58,8 @@ export default function Contributions() {
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
 
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
+
+  const filterRef = useRef<ProjectContributionsFilterRef>(null);
 
   const tabItems = [
     {
@@ -146,6 +148,7 @@ export default function Contributions() {
           enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) && Boolean(filterQueryParams),
         },
       }),
+      filterRef,
     },
     {
       id: "completed_contributions_table",
@@ -178,6 +181,7 @@ export default function Contributions() {
           enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) && Boolean(filterQueryParams),
         },
       }),
+      filterRef,
     },
     {
       id: "canceled_contributions_table",
@@ -210,6 +214,7 @@ export default function Contributions() {
           enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) && Boolean(filterQueryParams),
         },
       }),
+      filterRef,
     },
   ];
 

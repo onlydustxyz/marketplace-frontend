@@ -1,5 +1,5 @@
 import { sortBy } from "lodash";
-import { useEffect, useMemo, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
@@ -39,7 +39,15 @@ export type FilterQueryParams = {
   types: string;
 };
 
-export function ProjectContributionsFilter({ onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void }) {
+export type ProjectContributionsFilterRef = {
+  reset: () => void;
+  hasActiveFilters: boolean;
+};
+export const ProjectContributionsFilter = forwardRef(function ProjectContributionsFilter(
+  { onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void },
+  ref: React.Ref<ProjectContributionsFilterRef>
+) {
+  // export function ProjectContributionsFilter({ onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void }) {
   const { projectKey = "" } = useParams<{ projectKey?: string }>();
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
@@ -172,6 +180,17 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
     });
   }
 
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        reset: resetFilters,
+        hasActiveFilters,
+      };
+    },
+    [hasActiveFilters]
+  );
+
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters}>
       <FilterDatepicker
@@ -192,4 +211,4 @@ export function ProjectContributionsFilter({ onChange }: { onChange: (filterQuer
       <FilterTypeOptions selected={filters.types ?? initialFilters.types} onChange={updateTypes} />
     </Filter>
   );
-}
+});
