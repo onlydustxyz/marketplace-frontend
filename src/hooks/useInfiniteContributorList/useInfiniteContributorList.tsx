@@ -12,7 +12,7 @@ export default function useInfiniteContributorList({ projectId, queryParams }: U
   return useInfiniteRestfulData<components["schemas"]["ContributorsPageResponse"]>(
     {
       resourcePath: ApiResourcePaths.GET_PROJECT_CONTRIBUTORS,
-      pageSize: 20,
+      pageSize: 30,
       pathParam: projectId,
       queryParams,
     },

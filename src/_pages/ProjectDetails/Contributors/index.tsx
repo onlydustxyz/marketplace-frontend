@@ -24,6 +24,9 @@ import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithu
 import { IMAGES } from "src/assets/img";
 import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
 import { Card } from "components/ds/card/card.tsx";
+import EyeOffLine from "../../../icons/EyeOffLine.tsx";
+import FormToggle from "../../../components/FormToggle";
+import { useForm, useWatch } from "react-hook-form";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -36,6 +39,16 @@ export default function Contributors() {
 
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
+  const showHiddenContributorsName = "show-hidden-contributors";
+  const { control } = useForm({
+    defaultValues: { [showHiddenContributorsName]: false },
+  });
+
+  const showHiddenContributors = useWatch({
+    control,
+    name: showHiddenContributorsName,
+  });
+
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: isProjectLeader ? Fields.ToRewardCount : Fields.ContributionCount,
     isAscending: false,
@@ -44,8 +57,15 @@ export default function Contributors() {
 
   const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
     projectId: project?.id ?? "",
-    queryParams,
+    queryParams: {
+      ...(queryParams as URLSearchParams),
+      showHidden: showHiddenContributors.toString(),
+    },
   });
+
+  const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
+
+  const isThereAnyHiddenContributors = contributors.some(contributor => contributor.hidden);
 
   const githubUserId = getGithubUserIdFromSub(user?.sub);
 
@@ -83,8 +103,6 @@ export default function Contributors() {
 
   if (!project) return null;
 
-  const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
-
   return (
     <>
       <Title>
@@ -113,6 +131,14 @@ export default function Contributors() {
         projectName={project?.name}
       />
       <ClaimBanner />
+      {isThereAnyHiddenContributors ? (
+        <div className="flex flex-row justify-end gap-2 font-walsheim text-sm font-normal text-greyscale-50">
+          <EyeOffLine />
+
+          <div className="inline lg:hidden xl:flex">{T("reward.form.contributions.showIgnored")}</div>
+          <FormToggle name={showHiddenContributorsName} control={control} />
+        </div>
+      ) : null}
       {contributors?.length > 0 && (
         <ContributorsTable
           {...{
@@ -133,7 +159,10 @@ export default function Contributors() {
         <Card>
           <EmptyState
             illustrationSrc={IMAGES.global.categories}
-            title={{ token: "contributor.tableFallback.noContributor", params: { projectName: project?.name } }}
+            title={{
+              token: "contributor.tableFallback.noContributor",
+              params: { projectName: project?.name },
+            }}
             description={{ token: "contributor.tableFallback.relevantProfiles" }}
           />
         </Card>
