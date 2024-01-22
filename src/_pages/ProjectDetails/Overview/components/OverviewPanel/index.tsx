@@ -5,8 +5,7 @@ import { ProjectOverviewSponsors } from "src/components/Project/Overview/Overvie
 import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
 import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
 import { IMAGES } from "src/assets/img";
-import { Card as NewCard } from "components/ds/card/card.tsx";
-import Card from "src/components/Card";
+import { Card } from "components/ds/card/card.tsx";
 import isDefined from "src/utils/isDefined.ts";
 
 interface Props {
@@ -20,17 +19,17 @@ export default function OverviewPanel({ project }: Props) {
 
   if (!projectLeads.length && !contributorCount && !sponsors?.length && !moreInfos?.length) {
     return (
-      <NewCard>
+      <Card>
         <EmptyState
           illustrationSrc={IMAGES.icons.compass}
           description={{ token: "project.details.overview.emptyStateDescription" }}
         />
-      </NewCard>
+      </Card>
     );
   }
 
   return (
-    <Card fullWidth={false} className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0" padded={false}>
+    <Card className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
       <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
       <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
       <ProjectOverviewSponsors sponsors={sponsors} />
