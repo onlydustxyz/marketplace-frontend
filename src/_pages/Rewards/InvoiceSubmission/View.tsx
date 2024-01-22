@@ -108,7 +108,7 @@ export function buildHiddenFields({
   githubUserId,
   paymentRequests: paymentRequests,
   payoutInfo,
-}: Omit<Props, "markInvoiceAsReceived">): Record<string, string> {
+}: Props): Record<string, string> {
   return {
     github_id: githubUserId.toString(),
     request_ids: paymentRequests.map(p => p.id).join(","),
@@ -116,7 +116,7 @@ export function buildHiddenFields({
       paymentRequests.map(
         p =>
           `#${pretty(p.id)} - ${formatDate(new Date(p.requestedAt))} (${formatMoneyAmount({
-            amount: p.amount.total,
+            amount: p.amount.dollarsEquivalent ?? 0,
             currency: p.amount.currency,
           })})`
       )
