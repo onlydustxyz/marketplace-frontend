@@ -30,6 +30,7 @@ const ImpersonationPage = () => {
 
           if (isError) {
             clearImpersonateClaim();
+            reset(); // Return to initial user
             navigate(RoutePaths.NotFound);
           }
 
@@ -38,12 +39,14 @@ const ImpersonationPage = () => {
               navigate(RoutePaths.Projects);
             } else {
               clearImpersonateClaim();
+              reset(); // Return to initial user
               navigate(RoutePaths.NotFound);
             }
           }
         })
         .catch(() => {
           clearImpersonateClaim();
+          reset(); // Return to initial user
           navigate(RoutePaths.NotFound);
         });
     }
