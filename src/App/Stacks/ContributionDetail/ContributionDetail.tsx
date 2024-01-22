@@ -1,15 +1,19 @@
-import posthog from "posthog-js";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { Fragment, useEffect } from "react";
 import { useMatch } from "react-router-dom";
-import { RoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
+import { RoutePaths } from "src/App";
+import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
+import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
-import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
+import { CommitsTooltip } from "src/components/GithubCard/GithubPullRequest/CommitsTooltip";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
+import { usePosthog } from "src/hooks/usePosthog";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
 import GitCommitLine from "src/icons/GitCommitLine";
@@ -18,11 +22,7 @@ import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
-import { CommitsTooltip } from "src/components/GithubCard/GithubPullRequest/CommitsTooltip";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
-import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
@@ -30,6 +30,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
   const [openRewardPanel] = useStackReward();
   const [openProjectOverview] = useStackProjectOverview();
   const isMyContribution = Boolean(useMatch(`${RoutePaths.Contributions}/*`));
+  const { capture } = usePosthog();
 
   const {
     data: contribution,
@@ -41,7 +42,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
 
   useEffect(() => {
     if (contribution) {
-      posthog.capture("contribution_viewed", { id_contribution: contribution.id, name: contribution.githubTitle });
+      capture("contribution_viewed", { id_contribution: contribution.id, name: contribution.githubTitle });
     }
   }, [contribution]);
 

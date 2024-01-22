@@ -33,11 +33,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <QueryProvider>
                   <div id="root">{children}</div>
                   <PosthogIdentifyUser />
+                  <PosthogNext />
                 </QueryProvider>
               </ImpersonationProvider>
             </IntlProvider>
           </Auth0ProviderWithNavigate>
-          <PosthogNext />
         </PosthogProvider>
       </body>
       {config.GTM_ID ? <GoogleTagManager gtmId={config.GTM_ID} /> : null}

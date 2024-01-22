@@ -8,13 +8,15 @@ export function handleLogout(
   clearImpersonateClaim: () => void
 ) {
   const queryClient = new QueryClient();
+
+  posthog.capture("user_logged_out");
+  posthog.reset();
+
   if (isImpersonating) {
     clearImpersonateClaim();
     queryClient.invalidateQueries();
     window.location.reload();
   } else {
-    posthog.capture("user_logged_out");
-    posthog.reset();
     logout({
       logoutParams: {
         returnTo: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL || "/",

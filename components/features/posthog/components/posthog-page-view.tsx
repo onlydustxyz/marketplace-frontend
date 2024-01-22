@@ -3,10 +3,12 @@
 import { useSearchParams } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
 import { useEffect } from "react";
+import { usePosthog } from "src/hooks/usePosthog";
 
 export function PosthogPageView({ pathname }: { pathname: string }) {
   const searchParams = useSearchParams();
   const posthog = usePostHog();
+  const { capture } = usePosthog();
 
   // Track pageviews
   useEffect(() => {
@@ -15,7 +17,7 @@ export function PosthogPageView({ pathname }: { pathname: string }) {
       if (searchParams.toString()) {
         url = url + `?${searchParams.toString()}`;
       }
-      posthog.capture("$pageview", {
+      capture("$pageview", {
         $current_url: url,
       });
     }

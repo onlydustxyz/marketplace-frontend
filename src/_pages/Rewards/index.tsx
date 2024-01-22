@@ -1,17 +1,17 @@
-import posthog from "posthog-js";
+import { EmptyState } from "components/layout/placeholders/empty-state";
+import { useContext, useEffect, useMemo, useRef } from "react";
+import { UserRewardTable } from "src/_pages/Rewards/UserRewardTable";
+import { IMAGES } from "src/assets/img";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import SEO from "src/components/SEO";
-import { UserRewardTable } from "src/_pages/Rewards/UserRewardTable";
 import Flex from "src/components/Utils/Flex";
+import { usePosthog } from "src/hooks/usePosthog";
 import { useT } from "talkr";
+import { UserRewardsContext } from "./context/UserRewards";
 import { UserRewardsProvider } from "./context/UserRewards.provider";
 import { Earning } from "./Earning/Earning";
 import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";
 import InvoiceSubmission from "./InvoiceSubmission";
-import { useContext, useEffect, useMemo, useRef } from "react";
-import { UserRewardsContext } from "./context/UserRewards";
-import { EmptyState } from "components/layout/placeholders/empty-state";
-import { IMAGES } from "src/assets/img";
 
 export enum RewardStatus {
   COMPLETE = "COMPLETE",
@@ -66,8 +66,10 @@ function SafeRewards() {
 }
 
 export default function Rewards() {
+  const { capture } = usePosthog();
+
   useEffect(() => {
-    posthog.capture("reward_list_viewed");
+    capture("reward_list_viewed");
   }, []);
 
   return (

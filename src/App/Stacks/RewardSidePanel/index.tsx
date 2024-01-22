@@ -1,10 +1,10 @@
-import posthog from "posthog-js";
 import { ComponentProps, useEffect } from "react";
 import { useIntl } from "src/hooks/useIntl";
+import { usePosthog } from "src/hooks/usePosthog";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useMutationRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 import View from "./View";
-import { useMutationRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 
 export default function RewardSidePanel({
   projectId,
@@ -13,9 +13,11 @@ export default function RewardSidePanel({
   projectLeaderView,
   isMine,
 }: ComponentProps<typeof View>) {
+  const { capture } = usePosthog();
+
   useEffect(() => {
     if (rewardId) {
-      posthog.capture("reward_viewed", { id_reward: rewardId });
+      capture("reward_viewed", { id_reward: rewardId });
     }
   }, [rewardId]);
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { PropsWithChildren, createContext, useCallback } from "react";
+import posthog from "posthog-js";
+import { createContext, PropsWithChildren, useCallback } from "react";
 import { useLocalStorage } from "react-use";
 
 type ImpersonateClaim = {
@@ -32,6 +33,9 @@ export function ImpersonationProvider({ children }: PropsWithChildren) {
   };
 
   const handleClearImpersonateClaim = () => {
+    // Can't use hook because this provider is used inside said hook
+    // Reset Posthog so it can identify the real user again
+    posthog.reset();
     removeImpersonateClaim();
   };
 

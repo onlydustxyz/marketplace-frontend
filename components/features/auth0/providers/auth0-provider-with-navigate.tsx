@@ -13,6 +13,7 @@ export function Auth0ProviderWithNavigate({ children }: { children: ReactNode })
 
   const onRedirectCallback = (appState: AppState | undefined, user?: User) => {
     if (user) {
+      // Can't use hook here due to provider order
       posthog.capture("user_logged_in");
     }
 
