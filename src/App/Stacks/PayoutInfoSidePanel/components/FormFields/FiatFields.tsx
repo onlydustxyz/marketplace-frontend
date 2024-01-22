@@ -5,7 +5,7 @@ import { useIntl } from "src/hooks/useIntl";
 import IBANParser from "iban";
 import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
 import CurrencyField from "./CurrencyField.tsx";
-import { Currency } from "../../../../../types.ts";
+import { Currency } from "src/types.ts";
 
 export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();
