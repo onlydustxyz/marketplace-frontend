@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/auth0-provider-with-navigate";
-import ImpersonationProvider from "components/features/impersonation/impersonation.provider";
+import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
 
 import { Stacks } from "src/App/Stacks/Stacks";
 import Tooltip from "src/components/Tooltip";
