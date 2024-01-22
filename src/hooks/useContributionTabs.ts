@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { isInArray } from "src/utils/isInArray";
+import { useIntl } from "./useIntl.tsx";
 
 export enum AllTabs {
   All = "ALL_CONTRIBUTIONS",
@@ -12,6 +13,7 @@ export enum AllTabs {
 const tabValues = Object.values(AllTabs);
 
 export function useContributionTabs() {
+  const { T } = useIntl();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
@@ -26,7 +28,19 @@ export function useContributionTabs() {
     setSearchParams({ tab });
   }
 
+  function getActiveTab() {
+    const tabNames = {
+      [AllTabs.All]: T("contributions.nav.allContributions").toLowerCase(),
+      [AllTabs.InProgress]: T("contributions.inProgress.title").toLowerCase(),
+      [AllTabs.Completed]: T("contributions.completed.title").toLowerCase(),
+      [AllTabs.Cancelled]: T("contributions.canceled.title").toLowerCase(),
+    };
+
+    return tabNames[activeTab ?? AllTabs.All];
+  }
+
   return {
+    activeTab: getActiveTab(),
     isActiveTab,
     updateActiveTab,
   };

@@ -83,14 +83,10 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
 
             <Tooltip anchorId={tooltipId} clickable>
               <CommitsTooltip
-                pullRequest={{
-                  author: {
-                    login: githubAuthor.login,
-                    avatarUrl: githubAuthor.avatarUrl,
-                    id: githubAuthor.githubUserId,
-                    htmlUrl: githubAuthor.htmlUrl,
-                    user: null,
-                  },
+                author={{
+                  authorLogin: githubAuthor.login,
+                  authorAvatarUrl: githubAuthor.avatarUrl,
+                  githubAuthorId: githubAuthor.githubUserId,
                 }}
                 userCommits={userCommitsCount}
                 commitsCount={commitsCount}

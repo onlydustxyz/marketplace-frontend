@@ -263,6 +263,8 @@ const config: Config = withTV({
       addComponents({
         ".pseudo-outline": pseudoOutline,
         ...variantSizes.reduce((acc, size) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
           acc[`.pseudo-outline-${size}`] = {
             ...pseudoOutline,
             "&:before": {

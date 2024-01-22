@@ -4,18 +4,18 @@ import { useIntl } from "src/hooks/useIntl";
 import Section, { SectionIcon } from "./OverviewSection";
 
 export interface ProjectOverviewContributorProps {
-  project: UseGetProjectBySlugResponse;
+  contributorCount: number;
+  topContributors: UseGetProjectBySlugResponse["topContributors"];
 }
 
-export const ProjectOverviewContributor = ({ project }: ProjectOverviewContributorProps) => {
+export const ProjectOverviewContributor = ({ contributorCount, topContributors }: ProjectOverviewContributorProps) => {
   const { T } = useIntl();
-  const contributorCount = project.contributorCount || 0;
 
   return contributorCount ? (
     <Section icon={SectionIcon.User} title={T("project.details.overview.contributors", { count: contributorCount })}>
       <div className="flex flex-row items-center gap-2 text-sm font-normal text-greyscale-50">
         <div className="flex flex-row -space-x-1">
-          {(project.topContributors || []).map(contributor => (
+          {(topContributors || []).map(contributor => (
             <RoundedImage
               key={contributor.login}
               src={contributor.avatarUrl}

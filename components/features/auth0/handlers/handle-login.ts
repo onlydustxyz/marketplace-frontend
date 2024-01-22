@@ -1,12 +1,11 @@
 import { RedirectLoginOptions } from "@auth0/auth0-react";
 
-export const handleLoginWithRedirect = async (
+export async function handleLoginWithRedirect(
   loginWithRedirectFunc: (options?: RedirectLoginOptions) => Promise<void>
-) => {
-  await loginWithRedirectFunc();
-  //   {
-  //   appState: {
-  //     returnTo: window.location.pathname,
-  //   },
-  // }
-};
+) {
+  await loginWithRedirectFunc({
+    appState: {
+      returnTo: window.location.pathname,
+    },
+  });
+}

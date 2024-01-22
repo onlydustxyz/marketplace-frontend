@@ -1,3 +1,5 @@
+"use client";
+
 import { PropsWithChildren, createContext, useCallback } from "react";
 import { useLocalStorage } from "react-use";
 
@@ -15,7 +17,7 @@ type ImpersonationContextType = {
 
 export const ImpersonationContext = createContext<ImpersonationContextType | undefined>(undefined);
 
-const ImpersonationProvider = ({ children }: PropsWithChildren) => {
+export function ImpersonationProvider({ children }: PropsWithChildren) {
   const [impersonateClaim, setImpersonateClaim, removeImpersonateClaim] =
     useLocalStorage<ImpersonateClaim>("impersonateClaim");
 
@@ -49,6 +51,4 @@ const ImpersonationProvider = ({ children }: PropsWithChildren) => {
   };
 
   return <ImpersonationContext.Provider value={value}>{children}</ImpersonationContext.Provider>;
-};
-
-export default ImpersonationProvider;
+}

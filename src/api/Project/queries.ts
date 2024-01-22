@@ -292,7 +292,6 @@ export default {
   useGetProjectContributionDetail,
   useInfiniteList,
   useRewardableItemsInfiniteList,
-  useRewardableItemsQueryParams,
   useProjectContributorsInfiniteList,
   useProjectContributionsInfiniteList,
   useCompletedRewardableItems,
