@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import config from "src/config";
 import { sharedMetadata } from "./shared-metadata";
 import { ReactNode } from "react";
+import { IntlProvider } from "src/hooks/useIntl";
 
 const PosthogNext = dynamic(() => import("components/features/posthog/components/posthog-next"), {
   ssr: false,
@@ -27,12 +28,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <PosthogProvider>
           <Auth0ProviderWithNavigate>
-            <ImpersonationProvider>
-              <QueryProvider>
-                <div id="root">{children}</div>
-                <PosthogIdentifyUser />
-              </QueryProvider>
-            </ImpersonationProvider>
+            <IntlProvider>
+              <ImpersonationProvider>
+                <QueryProvider>
+                  <div id="root">{children}</div>
+                  <PosthogIdentifyUser />
+                </QueryProvider>
+              </ImpersonationProvider>
+            </IntlProvider>
           </Auth0ProviderWithNavigate>
           <PosthogNext />
         </PosthogProvider>
