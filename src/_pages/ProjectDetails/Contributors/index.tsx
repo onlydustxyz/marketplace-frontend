@@ -134,7 +134,7 @@ export default function Contributors() {
           <EmptyState
             illustrationSrc={IMAGES.global.categories}
             title={{ token: "contributor.tableFallback.noContributor", params: { projectName: project?.name } }}
-            description={{ token: "contributor.tableFallback.noContributorDescription" }}
+            description={{ token: "contributor.tableFallback.relevantProfiles" }}
           />
         </Card>
       )}

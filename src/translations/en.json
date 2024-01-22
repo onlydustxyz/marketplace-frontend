@@ -983,7 +983,8 @@
         "technologies": "Technologies",
         "title": "Overview",
         "totalSpentAmountInUsd": "GRANTED",
-        "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend"
+        "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend",
+        "emptyStateDescription": "This project has no additional information to showcase for now."
       },
       "contributions": {
         "title": "Contributions"

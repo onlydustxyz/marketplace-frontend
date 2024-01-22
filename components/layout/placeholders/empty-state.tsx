@@ -12,7 +12,7 @@ interface Token {
 interface EmptyStateProps {
   as?: ElementType;
   illustrationSrc: string;
-  title: Token;
+  title?: Token;
   description?: Token;
   actionLabel?: Token;
   onAction?: () => void;
@@ -34,11 +34,13 @@ export function EmptyState({
         <Image src={illustrationSrc} width={80} height={80} alt={T("emptyStatePictureFallback")} />
       </div>
       <div>
-        <Typography
-          variant="title-l"
-          className="mb-1 font-belwe"
-          translate={{ token: title?.token, params: title?.params }}
-        />
+        {title?.token ? (
+          <Typography
+            variant="title-l"
+            className="mb-1 font-belwe"
+            translate={{ token: title?.token, params: title?.params }}
+          />
+        ) : null}
         {description?.token ? (
           <Typography
             variant="body-s"
