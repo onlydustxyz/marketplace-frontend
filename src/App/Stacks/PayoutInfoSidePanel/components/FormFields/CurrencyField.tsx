@@ -23,7 +23,7 @@ function CurrencyField({ currencies, children }: CurrencyFieldProps) {
             <Chip solid>
               <CurrencyIcons currency={currency} className="h-4 w-4" />
             </Chip>
-            <Typography variant={"body-xs"} translate={{ token: `currencies.currency.${currency}` }} />
+            <Typography variant={"body-xs"}>{currency}</Typography>
           </Flex>
         ))}
       </Flex>
