@@ -4,6 +4,7 @@ import { useLocalStorage } from "usehooks-ts";
 
 type Props<Field> = {
   storageKey: string;
+  showHidden?: boolean;
 } & Sorting<Field>;
 
 export type Sorting<Field> = {
@@ -25,7 +26,7 @@ Lower numbers or amounts will be at the top of the list.
 For letters/words, the sort is alphabetical from A to Z.
 When it comes to dates, ascending order would mean that the oldest ones come first and the most recent ones last
 */
-export default function useQueryParamsSorting<Field>({ field, isAscending, storageKey }: Props<Field>) {
+export default function useQueryParamsSorting<Field>({ field, isAscending, storageKey, showHidden }: Props<Field>) {
   const [sorting, setSorting] = useLocalStorage(storageKey, { field, isAscending });
 
   const sortField: SortField<Field> = field =>
@@ -35,6 +36,7 @@ export default function useQueryParamsSorting<Field>({ field, isAscending, stora
     () => ({
       sort: sorting.field,
       direction: sorting.isAscending ? "ASC" : "DESC",
+      ...(typeof showHidden !== "undefined" ? { showHidden: showHidden.toString() } : {}),
     }),
     [sorting]
   ) as QueryParams;
