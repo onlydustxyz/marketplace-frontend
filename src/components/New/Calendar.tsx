@@ -1,5 +1,5 @@
-import { addDays, eachDayOfInterval, format, isAfter } from "date-fns";
-import { MouseEvent, useEffect, useState } from "react";
+import { eachDayOfInterval, format, isAfter, subDays, subMonths } from "date-fns";
+import { useEffect, useState } from "react";
 import { CaptionProps, DateRange, DayPicker, DayPickerBase, DayPickerProps, useNavigation } from "react-day-picker";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
@@ -38,7 +38,7 @@ function CustomCaption(props: CaptionProps) {
 const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
   classNames: {
     root: "w-full font-walsheim p-2",
-    months: "w-full",
+    months: "flex flex-row gap-2",
     table: "w-full flex flex-col gap-1",
     head_row: "w-full flex justify-between",
     head_cell: "text-xs text-greyscale-200 font-medium w-8 h-8 flex items-center justify-center",
@@ -47,12 +47,12 @@ const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
     cell: "w-8 h-8",
     day: "text-xs text-greyscale-50 w-8 h-8 rounded flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-spacePurple-500 hover:bg-spacePurple-500 transition-colors ease-in duration-200",
     day_disabled: "text-greyscale-600 pointer-events-none",
-    day_outside: "text-greyscale-600",
+    day_outside: "text-greyscale-600 opacity-0",
     day_selected: "bg-spacePurple-500 !text-greyscale-50",
-    day_range_start: "bg-spacePurple-500 text-white",
-    day_range_end: "bg-spacePurple-500 text-white",
-    day_range_middle: "!bg-spacePurple-300 text-white",
-    day_today: "text-spacePurple-300 hover:text-white",
+    day_range_start: "bg-spacePurple-500 text-white rounded-r-none",
+    day_range_end: "bg-spacePurple-500 text-white rounded-l-none",
+    day_range_middle: "!bg-spacePurple-300 text-white rounded-none",
+    day_today: "text-spacePurple-300 hover:text-white ",
   },
   components: {
     Caption: CustomCaption,
@@ -60,8 +60,8 @@ const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
   formatters: {
     formatWeekdayName: day => day.toLocaleDateString("en-US", { weekday: "narrow" }),
   },
-  showOutsideDays: true,
   weekStartsOn: 1,
+  showOutsideDays: true,
 };
 
 export function useSingleCalendar(defaultValue?: Date) {
@@ -127,18 +127,25 @@ export function Calendar(options: DayPickerProps) {
       {...options}
       onDayMouseEnter={onMouseEnter}
       modifiers={{ middleHovered: hoveredMiddle, endHovered: hoveredEnd, startHover: hoveredStart }}
+      numberOfMonths={2}
+      pagedNavigation
       modifiersStyles={{
         middleHovered: {
           background: "#CE66FF",
           color: "white",
+          borderRadius: 0,
         },
         endHovered: {
           background: "#8B00CC",
           color: "white",
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
         },
         startHover: {
           background: "#AE00FF",
           color: "white",
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
         },
       }}
     />

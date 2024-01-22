@@ -122,16 +122,16 @@ export function Datepicker({
       return (
         <Calendar
           mode="range"
+          pagedNavigation
           // Sometimes date strings are passed instead of date objects
           selected={props.selectedPeriod === Period.Custom ? parseDateRangeString(selectedDateRange) : undefined}
           {...(props.disabledFuture ? { toDate: new Date() } : {})}
           onSelect={(...args) => {
             if (selectedDateRange?.from && selectedDateRange?.to) {
               // If we already have a valid date range and the user selects a new date, we want to reset the date range
-              // const [, selectedDay, ...restArgs] = args;
-              //
-              // props.onChange?.({ from: selectedDay, to: undefined }, selectedDay, ...restArgs);
-              props.onChange?.(...args);
+              const [, selectedDay, ...restArgs] = args;
+
+              props.onChange?.({ from: selectedDay, to: undefined }, selectedDay, ...restArgs);
             } else {
               props.onChange?.(...args);
               if (autoCloseOnDateSelected) {
@@ -212,7 +212,7 @@ export function Datepicker({
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
-            className={cn("z-10 overflow-hidden rounded-xl border border-greyscale-50/8 shadow-lg", {
+            className={cn("z-20 w-[200%] overflow-hidden rounded-xl border border-greyscale-50/8 shadow-lg", {
               "bg-greyscale-800": isElevated,
               "bg-greyscale-900": !isElevated,
               "origin-top translate-y-1.5": placement === "bottom",
