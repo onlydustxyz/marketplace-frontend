@@ -1,18 +1,9 @@
 import { addDays, eachDayOfInterval, format, isAfter } from "date-fns";
-import { MouseEvent, useState } from "react";
-import {
-  ActiveModifiers,
-  CaptionProps,
-  DateRange,
-  DayPicker,
-  DayPickerBase,
-  DayPickerProps,
-  useNavigation,
-} from "react-day-picker";
+import { MouseEvent, useEffect, useState } from "react";
+import { CaptionProps, DateRange, DayPicker, DayPickerBase, DayPickerProps, useNavigation } from "react-day-picker";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
-import { Period } from "./Field/Datepicker.tsx";
 
 function CustomCaption(props: CaptionProps) {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
@@ -54,13 +45,14 @@ const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
     tbody: "flex flex-col gap-1",
     row: "w-full flex justify-between",
     cell: "w-8 h-8",
-    day: "text-xs text-greyscale-50 w-8 h-8 rounded flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-spacePurple-500",
-    day_disabled: "text-greyscale-600",
+    day: "text-xs text-greyscale-50 w-8 h-8 rounded flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-spacePurple-500 hover:bg-spacePurple-500 transition-colors ease-in duration-200",
+    day_disabled: "text-greyscale-600 pointer-events-none",
     day_outside: "text-greyscale-600",
     day_selected: "bg-spacePurple-500 !text-greyscale-50",
-    day_range_start: "bg-spacePurple-500",
-    day_range_end: "bg-spacePurple-500",
-    day_range_middle: "!bg-spacePurple-300",
+    day_range_start: "bg-spacePurple-500 text-white",
+    day_range_end: "bg-spacePurple-500 text-white",
+    day_range_middle: "!bg-spacePurple-300 text-white",
+    day_today: "text-spacePurple-300 hover:text-white",
   },
   components: {
     Caption: CustomCaption,
@@ -87,63 +79,68 @@ export function useRangeCalendar(defaultValue?: DateRange) {
 export function Calendar(options: DayPickerProps) {
   const [hoveredMiddle, setHoverMiddle] = useState<Date[]>([]);
   const [hoveredEnd, setHoverEnd] = useState<Date[]>([]);
+  const [hoveredStart, setHoverStart] = useState<Date[]>([]);
 
-  function onMouseEnter(day: Date, activeModifiers: ActiveModifiers, e: MouseEvent) {
+  useEffect(() => {
     if (options.selected) {
-      const selected = options?.selected as { from: Date };
-      if (selected.from) {
-        // if (isAfter(day, selected.from)) {
-        //   setHoverMiddle([]);
-        // } else if (isAfter(day, addDays(selected.from, 1))) {
-        if (isAfter(day, selected.from)) {
-          const interval = eachDayOfInterval({
-            start: selected.from,
-            end: day,
-          });
+      setHoverMiddle([]);
+      setHoverEnd([]);
+      setHoverStart([]);
+    }
+  }, [options.selected]);
+  function onMouseEnter(day: Date) {
+    if (options.mode === "range") {
+      if (options.selected) {
+        const selected = options?.selected as { from: Date; to?: Date };
+        if (selected.from && !selected.to) {
+          if (isAfter(day, selected.from)) {
+            const interval = eachDayOfInterval({
+              start: selected.from,
+              end: day,
+            });
 
-          interval.pop();
-          interval.shift();
-          setHoverMiddle(interval);
-          setHoverEnd([day]);
+            interval.pop();
+            interval.shift();
+            setHoverMiddle(interval);
+            setHoverEnd([day]);
+            setHoverStart([selected.from]);
+          } else {
+            const interval = eachDayOfInterval({
+              start: day,
+              end: selected.from,
+            });
+
+            interval.pop();
+            interval.shift();
+            setHoverMiddle(interval);
+            setHoverEnd([selected.from]);
+            setHoverStart([day]);
+          }
         }
       }
     }
   }
 
-  console.log("hoveredMiddle", hoveredMiddle);
   return (
     <DayPicker
       {...defaultOptions}
       {...options}
       onDayMouseEnter={onMouseEnter}
-      modifiers={{ booked: hoveredMiddle, endHovered: hoveredEnd }}
+      modifiers={{ middleHovered: hoveredMiddle, endHovered: hoveredEnd, startHover: hoveredStart }}
       modifiersStyles={{
-        booked: {
-          background: "green",
-          transition: "background 0.2s ease-in-out",
+        middleHovered: {
+          background: "#CE66FF",
+          color: "white",
         },
         endHovered: {
-          background: "blue",
-          transition: "background 0.2s ease-in-out",
+          background: "#8B00CC",
+          color: "white",
+        },
+        startHover: {
+          background: "#AE00FF",
+          color: "white",
         },
       }}
     />
   );
 }
-
-// Build a tailwind class to do this on react-day-picker lib
-//
-//     - when button have aria-selected="true" the background should be green
-//     - when i hover a button the background should be red
-//     - when i hover a button all the child beetwen the button and the button with aria-selected="true" should have a background color blue
-//
-//     exemple :
-//
-//     - if i hover the button "2" the button "1" should have a background blue and "2" should have a background color red and the button "selected" should have a blue background
-//     - if i hover the button "3" the button "1" & "2" should have a background blue and "3" should have a background color red and the button "selected" should have a blue background
-//
-
-//
-//     when button "end" is hover the two button in middle should be with a background color red and the button "end" should have a blue background. Button "other" should not have background
-//
-//     you should use only CSS selector without take care of the inner html content

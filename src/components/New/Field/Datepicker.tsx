@@ -24,6 +24,9 @@ export enum Period {
 
 type BaseProps = {
   isElevated?: boolean;
+  autoCloseOnDateSelected?: boolean;
+  autoCloseOnPeriodeSelected?: boolean;
+  disabledFuture?: boolean;
 };
 
 type SingleProps = BaseProps & {
@@ -61,7 +64,12 @@ type Props = WithPeriodProps | WithoutPeriodProps;
 
 // Do not spread props due to this Typescript limitation
 // https://stackoverflow.com/questions/69023997/typescript-discriminated-union-narrowing-not-working
-export function Datepicker({ isElevated = false, ...props }: Props) {
+export function Datepicker({
+  isElevated = false,
+  autoCloseOnDateSelected = true,
+  autoCloseOnPeriodeSelected = true,
+  ...props
+}: Props) {
   const { T } = useIntl();
   const { refs, floatingStyles, placement } = useFloating({
     middleware: [flip()],
@@ -116,15 +124,19 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
           mode="range"
           // Sometimes date strings are passed instead of date objects
           selected={props.selectedPeriod === Period.Custom ? parseDateRangeString(selectedDateRange) : undefined}
+          {...(props.disabledFuture ? { toDate: new Date() } : {})}
           onSelect={(...args) => {
             if (selectedDateRange?.from && selectedDateRange?.to) {
               // If we already have a valid date range and the user selects a new date, we want to reset the date range
-              const [, selectedDay, ...restArgs] = args;
-
-              props.onChange?.({ from: selectedDay, to: undefined }, selectedDay, ...restArgs);
+              // const [, selectedDay, ...restArgs] = args;
+              //
+              // props.onChange?.({ from: selectedDay, to: undefined }, selectedDay, ...restArgs);
+              props.onChange?.(...args);
             } else {
               props.onChange?.(...args);
-              close();
+              if (autoCloseOnDateSelected) {
+                close();
+              }
             }
 
             props.onPeriodChange?.(Period.Custom);
@@ -236,7 +248,9 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
 
                               props.onPeriodChange(id);
 
-                              close();
+                              if (autoCloseOnPeriodeSelected) {
+                                close();
+                              }
                             }}
                           >
                             <span>{label}</span>

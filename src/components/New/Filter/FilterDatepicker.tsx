@@ -22,11 +22,13 @@ export function FilterDatepicker({
   return (
     <FilterField label={T("filter.date.title")}>
       <Datepicker
+        autoCloseOnDateSelected={false}
         mode="range"
         value={selected}
         onChange={value => {
           if (value) onChange(value);
         }}
+        disabledFuture
         selectedPeriod={selectedPeriod}
         onPeriodChange={onPeriodChange}
         periods={periods}
