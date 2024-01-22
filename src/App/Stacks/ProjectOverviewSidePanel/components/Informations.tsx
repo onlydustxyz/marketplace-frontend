@@ -3,10 +3,10 @@ import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLea
 import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
 import { ProjectOverviewSponsors } from "src/components/Project/Overview/OverviewSponsors";
 import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
-import isDefined from "../../../../utils/isDefined.ts";
-import { Card } from "../../../../../components/ds/card/card.tsx";
-import { EmptyState } from "../../../../../components/layout/placeholders/empty-state.tsx";
-import { IMAGES } from "../../../../assets/img";
+import isDefined from "src/utils/isDefined";
+import { Card } from "components/ds/card/card";
+import { EmptyState } from "components/layout/placeholders/empty-state";
+import { IMAGES } from "src/assets/img";
 
 export interface ProjectOverviewInformationsProps {
   project: UseGetProjectBySlugResponse;
