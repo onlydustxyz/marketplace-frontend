@@ -15,7 +15,8 @@
     "gen:types": "scripts/generate-api-types.sh",
     "postbuild": "scripts/upload-sourcemaps.sh",
     "dependency-cruiser": "depcruise --config .dependency-cruiser.js src",
-    "update-languages": "scripts/generate-github-languages-file.sh"
+    "update-languages": "scripts/generate-github-languages-file.sh",
+    "component": "ts-node tools/create-components.ts"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
@@ -70,9 +71,11 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@storybook/addon-docs": "^7.6.7",
     "@faker-js/faker": "^8.0.2",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.13",
+    "@inquirer/prompts": "^3.3.0",
     "@next/eslint-plugin-next": "^14.0.4",
     "@playwright/test": "^1.31.2",
     "@storybook/addon-actions": "^7.6.6",

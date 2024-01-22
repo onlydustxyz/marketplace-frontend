@@ -20,7 +20,7 @@ import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import ProjectApi from "src/api/Project";
 import { RewardProjectButton } from "../components/RewardProjectButton";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { IMAGES } from "src/assets/img";
 import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
 import { Card } from "components/ds/card/card.tsx";

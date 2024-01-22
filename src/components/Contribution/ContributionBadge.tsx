@@ -8,7 +8,7 @@ import { Contribution, GithubContributionType, GithubPullRequestStatus } from "s
 import Contributor from "../Contributor";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 interface ContributionBadgeProps {
   contribution: Pick<

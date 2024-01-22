@@ -1,6 +1,8 @@
-import { PropsWithChildren } from "react";
-export const ImageMetadataBackground = ({ children }: PropsWithChildren) => {
+import { TBackground } from "./background.types";
+
+export function ImageMetadataBackground({ children }: TBackground.Props) {
   const backgroundUrl = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/metadata_background.png`;
+
   return (
     <div
       style={{
@@ -23,4 +25,4 @@ export const ImageMetadataBackground = ({ children }: PropsWithChildren) => {
       </div>
     </div>
   );
-};
+}

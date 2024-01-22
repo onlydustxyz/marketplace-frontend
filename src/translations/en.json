@@ -884,6 +884,9 @@
     "privacy": "Privacy"
   },
   "project": {
+    "highlights": {
+      "thumbnail": "Project logo"
+    },
     "openOverview": "View project details",
     "stillFetching": "We are still fetching some project information. Please come back in approx. 5-10 min.",
     "claim": {
@@ -1322,6 +1325,7 @@
       "many": "__count__ project leads",
       "one": "Led by"
     },
+    "noLed": "The project is claimable",
     "projectLeadInvitation": {
       "prompt": "You've been promoted to Project Lead",
       "view": "View invite"
@@ -1335,7 +1339,11 @@
     "accept": "Accept invite",
     "acceptShort": "Accept",
     "success": "Congratulations! You’re now a project lead on __projectName__",
-    "prompt": "You've been promoted to Project Lead on __projectName__"
+    "prompt": "You've been promoted to Project Lead on __projectName__",
+    "card": {
+      "prompt": "You've been promoted to Project Lead",
+      "view": "View invite"
+    }
   },
   "projects": {
     "count": {
