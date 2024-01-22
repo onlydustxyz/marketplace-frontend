@@ -1,3 +1,4 @@
+import posthog from "posthog-js";
 import { useForm, FormProvider } from "react-hook-form";
 import { Contributor, Inputs } from "./types";
 import { useCallback, useState } from "react";
@@ -49,6 +50,15 @@ const RewardForm: React.FC = () => {
     pathParam: project?.id || "",
     method: "POST",
     onSuccess: async () => {
+      const formValues = getValues();
+
+      posthog.capture("reward_sent", {
+        amount: formValues.amountToWire,
+        count_contributions: formValues.workItems.length,
+        project_id: project?.id,
+        recipient_id: contributor?.githubUserId,
+      });
+
       try {
         await refetch();
         showToaster(T("reward.form.sent"));
@@ -93,7 +103,7 @@ const RewardForm: React.FC = () => {
 
   const contributions = completedContributions;
 
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, getValues } = formMethods;
 
   const onValidSubmit = (formData: Inputs) => {
     if (contributor) {
