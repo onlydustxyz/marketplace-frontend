@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { isInArray } from "src/utils/isInArray";
-import { useIntl } from "./useIntl.tsx";
+import { useIntl } from "./useIntl";
 
 export enum AllTabs {
   All = "ALL_CONTRIBUTIONS",
