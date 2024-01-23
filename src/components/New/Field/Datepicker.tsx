@@ -122,6 +122,7 @@ export function Datepicker({
       return (
         <Calendar
           mode="range"
+          numberOfMonths={2}
           pagedNavigation
           // Sometimes date strings are passed instead of date objects
           selected={props.selectedPeriod === Period.Custom ? parseDateRangeString(selectedDateRange) : undefined}
@@ -212,7 +213,7 @@ export function Datepicker({
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
-            className={cn("z-20 w-[200%] overflow-hidden rounded-xl border border-greyscale-50/8 shadow-lg", {
+            className={cn("z-20 rounded-xl border border-greyscale-50/8 shadow-lg", {
               "bg-greyscale-800": isElevated,
               "bg-greyscale-900": !isElevated,
               "origin-top translate-y-1.5": placement === "bottom",

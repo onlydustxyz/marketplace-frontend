@@ -38,6 +38,7 @@ function CustomCaption(props: CaptionProps) {
 const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
   classNames: {
     root: "w-full font-walsheim p-2",
+    month: "flex-1",
     months: "flex flex-row gap-2",
     table: "w-full flex flex-col gap-1",
     head_row: "w-full flex justify-between",
@@ -127,7 +128,6 @@ export function Calendar(options: DayPickerProps) {
       {...options}
       onDayMouseEnter={onMouseEnter}
       modifiers={{ middleHovered: hoveredMiddle, endHovered: hoveredEnd, startHover: hoveredStart }}
-      numberOfMonths={2}
       pagedNavigation
       modifiersStyles={{
         middleHovered: {
