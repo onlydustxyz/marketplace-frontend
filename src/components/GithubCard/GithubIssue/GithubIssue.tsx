@@ -43,7 +43,8 @@ export type GithubIssueProps = {
   issue: Partial<RewardableItem & RewardItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
-  contribution: ComponentProps<typeof ContributionBadge>["contribution"];
+  badgeProps: ComponentProps<typeof ContributionBadge>;
+  disabled?: boolean;
 };
 
 export default function GithubIssue({
@@ -55,7 +56,8 @@ export default function GithubIssue({
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
-  contribution,
+  badgeProps,
+  disabled,
 }: GithubIssueProps) {
   const { repoName } = parseIssueLink(issue?.htmlUrl || issue?.githubUrl || "");
 
@@ -63,6 +65,7 @@ export default function GithubIssue({
     <div
       className={cn("w-full", {
         "cursor-pointer": onCardClick,
+        "cursor-not-allowed": disabled,
       })}
       onClick={onCardClick}
     >
@@ -76,7 +79,7 @@ export default function GithubIssue({
         {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
         <div className="flex w-full flex-col gap-2 font-walsheim">
           <div className="flex items-center gap-2">
-            <ContributionBadge contribution={contribution} />
+            <ContributionBadge {...badgeProps} />
 
             <div className="flex text-sm font-medium text-greyscale-50">
               <GithubLink url={issue?.htmlUrl || issue?.githubUrl || ""} text={issue.title} />

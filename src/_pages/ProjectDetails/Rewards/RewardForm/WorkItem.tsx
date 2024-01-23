@@ -59,7 +59,7 @@ export function WorkItem({
       action={GithubIssueAction.Remove}
       onClick={action}
       contributor={contributor}
-      contribution={getContribution(workItem)}
+      badgeProps={{ contribution: getContribution(workItem) }}
       {...githubProp[workItem.type as WorkItemType]}
     />
   );

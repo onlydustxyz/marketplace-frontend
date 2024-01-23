@@ -46,7 +46,8 @@ export type GithubPullRequestProps = {
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
   contributorLogin?: string;
-  contribution: ComponentProps<typeof ContributionBadge>["contribution"];
+  badgeProps: ComponentProps<typeof ContributionBadge>;
+  disabled?: boolean;
 };
 
 export default function GithubPullRequest({
@@ -59,7 +60,8 @@ export default function GithubPullRequest({
   addMarginTopForVirtuosoDisplay = false,
   contributorLogin,
   onCardClick,
-  contribution,
+  badgeProps,
+  disabled,
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest?.htmlUrl || pullRequest?.githubUrl || "");
 
@@ -70,6 +72,7 @@ export default function GithubPullRequest({
     <div
       className={cn("w-full", {
         "cursor-pointer": onCardClick,
+        "cursor-not-allowed": disabled,
       })}
       onClick={onCardClick}
     >
@@ -83,7 +86,7 @@ export default function GithubPullRequest({
         {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
         <div className="flex w-full flex-col gap-2 font-walsheim">
           <div className="flex items-center gap-2">
-            <ContributionBadge contribution={contribution} />
+            <ContributionBadge {...badgeProps} />
 
             <div className="text-sm font-medium text-greyscale-50">
               <GithubLink url={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""} text={pullRequest.title} />

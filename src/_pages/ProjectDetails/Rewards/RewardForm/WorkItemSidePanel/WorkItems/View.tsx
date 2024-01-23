@@ -220,11 +220,11 @@ function getWorkItem(type: WorkItemType, props: RewardItemType, rewardableItem: 
 
   switch (type) {
     case WorkItemType.Issue:
-      return <GithubIssue {...(props as GithubIssueProps)} contribution={contribution} />;
+      return <GithubIssue {...(props as GithubIssueProps)} badgeProps={{ contribution }} />;
     case WorkItemType.PullRequest:
-      return <GithubPullRequest {...(props as GithubPullRequestProps)} contribution={contribution} />;
+      return <GithubPullRequest {...(props as GithubPullRequestProps)} badgeProps={{ contribution }} />;
     case WorkItemType.CodeReview:
-      return <GithubCodeReview {...(props as GithubCodeReviewProps)} contribution={contribution} />;
+      return <GithubCodeReview {...(props as GithubCodeReviewProps)} badgeProps={{ contribution }} />;
     default:
       return null;
   }

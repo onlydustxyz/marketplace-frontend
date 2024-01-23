@@ -43,7 +43,8 @@ export type GithubCodeReviewProps = {
   codeReview: Partial<RewardableItem & RewardItem>;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
-  contribution: ComponentProps<typeof ContributionBadge>["contribution"];
+  badgeProps: ComponentProps<typeof ContributionBadge>;
+  disabled?: boolean;
 };
 
 export default function GithubCodeReview({
@@ -55,7 +56,8 @@ export default function GithubCodeReview({
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
-  contribution,
+  badgeProps,
+  disabled,
 }: GithubCodeReviewProps) {
   const { title, htmlUrl, githubUrl, createdAt } = codeReview || {};
 
@@ -65,6 +67,7 @@ export default function GithubCodeReview({
     <div
       className={cn("w-full", {
         "cursor-pointer": onCardClick,
+        "cursor-not-allowed": disabled,
       })}
       onClick={onCardClick}
     >
@@ -78,7 +81,7 @@ export default function GithubCodeReview({
         {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
         <div className="flex w-full flex-col gap-3 font-walsheim">
           <div className="flex items-center gap-2">
-            <ContributionBadge contribution={contribution} />
+            <ContributionBadge {...badgeProps} />
 
             <div className="flex text-sm font-medium text-greyscale-50">
               <GithubLink url={htmlUrl || githubUrl || ""} text={title ?? ""} />
