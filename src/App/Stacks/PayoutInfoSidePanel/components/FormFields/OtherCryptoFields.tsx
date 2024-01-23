@@ -3,8 +3,8 @@ import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
 import { APTOS_WALLET, ETH_WALLET_OR_ENS_ADDRESS, OPTIMISM_WALLET, STARKNET_WALLET } from "src/utils/regex";
 import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
-import CurrencyField from "./CurrencyField.tsx";
-import { Currency } from "src/types.ts";
+import { CurrencyField } from "./CurrencyField";
+import { Currency } from "src/types";
 
 export function OtherCryptoFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();

@@ -4,8 +4,8 @@ import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import IBANParser from "iban";
 import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
-import CurrencyField from "./CurrencyField.tsx";
-import { Currency } from "src/types.ts";
+import { CurrencyField } from "./CurrencyField";
+import { Currency } from "src/types";
 
 export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();

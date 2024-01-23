@@ -1,14 +1,14 @@
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import { Currency } from "src/types.ts";
-import { Flex } from "components/layout/flex/flex.tsx";
-import { Chip } from "src/components/Chip/Chip.tsx";
-import { Typography } from "components/layout/typography/typography.tsx";
-import { CurrencyIcons } from "src/components/Currency/CurrencyIcon.tsx";
+import { Flex } from "components/layout/flex/flex";
+import { Chip } from "src/components/Chip/Chip";
+import { Typography } from "components/layout/typography/typography";
+import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 
 interface CurrencyFieldProps extends PropsWithChildren {
   currencies: Currency[];
 }
-function CurrencyField({ currencies, children }: CurrencyFieldProps) {
+export function CurrencyField({ currencies, children }: CurrencyFieldProps) {
   return (
     <Flex direction="col" className="w-full gap-2">
       {children}
@@ -30,5 +30,3 @@ function CurrencyField({ currencies, children }: CurrencyFieldProps) {
     </Flex>
   );
 }
-
-export default CurrencyField;
