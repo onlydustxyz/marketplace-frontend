@@ -1,8 +1,8 @@
 import ProjectApi from "src/api/Project";
-import useMutationAlert from "src/api/useMutationAlert.ts";
 import { API_PATH } from "src/api/ApiPath.ts";
 import { useIntl } from "src/hooks/useIntl.tsx";
 import { components } from "src/__generated/api";
+import { useShowToaster } from "src/hooks/useToaster";
 
 interface Props {
   projectId: string;
@@ -10,33 +10,30 @@ interface Props {
 
 export function useToggleContributor({ projectId }: Props) {
   const { T } = useIntl();
-  const { mutate: hideContributor, ...restHideContributorMutation } = ProjectApi.mutations.useHideContributor({
+  const showToaster = useShowToaster();
+  const { mutate: hideContributor } = ProjectApi.mutations.useHideContributor({
     params: { projectId },
-    options: { enabled: Boolean(projectId) },
+    options: {
+      enabled: Boolean(projectId),
+      onSuccess: () => {
+        showToaster(T("project.details.contributors.hideContributor.success"));
+      },
+      onError: () => {
+        showToaster(T("project.details.contributors.hideContributor.error"), { isError: true });
+      },
+    },
   });
 
-  const { mutate: showContributor, ...restShowContributorMutation } = ProjectApi.mutations.useShowContributor({
+  const { mutate: showContributor } = ProjectApi.mutations.useShowContributor({
     params: { projectId },
-    options: { enabled: Boolean(projectId) },
-  });
-
-  useMutationAlert({
-    mutation: restHideContributorMutation,
-    success: {
-      message: T("project.details.contributors.hideContributor.success"),
-    },
-    error: {
-      message: T("project.details.contributors.hideContributor.error"),
-    },
-  });
-
-  useMutationAlert({
-    mutation: restShowContributorMutation,
-    success: {
-      message: T("project.details.contributors.showContributor.success"),
-    },
-    error: {
-      message: T("project.details.contributors.showContributor.error"),
+    options: {
+      enabled: Boolean(projectId),
+      onSuccess: () => {
+        showToaster(T("project.details.contributors.showContributor.success"));
+      },
+      onError: () => {
+        showToaster(T("project.details.contributors.showContributor.error"), { isError: true });
+      },
     },
   });
 
