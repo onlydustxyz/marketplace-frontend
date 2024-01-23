@@ -36,18 +36,6 @@ function kebabToCamel(str: string) {
   return pascalCaseWords.join("");
 }
 
-function stringToKebab(str: string) {
-  const words = str.split("");
-  const kebabCaseWords = words.map((letter, idx) => {
-    if (letter === letter.toUpperCase()) {
-      return `${idx !== 0 ? "-" : ""}${letter.toLowerCase()}`;
-    }
-    return letter;
-  });
-
-  return kebabCaseWords.join("");
-}
-
 async function exists(path: string) {
   try {
     await fs.stat(path);
@@ -64,8 +52,8 @@ async function createComponent({ name, path, PascalName }: Informations) {
       `
         import { T${PascalName} } from "./${name}.types.ts";
 
-        export function ${PascalName}(props: T${PascalName}.Props) {
-          return <div>${PascalName}</div>;
+        export function ${PascalName}({ children }: T${PascalName}.Props) {
+          return <div>{children}</div>;
         }
   `,
       { parser: "typescript" }
@@ -125,31 +113,42 @@ async function createFiles(informations: Informations) {
   }
 }
 
-// TODO: Change the return if folder or path exist to not do it again
-async function promptName() {
-  const name = await i.input({ message: "Components Name" });
-  const kebakName = stringToKebab(name);
+async function askForFolder() {
+  let folder = await i.input({ message: "Folder path:" });
+  let isFolderExist = await exists(folder);
 
-  const folder = await i.input({ message: "Folder path" });
+  while (!isFolderExist) {
+    isFolderExist = await exists(folder);
 
-  const variants = await i.confirm({ message: "Add variant?" });
-
-  const path = `${folder}/${kebakName}`;
-  const isFolderExist = await exists(folder);
-
-  if (!isFolderExist) {
-    console.log(`${COLORS.YELLOW}Folder doesn't exist${COLORS.NC}`);
-    return promptName();
+    if (!isFolderExist) {
+      console.log(`\n${COLORS.RED}❌ Folder doesn't exist${COLORS.NC}\n`);
+      folder = await i.input({ message: "Folder path:" });
+    }
   }
 
+  return folder;
+}
+
+async function promptName() {
+  const name = await i.input({ message: "Component name (kebab-case):" });
+
+  const folder = await askForFolder();
+
+  const path = `${folder}/${name}`;
   const isPathExist = await exists(path);
 
   if (isPathExist) {
-    console.log(`${COLORS.YELLOW}Path already exist${COLORS.NC}`);
+    console.log(`${COLORS.RED}❌ Component already exist${COLORS.NC}`);
+    console.log(`\nComponent path: ${COLORS.BLUE}${path}${COLORS.NC}`);
+
+    console.log(`\n${COLORS.YELLOW}👇 Choose another name${COLORS.NC}\n`);
+
     return promptName();
   }
 
-  return { folder, name: kebakName, path, variants };
+  const variants = await i.confirm({ message: "Do you want variants?" });
+
+  return { folder, name, path, variants };
 }
 
 async function createComponents() {
@@ -165,6 +164,9 @@ async function createComponents() {
     camelName: kebabToCamel(name),
     options: { variants },
   });
+
+  console.log(`\n${COLORS.GREEN}✅ Component created${COLORS.NC}`);
+  console.log(`Component path: ${COLORS.BLUE}${path}${COLORS.NC}\n`);
 }
 
 createComponents();
