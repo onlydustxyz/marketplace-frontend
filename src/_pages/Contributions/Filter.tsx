@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useLocalStorage } from "react-use";
 import MeApi from "src/api/me";
@@ -37,7 +37,15 @@ export type FilterQueryParams = {
   projects: string;
 };
 
-export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void }) {
+export type ContributionsFilterRef = {
+  reset: () => void;
+  hasActiveFilters: boolean;
+};
+
+export const ContributionsFilter = forwardRef(function ContributionsFilter(
+  { onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void },
+  ref: React.Ref<ContributionsFilterRef>
+) {
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
     "contributions-table-filters",
     JSON.stringify(initialFilters)
@@ -148,6 +156,17 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
     setFilters(prevState => updateState(prevState, { projects }));
   }
 
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        reset: resetFilters,
+        hasActiveFilters,
+      };
+    },
+    [hasActiveFilters]
+  );
+
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters}>
       <FilterDatepicker
@@ -169,4 +188,4 @@ export function ContributionsFilter({ onChange }: { onChange: (filterQueryParams
       <FilterTypeOptions selected={filters.types ?? initialFilters.types} onChange={updateTypes} />
     </Filter>
   );
-}
+});

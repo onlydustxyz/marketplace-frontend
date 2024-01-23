@@ -31,7 +31,7 @@ import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import MixedApi from "../../../api/Mixed";
 
 enum Align {
@@ -333,7 +333,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
 
                         {formattedReceipt.type === "crypto" ? (
                           <ExternalLink
-                            url={`https://etherscan.io/tx/${formattedReceipt.reference}`}
+                            url={formattedReceipt.link || `https://etherscan.io/tx/${formattedReceipt.reference}`}
                             text={T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.reference`, {
                               reference: formattedReceipt.reference,
                             })}
@@ -385,6 +385,7 @@ type FormattedReceipt = {
   shortDetails: string;
   fullDetails: string;
   reference: string;
+  link?: string;
 };
 
 const formatReceipt = (receipt?: components["schemas"]["ReceiptResponse"]): FormattedReceipt | undefined => {
@@ -396,6 +397,7 @@ const formatReceipt = (receipt?: components["schemas"]["ReceiptResponse"]): Form
       shortDetails: ens ?? `0x...${address.substring(address.length - 5)}`,
       fullDetails: address,
       reference,
+      link: receipt.transactionReferenceLink,
     };
   }
 
@@ -407,6 +409,7 @@ const formatReceipt = (receipt?: components["schemas"]["ReceiptResponse"]): Form
       shortDetails: `**** ${iban.substring(iban.length - 3)}`,
       fullDetails: IBAN.printFormat(iban),
       reference,
+      link: receipt.transactionReferenceLink,
     };
   }
 };

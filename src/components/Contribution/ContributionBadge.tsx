@@ -8,7 +8,7 @@ import { Contribution, GithubContributionType, GithubPullRequestStatus } from "s
 import Contributor from "../Contributor";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util.ts";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 
 interface ContributionBadgeProps {
   contribution: Pick<
@@ -131,7 +131,7 @@ export function ContributionBadge({
 
             <div className="flex items-center text-xs font-medium">
               <span className="text-spaceBlue-200">{tokens[type]}</span>
-              <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} clickable />
+              <Contributor className="ml-1 flex-row-reverse text-xs font-medium" contributor={githubAuthor} clickable />
             </div>
 
             {githubBody ? <p className="line-clamp-2 break-all text-xs text-spaceBlue-200">{githubBody}</p> : null}

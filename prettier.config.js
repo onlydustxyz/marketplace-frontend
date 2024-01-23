@@ -8,4 +8,5 @@ module.exports = {
   singleQuote: false,
   printWidth: 120,
   plugins: [require("prettier-plugin-tailwindcss")],
+  tailwindFunctions: ["tv"],
 };
