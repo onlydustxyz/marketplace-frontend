@@ -1,4 +1,4 @@
-import { ACTIONS_CONFIG } from "./config.actions.ts";
+import { ACTIONS_CONFIG } from "./config.actions";
 
 export const BASE_API_V1 = (path: string) => ACTIONS_CONFIG.v1(path);
 

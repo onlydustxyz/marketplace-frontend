@@ -20,7 +20,7 @@ import { useMemo, useRef, useState } from "react";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import Skeleton from "src/components/Skeleton";
 import { IMAGES } from "src/assets/img";
-import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
+import { EmptyState } from "components/layout/placeholders/empty-state";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();

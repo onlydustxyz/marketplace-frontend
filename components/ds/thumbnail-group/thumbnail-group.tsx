@@ -1,4 +1,4 @@
-import { cn } from "src/utils/cn.ts";
+import { cn } from "src/utils/cn";
 import { TThumbnailGroup } from "components/ds/thumbnail-group/thumbnail-group.types";
 
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
