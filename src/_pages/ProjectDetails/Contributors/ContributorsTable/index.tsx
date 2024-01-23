@@ -6,12 +6,14 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import View from "./View";
 import { ViewMobile } from "./ViewMobile";
+import { useToggleContributor } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/useToggleContributor.tsx";
 
 type Props<C> = {
   contributors: C[];
   projectKey: string;
+  projectId: string;
   rewardDisableReason?: ComponentProps<typeof View>["rewardDisableReason"];
-} & Omit<ComponentProps<typeof View>, "contributors" | "onRewardGranted">;
+} & Omit<ComponentProps<typeof View>, "contributors" | "onRewardGranted" | "onToggleContributor">;
 
 export default function ContributorsTable<C extends components["schemas"]["ContributorPageItemResponse"]>({
   contributors,
@@ -20,6 +22,7 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
   isFetchingNextPage,
   isProjectLeader,
   projectKey,
+  projectId,
   sorting,
   sortField,
   rewardDisableReason,
@@ -27,6 +30,7 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const navigate = useNavigate();
+  const { onToggleContributor } = useToggleContributor({ projectId });
 
   const onRewardGranted = (contributor: C) => {
     navigate(
@@ -50,6 +54,7 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
         isFetchingNextPage,
         isProjectLeader,
         onRewardGranted,
+        onToggleContributor,
         sorting,
         sortField,
         rewardDisableReason,

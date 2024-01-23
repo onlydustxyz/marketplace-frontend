@@ -17,6 +17,7 @@ type Props<C> = {
   contributor: C;
   isProjectLeader: boolean;
   onRewardGranted: (contributor: C) => void;
+  onToggleContributor: (contributor: C) => void;
   rewardDisableReason?: RewardDisabledReason;
 };
 
@@ -24,6 +25,7 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
   contributor,
   isProjectLeader,
   onRewardGranted,
+  onToggleContributor,
   rewardDisableReason,
 }: Props<C>) {
   const { T } = useIntl();
@@ -117,10 +119,14 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
             <Button
               type={ButtonType.Secondary}
               size={ButtonSize.Sm}
-              onClick={() => onRewardGranted(contributor)}
+              onClick={() => onToggleContributor(contributor)}
               iconOnly
               data-testid="toggle-contributors-button"
-              {...withTooltip(contributor.hidden ? "show contributor" : "hide contributor")}
+              {...withTooltip(
+                contributor.hidden
+                  ? T("project.details.contributors.showContributor.tooltip")
+                  : T("project.details.contributors.hideContributor.tooltip")
+              )}
             >
               {contributor.hidden ? <EyeLine /> : <EyeOffLine />}
             </Button>

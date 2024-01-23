@@ -3,17 +3,21 @@ import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
-import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { ToRewardDetailsTooltip } from "src/_pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
+import ProjectApi from "src/api/Project";
 
 type Props<C> = {
   contributors: C[];
   onRewardGranted: (contributor: C) => void;
+  onToggleContributor: (contributor: C) => void;
   rewardDisableReason?: ComponentProps<typeof ContributorLine>["rewardDisableReason"];
 } & ComponentProps<typeof Headers> &
-  Pick<ReturnType<typeof useInfiniteContributorList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage">;
+  Pick<
+    ReturnType<typeof ProjectApi.queries.useProjectContributorsInfiniteList>,
+    "fetchNextPage" | "hasNextPage" | "isFetchingNextPage"
+  >;
 
 export default function View<C extends components["schemas"]["ContributorPageItemResponse"]>({
   contributors,
@@ -22,6 +26,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
   isFetchingNextPage,
   isProjectLeader,
   onRewardGranted,
+  onToggleContributor,
   sorting,
   sortField,
   rewardDisableReason,
@@ -39,6 +44,7 @@ export default function View<C extends components["schemas"]["ContributorPageIte
               contributor,
               isProjectLeader,
               onRewardGranted,
+              onToggleContributor,
               rewardDisableReason,
             }}
           />

@@ -5,7 +5,6 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
-import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
@@ -41,7 +40,7 @@ export default function Contributors() {
 
   const showHiddenContributorsName = "show-hidden-contributors";
   const { control } = useForm({
-    defaultValues: { [showHiddenContributorsName]: false },
+    defaultValues: { [showHiddenContributorsName]: true },
   });
 
   const showHiddenContributors = useWatch({
@@ -55,13 +54,18 @@ export default function Contributors() {
     storageKey: "projectContributorsSorting",
   });
 
-  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
-    projectId: project?.id ?? "",
-    queryParams: {
-      ...(queryParams as URLSearchParams),
-      showHidden: showHiddenContributors.toString(),
-    },
-  });
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    ProjectApi.queries.useProjectContributorsInfiniteList({
+      params: {
+        projectId: project?.id ?? "",
+        pageSize: 30,
+        queryParams: {
+          ...(queryParams as URLSearchParams),
+          showHidden: showHiddenContributors?.toString(),
+        },
+      },
+      options: { enabled: Boolean(project?.id) },
+    });
 
   const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
 

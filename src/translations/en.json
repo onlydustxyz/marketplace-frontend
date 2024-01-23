@@ -953,7 +953,17 @@
           "zero": "No contributor"
         },
         "reward": "Reward",
-        "title": "Contributors"
+        "title": "Contributors",
+          "hideContributor": {
+              "tooltip": "Hide contributor",
+              "success": "The contributor was successfully hidden",
+              "error": "The contributor could not be hidden"
+          },
+          "showContributor": {
+              "tooltip": "Show contributor",
+              "success": "The contributor was successfully shown",
+              "error": "The contributor could not be shown"
+          }
       },
       "githubRepos": {
         "count": {
