@@ -67,6 +67,8 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
         hasNextPage,
         isFetchingNextPage,
         isProjectLeader,
+        onRewardGranted,
+        onToggleContributor,
       }}
     />
   );

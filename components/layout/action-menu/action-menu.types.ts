@@ -8,6 +8,7 @@ export namespace TActionMenu {
   }
 
   export interface Props extends PropsWithChildren {
+    className?: string;
     disabled?: boolean;
     actions: ActionItem[];
   }

@@ -7,6 +7,11 @@ import StackLine from "src/icons/StackLine";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion.tsx";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Icon } from "components/layout/icon/icon.tsx";
+import EyeOffLine from "src/icons/EyeOffLine.tsx";
+import { useIntl } from "src/hooks/useIntl.tsx";
+import ActionMenu from "components/layout/action-menu/action-menu.tsx";
+import SendPlane2Line from "src/icons/SendPlane2Line.tsx";
+import EyeLine from "src/icons/EyeLine.tsx";
 
 type ViewMobileProps = {
   contributors: components["schemas"]["ContributorPageItemResponse"][];
@@ -14,6 +19,8 @@ type ViewMobileProps = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   isProjectLeader: boolean;
+  onRewardGranted: (contributor: C) => void;
+  onToggleContributor: (contributor: C) => void;
 };
 
 export function ViewMobile({
@@ -22,13 +29,17 @@ export function ViewMobile({
   hasNextPage,
   isFetchingNextPage,
   isProjectLeader,
+  onRewardGranted,
+  onToggleContributor,
 }: ViewMobileProps) {
+  const { T } = useIntl();
   return (
     <Card className="divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5" padded={false}>
       {contributors
         .sort((contributorA, contributorB) => contributorB.contributionCount - contributorA.contributionCount)
         .map(contributor => {
-          const { contributionCount, contributionToRewardCount, rewardCount, login, earned } = contributor || {};
+          const { contributionCount, contributionToRewardCount, rewardCount, login, earned, hidden } =
+            contributor || {};
           const hasNothing = contributionToRewardCount === 0 && contributionCount === 0;
           const currencies: AvailableConversionCurrency[] = (earned.details || []).map(currency => ({
             currency: currency.currency,
@@ -81,14 +92,30 @@ export function ViewMobile({
                 ) : (
                   "-"
                 )}
-                <Button
-                  type={ButtonType.Secondary}
-                  size={ButtonSize.Sm}
-                  iconOnly
-                  data-testid="toggle-contributors-action-menu"
+                <ActionMenu
+                  actions={[
+                    {
+                      label: T("project.details.contributors.reward"),
+                      onClick: () => onRewardGranted(contributor),
+                      icon: <SendPlane2Line />,
+                    },
+                    {
+                      label: T("project.details.contributors.actionMenu", { action: hidden ? "Show" : "Hide" }),
+                      onClick: () => onToggleContributor(contributor),
+                      icon: hidden ? <EyeLine /> : <EyeOffLine />,
+                    },
+                  ]}
+                  className="right-0 top-1"
                 >
-                  <Icon remixName="ri-more-fill" size={12} />
-                </Button>
+                  <Button
+                    type={ButtonType.Secondary}
+                    size={ButtonSize.Sm}
+                    iconOnly
+                    data-testid="toggle-contributors-action-menu"
+                  >
+                    <Icon remixName="ri-more-fill" size={12} />
+                  </Button>
+                </ActionMenu>
               </div>
             </div>
           );
