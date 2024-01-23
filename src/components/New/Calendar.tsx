@@ -1,6 +1,7 @@
+"use client";
 import { eachDayOfInterval, format, isAfter } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
-import { CaptionProps, DateRange, DayPicker, DayPickerBase, DayPickerProps, useNavigation } from "react-day-picker";
+import { CaptionProps, DayPicker, DayPickerBase, DayPickerProps, useNavigation } from "react-day-picker";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
@@ -101,18 +102,6 @@ const defaultOptions = (
   showOutsideDays: true,
 });
 
-export function useSingleCalendar(defaultValue?: Date) {
-  return useState<Date | undefined>(defaultValue);
-}
-
-export function useMultipleCalendar(defaultValue?: Date[]) {
-  return useState<Date[] | undefined>(defaultValue);
-}
-
-export function useRangeCalendar(defaultValue?: DateRange) {
-  return useState<DateRange | undefined>(defaultValue);
-}
-
 export function Calendar(options: DayPickerProps) {
   const [hoveredMiddle, setHoverMiddle] = useState<Date[]>([]);
   const [hoveredEnd, setHoverEnd] = useState<Date[]>([]);
@@ -126,34 +115,32 @@ export function Calendar(options: DayPickerProps) {
     }
   }, [options.selected]);
   function onMouseEnter(day: Date) {
-    if (options.mode === "range") {
-      if (options.selected) {
-        const selected = options?.selected as { from: Date; to?: Date };
-        if (selected.from && !selected.to) {
-          if (isAfter(day, selected.from)) {
-            const interval = eachDayOfInterval({
-              start: selected.from,
-              end: day,
-            });
+    if (options.mode === "range" && options.selected) {
+      const selected = options?.selected as { from: Date; to?: Date };
+      if (selected.from && !selected.to) {
+        if (isAfter(day, selected.from)) {
+          const interval = eachDayOfInterval({
+            start: selected.from,
+            end: day,
+          });
 
-            interval.pop();
-            interval.shift();
-            setHoverMiddle(interval);
+          interval.pop();
+          interval.shift();
+          setHoverMiddle(interval);
 
-            setHoverEnd([day]);
-            setHoverStart([selected.from]);
-          } else {
-            const interval = eachDayOfInterval({
-              start: day,
-              end: selected.from,
-            });
+          setHoverEnd([day]);
+          setHoverStart([selected.from]);
+        } else {
+          const interval = eachDayOfInterval({
+            start: day,
+            end: selected.from,
+          });
 
-            interval.pop();
-            interval.shift();
-            setHoverMiddle(interval);
-            setHoverEnd([selected.from]);
-            setHoverStart([day]);
-          }
+          interval.pop();
+          interval.shift();
+          setHoverMiddle(interval);
+          setHoverEnd([selected.from]);
+          setHoverStart([day]);
         }
       }
     }
@@ -167,6 +154,7 @@ export function Calendar(options: DayPickerProps) {
     }),
     [hoveredMiddle, hoveredEnd, hoveredStart]
   );
+
   const modifiersStyles = useMemo(
     () => ({
       middleHovered: {
