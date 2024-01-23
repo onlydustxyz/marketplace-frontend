@@ -11,6 +11,7 @@ export const buttonPrimaryVariants = tv({
     },
     {
       accentColor: "purple",
+      disabled: false,
       class:
         "focus-visible:bg-spacePurple-50 focus-visible:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900 active:bg-spacePurple-50 active:text-spacePurple-900 active:outline-spacePurple-800",
     },
