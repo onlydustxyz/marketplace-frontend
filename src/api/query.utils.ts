@@ -85,8 +85,7 @@ export async function getHttpOptions({
 }: HttpProps): Promise<HttpOptionsTypeReturn> {
   async function retrieveAccessToken() {
     try {
-      const token = await getAccessToken();
-      return token;
+      return await getAccessToken();
     } catch (err) {
       logout();
       return null;
