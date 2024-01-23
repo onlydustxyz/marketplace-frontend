@@ -116,20 +116,22 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
               <SendPlane2Line />
               {T("project.details.contributors.reward")}
             </Button>
-            <Button
-              type={ButtonType.Secondary}
-              size={ButtonSize.Sm}
-              onClick={() => onToggleContributor(contributor)}
-              iconOnly
-              data-testid="toggle-contributors-button"
-              {...withTooltip(
-                contributor.hidden
-                  ? T("project.details.contributors.showContributor.tooltip")
-                  : T("project.details.contributors.hideContributor.tooltip")
-              )}
-            >
-              {contributor.hidden ? <EyeLine /> : <EyeOffLine />}
-            </Button>
+            {isProjectLeader ? (
+              <Button
+                type={ButtonType.Secondary}
+                size={ButtonSize.Sm}
+                onClick={() => onToggleContributor(contributor)}
+                iconOnly
+                data-testid="toggle-contributors-button"
+                {...withTooltip(
+                  contributor.hidden
+                    ? T("project.details.contributors.showContributor.tooltip")
+                    : T("project.details.contributors.hideContributor.tooltip")
+                )}
+              >
+                {contributor.hidden ? <EyeLine /> : <EyeOffLine />}
+              </Button>
+            ) : null}
           </Cell>
         </>
       ) : null}

@@ -135,7 +135,7 @@ export default function Contributors() {
         projectName={project?.name}
       />
       <ClaimBanner />
-      {isThereAnyHiddenContributors ? (
+      {isThereAnyHiddenContributors && isProjectLeader ? (
         <div className="flex flex-row justify-end gap-2 font-walsheim text-sm font-normal text-greyscale-50">
           <EyeOffLine />
 

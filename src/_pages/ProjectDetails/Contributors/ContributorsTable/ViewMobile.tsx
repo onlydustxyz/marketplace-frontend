@@ -19,8 +19,8 @@ type ViewMobileProps = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   isProjectLeader: boolean;
-  onRewardGranted: (contributor: C) => void;
-  onToggleContributor: (contributor: C) => void;
+  onRewardGranted: (contributor: components["schemas"]["ContributorPageItemResponse"]) => void;
+  onToggleContributor: (contributor: components["schemas"]["ContributorPageItemResponse"]) => void;
 };
 
 export function ViewMobile({
@@ -92,30 +92,32 @@ export function ViewMobile({
                 ) : (
                   "-"
                 )}
-                <ActionMenu
-                  actions={[
-                    {
-                      label: T("project.details.contributors.reward"),
-                      onClick: () => onRewardGranted(contributor),
-                      icon: <SendPlane2Line />,
-                    },
-                    {
-                      label: T("project.details.contributors.actionMenu", { action: hidden ? "Show" : "Hide" }),
-                      onClick: () => onToggleContributor(contributor),
-                      icon: hidden ? <EyeLine /> : <EyeOffLine />,
-                    },
-                  ]}
-                  className="right-0 top-1"
-                >
-                  <Button
-                    type={ButtonType.Secondary}
-                    size={ButtonSize.Sm}
-                    iconOnly
-                    data-testid="toggle-contributors-action-menu"
+                {isProjectLeader ? (
+                  <ActionMenu
+                    actions={[
+                      {
+                        label: T("project.details.contributors.reward"),
+                        onClick: () => onRewardGranted(contributor),
+                        icon: <SendPlane2Line />,
+                      },
+                      {
+                        label: T("project.details.contributors.actionMenu", { action: hidden ? "Show" : "Hide" }),
+                        onClick: () => onToggleContributor(contributor),
+                        icon: hidden ? <EyeLine /> : <EyeOffLine />,
+                      },
+                    ]}
+                    className="right-0 top-1"
                   >
-                    <Icon remixName="ri-more-fill" size={12} />
-                  </Button>
-                </ActionMenu>
+                    <Button
+                      type={ButtonType.Secondary}
+                      size={ButtonSize.Sm}
+                      iconOnly
+                      data-testid="toggle-contributors-action-menu"
+                    >
+                      <Icon remixName="ri-more-fill" size={12} />
+                    </Button>
+                  </ActionMenu>
+                ) : null}
               </div>
             </div>
           );
