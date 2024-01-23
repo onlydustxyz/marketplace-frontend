@@ -30,9 +30,9 @@ import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import Loader from "src/components/Loader";
 import RewardLoader from "./Loaders/RewardsLoader";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
-import AuthenticationGuard from "components/features/auth0/guards/authentication-guard.tsx";
-import { LeadGuard } from "components/features/auth0/guards/lead-guard.tsx";
-import { AdminGuard } from "../../components/features/auth0/guards/admin-guard.tsx";
+import AuthenticationGuard from "components/features/auth0/guards/authentication-guard";
+import { LeadGuard } from "components/features/auth0/guards/lead-guard";
+import { AdminGuard } from "components/features/auth0/guards/admin-guard";
 
 export enum RoutePaths {
   Projects = "/",

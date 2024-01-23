@@ -13,7 +13,7 @@ import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
 import { Item } from "src/components/New/Filter/FilterSelect";
-import { useCurrenciesOrder } from "../../../hooks/useCurrenciesOrder.ts";
+import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 
 type Filters = {
   period: Period;

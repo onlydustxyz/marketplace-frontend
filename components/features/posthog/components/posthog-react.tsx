@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { PosthogPageView } from "./posthog-page-view.tsx";
+import { PosthogPageView } from "./posthog-page-view";
 
 export default function PosthogReact() {
   const location = useLocation();
