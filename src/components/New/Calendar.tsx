@@ -1,11 +1,45 @@
-import { eachDayOfInterval, format, isAfter, subDays, subMonths } from "date-fns";
-import { useEffect, useState } from "react";
+import { eachDayOfInterval, format, isAfter } from "date-fns";
+import { useEffect, useMemo, useState } from "react";
 import { CaptionProps, DateRange, DayPicker, DayPickerBase, DayPickerProps, useNavigation } from "react-day-picker";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 
-function CustomCaption(props: CaptionProps) {
+function CustomCaptionSided(props: CaptionProps) {
+  const { goToMonth, nextMonth, previousMonth } = useNavigation();
+  return (
+    <div className="flex items-center justify-between gap-1 px-2 py-1">
+      {props.displayIndex === 0 ? (
+        <Button
+          disabled={!previousMonth}
+          onClick={() => previousMonth && goToMonth(previousMonth)}
+          type={ButtonType.Secondary}
+          size={ButtonSize.Xs}
+          iconOnly
+        >
+          <ArrowLeftSLine />
+        </Button>
+      ) : (
+        <div />
+      )}
+      <span className="text-sm text-greyscale-50">{format(props.displayMonth, "MMMM yyy")}</span>
+      {props.displayIndex === 1 ? (
+        <Button
+          disabled={!nextMonth}
+          onClick={() => nextMonth && goToMonth(nextMonth)}
+          type={ButtonType.Secondary}
+          size={ButtonSize.Xs}
+          iconOnly
+        >
+          <ArrowRightSLine />
+        </Button>
+      ) : (
+        <div />
+      )}
+    </div>
+  );
+}
+function CustomCaptionGrouped(props: CaptionProps) {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
   return (
     <div className="flex items-center justify-between gap-1 px-2 py-1">
@@ -35,7 +69,9 @@ function CustomCaption(props: CaptionProps) {
   );
 }
 
-const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
+const defaultOptions = (
+  mode: "single" | "range" | "default" | "multiple" | undefined
+): Omit<DayPickerBase, "mode" | "selected"> => ({
   classNames: {
     root: "w-full font-walsheim p-2",
     month: "flex-1",
@@ -46,7 +82,7 @@ const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
     tbody: "flex flex-col gap-1",
     row: "w-full flex justify-between",
     cell: "w-8 h-8",
-    day: "text-xs text-greyscale-50 w-8 h-8 rounded flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-spacePurple-500 hover:bg-spacePurple-500 transition-colors ease-in duration-200",
+    day: "text-xs text-greyscale-50 w-8 h-8 rounded flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-spacePurple-500 hover:bg-spacePurple-500 transition-all ease-in duration-200",
     day_disabled: "text-greyscale-600 pointer-events-none",
     day_outside: "text-greyscale-600 opacity-0",
     day_selected: "bg-spacePurple-500 !text-greyscale-50",
@@ -56,14 +92,14 @@ const defaultOptions: Omit<DayPickerBase, "mode" | "selected"> = {
     day_today: "text-spacePurple-300 hover:text-white ",
   },
   components: {
-    Caption: CustomCaption,
+    Caption: mode === "range" ? CustomCaptionSided : CustomCaptionGrouped,
   },
   formatters: {
     formatWeekdayName: day => day.toLocaleDateString("en-US", { weekday: "narrow" }),
   },
   weekStartsOn: 1,
   showOutsideDays: true,
-};
+});
 
 export function useSingleCalendar(defaultValue?: Date) {
   return useState<Date | undefined>(defaultValue);
@@ -103,6 +139,7 @@ export function Calendar(options: DayPickerProps) {
             interval.pop();
             interval.shift();
             setHoverMiddle(interval);
+
             setHoverEnd([day]);
             setHoverStart([selected.from]);
           } else {
@@ -122,32 +159,45 @@ export function Calendar(options: DayPickerProps) {
     }
   }
 
+  const modifiers = useMemo(
+    () => ({
+      middleHovered: hoveredMiddle,
+      endHovered: hoveredEnd,
+      startHover: hoveredStart,
+    }),
+    [hoveredMiddle, hoveredEnd, hoveredStart]
+  );
+  const modifiersStyles = useMemo(
+    () => ({
+      middleHovered: {
+        background: "#CE66FF",
+        color: "white",
+        borderRadius: 0,
+      },
+      endHovered: {
+        background: "#8B00CC",
+        color: "white",
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+      },
+      startHover: {
+        background: "#AE00FF",
+        color: "white",
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+      },
+    }),
+    []
+  );
+
   return (
     <DayPicker
-      {...defaultOptions}
+      {...defaultOptions(options.mode)}
       {...options}
       onDayMouseEnter={onMouseEnter}
-      modifiers={{ middleHovered: hoveredMiddle, endHovered: hoveredEnd, startHover: hoveredStart }}
+      modifiers={modifiers}
       pagedNavigation
-      modifiersStyles={{
-        middleHovered: {
-          background: "#CE66FF",
-          color: "white",
-          borderRadius: 0,
-        },
-        endHovered: {
-          background: "#8B00CC",
-          color: "white",
-          borderTopLeftRadius: 0,
-          borderBottomLeftRadius: 0,
-        },
-        startHover: {
-          background: "#AE00FF",
-          color: "white",
-          borderTopRightRadius: 0,
-          borderBottomRightRadius: 0,
-        },
-      }}
+      modifiersStyles={modifiersStyles}
     />
   );
 }

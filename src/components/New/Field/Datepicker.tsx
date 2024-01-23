@@ -9,6 +9,7 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB, getFormattedTimeDatepicker, parseDateRangeString, parseDateString } from "src/utils/date";
+import { subMonths } from "date-fns";
 
 export enum Period {
   ThisWeek = "this_week",
@@ -75,6 +76,7 @@ export function Datepicker({
     middleware: [flip()],
     whileElementsMounted: autoUpdate,
     transform: false,
+    placement: props.mode === "range" ? "top-end" : undefined,
   });
 
   // This is useful if a date range only has one of two values for example
@@ -124,6 +126,7 @@ export function Datepicker({
           mode="range"
           numberOfMonths={2}
           pagedNavigation
+          defaultMonth={subMonths(new Date(), 1)}
           // Sometimes date strings are passed instead of date objects
           selected={props.selectedPeriod === Period.Custom ? parseDateRangeString(selectedDateRange) : undefined}
           {...(props.disabledFuture ? { toDate: new Date() } : {})}
@@ -206,18 +209,22 @@ export function Datepicker({
 
           <Transition
             ref={refs.setFloating}
-            style={{ ...floatingStyles, right: "-6px" }}
+            style={{
+              ...floatingStyles,
+              ...(props.mode === "single" ? { right: "-6px" } : {}),
+            }}
             enter="transition duration-100 ease-out"
             enterFrom="transform scale-95 opacity-0"
             enterTo="transform scale-100 opacity-100"
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
-            className={cn("z-20 rounded-xl border border-greyscale-50/8 shadow-lg", {
+            className={cn("z-20 min-w-full rounded-xl border border-greyscale-50/8 shadow-lg", {
               "bg-greyscale-800": isElevated,
               "bg-greyscale-900": !isElevated,
               "origin-top translate-y-1.5": placement === "bottom",
               "origin-bottom -translate-y-1.5": placement === "top",
+              "translate-y-1.5": props.mode === "range",
             })}
           >
             <Popover.Panel>

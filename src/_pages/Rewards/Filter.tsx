@@ -169,7 +169,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
 
   return (
     <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
-      <div className="isolate focus-within:z-50">
+      <div className="focus-within:z-50">
         <FilterDatepicker
           selected={filters.dateRange ?? initialFilters.dateRange}
           selectedPeriod={filters.period ?? initialFilters.period}
