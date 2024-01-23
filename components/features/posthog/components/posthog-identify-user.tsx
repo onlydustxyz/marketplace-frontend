@@ -6,21 +6,17 @@ import MeApi from "src/api/me";
 import { usePosthog } from "src/hooks/usePosthog";
 
 export function PosthogIdentifyUser() {
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const { identify } = usePosthog();
 
   const { data } = MeApi.queries.useGetMe({});
 
   useEffect(() => {
-    if (isAuthenticated && user && data) {
-      const { email } = user;
-      const { isAdmin: admin, createdAt: created_at, githubUserId: github_user_id, id } = data;
-
-      // TOOD get email from /me endpoint
-
+    if (isAuthenticated && data) {
+      const { isAdmin: admin, createdAt: created_at, githubUserId: github_user_id, id, email } = data;
       identify(id, { admin, created_at, email, github_user_id });
     }
-  }, [isAuthenticated, user, data]);
+  }, [isAuthenticated, data]);
 
   return null;
 }
