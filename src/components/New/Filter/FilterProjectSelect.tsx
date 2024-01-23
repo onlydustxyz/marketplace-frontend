@@ -1,7 +1,7 @@
 import { FilterField } from "src/components/New/Filter/FilterField";
-import { FilterSelect, Item } from "src/components/New/Filter/FilterSelect";
 import { useIntl } from "src/hooks/useIntl";
 import FolderLine from "src/icons/FolderLine";
+import { FilterSelectAutoComplete, Item } from "src/components/New/Filter/FilterSelectAutoComplete";
 
 export function FilterProjectSelect({
   projects,
@@ -16,7 +16,7 @@ export function FilterProjectSelect({
 
   return (
     <FilterField label={T("filter.project.title")}>
-      <FilterSelect
+      <FilterSelectAutoComplete
         icon={({ className }) => <FolderLine className={className} />}
         tokens={{ zero: "filter.project.all", other: "filter.project" }}
         items={projects}

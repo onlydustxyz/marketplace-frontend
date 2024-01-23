@@ -1,5 +1,5 @@
-import { Listbox, Transition } from "@headlessui/react";
-import { ReactElement, useCallback } from "react";
+import { Combobox, Transition } from "@headlessui/react";
+import { ReactElement, useCallback, useMemo, useState } from "react";
 import { IMAGES } from "src/assets/img";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
@@ -34,16 +34,16 @@ type MultipleProps<T> = Props<T> & {
   selected: T[];
 };
 
-export function FilterSelect<T extends Item>({
+export function FilterSelectAutoComplete<T extends Item>({
   disabled = false,
   icon,
   items,
-  multiple,
-  onChange,
-  selected,
   tokens,
+  ...comboProps
 }: SingleProps<T> | MultipleProps<T>) {
   const { T } = useIntl();
+  const [query, setQuery] = useState<string>();
+  const { selected } = comboProps;
 
   const { refs, floatingStyles, placement } = useFloating({
     middleware: [flip()],
@@ -63,34 +63,61 @@ export function FilterSelect<T extends Item>({
     return selected?.label ?? T(tokens.zero);
   }, [selected, items, tokens, T]);
 
+  const filteredItems = useMemo(
+    () =>
+      items.filter(item =>
+        query?.length ? item.label?.toString()?.toLowerCase()?.includes(query?.toLowerCase()) : true
+      ),
+    [items, query]
+  );
+
   return (
     <div className={cn("relative", { "opacity-50": disabled })}>
-      <Listbox value={selected} onChange={onChange} multiple={multiple} disabled={disabled} by="id">
+      {/* // need this to handle the multiple and single from headless ui
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore*/}
+      <Combobox {...comboProps} disabled={disabled} by="id">
         {({ open }) => (
           <>
-            <Listbox.Button
+            <Combobox.Button
               ref={refs.setReference}
+              as="div"
               className={cn(
-                "flex w-full items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
+                "relative flex w-full items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
                 {
                   "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                     open,
                 }
               )}
             >
-              <span className="flex flex-1 items-center gap-2">
-                {icon?.({
-                  selected,
-                  className: cn("text-base leading-none", { "text-spacePurple-500": open }),
-                })}
-                <span className="font-walsheim text-sm leading-none">{renderToken()}</span>
-              </span>
-              <ArrowDownSLine
-                className={cn("text-xl leading-none text-spaceBlue-200", {
-                  "text-spacePurple-400": open,
-                })}
+              <Combobox.Input
+                className={cn(
+                  "peer w-full border-none bg-transparent pl-6 font-walsheim text-sm text-greyscale-50 outline-none",
+                  {
+                    "placeholder:text-greyscale-50 focus-within:placeholder:text-spacePurple-400": !open,
+                    "placeholder:text-spacePurple-400": open,
+                  }
+                )}
+                onChange={event => {
+                  setQuery(event.target.value);
+                }}
+                autoComplete="off"
               />
-            </Listbox.Button>
+              <div className="absolute bottom-0 left-0 right-0 top-0 flex w-full items-center justify-between px-2.5 py-1.5">
+                <span className="flex flex-1 items-center gap-2">
+                  {icon?.({
+                    selected,
+                    className: cn("text-base leading-none", { "text-spacePurple-500": open }),
+                  })}
+                  {!query?.length ? <span className="font-walsheim text-sm leading-none">{renderToken()}</span> : null}
+                </span>
+                <ArrowDownSLine
+                  className={cn("text-xl leading-none text-spaceBlue-200", {
+                    "text-spacePurple-400": open,
+                  })}
+                />
+              </div>
+            </Combobox.Button>
             <Transition
               ref={refs.setFloating}
               style={{ ...floatingStyles }}
@@ -100,6 +127,7 @@ export function FilterSelect<T extends Item>({
               leave="transform transition duration-75 ease-out"
               leaveFrom="scale-100 opacity-100"
               leaveTo="scale-95 opacity-0"
+              afterLeave={() => setQuery("")}
               className={cn(
                 "absolute -left-1.5 -right-1.5 z-10 overflow-hidden rounded-2xl border border-card-border-light bg-card-background-medium shadow-medium",
                 {
@@ -108,10 +136,10 @@ export function FilterSelect<T extends Item>({
                 }
               )}
             >
-              <Listbox.Options className="max-h-60 divide-y divide-card-border-light overflow-auto bg-greyscale-800 py-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-                {items.map(item => (
-                  <Listbox.Option key={item.id} value={item}>
-                    {({ selected, active }) => (
+              <Combobox.Options className="max-h-60 divide-y divide-card-border-light overflow-auto bg-greyscale-800 py-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+                {filteredItems.map(item => (
+                  <Combobox.Option key={item.id} value={item}>
+                    {({ active, selected }) => (
                       <div
                         className={cn("flex cursor-pointer items-center gap-3 px-4 py-2", {
                           "bg-card-background-heavy": active,
@@ -124,13 +152,13 @@ export function FilterSelect<T extends Item>({
                         {selected ? <CheckLine className="text-xl leading-none text-greyscale-50" /> : null}
                       </div>
                     )}
-                  </Listbox.Option>
+                  </Combobox.Option>
                 ))}
-              </Listbox.Options>
+              </Combobox.Options>
             </Transition>
           </>
         )}
-      </Listbox>
+      </Combobox>
     </div>
   );
 }

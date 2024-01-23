@@ -1,8 +1,7 @@
 import { FilterField } from "src/components/New/Filter/FilterField";
-import { FilterSelect, Item } from "src/components/New/Filter/FilterSelect";
 import { useIntl } from "src/hooks/useIntl";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-
+import { FilterSelectAutoComplete, Item } from "src/components/New/Filter/FilterSelectAutoComplete";
 export function FilterRepoSelect({
   repos,
   selected,
@@ -16,7 +15,7 @@ export function FilterRepoSelect({
 
   return (
     <FilterField label={T("filter.repository.title")}>
-      <FilterSelect
+      <FilterSelectAutoComplete
         icon={({ className }) => <GitRepositoryLine className={className} />}
         tokens={{ zero: "filter.repository.all", other: "filter.repository" }}
         items={repos}
