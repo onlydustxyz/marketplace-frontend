@@ -10,8 +10,8 @@ import { useIntl } from "src/hooks/useIntl";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import { RewardDisabledReason } from "src/types";
-import EyeLine from "../../../../icons/EyeLine.tsx";
-import EyeOffLine from "../../../../icons/EyeOffLine.tsx";
+import EyeLine from "src/icons/EyeLine";
+import EyeOffLine from "src/icons/EyeOffLine";
 
 type Props<C> = {
   contributor: C;
