@@ -39,7 +39,7 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
   onSettled,
   invalidatesTags,
 }: UseBaseMutationProps<Response>) {
-  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated, logout } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
   const queryClient = useQueryClient();
 
@@ -47,6 +47,7 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
     mutationFn: async (data: Payload): Promise<Response> => {
       const { options } = await getHttpOptions({
         isAuthenticated,
+        logout,
         method,
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
