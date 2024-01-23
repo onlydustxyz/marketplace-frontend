@@ -6,7 +6,7 @@ interface Props extends PropsWithChildren {
   visible: boolean;
 }
 
-function OtherContributionTooltip({ visible, children }: Props) {
+export function OtherContributionTooltip({ visible, children }: Props) {
   const { T } = useIntl();
 
   return (
@@ -21,5 +21,3 @@ function OtherContributionTooltip({ visible, children }: Props) {
     </div>
   );
 }
-
-export default OtherContributionTooltip;
