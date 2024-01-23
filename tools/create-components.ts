@@ -1,33 +1,51 @@
-// eslint-disable @typescript-eslint/no-var-requires
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require("fs/promises");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const prettier = require("prettier");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const i = require("@inquirer/prompts");
 
-type Informations = {
+interface Informations {
   folder: string;
   name: string;
   path: string;
   PascalName: string;
   camelName: string;
   options: {
-    variant: boolean;
-    loading: boolean;
+    variants: boolean;
   };
+}
+
+const COLORS = {
+  RED: "\x1b[0;31m",
+  GREEN: "\x1b[0;32m",
+  YELLOW: "\x1b[1;33m",
+  BLUE: "\x1b[0;34m",
+  NC: "\x1b[0m", // No color
 };
 
 function kebabToPascal(str: string) {
   const words = str.split("-");
   const pascalCaseWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+
   return pascalCaseWords.join("");
 }
 
 function kebabToCamel(str: string) {
   const words = str.split("-");
   const pascalCaseWords = words.map(word => word.charAt(0).toLowerCase() + word.slice(1));
+
   return pascalCaseWords.join("");
+}
+
+function stringToKebab(str: string) {
+  const words = str.split("");
+  const kebabCaseWords = words.map((letter, idx) => {
+    if (letter === letter.toUpperCase()) {
+      return `${idx !== 0 ? "-" : ""}${letter.toLowerCase()}`;
+    }
+    return letter;
+  });
+
+  return kebabCaseWords.join("");
 }
 
 async function exists(path: string) {
@@ -39,116 +57,113 @@ async function exists(path: string) {
   }
 }
 
-async function createIndex({ name, path, PascalName }: Informations) {
-  await fs.appendFile(
-    `${path}/index.ts`,
-    prettier.format(
-      `
-    export * from "./${name}.tsx";
-
-    import ${PascalName} from "./${name}.tsx";
-
-    export * from "./${name}.tsx";
-    export type * from "./${name}.type.ts";
-
-    export default ${PascalName};
-  `,
-      { parser: "typescript" }
-    )
-  );
-}
-
 async function createComponent({ name, path, PascalName }: Informations) {
   await fs.appendFile(
     `${path}/${name}.tsx`,
     prettier.format(
       `
-        import { ${PascalName}Props } from "./${name}.type.ts";
+        import { T${PascalName} } from "./${name}.types.ts";
 
-        export function ${PascalName}(props: ${PascalName}Props) {
+        export function ${PascalName}(props: T${PascalName}.Props) {
           return <div>${PascalName}</div>;
         }
-
-        export default ${PascalName};
   `,
       { parser: "typescript" }
     )
   );
 }
 
-async function createProps({ name, path, PascalName, options: { variant } }: Informations) {
+async function createTypes({ name, path, PascalName, camelName, options: { variants } }: Informations) {
   await fs.appendFile(
-    `${path}/${name}.type.ts`,
+    `${path}/${name}.types.ts`,
     prettier.format(
       `
         import { PropsWithChildren } from "react";
-        ${variant ? `import { ${PascalName}Variant } from "./${name}.variant.ts"` : ""};
-
-        export interface ${PascalName}Props extends PropsWithChildren${variant ? `, ${PascalName}Variant` : ""} {
-          sample?: string;
+        ${
+          variants
+            ? `
+        import { VariantProps } from "tailwind-variants"; 
+        import { ${camelName}Variants } from "./${name}.variants";`
+            : ""
         }
 
+        export namespace T${PascalName} {
+          ${variants ? `export type Variants = VariantProps<typeof ${camelName}Variants>;` : ""}
 
+          export interface Props extends PropsWithChildren${variants ? ", Variants" : ""} {}
+        }
   `,
       { parser: "typescript" }
     )
   );
 }
 
-async function createVariant({ name, path, PascalName, camelName }: Informations) {
+async function createVariants({ name, path, camelName }: Informations) {
   await fs.appendFile(
-    `${path}/${name}.variant.ts`,
+    `${path}/${name}.variants.ts`,
     prettier.format(
       `
-        import { tv, VariantProps } from "tailwind-variants";
+        import { tv } from "tailwind-variants";
 
-        export type ${PascalName}Variant = VariantProps<typeof ${camelName}Variant>;
-
-        export const ${camelName}Variant = tv({
+        export const ${camelName}Variants = tv({
           base: "",
           variants: {},
           defaultVariants: {},
         });
-
   `,
       { parser: "typescript" }
     )
   );
 }
+
 async function createFiles(informations: Informations) {
-  await createIndex(informations);
   await createComponent(informations);
-  await createProps(informations);
-  if (informations.options.variant) {
-    await createVariant(informations);
+  await createTypes(informations);
+
+  if (informations.options.variants) {
+    await createVariants(informations);
   }
 }
 
+// TODO: Change the return if folder or path exist to not do it again
 async function promptName() {
   const name = await i.input({ message: "Components Name" });
-  const folder = await i.input({ message: "Folder path" });
-  const variant = await i.confirm({ message: "Add variant?" });
-  const path = `${folder}/${name}`;
-  const isExist = await exists(path);
+  const kebakName = stringToKebab(name);
 
-  if (isExist) {
-    console.log("Already exist");
+  const folder = await i.input({ message: "Folder path" });
+
+  const variants = await i.confirm({ message: "Add variant?" });
+
+  const path = `${folder}/${kebakName}`;
+  const isFolderExist = await exists(folder);
+
+  if (!isFolderExist) {
+    console.log(`${COLORS.YELLOW}Folder doesn't exist${COLORS.NC}`);
     return promptName();
   }
 
-  return { folder, name, path, loading: false, variant: variant as boolean };
+  const isPathExist = await exists(path);
+
+  if (isPathExist) {
+    console.log(`${COLORS.YELLOW}Path already exist${COLORS.NC}`);
+    return promptName();
+  }
+
+  return { folder, name: kebakName, path, variants };
 }
 
 async function createComponents() {
-  const { folder, name, path, loading, variant } = await promptName();
+  const { folder, name, path, variants } = await promptName();
+
   await fs.mkdir(path);
+
   await createFiles({
     folder,
     name,
     path,
     PascalName: kebabToPascal(name),
     camelName: kebabToCamel(name),
-    options: { loading, variant },
+    options: { variants },
   });
 }
 
