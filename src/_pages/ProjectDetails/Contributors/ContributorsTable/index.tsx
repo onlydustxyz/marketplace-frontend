@@ -28,7 +28,6 @@ export default function ContributorsTable<C extends components["schemas"]["Contr
   rewardDisableReason,
 }: Props<C>) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-
   const navigate = useNavigate();
   const { onToggleContributor } = useToggleContributor({ projectId });
 

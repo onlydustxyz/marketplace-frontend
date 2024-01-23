@@ -3,9 +3,8 @@ import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
 import { ShowMore } from "src/components/Table/ShowMore";
 import Medal2Fill from "src/icons/Medal2Fill";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
-import { formatMoneyAmount } from "src/utils/money";
+import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion.tsx";
 
 type ViewMobileProps = {
   contributors: components["schemas"]["ContributorPageItemResponse"][];
@@ -29,6 +28,11 @@ export function ViewMobile({
         .map(contributor => {
           const { contributionCount, contributionToRewardCount, rewardCount, login, earned } = contributor || {};
           const hasNothing = contributionToRewardCount === 0 && contributionCount === 0;
+          const currencies: AvailableConversionCurrency[] = (earned.details || []).map(currency => ({
+            currency: currency.currency,
+            amount: currency.totalAmount,
+            dollar: currency.totalDollarsEquivalent,
+          }));
 
           return (
             <div className="flex items-center justify-between gap-1 p-3" key={login}>
@@ -48,8 +52,15 @@ export function ViewMobile({
                         {rewardCount}
                       </div>
                       <div className="flex items-center gap-1 text-sm">
-                        <MoneyDollarCircleLine className="text-base font-medium text-spaceBlue-200" />
-                        {`${earned?.totalAmount ? formatMoneyAmount({ amount: earned.totalAmount }) : "-"}`}
+                        {earned?.totalAmount ? (
+                          <AvailableConversion
+                            tooltipId={`${login}-contributors-earned-details`}
+                            totalAmount={earned?.totalAmount}
+                            currencies={currencies}
+                          />
+                        ) : (
+                          "-"
+                        )}
                       </div>
                     </>
                   ) : null}

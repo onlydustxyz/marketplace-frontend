@@ -139,7 +139,7 @@ export default function Contributors() {
         <div className="flex flex-row justify-end gap-2 font-walsheim text-sm font-normal text-greyscale-50">
           <EyeOffLine />
 
-          <div className="inline lg:hidden xl:flex">{T("reward.form.contributions.showIgnored")}</div>
+          <div className="inline xl:flex">{T("reward.form.contributions.showIgnored")}</div>
           <FormToggle name={showHiddenContributorsName} control={control} />
         </div>
       ) : null}
