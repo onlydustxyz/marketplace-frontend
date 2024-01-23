@@ -1,18 +1,7 @@
 import { Menu, Transition } from "@headlessui/react";
-import { ReactNode, PropsWithChildren } from "react";
+import { TActionMenu } from "./action-menu.types";
 
-type ActionItem = {
-  label: string;
-  onClick: () => void;
-  icon?: ReactNode;
-};
-
-type Props = {
-  disabled?: boolean;
-  actions: ActionItem[];
-} & PropsWithChildren;
-
-export default function ActionMenu({ actions, children, disabled }: Props) {
+export default function ActionMenu({ actions, children, disabled }: TActionMenu.Props) {
   return (
     <Menu as="div" className="inline-block text-left">
       <div>{disabled ? <div>{children}</div> : <Menu.Button>{children}</Menu.Button>}</div>
