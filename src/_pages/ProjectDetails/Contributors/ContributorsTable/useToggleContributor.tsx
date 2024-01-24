@@ -1,6 +1,6 @@
 import ProjectApi from "src/api/Project";
-import { API_PATH } from "src/api/ApiPath.ts";
-import { useIntl } from "src/hooks/useIntl.tsx";
+import { API_PATH } from "src/api/ApiPath";
+import { useIntl } from "src/hooks/useIntl";
 import { components } from "src/__generated/api";
 import { useShowToaster } from "src/hooks/useToaster";
 
