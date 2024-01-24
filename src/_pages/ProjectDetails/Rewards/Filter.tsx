@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
@@ -202,8 +202,25 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     [hasActiveFilters]
   );
 
+  const filterCount = useMemo(() => {
+    let count = 0;
+
+    if (filters.contributors?.length) {
+      count += 1;
+    }
+
+    if (filters.currency?.length) {
+      count += 1;
+    }
+
+    if (filters.period !== initialFilters.period) {
+      count += 1;
+    }
+    return count;
+  }, [filters]);
+
   return (
-    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
+    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position} count={filterCount}>
       <div className="focus-within:z-10">
         <FilterDatepicker
           selected={filters.dateRange ?? initialFilters.dateRange}

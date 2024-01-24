@@ -168,8 +168,29 @@ export const ContributionsFilter = forwardRef(function ContributionsFilter(
     [hasActiveFilters]
   );
 
+  const filterCount = useMemo(() => {
+    let count = 0;
+
+    if (filters.projects?.length) {
+      count += 1;
+    }
+
+    if (filters.types?.length) {
+      count += 1;
+    }
+
+    if (filters.repos?.length) {
+      count += 1;
+    }
+
+    if (filters.period !== initialFilters.period) {
+      count += 1;
+    }
+    return count;
+  }, [filters]);
+
   return (
-    <Filter isActive={hasActiveFilters} onClear={resetFilters}>
+    <Filter isActive={hasActiveFilters} onClear={resetFilters} count={filterCount}>
       <FilterDatepicker
         selected={filters.dateRange ?? initialFilters.dateRange}
         onChange={updateDate}

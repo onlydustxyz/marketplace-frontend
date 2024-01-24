@@ -1,4 +1,4 @@
-import { isArray, sortBy } from "lodash";
+import { sortBy } from "lodash";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
@@ -156,11 +156,10 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
     [repos]
   );
 
-  const { data: contributorsData, isLoading: contributorsLoading } =
-    ProjectApi.queries.useProjectContributorsInfiniteList({
-      params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
-      options: { enabled: Boolean(project?.id) },
-    });
+  const { data: contributorsData } = ProjectApi.queries.useProjectContributorsInfiniteList({
+    params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
+    options: { enabled: Boolean(project?.id) },
+  });
   const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
 
   function resetFilters() {
@@ -213,8 +212,29 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
     [hasActiveFilters]
   );
 
+  const filterCount = useMemo(() => {
+    let count = 0;
+
+    if (filters.contributors?.length) {
+      count += 1;
+    }
+
+    if (filters.types?.length) {
+      count += 1;
+    }
+
+    if (filters.repos?.length) {
+      count += 1;
+    }
+
+    if (filters.period !== initialFilters.period) {
+      count += 1;
+    }
+    return count;
+  }, [filters]);
+
   return (
-    <Filter isActive={hasActiveFilters} onClear={resetFilters}>
+    <Filter isActive={hasActiveFilters} onClear={resetFilters} count={filterCount}>
       <FilterDatepicker
         selected={filters.dateRange ?? initialFilters.dateRange}
         onChange={updateDate}

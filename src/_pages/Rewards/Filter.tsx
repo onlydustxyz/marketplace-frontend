@@ -195,8 +195,25 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
     [hasActiveFilters]
   );
 
+  const filterCount = useMemo(() => {
+    let count = 0;
+
+    if (filters.projects?.length) {
+      count += 1;
+    }
+
+    if (filters.currency?.length) {
+      count += 1;
+    }
+
+    if (filters.period !== initialFilters.period) {
+      count += 1;
+    }
+    return count;
+  }, [filters]);
+
   return (
-    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
+    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position} count={filterCount}>
       <div className="focus-within:z-50">
         <FilterDatepicker
           selected={filters.dateRange ?? initialFilters.dateRange}
