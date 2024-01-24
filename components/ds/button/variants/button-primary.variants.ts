@@ -3,8 +3,12 @@ import { buttonVariants } from "./button.variants";
 
 export const buttonPrimaryVariants = tv({
   extend: buttonVariants,
-  base: "bg-greyscale-50 text-spaceBlue-900 shadow-bottom-sm active:shadow-none active:outline active:outline-4",
+  base: "bg-greyscale-50 text-spaceBlue-900 shadow-bottom-sm",
   compoundVariants: [
+    {
+      disabled: false,
+      class: "active:shadow-none active:outline active:outline-4",
+    },
     {
       pressed: true,
       class: "shadow-none outline outline-4",
@@ -22,6 +26,7 @@ export const buttonPrimaryVariants = tv({
     },
     {
       accentColor: "orange",
+      disabled: false,
       class:
         "focus-visible:bg-orange-50 focus-visible:text-orange-900 hover:bg-orange-50 hover:text-orange-900 active:bg-orange-50 active:text-orange-900 active:outline-orange-800",
     },
