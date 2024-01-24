@@ -31,7 +31,7 @@ export function useRestfulData<R = unknown>({
   ...queryOptions
 }: UseRestfulDataProps<R>) {
   const { enabled, ...restQueryOptions } = queryOptions;
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useQuery<R>({
@@ -39,6 +39,7 @@ export function useRestfulData<R = unknown>({
     queryFn: async () => {
       const { options } = await getHttpOptions({
         isAuthenticated,
+        logout,
         method,
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
@@ -74,7 +75,7 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
   onError,
   onSettled,
 }: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void; onSettled?: () => void }) {
-  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated, logout } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useMutation({
@@ -82,6 +83,7 @@ export function useMutationRestfulData<Payload = unknown, Response = unknown>({
       const { options } = await getHttpOptions({
         isAuthenticated,
         method,
+        logout,
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
       });
@@ -144,7 +146,7 @@ export function useInfiniteRestfulData<R extends ResponseData>(
     enabled,
     ...restQueryOptions
   } = queryOptions;
-  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated, logout } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
   return useInfiniteQuery<R>({
     queryKey: [...queryKey],
@@ -152,6 +154,7 @@ export function useInfiniteRestfulData<R extends ResponseData>(
       const { options } = await getHttpOptions({
         isAuthenticated,
         method: "GET",
+        logout,
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
       });

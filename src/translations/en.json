@@ -789,6 +789,7 @@
       "emailPlaceholder": "example@onlydust.co",
       "ethIdentity": "Ethereum wallet address or ENS name",
       "ethIdentityPlaceholder": "Ethereum wallet address or ENS name",
+      "walletUsedFor": "Relevant for rewards in",
       "firstname": "First name",
       "iban": "IBAN / Account number",
       "ibanInvalid": "Please enter a valid IBAN / Account number",

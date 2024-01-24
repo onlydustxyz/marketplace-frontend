@@ -7,7 +7,7 @@ import MeApi from "src/api/me";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 export default function Header() {
   const location = useLocation();

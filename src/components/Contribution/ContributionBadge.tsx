@@ -131,7 +131,7 @@ export function ContributionBadge({
 
             <div className="flex items-center text-xs font-medium">
               <span className="text-spaceBlue-200">{tokens[type]}</span>
-              <Contributor className="ml-1 flex-row-reverse" contributor={githubAuthor} clickable />
+              <Contributor className="ml-1 flex-row-reverse text-xs font-medium" contributor={githubAuthor} clickable />
             </div>
 
             {githubBody ? <p className="line-clamp-2 break-all text-xs text-spaceBlue-200">{githubBody}</p> : null}
