@@ -78,11 +78,13 @@ export function ContributionIcon({
   status,
   size = Sizes.md,
   contributionStatus,
+  isMonochrome = false,
 }: {
   type: GithubContributionType;
   status: GithubStatus;
   size?: Sizes;
   contributionStatus?: `${ContributionStatus}`;
+  isMonochrome?: boolean;
 }) {
   const icons: GithubTypeStatusDict<JSX.Element> = {
     [GithubContributionType.PullRequest]: {
@@ -126,7 +128,7 @@ export function ContributionIcon({
 
   // Even though a type and status should always be defined, in development sometimes they aren't and makes the component crash.
   return type && status ? (
-    <div className={cn("leading-none", statusClassnames)}>
+    <div className={cn("leading-none", isMonochrome ? "" : statusClassnames)}>
       {contributionStatus
         ? contributionStatusIcons[contributionStatus][type][status as keyof typeof icons[GithubContributionType]]
         : icons[type][status as keyof typeof icons[GithubContributionType]]}
