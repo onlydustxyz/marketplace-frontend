@@ -71,7 +71,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "^7.6.7",
     "@faker-js/faker": "^8.0.2",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.13",
@@ -79,6 +78,7 @@
     "@next/eslint-plugin-next": "^14.0.4",
     "@playwright/test": "^1.31.2",
     "@storybook/addon-actions": "^7.6.6",
+    "@storybook/addon-docs": "^7.6.7",
     "@storybook/addon-essentials": "^7.6.6",
     "@storybook/addon-interactions": "^7.6.6",
     "@storybook/addon-links": "^7.6.6",
@@ -121,6 +121,7 @@
     "sinon": "^15.0.4",
     "storybook": "^7.6.6",
     "storybook-addon-react-router-v6": "^1.0.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vitest": "^0.25.1",
     "vitest-canvas-mock": "^0.2.2"

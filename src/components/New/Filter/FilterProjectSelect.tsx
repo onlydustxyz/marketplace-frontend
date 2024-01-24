@@ -4,7 +4,8 @@ import FolderLine from "src/icons/FolderLine";
 import {
   FilterSelectAutoComplete,
   Item,
-} from "src/components/New/Filter/FilterSelectedAutoComplete/FilterSelectAutoComplete.tsx";
+} from "src/components/New/Filter/FilterSelectedAutoComplete/FilterSelectAutoComplete";
+import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
 
 export function FilterProjectSelect({
   projects,
@@ -20,6 +21,17 @@ export function FilterProjectSelect({
   return (
     <FilterField label={T("filter.project.title")}>
       <FilterSelectAutoComplete
+        type="project"
+        icon={({ className }) => <FolderLine className={className} />}
+        tokens={{ zero: "filter.project.all", other: "filter.project" }}
+        items={projects}
+        multiple
+        selected={selected}
+        onChange={onChange}
+        disabled={projects.length <= 1}
+      />{" "}
+      <SelectAutocomplete
+        type="project"
         icon={({ className }) => <FolderLine className={className} />}
         tokens={{ zero: "filter.project.all", other: "filter.project" }}
         items={projects}
