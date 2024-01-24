@@ -6,7 +6,7 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import View from "./View";
 import { ViewMobile } from "./ViewMobile";
-import { useToggleContributor } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/useToggleContributor.tsx";
+import { useToggleContributor } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/useToggleContributor";
 
 type Props<C> = {
   contributors: C[];

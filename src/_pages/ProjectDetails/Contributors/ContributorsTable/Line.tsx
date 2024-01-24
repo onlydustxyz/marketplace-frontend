@@ -91,7 +91,6 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
                 })}
               >
                 <StackLine />
-
                 <span className="font-walsheim font-medium">{contributor.contributionToRewardCount}</span>
               </div>
             ) : (

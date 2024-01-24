@@ -40,7 +40,7 @@ export default function Contributors() {
 
   const showHiddenContributorsName = "show-hidden-contributors";
   const { control } = useForm({
-    defaultValues: { [showHiddenContributorsName]: true },
+    defaultValues: { [showHiddenContributorsName]: false },
   });
 
   const showHiddenContributors = useWatch({
@@ -67,9 +67,9 @@ export default function Contributors() {
       options: { enabled: Boolean(project?.id) },
     });
 
-  const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
+  const [{ hasHiddenContributors = false }] = data?.pages ?? [{}];
 
-  const isThereAnyHiddenContributors = contributors.some(contributor => contributor.hidden);
+  const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
 
   const githubUserId = getGithubUserIdFromSub(user?.sub);
 
@@ -135,7 +135,7 @@ export default function Contributors() {
         projectName={project?.name}
       />
       <ClaimBanner />
-      {isThereAnyHiddenContributors && isProjectLeader ? (
+      {hasHiddenContributors && isProjectLeader ? (
         <div className="flex flex-row justify-end gap-2 font-walsheim text-sm font-normal text-greyscale-50">
           <EyeOffLine />
 

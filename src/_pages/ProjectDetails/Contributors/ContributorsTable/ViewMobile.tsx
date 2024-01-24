@@ -5,25 +5,25 @@ import { ShowMore } from "src/components/Table/ShowMore";
 import Medal2Fill from "src/icons/Medal2Fill";
 import StackLine from "src/icons/StackLine";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion.tsx";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { Icon } from "components/layout/icon/icon.tsx";
-import EyeOffLine from "src/icons/EyeOffLine.tsx";
-import { useIntl } from "src/hooks/useIntl.tsx";
-import ActionMenu from "components/layout/action-menu/action-menu.tsx";
-import SendPlane2Line from "src/icons/SendPlane2Line.tsx";
-import EyeLine from "src/icons/EyeLine.tsx";
+import { Icon } from "components/layout/icon/icon";
+import EyeOffLine from "src/icons/EyeOffLine";
+import { useIntl } from "src/hooks/useIntl";
+import ActionMenu from "components/layout/action-menu/action-menu";
+import SendPlane2Line from "src/icons/SendPlane2Line";
+import EyeLine from "src/icons/EyeLine";
+import { Button } from "components/ds/button/button";
 
-type ViewMobileProps = {
-  contributors: components["schemas"]["ContributorPageItemResponse"][];
+type ViewMobileProps<C> = {
+  contributors: C[];
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   isProjectLeader: boolean;
-  onRewardGranted: (contributor: components["schemas"]["ContributorPageItemResponse"]) => void;
-  onToggleContributor: (contributor: components["schemas"]["ContributorPageItemResponse"]) => void;
+  onRewardGranted: (contributor: C) => void;
+  onToggleContributor: (contributor: C) => void;
 };
 
-export function ViewMobile({
+export function ViewMobile<C extends components["schemas"]["ContributorPageItemResponse"]>({
   contributors,
   fetchNextPage,
   hasNextPage,
@@ -31,7 +31,7 @@ export function ViewMobile({
   isProjectLeader,
   onRewardGranted,
   onToggleContributor,
-}: ViewMobileProps) {
+}: ViewMobileProps<C>) {
   const { T } = useIntl();
   return (
     <Card className="divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5" padded={false}>
@@ -108,12 +108,7 @@ export function ViewMobile({
                     ]}
                     className="right-0 top-1"
                   >
-                    <Button
-                      type={ButtonType.Secondary}
-                      size={ButtonSize.Sm}
-                      iconOnly
-                      data-testid="toggle-contributors-action-menu"
-                    >
+                    <Button as="div" className="w-8 px-2" variant="secondary" size="s">
                       <Icon remixName="ri-more-fill" size={12} />
                     </Button>
                   </ActionMenu>
