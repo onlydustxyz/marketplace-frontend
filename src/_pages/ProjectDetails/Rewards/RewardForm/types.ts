@@ -1,6 +1,6 @@
 import { components } from "src/__generated/api";
 import { BudgetCurrencyType } from "src/utils/money";
-import { WorkItemType } from "src/types.ts";
+import { WorkItemType } from "src/types";
 
 export interface WorkItem {
   id: string;
