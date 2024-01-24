@@ -10,6 +10,10 @@ type Props = {
 };
 
 export default function Profile({ userProfile }: Props) {
+  const isTechnologiesEmpty =
+    userProfile?.technologies &&
+    Object.keys(userProfile?.technologies).length === 0 &&
+    userProfile?.technologies.constructor === Object;
   return (
     <div className="flex h-full min-h-0 w-full bg-greyscale-900 px-4 md:rounded-3xl">
       <div className="flex min-h-0 w-full flex-col gap-4 lg:flex-row lg:divide-x lg:divide-greyscale-50/8">
@@ -24,7 +28,7 @@ export default function Profile({ userProfile }: Props) {
               }}
               isPublic={true}
             />
-            {userProfile.technologies ? <TechnologiesSection technologies={userProfile.technologies ?? {}} /> : null}
+            {!isTechnologiesEmpty ? <TechnologiesSection technologies={userProfile.technologies ?? {}} /> : null}
           </div>
         </div>
         <div className="flex flex-col gap-12 px-px py-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 lg:basis-1/2 lg:overflow-y-auto lg:pl-8 lg:pr-4">
