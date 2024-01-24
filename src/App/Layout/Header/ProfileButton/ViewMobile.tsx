@@ -2,7 +2,6 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import { RoutePaths } from "src/App";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import Dot from "src/assets/icons/Dot";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
@@ -17,6 +16,8 @@ import { cn } from "src/utils/cn";
 import { LogoutButton } from "./LogoutButton";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import MeApi from "src/api/me";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import PassValidLine from "src/icons/PassValidLine";
 
 type Props = {
   avatarUrl: string | null;
@@ -32,6 +33,7 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
   const [openPayoutInfo] = useStackPayoutInfo();
+  const [openVerifyIdentity] = useStackVerifyIdentity();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { queryParams } = useQueryParamsSorting({
@@ -126,6 +128,17 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
                   <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </button>
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <button
+                    className="flex items-center gap-3 p-4"
+                    onClick={() => {
+                      setPanelOpen(false);
+                      openVerifyIdentity();
+                    }}
+                  >
+                    <PassValidLine className="text-xl" /> {T("navbar.profile.verifyIdentity")}
+                  </button>
+                ) : null}
               </>
             </>
           )}

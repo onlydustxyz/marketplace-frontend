@@ -13,6 +13,7 @@ import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOver
 import EyeLine from "src/icons/EyeLine";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "..";
+import { VerifyIdentitySidePanel } from "./VerifyIdentitySidePanel/VerifyIdentitySidePanel";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
@@ -23,6 +24,7 @@ export enum StackRoute {
   Contribution = "contribution",
   GithubWorkflowClaim = "github-workflow-claim",
   GithubWorkflowTutorial = "github-workflow-tutorial",
+  VerifyIdentity = "verify-identity",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -77,12 +79,19 @@ export const Stacks = () => {
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
+      {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+        <RegisterStack name={StackRoute.VerifyIdentity}>{() => <VerifyIdentitySidePanel />}</RegisterStack>
+      ) : null}
     </>
   );
 };
 
 export const useStackPayoutInfo = () => {
   return useStackNavigation(StackRoute.PayoutInfo);
+};
+
+export const useStackVerifyIdentity = () => {
+  return useStackNavigation(StackRoute.VerifyIdentity);
 };
 
 export const useStackProjecRewardAsLead = () => {
