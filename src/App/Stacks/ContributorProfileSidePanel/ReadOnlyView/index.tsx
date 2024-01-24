@@ -19,6 +19,12 @@ export default function ReadOnlyView({ profile, isOwn, setEditMode }: Props) {
   const onClickProject = (slug: string) => {
     openProjectOverview({ slug });
   };
+
+  const isTechnologiesEmpty =
+    profile?.technologies &&
+    Object.keys(profile?.technologies).length === 0 &&
+    profile?.technologies.constructor === Object;
+
   return (
     <div className="flex h-full flex-col">
       <Header profile={profile} />
@@ -27,7 +33,7 @@ export default function ReadOnlyView({ profile, isOwn, setEditMode }: Props) {
         <IntroSection profile={profile} isOwn={isOwn} setEditMode={setEditMode} />
 
         <div className="flex flex-col gap-8">
-          {profile?.technologies ? <TechnologiesSection technologies={profile.technologies ?? {}} /> : null}
+          {!isTechnologiesEmpty ? <TechnologiesSection technologies={profile.technologies ?? {}} /> : null}
           <StatsSection profile={profile} />
           {profile?.projects?.length ? (
             <ProjectsSection projects={profile.projects} setOpen={closeAll} event={onClickProject} />
