@@ -10,9 +10,11 @@ export namespace TSelectAutocomplete {
 
   export type avatarType = "project" | "user";
 
+  export type icon<T> = ({ selected, className }: { selected: T | T[]; className: string }) => ReactElement;
+
   export type BaseProps<T> = {
     disabled?: boolean;
-    icon?: ({ selected, className }: { selected: T | T[]; className: string }) => ReactElement;
+    icon?: icon<T>;
     items: T[];
     tokens: Record<"zero" | "other", string>;
     type: avatarType;

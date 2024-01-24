@@ -3,9 +3,10 @@ import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { cn } from "src/utils/cn";
 import { Combobox, Transition } from "@headlessui/react";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
-import { SelectAutocompleteHooks as Hooks } from "components/ds/Filters/select-autocomplete/select-autocomplete.hooks";
-import { Option } from "./components/option/option";
-import { Options } from "components/ds/Filters/select-autocomplete/components/options/options";
+import { SelectAutocompleteHooks as Hooks } from "./select-autocomplete.hooks";
+import { Options } from "./components/options/options";
+import { Button } from "./components/button/button";
+import { ChangeEvent } from "react";
 
 export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   disabled = false,
@@ -25,6 +26,10 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
     whileElementsMounted: autoUpdate,
     transform: false,
   });
+
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
 
   return (
     <div className={cn("relative", { "opacity-50": disabled })}>
@@ -53,25 +58,10 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
                     "placeholder:text-spacePurple-400": open,
                   }
                 )}
-                onChange={event => {
-                  setQuery(event.target.value);
-                }}
+                onChange={onInputChange}
                 autoComplete="off"
               />
-              <div className="absolute bottom-0 left-0 right-0 top-0 flex w-full items-center justify-between px-2.5 py-1.5">
-                <span className="flex flex-1 items-center gap-2">
-                  {icon?.({
-                    selected,
-                    className: cn("text-base leading-none", { "text-spacePurple-500": open }),
-                  })}
-                  {!query?.length ? <span className="font-walsheim text-sm leading-none">{token}</span> : null}
-                </span>
-                <ArrowDownSLine
-                  className={cn("text-xl leading-none text-spaceBlue-200", {
-                    "text-spacePurple-400": open,
-                  })}
-                />
-              </div>
+              <Button selected={selected} icon={icon} query={query} token={token} open={open} />
             </Combobox.Button>
             <Transition
               ref={refs.setFloating}
