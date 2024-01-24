@@ -1,6 +1,6 @@
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
@@ -71,6 +71,7 @@ export function Datepicker({
   autoCloseOnPeriodeSelected = true,
   ...props
 }: Props) {
+  const calendarRef = useRef(null);
   const { T } = useIntl();
   const { refs, floatingStyles, placement } = useFloating({
     middleware: [flip()],
@@ -191,13 +192,18 @@ export function Datepicker({
           <Popover.Button
             ref={refs.setReference}
             className={cn(
-              "flex w-full items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg",
+              "relative right-0 flex w-full origin-right items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg transition-all duration-200 ease-in",
               {
                 "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                   open,
                 "text-spaceBlue-200": !open && !selectionIsValid,
                 "text-greyScale-50": !open && selectionIsValid,
+              },
+              {
+                "w-[500px] max-w-full": open && props.mode === "range",
+                "w-[284px] max-w-full": !open && props.mode === "range",
               }
+              // "w-[200%]"
             )}
           >
             <span className="flex flex-1 items-center gap-2">
@@ -206,30 +212,33 @@ export function Datepicker({
             </span>
             <ArrowDownSLine className="text-xl leading-none" />
           </Popover.Button>
-
           <Transition
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
               ...(props.mode === "single" ? { right: "-6px" } : {}),
             }}
-            enter="transition duration-100 ease-out"
+            enter="transition duration-200 ease-in"
             enterFrom="transform scale-95 opacity-0"
             enterTo="transform scale-100 opacity-100"
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
-            className={cn("z-20 min-w-full rounded-xl border border-greyscale-50/8 shadow-lg", {
-              "bg-greyscale-800": isElevated,
-              "bg-greyscale-900": !isElevated,
-              "origin-top translate-y-1.5": placement === "bottom",
-              "origin-bottom -translate-y-1.5": placement === "top",
-              "translate-y-1.5": props.mode === "range",
-            })}
+            className={cn(
+              "z-20 min-w-full rounded-xl border border-greyscale-50/8 shadow-lg",
+              {
+                "bg-greyscale-800": isElevated,
+                "bg-greyscale-900": !isElevated,
+                "origin-top translate-y-1.5": placement === "bottom",
+                "origin-bottom -translate-y-1.5": placement === "top",
+                "translate-y-1.5": props.mode === "range",
+              }
+              // "w-full"
+            )}
           >
-            <Popover.Panel>
+            <Popover.Panel ref={calendarRef}>
               {({ close }) => (
-                <>
+                <div>
                   {props.periods?.length ? (
                     <div className="divide-y divide-card-border-medium border-b border-greyscale-50/8 font-walsheim">
                       {props.periods?.map(({ id, label, value, isActive }) => {
@@ -269,7 +278,7 @@ export function Datepicker({
                     </div>
                   ) : null}
                   {renderCalendar({ close })}
-                </>
+                </div>
               )}
             </Popover.Panel>
           </Transition>

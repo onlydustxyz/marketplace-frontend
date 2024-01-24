@@ -115,6 +115,7 @@ export const ContributionsFilter = forwardRef(function ContributionsFilter(
   const { data: reposData } = MeApi.queries.useMyContributedRepos({
     params: { projects: projectIds.length ? projectIds.join(",") : "" },
   });
+
   const contributedRepos = reposData?.repos ?? [];
 
   function resetFilters() {

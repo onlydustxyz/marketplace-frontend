@@ -1,7 +1,10 @@
 import { FilterField } from "src/components/New/Filter/FilterField";
 import { useIntl } from "src/hooks/useIntl";
 import FolderLine from "src/icons/FolderLine";
-import { FilterSelectAutoComplete, Item } from "src/components/New/Filter/FilterSelectAutoComplete";
+import {
+  FilterSelectAutoComplete,
+  Item,
+} from "src/components/New/Filter/FilterSelectedAutoComplete/FilterSelectAutoComplete.tsx";
 
 export function FilterProjectSelect({
   projects,
