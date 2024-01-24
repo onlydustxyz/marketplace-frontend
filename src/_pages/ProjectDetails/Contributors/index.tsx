@@ -5,7 +5,6 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
-import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
@@ -22,8 +21,11 @@ import { RewardProjectButton } from "../components/RewardProjectButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { IMAGES } from "src/assets/img";
-import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
-import { Card } from "components/ds/card/card.tsx";
+import { EmptyState } from "components/layout/placeholders/empty-state";
+import { Card } from "components/ds/card/card";
+import EyeOffLine from "src/icons/EyeOffLine";
+import FormToggle from "src/components/FormToggle";
+import { useForm, useWatch } from "react-hook-form";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -36,16 +38,38 @@ export default function Contributors() {
 
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
+  const showHiddenContributorsName = "show-hidden-contributors";
+  const { control } = useForm({
+    defaultValues: { [showHiddenContributorsName]: false },
+  });
+
+  const showHiddenContributors = useWatch({
+    control,
+    name: showHiddenContributorsName,
+  });
+
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: isProjectLeader ? Fields.ToRewardCount : Fields.ContributionCount,
     isAscending: false,
     storageKey: "projectContributorsSorting",
   });
 
-  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
-    projectId: project?.id ?? "",
-    queryParams,
-  });
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    ProjectApi.queries.useProjectContributorsInfiniteList({
+      params: {
+        projectId: project?.id ?? "",
+        pageSize: 30,
+        queryParams: {
+          ...(queryParams as URLSearchParams),
+          showHidden: showHiddenContributors?.toString(),
+        },
+      },
+      options: { enabled: Boolean(project?.id) },
+    });
+
+  const [{ hasHiddenContributors = false }] = data?.pages ?? [{}];
+
+  const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
 
   const githubUserId = getGithubUserIdFromSub(user?.sub);
 
@@ -83,8 +107,6 @@ export default function Contributors() {
 
   if (!project) return null;
 
-  const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
-
   return (
     <>
       <Title>
@@ -113,6 +135,14 @@ export default function Contributors() {
         projectName={project?.name}
       />
       <ClaimBanner />
+      {hasHiddenContributors && isProjectLeader ? (
+        <div className="flex flex-row justify-end gap-2 font-walsheim text-sm font-normal text-greyscale-50">
+          <EyeOffLine />
+
+          <div className="inline xl:flex">{T("reward.form.contributions.showIgnored")}</div>
+          <FormToggle name={showHiddenContributorsName} control={control} />
+        </div>
+      ) : null}
       {contributors?.length > 0 && (
         <ContributorsTable
           {...{
@@ -133,7 +163,10 @@ export default function Contributors() {
         <Card>
           <EmptyState
             illustrationSrc={IMAGES.global.categories}
-            title={{ token: "contributor.tableFallback.noContributor", params: { projectName: project?.name } }}
+            title={{
+              token: "contributor.tableFallback.noContributor",
+              params: { projectName: project?.name },
+            }}
             description={{ token: "contributor.tableFallback.relevantProfiles" }}
           />
         </Card>

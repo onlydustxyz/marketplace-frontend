@@ -124,6 +124,7 @@ export function useRewardableItemsQueryParams(props: RewardableItemsQueryParamsP
 }
 
 export type UseProjectContributorsInfiniteListResponse = components["schemas"]["ContributorsPageResponse"];
+export type ProjectContributorItem = components["schemas"]["ContributorPageItemResponse"];
 
 interface ProjectContributorsInfiniteListParams {
   projectId: string;

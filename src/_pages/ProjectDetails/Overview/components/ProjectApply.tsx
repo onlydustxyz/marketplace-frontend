@@ -16,7 +16,7 @@ import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import User3Line from "src/icons/User3Line";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login.ts";
+import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface ApplyCalloutProps {

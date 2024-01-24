@@ -1,6 +1,6 @@
 import { API_PATH } from "src/api/ApiPath";
-import { components } from "src/__generated/api";
-import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
+import { components, operations } from "src/__generated/api";
+import { UseMutationProps, useBaseMutation, BaseMutationPayload } from "../useBaseMutation";
 import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
 import { PROJECT_TAGS } from "./tags";
 
@@ -108,6 +108,34 @@ const useCreateOtherIssue = ({
   });
 };
 
+type UseHideContributorBody = operations["hideContributor"]["parameters"]["path"];
+
+const useHideContributor = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { projectId: string }, UseHideContributorBody>) => {
+  return useBaseMutation<BaseMutationPayload, void>({
+    resourcePath: "",
+    invalidatesTags: [{ queryKey: PROJECT_TAGS.contributors(params?.projectId || ""), exact: false }],
+    method: "POST",
+    ...options,
+  });
+};
+
+type UseShowContributorBody = operations["showContributor"]["parameters"]["path"];
+
+const useShowContributor = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { projectId: string }, UseShowContributorBody>) => {
+  return useBaseMutation<BaseMutationPayload, void>({
+    resourcePath: "",
+    invalidatesTags: [{ queryKey: PROJECT_TAGS.contributors(params?.projectId || ""), exact: false }],
+    method: "DELETE",
+    ...options,
+  });
+};
+
 export default {
   useCreateProject,
   useUpdateProject,
@@ -116,4 +144,6 @@ export default {
   useCreateOtherWorks,
   useCreateOtherPullRequest,
   useCreateOtherIssue,
+  useHideContributor,
+  useShowContributor,
 };

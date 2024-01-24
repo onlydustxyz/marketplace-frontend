@@ -1,26 +1,22 @@
-import { cn } from "src/utils/cn";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import { RoutePaths } from "src/App";
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import Dot from "src/assets/icons/Dot";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
 import Folder3Line from "src/icons/Folder3Line";
-import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
+import { cn } from "src/utils/cn";
+import { LogoutButton } from "./LogoutButton";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { handleLogout } from "components/features/auth0/handlers/handle-logout.ts";
-import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
 
 type Props = {
   avatarUrl: string | null;
@@ -32,8 +28,6 @@ type Props = {
 
 export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, githubUserId, hideProfileItems }: Props) {
   const { T } = useIntl();
-  const { logout } = useAuth0();
-  const { isImpersonating, clearImpersonateClaim } = useImpersonation();
 
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
@@ -52,10 +46,6 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
 
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
-
-  const handleLogoutClick = () => {
-    handleLogout(logout, isImpersonating, clearImpersonateClaim);
-  };
 
   return (
     <>
@@ -145,15 +135,7 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
               <div>{T("navbar.separator")}</div>
               <button onClick={openPrivacyPolicy}>{T("navbar.privacyPolicy")}</button>
             </div>
-            <Button
-              type={ButtonType.Secondary}
-              size={ButtonSize.Xs}
-              onClick={handleLogoutClick}
-              data-testid="logout-button"
-            >
-              <LogoutBoxRLine className="border-greyscale-50 text-sm" />
-              {T("navbar.logout")}
-            </Button>
+            <LogoutButton />
           </div>
         </div>
       </SidePanel>

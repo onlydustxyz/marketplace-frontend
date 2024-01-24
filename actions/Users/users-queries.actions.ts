@@ -1,6 +1,6 @@
 import { BaseQueriesOptions } from "../type.actions";
 import { BaseQueries } from "../base-queries.actions";
-import { components } from "../../src/__generated/api";
+import { components } from "src/__generated/api";
 import { ACTION_PATH } from "../path.actions";
 import { UsersActionTags } from "./users-tags.actions";
 

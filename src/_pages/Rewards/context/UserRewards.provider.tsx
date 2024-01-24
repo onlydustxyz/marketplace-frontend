@@ -5,7 +5,7 @@ import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSort
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import { UserRewardsContextProps } from "./UserRewards.type";
 import { UserRewardsContext } from "./UserRewards";
-import { useCurrenciesOrder } from "../../../hooks/useCurrenciesOrder.ts";
+import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 
 export function UserRewardsProvider({ children }: UserRewardsContextProps) {
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>({});

@@ -1,23 +1,24 @@
 import { useEffect, useMemo } from "react";
-import ErrorFallback from "src/ErrorFallback";
-import ProjectApi from "src/api/Project";
-import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
-import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
-import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+import { EmptyState } from "components/layout/placeholders/empty-state";
+import { uniqBy } from "lodash";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/_pages/Projects/Sorting/SortingDropdown";
 import { useProjectFilter } from "src/_pages/Projects/useProjectFilter";
+import ProjectApi from "src/api/Project";
+import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
+import { IMAGES } from "src/assets/img";
+import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
+import { ShowMore } from "src/components/Table/ShowMore";
+import ErrorFallback from "src/ErrorFallback";
+import { useIntl } from "src/hooks/useIntl";
+import { usePosthog } from "src/hooks/usePosthog";
+import { Sponsor } from "src/types";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";
-import AllProjectLoading from "./AllProjectsLoading";
-import { Sponsor } from "src/types";
-import { uniqBy } from "lodash";
 import SubmitProject from "../SubmitProject";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
-import { IMAGES } from "src/assets/img";
+import AllProjectLoading from "./AllProjectsLoading";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -50,6 +51,7 @@ export default function AllProjects({
 }: Props) {
   const { T } = useIntl();
   const { user } = useAuth0();
+  const { capture } = usePosthog();
 
   const {
     projectFilter: { ownership, technologies, sponsors },
@@ -69,6 +71,8 @@ export default function AllProjects({
       sorting ? ["sort", sorting] : null,
       ownership ? ["mine", String(ownership === "Mine")] : null,
     ].filter((param): param is string[] => Boolean(param));
+
+    capture("project_list_viewed", { technologies, sponsors: sponsors.map(({ name }) => name), ownership });
 
     return params;
   }, [technologies, sponsors, search, sorting, ownership]);

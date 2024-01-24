@@ -66,6 +66,7 @@ type HttpOptionsTypeReturn = {
 
 type HttpProps = {
   isAuthenticated: boolean;
+  logout: () => void;
   getAccessToken: {
     (options: GetTokenSilentlyOptions & { detailedResponse: true }): Promise<GetTokenSilentlyVerboseResponse>;
     (options?: GetTokenSilentlyOptions): Promise<string>;
@@ -80,11 +81,13 @@ export async function getHttpOptions({
   getAccessToken,
   method,
   impersonationHeaders,
+  logout,
 }: HttpProps): Promise<HttpOptionsTypeReturn> {
   async function retrieveAccessToken() {
     try {
-      return getAccessToken();
-    } catch {
+      return await getAccessToken();
+    } catch (err) {
+      logout();
       return null;
     }
   }
