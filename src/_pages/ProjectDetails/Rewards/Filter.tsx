@@ -75,10 +75,6 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     if (filtersStorage) {
       let parsed = JSON.parse(filtersStorage);
 
-      if (parsed.contributors?.[0]?.id && isArray(parsed.currency)) {
-        return parsed;
-      }
-
       if (parsed.contributors?.[0]?.githubUserId) {
         parsed.contributors = parsed.contributors.map((contributor: ContributorResponse) => ({
           label: contributor.login,
@@ -87,10 +83,12 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
         }));
       }
 
-      if (parsed.currency?.value === "") {
-        parsed.currency = [];
-      } else if (!isArray(parsed.currency)) {
-        parsed.currency = [parsed.currency];
+      if (!isArray(parsed.currency)) {
+        if (parsed.currency?.value === "" || !parsed.currency?.value) {
+          parsed.currency = [];
+        } else {
+          parsed.currency = [parsed.currency];
+        }
       }
 
       return parsed;
@@ -107,11 +105,12 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   useEffect(() => {
     const { dateRange, period, contributors, currency } = filters;
 
-    const filterQueryParams: FilterQueryParams = {
-      contributors: contributors?.map(({ id }) => String(id)).join(","),
-    };
+    const filterQueryParams: FilterQueryParams = {};
 
-    if (currency) {
+    if (contributors?.length) {
+      filterQueryParams.contributors = contributors?.map(({ id }) => String(id)).join(",");
+    }
+    if (currency?.length) {
       filterQueryParams.currencies = currency.map(({ value }) => String(value)).join(",");
     }
 
@@ -145,14 +144,13 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    filters.period !== initialFilters.period || filters.contributors?.length || filters.currency?.value !== ""
+    filters.period !== initialFilters.period || filters.contributors?.length || filters.currency?.length
   );
 
-  const { data: contributorsData, isLoading: contributorsLoading } =
-    ProjectApi.queries.useProjectContributorsInfiniteList({
-      params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
-      options: { enabled: Boolean(project?.id) },
-    });
+  const { data: contributorsData } = ProjectApi.queries.useProjectContributorsInfiniteList({
+    params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
+    options: { enabled: Boolean(project?.id) },
+  });
   const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
 
   function resetFilters() {
@@ -168,7 +166,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
       label: "",
     }));
 
-    setFiltersStorage(JSON.stringify(removeCurrenciesJsx));
+    setFiltersStorage(JSON.stringify({ ...updatedState, currency: removeCurrenciesJsx }));
 
     return updatedState;
   }
