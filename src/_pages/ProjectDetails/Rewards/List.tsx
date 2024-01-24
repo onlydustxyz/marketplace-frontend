@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import Card from "src/components/Card";
-import ProjectRewardTableFallback from "src/components/ProjectRewardTableFallback";
 import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
@@ -20,6 +19,8 @@ import { FilterQueryParams, ProjectRewardsFilter, ProjectRewardsFilterRef } from
 import { useMemo, useRef, useState } from "react";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import Skeleton from "src/components/Skeleton";
+import { IMAGES } from "src/assets/img";
+import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
@@ -70,17 +71,29 @@ const RewardList: React.FC = () => {
 
   const hasActiveFilters = !!filterRef?.current?.hasActiveFilters;
 
-  const emptyFallback = useMemo(
-    () =>
-      project && rewards?.length === 0 ? (
-        <ProjectRewardTableFallback
-          project={project}
-          activeFilter={hasActiveFilters}
-          activeFilterButtonEvent={filterRef.current?.reset}
+  const emptyFallback = useMemo(() => {
+    if (project && rewards?.length === 0) {
+      if (hasActiveFilters) {
+        return (
+          <EmptyState
+            illustrationSrc={IMAGES.global.payment}
+            title={{ token: "project.details.tableFallback.withFilter.title" }}
+            description={{ token: "project.details.tableFallback.withFilter.message" }}
+            actionLabel={{ token: "project.details.tableFallback.withFilter.buttonLabel" }}
+            onAction={filterRef.current?.reset}
+          />
+        );
+      }
+      return (
+        <EmptyState
+          illustrationSrc={IMAGES.global.payment}
+          title={{ token: "project.details.tableFallback.noRewards" }}
+          description={{ token: "project.details.tableFallback.send" }}
         />
-      ) : null,
-    [hasActiveFilters, filterRef, project, rewards]
-  );
+      );
+    }
+    return null;
+  }, [hasActiveFilters, filterRef, project, rewards]);
 
   if (error) {
     return <ErrorFallback />;

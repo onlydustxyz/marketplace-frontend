@@ -5,7 +5,6 @@ import OnboardingProvider from "src/App/OnboardingProvider";
 import { Stacks } from "src/App/Stacks/Stacks";
 import config from "src/config.ts";
 import ErrorFallback from "src/ErrorFallback";
-import { IntlProvider } from "src/hooks/useIntl";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
 import { ToasterProvider } from "src/hooks/useToaster";
@@ -20,28 +19,26 @@ const PostHogReact = dynamic(() => import("components/features/posthog/component
 
 export default function Providers() {
   return (
-    <IntlProvider>
-      <BrowserRouter>
-        <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
-          <ToasterProvider>
-            <StackProvider>
-              <SidePanelStackProvider>
-                <SidePanelProvider>
-                  {config.MAINTENANCE ? (
-                    <Maintenance />
-                  ) : (
-                    <OnboardingProvider>
-                      <App />
-                      <Stacks />
-                      <PostHogReact />
-                    </OnboardingProvider>
-                  )}
-                </SidePanelProvider>
-              </SidePanelStackProvider>
-            </StackProvider>
-          </ToasterProvider>
-        </ErrorBoundary>
-      </BrowserRouter>
-    </IntlProvider>
+    <BrowserRouter>
+      <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
+        <ToasterProvider>
+          <StackProvider>
+            <SidePanelStackProvider>
+              <SidePanelProvider>
+                {config.MAINTENANCE ? (
+                  <Maintenance />
+                ) : (
+                  <OnboardingProvider>
+                    <App />
+                    <Stacks />
+                    <PostHogReact />
+                  </OnboardingProvider>
+                )}
+              </SidePanelProvider>
+            </SidePanelStackProvider>
+          </StackProvider>
+        </ToasterProvider>
+      </ErrorBoundary>
+    </BrowserRouter>
   );
 }

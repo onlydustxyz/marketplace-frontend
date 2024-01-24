@@ -16,7 +16,7 @@ import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { cn } from "src/utils/cn";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
-import { Link, generatePath } from "react-router-dom";
+import { generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import WhatsappFill from "src/icons/WhatsappFill";
 import { components } from "src/__generated/api";
@@ -24,6 +24,7 @@ import CompletionBar from "src/components/CompletionBar";
 import { UserProfile } from "src/api/Users/queries";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import { IMAGES } from "src/assets/img";
+import Link from "next/link";
 
 type Props = {
   profile: UserProfile;
@@ -74,11 +75,10 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
             </Button>
           )}
           <Link
-            to={generatePath(RoutePaths.PublicProfile, {
+            href={generatePath(RoutePaths.PublicProfile, {
               userLogin: profile.login || "",
             })}
             target="_blank"
-            data-testid="open-public-profile-btn"
           >
             <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
               <ExternalLinkLine />

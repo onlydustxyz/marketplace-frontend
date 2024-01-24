@@ -1,4 +1,4 @@
-import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
+import { ComponentProps, PropsWithChildren, ReactNode, useRef, useState } from "react";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -14,6 +14,10 @@ import { cn } from "src/utils/cn";
 import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
+import { useContributionTabs } from "src/hooks/useContributionTabs";
+import { ContributionsFilterRef } from "src/_pages/Contributions/Filter.tsx";
+import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter.tsx";
+import { ContributionEmptyFallBack } from "./ContributionEmptyFalback.tsx";
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
@@ -65,6 +69,7 @@ type Props = {
   >;
   sort: TableSort;
   title: string;
+  filterRef: ReturnType<typeof useRef<ContributionsFilterRef | ProjectContributionsFilterRef | null>>;
 };
 
 export function ContributionTable({
@@ -78,12 +83,16 @@ export function ContributionTable({
   query,
   sort,
   title,
+  filterRef,
 }: Props) {
   const { T } = useIntl();
   const [collapsed, setCollapsed] = useState(false);
+  const hasActiveFilters = !!filterRef?.current?.hasActiveFilters;
 
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
+
+  const { activeTab } = useContributionTabs();
 
   const nbColumns = headerCells.length;
   const sortDirection = sort.direction === OrderBy.Asc ? "up" : "down";
@@ -102,12 +111,15 @@ export function ContributionTable({
         </div>
       );
     }
-
     if (!hasContributions) {
       return (
-        <div className="py-6">
-          <Message>{T("contributions.table.empty")}</Message>
-        </div>
+        <ContributionEmptyFallBack
+          isMobile={true}
+          hasActiveFilters={hasActiveFilters}
+          nbColumns={nbColumns}
+          activeTab={activeTab}
+          filterRef={filterRef}
+        />
       );
     }
 
@@ -136,7 +148,15 @@ export function ContributionTable({
     }
 
     if (!hasContributions) {
-      return <TableText colSpan={nbColumns}>{T("contributions.table.empty")}</TableText>;
+      return (
+        <ContributionEmptyFallBack
+          isMobile={false}
+          hasActiveFilters={hasActiveFilters}
+          nbColumns={nbColumns}
+          activeTab={activeTab}
+          filterRef={filterRef}
+        />
+      );
     }
 
     return contributions?.map(bodyRow);
