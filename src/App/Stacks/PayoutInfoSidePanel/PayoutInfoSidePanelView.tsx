@@ -5,6 +5,7 @@ import Card from "src/components/Card";
 import Tag, { TagSize } from "src/components/Tag";
 import Center from "src/components/Utils/Center";
 import Flex from "src/components/Utils/Flex";
+import { Flex as NewFlex } from "components/layout/flex/flex";
 import { useIntl } from "src/hooks/useIntl";
 import BuildingLine from "src/icons/BuildingLine";
 import CheckLine from "src/icons/CheckLine";
@@ -94,10 +95,10 @@ export default function PayoutInfoSidePanel({
           ) : null}
 
           <ProfileContent title={T("profile.form.payoutCurrenciesType")}>
-            <OtherCryptoFields {...{ requiredFields }} />
-            <div className="mt-6">
+            <NewFlex direction="col" className="gap-6">
+              <OtherCryptoFields {...{ requiredFields }} />
               <FiatFields {...{ requiredFields }} />
-            </div>
+            </NewFlex>
           </ProfileContent>
         </Card>
 

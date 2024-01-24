@@ -12,7 +12,7 @@ import {
 import { ProjectCreationSteps } from "src/_pages/ProjectCreation/types/ProjectCreationSteps";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login.ts";
+import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
 export default function SubmitProject({ className }: { className?: string }) {
   const { T } = useIntl();

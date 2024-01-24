@@ -23,14 +23,17 @@ export interface UseBaseMutationProps<R = unknown> extends BaseMutationOptions<R
   stringifiedBody?: boolean;
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 }
+export interface BaseMutationPayload {
+  resourcePath?: string;
+}
 
-export interface UseMutationProps<RESULT = unknown, PARAMS = unknown, Payload = unknown> {
+export interface UseMutationProps<RESULT = unknown, PARAMS = unknown, Payload = BaseMutationPayload> {
   options?: BaseMutationOptions<RESULT>;
   params?: PARAMS;
   body?: Payload;
 }
 
-export function useBaseMutation<Payload = unknown, Response = unknown>({
+export function useBaseMutation<Payload = BaseMutationPayload, Response = unknown>({
   resourcePath,
   queryParams = [],
   method = "PUT",
@@ -39,19 +42,21 @@ export function useBaseMutation<Payload = unknown, Response = unknown>({
   onSettled,
   invalidatesTags,
 }: UseBaseMutationProps<Response>) {
-  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated, logout } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: Payload): Promise<Response> => {
+    mutationFn: async (mutationData: Payload): Promise<Response> => {
+      const { resourcePath: mutatePath, ...data } = (mutationData || {}) as BaseMutationPayload;
       const { options } = await getHttpOptions({
         isAuthenticated,
+        logout,
         method,
         getAccessToken: getAccessTokenSilently,
         impersonationHeaders: getImpersonateHeaders(),
       });
-      return fetch(getEndpointUrl({ resourcePath, queryParams }), {
+      return fetch(getEndpointUrl({ resourcePath: mutatePath || resourcePath, queryParams }), {
         ...options,
         body: data ? JSON.stringify(data) : undefined,
       })

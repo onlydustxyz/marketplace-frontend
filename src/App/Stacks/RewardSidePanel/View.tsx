@@ -1,8 +1,14 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { UseMutateFunction } from "@tanstack/react-query";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { matchPath, useLocation } from "react-router-dom";
 import { components } from "src/__generated/api";
+import { RoutePaths } from "src/App/index";
+import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
+import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -23,16 +29,14 @@ import Time from "src/icons/TimeLine";
 import { Currency, GithubContributionType, PaymentStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
+import { rewardItemToContribution } from "src/utils/formatToContribution";
 import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { formatMoneyAmount } from "src/utils/money";
+import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
-import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-import MixedApi from "../../../api/Mixed";
 
 enum Align {
   Top = "top",
@@ -52,6 +56,9 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
   const { user } = useAuth0();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
+
+  const { pathname } = useLocation();
+  const isMyRewardsPage = !!matchPath(`${RoutePaths.Rewards}`, pathname);
 
   const {
     data,
@@ -105,63 +112,84 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
           </div>
           <div className="flex h-0 flex-auto flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
             {rewardItems.map(item => {
+              const hasContribution = Boolean(item.contributionId);
+              const isNotMyContribution = isMyRewardsPage && !hasContribution;
+
               switch (item.type) {
                 case GithubContributionType.PullRequest: {
                   return (
-                    <GithubPullRequest
-                      key={item.id}
-                      pullRequest={item}
-                      onCardClick={
-                        item.contributionId
-                          ? () => {
-                              openStackContribution({
-                                contributionId: item.contributionId,
-                                projectId,
-                                githubHtmlUrl: item.githubUrl,
-                              });
-                            }
-                          : undefined
-                      }
-                      contributorLogin={data?.to.login}
-                    />
+                    <OtherContributionTooltip key={item.id} visible={isNotMyContribution}>
+                      <GithubPullRequest
+                        pullRequest={item}
+                        onCardClick={
+                          hasContribution
+                            ? () => {
+                                openStackContribution({
+                                  contributionId: item.contributionId,
+                                  projectId,
+                                  githubHtmlUrl: item.githubUrl,
+                                });
+                              }
+                            : undefined
+                        }
+                        contributorLogin={data?.to.login}
+                        badgeProps={{
+                          contribution: rewardItemToContribution(item),
+                          showExternal: isMyRewardsPage,
+                        }}
+                        disabled={!hasContribution}
+                      />
+                    </OtherContributionTooltip>
                   );
                 }
                 case GithubContributionType.Issue: {
                   return (
-                    <GithubIssue
-                      key={item.id}
-                      issue={item}
-                      onCardClick={
-                        item.contributionId
-                          ? () => {
-                              openStackContribution({
-                                contributionId: item.contributionId,
-                                projectId,
-                                githubHtmlUrl: item.githubUrl,
-                              });
-                            }
-                          : undefined
-                      }
-                    />
+                    <OtherContributionTooltip key={item.id} visible={isNotMyContribution}>
+                      <GithubIssue
+                        issue={item}
+                        onCardClick={
+                          hasContribution
+                            ? () => {
+                                openStackContribution({
+                                  contributionId: item.contributionId,
+                                  projectId,
+                                  githubHtmlUrl: item.githubUrl,
+                                });
+                              }
+                            : undefined
+                        }
+                        badgeProps={{
+                          contribution: rewardItemToContribution(item),
+                          showExternal: isMyRewardsPage,
+                        }}
+                        disabled={!hasContribution}
+                      />
+                    </OtherContributionTooltip>
                   );
                 }
                 case GithubContributionType.CodeReview: {
                   return (
-                    <GithubCodeReview
-                      key={item.id}
-                      onCardClick={
-                        item.contributionId
-                          ? () => {
-                              openStackContribution({
-                                contributionId: item.contributionId,
-                                projectId,
-                                githubHtmlUrl: item.githubUrl,
-                              });
-                            }
-                          : undefined
-                      }
-                      codeReview={item}
-                    />
+                    <OtherContributionTooltip key={item.id} visible={isNotMyContribution}>
+                      <GithubCodeReview
+                        onCardClick={
+                          hasContribution
+                            ? () => {
+                                openStackContribution({
+                                  contributionId: item.contributionId,
+                                  projectId,
+                                  githubHtmlUrl: item.githubUrl,
+                                });
+                              }
+                            : undefined
+                        }
+                        codeReview={item}
+                        badgeProps={{
+                          contribution: rewardItemToContribution(item),
+                          showExternal: isMyRewardsPage,
+                        }}
+                        disabled={!hasContribution}
+                      />
+                    </OtherContributionTooltip>
                   );
                 }
                 default: {

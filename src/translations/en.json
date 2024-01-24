@@ -660,7 +660,8 @@
         },
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
         "rewardItems": {
-          "error": "An error occurred, please try again later."
+          "error": "An error occurred, please try again later.",
+          "otherContributionTooltip": "This is a contribution made by someone else and is not included in your total contribution count."
         }
       },
       "status": "Status"
@@ -789,6 +790,7 @@
       "emailPlaceholder": "example@onlydust.co",
       "ethIdentity": "Ethereum wallet address or ENS name",
       "ethIdentityPlaceholder": "Ethereum wallet address or ENS name",
+      "walletUsedFor": "Relevant for rewards in",
       "firstname": "First name",
       "iban": "IBAN / Account number",
       "ibanInvalid": "Please enter a valid IBAN / Account number",
@@ -953,7 +955,18 @@
           "zero": "No contributor"
         },
         "reward": "Reward",
-        "title": "Contributors"
+        "title": "Contributors",
+        "hideContributor": {
+          "tooltip": "Hide contributor",
+          "success": "The contributor was successfully hidden",
+          "error": "The contributor could not be hidden"
+        },
+        "showContributor": {
+          "tooltip": "Show contributor",
+          "success": "The contributor was successfully shown",
+          "error": "The contributor could not be shown"
+        },
+        "actionMenu": "__action__"
       },
       "githubRepos": {
         "count": {
@@ -1428,5 +1441,12 @@
     "message": "Github is experiencing service issues. OnlyDust features may be affected until the incident is resolved.",
     "button": "View Github status"
   },
-  "emptyStatePictureFallback": "Empty State Picture"
+  "emptyStatePictureFallback": "Empty State Picture",
+  "callout": {
+    "missingRepositories": {
+      "title": "Missing repositories?",
+      "description": "Make sure they are public and the Github app is granted on all of them.",
+      "button": "Manage on Github"
+    }
+  }
 }
