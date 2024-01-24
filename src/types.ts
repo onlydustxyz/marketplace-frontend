@@ -80,6 +80,7 @@ export enum PreferredMethod {
 
 export enum PaymentStatus {
   COMPLETE = "COMPLETE",
+  LOCKED = "LOCKED",
   PENDING_INVOICE = "PENDING_INVOICE",
   PENDING_SIGNUP = "PENDING_SIGNUP",
   PROCESSING = "PROCESSING",
