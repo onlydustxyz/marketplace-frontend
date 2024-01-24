@@ -83,6 +83,7 @@ export function ContributionDate({
               status={status}
               contributionStatus={contributionStatus}
               size={withIcon ? Sizes.xs : undefined}
+              isMonochrome
             />
             <span className="first-letter:uppercase">
               {T(getGithubStatusToken(type, status), { date: displayRelativeDate(date) })}

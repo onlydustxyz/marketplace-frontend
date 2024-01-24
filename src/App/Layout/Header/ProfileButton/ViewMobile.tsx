@@ -1,20 +1,18 @@
-import { cn } from "src/utils/cn";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import { RoutePaths } from "src/App";
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import Dot from "src/assets/icons/Dot";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { handleLogout } from "components/features/auth0/handlers/handle-logout";
-import { useImpersonation } from "components/features/impersonation/use-impersonation";
 import { Icon } from "components/layout/icon/icon";
+import { LogoutButton } from "./LogoutButton";
+import { cn } from "src/utils/cn";
 
 interface Props {
   avatarUrl: string | null;
@@ -33,8 +31,6 @@ export function ViewMobile({
   openFeedback,
 }: Props) {
   const { T } = useIntl();
-  const { logout } = useAuth0();
-  const { isImpersonating, clearImpersonateClaim } = useImpersonation();
 
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
@@ -53,10 +49,6 @@ export function ViewMobile({
 
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
-
-  const handleLogoutClick = () => {
-    handleLogout(logout, isImpersonating, clearImpersonateClaim);
-  };
 
   return (
     <>
@@ -168,10 +160,14 @@ export function ViewMobile({
               {T("navbar.feedback.button")}
             </button>
 
-            <button className="flex items-center gap-3 p-4" onClick={handleLogoutClick}>
-              <Icon remixName="ri-logout-box-r-line" size={20} />
-              {T("navbar.logout")}
-            </button>
+            <LogoutButton
+              customButton={
+                <button className="flex items-center gap-3 p-4">
+                  <Icon remixName="ri-logout-box-r-line" size={20} />
+                  {T("navbar.logout")}
+                </button>
+              }
+            />
           </div>
         </div>
       </SidePanel>

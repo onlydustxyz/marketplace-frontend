@@ -1,16 +1,14 @@
 import { Menu, Transition } from "@headlessui/react";
-import { cn } from "src/utils/cn";
 import { Fragment, PropsWithChildren, useState } from "react";
+import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { useSidePanel } from "src/hooks/useSidePanel";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { handleLogout } from "components/features/auth0/handlers/handle-logout";
-import { useImpersonation } from "components/features/impersonation/use-impersonation";
 import { Icon } from "components/layout/icon/icon";
+import { LogoutButton } from "./LogoutButton";
+import { cn } from "src/utils/cn";
 
 interface MenuItemProps extends PropsWithChildren {
   disabled?: boolean;
@@ -53,8 +51,6 @@ export function View({
   openFeedback,
 }: Props) {
   const { T } = useIntl();
-  const { logout } = useAuth0();
-  const { isImpersonating, clearImpersonateClaim } = useImpersonation();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -62,10 +58,6 @@ export function View({
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
-
-  const handleLogoutClick = () => {
-    handleLogout(logout, isImpersonating, clearImpersonateClaim);
-  };
 
   return (
     <div className="relative">
@@ -150,10 +142,14 @@ export function View({
                 <div className="grow">{T("navbar.feedback.button")}</div>
               </MenuItem>
 
-              <MenuItem onClick={handleLogoutClick}>
-                <Icon remixName="ri-logout-box-r-line" size={20} />
-                <div className="grow">{T("navbar.logout")}</div>
-              </MenuItem>
+              <LogoutButton
+                customButton={
+                  <MenuItem>
+                    <Icon remixName="ri-logout-box-r-line" size={20} />
+                    <div className="grow">{T("navbar.logout")}</div>
+                  </MenuItem>
+                }
+              />
             </div>
           </Menu.Items>
         </Transition>

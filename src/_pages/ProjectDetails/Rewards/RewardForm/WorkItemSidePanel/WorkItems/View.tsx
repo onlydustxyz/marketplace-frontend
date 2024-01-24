@@ -13,6 +13,7 @@ import EyeOffLine from "src/icons/EyeOffLine";
 import Link from "src/icons/Link";
 import SearchLine from "src/icons/SearchLine";
 import Toggle from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
+import { rewardableItemToContribution } from "src/utils/formatToContribution";
 import OtherIssueInput from "./OtherIssueInput";
 import { RewardableWorkItem, contributionToWorkItem } from "./WorkItems";
 import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
@@ -214,14 +215,16 @@ const ListBuilder = (tabName: string) => {
 
 type RewardItemType = GithubIssueProps | GithubPullRequestProps | GithubCodeReviewProps;
 
-function getWorkItem(type: WorkItemType, props: RewardItemType): ReactElement | null {
+function getWorkItem(type: WorkItemType, props: RewardItemType, rewardableItem: RewardableItem): ReactElement | null {
+  const contribution = rewardableItemToContribution(rewardableItem);
+
   switch (type) {
     case WorkItemType.Issue:
-      return <GithubIssue {...(props as GithubIssueProps)} />;
+      return <GithubIssue {...(props as GithubIssueProps)} badgeProps={{ contribution }} />;
     case WorkItemType.PullRequest:
-      return <GithubPullRequest {...(props as GithubPullRequestProps)} />;
+      return <GithubPullRequest {...(props as GithubPullRequestProps)} badgeProps={{ contribution }} />;
     case WorkItemType.CodeReview:
-      return <GithubCodeReview {...(props as GithubCodeReviewProps)} />;
+      return <GithubCodeReview {...(props as GithubCodeReviewProps)} badgeProps={{ contribution }} />;
     default:
       return null;
   }
@@ -261,7 +264,7 @@ const VirtualizedIssueList = ({
         </div>
       );
     }
-    return <></>;
+    return null;
   };
 
   return (
@@ -292,7 +295,7 @@ const VirtualizedIssueList = ({
           contributor,
         };
 
-        return getWorkItem(workItem.type, sharedProps as RewardItemType);
+        return getWorkItem(workItem.type, sharedProps as unknown as RewardItemType, contribution);
       }}
     />
   );

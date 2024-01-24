@@ -28,12 +28,12 @@ export default function Headers({ sorting, sortField, isProjectLeader }: Props) 
 
   return (
     <HeaderLine className="text-sm text-spaceBlue-200">
-      <HeaderCell onClick={() => sortField(Fields.Login)} width={HeaderCellWidth.Full}>
+      <HeaderCell onClick={() => sortField(Fields.Login)} width={HeaderCellWidth.Fifth}>
         <User3Line />
         {T("contributor.table.contributor")}
         <SortingArrow direction={sorting.isAscending ? "up" : "down"} visible={sorting.field === Fields.Login} />
       </HeaderCell>
-      <HeaderCell onClick={() => sortField(Fields.ContributionCount)} width={HeaderCellWidth.Full}>
+      <HeaderCell onClick={() => sortField(Fields.ContributionCount)} width={HeaderCellWidth.Sixth}>
         <StackLine className="text-base" />
         {T("contributor.table.contributions")}
         <SortingArrow
@@ -41,25 +41,28 @@ export default function Headers({ sorting, sortField, isProjectLeader }: Props) 
           visible={sorting.field === Fields.ContributionCount}
         />
       </HeaderCell>
-      <HeaderCell onClick={() => sortField(Fields.RewardCount)} width={HeaderCellWidth.Full}>
+      <HeaderCell onClick={() => sortField(Fields.RewardCount)} width={HeaderCellWidth.Sixth}>
         <Medal2Fill className="text-base" />
         {T("contributor.table.rewards")}
         <SortingArrow direction={sorting.isAscending ? "up" : "down"} visible={sorting.field === Fields.RewardCount} />
       </HeaderCell>
-      <HeaderCell onClick={() => sortField(Fields.TotalEarned)} width={HeaderCellWidth.Full}>
+      <HeaderCell onClick={() => sortField(Fields.TotalEarned)} width={HeaderCellWidth.Fifth}>
         <MoneyDollarCircleLine className="text-base" />
         {T("contributor.table.totalEarned")}
         <SortingArrow direction={sorting.isAscending ? "up" : "down"} visible={sorting.field === Fields.TotalEarned} />
       </HeaderCell>
       {isProjectLeader && (
-        <HeaderCell onClick={() => sortField(Fields.ToRewardCount)} width={HeaderCellWidth.Full}>
-          <HandCoinLine className="text-base" />
-          {T("contributor.table.toReward")}
-          <SortingArrow
-            direction={sorting.isAscending ? "up" : "down"}
-            visible={sorting.field === Fields.ToRewardCount}
-          />
-        </HeaderCell>
+        <>
+          <HeaderCell onClick={() => sortField(Fields.ToRewardCount)} width={HeaderCellWidth.Sixth}>
+            <HandCoinLine className="text-base" />
+            {T("contributor.table.toReward")}
+            <SortingArrow
+              direction={sorting.isAscending ? "up" : "down"}
+              visible={sorting.field === Fields.ToRewardCount}
+            />
+          </HeaderCell>
+          <HeaderCell width={HeaderCellWidth.Fifth}></HeaderCell>
+        </>
       )}
     </HeaderLine>
   );

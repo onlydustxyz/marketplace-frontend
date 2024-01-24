@@ -12,6 +12,7 @@ export function Icon({ customName, remixName, size = 16, color = "currentColor",
           className={cn(remixName)}
           style={{
             fontSize: `${size}px`,
+            lineHeight: 1,
             color,
           }}
         />

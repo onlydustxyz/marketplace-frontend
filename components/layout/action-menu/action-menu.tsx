@@ -1,18 +1,8 @@
 import { Menu, Transition } from "@headlessui/react";
-import { ReactNode, PropsWithChildren } from "react";
+import { TActionMenu } from "./action-menu.types";
+import { cn } from "src/utils/cn";
 
-type ActionItem = {
-  label: string;
-  onClick: () => void;
-  icon?: ReactNode;
-};
-
-type Props = {
-  disabled?: boolean;
-  actions: ActionItem[];
-} & PropsWithChildren;
-
-export default function ActionMenu({ actions, children, disabled }: Props) {
+export default function ActionMenu({ actions, children, disabled, className }: TActionMenu.Props) {
   return (
     <Menu as="div" className="inline-block text-left">
       <div>{disabled ? <div>{children}</div> : <Menu.Button>{children}</Menu.Button>}</div>
@@ -25,7 +15,12 @@ export default function ActionMenu({ actions, children, disabled }: Props) {
         leaveTo="transform scale-95 opacity-0"
         className="relative z-10"
       >
-        <Menu.Items className="absolute -top-12 right-0 z-40 w-auto min-w-max origin-top-right rounded-xl bg-greyscale-900 p-2 font-walsheim text-sm font-normal shadow-medium outline-none focus:outline-none">
+        <Menu.Items
+          className={cn(
+            "absolute -top-12 right-0 z-40 w-auto min-w-max origin-top-right rounded-xl bg-greyscale-900 p-2 font-walsheim text-sm font-normal shadow-medium outline-none focus:outline-none",
+            className
+          )}
+        >
           {actions.map((action, index) => (
             <Menu.Item
               key={index}

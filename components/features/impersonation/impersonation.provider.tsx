@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, createContext, useCallback } from "react";
+import { createContext, PropsWithChildren, useCallback } from "react";
 import { useLocalStorage } from "react-use";
 
 type ImpersonateClaim = {

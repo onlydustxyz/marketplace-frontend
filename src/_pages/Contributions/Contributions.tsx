@@ -1,4 +1,4 @@
-import { ComponentProps, useRef, useState } from "react";
+import { ComponentProps, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
@@ -9,6 +9,7 @@ import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { useIntl } from "src/hooks/useIntl";
+import { usePosthog } from "src/hooks/usePosthog";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import { ContributionStatus, OrderBy } from "src/types";
@@ -36,10 +37,15 @@ export default function Contributions() {
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
   const { isActiveTab, updateActiveTab } = useContributionTabs();
   const { headerCells, bodyRow } = useContributionTable();
+  const { capture } = usePosthog();
 
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
 
   const filterRef = useRef<ContributionsFilterRef>(null);
+
+  useEffect(() => {
+    capture("contributions_list_viewed");
+  }, []);
 
   const tabItems = [
     {

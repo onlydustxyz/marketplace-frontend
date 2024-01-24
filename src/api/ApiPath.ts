@@ -38,6 +38,10 @@ export const API_PATH = {
     BASE_API_V1(`projects/${projectId}/insights/contributions/staled`),
   PROJECT_INSIGHTS_CONTRIBUTORS_CHURNED: (projectId: string) =>
     BASE_API_V1(`projects/${projectId}/insights/contributors/churned`),
+  PROJECT_HIDE_CONTRIBUTOR: (projectId: string, githubUserId: string) =>
+    BASE_API_V1(`projects/${projectId}/contributors/${githubUserId}/hidden`),
+  PROJECT_SHOW_CONTRIBUTOR: (projectId: string, githubUserId: string) =>
+    BASE_API_V1(`projects/${projectId}/contributors/${githubUserId}/hidden`),
 
   /* --------------------------------- USERS -------------------------------- */
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),
