@@ -70,7 +70,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
           currency: [parsed.currency],
         };
       }
-      return JSON.parse(filtersStorage);
+      return parsed;
     }
 
     return initialFilters;
@@ -217,11 +217,6 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
           </div>
 
           <div className="focus-within:z-10">
-            {/*<FilterCurrencySelect*/}
-            {/*  selected={filters.currency ?? initialFilters.currency}*/}
-            {/*  onChange={updateCurrency}*/}
-            {/*  currencies={currenciesFilters ?? []}*/}
-            {/*/>*/}
             <FiltersCurrencies
               selected={filters.currency ?? initialFilters.currency}
               onChange={updateCurrency}

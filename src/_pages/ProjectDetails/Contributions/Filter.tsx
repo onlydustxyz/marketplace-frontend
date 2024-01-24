@@ -1,11 +1,10 @@
-import { sortBy } from "lodash";
+import { isArray, sortBy } from "lodash";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import { Period } from "src/components/New/Field/Datepicker";
 import { Filter } from "src/components/New/Filter/Filter";
-import { FilterContributorCombobox } from "src/components/New/Filter/FilterContributorCombobox";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
 import { Item } from "src/components/New/Filter/FilterSelect";
@@ -14,12 +13,13 @@ import { ContributorResponse, GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 import { useLocalStorage } from "usehooks-ts";
 import { FiltersRepos } from "components/features/filters/filters-repos/filters-repos";
+import { FiltersUsers } from "components/features/filters/filters-users/filters-users";
 
 type Filters = {
   dateRange: DateRange;
   period: Period;
   repos: Item[];
-  contributors: ContributorResponse[];
+  contributors: Item[];
   types: GithubContributionType[];
 };
 
@@ -61,10 +61,33 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
   const contributorsQueryState = useState<string>();
   const [contributorsQuery] = contributorsQueryState;
 
+  function parseFiltersStorage() {
+    if (filtersStorage) {
+      const parsed = JSON.parse(filtersStorage);
+
+      if (parsed.contributors?.[0]?.id) {
+        return parsed;
+      }
+
+      if (parsed.contributors?.[0]?.githubUserId) {
+        return {
+          ...parsed,
+          contributors: parsed.contributors.map((contributor: ContributorResponse) => ({
+            label: contributor.login,
+            id: contributor.githubUserId,
+            image: contributor.avatarUrl,
+          })),
+        };
+      }
+
+      return JSON.parse(filtersStorage);
+    }
+
+    return initialFilters;
+  }
+
   // Type of partial Filters is required as the shape required by the state may not exist in the user's local storage
-  const [filters, setFilters] = useState<Partial<Filters>>(
-    filtersStorage ? JSON.parse(filtersStorage) : initialFilters
-  );
+  const [filters, setFilters] = useState<Partial<Filters>>(parseFiltersStorage());
 
   const allPeriods = useDatepickerPeriods({ selectedPeriod: filters.period ?? initialFilters.period });
 
@@ -79,7 +102,7 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
 
     const filterQueryParams: FilterQueryParams = {
       repositories: repos.map(({ id }) => String(id)).join(","),
-      contributorIds: contributors.map(({ githubUserId }) => String(githubUserId)).join(","),
+      contributorIds: contributors.map(({ id }) => String(id)).join(","),
       types: types.join(","),
     };
 
@@ -165,7 +188,7 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
     setFilters(prevState => updateState(prevState, { repos }));
   }
 
-  function updateContributors(contributors: ContributorResponse[]) {
+  function updateContributors(contributors: Item[]) {
     setFilters(prevState => updateState(prevState, { contributors }));
   }
 
@@ -199,13 +222,14 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
         onPeriodChange={updatePeriod}
       />
       <FiltersRepos repos={sortedRepos} selected={filters.repos ?? initialFilters.repos} onChange={updateRepos} />
-      <FilterContributorCombobox<ContributorResponse>
-        contributors={contributors}
+      <FiltersUsers
+        users={contributors.map(({ login, githubUserId, avatarUrl }) => ({
+          id: githubUserId,
+          label: login,
+          image: avatarUrl,
+        }))}
         selected={filters.contributors ?? initialFilters.contributors}
         onChange={updateContributors}
-        queryState={contributorsQueryState}
-        uniqueKey="githubUserId"
-        isLoading={contributorsLoading}
       />
       <FilterTypeOptions selected={filters.types ?? initialFilters.types} onChange={updateTypes} />
     </Filter>

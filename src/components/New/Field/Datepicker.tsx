@@ -200,10 +200,9 @@ export function Datepicker({
                 "text-greyScale-50": !open && selectionIsValid,
               },
               {
-                "w-[500px] max-w-full": open && props.mode === "range",
-                "w-[284px] max-w-full": !open && props.mode === "range",
+                "w-[500px] min-w-full max-w-full": open && props.mode === "range",
+                "w-[284px] min-w-full max-w-full": !open && props.mode === "range",
               }
-              // "w-[200%]"
             )}
           >
             <span className="flex flex-1 items-center gap-2">
@@ -233,7 +232,6 @@ export function Datepicker({
                 "origin-bottom -translate-y-1.5": placement === "top",
               },
               { "w-[calc(100%_+_24px)]": props.mode === "range" }
-              // "w-full"
             )}
           >
             <Popover.Panel ref={calendarRef}>
