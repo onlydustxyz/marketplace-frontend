@@ -15,7 +15,7 @@ export function Options({ selectedItems, filteredItems, type }: TOptions.Props) 
             ))}
           </div>
         ) : null}
-        <div className="pt-2">
+        <div className="flex flex-col gap-1">
           {filteredItems.map(item => (
             <Combobox.Option key={item.id} value={item}>
               {({ active, selected }) => <Option selected={selected} active={active} type={type} item={item} />}

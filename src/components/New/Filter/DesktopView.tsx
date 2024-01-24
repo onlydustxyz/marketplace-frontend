@@ -36,7 +36,7 @@ export function DesktopView({
             size={ButtonSize.Sm}
             pressed={open}
             className={cn({
-              "border-spacePurple-200 text-spacePurple-100": isActive,
+              "border-spacePurple-500 bg-spacePurple-900 text-spacePurple-200": isActive,
             })}
           >
             <FilterIcon />

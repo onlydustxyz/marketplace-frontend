@@ -17,8 +17,9 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
 }: TSelectAutocomplete.Props<T>) {
   const selectedRef = useRef(comboProps.selected);
   const { current: selected } = selectedRef;
+  const { selected: selectedTracked } = comboProps;
   // const { selected } = comboProps;
-  const token = Hooks.useTokens(selected, items, tokens);
+  const token = Hooks.useTokens(selectedTracked, items, tokens);
   const { filteredItems, query, setQuery } = Hooks.useFilteredItems(selected, items);
   const selectedItems = Hooks.useSelectedItems(selected);
 
@@ -67,7 +68,7 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
                 onChange={onInputChange}
                 autoComplete="off"
               />
-              <Button selected={selected} icon={icon} query={query} token={token} open={open} />
+              <Button selected={selectedTracked} icon={icon} query={query} token={token} open={open} />
             </Combobox.Button>
             <Transition
               ref={refs.setFloating}
