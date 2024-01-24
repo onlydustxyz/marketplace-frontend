@@ -2,7 +2,6 @@ import { TSelectAutocomplete } from "./select-autocomplete.types";
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { cn } from "src/utils/cn";
 import { Combobox, Transition } from "@headlessui/react";
-import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { SelectAutocompleteHooks as Hooks } from "./select-autocomplete.hooks";
 import { Options } from "./components/options/options";
 import { Button } from "./components/button/button";

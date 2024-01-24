@@ -1,10 +1,8 @@
 import { FilterField } from "src/components/New/Filter/FilterField";
 import { useIntl } from "src/hooks/useIntl";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import {
-  FilterSelectAutoComplete,
-  Item,
-} from "src/components/New/Filter/FilterSelectedAutoComplete/FilterSelectAutoComplete.tsx";
+import { Item } from "src/components/New/Filter/FilterSelectedAutoComplete/FilterSelectAutoComplete";
+import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
 export function FilterRepoSelect({
   repos,
   selected,
@@ -18,7 +16,7 @@ export function FilterRepoSelect({
 
   return (
     <FilterField label={T("filter.repository.title")}>
-      <FilterSelectAutoComplete
+      <SelectAutocomplete
         icon={({ className }) => <GitRepositoryLine className={className} />}
         tokens={{ zero: "filter.repository.all", other: "filter.repository" }}
         items={repos}
@@ -26,6 +24,7 @@ export function FilterRepoSelect({
         selected={selected}
         onChange={onChange}
         disabled={repos.length <= 1}
+        type="project"
       />
     </FilterField>
   );

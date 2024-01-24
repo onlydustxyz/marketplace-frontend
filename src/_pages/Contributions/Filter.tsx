@@ -6,12 +6,12 @@ import { Period } from "src/components/New/Field/Datepicker";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { FilterProjectSelect } from "src/components/New/Filter/FilterProjectSelect";
-import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam } from "src/utils/date";
+import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
+import { FiltersRepos } from "components/features/filters/filters-repos/filters-repos";
 
 export type Filters = {
   dateRange: DateRange;
@@ -176,12 +176,12 @@ export const ContributionsFilter = forwardRef(function ContributionsFilter(
         selectedPeriod={filters.period ?? initialFilters.period}
         onPeriodChange={updatePeriod}
       />
-      <FilterProjectSelect
+      <FiltersProjects
         projects={contributedProjects.map(({ id, name, logoUrl }) => ({ id, label: name, image: logoUrl }))}
         selected={filters.projects ?? initialFilters.projects}
         onChange={updateProjects}
       />
-      <FilterRepoSelect
+      <FiltersRepos
         repos={contributedRepos.map(({ id, name }) => ({ id, label: name }))}
         selected={filters.repos ?? initialFilters.repos}
         onChange={updateRepos}
