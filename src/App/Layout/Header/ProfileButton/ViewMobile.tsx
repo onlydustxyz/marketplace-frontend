@@ -105,7 +105,7 @@ export function ViewMobile({
                     </NavLink>
                   ) : null}
 
-                  <span className="mx-4 my-1 h-px bg-greyscale-50/8" />
+                  <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
                 </div>
               ) : null}
 
@@ -135,7 +135,7 @@ export function ViewMobile({
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </button>
 
-                <span className="mx-4 my-1 h-px bg-greyscale-50/8" />
+                <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
               </div>
             </>
           )}
@@ -151,7 +151,7 @@ export function ViewMobile({
               {T("navbar.privacyPolicy")}
             </button>
 
-            <span className="mx-4 my-1 h-px bg-greyscale-50/8" />
+            <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
           </div>
 
           <div>

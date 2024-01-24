@@ -106,7 +106,7 @@ export function View({
 						ring-greyscale-50/8 focus:outline-none"
           >
             {!hideProfileItems && (
-              <div className="border-b border-greyscale-50/8 pb-1">
+              <div>
                 <MenuItem secondary disabled>
                   {T("navbar.profile.title").toUpperCase()}
                 </MenuItem>
@@ -121,10 +121,12 @@ export function View({
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </MenuItem>
+
+                <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
               </div>
             )}
 
-            <div className={cn("border-b border-greyscale-50/8 pb-1", { "py-1": !hideProfileItems })}>
+            <div>
               <MenuItem onClick={openFullTermsAndConditions}>
                 <Icon remixName="ri-bill-line" size={20} />
                 <div className="grow">{T("navbar.termsAndConditions")}</div>
@@ -134,9 +136,11 @@ export function View({
                 <Icon remixName="ri-lock-line" size={20} />
                 <div className="grow">{T("navbar.privacyPolicy")}</div>
               </MenuItem>
+
+              <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
             </div>
 
-            <div className="pt-1">
+            <div>
               <MenuItem onClick={openFeedback}>
                 <Icon remixName="ri-discuss-line" size={20} />
                 <div className="grow">{T("navbar.feedback.button")}</div>
