@@ -4,7 +4,6 @@ import { useLocalStorage } from "usehooks-ts";
 
 type Props<Field> = {
   storageKey: string;
-  showHidden?: boolean;
 } & Sorting<Field>;
 
 export type Sorting<Field> = {
