@@ -8,8 +8,7 @@ const SUMSUB_APP_TOKEN = process.env.SUMSUB_APP_TOKEN ?? "";
 const SUMSUB_SECRET_KEY = process.env.SUMSUB_SECRET_KEY ?? "";
 const SUMSUB_BASE_URL = "https://api.sumsub.com";
 
-const config = {};
-config.baseURL = SUMSUB_BASE_URL;
+const config = { baseURL: SUMSUB_BASE_URL };
 
 axios.interceptors.request.use(createSignature, function (error) {
   return Promise.reject(error);
