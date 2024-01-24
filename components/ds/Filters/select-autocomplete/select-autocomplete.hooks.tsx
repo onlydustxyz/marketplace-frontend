@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { TSelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete.types";
 import { useIntl } from "src/hooks/useIntl";
 import { isArray } from "lodash";
 import { SelectAutocompleteUtils as Utils } from "components/ds/Filters/select-autocomplete/select-autocomplete.utils";
 
 export namespace SelectAutocompleteHooks {
-  export const useRenderTokens = (
+  export const useTokens = (
     selected: TSelectAutocomplete.Item[] | TSelectAutocomplete.Item,
     items: TSelectAutocomplete.Item[],
     tokens: Record<"zero" | "other", string>

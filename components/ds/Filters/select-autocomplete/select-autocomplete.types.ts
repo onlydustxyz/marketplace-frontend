@@ -8,12 +8,14 @@ export namespace TSelectAutocomplete {
     image?: string | null;
   };
 
+  export type avatarType = "project" | "user";
+
   export type BaseProps<T> = {
     disabled?: boolean;
     icon?: ({ selected, className }: { selected: T | T[]; className: string }) => ReactElement;
     items: T[];
     tokens: Record<"zero" | "other", string>;
-    type: "project" | "user";
+    type: avatarType;
   };
 
   export type SingleProps<T> = BaseProps<T> & {
