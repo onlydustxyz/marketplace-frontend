@@ -2,9 +2,31 @@ import { ComponentType } from "react";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
+import { rewardableItemToContribution } from "src/utils/formatToContribution";
 import { Contributor } from "./types";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 import { WorkItemType } from "src/types";
+
+function getContribution(workItem: RewardableWorkItem) {
+  let rewardableWorkItem:
+    | RewardableWorkItem["githubIssue"]
+    | RewardableWorkItem["githubPullRequest"]
+    | RewardableWorkItem["githubCodeReview"];
+
+  switch (workItem.type) {
+    case WorkItemType.Issue:
+      rewardableWorkItem = workItem.githubIssue;
+      break;
+    case WorkItemType.PullRequest:
+      rewardableWorkItem = workItem.githubPullRequest;
+      break;
+    case WorkItemType.CodeReview:
+      rewardableWorkItem = workItem.githubCodeReview;
+      break;
+  }
+
+  return rewardableItemToContribution(rewardableWorkItem);
+}
 
 export function WorkItem({
   workItem,
@@ -37,6 +59,7 @@ export function WorkItem({
       action={GithubIssueAction.Remove}
       onClick={action}
       contributor={contributor}
+      badgeProps={{ contribution: getContribution(workItem) }}
       {...githubProp[workItem.type as WorkItemType]}
     />
   );

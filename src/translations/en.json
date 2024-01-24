@@ -660,7 +660,8 @@
         },
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
         "rewardItems": {
-          "error": "An error occurred, please try again later."
+          "error": "An error occurred, please try again later.",
+          "otherContributionTooltip": "This is a contribution made by someone else and is not included in your total contribution count."
         }
       },
       "status": "Status"
