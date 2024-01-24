@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { Currency } from "src/types.ts";
+import { Currency } from "src/types";
 import { Flex } from "components/layout/flex/flex";
 import { Chip } from "src/components/Chip/Chip";
 import { Typography } from "components/layout/typography/typography";
