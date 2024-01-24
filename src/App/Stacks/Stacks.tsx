@@ -79,7 +79,9 @@ export const Stacks = () => {
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
-      <RegisterStack name={StackRoute.VerifyIdentity}>{() => <VerifyIdentitySidePanel />}</RegisterStack>
+      {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+        <RegisterStack name={StackRoute.VerifyIdentity}>{() => <VerifyIdentitySidePanel />}</RegisterStack>
+      ) : null}
     </>
   );
 };

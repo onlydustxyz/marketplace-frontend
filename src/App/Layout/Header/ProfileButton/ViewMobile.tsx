@@ -128,15 +128,17 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
                   <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </button>
-                <button
-                  className="flex items-center gap-3 p-4"
-                  onClick={() => {
-                    setPanelOpen(false);
-                    openVerifyIdentity();
-                  }}
-                >
-                  <PassValidLine className="text-xl" /> {T("navbar.profile.verifyIdentity")}
-                </button>
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <button
+                    className="flex items-center gap-3 p-4"
+                    onClick={() => {
+                      setPanelOpen(false);
+                      openVerifyIdentity();
+                    }}
+                  >
+                    <PassValidLine className="text-xl" /> {T("navbar.profile.verifyIdentity")}
+                  </button>
+                ) : null}
               </>
             </>
           )}

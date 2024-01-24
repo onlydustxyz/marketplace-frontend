@@ -88,10 +88,12 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </MenuItem>
-                <MenuItem onClick={openVerifyIdentity}>
-                  <PassValidLine className="text-xl" />
-                  <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
-                </MenuItem>
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <MenuItem onClick={openVerifyIdentity}>
+                    <PassValidLine className="text-xl" />
+                    <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
+                  </MenuItem>
+                ) : null}
               </div>
             )}
             <MenuItem secondary disabled>
