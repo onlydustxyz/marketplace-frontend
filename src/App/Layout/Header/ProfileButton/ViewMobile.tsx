@@ -22,9 +22,16 @@ interface Props {
   isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
+  openFeedback: () => void;
 }
 
-export function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, githubUserId, hideProfileItems }: Props) {
+export function ViewMobile({
+  avatarUrl,
+  isMissingPayoutSettingsInfo,
+  githubUserId,
+  hideProfileItems,
+  openFeedback,
+}: Props) {
   const { T } = useIntl();
   const { logout } = useAuth0();
   const { isImpersonating, clearImpersonateClaim } = useImpersonation();
@@ -156,7 +163,7 @@ export function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, githubUserI
           </div>
 
           <div>
-            <button className="flex items-center gap-3 p-4">
+            <button className="flex items-center gap-3 p-4" onClick={openFeedback}>
               <Icon remixName="ri-discuss-line" size={20} />
               {T("navbar.feedback.button")}
             </button>

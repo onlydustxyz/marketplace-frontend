@@ -41,9 +41,17 @@ interface Props {
   isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
+  openFeedback: () => void;
 }
 
-export function View({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) {
+export function View({
+  githubUserId,
+  avatarUrl,
+  login,
+  isMissingPayoutSettingsInfo,
+  hideProfileItems,
+  openFeedback,
+}: Props) {
   const { T } = useIntl();
   const { logout } = useAuth0();
   const { isImpersonating, clearImpersonateClaim } = useImpersonation();
@@ -101,7 +109,7 @@ export function View({ githubUserId, avatarUrl, login, isMissingPayoutSettingsIn
           <Menu.Items
             onFocus={() => setMenuItemsVisible(true)}
             onBlur={() => setMenuItemsVisible(false)}
-            className=" absolute right-0 z-20 mt-3 w-56 origin-top-right
+            className="absolute right-0 z-20 mt-3 w-56 origin-top-right
 						overflow-hidden rounded-md bg-whiteFakeOpacity-5 py-2 shadow-lg ring-1
 						ring-greyscale-50/8 focus:outline-none"
           >
@@ -137,7 +145,7 @@ export function View({ githubUserId, avatarUrl, login, isMissingPayoutSettingsIn
             </div>
 
             <div className="pt-1">
-              <MenuItem>
+              <MenuItem onClick={openFeedback}>
                 <Icon remixName="ri-discuss-line" size={20} />
                 <div className="grow">{T("navbar.feedback.button")}</div>
               </MenuItem>
