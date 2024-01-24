@@ -21,10 +21,10 @@ import { RewardProjectButton } from "../components/RewardProjectButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { IMAGES } from "src/assets/img";
-import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
-import { Card } from "components/ds/card/card.tsx";
-import EyeOffLine from "../../../icons/EyeOffLine.tsx";
-import FormToggle from "../../../components/FormToggle";
+import { EmptyState } from "components/layout/placeholders/empty-state";
+import { Card } from "components/ds/card/card";
+import EyeOffLine from "src/icons/EyeOffLine";
+import FormToggle from "src/components/FormToggle";
 import { useForm, useWatch } from "react-hook-form";
 
 export default function Contributors() {
