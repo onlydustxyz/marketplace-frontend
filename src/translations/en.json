@@ -1441,5 +1441,12 @@
     "message": "Github is experiencing service issues. OnlyDust features may be affected until the incident is resolved.",
     "button": "View Github status"
   },
-  "emptyStatePictureFallback": "Empty State Picture"
+  "emptyStatePictureFallback": "Empty State Picture",
+  "callout": {
+    "missingRepositories": {
+      "title": "Missing repositories?",
+      "description": "Make sure they are public and the Github app is granted on all of them.",
+      "button": "Manage on Github"
+    }
+  }
 }

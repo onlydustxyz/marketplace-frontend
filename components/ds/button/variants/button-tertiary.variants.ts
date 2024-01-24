@@ -3,12 +3,20 @@ import { buttonVariants } from "./button.variants";
 
 export const buttonTertiaryVariants = tv({
   extend: buttonVariants,
-  base: "focus-visible:bg-white/5 hover:bg-white/5",
   compoundVariants: [
     {
+      disabled: false,
+      class: "focus-visible:bg-white/5 hover:bg-white/5",
+    },
+    {
       accentColor: "purple",
+      class: "text-spacePurple-500",
+    },
+    {
+      accentColor: "purple",
+      disabled: false,
       class:
-        "text-spacePurple-500 focus-visible:text-spacePurple-400 hover:text-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-400",
+        "focus-visible:text-spacePurple-400 hover:text-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-400",
     },
     {
       accentColor: "purple",
@@ -17,8 +25,12 @@ export const buttonTertiaryVariants = tv({
     },
     {
       accentColor: "orange",
-      class:
-        "text-orange-500 focus-visible:text-orange-400 hover:text-orange-400 active:bg-orange-900 active:text-orange-400",
+      class: "text-orange-500",
+    },
+    {
+      accentColor: "orange",
+      disabled: false,
+      class: "focus-visible:text-orange-400 hover:text-orange-400 active:bg-orange-900 active:text-orange-400",
     },
     {
       accentColor: "orange",
