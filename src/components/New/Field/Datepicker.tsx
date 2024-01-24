@@ -192,7 +192,7 @@ export function Datepicker({
           <Popover.Button
             ref={refs.setReference}
             className={cn(
-              "relative right-0 flex w-full origin-right items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg transition-all duration-200 ease-in",
+              "relative right-0 z-20 flex w-full origin-right items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg transition-all duration-200 ease-out",
               {
                 "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                   open,
@@ -216,29 +216,33 @@ export function Datepicker({
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
-              ...(props.mode === "single" ? { right: "-6px" } : {}),
+              ...(props.mode === "single" ? { right: "-6px" } : { top: "-12px", left: "-12px" }),
             }}
-            enter="transition duration-200 ease-in"
+            enter="transition duration-150 ease-out delay-75"
             enterFrom="transform scale-95 opacity-0"
             enterTo="transform scale-100 opacity-100"
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
             className={cn(
-              "z-20 min-w-full rounded-xl border border-greyscale-50/8 shadow-lg",
+              "z-10 min-w-full rounded-xl border border-greyscale-50/8 shadow-lg",
               {
                 "bg-greyscale-800": isElevated,
                 "bg-greyscale-900": !isElevated,
                 "origin-top translate-y-1.5": placement === "bottom",
                 "origin-bottom -translate-y-1.5": placement === "top",
-                "translate-y-1.5": props.mode === "range",
-              }
+              },
+              { "w-[calc(100%_+_24px)]": props.mode === "range" }
               // "w-full"
             )}
           >
             <Popover.Panel ref={calendarRef}>
               {({ close }) => (
-                <div>
+                <div
+                  className={cn({
+                    "pt-[54px]": props.mode === "range",
+                  })}
+                >
                   {props.periods?.length ? (
                     <div className="divide-y divide-card-border-medium border-b border-greyscale-50/8 font-walsheim">
                       {props.periods?.map(({ id, label, value, isActive }) => {
