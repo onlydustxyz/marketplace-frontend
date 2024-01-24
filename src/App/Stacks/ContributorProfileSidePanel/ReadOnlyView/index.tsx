@@ -3,7 +3,6 @@ import IntroSection from "./IntroSection";
 import TechnologiesSection from "./TechnologiesSection";
 import StatsSection from "./StatsSection";
 import ProjectsSection from "./ProjectsSection";
-import { useMemo } from "react";
 import { useCloseAllStack } from "src/libs/react-stack";
 import { UserProfile } from "src/api/Users/queries";
 import { useStackProjectOverview } from "../../Stacks";
@@ -15,7 +14,6 @@ type Props = {
 };
 
 export default function ReadOnlyView({ profile, isOwn, setEditMode }: Props) {
-  const languages = useMemo(() => Object.keys(profile.technologies || {}), [profile]);
   const closeAll = useCloseAllStack();
   const [openProjectOverview] = useStackProjectOverview();
   const onClickProject = (slug: string) => {
@@ -29,7 +27,7 @@ export default function ReadOnlyView({ profile, isOwn, setEditMode }: Props) {
         <IntroSection profile={profile} isOwn={isOwn} setEditMode={setEditMode} />
 
         <div className="flex flex-col gap-8">
-          {languages.length > 0 && <TechnologiesSection languages={languages} />}
+          {profile?.technologies ? <TechnologiesSection technologies={profile.technologies ?? {}} /> : null}
           <StatsSection profile={profile} />
           {profile?.projects?.length ? (
             <ProjectsSection projects={profile.projects} setOpen={closeAll} event={onClickProject} />
