@@ -6,7 +6,7 @@ import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { matchPath, useLocation } from "react-router-dom";
 import { components } from "src/__generated/api";
-import { RoutePaths } from "src/App/index.tsx";
+import { RoutePaths } from "src/App/index";
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
 import InfoIcon from "src/assets/icons/InfoIcon";
