@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { UseMutateFunction } from "@tanstack/react-query";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.util";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -37,7 +37,6 @@ import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
-import { useAuth0 } from "@auth0/auth0-react";
 
 enum Align {
   Top = "top",
