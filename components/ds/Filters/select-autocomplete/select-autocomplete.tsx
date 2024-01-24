@@ -5,7 +5,7 @@ import { Combobox, Transition } from "@headlessui/react";
 import { SelectAutocompleteHooks as Hooks } from "./select-autocomplete.hooks";
 import { Options } from "./components/options/options";
 import { Button } from "./components/button/button";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useRef } from "react";
 
 export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   disabled = false,
@@ -15,7 +15,9 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   type,
   ...comboProps
 }: TSelectAutocomplete.Props<T>) {
-  const { selected } = comboProps;
+  const selectedRef = useRef(comboProps.selected);
+  const { current: selected } = selectedRef;
+  // const { selected } = comboProps;
   const token = Hooks.useTokens(selected, items, tokens);
   const { filteredItems, query, setQuery } = Hooks.useFilteredItems(selected, items);
   const selectedItems = Hooks.useSelectedItems(selected);
@@ -30,17 +32,22 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
     setQuery(event.target.value);
   };
 
+  const onButtonFocus = () => {
+    selectedRef.current = comboProps.selected;
+  };
+
   return (
     <div className={cn("relative", { "opacity-50": disabled })}>
       {/* // need this to handle the multiple and single from headless ui
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore*/}
-      <Combobox {...comboProps} disabled={disabled} by="id">
+      <Combobox {...comboProps} disabled={disabled} by="id" value={comboProps.selected}>
         {({ open }) => (
           <>
             <Combobox.Button
               ref={refs.setReference}
               as="div"
+              onClick={onButtonFocus}
               className={cn(
                 "relative flex w-full items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
                 {

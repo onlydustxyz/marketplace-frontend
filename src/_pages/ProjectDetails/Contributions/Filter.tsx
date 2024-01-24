@@ -8,12 +8,12 @@ import { Filter } from "src/components/New/Filter/Filter";
 import { FilterContributorCombobox } from "src/components/New/Filter/FilterContributorCombobox";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { FilterRepoSelect } from "src/components/New/Filter/FilterRepoSelect";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { ContributorResponse, GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 import { useLocalStorage } from "usehooks-ts";
+import { FiltersRepos } from "components/features/filters/filters-repos/filters-repos";
 
 type Filters = {
   dateRange: DateRange;
@@ -198,7 +198,7 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
         selectedPeriod={filters.period ?? initialFilters.period}
         onPeriodChange={updatePeriod}
       />
-      <FilterRepoSelect repos={sortedRepos} selected={filters.repos ?? initialFilters.repos} onChange={updateRepos} />
+      <FiltersRepos repos={sortedRepos} selected={filters.repos ?? initialFilters.repos} onChange={updateRepos} />
       <FilterContributorCombobox<ContributorResponse>
         contributors={contributors}
         selected={filters.contributors ?? initialFilters.contributors}

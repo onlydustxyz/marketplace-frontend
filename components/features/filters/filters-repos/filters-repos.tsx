@@ -7,7 +7,7 @@ import { useIntl } from "src/hooks/useIntl";
 export function FiltersRepos({ repos, selected, onChange }: TFiltersRepos.Props) {
   const { T } = useIntl();
   return (
-    <FilterFieldContainer label={T("filter.project.title")}>
+    <FilterFieldContainer label={T("filter.repository.title")}>
       <SelectAutocomplete
         icon={({ className }) => <GitRepositoryLine className={className} />}
         tokens={{ zero: "filter.repository.all", other: "filter.repository" }}
