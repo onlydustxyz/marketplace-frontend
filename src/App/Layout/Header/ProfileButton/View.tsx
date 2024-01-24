@@ -12,6 +12,29 @@ import { handleLogout } from "components/features/auth0/handlers/handle-logout";
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
 import { Icon } from "components/layout/icon/icon";
 
+interface MenuItemProps extends PropsWithChildren {
+  disabled?: boolean;
+  onClick?: () => void;
+  secondary?: boolean;
+}
+
+const MenuItem = ({ disabled = false, onClick, secondary = false, children, ...rest }: MenuItemProps) => (
+  <Menu.Item
+    {...rest}
+    disabled={disabled}
+    as="div"
+    className={cn("flex flex-row items-center gap-3 px-4 py-2 font-walsheim text-sm", {
+      "cursor-pointer ui-active:bg-white/4": !disabled,
+      "cursor-default": disabled,
+      "text-greyscale-50": !secondary,
+      "text-spaceBlue-200": secondary,
+    })}
+    onClick={onClick}
+  >
+    {children}
+  </Menu.Item>
+);
+
 interface Props {
   avatarUrl: string | null;
   login: string;
@@ -20,7 +43,7 @@ interface Props {
   hideProfileItems?: boolean;
 }
 
-const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
+export function View({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) {
   const { T } = useIntl();
   const { logout } = useAuth0();
   const { isImpersonating, clearImpersonateClaim } = useImpersonation();
@@ -114,7 +137,7 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
             </div>
 
             <div className="pt-1">
-              <MenuItem onClick={handleLogoutClick}>
+              <MenuItem>
                 <Icon remixName="ri-discuss-line" size={20} />
                 <div className="grow">{T("navbar.feedback.button")}</div>
               </MenuItem>
@@ -129,29 +152,4 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
       </Menu>
     </div>
   );
-};
-
-type MenuItemProps = {
-  disabled?: boolean;
-  onClick?: () => void;
-  secondary?: boolean;
-} & PropsWithChildren;
-
-const MenuItem = ({ disabled = false, onClick, secondary = false, children, ...rest }: MenuItemProps) => (
-  <Menu.Item
-    {...rest}
-    disabled={disabled}
-    as="div"
-    className={cn("flex flex-row items-center gap-3 px-4 py-2 font-walsheim text-sm", {
-      "cursor-pointer ui-active:bg-white/4": !disabled,
-      "cursor-default": disabled,
-      "text-greyscale-50": !secondary,
-      "text-spaceBlue-200": secondary,
-    })}
-    onClick={onClick}
-  >
-    {children}
-  </Menu.Item>
-);
-
-export default View;
+}
