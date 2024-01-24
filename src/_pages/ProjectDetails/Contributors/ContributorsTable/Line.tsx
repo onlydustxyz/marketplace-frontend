@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { components } from "src/__generated/api";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Contributor from "src/components/Contributor";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
@@ -12,6 +11,7 @@ import StackLine from "src/icons/StackLine";
 import { RewardDisabledReason } from "src/types";
 import EyeLine from "src/icons/EyeLine";
 import EyeOffLine from "src/icons/EyeOffLine";
+import { ProjectContributorItem } from "src/api/Project/queries";
 
 type Props<C> = {
   contributor: C;
@@ -21,7 +21,7 @@ type Props<C> = {
   rewardDisableReason?: RewardDisabledReason;
 };
 
-export default function ContributorLine<C extends components["schemas"]["ContributorPageItemResponse"]>({
+export default function ContributorLine<C extends ProjectContributorItem>({
   contributor,
   isProjectLeader,
   onRewardGranted,

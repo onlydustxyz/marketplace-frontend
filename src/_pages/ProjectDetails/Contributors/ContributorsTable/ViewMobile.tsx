@@ -1,4 +1,3 @@
-import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
 import { ShowMore } from "src/components/Table/ShowMore";
@@ -12,6 +11,7 @@ import ActionMenu from "components/layout/action-menu/action-menu";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import EyeLine from "src/icons/EyeLine";
 import { Button } from "components/ds/button/button";
+import { ProjectContributorItem } from "src/api/Project/queries";
 
 type ViewMobileProps<C> = {
   contributors: C[];
@@ -23,7 +23,7 @@ type ViewMobileProps<C> = {
   onToggleContributor: (contributor: C) => void;
 };
 
-export function ViewMobile<C extends components["schemas"]["ContributorPageItemResponse"]>({
+export function ViewMobile<C extends ProjectContributorItem>({
   contributors,
   fetchNextPage,
   hasNextPage,

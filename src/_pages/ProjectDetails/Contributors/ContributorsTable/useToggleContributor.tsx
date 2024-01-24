@@ -1,8 +1,8 @@
 import ProjectApi from "src/api/Project";
 import { API_PATH } from "src/api/ApiPath";
 import { useIntl } from "src/hooks/useIntl";
-import { components } from "src/__generated/api";
 import { useShowToaster } from "src/hooks/useToaster";
+import { ProjectContributorItem } from "src/api/Project/queries";
 
 interface Props {
   projectId: string;
@@ -37,7 +37,7 @@ export function useToggleContributor({ projectId }: Props) {
     },
   });
 
-  const onToggleContributor = (contributor: components["schemas"]["ContributorPageItemResponse"]) => {
+  const onToggleContributor = (contributor: ProjectContributorItem) => {
     if (contributor.hidden) {
       showContributor({
         resourcePath: API_PATH.PROJECT_SHOW_CONTRIBUTOR(projectId || "", contributor?.githubUserId.toString() || ""),

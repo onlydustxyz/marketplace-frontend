@@ -1,5 +1,4 @@
 import { ComponentProps } from "react";
-import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
@@ -7,6 +6,7 @@ import { ToRewardDetailsTooltip } from "src/_pages/ProjectDetails/Tooltips/ToRew
 import Headers from "./Headers";
 import ContributorLine from "./Line";
 import ProjectApi from "src/api/Project";
+import { ProjectContributorItem } from "src/api/Project/queries";
 
 type Props<C> = {
   contributors: C[];
@@ -19,7 +19,7 @@ type Props<C> = {
     "fetchNextPage" | "hasNextPage" | "isFetchingNextPage"
   >;
 
-export default function View<C extends components["schemas"]["ContributorPageItemResponse"]>({
+export default function View<C extends ProjectContributorItem>({
   contributors,
   fetchNextPage,
   hasNextPage,

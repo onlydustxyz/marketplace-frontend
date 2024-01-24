@@ -1,12 +1,12 @@
 import { ComponentProps } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { components } from "src/__generated/api";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import View from "./View";
 import { ViewMobile } from "./ViewMobile";
 import { useToggleContributor } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/useToggleContributor";
+import { ProjectContributorItem } from "src/api/Project/queries";
 
 type Props<C> = {
   contributors: C[];
@@ -15,7 +15,7 @@ type Props<C> = {
   rewardDisableReason?: ComponentProps<typeof View>["rewardDisableReason"];
 } & Omit<ComponentProps<typeof View>, "contributors" | "onRewardGranted" | "onToggleContributor">;
 
-export default function ContributorsTable<C extends components["schemas"]["ContributorPageItemResponse"]>({
+export default function ContributorsTable<C extends ProjectContributorItem>({
   contributors,
   fetchNextPage,
   hasNextPage,
