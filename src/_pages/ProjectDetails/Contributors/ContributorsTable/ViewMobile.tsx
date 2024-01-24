@@ -4,7 +4,7 @@ import Contributor from "src/components/Contributor";
 import { ShowMore } from "src/components/Table/ShowMore";
 import Medal2Fill from "src/icons/Medal2Fill";
 import StackLine from "src/icons/StackLine";
-import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion.tsx";
+import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
 import { Icon } from "components/layout/icon/icon";
 import EyeOffLine from "src/icons/EyeOffLine";
 import { useIntl } from "src/hooks/useIntl";
