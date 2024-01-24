@@ -1,23 +1,26 @@
 import { useIntl } from "src/hooks/useIntl";
 import Tag, { TagSize } from "src/components/Tag";
 import { Section } from "./Section";
+import { getFilteredTechnologies, Technologies } from "src/utils/technologies";
 
 type Props = {
-  languages: string[];
+  technologies: Technologies;
 };
 
-export default function TechnologiesSection({ languages }: Props) {
+export default function TechnologiesSection({ technologies }: Props) {
   const { T } = useIntl();
+
+  const { filteredTechArray: filteredTechnologies } = getFilteredTechnologies(technologies);
 
   return (
     <Section title={T("profile.sections.technologies.title")}>
       <div className="flex flex-wrap gap-2">
-        {languages.map((language, index) => (
-          <Tag key={language} size={TagSize.Medium}>
+        {filteredTechnologies.map((technology, index) => (
+          <Tag key={index} size={TagSize.Medium}>
             <div className="flex h-4 w-4 items-center justify-center rounded-[4px] bg-white/5 text-xs text-greyscale-50">
               {index + 1}
             </div>
-            <div className="text-sm text-greyscale-50">{language}</div>
+            <div className="text-sm text-greyscale-50">{technology[0]}</div>
           </Tag>
         ))}
       </div>
