@@ -8,6 +8,7 @@ import { Translate } from "components/layout/translate/translate";
 import { withTooltip } from "src/components/Tooltip";
 
 // TODO: Change Tooltip to use the new Tooltip component
+// TODO: Change Button with link using the new library
 export function AddMissingRepositories({ url, disabled, tooltip, className }: TAddMissingRepositories.Props) {
   return (
     <CalloutAlert className={className}>
