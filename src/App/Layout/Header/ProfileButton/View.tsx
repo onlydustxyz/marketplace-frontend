@@ -5,23 +5,20 @@ import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import User3Line from "src/icons/User3Line";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
 import { handleLogout } from "components/features/auth0/handlers/handle-logout";
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
+import { Icon } from "components/layout/icon/icon";
 
-type Props = {
+interface Props {
   avatarUrl: string | null;
   login: string;
   isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
-};
+}
 
 const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
   const { T } = useIntl();
@@ -62,10 +59,13 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
             {avatarUrl && (
               <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
             )}
+
             <div className={cn({ "mr-1": !isMissingPayoutSettingsInfo })}>{login}</div>
+
             {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
         </div>
+
         <Transition
           as={Fragment}
           enter="transition ease-out duration-100"
@@ -79,47 +79,51 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
             onFocus={() => setMenuItemsVisible(true)}
             onBlur={() => setMenuItemsVisible(false)}
             className=" absolute right-0 z-20 mt-3 w-56 origin-top-right
-						overflow-hidden rounded-md bg-whiteFakeOpacity-5 pt-2 shadow-lg ring-1
+						overflow-hidden rounded-md bg-whiteFakeOpacity-5 py-2 shadow-lg ring-1
 						ring-greyscale-50/8 focus:outline-none"
           >
             {!hideProfileItems && (
-              <div className="border-b border-greyscale-50/8 pb-2">
+              <div className="border-b border-greyscale-50/8 pb-1">
                 <MenuItem secondary disabled>
                   {T("navbar.profile.title").toUpperCase()}
                 </MenuItem>
+
                 <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel({ githubUserId })}>
-                  <User3Line className="text-xl" />
+                  <Icon remixName="ri-user-3-line" size={20} />
                   <div className="grow">{T("navbar.profile.publicProfile")}</div>
                 </MenuItem>
+
                 <MenuItem onClick={openPayoutInfo}>
-                  <MoneyDollarCircleLine className="text-xl" />
+                  <Icon remixName="ri-money-dollar-circle-line" size={20} />
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </MenuItem>
               </div>
             )}
-            <MenuItem secondary disabled>
-              <div className="flex w-full flex-row items-center justify-between py-1">
-                <div className="flex flex-row gap-1 font-walsheim text-sm font-normal text-spaceBlue-200">
-                  <div className="cursor-pointer" onClick={() => openFullTermsAndConditions()}>
-                    {T("navbar.termsAndConditions")}
-                  </div>
-                  <div>{T("navbar.separator")}</div>
-                  <div className="cursor-pointer" onClick={() => openPrivacyPolicy()}>
-                    {T("navbar.privacyPolicy")}
-                  </div>
-                </div>
-                <Button
-                  type={ButtonType.Secondary}
-                  size={ButtonSize.Xs}
-                  onClick={handleLogoutClick}
-                  data-testid="logout-button"
-                >
-                  <LogoutBoxRLine className="border-greyscale-50 text-sm" />
-                  {T("navbar.logout")}
-                </Button>
-              </div>
-            </MenuItem>
+
+            <div className={cn("border-b border-greyscale-50/8 pb-1", { "py-1": !hideProfileItems })}>
+              <MenuItem onClick={openFullTermsAndConditions}>
+                <Icon remixName="ri-bill-line" size={20} />
+                <div className="grow">{T("navbar.termsAndConditions")}</div>
+              </MenuItem>
+
+              <MenuItem onClick={openPrivacyPolicy}>
+                <Icon remixName="ri-lock-line" size={20} />
+                <div className="grow">{T("navbar.privacyPolicy")}</div>
+              </MenuItem>
+            </div>
+
+            <div className="pt-1">
+              <MenuItem onClick={handleLogoutClick}>
+                <Icon remixName="ri-discuss-line" size={20} />
+                <div className="grow">{T("navbar.feedback.button")}</div>
+              </MenuItem>
+
+              <MenuItem onClick={handleLogoutClick}>
+                <Icon remixName="ri-logout-box-r-line" size={20} />
+                <div className="grow">{T("navbar.logout")}</div>
+              </MenuItem>
+            </div>
           </Menu.Items>
         </Transition>
       </Menu>
