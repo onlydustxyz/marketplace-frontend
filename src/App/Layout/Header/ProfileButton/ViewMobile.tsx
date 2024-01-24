@@ -1,3 +1,4 @@
+import PassValidLine from "src/icons/PassValidLine";
 import { cn } from "src/utils/cn";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -17,7 +18,7 @@ import User3Line from "src/icons/User3Line";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerification } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
 import { handleLogout } from "components/features/auth0/handlers/handle-logout";
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
@@ -39,6 +40,7 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
   const [openContributorProfilePanel] = useStackContributorProfile();
   const [openPayoutInfo] = useStackPayoutInfo();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
+  const [openVerification] = useStackVerification();
 
   const { queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -135,6 +137,15 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
                 >
                   <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
+                </button>
+                <button
+                  className="flex items-center gap-3 p-4"
+                  onClick={() => {
+                    setPanelOpen(false);
+                    openVerification();
+                  }}
+                >
+                  <PassValidLine className="text-xl" /> {T("navbar.profile.verifyIdentity")}
                 </button>
               </>
             </>

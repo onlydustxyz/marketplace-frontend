@@ -1,18 +1,19 @@
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { generatePath, Link } from "react-router-dom";
 import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
-import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
+import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
+import EyeLine from "src/icons/EyeLine";
 import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
+import { RoutePaths } from "..";
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
+import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
-import EyeLine from "src/icons/EyeLine";
-import { Link, generatePath } from "react-router-dom";
-import { RoutePaths } from "..";
+import { VerificationSidePanel } from "./VerificationSidePanel/VerificationSidePanel";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
@@ -23,6 +24,7 @@ export enum StackRoute {
   Contribution = "contribution",
   GithubWorkflowClaim = "github-workflow-claim",
   GithubWorkflowTutorial = "github-workflow-tutorial",
+  Verification = "verification",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -77,8 +79,13 @@ export const Stacks = () => {
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
+      <RegisterStack name={StackRoute.Verification}>{() => <VerificationSidePanel />}</RegisterStack>
     </>
   );
+};
+
+export const useStackVerification = () => {
+  return useStackNavigation(StackRoute.Verification);
 };
 
 export const useStackPayoutInfo = () => {

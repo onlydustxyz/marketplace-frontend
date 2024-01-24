@@ -4898,6 +4898,19 @@
     "@typescript-eslint/types" "6.15.0"
     eslint-visitor-keys "^3.4.1"
 
+"@veriff/incontext-sdk@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@veriff/incontext-sdk/-/incontext-sdk-1.3.1.tgz#b671b52e4f239e62c3b38941e17ce1380c76ff5b"
+  integrity sha512-n59bTwrKVKNYoxI5ZhOrncQexWtKsc3MBvUSEsuG6XuXE1VIXbKG4z3PfU8ZTVHf3WarFpKrsfwMTWkBVPJSAg==
+  dependencies:
+    dom-focus-lock "^1.0.4"
+    tua-body-scroll-lock "1.0.0"
+
+"@veriff/js-sdk@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@veriff/js-sdk/-/js-sdk-1.5.1.tgz#f8580aa51b0404e58c66bf82a5cc22bc11aafc1b"
+  integrity sha512-THHcyRTctdtXUpKAEGnddTkwgFdRi2taAigtnhOfGmoCp23m+9vlZp5GnT7qmswfyZk48BCZ4Uc2gT7AUIhqTA==
+
 "@vitejs/plugin-react@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-react/-/plugin-react-2.2.0.tgz#1b9f63b8b6bc3f56258d20cd19b33f5cc761ce6e"
@@ -6999,6 +7012,13 @@ dom-converter@^0.2.0:
   dependencies:
     utila "~0.4"
 
+dom-focus-lock@^1.0.4:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/dom-focus-lock/-/dom-focus-lock-1.1.0.tgz#5044c0cd138d99c3ce160a04667232200da1938c"
+  integrity sha512-KDJb48vxT2XmyETTFUobMizW4uRA6Riyr8nwdcAApnhl8UsY5QkpCq8f+3EDQX8REyddLtUaj0Tsx9rMJiW+CQ==
+  dependencies:
+    focus-lock "^0.11.3"
+
 dom-helpers@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.4.0.tgz#e9b369700f959f62ecde5a6babde4bccd9169af8"
@@ -8008,6 +8028,13 @@ flow-parser@0.*:
   version "0.199.1"
   resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.199.1.tgz#d2e37d3ccd3a4301738a429079a41320a54ada57"
   integrity sha512-Mt+GFUQYij3miM7Z6o8E3aHTGXZKSOhvlCFgdQRoi6fkWfhyijnoX51zpOxM5PmZuiV6gallWhDZzwOsWxRutg==
+
+focus-lock@^0.11.3:
+  version "0.11.6"
+  resolved "https://registry.yarnpkg.com/focus-lock/-/focus-lock-0.11.6.tgz#e8821e21d218f03e100f7dc27b733f9c4f61e683"
+  integrity sha512-KSuV3ur4gf2KqMNoZx3nXNVhqCkn42GuTYCX4tXPEwf0MjpFQmNMiN6m7dXaUXgIoivL6/65agoUMg4RLS0Vbg==
+  dependencies:
+    tslib "^2.0.3"
 
 follow-redirects@^1.14.0, follow-redirects@^1.15.0:
   version "1.15.2"
@@ -13596,6 +13623,11 @@ tty-browserify@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.1.tgz#3f05251ee17904dfd0677546670db9651682b811"
   integrity sha512-C3TaO7K81YvjCgQH9Q1S3R3P3BtN3RIM8n+OvX4il1K1zgE8ZhI0op7kClgkxtutIE8hQrcrHBXvIheqKUUCxw==
+
+tua-body-scroll-lock@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tua-body-scroll-lock/-/tua-body-scroll-lock-1.0.0.tgz#77bfefa58846fe49f2ef03fe8eb39e15e5e93f45"
+  integrity sha512-3ohEBWgwbFCtpt2Dls2dzgmMdAS3CmytbAsiIdh9OvGL91h0JSlbayJ7zG4wuf8KFEQtce2nFAd5/+pw7+Dc9w==
 
 tunnel-agent@^0.6.0:
   version "0.6.0"

@@ -10,10 +10,11 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useSidePanel } from "src/hooks/useSidePanel";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerification } from "src/App/Stacks/Stacks";
 import { useAuth0 } from "@auth0/auth0-react";
 import { handleLogout } from "components/features/auth0/handlers/handle-logout";
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
+import PassValidLine from "src/icons/PassValidLine";
 
 type Props = {
   avatarUrl: string | null;
@@ -31,6 +32,7 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [openPayoutInfo] = useStackPayoutInfo();
+  const [openVerification] = useStackVerification();
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
@@ -95,6 +97,10 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
                   <MoneyDollarCircleLine className="text-xl" />
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
+                </MenuItem>
+                <MenuItem onClick={openVerification}>
+                  <PassValidLine className="text-xl" />
+                  <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
                 </MenuItem>
               </div>
             )}
