@@ -4,9 +4,15 @@ import { buttonSecondaryVariants } from "./variants/button-secondary.variants";
 import { buttonTertiaryVariants } from "./variants/button-tertiary.variants";
 import { TButton } from "./button.types";
 
-export function Button({ type = "button", variant = "primary", className, ...props }: TButton.Props) {
+export function Button({
+  as: Component = "button",
+  type = "button",
+  variant = "primary",
+  className,
+  ...props
+}: TButton.Props) {
   return (
-    <button
+    <Component
       className={cn(
         variant === "primary" && buttonPrimaryVariants({ ...props }),
         variant === "secondary" && buttonSecondaryVariants({ ...props }),
