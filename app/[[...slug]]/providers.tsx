@@ -13,10 +13,6 @@ import Maintenance from "src/Maintenance";
 
 const App = dynamic(() => import("src/App"), { ssr: false });
 
-const PostHogReact = dynamic(() => import("components/features/posthog/components/posthog-react"), {
-  ssr: false,
-});
-
 export default function Providers() {
   return (
     <BrowserRouter>
@@ -31,7 +27,6 @@ export default function Providers() {
                   <OnboardingProvider>
                     <App />
                     <Stacks />
-                    <PostHogReact />
                   </OnboardingProvider>
                 )}
               </SidePanelProvider>
