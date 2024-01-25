@@ -1,10 +1,8 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import { Filter } from "src/components/New/Filter/Filter";
-import { FilterContributorCombobox } from "src/components/New/Filter/FilterContributorCombobox";
-import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySelect";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ContributorResponse } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
@@ -14,19 +12,22 @@ import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
 import { Item } from "src/components/New/Filter/FilterSelect";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
+import { FiltersUsers } from "components/features/filters/filters-users/filters-users";
+import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
+import { isArray } from "lodash";
 
 type Filters = {
   period: Period;
   dateRange: DateRange;
-  contributors: ContributorResponse[];
-  currency: { id: string | number; value: string };
+  contributors: Item[];
+  currency: Item[];
 };
 
 const initialFilters: Filters = {
   period: Period.AllTime,
   dateRange: allTime,
   contributors: [],
-  currency: { id: 0, value: "" },
+  currency: [],
 };
 
 export type FilterQueryParams = {
@@ -70,23 +71,47 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
 
   const contributorsQueryState = useState<string>();
   const [contributorsQuery] = contributorsQueryState;
+  function parseFiltersStorage() {
+    if (filtersStorage) {
+      const parsed = JSON.parse(filtersStorage);
+
+      if (parsed.contributors?.[0]?.githubUserId) {
+        parsed.contributors = parsed.contributors.map((contributor: ContributorResponse) => ({
+          label: contributor.login,
+          id: contributor.githubUserId,
+          image: contributor.avatarUrl,
+        }));
+      }
+
+      if (!isArray(parsed.currency)) {
+        if (parsed.currency?.value === "" || !parsed.currency?.value) {
+          parsed.currency = [];
+        } else {
+          parsed.currency = [parsed.currency];
+        }
+      }
+
+      return parsed;
+    }
+
+    return initialFilters;
+  }
 
   // Type of partial Filters is required as the shape required by the state may not exist in the user's local storage
-  const [filters, setFilters] = useState<Partial<Filters>>(
-    filtersStorage ? JSON.parse(filtersStorage) : initialFilters
-  );
+  const [filters, setFilters] = useState<Partial<Filters>>(parseFiltersStorage());
 
   const allPeriods = useDatepickerPeriods({ selectedPeriod: filters.period ?? initialFilters.period });
 
   useEffect(() => {
     const { dateRange, period, contributors, currency } = filters;
 
-    const filterQueryParams: FilterQueryParams = {
-      contributors: contributors?.map(({ githubUserId }) => String(githubUserId)).join(","),
-    };
+    const filterQueryParams: FilterQueryParams = {};
 
-    if (currency) {
-      filterQueryParams.currencies = currency.value;
+    if (contributors?.length) {
+      filterQueryParams.contributors = contributors?.map(({ id }) => String(id)).join(",");
+    }
+    if (currency?.length) {
+      filterQueryParams.currencies = currency.map(({ value }) => String(value)).join(",");
     }
 
     // If a predefined period is selected, use the predefined period's date range
@@ -119,14 +144,13 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    filters.period !== initialFilters.period || filters.contributors?.length || filters.currency?.value !== ""
+    filters.period !== initialFilters.period || filters.contributors?.length || filters.currency?.length
   );
 
-  const { data: contributorsData, isLoading: contributorsLoading } =
-    ProjectApi.queries.useProjectContributorsInfiniteList({
-      params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
-      options: { enabled: Boolean(project?.id) },
-    });
+  const { data: contributorsData } = ProjectApi.queries.useProjectContributorsInfiniteList({
+    params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
+    options: { enabled: Boolean(project?.id) },
+  });
   const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
 
   function resetFilters() {
@@ -137,7 +161,12 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
     const updatedState = { ...prevState, ...newState };
 
-    setFiltersStorage(JSON.stringify(updatedState));
+    const removeCurrenciesJsx = updatedState.currency?.map(c => ({
+      ...c,
+      label: "",
+    }));
+
+    setFiltersStorage(JSON.stringify({ ...updatedState, currency: removeCurrenciesJsx }));
 
     return updatedState;
   }
@@ -150,17 +179,14 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     setFilters(prevState => updateState(prevState, { period }));
   }
 
-  function updateContributors(contributors: ContributorResponse[]) {
+  function updateContributors(contributors: Item[]) {
     setFilters(prevState => updateState(prevState, { contributors }));
   }
 
-  function updateCurrency(currency: Item) {
+  function updateCurrency(currency: Item[]) {
     setFilters(prevState =>
       updateState(prevState, {
-        currency: {
-          id: currency.id,
-          value: currency.value || "",
-        },
+        currency,
       })
     );
   }
@@ -176,8 +202,25 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     [hasActiveFilters]
   );
 
+  const filterCount = useMemo(() => {
+    let count = 0;
+
+    if (filters.contributors?.length) {
+      count += 1;
+    }
+
+    if (filters.currency?.length) {
+      count += 1;
+    }
+
+    if (filters.period !== initialFilters.period) {
+      count += 1;
+    }
+    return count;
+  }, [filters]);
+
   return (
-    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
+    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position} count={filterCount}>
       <div className="focus-within:z-10">
         <FilterDatepicker
           selected={filters.dateRange ?? initialFilters.dateRange}
@@ -187,24 +230,27 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
         />
       </div>
       <div className="focus-within:z-10">
-        <FilterContributorCombobox<ContributorResponse>
-          contributors={contributors}
+        <FiltersUsers
+          users={contributors.map(({ login, githubUserId, avatarUrl }) => ({
+            id: githubUserId,
+            label: login,
+            image: avatarUrl,
+          }))}
           selected={filters.contributors ?? initialFilters.contributors}
           onChange={updateContributors}
-          queryState={contributorsQueryState}
-          uniqueKey="githubUserId"
-          isLoading={contributorsLoading}
         />
       </div>
       <div className="focus-within:z-10">
         {projectBudget ? (
-          <FilterCurrencySelect
+          <FiltersCurrencies
             selected={filters.currency ?? initialFilters.currency}
             onChange={updateCurrency}
-            currencies={orderedCurrencies.map((budget, index) => ({
-              id: index + 1,
-              value: budget.currency,
-            }))}
+            currencies={
+              orderedCurrencies?.map(currency => ({
+                id: currency.currency,
+                value: currency.currency,
+              })) ?? []
+            }
           />
         ) : null}
       </div>
