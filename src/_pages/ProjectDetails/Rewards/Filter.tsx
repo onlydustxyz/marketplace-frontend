@@ -73,7 +73,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   const [contributorsQuery] = contributorsQueryState;
   function parseFiltersStorage() {
     if (filtersStorage) {
-      let parsed = JSON.parse(filtersStorage);
+      const parsed = JSON.parse(filtersStorage);
 
       if (parsed.contributors?.[0]?.githubUserId) {
         parsed.contributors = parsed.contributors.map((contributor: ContributorResponse) => ({
