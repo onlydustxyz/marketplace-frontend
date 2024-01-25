@@ -9,7 +9,13 @@ import { withTooltip } from "src/components/Tooltip";
 
 // TODO: Change Tooltip to use the new Tooltip component
 // TODO: Change Button with link using the new library
-export function AddMissingRepositories({ url, disabled, tooltip, className }: TAddMissingRepositories.Props) {
+export function AddMissingRepositories({
+  url,
+  disabled,
+  tooltip,
+  backgroundColor,
+  className,
+}: TAddMissingRepositories.Props) {
   return (
     <CalloutAlert className={className}>
       <Flex className="gap-4" alignItems="center">
@@ -33,6 +39,7 @@ export function AddMissingRepositories({ url, disabled, tooltip, className }: TA
           size="s"
           className="whitespace-nowrap"
           disabled={disabled}
+          backgroundColor={backgroundColor}
           {...withTooltip(tooltip || "", {
             visible: disabled && !!tooltip,
           })}
