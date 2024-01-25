@@ -13,6 +13,7 @@ import { MyPayoutInfoType, MyRewardsPendingInvoiceType } from ".";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import MeApi from "src/api/me";
 import { useShowToaster } from "src/hooks/useToaster";
+import { Currency } from "src/types";
 
 type Props = {
   githubUserId: number;
@@ -118,7 +119,9 @@ export function buildHiddenFields({
           `#${pretty(p.id)} - ${formatDate(new Date(p.requestedAt))} (${formatMoneyAmount({
             amount: p.amount.total,
             currency: p.amount.currency,
-          })} ${p.amount.currency !== "USD" ? "~ " + p.amount.dollarsEquivalent?.toFixed(5) + " USD" : ""})`
+          })} ${
+            p.amount.currency !== Currency.USD ? "~ " + p.amount.dollarsEquivalent?.toFixed(5) + " " + Currency.USD : ""
+          })`
       )
     ),
     company_name: payoutInfo?.company?.name || "",
@@ -132,7 +135,7 @@ export function buildHiddenFields({
     payout_info: "",
     total_amount: formatMoneyAmount({
       amount: paymentRequests.map(p => p.amount.dollarsEquivalent ?? 0).reduce((acc, amount) => acc + amount, 0),
-      currency: "USD",
+      currency: Currency.USD,
     }),
     env: config.ENVIRONMENT ?? "",
   };
