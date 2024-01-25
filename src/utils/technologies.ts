@@ -2,6 +2,11 @@ export interface Technologies {
   [key: string]: number;
 }
 
+export function isBlackListedTechnologies(technology: string): boolean {
+  const blackListedTech = process.env.NEXT_PUBLIC_LANGUAGES_FILTER;
+
+  return blackListedTech?.includes(technology) || false;
+}
 export function getFilteredTechnologies(technologies: Technologies): {
   filteredTechObject: Technologies;
   filteredTechArray: [string, number][];

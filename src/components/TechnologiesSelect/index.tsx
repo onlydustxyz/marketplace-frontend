@@ -23,6 +23,7 @@ import Flex from "../Utils/Flex";
 import TechnologiesApi from "src/api/Technologies";
 import useMutationAlert from "src/api/useMutationAlert";
 import { IMAGES } from "src/assets/img";
+import { getFilteredTechnologies, isBlackListedTechnologies } from "src/utils/technologies";
 
 type Props = {
   technologies: LanguageMap;
@@ -65,12 +66,14 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
     ...ai,
     ...architecture,
     ...web3,
-  }).map(language => ({
-    id: language,
-    value: language,
-    displayValue: language,
-    isSupported: supportedTechnologies.includes(language.toLowerCase()),
-  }));
+  })
+    .map(language => ({
+      id: language,
+      value: language,
+      displayValue: language,
+      isSupported: supportedTechnologies.includes(language.toLowerCase()),
+    }))
+    .filter(language => !isBlackListedTechnologies(language.id));
 
   const selectedLanguages: LanguageOption[] = Object.entries(technologies)
     .sort((lang1, lang2) => lang2[1] - lang1[1])
@@ -79,7 +82,8 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
       value: language,
       displayValue: language,
       isSupported: supportedTechnologies.includes(language.toLowerCase()),
-    }));
+    }))
+    .filter(language => !isBlackListedTechnologies(language.id));
 
   const sendSuggestion = async (suggestion: string) => {
     setSuggestionValue(suggestion);
