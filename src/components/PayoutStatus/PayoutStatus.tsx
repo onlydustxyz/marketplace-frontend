@@ -19,6 +19,7 @@ type PaymentStatusUnion = `${PaymentStatus}`;
 
 export default function PayoutStatus({ status, date }: Props) {
   const statuses: Record<PaymentStatusUnion, JSX.Element> = {
+    // TODO handle complete date once backend ready
     [PaymentStatus.COMPLETE]: <CompleteTag />,
     [PaymentStatus.LOCKED]: <LockedTag date={date} />,
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
