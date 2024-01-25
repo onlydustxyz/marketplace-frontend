@@ -658,6 +658,9 @@
         "to": "to",
         "on": "on",
         "you": "(you)",
+        "transactionDetails": {
+            "title": "Transaction details"
+        },
         "contributions": {
           "zero": "No contributions included in reward",
           "one": "__count__ contribution included in reward",
