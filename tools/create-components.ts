@@ -11,6 +11,7 @@ interface Informations {
   camelName: string;
   options: {
     variants: boolean;
+    stories: boolean;
   };
 }
 
@@ -50,7 +51,7 @@ async function createComponent({ name, path, PascalName }: Informations) {
     `${path}/${name}.tsx`,
     prettier.format(
       `
-        import { T${PascalName} } from "./${name}.types.ts";
+        import { T${PascalName} } from "./${name}.types";
 
         export function ${PascalName}({ children }: T${PascalName}.Props) {
           return <div>{children}</div>;
@@ -104,12 +105,57 @@ async function createVariants({ name, path, camelName }: Informations) {
   );
 }
 
+async function createStories({ name, path, PascalName }: Informations) {
+  await fs.appendFile(
+    `${path}/${name}.stories.tsx`,
+    prettier.format(
+      `
+        import type { Meta, StoryObj } from "@storybook/react";
+
+        import { ${PascalName} } from "./${name}";
+        import { T${PascalName} } from "./${name}.types";
+
+        type Story = StoryObj<typeof ${PascalName}>;
+
+        const defaultProps: T${PascalName}.Props = {
+          children: <div>${PascalName}</div>
+        };
+
+        const meta: Meta<typeof ${PascalName}> = {
+          component: ${PascalName},
+          title: "Design system/${PascalName}",
+          tags: ["autodocs"],
+          parameters: {
+            backgrounds: {
+              default: "black",
+              values: [{ name: "black", value: "#0E0814" }],
+            },
+          },
+        };
+
+        export const Default: Story = {
+          render: args => {
+            return <${PascalName} {...defaultProps} {...args} />;
+          },
+        };
+
+        export default meta;
+  `,
+      { parser: "typescript" }
+    )
+  );
+}
+
 async function createFiles(informations: Informations) {
   await createComponent(informations);
   await createTypes(informations);
 
   if (informations.options.variants) {
     await createVariants(informations);
+  }
+
+  if (informations.options.stories) {
+    await createStories(informations);
   }
 }
 
@@ -147,12 +193,13 @@ async function promptName() {
   }
 
   const variants = await i.confirm({ message: "Do you want variants?" });
+  const stories = await i.confirm({ message: "Do you want stories?" });
 
-  return { folder, name, path, variants };
+  return { folder, name, path, variants, stories };
 }
 
 async function createComponents() {
-  const { folder, name, path, variants } = await promptName();
+  const { folder, name, path, variants, stories } = await promptName();
 
   await fs.mkdir(path);
 
@@ -162,7 +209,7 @@ async function createComponents() {
     path,
     PascalName: kebabToPascal(name),
     camelName: kebabToCamel(name),
-    options: { variants },
+    options: { variants, stories },
   });
 
   console.log(`\n${COLORS.GREEN}✅ Component created${COLORS.NC}`);

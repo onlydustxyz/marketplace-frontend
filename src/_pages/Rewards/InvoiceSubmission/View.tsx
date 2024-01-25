@@ -13,6 +13,7 @@ import { MyPayoutInfoType, MyRewardsPendingInvoiceType } from ".";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import MeApi from "src/api/me";
 import { useShowToaster } from "src/hooks/useToaster";
+import { Currency } from "src/types";
 
 type Props = {
   githubUserId: number;
@@ -108,7 +109,7 @@ export function buildHiddenFields({
   githubUserId,
   paymentRequests: paymentRequests,
   payoutInfo,
-}: Omit<Props, "markInvoiceAsReceived">): Record<string, string> {
+}: Props): Record<string, string> {
   return {
     github_id: githubUserId.toString(),
     request_ids: paymentRequests.map(p => p.id).join(","),
@@ -118,7 +119,9 @@ export function buildHiddenFields({
           `#${pretty(p.id)} - ${formatDate(new Date(p.requestedAt))} (${formatMoneyAmount({
             amount: p.amount.total,
             currency: p.amount.currency,
-          })})`
+          })} ${
+            p.amount.currency !== Currency.USD ? "~ " + p.amount.dollarsEquivalent?.toFixed(5) + " " + Currency.USD : ""
+          })`
       )
     ),
     company_name: payoutInfo?.company?.name || "",
@@ -129,17 +132,10 @@ export function buildHiddenFields({
     zip_code: payoutInfo?.location?.postalCode || "",
     city: payoutInfo?.location?.city || "",
     country: payoutInfo?.location?.country || "",
-    payout_info: payoutInfo?.payoutSettings?.ethWallet?.startsWith("0x")
-      ? `ETH Address: ${payoutInfo?.payoutSettings?.ethWallet}`
-      : payoutInfo?.payoutSettings?.ethWallet
-      ? `ENS Domain: ${payoutInfo?.payoutSettings?.ethWallet}`
-      : formatList([
-          `IBAN: ${payoutInfo?.payoutSettings?.sepaAccount?.iban}`,
-          `BIC: ${payoutInfo?.payoutSettings?.sepaAccount?.bic}`,
-        ]),
+    payout_info: "",
     total_amount: formatMoneyAmount({
-      amount: paymentRequests.map(p => p.amount.total).reduce((acc, amount) => acc + amount, 0),
-      currency: paymentRequests.at(0)?.amount.currency,
+      amount: paymentRequests.map(p => p.amount.dollarsEquivalent ?? 0).reduce((acc, amount) => acc + amount, 0),
+      currency: Currency.USD,
     }),
     env: config.ENVIRONMENT ?? "",
   };

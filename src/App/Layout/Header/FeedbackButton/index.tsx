@@ -2,10 +2,13 @@ import { SliderButton } from "@typeform/embed-react";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
 import MeApi from "src/api/me";
-import { useMemo } from "react";
+import { ReactNode, Ref, forwardRef, useMemo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export default function FeedbackButton({ customButton }: { customButton?: React.ReactNode }) {
+export const FeedbackButton = forwardRef(function FeedbackButton(
+  { customButton }: { customButton?: ReactNode },
+  ref: Ref<unknown>
+) {
   const { user } = useAuth0();
   const { T } = useIntl();
 
@@ -29,6 +32,7 @@ export default function FeedbackButton({ customButton }: { customButton?: React.
     <>
       {user && (
         <SliderButton
+          ref={ref}
           id="CQcFnolD"
           iframeProps={{ title: T("navbar.feedback.popupTitle") }}
           opacity={100}
@@ -54,4 +58,6 @@ export default function FeedbackButton({ customButton }: { customButton?: React.
       )}
     </>
   );
-}
+});
+
+export default FeedbackButton;

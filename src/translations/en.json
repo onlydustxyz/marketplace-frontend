@@ -407,7 +407,8 @@
     "profile": {
       "title": "Your account",
       "publicProfile": "Public profile",
-      "payoutInfo": "Payout information"
+      "payoutInfo": "Payout information",
+      "verifyIdentity": "Verify identity"
     },
     "rewards": "Rewards",
     "projects": "Projects",
