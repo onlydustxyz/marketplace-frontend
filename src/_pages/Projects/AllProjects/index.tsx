@@ -72,8 +72,6 @@ export default function AllProjects({
       ownership ? ["mine", String(ownership === "Mine")] : null,
     ].filter((param): param is string[] => Boolean(param));
 
-    capture("project_list_viewed", { technologies, sponsors: sponsors.map(({ name }) => name), ownership });
-
     return params;
   }, [technologies, sponsors, search, sorting, ownership]);
 
@@ -81,6 +79,10 @@ export default function AllProjects({
     ProjectApi.queries.useInfiniteList({
       queryParams,
     });
+
+  useEffect(() => {
+    capture("project_list_viewed", { technologies, sponsors: sponsors.map(({ name }) => name), ownership });
+  }, [ownership, technologies, sponsors]);
 
   useEffect(() => {
     restoreScroll();
