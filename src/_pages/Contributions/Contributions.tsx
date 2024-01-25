@@ -31,12 +31,9 @@ const initialSort: Record<ContributionStatus, TableSort> = {
   },
 };
 
-// should migrate localstorage data from CREATED_AT to LAST_UPDATED_AT
-
 export default function Contributions() {
   const { T } = useIntl();
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort-v02", JSON.stringify(initialSort));
-  // const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
   const { isActiveTab, updateActiveTab } = useContributionTabs();
   const { headerCells, bodyRow } = useContributionTable();
