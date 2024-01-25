@@ -19,7 +19,7 @@ export default function RewardSidePanel({
     if (rewardId) {
       capture("reward_viewed", { id_reward: rewardId });
     }
-  }, [rewardId]);
+  }, []);
 
   return (
     <View
