@@ -1,31 +1,13 @@
+import { useIntl } from "src/hooks/useIntl";
+import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
+import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
 import { ReactElement, useCallback } from "react";
-import InfoIcon from "src/assets/icons/InfoIcon";
+import { Currency } from "src/types";
+import { Flex } from "src/components/New/Layout/Flex";
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
-import { FilterField } from "src/components/New/Filter/FilterField";
-import { FilterSelect, Item } from "src/components/New/Filter/FilterSelect";
-import { useIntl } from "src/hooks/useIntl";
-import { Currency } from "src/types";
-import { Flex } from "../Layout/Flex";
-
-function LabelIcon({ currency }: { currency: Currency }): ReactElement {
-  return (
-    <Chip className="h-full w-full">
-      <CurrencyIcons className="h-full w-full" currency={currency} />
-    </Chip>
-  );
-}
-
-function currencyOrDefault(selected: Item) {
-  if (selected.value === "") {
-    return {
-      label: "filter.currency.all",
-      icon: <InfoIcon />,
-    };
-  }
-
-  return currenciesLabel[selected.value as Currency];
-}
+import { TFiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies.types";
+import MoneyBoxLine from "src/icons/MoneyBoxLine";
 
 const currenciesLabel: Record<Currency, { label: string; icon: JSX.Element }> = {
   [Currency.USD]: { label: "currencies.currency.USD", icon: <LabelIcon currency={Currency.USD} /> },
@@ -37,15 +19,15 @@ const currenciesLabel: Record<Currency, { label: string; icon: JSX.Element }> = 
   [Currency.USDC]: { label: "currencies.currency.USDC", icon: <LabelIcon currency={Currency.USDC} /> },
 };
 
-export function FilterCurrencySelect({
-  currencies,
-  selected,
-  onChange,
-}: {
-  currencies: Item[];
-  selected: Item;
-  onChange: (items: Item) => void;
-}) {
+function LabelIcon({ currency }: { currency: Currency }): ReactElement {
+  return (
+    <Chip className="h-full w-full">
+      <CurrencyIcons className="h-full w-full" currency={currency} />
+    </Chip>
+  );
+}
+
+export function FiltersCurrencies({ currencies, selected, onChange }: TFiltersCurrencies.Props) {
   const { T } = useIntl();
 
   const getLabel = useCallback(
@@ -58,29 +40,25 @@ export function FilterCurrencySelect({
     []
   );
 
-  const defaultCurrency = {
-    value: "",
-    label: <Flex className="items-center">{T("filter.currency.all")}</Flex>,
-    id: 0,
-  };
-
   const items = currencies.map(currency => ({
     ...currency,
     label: getLabel((currency.value || Currency.USD) as Currency),
   }));
 
   return (
-    <FilterField label={T("filter.currency.title")}>
-      <FilterSelect
-        icon={({ selected }) => <div className="h-4 w-4">{currencyOrDefault(selected as Item).icon}</div>}
+    <FilterFieldContainer label={T("filter.currency.title")}>
+      <SelectAutocomplete
+        type="square"
+        icon={({ className }) => <MoneyBoxLine className={className} />}
         tokens={{ zero: "filter.currency.all", other: "filter.currency" }}
-        items={[defaultCurrency, ...items]}
-        selected={{
-          ...selected,
-          label: <>{T(currencyOrDefault(selected as Item).label)}</>,
-        }}
+        items={items}
+        selected={selected.map(values => ({
+          ...values,
+          label: getLabel((values.value || Currency.USD) as Currency),
+        }))}
         onChange={onChange}
+        multiple={true}
       />
-    </FilterField>
+    </FilterFieldContainer>
   );
 }
