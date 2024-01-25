@@ -116,9 +116,9 @@ export function buildHiddenFields({
       paymentRequests.map(
         p =>
           `#${pretty(p.id)} - ${formatDate(new Date(p.requestedAt))} (${formatMoneyAmount({
-            amount: p.amount.dollarsEquivalent ?? 0,
+            amount: p.amount.total,
             currency: p.amount.currency,
-          })} ~ ${p.amount.dollarsEquivalent} USD)`
+          })} ${p.amount.currency !== "USD" ? "~ " + p.amount.dollarsEquivalent?.toFixed(5) + " USD" : ""})`
       )
     ),
     company_name: payoutInfo?.company?.name || "",
