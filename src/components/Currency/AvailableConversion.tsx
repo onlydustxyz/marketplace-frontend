@@ -63,6 +63,7 @@ const ConversionTooltip = ({
   if (!tooltipId) {
     return null;
   }
+
   return (
     <Tooltip id={tooltipId} clickable position={TooltipPosition.Bottom}>
       <div className="flex flex-col gap-2">
@@ -146,7 +147,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
           <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
         </div>
       </div>
-      {currency?.currency !== Currency.USD ? (
+      {currency?.currency !== Currency.USD && currency?.currency !== Currency.STRK ? (
         <ConversionTooltip tooltipId={tooltipId} currencies={orderedCurrencies} />
       ) : null}
     </>
