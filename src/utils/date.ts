@@ -73,3 +73,39 @@ export function formatDateQueryParam(value: Date | string) {
  * Represents a date range of all time.
  */
 export const allTime = { from: new Date(0), to: new Date() } satisfies DateRange;
+
+// American date format ex Dec 13, 2023 as string
+export function getFormattedDateToLocaleDateString(date: Date) {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+
+interface DateComparisonResult {
+  status: "past" | "future" | "today" | "invalid";
+}
+
+/**
+ * Determines if a given date is in the past or in the future.
+ * @param {string | Date | dayjs.Dayjs | null} date - The date to be checked.
+ * @returns {DateComparisonResult} - Returns 'past' if the date is in the past, 'future' if it's in the future, 'today' if it's the same date, or 'invalid' if the date is nullish.
+ */
+
+export function compareDateToNow(date: string | Date | dayjs.Dayjs | null | undefined): DateComparisonResult {
+  if (!date) {
+    return { status: "invalid" };
+  }
+
+  const now = dayjs();
+  const targetDate = dayjs(date);
+
+  if (targetDate.isBefore(now, "second")) {
+    return { status: "past" };
+  } else if (targetDate.isAfter(now, "second")) {
+    return { status: "future" };
+  } else {
+    return { status: "today" };
+  }
+}

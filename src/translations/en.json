@@ -596,6 +596,7 @@
     "list": "List rewards",
     "status": {
       "complete": "Complete",
+      "locked": "Locked",
       "invoicePending": "Pending invoice",
       "signupPending": "Signup invoice",
       "payoutInfoMissing": "Payout info missing",
@@ -604,6 +605,9 @@
       "processing": "Processing",
       "tooltip": {
         "complete": "Reward successful",
+        "lockedUntilFurther": "Locked until further notice",
+        "lockedUntilDate": "Locked until __date__",
+        "unlockedOnDate": "Unlocked on __date__",
         "invoicePending": "An invoice is required to process your reward. Please wait up to 5 days if you already sent it.",
         "signupPending": "You need to sign up on OnlyDust to get paid",
         "payoutInfoMissing": "Fill in your payout information to get paid",
