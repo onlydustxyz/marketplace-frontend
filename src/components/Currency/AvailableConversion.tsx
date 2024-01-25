@@ -132,7 +132,10 @@ export const AvailableConversion: FC<AvailableConversion> = ({
 
   return (
     <>
-      <div {...(orderedCurrencies ? tooltipIdProps : {})} className="flex flex-row items-center justify-start gap-1">
+      <div
+        {...(orderedCurrencies.length ? tooltipIdProps : {})}
+        className="flex flex-row items-center justify-start gap-1"
+      >
         <Chips number={numberCurencyToShow}>
           {currencyArray?.map(currency => (
             <div key={currency.currency}>
