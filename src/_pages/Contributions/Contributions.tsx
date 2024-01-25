@@ -31,10 +31,31 @@ const initialSort: Record<ContributionStatus, TableSort> = {
   },
 };
 
+// should migrate localstorage data from CREATED_AT to LAST_UPDATED_AT
+function migrateStorage(storage: typeof initialSort) {
+  const newStorage = { ...storage };
+  const createdAt = "CREATED_AT" as TableColumns;
+
+  if (storage.CANCELLED && storage.CANCELLED.sort === createdAt) {
+    newStorage.CANCELLED.sort = TableColumns.Date;
+  }
+  if (storage.COMPLETED && storage.COMPLETED.sort === createdAt) {
+    newStorage.COMPLETED.sort = TableColumns.Date;
+  }
+  if (storage.IN_PROGRESS && storage.IN_PROGRESS.sort === createdAt) {
+    newStorage.IN_PROGRESS.sort = TableColumns.Date;
+  }
+
+  return newStorage;
+}
+
 export default function Contributions() {
   const { T } = useIntl();
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
-  const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
+  // const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
+  const [sort, setSort] = useState<typeof initialSort>(
+    sortStorage ? migrateStorage(JSON.parse(sortStorage)) : initialSort
+  );
   const { isActiveTab, updateActiveTab } = useContributionTabs();
   const { headerCells, bodyRow } = useContributionTable();
   const { capture } = usePosthog();
