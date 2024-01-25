@@ -2,8 +2,21 @@ export interface Technologies {
   [key: string]: number;
 }
 
-export function isBlackListedTechnologies(technology: string): boolean {
+export function matchBlackListedTechnology(technology: string, lower?: boolean): boolean {
+  const blackListedTech = lower
+    ? process.env.NEXT_PUBLIC_LANGUAGES_FILTER?.toLowerCase()
+    : process.env.NEXT_PUBLIC_LANGUAGES_FILTER;
+
+  const arrayOfTech = blackListedTech?.split(",");
+
+  return !!arrayOfTech?.find(b => b === technology.toLowerCase()) || false;
+}
+export function isBlackListedTechnologies(technology: string, lower?: boolean): boolean {
   const blackListedTech = process.env.NEXT_PUBLIC_LANGUAGES_FILTER;
+
+  if (lower) {
+    return blackListedTech?.toLowerCase().includes(technology) || false;
+  }
 
   return blackListedTech?.includes(technology) || false;
 }

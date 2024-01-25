@@ -173,7 +173,7 @@ const ComboboxOption = ({ option, last, children }: ComboboxOptionProps) => (
   <Combobox.Option
     value={option}
     className={cn(
-      "flex bg-greyscale-800 px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 ui-active:bg-greyscale-600",
+      "flex bg-greyscale-800 px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 ui-active:bg-greyscale-600 [&:has(.disabled-option)]:hover:bg-greyscale-800",
       {
         "border-b border-greyscale-50/8": !last,
       }
