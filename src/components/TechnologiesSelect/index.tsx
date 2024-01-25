@@ -23,7 +23,7 @@ import Flex from "../Utils/Flex";
 import TechnologiesApi from "src/api/Technologies";
 import useMutationAlert from "src/api/useMutationAlert";
 import { IMAGES } from "src/assets/img";
-import { isBlackListedTechnologies, matchBlackListedTechnology } from "src/utils/technologies";
+import { isBlackListedTechnologies } from "src/utils/technologies";
 import CrossIconLine from "src/assets/icons/CrossIconLine";
 
 type Props = {
@@ -99,7 +99,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
     const languages = typeof setter === "function" ? setter(selectedLanguages) : setter;
     const suggestion = languages.find(l => l.id === EMPTY_OPTION_ID);
     if (suggestion) {
-      const isBlackListed = matchBlackListedTechnology(suggestion.value, true);
+      const isBlackListed = isBlackListedTechnologies(suggestion.value);
       if (!isBlackListed) {
         sendSuggestion(suggestion.value);
       }
@@ -181,7 +181,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
 
 function Technology({ option }: RenderProps<LanguageOption>) {
   const { T } = useIntl();
-  const isBlackListed = matchBlackListedTechnology(option.value, true);
+  const isBlackListed = isBlackListedTechnologies(option.value);
 
   if (option.id === EMPTY_OPTION_ID && isBlackListed) {
     return (
