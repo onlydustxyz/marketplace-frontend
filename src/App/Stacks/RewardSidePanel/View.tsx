@@ -37,6 +37,7 @@ import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
+import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/RewardTransactionDetails";
 
 enum Align {
   Top = "top",
@@ -379,6 +380,15 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                 </Details>
               ) : null}
             </div>
+            <RewardTransactionDetails
+              isMine={isMine}
+              status={data?.status}
+              currency={data?.currency}
+              createdAt={data?.createdAt}
+              processedAt={data?.processedAt}
+              unlockDate={data?.unlockDate}
+              receipt={data?.receipt}
+            />
             {renderRewardItems()}
           </div>
         </div>
@@ -416,7 +426,7 @@ type FormattedReceipt = {
   link?: string;
 };
 
-const formatReceipt = (receipt?: components["schemas"]["ReceiptResponse"]): FormattedReceipt | undefined => {
+export const formatReceipt = (receipt?: components["schemas"]["ReceiptResponse"]): FormattedReceipt | undefined => {
   if (receipt?.type === "CRYPTO") {
     const { ens, walletAddress: address = "", transactionReference: reference } = receipt;
 
