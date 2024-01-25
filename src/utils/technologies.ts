@@ -2,7 +2,7 @@ export interface Technologies {
   [key: string]: number;
 }
 
-export function isBlackListedTechnologies(technology: string): boolean {
+export function isBlackListedTechnology(technology: string): boolean {
   const blackListedTech = process.env.NEXT_PUBLIC_LANGUAGES_FILTER?.toLowerCase();
 
   const arrayOfTech = blackListedTech?.split(",");

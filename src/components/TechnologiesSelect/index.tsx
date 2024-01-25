@@ -23,7 +23,7 @@ import Flex from "../Utils/Flex";
 import TechnologiesApi from "src/api/Technologies";
 import useMutationAlert from "src/api/useMutationAlert";
 import { IMAGES } from "src/assets/img";
-import { isBlackListedTechnologies } from "src/utils/technologies";
+import { isBlackListedTechnology } from "src/utils/technologies";
 import CrossIconLine from "src/assets/icons/CrossIconLine";
 
 type Props = {
@@ -74,7 +74,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
       displayValue: language,
       isSupported: supportedTechnologies.includes(language.toLowerCase()),
     }))
-    .filter(language => !isBlackListedTechnologies(language.id));
+    .filter(language => !isBlackListedTechnology(language.id));
 
   const selectedLanguages: LanguageOption[] = Object.entries(technologies)
     .sort((lang1, lang2) => lang2[1] - lang1[1])
@@ -84,7 +84,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
       displayValue: language,
       isSupported: supportedTechnologies.includes(language.toLowerCase()),
     }))
-    .filter(language => !isBlackListedTechnologies(language.id));
+    .filter(language => !isBlackListedTechnology(language.id));
 
   const sendSuggestion = async (suggestion: string) => {
     setSuggestionValue(suggestion);
@@ -99,7 +99,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
     const languages = typeof setter === "function" ? setter(selectedLanguages) : setter;
     const suggestion = languages.find(l => l.id === EMPTY_OPTION_ID);
     if (suggestion) {
-      const isBlackListed = isBlackListedTechnologies(suggestion.value);
+      const isBlackListed = isBlackListedTechnology(suggestion.value);
       if (!isBlackListed) {
         sendSuggestion(suggestion.value);
       }
@@ -181,7 +181,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
 
 function Technology({ option }: RenderProps<LanguageOption>) {
   const { T } = useIntl();
-  const isBlackListed = isBlackListedTechnologies(option.value);
+  const isBlackListed = isBlackListedTechnology(option.value);
 
   if (option.id === EMPTY_OPTION_ID && isBlackListed) {
     return (
