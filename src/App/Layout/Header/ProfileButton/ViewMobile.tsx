@@ -2,7 +2,6 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import { RoutePaths } from "src/App";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import Dot from "src/assets/icons/Dot";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
@@ -11,8 +10,9 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import MeApi from "src/api/me";
 import { Icon } from "components/layout/icon/icon";
-import { LogoutButton } from "./LogoutButton";
 import { cn } from "src/utils/cn";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import { useLogout } from "./Logout.hooks";
 
 interface Props {
   avatarUrl: string | null;
@@ -35,7 +35,10 @@ export function ViewMobile({
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
   const [openPayoutInfo] = useStackPayoutInfo();
+  const [openVerifyIdentity] = useStackVerifyIdentity();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
+
+  const { handleLogout } = useLogout();
 
   const { queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -135,6 +138,19 @@ export function ViewMobile({
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </button>
 
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <button
+                    className="flex items-center gap-3 p-4"
+                    onClick={() => {
+                      setPanelOpen(false);
+                      openVerifyIdentity();
+                    }}
+                  >
+                    <Icon remixName="ri-pass-valid-line" size={20} />
+                    {T("navbar.profile.verifyIdentity")}
+                  </button>
+                ) : null}
+
                 <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
               </div>
             </>
@@ -160,14 +176,10 @@ export function ViewMobile({
               {T("navbar.feedback.button")}
             </button>
 
-            <LogoutButton
-              customButton={
-                <button className="flex items-center gap-3 p-4">
-                  <Icon remixName="ri-logout-box-r-line" size={20} />
-                  {T("navbar.logout")}
-                </button>
-              }
-            />
+            <button className="flex items-center gap-3 p-4" onClick={handleLogout}>
+              <Icon remixName="ri-logout-box-r-line" size={20} />
+              {T("navbar.logout")}
+            </button>
           </div>
         </div>
       </SidePanel>

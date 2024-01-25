@@ -1,14 +1,14 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
 import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import { useSidePanel } from "src/hooks/useSidePanel";
 import { Icon } from "components/layout/icon/icon";
-import { LogoutButton } from "./LogoutButton";
+import { useSidePanel } from "src/hooks/useSidePanel";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
 import { cn } from "src/utils/cn";
+import { useLogout } from "./Logout.hooks";
 
 interface MenuItemProps extends PropsWithChildren {
   disabled?: boolean;
@@ -55,9 +55,12 @@ export function View({
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [openPayoutInfo] = useStackPayoutInfo();
+  const [openVerifyIdentity] = useStackVerifyIdentity();
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
+
+  const { handleLogout } = useLogout();
 
   return (
     <div className="relative">
@@ -122,6 +125,13 @@ export function View({
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </MenuItem>
 
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <MenuItem onClick={openVerifyIdentity}>
+                    <Icon remixName="ri-pass-valid-line" size={20} />
+                    <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
+                  </MenuItem>
+                ) : null}
+
                 <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
               </div>
             )}
@@ -146,14 +156,10 @@ export function View({
                 <div className="grow">{T("navbar.feedback.button")}</div>
               </MenuItem>
 
-              <LogoutButton
-                customButton={
-                  <MenuItem>
-                    <Icon remixName="ri-logout-box-r-line" size={20} />
-                    <div className="grow">{T("navbar.logout")}</div>
-                  </MenuItem>
-                }
-              />
+              <MenuItem onClick={handleLogout}>
+                <Icon remixName="ri-logout-box-r-line" size={20} />
+                <div className="grow">{T("navbar.logout")}</div>
+              </MenuItem>
             </div>
           </Menu.Items>
         </Transition>
