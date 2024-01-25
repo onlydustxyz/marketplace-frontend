@@ -12,6 +12,8 @@ import { parsePullRequestLink } from "src/utils/github";
 import { CommitsTooltip } from "./CommitsTooltip";
 import { RewardableItem } from "src/api/Project/queries";
 import { RewardItem } from "src/hooks/useInfiniteRewardItems";
+import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
+import { ComponentProps } from "react";
 
 export enum Action {
   Add = "add",
@@ -44,6 +46,8 @@ export type GithubPullRequestProps = {
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
   contributorLogin?: string;
+  badgeProps: ComponentProps<typeof ContributionBadge>;
+  disabled?: boolean;
 };
 
 export default function GithubPullRequest({
@@ -56,6 +60,8 @@ export default function GithubPullRequest({
   addMarginTopForVirtuosoDisplay = false,
   contributorLogin,
   onCardClick,
+  badgeProps,
+  disabled,
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest?.htmlUrl || pullRequest?.githubUrl || "");
 
@@ -66,26 +72,28 @@ export default function GithubPullRequest({
     <div
       className={cn("w-full", {
         "cursor-pointer": onCardClick,
+        "cursor-not-allowed": disabled,
       })}
       onClick={onCardClick}
     >
       <Card
         padded={false}
-        className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {
+        className={cn("flex gap-3 rounded-2xl p-4 shadow-light hover:bg-noise-light hover:backdrop-blur-4xl", {
           "mt-1": addMarginTopForVirtuosoDisplay,
         })}
         withBg={false}
       >
         {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
         <div className="flex w-full flex-col gap-2 font-walsheim">
-          <div className="flex text-sm font-medium text-greyscale-50">
-            <GithubLink
-              url={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""}
-              text={`#${pullRequest.number} · ${pullRequest.title}`}
-            />
+          <div className="flex items-center gap-2">
+            <ContributionBadge {...badgeProps} />
+
+            <div className="text-sm font-medium text-greyscale-50">
+              <GithubLink url={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""} text={pullRequest.title} />
+            </div>
           </div>
-          <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
-            <div className="flex flex-row items-center gap-1">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
+            <div className="flex items-center gap-1">
               <ContributionCreationDate
                 id={pullRequest.id ?? ""}
                 type={GithubContributionType.PullRequest}
@@ -96,7 +104,7 @@ export default function GithubPullRequest({
                 }}
               />
             </div>
-            <div className="flex flex-row items-center gap-1">
+            <div className="flex items-center gap-1">
               <ContributionDate
                 id={pullRequest.id ?? ""}
                 type={GithubContributionType.PullRequest}
@@ -109,12 +117,12 @@ export default function GithubPullRequest({
                 withIcon
               />
             </div>
-            <div className="inline-flex flex-row items-center gap-1">
+            <div className="inline-flex items-center gap-1">
               <GitRepositoryLine />
               {repoName || pullRequest.repoName}
             </div>
 
-            <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">
+            <div id={pullRequest?.id} className="flex items-center gap-1 ">
               <GitCommitLine />
               {userCommits + "/" + commitsCount}
               {pullRequest?.authorLogin ? (

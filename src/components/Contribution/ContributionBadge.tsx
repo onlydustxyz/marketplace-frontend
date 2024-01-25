@@ -3,12 +3,12 @@ import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/component
 import { useIntl } from "src/hooks/useIntl";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-
 import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import Contributor from "../Contributor";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+import { ComponentProps } from "react";
 
 interface ContributionBadgeProps {
   contribution: Pick<
@@ -18,7 +18,7 @@ interface ContributionBadgeProps {
   withTooltip?: boolean;
   asLink?: boolean;
   size?: ContributionBadgeSizes;
-  tooltipProps?: React.ComponentProps<typeof Tooltip>;
+  tooltipProps?: ComponentProps<typeof Tooltip>;
   showExternal?: boolean;
 }
 
@@ -116,7 +116,11 @@ export function ContributionBadge({
     <>
       {withTooltip ? (
         <Tooltip id={tooltipId} clickable padding={PaddingVariant.Large} {...tooltipProps}>
-          <div className="flex max-w-sm flex-col gap-2 text-left">
+          <div
+            className="flex max-w-sm flex-col gap-2 text-left"
+            // When this element is nested inside another clickable element, we don't want the click to propagate to the parent
+            onClick={e => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between gap-2">
               <span className="line-clamp-2 text-sm font-medium leading-4">
                 <ExternalLink

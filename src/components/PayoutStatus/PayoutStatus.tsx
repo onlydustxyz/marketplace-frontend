@@ -17,6 +17,7 @@ type PaymentStatusUnion = `${PaymentStatus}`;
 export default function PayoutStatus({ status }: Props) {
   const statuses: Record<PaymentStatusUnion, JSX.Element> = {
     [PaymentStatus.COMPLETE]: <CompleteTag />,
+    [PaymentStatus.LOCKED]: <></>,
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
     [PaymentStatus.PENDING_SIGNUP]: <PendingSignup />,
     [PaymentStatus.PROCESSING]: <ProcessingTag />,

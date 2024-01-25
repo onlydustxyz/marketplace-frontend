@@ -1,30 +1,32 @@
-import { useForm, FormProvider } from "react-hook-form";
-import { Contributor, Inputs } from "./types";
-import { useCallback, useState } from "react";
-import { useIntl } from "src/hooks/useIntl";
-import View from "./View";
-import { useShowToaster } from "src/hooks/useToaster";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
-import { ProjectRoutePaths, RoutePaths } from "src/App";
-import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { useLocalStorage } from "usehooks-ts";
-import { reorderBudgets } from "./utils";
-import { BudgetCurrencyType } from "src/utils/money";
-import ErrorFallback from "src/ErrorFallback";
 import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import MeApi from "src/api/me";
-import { CompletedRewardableItem } from "src/api/Project/queries";
-import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 import ProjectApi from "src/api/Project";
+import { CompletedRewardableItem } from "src/api/Project/queries";
+import { ProjectRoutePaths, RoutePaths } from "src/App";
 import Skeleton from "src/components/Skeleton";
+import ErrorFallback from "src/ErrorFallback";
+import { useIntl } from "src/hooks/useIntl";
+import { usePosthog } from "src/hooks/usePosthog";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import { useShowToaster } from "src/hooks/useToaster";
 import { ProjectBudgetType } from "src/types";
+import { BudgetCurrencyType } from "src/utils/money";
+import { useLocalStorage } from "usehooks-ts";
+import { Contributor, Inputs } from "./types";
+import { reorderBudgets } from "./utils";
+import View from "./View";
+import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
   const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { capture } = usePosthog();
 
   const queryClient = useQueryClient();
 
@@ -49,6 +51,15 @@ const RewardForm: React.FC = () => {
     pathParam: project?.id || "",
     method: "POST",
     onSuccess: async () => {
+      const formValues = getValues();
+
+      capture("reward_sent", {
+        amount: formValues.amountToWire,
+        count_contributions: formValues.workItems.length,
+        project_id: project?.id,
+        recipient_id: contributor?.githubUserId,
+      });
+
       try {
         await refetch();
         showToaster(T("reward.form.sent"));
@@ -93,7 +104,7 @@ const RewardForm: React.FC = () => {
 
   const contributions = completedContributions;
 
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, getValues } = formMethods;
 
   const onValidSubmit = (formData: Inputs) => {
     if (contributor) {

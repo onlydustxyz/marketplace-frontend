@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { components } from "src/__generated/api";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Contributor from "src/components/Contributor";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
@@ -10,18 +9,23 @@ import { useIntl } from "src/hooks/useIntl";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import { RewardDisabledReason } from "src/types";
+import EyeLine from "src/icons/EyeLine";
+import EyeOffLine from "src/icons/EyeOffLine";
+import { ProjectContributorItem } from "src/api/Project/queries";
 
 type Props<C> = {
   contributor: C;
   isProjectLeader: boolean;
   onRewardGranted: (contributor: C) => void;
+  onToggleContributor: (contributor: C) => void;
   rewardDisableReason?: RewardDisabledReason;
 };
 
-export default function ContributorLine<C extends components["schemas"]["ContributorPageItemResponse"]>({
+export default function ContributorLine<C extends ProjectContributorItem>({
   contributor,
   isProjectLeader,
   onRewardGranted,
+  onToggleContributor,
   rewardDisableReason,
 }: Props<C>) {
   const { T } = useIntl();
@@ -73,50 +77,63 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
         )}
       </Cell>
       {isProjectLeader ? (
-        <Cell height={CellHeight.Small} horizontalMargin={false}>
-          {contributor?.contributionToRewardCount && contributor?.contributionToRewardCount > 0 ? (
-            <div
-              id="to-reward-count"
-              className="flex cursor-default items-center gap-1 rounded-full bg-spacePurple-900 px-1.5 py-1 text-spacePurple-400"
-              data-tooltip-id="to-reward-details"
-              data-tooltip-content={JSON.stringify({
-                unpaidPullRequestCount: contributor.pullRequestToReward,
-                unpaidIssueCount: contributor.issueToReward,
-                unpaidCodeReviewCount: contributor.codeReviewToReward,
+        <>
+          <Cell height={CellHeight.Small} horizontalMargin={false}>
+            {contributor?.contributionToRewardCount && contributor?.contributionToRewardCount > 0 ? (
+              <div
+                id="to-reward-count"
+                className="flex cursor-default items-center gap-1 rounded-full bg-spacePurple-900 px-1.5 py-1 text-spacePurple-400"
+                data-tooltip-id="to-reward-details"
+                data-tooltip-content={JSON.stringify({
+                  unpaidPullRequestCount: contributor.pullRequestToReward,
+                  unpaidIssueCount: contributor.issueToReward,
+                  unpaidCodeReviewCount: contributor.codeReviewToReward,
+                })}
+              >
+                <StackLine />
+                <span className="font-walsheim font-medium">{contributor.contributionToRewardCount}</span>
+              </div>
+            ) : (
+              "-"
+            )}
+          </Cell>
+          <Cell
+            height={CellHeight.Small}
+            horizontalMargin={false}
+            className="invisible flex justify-end gap-2 group-hover:visible"
+          >
+            <Button
+              type={ButtonType.Secondary}
+              size={ButtonSize.Sm}
+              disabled={Boolean(rewardDisableReason)}
+              onClick={() => onRewardGranted(contributor)}
+              data-testid="give-reward-button"
+              {...withTooltip(getDisabledTooltipToken(), {
+                visible: Boolean(rewardDisableReason),
               })}
             >
-              <StackLine />
-
-              <span className="font-walsheim font-medium">{contributor.contributionToRewardCount}</span>
-            </div>
-          ) : (
-            "-"
-          )}
-        </Cell>
+              <SendPlane2Line />
+              {T("project.details.contributors.reward")}
+            </Button>
+            {isProjectLeader ? (
+              <Button
+                type={ButtonType.Secondary}
+                size={ButtonSize.Sm}
+                onClick={() => onToggleContributor(contributor)}
+                iconOnly
+                data-testid="toggle-contributors-button"
+                {...withTooltip(
+                  contributor.hidden
+                    ? T("project.details.contributors.showContributor.tooltip")
+                    : T("project.details.contributors.hideContributor.tooltip")
+                )}
+              >
+                {contributor.hidden ? <EyeLine /> : <EyeOffLine />}
+              </Button>
+            ) : null}
+          </Cell>
+        </>
       ) : null}
-      {isProjectLeader ? (
-        <Cell
-          height={CellHeight.Small}
-          horizontalMargin={false}
-          className="invisible flex justify-end group-hover:visible"
-        >
-          <Button
-            type={ButtonType.Secondary}
-            size={ButtonSize.Sm}
-            disabled={Boolean(rewardDisableReason)}
-            onClick={() => onRewardGranted(contributor)}
-            data-testid="give-reward-button"
-            {...withTooltip(getDisabledTooltipToken(), {
-              visible: Boolean(rewardDisableReason),
-            })}
-          >
-            <SendPlane2Line />
-            {T("project.details.contributors.reward")}
-          </Button>
-        </Cell>
-      ) : (
-        <Cell />
-      )}
     </Line>
   );
 }

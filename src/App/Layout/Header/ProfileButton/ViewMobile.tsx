@@ -1,26 +1,23 @@
-import { cn } from "src/utils/cn";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import { RoutePaths } from "src/App";
 import Dot from "src/assets/icons/Dot";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
 import Folder3Line from "src/icons/Folder3Line";
-import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
+import { cn } from "src/utils/cn";
+import { LogoutButton } from "./LogoutButton";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { handleLogout } from "components/features/auth0/handlers/handle-logout";
-import { useImpersonation } from "components/features/impersonation/use-impersonation";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import PassValidLine from "src/icons/PassValidLine";
 
 type Props = {
   avatarUrl: string | null;
@@ -32,12 +29,11 @@ type Props = {
 
 export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, githubUserId, hideProfileItems }: Props) {
   const { T } = useIntl();
-  const { logout } = useAuth0();
-  const { isImpersonating, clearImpersonateClaim } = useImpersonation();
 
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
   const [openPayoutInfo] = useStackPayoutInfo();
+  const [openVerifyIdentity] = useStackVerifyIdentity();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { queryParams } = useQueryParamsSorting({
@@ -52,10 +48,6 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
 
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
-
-  const handleLogoutClick = () => {
-    handleLogout(logout, isImpersonating, clearImpersonateClaim);
-  };
 
   return (
     <>
@@ -136,6 +128,17 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
                   <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </button>
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <button
+                    className="flex items-center gap-3 p-4"
+                    onClick={() => {
+                      setPanelOpen(false);
+                      openVerifyIdentity();
+                    }}
+                  >
+                    <PassValidLine className="text-xl" /> {T("navbar.profile.verifyIdentity")}
+                  </button>
+                ) : null}
               </>
             </>
           )}
@@ -145,15 +148,7 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
               <div>{T("navbar.separator")}</div>
               <button onClick={openPrivacyPolicy}>{T("navbar.privacyPolicy")}</button>
             </div>
-            <Button
-              type={ButtonType.Secondary}
-              size={ButtonSize.Xs}
-              onClick={handleLogoutClick}
-              data-testid="logout-button"
-            >
-              <LogoutBoxRLine className="border-greyscale-50 text-sm" />
-              {T("navbar.logout")}
-            </Button>
+            <LogoutButton />
           </div>
         </div>
       </SidePanel>

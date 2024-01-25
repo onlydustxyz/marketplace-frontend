@@ -1,19 +1,16 @@
 import { Menu, Transition } from "@headlessui/react";
-import { cn } from "src/utils/cn";
 import { Fragment, PropsWithChildren, useState } from "react";
 import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useSidePanel } from "src/hooks/useSidePanel";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { handleLogout } from "components/features/auth0/handlers/handle-logout";
-import { useImpersonation } from "components/features/impersonation/use-impersonation";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import PassValidLine from "src/icons/PassValidLine";
+import { cn } from "src/utils/cn";
+import { LogoutButton } from "./LogoutButton";
 
 type Props = {
   avatarUrl: string | null;
@@ -25,19 +22,14 @@ type Props = {
 
 const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
   const { T } = useIntl();
-  const { logout } = useAuth0();
-  const { isImpersonating, clearImpersonateClaim } = useImpersonation();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [openPayoutInfo] = useStackPayoutInfo();
+  const [openVerifyIdentity] = useStackVerifyIdentity();
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
-
-  const handleLogoutClick = () => {
-    handleLogout(logout, isImpersonating, clearImpersonateClaim);
-  };
 
   return (
     <div className="relative">
@@ -96,6 +88,12 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </MenuItem>
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <MenuItem onClick={openVerifyIdentity}>
+                    <PassValidLine className="text-xl" />
+                    <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
+                  </MenuItem>
+                ) : null}
               </div>
             )}
             <MenuItem secondary disabled>
@@ -109,15 +107,7 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
                     {T("navbar.privacyPolicy")}
                   </div>
                 </div>
-                <Button
-                  type={ButtonType.Secondary}
-                  size={ButtonSize.Xs}
-                  onClick={handleLogoutClick}
-                  data-testid="logout-button"
-                >
-                  <LogoutBoxRLine className="border-greyscale-50 text-sm" />
-                  {T("navbar.logout")}
-                </Button>
+                <LogoutButton />
               </div>
             </MenuItem>
           </Menu.Items>
