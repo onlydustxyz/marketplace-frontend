@@ -9,7 +9,7 @@ export function FiltersProjects({ projects, selected, onChange }: TFiltersProjec
   return (
     <FilterFieldContainer label={T("filter.project.title")}>
       <SelectAutocomplete
-        type="project"
+        type="square"
         icon={({ className }) => <FolderLine className={className} />}
         tokens={{ zero: "filter.project.all", other: "filter.project" }}
         items={projects}

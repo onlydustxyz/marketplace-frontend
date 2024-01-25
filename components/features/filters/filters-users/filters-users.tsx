@@ -14,7 +14,7 @@ export function FiltersUsers({ users, selected, onChange }: TFiltersUsers.Props)
         tokens={{ zero: "filter.contributor.placeholder", other: "filter.contributor.many" }}
         multiple
         disabled={users.length <= 1}
-        type="user"
+        type="circle"
         items={users}
         selected={selected}
         onChange={onChange}

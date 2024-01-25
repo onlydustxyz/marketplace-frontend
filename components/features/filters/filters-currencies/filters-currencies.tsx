@@ -48,7 +48,7 @@ export function FiltersCurrencies({ currencies, selected, onChange }: TFiltersCu
   return (
     <FilterFieldContainer label={T("filter.currency.title")}>
       <SelectAutocomplete
-        type="project"
+        type="square"
         icon={({ className }) => <MoneyBoxLine className={className} />}
         tokens={{ zero: "filter.currency.all", other: "filter.currency" }}
         items={items}

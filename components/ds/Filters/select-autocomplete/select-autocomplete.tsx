@@ -18,7 +18,6 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   const selectedRef = useRef(comboProps.selected);
   const { current: selected } = selectedRef;
   const { selected: selectedTracked } = comboProps;
-  // const { selected } = comboProps;
   const token = Hooks.useTokens(selectedTracked, items, tokens);
   const { filteredItems, query, setQuery } = Hooks.useFilteredItems(selected, items);
   const selectedItems = Hooks.useSelectedItems(selected);

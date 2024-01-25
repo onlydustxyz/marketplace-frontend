@@ -16,7 +16,7 @@ export function FiltersRepos({ repos, selected, onChange }: TFiltersRepos.Props)
         selected={selected}
         onChange={onChange}
         disabled={repos.length <= 1}
-        type="project"
+        type="square"
       />
     </FilterFieldContainer>
   );

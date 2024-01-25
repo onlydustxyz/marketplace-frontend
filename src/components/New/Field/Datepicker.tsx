@@ -1,6 +1,6 @@
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
@@ -25,9 +25,9 @@ export enum Period {
 
 type BaseProps = {
   isElevated?: boolean;
-  autoCloseOnDateSelected?: boolean;
-  autoCloseOnPeriodeSelected?: boolean;
-  disabledFuture?: boolean;
+  autoCloseOnDateSelect?: boolean;
+  autoCloseOnPeriodeSelect?: boolean;
+  disableFuture?: boolean;
 };
 
 type SingleProps = BaseProps & {
@@ -67,8 +67,8 @@ type Props = WithPeriodProps | WithoutPeriodProps;
 // https://stackoverflow.com/questions/69023997/typescript-discriminated-union-narrowing-not-working
 export function Datepicker({
   isElevated = false,
-  autoCloseOnDateSelected = true,
-  autoCloseOnPeriodeSelected = true,
+  autoCloseOnDateSelect = true,
+  autoCloseOnPeriodeSelect = true,
   ...props
 }: Props) {
   const calendarRef = useRef(null);
@@ -130,7 +130,7 @@ export function Datepicker({
           defaultMonth={subMonths(new Date(), 1)}
           // Sometimes date strings are passed instead of date objects
           selected={props.selectedPeriod === Period.Custom ? parseDateRangeString(selectedDateRange) : undefined}
-          {...(props.disabledFuture ? { toDate: new Date() } : {})}
+          {...(props.disableFuture ? { toDate: new Date() } : {})}
           onSelect={(...args) => {
             if (selectedDateRange?.from && selectedDateRange?.to) {
               // If we already have a valid date range and the user selects a new date, we want to reset the date range
@@ -139,7 +139,7 @@ export function Datepicker({
               props.onChange?.({ from: selectedDay, to: undefined }, selectedDay, ...restArgs);
             } else {
               props.onChange?.(...args);
-              if (autoCloseOnDateSelected) {
+              if (autoCloseOnDateSelect) {
                 close();
               }
             }
@@ -267,7 +267,7 @@ export function Datepicker({
 
                               props.onPeriodChange(id);
 
-                              if (autoCloseOnPeriodeSelected) {
+                              if (autoCloseOnPeriodeSelect) {
                                 close();
                               }
                             }}

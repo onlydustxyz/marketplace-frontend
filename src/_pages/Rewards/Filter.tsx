@@ -157,7 +157,6 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   }
 
   function updateCurrency(currencies: Item[]) {
-    console.log("currencies", currencies);
     setFilters(prevState =>
       updateState(prevState, {
         currency: currencies,
