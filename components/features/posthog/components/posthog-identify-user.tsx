@@ -6,17 +6,22 @@ import MeApi from "src/api/me";
 import { usePosthog } from "src/hooks/usePosthog";
 
 export function PosthogIdentifyUser() {
-  const { isAuthenticated } = useAuth0();
-  const { identify } = usePosthog();
+  const { isAuthenticated, user } = useAuth0();
+  const { identify, capture } = usePosthog();
 
   const { data } = MeApi.queries.useGetMe({});
 
   useEffect(() => {
-    if (isAuthenticated && data) {
+    if (isAuthenticated && user && data) {
       const { isAdmin: admin, createdAt: created_at, githubUserId: github_user_id, id, email } = data;
+
       identify(id, { admin, created_at, email, github_user_id });
+
+      if (user.email !== email) {
+        capture("impersonated");
+      }
     }
-  }, [isAuthenticated, data]);
+  }, [isAuthenticated, user, data]);
 
   return null;
 }
