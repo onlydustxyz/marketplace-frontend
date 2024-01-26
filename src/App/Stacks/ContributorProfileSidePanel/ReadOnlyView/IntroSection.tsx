@@ -3,12 +3,7 @@ import MapPinLine from "src/icons/MapPinLine";
 import { formatDateShort } from "src/utils/date";
 import GlobalLine from "src/icons/GlobalLine";
 import SocialLink from "./SocialLink";
-import GithubLogo from "src/icons/GithubLogo";
-import TwitterFill from "src/icons/TwitterFill";
 import Telegram from "src/assets/icons/Telegram";
-import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
-import MailLine from "src/icons/MailLine";
-import DiscordFill from "src/icons/DiscordFill";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import PencilLine from "src/icons/PencilLine";
 import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
@@ -17,7 +12,6 @@ import { cn } from "src/utils/cn";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import WhatsappFill from "src/icons/WhatsappFill";
 import { components } from "src/__generated/api";
 import CompletionBar from "src/components/CompletionBar";
 import { UserProfile } from "src/api/Users/queries";
@@ -25,6 +19,7 @@ import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore
 import { IMAGES } from "src/assets/img";
 import NextLink from "next/link";
 import { Link } from "components/ds/link/link";
+import { Icon } from "components/layout/icon/icon";
 
 type Props = {
   profile: UserProfile;
@@ -156,37 +151,37 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
       <div className="flex flex-row items-center gap-2">
         {profile.htmlUrl && (
           <SocialLink testId="github" link={profile.htmlUrl}>
-            <GithubLogo />
+            <Icon remixName="ri-github-fill" size={24} />
           </SocialLink>
         )}
         {telegram && (
           <SocialLink testId="telegram" link={telegram}>
-            <Telegram className="fill-greyscale-200" size={20} />
+            <Telegram size={24} />
           </SocialLink>
         )}
         {whatsapp && (
           <SocialLink testId="whatsapp" copyableValue={whatsapp} copyableValueName={T("profile.whatsapp")}>
-            <WhatsappFill />
+            <Icon remixName="ri-whatsapp-fill" size={24} />
           </SocialLink>
         )}
         {twitter && (
           <SocialLink testId="twitter" link={twitter}>
-            <TwitterFill />
+            <Icon remixName="ri-twitter-fill" size={24} />
           </SocialLink>
         )}
         {discord && (
           <SocialLink testId="discord" copyableValue={discord} copyableValueName={T("profile.discord")}>
-            <DiscordFill />
+            <Icon remixName="ri-discord-fill" size={24} />
           </SocialLink>
         )}
         {linkedin && (
           <SocialLink testId="linkedin" link={linkedin}>
-            <LinkedinBoxFill />
+            <Icon remixName="ri-linkedin-box-fill" size={24} />
           </SocialLink>
         )}
         {email && (
           <SocialLink testId="email" copyableValue={email} copyableValueName={T("profile.email")}>
-            <MailLine />
+            <Icon remixName="ri-mail-line" size={24} />
           </SocialLink>
         )}
       </div>
