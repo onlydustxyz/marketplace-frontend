@@ -1,4 +1,4 @@
-import { format, parseISO } from "date-fns";
+import { format, isValid, parseISO } from "date-fns";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import weekOfYear from "dayjs/plugin/weekOfYear";
@@ -94,7 +94,7 @@ interface DateComparisonResult {
  */
 
 export function compareDateToNow(date: string | Date | dayjs.Dayjs | null | undefined): DateComparisonResult {
-  if (!date) {
+  if (!date && !isValid(date)) {
     return { status: "invalid" };
   }
 
