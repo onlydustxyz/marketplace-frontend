@@ -4,12 +4,12 @@ import Section, { SectionIcon } from "./OverviewSection";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import ExternalLink from "src/components/ExternalLink";
 
-export interface ProjectOverviewSponsorsProps {
+interface Props {
   // TODO get ecosystems type when it's available
   ecosystems: UseGetProjectBySlugResponse["sponsors"];
 }
 
-export const ProjectOverviewEcosystem = ({ ecosystems }: ProjectOverviewSponsorsProps) => {
+export const ProjectOverviewEcosystem = ({ ecosystems }: Props) => {
   const { T } = useIntl();
 
   return ecosystems?.length ? (
