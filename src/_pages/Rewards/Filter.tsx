@@ -11,7 +11,6 @@ import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker
 import { UserRewardsContext } from "./context/UserRewards";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
-import { isArray } from "lodash";
 
 type Filters = {
   period: Period;
@@ -46,38 +45,14 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   const { rewards, setFilterQueryParams, currencies, projects } = useContext(UserRewardsContext);
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "my-rewards-table-filters",
+    "my-rewards-table-filters-v2-0-0",
     JSON.stringify(initialFilters)
   );
 
-  function parseFiltersStorage() {
-    if (filtersStorage) {
-      const parsed = JSON.parse(filtersStorage);
-
-      if (isArray(parsed.currency)) {
-        return parsed;
-      }
-
-      if (parsed.currency.value === "") {
-        return {
-          ...parsed,
-          currency: [],
-        };
-      }
-      if (parsed.currency) {
-        return {
-          ...parsed,
-          currency: [parsed.currency],
-        };
-      }
-      return parsed;
-    }
-
-    return initialFilters;
-  }
-
   // Type of partial Filters is required as the shape required by the state may not exist in the user's local storage
-  const [filters, setFilters] = useState<Partial<Filters>>(parseFiltersStorage());
+  const [filters, setFilters] = useState<Partial<Filters>>(
+    filtersStorage ? JSON.parse(filtersStorage) : initialFilters
+  );
 
   const allPeriods = useDatepickerPeriods({ selectedPeriod: filters.period ?? initialFilters.period });
   const projectIds = useMemo(() => filters.projects?.map(({ id }) => String(id)), [filters]) ?? [];
