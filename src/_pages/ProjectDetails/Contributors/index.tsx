@@ -18,18 +18,17 @@ import { EditProjectButton } from "../components/EditProjectButton";
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import ProjectApi from "src/api/Project";
 import { RewardProjectButton } from "../components/RewardProjectButton";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { IMAGES } from "src/assets/img";
 import { EmptyState } from "components/layout/placeholders/empty-state";
 import { Card } from "components/ds/card/card";
 import EyeOffLine from "src/icons/EyeOffLine";
 import FormToggle from "src/components/FormToggle";
 import { useForm, useWatch } from "react-hook-form";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export default function Contributors() {
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
   const { projectKey = "" } = useParams<{ projectKey: string }>();
 
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
@@ -70,8 +69,6 @@ export default function Contributors() {
   const [{ hasHiddenContributors = false }] = data?.pages ?? [{}];
 
   const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
-
-  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
 

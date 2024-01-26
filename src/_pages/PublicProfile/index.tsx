@@ -22,7 +22,7 @@ const PublicProfilePage = () => {
 
   useEffect(() => {
     if (userProfile) {
-      capture("contributor_viewed", { id: userProfile.id, type: "full" });
+      capture("contributor_viewed", { id: userProfile.githubUserId, type: "full" });
     }
   }, [userProfile]);
 

@@ -1,5 +1,3 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { useEffect, useState } from "react";
 import MeApi from "src/api/me";
 import UsersApi from "src/api/Users";
@@ -8,6 +6,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { useShowToaster } from "src/hooks/useToaster";
 import View from "./View";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 type Props = {
   githubUserId: number;
@@ -16,11 +15,11 @@ type Props = {
 export default function ContributorProfileSidePanel({ githubUserId }: Props) {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const { user } = useAuth0();
+  const { githubUserId: currentGithubUserId } = useCurrentUser();
   const { capture } = usePosthog();
 
   const [editMode, setEditMode] = useState(false);
-  const isMine = getGithubUserIdFromSub(user?.sub) === githubUserId;
+  const isMine = currentGithubUserId === githubUserId;
 
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({
     options: { enabled: isMine && editMode },
@@ -35,7 +34,7 @@ export default function ContributorProfileSidePanel({ githubUserId }: Props) {
 
   useEffect(() => {
     if (profile) {
-      capture("contributor_viewed", { id: profile.id, type: "panel" });
+      capture("contributor_viewed", { id: profile.githubUserId, type: "panel" });
     }
   }, [profile]);
 

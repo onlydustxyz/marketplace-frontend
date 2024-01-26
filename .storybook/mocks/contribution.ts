@@ -3,6 +3,7 @@ import { Contribution } from "src/types";
 export const contribution: Contribution = {
   id: "652825ae108702f028ae4454bee3925c40c9a1b308a6d815d14ecbf50572e082",
   createdAt: "2023-09-18T16:41:40Z",
+  lastUpdatedAt: "2023-09-18T16:41:40Z",
   type: "CODE_REVIEW",
   status: "IN_PROGRESS",
   repo: {
@@ -55,8 +56,8 @@ export const contribution: Contribution = {
   contributor: {
     avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
     githubUserId: 5160414,
-    htmlUrl: "",  
+    htmlUrl: "",
     login: "haydencleary",
     isRegistered: true,
-  }
+  },
 };

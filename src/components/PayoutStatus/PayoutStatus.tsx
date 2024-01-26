@@ -6,18 +6,24 @@ import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
 import { withTooltip } from "src/components/Tooltip";
 import { components } from "src/__generated/api";
+import { compareDateToNow, getFormattedDateToLocaleDateString } from "src/utils/date";
+import LockFill from "src/icons/LockFill";
 
 type Props = {
   status: PaymentStatusUnion;
+  dates?: {
+    processedAt?: string | null;
+    unlockDate?: string | null;
+  };
 };
 
 export type PaymentStatusType = components["schemas"]["RewardPageItemResponse"]["status"];
 type PaymentStatusUnion = `${PaymentStatus}`;
 
-export default function PayoutStatus({ status }: Props) {
+export default function PayoutStatus({ status, dates }: Props) {
   const statuses: Record<PaymentStatusUnion, JSX.Element> = {
-    [PaymentStatus.COMPLETE]: <CompleteTag />,
-    [PaymentStatus.LOCKED]: <></>,
+    [PaymentStatus.COMPLETE]: <CompleteTag date={dates?.processedAt} />,
+    [PaymentStatus.LOCKED]: <LockedTag date={dates?.unlockDate} />,
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
     [PaymentStatus.PENDING_SIGNUP]: <PendingSignup />,
     [PaymentStatus.PROCESSING]: <ProcessingTag />,
@@ -26,13 +32,51 @@ export default function PayoutStatus({ status }: Props) {
   return statuses[status];
 }
 
-const CompleteTag = () => {
+const CompleteTag = ({ date }: { date: string | null | undefined }) => {
   const { T } = useIntl();
 
   return (
-    <Tag size={TagSize.Medium} {...withTooltip(T("reward.status.tooltip.complete"), { className: "w-36" })}>
+    <Tag
+      size={TagSize.Medium}
+      {...withTooltip(
+        T("reward.status.tooltip.processedOnDate", {
+          date: date ? getFormattedDateToLocaleDateString(new Date(date)) : undefined,
+        }),
+        { className: "w-36" }
+      )}
+    >
       <CheckLine className="text-greyscale-50" />
       <span className="font-normal text-greyscale-50">{T("reward.status.complete")}</span>
+    </Tag>
+  );
+};
+
+const LockedTag = ({ date }: { date: string | null | undefined }) => {
+  const { T } = useIntl();
+  const dateRelativeToNow = compareDateToNow(date);
+  let tooltipValue;
+
+  switch (dateRelativeToNow.status) {
+    case "past":
+      tooltipValue = T("reward.status.tooltip.unlockedOnDate", {
+        date: date ? getFormattedDateToLocaleDateString(new Date(date)) : undefined,
+      });
+      break;
+    case "future":
+      tooltipValue = T("reward.status.tooltip.lockedUntilDate", {
+        date: date ? getFormattedDateToLocaleDateString(new Date(date)) : undefined,
+      });
+      break;
+    case "invalid":
+    case "today":
+    default:
+      tooltipValue = T("reward.status.tooltip.lockedUntilFurther");
+  }
+
+  return (
+    <Tag size={TagSize.Medium} {...withTooltip(tooltipValue, { className: "w-36" })}>
+      <LockFill className="text-greyscale-50" />
+      <span className="font-normal text-greyscale-50">{T("reward.status.locked")}</span>
     </Tag>
   );
 };

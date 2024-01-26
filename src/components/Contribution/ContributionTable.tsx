@@ -36,7 +36,7 @@ function TableText({ children, colSpan }: PropsWithChildren<{ colSpan: number }>
 }
 
 export enum TableColumns {
-  Date = "CREATED_AT",
+  Date = "LAST_UPDATED_AT",
   Project = "PROJECT_REPO_NAME",
   Repo = "REPO_NAME",
   Contributor = "CONTRIBUTOR_LOGIN",

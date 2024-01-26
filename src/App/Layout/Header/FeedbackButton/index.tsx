@@ -3,13 +3,13 @@ import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
 import MeApi from "src/api/me";
 import { ReactNode, Ref, forwardRef, useMemo } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export const FeedbackButton = forwardRef(function FeedbackButton(
   { customButton }: { customButton?: ReactNode },
   ref: Ref<unknown>
 ) {
-  const { user } = useAuth0();
+  const { user } = useCurrentUser();
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyPayoutInfo({});
@@ -41,7 +41,7 @@ export const FeedbackButton = forwardRef(function FeedbackButton(
             firstname,
             lastname,
             email: user.email || "",
-            github: user.nickname || "",
+            github: user.login || "",
           }}
           autoClose
           transitiveSearchParams
