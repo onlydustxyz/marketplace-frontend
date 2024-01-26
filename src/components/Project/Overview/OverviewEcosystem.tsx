@@ -14,7 +14,6 @@ export const ProjectOverviewEcosystem = ({ ecosystems }: Props) => {
 
   return ecosystems?.length ? (
     <Section
-      testId="sponsors"
       icon={SectionIcon.Global}
       title={T("project.details.overview.ecosystems", { count: ecosystems?.length ?? 0 })}
     >

@@ -1,9 +1,9 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { IMAGES } from "src/assets/img";
 import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
-import { ProjectOverviewEcosystem } from "src/components/Project/Overview/OverviewEcosystem";
 import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
 import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
+import { ProjectOverviewTechnologies } from "src/components/Project/Overview/OverviewTechnologies";
 import isDefined from "src/utils/isDefined";
 
 import { Card } from "components/ds/card/card";
@@ -22,6 +22,7 @@ export default function OverviewPanel({ project }: Props) {
     invitedLeaders,
     // sponsors,
     moreInfos,
+    technologies,
   } = project;
   const projectLeads = leaders?.filter(lead => isDefined(lead?.login)) || [];
   const projectInvited = invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
@@ -48,8 +49,9 @@ export default function OverviewPanel({ project }: Props) {
       {/*<ProjectOverviewEcosystem
         // TODO pass correct props when they are available
         ecosystems={sponsors}
-      />
-      <ProjectOverviewSponsors sponsors={sponsors} />*/}
+      />*/}
+      {/*<ProjectOverviewSponsors sponsors={sponsors} />*/}
+      <ProjectOverviewTechnologies technologies={technologies} />
       <ProjectOverviewMoreInfo moreInfos={moreInfos} />
     </Card>
   );
