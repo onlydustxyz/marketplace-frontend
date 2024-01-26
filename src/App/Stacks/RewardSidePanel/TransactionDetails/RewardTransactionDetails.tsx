@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { UseGetRewards } from "src/api/Mixed/queries";
 import { useIntl } from "src/hooks/useIntl";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -7,6 +7,8 @@ import BankCardLine from "src/icons/BankCardLine";
 import { compareDateToNow, formatDateTime } from "src/utils/date";
 import { formatReceipt } from "src/App/Stacks/RewardSidePanel/View";
 import { cn } from "src/utils/cn";
+import { useUnlockDetailRow } from "src/App/Stacks/RewardSidePanel/TransactionDetails/useUnlockDetailRow";
+import { DetailRow } from "src/App/Stacks/RewardSidePanel/TransactionDetails/DetailRow";
 
 interface Props {
   isMine: boolean | undefined;
@@ -17,26 +19,6 @@ interface Props {
   processedAt?: string;
   receipt: UseGetRewards["receipt"];
 }
-
-const DetailRow = ({
-  icon,
-  label,
-  date,
-  additionalClass,
-}: {
-  icon: ReactElement;
-  label: string;
-  date: string;
-  additionalClass?: string;
-}) => (
-  <div className="flex flex-row items-center gap-2">
-    {icon}
-    <div className={cn("font-walsheim text-sm font-normal", additionalClass)}>
-      <span>{label}</span>
-      <span className="text-greyscale-300">{date}</span>
-    </div>
-  </div>
-);
 
 export function RewardTransactionDetails({
   isMine,
@@ -53,7 +35,10 @@ export function RewardTransactionDetails({
 
   const isLocked = status === "LOCKED";
   const isComplete = status === "COMPLETE" && processedAt;
-
+  const { label, date } = useUnlockDetailRow({
+    unlockDateRelativeToNowStatus: unlockDateRelativeToNow.status,
+    unlockDate,
+  });
   function renderLockedStatus() {
     return (
       <>
@@ -71,21 +56,8 @@ export function RewardTransactionDetails({
               />
             </div>
           }
-          label={T(
-            unlockDateRelativeToNow.status === "past"
-              ? "reward.table.detailsPanel.transactionDetails.unlockedLabel"
-              : "reward.table.detailsPanel.transactionDetails.lockedLabel"
-          )}
-          date={T(
-            unlockDateRelativeToNow.status === "past"
-              ? "reward.table.detailsPanel.transactionDetails.onDate"
-              : unlockDateRelativeToNow.status === "future"
-              ? "reward.table.detailsPanel.transactionDetails.untilDate"
-              : "reward.table.detailsPanel.transactionDetails.untilFurther",
-            {
-              date: unlockDate ? formatDateTime(new Date(unlockDate)) : null,
-            }
-          )}
+          label={label}
+          date={date}
         />
       </>
     );

@@ -37,7 +37,7 @@ import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
-import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/RewardTransactionDetails";
+import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 
 enum Align {
   Top = "top",
