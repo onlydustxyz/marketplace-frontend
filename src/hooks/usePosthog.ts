@@ -24,6 +24,7 @@ export function usePosthog() {
   }
 
   return {
+    posthog,
     identify,
     capture,
     reset,

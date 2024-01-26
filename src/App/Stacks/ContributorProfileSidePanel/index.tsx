@@ -35,7 +35,7 @@ export default function ContributorProfileSidePanel({ githubUserId }: Props) {
 
   useEffect(() => {
     if (profile) {
-      capture("contributor_viewed", { id: profile.id, type: "panel" });
+      capture("contributor_viewed", { id: profile.githubUserId, type: "panel" });
     }
   }, [profile]);
 
