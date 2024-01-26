@@ -16,7 +16,7 @@ export namespace TSelectAutocomplete {
     disabled?: boolean;
     icon?: icon<T>;
     items: T[];
-    tokens: Record<"zero" | "other", string>;
+    tokens: Record<"zero" | "other" | "empty", string>;
     type: avatarType;
   }
 

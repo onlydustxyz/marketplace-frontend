@@ -8,17 +8,13 @@ import { QueryProvider } from "components/features/api/providers/query-provider"
 import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/auth0-provider-with-navigate";
 import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
 import { PosthogIdentifyUser } from "components/features/posthog/components/posthog-identify-user";
+import { PosthogPageView } from "components/features/posthog/components/posthog-page-view";
 import { PosthogProvider } from "components/features/posthog/providers/posthog.provider";
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-import config from "src/config";
-import { sharedMetadata } from "./shared-metadata";
 import { ReactNode } from "react";
+import config from "src/config";
 import { IntlProvider } from "src/hooks/useIntl";
-
-const PosthogNext = dynamic(() => import("components/features/posthog/components/posthog-next"), {
-  ssr: false,
-});
+import { sharedMetadata } from "./shared-metadata";
 
 export const metadata: Metadata = sharedMetadata;
 
@@ -33,7 +29,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <QueryProvider>
                   <div id="root">{children}</div>
                   <PosthogIdentifyUser />
-                  <PosthogNext />
+                  <PosthogPageView />
                 </QueryProvider>
               </IntlProvider>
             </Auth0ProviderWithNavigate>

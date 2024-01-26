@@ -4,9 +4,8 @@ import { ContributionReview, ReviewStateStatuses } from "src/components/Contribu
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { cn } from "src/utils/cn";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { Link } from "components/ds/link/link";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 type Props = {
   contribution: ContributionT;
@@ -15,7 +14,7 @@ type Props = {
 };
 
 export function Contribution({ contribution, isMobile = false, showExternal = false }: Props) {
-  const { user } = useAuth0();
+  const { user } = useCurrentUser();
   const [openContributionPanel] = useStackContribution();
 
   const {
@@ -30,7 +29,7 @@ export function Contribution({ contribution, isMobile = false, showExternal = fa
     githubAuthor: { githubUserId },
   } = contribution;
 
-  const isMine = githubUserId === getGithubUserIdFromSub(user?.sub);
+  const isMine = githubUserId === user?.githubUserId;
 
   function renderReview() {
     if (

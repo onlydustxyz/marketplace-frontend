@@ -14,7 +14,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
-import { ContributionStatus, Contribution as ContributionT, GithubContributionType } from "src/types";
+import { Contribution as ContributionT, GithubContributionType } from "src/types";
 
 export function useContributionTable() {
   const { T } = useIntl();
@@ -61,9 +61,8 @@ export function useContributionTable() {
   const bodyRow = (contribution?: ContributionT) => {
     if (!contribution) return null;
 
-    const { createdAt, completedAt, githubStatus, id, repo, status, type } = contribution;
+    const { githubStatus, id, repo, status, type, lastUpdatedAt } = contribution;
     const lineId = `project-contribution-${id}`;
-    const lineDate = status === ContributionStatus.InProgress ? createdAt : completedAt;
 
     return (
       <Line key={lineId} className="border-card-border-light">
@@ -73,7 +72,7 @@ export function useContributionTable() {
             type={type as GithubContributionType}
             status={githubStatus}
             contributionStatus={status}
-            date={new Date(lineDate ?? "")}
+            date={new Date(lastUpdatedAt ?? "")}
             tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
           />
         </Cell>

@@ -17,8 +17,17 @@ type Props = {
 export function RewardLine({ reward, onClick, selected }: Props) {
   const { T } = useIntl();
 
-  const { id, amount, numberOfRewardedContributions, requestedAt, rewardedUserAvatar, rewardedUserLogin, status } =
-    reward || {};
+  const {
+    id,
+    amount,
+    numberOfRewardedContributions,
+    requestedAt,
+    rewardedUserAvatar,
+    rewardedUserLogin,
+    status,
+    unlockDate,
+    processedAt,
+  } = reward || {};
 
   return (
     <>
@@ -49,7 +58,7 @@ export function RewardLine({ reward, onClick, selected }: Props) {
           </div>
         </Cell>
         <Cell height={CellHeight.Medium}>
-          <PayoutStatus status={status} />
+          <PayoutStatus status={status} dates={{ unlockDate, processedAt }} />
         </Cell>
       </Line>
     </>

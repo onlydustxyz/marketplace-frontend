@@ -57,7 +57,10 @@ export function RewardCard({
           </p>
         </div>
 
-        <PayoutStatus status={reward.status} />
+        <PayoutStatus
+          status={reward.status}
+          dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
+        />
       </div>
 
       <Tag>

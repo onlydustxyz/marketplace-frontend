@@ -5,10 +5,9 @@ import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import Contributor from "../Contributor";
 import { cn } from "src/utils/cn";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { ComponentProps } from "react";
 import { Link } from "components/ds/link/link";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 interface ContributionBadgeProps {
   contribution: Pick<
@@ -89,11 +88,11 @@ export function ContributionBadge({
   showExternal = false,
 }: ContributionBadgeProps) {
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
 
   const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
 
-  const isExternal = githubAuthor && getGithubUserIdFromSub(user?.sub) !== githubAuthor.githubUserId;
+  const isExternal = githubAuthor && githubUserId !== githubAuthor.githubUserId;
   const tooltipId = `${githubNumber}-${type}-${githubStatus}`;
 
   const tokens = {

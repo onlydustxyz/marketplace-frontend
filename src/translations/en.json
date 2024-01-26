@@ -245,6 +245,7 @@
     "project": {
       "title": "Projects",
       "all": "All projects",
+      "empty": "No project found",
       "zero": "projects",
       "one": "__count__ project",
       "many": "__count__ projects"
@@ -252,13 +253,15 @@
     "repository": {
       "title": "Repositories",
       "all": "All repositories",
+      "empty": "No repository found",
       "zero": "repositories",
       "one": "__count__ repository",
       "many": "__count__ repositories"
     },
     "currency": {
-      "title": "Currency",
+      "title": "Currencies",
       "all": "All currencies",
+      "empty": "No currency found",
       "zero": "currencies",
       "one": "__count__ currency",
       "many": "__count__ currencies"
@@ -266,6 +269,7 @@
     "contributor": {
       "title": "Contributors",
       "placeholder": "Everyone",
+      "empty": "No contributors found",
       "zero": "contributors",
       "one": "__count__ contributor",
       "many": "__count__ contributors"
@@ -596,6 +600,7 @@
     "list": "List rewards",
     "status": {
       "complete": "Complete",
+      "locked": "Locked",
       "invoicePending": "Pending invoice",
       "signupPending": "Signup invoice",
       "payoutInfoMissing": "Payout info missing",
@@ -604,6 +609,10 @@
       "processing": "Processing",
       "tooltip": {
         "complete": "Reward successful",
+        "processedOnDate": "Processed on __date__",
+        "lockedUntilFurther": "Locked until further notice",
+        "lockedUntilDate": "Locked until __date__",
+        "unlockedOnDate": "Unlocked on __date__",
         "invoicePending": "An invoice is required to process your reward. Please wait up to 5 days if you already sent it.",
         "signupPending": "You need to sign up on OnlyDust to get paid",
         "payoutInfoMissing": "Fill in your payout information to get paid",
@@ -637,8 +646,8 @@
         "requestedAt": "Created on __requestedAt__",
         "processedAt": "Processed on __processedAt__",
         "processedVia": {
-          "crypto": "via **Crypto Wire** on __recipient__",
-          "fiat": "via **Bank Wire** on account __recipient__"
+          "crypto": "via[]Crypto Wire[]on[]__recipient__",
+          "fiat": "via[]Bank Wire[]on account[]__recipient__"
         },
         "processedTooltip": {
           "crypto": {
@@ -654,6 +663,16 @@
         "to": "to",
         "on": "on",
         "you": "(you)",
+        "transactionDetails": {
+            "title": "Transaction details",
+            "createdLabel": "Created ",
+            "lockedLabel": "Locked ",
+            "unlockedLabel": "Unlocked ",
+            "processedLabel": "Processed ",
+            "onDate": "on __date__",
+            "untilDate": "until __date__",
+            "untilFurther": "until further notice"
+        },
         "contributions": {
           "zero": "No contributions included in reward",
           "one": "__count__ contribution included in reward",
@@ -1451,5 +1470,8 @@
       "description": "Make sure they are public and the Github app is granted on all of them.",
       "button": "Manage on Github"
     }
-  }
+  },
+    "filters": {
+        "noResults": "No results"
+    }
 }

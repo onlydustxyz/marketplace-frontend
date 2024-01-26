@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import ProjectApi from "src/api/Project";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
-import { ContributorResponse } from "src/types";
 import { useLocalStorage } from "usehooks-ts";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
@@ -14,7 +13,6 @@ import { Item } from "src/components/New/Filter/FilterSelect";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { FiltersUsers } from "components/features/filters/filters-users/filters-users";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
-import { isArray } from "lodash";
 
 type Filters = {
   period: Period;
@@ -65,40 +63,17 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   const orderedCurrencies = useCurrenciesOrder({ currencies: projectBudget?.budgets });
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    `project-rewards-table-filters-${projectKey}`,
+    `project-rewards-table-filters-${projectKey}-v2-0-0`,
     JSON.stringify(initialFilters)
   );
 
   const contributorsQueryState = useState<string>();
   const [contributorsQuery] = contributorsQueryState;
-  function parseFiltersStorage() {
-    if (filtersStorage) {
-      const parsed = JSON.parse(filtersStorage);
-
-      if (parsed.contributors?.[0]?.githubUserId) {
-        parsed.contributors = parsed.contributors.map((contributor: ContributorResponse) => ({
-          label: contributor.login,
-          id: contributor.githubUserId,
-          image: contributor.avatarUrl,
-        }));
-      }
-
-      if (!isArray(parsed.currency)) {
-        if (parsed.currency?.value === "" || !parsed.currency?.value) {
-          parsed.currency = [];
-        } else {
-          parsed.currency = [parsed.currency];
-        }
-      }
-
-      return parsed;
-    }
-
-    return initialFilters;
-  }
 
   // Type of partial Filters is required as the shape required by the state may not exist in the user's local storage
-  const [filters, setFilters] = useState<Partial<Filters>>(parseFiltersStorage());
+  const [filters, setFilters] = useState<Partial<Filters>>(
+    filtersStorage ? JSON.parse(filtersStorage) : initialFilters
+  );
 
   const allPeriods = useDatepickerPeriods({ selectedPeriod: filters.period ?? initialFilters.period });
 

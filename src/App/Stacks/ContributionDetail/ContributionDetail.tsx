@@ -1,5 +1,3 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { Fragment, useEffect } from "react";
 import { useMatch } from "react-router-dom";
 import ProjectApi from "src/api/Project";
@@ -24,10 +22,11 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 import { Link } from "components/ds/link/link";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
   const [openRewardPanel] = useStackReward();
   const [openProjectOverview] = useStackProjectOverview();
   const isMyContribution = Boolean(useMatch(`${RoutePaths.Contributions}/*`));
@@ -222,7 +221,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
 
               <div className="flex flex-col gap-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                 {contribution.rewards.map(reward => {
-                  const isMine = reward.to.githubUserId === getGithubUserIdFromSub(user?.sub);
+                  const isMine = reward.to.githubUserId === githubUserId;
                   return (
                     <RewardCard
                       key={reward.id}
