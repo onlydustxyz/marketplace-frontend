@@ -1,4 +1,5 @@
-import { IMAGES } from "src/assets/img";
+import { Button } from "components/ds/button/button";
+import { Icon } from "components/layout/icon/icon";
 
 interface LinkProps {
   link: string;
@@ -6,13 +7,10 @@ interface LinkProps {
 
 export default function GithubLink({ link }: LinkProps) {
   return (
-    <a
-      href={link}
-      target="_blank"
-      className="flex h-8 w-8 justify-center rounded-xl border border-neutral-100 bg-white/5 grayscale hover:cursor-pointer hover:opacity-60"
-      rel="noreferrer"
-    >
-      <img className="w-3.5 fill-neutral-100" alt="GitHub" src={IMAGES.svg.logos.github} loading="lazy" />
+    <a href={link} target="_blank" rel="noreferrer">
+      <Button size="s" variant="secondary" iconOnly>
+        <Icon remixName="ri-github-fill" className="fill-neutral-100" />
+      </Button>
     </a>
   );
 }
