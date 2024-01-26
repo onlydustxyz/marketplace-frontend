@@ -5,10 +5,10 @@ import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import Time from "src/icons/TimeLine";
 import BankCardLine from "src/icons/BankCardLine";
 import { compareDateToNow, formatDateTime } from "src/utils/date";
-import { formatReceipt } from "src/App/Stacks/RewardSidePanel/View";
 import { cn } from "src/utils/cn";
 import { useUnlockDetailRow } from "src/App/Stacks/RewardSidePanel/TransactionDetails/useUnlockDetailRow";
 import { DetailRow } from "src/App/Stacks/RewardSidePanel/TransactionDetails/DetailRow";
+import { FormattedReceipt } from "src/App/Stacks/RewardSidePanel/TransactionDetails/FormattedReceipt";
 
 interface Props {
   isMine: boolean | undefined;
@@ -30,7 +30,6 @@ export function RewardTransactionDetails({
   receipt,
 }: Props) {
   const { T } = useIntl();
-  const formattedReceipt = isMine ? formatReceipt(receipt) : null;
   const unlockDateRelativeToNow = compareDateToNow(unlockDate);
 
   const isLocked = status === "LOCKED";
@@ -74,13 +73,7 @@ export function RewardTransactionDetails({
             date: processedAt ? formatDateTime(new Date(processedAt)) : null,
           })}
         />
-        {formattedReceipt && (
-          <div className="ml-6 font-walsheim text-sm font-normal">
-            {T(`reward.table.detailsPanel.processedVia.${formattedReceipt.type}`, {
-              recipient: formattedReceipt.shortDetails,
-            })}
-          </div>
-        )}
+        {isMine ? <FormattedReceipt receipt={receipt} /> : null}
       </>
     );
   }
@@ -95,8 +88,8 @@ export function RewardTransactionDetails({
         label={T("reward.table.detailsPanel.transactionDetails.createdLabel")}
         date={formatDateTime(new Date(createdAt))}
       />
-      {isLocked && renderLockedStatus()}
-      {isComplete && renderCompletedStatus()}
+      {isLocked ? renderLockedStatus() : null}
+      {isComplete ? renderCompletedStatus() : null}
     </div>
   );
 }

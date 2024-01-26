@@ -642,8 +642,8 @@
         "requestedAt": "Created on __requestedAt__",
         "processedAt": "Processed on __processedAt__",
         "processedVia": {
-          "crypto": "via **Crypto Wire** on __recipient__",
-          "fiat": "via **Bank Wire** on account __recipient__"
+          "crypto": "via[]Crypto Wire[]on[]__recipient__",
+          "fiat": "via[]Bank Wire[]on account[]__recipient__"
         },
         "processedTooltip": {
           "crypto": {
