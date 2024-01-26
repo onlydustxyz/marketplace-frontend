@@ -28,7 +28,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:@next/next/recommended",
   ],
-  plugins: ["@typescript-eslint", "prettier", "unused-imports"],
+  plugins: ["@typescript-eslint", "prettier", "unused-imports", "@trivago/prettier-plugin-sort-imports"],
   rules: {
     quotes: [
       "warn",
