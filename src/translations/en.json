@@ -1039,6 +1039,10 @@
           "many": "Sponsors",
           "one": "Sponsor"
         },
+        "ecosystems": {
+          "many": "Ecosystems",
+          "one": "Ecosystem"
+        },
         "technologies": "Technologies",
         "title": "Overview",
         "totalSpentAmountInUsd": "GRANTED",

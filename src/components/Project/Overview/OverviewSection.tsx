@@ -6,6 +6,7 @@ export enum SectionIcon {
   Funds = "ri-funds-line",
   Service = "ri-service-line",
   Link = "ri-link",
+  Global = "ri-global-line",
 }
 
 type Props = {
