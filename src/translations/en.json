@@ -596,6 +596,7 @@
     "list": "List rewards",
     "status": {
       "complete": "Complete",
+      "locked": "Locked",
       "invoicePending": "Pending invoice",
       "signupPending": "Signup invoice",
       "payoutInfoMissing": "Payout info missing",
@@ -604,6 +605,10 @@
       "processing": "Processing",
       "tooltip": {
         "complete": "Reward successful",
+        "processedOnDate": "Processed on __date__",
+        "lockedUntilFurther": "Locked until further notice",
+        "lockedUntilDate": "Locked until __date__",
+        "unlockedOnDate": "Unlocked on __date__",
         "invoicePending": "An invoice is required to process your reward. Please wait up to 5 days if you already sent it.",
         "signupPending": "You need to sign up on OnlyDust to get paid",
         "payoutInfoMissing": "Fill in your payout information to get paid",
@@ -637,8 +642,8 @@
         "requestedAt": "Created on __requestedAt__",
         "processedAt": "Processed on __processedAt__",
         "processedVia": {
-          "crypto": "via **Crypto Wire** on __recipient__",
-          "fiat": "via **Bank Wire** on account __recipient__"
+          "crypto": "via[]Crypto Wire[]on[]__recipient__",
+          "fiat": "via[]Bank Wire[]on account[]__recipient__"
         },
         "processedTooltip": {
           "crypto": {
@@ -654,6 +659,16 @@
         "to": "to",
         "on": "on",
         "you": "(you)",
+        "transactionDetails": {
+            "title": "Transaction details",
+            "createdLabel": "Created ",
+            "lockedLabel": "Locked ",
+            "unlockedLabel": "Unlocked ",
+            "processedLabel": "Processed ",
+            "onDate": "on __date__",
+            "untilDate": "until __date__",
+            "untilFurther": "until further notice"
+        },
         "contributions": {
           "zero": "No contributions included in reward",
           "one": "__count__ contribution included in reward",

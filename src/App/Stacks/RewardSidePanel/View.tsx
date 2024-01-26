@@ -1,9 +1,6 @@
 import { UseMutateFunction } from "@tanstack/react-query";
-import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { matchPath, useLocation } from "react-router-dom";
-import { components } from "src/__generated/api";
 import { RoutePaths } from "src/App/index";
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
@@ -11,17 +8,15 @@ import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
-import ExternalLink from "src/components/ExternalLink";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { ShowMore } from "src/components/Table/ShowMore";
-import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
+import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
-import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
 import { Currency, GithubContributionType, PaymentStatus } from "src/types";
@@ -29,13 +24,13 @@ import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
 import { rewardItemToContribution } from "src/utils/formatToContribution";
 import { pretty } from "src/utils/id";
-import isDefined from "src/utils/isDefined";
 import { formatMoneyAmount } from "src/utils/money";
 import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
 import { useCurrentUser } from "hooks/users/useCurrentUser";
+import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 
 enum Align {
   Top = "top",
@@ -78,7 +73,6 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
 
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
-  const formattedReceipt = isMine ? formatReceipt(data?.receipt) : null;
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
 
@@ -232,7 +226,10 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
           <div className="flex h-full flex-col gap-8 divide-y divide-greyscale-50/12">
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-2">
-                <PayoutStatus status={data.status} />
+                <PayoutStatus
+                  status={data.status}
+                  dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
+                />
                 <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
                   <InfoIcon className="h-4 w-3" />
                   <span>
@@ -326,56 +323,16 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                   })}
                 </Details>
               )}
-              {data.status === PaymentStatus.COMPLETE && data.processedAt ? (
-                <Details align={formattedReceipt ? Align.Top : Align.Center}>
-                  <BankCardLine className="text-base" />
-                  <ReactMarkdown
-                    className="payment-receipt whitespace-pre-wrap"
-                    {...withCustomTooltip("payment-receipt-tooltip")}
-                  >
-                    {[
-                      T("reward.table.detailsPanel.processedAt", {
-                        processedAt: formatDateTime(new Date(data.processedAt)),
-                      }),
-                      formattedReceipt
-                        ? T(`reward.table.detailsPanel.processedVia.${formattedReceipt.type}`, {
-                            recipient: formattedReceipt.shortDetails,
-                          })
-                        : null,
-                    ]
-                      .filter(isDefined)
-                      .join("\n")}
-                  </ReactMarkdown>
-
-                  {formattedReceipt ? (
-                    <Tooltip anchorSelect=".payment-receipt" clickable>
-                      <div className="flex flex-col items-start">
-                        <div>
-                          {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.recipient`, {
-                            recipient: formattedReceipt.fullDetails,
-                          })}
-                        </div>
-
-                        {formattedReceipt.type === "crypto" ? (
-                          <ExternalLink
-                            url={formattedReceipt.link || `https://etherscan.io/tx/${formattedReceipt.reference}`}
-                            text={T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.reference`, {
-                              reference: formattedReceipt.reference,
-                            })}
-                          />
-                        ) : (
-                          <div>
-                            {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.reference`, {
-                              reference: formattedReceipt.reference,
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    </Tooltip>
-                  ) : null}
-                </Details>
-              ) : null}
             </div>
+            <RewardTransactionDetails
+              isMine={isMine}
+              status={data?.status}
+              currency={data?.currency}
+              createdAt={data?.createdAt}
+              processedAt={data?.processedAt}
+              unlockDate={data?.unlockDate}
+              receipt={data?.receipt}
+            />
             {renderRewardItems()}
           </div>
         </div>
@@ -404,40 +361,6 @@ const Details = ({ align = Align.Center, children }: PropsWithChildren & { align
     {children}
   </div>
 );
-
-type FormattedReceipt = {
-  type: "crypto" | "fiat";
-  shortDetails: string;
-  fullDetails: string;
-  reference: string;
-  link?: string;
-};
-
-const formatReceipt = (receipt?: components["schemas"]["ReceiptResponse"]): FormattedReceipt | undefined => {
-  if (receipt?.type === "CRYPTO") {
-    const { ens, walletAddress: address = "", transactionReference: reference } = receipt;
-
-    return {
-      type: "crypto",
-      shortDetails: ens ?? `0x...${address.substring(address.length - 5)}`,
-      fullDetails: address,
-      reference,
-      link: receipt.transactionReferenceLink,
-    };
-  }
-
-  if (receipt?.type === "FIAT") {
-    const { iban = "", transactionReference: reference } = receipt;
-
-    return {
-      type: "fiat",
-      shortDetails: `**** ${iban.substring(iban.length - 3)}`,
-      fullDetails: IBAN.printFormat(iban),
-      reference,
-      link: receipt.transactionReferenceLink,
-    };
-  }
-};
 
 type CancelRewardButtonProps = {
   onRewardCancel: UseMutateFunction<unknown, Error, unknown, unknown>;

@@ -54,10 +54,8 @@ export default function RewardLine({ reward, onClick, selected }: Props) {
       </Cell>
       <Cell>
         <PayoutStatus
-          {...{
-            id: `payout-status-${reward?.id}`,
-            status: reward?.status,
-          }}
+          status={reward?.status}
+          dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
         />
       </Cell>
     </Line>
