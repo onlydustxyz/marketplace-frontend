@@ -60,10 +60,8 @@ export default function MobileUserRewardList({
                   date={new Date(reward.requestedAt)}
                   payoutStatus={
                     <PayoutStatus
-                      {...{
-                        id: `payout-status-${reward.id}`,
-                        status: reward.status,
-                      }}
+                      status={reward?.status}
+                      dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
                     />
                   }
                 />
