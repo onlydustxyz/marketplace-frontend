@@ -1,4 +1,3 @@
-import ExternalLink from "src/components/ExternalLink";
 import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
@@ -9,6 +8,7 @@ import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { ComponentProps } from "react";
+import { Link } from "components/ds/link/link";
 
 interface ContributionBadgeProps {
   contribution: Pick<
@@ -123,11 +123,9 @@ export function ContributionBadge({
           >
             <div className="flex items-center justify-between gap-2">
               <span className="line-clamp-2 text-sm font-medium leading-4">
-                <ExternalLink
-                  url={githubHtmlUrl}
-                  text={githubTitle}
-                  anchorProps={{ className: "line-clamp-2 whitespace-pre-line" }}
-                />
+                <Link href={githubHtmlUrl} className="line-clamp-2 whitespace-pre-line">
+                  {githubTitle}
+                </Link>
               </span>
 
               <ContributionBadgeContent {...contentProps} withTooltip={false} />

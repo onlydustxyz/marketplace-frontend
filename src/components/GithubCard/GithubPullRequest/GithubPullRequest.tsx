@@ -2,7 +2,6 @@ import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
-import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitCommitLine from "src/icons/GitCommitLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
@@ -14,6 +13,7 @@ import { RewardableItem } from "src/api/Project/queries";
 import { RewardItem } from "src/hooks/useInfiniteRewardItems";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ComponentProps } from "react";
+import { Link } from "components/ds/link/link";
 
 export enum Action {
   Add = "add",
@@ -89,7 +89,7 @@ export default function GithubPullRequest({
             <ContributionBadge {...badgeProps} />
 
             <div className="text-sm font-medium text-greyscale-50">
-              <GithubLink url={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""} text={pullRequest.title} />
+              <Link href={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""}>{pullRequest.title}</Link>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
