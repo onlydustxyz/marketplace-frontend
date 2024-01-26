@@ -11,7 +11,6 @@ import MailLine from "src/icons/MailLine";
 import DiscordFill from "src/icons/DiscordFill";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import PencilLine from "src/icons/PencilLine";
-import ExternalLink from "src/components/ExternalLink";
 import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { cn } from "src/utils/cn";
@@ -24,7 +23,8 @@ import CompletionBar from "src/components/CompletionBar";
 import { UserProfile } from "src/api/Users/queries";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import { IMAGES } from "src/assets/img";
-import Link from "next/link";
+import NextLink from "next/link";
+import { Link } from "components/ds/link/link";
 
 type Props = {
   profile: UserProfile;
@@ -74,7 +74,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
               {T("profile.editButton")}
             </Button>
           )}
-          <Link
+          <NextLink
             href={generatePath(RoutePaths.PublicProfile, {
               userLogin: profile.login || "",
             })}
@@ -83,7 +83,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
             <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
               <ExternalLinkLine />
             </Button>
-          </Link>
+          </NextLink>
         </div>
       ) : null}
 
@@ -124,7 +124,9 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           {website && (
             <div data-testid="website" className="flex flex-row items-center gap-1 text-base text-greyscale-300">
               <GlobalLine />
-              <ExternalLink url={website.url} text={website.hostname} />
+              <Link href={website.url} size="m">
+                {website.hostname}
+              </Link>
             </div>
           )}
           {profile.createdAt ? (

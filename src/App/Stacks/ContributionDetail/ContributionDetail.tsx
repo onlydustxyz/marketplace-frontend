@@ -23,6 +23,7 @@ import { ContributionStatus, GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
+import { Link } from "components/ds/link/link";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();
@@ -172,12 +173,9 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                   />
                   <div className="text-sm text-greyscale-300">
                     {T("contributions.panel.contribution.forProject")}&nbsp;
-                    <button
-                      onClick={() => openProjectOverview({ slug: contribution.project.slug })}
-                      className="text-spacePurple-400 hover:text-spacePurple-300"
-                    >
+                    <Link onClick={() => openProjectOverview({ slug: contribution.project.slug })}>
                       {contribution.project.name}
-                    </button>
+                    </Link>
                     &nbsp;/&nbsp;{contribution.repo.name}
                   </div>
                 </div>
