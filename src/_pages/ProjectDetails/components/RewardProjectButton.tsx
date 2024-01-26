@@ -13,13 +13,13 @@ import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 type RewardProjectButtonProps = { project: components["schemas"]["ProjectResponse"]; size?: ButtonSize };
 
 export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardProjectButtonProps) {
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { user } = useCurrentUser();
   const { data: userInfo } = MeApi.queries.useGetMyPayoutInfo({});
   const { data: userProfile } = MeApi.queries.useGetMyProfileInfo({});
   const navigate = useNavigate();
