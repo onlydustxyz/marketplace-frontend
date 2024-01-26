@@ -84,7 +84,12 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
               )}
             >
               <Combobox.Options className="bg-greyscale-800 p-1 py-2 pt-[54px]">
-                <Options selectedItems={selectedItems} filteredItems={filteredItems} type={type} />
+                <Options
+                  selectedItems={selectedItems}
+                  filteredItems={filteredItems}
+                  type={type}
+                  emptyMessage={tokens.empty}
+                />
               </Combobox.Options>
             </Transition>
           </>

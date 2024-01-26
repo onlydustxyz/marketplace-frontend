@@ -245,6 +245,7 @@
     "project": {
       "title": "Projects",
       "all": "All projects",
+      "empty": "No project found",
       "zero": "projects",
       "one": "__count__ project",
       "many": "__count__ projects"
@@ -252,13 +253,15 @@
     "repository": {
       "title": "Repositories",
       "all": "All repositories",
+      "empty": "No repository found",
       "zero": "repositories",
       "one": "__count__ repository",
       "many": "__count__ repositories"
     },
     "currency": {
-      "title": "Currency",
+      "title": "Currencies",
       "all": "All currencies",
+      "empty": "No currency found",
       "zero": "currencies",
       "one": "__count__ currency",
       "many": "__count__ currencies"
@@ -266,6 +269,7 @@
     "contributor": {
       "title": "Contributors",
       "placeholder": "Everyone",
+      "empty": "No contributors found",
       "zero": "contributors",
       "one": "__count__ contributor",
       "many": "__count__ contributors"
@@ -1466,5 +1470,8 @@
       "description": "Make sure they are public and the Github app is granted on all of them.",
       "button": "Manage on Github"
     }
-  }
+  },
+    "filters": {
+        "noResults": "No results"
+    }
 }

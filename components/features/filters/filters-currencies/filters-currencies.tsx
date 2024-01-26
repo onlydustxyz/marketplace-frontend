@@ -50,7 +50,7 @@ export function FiltersCurrencies({ currencies, selected, onChange }: TFiltersCu
       <SelectAutocomplete
         type="square"
         icon={({ className }) => <MoneyBoxLine className={className} />}
-        tokens={{ zero: "filter.currency.all", other: "filter.currency" }}
+        tokens={{ zero: "filter.currency.all", other: "filter.currency", empty: "filter.currency.empty" }}
         items={items}
         selected={selected.map(values => ({
           ...values,

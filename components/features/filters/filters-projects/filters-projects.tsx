@@ -11,7 +11,7 @@ export function FiltersProjects({ projects, selected, onChange }: TFiltersProjec
       <SelectAutocomplete
         type="square"
         icon={({ className }) => <FolderLine className={className} />}
-        tokens={{ zero: "filter.project.all", other: "filter.project" }}
+        tokens={{ zero: "filter.project.all", other: "filter.project", empty: "filter.project.empty" }}
         items={projects}
         multiple
         selected={selected}
