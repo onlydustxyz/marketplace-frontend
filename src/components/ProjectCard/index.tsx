@@ -19,8 +19,7 @@ import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
 import { MissingGithubAppInstall } from "../New/Project/MissingGithubAppInstall";
 import ProjectTitle from "./ProjectTitle";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export enum Variant {
   Default = "default",
@@ -52,9 +51,9 @@ export default function ProjectCard({ project, className, variant = Variant.Defa
   } = project;
 
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
 
-  const isLeader = isUserProjectLead(project, getGithubUserIdFromSub(user?.sub));
+  const isLeader = isUserProjectLead(project, githubUserId);
   const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
   const topSponsors = sponsors?.map(sponsor => sponsor).slice(0, 3) ?? [];
   const languages = technologies ? getTopTechnologies(technologies) : [];

@@ -1,6 +1,4 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { UseMutateFunction } from "@tanstack/react-query";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -37,6 +35,7 @@ import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 enum Align {
   Top = "top",
@@ -53,7 +52,7 @@ export type Props = {
 
 export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView, isMine }: Props) {
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
 
@@ -82,8 +81,6 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
   const formattedReceipt = isMine ? formatReceipt(data?.receipt) : null;
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
-
-  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   function renderRewardItems() {
     if (rewardItemsLoading) {

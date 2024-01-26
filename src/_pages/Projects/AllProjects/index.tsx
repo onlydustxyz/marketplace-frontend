@@ -1,6 +1,4 @@
 import { useEffect, useMemo } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { EmptyState } from "components/layout/placeholders/empty-state";
 import { uniqBy } from "lodash";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/_pages/Projects/Sorting/SortingDropdown";
@@ -19,6 +17,7 @@ import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";
 import SubmitProject from "../SubmitProject";
 import AllProjectLoading from "./AllProjectsLoading";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -50,7 +49,7 @@ export default function AllProjects({
   setSponsors,
 }: Props) {
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
   const { capture } = usePosthog();
 
   const {
@@ -115,8 +114,6 @@ export default function AllProjects({
   }
 
   const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
-
-  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   if (projects.length) {
     return (
