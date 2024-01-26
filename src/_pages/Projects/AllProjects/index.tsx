@@ -99,9 +99,7 @@ export default function AllProjects({
         "id"
       );
 
-      setTechnologies(
-        technologies.length ? replaceApostrophes(technologies.filter(item => !blackListedTech?.includes(item))) : []
-      );
+      setTechnologies(technologies.length ? technologies.filter(item => !blackListedTech?.includes(item)) : []);
       setSponsors(sponsors);
     }
   }, [data]);
@@ -169,8 +167,4 @@ export default function AllProjects({
       onAction={handleClear}
     />
   );
-}
-
-function replaceApostrophes(array: string[]): string[] {
-  return array.map(item => item.replace(/'/g, " "));
 }
