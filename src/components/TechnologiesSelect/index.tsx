@@ -23,6 +23,8 @@ import Flex from "../Utils/Flex";
 import TechnologiesApi from "src/api/Technologies";
 import useMutationAlert from "src/api/useMutationAlert";
 import { IMAGES } from "src/assets/img";
+import { isBlackListedTechnology } from "src/utils/technologies";
+import CrossIconLine from "src/assets/icons/CrossIconLine";
 
 type Props = {
   technologies: LanguageMap;
@@ -65,12 +67,14 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
     ...ai,
     ...architecture,
     ...web3,
-  }).map(language => ({
-    id: language,
-    value: language,
-    displayValue: language,
-    isSupported: supportedTechnologies.includes(language.toLowerCase()),
-  }));
+  })
+    .map(language => ({
+      id: language,
+      value: language,
+      displayValue: language,
+      isSupported: supportedTechnologies.includes(language.toLowerCase()),
+    }))
+    .filter(language => !isBlackListedTechnology(language.id));
 
   const selectedLanguages: LanguageOption[] = Object.entries(technologies)
     .sort((lang1, lang2) => lang2[1] - lang1[1])
@@ -79,7 +83,8 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
       value: language,
       displayValue: language,
       isSupported: supportedTechnologies.includes(language.toLowerCase()),
-    }));
+    }))
+    .filter(language => !isBlackListedTechnology(language.id));
 
   const sendSuggestion = async (suggestion: string) => {
     setSuggestionValue(suggestion);
@@ -93,9 +98,11 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
   ) => {
     const languages = typeof setter === "function" ? setter(selectedLanguages) : setter;
     const suggestion = languages.find(l => l.id === EMPTY_OPTION_ID);
-
     if (suggestion) {
-      sendSuggestion(suggestion.value);
+      const isBlackListed = isBlackListedTechnology(suggestion.value);
+      if (!isBlackListed) {
+        sendSuggestion(suggestion.value);
+      }
     } else {
       setTechnologies(
         languages.reduce(
@@ -174,17 +181,36 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
 
 function Technology({ option }: RenderProps<LanguageOption>) {
   const { T } = useIntl();
+  const isBlackListed = isBlackListedTechnology(option.value);
 
-  return option.id === EMPTY_OPTION_ID ? (
-    <div className="flex flex-col gap-1">
-      <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
-        <Add /> {T("profile.form.technologies.suggestion.suggest", { technology: option.value })}
+  if (option.id === EMPTY_OPTION_ID && isBlackListed) {
+    return (
+      <div className="disabled-option flex flex-col gap-1 ">
+        <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
+          <CrossIconLine className="[&>path]:fill-white" />{" "}
+          {T("profile.form.technologies.suggestion.suggestBlacklisted", { technology: option.value })}
+        </div>
+        <div className="font-walsheim text-sm font-normal italic text-greyscale-200">
+          {T("profile.form.technologies.suggestion.blackListed")}
+        </div>
       </div>
-      <div className="font-walsheim text-sm font-normal italic text-greyscale-200">
-        {T("profile.form.technologies.suggestion.disclaimer")}
+    );
+  }
+
+  if (option.id === EMPTY_OPTION_ID) {
+    return (
+      <div className="flex flex-col gap-1">
+        <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
+          <Add /> {T("profile.form.technologies.suggestion.suggest", { technology: option.value })}
+        </div>
+        <div className="font-walsheim text-sm font-normal italic text-greyscale-200">
+          {T("profile.form.technologies.suggestion.disclaimer")}
+        </div>
       </div>
-    </div>
-  ) : (
+    );
+  }
+
+  return (
     <div className="flex flex-row items-center gap-2">
       {option.displayValue}
       {option.isSupported && (

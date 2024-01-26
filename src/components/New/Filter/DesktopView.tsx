@@ -5,6 +5,7 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import Refresh from "src/icons/Refresh";
 import { cn } from "src/utils/cn";
+import { Typography } from "components/layout/typography/typography";
 
 export enum FilterPosition {
   Left,
@@ -15,9 +16,11 @@ export function DesktopView({
   children,
   isActive,
   onClear,
+  count = 0,
   position = FilterPosition.Right,
 }: PropsWithChildren<{
   isActive: boolean;
+  count?: number;
   onClear: () => void;
   position?: FilterPosition;
 }>) {
@@ -33,11 +36,24 @@ export function DesktopView({
             size={ButtonSize.Sm}
             pressed={open}
             className={cn({
-              "border-spacePurple-200 text-spacePurple-100": isActive,
+              "border-spacePurple-500 bg-spacePurple-900 text-spacePurple-200": isActive,
             })}
           >
             <FilterIcon />
             {T("filter.title")}
+            {count ? (
+              <div>
+                <Typography
+                  as="div"
+                  variant="body-s-bold"
+                  className="flex h-4 w-4 items-center justify-center rounded-full bg-spacePurple-500 text-spacePurple-900"
+                >
+                  {count}
+                </Typography>
+              </div>
+            ) : (
+              <></>
+            )}
           </Popover.Button>
 
           <Transition

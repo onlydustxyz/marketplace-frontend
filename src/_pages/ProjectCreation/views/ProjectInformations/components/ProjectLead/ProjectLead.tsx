@@ -8,13 +8,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { Combobox, Variant } from "src/components/New/Field/Combobox/Combobox";
 import { ItemType } from "src/components/New/Field/Combobox/MultiList";
 import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
-import { useAuth0 } from "@auth0/auth0-react";
-
-// TODO : Doc
-/**
- * used in https://www.figma.com/file/8PqNt4K2uKLu3DvxF3rVDX/%F0%9F%A7%AA-Only-Dust-%E2%80%A2-Venus?type=design&node-id=10797-233325&mode=design&t=ES631NUQNvE41TSD-4
- */
-// TODO : when a project id is pass to the component use the layout for edition and fetch another API route
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export type SelectedLeadType = {
   avatarUrl?: string;
@@ -37,8 +31,8 @@ export interface FieldProjectLeadProps {
 }
 
 export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, value }) => {
-  const { user } = useAuth0();
-  const { sub, picture = "", nickname = "" } = user || {};
+  const { user } = useCurrentUser();
+  const { githubUserId, avatarUrl = "", login = "" } = user || {};
   const [query, setQuery] = useState("");
   const { project } = useContext(EditContext);
   const { T } = useIntl();
@@ -62,7 +56,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
 
   const selectedLeads = useMemo(
     () => [
-      <FieldProjectLeadItem key={sub} avatar={picture} isYou label={nickname} />,
+      <FieldProjectLeadItem key={githubUserId} avatar={avatarUrl} isYou label={login} />,
       ...(value?.toKeep || [])
         .filter(lead => lead.id !== user?.id)
         .map(({ githubUserId, avatarUrl, login }) => (

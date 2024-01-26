@@ -1,6 +1,5 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { UseMutateFunction } from "@tanstack/react-query";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { matchPath, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App/index";
@@ -31,6 +30,7 @@ import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 
 enum Align {
@@ -48,7 +48,7 @@ export type Props = {
 
 export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView, isMine }: Props) {
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
 
@@ -76,8 +76,6 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
-
-  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   function renderRewardItems() {
     if (rewardItemsLoading) {

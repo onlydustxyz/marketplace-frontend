@@ -845,7 +845,9 @@
         "supportedTooltip": "Increase your chance of matching a project by choosing featured technologies.",
         "suggestion": {
           "suggest": "Suggest '__technology__'",
+          "suggestBlacklisted": "Technology '__technology__'",
           "disclaimer": "Oops! We do our best to maintain a list of relevant technologies, help us doing so by pointing out missing ones. Thank you",
+          "blackListed": "While we recognize this technology, it may not be relevant for the projects you're seeking.",
           "success": "Thanks for suggesting '__technology__'! We will add it to the list after review."
         }
       },

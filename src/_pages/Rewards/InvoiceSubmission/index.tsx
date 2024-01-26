@@ -4,15 +4,14 @@ import Skeleton from "src/components/Skeleton";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import View from "./View";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export type MyPayoutInfoType = components["schemas"]["UserPayoutInformationResponse"];
 export type MyRewardsPendingInvoiceType = components["schemas"]["MyRewardsListResponse"];
 
 export default function InvoiceSubmission() {
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
 
   const showToaster = useShowToaster();
 
@@ -52,7 +51,7 @@ export default function InvoiceSubmission() {
   return (
     <View
       {...{
-        githubUserId: getGithubUserIdFromSub(user?.sub) || 0,
+        githubUserId: githubUserId || 0,
         paymentRequests: rewardsPendingInvoice?.rewards || [],
         payoutInfo: payoutInfo || {},
       }}
