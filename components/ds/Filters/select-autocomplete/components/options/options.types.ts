@@ -6,5 +6,6 @@ export namespace TOptions {
     selectedItems: TSelectAutocomplete.Item[];
     filteredItems: TSelectAutocomplete.Item[];
     type: TSelectAutocomplete.avatarType;
+    emptyMessage?: string;
   }
 }

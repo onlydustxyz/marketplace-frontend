@@ -137,7 +137,7 @@ export function Datepicker({
               const [, selectedDay, ...restArgs] = args;
 
               props.onChange?.({ from: selectedDay, to: undefined }, selectedDay, ...restArgs);
-            } else {
+            } else if (args[0]?.to) {
               props.onChange?.(...args);
               if (autoCloseOnDateSelect) {
                 close();
