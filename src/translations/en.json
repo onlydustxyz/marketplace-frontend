@@ -1476,7 +1476,7 @@
       "button": "Manage on Github"
     }
   },
-    "filters": {
-        "noResults": "No results"
-    }
+  "filters": {
+    "noResults": "No results"
+  }
 }

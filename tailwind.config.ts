@@ -4,6 +4,7 @@ import scrollbar from "tailwind-scrollbar";
 import headlessUi from "@headlessui/tailwindcss";
 import typography from "@tailwindcss/typography";
 import { withTV } from "tailwind-variants/transformer";
+import { nextui } from "@nextui-org/react";
 
 const config: Config = withTV({
   content: [
@@ -12,6 +13,7 @@ const config: Config = withTV({
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./.storybook/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -483,6 +485,16 @@ const config: Config = withTV({
           values: theme("transitionDelay"),
         }
       );
+    }),
+    nextui({
+      defaultTheme: "dark",
+      themes: {
+        dark: {
+          colors: {
+            background: "#000000",
+          },
+        },
+      },
     }),
   ],
 });
