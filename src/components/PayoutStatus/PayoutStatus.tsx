@@ -11,16 +11,19 @@ import LockFill from "src/icons/LockFill";
 
 type Props = {
   status: PaymentStatusUnion;
-  date?: string | null;
+  dates?: {
+    processedAt?: string | null;
+    unlockDate?: string | null;
+  };
 };
 
 export type PaymentStatusType = components["schemas"]["RewardPageItemResponse"]["status"];
 type PaymentStatusUnion = `${PaymentStatus}`;
 
-export default function PayoutStatus({ status, date }: Props) {
+export default function PayoutStatus({ status, dates }: Props) {
   const statuses: Record<PaymentStatusUnion, JSX.Element> = {
-    [PaymentStatus.COMPLETE]: <CompleteTag date={date} />,
-    [PaymentStatus.LOCKED]: <LockedTag date={date} />,
+    [PaymentStatus.COMPLETE]: <CompleteTag date={dates?.processedAt} />,
+    [PaymentStatus.LOCKED]: <LockedTag date={dates?.unlockDate} />,
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
     [PaymentStatus.PENDING_SIGNUP]: <PendingSignup />,
     [PaymentStatus.PROCESSING]: <ProcessingTag />,
