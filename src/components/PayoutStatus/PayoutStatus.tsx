@@ -19,8 +19,7 @@ type PaymentStatusUnion = `${PaymentStatus}`;
 
 export default function PayoutStatus({ status, date }: Props) {
   const statuses: Record<PaymentStatusUnion, JSX.Element> = {
-    // TODO handle complete date once backend ready
-    [PaymentStatus.COMPLETE]: <CompleteTag />,
+    [PaymentStatus.COMPLETE]: <CompleteTag date={date} />,
     [PaymentStatus.LOCKED]: <LockedTag date={date} />,
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
     [PaymentStatus.PENDING_SIGNUP]: <PendingSignup />,
@@ -30,11 +29,19 @@ export default function PayoutStatus({ status, date }: Props) {
   return statuses[status];
 }
 
-const CompleteTag = () => {
+const CompleteTag = ({ date }: { date: string | null | undefined }) => {
   const { T } = useIntl();
 
   return (
-    <Tag size={TagSize.Medium} {...withTooltip(T("reward.status.tooltip.complete"), { className: "w-36" })}>
+    <Tag
+      size={TagSize.Medium}
+      {...withTooltip(
+        T("reward.status.tooltip.processedOnDate", {
+          date: date ? getFormattedDateToLocaleDateString(new Date(date)) : undefined,
+        }),
+        { className: "w-36" }
+      )}
+    >
       <CheckLine className="text-greyscale-50" />
       <span className="font-normal text-greyscale-50">{T("reward.status.complete")}</span>
     </Tag>

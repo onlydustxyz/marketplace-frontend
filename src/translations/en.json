@@ -605,6 +605,7 @@
       "processing": "Processing",
       "tooltip": {
         "complete": "Reward successful",
+        "processedOnDate": "Processed on __date__",
         "lockedUntilFurther": "Locked until further notice",
         "lockedUntilDate": "Locked until __date__",
         "unlockedOnDate": "Unlocked on __date__",
