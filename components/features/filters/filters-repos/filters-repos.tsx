@@ -10,7 +10,7 @@ export function FiltersRepos({ repos, selected, onChange }: TFiltersRepos.Props)
     <FilterFieldContainer label={T("filter.repository.title")}>
       <SelectAutocomplete
         icon={({ className }) => <GitRepositoryLine className={className} />}
-        tokens={{ zero: "filter.repository.all", other: "filter.repository" }}
+        tokens={{ zero: "filter.repository.all", other: "filter.repository", empty: "filter.repository.empty" }}
         items={repos}
         multiple
         selected={selected}

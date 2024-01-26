@@ -120,7 +120,7 @@ export function buildHiddenFields({
             amount: p.amount.total,
             currency: p.amount.currency,
           })} ${
-            p.amount.currency !== Currency.USD ? "~ " + p.amount.dollarsEquivalent?.toFixed(5) + " " + Currency.USD : ""
+            p.amount.currency !== Currency.USD ? "~ " + p.amount.dollarsEquivalent?.toFixed(2) + " " + Currency.USD : ""
           })`
       )
     ),
