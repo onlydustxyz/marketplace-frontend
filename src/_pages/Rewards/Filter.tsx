@@ -11,7 +11,6 @@ import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker
 import { UserRewardsContext } from "./context/UserRewards";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
-import { isArray } from "lodash";
 
 type Filters = {
   period: Period;
