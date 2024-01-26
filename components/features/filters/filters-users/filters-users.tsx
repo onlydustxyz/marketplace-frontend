@@ -11,7 +11,11 @@ export function FiltersUsers({ users, selected, onChange }: TFiltersUsers.Props)
     <FilterFieldContainer label={T("filter.contributor.title")}>
       <SelectAutocomplete
         icon={({ className }) => <User3Line className={className} />}
-        tokens={{ zero: "filter.contributor.placeholder", other: "filter.contributor.many" }}
+        tokens={{
+          zero: "filter.contributor.placeholder",
+          other: "filter.contributor.many",
+          empty: "filter.contributor.empty",
+        }}
         multiple
         disabled={users.length <= 1}
         type="circle"

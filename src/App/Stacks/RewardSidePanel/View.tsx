@@ -18,10 +18,8 @@ import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import Time from "src/icons/TimeLine";
 import { Currency, GithubContributionType, PaymentStatus } from "src/types";
 import { cn } from "src/utils/cn";
-import { formatDateTime } from "src/utils/date";
 import { rewardItemToContribution } from "src/utils/formatToContribution";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
@@ -315,14 +313,6 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                   </div>
                 </Details>
               ) : null}
-              {data.createdAt && (
-                <Details>
-                  <Time className="text-base" />
-                  {T("reward.table.detailsPanel.requestedAt", {
-                    requestedAt: formatDateTime(new Date(data.createdAt)),
-                  })}
-                </Details>
-              )}
             </div>
             <RewardTransactionDetails
               isMine={isMine}
