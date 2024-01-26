@@ -48,13 +48,15 @@ export function FormattedReceipt({ receipt }: Props) {
   const { T } = useIntl();
   const formattedReceipt = receipt ? formatReceipt(receipt) : null;
 
-  const formatReceiptTranslate = formattedReceipt
-    ? T(`reward.table.detailsPanel.processedVia.${formattedReceipt.type}`, {
-        recipient: formattedReceipt.shortDetails,
-      }).split("[]")
-    : [];
+  if (!formattedReceipt) {
+    return null;
+  }
 
-  return formattedReceipt ? (
+  const formatReceiptTranslate = T(`reward.table.detailsPanel.processedVia.${formattedReceipt.type}`, {
+    recipient: formattedReceipt.shortDetails,
+  }).split("[]");
+
+  return (
     <>
       <div className="ml-6 font-walsheim text-sm font-normal text-greyscale-50" id="reward-payment-receipt">
         {formatReceiptTranslate.map((str, index) => (
@@ -88,5 +90,5 @@ export function FormattedReceipt({ receipt }: Props) {
         </div>
       </Tooltip>
     </>
-  ) : null;
+  );
 }
