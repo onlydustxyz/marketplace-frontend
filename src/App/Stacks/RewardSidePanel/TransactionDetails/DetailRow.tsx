@@ -5,17 +5,17 @@ export function DetailRow({
   icon,
   label,
   date,
-  additionalClass,
+  className,
 }: {
   icon: ReactElement;
   label: string;
   date: string;
-  additionalClass?: string;
+  className?: string;
 }) {
   return (
     <div className="flex flex-row items-center gap-2">
       {icon}
-      <div className={cn("font-walsheim text-sm font-normal", additionalClass)}>
+      <div className={cn("font-walsheim text-sm font-normal", className)}>
         <span>{label}</span>
         <span className="text-greyscale-300">{date}</span>
       </div>
