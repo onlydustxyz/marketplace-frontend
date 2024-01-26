@@ -664,14 +664,14 @@
         "on": "on",
         "you": "(you)",
         "transactionDetails": {
-            "title": "Transaction details",
-            "createdLabel": "Created ",
-            "lockedLabel": "Locked ",
-            "unlockedLabel": "Unlocked ",
-            "processedLabel": "Processed ",
-            "onDate": "on __date__",
-            "untilDate": "until __date__",
-            "untilFurther": "until further notice"
+          "title": "Transaction details",
+          "createdLabel": "Created ",
+          "lockedLabel": "Locked ",
+          "unlockedLabel": "Unlocked ",
+          "processedLabel": "Processed ",
+          "onDate": "on __date__",
+          "untilDate": "until __date__",
+          "untilFurther": "until further notice"
         },
         "contributions": {
           "zero": "No contributions included in reward",
@@ -1471,7 +1471,7 @@
       "button": "Manage on Github"
     }
   },
-    "filters": {
-        "noResults": "No results"
-    }
+  "filters": {
+    "noResults": "No results"
+  }
 }

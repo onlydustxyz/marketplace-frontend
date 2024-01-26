@@ -15,7 +15,7 @@ export default function TagButton({
   return (
     <Tag
       as={as}
-      className="text-spacePurple-500 transition-all duration-200 ease-out hover:scale-[98%] hover:border-spacePurple-500 hover:text-purple-500"
+      className="text-spacePurple-500 duration-200 ease-out transition-all hover:scale-[98%] hover:border-spacePurple-500 hover:text-purple-500"
       onClick={handleClick}
       {...rest}
     >

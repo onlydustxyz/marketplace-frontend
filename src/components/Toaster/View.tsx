@@ -58,7 +58,7 @@ export default function View({ message, visible, isError, setVisible }: Props) {
               }
             )}
           >
-            <div className="border-1 w-full rounded-[15px] border border-transparent">
+            <div className="w-full rounded-[15px] border border-1 border-transparent">
               <div
                 className={cn("rounded-[15px]", {
                   "bg-orange-900": isError,
