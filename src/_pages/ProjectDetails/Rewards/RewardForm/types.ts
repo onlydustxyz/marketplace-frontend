@@ -1,6 +1,6 @@
 import { components } from "src/__generated/api";
-import { BudgetCurrencyType } from "src/utils/money";
 import { WorkItemType } from "src/types";
+import { BudgetCurrencyType } from "src/utils/money";
 
 export interface WorkItem {
   id: string;

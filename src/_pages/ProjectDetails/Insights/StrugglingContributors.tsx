@@ -1,14 +1,15 @@
-import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
-import Table from "src/components/Table";
-import HeaderLine from "src/components/Table/HeaderLine";
-import HeaderCell from "src/components/Table/HeaderCell";
-import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder/EmptyTablePlaceholder";
-import { useStrugglingContributorsTable } from "./hooks/useStrugglingContributorsTable";
 import ProjectApi from "src/api/Project";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
-import QuestionLine from "src/icons/QuestionLine";
 import Skeleton from "src/components/Skeleton";
+import Table from "src/components/Table";
+import HeaderCell from "src/components/Table/HeaderCell";
+import HeaderLine from "src/components/Table/HeaderLine";
+import { ShowMore } from "src/components/Table/ShowMore";
+import { useIntl } from "src/hooks/useIntl";
+import QuestionLine from "src/icons/QuestionLine";
+
+import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder/EmptyTablePlaceholder";
+import { useStrugglingContributorsTable } from "./hooks/useStrugglingContributorsTable";
 
 export default function StrugglingContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();

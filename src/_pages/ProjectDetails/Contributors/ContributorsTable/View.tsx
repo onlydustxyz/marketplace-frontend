@@ -1,12 +1,14 @@
 import { ComponentProps } from "react";
+
+import { ToRewardDetailsTooltip } from "src/_pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
+import ProjectApi from "src/api/Project";
+import { ProjectContributorItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { ToRewardDetailsTooltip } from "src/_pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
+
 import Headers from "./Headers";
 import ContributorLine from "./Line";
-import ProjectApi from "src/api/Project";
-import { ProjectContributorItem } from "src/api/Project/queries";
 
 type Props<C> = {
   contributors: C[];

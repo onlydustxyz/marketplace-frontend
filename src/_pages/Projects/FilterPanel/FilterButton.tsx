@@ -1,7 +1,7 @@
-import { cn } from "src/utils/cn";
+import { Ownership, useProjectFilter } from "src/_pages/Projects/useProjectFilter";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import { useIntl } from "src/hooks/useIntl";
-import { Ownership, useProjectFilter } from "src/_pages/Projects/useProjectFilter";
+import { cn } from "src/utils/cn";
 
 type Props = {
   panelOpen: boolean;

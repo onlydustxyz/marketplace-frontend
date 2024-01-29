@@ -2,6 +2,8 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import { copyClickHandlerFactory } from "src/utils/clickHandler";
 
+import { Button } from "components/ds/button/button";
+
 interface SocialLinkProps extends React.PropsWithChildren {
   link?: string;
   copyableValue?: string;
@@ -13,7 +15,7 @@ export default function SocialLink({ link, copyableValue, copyableValueName, tes
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
-  const Component = link ? "a" : "div";
+  const Component = link ? "a" : "button";
 
   const linkProps = { href: link, target: "_blank", rel: "noreferrer" };
   const copyProps = {
@@ -24,10 +26,18 @@ export default function SocialLink({ link, copyableValue, copyableValueName, tes
 
   const props = link ? linkProps : copyProps;
   return (
-    <Component className="rounded-xl bg-white/4" data-testid={testId} {...props}>
-      <div className="flex h-10 w-10 flex-row items-center justify-center rounded-xl bg-noise-light text-2xl text-greyscale-200  hover:cursor-pointer hover:opacity-60">
+    <>
+      <Button
+        as={Component}
+        size="m"
+        variant="secondary"
+        iconOnly
+        className="h-10 w-10 border-transparent bg-noise-light p-0 text-greyscale-200 hover:border"
+        data-testid={testId}
+        {...props}
+      >
         {children}
-      </div>
-    </Component>
+      </Button>
+    </>
   );
 }

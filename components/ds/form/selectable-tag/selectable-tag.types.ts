@@ -1,5 +1,6 @@
-import { TSelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item.types";
 import { CheckboxGroupProps } from "@nextui-org/react";
+
+import { TSelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item.types";
 
 export namespace TSelectableTag {
   export type Mode = "single" | "multiple";

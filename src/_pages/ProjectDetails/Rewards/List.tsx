@@ -1,26 +1,29 @@
+import { useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import ErrorFallback from "src/ErrorFallback";
+import Title from "src/_pages/ProjectDetails/Title";
 import ProjectApi from "src/api/Project";
+import { IMAGES } from "src/assets/img";
 import Card from "src/components/Card";
+import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Fields } from "src/components/RewardTable/Headers";
 import RewardTable from "src/components/RewardTable/RewardTable";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
+import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
-import Title from "src/_pages/ProjectDetails/Title";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
+
+import { EmptyState } from "components/layout/placeholders/empty-state";
+
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { RewardProjectButton } from "../components/RewardProjectButton";
 import { Budget } from "./Budget/Budget";
 import { FilterQueryParams, ProjectRewardsFilter, ProjectRewardsFilterRef } from "./Filter";
-import { useMemo, useRef, useState } from "react";
-import { FilterPosition } from "src/components/New/Filter/DesktopView";
-import Skeleton from "src/components/Skeleton";
-import { IMAGES } from "src/assets/img";
-import { EmptyState } from "components/layout/placeholders/empty-state";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();

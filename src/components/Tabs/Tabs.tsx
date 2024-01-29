@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react";
-import { cn } from "src/utils/cn";
 
 import { DesktopView, type Variants } from "src/components/Tabs/DesktopView";
 import { MobileView } from "src/components/Tabs/MobileView";
+import { cn } from "src/utils/cn";
 
 export type Tab = PropsWithChildren<{
   active: boolean;

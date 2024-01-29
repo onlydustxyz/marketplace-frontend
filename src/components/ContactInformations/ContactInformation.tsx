@@ -1,12 +1,13 @@
-import Input, { Size } from "src/components/FormInput";
-import { RegisterOptions, useFormContext } from "react-hook-form";
 import { ReactElement } from "react";
+import { RegisterOptions, useFormContext } from "react-hook-form";
+
+import Input, { Size } from "src/components/FormInput";
+import { withTooltip } from "src/components/Tooltip";
+import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
-import { cn } from "src/utils/cn";
 import EyeLine from "src/icons/EyeLine";
 import EyeOffLine from "src/icons/EyeOffLine";
-import { useIntl } from "src/hooks/useIntl";
-import { withTooltip } from "src/components/Tooltip";
+import { cn } from "src/utils/cn";
 
 type Props = {
   icon: ReactElement;

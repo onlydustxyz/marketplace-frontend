@@ -1,4 +1,5 @@
 import { ComponentProps } from "react";
+
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 

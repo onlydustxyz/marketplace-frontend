@@ -1,5 +1,6 @@
 import { ElementType, PropsWithChildren } from "react";
 import { VariantProps } from "tailwind-variants";
+
 import { cardVariants } from "./card.variants";
 
 export namespace TCard {

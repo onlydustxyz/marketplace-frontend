@@ -1,11 +1,13 @@
 import { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
 import { Dispatch, ReactNode } from "react";
-import { UseGetMeRewardCurrencies, UseMyRewardsInfiniteListResponse } from "src/api/me/queries";
-import { Money, MyReward } from "src/types";
-import { FilterQueryParams } from "../Filter";
-import { useQueryParamsSortingReturn } from "src/components/RewardTable/useQueryParamsSorting";
-import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
+
 import { components } from "src/__generated/api";
+import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
+import { UseGetMeRewardCurrencies, UseMyRewardsInfiniteListResponse } from "src/api/me/queries";
+import { useQueryParamsSortingReturn } from "src/components/RewardTable/useQueryParamsSorting";
+import { Money, MyReward } from "src/types";
+
+import { FilterQueryParams } from "../Filter";
 
 export type Earning = {
   rewardedAmount?: Money;

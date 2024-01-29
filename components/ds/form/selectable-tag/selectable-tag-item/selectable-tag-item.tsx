@@ -1,8 +1,10 @@
-import { cn } from "src/utils/cn";
-import { selectableTagItemVariants } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item.variants";
-import { TSelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item.types";
-import { useCheckbox, VisuallyHidden } from "@nextui-org/react";
+import { VisuallyHidden, useCheckbox } from "@nextui-org/react";
 import { useMemo } from "react";
+
+import { cn } from "src/utils/cn";
+
+import { TSelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item.types";
+import { selectableTagItemVariants } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item.variants";
 
 export function SelectableTagItem<V extends string>({
   value,

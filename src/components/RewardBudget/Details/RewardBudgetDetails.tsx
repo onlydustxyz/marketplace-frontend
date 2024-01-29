@@ -1,13 +1,13 @@
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { WorkEstimationBudgetDetails } from "src/components/RewardBudget/RewardBudget.type";
+import { RewardBudgetUtils } from "src/components/RewardBudget/RewardBudget.utils";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import InformationLine from "src/icons/InformationLine";
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
 import { formatMoneyAmount } from "src/utils/money";
-import { RewardBudgetUtils } from "src/components/RewardBudget/RewardBudget.utils";
 
 interface RewardBudgetDetailsProps {
   budget: WorkEstimationBudgetDetails;

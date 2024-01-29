@@ -1,10 +1,13 @@
-import { generatePath } from "react-router-dom";
-import { RoutePaths } from "src/App";
 import Link from "next/link";
+import { generatePath } from "react-router-dom";
+
+import { RoutePaths } from "src/App";
+
 import { Button } from "components/ds/button/button";
-import { TProjectMissingGithubBanner } from "./project-missing-github-banner.types";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { TProjectMissingGithubBanner } from "./project-missing-github-banner.types";
 
 export function ProjectMissingGithubBanner({ slug = "" }: TProjectMissingGithubBanner.Props) {
   return (

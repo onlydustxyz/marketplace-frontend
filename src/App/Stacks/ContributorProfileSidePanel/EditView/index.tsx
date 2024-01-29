@@ -1,31 +1,33 @@
-import { useIntl } from "src/hooks/useIntl";
-import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import CheckLine from "src/icons/CheckLine";
-import Button, { ButtonSize } from "src/components/Button";
-import Tag, { TagSize } from "src/components/Tag";
-import Header from "src/App/Stacks/ContributorProfileSidePanel/Header";
-import Card from "./Card";
-import { Section } from "./Section";
-import Input, { Size } from "src/components/FormInput";
-import { Controller, FormProvider, useForm } from "react-hook-form";
-import GlobalLine from "src/icons/GlobalLine";
-import MapPinLine from "src/icons/MapPinLine";
-import { AllocatedTime, UserProfileInfo, fromFragment, mapFormDataToSchema } from "./types";
-import ContactInformations from "src/components/ContactInformations";
-import TechnologiesSelect from "src/components/TechnologiesSelect";
-import FormSelect from "src/components/FormSelect";
-import LockFill from "src/icons/LockFill";
-import FormToggle from "src/components/FormToggle";
-import CompletionBar from "src/components/CompletionBar";
 import { useState } from "react";
-import { viewportConfig } from "src/config";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useMediaQuery } from "usehooks-ts";
-import { cn } from "src/utils/cn";
+
+import Header from "src/App/Stacks/ContributorProfileSidePanel/Header";
 import MeApi from "src/api/me";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
-import { calculateFormCompletionScore, calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import useMutationAlert from "src/api/useMutationAlert";
+import Button, { ButtonSize } from "src/components/Button";
+import CompletionBar from "src/components/CompletionBar";
+import ContactInformations from "src/components/ContactInformations";
+import Input, { Size } from "src/components/FormInput";
+import FormSelect from "src/components/FormSelect";
+import FormToggle from "src/components/FormToggle";
 import { Spinner } from "src/components/Spinner/Spinner";
+import Tag, { TagSize } from "src/components/Tag";
+import TechnologiesSelect from "src/components/TechnologiesSelect";
+import { viewportConfig } from "src/config";
+import { useIntl } from "src/hooks/useIntl";
+import CheckLine from "src/icons/CheckLine";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import GlobalLine from "src/icons/GlobalLine";
+import LockFill from "src/icons/LockFill";
+import MapPinLine from "src/icons/MapPinLine";
+import { calculateFormCompletionScore, calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
+import { cn } from "src/utils/cn";
+
+import Card from "./Card";
+import { Section } from "./Section";
+import { AllocatedTime, UserProfileInfo, fromFragment, mapFormDataToSchema } from "./types";
 
 type Props = {
   myProfile: UseGetMyProfileInfoResponse;

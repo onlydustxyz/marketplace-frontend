@@ -1,8 +1,8 @@
-import ProjectApi from "src/api/Project";
 import { API_PATH } from "src/api/ApiPath";
+import ProjectApi from "src/api/Project";
+import { ProjectContributorItem } from "src/api/Project/queries";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-import { ProjectContributorItem } from "src/api/Project/queries";
 
 interface Props {
   projectId: string;

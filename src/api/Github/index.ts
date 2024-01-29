@@ -1,5 +1,5 @@
-import { GITHUB_TAGS as tags } from "./tags";
 import queries from "./queries";
+import { GITHUB_TAGS as tags } from "./tags";
 
 const GithubApi = {
   tags,

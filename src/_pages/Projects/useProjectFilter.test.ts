@@ -1,5 +1,6 @@
-import { describe, expect, it } from "vitest";
 import { renderHook } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+
 import { Ownership, ProjectFilterProvider, useProjectFilter } from "./useProjectFilter";
 
 const render = () => renderHook(() => useProjectFilter(), { wrapper: ProjectFilterProvider });

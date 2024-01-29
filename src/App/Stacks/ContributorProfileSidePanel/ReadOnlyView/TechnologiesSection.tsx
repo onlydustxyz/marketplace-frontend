@@ -1,7 +1,8 @@
-import { useIntl } from "src/hooks/useIntl";
 import Tag, { TagSize } from "src/components/Tag";
+import { useIntl } from "src/hooks/useIntl";
+import { Technologies, getFilteredTechnologies } from "src/utils/technologies";
+
 import { Section } from "./Section";
-import { getFilteredTechnologies, Technologies } from "src/utils/technologies";
 
 type Props = {
   technologies: Technologies;

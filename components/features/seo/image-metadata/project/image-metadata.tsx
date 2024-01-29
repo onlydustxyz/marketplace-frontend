@@ -1,6 +1,6 @@
-import { TProjectImageMetadataProps } from "./image-metadata.types";
 import { ImageMetadataBackground } from "../commons/background/background";
 import { ImageMetadataContent } from "../commons/content/content";
+import { TProjectImageMetadataProps } from "./image-metadata.types";
 
 export function ProjectImageMetadata({ name, description, imageUrl }: TProjectImageMetadataProps.Props) {
   const image = imageUrl || `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/project-placeholder.png`;

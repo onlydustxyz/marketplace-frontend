@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, ComponentProps } from "react";
-import Tag from "src/components/Tag";
 import { MouseEvent } from "react";
+
+import Tag from "src/components/Tag";
 
 export default function TagButton({
   children,

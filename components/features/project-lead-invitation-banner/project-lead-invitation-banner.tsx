@@ -1,11 +1,14 @@
+import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
+
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
+
 import { Button } from "components/ds/button/button";
 import { projectLeadInvitationBannerVariants } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner.variants";
-import { useMemo } from "react";
-import { Translate } from "components/layout/translate/translate";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
+
 import { TProjectLeadInvitationBanner } from "./project-lead-invitation-banner.types";
 
 export function ProjectLeadInvitationBanner({

@@ -1,6 +1,7 @@
 import SkeletonEl from "src/components/New/Skeleton/Skeleton";
-import GithubLink from "../GithubLink";
+
 import ProfileButton from ".";
+import GithubLink from "../GithubLink";
 
 type ProfileButtonDisplayProps = {
   isLoading: boolean;

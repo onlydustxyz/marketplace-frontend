@@ -1,11 +1,12 @@
-import { useIntl } from "src/hooks/useIntl";
-import HeaderLine from "src/components/Table/HeaderLine";
-import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
-import TimeLine from "src/icons/TimeLine";
-import Folder3Line from "src/icons/Folder3Line";
-import FocusLine from "src/icons/FocusLine";
 import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import Amount from "src/assets/icons/Amount";
+import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
+import HeaderLine from "src/components/Table/HeaderLine";
+import { useIntl } from "src/hooks/useIntl";
+import FocusLine from "src/icons/FocusLine";
+import Folder3Line from "src/icons/Folder3Line";
+import TimeLine from "src/icons/TimeLine";
+
 import { SortField, Sorting } from "./useQueryParamsSorting";
 
 export enum Fields {

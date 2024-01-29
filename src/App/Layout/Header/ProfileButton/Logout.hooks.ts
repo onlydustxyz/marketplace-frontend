@@ -1,7 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { QueryClient } from "@tanstack/react-query";
-import { useImpersonation } from "components/features/impersonation/use-impersonation";
+
 import { usePosthog } from "src/hooks/usePosthog";
+
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 const queryClient = new QueryClient();
 

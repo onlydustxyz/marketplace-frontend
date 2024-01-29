@@ -1,7 +1,7 @@
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
+
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-
 import { useIntl } from "src/hooks/useIntl";
 
 type EditProjectButtonProps = { projectKey: string };

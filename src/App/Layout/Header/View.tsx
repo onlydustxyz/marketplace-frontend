@@ -1,13 +1,15 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
+import { useMediaQuery } from "usehooks-ts";
+
 import { RoutePaths } from "src/App";
+import MenuItem from "src/App/Layout/Header/MenuItem";
+import { viewportConfig } from "src/config";
+import { useIntl } from "src/hooks/useIntl";
+
+import { GithubStatusBanner } from "./GithubStatusBanner";
 import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
-import MenuItem from "src/App/Layout/Header/MenuItem";
-import { Link } from "react-router-dom";
-import { useIntl } from "src/hooks/useIntl";
-import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
-import { GithubStatusBanner } from "./GithubStatusBanner";
-import { useAuth0 } from "@auth0/auth0-react";
 import { ProfileButtonDisplay } from "./ProfileButton/ProfileButtonDisplay";
 
 interface HeaderViewProps {

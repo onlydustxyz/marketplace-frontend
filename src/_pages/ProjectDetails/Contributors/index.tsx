@@ -1,5 +1,14 @@
+import { useCurrentUser } from "hooks/users/useCurrentUser";
+import { useForm, useWatch } from "react-hook-form";
 import { useParams } from "react-router-dom";
+
 import ErrorFallback from "src/ErrorFallback";
+import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
+import { Fields } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/Headers";
+import Title from "src/_pages/ProjectDetails/Title";
+import ProjectApi from "src/api/Project";
+import { IMAGES } from "src/assets/img";
+import FormToggle from "src/components/FormToggle";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
@@ -7,24 +16,18 @@ import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
-import { Fields } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/Headers";
-import Title from "src/_pages/ProjectDetails/Title";
+import EyeOffLine from "src/icons/EyeOffLine";
 import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
+
+import { Card } from "components/ds/card/card";
+import { EmptyState } from "components/layout/placeholders/empty-state";
+
+import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
-import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
-import ProjectApi from "src/api/Project";
 import { RewardProjectButton } from "../components/RewardProjectButton";
-import { IMAGES } from "src/assets/img";
-import { EmptyState } from "components/layout/placeholders/empty-state";
-import { Card } from "components/ds/card/card";
-import EyeOffLine from "src/icons/EyeOffLine";
-import FormToggle from "src/components/FormToggle";
-import { useForm, useWatch } from "react-hook-form";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export default function Contributors() {
   const { T } = useIntl();

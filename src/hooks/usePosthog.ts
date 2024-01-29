@@ -1,7 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { usePostHog } from "posthog-js/react";
+
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
-import { usePostHog } from "posthog-js/react";
 
 export function usePosthog() {
   const posthog = usePostHog();

@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { SelectableTag } from "./selectable-tag";
-import StoryState from "components/features/storybooks/stateManagement";
+
 import { SelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item";
+import StoryState from "components/features/storybooks/stateManagement";
 import { Icon } from "components/layout/icon/icon";
+
+import { SelectableTag } from "./selectable-tag";
 
 const meta: Meta<typeof SelectableTag> = {
   component: SelectableTag,

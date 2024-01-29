@@ -1,7 +1,7 @@
-import { LanguageMap } from "src/types";
+import { components } from "src/__generated/api";
 import { UseUpdateProfileBody } from "src/api/me/mutations";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
-import { components } from "src/__generated/api";
+import { LanguageMap } from "src/types";
 
 const translateProfileCover = (cover: string): ProfileCover | undefined => {
   switch (cover) {

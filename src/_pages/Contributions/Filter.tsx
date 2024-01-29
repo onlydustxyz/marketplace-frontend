@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useLocalStorage } from "react-use";
+
 import MeApi from "src/api/me";
 import { Period } from "src/components/New/Field/Datepicker";
 import { Filter } from "src/components/New/Filter/Filter";
@@ -10,6 +11,7 @@ import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam } from "src/utils/date";
+
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 import { FiltersRepos } from "components/features/filters/filters-repos/filters-repos";
 

@@ -2,6 +2,7 @@
 
 import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
 import { ReactNode } from "react";
+
 import { usePosthog } from "src/hooks/usePosthog";
 
 const domain = process.env.NEXT_PUBLIC_AUTH0_PROVIDER_DOMAIN;

@@ -1,5 +1,5 @@
-import { PaymentStatus } from "src/types";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
+import { PaymentStatus } from "src/types";
 
 export default {
   title: "PayoutStatus",

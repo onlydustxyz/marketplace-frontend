@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { RefSubscriptionInterface } from "./types/RefSubscription";
+
 import { Events } from "./types/Event";
+import { RefSubscriptionInterface } from "./types/RefSubscription";
 
 /**
  * Custom hook for subscribing to events and registering a reference.

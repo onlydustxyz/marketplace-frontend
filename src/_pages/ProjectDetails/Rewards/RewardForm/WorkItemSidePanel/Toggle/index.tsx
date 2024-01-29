@@ -1,5 +1,6 @@
-import { ReactElement } from "react";
 import { Switch } from "@headlessui/react";
+import { ReactElement } from "react";
+
 import { cn } from "src/utils/cn";
 
 type Props = {

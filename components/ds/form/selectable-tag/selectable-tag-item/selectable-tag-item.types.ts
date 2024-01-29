@@ -1,5 +1,6 @@
 import { InputHTMLAttributes, PropsWithChildren } from "react";
 import { VariantProps } from "tailwind-variants";
+
 import { selectableTagItemVariants } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item.variants";
 import { TIcon } from "components/layout/icon/icon.types";
 

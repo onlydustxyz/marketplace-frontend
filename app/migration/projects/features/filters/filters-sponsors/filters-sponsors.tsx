@@ -1,6 +1,9 @@
 import { useContext } from "react";
-import { FiltersDropDown } from "components/ds/drop-down/filters-drop-down";
+
 import { IMAGES } from "src/assets/img";
+
+import { FiltersDropDown } from "components/ds/drop-down/filters-drop-down";
+
 import { ProjectsContext } from "../../../context/project.context";
 
 export function FiltersSponsors() {

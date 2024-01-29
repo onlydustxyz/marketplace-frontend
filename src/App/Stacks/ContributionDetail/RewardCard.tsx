@@ -1,3 +1,5 @@
+import { SyntheticEvent } from "react";
+
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
@@ -10,6 +12,8 @@ import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
+import { Link } from "components/ds/link/link";
+
 export function RewardCard({
   reward,
   onClick,
@@ -19,6 +23,14 @@ export function RewardCard({
 }) {
   const { T } = useIntl();
   const [openProfilePanel] = useStackContributorProfile();
+
+  const handleClick = (e: SyntheticEvent) => {
+    e.stopPropagation();
+
+    if (reward.from.githubUserId) {
+      openProfilePanel({ githubUserId: reward.from.githubUserId });
+    }
+  };
 
   return (
     <article
@@ -73,16 +85,7 @@ export function RewardCard({
         />
         <p className="text-sm leading-none text-greyscale-300">
           {T("contributions.panel.rewards.fromUser")}&nbsp;
-          <button
-            type="button"
-            className="text-spacePurple-300 hover:text-spacePurple-200"
-            onClick={e => {
-              e.stopPropagation();
-              if (reward.from.githubUserId) openProfilePanel({ githubUserId: reward.from.githubUserId });
-            }}
-          >
-            {reward.from.login}
-          </button>
+          <Link onClick={handleClick}>{reward.from.login}</Link>
         </p>
       </div>
     </article>

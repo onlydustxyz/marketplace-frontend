@@ -1,14 +1,15 @@
 import React from "react";
-import { UseGetRewards } from "src/api/Mixed/queries";
-import { useIntl } from "src/hooks/useIntl";
-import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
-import Time from "src/icons/TimeLine";
-import BankCardLine from "src/icons/BankCardLine";
-import { compareDateToNow, formatDateTime } from "src/utils/date";
-import { cn } from "src/utils/cn";
-import { useUnlockDetailRow } from "src/App/Stacks/RewardSidePanel/TransactionDetails/useUnlockDetailRow";
+
 import { DetailRow } from "src/App/Stacks/RewardSidePanel/TransactionDetails/DetailRow";
 import { FormattedReceipt } from "src/App/Stacks/RewardSidePanel/TransactionDetails/FormattedReceipt";
+import { useUnlockDetailRow } from "src/App/Stacks/RewardSidePanel/TransactionDetails/useUnlockDetailRow";
+import { UseGetRewards } from "src/api/Mixed/queries";
+import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
+import { useIntl } from "src/hooks/useIntl";
+import BankCardLine from "src/icons/BankCardLine";
+import Time from "src/icons/TimeLine";
+import { cn } from "src/utils/cn";
+import { compareDateToNow, formatDateTime } from "src/utils/date";
 
 interface Props {
   isMine: boolean | undefined;

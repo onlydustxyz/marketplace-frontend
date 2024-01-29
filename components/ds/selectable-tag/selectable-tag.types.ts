@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import { VariantProps } from "tailwind-variants";
+
 import { selectableTagVariants } from "./selectable-tag.variants";
 
 export namespace TSelectableTag {
