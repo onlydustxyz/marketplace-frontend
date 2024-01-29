@@ -47,7 +47,7 @@ export const ContributionsFilter = forwardRef(function ContributionsFilter(
   ref: React.Ref<ContributionsFilterRef>
 ) {
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "contributions-table-filters",
+    "contributions-table-filters-v2-0-0",
     JSON.stringify(initialFilters)
   );
 

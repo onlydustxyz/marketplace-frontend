@@ -54,7 +54,7 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
   });
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "project-contributions-table-filters",
+    "project-contributions-table-filters-v2-0-0",
     JSON.stringify(initialFilters)
   );
 
