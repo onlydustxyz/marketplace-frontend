@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { Card } from "components/ds/card/card";
 import { cn } from "src/utils/cn";
-import { HiringTag } from "./hiring-tag/hiring-tag";
 import { Highlights } from "./highlights/highlights";
 import { Technologies } from "./technologies/technologies";
 import { Leaders } from "./leaders/leaders";
@@ -13,8 +12,12 @@ import { TProjectCard } from "./project-card.types";
 import { Flex } from "components/layout/flex/flex";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
 import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
+import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+import PrivateTag from "src/components/PrivateTag";
+import { useIntl } from "src/hooks/useIntl";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
+  const { T } = useIntl();
   const { hiring, isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
   const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
   const isPrivate = project.visibility === "PRIVATE";
@@ -52,7 +55,24 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
       border={isInvitedAsProjectLead ? "multiColor" : "medium"}
       dataTestId="project-card"
     >
-      <HiringTag isHiring={hiring} isErrorVariant={isErrorVariant} />
+      <Flex direction="col" className="gap-5">
+        <div className="relative flex-shrink-0">
+          <Thumbnail
+            src={project.logoUrl}
+            alt={T("project.highlights.thumbnail")}
+            size="xl"
+            className="mt-1"
+            type={"project"}
+          />
+          {isPrivate && (
+            <div className="absolute -bottom-2.5 -right-2.5">
+              <PrivateTag />
+            </div>
+          )}
+        </div>
+        <Flex direction="col"></Flex>
+      </Flex>
+
       <Flex direction="col" className="gap-5">
         <Flex direction="col" className="items-stretch gap-6 divide-stone-100/8 lg:flex-row lg:gap-6 lg:divide-x">
           <Flex direction="col" className="min-w-0 basis-1/3 gap-y-5">
