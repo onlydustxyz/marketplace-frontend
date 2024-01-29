@@ -1,25 +1,24 @@
-import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import Intro from "./Intro";
-import Card from "./Card";
 import { useEffect, useState } from "react";
-import { useIntl } from "src/hooks/useIntl";
-import TechnologiesSelect from "src/components/TechnologiesSelect";
-import FormToggle from "src/components/FormToggle";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import FormSelect, { Size } from "src/components/FormSelect";
-import ContactInformations from "src/components/ContactInformations";
+import { useNavigate } from "react-router-dom";
+import MeApi from "src/api/me";
+import useMutationAlert from "src/api/useMutationAlert";
+import { RoutePaths } from "src/App";
 import {
   AllocatedTime,
-  UserProfileInfo,
   fromFragment,
   mapFormDataToSchema,
+  UserProfileInfo,
 } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
-import BaseCard from "src/components/Card";
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
+import FormSelect, { Size } from "src/components/FormSelect";
+import FormToggle from "src/components/FormToggle";
 import SEO from "src/components/SEO";
-import MeApi from "src/api/me";
-import { useNavigate } from "react-router-dom";
-import { RoutePaths } from "src/App";
-import useMutationAlert from "src/api/useMutationAlert";
+import TechnologiesSelect from "src/components/TechnologiesSelect";
+import { useIntl } from "src/hooks/useIntl";
+import Card from "./Card";
+import { Contact } from "./Contact";
+import Intro from "./Intro";
 
 const MAX_STEP = 3;
 
@@ -158,9 +157,7 @@ export default function Onboarding() {
                   submit
                   loading={userProfilInformationIsPending}
                 >
-                  <BaseCard className="bg-white/2">
-                    <ContactInformations />
-                  </BaseCard>
+                  <Contact />
                 </Card>
               )}
             </form>
