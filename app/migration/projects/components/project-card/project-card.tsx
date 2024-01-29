@@ -57,6 +57,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
       dataTestId="project-card"
     >
       <HiringTag isHiring={hiring} isErrorVariant={isErrorVariant} />
+
       <Flex direction="col" className="gap-5">
         <div className="relative flex-shrink-0">
           <Thumbnail
