@@ -77,7 +77,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             <Flex direction="col">icon tags</Flex>
           </Flex>
           <Summary shortDescription={project.shortDescription} />
-          <div className="s:grid-cols-3 s:grid mt-5 flex flex-row items-center gap-3">
+          <div className="mt-5 grid grid-cols-2 items-center gap-4 md:flex md:flex-row">
             <Leaders leaders={project.leaders} />
             <ContributorsCounter count={project.contributorCount} />
             <Sponsors sponsors={project.sponsors} />
@@ -85,35 +85,12 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           </div>
         </Flex>
       </Flex>
-      <Flex
-        direction="col"
-        className={cn("gap-5", { "mt-5": project.isInvitedAsProjectLead || project.isMissingGithubAppInstallation })}
-      >
-        {InviteBanner}
-        {MissingGithubBanner}
-      </Flex>
-
-      <Flex direction="col" className="gap-5">
-        {/*<Flex direction="col" className="items-stretch gap-6 divide-stone-100/8 lg:flex-row lg:gap-6 lg:divide-x">*/}
-        {/*  <Flex direction="col" className="min-w-0 basis-1/3 gap-y-5">*/}
-        {/*    <Highlights*/}
-        {/*      name={project.name}*/}
-        {/*      isPrivate={isPrivate}*/}
-        {/*      logoUrl={project.logoUrl}*/}
-        {/*      leaders={<Leaders leaders={project.leaders} />}*/}
-        {/*    />*/}
-        {/*    <Technologies technologies={project.technologies} />*/}
-        {/*  </Flex>*/}
-        {/*  <Flex direction="col" className="basis-2/3 items-stretch justify-center gap-4 lg:gap-4 lg:pl-6">*/}
-        {/*    <Summary shortDescription={project.shortDescription} />*/}
-        {/*    <Flex direction="col" className="w-full flex-row flex-wrap gap-1 xl:gap-2">*/}
-        {/*      <ReposCounter count={project.repoCount} />*/}
-        {/*      <ContributorsCounter count={project.contributorCount} />*/}
-        {/*      <Sponsors sponsors={project.sponsors} />*/}
-        {/*    </Flex>*/}
-        {/*  </Flex>*/}
-        {/*</Flex>*/}
-      </Flex>
+      {project.isInvitedAsProjectLead || project.isMissingGithubAppInstallation ? (
+        <Flex direction="col" className="mt-5 gap-5">
+          {InviteBanner}
+          {MissingGithubBanner}
+        </Flex>
+      ) : null}
     </Card>
   );
 }

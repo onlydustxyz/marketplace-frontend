@@ -4,11 +4,10 @@ import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 
-import { Tag } from "components/ds/tag/tag";
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
-import { Translate } from "components/layout/translate/translate";
 
 import { TSponsors } from "./sponsors.types";
+import { Typography } from "components/layout/typography/typography";
 
 export function Sponsors({ sponsors }: TSponsors.Props) {
   const { T } = useIntl();
@@ -25,7 +24,10 @@ export function Sponsors({ sponsors }: TSponsors.Props) {
     : "";
 
   return (
-    <Tag size="small" {...withTooltip(tooltipsContent, { position: TooltipPosition.Bottom, className: "w-fit" })}>
+    <div
+      className="flex flex-row items-center gap-1"
+      {...withTooltip(tooltipsContent, { position: TooltipPosition.Bottom, className: "w-fit" })}
+    >
       <div className="flex flex-row -space-x-1">
         {sponsors.map(sponsor => (
           <Thumbnail
@@ -38,10 +40,16 @@ export function Sponsors({ sponsors }: TSponsors.Props) {
         ))}
       </div>
       {sponsors.length === 1 ? (
-        sponsors.at(0)?.name
+        <Typography variant="body-s" className="truncate">
+          {sponsors.at(0)?.name}
+        </Typography>
       ) : (
-        <Translate token="project.sponsorsCount" params={{ count: sponsors.length }} />
+        <Typography
+          variant="body-s"
+          className="truncate"
+          translate={{ token: "project.sponsorsCount", params: { count: sponsors.length } }}
+        />
       )}
-    </Tag>
+    </div>
   );
 }
