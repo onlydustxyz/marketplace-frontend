@@ -2,12 +2,25 @@ import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { useIntl } from "src/hooks/useIntl";
 import Section, { SectionIcon } from "./OverviewSection";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import { Link } from "components/ds/link/link";
 import { Typography } from "components/layout/typography/typography";
+import { Link } from "components/ds/link/link";
 
 export interface ProjectOverviewSponsorsProps {
   sponsors: UseGetProjectBySlugResponse["sponsors"];
 }
+
+interface LinkContentProps {
+  sponsor: ProjectOverviewSponsorsProps["sponsors"][0];
+}
+
+const LinkContent = ({ sponsor }: LinkContentProps) => {
+  return (
+    <>
+      <RoundedImage alt={sponsor.name} rounding={Rounding.Circle} size={ImageSize.Sm} src={sponsor.logoUrl} />
+      {sponsor.name}
+    </>
+  );
+};
 
 export const ProjectOverviewSponsors = ({ sponsors }: ProjectOverviewSponsorsProps) => {
   const { T } = useIntl();
@@ -23,13 +36,11 @@ export const ProjectOverviewSponsors = ({ sponsors }: ProjectOverviewSponsorsPro
           <div key={sponsor.id}>
             {sponsor.url ? (
               <Link href={sponsor.url} className="flex items-center gap-2">
-                <RoundedImage alt={sponsor.name} rounding={Rounding.Circle} size={ImageSize.Sm} src={sponsor.logoUrl} />
-                {sponsor.name}
+                <LinkContent sponsor={sponsor} />
               </Link>
             ) : (
               <Typography variant="body-s" className="flex items-center gap-2">
-                <RoundedImage alt={sponsor.name} rounding={Rounding.Circle} size={ImageSize.Sm} src={sponsor.logoUrl} />
-                {sponsor.name}
+                <LinkContent sponsor={sponsor} />
               </Typography>
             )}
           </div>

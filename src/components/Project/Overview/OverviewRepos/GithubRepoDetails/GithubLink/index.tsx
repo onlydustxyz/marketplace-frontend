@@ -5,6 +5,7 @@ interface LinkProps {
   link: string;
 }
 
+// TODO: Change Button with link using the new library
 export default function GithubLink({ link }: LinkProps) {
   return (
     <a href={link} target="_blank" rel="noreferrer">

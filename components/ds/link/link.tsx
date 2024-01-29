@@ -19,28 +19,33 @@ function LinkContent({ children, isExternal }: TLink.LinkContentProps) {
 export function Link({ href, target, rel, onClick, children, className, ...props }: TLink.Props) {
   const isExternal = href?.toString().startsWith("http") ?? false;
 
-  const targetProps: HTMLAttributeAnchorTarget | undefined = target ? target : isExternal ? "_blank" : undefined;
-  const relProps = rel ? rel : isExternal ? "noopener noreferrer" : undefined;
+  const targetExternal: HTMLAttributeAnchorTarget | undefined = isExternal ? "_blank" : undefined;
+  const targetProps = target || targetExternal;
 
-  return (
-    <>
-      {href ? (
-        <NavLink
-          to={href}
-          target={targetProps}
-          rel={relProps}
-          className={cn(linkVariants({ ...props }), className)}
-          {...props}
-        >
-          <LinkContent isExternal={isExternal}>{children}</LinkContent>
-        </NavLink>
-      ) : null}
+  const relExternal = isExternal ? "noopener noreferrer" : undefined;
+  const relProps = rel || relExternal;
 
-      {onClick ? (
-        <span onClick={onClick} className={cn(linkVariants({ ...props }), "cursor-pointer", className)}>
-          <LinkContent isExternal={isExternal}>{children}</LinkContent>
-        </span>
-      ) : null}
-    </>
-  );
+  if (href) {
+    return (
+      <NavLink
+        to={href}
+        target={targetProps}
+        rel={relProps}
+        className={cn(linkVariants({ ...props }), className)}
+        {...props}
+      >
+        <LinkContent isExternal={isExternal}>{children}</LinkContent>
+      </NavLink>
+    );
+  }
+
+  if (onClick) {
+    return (
+      <button onClick={onClick} className={cn(linkVariants({ ...props }), className)}>
+        <LinkContent isExternal={isExternal}>{children}</LinkContent>
+      </button>
+    );
+  }
+
+  return null;
 }

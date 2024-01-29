@@ -45,17 +45,13 @@ export default function Contributor({ contributor, clickable, className }: Props
     open({ githubUserId: contributor.githubUserId });
   };
 
-  return (
-    <>
-      {clickable ? (
-        <Link onClick={handleClick} className={cn("group flex items-center gap-2 truncate", className)}>
-          <ContributorContent contributor={contributor} clickable={clickable} />
-        </Link>
-      ) : (
-        <div className={cn("group flex items-center gap-2 truncate", className)}>
-          <ContributorContent contributor={contributor} clickable={clickable} />
-        </div>
-      )}
-    </>
+  return clickable ? (
+    <Link onClick={handleClick} className={cn("group flex items-center gap-2 truncate", className)}>
+      <ContributorContent contributor={contributor} clickable={clickable} />
+    </Link>
+  ) : (
+    <div className={cn("group flex items-center gap-2 truncate", className)}>
+      <ContributorContent contributor={contributor} clickable={clickable} />
+    </div>
   );
 }
