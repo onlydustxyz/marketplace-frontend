@@ -13,6 +13,7 @@ import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
 import StruggleReasonBadge from "../commons/StruggleReasonBadge/StruggleReasonBadge";
+import { Link } from "components/ds/link/link";
 
 type HeaderCell = {
   icon: ReactNode;
@@ -62,7 +63,9 @@ export function useStrugglingContributorsTable() {
         <Cell height={CellHeight.Compact}>
           <Contributor contributor={contributor} clickable />
         </Cell>
-        <Cell height={CellHeight.Compact}>{repo?.name}</Cell>
+        <Cell height={CellHeight.Compact}>
+          <Link href={repo?.htmlUrl}>{repo?.name}</Link>
+        </Cell>
         <Cell height={CellHeight.Compact}>
           <Contribution contribution={contribution} />
         </Cell>

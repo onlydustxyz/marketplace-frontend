@@ -1,10 +1,10 @@
+import { Link } from "components/ds/link/link";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { HeaderCell, TableColumns } from "src/components/Contribution/ContributionTable";
 import Contributor from "src/components/Contributor";
-import ExternalLink from "src/components/ExternalLink";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
@@ -77,7 +77,7 @@ export function useContributionTable() {
           />
         </Cell>
         <Cell height={CellHeight.Compact}>
-          <ExternalLink url={repo.htmlUrl} text={repo.name} />
+          <Link href={repo.htmlUrl}>{repo.name}</Link>
         </Cell>
         <Cell height={CellHeight.Compact}>
           <Contributor contributor={contribution.contributor} clickable />
