@@ -113,6 +113,7 @@ const config: Config = withTV({
             light: "#FFFFFF05",
             medium: "#FFFFFF0D",
             heavy: "#FFFFFF14",
+            solidHeavy: "#1a1939",
           },
           border: {
             light: "#F3F0EE14",

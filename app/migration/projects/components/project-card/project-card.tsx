@@ -48,8 +48,9 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
 
   return (
     <Card
-      className={cn("relative", {
-        "bg-spaceBlue-900 hover:bg-right": !isErrorVariant,
+      className={cn("relative duration-100 ease-out transition", {
+        "bg-spaceBlue-900 hover:border-card-border-heavy hover:bg-card-background-solidHeavy hover:ease-in":
+          !isErrorVariant,
         "border-orange-500 bg-orange-900": isErrorVariant,
         "mt-3": isFirstHiringProject,
       })}
