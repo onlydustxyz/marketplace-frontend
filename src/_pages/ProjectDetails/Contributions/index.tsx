@@ -52,7 +52,7 @@ export default function Contributions() {
   const { headerCells, bodyRow } = useContributionTable();
 
   const [sortStorage, setSortStorage] = useLocalStorage(
-    "project-contributions-table-sort",
+    "project-contributions-table-sort-v2-0-0",
     JSON.stringify(initialSort)
   );
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
