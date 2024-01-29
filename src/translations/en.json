@@ -1368,7 +1368,7 @@
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
-      "one": ""
+      "one": " "
     },
     "noLed": "The project is claimable",
     "projectLeadInvitation": {
