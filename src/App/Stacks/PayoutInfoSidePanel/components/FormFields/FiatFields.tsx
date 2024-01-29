@@ -1,11 +1,13 @@
+import IBANParser from "iban";
 import { Controller, useFormContext } from "react-hook-form";
+
+import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
 import Input from "src/components/FormInput";
 import Flex from "src/components/Utils/Flex";
 import { useIntl } from "src/hooks/useIntl";
-import IBANParser from "iban";
-import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
-import { CurrencyField } from "./CurrencyField";
 import { Currency } from "src/types";
+
+import { CurrencyField } from "./CurrencyField";
 
 export function FiatFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();

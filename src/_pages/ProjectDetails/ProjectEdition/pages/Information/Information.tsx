@@ -1,5 +1,10 @@
 import { useContext } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
+
+import {
+  FieldProjectLead,
+  SelectedLeadType,
+} from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import ProjectApi from "src/api/Project";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
@@ -9,10 +14,7 @@ import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import InformationLine from "src/icons/InformationLine";
-import {
-  FieldProjectLead,
-  SelectedLeadType,
-} from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
+
 import { EditContext, EditFormData } from "../../EditContext";
 import { RewardableContributionsField } from "../../RewardableContributionsField";
 import { MoreInfosField } from "./components/MoreInfosField";

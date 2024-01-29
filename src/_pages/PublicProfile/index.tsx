@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+
+import UsersApi from "src/api/Users";
 import { FetchError } from "src/api/query.type";
 import { useQueriesErrorBehavior } from "src/api/useQueriesError";
-import UsersApi from "src/api/Users";
 import SEO from "src/components/SEO";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import { usePosthog } from "src/hooks/usePosthog";
+
 import Footer from "./Footer";
 import Header from "./Header";
 import Profile from "./Profile";

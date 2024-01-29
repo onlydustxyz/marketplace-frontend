@@ -1,6 +1,7 @@
 import { components } from "src/__generated/api";
-import { SelectedLeadType } from "../views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { MoreInfosField } from "src/types";
+
+import { SelectedLeadType } from "../views/ProjectInformations/components/ProjectLead/ProjectLead";
 
 export interface CreateFormDataRepos {
   repoId: number;

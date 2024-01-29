@@ -1,8 +1,9 @@
-import { TOption } from "./option.types";
-import { cn } from "src/utils/cn";
-import { Avatar } from "src/components/New/Avatar";
 import { IMAGES } from "src/assets/img";
+import { Avatar } from "src/components/New/Avatar";
 import CheckLine from "src/icons/CheckLine";
+import { cn } from "src/utils/cn";
+
+import { TOption } from "./option.types";
 
 export function Option({ active, selected, item, type }: TOption.Props) {
   return (

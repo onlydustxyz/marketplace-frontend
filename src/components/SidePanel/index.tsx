@@ -1,8 +1,9 @@
-import { Fragment, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, PropsWithChildren, ReactElement, useEffect, useState } from "react";
+
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import CloseLine from "src/icons/CloseLine";
 import { useSidePanelStack } from "src/hooks/useSidePanelStack";
+import CloseLine from "src/icons/CloseLine";
 import { cn } from "src/utils/cn";
 
 type Props = {

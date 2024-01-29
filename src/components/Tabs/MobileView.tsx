@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { cn } from "src/utils/cn";
 
 import ChevronDown from "src/assets/icons/ChevronDown";
 import SidePanel from "src/components/SidePanel";
 import type { Tab } from "src/components/Tabs/Tabs";
+import { cn } from "src/utils/cn";
 
 export function MobileView({ tabs, title }: { tabs: Tab[]; title?: string }) {
   const [panelOpen, setPanelOpen] = useState(false);

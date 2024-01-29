@@ -1,10 +1,12 @@
 import { ComponentProps, ReactElement } from "react";
+
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
+import { withTooltip } from "src/components/Tooltip";
 import PencilLine from "src/icons/PencilLine";
 import { cn } from "src/utils/cn";
+
 import { Avatar } from "../Avatar";
-import { withTooltip } from "src/components/Tooltip";
 
 interface HorizontalListItemCardProps {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;

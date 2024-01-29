@@ -1,5 +1,6 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
+
 import Toaster from "src/components/Toaster/View";
 
 export default {

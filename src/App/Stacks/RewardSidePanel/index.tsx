@@ -1,9 +1,11 @@
 import { ComponentProps, useEffect } from "react";
+
 import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useMutationRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
+
 import View from "./View";
 
 export default function RewardSidePanel({

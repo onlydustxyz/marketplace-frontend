@@ -1,6 +1,6 @@
+import { IMAGES } from "src/assets/img";
 import { useIntl } from "src/hooks/useIntl";
 import InformationLine from "src/icons/InformationLine";
-import { IMAGES } from "src/assets/img";
 
 export default function TutorialSidePanelSteps3() {
   const { T } = useIntl();

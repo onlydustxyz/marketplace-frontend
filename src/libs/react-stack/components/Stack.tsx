@@ -1,7 +1,9 @@
 import { useMemo } from "react";
-import { Panel } from "./Panel";
+
 import { RefSubscriptionInterface, useSubscribe } from "src/libs/react-subscriber";
+
 import { Options, StackInterface, StacksParams } from "../types/Stack";
+import { Panel } from "./Panel";
 
 export interface StackProps<P extends StacksParams> {
   stackRef: RefSubscriptionInterface<StackInterface<P>>;

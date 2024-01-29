@@ -1,5 +1,7 @@
 import { ComponentProps } from "react";
+
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
+
 import { contribution } from "../mocks/contribution";
 
 export default {

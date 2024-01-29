@@ -1,25 +1,29 @@
 import { useMemo } from "react";
-import { Card } from "components/ds/card/card";
-import { cn } from "src/utils/cn";
-import { Highlights } from "./highlights/highlights";
-import { Technologies } from "./technologies/technologies";
-import { Leaders } from "./leaders/leaders";
-import { Summary } from "./summary/summary";
-import { ReposCounter } from "./repos-counter/repos-counter";
-import { ContributorsCounter } from "./contributors-counter/contributors-counter";
-import { Sponsors } from "./sponsors/sponsors";
-import { TProjectCard } from "./project-card.types";
-import { Flex } from "components/layout/flex/flex";
-import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
-import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+
+import { HiringTag } from "app/migration/projects/components/project-card/hiring-tag/hiring-tag";
+
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
-import { HiringTag } from "app/migration/projects/components/project-card/hiring-tag/hiring-tag";
+import { cn } from "src/utils/cn";
+
+import { Card } from "components/ds/card/card";
+import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
+import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
+import { Flex } from "components/layout/flex/flex";
+
+import { ContributorsCounter } from "./contributors-counter/contributors-counter";
+import { Highlights } from "./highlights/highlights";
+import { Leaders } from "./leaders/leaders";
+import { TProjectCard } from "./project-card.types";
+import { ReposCounter } from "./repos-counter/repos-counter";
+import { Sponsors } from "./sponsors/sponsors";
+import { Summary } from "./summary/summary";
+import { Technologies } from "./technologies/technologies";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
-  const { hiring, isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
+  const { isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
   const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
   const isPrivate = project.visibility === "PRIVATE";
 
@@ -56,9 +60,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
       border={isInvitedAsProjectLead ? "multiColor" : "medium"}
       dataTestId="project-card"
     >
-      <HiringTag isHiring={hiring} isErrorVariant={isErrorVariant} />
-
-      <Flex direction="col" className="gap-5">
+      <Flex direction="row" className="gap-5">
         <div className="relative flex-shrink-0">
           <Thumbnail
             src={project.logoUrl}
@@ -73,7 +75,13 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             </div>
           )}
         </div>
-        <Flex direction="col"></Flex>
+        <Flex direction="col" className="flex-1">
+          <Flex direction="row">
+            <div className="flex-1 truncate font-belwe text-2xl font-medium">{project.name}</div>
+            <Flex direction="col">icon tags</Flex>
+          </Flex>
+          <Summary shortDescription={project.shortDescription} />
+        </Flex>
       </Flex>
 
       <Flex direction="col" className="gap-5">

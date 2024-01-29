@@ -1,5 +1,6 @@
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
+
 import { ItemType } from "./MultiList";
 
 type StateProps<T> = {

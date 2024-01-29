@@ -1,7 +1,8 @@
-import { TButton } from "./button.types";
-import { cn } from "src/utils/cn";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
+import { cn } from "src/utils/cn";
+
 import { TSelectAutocomplete } from "../../select-autocomplete.types";
+import { TButton } from "./button.types";
 
 export function Button<T extends TSelectAutocomplete.Item>({ icon, query, token, selected, open }: TButton.Props<T>) {
   return (

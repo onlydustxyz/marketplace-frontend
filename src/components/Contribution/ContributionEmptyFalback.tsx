@@ -1,9 +1,11 @@
 import { useRef } from "react";
+
 import { ContributionsFilterRef } from "src/_pages/Contributions/Filter";
 import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter";
 import { IMAGES } from "src/assets/img";
-import { EmptyState } from "components/layout/placeholders/empty-state";
+
 import { Card } from "components/ds/card/card";
+import { EmptyState } from "components/layout/placeholders/empty-state";
 
 interface ContributionEmptyFallBackParams {
   isMobile?: boolean;

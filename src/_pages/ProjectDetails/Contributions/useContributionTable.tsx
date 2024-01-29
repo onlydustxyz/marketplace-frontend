@@ -4,7 +4,6 @@ import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { HeaderCell, TableColumns } from "src/components/Contribution/ContributionTable";
 import Contributor from "src/components/Contributor";
-import ExternalLink from "src/components/ExternalLink";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
@@ -15,6 +14,8 @@ import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
 import { Contribution as ContributionT, GithubContributionType } from "src/types";
+
+import { Link } from "components/ds/link/link";
 
 export function useContributionTable() {
   const { T } = useIntl();
@@ -77,7 +78,7 @@ export function useContributionTable() {
           />
         </Cell>
         <Cell height={CellHeight.Compact}>
-          <ExternalLink url={repo.htmlUrl} text={repo.name} />
+          <Link href={repo.htmlUrl}>{repo.name}</Link>
         </Cell>
         <Cell height={CellHeight.Compact}>
           <Contributor contributor={contribution.contributor} clickable />

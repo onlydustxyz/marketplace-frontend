@@ -1,5 +1,6 @@
-import { cn } from "src/utils/cn";
 import { IMAGES } from "src/assets/img";
+import { cn } from "src/utils/cn";
+
 import { TRoundedImage } from "./rounded-image.types";
 import { roundedImageVariants } from "./rounded-image.variants";
 

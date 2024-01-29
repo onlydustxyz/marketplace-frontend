@@ -1,9 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck - pass build
-
+import { useAuth0 } from "@auth0/auth0-react";
 import SumsubWebSdk from "@sumsub/websdk-react";
 import { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 
 const config = {};
 const options = {};

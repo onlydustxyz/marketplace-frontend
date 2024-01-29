@@ -1,9 +1,11 @@
 import { useContext } from "react";
-import { useIntl } from "src/hooks/useIntl";
-import { EditContext } from "../../../EditContext";
+
 import Card from "src/components/Card";
-import OrganizationList from "./components/OrganizationList";
 import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
+import { useIntl } from "src/hooks/useIntl";
+
+import { EditContext } from "../../../EditContext";
+import OrganizationList from "./components/OrganizationList";
 
 export const EditPanelOrganization = () => {
   const { T } = useIntl();

@@ -1,10 +1,13 @@
-import { TSearchBar } from "./search-bar.types";
-import { cn } from "src/utils/cn";
-import { useMediaQuery } from "usehooks-ts";
-import { viewportConfig } from "src/config";
 import { ChangeEvent, PropsWithChildren, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useMediaQuery } from "usehooks-ts";
+
+import { viewportConfig } from "src/config";
+import { cn } from "src/utils/cn";
+
 import { Icon } from "components/layout/icon/icon";
+
+import { TSearchBar } from "./search-bar.types";
 
 export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);

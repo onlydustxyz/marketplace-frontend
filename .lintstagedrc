@@ -1,5 +1,3 @@
 {
-  "*.{js,jsx,json,ts,tsx}": [
-    "eslint"
-  ]
+  "*.{js,jsx,json,ts,tsx}": ["eslint"]
 }

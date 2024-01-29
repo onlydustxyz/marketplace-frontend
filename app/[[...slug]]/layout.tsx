@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
-import { sharedMetadata } from "../shared-metadata";
 import { ProjectsActions } from "actions/Projects/projects.actions";
 import { UsersActions } from "actions/Users/users.actions";
+import type { Metadata } from "next";
+
+import { sharedMetadata } from "../shared-metadata";
 
 export async function generateMetadata(props: { params: { slug: string[] } }): Promise<Metadata> {
   const { params } = props;

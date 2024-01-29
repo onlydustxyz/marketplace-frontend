@@ -1,12 +1,14 @@
+import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Listbox, Transition } from "@headlessui/react";
 import { ReactElement, useCallback } from "react";
+
 import { IMAGES } from "src/assets/img";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
+
 import { Avatar } from "../Avatar";
-import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 
 export type Item = {
   id: number | string;

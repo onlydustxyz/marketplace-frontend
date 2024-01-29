@@ -1,8 +1,10 @@
-import { TFiltersUsers } from "./filters-users.types";
 import { useIntl } from "src/hooks/useIntl";
+import User3Line from "src/icons/User3Line";
+
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
 import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
-import User3Line from "src/icons/User3Line";
+
+import { TFiltersUsers } from "./filters-users.types";
 
 export function FiltersUsers({ users, selected, onChange }: TFiltersUsers.Props) {
   const { T } = useIntl();

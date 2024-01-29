@@ -1,5 +1,6 @@
-import { Fragment } from "react";
 import { Combobox as HeadlessCombobox } from "@headlessui/react";
+import { Fragment } from "react";
+
 import { cn } from "src/utils/cn";
 
 export type ItemType<T> = {

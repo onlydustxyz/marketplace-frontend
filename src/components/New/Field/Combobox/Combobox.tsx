@@ -1,8 +1,10 @@
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Combobox as HeadlessCombobox, Transition } from "@headlessui/react";
+
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import { cn } from "src/utils/cn";
+
 import { ComboboxState } from "./ComboboxState";
 import { ItemType, MultiList } from "./MultiList";
 import { SingleList } from "./SingleList";

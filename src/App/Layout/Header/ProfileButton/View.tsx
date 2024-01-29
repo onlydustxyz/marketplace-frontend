@@ -1,13 +1,16 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
+
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
 import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import { Icon } from "components/layout/icon/icon";
 import { useSidePanel } from "src/hooks/useSidePanel";
-import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
+
+import { Icon } from "components/layout/icon/icon";
+
 import { useLogout } from "./Logout.hooks";
 
 interface MenuItemProps extends PropsWithChildren {

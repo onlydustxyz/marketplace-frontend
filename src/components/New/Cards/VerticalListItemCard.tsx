@@ -1,8 +1,10 @@
 import { ComponentProps, FC, PropsWithChildren } from "react";
-import { Avatar } from "../Avatar";
-import { Flex } from "../Layout/Flex";
+
 import Card from "src/components/Card";
 import { cn } from "src/utils/cn";
+
+import { Avatar } from "../Avatar";
+import { Flex } from "../Layout/Flex";
 
 export interface VerticalListItemCardProps extends PropsWithChildren {
   AvatarProps?: Partial<ComponentProps<typeof Avatar>>;

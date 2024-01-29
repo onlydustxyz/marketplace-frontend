@@ -1,17 +1,19 @@
-import { useIntl } from "src/hooks/useIntl";
-import { RewardableWorkItem, WorkItems } from "./WorkItems/WorkItems";
-import SidePanel from "src/components/SidePanel";
 import { useState } from "react";
-import Tab from "./Tab";
-import GitPullRequestLine from "src/icons/GitPullRequestLine";
-import IssueOpen from "src/assets/icons/IssueOpen";
-import OtherWorkForm from "./OtherWorkForm";
-import DiscussLine from "src/icons/DiscussLine";
-import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
-import { Contributor } from "../types";
+import IssueOpen from "src/assets/icons/IssueOpen";
+import SidePanel from "src/components/SidePanel";
+import { viewportConfig } from "src/config";
+import { useIntl } from "src/hooks/useIntl";
+import DiscussLine from "src/icons/DiscussLine";
+import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import { WorkItemType } from "src/types";
+
+import { Contributor } from "../types";
+import OtherWorkForm from "./OtherWorkForm";
+import Tab from "./Tab";
+import { RewardableWorkItem, WorkItems } from "./WorkItems/WorkItems";
 
 type Props = {
   projectId: string;
