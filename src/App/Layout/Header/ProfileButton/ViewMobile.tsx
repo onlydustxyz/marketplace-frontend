@@ -58,7 +58,7 @@ export function ViewMobile({
       <button
         onClick={() => setPanelOpen(true)}
         className={cn(
-          "border-1 flex items-center justify-center gap-2 rounded-full border px-2 py-1.5 font-walsheim text-sm",
+          "flex items-center justify-center gap-2 rounded-full border border-1 px-2 py-1.5 font-walsheim text-sm",
           {
             "border-greyscale-50/12": !isMissingPayoutSettingsInfo,
             "border-orange-500": isMissingPayoutSettingsInfo,

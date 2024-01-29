@@ -4,17 +4,13 @@ import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import { GoogleTagManager } from "@next/third-parties/google";
-import { QueryProvider } from "components/features/api/providers/query-provider";
-import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/auth0-provider-with-navigate";
-import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
 import { PosthogIdentifyUser } from "components/features/posthog/components/posthog-identify-user";
 import { PosthogPageView } from "components/features/posthog/components/posthog-page-view";
-import { PosthogProvider } from "components/features/posthog/providers/posthog.provider";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 import config from "src/config";
-import { IntlProvider } from "src/hooks/useIntl";
 import { sharedMetadata } from "./shared-metadata";
+import Providers from "app/providers";
 
 export const metadata: Metadata = sharedMetadata;
 
@@ -22,19 +18,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <PosthogProvider>
-          <ImpersonationProvider>
-            <Auth0ProviderWithNavigate>
-              <IntlProvider>
-                <QueryProvider>
-                  <div id="root">{children}</div>
-                  <PosthogIdentifyUser />
-                  <PosthogPageView />
-                </QueryProvider>
-              </IntlProvider>
-            </Auth0ProviderWithNavigate>
-          </ImpersonationProvider>
-        </PosthogProvider>
+        <Providers>
+          <div id="root">{children}</div>
+          <PosthogIdentifyUser />
+          <PosthogPageView />
+        </Providers>
       </body>
       {config.GTM_ID ? <GoogleTagManager gtmId={config.GTM_ID} /> : null}
     </html>
