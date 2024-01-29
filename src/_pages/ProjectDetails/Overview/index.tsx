@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
+import { SponsorProjectButton } from "src/_pages/ProjectDetails/components/SponsorProjectButton";
 import Title from "src/_pages/ProjectDetails/Title";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
@@ -82,6 +83,12 @@ export default function Overview() {
             <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
               <EditProjectButton projectKey={project.slug} />
               <RewardProjectButton project={project} />
+            </Flex>
+          ) : null}
+
+          {!isProjectLeader ? (
+            <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
+              <SponsorProjectButton project={project} />
             </Flex>
           ) : null}
         </div>
