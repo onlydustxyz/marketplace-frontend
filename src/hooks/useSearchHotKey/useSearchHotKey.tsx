@@ -1,5 +1,6 @@
-import { useHotkeys } from "react-hotkeys-hook";
 import { useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+
 import { UseSearchHotKeyProps } from "./useSearchHotKey.type";
 
 export const useSearchHotKey = ({ onPress, inputRef }: UseSearchHotKeyProps) => {

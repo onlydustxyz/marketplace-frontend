@@ -1,12 +1,14 @@
 import { ComponentProps } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import View from "./View";
-import { ViewMobile } from "./ViewMobile";
+
+import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { useToggleContributor } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/useToggleContributor";
 import { ProjectContributorItem } from "src/api/Project/queries";
+import { viewportConfig } from "src/config";
+
+import View from "./View";
+import { ViewMobile } from "./ViewMobile";
 
 type Props<C> = {
   contributors: C[];

@@ -1,5 +1,5 @@
-import { cn } from "src/utils/cn";
 import { Chip } from "src/components/Chip/Chip";
+import { cn } from "src/utils/cn";
 
 type ChipsProps = {
   className?: string;

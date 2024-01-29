@@ -1,7 +1,8 @@
 import { Tag } from "components/ds/tag/tag";
-import { Translate } from "components/layout/translate/translate";
-import { TContributorsCounter } from "./contributors-counter.types";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
+
+import { TContributorsCounter } from "./contributors-counter.types";
 
 export function ContributorsCounter({ count }: TContributorsCounter.Props) {
   if (!count) {

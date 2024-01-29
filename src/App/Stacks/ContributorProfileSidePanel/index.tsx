@@ -1,12 +1,14 @@
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useEffect, useState } from "react";
-import MeApi from "src/api/me";
+
 import UsersApi from "src/api/Users";
+import MeApi from "src/api/me";
 import { NotFound } from "src/components/NotFound";
 import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { useShowToaster } from "src/hooks/useToaster";
+
 import View from "./View";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 type Props = {
   githubUserId: number;

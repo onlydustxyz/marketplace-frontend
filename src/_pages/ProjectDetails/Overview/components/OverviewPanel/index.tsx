@@ -1,12 +1,13 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
-import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
-import { ProjectOverviewSponsors } from "src/components/Project/Overview/OverviewSponsors";
-import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
-import { EmptyState } from "components/layout/placeholders/empty-state";
 import { IMAGES } from "src/assets/img";
-import { Card } from "components/ds/card/card";
+import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
+import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
+import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
+import { ProjectOverviewSponsors } from "src/components/Project/Overview/OverviewSponsors";
 import isDefined from "src/utils/isDefined";
+
+import { Card } from "components/ds/card/card";
+import { EmptyState } from "components/layout/placeholders/empty-state";
 
 interface Props {
   project: UseGetProjectBySlugResponse;

@@ -1,8 +1,9 @@
-import { Link } from "components/ds/link/link";
-import { Typography } from "components/layout/typography/typography";
 import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { ShortProject, ShortRepo } from "src/types";
+
+import { Link } from "components/ds/link/link";
+import { Typography } from "components/layout/typography/typography";
 
 export function ContributionProjectRepo({ project, repo }: { project: ShortProject; repo: ShortRepo }) {
   const [openProjectOverview] = useStackProjectOverview();

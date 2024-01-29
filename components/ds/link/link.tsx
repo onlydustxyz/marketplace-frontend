@@ -1,8 +1,11 @@
-import { TLink } from "./link.types";
 import { HTMLAttributeAnchorTarget } from "react";
-import { Icon } from "components/layout/icon/icon";
 import { NavLink } from "react-router-dom";
+
 import { cn } from "src/utils/cn";
+
+import { Icon } from "components/layout/icon/icon";
+
+import { TLink } from "./link.types";
 import { linkVariants } from "./link.variants";
 
 function LinkContent({ children, isExternal }: TLink.LinkContentProps) {

@@ -1,21 +1,25 @@
 import { useMemo } from "react";
-import { Card } from "components/ds/card/card";
-import { cn } from "src/utils/cn";
-import { Highlights } from "./highlights/highlights";
-import { Technologies } from "./technologies/technologies";
-import { Leaders } from "./leaders/leaders";
-import { Summary } from "./summary/summary";
-import { ReposCounter } from "./repos-counter/repos-counter";
-import { ContributorsCounter } from "./contributors-counter/contributors-counter";
-import { Sponsors } from "./sponsors/sponsors";
-import { TProjectCard } from "./project-card.types";
-import { Flex } from "components/layout/flex/flex";
-import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
-import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+
+import { HiringTag } from "app/migration/projects/components/project-card/hiring-tag/hiring-tag";
+
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
-import { HiringTag } from "app/migration/projects/components/project-card/hiring-tag/hiring-tag";
+import { cn } from "src/utils/cn";
+
+import { Card } from "components/ds/card/card";
+import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
+import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
+import { Flex } from "components/layout/flex/flex";
+
+import { ContributorsCounter } from "./contributors-counter/contributors-counter";
+import { Highlights } from "./highlights/highlights";
+import { Leaders } from "./leaders/leaders";
+import { TProjectCard } from "./project-card.types";
+import { ReposCounter } from "./repos-counter/repos-counter";
+import { Sponsors } from "./sponsors/sponsors";
+import { Summary } from "./summary/summary";
+import { Technologies } from "./technologies/technologies";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();

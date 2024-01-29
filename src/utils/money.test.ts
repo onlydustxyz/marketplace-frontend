@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest";
+
 import { Currency } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
-import { describe, expect, it } from "vitest";
 
 describe("Money", () => {
   it("should be formatted in dollars", () => {

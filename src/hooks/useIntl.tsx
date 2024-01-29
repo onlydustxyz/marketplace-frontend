@@ -1,7 +1,9 @@
 "use client";
-import { useT, TParams, tr, Talkr, Autocomplete } from "talkr";
-import en from "src/translations/en.json";
+
 import { PropsWithChildren } from "react";
+import { Autocomplete, TParams, Talkr, tr, useT } from "talkr";
+
+import en from "src/translations/en.json";
 
 export type Key = Autocomplete<typeof en>;
 

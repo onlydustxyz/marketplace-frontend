@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import { StorageClass, StorageInterface } from "./Storage";
 
 export interface useStorageInterface<T> {

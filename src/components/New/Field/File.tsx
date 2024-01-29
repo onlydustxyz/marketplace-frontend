@@ -1,10 +1,13 @@
 import { ChangeEvent, FocusEventHandler, Ref, forwardRef, useEffect, useState } from "react";
-import { Field, FieldProps } from "./Field";
-import { cn } from "src/utils/cn";
-import { FieldInfoMessage } from "./InfoMessage";
+
 import GalleryLine from "src/assets/icons/GalleryLine";
 import LoaderIcon from "src/assets/icons/Loader";
 import { useIntl } from "src/hooks/useIntl";
+import { cn } from "src/utils/cn";
+
+import { Field, FieldProps } from "./Field";
+import { FieldInfoMessage } from "./InfoMessage";
+
 export interface FieldImageProps<F extends string | File> extends Omit<FieldProps, "children"> {
   className?: string;
   onChange?: (...event: unknown[]) => void;

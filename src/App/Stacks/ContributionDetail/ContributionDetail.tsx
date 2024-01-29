@@ -1,9 +1,11 @@
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { Fragment, useEffect } from "react";
 import { useMatch } from "react-router-dom";
-import ProjectApi from "src/api/Project";
+
 import { RoutePaths } from "src/App";
 import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
 import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
+import ProjectApi from "src/api/Project";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
@@ -20,9 +22,10 @@ import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, GithubContributionType } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
-import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
+
 import { Link } from "components/ds/link/link";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
+
+import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 
 export function ContributionDetail({ contributionId, projectId }: { contributionId: string; projectId: string }) {
   const { T } = useIntl();

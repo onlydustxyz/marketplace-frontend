@@ -1,5 +1,5 @@
-import { useIntl } from "src/hooks/useIntl";
 import Contributor from "src/components/Contributor";
+import { useIntl } from "src/hooks/useIntl";
 
 type Author = {
   authorLogin: string;

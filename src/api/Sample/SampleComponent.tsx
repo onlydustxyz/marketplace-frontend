@@ -1,6 +1,7 @@
-import SampleApi from ".";
 import useMutationAlert from "src/api/useMutationAlert";
 import { UseQueriesError } from "src/api/useQueriesError";
+
+import SampleApi from ".";
 import { FetchError } from "../query.type";
 
 export const Test = () => {

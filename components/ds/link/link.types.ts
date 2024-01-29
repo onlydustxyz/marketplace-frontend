@@ -1,6 +1,7 @@
 import { AnchorHTMLAttributes, MouseEventHandler, PropsWithChildren } from "react";
 import { NavLinkProps as OriginalNavLinkProps } from "react-router-dom";
 import { VariantProps } from "tailwind-variants";
+
 import { linkVariants } from "./link.variants";
 
 // TODO: Change to next/link after the migration

@@ -1,7 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { EDIT_PANEL_NAME, EditPanel } from ".";
+
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { useStackNavigation } from "src/libs/react-stack";
+
+import { EDIT_PANEL_NAME, EditPanel } from ".";
 import { EditContext } from "../../EditContext";
 
 interface EditPanelContextProps {

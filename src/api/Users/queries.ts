@@ -1,4 +1,5 @@
 import { components } from "src/__generated/api";
+
 import { API_PATH } from "../ApiPath";
 import { UseQueryProps, useBaseQuery } from "../useBaseQuery";
 import { USERS_TAGS } from "./tags";

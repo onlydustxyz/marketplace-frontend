@@ -1,9 +1,11 @@
 import { PropsWithChildren, useState } from "react";
+
 import Button, { ButtonOnBackground, Width } from "src/components/Button";
 import Card from "src/components/Card";
-import TermsAndConditionsCheckBox from "./Checkbox";
-import { useSidePanel } from "src/hooks/useSidePanel";
 import { Flex } from "src/components/New/Layout/Flex";
+import { useSidePanel } from "src/hooks/useSidePanel";
+
+import TermsAndConditionsCheckBox from "./Checkbox";
 
 interface TermsAndConditionsMainCardProps {
   handleAcceptTermsAndConditions: () => void;

@@ -1,12 +1,15 @@
+import { SyntheticEvent } from "react";
+
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { IMAGES } from "src/assets/img";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { ContributorT } from "src/types";
 import { cn } from "src/utils/cn";
-import { Avatar } from "../New/Avatar";
+
 import { Link } from "components/ds/link/link";
-import { SyntheticEvent } from "react";
+
+import { Avatar } from "../New/Avatar";
 
 interface Props {
   contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered">;

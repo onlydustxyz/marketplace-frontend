@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
+
 import { RoutePaths } from "src/App";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
+import MeApi from "src/api/me";
 import Dot from "src/assets/icons/Dot";
+import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import MeApi from "src/api/me";
-import { Icon } from "components/layout/icon/icon";
 import { cn } from "src/utils/cn";
-import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+
+import { Icon } from "components/layout/icon/icon";
+
 import { useLogout } from "./Logout.hooks";
 
 interface Props {

@@ -1,5 +1,5 @@
-import { useIntl } from "src/hooks/useIntl";
 import { IMAGES } from "src/assets/img";
+import { useIntl } from "src/hooks/useIntl";
 import { WorkItemType } from "src/types";
 
 const itemTypes = {

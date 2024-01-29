@@ -1,7 +1,11 @@
 import _ from "lodash";
 import { useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { useMediaQuery } from "usehooks-ts";
+
 import { ProjectRoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
+import Skeleton from "src/components/Skeleton";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import {
@@ -10,9 +14,7 @@ import {
   usePendingProjectLeader,
   useProjectLeader,
 } from "src/hooks/useProjectLeader/useProjectLeader";
-import { useParams } from "react-router-dom";
-import Skeleton from "src/components/Skeleton";
-import { useMediaQuery } from "usehooks-ts";
+
 import View from "./View";
 import ViewMobile from "./ViewMobile";
 

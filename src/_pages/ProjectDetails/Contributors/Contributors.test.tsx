@@ -1,10 +1,12 @@
-import { describe, expect, it } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { ToasterProvider } from "src/hooks/useToaster";
+import { describe, expect, it } from "vitest";
+
 import View from "src/_pages/ProjectDetails/View";
+import { ToasterProvider } from "src/hooks/useToaster";
 import { renderWithIntl } from "src/test/utils";
+
 import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
 
 const queryClient = new QueryClient();

@@ -1,9 +1,11 @@
-import { RefSubscriptionInterface, useSubscribe } from "src/libs/react-subscriber";
-import { Options, StackPanelInterface, StacksParams } from "../types/Stack";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import SidePanel from "../ui/Panel";
+
+import { RefSubscriptionInterface, useSubscribe } from "src/libs/react-subscriber";
+
 import useStackContext from "../hooks/useStackContext";
+import { Options, StackPanelInterface, StacksParams } from "../types/Stack";
+import SidePanel from "../ui/Panel";
 
 export interface PanelProps<P extends StacksParams> {
   panelRef: RefSubscriptionInterface<StackPanelInterface<P>>;

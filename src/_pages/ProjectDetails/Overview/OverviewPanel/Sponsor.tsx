@@ -1,5 +1,6 @@
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { Maybe } from "src/types";
+
 import { Link } from "components/ds/link/link";
 
 type Props = {

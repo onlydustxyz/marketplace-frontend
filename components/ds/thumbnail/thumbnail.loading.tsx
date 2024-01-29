@@ -1,7 +1,9 @@
-import { TThumbnail } from "./thumbnail.types";
 import { cn } from "src/utils/cn";
-import { thumbnailVariants } from "components/ds/thumbnail/thumbnail.variants";
+
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { thumbnailVariants } from "components/ds/thumbnail/thumbnail.variants";
+
+import { TThumbnail } from "./thumbnail.types";
 
 export function ThumbnailLoading({ skeletonProps, animate = true, className, ...props }: TThumbnail.LoadingProps) {
   return (

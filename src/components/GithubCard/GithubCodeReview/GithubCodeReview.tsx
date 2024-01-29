@@ -1,16 +1,18 @@
+import { ComponentProps } from "react";
+
 import { RewardableItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
+import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
+import { RewardItem } from "src/hooks/useInfiniteRewardItems";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { ContributionStatus, GithubCodeReviewStatus, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
-import { RewardItem } from "src/hooks/useInfiniteRewardItems";
-import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { ComponentProps } from "react";
+
 import { Link } from "components/ds/link/link";
 
 export enum Action {

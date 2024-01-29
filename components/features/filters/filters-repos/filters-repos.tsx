@@ -1,8 +1,10 @@
-import { TFiltersRepos } from "./filters-repos.types";
+import { useIntl } from "src/hooks/useIntl";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
 import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { useIntl } from "src/hooks/useIntl";
+
+import { TFiltersRepos } from "./filters-repos.types";
 
 export function FiltersRepos({ repos, selected, onChange }: TFiltersRepos.Props) {
   const { T } = useIntl();

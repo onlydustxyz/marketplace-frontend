@@ -1,5 +1,7 @@
 import { ForwardedRef, forwardRef } from "react";
+
 import { cn } from "src/utils/cn";
+
 import { TScrollView } from "./scroll-view.types";
 
 export const ScrollView = forwardRef(function Background(

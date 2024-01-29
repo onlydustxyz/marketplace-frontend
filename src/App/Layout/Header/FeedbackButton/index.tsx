@@ -1,9 +1,10 @@
 import { SliderButton } from "@typeform/embed-react";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
+import { ReactNode, Ref, forwardRef, useMemo } from "react";
+
+import MeApi from "src/api/me";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
-import MeApi from "src/api/me";
-import { ReactNode, Ref, forwardRef, useMemo } from "react";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export const FeedbackButton = forwardRef(function FeedbackButton(
   { customButton }: { customButton?: ReactNode },

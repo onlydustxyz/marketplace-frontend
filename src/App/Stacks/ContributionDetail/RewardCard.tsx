@@ -1,5 +1,5 @@
-import { Link } from "components/ds/link/link";
 import { SyntheticEvent } from "react";
+
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
@@ -11,6 +11,8 @@ import { ContributionDetail } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
+
+import { Link } from "components/ds/link/link";
 
 export function RewardCard({
   reward,

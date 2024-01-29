@@ -1,5 +1,5 @@
-import { useIntl } from "src/hooks/useIntl";
 import OnlyDustCrashedLogo from "src/assets/icons/OnlyDustCrashedLogo";
+import { useIntl } from "src/hooks/useIntl";
 
 export default function ErrorState() {
   const { T } = useIntl();

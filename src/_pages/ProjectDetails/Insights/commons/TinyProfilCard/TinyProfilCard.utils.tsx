@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+
 import { ProfileCover } from "./TinyProfilCard.type";
 
 function getCoverClass(cover: `${ProfileCover}`): string {

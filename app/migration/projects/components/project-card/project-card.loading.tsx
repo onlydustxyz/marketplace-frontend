@@ -1,9 +1,9 @@
 import { Card } from "components/ds/card/card";
-import { Flex } from "components/layout/flex/flex";
-import { TagLoading } from "components/ds/tag/tag.loading";
-import { ThumbnailLoading } from "components/ds/thumbnail/thumbnail.loading";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { TagLoading } from "components/ds/tag/tag.loading";
 import { ThumbnailGroupLoading } from "components/ds/thumbnail-group/thumbnail-group.loading";
+import { ThumbnailLoading } from "components/ds/thumbnail/thumbnail.loading";
+import { Flex } from "components/layout/flex/flex";
 
 export function ProjectCardLoading() {
   return (

@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
-import { FilterQueryParams } from "../Filter";
+
+import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
-import { UserRewardsContextProps } from "./UserRewards.type";
-import { UserRewardsContext } from "./UserRewards";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
+
+import { FilterQueryParams } from "../Filter";
+import { UserRewardsContext } from "./UserRewards";
+import { UserRewardsContextProps } from "./UserRewards.type";
 
 export function UserRewardsProvider({ children }: UserRewardsContextProps) {
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>({});
