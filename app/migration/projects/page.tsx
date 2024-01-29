@@ -13,7 +13,6 @@ import { ProjectList } from "./features/project-list/project-list";
 export default function ProjectsPage() {
   const { count } = useContext(ProjectsContext);
 
-
   return (
     <Flex className="w-full gap-6" direction="col">
       <div className="w-full">
