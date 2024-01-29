@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 export const useRepositorySearch = (search?: string) => {

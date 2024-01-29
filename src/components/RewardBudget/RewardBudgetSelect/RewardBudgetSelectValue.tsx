@@ -1,9 +1,10 @@
 import { Listbox } from "@headlessui/react";
+
+import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
+import { WorkEstimationBudgetDetails } from "src/components/RewardBudget/RewardBudget.type";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
-import { WorkEstimationBudgetDetails } from "src/components/RewardBudget/RewardBudget.type";
-import { Chip } from "src/components/Chip/Chip";
 import { cn } from "src/utils/cn";
 
 export interface RewardBudgetSelectValueProps {

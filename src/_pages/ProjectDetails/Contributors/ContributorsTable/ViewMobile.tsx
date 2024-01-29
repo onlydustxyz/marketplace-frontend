@@ -1,17 +1,18 @@
+import { ProjectContributorItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
-import { ShowMore } from "src/components/Table/ShowMore";
-import Medal2Fill from "src/icons/Medal2Fill";
-import StackLine from "src/icons/StackLine";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
-import { Icon } from "components/layout/icon/icon";
-import EyeOffLine from "src/icons/EyeOffLine";
+import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
-import ActionMenu from "components/layout/action-menu/action-menu";
-import SendPlane2Line from "src/icons/SendPlane2Line";
 import EyeLine from "src/icons/EyeLine";
+import EyeOffLine from "src/icons/EyeOffLine";
+import Medal2Fill from "src/icons/Medal2Fill";
+import SendPlane2Line from "src/icons/SendPlane2Line";
+import StackLine from "src/icons/StackLine";
+
 import { Button } from "components/ds/button/button";
-import { ProjectContributorItem } from "src/api/Project/queries";
+import ActionMenu from "components/layout/action-menu/action-menu";
+import { Icon } from "components/layout/icon/icon";
 
 type ViewMobileProps<C> = {
   contributors: C[];

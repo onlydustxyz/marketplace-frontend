@@ -1,5 +1,6 @@
-import { UseRestfulDataProps } from "./useRestfulData";
 import { useEffect, useState } from "react";
+
+import { UseRestfulDataProps } from "./useRestfulData";
 
 export function useRestfulMockData({ mock }: UseRestfulDataProps & { mock?: unknown }) {
   const [data, setData] = useState<unknown>(undefined);

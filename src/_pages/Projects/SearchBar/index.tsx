@@ -1,11 +1,12 @@
-import { cn } from "src/utils/cn";
 import { PropsWithChildren, useRef, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useMediaQuery } from "usehooks-ts";
+
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
 import SearchLine from "src/icons/SearchLine";
-import { useMediaQuery } from "usehooks-ts";
-import { useHotkeys } from "react-hotkeys-hook";
+import { cn } from "src/utils/cn";
 
 type Props = {
   search: string;

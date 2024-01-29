@@ -1,10 +1,11 @@
 import { useContext } from "react";
+
+import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import HorizontalListItemCard from "src/components/New/Cards/HorizontalListItemCard";
 import AddLine from "src/icons/AddLine";
 import PencilLine from "src/icons/PencilLine";
-import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
 
 interface OrganizationListProps {

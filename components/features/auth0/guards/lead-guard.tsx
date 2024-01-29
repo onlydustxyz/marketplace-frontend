@@ -1,8 +1,9 @@
 import { ReactElement } from "react";
-import { generatePath, Navigate, useParams } from "react-router-dom";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
+import { Navigate, generatePath, useParams } from "react-router-dom";
+
 import { RoutePaths } from "src/App";
 import MeApi from "src/api/me";
+import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 
 function LeadGuard({ children }: { children: ReactElement }) {
   const { isLoading, isRefetching } = MeApi.queries.useGetMe({});

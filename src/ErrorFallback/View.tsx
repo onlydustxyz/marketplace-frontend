@@ -1,6 +1,6 @@
 import OnlyDustCrashedLogo from "src/assets/icons/OnlyDustCrashedLogo";
-import { useIntl } from "src/hooks/useIntl";
 import Button, { ButtonType } from "src/components/Button";
+import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import Refresh from "src/icons/Refresh";
 import { cn } from "src/utils/cn";

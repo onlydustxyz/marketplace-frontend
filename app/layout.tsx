@@ -1,16 +1,20 @@
+import { GoogleTagManager } from "@next/third-parties/google";
+import type { Metadata } from "next";
+import { ReactNode } from "react";
 import "remixicon/fonts/remixicon.css";
+
+import Providers from "app/providers";
+
 import "src/assets/css/index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
-import { GoogleTagManager } from "@next/third-parties/google";
+import config from "src/config";
+
 import { PosthogIdentifyUser } from "components/features/posthog/components/posthog-identify-user";
 import { PosthogPageView } from "components/features/posthog/components/posthog-page-view";
-import type { Metadata } from "next";
-import { ReactNode } from "react";
-import config from "src/config";
+
 import { sharedMetadata } from "./shared-metadata";
-import Providers from "app/providers";
 
 export const metadata: Metadata = sharedMetadata;
 

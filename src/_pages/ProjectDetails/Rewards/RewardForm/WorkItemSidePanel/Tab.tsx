@@ -1,7 +1,8 @@
-import { cn } from "src/utils/cn";
 import { PropsWithChildren } from "react";
+
 import { IMAGES } from "src/assets/img";
 import { useIntl } from "src/hooks/useIntl";
+import { cn } from "src/utils/cn";
 
 type Props = {
   active: boolean;

@@ -1,5 +1,7 @@
-import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+
+import { viewportConfig } from "src/config";
+
 import ProjectOverviewDesktopPlaceholder from "./Placeholders/ProjectOverviewDesktopPlaceholder";
 import ProjectOverviewMobilePlaceholder from "./Placeholders/ProjectOverviewMobilePlaceholder";
 

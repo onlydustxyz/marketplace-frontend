@@ -70,5 +70,6 @@ export const buttonVariants = tv({
     variant: "primary",
     accentColor: "purple",
     backgroundColor: "default",
+    disabled: false,
   },
 });

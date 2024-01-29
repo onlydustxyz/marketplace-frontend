@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+
 import { components } from "src/__generated/api";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Contribution } from "src/components/Contribution/Contribution";
@@ -12,6 +13,9 @@ import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
+
+import { Link } from "components/ds/link/link";
+
 import StruggleReasonBadge from "../commons/StruggleReasonBadge/StruggleReasonBadge";
 
 type HeaderCell = {
@@ -62,7 +66,9 @@ export function useStrugglingContributorsTable() {
         <Cell height={CellHeight.Compact}>
           <Contributor contributor={contributor} clickable />
         </Cell>
-        <Cell height={CellHeight.Compact}>{repo?.name}</Cell>
+        <Cell height={CellHeight.Compact}>
+          <Link href={repo?.htmlUrl}>{repo?.name}</Link>
+        </Cell>
         <Cell height={CellHeight.Compact}>
           <Contribution contribution={contribution} />
         </Cell>

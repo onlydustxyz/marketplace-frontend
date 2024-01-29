@@ -1,14 +1,16 @@
-import { FC, useContext, useMemo, useState } from "react";
-import { FieldLabel } from "src/components/New/Field/Label";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { debounce, uniqWith } from "lodash";
-import { FieldProjectLeadItem } from "./ProjectLeadItem";
-import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
+import { FC, useContext, useMemo, useState } from "react";
+
+import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
 import UsersApi from "src/api/Users";
-import { useIntl } from "src/hooks/useIntl";
 import { Combobox, Variant } from "src/components/New/Field/Combobox/Combobox";
 import { ItemType } from "src/components/New/Field/Combobox/MultiList";
-import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
+import { FieldLabel } from "src/components/New/Field/Label";
+import { useIntl } from "src/hooks/useIntl";
+
+import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
+import { FieldProjectLeadItem } from "./ProjectLeadItem";
 
 export type SelectedLeadType = {
   avatarUrl?: string;

@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import { CardTypes, EarningCard } from "./EarningCard";
+
 import { UserRewardsContext } from "../context/UserRewards";
+import { CardTypes, EarningCard } from "./EarningCard";
 
 export function Earning() {
   const { earning } = useContext(UserRewardsContext);

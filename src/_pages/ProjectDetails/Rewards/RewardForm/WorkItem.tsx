@@ -1,11 +1,13 @@
 import { ComponentType } from "react";
+
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
-import { rewardableItemToContribution } from "src/utils/formatToContribution";
-import { Contributor } from "./types";
-import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 import { WorkItemType } from "src/types";
+import { rewardableItemToContribution } from "src/utils/formatToContribution";
+
+import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
+import { Contributor } from "./types";
 
 function getContribution(workItem: RewardableWorkItem) {
   let rewardableWorkItem:

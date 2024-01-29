@@ -1,5 +1,6 @@
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
+
 import { useStackGithubWorkflowTutorial } from "../../Stacks";
 import TutorialSidePanelHelp from "./components/Help";
 import TutorialSidePanelSteps1 from "./components/Steps1";

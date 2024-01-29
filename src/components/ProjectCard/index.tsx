@@ -1,6 +1,8 @@
-import { generatePath, Link } from "react-router-dom";
-import { components } from "src/__generated/api";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
+import { Link, generatePath } from "react-router-dom";
+
 import { RoutePaths } from "src/App";
+import { components } from "src/__generated/api";
 import Card, { CardBorder } from "src/components/Card";
 import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
@@ -17,9 +19,9 @@ import { cn } from "src/utils/cn";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
+
 import { MissingGithubAppInstall } from "../New/Project/MissingGithubAppInstall";
 import ProjectTitle from "./ProjectTitle";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export enum Variant {
   Default = "default",

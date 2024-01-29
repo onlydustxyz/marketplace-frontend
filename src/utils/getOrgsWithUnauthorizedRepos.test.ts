@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getOrgsWithUnauthorizedRepos } from "./getOrgsWithUnauthorizedRepos";
 
 const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {

@@ -1,8 +1,10 @@
 import { useEffect } from "react";
+
 import ProjectApi from "src/api/Project";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import SkeletonProjectOverviewPanel from "src/components/Skeleton/SkeletonProjectOverviewPanel";
 import { usePosthog } from "src/hooks/usePosthog";
+
 import { ProjectOverviewHeadersCard } from "./components/Header";
 import { ProjectOverviewInformations } from "./components/Informations";
 import { ProjectOverviewReposCard } from "./components/Repos";

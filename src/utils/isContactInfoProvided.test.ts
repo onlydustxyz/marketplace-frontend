@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
+
 import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
+
 import isContactInfoProvided from "./isContactInfoProvided";
 
 const userProfile = {

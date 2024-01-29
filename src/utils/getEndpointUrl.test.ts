@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getEndpointUrl } from "./getEndpointUrl";
 
 describe("getEndpointUrl", () => {

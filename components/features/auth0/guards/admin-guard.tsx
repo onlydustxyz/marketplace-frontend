@@ -1,7 +1,8 @@
 import { ReactElement } from "react";
-import { generatePath, Navigate, useParams } from "react-router-dom";
-import MeApi from "src/api/me";
+import { Navigate, generatePath, useParams } from "react-router-dom";
+
 import { RoutePaths } from "src/App";
+import MeApi from "src/api/me";
 
 export function AdminGuard({ children }: { children: ReactElement }) {
   const params = useParams();

@@ -1,10 +1,12 @@
+import { useMatch } from "react-router-dom";
+import { useMediaQuery } from "usehooks-ts";
+
+import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
+import { ContributionTableSkeleton } from "src/components/Contribution/ContributionTableSkeleton";
 import Skeleton, { SkeletonVariant } from "src/components/Skeleton";
 import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
+
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "..";
-import { useMatch } from "react-router-dom";
-import { ContributionTableSkeleton } from "src/components/Contribution/ContributionTableSkeleton";
-import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
 
 export default function ProjectDetailsLoader() {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);

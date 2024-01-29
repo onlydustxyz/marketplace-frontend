@@ -1,9 +1,9 @@
+import { components } from "src/__generated/api";
 import Card from "src/components/Card";
 import GithubLink from "src/components/Project/Overview/OverviewRepos/GithubRepoDetails/GithubLink";
 import { useIntl } from "src/hooks/useIntl";
 import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
-import { components } from "src/__generated/api";
 
 type Props = {
   githubRepo: components["schemas"]["GithubRepoResponse"];

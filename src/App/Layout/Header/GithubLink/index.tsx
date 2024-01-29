@@ -1,7 +1,9 @@
+import { useAuth0 } from "@auth0/auth0-react";
+
 import { useIntl } from "src/hooks/useIntl";
 import GithubLogo, { Size } from "src/icons/GithubLogo";
 import { cn } from "src/utils/cn";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
 export enum Variant {

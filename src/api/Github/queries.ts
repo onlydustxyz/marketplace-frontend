@@ -1,7 +1,8 @@
-import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
-import { API_PATH } from "src/api/ApiPath";
-import { GITHUB_TAGS } from "./tags";
 import { components } from "src/__generated/api";
+import { API_PATH } from "src/api/ApiPath";
+import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
+
+import { GITHUB_TAGS } from "./tags";
 
 export type useInstallationByIdResponse = components["schemas"]["InstallationResponse"];
 

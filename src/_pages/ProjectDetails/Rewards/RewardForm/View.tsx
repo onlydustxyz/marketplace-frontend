@@ -1,34 +1,36 @@
-import Card from "src/components/Card";
-import { useIntl } from "src/hooks/useIntl";
-import ContributorSelect from "src/_pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
-import Callout from "src/components/Callout";
-import { viewportConfig } from "src/config";
-import Add from "src/icons/Add";
-import CloseLine from "src/icons/CloseLine";
+import { useMediaQuery } from "usehooks-ts";
+
+import ContributorSelect from "src/_pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 import {
   RewardableWorkItem,
   contributionToWorkItem,
 } from "src/_pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import Title from "src/_pages/ProjectDetails/Title";
+import ProjectApi from "src/api/Project";
+import { CompletedRewardableItem } from "src/api/Project/queries";
+import useMutationAlert from "src/api/useMutationAlert";
+import { IMAGES } from "src/assets/img";
+import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
+import Callout from "src/components/Callout";
+import Card from "src/components/Card";
+import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
+import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
+import Skeleton from "src/components/Skeleton";
+import { viewportConfig } from "src/config";
+import { useIntl } from "src/hooks/useIntl";
+import Add from "src/icons/Add";
+import CloseLine from "src/icons/CloseLine";
 import { GithubContributionType, ProjectBudgetType } from "src/types";
-import { useMediaQuery } from "usehooks-ts";
+import { BudgetCurrencyType } from "src/utils/money";
+
 import { AutoAddOrIgnore } from "./AutoAdd/AutoAddOrIgnore";
 import { WorkItem } from "./WorkItem";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
-import { BudgetCurrencyType } from "src/utils/money";
-import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
-import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
-import { Controller, useFormContext } from "react-hook-form";
-import { CompletedRewardableItem } from "src/api/Project/queries";
-import ProjectApi from "src/api/Project";
-import useMutationAlert from "src/api/useMutationAlert";
-import Skeleton from "src/components/Skeleton";
-import { IMAGES } from "src/assets/img";
 
 interface Props {
   projectId: string;

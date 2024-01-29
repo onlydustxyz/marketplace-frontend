@@ -1,7 +1,9 @@
-import { TOptions } from "./options.types";
 import { Combobox } from "@headlessui/react";
-import { Option } from "../option/option";
+
 import { Typography } from "components/layout/typography/typography";
+
+import { Option } from "../option/option";
+import { TOptions } from "./options.types";
 
 export function Options({ selectedItems, filteredItems, type, emptyMessage }: TOptions.Props) {
   return (
