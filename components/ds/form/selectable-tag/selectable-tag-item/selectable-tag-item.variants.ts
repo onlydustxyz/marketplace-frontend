@@ -6,5 +6,8 @@ export const selectableTagItemVariants = tv({
     selected: {
       true: "bg-spacePurple-900 before:absolute before:-inset-0.5 before:rounded-lg before:border-2 before:border-spacePurple-500",
     },
+    disabled: {
+      true: "pointer-events-none opacity-50",
+    },
   },
 });

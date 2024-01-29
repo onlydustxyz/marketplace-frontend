@@ -21,4 +21,10 @@ export namespace TIcon {
   }
 
   export type Props = CustomProps | RemixProps;
+  export type renderIcon = (props: {
+    className?: string;
+    color?: string;
+    active?: boolean;
+    size?: number;
+  }) => JSX.Element;
 }

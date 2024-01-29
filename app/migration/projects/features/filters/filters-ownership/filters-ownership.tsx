@@ -4,6 +4,7 @@ import { Flex } from "components/layout/flex/flex";
 import { SelectableTag } from "components/ds/form/selectable-tag/selectable-tag";
 import { Ownership } from "../../../context/project.context.types";
 import { SelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item";
+import { Icon } from "components/layout/icon/icon";
 
 export function FiltersOwnership() {
   const { filters } = useContext(ProjectsContext);
@@ -22,15 +23,21 @@ export function FiltersOwnership() {
           {
             value: Ownership.Mine,
             children: "Mine",
+            icon: props => <Icon remixName="ri-seedling-line" {...props} />,
           },
           {
             value: Ownership.All,
             children: "All",
           },
+          {
+            value: Ownership.All,
+            children: "All2",
+            disabled: true,
+          },
         ]}
       />
 
-      <SelectableTagItem value={Ownership.Mine} checkboxProps={{ onChange: (...args) => console.log("args", args) }}>
+      <SelectableTagItem value={Ownership.Mine} checkboxProps={{ onChange: () => null }}>
         Display tag
       </SelectableTagItem>
     </Flex>
