@@ -4,10 +4,9 @@ import { SocialIcon } from "src/_pages/ProjectDetails/ProjectEdition/pages/Infor
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import Telegram from "src/assets/icons/Telegram";
 import { useIntl } from "src/hooks/useIntl";
-import DiscordFill from "src/icons/DiscordFill";
-import TwitterFill from "src/icons/TwitterFill";
 
 import { Link } from "components/ds/link/link";
+import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 import FakeExternalLink from "./FakeExternalLink";
@@ -44,11 +43,11 @@ export const ProjectOverviewMoreInfo = ({ moreInfos }: ProjectOverviewMoreInfoPr
             />
             <FakeExternalLink
               text={T("common.channel.discord")}
-              icon={({ className }) => <DiscordFill className={className} />}
+              icon={({ className }) => <Icon remixName="ri-discord-fill" className={className} />}
             />
             <FakeExternalLink
               text={T("common.channel.twitter")}
-              icon={({ className }) => <TwitterFill className={className} />}
+              icon={({ className }) => <Icon remixName="ri-twitter-x-fill" className={className} />}
             />
           </Typography>
         )}

@@ -14127,10 +14127,10 @@ remark-slug@^6.0.0:
     mdast-util-to-string "^1.0.0"
     unist-util-visit "^2.0.0"
 
-remixicon@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/remixicon/-/remixicon-3.3.0.tgz#2d610706a98a4bed093e9d5c2a28551632b11c68"
-  integrity sha512-iNeRbwVgd8Ef467IjMd/+joFWSBOYfqsLtxtSzsS8fWn75a1H7sgGu5uWE4c3NLjP2C1giFlx8gw63qZd96yJQ==
+remixicon@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/remixicon/-/remixicon-4.1.0.tgz#3a0068cef5f431473707f9d2a108968cd467c0aa"
+  integrity sha512-N5dmpN6bjB7GyHi8RqhKp8Fy1cfOch0m75KZQv4ZNFa2ffpXJY2FQ4TdgigZulTdwOoTwLKjBQ7GCC+bEw8LHg==
 
 renderkid@^3.0.0:
   version "3.0.0"
