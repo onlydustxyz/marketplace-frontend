@@ -15,6 +15,7 @@ import { ProjectMissingGithubBanner } from "components/features/project-missing-
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
+import { HiringTag } from "app/migration/projects/components/project-card/hiring-tag/hiring-tag";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
@@ -55,6 +56,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
       border={isInvitedAsProjectLead ? "multiColor" : "medium"}
       dataTestId="project-card"
     >
+      <HiringTag isHiring={hiring} isErrorVariant={isErrorVariant} />
       <Flex direction="col" className="gap-5">
         <div className="relative flex-shrink-0">
           <Thumbnail
