@@ -5,6 +5,7 @@ import { UseInfiniteListResponse } from "src/api/Project/queries";
 
 import { TFiltersDropDown } from "components/ds/drop-down/filters-drop-down.types";
 import { ProjectTypes } from "src/api/Project/types";
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 export namespace TProjectContext {
   export interface Props extends PropsWithChildren {}
@@ -23,7 +24,7 @@ export namespace TProjectContext {
       set: (filter: Partial<Filter>) => void;
       clear: () => void;
       options: {
-        technologies: TFiltersDropDown.Option[];
+        technologies: TSelectAutocomplete.Item[];
         sponsors: TFiltersDropDown.Option[];
       };
     };

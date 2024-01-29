@@ -1,6 +1,6 @@
 import { isArray } from "lodash";
 
-import { TSelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete.types";
+import { TSelectAutocomplete } from "./select-autocomplete.types";
 
 export namespace SelectAutocompleteUtils {
   export const isItemSelected = (

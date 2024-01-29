@@ -18,12 +18,7 @@ export function FiltersTechnologies() {
           id: name,
           value: name,
         }))}
-        technologies={filters.options.technologies.map(({ id, label }) => ({
-          id,
-          label,
-          value: id,
-          image: undefined,
-        }))}
+        technologies={filters.options.technologies}
         onChange={handleTechnologyClick}
       />
     </>

@@ -3,8 +3,8 @@ import { useMemo, useState } from "react";
 
 import { useIntl } from "src/hooks/useIntl";
 
-import { TSelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete.types";
-import { SelectAutocompleteUtils as Utils } from "components/ds/Filters/select-autocomplete/select-autocomplete.utils";
+import { TSelectAutocomplete } from "./select-autocomplete.types";
+import { SelectAutocompleteUtils as Utils } from "./select-autocomplete.utils";
 
 export namespace SelectAutocompleteHooks {
   export const useTokens = (

@@ -91,6 +91,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
             technologies: technologies.map(name => ({
               label: name,
               id: name,
+              value: name,
             })),
             sponsors: sponsors.map(({ id, name }) => ({
               label: name,
