@@ -15,11 +15,10 @@ import { ProjectMissingGithubBanner } from "components/features/project-missing-
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
-import { HiringTag } from "app/migration/projects/components/project-card/hiring-tag/hiring-tag";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
-  const { hiring, isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
+  const { isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
   const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
   const isPrivate = project.visibility === "PRIVATE";
 
@@ -56,9 +55,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
       border={isInvitedAsProjectLead ? "multiColor" : "medium"}
       dataTestId="project-card"
     >
-      <HiringTag isHiring={hiring} isErrorVariant={isErrorVariant} />
-
-      <Flex direction="col" className="gap-5">
+      <Flex direction="row" className="gap-5">
         <div className="relative flex-shrink-0">
           <Thumbnail
             src={project.logoUrl}
@@ -73,7 +70,13 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             </div>
           )}
         </div>
-        <Flex direction="col"></Flex>
+        <Flex direction="col" className="flex-1">
+          <Flex direction="row">
+            <div className="flex-1 truncate font-belwe text-2xl font-medium">{project.name}</div>
+            <Flex direction="col">icon tags</Flex>
+          </Flex>
+          <Summary shortDescription={project.shortDescription} />
+        </Flex>
       </Flex>
 
       <Flex direction="col" className="gap-5">
