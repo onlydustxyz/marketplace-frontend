@@ -6,7 +6,7 @@ import { AddProjectModal } from "./add-project-modal";
 
 export function AddProject() {
   return (
-    <Card className="mb-4 flex items-center gap-4">
+    <Card background="base" border="medium" className="mb-4 flex items-center gap-4">
       <Typography variant="body-s">
         <Translate token="project.details.create.description" />
       </Typography>

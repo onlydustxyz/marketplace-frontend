@@ -10,6 +10,7 @@ import { ProjectsFilters } from "./features/filters/filters";
 import { ProjectList } from "./features/project-list/project-list";
 import { ProjectSearch } from "./features/project-search/project-search";
 import { ProjectsSort } from "./features/projects-sort/projects-sort";
+import { AddProject } from "app/migration/projects/components/add-project/add-project";
 
 export default function ProjectsPage() {
   const { count } = useContext(ProjectsContext);
@@ -22,7 +23,9 @@ export default function ProjectsPage() {
       <Flex className="relative w-full gap-6" direction="row">
         <div className="hidden shrink-0 basis-[356px] lg:block">
           <Flex className="sticky top-0 z-10 w-full gap-4 xl:block" direction="col">
-            <div className="w-full self-start">CREATE</div>
+            <div className="w-full self-start">
+              <AddProject />
+            </div>
             <div className="w-full self-start">
               <ProjectsFilters />
             </div>

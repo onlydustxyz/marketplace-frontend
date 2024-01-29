@@ -1,4 +1,4 @@
-export namespace TSort {
+export namespace TSelectSort {
   export type Option = {
     id: string;
     label?: string;

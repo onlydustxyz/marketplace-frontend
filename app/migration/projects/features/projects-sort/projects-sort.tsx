@@ -2,8 +2,8 @@ import { useContext, useMemo } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import { ProjectsContext } from "../../context/project.context";
 import { TSort } from "components/ds/sort/sort.types";
-import { Sort } from "components/ds/sort/sort";
 import { ProjectTypes } from "src/api/Project/types";
+import { SelectSort } from "components/ds/form/select-sort/select-sort";
 
 export function ProjectsSort() {
   const { T } = useIntl();
@@ -36,7 +36,7 @@ export function ProjectsSort() {
   };
 
   return (
-    <Sort
+    <SelectSort
       labelToken="projects.sorting.label"
       value={filters.values.sorting}
       onChange={onSortChange}
