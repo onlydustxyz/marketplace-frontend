@@ -46,7 +46,7 @@ export const VerticalListItemDrop: FC<VerticalListItemDropProps> = ({
     <Disclosure
       defaultOpen
       className={cn(
-        "flex w-full flex-col rounded-b-2xl border-b border-card-border-light transition-all duration-300",
+        "flex w-full flex-col rounded-b-2xl border-b border-card-border-light duration-300 transition-all",
         ContainerClassName
       )}
       {...RestContainerProps}
@@ -63,7 +63,7 @@ export const VerticalListItemDrop: FC<VerticalListItemDropProps> = ({
           >
             <div
               className={cn(
-                "rounded-t-2xl border-l border-r border-t border-card-border-light bg-greyscale-900 px-4 py-4 transition-all duration-150",
+                "rounded-t-2xl border-l border-r border-t border-card-border-light bg-greyscale-900 px-4 py-4 duration-150 transition-all",
                 !open && "rounded-b-2xl",
                 variant === Variants.BLUE && "bg-card-background-base"
               )}
@@ -84,7 +84,7 @@ export const VerticalListItemDrop: FC<VerticalListItemDropProps> = ({
                 <div className="flex items-center justify-end gap-1">
                   <ArrowDownSLine
                     className={cn(
-                      "flex items-center justify-center text-[24px] text-greyscale-600 transition-all duration-150 ease-out",
+                      "flex items-center justify-center text-[24px] text-greyscale-600 duration-150 ease-out transition-all",
                       open && "rotate-180 transform text-white"
                     )}
                   />

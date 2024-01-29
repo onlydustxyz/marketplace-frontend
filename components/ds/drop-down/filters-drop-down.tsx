@@ -43,7 +43,7 @@ export function FiltersDropDown({ title, image, options, value, onChange }: TFil
           {value.length > 0 ? <Badge value={value.length} /> : null}
 
           <span
-            className={cn("transition duration-300", {
+            className={cn("duration-300 transition", {
               "-rotate-180": !isOpen,
               "-rotate-90": isOpen,
             })}
