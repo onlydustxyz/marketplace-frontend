@@ -4,7 +4,7 @@ export namespace TSelectAutocomplete {
   export interface Item {
     id: number | string;
     label?: string | JSX.Element;
-    value?: string;
+    value: string;
     image?: string | null;
   }
 

@@ -227,8 +227,13 @@
       "some": "Sponsors"
     },
     "technologies": {
+      "title": "Technologies",
       "all": "All technologies",
-      "some": "Technologies"
+      "some": "Technologies",
+      "zero": "technologies",
+      "empty": "No technologies found",
+        "one": "__count__ technology",
+        "many": "__count__ technologies"
     },
     "title": "Filter",
     "mobileButton": {

@@ -8,13 +8,7 @@ import { Button } from "./components/button/button";
 import { Options } from "./components/options/options";
 import { SelectAutocompleteHooks as Hooks } from "./select-autocomplete.hooks";
 import { TSelectAutocomplete } from "./select-autocomplete.types";
-import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
-import users from "src/api/Users";
 
-/**
- * TODO :
- * controle shouldFlip props
- * */
 export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   disabled = false,
   icon,
@@ -26,78 +20,83 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   const selectedRef = useRef(comboProps.selected);
   const { current: selected } = selectedRef;
   const { selected: selectedTracked } = comboProps;
-  const container = useRef<HTMLDivElement>(null);
+  const token = Hooks.useTokens(selectedTracked, items, tokens);
+  const { filteredItems, query, setQuery } = Hooks.useFilteredItems(selected, items);
+  const selectedItems = Hooks.useSelectedItems(selected);
 
-  console.log("container.current?.offsetWidth", container.current?.offsetWidth);
+  const { refs, floatingStyles } = useFloating({
+    middleware: [flip()],
+    whileElementsMounted: autoUpdate,
+    transform: false,
+  });
+
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const onButtonFocus = () => {
+    selectedRef.current = comboProps.selected;
+  };
+
   return (
-    <div className={cn("relative z-[1]", `w-[${container.current?.offsetWidth}px]`)}>
-      <Autocomplete
-        multiple={true}
-        classNames={{
-          base: "max-w-xs",
-          // listboxWrapper: "max-h-[320px]",
-          selectorButton: "text-default-500",
-        }}
-        defaultItems={items}
-        inputProps={{
-          classNames: {
-            input:
-              "ml-1 group-data-[focus=true]:text-spacePurple-400 group-data-[focus=true]:placeholder:text-spacePurple-400",
-            inputWrapper: cn(
-              "relative flex w-full h-5 items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
-              "group-data-[focus=true]:bg-spacePurple-900 group-data-[focus=true]:border-spacePurple-400 group-data-[focus=true]:outline-1 group-data-[focus=true]:border-[2px]"
-            ),
-            // mainWrapper:
-            //   "relative z-[1] after:w-[calc(100%_+_24px)] after:h-[calc(100%_+_24px)] after:bg-greyscale-800 after:absolute after:-top-3 after:-left-3 after:-z-[1] after:rounded-xl",
-          },
-        }}
-        listboxProps={{
-          hideSelectedIcon: true,
-          itemClasses: {
-            base: [
-              "rounded-medium",
-              "text-default-500",
-              "transition-opacity",
-              "data-[hover=true]:text-foreground",
-              "dark:data-[hover=true]:bg-default-50",
-              "data-[pressed=true]:opacity-70",
-              "data-[hover=true]:bg-default-200",
-              "data-[selectable=true]:focus:bg-default-100",
-              "data-[focus-visible=true]:ring-default-500",
-            ],
-          },
-        }}
-        aria-label="Select an employee"
-        placeholder="Enter employee name"
-        shouldCloseOnBlur={false}
-        popoverProps={{
-          offset: -52,
-          crossOffset: 0,
-          // shouldFlip: false,
-          isOpen: true,
-          shouldCloseOnBlur: false,
-          // portalContainer: document.querySelector(".test-wrapper-class") || undefined,
-          portalContainer: container.current || undefined,
-          classNames: {
-            trigger: "bg-red-500",
-            base: "rounded-xl bg-red-500",
-            content: cn(
-              "p-1 bg-greyscale-800 py-2 w-[calc(100%_+_24px)] -ml-3 -translate-x-3 data-[placement=top]:pb-[52px] data-[placement=bottom]:pt-[52px]"
-            ),
-          },
-        }}
-        startContent={icon?.({
-          className: "text-default-500 group-data-[focus=true]:text-spacePurple-400",
-          selected: [],
-        })}
-      >
-        {item => (
-          <AutocompleteItem key={item.id} textValue={item.value}>
-            {item.label}
-          </AutocompleteItem>
+    <div className={cn("relative", { "opacity-50": disabled })}>
+      {/* // need this to handle the multiple and single from headless ui
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore*/}
+      <Combobox {...comboProps} disabled={disabled} by="id" value={comboProps.selected}>
+        {({ open }) => (
+          <>
+            <Combobox.Button
+              ref={refs.setReference}
+              as="div"
+              onClick={onButtonFocus}
+              className={cn(
+                "relative flex w-full items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
+                {
+                  "z-20 border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
+                    open,
+                }
+              )}
+            >
+              <Combobox.Input
+                className={cn(
+                  "peer w-full border-none bg-transparent pl-6 font-walsheim text-sm text-greyscale-50 outline-none",
+                  {
+                    "placeholder:text-greyscale-50 focus-within:placeholder:text-spacePurple-400": !open,
+                    "placeholder:text-spacePurple-400": open,
+                  }
+                )}
+                onChange={onInputChange}
+                autoComplete="off"
+              />
+              <Button selected={selectedTracked} icon={icon} query={query} token={token} open={open} />
+            </Combobox.Button>
+            <Transition
+              ref={refs.setFloating}
+              style={{ ...floatingStyles, top: "-12px" }}
+              enter="transform transition duration-100 ease-out"
+              enterFrom="scale-95 opacity-0"
+              enterTo="scale-100 opacity-100"
+              leave="transform transition duration-75 ease-out"
+              leaveFrom="scale-100 opacity-100"
+              leaveTo="scale-95 opacity-0"
+              afterLeave={() => setQuery("")}
+              className={cn(
+                "absolute -left-1.5 -right-1.5 z-10 w-[calc(100%_+_24px)] overflow-hidden rounded-2xl border border-card-border-light bg-card-background-medium shadow-medium"
+              )}
+            >
+              <Combobox.Options className="bg-greyscale-800 p-1 py-2 pt-[54px]">
+                <Options
+                  selectedItems={selectedItems}
+                  filteredItems={filteredItems}
+                  type={type}
+                  emptyMessage={tokens.empty}
+                />
+              </Combobox.Options>
+            </Transition>
+          </>
         )}
-      </Autocomplete>
-      <div ref={container} className="absolute bottom-0 left-0 right-0 top-0 -z-[1]" />
+      </Combobox>
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
-export namespace TFiltersUsers {
+export namespace TFiltersTechnologies {
   export interface Props {
-    users: TSelectAutocomplete.Item[];
+    technologies: TSelectAutocomplete.Item[];
     selected: TSelectAutocomplete.Item[];
-    onChange: (repos: TSelectAutocomplete.Item[]) => void;
+    onChange: (technologies: TSelectAutocomplete.Item[]) => void;
   }
 }
