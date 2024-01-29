@@ -27,6 +27,7 @@ import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
+import { Link } from "components/ds/link/link";
 import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 
@@ -302,14 +303,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                   />
                   <div className="flex flex-row items-center gap-1">
                     {T("reward.table.detailsPanel.on")}
-                    <button
-                      className="group flex items-center gap-2 truncate font-walsheim text-sm font-normal"
-                      onClick={() => openProjectOverview({ slug: data.project.slug })}
-                    >
-                      <span className={"block truncate text-spacePurple-300 group-hover:underline"}>
-                        {data.project.name}
-                      </span>
-                    </button>
+                    <Link onClick={() => openProjectOverview({ slug: data.project.slug })}>{data.project.name}</Link>
                   </div>
                 </Details>
               ) : null}
