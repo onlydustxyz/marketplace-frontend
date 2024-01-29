@@ -47,7 +47,12 @@ export function SelectableTagItem<V extends string>({
       <VisuallyHidden>
         <input {...getInputProps()} {...checkboxProps} />
       </VisuallyHidden>
-      <div className={cn(selectableTagItemVariants({ ...props, selected: isActive, disabled }), className)}>
+      <div
+        className={cn(
+          selectableTagItemVariants({ ...props, selected: isActive || false, disabled: disabled || false }),
+          className
+        )}
+      >
         {Icon}
         {children}
       </div>
