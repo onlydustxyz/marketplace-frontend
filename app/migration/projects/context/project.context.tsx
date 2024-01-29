@@ -1,17 +1,11 @@
 "use client";
 import { createContext, useEffect, useMemo, useState } from "react";
 import ProjectApi from "src/api/Project";
-import {
-  DEFAULT_PROJECTS_FILTER,
-  PROJECT_FILTER_KEY,
-  ProjectContextReturn,
-  ProjectFilter,
-  ProjectsContextProps,
-} from "./project.context.types";
+import { TProjectContext } from "./project.context.types";
 import { useLocalStorage } from "react-use";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 
-export const ProjectsContext = createContext<ProjectContextReturn>({
+export const ProjectsContext = createContext<TProjectContext.Return>({
   projects: [],
   fetchNextPage: () => null,
   hasNextPage: false,
@@ -20,7 +14,7 @@ export const ProjectsContext = createContext<ProjectContextReturn>({
   sponsors: [],
   technologies: [],
   filters: {
-    values: DEFAULT_PROJECTS_FILTER,
+    values: TProjectContext.DEFAULT_FILTER,
     isCleared: true,
     set: () => null,
     clear: () => null,
@@ -31,9 +25,9 @@ export const ProjectsContext = createContext<ProjectContextReturn>({
   },
 });
 
-export function ProjectsContextProvider({ children }: ProjectsContextProps) {
-  const [storage, setStorage] = useLocalStorage(PROJECT_FILTER_KEY, DEFAULT_PROJECTS_FILTER);
-  const [filters, setFilters] = useState<ProjectFilter>({ ...DEFAULT_PROJECTS_FILTER, ...storage });
+export function ProjectsContextProvider({ children }: TProjectContext.Props) {
+  const [storage, setStorage] = useLocalStorage(TProjectContext.FILTER_KEY, TProjectContext.DEFAULT_FILTER);
+  const [filters, setFilters] = useState<TProjectContext.Filter>({ ...TProjectContext.DEFAULT_FILTER, ...storage });
 
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
@@ -51,20 +45,20 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
     queryParams,
   });
 
-  const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(DEFAULT_PROJECTS_FILTER), [filters]);
+  const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(TProjectContext.DEFAULT_FILTER), [filters]);
   const count = useMemo(() => data?.pages[0]?.totalItemNumber || 0, [data]);
   const technologies = useMemo(() => data?.pages[0]?.technologies || [], [data]);
   const sponsors = useMemo(() => data?.pages[0]?.sponsors || [], [data]);
   const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
 
-  function onFilterChange(newFilter: Partial<ProjectFilter>) {
+  function onFilterChange(newFilter: Partial<TProjectContext.Filter>) {
     const filtersValues = { ...filters, ...newFilter };
     setFilters(filtersValues);
     setStorage(filtersValues);
   }
   function onClearFilter() {
-    setFilters(DEFAULT_PROJECTS_FILTER);
-    setStorage(DEFAULT_PROJECTS_FILTER);
+    setFilters(TProjectContext.DEFAULT_FILTER);
+    setStorage(TProjectContext.DEFAULT_FILTER);
   }
 
   /** Need this to migrate existing filter for sponsor */

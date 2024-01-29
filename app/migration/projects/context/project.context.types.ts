@@ -2,54 +2,46 @@ import { UseInfiniteListResponse } from "src/api/Project/queries";
 import { PropsWithChildren } from "react";
 import { components } from "src/__generated/api";
 import { TFiltersDropDown } from "components/ds/drop-down/filters-drop-down.types";
+import { ProjectTypes } from "src/api/Project/types";
 
-export interface ProjectsContextProps extends PropsWithChildren {}
+export namespace TProjectContext {
+  export interface Props extends PropsWithChildren {}
 
-export type ProjectContextReturn = {
-  projects: UseInfiniteListResponse["projects"];
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  count: number;
-  sponsors: components["schemas"]["SponsorResponse"][];
-  technologies: string[];
-  filters: {
-    values: ProjectFilter;
-    isCleared: boolean;
-    set: (filter: Partial<ProjectFilter>) => void;
-    clear: () => void;
-    options: {
-      technologies: TFiltersDropDown.Option[];
-      sponsors: TFiltersDropDown.Option[];
+  export type Return = {
+    projects: UseInfiniteListResponse["projects"];
+    fetchNextPage: () => void;
+    hasNextPage: boolean;
+    isFetchingNextPage: boolean;
+    count: number;
+    sponsors: components["schemas"]["SponsorResponse"][];
+    technologies: string[];
+    filters: {
+      values: Filter;
+      isCleared: boolean;
+      set: (filter: Partial<Filter>) => void;
+      clear: () => void;
+      options: {
+        technologies: TFiltersDropDown.Option[];
+        sponsors: TFiltersDropDown.Option[];
+      };
     };
   };
-};
 
-export enum Ownership {
-  All = "All",
-  Mine = "Mine",
+  export interface Filter {
+    ownership: ProjectTypes.Ownership;
+    technologies: string[];
+    sponsors: string[];
+    search?: string;
+    sorting: ProjectTypes.Sorting;
+  }
+
+  export const FILTER_KEY = "project_filter";
+  export const DEFAULT_SORTING = ProjectTypes.Sorting.Trending;
+
+  export const DEFAULT_FILTER: Filter = {
+    ownership: ProjectTypes.Ownership.All,
+    technologies: [],
+    sponsors: [],
+    sorting: DEFAULT_SORTING,
+  };
 }
-
-export interface ProjectFilter {
-  ownership: Ownership;
-  technologies: string[];
-  sponsors: string[];
-  search?: string;
-  sorting: Sorting;
-}
-
-export enum Sorting {
-  Trending = "RANK",
-  ProjectName = "NAME",
-  ReposCount = "REPO_COUNT",
-  ContributorsCount = "CONTRIBUTOR_COUNT",
-}
-export const PROJECT_FILTER_KEY = "project_filter";
-export const DEFAULT_PROJECT_SORTING = Sorting.Trending;
-
-export const DEFAULT_PROJECTS_FILTER: ProjectFilter = {
-  ownership: Ownership.All,
-  technologies: [],
-  sponsors: [],
-  sorting: DEFAULT_PROJECT_SORTING,
-};

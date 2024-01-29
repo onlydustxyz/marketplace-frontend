@@ -1,9 +1,9 @@
 import { useContext, useMemo } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import { ProjectsContext } from "../../context/project.context";
-import { Sorting } from "../../context/project.context.types";
 import { TSort } from "components/ds/sort/sort.types";
 import { Sort } from "components/ds/sort/sort";
+import { ProjectTypes } from "src/api/Project/types";
 
 export function ProjectsSort() {
   const { T } = useIntl();
@@ -12,26 +12,26 @@ export function ProjectsSort() {
   const options: TSort.Option[] = useMemo(
     () => [
       {
-        label: T(`projects.sorting.${Sorting.Trending}`),
-        id: Sorting.Trending,
+        label: T(`projects.sorting.${ProjectTypes.Sorting.Trending}`),
+        id: ProjectTypes.Sorting.Trending,
       },
       {
-        label: T(`projects.sorting.${Sorting.ProjectName}`),
-        id: Sorting.ProjectName,
+        label: T(`projects.sorting.${ProjectTypes.Sorting.ProjectName}`),
+        id: ProjectTypes.Sorting.ProjectName,
       },
       {
-        label: T(`projects.sorting.${Sorting.ReposCount}`),
-        id: Sorting.ReposCount,
+        label: T(`projects.sorting.${ProjectTypes.Sorting.ReposCount}`),
+        id: ProjectTypes.Sorting.ReposCount,
       },
       {
-        label: T(`projects.sorting.${Sorting.ContributorsCount}`),
-        id: Sorting.ContributorsCount,
+        label: T(`projects.sorting.${ProjectTypes.Sorting.ContributorsCount}`),
+        id: ProjectTypes.Sorting.ContributorsCount,
       },
     ],
     []
   );
 
-  const onSortChange = (value: Sorting) => {
+  const onSortChange = (value: ProjectTypes.Sorting) => {
     filters.set({ sorting: value });
   };
 

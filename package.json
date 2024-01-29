@@ -62,7 +62,7 @@
     "react-virtuoso": "^4.3.2",
     "recharts": "^2.6.2",
     "remark-gfm": "^3.0.1",
-    "remixicon": "^3.3.0",
+    "remixicon": "^4.1.0",
     "storybook-addon-state": "^1.0.3",
     "tailwind-merge": "^1.14.0",
     "tailwind-scrollbar": "^2.1.0",

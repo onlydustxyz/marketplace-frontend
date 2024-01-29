@@ -3,8 +3,8 @@ import { Typography } from "components/layout/typography/typography";
 import { Flex } from "components/layout/flex/flex";
 import { FiltersTechnologies } from "./filters-technologies/filters-technologies";
 import { FiltersSponsors } from "./filters-sponsors/filters-sponsors";
-import { FiltersOwnership } from "./filters-ownership/filters-ownership";
 import { FiltersClearAll } from "./clear-all/clear-all";
+import { FiltersHighlight } from "app/migration/projects/features/filters/filters-highlight/filters-highlight";
 
 export function ProjectsFilters() {
   return (
@@ -14,7 +14,7 @@ export function ProjectsFilters() {
         <FiltersClearAll />
       </Flex>
 
-      <FiltersOwnership />
+      <FiltersHighlight />
       <FiltersTechnologies />
       <FiltersSponsors />
     </Card>
