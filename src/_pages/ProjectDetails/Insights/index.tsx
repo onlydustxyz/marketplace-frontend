@@ -1,15 +1,17 @@
 import { useParams } from "react-router-dom";
+
 import ProjectApi from "src/api/Project";
-import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
-import Title from "../Title";
 import Flex from "src/components/Utils/Flex";
-import { EditProjectButton } from "../components/EditProjectButton";
 import { useIntl } from "src/hooks/useIntl";
-import NewcomersContributors from "./NewcomersContributors";
-import MostActiveContributors from "./MostActiveContributors";
-import StrugglingContributors from "./StrugglingContributors";
-import ChurnedContributors from "./ChurnedContributors";
+import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
+
+import Title from "../Title";
+import { EditProjectButton } from "../components/EditProjectButton";
 import { RewardProjectButton } from "../components/RewardProjectButton";
+import ChurnedContributors from "./ChurnedContributors";
+import MostActiveContributors from "./MostActiveContributors";
+import NewcomersContributors from "./NewcomersContributors";
+import StrugglingContributors from "./StrugglingContributors";
 
 export default function Insights() {
   const { T } = useIntl();

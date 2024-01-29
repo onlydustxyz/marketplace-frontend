@@ -1,7 +1,8 @@
 import { useIntl } from "src/hooks/useIntl";
-import { calculateDaysAgo, getColorClass } from "./StruggleReasonBadge.utils";
-import { StruggleReasonBadgeProps } from "./StruggleReasonBadge.type";
+
 import Bar from "./SruggleReasonBar";
+import { StruggleReasonBadgeProps } from "./StruggleReasonBadge.type";
+import { calculateDaysAgo, getColorClass } from "./StruggleReasonBadge.utils";
 
 export default function StruggleReasonBadge({ date, githubStatus }: StruggleReasonBadgeProps) {
   const { T } = useIntl();

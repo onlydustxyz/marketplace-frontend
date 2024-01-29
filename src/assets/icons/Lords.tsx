@@ -1,4 +1,5 @@
 import { cn } from "src/utils/cn";
+
 import { IMAGES } from "../img";
 
 type Props = {

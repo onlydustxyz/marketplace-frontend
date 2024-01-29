@@ -1,4 +1,5 @@
 import { ComponentProps } from "react";
+
 import View from "./View";
 
 export default function GithubRepoDetails({

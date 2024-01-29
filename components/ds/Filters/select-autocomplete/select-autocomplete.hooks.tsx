@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
-import { TSelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete.types";
-import { useIntl } from "src/hooks/useIntl";
 import { isArray } from "lodash";
+import { useMemo, useState } from "react";
+
+import { useIntl } from "src/hooks/useIntl";
+
+import { TSelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete.types";
 import { SelectAutocompleteUtils as Utils } from "components/ds/Filters/select-autocomplete/select-autocomplete.utils";
 
 export namespace SelectAutocompleteHooks {

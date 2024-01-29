@@ -1,9 +1,11 @@
 import { PropsWithChildren } from "react";
-import { Currency } from "src/types";
-import { Flex } from "components/layout/flex/flex";
+
 import { Chip } from "src/components/Chip/Chip";
-import { Typography } from "components/layout/typography/typography";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
+import { Currency } from "src/types";
+
+import { Flex } from "components/layout/flex/flex";
+import { Typography } from "components/layout/typography/typography";
 
 interface CurrencyFieldProps extends PropsWithChildren {
   currencies: Currency[];

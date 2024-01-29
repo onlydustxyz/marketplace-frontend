@@ -1,5 +1,6 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
+
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
 
 export default {

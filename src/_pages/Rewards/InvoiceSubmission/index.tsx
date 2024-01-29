@@ -1,10 +1,12 @@
+import { useCurrentUser } from "hooks/users/useCurrentUser";
+
 import { components } from "src/__generated/api";
 import MeApi from "src/api/me";
 import Skeleton from "src/components/Skeleton";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
+
 import View from "./View";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export type MyPayoutInfoType = components["schemas"]["UserPayoutInformationResponse"];
 export type MyRewardsPendingInvoiceType = components["schemas"]["MyRewardsListResponse"];

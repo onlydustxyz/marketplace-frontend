@@ -1,9 +1,10 @@
 import Card from "src/components/Card";
+import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import StackLine from "src/icons/StackLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
+
 import { LastContributionCardProps } from "./LastContributionCard.type";
-import { useIntl } from "src/hooks/useIntl";
 
 export default function LastContributionCard({
   lastContributionDate = "",

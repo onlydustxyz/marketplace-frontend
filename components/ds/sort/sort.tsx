@@ -1,9 +1,12 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { useMemo } from "react";
+
 import { cn } from "src/utils/cn";
-import { TSort } from "./sort.types";
-import { Translate } from "components/layout/translate/translate";
+
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
+
+import { TSort } from "./sort.types";
 
 export function Sort({ value, onChange, labelToken, options }: TSort.Props) {
   const selected = useMemo(() => options.find(o => o.id === value), [value, options]);

@@ -1,10 +1,12 @@
-import "tailwindcss/tailwind.css";
-import "src/assets/css/index.css";
-import "remixicon/fonts/remixicon.css";
-import "src/assets/fonts/Alfreda/stylesheet.css";
-import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
-import "src/assets/fonts/Belwe/stylesheet.css";
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
+import "remixicon/fonts/remixicon.css";
+import "tailwindcss/tailwind.css";
+
+import "src/assets/css/index.css";
+import "src/assets/fonts/Alfreda/stylesheet.css";
+import "src/assets/fonts/Belwe/stylesheet.css";
+import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
+
 import withContextProviders from "./decorators/withProviders";
 
 const customViewports = {

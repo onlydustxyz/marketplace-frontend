@@ -1,8 +1,10 @@
 import { buildLanguageString } from "src/utils/languages";
-import { Tag } from "components/ds/tag/tag";
 import { getTopTechnologies } from "src/utils/technologies";
-import { TTechnologies } from "./technologies.types";
+
+import { Tag } from "components/ds/tag/tag";
 import { Icon } from "components/layout/icon/icon";
+
+import { TTechnologies } from "./technologies.types";
 
 export function Technologies({ technologies }: TTechnologies.Props) {
   const topTechnologies = technologies ? getTopTechnologies(technologies) : [];

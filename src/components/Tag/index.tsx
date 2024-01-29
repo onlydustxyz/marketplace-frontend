@@ -1,6 +1,7 @@
-import { cn } from "src/utils/cn";
 import { ElementType, PropsWithChildren } from "react";
 import { MouseEvent } from "react";
+
+import { cn } from "src/utils/cn";
 
 export enum TagSize {
   Small = "small",

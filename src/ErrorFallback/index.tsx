@@ -1,8 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { RoutePaths } from "src/App";
-import { FallbackProps, useErrorBoundary } from "react-error-boundary";
-import View from "./View";
 import { createPortal } from "react-dom";
+import { FallbackProps, useErrorBoundary } from "react-error-boundary";
+import { useNavigate } from "react-router-dom";
+
+import { RoutePaths } from "src/App";
+
+import View from "./View";
 
 type Props = {
   isFixed?: boolean;

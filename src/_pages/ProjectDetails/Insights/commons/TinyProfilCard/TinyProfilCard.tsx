@@ -1,11 +1,13 @@
 import React from "react";
+
+import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
-import SendPlane2Line from "src/icons/SendPlane2Line";
-import { cn } from "src/utils/cn";
-import { IMAGES } from "src/assets/img";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import MapPinLine from "src/icons/MapPinLine";
+import SendPlane2Line from "src/icons/SendPlane2Line";
+import { cn } from "src/utils/cn";
+
 import { ProfileCover, Props } from "./TinyProfilCard.type";
 import { OptionalSection, getCoverClass } from "./TinyProfilCard.utils";
 

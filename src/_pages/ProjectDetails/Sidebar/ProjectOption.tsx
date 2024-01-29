@@ -1,11 +1,13 @@
 import { Listbox } from "@headlessui/react";
+
+import { components } from "src/__generated/api";
 import ShootingStar from "src/assets/icons/ShootingStar";
-import CheckLine from "src/icons/CheckLine";
+import { IMAGES } from "src/assets/img";
 import RoundedImage from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-import { components } from "src/__generated/api";
-import { IMAGES } from "src/assets/img";
+import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
+
 interface Props {
   project: components["schemas"]["ProjectLedShortResponse"];
   isSelected: boolean;

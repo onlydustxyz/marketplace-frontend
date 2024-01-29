@@ -1,6 +1,7 @@
 import { cn } from "src/utils/cn";
-import { TTag } from "components/ds/tag/tag.types";
+
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { TTag } from "components/ds/tag/tag.types";
 
 export function TagLoading({ className, skeletonProps, ...props }: TTag.LoadingProps) {
   return (

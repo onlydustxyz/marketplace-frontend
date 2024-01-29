@@ -1,7 +1,9 @@
 import PrivateTag from "src/components/PrivateTag";
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
-import { THighlights } from "./highlights.types";
 import { useIntl } from "src/hooks/useIntl";
+
+import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+
+import { THighlights } from "./highlights.types";
 
 export function Highlights({ name, logoUrl, isPrivate, leaders }: THighlights.Props) {
   const { T } = useIntl();

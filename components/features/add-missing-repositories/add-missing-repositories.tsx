@@ -1,11 +1,13 @@
-import { TAddMissingRepositories } from "./add-missing-repositories.types";
-import { Icon } from "components/layout/icon/icon";
+import { withTooltip } from "src/components/Tooltip";
+
 import { Button } from "components/ds/button/button";
 import { CalloutAlert } from "components/ds/callout-alert/callout-alert";
 import { Flex } from "components/layout/flex/flex";
-import { Typography } from "components/layout/typography/typography";
+import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
-import { withTooltip } from "src/components/Tooltip";
+import { Typography } from "components/layout/typography/typography";
+
+import { TAddMissingRepositories } from "./add-missing-repositories.types";
 
 // TODO: Change Tooltip to use the new Tooltip component
 // TODO: Change Button with link using the new library

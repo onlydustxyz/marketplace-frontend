@@ -1,25 +1,28 @@
-import { useIntl } from "src/hooks/useIntl";
-import MapPinLine from "src/icons/MapPinLine";
-import { formatDateShort } from "src/utils/date";
-import GlobalLine from "src/icons/GlobalLine";
-import SocialLink from "./SocialLink";
-import Telegram from "src/assets/icons/Telegram";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import PencilLine from "src/icons/PencilLine";
-import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
-import MarkdownPreview from "src/components/MarkdownPreview";
-import { cn } from "src/utils/cn";
-import ExternalLinkLine from "src/icons/ExternalLinkLine";
-import { generatePath } from "react-router-dom";
-import { RoutePaths } from "src/App";
-import { components } from "src/__generated/api";
-import CompletionBar from "src/components/CompletionBar";
-import { UserProfile } from "src/api/Users/queries";
-import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
-import { IMAGES } from "src/assets/img";
 import NextLink from "next/link";
+import { generatePath } from "react-router-dom";
+
+import { RoutePaths } from "src/App";
+import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
+import { components } from "src/__generated/api";
+import { UserProfile } from "src/api/Users/queries";
+import Telegram from "src/assets/icons/Telegram";
+import { IMAGES } from "src/assets/img";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import CompletionBar from "src/components/CompletionBar";
+import MarkdownPreview from "src/components/MarkdownPreview";
+import { useIntl } from "src/hooks/useIntl";
+import ExternalLinkLine from "src/icons/ExternalLinkLine";
+import GlobalLine from "src/icons/GlobalLine";
+import MapPinLine from "src/icons/MapPinLine";
+import PencilLine from "src/icons/PencilLine";
+import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
+import { cn } from "src/utils/cn";
+import { formatDateShort } from "src/utils/date";
+
 import { Link } from "components/ds/link/link";
 import { Icon } from "components/layout/icon/icon";
+
+import SocialLink from "./SocialLink";
 
 type Props = {
   profile: UserProfile;

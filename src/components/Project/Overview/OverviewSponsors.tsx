@@ -1,9 +1,11 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import { useIntl } from "src/hooks/useIntl";
-import Section, { SectionIcon } from "./OverviewSection";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import { Typography } from "components/layout/typography/typography";
+import { useIntl } from "src/hooks/useIntl";
+
 import { Link } from "components/ds/link/link";
+import { Typography } from "components/layout/typography/typography";
+
+import Section, { SectionIcon } from "./OverviewSection";
 
 export interface ProjectOverviewSponsorsProps {
   sponsors: UseGetProjectBySlugResponse["sponsors"];

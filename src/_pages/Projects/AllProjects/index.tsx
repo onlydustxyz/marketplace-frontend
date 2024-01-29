@@ -1,6 +1,8 @@
-import { useEffect, useMemo } from "react";
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { uniqBy } from "lodash";
+import { useEffect, useMemo } from "react";
+
+import ErrorFallback from "src/ErrorFallback";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/_pages/Projects/Sorting/SortingDropdown";
 import { useProjectFilter } from "src/_pages/Projects/useProjectFilter";
 import ProjectApi from "src/api/Project";
@@ -8,16 +10,17 @@ import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 import { IMAGES } from "src/assets/img";
 import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
 import { ShowMore } from "src/components/Table/ShowMore";
-import ErrorFallback from "src/ErrorFallback";
 import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { Sponsor } from "src/types";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
+
+import { EmptyState } from "components/layout/placeholders/empty-state";
+
 import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";
 import SubmitProject from "../SubmitProject";
 import AllProjectLoading from "./AllProjectsLoading";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 

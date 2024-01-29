@@ -1,6 +1,8 @@
 import { Menu, Transition } from "@headlessui/react";
-import { TActionMenu } from "./action-menu.types";
+
 import { cn } from "src/utils/cn";
+
+import { TActionMenu } from "./action-menu.types";
 
 export default function ActionMenu({ actions, children, disabled, className }: TActionMenu.Props) {
   return (

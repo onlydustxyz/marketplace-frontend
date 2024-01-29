@@ -1,9 +1,12 @@
 import { UseMutateFunction } from "@tanstack/react-query";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { PropsWithChildren, useState } from "react";
 import { matchPath, useLocation } from "react-router-dom";
-import { RoutePaths } from "src/App/index";
+
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
+import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
+import { RoutePaths } from "src/App/index";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -23,13 +26,13 @@ import { cn } from "src/utils/cn";
 import { rewardItemToContribution } from "src/utils/formatToContribution";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
+
+import { Link } from "components/ds/link/link";
+
 import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
 import { SkeletonDetail } from "./SkeletonDetail";
 import { SkeletonItems } from "./SkeletonItems";
-import { Link } from "components/ds/link/link";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
-import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 
 enum Align {
   Top = "top",

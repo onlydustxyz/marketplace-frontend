@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import MeApi from "src/api/me";
-import useMutationAlert from "src/api/useMutationAlert";
+
 import { RoutePaths } from "src/App";
 import {
   AllocatedTime,
+  UserProfileInfo,
   fromFragment,
   mapFormDataToSchema,
-  UserProfileInfo,
 } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
+import MeApi from "src/api/me";
+import useMutationAlert from "src/api/useMutationAlert";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import FormSelect, { Size } from "src/components/FormSelect";
 import FormToggle from "src/components/FormToggle";
 import SEO from "src/components/SEO";
 import TechnologiesSelect from "src/components/TechnologiesSelect";
 import { useIntl } from "src/hooks/useIntl";
+
 import Card from "./Card";
 import { Contact } from "./Contact";
 import Intro from "./Intro";

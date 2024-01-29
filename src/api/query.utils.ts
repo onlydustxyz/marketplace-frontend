@@ -1,5 +1,6 @@
-import { FetchError } from "./query.type";
 import { GetTokenSilentlyOptions, GetTokenSilentlyVerboseResponse } from "@auth0/auth0-spa-js";
+
+import { FetchError } from "./query.type";
 
 /**
  * Enum representing string values for various HTTP status codes.

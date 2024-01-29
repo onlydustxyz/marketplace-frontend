@@ -1,14 +1,14 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+import { IMAGES } from "src/assets/img";
+import MarkdownPreview from "src/components/MarkdownPreview";
 import Tag, { TagSize } from "src/components/Tag";
+import { withTooltip } from "src/components/Tooltip";
 import config from "src/config";
+import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
+import LockFill from "src/icons/LockFill";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
-import { withTooltip } from "src/components/Tooltip";
-import LockFill from "src/icons/LockFill";
-import { useIntl } from "src/hooks/useIntl";
-import MarkdownPreview from "src/components/MarkdownPreview";
-import { IMAGES } from "src/assets/img";
 
 export interface ProjectOverviewHeaderProps {
   project: UseGetProjectBySlugResponse;

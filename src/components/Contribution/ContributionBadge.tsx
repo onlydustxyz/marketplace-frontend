@@ -1,13 +1,16 @@
+import { useCurrentUser } from "hooks/users/useCurrentUser";
+import { ComponentProps } from "react";
+
+import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
-import Contributor from "../Contributor";
 import { cn } from "src/utils/cn";
-import { ComponentProps } from "react";
+
 import { Link } from "components/ds/link/link";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
+
+import Contributor from "../Contributor";
 
 interface ContributionBadgeProps {
   contribution: Pick<

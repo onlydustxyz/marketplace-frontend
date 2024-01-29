@@ -1,8 +1,10 @@
-import { TFiltersProjects } from "./filters-projects.types";
-import FolderLine from "src/icons/FolderLine";
-import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
 import { useIntl } from "src/hooks/useIntl";
+import FolderLine from "src/icons/FolderLine";
+
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
+import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
+
+import { TFiltersProjects } from "./filters-projects.types";
 
 export function FiltersProjects({ projects, selected, onChange }: TFiltersProjects.Props) {
   const { T } = useIntl();

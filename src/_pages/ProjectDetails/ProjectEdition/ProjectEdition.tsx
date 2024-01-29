@@ -1,5 +1,8 @@
 import { PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
+import { useFormState } from "react-hook-form";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useMediaQuery } from "usehooks-ts";
+
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import Button, { ButtonOnBackground, ButtonSize, ButtonType } from "src/components/Button";
@@ -7,26 +10,25 @@ import Card from "src/components/Card";
 import { FormStatus } from "src/components/FormStatus/FormStatus";
 import Loader from "src/components/Loader";
 import { Flex } from "src/components/New/Layout/Flex";
+import { Spinner } from "src/components/Spinner/Spinner";
+import { Tabs } from "src/components/Tabs/Tabs";
 import Center from "src/components/Utils/Center";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
+import { usePooling } from "src/hooks/usePooling/usePooling";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
+import CloseLine from "src/icons/CloseLine";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import FileListLine from "src/icons/FileListLine";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { cn } from "src/utils/cn";
+import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
+
+import StillFetchingBanner from "../Banners/StillFetchingBanner";
+import Title from "../Title";
 import { EditContext, EditProvider } from "./EditContext";
 import { Information } from "./pages/Information/Information";
 import { Repository } from "./pages/Repository/Repository";
-import { Tabs } from "src/components/Tabs/Tabs";
-import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
-import CloseLine from "src/icons/CloseLine";
-import Title from "../Title";
-import { useMediaQuery } from "usehooks-ts";
-import { viewportConfig } from "src/config";
-import { usePooling } from "src/hooks/usePooling/usePooling";
-import { useFormState } from "react-hook-form";
-import { Spinner } from "src/components/Spinner/Spinner";
-import StillFetchingBanner from "../Banners/StillFetchingBanner";
 
 function TabContents({ children }: PropsWithChildren) {
   return <Flex className="items-center gap-2 md:gap-1.5">{children}</Flex>;

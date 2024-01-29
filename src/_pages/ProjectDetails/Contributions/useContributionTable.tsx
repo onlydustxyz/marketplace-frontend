@@ -1,4 +1,3 @@
-import { Link } from "components/ds/link/link";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
@@ -15,6 +14,8 @@ import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
 import { Contribution as ContributionT, GithubContributionType } from "src/types";
+
+import { Link } from "components/ds/link/link";
 
 export function useContributionTable() {
   const { T } = useIntl();

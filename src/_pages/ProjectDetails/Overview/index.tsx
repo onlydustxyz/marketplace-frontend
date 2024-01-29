@@ -1,10 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useMediaQuery } from "usehooks-ts";
+
 import Title from "src/_pages/ProjectDetails/Title";
-import MeApi from "src/api/me";
 import ProjectApi from "src/api/Project";
+import MeApi from "src/api/me";
 import Card from "src/components/Card";
 import { ProjectOverviewHeader } from "src/components/Project/Overview/OverviewHeader";
 import { ProjectOverviewRepos } from "src/components/Project/Overview/OverviewRepos/OverviewRepos";
@@ -18,7 +19,9 @@ import { usePosthog } from "src/hooks/usePosthog";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { useShowToaster } from "src/hooks/useToaster";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
-import { useMediaQuery } from "usehooks-ts";
+
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
