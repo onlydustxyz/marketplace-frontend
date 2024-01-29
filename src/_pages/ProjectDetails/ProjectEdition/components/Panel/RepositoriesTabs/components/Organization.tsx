@@ -7,6 +7,8 @@ import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContex
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import { sortBy } from "lodash";
 import { VerticalListItemDrop } from "src/components/New/Cards/VerticalListItemDrop";
+import { AddMissingRepositories } from "components/features/add-missing-repositories/add-missing-repositories";
+import { getGithubSetupLink } from "src/utils/githubSetupLink";
 
 export interface OrganizationProps {
   organization: UseGithubOrganizationsResponse;
@@ -38,6 +40,14 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
     );
   }, [organization, unInstalledRepo]);
 
+  const linkUrl = getGithubSetupLink({
+    id: organization.githubUserId,
+    login: organization.login,
+    installationId: organization.installationId,
+    installed: organization.installed,
+    isAPersonalOrganization: organization.isPersonal,
+  });
+
   return (
     <div className="w-full">
       <VerticalListItemDrop
@@ -50,6 +60,13 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
         <Flex justify="start" item="start" className="w-full gap-3" direction="col">
           {repositories}
         </Flex>
+
+        <AddMissingRepositories
+          url={linkUrl}
+          disabled={!organization.isCurrentUserAdmin}
+          tooltip={T("project.details.create.organizations.tooltipInstalledByAdmin")}
+          className="mt-4"
+        />
       </VerticalListItemDrop>
     </div>
   );

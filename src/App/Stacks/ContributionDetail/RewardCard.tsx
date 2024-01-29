@@ -1,3 +1,6 @@
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
@@ -6,9 +9,6 @@ import { ContributionDetail } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
-import PayoutStatus from "../../../components/PayoutStatus/PayoutStatus";
-import { AvailableConversion } from "../../../components/Currency/AvailableConversion";
-import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 
 export function RewardCard({
   reward,
@@ -47,7 +47,10 @@ export function RewardCard({
           </p>
         </div>
 
-        <PayoutStatus status={reward.status} />
+        <PayoutStatus
+          status={reward.status}
+          dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
+        />
       </div>
 
       <Tag>

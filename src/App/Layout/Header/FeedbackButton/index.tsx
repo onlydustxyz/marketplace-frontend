@@ -2,11 +2,14 @@ import { SliderButton } from "@typeform/embed-react";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
 import MeApi from "src/api/me";
-import { useMemo } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { ReactNode, Ref, forwardRef, useMemo } from "react";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
-export default function FeedbackButton({ customButton }: { customButton?: React.ReactNode }) {
-  const { user } = useAuth0();
+export const FeedbackButton = forwardRef(function FeedbackButton(
+  { customButton }: { customButton?: ReactNode },
+  ref: Ref<unknown>
+) {
+  const { user } = useCurrentUser();
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyPayoutInfo({});
@@ -29,6 +32,7 @@ export default function FeedbackButton({ customButton }: { customButton?: React.
     <>
       {user && (
         <SliderButton
+          ref={ref}
           id="CQcFnolD"
           iframeProps={{ title: T("navbar.feedback.popupTitle") }}
           opacity={100}
@@ -37,7 +41,7 @@ export default function FeedbackButton({ customButton }: { customButton?: React.
             firstname,
             lastname,
             email: user.email || "",
-            github: user.nickname || "",
+            github: user.login || "",
           }}
           autoClose
           transitiveSearchParams
@@ -54,4 +58,6 @@ export default function FeedbackButton({ customButton }: { customButton?: React.
       )}
     </>
   );
-}
+});
+
+export default FeedbackButton;

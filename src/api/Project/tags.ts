@@ -30,4 +30,14 @@ export const PROJECT_TAGS = {
   ],
   contributions_staled: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributions-staled", { projectId }],
   contributors_churned: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "contributors-churned", { projectId }],
+  hide_contributor: (projectId: string, githubUserId: string) => [
+    RESSOURCE_TAGS.PROJECTS,
+    "hide-contributors",
+    { projectId, githubUserId },
+  ],
+  show_contributor: (projectId: string, githubUserId: string) => [
+    RESSOURCE_TAGS.PROJECTS,
+    "show-contributors",
+    { projectId, githubUserId },
+  ],
 };

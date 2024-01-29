@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { ContributionsFilterRef } from "src/_pages/Contributions/Filter.tsx";
-import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter.tsx";
+import { ContributionsFilterRef } from "src/_pages/Contributions/Filter";
+import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter";
 import { IMAGES } from "src/assets/img";
-import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
-import { Card } from "components/ds/card/card.tsx";
+import { EmptyState } from "components/layout/placeholders/empty-state";
+import { Card } from "components/ds/card/card";
 
 interface ContributionEmptyFallBackParams {
   isMobile?: boolean;

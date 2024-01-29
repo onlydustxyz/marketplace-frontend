@@ -1,7 +1,6 @@
 import { forwardRef, useContext, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { Filter } from "src/components/New/Filter/Filter";
-import { FilterCurrencySelect } from "src/components/New/Filter/FilterCurrencySelect";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useLocalStorage } from "usehooks-ts";
 import { Item } from "src/components/New/Filter/FilterSelect";
@@ -9,21 +8,22 @@ import { allTime, formatDateQueryParam } from "src/utils/date";
 import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Period } from "src/components/New/Field/Datepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { FilterProjectSelect } from "src/components/New/Filter/FilterProjectSelect";
 import { UserRewardsContext } from "./context/UserRewards";
+import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
+import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 
 type Filters = {
   period: Period;
   dateRange: DateRange;
   projects: Item[];
-  currency: Item;
+  currency: Item[];
 };
 
 const initialFilters: Filters = {
   period: Period.AllTime,
   dateRange: allTime,
   projects: [],
-  currency: { id: 0, value: "" },
+  currency: [],
 };
 
 export type FilterQueryParams = {
@@ -45,7 +45,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   const { rewards, setFilterQueryParams, currencies, projects } = useContext(UserRewardsContext);
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "my-rewards-table-filters",
+    "my-rewards-table-filters-v2-0-0",
     JSON.stringify(initialFilters)
   );
 
@@ -65,7 +65,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
     };
 
     if (currency) {
-      filterQueryParams.currencies = currency.value ?? "";
+      filterQueryParams.currencies = currency.map(({ value }) => String(value)).join(",");
     }
 
     // If a predefined period is selected, use the predefined period's date range
@@ -98,7 +98,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   }, [filters]);
 
   const hasActiveFilters = Boolean(
-    filters.period !== initialFilters.period || filters.projects?.length || filters.currency?.value
+    filters.period !== initialFilters.period || filters.projects?.length || filters.currency?.length
   );
 
   function resetFilters() {
@@ -109,7 +109,12 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
     const updatedState = { ...prevState, ...newState };
 
-    setFiltersStorage(JSON.stringify(updatedState));
+    const removeCurrenciesJsx = updatedState.currency?.map(c => ({
+      ...c,
+      label: "",
+    }));
+
+    setFiltersStorage(JSON.stringify({ ...updatedState, currency: removeCurrenciesJsx }));
 
     return updatedState;
   }
@@ -126,13 +131,10 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
     setFilters(prevState => updateState(prevState, { projects }));
   }
 
-  function updateCurrency(currency: Item) {
+  function updateCurrency(currencies: Item[]) {
     setFilters(prevState =>
       updateState(prevState, {
-        currency: {
-          id: currency.id,
-          value: currency.value || "",
-        },
+        currency: currencies,
       })
     );
   }
@@ -167,9 +169,26 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
     [hasActiveFilters]
   );
 
+  const filterCount = useMemo(() => {
+    let count = 0;
+
+    if (filters.projects?.length) {
+      count += 1;
+    }
+
+    if (filters.currency?.length) {
+      count += 1;
+    }
+
+    if (filters.period !== initialFilters.period) {
+      count += 1;
+    }
+    return count;
+  }, [filters]);
+
   return (
-    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position}>
-      <div className="isolate focus-within:z-50">
+    <Filter isActive={hasActiveFilters} onClear={resetFilters} position={position} count={filterCount}>
+      <div className="focus-within:z-50">
         <FilterDatepicker
           selected={filters.dateRange ?? initialFilters.dateRange}
           selectedPeriod={filters.period ?? initialFilters.period}
@@ -181,7 +200,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
       {rewards ? (
         <>
           <div className="focus-within:z-10">
-            <FilterProjectSelect
+            <FiltersProjects
               projects={projectsFilters ?? []}
               selected={filters.projects ?? initialFilters.projects}
               onChange={updateProjects}
@@ -189,7 +208,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
           </div>
 
           <div className="focus-within:z-10">
-            <FilterCurrencySelect
+            <FiltersCurrencies
               selected={filters.currency ?? initialFilters.currency}
               onChange={updateCurrency}
               currencies={currenciesFilters ?? []}

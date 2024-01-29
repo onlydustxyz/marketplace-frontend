@@ -1,6 +1,6 @@
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
@@ -9,6 +9,7 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB, getFormattedTimeDatepicker, parseDateRangeString, parseDateString } from "src/utils/date";
+import { subMonths } from "date-fns";
 
 export enum Period {
   ThisWeek = "this_week",
@@ -24,6 +25,9 @@ export enum Period {
 
 type BaseProps = {
   isElevated?: boolean;
+  autoCloseOnDateSelect?: boolean;
+  autoCloseOnPeriodeSelect?: boolean;
+  disableFuture?: boolean;
 };
 
 type SingleProps = BaseProps & {
@@ -61,12 +65,19 @@ type Props = WithPeriodProps | WithoutPeriodProps;
 
 // Do not spread props due to this Typescript limitation
 // https://stackoverflow.com/questions/69023997/typescript-discriminated-union-narrowing-not-working
-export function Datepicker({ isElevated = false, ...props }: Props) {
+export function Datepicker({
+  isElevated = false,
+  autoCloseOnDateSelect = true,
+  autoCloseOnPeriodeSelect = true,
+  ...props
+}: Props) {
+  const calendarRef = useRef(null);
   const { T } = useIntl();
   const { refs, floatingStyles, placement } = useFloating({
     middleware: [flip()],
     whileElementsMounted: autoUpdate,
     transform: false,
+    placement: props.mode === "range" ? "top-end" : undefined,
   });
 
   // This is useful if a date range only has one of two values for example
@@ -114,17 +125,23 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
       return (
         <Calendar
           mode="range"
+          numberOfMonths={2}
+          pagedNavigation
+          defaultMonth={subMonths(new Date(), 1)}
           // Sometimes date strings are passed instead of date objects
-          selected={parseDateRangeString(selectedDateRange)}
+          selected={props.selectedPeriod === Period.Custom ? parseDateRangeString(selectedDateRange) : undefined}
+          {...(props.disableFuture ? { toDate: new Date() } : {})}
           onSelect={(...args) => {
-            // If we already have a valid date range and the user selects a new date, we want to reset the date range
             if (selectedDateRange?.from && selectedDateRange?.to) {
+              // If we already have a valid date range and the user selects a new date, we want to reset the date range
               const [, selectedDay, ...restArgs] = args;
 
               props.onChange?.({ from: selectedDay, to: undefined }, selectedDay, ...restArgs);
-            } else {
+            } else if (args[0]?.to) {
               props.onChange?.(...args);
-              close();
+              if (autoCloseOnDateSelect) {
+                close();
+              }
             }
 
             props.onPeriodChange?.(Period.Custom);
@@ -175,12 +192,16 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
           <Popover.Button
             ref={refs.setReference}
             className={cn(
-              "flex w-full items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg",
+              "relative right-0 z-20 flex w-full origin-right items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg transition-all duration-200 ease-out",
               {
                 "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                   open,
                 "text-spaceBlue-200": !open && !selectionIsValid,
                 "text-greyScale-50": !open && selectionIsValid,
+              },
+              {
+                "w-[500px] min-w-full max-w-full": open && props.mode === "range",
+                "w-[284px] min-w-full max-w-full": !open && props.mode === "range",
               }
             )}
           >
@@ -190,26 +211,36 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
             </span>
             <ArrowDownSLine className="text-xl leading-none" />
           </Popover.Button>
-
           <Transition
             ref={refs.setFloating}
-            style={{ ...floatingStyles, right: "-6px" }}
-            enter="transition duration-100 ease-out"
+            style={{
+              ...floatingStyles,
+              ...(props.mode === "single" ? { right: "-6px" } : { top: "-12px", left: "-12px" }),
+            }}
+            enter="transition duration-150 ease-out delay-75"
             enterFrom="transform scale-95 opacity-0"
             enterTo="transform scale-100 opacity-100"
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
-            className={cn("z-10 overflow-hidden rounded-xl border border-greyscale-50/8 shadow-lg", {
-              "bg-greyscale-800": isElevated,
-              "bg-greyscale-900": !isElevated,
-              "origin-top translate-y-1.5": placement === "bottom",
-              "origin-bottom -translate-y-1.5": placement === "top",
-            })}
+            className={cn(
+              "z-10 min-w-full rounded-xl border border-greyscale-50/8 shadow-lg",
+              {
+                "bg-greyscale-800": isElevated,
+                "bg-greyscale-900": !isElevated,
+                "origin-top translate-y-1.5": placement === "bottom",
+                "origin-bottom -translate-y-1.5": placement === "top",
+              },
+              { "w-[calc(100%_+_24px)]": props.mode === "range" }
+            )}
           >
-            <Popover.Panel>
+            <Popover.Panel ref={calendarRef}>
               {({ close }) => (
-                <>
+                <div
+                  className={cn({
+                    "pt-[54px]": props.mode === "range",
+                  })}
+                >
                   {props.periods?.length ? (
                     <div className="divide-y divide-card-border-medium border-b border-greyscale-50/8 font-walsheim">
                       {props.periods?.map(({ id, label, value, isActive }) => {
@@ -236,7 +267,9 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
 
                               props.onPeriodChange(id);
 
-                              close();
+                              if (autoCloseOnPeriodeSelect) {
+                                close();
+                              }
                             }}
                           >
                             <span>{label}</span>
@@ -247,7 +280,7 @@ export function Datepicker({ isElevated = false, ...props }: Props) {
                     </div>
                   ) : null}
                   {renderCalendar({ close })}
-                </>
+                </div>
               )}
             </Popover.Panel>
           </Transition>

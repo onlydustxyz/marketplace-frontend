@@ -1,21 +1,30 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { FetchError } from "src/api/query.type";
+import { useQueriesErrorBehavior } from "src/api/useQueriesError";
+import UsersApi from "src/api/Users";
+import SEO from "src/components/SEO";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
-import Header from "./Header";
+import { usePosthog } from "src/hooks/usePosthog";
 import Footer from "./Footer";
+import Header from "./Header";
 import Profile from "./Profile";
-import SEO from "src/components/SEO";
-import UsersApi from "src/api/Users";
-import { useQueriesErrorBehavior } from "src/api/useQueriesError";
-import { FetchError } from "src/api/query.type";
 
 const PublicProfilePage = () => {
   const { userLogin } = useParams();
+  const { capture } = usePosthog();
 
   const { data: userProfile, ...restUserProfileByGithubLoginQueries } = UsersApi.queries.useUserProfileByGithubLogin({
     params: { login: userLogin },
     options: { retry: 1 },
   });
+
+  useEffect(() => {
+    if (userProfile) {
+      capture("contributor_viewed", { id: userProfile.githubUserId, type: "full" });
+    }
+  }, [userProfile]);
 
   const errorHandlingComponent = useQueriesErrorBehavior({
     queries: {

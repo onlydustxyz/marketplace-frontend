@@ -245,6 +245,7 @@
     "project": {
       "title": "Projects",
       "all": "All projects",
+      "empty": "No project found",
       "zero": "projects",
       "one": "__count__ project",
       "many": "__count__ projects"
@@ -252,13 +253,15 @@
     "repository": {
       "title": "Repositories",
       "all": "All repositories",
+      "empty": "No repository found",
       "zero": "repositories",
       "one": "__count__ repository",
       "many": "__count__ repositories"
     },
     "currency": {
-      "title": "Currency",
+      "title": "Currencies",
       "all": "All currencies",
+      "empty": "No currency found",
       "zero": "currencies",
       "one": "__count__ currency",
       "many": "__count__ currencies"
@@ -266,6 +269,7 @@
     "contributor": {
       "title": "Contributors",
       "placeholder": "Everyone",
+      "empty": "No contributors found",
       "zero": "contributors",
       "one": "__count__ contributor",
       "many": "__count__ contributors"
@@ -407,7 +411,8 @@
     "profile": {
       "title": "Your account",
       "publicProfile": "Public profile",
-      "payoutInfo": "Payout information"
+      "payoutInfo": "Payout information",
+      "verifyIdentity": "Verify identity"
     },
     "rewards": "Rewards",
     "projects": "Projects",
@@ -595,6 +600,7 @@
     "list": "List rewards",
     "status": {
       "complete": "Complete",
+      "locked": "Locked",
       "invoicePending": "Pending invoice",
       "signupPending": "Signup invoice",
       "payoutInfoMissing": "Payout info missing",
@@ -603,6 +609,10 @@
       "processing": "Processing",
       "tooltip": {
         "complete": "Reward successful",
+        "processedOnDate": "Processed on __date__",
+        "lockedUntilFurther": "Locked until further notice",
+        "lockedUntilDate": "Locked until __date__",
+        "unlockedOnDate": "Unlocked on __date__",
         "invoicePending": "An invoice is required to process your reward. Please wait up to 5 days if you already sent it.",
         "signupPending": "You need to sign up on OnlyDust to get paid",
         "payoutInfoMissing": "Fill in your payout information to get paid",
@@ -636,8 +646,8 @@
         "requestedAt": "Created on __requestedAt__",
         "processedAt": "Processed on __processedAt__",
         "processedVia": {
-          "crypto": "via **Crypto Wire** on __recipient__",
-          "fiat": "via **Bank Wire** on account __recipient__"
+          "crypto": "via[]Crypto Wire[]on[]__recipient__",
+          "fiat": "via[]Bank Wire[]on account[]__recipient__"
         },
         "processedTooltip": {
           "crypto": {
@@ -653,6 +663,16 @@
         "to": "to",
         "on": "on",
         "you": "(you)",
+        "transactionDetails": {
+            "title": "Transaction details",
+            "createdLabel": "Created ",
+            "lockedLabel": "Locked ",
+            "unlockedLabel": "Unlocked ",
+            "processedLabel": "Processed ",
+            "onDate": "on __date__",
+            "untilDate": "until __date__",
+            "untilFurther": "until further notice"
+        },
         "contributions": {
           "zero": "No contributions included in reward",
           "one": "__count__ contribution included in reward",
@@ -660,7 +680,8 @@
         },
         "usdEstimateTooltip": "Dollars equivalent at today’s date.",
         "rewardItems": {
-          "error": "An error occurred, please try again later."
+          "error": "An error occurred, please try again later.",
+          "otherContributionTooltip": "This is a contribution made by someone else and is not included in your total contribution count."
         }
       },
       "status": "Status"
@@ -789,6 +810,7 @@
       "emailPlaceholder": "example@onlydust.co",
       "ethIdentity": "Ethereum wallet address or ENS name",
       "ethIdentityPlaceholder": "Ethereum wallet address or ENS name",
+      "walletUsedFor": "Relevant for rewards in",
       "firstname": "First name",
       "iban": "IBAN / Account number",
       "ibanInvalid": "Please enter a valid IBAN / Account number",
@@ -827,7 +849,9 @@
         "supportedTooltip": "Increase your chance of matching a project by choosing featured technologies.",
         "suggestion": {
           "suggest": "Suggest '__technology__'",
+          "suggestBlacklisted": "Technology '__technology__'",
           "disclaimer": "Oops! We do our best to maintain a list of relevant technologies, help us doing so by pointing out missing ones. Thank you",
+          "blackListed": "While we recognize this technology, it may not be relevant for the projects you're seeking.",
           "success": "Thanks for suggesting '__technology__'! We will add it to the list after review."
         }
       },
@@ -953,7 +977,18 @@
           "zero": "No contributor"
         },
         "reward": "Reward",
-        "title": "Contributors"
+        "title": "Contributors",
+        "hideContributor": {
+          "tooltip": "Hide contributor",
+          "success": "The contributor was successfully hidden",
+          "error": "The contributor could not be hidden"
+        },
+        "showContributor": {
+          "tooltip": "Show contributor",
+          "success": "The contributor was successfully shown",
+          "error": "The contributor could not be shown"
+        },
+        "actionMenu": "__action__"
       },
       "githubRepos": {
         "count": {
@@ -1428,5 +1463,15 @@
     "message": "Github is experiencing service issues. OnlyDust features may be affected until the incident is resolved.",
     "button": "View Github status"
   },
-  "emptyStatePictureFallback": "Empty State Picture"
+  "emptyStatePictureFallback": "Empty State Picture",
+  "callout": {
+    "missingRepositories": {
+      "title": "Missing repositories?",
+      "description": "Make sure they are public and the Github app is granted on all of them.",
+      "button": "Manage on Github"
+    }
+  },
+    "filters": {
+        "noResults": "No results"
+    }
 }

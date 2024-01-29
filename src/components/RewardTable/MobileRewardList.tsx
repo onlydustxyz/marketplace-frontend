@@ -39,7 +39,12 @@ function MobileRewardItemContainer({ reward }: { reward: RewardPageItemType }) {
       })}
       amount={reward.amount}
       date={new Date(reward.requestedAt)}
-      payoutStatus={<PayoutStatus status={PaymentStatus[reward.status]} />}
+      payoutStatus={
+        <PayoutStatus
+          status={PaymentStatus[reward.status]}
+          dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
+        />
+      }
     />
   );
 }

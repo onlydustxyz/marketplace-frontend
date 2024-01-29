@@ -1,44 +1,44 @@
-import { cn } from "src/utils/cn";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import { RoutePaths } from "src/App";
 import Dot from "src/assets/icons/Dot";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
-import Folder3Line from "src/icons/Folder3Line";
-import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import StackLine from "src/icons/StackLine";
-import User3Line from "src/icons/User3Line";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
-import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { handleLogout } from "components/features/auth0/handlers/handle-logout.ts";
-import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
+import { Icon } from "components/layout/icon/icon";
+import { cn } from "src/utils/cn";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import { useLogout } from "./Logout.hooks";
 
-type Props = {
+interface Props {
   avatarUrl: string | null;
   login: string;
   isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
-};
+  openFeedback: () => void;
+}
 
-export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, githubUserId, hideProfileItems }: Props) {
+export function ViewMobile({
+  avatarUrl,
+  isMissingPayoutSettingsInfo,
+  githubUserId,
+  hideProfileItems,
+  openFeedback,
+}: Props) {
   const { T } = useIntl();
-  const { logout } = useAuth0();
-  const { isImpersonating, clearImpersonateClaim } = useImpersonation();
 
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
   const [openPayoutInfo] = useStackPayoutInfo();
+  const [openVerifyIdentity] = useStackVerifyIdentity();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
+
+  const { handleLogout } = useLogout();
 
   const { queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -52,10 +52,6 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
 
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
-
-  const handleLogoutClick = () => {
-    handleLogout(logout, isImpersonating, clearImpersonateClaim);
-  };
 
   return (
     <>
@@ -72,12 +68,13 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
         {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />}
         {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
       </button>
+
       <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom">
-        <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
+        <div className="flex flex-col bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
           {!hideProfileItems && (
             <>
               {githubUserId || hasRewards ? (
-                <>
+                <div>
                   <NavLink
                     to={RoutePaths.Projects}
                     onClick={() => setPanelOpen(false)}
@@ -85,18 +82,18 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
                       cn("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
                     }
                   >
-                    <Folder3Line className="text-xl" /> {T("navbar.projects")}
+                    <Icon remixName="ri-folder-3-line" size={20} />
+                    {T("navbar.projects")}
                   </NavLink>
 
                   {githubUserId ? (
                     <NavLink
                       to={RoutePaths.Contributions}
                       onClick={() => setPanelOpen(false)}
-                      className={({ isActive }) =>
-                        cn("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
-                      }
+                      className={({ isActive }) => cn("flex items-center gap-3  p-4", { "bg-white/8": isActive })}
                     >
-                      <StackLine className="text-xl" /> {T("navbar.contributions")}
+                      <Icon remixName="ri-stack-line" size={20} />
+                      {T("navbar.contributions")}
                     </NavLink>
                   ) : null}
 
@@ -104,18 +101,19 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
                     <NavLink
                       to={RoutePaths.Rewards}
                       onClick={() => setPanelOpen(false)}
-                      className={({ isActive }) =>
-                        cn("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
-                      }
+                      className={({ isActive }) => cn("flex items-center gap-3  p-4", { "bg-white/8": isActive })}
                     >
-                      <ExchangeDollarLine className="text-xl" /> {T("navbar.rewards")}
+                      <Icon remixName="ri-exchange-dollar-line" size={20} />
+                      {T("navbar.rewards")}
                     </NavLink>
                   ) : null}
-                </>
+
+                  <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
+                </div>
               ) : null}
 
-              <>
-                {githubUserId && (
+              <div>
+                {githubUserId ? (
                   <button
                     className="flex items-center gap-3 p-4"
                     onClick={() => {
@@ -123,9 +121,11 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
                       openContributorProfilePanel({ githubUserId });
                     }}
                   >
-                    <User3Line className="text-xl" /> {T("navbar.profile.publicProfile")}
+                    <Icon remixName="ri-user-3-line" size={20} />
+                    {T("navbar.profile.publicProfile")}
                   </button>
-                )}
+                ) : null}
+
                 <button
                   className="flex items-center gap-3 p-4"
                   onClick={() => {
@@ -133,27 +133,53 @@ export default function ViewMobile({ avatarUrl, isMissingPayoutSettingsInfo, git
                     openPayoutInfo();
                   }}
                 >
-                  <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
+                  <Icon remixName="ri-money-dollar-circle-line" size={20} />
+                  {T("navbar.profile.payoutInfo")}
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </button>
-              </>
+
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <button
+                    className="flex items-center gap-3 p-4"
+                    onClick={() => {
+                      setPanelOpen(false);
+                      openVerifyIdentity();
+                    }}
+                  >
+                    <Icon remixName="ri-pass-valid-line" size={20} />
+                    {T("navbar.profile.verifyIdentity")}
+                  </button>
+                ) : null}
+
+                <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
+              </div>
             </>
           )}
-          <div className="flex w-full flex-row items-center justify-between p-4">
-            <div className="flex flex-row gap-1 text-xs font-normal text-spaceBlue-200">
-              <button onClick={openFullTermsAndConditions}>{T("navbar.termsAndConditions")}</button>
-              <div>{T("navbar.separator")}</div>
-              <button onClick={openPrivacyPolicy}>{T("navbar.privacyPolicy")}</button>
-            </div>
-            <Button
-              type={ButtonType.Secondary}
-              size={ButtonSize.Xs}
-              onClick={handleLogoutClick}
-              data-testid="logout-button"
-            >
-              <LogoutBoxRLine className="border-greyscale-50 text-sm" />
+
+          <div>
+            <button className="flex items-center gap-3 p-4" onClick={openFullTermsAndConditions}>
+              <Icon remixName="ri-bill-line" size={20} />
+              {T("navbar.termsAndConditions")}
+            </button>
+
+            <button className="flex items-center gap-3 p-4" onClick={openPrivacyPolicy}>
+              <Icon remixName="ri-lock-line" size={20} />
+              {T("navbar.privacyPolicy")}
+            </button>
+
+            <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
+          </div>
+
+          <div>
+            <button className="flex items-center gap-3 p-4" onClick={openFeedback}>
+              <Icon remixName="ri-discuss-line" size={20} />
+              {T("navbar.feedback.button")}
+            </button>
+
+            <button className="flex items-center gap-3 p-4" onClick={handleLogout}>
+              <Icon remixName="ri-logout-box-r-line" size={20} />
               {T("navbar.logout")}
-            </Button>
+            </button>
           </div>
         </div>
       </SidePanel>

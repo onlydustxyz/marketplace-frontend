@@ -3,7 +3,6 @@ import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
 import MenuItem from "src/App/Layout/Header/MenuItem";
 import { Link } from "react-router-dom";
-import FeedbackButton from "./FeedbackButton";
 import { useIntl } from "src/hooks/useIntl";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
@@ -23,7 +22,6 @@ interface HeaderViewProps {
 }
 
 export default function HeaderView({ menuItems, selectedMenuItem, impersonating = false }: HeaderViewProps) {
-  const testing = process.env.NODE_ENV === "test";
   const { T } = useIntl();
   const { isAuthenticated, isLoading } = useAuth0();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -73,7 +71,6 @@ export default function HeaderView({ menuItems, selectedMenuItem, impersonating 
               </>
             )}
             <div className="flex flex-row items-center justify-end gap-4">
-              {isXl && isAuthenticated && !testing ? <FeedbackButton /> : null}
               <ProfileButtonDisplay isLoading={isLoading} isAuthenticated={isAuthenticated} />
             </div>
           </div>

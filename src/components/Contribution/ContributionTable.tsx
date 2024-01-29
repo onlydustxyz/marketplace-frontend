@@ -15,9 +15,9 @@ import { useMediaQuery } from "usehooks-ts";
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 import { useContributionTabs } from "src/hooks/useContributionTabs";
-import { ContributionsFilterRef } from "src/_pages/Contributions/Filter.tsx";
-import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter.tsx";
-import { ContributionEmptyFallBack } from "./ContributionEmptyFalback.tsx";
+import { ContributionsFilterRef } from "src/_pages/Contributions/Filter";
+import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter";
+import { ContributionEmptyFallBack } from "./ContributionEmptyFalback";
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
@@ -36,7 +36,7 @@ function TableText({ children, colSpan }: PropsWithChildren<{ colSpan: number }>
 }
 
 export enum TableColumns {
-  Date = "CREATED_AT",
+  Date = "LAST_UPDATED_AT",
   Project = "PROJECT_REPO_NAME",
   Repo = "REPO_NAME",
   Contributor = "CONTRIBUTOR_LOGIN",

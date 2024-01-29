@@ -7,6 +7,7 @@ export const buttonSecondaryVariants = tv({
   compoundVariants: [
     {
       accentColor: "purple",
+      disabled: false,
       class:
         "focus-visible:border-spacePurple-200 focus-visible:text-spacePurple-100 hover:border-spacePurple-200 hover:text-spacePurple-100 active:border-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-200",
     },
@@ -17,6 +18,7 @@ export const buttonSecondaryVariants = tv({
     },
     {
       accentColor: "orange",
+      disabled: false,
       class:
         "focus-visible:border-orange-200 focus-visible:text-orange-100 hover:border-orange-200 hover:text-orange-100 active:border-orange-400 active:bg-orange-900 active:text-orange-200",
     },

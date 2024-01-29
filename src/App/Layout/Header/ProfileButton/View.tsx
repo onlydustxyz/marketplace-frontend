@@ -1,43 +1,66 @@
 import { Menu, Transition } from "@headlessui/react";
-import { cn } from "src/utils/cn";
 import { Fragment, PropsWithChildren, useState } from "react";
 import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import User3Line from "src/icons/User3Line";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { Icon } from "components/layout/icon/icon";
 import { useSidePanel } from "src/hooks/useSidePanel";
-import { useStackContributorProfile, useStackPayoutInfo } from "src/App/Stacks/Stacks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { handleLogout } from "components/features/auth0/handlers/handle-logout.ts";
-import { useImpersonation } from "components/features/impersonation/use-impersonation.tsx";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import { cn } from "src/utils/cn";
+import { useLogout } from "./Logout.hooks";
 
-type Props = {
+interface MenuItemProps extends PropsWithChildren {
+  disabled?: boolean;
+  onClick?: () => void;
+  secondary?: boolean;
+}
+
+const MenuItem = ({ disabled = false, onClick, secondary = false, children, ...rest }: MenuItemProps) => (
+  <Menu.Item
+    {...rest}
+    disabled={disabled}
+    as="div"
+    className={cn("flex flex-row items-center gap-3 px-4 py-2 font-walsheim text-sm", {
+      "cursor-pointer ui-active:bg-white/4": !disabled,
+      "cursor-default": disabled,
+      "text-greyscale-50": !secondary,
+      "text-spaceBlue-200": secondary,
+    })}
+    onClick={onClick}
+  >
+    {children}
+  </Menu.Item>
+);
+
+interface Props {
   avatarUrl: string | null;
   login: string;
   isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
-};
+  openFeedback: () => void;
+}
 
-const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
+export function View({
+  githubUserId,
+  avatarUrl,
+  login,
+  isMissingPayoutSettingsInfo,
+  hideProfileItems,
+  openFeedback,
+}: Props) {
   const { T } = useIntl();
-  const { logout } = useAuth0();
-  const { isImpersonating, clearImpersonateClaim } = useImpersonation();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [openPayoutInfo] = useStackPayoutInfo();
+  const [openVerifyIdentity] = useStackVerifyIdentity();
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
-  const handleLogoutClick = () => {
-    handleLogout(logout, isImpersonating, clearImpersonateClaim);
-  };
+  const { handleLogout } = useLogout();
 
   return (
     <div className="relative">
@@ -62,10 +85,13 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
             {avatarUrl && (
               <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
             )}
+
             <div className={cn({ "mr-1": !isMissingPayoutSettingsInfo })}>{login}</div>
+
             {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
         </div>
+
         <Transition
           as={Fragment}
           enter="transition ease-out duration-100"
@@ -78,76 +104,66 @@ const View = ({ githubUserId, avatarUrl, login, isMissingPayoutSettingsInfo, hid
           <Menu.Items
             onFocus={() => setMenuItemsVisible(true)}
             onBlur={() => setMenuItemsVisible(false)}
-            className=" absolute right-0 z-20 mt-3 w-56 origin-top-right
-						overflow-hidden rounded-md bg-whiteFakeOpacity-5 pt-2 shadow-lg ring-1
+            className="absolute right-0 z-20 mt-3 w-56 origin-top-right
+						overflow-hidden rounded-md bg-whiteFakeOpacity-5 py-2 shadow-lg ring-1
 						ring-greyscale-50/8 focus:outline-none"
           >
             {!hideProfileItems && (
-              <div className="border-b border-greyscale-50/8 pb-2">
+              <div>
                 <MenuItem secondary disabled>
                   {T("navbar.profile.title").toUpperCase()}
                 </MenuItem>
+
                 <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel({ githubUserId })}>
-                  <User3Line className="text-xl" />
+                  <Icon remixName="ri-user-3-line" size={20} />
                   <div className="grow">{T("navbar.profile.publicProfile")}</div>
                 </MenuItem>
+
                 <MenuItem onClick={openPayoutInfo}>
-                  <MoneyDollarCircleLine className="text-xl" />
+                  <Icon remixName="ri-money-dollar-circle-line" size={20} />
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
                   {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </MenuItem>
+
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <MenuItem onClick={openVerifyIdentity}>
+                    <Icon remixName="ri-pass-valid-line" size={20} />
+                    <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
+                  </MenuItem>
+                ) : null}
+
+                <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
               </div>
             )}
-            <MenuItem secondary disabled>
-              <div className="flex w-full flex-row items-center justify-between py-1">
-                <div className="flex flex-row gap-1 font-walsheim text-sm font-normal text-spaceBlue-200">
-                  <div className="cursor-pointer" onClick={() => openFullTermsAndConditions()}>
-                    {T("navbar.termsAndConditions")}
-                  </div>
-                  <div>{T("navbar.separator")}</div>
-                  <div className="cursor-pointer" onClick={() => openPrivacyPolicy()}>
-                    {T("navbar.privacyPolicy")}
-                  </div>
-                </div>
-                <Button
-                  type={ButtonType.Secondary}
-                  size={ButtonSize.Xs}
-                  onClick={handleLogoutClick}
-                  data-testid="logout-button"
-                >
-                  <LogoutBoxRLine className="border-greyscale-50 text-sm" />
-                  {T("navbar.logout")}
-                </Button>
-              </div>
-            </MenuItem>
+
+            <div>
+              <MenuItem onClick={openFullTermsAndConditions}>
+                <Icon remixName="ri-bill-line" size={20} />
+                <div className="grow">{T("navbar.termsAndConditions")}</div>
+              </MenuItem>
+
+              <MenuItem onClick={openPrivacyPolicy}>
+                <Icon remixName="ri-lock-line" size={20} />
+                <div className="grow">{T("navbar.privacyPolicy")}</div>
+              </MenuItem>
+
+              <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
+            </div>
+
+            <div>
+              <MenuItem onClick={openFeedback}>
+                <Icon remixName="ri-discuss-line" size={20} />
+                <div className="grow">{T("navbar.feedback.button")}</div>
+              </MenuItem>
+
+              <MenuItem onClick={handleLogout}>
+                <Icon remixName="ri-logout-box-r-line" size={20} />
+                <div className="grow">{T("navbar.logout")}</div>
+              </MenuItem>
+            </div>
           </Menu.Items>
         </Transition>
       </Menu>
     </div>
   );
-};
-
-type MenuItemProps = {
-  disabled?: boolean;
-  onClick?: () => void;
-  secondary?: boolean;
-} & PropsWithChildren;
-
-const MenuItem = ({ disabled = false, onClick, secondary = false, children, ...rest }: MenuItemProps) => (
-  <Menu.Item
-    {...rest}
-    disabled={disabled}
-    as="div"
-    className={cn("flex flex-row items-center gap-3 px-4 py-2 font-walsheim text-sm", {
-      "cursor-pointer ui-active:bg-white/4": !disabled,
-      "cursor-default": disabled,
-      "text-greyscale-50": !secondary,
-      "text-spaceBlue-200": secondary,
-    })}
-    onClick={onClick}
-  >
-    {children}
-  </Menu.Item>
-);
-
-export default View;
+}

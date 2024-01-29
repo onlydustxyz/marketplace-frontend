@@ -2,7 +2,18 @@ export interface Technologies {
   [key: string]: number;
 }
 
-export function getTopTechnologies(technologies: Technologies): string[] {
+export function isBlackListedTechnology(technology: string): boolean {
+  const blackListedTech = process.env.NEXT_PUBLIC_LANGUAGES_FILTER?.toLowerCase();
+
+  const arrayOfTech = blackListedTech?.split(",");
+
+  return !!arrayOfTech?.find(b => b === technology.toLowerCase()) || false;
+}
+
+export function getFilteredTechnologies(technologies: Technologies): {
+  filteredTechObject: Technologies;
+  filteredTechArray: [string, number][];
+} {
   const blackListedTech = process.env.NEXT_PUBLIC_LANGUAGES_FILTER;
 
   // Convert object to array of [technology, count] pairs
@@ -10,6 +21,15 @@ export function getTopTechnologies(technologies: Technologies): string[] {
 
   // Filter out blacklisted technologies
   const filteredTechArray = techArray.filter(item => !blackListedTech?.includes(item[0]));
+
+  // Convert array back to object
+  const filteredTechObject = Object.fromEntries(filteredTechArray);
+
+  return { filteredTechObject, filteredTechArray };
+}
+
+export function getTopTechnologies(technologies: Technologies): string[] {
+  const { filteredTechArray } = getFilteredTechnologies(technologies);
 
   // Sort array in descending order based on count
   const sortedTechArray = filteredTechArray.sort((a, b) => b[1] - a[1]);

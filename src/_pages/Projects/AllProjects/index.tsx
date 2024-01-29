@@ -1,23 +1,23 @@
 import { useEffect, useMemo } from "react";
-import ErrorFallback from "src/ErrorFallback";
-import ProjectApi from "src/api/Project";
-import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
-import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
-import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
+import { EmptyState } from "components/layout/placeholders/empty-state";
+import { uniqBy } from "lodash";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/_pages/Projects/Sorting/SortingDropdown";
 import { useProjectFilter } from "src/_pages/Projects/useProjectFilter";
+import ProjectApi from "src/api/Project";
+import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
+import { IMAGES } from "src/assets/img";
+import ProjectCard, { Variant as ProjectCardVariant } from "src/components/ProjectCard";
+import { ShowMore } from "src/components/Table/ShowMore";
+import ErrorFallback from "src/ErrorFallback";
+import { useIntl } from "src/hooks/useIntl";
+import { usePosthog } from "src/hooks/usePosthog";
+import { Sponsor } from "src/types";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";
-import AllProjectLoading from "./AllProjectsLoading";
-import { Sponsor } from "src/types";
-import { uniqBy } from "lodash";
 import SubmitProject from "../SubmitProject";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-import { EmptyState } from "components/layout/placeholders/empty-state.tsx";
-import { IMAGES } from "src/assets/img";
+import AllProjectLoading from "./AllProjectsLoading";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -49,7 +49,8 @@ export default function AllProjects({
   setSponsors,
 }: Props) {
   const { T } = useIntl();
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
+  const { capture } = usePosthog();
 
   const {
     projectFilter: { ownership, technologies, sponsors },
@@ -79,6 +80,10 @@ export default function AllProjects({
     });
 
   useEffect(() => {
+    capture("project_list_viewed", { technologies, sponsors: sponsors.map(({ name }) => name), ownership });
+  }, [ownership, technologies, sponsors]);
+
+  useEffect(() => {
     restoreScroll();
   }, [restoreScroll]);
 
@@ -93,9 +98,7 @@ export default function AllProjects({
         "id"
       );
 
-      setTechnologies(
-        technologies.length ? replaceApostrophes(technologies.filter(item => !blackListedTech?.includes(item))) : []
-      );
+      setTechnologies(technologies.length ? technologies.filter(item => !blackListedTech?.includes(item)) : []);
       setSponsors(sponsors);
     }
   }, [data]);
@@ -109,8 +112,6 @@ export default function AllProjects({
   }
 
   const projects = data?.pages?.flatMap(({ projects }) => projects) ?? [];
-
-  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   if (projects.length) {
     return (
@@ -163,8 +164,4 @@ export default function AllProjects({
       onAction={handleClear}
     />
   );
-}
-
-function replaceApostrophes(array: string[]): string[] {
-  return array.map(item => item.replace(/'/g, " "));
 }

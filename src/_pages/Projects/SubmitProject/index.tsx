@@ -12,7 +12,7 @@ import {
 import { ProjectCreationSteps } from "src/_pages/ProjectCreation/types/ProjectCreationSteps";
 import { cn } from "src/utils/cn";
 import { useAuth0 } from "@auth0/auth0-react";
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login.ts";
+import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
 export default function SubmitProject({ className }: { className?: string }) {
   const { T } = useIntl();
@@ -55,7 +55,7 @@ export default function SubmitProject({ className }: { className?: string }) {
   };
 
   return (
-    <Card className={cn("mb-4 flex h-fit flex-row gap-4 p-6", className)}>
+    <Card className={cn("mb-4 flex h-fit flex-row items-center gap-4 p-6", className)}>
       <div className="flex-1 text-sm leading-4">{T("project.details.create.description")}</div>
       <div className="relative z-10">
         <ConfirmationPopOver
