@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import {getGithubUserIdFromSub} from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { useEffect } from "react";
 import MeApi from "src/api/me";
 import { usePosthog } from "src/hooks/usePosthog";
