@@ -58,8 +58,7 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
     JSON.stringify(initialFilters)
   );
 
-  const contributorsQueryState = useState<string>();
-  const [contributorsQuery] = contributorsQueryState;
+  const [contributorsQuery, setContributorsQuery] = useState<string>();
 
   function parseFiltersStorage() {
     if (filtersStorage) {
@@ -156,11 +155,36 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
     [repos]
   );
 
-  const { data: contributorsData } = ProjectApi.queries.useProjectContributorsInfiniteList({
+  const {
+    data: contributorsData,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = ProjectApi.queries.useProjectContributorsInfiniteList({
     params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
     options: { enabled: Boolean(project?.id) },
   });
-  const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
+
+  const [contributors, setContributors] = useState<Item[]>([]);
+
+  useEffect(() => {
+    const flattenContributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
+    if (flattenContributors?.length) {
+      setContributors(
+        flattenContributors.map(({ login, githubUserId, avatarUrl }) => ({
+          id: githubUserId,
+          label: login,
+          image: avatarUrl,
+        }))
+      );
+    }
+  }, [contributorsData]);
+
+  const handleContributorsPagination = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
 
   function resetFilters() {
     setFilters(initialFilters);
@@ -243,13 +267,15 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
       />
       <FiltersRepos repos={sortedRepos} selected={filters.repos ?? initialFilters.repos} onChange={updateRepos} />
       <FiltersUsers
-        users={contributors.map(({ login, githubUserId, avatarUrl }) => ({
-          id: githubUserId,
-          label: login,
-          image: avatarUrl,
-        }))}
+        users={contributors}
         selected={filters.contributors ?? initialFilters.contributors}
         onChange={updateContributors}
+        onNextPage={handleContributorsPagination}
+        loadingNextPage={isFetchingNextPage}
+        controlledSearch={{
+          value: contributorsQuery || "",
+          onChange: (value: string) => setContributorsQuery(value),
+        }}
       />
       <FilterTypeOptions selected={filters.types ?? initialFilters.types} onChange={updateTypes} />
     </Filter>
