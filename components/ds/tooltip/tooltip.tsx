@@ -3,7 +3,14 @@ import { TTooltip } from "components/ds/tooltip/tooltip.types";
 
 export function Tooltip({ as: Component = "button", content, placement, children }: TTooltip.Props) {
   return (
-    <NextUiTooltip content={content} placement={placement} showArrow={true}>
+    <NextUiTooltip
+      content={content}
+      placement={placement}
+      showArrow={true}
+      classNames={{
+        content: ["p-4", "od-text-body-s"],
+      }}
+    >
       <Component>{children}</Component>
     </NextUiTooltip>
   );

@@ -1,6 +1,5 @@
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { IMAGES } from "src/assets/img";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
@@ -17,7 +16,6 @@ export function Contributor({
   clickable,
   className,
 }: TContributor.Props) {
-  const { T } = useIntl();
   const [open] = useStackContributorProfile();
 
   const Component = clickable ? "button" : "div";
