@@ -1,7 +1,7 @@
 import { cn } from "src/utils/cn";
 
-import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { TIconTag } from "components/ds/icon-tag/icon-tag.types";
+import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
 export function IconTagLoading({ className, skeletonProps }: TIconTag.LoadingProps) {
   return (

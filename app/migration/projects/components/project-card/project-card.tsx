@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import { ProjectTags } from "app/migration/projects/features/project-tags/project-tags";
+
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
@@ -16,7 +18,6 @@ import { TProjectCard } from "./project-card.types";
 import { Sponsors } from "./sponsors/sponsors";
 import { Summary } from "./summary/summary";
 import { Technologies } from "./technologies/technologies";
-import { ProjectTags } from "app/migration/projects/features/project-tags/project-tags";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
@@ -73,7 +74,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             </div>
           )}
         </div>
-        <Flex direction="col" className="w-full flex-1 gap-1 overflow-hidden">
+        <Flex direction="col" className="w-full flex-1 gap-2 overflow-hidden">
           <Flex direction="row" className="items-center gap-2 md:items-start">
             <div className="relative block flex-shrink-0 md:hidden">
               <Thumbnail
