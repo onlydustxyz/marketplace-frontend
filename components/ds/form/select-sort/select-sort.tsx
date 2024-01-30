@@ -12,7 +12,7 @@ export function SelectSort({ options, value, labelToken, onChange }: TSelectSort
   return (
     <Select
       items={options}
-      selectedKeys={[value]}
+      selectedKeys={value ? [value] : []}
       selectionMode="single"
       onChange={handleSelectionChange}
       labelPlacement="outside"

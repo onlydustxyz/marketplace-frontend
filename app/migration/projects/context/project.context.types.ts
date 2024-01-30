@@ -3,7 +3,6 @@ import { PropsWithChildren } from "react";
 import { components } from "src/__generated/api";
 import { UseInfiniteListResponse } from "src/api/Project/queries";
 
-import { TFiltersDropDown } from "components/ds/drop-down/filters-drop-down.types";
 import { ProjectTypes } from "src/api/Project/types";
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
@@ -26,26 +25,27 @@ export namespace TProjectContext {
       count: number;
       options: {
         technologies: TSelectAutocomplete.Item[];
-        sponsors: TFiltersDropDown.Option[];
       };
     };
   };
 
   export interface Filter {
-    ownership: ProjectTypes.Ownership;
+    mine: boolean;
     technologies: string[];
     sponsors: string[];
     search?: string;
     sorting: ProjectTypes.Sorting;
+    tags: ProjectTypes.Tags[];
   }
 
-  export const FILTER_KEY = "project_filter";
+  export const FILTER_KEY = "project_filter-v2-0-0";
   export const DEFAULT_SORTING = ProjectTypes.Sorting.Trending;
 
   export const DEFAULT_FILTER: Filter = {
-    ownership: ProjectTypes.Ownership.All,
+    mine: false,
     technologies: [],
     sponsors: [],
+    tags: [],
     sorting: DEFAULT_SORTING,
   };
 }

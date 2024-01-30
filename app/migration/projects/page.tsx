@@ -40,7 +40,7 @@ export default function ProjectsPage() {
                 className="text-spaceBlue-200"
               />
             </div>
-            <div className="flex w-full justify-end">
+            <div className="flex w-full justify-end gap-2">
               <ProjectsSort />
               <ProjectsFilters showOn="mobile" />
             </div>

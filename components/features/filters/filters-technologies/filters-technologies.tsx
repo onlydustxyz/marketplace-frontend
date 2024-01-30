@@ -9,7 +9,7 @@ import { TFiltersTechnologies } from "components/features/filters/filters-techno
 export function FiltersTechnologies({ technologies, selected, onChange }: TFiltersTechnologies.Props) {
   const { T } = useIntl();
   return (
-    <FilterFieldContainer label={T("filter.technologies.all")}>
+    <FilterFieldContainer label={T("filter.technologies.title")}>
       <SelectAutocomplete
         type="square"
         icon={({ className }) => <FolderLine className={className} />}
