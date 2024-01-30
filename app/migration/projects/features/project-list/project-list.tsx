@@ -6,11 +6,22 @@ import { isUserProjectLead } from "src/utils/isUserProjectLead";
 
 import { ProjectCard } from "../../components/project-card/project-card";
 import { ProjectsContext } from "../../context/project.context";
+import { ProjectCardLoading } from "app/migration/projects/components/project-card/project-card.loading";
 
 export function ProjectList() {
   const { githubUserId } = useCurrentUser();
 
-  const { projects, hasNextPage, fetchNextPage, isFetchingNextPage } = useContext(ProjectsContext);
+  const { projects, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = useContext(ProjectsContext);
+
+  if (isLoading) {
+    return (
+      <>
+        <ProjectCardLoading />
+        <ProjectCardLoading />
+        <ProjectCardLoading />
+      </>
+    );
+  }
 
   return (
     <>
