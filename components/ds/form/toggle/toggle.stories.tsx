@@ -2,16 +2,19 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { Toggle } from "./toggle";
 import { TToggle } from "./toggle.types";
+import StoryState from "components/features/storybooks/stateManagement";
 
 type Story = StoryObj<typeof Toggle>;
 
 const defaultProps: TToggle.Props = {
-  children: <div>Toggle</div>,
+  ariaLabel: "aria label",
+  value: false,
+  onChange: () => null,
 };
 
 const meta: Meta<typeof Toggle> = {
   component: Toggle,
-  title: "Design system/Toggle",
+  title: "Design system/Form/Toggle",
   tags: ["autodocs"],
   parameters: {
     backgrounds: {
@@ -22,8 +25,14 @@ const meta: Meta<typeof Toggle> = {
 };
 
 export const Default: Story = {
-  render: (args) => {
-    return <Toggle {...defaultProps} {...args} />;
+  render: args => {
+    return (
+      <StoryState initial="value1">
+        {(state, setState) => (
+          <Toggle {...defaultProps} {...args} value={state} onChange={(value: boolean) => setState(value)} />
+        )}
+      </StoryState>
+    );
   },
 };
 
