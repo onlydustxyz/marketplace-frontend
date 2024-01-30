@@ -31,7 +31,7 @@ export default function ProjectsPage() {
             </div>
           </Flex>
         </div>
-        <Flex className="w-full flex-1 gap-5" direction="col">
+        <Flex className="w-full flex-1 gap-5 overflow-hidden" direction="col">
           <Flex className="w-full gap-5" direction="row" alignItems="center">
             <div className="w-full">
               <Typography

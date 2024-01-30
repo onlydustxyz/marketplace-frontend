@@ -49,7 +49,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
 
   return (
     <Card
-      className={cn("relative duration-100 ease-out transition", {
+      className={cn("relative w-full duration-100 ease-out transition", {
         "bg-spaceBlue-900 hover:border-card-border-heavy hover:bg-card-background-solidHeavy hover:ease-in":
           !isErrorVariant,
         "border-orange-500 bg-orange-900": isErrorVariant,
@@ -73,7 +73,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             </div>
           )}
         </div>
-        <Flex direction="col" className="flex-1 gap-1">
+        <Flex direction="col" className="w-full flex-1 gap-1 overflow-hidden">
           <Flex direction="row" className="items-center gap-2 md:items-start">
             <div className="relative block flex-shrink-0 md:hidden">
               <Thumbnail
