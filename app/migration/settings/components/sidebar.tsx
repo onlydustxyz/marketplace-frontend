@@ -1,13 +1,12 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import { useIntl } from "src/hooks/useIntl";
-import { cn } from "src/utils/cn";
 
+import { MenuItem } from "components/layout/sidebar/menu-item/menu-item";
 import { Sidebar as LayoutSidebar } from "components/layout/sidebar/sidebar";
 
 export function Sidebar() {
@@ -15,7 +14,7 @@ export function Sidebar() {
   const { T } = useIntl();
   const pathname = usePathname();
 
-  const availableTabs = [
+  const menuItems = [
     {
       label: T("settings.sidebar.publicProfile"),
       path: "/settings/profile",
@@ -40,18 +39,8 @@ export function Sidebar() {
           <div>{/* TODO user card */}</div>
 
           <div className="align-start flex flex-col gap-2 pb-2 pt-3 text-xl font-medium">
-            {availableTabs.map(tab => (
-              <Link
-                key={tab.path}
-                href={tab.path}
-                onClick={closePanel}
-                className={cn("rounded-xl px-4 py-2.5 text-base", {
-                  "bg-white/8 text-white": pathname === tab.path,
-                  "text-neutral-400": pathname !== tab.path,
-                })}
-              >
-                {tab.label}
-              </Link>
+            {menuItems.map(({ path, label }) => (
+              <MenuItem key={path} href={path} label={label} onClick={closePanel} isActive={pathname === path} />
             ))}
 
             {!isAuthenticated ? (
