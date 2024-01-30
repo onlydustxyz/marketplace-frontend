@@ -1,19 +1,15 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import BurgerIcon from "src/assets/icons/BurgerIcon";
 import SidePanel from "src/components/SidePanel";
 import { viewportConfig } from "src/config";
 
-export function Sidebar({
-  children,
-  mobileHeader,
-}: {
-  children: ({ closePanel }: { closePanel?: () => void }) => ReactNode;
-  mobileHeader?: JSX.Element;
-}) {
+import { TSidebar } from "components/layout/sidebar/sidebar.types";
+
+export function Sidebar({ children, mobileHeader }: TSidebar.Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [panelOpen, setPanelOpen] = useState(false);
 
