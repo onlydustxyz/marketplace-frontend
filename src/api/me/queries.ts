@@ -15,7 +15,9 @@ const useGetMe = ({ options = {} }: UseQueryProps<UseGetUserMeResponse, undefine
     tags: ME_TAGS.user,
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
+    // Current user doesn't need to be refreshed automatically, otherwise some components could re-render unexpectedly (ex:lead-guard)
     refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 };
 
