@@ -22,12 +22,12 @@ export default function ProjectsPage() {
       </div>
       <Flex className="relative w-full gap-6" direction="row">
         <div className="hidden shrink-0 basis-[356px] lg:block">
-          <Flex className="sticky top-0 z-10 w-full gap-4 xl:block" direction="col">
-            <div className="w-full self-start">
-              <AddProject />
-            </div>
+          <Flex className="sticky top-3 z-10 w-full gap-3" direction="col">
             <div className="w-full self-start">
               <ProjectsFilters showOn="desktop" />
+            </div>
+            <div className="w-full self-start">
+              <AddProject />
             </div>
           </Flex>
         </div>
