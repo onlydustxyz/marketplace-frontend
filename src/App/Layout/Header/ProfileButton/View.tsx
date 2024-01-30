@@ -117,7 +117,7 @@ export function View({
                     <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
                   )}
 
-                  <Flex direction="col">
+                  <Flex direction="col" alignItems="start">
                     <Typography variant="title-s" className="text-sm leading-4">
                       {login}
                     </Typography>

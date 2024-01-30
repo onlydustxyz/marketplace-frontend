@@ -5,7 +5,6 @@ import { RoutePaths } from "src/App";
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
-import Dot from "src/assets/icons/Dot";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
@@ -13,7 +12,9 @@ import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
 
+import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { Typography } from "components/layout/typography/typography";
 
 import { useLogout } from "./Logout.hooks";
 
@@ -28,6 +29,7 @@ interface Props {
 
 export function ViewMobile({
   avatarUrl,
+  login,
   isMissingPayoutSettingsInfo,
   githubUserId,
   hideProfileItems,
@@ -71,6 +73,43 @@ export function ViewMobile({
         <div className="flex flex-col bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
           {!hideProfileItems && (
             <>
+              <div>
+                {githubUserId ? (
+                  <button
+                    className="flex w-full items-center gap-1 rounded-md px-3 py-4"
+                    onClick={() => {
+                      setPanelOpen(false);
+                      openContributorProfilePanel({ githubUserId });
+                    }}
+                  >
+                    {avatarUrl && (
+                      <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
+                    )}
+
+                    <Flex direction="col" alignItems="start">
+                      <Typography variant="title-s" className="text-sm leading-4">
+                        {login}
+                      </Typography>
+
+                      <Typography
+                        variant="body-s"
+                        translate={{
+                          token: isMissingPayoutSettingsInfo
+                            ? "navbar.profile.pendingBilling"
+                            : "navbar.profile.manage",
+                        }}
+                        className={cn({
+                          "text-spaceBlue-200": !isMissingPayoutSettingsInfo,
+                          "text-orange-500": isMissingPayoutSettingsInfo,
+                        })}
+                      />
+                    </Flex>
+                  </button>
+                ) : null}
+
+                <span className="my-1 block h-px bg-greyscale-50/8" />
+              </div>
+
               {githubUserId || hasRewards ? (
                 <div>
                   <NavLink
@@ -113,39 +152,21 @@ export function ViewMobile({
                   <span className="my-1 block h-px bg-greyscale-50/8" />
                 </div>
               ) : null}
-
-              <div>
-                {githubUserId ? (
-                  <button
-                    className="flex items-center gap-3 p-4"
-                    onClick={() => {
-                      setPanelOpen(false);
-                      openContributorProfilePanel({ githubUserId });
-                    }}
-                  >
-                    <Icon remixName="ri-user-3-line" size={20} />
-                    {T("navbar.profile.publicProfile")}
-                    {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
-                  </button>
-                ) : null}
-
-                <span className="my-1 block h-px bg-greyscale-50/8" />
-              </div>
             </>
           )}
 
           <div>
-            <button className="flex items-center gap-3 p-4" onClick={openFeedback}>
+            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFeedback}>
               <Icon remixName="ri-discuss-line" size={20} />
               {T("navbar.feedback.button")}
             </button>
 
-            <button className="flex items-center gap-3 p-4" onClick={openFullTermsAndConditions}>
+            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFullTermsAndConditions}>
               <Icon remixName="ri-bill-line" size={20} />
               {T("navbar.termsAndConditions")}
             </button>
 
-            <button className="flex items-center gap-3 p-4" onClick={openPrivacyPolicy}>
+            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openPrivacyPolicy}>
               <Icon remixName="ri-lock-line" size={20} />
               {T("navbar.privacyPolicy")}
             </button>
@@ -154,7 +175,7 @@ export function ViewMobile({
           </div>
 
           <div>
-            <button className="flex items-center gap-3 p-4" onClick={handleLogout}>
+            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={handleLogout}>
               <Icon remixName="ri-logout-box-r-line" size={20} />
               {T("navbar.logout")}
             </button>
