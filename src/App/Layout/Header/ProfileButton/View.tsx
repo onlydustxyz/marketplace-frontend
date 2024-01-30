@@ -1,35 +1,34 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
 
-import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
-import Dot from "src/assets/icons/Dot";
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
 
+import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { Typography } from "components/layout/typography/typography";
 
 import { useLogout } from "./Logout.hooks";
 
 interface MenuItemProps extends PropsWithChildren {
-  disabled?: boolean;
   onClick?: () => void;
-  secondary?: boolean;
+  isProfil?: boolean;
 }
 
-const MenuItem = ({ disabled = false, onClick, secondary = false, children, ...rest }: MenuItemProps) => (
+const MenuItem = ({ onClick, isProfil, children, ...rest }: MenuItemProps) => (
   <Menu.Item
     {...rest}
-    disabled={disabled}
     as="div"
-    className={cn("flex flex-row items-center gap-3 px-4 py-2 font-walsheim text-sm", {
-      "cursor-pointer ui-active:bg-white/4": !disabled,
-      "cursor-default": disabled,
-      "text-greyscale-50": !secondary,
-      "text-spaceBlue-200": secondary,
-    })}
+    className={cn(
+      "flex cursor-pointer flex-row items-center gap-3 rounded-md px-4 py-2 font-walsheim text-sm ui-active:bg-white/4",
+      {
+        "gap-1 px-3": isProfil,
+      }
+    )}
     onClick={onClick}
   >
     {children}
@@ -57,8 +56,6 @@ export function View({
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [openPayoutInfo] = useStackPayoutInfo();
-  const [openVerifyIdentity] = useStackVerifyIdentity();
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
@@ -89,7 +86,9 @@ export function View({
               <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
             )}
 
-            <div className={cn({ "mr-1": !isMissingPayoutSettingsInfo })}>{login}</div>
+            <Typography variant="title-s" className={cn("text-sm leading-4", { "mr-1": !isMissingPayoutSettingsInfo })}>
+              {login}
+            </Typography>
 
             {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
@@ -107,39 +106,45 @@ export function View({
           <Menu.Items
             onFocus={() => setMenuItemsVisible(true)}
             onBlur={() => setMenuItemsVisible(false)}
-            className="absolute right-0 z-20 mt-3 w-56 origin-top-right
-						overflow-hidden rounded-md bg-whiteFakeOpacity-5 py-2 shadow-lg ring-1
+            className="absolute right-0 z-20 mt-3 w-72 origin-top-right
+						overflow-hidden rounded-md bg-whiteFakeOpacity-5 p-3 shadow-lg ring-1
 						ring-greyscale-50/8 focus:outline-none"
           >
             {!hideProfileItems && (
               <div>
-                <MenuItem secondary disabled>
-                  {T("navbar.profile.title").toUpperCase()}
+                <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel({ githubUserId })} isProfil>
+                  {avatarUrl && (
+                    <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
+                  )}
+
+                  <Flex direction="col">
+                    <Typography variant="title-s" className="text-sm leading-4">
+                      {login}
+                    </Typography>
+
+                    <Typography
+                      variant="body-s"
+                      translate={{
+                        token: isMissingPayoutSettingsInfo ? "navbar.profile.pendingBilling" : "navbar.profile.manage",
+                      }}
+                      className={cn({
+                        "text-spaceBlue-200": !isMissingPayoutSettingsInfo,
+                        "text-orange-500": isMissingPayoutSettingsInfo,
+                      })}
+                    />
+                  </Flex>
                 </MenuItem>
 
-                <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel({ githubUserId })}>
-                  <Icon remixName="ri-user-3-line" size={20} />
-                  <div className="grow">{T("navbar.profile.publicProfile")}</div>
-                </MenuItem>
-
-                <MenuItem onClick={openPayoutInfo}>
-                  <Icon remixName="ri-money-dollar-circle-line" size={20} />
-                  <div className="grow">{T("navbar.profile.payoutInfo")}</div>
-                  {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
-                </MenuItem>
-
-                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-                  <MenuItem onClick={openVerifyIdentity}>
-                    <Icon remixName="ri-pass-valid-line" size={20} />
-                    <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
-                  </MenuItem>
-                ) : null}
-
-                <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
+                <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>
             )}
 
             <div>
+              <MenuItem onClick={openFeedback}>
+                <Icon remixName="ri-discuss-line" size={20} />
+                <div className="grow">{T("navbar.feedback.button")}</div>
+              </MenuItem>
+
               <MenuItem onClick={openFullTermsAndConditions}>
                 <Icon remixName="ri-bill-line" size={20} />
                 <div className="grow">{T("navbar.termsAndConditions")}</div>
@@ -150,15 +155,10 @@ export function View({
                 <div className="grow">{T("navbar.privacyPolicy")}</div>
               </MenuItem>
 
-              <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
+              <span className="my-1 block h-px bg-greyscale-50/8" />
             </div>
 
             <div>
-              <MenuItem onClick={openFeedback}>
-                <Icon remixName="ri-discuss-line" size={20} />
-                <div className="grow">{T("navbar.feedback.button")}</div>
-              </MenuItem>
-
               <MenuItem onClick={handleLogout}>
                 <Icon remixName="ri-logout-box-r-line" size={20} />
                 <div className="grow">{T("navbar.logout")}</div>

@@ -412,7 +412,9 @@
       "title": "Your account",
       "publicProfile": "Public profile",
       "payoutInfo": "Payout information",
-      "verifyIdentity": "Verify identity"
+      "verifyIdentity": "Verify identity",
+      "manage": "Manage my account",
+      "pendingBilling": "Pending billing profiles"
     },
     "rewards": "Rewards",
     "projects": "Projects",
