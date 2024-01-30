@@ -12,7 +12,7 @@ const defaultProps: TThumbnail.Props = {
 
 const meta: Meta<typeof Thumbnail> = {
   component: Thumbnail,
-  title: "Design system/Thumbnail",
+  title: "Design system/Thumbnails/Thumbnail",
   tags: ["autodocs"],
   parameters: {
     backgrounds: {

@@ -12,7 +12,7 @@ export function Popover({ children, content, ...PopOverProps }: TPopover.Props) 
       {...PopOverProps}
     >
       <PopoverTrigger>
-        <div>{children}</div>
+        <div className="relative inline-block">{children}</div>
       </PopoverTrigger>
       <PopoverContent>{content}</PopoverContent>
     </NextPopover>

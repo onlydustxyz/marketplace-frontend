@@ -2,16 +2,20 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { BottomSheet } from "./bottom-sheet";
 import { TBottomSheet } from "./bottom-sheet.types";
+import StoryState from "components/features/storybooks/stateManagement";
+import Button from "src/components/Button";
 
 type Story = StoryObj<typeof BottomSheet>;
 
 const defaultProps: TBottomSheet.Props = {
   children: <div>BottomSheet</div>,
+  title: "Bottom Sheet",
+  onClose: () => null,
 };
 
 const meta: Meta<typeof BottomSheet> = {
   component: BottomSheet,
-  title: "Design system/BottomSheet",
+  title: "Design system/Modals/BottomSheet",
   tags: ["autodocs"],
   parameters: {
     backgrounds: {
@@ -22,8 +26,17 @@ const meta: Meta<typeof BottomSheet> = {
 };
 
 export const Default: Story = {
-  render: (args) => {
-    return <BottomSheet {...defaultProps} {...args} />;
+  render: args => {
+    return (
+      <StoryState initial={false}>
+        {(state, setState) => (
+          <div>
+            <Button onClick={() => setState(true)}>Open bottom sheet</Button>
+            <BottomSheet {...defaultProps} {...args} open={state} onClose={() => setState(false)} />
+          </div>
+        )}
+      </StoryState>
+    );
   },
 };
 

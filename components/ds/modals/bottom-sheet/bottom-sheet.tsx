@@ -34,7 +34,7 @@ export function BottomSheet({ children, onOpen, onClose, title, open = false }: 
         },
       }}
     >
-      <ModalContent className="mx-0 my-0 max-w-full bg-greyscale-900 sm:mx-0 sm:my-0">
+      <ModalContent className="mx-0 my-0 max-w-full rounded-b-none bg-greyscale-900 sm:mx-0 sm:my-0">
         {onClose => (
           <>
             <ModalHeader className="flex flex-row items-center justify-between gap-1 p-6 pb-4">
