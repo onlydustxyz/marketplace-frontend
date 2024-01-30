@@ -191,8 +191,7 @@ const config: Config = withTV({
         "space-card": "url('/images/space-card-bg.webp')",
         "public-profile": "url('/images/public-profile-bg.webp')",
         space: `
-            url('/images/dust-top-right.webp'),
-            url('/images/dust-btm-left.webp'),
+            url('/images/space-background.svg'),
             linear-gradient(180deg, #000113 0%, #0E0D2E 100%)
         `,
         "multi-color-gradient":
@@ -207,10 +206,10 @@ const config: Config = withTV({
         linear-gradient(60deg, rgba(40, 3, 155, 1), rgba(100, 42, 229, 1));`,
       },
       backgroundPosition: {
-        space: "right top, bottom left",
+        space: "center, center",
       },
       backgroundSize: {
-        space: "auto, auto, 100%",
+        space: "cover, cover, 100%",
         "public-profile": "cover",
       },
       backdropBlur: {
