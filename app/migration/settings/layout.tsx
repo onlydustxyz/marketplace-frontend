@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react";
 
-import { Background } from "components/layout/background/background";
+import { Sidebar } from "app/migration/settings/components/sidebar";
 
-import { Sidebar } from "./components/sidebar";
+import { Background } from "components/layout/background/background";
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
   return (
