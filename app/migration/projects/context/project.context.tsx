@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import ProjectApi from "src/api/Project";
 import { TProjectContext } from "./project.context.types";
 import { useLocalStorage } from "react-use";
@@ -28,7 +28,7 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
 export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const [storage, setStorage] = useLocalStorage(TProjectContext.FILTER_KEY, TProjectContext.DEFAULT_FILTER);
   const [filters, setFilters] = useState<TProjectContext.Filter>({ ...TProjectContext.DEFAULT_FILTER, ...storage });
-
+  const [technologies, setTechnologies] = useState<string[]>([]);
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
@@ -47,7 +47,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
 
   const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(TProjectContext.DEFAULT_FILTER), [filters]);
   const count = useMemo(() => data?.pages[0]?.totalItemNumber || 0, [data]);
-  const technologies = useMemo(() => data?.pages[0]?.technologies || [], [data]);
+
   const sponsors = useMemo(() => data?.pages[0]?.sponsors || [], [data]);
   const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
   const filtersCount = useMemo(() => {
@@ -63,6 +63,12 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     setFilters(TProjectContext.DEFAULT_FILTER);
     setStorage(TProjectContext.DEFAULT_FILTER);
   }
+
+  useEffect(() => {
+    if (data?.pages[0]?.technologies?.length) {
+      setTechnologies(data?.pages[0]?.technologies);
+    }
+  }, [data]);
 
   return (
     <ProjectsContext.Provider
