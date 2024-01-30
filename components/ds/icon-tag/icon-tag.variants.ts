@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const iconTagVariants = tv({
-  base: "relative flex items-center justify-center overflow-hidden rounded-full border-greyscale-50/12 bg-greyscale-50/8",
+  base: "relative flex items-center justify-center overflow-hidden rounded-full border-greyscale-50/12 bg-greyscale-50/8 duration-300 ease-in transition-all",
   variants: {
     size: {
       small: "h-6 w-6 border p-1",
@@ -9,7 +9,7 @@ export const iconTagVariants = tv({
       large: "h-10 w-10 border p-3",
     },
     active: {
-      true: "border-spacePurple-500 bg-spacePurple-900",
+      true: "border-2 border-spacePurple-500 bg-spacePurple-900",
       false: "border-greyscale-50/12",
     },
   },

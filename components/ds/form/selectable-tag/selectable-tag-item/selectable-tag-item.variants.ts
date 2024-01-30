@@ -20,7 +20,7 @@ export const selectableTagItemVariants = tv({
       disabled: false,
       selected: false,
       class:
-        "hover:bg-spacePurple-900 hover:before:absolute hover:before:-inset-0.5 hover:before:rounded-lg hover:before:border-2 hover:before:border-spacePurple-500",
+        "hover:border-spacePurple-500 hover:bg-spacePurple-900 hover:before:absolute hover:before:-inset-0.5 hover:before:rounded-lg",
     },
   ],
 });
