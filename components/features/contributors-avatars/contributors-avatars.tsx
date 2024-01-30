@@ -6,7 +6,7 @@ import { Tooltip } from "components/ds/tooltip/tooltip";
 export function ContributorsAvatars({ contributors, ...variant }: TContributorsAvatars.Props) {
   function contributorsContent() {
     return (
-      <div className="flex flex-row items-center gap-3 text-snow">
+      <div className="grid grid-cols-2 items-center gap-3 text-snow md:grid-cols-4">
         {contributors.map(contributor => (
           <Contributor
             key={contributor.githubUserId}
