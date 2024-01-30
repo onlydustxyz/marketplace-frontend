@@ -1482,5 +1482,12 @@
   },
   "filters": {
     "noResults": "No results"
+  },
+  "settings": {
+    "sidebar": {
+      "publicProfile": "Public profile",
+      "payoutPreferences": "Payout preferences",
+      "verifyAccount": "Verify account"
+    }
   }
 }
