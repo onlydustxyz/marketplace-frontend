@@ -38,7 +38,13 @@ type Story = StoryObj<typeof IconTag>;
 
 export const Default: Story = {
   render: () => {
-    return <IconTag {...defaultProps} />;
+    return (
+      <div className="flex flex-row gap-4">
+        <IconTag {...defaultProps} />
+        <IconTag {...defaultProps} remixName="ri-hand-coin-line" active />
+        <IconTag {...defaultProps} remixName="ri-git-fork-line" tooltipContent="Tooltip content" />
+      </div>
+    );
   },
 };
 
