@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
-import { useStackContributorProfile } from "src/App/Stacks/Stacks";
+import { useStackContributorProfile, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
@@ -39,6 +39,7 @@ export function ViewMobile({
 
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
+  const [openVerifyIdentity] = useStackVerifyIdentity();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { handleLogout } = useLogout();
@@ -154,6 +155,23 @@ export function ViewMobile({
               ) : null}
             </>
           )}
+
+          {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+            <div>
+              <button
+                className="flex w-full items-center gap-3 rounded-md p-4"
+                onClick={() => {
+                  setPanelOpen(false);
+                  openVerifyIdentity();
+                }}
+              >
+                <Icon remixName="ri-pass-valid-line" size={20} />
+                {T("navbar.profile.verifyIdentity")}
+              </button>
+
+              <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
+            </div>
+          ) : null}
 
           <div>
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFeedback}>

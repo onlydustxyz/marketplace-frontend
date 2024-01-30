@@ -1,7 +1,7 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
 
-import { useStackContributorProfile } from "src/App/Stacks/Stacks";
+import { useStackContributorProfile, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
@@ -56,6 +56,7 @@ export function View({
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [openVerifyIdentity] = useStackVerifyIdentity();
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
@@ -138,6 +139,16 @@ export function View({
                 <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>
             )}
+
+            {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+              <div>
+                <MenuItem onClick={openVerifyIdentity}>
+                  <Icon remixName="ri-pass-valid-line" size={20} />
+                  <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
+                </MenuItem>
+                <span className="my-1 block h-px bg-greyscale-50/8" />
+              </div>
+            ) : null}
 
             <div>
               <MenuItem onClick={openFeedback}>
