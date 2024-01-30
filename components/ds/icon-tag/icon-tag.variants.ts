@@ -8,8 +8,13 @@ export const iconTagVariants = tv({
       medium: "h-8 w-8 border p-2",
       large: "h-10 w-10 border p-3",
     },
+    active: {
+      true: "border-spacePurple-500 bg-spacePurple-900",
+      false: "border-greyscale-50/12",
+    },
   },
   defaultVariants: {
     size: "medium",
+    active: false,
   },
 });

@@ -51,7 +51,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const sponsors = useMemo(() => data?.pages[0]?.sponsors || [], [data]);
   const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
   const filtersCount = useMemo(() => {
-    return filters.sponsors.length + filters.technologies.length + (filters.mine ? 1 : 0);
+    return filters.tags.length + filters.sponsors.length + filters.technologies.length + (filters.mine ? 1 : 0);
   }, [filters]);
 
   function onFilterChange(newFilter: Partial<TProjectContext.Filter>) {

@@ -91,7 +91,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             </div>
             <div className="flex-1 truncate font-belwe text-2xl font-medium">{project.name}</div>
             <Flex direction="row" className="gap-2">
-              <IconTag remixName="ri-seedling-line" size="medium" />
+              <IconTag remixName="ri-seedling-line" size="medium" active />
               <IconTag remixName="ri-hand-coin-line" size="medium" />
               <IconTag remixName="ri-git-fork-line" size="medium" />
             </Flex>

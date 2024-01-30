@@ -39,13 +39,13 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   };
 
   return (
-    <div className={cn("relative", { "opacity-50": disabled })}>
+    <div className={cn({ "opacity-50": disabled })}>
       {/* // need this to handle the multiple and single from headless ui
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore*/}
       <Combobox {...comboProps} disabled={disabled} by="id" value={comboProps.selected}>
         {({ open }) => (
-          <>
+          <div className={cn("relative", { "z-[999]": open })}>
             <Combobox.Button
               ref={refs.setReference}
               as="div"
@@ -94,7 +94,7 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
                 />
               </Combobox.Options>
             </Transition>
-          </>
+          </div>
         )}
       </Combobox>
     </div>
