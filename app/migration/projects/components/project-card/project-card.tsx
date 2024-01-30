@@ -16,7 +16,7 @@ import { TProjectCard } from "./project-card.types";
 import { Sponsors } from "./sponsors/sponsors";
 import { Summary } from "./summary/summary";
 import { Technologies } from "./technologies/technologies";
-import { IconTag } from "components/ds/icon-tag/icon-tag";
+import { ProjectTags } from "app/migration/projects/features/project-tags/project-tags";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
@@ -90,11 +90,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
               )}
             </div>
             <div className="flex-1 truncate font-belwe text-2xl font-medium">{project.name}</div>
-            <Flex direction="row" className="gap-2">
-              <IconTag remixName="ri-seedling-line" size="medium" active />
-              <IconTag remixName="ri-hand-coin-line" size="medium" />
-              <IconTag remixName="ri-git-fork-line" size="medium" />
-            </Flex>
+            {project.tags?.length ? <ProjectTags tags={project.tags} /> : null}
           </Flex>
           <Summary shortDescription={project.shortDescription} />
           <div className="mt-5 grid grid-cols-2 items-center gap-4 md:flex md:flex-row">

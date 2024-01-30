@@ -1,4 +1,4 @@
-import { ElementType, PropsWithChildren } from "react";
+import { ElementType, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { TSkeleton } from "components/ds/skeleton/skeleton.types";
@@ -13,6 +13,7 @@ export namespace TIconTag {
     as?: ElementType;
     id?: string;
     testId?: string;
+    tooltipContent?: ReactNode;
     className?: string;
     onClick?: () => void;
   }
