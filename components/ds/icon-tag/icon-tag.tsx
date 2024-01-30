@@ -1,8 +1,9 @@
 import { cn } from "src/utils/cn";
+
 import { TIconTag } from "components/ds/icon-tag/icon-tag.types";
 import { iconTagVariants } from "components/ds/icon-tag/icon-tag.variants";
-import { Icon } from "components/layout/icon/icon";
 import { Tooltip } from "components/ds/tooltip/tooltip";
+import { Icon } from "components/layout/icon/icon";
 
 export function IconTag({
   as: Component = "span",
