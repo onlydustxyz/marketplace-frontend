@@ -49,7 +49,6 @@ export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
         className={cn("relative z-10 flex items-center justify-center rounded-full", {
           "before:absolute before:-z-10 before:h-screen before:w-screen before:scale-x-[8] before:bg-multi-color-gradient before:md:scale-x-[30]":
             !inputFocus,
-          "overflow-hidden": !isXl,
         })}
       >
         <ResponsiveOutlineWrapper isXl={isXl}>
@@ -94,5 +93,5 @@ export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
 }
 
 function ResponsiveOutlineWrapper({ children, isXl }: { isXl: boolean } & PropsWithChildren) {
-  return isXl ? <>children</> : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
+  return isXl ? <>{children}</> : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
 }

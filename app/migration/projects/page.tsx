@@ -32,8 +32,8 @@ export default function ProjectsPage() {
           </Flex>
         </div>
         <Flex className="w-full flex-1 gap-5" direction="col">
-          <Flex className="w-fullgap-5" direction="row">
-            <div className="w-full self-start">
+          <Flex className="w-full gap-5" direction="row" alignItems="center">
+            <div className="w-full">
               <Typography
                 translate={{ token: "projects.count", params: { count } }}
                 variant="body-m-bold"

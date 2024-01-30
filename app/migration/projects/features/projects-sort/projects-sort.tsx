@@ -1,15 +1,15 @@
 import { useContext, useMemo } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import { ProjectsContext } from "../../context/project.context";
-import { TSort } from "components/ds/sort/sort.types";
 import { ProjectTypes } from "src/api/Project/types";
 import { SelectSort } from "components/ds/form/select-sort/select-sort";
+import { TSelectSort } from "components/ds/form/select-sort/select-sort.types";
 
 export function ProjectsSort() {
   const { T } = useIntl();
   const { filters } = useContext(ProjectsContext);
 
-  const options: TSort.Option[] = useMemo(
+  const options: TSelectSort.Option[] = useMemo(
     () => [
       {
         label: T(`projects.sorting.${ProjectTypes.Sorting.Trending}`),
