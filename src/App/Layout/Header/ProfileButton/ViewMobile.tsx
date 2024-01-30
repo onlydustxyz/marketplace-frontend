@@ -96,7 +96,7 @@ export function ViewMobile({
                         variant="body-s"
                         translate={{
                           token: isMissingPayoutSettingsInfo
-                            ? "navbar.profile.pendingBilling"
+                            ? "navbar.profile.missingPayoutInformation"
                             : "navbar.profile.manage",
                         }}
                         className={cn({

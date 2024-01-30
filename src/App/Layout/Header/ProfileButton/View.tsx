@@ -126,7 +126,9 @@ export function View({
                     <Typography
                       variant="body-s"
                       translate={{
-                        token: isMissingPayoutSettingsInfo ? "navbar.profile.pendingBilling" : "navbar.profile.manage",
+                        token: isMissingPayoutSettingsInfo
+                          ? "navbar.profile.missingPayoutInformation"
+                          : "navbar.profile.manage",
                       }}
                       className={cn({
                         "text-spaceBlue-200": !isMissingPayoutSettingsInfo,
