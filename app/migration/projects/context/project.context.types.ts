@@ -14,6 +14,7 @@ export namespace TProjectContext {
     fetchNextPage: () => void;
     hasNextPage: boolean;
     isFetchingNextPage: boolean;
+    isLoading: boolean;
     count: number;
     sponsors: components["schemas"]["SponsorResponse"][];
     technologies: string[];

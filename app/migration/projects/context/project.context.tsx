@@ -10,6 +10,7 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
   fetchNextPage: () => null,
   hasNextPage: false,
   isFetchingNextPage: false,
+  isLoading: false,
   count: 0,
   sponsors: [],
   technologies: [],
@@ -41,7 +42,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     return params;
   }, [filters]);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = ProjectApi.queries.useInfiniteList({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = ProjectApi.queries.useInfiniteList({
     queryParams,
   });
 
@@ -76,6 +77,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
         projects,
         fetchNextPage,
         isFetchingNextPage,
+        isLoading,
         hasNextPage,
         count,
         technologies,
