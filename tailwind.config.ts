@@ -493,6 +493,14 @@ const config: Config = withTV({
           colors: {
             background: "#000000",
           },
+          layout: {
+            radius: {
+              large: "10px",
+            },
+            boxShadow: {
+              medium: "0px 8px 64px 0px rgba(0, 0, 0, 0.32)",
+            },
+          },
         },
       },
     }),
