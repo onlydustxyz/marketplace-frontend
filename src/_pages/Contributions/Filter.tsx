@@ -7,19 +7,19 @@ import { Period } from "src/components/New/Field/Datepicker";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 import { FiltersRepos } from "components/features/filters/filters-repos/filters-repos";
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 export type Filters = {
   dateRange: DateRange;
   period: Period;
-  repos: Item[];
-  projects: Item[];
+  repos: TSelectAutocomplete.Item[];
+  projects: TSelectAutocomplete.Item[];
   types: GithubContributionType[];
 };
 
@@ -151,11 +151,11 @@ export const ContributionsFilter = forwardRef(function ContributionsFilter(
     setFilters(prevState => updateState(prevState, { period }));
   }
 
-  function updateRepos(repos: Item[]) {
+  function updateRepos(repos: TSelectAutocomplete.Item[]) {
     setFilters(prevState => updateState(prevState, { repos }));
   }
 
-  function updateProjects(projects: Item[]) {
+  function updateProjects(projects: TSelectAutocomplete.Item[]) {
     setFilters(prevState => updateState(prevState, { projects }));
   }
 
@@ -200,12 +200,12 @@ export const ContributionsFilter = forwardRef(function ContributionsFilter(
         onPeriodChange={updatePeriod}
       />
       <FiltersProjects
-        projects={contributedProjects.map(({ id, name, logoUrl }) => ({ id, label: name, image: logoUrl }))}
+        projects={contributedProjects.map(({ id, name, logoUrl }) => ({ id, label: name, image: logoUrl, value: id }))}
         selected={filters.projects ?? initialFilters.projects}
         onChange={updateProjects}
       />
       <FiltersRepos
-        repos={contributedRepos.map(({ id, name }) => ({ id, label: name }))}
+        repos={contributedRepos.map(({ id, name }) => ({ id, label: name, value: `${id}` }))}
         selected={filters.repos ?? initialFilters.repos}
         onChange={updateRepos}
       />

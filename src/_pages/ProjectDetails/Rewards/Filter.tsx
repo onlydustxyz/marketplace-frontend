@@ -9,18 +9,18 @@ import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { Item } from "src/components/New/Filter/FilterSelect";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 import { FiltersUsers } from "components/features/filters/filters-users/filters-users";
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 type Filters = {
   period: Period;
   dateRange: DateRange;
-  contributors: Item[];
-  currency: Item[];
+  contributors: TSelectAutocomplete.Item[];
+  currency: TSelectAutocomplete.Item[];
 };
 
 const initialFilters: Filters = {
@@ -156,11 +156,11 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     setFilters(prevState => updateState(prevState, { period }));
   }
 
-  function updateContributors(contributors: Item[]) {
+  function updateContributors(contributors: TSelectAutocomplete.Item[]) {
     setFilters(prevState => updateState(prevState, { contributors }));
   }
 
-  function updateCurrency(currency: Item[]) {
+  function updateCurrency(currency: TSelectAutocomplete.Item[]) {
     setFilters(prevState =>
       updateState(prevState, {
         currency,
@@ -210,6 +210,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
         <FiltersUsers
           users={contributors.map(({ login, githubUserId, avatarUrl }) => ({
             id: githubUserId,
+            value: `${githubUserId}`,
             label: login,
             image: avatarUrl,
           }))}
