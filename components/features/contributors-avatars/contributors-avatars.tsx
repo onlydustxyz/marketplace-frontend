@@ -3,7 +3,11 @@ import { Tooltip } from "components/ds/tooltip/tooltip";
 import { ThumbnailGroup } from "components/ds/thumbnail-group/thumbnail-group";
 
 export function ContributorsAvatars({ contributors, ...variant }: TContributorsAvatars.Props) {
-  const formatUserNames = () => contributors.map(contributor => contributor.login || "").join(", ");
+  const formatUserNames = () =>
+    contributors
+      .filter(contributor => contributor.login)
+      .map(contributor => contributor.login)
+      .join(", ");
 
   return (
     <Tooltip content={formatUserNames()}>
