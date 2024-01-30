@@ -8,43 +8,26 @@ import { BottomSheet } from "components/ds/modals/bottom-sheet/bottom-sheet";
 import { Translate } from "components/layout/translate/translate";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
-import { cn } from "src/utils/cn";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import { Button } from "components/ds/button/button";
-import { Tooltip } from "@nextui-org/react";
-// <button
-//     className={cn("flex items-center gap-2 rounded-xl border px-4 py-2 font-walsheim text-sm font-semibold", {
-//         "border-fuchsia-500 bg-slate-900 text-fuchsia-300": panelOpen,
-//     })}
-//     onClick={() => setPanelOpen(true)}
-// >
-//     <FilterIcon/>{" "}
-//     {T("filter.mobileButton", {
-//         count: filterCount,
-//     })}
-// </button>
+import { useContext, useState } from "react";
+import { ProjectsContext } from "app/migration/projects/context/project.context";
 
 export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const [openMobilePanel, setOpenMobilePanel] = useState(false);
+  const { filters } = useContext(ProjectsContext);
 
   if (!isXl && showOn === "mobile") {
     return (
       <>
-        <Button
-          className={cn("flex items-center gap-2 rounded-xl border px-4 py-2 font-walsheim text-sm font-semibold", {
-            // "border-fuchsia-500 bg-slate-900 text-fuchsia-300": panelOpen,
-          })}
-          // onClick={() => setPanelOpen(true)}
-        >
+        <Button variant={"secondary"} size="s" onClick={() => setOpenMobilePanel(true)}>
           <FilterIcon />
-          {/*{T("filter.mobileButton", {*/}
-          {/*  count: filterCount,*/}
-          {/*})}*/}
-          <Translate token="filter.mobileButton" params={{ count: 0 }} />
+          <Translate token="filter.mobileButton" params={{ count: filters.count }} />
         </Button>
         <BottomSheet
-          onOpen={() => null}
-          open={true}
+          onClose={() => setOpenMobilePanel(false)}
+          open={openMobilePanel}
           title={
             <Flex className="gap-2" justifyContent="start" alignItems="center">
               <Translate token="filter.title" as="div" />
@@ -65,9 +48,9 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
     );
   }
 
-  // if (!showOn === "desktop") {
-  //   return null;
-  // }
+  if (showOn === "mobile") {
+    return null;
+  }
 
   return (
     <>
@@ -82,9 +65,6 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
         <div className="border-b-1 border-card-border-medium px-6 py-4">
           <FiltersTechnologies />
         </div>
-        <Tooltip key="test1" content={"test1"} className="capitalize">
-          <div>{"couocu"}</div>
-        </Tooltip>
       </Card>
     </>
   );

@@ -4,9 +4,36 @@ import { Typography } from "components/layout/typography/typography";
 import { Button } from "components/ds/button/button";
 import CloseLine from "src/icons/CloseLine";
 
-export function BottomSheet({ children, onOpen, title, open = false }: TBottomSheet.Props) {
+export function BottomSheet({ children, onOpen, onClose, title, open = false }: TBottomSheet.Props) {
   return (
-    <Modal isOpen={open} placement="bottom" onOpenChange={onOpen} backdrop="opaque" hideCloseButton={true}>
+    <Modal
+      isOpen={open}
+      placement="bottom"
+      onOpenChange={onOpen}
+      onClose={onClose}
+      backdrop="opaque"
+      hideCloseButton={true}
+      motionProps={{
+        variants: {
+          enter: {
+            y: 0,
+            opacity: 1,
+            transition: {
+              duration: 0.3,
+              ease: "easeOut",
+            },
+          },
+          exit: {
+            y: 20,
+            opacity: 0,
+            transition: {
+              duration: 0.2,
+              ease: "easeIn",
+            },
+          },
+        },
+      }}
+    >
       <ModalContent className="mx-0 my-0 max-w-full bg-greyscale-900 sm:mx-0 sm:my-0">
         {onClose => (
           <>

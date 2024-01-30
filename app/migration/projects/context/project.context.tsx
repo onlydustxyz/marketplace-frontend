@@ -4,6 +4,7 @@ import ProjectApi from "src/api/Project";
 import { TProjectContext } from "./project.context.types";
 import { useLocalStorage } from "react-use";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
+import { Ownership } from "src/_pages/Projects/useProjectFilter";
 
 export const ProjectsContext = createContext<TProjectContext.Return>({
   projects: [],
@@ -16,6 +17,7 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
   filters: {
     values: TProjectContext.DEFAULT_FILTER,
     isCleared: true,
+    count: 0,
     set: () => null,
     clear: () => null,
     options: {
@@ -50,6 +52,9 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const technologies = useMemo(() => data?.pages[0]?.technologies || [], [data]);
   const sponsors = useMemo(() => data?.pages[0]?.sponsors || [], [data]);
   const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
+  const filtersCount = useMemo(() => {
+    return filters.sponsors.length + filters.technologies.length + (filters.ownership === Ownership.Mine ? 1 : 0);
+  }, [filters]);
 
   function onFilterChange(newFilter: Partial<TProjectContext.Filter>) {
     const filtersValues = { ...filters, ...newFilter };
@@ -86,6 +91,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
           values: filters,
           isCleared,
           set: onFilterChange,
+          count: filtersCount,
           clear: onClearFilter,
           options: {
             technologies: technologies.map(name => ({

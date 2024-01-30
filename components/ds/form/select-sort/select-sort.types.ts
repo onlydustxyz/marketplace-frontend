@@ -7,7 +7,7 @@ export namespace TSelectSort {
   export interface Props {
     labelToken: string;
     options: Option[];
-    value: string;
+    value: string | null;
     onChange(value: string): void;
   }
 }

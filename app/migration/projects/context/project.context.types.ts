@@ -23,6 +23,7 @@ export namespace TProjectContext {
       isCleared: boolean;
       set: (filter: Partial<Filter>) => void;
       clear: () => void;
+      count: number;
       options: {
         technologies: TSelectAutocomplete.Item[];
         sponsors: TFiltersDropDown.Option[];

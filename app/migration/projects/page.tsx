@@ -27,7 +27,7 @@ export default function ProjectsPage() {
               <AddProject />
             </div>
             <div className="w-full self-start">
-              <ProjectsFilters />
+              <ProjectsFilters showOn="desktop" />
             </div>
           </Flex>
         </div>
@@ -42,6 +42,7 @@ export default function ProjectsPage() {
             </div>
             <div className="flex w-full justify-end">
               <ProjectsSort />
+              <ProjectsFilters showOn="mobile" />
             </div>
           </Flex>
           <div className="flex w-full grow flex-col gap-5">
