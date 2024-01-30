@@ -1,15 +1,9 @@
 import { TContributorsAvatars } from "./contributors-avatars.types";
-import { Tooltip } from "components/ds/tooltip/tooltip";
 import { ThumbnailGroup } from "components/ds/thumbnail-group/thumbnail-group";
 import { Contributor } from "components/features/contributor/contributor";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 
 export function ContributorsAvatars({ contributors, ...variant }: TContributorsAvatars.Props) {
-  const formatUserNames = () =>
-    contributors
-      .filter(contributor => contributor.login)
-      .map(contributor => contributor.login)
-      .join(", ");
-
   function contributorsContent() {
     return (
       <div className="flex flex-row items-center gap-3 text-snow">
