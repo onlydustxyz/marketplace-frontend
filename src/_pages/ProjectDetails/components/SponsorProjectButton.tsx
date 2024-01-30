@@ -1,11 +1,13 @@
 import { FilloutStandardEmbed } from "@fillout/react";
-import { Icon } from "components/layout/icon/icon";
 import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useState } from "react";
+
 import { components } from "src/__generated/api";
 import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
+
+import { Icon } from "components/layout/icon/icon";
 
 interface Props {
   project: components["schemas"]["ProjectResponse"];

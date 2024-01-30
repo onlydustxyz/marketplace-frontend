@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
-import { SponsorProjectButton } from "src/_pages/ProjectDetails/components/SponsorProjectButton";
 import Title from "src/_pages/ProjectDetails/Title";
+import { SponsorProjectButton } from "src/_pages/ProjectDetails/components/SponsorProjectButton";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import Card from "src/components/Card";

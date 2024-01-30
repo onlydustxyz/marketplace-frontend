@@ -2,11 +2,11 @@ import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useForm, useWatch } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import { SponsorProjectButton } from "src/_pages/ProjectDetails/components/SponsorProjectButton";
 import ErrorFallback from "src/ErrorFallback";
 import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
 import { Fields } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/_pages/ProjectDetails/Title";
+import { SponsorProjectButton } from "src/_pages/ProjectDetails/components/SponsorProjectButton";
 import ProjectApi from "src/api/Project";
 import { IMAGES } from "src/assets/img";
 import FormToggle from "src/components/FormToggle";
