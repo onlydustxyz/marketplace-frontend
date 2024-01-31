@@ -1,11 +1,7 @@
 import Telegram from "src/assets/icons/Telegram";
 import { useIntl } from "src/hooks/useIntl";
-import DiscordFill from "src/icons/DiscordFill";
-import GithubLogo from "src/icons/GithubLogo";
-import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
-import MailLine from "src/icons/MailLine";
-import TwitterFill from "src/icons/TwitterFill";
-import WhatsappFill from "src/icons/WhatsappFill";
+
+import { Icon } from "components/layout/icon/icon";
 
 import ContactInformation from "./ContactInformation";
 
@@ -22,14 +18,14 @@ export default function ContactInformations({ onlyEditable }: Props) {
         <>
           <ContactInformation
             name="login"
-            icon={<GithubLogo className="text-greyscale-600" />}
+            icon={<Icon remixName="ri-github-fill" className="text-greyscale-600" />}
             editDisabled
             visibilityName="isGithubHandlePublic"
             visibilityDisabled
           />
           <ContactInformation
             name="email"
-            icon={<MailLine className="text-greyscale-600" />}
+            icon={<Icon remixName="ri-mail-line" className="text-greyscale-600" />}
             editDisabled
             visibilityName="isEmailPublic"
           />
@@ -50,7 +46,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
       <ContactInformation
         name="whatsapp"
         placeholder={T("profile.form.contactInfo.whatsapp")}
-        icon={<WhatsappFill />}
+        icon={<Icon remixName="ri-whatsapp-fill" />}
         visibilityName="isWhatsappPublic"
         options={{
           pattern: {
@@ -62,7 +58,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
       <ContactInformation
         name="twitter"
         placeholder={T("profile.form.contactInfo.twitter")}
-        icon={<TwitterFill />}
+        icon={<Icon remixName="ri-twitter-x-fill" />}
         visibilityName="isTwitterPublic"
         options={{
           pattern: {
@@ -74,7 +70,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
       <ContactInformation
         name="discord"
         placeholder={T("profile.form.contactInfo.discord")}
-        icon={<DiscordFill />}
+        icon={<Icon remixName="ri-discord-fill" />}
         visibilityName="isDiscordPublic"
         options={{
           pattern: {
@@ -86,7 +82,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
       <ContactInformation
         name="linkedin"
         placeholder={T("profile.form.contactInfo.linkedin")}
-        icon={<LinkedinBoxFill />}
+        icon={<Icon remixName="ri-linkedin-box-fill" />}
         visibilityName="isLinkedInPublic"
         options={{
           pattern: {

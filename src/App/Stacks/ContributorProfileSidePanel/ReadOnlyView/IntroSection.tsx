@@ -169,7 +169,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
         )}
         {twitter && (
           <SocialLink testId="twitter" link={twitter}>
-            <Icon remixName="ri-twitter-fill" size={24} />
+            <Icon remixName="ri-twitter-x-fill" size={24} />
           </SocialLink>
         )}
         {discord && (

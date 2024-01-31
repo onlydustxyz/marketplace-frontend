@@ -1,3 +1,5 @@
+"use client";
+
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 type SidePanelStack = {
