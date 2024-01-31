@@ -1,8 +1,10 @@
 import { useMemo } from "react";
+import { generatePath } from "react-router-dom";
 
 import { Ecosystems } from "app/migration/projects/components/project-card/ecosystems/ecosystems";
 import { ProjectTags } from "app/migration/projects/features/project-tags/project-tags";
 
+import { RoutePaths } from "src/App";
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
@@ -58,6 +60,8 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
       })}
       border={isInvitedAsProjectLead ? "multiColor" : "medium"}
       dataTestId="project-card"
+      as="a"
+      href={generatePath(RoutePaths.ProjectDetails, { projectKey: project.slug })}
     >
       <Flex direction="row" className="gap-5">
         <div className="relative hidden flex-shrink-0 md:block">
