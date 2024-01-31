@@ -84,14 +84,24 @@ export function BudgetCard({
 
   return (
     <Card
-      className={cn("px-4 py-5 transition-all lg:px-4 lg:py-5", {
-        "od-bg-budget bg-origin-border": type === CardTypes.Remaining,
+      className={cn("group px-4 py-5 transition-all lg:px-4 lg:py-5", {
+        // "od-bg-budget bg-origin-border": type === CardTypes.Remaining,
         // "bg-[length:150%_150%] !duration-500 !ease-in transition-all hover:bg-[100%_100%]":
-        "bg-[length:150%_150%] !duration-500 !ease-in hover:bg-[100%_100%]": type === CardTypes.Remaining,
+        "relative z-[1]": type === CardTypes.Remaining,
+        "overflow-hidden": type === CardTypes.Remaining,
         "cursor-pointer": !!onClick,
       })}
       onClick={onClick}
     >
+      {type === CardTypes.Remaining && (
+        <div
+          className={cn(
+            "absolute bottom-0 left-1/2 top-1/2 -z-[1] aspect-square w-[calc(100%_+_20px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl bg-red-500",
+            "after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:h-full after:w-full",
+            "after:od-bg-budget after:bg-[length:110%_110%] after:group-hover:animate-budgetcard"
+          )}
+        ></div>
+      )}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center text-sm uppercase text-white">
