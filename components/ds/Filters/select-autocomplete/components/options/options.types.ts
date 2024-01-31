@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+
 import { TSelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete.types";
 
 export namespace TOptions {
@@ -7,5 +8,7 @@ export namespace TOptions {
     filteredItems: TSelectAutocomplete.Item[];
     type: TSelectAutocomplete.avatarType;
     emptyMessage?: string;
+    onNextPage?: () => void;
+    loadingNextPage?: boolean;
   }
 }

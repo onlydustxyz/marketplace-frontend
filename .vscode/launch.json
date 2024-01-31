@@ -1,214 +1,162 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'api'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=api"
-                ],
-                "filter": {
-                    "name": "api",
-                    "kind": "lib"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'api'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=api",
-                    "--package=api"
-                ],
-                "filter": {
-                    "name": "api",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'api'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=api",
-                    "--package=api"
-                ],
-                "filter": {
-                    "name": "api",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'event_listeners'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=event_listeners",
-                    "--package=api"
-                ],
-                "filter": {
-                    "name": "event_listeners",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'event_listeners'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=event_listeners",
-                    "--package=api"
-                ],
-                "filter": {
-                    "name": "event_listeners",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'domain'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=domain"
-                ],
-                "filter": {
-                    "name": "domain",
-                    "kind": "lib"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'infrastructure'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=infrastructure"
-                ],
-                "filter": {
-                    "name": "infrastructure",
-                    "kind": "lib"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'testing'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=testing"
-                ],
-                "filter": {
-                    "name": "testing",
-                    "kind": "lib"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'event-store'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=event-store"
-                ],
-                "filter": {
-                    "name": "event-store",
-                    "kind": "lib"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'event-store'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=event-store",
-                    "--package=event-store"
-                ],
-                "filter": {
-                    "name": "event-store",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'event-store'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=event-store",
-                    "--package=event-store"
-                ],
-                "filter": {
-                    "name": "event-store",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in library 'api'",
+      "cargo": {
+        "args": ["test", "--no-run", "--lib", "--package=api"],
+        "filter": {
+          "name": "api",
+          "kind": "lib"
         }
-    ]
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'api'",
+      "cargo": {
+        "args": ["build", "--bin=api", "--package=api"],
+        "filter": {
+          "name": "api",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in executable 'api'",
+      "cargo": {
+        "args": ["test", "--no-run", "--bin=api", "--package=api"],
+        "filter": {
+          "name": "api",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'event_listeners'",
+      "cargo": {
+        "args": ["build", "--bin=event_listeners", "--package=api"],
+        "filter": {
+          "name": "event_listeners",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in executable 'event_listeners'",
+      "cargo": {
+        "args": ["test", "--no-run", "--bin=event_listeners", "--package=api"],
+        "filter": {
+          "name": "event_listeners",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in library 'domain'",
+      "cargo": {
+        "args": ["test", "--no-run", "--lib", "--package=domain"],
+        "filter": {
+          "name": "domain",
+          "kind": "lib"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in library 'infrastructure'",
+      "cargo": {
+        "args": ["test", "--no-run", "--lib", "--package=infrastructure"],
+        "filter": {
+          "name": "infrastructure",
+          "kind": "lib"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in library 'testing'",
+      "cargo": {
+        "args": ["test", "--no-run", "--lib", "--package=testing"],
+        "filter": {
+          "name": "testing",
+          "kind": "lib"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in library 'event-store'",
+      "cargo": {
+        "args": ["test", "--no-run", "--lib", "--package=event-store"],
+        "filter": {
+          "name": "event-store",
+          "kind": "lib"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'event-store'",
+      "cargo": {
+        "args": ["build", "--bin=event-store", "--package=event-store"],
+        "filter": {
+          "name": "event-store",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in executable 'event-store'",
+      "cargo": {
+        "args": ["test", "--no-run", "--bin=event-store", "--package=event-store"],
+        "filter": {
+          "name": "event-store",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
 }

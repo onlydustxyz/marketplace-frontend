@@ -1,4 +1,6 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+"use client";
+
+import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 type SidePanelStack = {
   open: (setOpen: SetOpen) => number;

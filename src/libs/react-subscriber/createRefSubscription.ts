@@ -1,6 +1,7 @@
-import { RefSubscriptionInterface, RefSubscriptionSubscriberInterface } from "./types/RefSubscription";
 import { EventEmitter } from "events";
+
 import { Events } from "./types/Event";
+import { RefSubscriptionInterface, RefSubscriptionSubscriberInterface } from "./types/RefSubscription";
 
 /**
  * Creates a subscription object with a reference to a value of type T.

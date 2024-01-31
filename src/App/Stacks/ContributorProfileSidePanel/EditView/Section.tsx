@@ -1,5 +1,6 @@
-import { cn } from "src/utils/cn";
 import { PropsWithChildren, ReactElement, ReactNode } from "react";
+
+import { cn } from "src/utils/cn";
 
 type Props = {
   title: ReactElement | string;

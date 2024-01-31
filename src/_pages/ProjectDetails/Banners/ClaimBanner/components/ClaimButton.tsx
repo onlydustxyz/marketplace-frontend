@@ -1,8 +1,9 @@
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { useAuth0 } from "@auth0/auth0-react";
 
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import MagicLine from "src/icons/MagicLine";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
 type ClaimButton = { callback: () => void };

@@ -1,6 +1,7 @@
 import { BaseHTMLAttributes } from "react";
-import { RemixIconsName } from "./remix-icon-names.types";
+
 import { TCustomIcon } from "./custom-icon.types";
+import { RemixIconsName } from "./remix-icon-names.types";
 
 export namespace TIcon {
   type HtmlDiv = BaseHTMLAttributes<HTMLDivElement>;
@@ -21,4 +22,10 @@ export namespace TIcon {
   }
 
   export type Props = CustomProps | RemixProps;
+  export type renderIcon = (props: {
+    className?: string;
+    color?: string;
+    active?: boolean;
+    size?: number;
+  }) => JSX.Element;
 }

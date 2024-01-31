@@ -1,4 +1,5 @@
 import { ComponentProps } from "react";
+
 import { Budget } from "src/_pages/ProjectDetails/Rewards/Budget/Budget";
 import { Currency } from "src/types";
 

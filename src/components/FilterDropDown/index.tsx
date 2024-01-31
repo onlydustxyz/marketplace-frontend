@@ -1,10 +1,11 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { cn } from "src/utils/cn";
 import { useState } from "react";
-import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
-import Badge, { BadgeSize } from "src/components/Badge";
+
 import { IMAGES } from "src/assets/img";
+import Badge, { BadgeSize } from "src/components/Badge";
 import { useIntl } from "src/hooks/useIntl";
+import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
+import { cn } from "src/utils/cn";
 
 export enum FilterDropDownIcon {
   Technology = "technology",

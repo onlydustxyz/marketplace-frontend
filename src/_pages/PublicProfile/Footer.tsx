@@ -1,10 +1,11 @@
-import { useIntl } from "src/hooks/useIntl";
-import GithubLogo from "src/icons/GithubLogo";
-import TwitterFill from "src/icons/TwitterFill";
-import { useSidePanel } from "src/hooks/useSidePanel";
-import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+
 import { IMAGES } from "src/assets/img";
+import { viewportConfig } from "src/config";
+import { useIntl } from "src/hooks/useIntl";
+import { useSidePanel } from "src/hooks/useSidePanel";
+
+import { Icon } from "components/layout/icon/icon";
 
 export default function Footer() {
   const { T } = useIntl();
@@ -35,10 +36,10 @@ export default function Footer() {
           </div>
         </div>
         <a href="https://twitter.com/OnlyDust_xyz" target="_blank" rel="noreferrer" className="hidden md:inline">
-          <TwitterFill className="text-xl" />
+          <Icon remixName="ri-twitter-x-fill" size={20} />
         </a>
         <a href="https://github.com/onlydustxyz" target="_blank" rel="noreferrer" className="hidden md:inline">
-          <GithubLogo className="text-xl" />
+          <Icon remixName="ri-github-fill" size={20} />
         </a>
       </div>
     </div>

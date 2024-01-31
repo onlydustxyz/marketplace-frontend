@@ -1,4 +1,6 @@
 "use client";
+
+import dynamic from "next/dynamic";
 import { PropsWithChildren } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -7,7 +9,6 @@ import Tooltip from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { StackProvider } from "src/libs/react-stack";
-import dynamic from "next/dynamic";
 
 const BrowserRouter = dynamic(() => import("react-router-dom").then(mod => mod.BrowserRouter), { ssr: false });
 

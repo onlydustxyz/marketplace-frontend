@@ -1,15 +1,17 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import {
+  QueryKey,
   QueryObserverOptions,
   QueryOptions,
   UseInfiniteQueryOptions,
   useInfiniteQuery,
   useMutation,
   useQuery,
-  QueryKey,
 } from "@tanstack/react-query";
-import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import { getHttpOptions } from "src/api/query.utils";
+import { QueryParams, getEndpointUrl } from "src/utils/getEndpointUrl";
+
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 export interface UseRestfulDataProps<R = unknown>

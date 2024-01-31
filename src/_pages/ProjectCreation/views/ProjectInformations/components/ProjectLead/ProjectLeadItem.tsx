@@ -1,4 +1,5 @@
 import { FC } from "react";
+
 import { Avatar } from "src/components/New/Avatar";
 import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";

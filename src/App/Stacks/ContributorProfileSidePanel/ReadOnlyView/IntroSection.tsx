@@ -1,30 +1,28 @@
-import { useIntl } from "src/hooks/useIntl";
-import MapPinLine from "src/icons/MapPinLine";
-import { formatDateShort } from "src/utils/date";
-import GlobalLine from "src/icons/GlobalLine";
-import SocialLink from "./SocialLink";
-import GithubLogo from "src/icons/GithubLogo";
-import TwitterFill from "src/icons/TwitterFill";
-import Telegram from "src/assets/icons/Telegram";
-import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
-import MailLine from "src/icons/MailLine";
-import DiscordFill from "src/icons/DiscordFill";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import PencilLine from "src/icons/PencilLine";
-import ExternalLink from "src/components/ExternalLink";
-import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
-import MarkdownPreview from "src/components/MarkdownPreview";
-import { cn } from "src/utils/cn";
-import ExternalLinkLine from "src/icons/ExternalLinkLine";
+import NextLink from "next/link";
 import { generatePath } from "react-router-dom";
+
 import { RoutePaths } from "src/App";
-import WhatsappFill from "src/icons/WhatsappFill";
+import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
 import { components } from "src/__generated/api";
-import CompletionBar from "src/components/CompletionBar";
 import { UserProfile } from "src/api/Users/queries";
-import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
+import Telegram from "src/assets/icons/Telegram";
 import { IMAGES } from "src/assets/img";
-import Link from "next/link";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import CompletionBar from "src/components/CompletionBar";
+import MarkdownPreview from "src/components/MarkdownPreview";
+import { useIntl } from "src/hooks/useIntl";
+import ExternalLinkLine from "src/icons/ExternalLinkLine";
+import GlobalLine from "src/icons/GlobalLine";
+import MapPinLine from "src/icons/MapPinLine";
+import PencilLine from "src/icons/PencilLine";
+import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
+import { cn } from "src/utils/cn";
+import { formatDateShort } from "src/utils/date";
+
+import { Link } from "components/ds/link/link";
+import { Icon } from "components/layout/icon/icon";
+
+import SocialLink from "./SocialLink";
 
 type Props = {
   profile: UserProfile;
@@ -74,7 +72,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
               {T("profile.editButton")}
             </Button>
           )}
-          <Link
+          <NextLink
             href={generatePath(RoutePaths.PublicProfile, {
               userLogin: profile.login || "",
             })}
@@ -83,7 +81,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
             <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
               <ExternalLinkLine />
             </Button>
-          </Link>
+          </NextLink>
         </div>
       ) : null}
 
@@ -124,7 +122,9 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           {website && (
             <div data-testid="website" className="flex flex-row items-center gap-1 text-base text-greyscale-300">
               <GlobalLine />
-              <ExternalLink url={website.url} text={website.hostname} />
+              <Link href={website.url} size="m">
+                {website.hostname}
+              </Link>
             </div>
           )}
           {profile.createdAt ? (
@@ -154,37 +154,37 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
       <div className="flex flex-row items-center gap-2">
         {profile.htmlUrl && (
           <SocialLink testId="github" link={profile.htmlUrl}>
-            <GithubLogo />
+            <Icon remixName="ri-github-fill" size={24} />
           </SocialLink>
         )}
         {telegram && (
           <SocialLink testId="telegram" link={telegram}>
-            <Telegram className="fill-greyscale-200" size={20} />
+            <Telegram size={24} />
           </SocialLink>
         )}
         {whatsapp && (
           <SocialLink testId="whatsapp" copyableValue={whatsapp} copyableValueName={T("profile.whatsapp")}>
-            <WhatsappFill />
+            <Icon remixName="ri-whatsapp-fill" size={24} />
           </SocialLink>
         )}
         {twitter && (
           <SocialLink testId="twitter" link={twitter}>
-            <TwitterFill />
+            <Icon remixName="ri-twitter-x-fill" size={24} />
           </SocialLink>
         )}
         {discord && (
           <SocialLink testId="discord" copyableValue={discord} copyableValueName={T("profile.discord")}>
-            <DiscordFill />
+            <Icon remixName="ri-discord-fill" size={24} />
           </SocialLink>
         )}
         {linkedin && (
           <SocialLink testId="linkedin" link={linkedin}>
-            <LinkedinBoxFill />
+            <Icon remixName="ri-linkedin-box-fill" size={24} />
           </SocialLink>
         )}
         {email && (
           <SocialLink testId="email" copyableValue={email} copyableValueName={T("profile.email")}>
-            <MailLine />
+            <Icon remixName="ri-mail-line" size={24} />
           </SocialLink>
         )}
       </div>

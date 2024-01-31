@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+
 import { cn } from "src/utils/cn";
 
 export function DetailRow({

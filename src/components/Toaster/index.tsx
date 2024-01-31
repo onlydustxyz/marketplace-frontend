@@ -1,4 +1,5 @@
 import { useToaster } from "src/hooks/useToaster";
+
 import View from "./View";
 
 export const Toaster = () => {

@@ -1,12 +1,15 @@
 import { FC, useContext } from "react";
-import { Flex } from "src/components/New/Layout/Flex";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import AddLine from "src/icons/AddLine";
-import { useIntl } from "src/hooks/useIntl";
+
 import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
-import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { Flex } from "src/components/New/Layout/Flex";
 import { withTooltip } from "src/components/Tooltip";
+import { useIntl } from "src/hooks/useIntl";
+import AddLine from "src/icons/AddLine";
+
+import { Link } from "components/ds/link/link";
+import { Typography } from "components/layout/typography/typography";
 
 export interface RepositoryProps {
   organization: UseGithubOrganizationsResponse;
@@ -36,9 +39,9 @@ export const Repository: FC<RepositoryProps> = ({ organization, repository }) =>
         </Button>
 
         <Flex justify="start" item="start" direction="col" className="flex-1 gap-2.5 overflow-hidden">
-          <div className="text-body-m-bold">
-            <GithubLink url={repository.htmlUrl} text={repository.name} />
-          </div>
+          <Link href={repository.htmlUrl}>
+            <Typography variant="body-m-bold">{repository.name}</Typography>
+          </Link>
 
           <div className="w-full max-w-full">
             <p className="text-body-s w-full max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-greyscale-200">

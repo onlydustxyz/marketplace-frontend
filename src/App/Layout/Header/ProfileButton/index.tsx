@@ -1,8 +1,10 @@
+import { Fragment, useRef } from "react";
+import { useMediaQuery } from "usehooks-ts";
+
 import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
 import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
-import { Fragment, useRef } from "react";
+
 import FeedbackButton from "../FeedbackButton";
 import { View } from "./View";
 import { ViewMobile } from "./ViewMobile";

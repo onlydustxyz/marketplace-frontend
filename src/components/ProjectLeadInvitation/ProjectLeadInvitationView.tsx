@@ -1,8 +1,9 @@
-import { viewportConfig } from "src/config";
-import CheckLine from "src/icons/CheckLine";
 import { useT } from "talkr";
 import { useMediaQuery } from "usehooks-ts";
+
 import Button, { ButtonSize } from "src/components/Button";
+import { viewportConfig } from "src/config";
+import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
 
 export enum CalloutSizes {

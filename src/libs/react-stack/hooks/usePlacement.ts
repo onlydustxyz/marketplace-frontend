@@ -1,5 +1,6 @@
-import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+
+import { viewportConfig } from "src/config";
 
 /**
  * Custom hook that determines the placement and mobile status based on the viewport size.

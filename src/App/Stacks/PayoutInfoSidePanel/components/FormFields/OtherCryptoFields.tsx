@@ -1,10 +1,12 @@
 import { useFormContext } from "react-hook-form";
+
+import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
 import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
-import { APTOS_WALLET, ETH_WALLET_OR_ENS_ADDRESS, OPTIMISM_WALLET, STARKNET_WALLET } from "src/utils/regex";
-import { RequiredFieldsType } from "src/App/Stacks/PayoutInfoSidePanel/usePayoutInfoValidation";
-import { CurrencyField } from "./CurrencyField";
 import { Currency } from "src/types";
+import { APTOS_WALLET, ETH_WALLET_OR_ENS_ADDRESS, OPTIMISM_WALLET, STARKNET_WALLET } from "src/utils/regex";
+
+import { CurrencyField } from "./CurrencyField";
 
 export function OtherCryptoFields({ requiredFields }: { requiredFields: RequiredFieldsType }) {
   const { T } = useIntl();

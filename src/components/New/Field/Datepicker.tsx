@@ -1,7 +1,9 @@
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Popover, Transition } from "@headlessui/react";
+import { subMonths } from "date-fns";
 import { useMemo, useRef } from "react";
 import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
+
 import { Calendar } from "src/components/New/Calendar";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
@@ -9,7 +11,6 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB, getFormattedTimeDatepicker, parseDateRangeString, parseDateString } from "src/utils/date";
-import { subMonths } from "date-fns";
 
 export enum Period {
   ThisWeek = "this_week",

@@ -1,11 +1,13 @@
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
-import { useImpersonation } from "components/features/impersonation/use-impersonation";
-import { usePosthog } from "src/hooks/usePosthog";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+
 import { RoutePaths } from "src/App";
 import MeApi from "src/api/me/index";
 import { useIntl } from "src/hooks/useIntl";
+import { usePosthog } from "src/hooks/usePosthog";
+
+import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 const ImpersonationPage = () => {
   const { T } = useIntl();

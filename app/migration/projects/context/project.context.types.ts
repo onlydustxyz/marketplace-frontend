@@ -1,6 +1,8 @@
-import { UseInfiniteListResponse } from "src/api/Project/queries";
 import { PropsWithChildren } from "react";
+
 import { components } from "src/__generated/api";
+import { UseInfiniteListResponse } from "src/api/Project/queries";
+
 import { TFiltersDropDown } from "components/ds/drop-down/filters-drop-down.types";
 
 export interface ProjectsContextProps extends PropsWithChildren {}

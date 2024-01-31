@@ -1,5 +1,6 @@
 import { ComponentProps, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
+
 import MeApi from "src/api/me";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -13,6 +14,7 @@ import { usePosthog } from "src/hooks/usePosthog";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import { ContributionStatus, OrderBy } from "src/types";
+
 import { ContributionsFilter, ContributionsFilterRef, FilterQueryParams } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
 

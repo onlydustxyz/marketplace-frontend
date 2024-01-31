@@ -1,14 +1,17 @@
+import { sortBy } from "lodash";
 import { FC, useContext, useMemo } from "react";
-import { Flex } from "src/components/New/Layout/Flex";
-import { useIntl } from "src/hooks/useIntl";
-import { Repository } from "./Repository";
-import InformationLine from "src/icons/InformationLine";
+
 import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContext";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
-import { sortBy } from "lodash";
 import { VerticalListItemDrop } from "src/components/New/Cards/VerticalListItemDrop";
-import { AddMissingRepositories } from "components/features/add-missing-repositories/add-missing-repositories";
+import { Flex } from "src/components/New/Layout/Flex";
+import { useIntl } from "src/hooks/useIntl";
+import InformationLine from "src/icons/InformationLine";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
+
+import { AddMissingRepositories } from "components/features/add-missing-repositories/add-missing-repositories";
+
+import { Repository } from "./Repository";
 
 export interface OrganizationProps {
   organization: UseGithubOrganizationsResponse;
@@ -65,7 +68,7 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
           url={linkUrl}
           disabled={!organization.isCurrentUserAdmin}
           tooltip={T("project.details.create.organizations.tooltipInstalledByAdmin")}
-          className="mt-4"
+          className="mt-3"
         />
       </VerticalListItemDrop>
     </div>

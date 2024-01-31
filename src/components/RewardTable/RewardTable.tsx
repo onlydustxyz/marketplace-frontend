@@ -1,16 +1,18 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { ComponentProps, useState } from "react";
+import { useMediaQuery } from "usehooks-ts";
+
+import { useStackProjecRewardAsLead } from "src/App/Stacks/Stacks";
+import ProjectApi from "src/api/Project";
+import MeApi from "src/api/me";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { viewportConfig } from "src/config";
 import useInfiniteRewardsList, { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
-import { useMediaQuery } from "usehooks-ts";
+
 import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
-import MeApi from "src/api/me";
-import { useStackProjecRewardAsLead } from "src/App/Stacks/Stacks";
-import ProjectApi from "src/api/Project";
 
 type Options = ComponentProps<typeof Headers> &
   Pick<ReturnType<typeof useInfiniteRewardsList>, "fetchNextPage" | "hasNextPage" | "isFetchingNextPage" | "refetch">;

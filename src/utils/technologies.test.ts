@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { getTopTechnologies, Technologies } from "./technologies";
+
+import { Technologies, getTopTechnologies } from "./technologies";
 
 describe("getTopTechnologies", () => {
   it("should return the names of the top three technologies based on usage", () => {

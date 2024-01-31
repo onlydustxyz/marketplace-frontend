@@ -1,5 +1,5 @@
-import { useIntl } from "src/hooks/useIntl";
 import { withTooltip } from "src/components/Tooltip";
+import { useIntl } from "src/hooks/useIntl";
 import LockFill from "src/icons/LockFill";
 
 export default function PrivateTag() {

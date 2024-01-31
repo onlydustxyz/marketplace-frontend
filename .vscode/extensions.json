@@ -1,15 +1,15 @@
 {
-    "recommendations": [
-        "swellaby.rust-pack",
-        "aaron-bond.better-comments",
-        "vadimcn.vscode-lldb",
-        "eamodio.gitlens",
-        "ms-vsliveshare.vsliveshare",
-        "editorconfig.editorconfig",
-        "graphql.vscode-graphql-syntax",
-        "esbenp.prettier-vscode",
-        "rvest.vs-code-prettier-eslint",
-        "dbaeumer.vscode-eslint"
-    ],
-    "unwantedRecommendations": ["tamasfe.even-better-toml", "rust-lang.rust"]
+  "recommendations": [
+    "swellaby.rust-pack",
+    "aaron-bond.better-comments",
+    "vadimcn.vscode-lldb",
+    "eamodio.gitlens",
+    "ms-vsliveshare.vsliveshare",
+    "editorconfig.editorconfig",
+    "graphql.vscode-graphql-syntax",
+    "esbenp.prettier-vscode",
+    "rvest.vs-code-prettier-eslint",
+    "dbaeumer.vscode-eslint"
+  ],
+  "unwantedRecommendations": ["tamasfe.even-better-toml", "rust-lang.rust"]
 }

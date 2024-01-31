@@ -1,15 +1,17 @@
 import { useEffect, useMemo } from "react";
+
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
-import ClaimBannerOrganization from "./components/Organization";
 import useMutationAlert from "src/api/useMutationAlert";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { useIntl } from "src/hooks/useIntl";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
+
 import { useStackGithubWorkflowClaim } from "../../Stacks";
 import { ClaimUtils } from "./claim.utils";
-import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
+import ClaimBannerOrganization from "./components/Organization";
 
 export interface ClaimSidePanelProps {
   projectSlug: string;

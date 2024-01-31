@@ -1,10 +1,19 @@
-import { TFiltersUsers } from "./filters-users.types";
 import { useIntl } from "src/hooks/useIntl";
-import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
-import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
 import User3Line from "src/icons/User3Line";
 
-export function FiltersUsers({ users, selected, onChange }: TFiltersUsers.Props) {
+import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
+import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
+
+import { TFiltersUsers } from "./filters-users.types";
+
+export function FiltersUsers({
+  users,
+  selected,
+  onChange,
+  onNextPage,
+  loadingNextPage,
+  controlledSearch,
+}: TFiltersUsers.Props) {
   const { T } = useIntl();
 
   return (
@@ -17,11 +26,14 @@ export function FiltersUsers({ users, selected, onChange }: TFiltersUsers.Props)
           empty: "filter.contributor.empty",
         }}
         multiple
-        disabled={users.length <= 1}
+        disabled={users.length <= 1 && !controlledSearch}
         type="circle"
         items={users}
         selected={selected}
         onChange={onChange}
+        onNextPage={onNextPage}
+        loadingNextPage={loadingNextPage}
+        controlledSearch={controlledSearch}
       />
     </FilterFieldContainer>
   );

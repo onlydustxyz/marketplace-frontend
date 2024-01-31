@@ -1,9 +1,11 @@
 "use client";
 
-import { Contributor } from "components/features/contributor/contributor";
-import { Translate } from "components/layout/translate/translate";
 import { useMemo } from "react";
+
+import { Contributor } from "components/features/contributor/contributor";
 import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
+import { Translate } from "components/layout/translate/translate";
+
 import { TLeaders } from "./leaders.types";
 
 export function Leaders({ leaders }: TLeaders.Props) {

@@ -1,4 +1,7 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+"use client";
+
+import { PropsWithChildren, createContext, useContext, useState } from "react";
+
 import FullTermsAndConditionsSidePanel from "src/_pages/TermsAndConditions/FullTermsAndConditionsSidePanel";
 import PrivacyPolicySidePanel from "src/_pages/TermsAndConditions/PrivacyPolicySidePanel";
 

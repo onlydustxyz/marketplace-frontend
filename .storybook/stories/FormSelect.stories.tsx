@@ -1,9 +1,9 @@
-import DraftLine from "src/icons/DraftLine";
+import { Size } from "src/components/FormSelect";
 import FormSelect from "src/components/FormSelect/View";
-import TeamLine from "src/icons/TeamLine";
+import DraftLine from "src/icons/DraftLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
 import MoreLine from "src/icons/MoreLine";
-import { Size } from "src/components/FormSelect";
+import TeamLine from "src/icons/TeamLine";
 
 export default {
   title: "FormSelect",

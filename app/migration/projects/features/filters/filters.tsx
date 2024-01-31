@@ -1,10 +1,11 @@
 import { Card } from "components/ds/card/card";
-import { Typography } from "components/layout/typography/typography";
 import { Flex } from "components/layout/flex/flex";
-import { FiltersTechnologies } from "./filters-technologies/filters-technologies";
-import { FiltersSponsors } from "./filters-sponsors/filters-sponsors";
-import { FiltersOwnership } from "./filters-ownership/filters-ownership";
+import { Typography } from "components/layout/typography/typography";
+
 import { FiltersClearAll } from "./clear-all/clear-all";
+import { FiltersOwnership } from "./filters-ownership/filters-ownership";
+import { FiltersSponsors } from "./filters-sponsors/filters-sponsors";
+import { FiltersTechnologies } from "./filters-technologies/filters-technologies";
 
 export function ProjectsFilters() {
   return (

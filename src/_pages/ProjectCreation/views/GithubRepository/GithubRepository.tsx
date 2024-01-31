@@ -1,20 +1,23 @@
-import { Controller } from "react-hook-form";
-import { MultiStepsForm } from "src/_pages/ProjectCreation/components/MultiStepsForm";
-import { Flex } from "src/components/New/Layout/Flex";
-import { FieldCheckbox } from "src/components/New/Field/Checkbox";
-import { useCallback, useContext, useMemo, useRef } from "react";
-import { FieldInput } from "src/components/New/Field/Input";
-import SearchLine from "src/icons/SearchLine";
-import { useRepositoryCount } from "./hooks/useRepositoryCount";
-import { FormInformationCount } from "./components/FormInformationCount";
-import { useRepositorySearch } from "./hooks/useRepositorySearch";
-import { useIntl } from "src/hooks/useIntl";
-import { CreateProjectContext } from "../../ProjectCreation.context";
 import { sortBy } from "lodash";
+import { useCallback, useContext, useMemo, useRef } from "react";
+import { Controller } from "react-hook-form";
+
+import { MultiStepsForm } from "src/_pages/ProjectCreation/components/MultiStepsForm";
 import { VerticalListItemDrop } from "src/components/New/Cards/VerticalListItemDrop";
+import { FieldCheckbox } from "src/components/New/Field/Checkbox";
+import { FieldInput } from "src/components/New/Field/Input";
+import { Flex } from "src/components/New/Layout/Flex";
+import { useIntl } from "src/hooks/useIntl";
 import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
-import { AddMissingRepositories } from "components/features/add-missing-repositories/add-missing-repositories";
+import SearchLine from "src/icons/SearchLine";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
+
+import { AddMissingRepositories } from "components/features/add-missing-repositories/add-missing-repositories";
+
+import { CreateProjectContext } from "../../ProjectCreation.context";
+import { FormInformationCount } from "./components/FormInformationCount";
+import { useRepositoryCount } from "./hooks/useRepositoryCount";
+import { useRepositorySearch } from "./hooks/useRepositorySearch";
 
 export const GithubRepositoryPage = () => {
   const { T } = useIntl();
@@ -137,7 +140,7 @@ export const GithubRepositoryPage = () => {
                         disabled={!organization.isCurrentUserAdmin}
                         tooltip={T("project.details.create.organizations.tooltipInstalledByAdmin")}
                         backgroundColor="blue"
-                        className="mt-3"
+                        className="mt-5 border border-card-border-heavy"
                       />
                     </VerticalListItemDrop>
                   );

@@ -1,10 +1,11 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+import MeApi from "src/api/me";
 import Contributor from "src/components/Contributor";
 import { Flex } from "src/components/New/Layout/Flex";
 import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
+
 import Section, { SectionIcon } from "./OverviewSection";
-import MeApi from "src/api/me";
 
 export interface ProjectOverviewLeadProps {
   projectId: string;

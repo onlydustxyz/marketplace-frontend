@@ -1,10 +1,10 @@
+import headlessUi from "@headlessui/tailwindcss";
+import { nextui } from "@nextui-org/react";
+import typography from "@tailwindcss/typography";
+import scrollbar from "tailwind-scrollbar";
+import { withTV } from "tailwind-variants/transformer";
 import { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
-import scrollbar from "tailwind-scrollbar";
-import headlessUi from "@headlessui/tailwindcss";
-import typography from "@tailwindcss/typography";
-import { withTV } from "tailwind-variants/transformer";
-import { nextui } from "@nextui-org/react";
 
 const config: Config = withTV({
   content: [
@@ -492,6 +492,14 @@ const config: Config = withTV({
         dark: {
           colors: {
             background: "#000000",
+          },
+          layout: {
+            radius: {
+              large: "10px",
+            },
+            boxShadow: {
+              medium: "0px 8px 64px 0px rgba(0, 0, 0, 0.32)",
+            },
           },
         },
       },

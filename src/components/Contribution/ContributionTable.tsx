@@ -1,4 +1,9 @@
 import { ComponentProps, PropsWithChildren, ReactNode, useRef, useState } from "react";
+import { useMediaQuery } from "usehooks-ts";
+
+import { ContributionsFilterRef } from "src/_pages/Contributions/Filter";
+import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter";
+import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -6,18 +11,15 @@ import Table from "src/components/Table";
 import HeaderCell from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import { viewportConfig } from "src/config";
+import { useContributionTabs } from "src/hooks/useContributionTabs";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
-import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import { Contribution as ContributionT, OrderBy } from "src/types";
 import { cn } from "src/utils/cn";
-import { useMediaQuery } from "usehooks-ts";
+
 import { ShowMore } from "../Table/ShowMore";
-import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
-import { useContributionTabs } from "src/hooks/useContributionTabs";
-import { ContributionsFilterRef } from "src/_pages/Contributions/Filter";
-import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter";
 import { ContributionEmptyFallBack } from "./ContributionEmptyFalback";
+import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
