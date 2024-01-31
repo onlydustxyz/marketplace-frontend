@@ -34,7 +34,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           projectName={project.name}
           on="cards"
           size={"s"}
-          btnLabelToken="project.projectLeadInvitation.view"
+          btnLabelToken="v2.features.banners.projectLeadInvitation.card.view"
         />
       );
     }
@@ -83,7 +83,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             <div className="relative block flex-shrink-0 md:hidden">
               <Thumbnail
                 src={project.logoUrl}
-                alt={T("project.highlights.thumbnail")}
+                alt={T("v2.pages.projects.highlights.thumbnail")}
                 size="l"
                 className="mt-1"
                 type={"project"}

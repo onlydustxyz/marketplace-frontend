@@ -1,7 +1,7 @@
 import { Icon } from "components/layout/icon/icon";
+import { Typography } from "components/layout/typography/typography";
 
 import { TContributorsCounter } from "./contributors-counter.types";
-import { Typography } from "components/layout/typography/typography";
 
 export function ContributorsCounter({ count }: TContributorsCounter.Props) {
   if (!count) {
@@ -14,7 +14,7 @@ export function ContributorsCounter({ count }: TContributorsCounter.Props) {
       <Typography
         variant="body-s"
         className="truncate"
-        translate={{ token: "project.details.contributors.count", params: { count } }}
+        translate={{ token: "v2.features.contributors.count", params: { count } }}
       />
     </div>
   );

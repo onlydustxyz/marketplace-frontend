@@ -30,6 +30,7 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
       avatarUrl: "https://avatars.githubusercontent.com/u/31901905?v=4",
     },
   ],
+  ecosystems: [],
   repos: [
     {
       id: 663102799,
