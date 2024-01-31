@@ -52,7 +52,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
 
   return (
     <Card
-      className={cn("relative w-full duration-100 ease-out transition", {
+      className={cn("transition", "relative w-full duration-300 ease-out", {
         "bg-spaceBlue-900 hover:border-card-border-heavy hover:bg-card-background-solidHeavy hover:ease-in":
           !isErrorVariant,
         "border-orange-500 bg-orange-900": isErrorVariant,
