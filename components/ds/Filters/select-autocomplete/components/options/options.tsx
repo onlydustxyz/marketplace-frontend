@@ -1,7 +1,9 @@
 import { Combobox } from "@headlessui/react";
-import { Typography } from "components/layout/typography/typography";
 import { InView } from "react-intersection-observer";
+
 import { Spinner } from "src/components/Spinner/Spinner";
+
+import { Typography } from "components/layout/typography/typography";
 
 import { Option } from "../option/option";
 import { TOptions } from "./options.types";
