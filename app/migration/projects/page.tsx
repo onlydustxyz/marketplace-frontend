@@ -11,9 +11,10 @@ import { ProjectList } from "./features/project-list/project-list";
 import { ProjectSearch } from "./features/project-search/project-search";
 import { ProjectsSort } from "./features/projects-sort/projects-sort";
 import { AddProject } from "app/migration/projects/features/add-project/add-project";
+import { NoResults } from "app/migration/projects/features/no-results/no-results";
 
 export default function ProjectsPage() {
-  const { count } = useContext(ProjectsContext);
+  const { count, projects, isLoading } = useContext(ProjectsContext);
 
   return (
     <Flex className="w-full gap-6" direction="col">
@@ -46,7 +47,7 @@ export default function ProjectsPage() {
             </div>
           </Flex>
           <div className="flex w-full grow flex-col gap-5">
-            <ProjectList />
+            {isLoading || projects.length > 0 ? <ProjectList /> : <NoResults />}
           </div>
         </Flex>
       </Flex>
