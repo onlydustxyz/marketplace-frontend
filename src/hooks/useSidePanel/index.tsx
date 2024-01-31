@@ -1,3 +1,5 @@
+"use client";
+
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 import FullTermsAndConditionsSidePanel from "src/_pages/TermsAndConditions/FullTermsAndConditionsSidePanel";
