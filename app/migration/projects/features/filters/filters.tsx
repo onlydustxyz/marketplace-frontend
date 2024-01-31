@@ -13,6 +13,7 @@ import { Button } from "components/ds/button/button";
 import { useContext, useState } from "react";
 import { ProjectsContext } from "app/migration/projects/context/project.context";
 import { FiltersMine } from "app/migration/projects/features/filters/filters-mine/filters-mine";
+import { FiltersEcosystems } from "app/migration/projects/features/filters/filters-ecosystems/filters-ecosystems";
 
 export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -41,6 +42,9 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
               <FiltersTags />
             </div>
             <div className="py-4">
+              <FiltersEcosystems />
+            </div>
+            <div className="py-4">
               <FiltersTechnologies />
             </div>
           </div>
@@ -62,6 +66,9 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
         </Flex>
         <div className="border-b-1 border-card-border-medium px-6 py-4">
           <FiltersTags />
+        </div>
+        <div className="border-b-1 border-card-border-medium px-6 py-4">
+          <FiltersEcosystems />
         </div>
         <div className="border-b-1 border-card-border-medium px-6 py-4">
           <FiltersTechnologies />

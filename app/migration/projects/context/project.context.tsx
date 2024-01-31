@@ -12,8 +12,6 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
   isFetchingNextPage: false,
   isLoading: false,
   count: 0,
-  sponsors: [],
-  technologies: [],
   filters: {
     values: TProjectContext.DEFAULT_FILTER,
     isCleared: true,
@@ -22,6 +20,7 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
     clear: () => null,
     options: {
       technologies: [],
+      ecosystems: [],
     },
   },
 });
@@ -29,10 +28,14 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
 export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const [storage, setStorage] = useLocalStorage(TProjectContext.FILTER_KEY, TProjectContext.DEFAULT_FILTER);
   const [filters, setFilters] = useState<TProjectContext.Filter>({ ...TProjectContext.DEFAULT_FILTER, ...storage });
-  const [technologies, setTechnologies] = useState<string[]>([]);
+  const [filtersOptions, setFiltersOptions] = useState<TProjectContext.FiltersOptions>({
+    technologies: [],
+    ecosystems: [],
+  });
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
+      filters.ecosystemId.length > 0 ? ["ecosystemId", filters.ecosystemId.map(({ id }) => id).join(",")] : null,
       filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
@@ -49,10 +52,9 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(TProjectContext.DEFAULT_FILTER), [filters]);
   const count = useMemo(() => data?.pages[0]?.totalItemNumber || 0, [data]);
 
-  const sponsors = useMemo(() => data?.pages[0]?.sponsors || [], [data]);
   const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
   const filtersCount = useMemo(() => {
-    return filters.tags.length + filters.sponsors.length + filters.technologies.length + (filters.mine ? 1 : 0);
+    return filters.tags.length + filters.ecosystemId.length + filters.technologies.length + (filters.mine ? 1 : 0);
   }, [filters]);
 
   function onFilterChange(newFilter: Partial<TProjectContext.Filter>) {
@@ -66,8 +68,27 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   }
 
   useEffect(() => {
-    if (data?.pages[0]?.technologies?.length) {
-      setTechnologies(data?.pages[0]?.technologies);
+    if (data?.pages[0]) {
+      const newTechnologies = data?.pages[0]?.technologies;
+      const newEcosystems = data?.pages[0]?.ecosystems;
+      setFiltersOptions(prevOptions => ({
+        ...prevOptions,
+        technologies: newTechnologies?.length
+          ? newTechnologies.map(name => ({
+              label: name,
+              id: name,
+              value: name,
+            }))
+          : prevOptions.technologies,
+        ecosystems: newEcosystems?.length
+          ? newEcosystems.map(({ name, id, logoUrl }) => ({
+              id,
+              label: name,
+              value: id,
+              image: logoUrl,
+            }))
+          : prevOptions.technologies,
+      }));
     }
   }, [data]);
 
@@ -80,21 +101,13 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
         isLoading,
         hasNextPage,
         count,
-        technologies,
-        sponsors,
         filters: {
           values: filters,
           isCleared,
           set: onFilterChange,
           count: filtersCount,
           clear: onClearFilter,
-          options: {
-            technologies: technologies.map(name => ({
-              label: name,
-              id: name,
-              value: name,
-            })),
-          },
+          options: filtersOptions,
         },
       }}
     >

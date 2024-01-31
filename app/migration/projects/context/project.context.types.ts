@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react";
 
-import { components } from "src/__generated/api";
 import { UseInfiniteListResponse } from "src/api/Project/queries";
 
 import { ProjectTypes } from "src/api/Project/types";
@@ -16,27 +15,28 @@ export namespace TProjectContext {
     isFetchingNextPage: boolean;
     isLoading: boolean;
     count: number;
-    sponsors: components["schemas"]["SponsorResponse"][];
-    technologies: string[];
     filters: {
       values: Filter;
       isCleared: boolean;
       set: (filter: Partial<Filter>) => void;
       clear: () => void;
       count: number;
-      options: {
-        technologies: TSelectAutocomplete.Item[];
-      };
+      options: FiltersOptions;
     };
   };
 
   export interface Filter {
     mine: boolean;
     technologies: string[];
-    sponsors: string[];
+    ecosystemId: TSelectAutocomplete.Item[];
     search?: string;
     sorting: ProjectTypes.Sorting;
     tags: ProjectTypes.Tags[];
+  }
+
+  export interface FiltersOptions {
+    technologies: TSelectAutocomplete.Item[];
+    ecosystems: TSelectAutocomplete.Item[];
   }
 
   export const FILTER_KEY = "project_filter-v2-0-0";
@@ -45,7 +45,7 @@ export namespace TProjectContext {
   export const DEFAULT_FILTER: Filter = {
     mine: false,
     technologies: [],
-    sponsors: [],
+    ecosystemId: [],
     tags: [],
     sorting: DEFAULT_SORTING,
   };
