@@ -90,6 +90,7 @@ export function BudgetCard({
         "bg-[length:150%_150%] !duration-500 !ease-in hover:bg-[100%_100%]": type === CardTypes.Remaining,
         "cursor-pointer": !!onClick,
       })}
+      onClick={onClick}
     >
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
