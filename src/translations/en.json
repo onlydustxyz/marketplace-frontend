@@ -1377,6 +1377,10 @@
       "many": "__count__ project leads",
       "one": " "
     },
+    "ecosystems": {
+      "many": "__count__ ecosystems",
+      "one": " "
+    },
     "noLed": "The project is claimable",
     "projectLeadInvitation": {
       "prompt": "You've been promoted to Project Lead",
