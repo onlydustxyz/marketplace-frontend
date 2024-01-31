@@ -1,6 +1,7 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { IMAGES } from "src/assets/img";
 import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
+import { ProjectOverviewEcosystem } from "src/components/Project/Overview/OverviewEcosystem";
 import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
 import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
 import { ProjectOverviewTechnologies } from "src/components/Project/Overview/OverviewTechnologies";
@@ -23,6 +24,7 @@ export default function OverviewPanel({ project }: Props) {
     // sponsors,
     moreInfos,
     technologies,
+      ecosystems
   } = project;
   const projectLeads = leaders?.filter(lead => isDefined(lead?.login)) || [];
   const projectInvited = invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
@@ -46,10 +48,7 @@ export default function OverviewPanel({ project }: Props) {
     <Card background="whiteFakeOpacity-2" className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
       <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
       <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
-      {/*<ProjectOverviewEcosystem
-        // TODO pass correct props when they are available
-        ecosystems={sponsors}
-      />*/}
+      <ProjectOverviewEcosystem ecosystems={ecosystems} />
       {/*<ProjectOverviewSponsors sponsors={sponsors} />*/}
       <ProjectOverviewTechnologies technologies={technologies} />
       <ProjectOverviewMoreInfo moreInfos={moreInfos} />
