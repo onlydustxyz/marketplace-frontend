@@ -1,0 +1,34 @@
+{
+  "count": {
+    "many": "__count__ PROJECTS",
+    "one": "1 PROJECT",
+    "zero": "0 PROJECTS"
+  },
+  "filters": {
+    "title": "Filter",
+    "clear": "Clear all",
+    "myProjectsLabel": "Show my projects only",
+    "mobileButton": {
+      "zero": "Filter",
+      "one": "Filter (__count__)",
+      "many": "Filters (__count__)"
+    }
+  },
+  "addProject": {
+    "label": "Managing an open source project?",
+    "btn": "Submit",
+    "resumeModal": {
+      "title": "Resume project creation?",
+      "description": "If you decide to start over all your previous changes will be lost.",
+      "restartBtn": "Start over",
+      "resumeBtn": "Resume"
+    }
+  },
+  "searchBar": {
+    "placeholder": "Search project title & description"
+  },
+  "sorting": {
+    "button": "Sort",
+    "label": "Sort by "
+  }
+}

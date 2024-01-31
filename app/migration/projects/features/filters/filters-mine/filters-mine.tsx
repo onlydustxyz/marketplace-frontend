@@ -15,8 +15,16 @@ export function FiltersMine() {
 
   return (
     <Flex justifyContent="between" alignItems={"center"} className="gap-2">
-      <Typography className="text-greyscale-50" variant="body-s" translate={{ token: "filter.showMyProject" }} />
-      <Toggle value={filters.values.mine} onChange={onFilterChange} ariaLabel={T("filter.showMyProject")} />
+      <Typography
+        className="text-greyscale-50"
+        variant="body-s"
+        translate={{ token: "v2.pages.projects.filters.myProjectsLabel" }}
+      />
+      <Toggle
+        value={filters.values.mine}
+        onChange={onFilterChange}
+        ariaLabel={T("v2.pages.projects.filters.myProjectsLabel")}
+      />
     </Flex>
   );
 }

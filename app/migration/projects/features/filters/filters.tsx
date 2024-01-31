@@ -24,14 +24,14 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
       <>
         <Button variant={"secondary"} size="s" onClick={() => setOpenMobilePanel(true)}>
           <FilterIcon />
-          <Translate token="filter.mobileButton" params={{ count: filters.count }} />
+          <Translate token="v2.pages.projects.filters.mobileButton" params={{ count: filters.count }} />
         </Button>
         <BottomSheet
           onClose={() => setOpenMobilePanel(false)}
           open={openMobilePanel}
           title={
             <Flex className="gap-2" justifyContent="start" alignItems="center">
-              <Translate token="filter.title" as="div" />
+              <Translate token="v2.pages.projects.filters.title" as="div" />
               <FiltersClearAll />
             </Flex>
           }
@@ -57,7 +57,7 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
     <>
       <Card className="flex h-fit flex-col" background="base" border="medium" hasPadding={false}>
         <Flex justifyContent="between" alignItems="center" className="border-b-1 border-card-border-medium px-6 py-4">
-          <Typography variant="title-s" translate={{ token: "filter.title" }} />
+          <Typography variant="title-s" translate={{ token: "v2.pages.projects.filters.title" }} />
           <FiltersClearAll />
         </Flex>
         <div className="border-b-1 border-card-border-medium px-6 py-4">

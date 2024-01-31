@@ -14,9 +14,9 @@ export function FiltersTechnologies({ technologies, selected, onChange }: TFilte
         type="square"
         icon={({ className }) => <FolderLine className={className} />}
         tokens={{
-          zero: "filter.technologies.all",
-          other: "filter.technologies",
-          empty: "filter.technologies.empty",
+          zero: "v2.features.filters.technologies.all",
+          other: "v2.features.filters.technologies",
+          empty: "v2.features.filters.technologies.empty",
         }}
         items={technologies}
         multiple

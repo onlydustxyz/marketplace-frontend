@@ -23,22 +23,22 @@ export function FiltersTags() {
         options={[
           {
             value: ProjectTypes.Tags.BeginnersWelcome,
-            children: T(`filter.tags.${ProjectTypes.Tags.BeginnersWelcome}`),
+            children: T(`v2.commons.enums.project.tags.${ProjectTypes.Tags.BeginnersWelcome}`),
             icon: props => <Icon remixName="ri-seedling-line" {...props} />,
           },
           {
             value: ProjectTypes.Tags.StrongExpertise,
-            children: T(`filter.tags.${ProjectTypes.Tags.StrongExpertise}`),
+            children: T(`v2.commons.enums.project.tags.${ProjectTypes.Tags.StrongExpertise}`),
             icon: props => <Icon remixName="ri-git-fork-line" {...props} />,
           },
           {
             value: ProjectTypes.Tags.LikelyToSendRewards,
-            children: T(`filter.tags.${ProjectTypes.Tags.LikelyToSendRewards}`),
+            children: T(`v2.commons.enums.project.tags.${ProjectTypes.Tags.LikelyToSendRewards}`),
             icon: props => <Icon remixName="ri-hand-coin-line" {...props} />,
           },
           {
             value: ProjectTypes.Tags.FastPaced,
-            children: T(`filter.tags.${ProjectTypes.Tags.FastPaced}`),
+            children: T(`v2.commons.enums.project.tags.${ProjectTypes.Tags.FastPaced}`),
             icon: props => <Icon remixName="ri-rocket-2-line" {...props} />,
           },
         ]}

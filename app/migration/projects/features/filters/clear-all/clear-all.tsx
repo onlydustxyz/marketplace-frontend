@@ -18,7 +18,7 @@ export function FiltersClearAll() {
   return (
     <Button onClick={filters.clear} variant="tertiary" size="xs">
       <Icon remixName="ri-refresh-line" size={12} />
-      <Translate token="filter.clearButton" />
+      <Translate token="v2.pages.projects.filters.clear" />
     </Button>
   );
 }

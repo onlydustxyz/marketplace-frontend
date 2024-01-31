@@ -10,7 +10,7 @@ import { ProjectsFilters } from "./features/filters/filters";
 import { ProjectList } from "./features/project-list/project-list";
 import { ProjectSearch } from "./features/project-search/project-search";
 import { ProjectsSort } from "./features/projects-sort/projects-sort";
-import { AddProject } from "app/migration/projects/components/add-project/add-project";
+import { AddProject } from "app/migration/projects/features/add-project/add-project";
 
 export default function ProjectsPage() {
   const { count } = useContext(ProjectsContext);
@@ -35,7 +35,7 @@ export default function ProjectsPage() {
           <Flex className="w-full gap-5" direction="row" alignItems="center">
             <div className="w-full">
               <Typography
-                translate={{ token: "projects.count", params: { count } }}
+                translate={{ token: "v2.pages.projects.count", params: { count } }}
                 variant="body-m-bold"
                 className="text-spaceBlue-200"
               />

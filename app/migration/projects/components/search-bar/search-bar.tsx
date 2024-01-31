@@ -7,7 +7,7 @@ import { cn } from "src/utils/cn";
 
 import { Icon } from "components/layout/icon/icon";
 
-import { TSearchBar } from "./search-bar.types";
+import { TSearchBar } from "app/migration/projects/components/search-bar/search-bar.types";
 
 export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);

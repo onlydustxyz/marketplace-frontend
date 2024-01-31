@@ -2,7 +2,7 @@ import { Card } from "components/ds/card/card";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { AddProjectModal } from "app/migration/projects/components/add-project/modal/add-project-modal";
+import { AddProjectModal } from "app/migration/projects/features/add-project/modal/add-project-modal";
 import { Button } from "components/ds/button/button";
 import { Icon } from "components/layout/icon/icon";
 import { Popover } from "components/ds/modals/popover/popover";
@@ -28,20 +28,20 @@ export function AddProject() {
   return (
     <Card background="base" border="medium" className="mb-4 flex items-center gap-4">
       <Typography variant="body-s">
-        <Translate token="project.details.create.description" />
+        <Translate token="v2.pages.projects.addProject.label" />
       </Typography>
 
       {canResume ? (
         <Popover placement={"bottom-start"} content={<AddProjectModal startProjectCreation={startProjectCreation} />}>
           <Button size="s">
             <Icon remixName="ri-magic-line" size={14} />
-            <Translate token="project.details.create.submit.button" />
+            <Translate token="v2.pages.projects.addProject.btn" />
           </Button>
         </Popover>
       ) : (
         <Button size="s" onClick={startProjectCreation}>
           <Icon remixName="ri-magic-line" size={14} />
-          <Translate token="project.details.create.submit.button" />
+          <Translate token="v2.pages.projects.addProject.btn" />
         </Button>
       )}
     </Card>

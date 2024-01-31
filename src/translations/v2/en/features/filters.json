@@ -1,0 +1,11 @@
+{
+  "technologies": {
+    "title": "Technologies",
+    "all": "All technologies",
+    "some": "Technologies",
+    "zero": "technologies",
+    "empty": "No technologies found",
+    "one": "__count__ technology",
+    "many": "__count__ technologies"
+  }
+}

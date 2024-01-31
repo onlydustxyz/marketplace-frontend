@@ -20,19 +20,19 @@ export function ProjectsSort() {
   const options: TSelectSort.Option[] = useMemo(
     () => [
       {
-        label: T(`projects.sorting.${ProjectTypes.Sorting.Trending}`),
+        label: T(`v2.commons.enums.project.sort.${ProjectTypes.Sorting.Trending}`),
         id: ProjectTypes.Sorting.Trending,
       },
       {
-        label: T(`projects.sorting.${ProjectTypes.Sorting.ProjectName}`),
+        label: T(`v2.commons.enums.project.sort.${ProjectTypes.Sorting.ProjectName}`),
         id: ProjectTypes.Sorting.ProjectName,
       },
       {
-        label: T(`projects.sorting.${ProjectTypes.Sorting.ReposCount}`),
+        label: T(`v2.commons.enums.project.sort.${ProjectTypes.Sorting.ReposCount}`),
         id: ProjectTypes.Sorting.ReposCount,
       },
       {
-        label: T(`projects.sorting.${ProjectTypes.Sorting.ContributorsCount}`),
+        label: T(`v2.commons.enums.project.sort.${ProjectTypes.Sorting.ContributorsCount}`),
         id: ProjectTypes.Sorting.ContributorsCount,
       },
     ],
@@ -47,12 +47,12 @@ export function ProjectsSort() {
     return (
       <>
         <Button variant={"secondary"} size="s" onClick={() => setOpenMobilePanel(true)}>
-          <Translate token="projects.sorting.button" />
+          <Translate token="v2.pages.projects.sorting.button" />
         </Button>
         <BottomSheet
           onClose={() => setOpenMobilePanel(false)}
           open={openMobilePanel}
-          title={<Translate token="projects.sorting.label" as="div" />}
+          title={<Translate token="v2.pages.projects.sorting.label" as="div" />}
         >
           <SelectableTag
             mode="single"
@@ -70,7 +70,7 @@ export function ProjectsSort() {
 
   return (
     <SelectSort
-      labelToken="projects.sorting.label"
+      labelToken="v2.pages.projects.sorting.label"
       value={filters.values.sorting}
       onChange={value => onSortChange(value as ProjectTypes.Sorting)}
       options={options}
