@@ -5,7 +5,7 @@ import { Combobox, Transition } from "@headlessui/react";
 import { SelectAutocompleteHooks as Hooks } from "./select-autocomplete.hooks";
 import { Options } from "./components/options/options";
 import { Button } from "./components/button/button";
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useRef, useMemo } from "react";
 
 export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   disabled = false,
