@@ -1,7 +1,8 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
+
+import { Link } from "components/ds/link/link";
 
 import Section, { SectionIcon } from "./OverviewSection";
 
@@ -13,16 +14,13 @@ export const ProjectOverviewEcosystem = ({ ecosystems }: Props) => {
   const { T } = useIntl();
 
   return ecosystems?.length ? (
-    <Section
-      icon={SectionIcon.Global}
-      title={T("project.details.overview.ecosystems", { count: ecosystems?.length ?? 0 })}
-    >
+    <Section icon={SectionIcon.Global} title={T("project.details.overview.ecosystems", { count: ecosystems.length })}>
       <div className="flex flex-row flex-wrap gap-3">
-        {ecosystems.map(ecosystem => (
-          <div key={ecosystem.id} className="flex flex-row items-center gap-2 text-sm font-normal">
-            <RoundedImage alt={ecosystem.name} rounding={Rounding.Circle} size={ImageSize.Sm} src={ecosystem.logoUrl} />
-            {ecosystem.url ? <ExternalLink url={ecosystem.url} text={ecosystem.name} /> : ecosystem.name}
-          </div>
+        {ecosystems.map(({ id, url, name, logoUrl }) => (
+          <Link key={id} href={url} className="flex flex-row items-center gap-2 text-sm font-normal">
+            <RoundedImage alt={name} rounding={Rounding.Circle} size={ImageSize.Sm} src={logoUrl} />
+            {name}
+          </Link>
         ))}
       </div>
     </Section>
