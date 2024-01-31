@@ -3,10 +3,10 @@ import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
 
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
-import { TContributor } from "components/features/contributor/contributor.types";
-import { Typography } from "components/layout/typography/typography";
 import { Tooltip } from "components/ds/tooltip/tooltip";
+import { TContributor } from "components/features/contributor/contributor.types";
 import { Translate } from "components/layout/translate/translate";
+import { Typography } from "components/layout/typography/typography";
 
 export function Contributor({
   githubUserId,
@@ -45,7 +45,7 @@ export function Contributor({
       </Typography>
 
       {isRegistered ? (
-        <Tooltip content={<Translate token="contributor.table.userRegisteredTooltip" />}>
+        <Tooltip content={<Translate token="v2.features.contributors.table.userRegisteredTooltip" />}>
           <img id={`od-logo-${login}`} src={IMAGES.logo.original} className="w-3.5" loading="lazy" alt="OnlyDust" />
         </Tooltip>
       ) : null}

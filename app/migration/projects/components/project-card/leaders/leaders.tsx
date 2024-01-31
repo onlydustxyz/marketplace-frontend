@@ -34,7 +34,7 @@ export function Leaders({ leaders }: TLeaders.Props) {
     return (
       <div className="flex flex-row items-center gap-1 text-snow">
         <div className="od-text-body-s flex flex-row gap-1 truncate whitespace-nowrap">
-          <Translate token="project.noLed" />
+          <Translate token="v2.features.leaders.noLed" />
         </div>
       </div>
     );
@@ -48,7 +48,7 @@ export function Leaders({ leaders }: TLeaders.Props) {
           <Typography
             variant="body-s"
             className="truncate"
-            translate={{ token: "project.ledBy", params: { count: leaders.length } }}
+            translate={{ token: "v2.features.leaders.ledBy", params: { count: leaders.length } }}
           />
           {hasOnlyOneLead}
         </div>

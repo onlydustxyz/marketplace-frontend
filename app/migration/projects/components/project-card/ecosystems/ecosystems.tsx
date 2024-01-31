@@ -33,7 +33,7 @@ export function Ecosystems({ ecosystems }: TEcosystems.Props) {
           <Typography
             variant="body-s"
             className="truncate"
-            translate={{ token: "project.ecosystems", params: { count: ecosystems.length } }}
+            translate={{ token: "v2.features.ecosystems.counters", params: { count: ecosystems.length } }}
           />
           {hasOnlyOneEcosystem}
         </div>
