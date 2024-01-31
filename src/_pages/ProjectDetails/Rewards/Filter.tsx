@@ -16,7 +16,7 @@ import { allTime, formatDateQueryParam } from "src/utils/date";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 import { FiltersUsers } from "components/features/filters/filters-users/filters-users";
 
-type Filters = {
+export type Filters = {
   period: Period;
   dateRange: DateRange;
   contributors: Item[];
@@ -47,7 +47,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     onChange,
     position,
   }: {
-    onChange: (filterQueryParams: FilterQueryParams) => void;
+    onChange: (filterQueryParams: FilterQueryParams, filters: Partial<Filters>) => void;
     position?: FilterPosition;
   },
   ref: React.Ref<ProjectRewardsFilterRef>
@@ -98,7 +98,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
         filterQueryParams.fromDate = formatDateQueryParam(value.from);
         filterQueryParams.toDate = formatDateQueryParam(value.to);
 
-        onChange(filterQueryParams);
+        onChange(filterQueryParams, filters);
 
         // Return early to avoid updating the date range twice
         return;
@@ -116,7 +116,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
       updateDate(initialFilters.dateRange);
     }
 
-    onChange(filterQueryParams);
+    onChange(filterQueryParams, filters);
   }, [filters]);
 
   const hasActiveFilters = Boolean(

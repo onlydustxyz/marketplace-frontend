@@ -470,6 +470,11 @@ const config: Config = withTV({
           borderColor: theme("colors.card.border.heavy"),
           background: theme("colors.card.background.heavy"),
         },
+        ".od-bg-budget": {
+          backgroundImage: `radial-gradient(at 64% 0%, rgba(221, 106, 55, 0.6) -5%, transparent 40%),
+        radial-gradient(at 48% 0%, #e504a2 1%, transparent 80%),
+        linear-gradient(60deg, rgba(40, 3, 155, 1), rgba(100, 42, 229, 1))`,
+        },
       });
     }),
     plugin(({ matchUtilities, theme }) => {

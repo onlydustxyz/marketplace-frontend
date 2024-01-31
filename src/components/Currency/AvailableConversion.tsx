@@ -19,7 +19,7 @@ import { CurrencyIcons } from "./CurrencyIcon";
 
 export interface AvailableConversionCurrency {
   currency: BudgetCurrencyType;
-  amount: number;
+  amount: number | undefined;
   dollar: number | undefined;
 }
 
@@ -79,7 +79,7 @@ const ConversionTooltip = ({
                 </Chip>
                 <div key={currency.currency} className="flex items-center justify-start gap-[2px]">
                   <p className="font-walsheim text-xs text-white">
-                    {formatMoneyAmount({ amount: currency.amount, currency: currency.currency })}
+                    {formatMoneyAmount({ amount: currency.amount || 0, currency: currency.currency })}
                   </p>
                   {currency.currency !== Currency.USD && (
                     <p className="font-walsheim text-xs text-spaceBlue-200">

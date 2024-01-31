@@ -5,11 +5,14 @@ import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import User3Line from "src/icons/User3Line";
-import { Money } from "src/types";
+import { Currency, Money } from "src/types";
 import { cn } from "src/utils/cn";
 
 import { Amount } from "./Amount";
 import { Counter } from "./Counter";
+import { useMemo } from "react";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import { Icon } from "components/layout/icon/icon";
 
 export enum CardTypes {
   Remaining,
@@ -47,32 +50,65 @@ type Props = {
   type?: CardTypes;
   sentRewards?: { count?: number; total?: number };
   rewardedContributorsCount?: number;
+  filteredCurrencies?: Currency[];
+  onClick?: () => void;
 };
 
-export function BudgetCard({ budget, sentRewards, rewardedContributorsCount, type = CardTypes.Remaining }: Props) {
+export function BudgetCard({
+  budget,
+  sentRewards,
+  rewardedContributorsCount,
+  filteredCurrencies,
+  type = CardTypes.Remaining,
+  onClick,
+}: Props) {
   const { T } = useIntl();
+
+  const showFilteredCurrencies = useMemo(() => {
+    if (filteredCurrencies && (type === CardTypes.Remaining || type === CardTypes.AmountSpent)) {
+      return (
+        <AvailableConversion
+          currencies={filteredCurrencies.map(c => ({
+            currency: c,
+            amount: undefined,
+            dollar: undefined,
+          }))}
+        />
+      );
+    }
+
+    return null;
+  }, []);
 
   return (
     <Card
       className={cn("px-4 py-5 lg:px-4 lg:py-5", {
-        "bg-budget bg-origin-border": type === CardTypes.Remaining,
+        "od-bg-budget bg-origin-border": type === CardTypes.Remaining,
+        // "bg-[length:150%_150%] !duration-500 !ease-in transition-all hover:bg-[100%_100%]":
+        "bg-[length:150%_150%] duration-500 ease-in transition-all transition-all hover:bg-[100%_100%]":
+          type === CardTypes.Remaining,
+        "cursor-pointer": !!onClick,
       })}
     >
       <div className="flex flex-col gap-2">
-        <div className="flex items-center text-sm uppercase text-white">
-          <span
-            className="mr-2"
-            {...withTooltip(T("project.details.remainingBudget.usdInfoBudgets"), {
-              visible: type === CardTypes.Remaining,
-            })}
-          >
-            {budgets[type].icon}
-          </span>
-          <div className="truncate font-semibold">{T(budgets[type].title)}</div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center text-sm uppercase text-white">
+            <span
+              className="mr-2"
+              {...withTooltip(T("project.details.remainingBudget.usdInfoBudgets"), {
+                visible: type === CardTypes.Remaining,
+              })}
+            >
+              {budgets[type].icon}
+            </span>
+            <div className="truncate font-semibold">{T(budgets[type].title)}</div>
+          </div>
+          {!!onClick && <Icon remixName="ri-more-fill" />}
         </div>
 
-        <div className="flex flex-wrap items-baseline font-belwe text-2xl text-greyscale-50">
-          {getContent(type, budget, rewardedContributorsCount, sentRewards)}
+        <div className="flex flex-wrap items-baseline justify-between font-belwe text-2xl text-greyscale-50">
+          <div>{getContent(type, budget, rewardedContributorsCount, sentRewards)}</div>
+          <div>{showFilteredCurrencies}</div>
         </div>
       </div>
     </Card>
