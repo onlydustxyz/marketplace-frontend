@@ -94,7 +94,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             {project.tags?.length ? <ProjectTags tags={project.tags} /> : null}
           </Flex>
           <Summary shortDescription={project.shortDescription} />
-          <div className="mt-5 grid grid-cols-2 items-center gap-4 md:flex md:flex-row">
+          <div className="mt-5 flex flex-row flex-wrap items-center gap-4">
             <Leaders leaders={project.leaders} />
             <ContributorsCounter count={project.contributorCount} />
             <Ecosystems ecosystems={project.ecosystems} />
