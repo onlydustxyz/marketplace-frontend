@@ -18,6 +18,12 @@ export namespace TSelectAutocomplete {
     items: T[];
     tokens: Record<"zero" | "other" | "empty", string>;
     type: avatarType;
+    onNextPage?: () => void;
+    loadingNextPage?: boolean;
+    controlledSearch?: {
+      value: string;
+      onChange: (value: string) => void;
+    };
   }
 
   export interface SingleProps<T> extends BaseProps<T> {
