@@ -1,6 +1,6 @@
 {
   "table": {
-    "userRegisteredTooltip": "User has linked their OnlyDust profile",
+    "userRegisteredTooltip": "User has linked their OnlyDust profile"
   },
   "count": {
     "many": "__count__ contributors",
