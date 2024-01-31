@@ -2,12 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
-import {
-  useStackContributorProfile,
-  useStackPayoutInfo,
-  useStackVerifyCompany,
-  useStackVerifyIdentity,
-} from "src/App/Stacks/Stacks";
+import { useStackContributorProfile, useStackPayoutInfo, useStackVerify } from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import Dot from "src/assets/icons/Dot";
@@ -43,8 +38,7 @@ export function ViewMobile({
   const [panelOpen, setPanelOpen] = useState(false);
   const [openContributorProfilePanel] = useStackContributorProfile();
   const [openPayoutInfo] = useStackPayoutInfo();
-  const [openVerifyIdentity] = useStackVerifyIdentity();
-  const [openVerifyCompany] = useStackVerifyCompany();
+  const [openVerify] = useStackVerify();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { handleLogout } = useLogout();
@@ -153,7 +147,7 @@ export function ViewMobile({
                       className="flex items-center gap-3 p-4"
                       onClick={() => {
                         setPanelOpen(false);
-                        openVerifyIdentity();
+                        openVerify({ userId: 456, levelName: "basic-kyc-level" });
                       }}
                     >
                       <Icon remixName="ri-pass-valid-line" size={20} />
@@ -163,7 +157,7 @@ export function ViewMobile({
                       className="flex items-center gap-3 p-4"
                       onClick={() => {
                         setPanelOpen(false);
-                        openVerifyCompany();
+                        openVerify({ userId: 456, levelName: "basic-kyb-level" });
                       }}
                     >
                       <Icon remixName="ri-pass-valid-line" size={20} />

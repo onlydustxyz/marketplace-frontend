@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck - pass build
 import SumsubWebSdk from "@sumsub/websdk-react";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useEffect, useState } from "react";
 
 const config = {};
@@ -19,19 +18,23 @@ function errorHandler(...args) {
   console.error(args);
 }
 
-export function VerifyIdentitySidePanel() {
-  const { user } = useCurrentUser();
+interface Props {
+  userId: string;
+  levelName: "basic-kyb-level" | "basic-kyc-level";
+}
+
+export function VerifySidePanel({ userId, levelName }: Props) {
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    if (user) {
-      fetch("/api/sumsub-token", { method: "POST", body: JSON.stringify({ userId: user.id }) }).then(res => {
+    if (userId) {
+      fetch("/api/sumsub-token", { method: "POST", body: JSON.stringify({ userId, levelName }) }).then(res => {
         res.json().then(({ token }) => {
           setToken(token);
         });
       });
     }
-  }, [user]);
+  }, [userId]);
 
   return (
     <div className="flex h-full w-full items-center">

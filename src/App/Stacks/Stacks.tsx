@@ -1,9 +1,10 @@
+import { ComponentProps } from "react";
 import { Link, generatePath } from "react-router-dom";
 
 import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
 import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
-import { VerifyCompanySidePanel } from "src/App/Stacks/VerifyCompanySidePanel/VerifyCompanySidePanel";
+import { VerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
@@ -16,7 +17,6 @@ import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
 import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
-import { VerifyIdentitySidePanel } from "./VerifyIdentitySidePanel/VerifyIdentitySidePanel";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
@@ -27,8 +27,7 @@ export enum StackRoute {
   Contribution = "contribution",
   GithubWorkflowClaim = "github-workflow-claim",
   GithubWorkflowTutorial = "github-workflow-tutorial",
-  VerifyIdentity = "verify-identity",
-  VerifyCompany = "verify-company",
+  Verify = "verify",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -55,6 +54,7 @@ export interface StackRouterParams {
   GithubWorkflowClaim: {
     projectSlug: string;
   };
+  Verify: ComponentProps<typeof VerifySidePanel>;
 }
 
 export const Stacks = () => {
@@ -84,10 +84,9 @@ export const Stacks = () => {
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
       {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-        <>
-          <RegisterStack name={StackRoute.VerifyIdentity}>{() => <VerifyIdentitySidePanel />}</RegisterStack>
-          <RegisterStack name={StackRoute.VerifyCompany}>{() => <VerifyCompanySidePanel />}</RegisterStack>
-        </>
+        <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
+          {({ params }) => <VerifySidePanel {...params} />}
+        </RegisterStack>
       ) : null}
     </>
   );
@@ -97,12 +96,8 @@ export const useStackPayoutInfo = () => {
   return useStackNavigation(StackRoute.PayoutInfo);
 };
 
-export const useStackVerifyIdentity = () => {
-  return useStackNavigation(StackRoute.VerifyIdentity);
-};
-
-export const useStackVerifyCompany = () => {
-  return useStackNavigation(StackRoute.VerifyCompany);
+export const useStackVerify = () => {
+  return useStackNavigation(StackRoute.Verify);
 };
 
 export const useStackProjecRewardAsLead = () => {
