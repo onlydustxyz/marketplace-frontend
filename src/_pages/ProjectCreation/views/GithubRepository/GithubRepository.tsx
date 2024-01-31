@@ -140,7 +140,7 @@ export const GithubRepositoryPage = () => {
                         disabled={!organization.isCurrentUserAdmin}
                         tooltip={T("project.details.create.organizations.tooltipInstalledByAdmin")}
                         backgroundColor="blue"
-                        className="mt-3"
+                        className="mt-5 border border-card-border-heavy"
                       />
                     </VerticalListItemDrop>
                   );
