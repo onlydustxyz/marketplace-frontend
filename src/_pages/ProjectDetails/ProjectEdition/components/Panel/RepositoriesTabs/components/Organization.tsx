@@ -68,7 +68,7 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
           url={linkUrl}
           disabled={!organization.isCurrentUserAdmin}
           tooltip={T("project.details.create.organizations.tooltipInstalledByAdmin")}
-          className="mt-4"
+          className="mt-3"
         />
       </VerticalListItemDrop>
     </div>
