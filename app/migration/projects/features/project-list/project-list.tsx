@@ -20,6 +20,7 @@ export function ProjectList() {
         <ProjectCardLoading />
         <ProjectCardLoading />
         <ProjectCardLoading />
+        <ProjectCardLoading />
       </>
     );
   }

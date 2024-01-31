@@ -2,6 +2,9 @@
 
 import { useContext } from "react";
 
+import { AddProject } from "app/migration/projects/features/add-project/add-project";
+import { NoResults } from "app/migration/projects/features/no-results/no-results";
+
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
@@ -10,8 +13,6 @@ import { ProjectsFilters } from "./features/filters/filters";
 import { ProjectList } from "./features/project-list/project-list";
 import { ProjectSearch } from "./features/project-search/project-search";
 import { ProjectsSort } from "./features/projects-sort/projects-sort";
-import { AddProject } from "app/migration/projects/features/add-project/add-project";
-import { NoResults } from "app/migration/projects/features/no-results/no-results";
 
 export default function ProjectsPage() {
   const { count, projects, isLoading } = useContext(ProjectsContext);
