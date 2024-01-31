@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { Ecosystems } from "app/migration/projects/components/project-card/ecosystems/ecosystems";
 import { ProjectTags } from "app/migration/projects/features/project-tags/project-tags";
 
 import PrivateTag from "src/components/PrivateTag";
@@ -15,7 +16,6 @@ import { Flex } from "components/layout/flex/flex";
 import { ContributorsCounter } from "./contributors-counter/contributors-counter";
 import { Leaders } from "./leaders/leaders";
 import { TProjectCard } from "./project-card.types";
-import { Sponsors } from "./sponsors/sponsors";
 import { Summary } from "./summary/summary";
 import { Technologies } from "./technologies/technologies";
 
@@ -97,7 +97,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           <div className="mt-5 grid grid-cols-2 items-center gap-4 md:flex md:flex-row">
             <Leaders leaders={project.leaders} />
             <ContributorsCounter count={project.contributorCount} />
-            <Sponsors sponsors={project.sponsors} />
+            <Ecosystems ecosystems={project.ecosystems} />
             <Technologies technologies={project.technologies} />
           </div>
         </Flex>

@@ -5,12 +5,12 @@ import { useMemo } from "react";
 import { Contributor } from "components/features/contributor/contributor";
 import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
 import { Translate } from "components/layout/translate/translate";
-
-import { TLeaders } from "./leaders.types";
 import { Typography } from "components/layout/typography/typography";
 
+import { TLeaders } from "./leaders.types";
+
 export function Leaders({ leaders }: TLeaders.Props) {
-  const asOnlyOneLead = useMemo(() => {
+  const hasOnlyOneLead = useMemo(() => {
     if (leaders.length === 1 && leaders[0].login) {
       const lead = leaders[0];
       return (
@@ -50,7 +50,7 @@ export function Leaders({ leaders }: TLeaders.Props) {
             className="truncate"
             translate={{ token: "project.ledBy", params: { count: leaders.length } }}
           />
-          {asOnlyOneLead}
+          {hasOnlyOneLead}
         </div>
       ) : null}
     </div>
