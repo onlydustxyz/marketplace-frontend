@@ -83,9 +83,9 @@ export function ViewMobile({
                       openContributorProfilePanel({ githubUserId });
                     }}
                   >
-                    {avatarUrl && (
+                    {avatarUrl ? (
                       <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
-                    )}
+                    ) : null}
 
                     <Flex direction="col" alignItems="start">
                       <Typography variant="title-s" className="text-sm leading-4">

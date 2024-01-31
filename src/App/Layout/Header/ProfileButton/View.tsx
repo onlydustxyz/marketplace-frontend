@@ -16,17 +16,17 @@ import { useLogout } from "./Logout.hooks";
 
 interface MenuItemProps extends PropsWithChildren {
   onClick?: () => void;
-  isProfil?: boolean;
+  isProfile?: boolean;
 }
 
-const MenuItem = ({ onClick, isProfil, children, ...rest }: MenuItemProps) => (
+const MenuItem = ({ onClick, isProfile, children, ...rest }: MenuItemProps) => (
   <Menu.Item
     {...rest}
     as="div"
     className={cn(
       "flex cursor-pointer flex-row items-center gap-3 rounded-md px-4 py-2 font-walsheim text-sm ui-active:bg-white/4",
       {
-        "gap-1 px-3": isProfil,
+        "gap-1 px-3": isProfile,
       }
     )}
     onClick={onClick}
@@ -113,10 +113,10 @@ export function View({
           >
             {!hideProfileItems && (
               <div>
-                <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel({ githubUserId })} isProfil>
-                  {avatarUrl && (
+                <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel({ githubUserId })} isProfile>
+                  {avatarUrl ? (
                     <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
-                  )}
+                  ) : null}
 
                   <Flex direction="col" alignItems="start">
                     <Typography variant="title-s" className="text-sm leading-4">
