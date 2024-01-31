@@ -1375,11 +1375,11 @@
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
-      "one": " "
+      "one": ""
     },
     "ecosystems": {
       "many": "__count__ ecosystems",
-      "one": " "
+      "zero": ""
     },
     "noLed": "The project is claimable",
     "projectLeadInvitation": {
