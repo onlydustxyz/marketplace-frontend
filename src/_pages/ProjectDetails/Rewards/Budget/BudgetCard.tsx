@@ -1,5 +1,7 @@
+import { useMemo } from "react";
+
 import InfoIcon from "src/assets/icons/InfoIcon";
-import Card from "src/components/Card";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
@@ -8,11 +10,11 @@ import User3Line from "src/icons/User3Line";
 import { Currency, Money } from "src/types";
 import { cn } from "src/utils/cn";
 
+import { Card } from "components/ds/card/card";
+import { Icon } from "components/layout/icon/icon";
+
 import { Amount } from "./Amount";
 import { Counter } from "./Counter";
-import { useMemo } from "react";
-import { AvailableConversion } from "src/components/Currency/AvailableConversion";
-import { Icon } from "components/layout/icon/icon";
 
 export enum CardTypes {
   Remaining,
@@ -82,11 +84,10 @@ export function BudgetCard({
 
   return (
     <Card
-      className={cn("px-4 py-5 lg:px-4 lg:py-5", {
+      className={cn("px-4 py-5 transition-all lg:px-4 lg:py-5", {
         "od-bg-budget bg-origin-border": type === CardTypes.Remaining,
         // "bg-[length:150%_150%] !duration-500 !ease-in transition-all hover:bg-[100%_100%]":
-        "bg-[length:150%_150%] duration-500 ease-in transition-all transition-all hover:bg-[100%_100%]":
-          type === CardTypes.Remaining,
+        "bg-[length:150%_150%] !duration-500 !ease-in hover:bg-[100%_100%]": type === CardTypes.Remaining,
         "cursor-pointer": !!onClick,
       })}
     >
