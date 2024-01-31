@@ -3,7 +3,6 @@ import FolderLine from "src/icons/FolderLine";
 
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
 import { SelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete";
-
 import { TFiltersTechnologies } from "components/features/filters/filters-technologies/filters-technologies.types";
 
 export function FiltersTechnologies({ technologies, selected, onChange }: TFiltersTechnologies.Props) {

@@ -1,6 +1,7 @@
-import { TPopover } from "./popover.types";
 import { PopoverContent, PopoverTrigger } from "@nextui-org/react";
 import { Popover as NextPopover } from "@nextui-org/react";
+
+import { TPopover } from "./popover.types";
 
 export function Popover({ children, content, ...PopOverProps }: TPopover.Props) {
   return (

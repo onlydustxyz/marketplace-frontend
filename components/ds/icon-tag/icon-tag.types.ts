@@ -1,8 +1,8 @@
 import { ElementType, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
-import { TSkeleton } from "components/ds/skeleton/skeleton.types";
 import { iconTagVariants } from "components/ds/icon-tag/icon-tag.variants";
+import { TSkeleton } from "components/ds/skeleton/skeleton.types";
 import { TCustomIcon } from "components/layout/icon/custom-icon.types";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 

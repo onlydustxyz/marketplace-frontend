@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { SelectAutocomplete } from "./select-autocomplete";
 import FolderLine from "src/icons/FolderLine";
+
+import { SelectAutocomplete } from "./select-autocomplete";
 
 const meta: Meta<typeof SelectAutocomplete> = {
   component: SelectAutocomplete,

@@ -1,10 +1,13 @@
 import { useContext } from "react";
-import { ProjectsContext } from "../../../context/project.context";
-import { Flex } from "components/layout/flex/flex";
-import { SelectableTag } from "components/ds/form/selectable-tag/selectable-tag";
-import { Icon } from "components/layout/icon/icon";
+
 import { ProjectTypes } from "src/api/Project/types";
 import { useIntl } from "src/hooks/useIntl";
+
+import { SelectableTag } from "components/ds/form/selectable-tag/selectable-tag";
+import { Flex } from "components/layout/flex/flex";
+import { Icon } from "components/layout/icon/icon";
+
+import { ProjectsContext } from "../../../context/project.context";
 
 export function FiltersTags() {
   const { T } = useIntl();

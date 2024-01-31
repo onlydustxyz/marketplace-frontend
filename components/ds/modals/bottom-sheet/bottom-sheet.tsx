@@ -1,8 +1,11 @@
-import { TBottomSheet } from "./bottom-sheet.types";
 import { Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react";
-import { Typography } from "components/layout/typography/typography";
-import { Button } from "components/ds/button/button";
+
 import CloseLine from "src/icons/CloseLine";
+
+import { Button } from "components/ds/button/button";
+import { Typography } from "components/layout/typography/typography";
+
+import { TBottomSheet } from "./bottom-sheet.types";
 
 export function BottomSheet({ children, onOpen, onClose, title, open = false }: TBottomSheet.Props) {
   return (

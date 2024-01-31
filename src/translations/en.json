@@ -239,8 +239,8 @@
       "some": "Technologies",
       "zero": "technologies",
       "empty": "No technologies found",
-        "one": "__count__ technology",
-        "many": "__count__ technologies"
+      "one": "__count__ technology",
+      "many": "__count__ technologies"
     },
     "title": "Filter",
     "mobileButton": {
@@ -1426,12 +1426,12 @@
       "RANK": "Trending projects"
     },
     "tags": {
-        "tooltips": {
-            "beginnersWelcome": "These projects are ready to take some time to onboard new developers.",
-            "fastPaced": "These project have a rapid development speed. Time to merged PRs and Fast Code Review are their main metrics.",
-            "likelyToSendRewards": "These projects have continuously sent rewards to their contributors in the past.",
-            "strongExpertise": "These projects have some complex challenges to tackle. They are waiting for your help."
-        }
+      "tooltips": {
+        "beginnersWelcome": "These projects are ready to take some time to onboard new developers.",
+        "fastPaced": "These project have a rapid development speed. Time to merged PRs and Fast Code Review are their main metrics.",
+        "likelyToSendRewards": "These projects have continuously sent rewards to their contributors in the past.",
+        "strongExpertise": "These projects have some complex challenges to tackle. They are waiting for your help."
+      }
     }
   },
   "rewardBudget": {

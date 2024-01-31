@@ -1,9 +1,12 @@
 import { useContext } from "react";
-import { ProjectsContext } from "../../../context/project.context";
+
 import { useIntl } from "src/hooks/useIntl";
+
 import { Toggle } from "components/ds/form/toggle/toggle";
-import { Typography } from "components/layout/typography/typography";
 import { Flex } from "components/layout/flex/flex";
+import { Typography } from "components/layout/typography/typography";
+
+import { ProjectsContext } from "../../../context/project.context";
 
 export function FiltersMine() {
   const { T } = useIntl();

@@ -1,8 +1,11 @@
+import { useContext } from "react";
+
+import { ProjectsContext } from "app/migration/projects/context/project.context";
+
+import { IMAGES } from "src/assets/img";
+
 import { Card } from "components/ds/card/card";
 import { EmptyState } from "components/layout/placeholders/empty-state";
-import { IMAGES } from "src/assets/img";
-import { useContext } from "react";
-import { ProjectsContext } from "app/migration/projects/context/project.context";
 
 export function NoResults() {
   const { filters } = useContext(ProjectsContext);

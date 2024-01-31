@@ -9,11 +9,11 @@ import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 
 import { UserRewardsContext } from "./context/UserRewards";
-import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 type Filters = {
   period: Period;

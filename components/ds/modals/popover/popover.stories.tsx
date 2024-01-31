@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import { Button } from "components/ds/button/button";
+
 import { Popover } from "./popover";
 import { TPopover } from "./popover.types";
-import { Button } from "components/ds/button/button";
 
 type Story = StoryObj<typeof Popover>;
 

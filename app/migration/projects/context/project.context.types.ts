@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react";
 
 import { UseInfiniteListResponse } from "src/api/Project/queries";
-
 import { ProjectTypes } from "src/api/Project/types";
+
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 export namespace TProjectContext {

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { SelectSort } from "./select-sort";
 import { ProjectTypes } from "src/api/Project/types";
+
+import { SelectSort } from "./select-sort";
 
 const meta: Meta<typeof SelectSort> = {
   component: SelectSort,

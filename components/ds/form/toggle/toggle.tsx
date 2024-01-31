@@ -1,5 +1,6 @@
-import { TToggle } from "./toggle.types";
 import { Switch } from "@nextui-org/react";
+
+import { TToggle } from "./toggle.types";
 
 export function Toggle({ ariaLabel, onChange, value, name }: TToggle.Props) {
   const handleChange = (value: boolean) => {

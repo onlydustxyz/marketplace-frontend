@@ -5,9 +5,9 @@ import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+import { Typography } from "components/layout/typography/typography";
 
 import { TSponsors } from "./sponsors.types";
-import { Typography } from "components/layout/typography/typography";
 
 export function Sponsors({ sponsors }: TSponsors.Props) {
   const { T } = useIntl();

@@ -1,15 +1,18 @@
 import { useContext, useMemo, useState } from "react";
-import { useIntl } from "src/hooks/useIntl";
-import { ProjectsContext } from "../../context/project.context";
+import { useMediaQuery } from "usehooks-ts";
+
 import { ProjectTypes } from "src/api/Project/types";
+import { viewportConfig } from "src/config";
+import { useIntl } from "src/hooks/useIntl";
+
+import { Button } from "components/ds/button/button";
 import { SelectSort } from "components/ds/form/select-sort/select-sort";
 import { TSelectSort } from "components/ds/form/select-sort/select-sort.types";
-import { useMediaQuery } from "usehooks-ts";
-import { viewportConfig } from "src/config";
-import { Translate } from "components/layout/translate/translate";
 import { SelectableTag } from "components/ds/form/selectable-tag/selectable-tag";
 import { BottomSheet } from "components/ds/modals/bottom-sheet/bottom-sheet";
-import { Button } from "components/ds/button/button";
+import { Translate } from "components/layout/translate/translate";
+
+import { ProjectsContext } from "../../context/project.context";
 
 export function ProjectsSort() {
   const { T } = useIntl();

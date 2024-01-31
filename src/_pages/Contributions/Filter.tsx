@@ -11,9 +11,9 @@ import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 import { FiltersRepos } from "components/features/filters/filters-repos/filters-repos";
-import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 export type Filters = {
   dateRange: DateRange;

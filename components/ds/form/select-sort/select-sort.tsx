@@ -1,9 +1,12 @@
-import { TSelectSort } from "./select-sort.types";
 import { Select, SelectItem } from "@nextui-org/react";
-import { Icon } from "components/layout/icon/icon";
-import { cn } from "src/utils/cn";
-import { Translate } from "components/layout/translate/translate";
 import { ChangeEvent } from "react";
+
+import { cn } from "src/utils/cn";
+
+import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
+
+import { TSelectSort } from "./select-sort.types";
 
 export function SelectSort({ options, value, labelToken, onChange }: TSelectSort.Props) {
   const handleSelectionChange = (e: ChangeEvent<HTMLSelectElement>) => {

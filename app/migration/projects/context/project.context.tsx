@@ -1,9 +1,12 @@
 "use client";
+
 import { createContext, useEffect, useMemo, useState } from "react";
-import ProjectApi from "src/api/Project";
-import { TProjectContext } from "./project.context.types";
 import { useLocalStorage } from "react-use";
+
+import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
+
+import { TProjectContext } from "./project.context.types";
 
 export const ProjectsContext = createContext<TProjectContext.Return>({
   projects: [],

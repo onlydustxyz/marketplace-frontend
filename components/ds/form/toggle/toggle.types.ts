@@ -1,4 +1,5 @@
 import { VariantProps } from "tailwind-variants";
+
 import { toggleVariants } from "./toggle.variants";
 
 export namespace TToggle {

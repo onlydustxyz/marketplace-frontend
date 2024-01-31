@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import StoryState from "components/features/storybooks/stateManagement";
+
 import { Toggle } from "./toggle";
 import { TToggle } from "./toggle.types";
-import StoryState from "components/features/storybooks/stateManagement";
 
 type Story = StoryObj<typeof Toggle>;
 

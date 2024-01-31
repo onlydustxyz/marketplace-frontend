@@ -1,7 +1,9 @@
 import { useContext } from "react";
-import { ProjectsContext } from "../../../context/project.context";
+
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { FiltersTechnologies as Filter } from "components/features/filters/filters-technologies/filters-technologies";
+
+import { ProjectsContext } from "../../../context/project.context";
 
 export function FiltersTechnologies() {
   const { filters } = useContext(ProjectsContext);

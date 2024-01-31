@@ -1,14 +1,15 @@
 "use client";
 
-import { Button } from "components/ds/button/button";
 import {
   STORAGE_KEY_CREATE_PROJECT_STEP,
   useResetStorage,
 } from "src/_pages/ProjectCreation/hooks/useProjectCreationStorage";
 import { ProjectCreationSteps } from "src/_pages/ProjectCreation/types/ProjectCreationSteps";
 import { cn } from "src/utils/cn";
-import { Typography } from "components/layout/typography/typography";
+
+import { Button } from "components/ds/button/button";
 import { Translate } from "components/layout/translate/translate";
+import { Typography } from "components/layout/typography/typography";
 
 export function AddProjectModal({ startProjectCreation }: { startProjectCreation(): void }) {
   const { reset: clearStorage } = useResetStorage();
