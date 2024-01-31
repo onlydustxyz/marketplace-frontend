@@ -5711,10 +5711,10 @@
     "@types/express" "^4.7.0"
     file-system-cache "2.3.0"
 
-"@sumsub/websdk-react@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@sumsub/websdk-react/-/websdk-react-2.0.1.tgz#5884b76da87267c837da39554257edebe9ef729a"
-  integrity sha512-PLbbGqTHvpGRjotytmNUl3AJOH6OVVo73UZtqmgBtX0OAT2REzwWjNDLjby3i3tFMCB8fxEgPW318NrgjCSBFA==
+"@sumsub/websdk-react@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@sumsub/websdk-react/-/websdk-react-1.4.0.tgz#daea4423ceffc8d57db63e22525d2842216db493"
+  integrity sha512-cydHjQmdkXGsj0COFaukmBHz8NzkrbeSU6ZeNbrlI83KoTkaKbuBkkkOaxY9p80L0LyMwMp1F3B1yRZr4gpLBw==
 
 "@swc/core-darwin-arm64@1.3.101":
   version "1.3.101"
