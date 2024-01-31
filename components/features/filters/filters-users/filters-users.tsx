@@ -6,7 +6,14 @@ import { SelectAutocomplete } from "components/ds/form/select-autocomplete/selec
 
 import { TFiltersUsers } from "./filters-users.types";
 
-export function FiltersUsers({ users, selected, onChange }: TFiltersUsers.Props) {
+export function FiltersUsers({
+  users,
+  selected,
+  onChange,
+  onNextPage,
+  loadingNextPage,
+  controlledSearch,
+}: TFiltersUsers.Props) {
   const { T } = useIntl();
 
   return (
@@ -19,11 +26,14 @@ export function FiltersUsers({ users, selected, onChange }: TFiltersUsers.Props)
           empty: "filter.contributor.empty",
         }}
         multiple
-        disabled={users.length <= 1}
+        disabled={users.length <= 1 && !controlledSearch}
         type="circle"
         items={users}
         selected={selected}
         onChange={onChange}
+        onNextPage={onNextPage}
+        loadingNextPage={loadingNextPage}
+        controlledSearch={controlledSearch}
       />
     </FilterFieldContainer>
   );

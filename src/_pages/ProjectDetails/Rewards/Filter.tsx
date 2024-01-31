@@ -12,9 +12,9 @@ import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 import { FiltersUsers } from "components/features/filters/filters-users/filters-users";
-import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 type Filters = {
   period: Period;
@@ -69,8 +69,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     JSON.stringify(initialFilters)
   );
 
-  const contributorsQueryState = useState<string>();
-  const [contributorsQuery] = contributorsQueryState;
+  const [contributorsQuery, setContributorsQuery] = useState<string>();
 
   // Type of partial Filters is required as the shape required by the state may not exist in the user's local storage
   const [filters, setFilters] = useState<Partial<Filters>>(
@@ -124,11 +123,36 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     filters.period !== initialFilters.period || filters.contributors?.length || filters.currency?.length
   );
 
-  const { data: contributorsData } = ProjectApi.queries.useProjectContributorsInfiniteList({
+  const {
+    data: contributorsData,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = ProjectApi.queries.useProjectContributorsInfiniteList({
     params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
     options: { enabled: Boolean(project?.id) },
   });
-  const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
+  const [contributors, setContributors] = useState<TSelectAutocomplete.Item[]>([]);
+
+  useEffect(() => {
+    const flattenContributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
+    if (flattenContributors?.length) {
+      setContributors(
+        flattenContributors.map(({ login, githubUserId, avatarUrl }) => ({
+          id: githubUserId,
+          value: `${githubUserId}`,
+          label: login,
+          image: avatarUrl,
+        }))
+      );
+    }
+  }, [contributorsData]);
+
+  const handleContributorsPagination = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
 
   function resetFilters() {
     setFilters(initialFilters);
@@ -208,14 +232,15 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
       </div>
       <div className="focus-within:z-10">
         <FiltersUsers
-          users={contributors.map(({ login, githubUserId, avatarUrl }) => ({
-            id: githubUserId,
-            value: `${githubUserId}`,
-            label: login,
-            image: avatarUrl,
-          }))}
+          users={contributors}
           selected={filters.contributors ?? initialFilters.contributors}
           onChange={updateContributors}
+          onNextPage={handleContributorsPagination}
+          loadingNextPage={isFetchingNextPage}
+          controlledSearch={{
+            value: contributorsQuery || "",
+            onChange: (value: string) => setContributorsQuery(value),
+          }}
         />
       </div>
       <div className="focus-within:z-10">

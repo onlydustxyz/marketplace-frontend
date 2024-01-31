@@ -1,3 +1,5 @@
+"use client";
+
 import { debounce } from "lodash";
 import { useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
