@@ -1,7 +1,12 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
 
-import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import {
+  useStackContributorProfile,
+  useStackPayoutInfo,
+  useStackVerifyCompany,
+  useStackVerifyIdentity,
+} from "src/App/Stacks/Stacks";
 import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
@@ -59,6 +64,7 @@ export function View({
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [openPayoutInfo] = useStackPayoutInfo();
   const [openVerifyIdentity] = useStackVerifyIdentity();
+  const [openVerifyCompany] = useStackVerifyCompany();
 
   const [openContributorProfileSidePanel] = useStackContributorProfile();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
@@ -129,10 +135,16 @@ export function View({
                 </MenuItem>
 
                 {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-                  <MenuItem onClick={openVerifyIdentity}>
-                    <Icon remixName="ri-pass-valid-line" size={20} />
-                    <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
-                  </MenuItem>
+                  <>
+                    <MenuItem onClick={openVerifyIdentity}>
+                      <Icon remixName="ri-pass-valid-line" size={20} />
+                      <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
+                    </MenuItem>
+                    <MenuItem onClick={openVerifyCompany}>
+                      <Icon remixName="ri-pass-valid-line" size={20} />
+                      <div className="grow">{T("navbar.profile.verifyCompany")}</div>
+                    </MenuItem>
+                  </>
                 ) : null}
 
                 <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />

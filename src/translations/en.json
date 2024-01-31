@@ -412,7 +412,8 @@
       "title": "Your account",
       "publicProfile": "Public profile",
       "payoutInfo": "Payout information",
-      "verifyIdentity": "Verify identity"
+      "verifyIdentity": "Verify identity",
+      "verifyCompany": "Verify company"
     },
     "rewards": "Rewards",
     "projects": "Projects",

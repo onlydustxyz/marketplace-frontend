@@ -164,8 +164,7 @@ function createAccessToken(externalUserId, levelName = "basic-kyc-level", ttlInS
 // 4) Getting access tokens for SDKs
 
 export async function POST(request: Request) {
-  const { userId: externalUserId } = await request.json();
-  const levelName = "basic-kyc-level";
+  const { userId: externalUserId, levelName = "basic-kyc-level" } = await request.json();
   console.log("External UserID: ", externalUserId);
 
   /*const applicantResponse = await axios(createApplicant(externalUserId, levelName))

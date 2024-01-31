@@ -2,7 +2,12 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
-import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import {
+  useStackContributorProfile,
+  useStackPayoutInfo,
+  useStackVerifyCompany,
+  useStackVerifyIdentity,
+} from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import Dot from "src/assets/icons/Dot";
@@ -39,6 +44,7 @@ export function ViewMobile({
   const [openContributorProfilePanel] = useStackContributorProfile();
   const [openPayoutInfo] = useStackPayoutInfo();
   const [openVerifyIdentity] = useStackVerifyIdentity();
+  const [openVerifyCompany] = useStackVerifyCompany();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { handleLogout } = useLogout();
@@ -142,16 +148,28 @@ export function ViewMobile({
                 </button>
 
                 {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-                  <button
-                    className="flex items-center gap-3 p-4"
-                    onClick={() => {
-                      setPanelOpen(false);
-                      openVerifyIdentity();
-                    }}
-                  >
-                    <Icon remixName="ri-pass-valid-line" size={20} />
-                    {T("navbar.profile.verifyIdentity")}
-                  </button>
+                  <>
+                    <button
+                      className="flex items-center gap-3 p-4"
+                      onClick={() => {
+                        setPanelOpen(false);
+                        openVerifyIdentity();
+                      }}
+                    >
+                      <Icon remixName="ri-pass-valid-line" size={20} />
+                      {T("navbar.profile.verifyIdentity")}
+                    </button>
+                    <button
+                      className="flex items-center gap-3 p-4"
+                      onClick={() => {
+                        setPanelOpen(false);
+                        openVerifyCompany();
+                      }}
+                    >
+                      <Icon remixName="ri-pass-valid-line" size={20} />
+                      {T("navbar.profile.verifyCompany")}
+                    </button>
+                  </>
                 ) : null}
 
                 <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />

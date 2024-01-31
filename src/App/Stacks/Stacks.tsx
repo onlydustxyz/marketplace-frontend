@@ -3,6 +3,7 @@ import { Link, generatePath } from "react-router-dom";
 import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
 import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
+import { VerifyCompanySidePanel } from "src/App/Stacks/VerifyCompanySidePanel/VerifyCompanySidePanel";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
@@ -27,6 +28,7 @@ export enum StackRoute {
   GithubWorkflowClaim = "github-workflow-claim",
   GithubWorkflowTutorial = "github-workflow-tutorial",
   VerifyIdentity = "verify-identity",
+  VerifyCompany = "verify-company",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -82,7 +84,10 @@ export const Stacks = () => {
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
       {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-        <RegisterStack name={StackRoute.VerifyIdentity}>{() => <VerifyIdentitySidePanel />}</RegisterStack>
+        <>
+          <RegisterStack name={StackRoute.VerifyIdentity}>{() => <VerifyIdentitySidePanel />}</RegisterStack>
+          <RegisterStack name={StackRoute.VerifyCompany}>{() => <VerifyCompanySidePanel />}</RegisterStack>
+        </>
       ) : null}
     </>
   );
@@ -94,6 +99,10 @@ export const useStackPayoutInfo = () => {
 
 export const useStackVerifyIdentity = () => {
   return useStackNavigation(StackRoute.VerifyIdentity);
+};
+
+export const useStackVerifyCompany = () => {
+  return useStackNavigation(StackRoute.VerifyCompany);
 };
 
 export const useStackProjecRewardAsLead = () => {
