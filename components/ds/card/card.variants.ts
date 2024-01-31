@@ -25,6 +25,9 @@ export const cardVariants = tv({
       heavy: "bg-card-background-heavy",
       base: "bg-card-background-base",
     },
+    clickable: {
+      true: "group relative z-[1] transition-all",
+    },
   },
   defaultVariants: {
     isFullWidth: true,

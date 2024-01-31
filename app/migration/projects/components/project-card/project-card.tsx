@@ -52,9 +52,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
 
   return (
     <Card
-      className={cn("transition", "relative w-full duration-300 ease-out", {
-        "bg-spaceBlue-900 hover:border-card-border-heavy hover:bg-card-background-solidHeavy hover:ease-in":
-          !isErrorVariant,
+      className={cn("relative w-full", {
         "border-orange-500 bg-orange-900": isErrorVariant,
         "mt-3": isFirstHiringProject,
       })}
@@ -62,6 +60,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
       dataTestId="project-card"
       as="a"
       href={generatePath(RoutePaths.ProjectDetails, { projectKey: project.slug })}
+      background="base"
     >
       <Flex direction="row" className="gap-5">
         <div className="relative hidden flex-shrink-0 md:block">
