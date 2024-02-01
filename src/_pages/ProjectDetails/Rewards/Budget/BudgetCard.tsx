@@ -85,10 +85,7 @@ export function BudgetCard({
   return (
     <Card
       className={cn("group px-4 py-5 transition-all lg:px-4 lg:py-5", {
-        // "od-bg-budget bg-origin-border": type === CardTypes.Remaining,
-        // "bg-[length:150%_150%] !duration-500 !ease-in transition-all hover:bg-[100%_100%]":
-        "relative z-[1]": type === CardTypes.Remaining,
-        "overflow-hidden": type === CardTypes.Remaining,
+        "relative z-[1] overflow-hidden": type === CardTypes.Remaining,
         "cursor-pointer": !!onClick,
       })}
       onClick={onClick}
