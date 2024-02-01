@@ -7,10 +7,8 @@ import MigrationProviders from "./providers";
 export default function MigrationLayout({ children }: { children: ReactNode }) {
   return (
     <MigrationProviders>
-      <div className="fixed flex h-[calc(100dvh)] w-screen flex-col">
-        <Header />
-        {children}
-      </div>
+      <Header />
+      <div className="fixed flex h-[calc(100dvh)] w-screen flex-col">{children}</div>
     </MigrationProviders>
   );
 }

@@ -1,5 +1,4 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 import { RoutePaths } from "src/App";
@@ -32,10 +31,10 @@ export default function HeaderView({ menuItems, selectedMenuItem, impersonating 
     <>
       <div className="gap-3 bg-black px-6 py-4 font-walsheim text-xl text-neutral-400 xl:gap-8" data-testid="header">
         <div className="flex items-center justify-center gap-8 xl:justify-start">
-          <Link to={RoutePaths.Projects} className="flex w-fit items-center gap-3 ">
+          <a href={RoutePaths.Projects} className="flex w-fit items-center gap-3 ">
             <OnlyDustLogo />
             <OnlyDustTitle />
-          </Link>
+          </a>
 
           <div className="flex-1 items-center gap-8 xl:flex">
             {isXl && (

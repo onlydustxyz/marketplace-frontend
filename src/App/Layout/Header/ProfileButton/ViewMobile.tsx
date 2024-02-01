@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
 import { useStackContributorProfile, useStackPayoutInfo, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
@@ -78,8 +77,8 @@ export function ViewMobile({
             <>
               {githubUserId || hasRewards ? (
                 <div>
-                  <NavLink
-                    to={RoutePaths.Projects}
+                  <a
+                    href={RoutePaths.Projects}
                     onClick={() => setPanelOpen(false)}
                     className={({ isActive }) =>
                       cn("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
@@ -87,28 +86,28 @@ export function ViewMobile({
                   >
                     <Icon remixName="ri-folder-3-line" size={20} />
                     {T("navbar.projects")}
-                  </NavLink>
+                  </a>
 
                   {githubUserId ? (
-                    <NavLink
-                      to={RoutePaths.Contributions}
+                    <a
+                      href={RoutePaths.Contributions}
                       onClick={() => setPanelOpen(false)}
                       className={({ isActive }) => cn("flex items-center gap-3  p-4", { "bg-white/8": isActive })}
                     >
                       <Icon remixName="ri-stack-line" size={20} />
                       {T("navbar.contributions")}
-                    </NavLink>
+                    </a>
                   ) : null}
 
                   {hasRewards ? (
-                    <NavLink
-                      to={RoutePaths.Rewards}
+                    <a
+                      href={RoutePaths.Rewards}
                       onClick={() => setPanelOpen(false)}
                       className={({ isActive }) => cn("flex items-center gap-3  p-4", { "bg-white/8": isActive })}
                     >
                       <Icon remixName="ri-exchange-dollar-line" size={20} />
                       {T("navbar.rewards")}
-                    </NavLink>
+                    </a>
                   ) : null}
 
                   <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />

@@ -36,7 +36,7 @@ const ProjectDetailsInsights = lazy(() => import("src/_pages/ProjectDetails/Insi
 const ProjectDetailsEdit = lazy(() => import("src/_pages/ProjectDetails/ProjectEdition/ProjectEdition"));
 
 export enum RoutePaths {
-  Projects = "/",
+  Projects = "/migration/projects",
   ProjectCreation = "/p/create",
   ProjectDetails = "/p/:projectKey",
   ProjectDetailsEdit = "/p/:projectKey/edit",

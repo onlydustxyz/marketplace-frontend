@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { Link } from "react-router-dom";
 
 import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
@@ -11,7 +10,7 @@ interface MenuItemProps {
   state?: unknown;
   activeRegex?: RegExp;
 }
-export default function MenuItem({ path, link, state, children, activeRegex }: MenuItemProps) {
+export default function MenuItem({ path, link, children, activeRegex }: MenuItemProps) {
   const active = (activeRegex || new RegExp(`^${link}.*`)).test(path);
   return (
     <div
@@ -24,9 +23,7 @@ export default function MenuItem({ path, link, state, children, activeRegex }: M
       )}
     >
       <div className="bg-black py-1">
-        <Link to={link} state={state}>
-          {children}
-        </Link>
+        <a href={link}>{children}</a>
       </div>
       {active && (
         <img
