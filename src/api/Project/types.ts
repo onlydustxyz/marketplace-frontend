@@ -1,4 +1,7 @@
 import { components } from "src/__generated/api";
+import { Key } from "src/hooks/useIntl";
+
+import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 
 export namespace ProjectTypes {
   export enum Ownership {
@@ -20,6 +23,13 @@ export namespace ProjectTypes {
     StrongExpertise = "STRONG_EXPERTISE",
   }
 
+  export type TagsUnion = "BEGINNERS_WELCOME" | "FAST_PACED" | "LIKELY_TO_SEND_REWARDS" | "STRONG_EXPERTISE";
+
   export type Leader = components["schemas"]["RegisteredUserResponse"];
   export type EcoSystem = components["schemas"]["EcosystemResponse"];
+
+  export interface TagMapping {
+    icon: RemixIconsName;
+    tooltip: Key;
+  }
 }
