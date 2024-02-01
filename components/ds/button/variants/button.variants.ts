@@ -4,6 +4,7 @@ import { cn } from "src/utils/cn";
 
 export const buttonVariants = tv({
   base: cn(
+    // should be here because of prettier re-ordering
     "transition-all",
     "flex flex-row items-center justify-center font-walsheim font-medium outline-none drop-shadow-bottom-sm duration-300 ease-in"
   ),

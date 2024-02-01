@@ -1,7 +1,7 @@
-import { TProjects } from "app/migration/projects/types/projects.types";
+import { ProjectTypes } from "src/api/Project/types";
 
 export namespace TLeaders {
   export interface Props {
-    leaders: TProjects.Leader[];
+    leaders: ProjectTypes.Leader[];
   }
 }

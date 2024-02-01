@@ -30,7 +30,16 @@ export const Default: Story = {
     return (
       <StoryState initial="value1">
         {(state, setState) => (
-          <Toggle {...defaultProps} {...args} value={state} onChange={(value: boolean) => setState(value)} />
+          <div className="flex flex-row items-center justify-start gap-2">
+            <Toggle {...defaultProps} {...args} value={state} onChange={(value: boolean) => setState(value)} />
+            <Toggle
+              {...defaultProps}
+              {...args}
+              value={state}
+              onChange={(value: boolean) => setState(value)}
+              disabled={true}
+            />
+          </div>
         )}
       </StoryState>
     );

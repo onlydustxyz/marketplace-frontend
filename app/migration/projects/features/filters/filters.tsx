@@ -62,25 +62,23 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
   }
 
   return (
-    <>
-      <Card className="flex h-fit flex-col" background="base" border="medium" hasPadding={false}>
-        <Flex justifyContent="between" alignItems="center" className="border-b-1 border-card-border-medium px-6 py-4">
-          <Typography variant="title-s" translate={{ token: "v2.pages.projects.filters.title" }} />
-          <FiltersClearAll />
-        </Flex>
-        <div className="border-b-1 border-card-border-medium px-6 py-4">
-          <FiltersTags />
-        </div>
-        <div className="border-b-1 border-card-border-medium px-6 py-4">
-          <FiltersEcosystems />
-        </div>
-        <div className="border-b-1 border-card-border-medium px-6 py-4">
-          <FiltersTechnologies />
-        </div>
-        <div className="px-6 py-4">
-          <FiltersMine />
-        </div>
-      </Card>
-    </>
+    <Card className="flex h-fit flex-col" background="base" border="medium" hasPadding={false}>
+      <Flex justifyContent="between" alignItems="center" className="border-b-1 border-card-border-medium px-6 py-4">
+        <Typography variant="title-s" translate={{ token: "v2.pages.projects.filters.title" }} />
+        <FiltersClearAll />
+      </Flex>
+      <div className="border-b-1 border-card-border-medium px-6 py-4">
+        <FiltersTags />
+      </div>
+      <div className="border-b-1 border-card-border-medium px-6 py-4">
+        <FiltersEcosystems />
+      </div>
+      <div className="border-b-1 border-card-border-medium px-6 py-4">
+        <FiltersTechnologies />
+      </div>
+      <div className="px-6 py-4">
+        <FiltersMine />
+      </div>
+    </Card>
   );
 }

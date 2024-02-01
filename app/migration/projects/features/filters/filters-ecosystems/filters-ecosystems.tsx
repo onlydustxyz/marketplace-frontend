@@ -13,12 +13,10 @@ export function FiltersEcosystems() {
   };
 
   return (
-    <>
-      <Filter
-        selected={filters.values.ecosystemId}
-        ecosystems={filters.options.ecosystems}
-        onChange={handleEcosystemClick}
-      />
-    </>
+    <Filter
+      selected={filters.values.ecosystemId}
+      ecosystems={filters.options.ecosystems}
+      onChange={handleEcosystemClick}
+    />
   );
 }

@@ -1,4 +1,4 @@
-import { ChangeEvent, PropsWithChildren, useRef, useState } from "react";
+import { ChangeEvent, ReactElement, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -92,6 +92,6 @@ export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
   );
 }
 
-function ResponsiveOutlineWrapper({ children, isXl }: { isXl: boolean } & PropsWithChildren) {
-  return isXl ? <>{children}</> : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
+function ResponsiveOutlineWrapper({ children, isXl }: { isXl: boolean; children: ReactElement }) {
+  return isXl ? children : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
 }

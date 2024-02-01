@@ -3,7 +3,7 @@
     "title": "Technologies",
     "all": "All technologies",
     "some": "Technologies",
-    "zero": "technologies",
+    "zero": "Technologies",
     "empty": "No technologies found",
     "one": "__count__ technology",
     "many": "__count__ technologies"
@@ -12,7 +12,7 @@
     "title": "Ecosystems",
     "all": "All ecosystems",
     "some": "Ecosystems",
-    "zero": "ecosystems",
+    "zero": "Ecosystems",
     "empty": "No ecosystems found",
     "one": "__count__ ecosystem",
     "many": "__count__ ecosystems"

@@ -2,32 +2,18 @@ import { useContext } from "react";
 
 import { ProjectsContext } from "app/migration/projects/context/project.context";
 
+import { ProjectConstants } from "src/api/Project/constants";
 import { ProjectTypes } from "src/api/Project/types";
 
 import { IconTag } from "components/ds/icon-tag/icon-tag";
 import { Flex } from "components/layout/flex/flex";
-import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 
-type ProjectTag = "BEGINNERS_WELCOME" | "FAST_PACED" | "LIKELY_TO_SEND_REWARDS" | "STRONG_EXPERTISE";
+import tagMapping = ProjectConstants.tagMapping;
 
 interface ProjectTagsProps {
-  tags: ProjectTag[];
+  tags: ProjectTypes.TagsUnion[];
 }
-
-const tagIconMapping: Record<ProjectTag, RemixIconsName> = {
-  BEGINNERS_WELCOME: "ri-seedling-line" as RemixIconsName,
-  FAST_PACED: "ri-rocket-2-line" as RemixIconsName,
-  LIKELY_TO_SEND_REWARDS: "ri-hand-coin-line" as RemixIconsName,
-  STRONG_EXPERTISE: "ri-git-fork-line" as RemixIconsName,
-};
-
-const tagTooltipMapping: Record<ProjectTag, string> = {
-  BEGINNERS_WELCOME: "v2.pages.projects.tags.tooltips.beginnersWelcome",
-  FAST_PACED: "v2.pages.projects.tags.tooltips.fastPaced",
-  LIKELY_TO_SEND_REWARDS: "v2.pages.projects.tags.tooltips.likelyToSendRewards",
-  STRONG_EXPERTISE: "v2.pages.projects.tags.tooltips.strongExpertise",
-};
 
 export function ProjectTags({ tags }: ProjectTagsProps) {
   const { filters } = useContext(ProjectsContext);
@@ -36,9 +22,8 @@ export function ProjectTags({ tags }: ProjectTagsProps) {
       {tags.map(tag => (
         <IconTag
           key={tag}
-          remixName={tagIconMapping[tag]}
-          size="medium"
-          tooltipContent={<Translate token={tagTooltipMapping[tag]} />}
+          remixName={tagMapping[tag].icon}
+          tooltipContent={<Translate token={tagMapping[tag].tooltip} />}
           active={filters.values.tags.length > 1 ? filters.values.tags.includes(tag as ProjectTypes.Tags) : false}
         />
       ))}

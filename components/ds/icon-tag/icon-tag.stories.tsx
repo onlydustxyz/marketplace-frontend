@@ -5,19 +5,16 @@ import { TIconTag } from "components/ds/icon-tag/icon-tag.types";
 
 const defaultProps: TIconTag.Props = {
   remixName: "ri-seedling-line",
-  size: "medium",
   active: false,
 };
 
 const activeProps: TIconTag.Props = {
   remixName: "ri-rocket-2-line",
-  size: "medium",
   active: true,
 };
 
 const tooltipProps: TIconTag.Props = {
   remixName: "ri-hand-coin-line",
-  size: "medium",
   tooltipContent: "Tooltip content",
 };
 
