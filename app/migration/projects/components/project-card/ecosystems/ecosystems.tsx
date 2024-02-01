@@ -28,16 +28,17 @@ export function Ecosystems({ ecosystems }: TEcosystems.Props) {
   return (
     <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
       <EcosystemsLogos ecosystems={ecosystems} />
-      {ecosystems.length > 0 ? (
-        <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
+
+      <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
+        {ecosystems.length > 1 ? (
           <Typography
             variant="body-s"
             className="truncate"
             translate={{ token: "v2.features.ecosystems.counters", params: { count: ecosystems.length } }}
           />
-          {hasOnlyOneEcosystem}
-        </div>
-      ) : null}
+        ) : null}
+        {hasOnlyOneEcosystem}
+      </div>
     </div>
   );
 }
