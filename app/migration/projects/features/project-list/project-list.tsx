@@ -1,8 +1,8 @@
 import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useContext } from "react";
 
-import { ProjectCardLoading } from "app/migration/projects/components/project-card/project-card.loading";
 import { ProjectsContext } from "app/migration/projects/context/project.context";
+import { ProjectListLoading } from "app/migration/projects/features/project-list/project-list.loading";
 
 import { ShowMore } from "src/components/Table/ShowMore";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
@@ -15,14 +15,7 @@ export function ProjectList() {
   const { projects, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = useContext(ProjectsContext);
 
   if (isLoading) {
-    return (
-      <>
-        <ProjectCardLoading />
-        <ProjectCardLoading />
-        <ProjectCardLoading />
-        <ProjectCardLoading />
-      </>
-    );
+    return <ProjectListLoading />;
   }
 
   return (
