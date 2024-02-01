@@ -16,10 +16,10 @@
   },
   "tags": {
     "tooltips": {
-      "beginnersWelcome": "These projects are ready to take some time to onboard new developers.",
+      "beginnersWelcome": "These project are ready to take some time to onboard new developers.",
       "fastPaced": "These project have a rapid development speed. Time to merged PRs and Fast Code Review are their main metrics.",
-      "likelyToSendRewards": "These projects have continuously sent rewards to their contributors in the past.",
-      "strongExpertise": "These projects have some complex challenges to tackle. They are waiting for your help."
+      "likelyToSendRewards": "These project have continuously sent rewards to their contributors in the past.",
+      "strongExpertise": "These project have some complex challenges to tackle. They are waiting for your help."
     }
   },
   "addProject": {
@@ -47,10 +47,5 @@
   },
   "highlights": {
     "thumbnail": "Project logo"
-  },
-
-  "ecosystems": {
-    "many": "__count__ ecosystems",
-    "one": " "
   }
 }
