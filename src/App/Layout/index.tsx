@@ -1,8 +1,7 @@
-import { Suspense, lazy } from "react";
+import { lazy } from "react";
 import { Outlet, useMatch } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
-import Skeleton from "src/components/Skeleton";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
@@ -20,17 +19,17 @@ export default function Layout() {
 
   return (
     <div className="flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
-      {!hideHeader && (
-        <Suspense
-          fallback={
-            <div className="px-6 py-4 ">
-              <Skeleton variant="header" />
-            </div>
-          }
-        >
-          <Header />
-        </Suspense>
-      )}
+      {/*{!hideHeader && (*/}
+      {/*  <Suspense*/}
+      {/*    fallback={*/}
+      {/*      <div className="px-6 py-4 ">*/}
+      {/*        <Skeleton variant="header" />*/}
+      {/*      </div>*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    <Header />*/}
+      {/*  </Suspense>*/}
+      {/*)}*/}
       <Outlet />
       <Toaster />
       {/* Hide tooltips on mobile */}

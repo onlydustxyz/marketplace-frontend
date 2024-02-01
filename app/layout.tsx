@@ -21,8 +21,9 @@ export const metadata: Metadata = sharedMetadata;
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-[calc(100dvh)] bg-space-new bg-no-repeat">
         <Providers>
+          {/*<Header />*/}
           <div id="root">{children}</div>
           <PosthogIdentifyUser />
           <PosthogPageView />
