@@ -43,16 +43,17 @@ export function Leaders({ leaders }: TLeaders.Props) {
   return (
     <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
       <ContributorsAvatars contributors={leaders} />
-      {leaders.length > 0 ? (
-        <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
+
+      <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
+        {leaders.length > 1 ? (
           <Typography
             variant="body-s"
             className="truncate"
             translate={{ token: "v2.features.leaders.ledBy", params: { count: leaders.length } }}
           />
-          {hasOnlyOneLead}
-        </div>
-      ) : null}
+        ) : null}
+        {hasOnlyOneLead}
+      </div>
     </div>
   );
 }
