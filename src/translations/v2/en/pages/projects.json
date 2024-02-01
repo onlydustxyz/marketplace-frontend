@@ -1,16 +1,16 @@
 {
   "count": {
-    "many": "__count__ PROJECTS",
-    "one": "1 PROJECT",
-    "zero": "0 PROJECTS"
+    "many": "__count__ projects",
+    "one": "1 project",
+    "zero": "0 projects"
   },
   "filters": {
     "title": "Filter",
     "clear": "Clear all",
     "myProjectsLabel": "Show my projects only",
     "mobileButton": {
-      "zero": "Filter",
-      "one": "Filter (__count__)",
+      "zero": "Filters",
+      "one": "Filters (__count__)",
       "many": "Filters (__count__)"
     }
   },
@@ -37,7 +37,7 @@
   },
   "sorting": {
     "button": "Sort",
-    "label": "Sort by "
+    "label": "Sort by"
   },
   "visibility": {
     "private": {

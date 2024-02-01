@@ -12,6 +12,7 @@ export function SelectSort({ options, value, labelToken, onChange }: TSelectSort
   const handleSelectionChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onChange(e.target.value);
   };
+
   return (
     <Select
       items={options}
@@ -46,9 +47,7 @@ export function SelectSort({ options, value, labelToken, onChange }: TSelectSort
           <div className="flex flex-row items-center gap-2">
             <Icon customName="arrow" size={20} />
             <div className="flex flex-row items-center gap-1">
-              <span>
-                <Translate token={labelToken} />
-              </span>
+              <Translate as="span" token={labelToken} />
               <span className="text-spacePurple-500">{items[0]?.data?.label?.toLowerCase()}</span>
             </div>
           </div>

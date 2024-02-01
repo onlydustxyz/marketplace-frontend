@@ -1,5 +1,4 @@
-import { PopoverContent, PopoverTrigger } from "@nextui-org/react";
-import { Popover as NextPopover } from "@nextui-org/react";
+import { Popover as NextPopover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 
 import { TPopover } from "./popover.types";
 

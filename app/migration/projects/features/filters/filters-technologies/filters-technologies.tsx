@@ -13,16 +13,14 @@ export function FiltersTechnologies() {
   };
 
   return (
-    <>
-      <Filter
-        selected={filters.values.technologies.map(name => ({
-          label: name,
-          id: name,
-          value: name,
-        }))}
-        technologies={filters.options.technologies}
-        onChange={handleTechnologyClick}
-      />
-    </>
+    <Filter
+      selected={filters.values.technologies.map(name => ({
+        label: name,
+        id: name,
+        value: name,
+      }))}
+      technologies={filters.options.technologies}
+      onChange={handleTechnologyClick}
+    />
   );
 }

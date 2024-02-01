@@ -5,7 +5,6 @@ import {
   useResetStorage,
 } from "src/_pages/ProjectCreation/hooks/useProjectCreationStorage";
 import { ProjectCreationSteps } from "src/_pages/ProjectCreation/types/ProjectCreationSteps";
-import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
 import { Translate } from "components/layout/translate/translate";
@@ -28,7 +27,7 @@ export function AddProjectModal({ startProjectCreation }: { startProjectCreation
   };
 
   return (
-    <div className={cn("w-60")}>
+    <div className="w-60">
       <div className="flex flex-col items-center gap-2 px-4 text-center">
         <Typography
           variant="title-s"
