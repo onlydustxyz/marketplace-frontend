@@ -70,6 +70,7 @@ export function BudgetCard({
     if (filteredCurrencies && (type === CardTypes.Remaining || type === CardTypes.AmountSpent)) {
       return (
         <AvailableConversion
+          sizeClassName="h-6 w-6"
           currencies={filteredCurrencies.map(c => ({
             currency: c,
             amount: undefined,
@@ -116,7 +117,9 @@ export function BudgetCard({
         </div>
 
         <div className="flex flex-wrap items-baseline justify-between font-belwe text-2xl text-greyscale-50">
-          <div>{getContent(type, budget, rewardedContributorsCount, sentRewards)}</div>
+          <div className="flex flex-row flex-wrap items-baseline justify-between">
+            {getContent(type, budget, rewardedContributorsCount, sentRewards)}
+          </div>
           <div>{showFilteredCurrencies}</div>
         </div>
       </div>

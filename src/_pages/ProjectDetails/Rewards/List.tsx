@@ -14,6 +14,7 @@ import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
+import { Currency } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { EmptyState } from "components/layout/placeholders/empty-state";
@@ -24,7 +25,6 @@ import { EditProjectButton } from "../components/EditProjectButton";
 import { RewardProjectButton } from "../components/RewardProjectButton";
 import { Budget } from "./Budget/Budget";
 import { FilterQueryParams, Filters, ProjectRewardsFilter, ProjectRewardsFilterRef } from "./Filter";
-import { Currency } from "src/types";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
@@ -141,7 +141,7 @@ const RewardList: React.FC = () => {
         <Skeleton variant="projectRewards" />
       ) : (
         <>
-          <Budget {...budget} filteredCurrencies={getFilteredCurrencies} />
+          {project ? <Budget {...budget} filteredCurrencies={getFilteredCurrencies} projectId={project.id} /> : null}
           <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
             <div className="w-full">
               {(project && rewards?.length > 0) || (hasActiveFilters && project) ? (
