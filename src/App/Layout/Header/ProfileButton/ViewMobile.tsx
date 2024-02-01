@@ -147,7 +147,7 @@ export function ViewMobile({
                       className="flex items-center gap-3 p-4"
                       onClick={() => {
                         setPanelOpen(false);
-                        openVerify({ userId: 456, levelName: "basic-kyc-level" });
+                        openVerify({ levelName: "basic-kyc-level" });
                       }}
                     >
                       <Icon remixName="ri-pass-valid-line" size={20} />
@@ -157,7 +157,7 @@ export function ViewMobile({
                       className="flex items-center gap-3 p-4"
                       onClick={() => {
                         setPanelOpen(false);
-                        openVerify({ userId: 456, levelName: "basic-kyb-level" });
+                        openVerify({ levelName: "basic-kyb-level" });
                       }}
                     >
                       <Icon remixName="ri-pass-valid-line" size={20} />

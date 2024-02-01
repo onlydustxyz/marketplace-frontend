@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck - pass build
 import SumsubWebSdk from "@sumsub/websdk-react";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useEffect, useState } from "react";
 
 const config = {
@@ -168,22 +169,22 @@ function errorHandler(...args) {
 }
 
 interface Props {
-  userId: string;
   levelName: "basic-kyb-level" | "basic-kyc-level";
 }
 
-export function VerifySidePanel({ userId, levelName }: Props) {
+export function VerifySidePanel({ levelName }: Props) {
+  const { user } = useCurrentUser();
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    if (userId) {
-      fetch("/api/sumsub-token", { method: "POST", body: JSON.stringify({ userId: 1234, levelName }) }).then(res => {
+    if (user) {
+      fetch("/api/sumsub-token", { method: "POST", body: JSON.stringify({ userId: user.id, levelName }) }).then(res => {
         res.json().then(({ token }) => {
           setToken(token);
         });
       });
     }
-  }, [userId]);
+  }, [user]);
 
   return token ? (
     <SumsubWebSdk

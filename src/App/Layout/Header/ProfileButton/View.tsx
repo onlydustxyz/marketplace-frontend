@@ -129,11 +129,11 @@ export function View({
 
                 {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
                   <>
-                    <MenuItem onClick={() => openVerify({ userId: 456, levelName: "basic-kyc-level" })}>
+                    <MenuItem onClick={() => openVerify({ levelName: "basic-kyc-level" })}>
                       <Icon remixName="ri-pass-valid-line" size={20} />
                       <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
                     </MenuItem>
-                    <MenuItem onClick={() => openVerify({ userId: 456, levelName: "basic-kyb-level" })}>
+                    <MenuItem onClick={() => openVerify({ levelName: "basic-kyb-level" })}>
                       <Icon remixName="ri-pass-valid-line" size={20} />
                       <div className="grow">{T("navbar.profile.verifyCompany")}</div>
                     </MenuItem>
