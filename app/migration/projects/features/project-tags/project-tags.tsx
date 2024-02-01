@@ -23,7 +23,6 @@ export function ProjectTags({ tags }: ProjectTagsProps) {
         <IconTag
           key={tag}
           remixName={tagMapping[tag].icon}
-          size="medium"
           tooltipContent={<Translate token={tagMapping[tag].tooltip} />}
           active={filters.values.tags.length > 1 ? filters.values.tags.includes(tag as ProjectTypes.Tags) : false}
         />
