@@ -34,7 +34,7 @@ export function Leaders({ leaders }: TLeaders.Props) {
     return (
       <div className="flex flex-row items-center gap-1 text-snow">
         <div className="od-text-body-s flex flex-row gap-1 truncate whitespace-nowrap">
-          <Translate token="v2.features.leaders.noLed" />
+          <Translate token="v2.features.leaders.notLed" />
         </div>
       </div>
     );
