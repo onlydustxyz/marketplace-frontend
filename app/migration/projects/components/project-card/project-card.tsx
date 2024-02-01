@@ -1,10 +1,12 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { Ecosystems } from "app/migration/projects/components/project-card/ecosystems/ecosystems";
 import { ProjectTags } from "app/migration/projects/features/project-tags/project-tags";
 
+import { ProjectTypes } from "src/api/Project/types";
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
+import { usePosthog } from "src/hooks/usePosthog";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
@@ -21,15 +23,38 @@ import { Technologies } from "./technologies/technologies";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
-  const { isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
+  const { capture } = usePosthog();
+  const {
+    isInvitedAsProjectLead,
+    isMissingGithubAppInstallation,
+    visibility,
+    name,
+    slug,
+    logoUrl,
+    tags,
+    shortDescription,
+    leaders,
+    contributorCount,
+    ecosystems,
+    technologies,
+  } = project;
+
+  useEffect(() => {
+    capture("project_list_viewed", {
+      technologies,
+      ecosystems: ecosystems.map(({ name }) => name),
+      ownership: isUserProjectLead ? ProjectTypes.Ownership.Mine : ProjectTypes.Ownership.All,
+    });
+  }, [isUserProjectLead, technologies, ecosystems]);
+
   const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
-  const isPrivate = project.visibility === "PRIVATE";
+  const isPrivate = visibility === "PRIVATE";
 
   const InviteBanner = useMemo(() => {
-    if (project.isInvitedAsProjectLead) {
+    if (isInvitedAsProjectLead) {
       return (
         <ProjectLeadInvitationBanner
-          projectName={project.name}
+          projectName={name}
           on="cards"
           size={"s"}
           btnLabelToken="v2.features.banners.projectLeadInvitation.card.view"
@@ -41,8 +66,8 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   }, [project]);
 
   const MissingGithubBanner = useMemo(() => {
-    if (isUserProjectLead && project.isMissingGithubAppInstallation) {
-      return <ProjectMissingGithubBanner slug={project.slug} />;
+    if (isUserProjectLead && isMissingGithubAppInstallation) {
+      return <ProjectMissingGithubBanner slug={slug} />;
     }
 
     return null;
@@ -57,13 +82,13 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
       border={isInvitedAsProjectLead ? "multiColor" : "medium"}
       dataTestId="project-card"
       as="a"
-      href={`/p/${project.slug}`}
+      href={`/p/${slug}`}
       background="base"
     >
       <Flex direction="row" className="gap-5">
         <div className="relative hidden flex-shrink-0 md:block">
           <Thumbnail
-            src={project.logoUrl}
+            src={logoUrl}
             alt={T("project.highlights.thumbnail")}
             size="xl"
             className="mt-1"
@@ -79,7 +104,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           <Flex direction="row" className="items-center gap-2 md:items-start">
             <div className="relative block flex-shrink-0 md:hidden">
               <Thumbnail
-                src={project.logoUrl}
+                src={logoUrl}
                 alt={T("v2.pages.projects.highlights.thumbnail")}
                 size="l"
                 className="mt-1"
@@ -92,18 +117,18 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
               )}
             </div>
             <div className="flex-1 truncate font-belwe text-2xl font-medium">{project.name}</div>
-            {project.tags?.length ? <ProjectTags tags={project.tags} /> : null}
+            {tags?.length ? <ProjectTags tags={tags} /> : null}
           </Flex>
-          <Summary shortDescription={project.shortDescription} />
+          <Summary shortDescription={shortDescription} />
           <div className="mt-5 flex flex-row flex-wrap items-center gap-4">
-            <Leaders leaders={project.leaders} />
-            <ContributorsCounter count={project.contributorCount} />
-            <Ecosystems ecosystems={project.ecosystems} />
-            <Technologies technologies={project.technologies} />
+            <Leaders leaders={leaders} />
+            <ContributorsCounter count={contributorCount} />
+            <Ecosystems ecosystems={ecosystems} />
+            <Technologies technologies={technologies} />
           </div>
         </Flex>
       </Flex>
-      {project.isInvitedAsProjectLead || project.isMissingGithubAppInstallation ? (
+      {isInvitedAsProjectLead || isMissingGithubAppInstallation ? (
         <Flex direction="col" className="mt-5 gap-5">
           {InviteBanner}
           {MissingGithubBanner}
