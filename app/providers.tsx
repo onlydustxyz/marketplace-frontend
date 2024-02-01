@@ -20,6 +20,8 @@ const SidePanelProvider = dynamic(() => import("src/hooks/useSidePanel").then(mo
   ssr: false,
 });
 
+const BrowserRouter = dynamic(() => import("react-router-dom").then(mod => mod.BrowserRouter), { ssr: false });
+
 export default function Providers({ children }: PropsWithChildren) {
   return (
     <PosthogProvider>
@@ -28,11 +30,13 @@ export default function Providers({ children }: PropsWithChildren) {
           <IntlProvider>
             <QueryProvider>
               <NextUIProvider>
-                <StackProvider>
-                  <SidePanelStackProvider>
-                    <SidePanelProvider>{children}</SidePanelProvider>
-                  </SidePanelStackProvider>
-                </StackProvider>
+                <BrowserRouter>
+                  <StackProvider>
+                    <SidePanelStackProvider>
+                      <SidePanelProvider>{children}</SidePanelProvider>
+                    </SidePanelStackProvider>
+                  </StackProvider>
+                </BrowserRouter>
               </NextUIProvider>
             </QueryProvider>
           </IntlProvider>

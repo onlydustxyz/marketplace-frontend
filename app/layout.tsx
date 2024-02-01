@@ -11,6 +11,7 @@ import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import config from "src/config";
 
+import { NavigationReactEvents } from "components/features/navigation/navigation-react";
 import { PosthogIdentifyUser } from "components/features/posthog/components/posthog-identify-user";
 import { PosthogPageView } from "components/features/posthog/components/posthog-page-view";
 
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div id="root">{children}</div>
           <PosthogIdentifyUser />
           <PosthogPageView />
+          <NavigationReactEvents />
         </Providers>
       </body>
       {config.GTM_ID ? <GoogleTagManager gtmId={config.GTM_ID} /> : null}
