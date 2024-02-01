@@ -1,3 +1,5 @@
+import { components } from "src/__generated/api";
+
 export namespace ProjectTypes {
   export enum Ownership {
     All = "All",
@@ -17,4 +19,7 @@ export namespace ProjectTypes {
     LikelyToSendRewards = "LIKELY_TO_SEND_REWARDS",
     StrongExpertise = "STRONG_EXPERTISE",
   }
+
+  export type Leader = components["schemas"]["RegisteredUserResponse"];
+  export type EcoSystem = components["schemas"]["EcosystemResponse"];
 }
