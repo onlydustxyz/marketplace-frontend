@@ -23,7 +23,7 @@ export default function ProjectsPage() {
         <ProjectSearch />
       </div>
       <Flex className="relative w-full gap-6" direction="row">
-        <div className="shrink-0 basis-[356px] lg:block">
+        <div className="hidden shrink-0 basis-[356px] lg:block">
           <Flex className="sticky top-3 z-10 w-full gap-3" direction="col">
             <div className="w-full self-start">
               <ProjectsFilters showOn="desktop" />
