@@ -5,7 +5,7 @@
     "success": "Congratulations! You’re now a project lead on __projectName__",
     "prompt": "You've been promoted to Project lead on __projectName__",
     "card": {
-      "prompt": "You've been promoted to Project Lead",
+      "prompt": "You've been promoted to Project lead",
       "view": "View invite"
     }
   },
