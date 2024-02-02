@@ -138,16 +138,19 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
           </div>
           <div className="pt-6">
             <Card border="light" className="od-bg-budget flex flex-row items-center justify-between border-0">
-              <Typography variant={"title-m"} as={"p"}>
-                Tile
-              </Typography>
+              <Typography
+                variant={"title-m"}
+                as={"p"}
+                translate={{ token: "project.details.remainingBudget.budget.panelTotal" }}
+              />
               <Typography variant={"body-l-bold"} as={"p"}>
                 {total === "N/A"
                   ? total
-                  : formatMoneyAmount({
+                  : `${formatMoneyAmount({
                       amount: total,
                       currency: Currency.USD,
-                    })}
+                      showCurrency: false,
+                    })} ${Currency.USD}`}
               </Typography>
             </Card>
           </div>
