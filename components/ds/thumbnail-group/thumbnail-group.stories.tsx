@@ -24,7 +24,7 @@ const defaultProps: TThumbnailGroup.Props = {
 
 const meta: Meta<typeof ThumbnailGroup> = {
   component: ThumbnailGroup,
-  title: "Design system/ThumbnailGroup",
+  title: "Design system/Thumbnails/ThumbnailGroup",
   tags: ["autodocs"],
 };
 

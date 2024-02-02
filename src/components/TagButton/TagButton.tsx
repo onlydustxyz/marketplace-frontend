@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes, ComponentProps } from "react";
 import { MouseEvent } from "react";
 
 import Tag from "src/components/Tag";
+import { cn } from "src/utils/cn";
 
 export default function TagButton({
   children,
@@ -16,7 +17,10 @@ export default function TagButton({
   return (
     <Tag
       as={as}
-      className="text-spacePurple-500 duration-200 ease-out transition-all hover:scale-[98%] hover:border-spacePurple-500 hover:text-purple-500"
+      className={cn(
+        "transition-all",
+        "text-spacePurple-500 duration-200 ease-out hover:scale-[98%] hover:border-spacePurple-500 hover:text-purple-500"
+      )}
       onClick={handleClick}
       {...rest}
     >

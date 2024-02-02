@@ -8,6 +8,7 @@ export namespace TCard {
 
   export interface Props extends PropsWithChildren, Variants {
     as?: ElementType;
+    href?: string;
     className?: string;
     dataTestId?: string;
     onClick?: () => void;
