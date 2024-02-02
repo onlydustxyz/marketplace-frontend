@@ -58,7 +58,7 @@ export function SafeProjectsPage() {
 export default function ProjectsPage() {
   return (
     <ProjectsContextProvider>
-      <div className="od-space-background h-full w-full overflow-y-auto bg-space bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 lg:rounded-3xl">
+      <div className="od-space-background h-full w-full overflow-y-auto bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 lg:rounded-3xl">
         <div className="flex max-w-7xl flex-col gap-6 px-4 py-4 md:mx-auto md:px-12 xl:pb-8 xl:pt-12 ">
           <SafeProjectsPage />
         </div>
