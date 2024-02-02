@@ -1,12 +1,10 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import { Ecosystems } from "app/migration/projects/components/project-card/ecosystems/ecosystems";
 import { ProjectTags } from "app/migration/projects/features/project-tags/project-tags";
 
-import { ProjectTypes } from "src/api/Project/types";
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
-import { usePosthog } from "src/hooks/usePosthog";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
@@ -23,7 +21,6 @@ import { Technologies } from "./technologies/technologies";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
-  const { capture } = usePosthog();
   const {
     isInvitedAsProjectLead,
     isMissingGithubAppInstallation,
@@ -38,14 +35,6 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
     ecosystems,
     technologies,
   } = project;
-
-  useEffect(() => {
-    capture("project_list_viewed", {
-      technologies,
-      ecosystems: ecosystems.map(({ name }) => name),
-      ownership: isUserProjectLead ? ProjectTypes.Ownership.Mine : ProjectTypes.Ownership.All,
-    });
-  }, [isUserProjectLead, technologies, ecosystems]);
 
   const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
   const isPrivate = visibility === "PRIVATE";

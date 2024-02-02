@@ -1,18 +1,30 @@
 import { useCurrentUser } from "hooks/users/useCurrentUser";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { ProjectsContext } from "app/migration/projects/context/project.context";
 import { ProjectListLoading } from "app/migration/projects/features/project-list/project-list.loading";
 
+import { ProjectTypes } from "src/api/Project/types";
 import { ShowMore } from "src/components/Table/ShowMore";
+import { usePosthog } from "src/hooks/usePosthog";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 
 import { ProjectCard } from "../../components/project-card/project-card";
 
 export function ProjectList() {
   const { githubUserId } = useCurrentUser();
+  const { capture } = usePosthog();
 
-  const { projects, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = useContext(ProjectsContext);
+  const { projects, filters, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = useContext(ProjectsContext);
+
+  useEffect(() => {
+    capture("project_list_viewed", {
+      technologies: filters.values.technologies,
+      ecosystems: filters.values.ecosystemId.map(({ label }) => label),
+      ownership: filters.values.mine ? ProjectTypes.Ownership.Mine : ProjectTypes.Ownership.All,
+      tags: filters.values.tags,
+    });
+  }, [filters]);
 
   if (isLoading) {
     return <ProjectListLoading />;
