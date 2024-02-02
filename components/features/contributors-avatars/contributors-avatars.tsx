@@ -1,19 +1,36 @@
-import { TooltipPosition, withTooltip } from "src/components/Tooltip";
+import isDefined from "src/utils/isDefined";
 
 import { ThumbnailGroup } from "components/ds/thumbnail-group/thumbnail-group";
+import { Tooltip } from "components/ds/tooltip/tooltip";
+import { Contributor } from "components/features/contributor/contributor";
 
 import { TContributorsAvatars } from "./contributors-avatars.types";
 
 export function ContributorsAvatars({ contributors, ...variant }: TContributorsAvatars.Props) {
-  const formatUserNames = () => contributors.map(contributor => contributor.login || "").join(", ");
+  function contributorsContent() {
+    return (
+      <div className="flex flex-row flex-wrap items-center gap-4 text-snow">
+        {contributors
+          .filter(
+            contributor =>
+              isDefined(contributor.githubUserId) && isDefined(contributor.login) && isDefined(contributor.avatarUrl)
+          )
+          .map(contributor => (
+            <Contributor
+              key={contributor.githubUserId}
+              githubUserId={contributor.githubUserId}
+              login={contributor.login}
+              avatarUrl={contributor.avatarUrl}
+              isRegistered={false}
+              clickable
+            />
+          ))}
+      </div>
+    );
+  }
 
   return (
-    <div
-      {...withTooltip(formatUserNames(), {
-        visible: contributors.length > 1,
-        position: TooltipPosition.Bottom,
-      })}
-    >
+    <Tooltip content={contributorsContent()}>
       <ThumbnailGroup
         thumbnails={contributors.map(contributor => ({
           src: contributor.avatarUrl
@@ -24,6 +41,6 @@ export function ContributorsAvatars({ contributors, ...variant }: TContributorsA
         size="xs"
         {...variant}
       />
-    </div>
+    </Tooltip>
   );
 }

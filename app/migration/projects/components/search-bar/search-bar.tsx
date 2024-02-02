@@ -1,13 +1,13 @@
-import { ChangeEvent, PropsWithChildren, useRef, useState } from "react";
+import { ChangeEvent, ReactElement, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useMediaQuery } from "usehooks-ts";
+
+import { TSearchBar } from "app/migration/projects/components/search-bar/search-bar.types";
 
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
 import { Icon } from "components/layout/icon/icon";
-
-import { TSearchBar } from "./search-bar.types";
 
 export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -49,7 +49,6 @@ export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
         className={cn("relative z-10 flex items-center justify-center rounded-full", {
           "before:absolute before:-z-10 before:h-screen before:w-screen before:scale-x-[8] before:bg-multi-color-gradient before:md:scale-x-[30]":
             !inputFocus,
-          "overflow-hidden": !isXl,
         })}
       >
         <ResponsiveOutlineWrapper isXl={isXl}>
@@ -93,6 +92,6 @@ export function SearchBar({ value, onChange, placeholder }: TSearchBar.Props) {
   );
 }
 
-function ResponsiveOutlineWrapper({ children, isXl }: { isXl: boolean } & PropsWithChildren) {
-  return isXl ? <>children</> : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
+function ResponsiveOutlineWrapper({ children, isXl }: { isXl: boolean; children: ReactElement }) {
+  return isXl ? children : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
 }

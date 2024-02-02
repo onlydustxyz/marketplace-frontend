@@ -14,6 +14,10 @@ export function ProjectSearch() {
   };
 
   return (
-    <SearchBar value={filters.values.search} onChange={onSearchChange} placeholder={T("searchBar.placeholderShort")} />
+    <SearchBar
+      value={filters.values.search}
+      onChange={onSearchChange}
+      placeholder={T("v2.pages.projects.searchBar.placeholder")}
+    />
   );
 }

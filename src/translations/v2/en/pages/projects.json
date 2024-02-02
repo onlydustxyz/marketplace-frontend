@@ -1,0 +1,51 @@
+{
+  "count": {
+    "many": "__count__ projects",
+    "one": "1 project",
+    "zero": "0 projects"
+  },
+  "filters": {
+    "title": "Filter",
+    "clear": "Clear all",
+    "myProjectsLabel": "Show my projects only",
+    "mobileButton": {
+      "zero": "Filters",
+      "one": "Filters (__count__)",
+      "many": "Filters (__count__)"
+    }
+  },
+  "tags": {
+    "tooltips": {
+      "beginnersWelcome": "These project are ready to take some time to onboard new developers.",
+      "fastPaced": "These project have a rapid development speed. Time to merged PRs and Fast Code Review are their main metrics.",
+      "likelyToSendRewards": "These project have continuously sent rewards to their contributors in the past.",
+      "strongExpertise": "These project have some complex challenges to tackle. They are waiting for your help."
+    }
+  },
+  "addProject": {
+    "label": "Managing an open source project?",
+    "btn": "Submit",
+    "resumeModal": {
+      "title": "Resume project creation?",
+      "description": "If you decide to start over all your previous changes will be lost.",
+      "restartBtn": "Start over",
+      "resumeBtn": "Resume"
+    }
+  },
+  "searchBar": {
+    "placeholder": "Search project title & description"
+  },
+  "sorting": {
+    "button": "Sort",
+    "label": "Sort by"
+  },
+  "visibility": {
+    "private": {
+      "tooltip": "Private project · only visible to you",
+      "name": "Private"
+    }
+  },
+  "highlights": {
+    "thumbnail": "Project logo"
+  }
+}
