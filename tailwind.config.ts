@@ -468,10 +468,12 @@ const config: Config = withTV({
           borderColor: theme("colors.card.border.medium"),
           background: theme("colors.card.background.medium"),
         },
-        ".card-heavy": {
-          border: "1px solid",
-          borderColor: theme("colors.card.border.heavy"),
-          background: theme("colors.card.background.heavy"),
+        ".od-space-background": {
+          background: theme("backgroundImage.space-new"),
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+          backgroundRepeat: "no-repeat",
         },
       });
     }),

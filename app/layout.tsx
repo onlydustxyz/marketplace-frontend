@@ -5,7 +5,6 @@ import "remixicon/fonts/remixicon.css";
 
 import Providers from "app/providers";
 
-import Header from "src/App/Layout/Header";
 import "src/assets/css/index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/Belwe/stylesheet.css";
@@ -22,13 +21,10 @@ export const metadata: Metadata = sharedMetadata;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="bg-space-new bg-cover bg-fixed bg-center bg-no-repeat">
-      <body className="min-h-[calc(100dvh)]">
+    <html lang="en">
+      <body>
         <Providers>
-          <div id="root">
-            <Header />
-            {children}
-          </div>
+          <div id="root">{children}</div>
           <PosthogIdentifyUser />
           <PosthogPageView />
           <NavigationReactEvents />
