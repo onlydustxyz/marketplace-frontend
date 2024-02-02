@@ -7,6 +7,7 @@ import { ProfileHeader } from "./features/header/header";
 // TODO: Recreate FieldInput in new components to change icon colors and textarea
 // TODO: Add zod
 // TODO: Recreate FieldImage in new components
+// TODO: Change ProfileHeader by the component
 export default function ProfilePage() {
   return (
     <>
