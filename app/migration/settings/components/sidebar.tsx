@@ -6,26 +6,28 @@ import { usePathname } from "next/navigation";
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import { useIntl } from "src/hooks/useIntl";
 
+import { Flex } from "components/layout/flex/flex";
 import { MenuItem } from "components/layout/sidebar/menu-item/menu-item";
 import { Sidebar as LayoutSidebar } from "components/layout/sidebar/sidebar";
+import { Typography } from "components/layout/typography/typography";
 
 export function Sidebar() {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
   const { T } = useIntl();
   const pathname = usePathname();
 
   const menuItems = [
     {
-      label: T("settings.sidebar.publicProfile"),
-      path: "/settings/profile",
+      label: T("v2.pages.settings.sidebar.publicProfile"),
+      path: "/migration/settings/profile",
     },
     {
-      label: T("settings.sidebar.payoutPreferences"),
-      path: "/settings/payout",
+      label: T("v2.pages.settings.sidebar.payoutPreferences"),
+      path: "/migration/settings/payout",
     },
     {
-      label: T("settings.sidebar.verifyAccount"),
-      path: "/settings/verify",
+      label: T("v2.pages.settings.sidebar.verifyAccount"),
+      path: "/migration/settings/verify",
     },
   ];
 
@@ -35,10 +37,19 @@ export function Sidebar() {
       mobileHeader={<div>Mobile header</div>}
     >
       {({ closePanel }) => (
-        <div className="flex w-full flex-col gap-4 divide-neutral-700 xl:gap-6 xl:divide-y">
-          <div>{/* TODO user card */}</div>
+        <div className="flex w-full flex-col gap-4 xl:gap-6">
+          <Flex
+            alignItems="center"
+            className="gap-4 rounded-xl border-1 border-greyscale-50/8 bg-white/2 p-3 shadow-light"
+          >
+            <img src={user?.picture} className="h-8 w-8 rounded-xl border-2 border-greyscale-50/12" />
 
-          <div className="align-start flex flex-col gap-2 pb-2 pt-3 text-xl font-medium">
+            <Typography variant="body-l-bold" className="truncate">
+              {user?.nickname}
+            </Typography>
+          </Flex>
+
+          <div className="align-start flex flex-col gap-4 text-xl font-medium">
             {menuItems.map(({ path, label }) => (
               <MenuItem key={path} href={path} label={label} onClick={closePanel} isActive={pathname === path} />
             ))}

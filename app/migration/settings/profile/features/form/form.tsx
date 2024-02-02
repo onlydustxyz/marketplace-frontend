@@ -9,13 +9,15 @@ import { useIntl } from "src/hooks/useIntl";
 
 import { Flex } from "components/layout/flex/flex";
 
+import { FormBottomBar } from "./bottom-bar/bottom-bar";
 import { FormContact } from "./contact/contact";
 import { TProfileForm } from "./form.types";
-import { UProfileForm, formatData } from "./form.utils";
+import { formatData } from "./form.utils";
 import { FormInformations } from "./informations/informations";
 import { FormTechnologies } from "./technologies/technologies";
 import { FormWeeklyAllocatedTime } from "./weekly-allocated-time/weekly-allocated-time";
 
+// TODO: BottomBar fixed
 export function ProfileForm() {
   const { T } = useIntl();
 
@@ -27,8 +29,7 @@ export function ProfileForm() {
     mode: "onChange",
   });
 
-  const { handleSubmit, formState, control, getValues, reset } = formMethods;
-  const { isDirty, isValid } = formState;
+  const { handleSubmit, reset } = formMethods;
 
   useEffect(() => {
     if (data) {
@@ -56,7 +57,10 @@ export function ProfileForm() {
     },
   });
 
-  const onSubmit = (formData: TProfileForm.Data) => updateUserProfileInfo(UProfileForm.mapFormDataToSchema(formData));
+  const onSubmit = (formData: TProfileForm.Data) => {
+    // updateUserProfileInfo(UProfileForm.mapFormDataToSchema(formData));
+    console.log(formData);
+  };
 
   return (
     <FormProvider {...formMethods}>
@@ -67,6 +71,8 @@ export function ProfileForm() {
           <FormTechnologies />
           <FormWeeklyAllocatedTime />
         </Flex>
+
+        <FormBottomBar userProfilInformationIsPending={userProfilInformationIsPending} />
       </form>
     </FormProvider>
   );

@@ -1,5 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 
+import MeApi from "src/api/me";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { useIntl } from "src/hooks/useIntl";
@@ -13,6 +14,7 @@ import { TProfileForm } from "../form.types";
 import { BannerButton } from "./banner-button/banner-button";
 import { FormInformationsSection } from "./section/section";
 
+// TODO: Change rounded image
 export function FormInformations() {
   const { T } = useIntl();
   const { control, setValue } = useFormContext();
@@ -21,9 +23,21 @@ export function FormInformations() {
     setValue("cover", cover);
   };
 
+  const {
+    mutate: uploadProjectLogo,
+    isPending: loadingUploadLogo,
+    isSuccess: successUploadLogo,
+  } = MeApi.mutations.useUploadProfilePicture({
+    options: {
+      onSuccess: data => {
+        setValue("avatarUrl", data.url);
+      },
+    },
+  });
+
   return (
-    <Card>
-      <FormInformationsSection title="settings.publicProfile.informations.avatar">
+    <Card background="base">
+      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.avatar">
         <Controller
           name="avatarUrl"
           control={control}
@@ -33,17 +47,17 @@ export function FormInformations() {
               {...fieldState}
               placeholder={T("project.details.create.informations.form.fields.logo.placeholder")}
               max_size_mo={10}
-              // upload={{
-              //   mutate: uploadProjectLogo,
-              //   success: successUploadLogo,
-              //   loading: loadingUploadLogo,
-              // }}
+              upload={{
+                mutate: uploadProjectLogo,
+                success: successUploadLogo,
+                loading: loadingUploadLogo,
+              }}
             />
           )}
         />
       </FormInformationsSection>
 
-      <FormInformationsSection title="settings.publicProfile.informations.banner">
+      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.banner">
         <Controller
           name="cover"
           control={control}
@@ -73,7 +87,7 @@ export function FormInformations() {
         />
       </FormInformationsSection>
 
-      <FormInformationsSection title="settings.publicProfile.informations.location">
+      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.location">
         <Controller
           name="location"
           control={control}
@@ -87,7 +101,7 @@ export function FormInformations() {
         />
       </FormInformationsSection>
 
-      <FormInformationsSection title="settings.publicProfile.informations.bio">
+      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.bio">
         <Controller
           name="bio"
           control={control}
@@ -95,7 +109,7 @@ export function FormInformations() {
         />
       </FormInformationsSection>
 
-      <FormInformationsSection title="settings.publicProfile.informations.website" isLast>
+      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.website" isLast>
         <Controller
           name="website"
           control={control}

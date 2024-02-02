@@ -1,6 +1,7 @@
 "use client";
 
-import MeApi from "src/api/me";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
@@ -13,25 +14,22 @@ import { Typography } from "components/layout/typography/typography";
 // TODO: Change Button with link using the new library
 export function ProfileGithubAccount() {
   const { T } = useIntl();
-
-  const { data } = MeApi.queries.useGetMe({});
-
-  const { login, avatarUrl, email } = data || {};
+  const { user } = useAuth0();
 
   return (
-    <Card>
+    <Card background="base">
       <Flex direction="col" className="gap-5">
         <Flex direction="col" className="gap-1">
           <Typography
             variant="title-s"
             translate={{
-              token: "settings.publicProfile.githubAccount.title",
+              token: "v2.pages.settings.publicProfile.githubAccount.title",
             }}
           />
           <Typography
             variant="body-s"
             translate={{
-              token: "settings.publicProfile.githubAccount.subtitle",
+              token: "v2.pages.settings.publicProfile.githubAccount.subtitle",
             }}
             className="text-spaceBlue-200"
           />
@@ -39,16 +37,16 @@ export function ProfileGithubAccount() {
 
         <Flex alignItems="center" className="gap-3" justifyContent="between">
           <Flex alignItems="center" className="gap-3">
-            {avatarUrl && (
-              <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
+            {user?.picture && (
+              <img className="h-8 w-8 rounded-full" src={user?.picture} loading="lazy" alt={T("profile.avatar")} />
             )}
 
             <Flex direction="col">
               <Typography variant="title-s" className="text-sm leading-4">
-                {login}
+                {user?.nickname}
               </Typography>
               <Typography variant="body-s" className="text-spaceBlue-200">
-                {email}
+                {user?.email}
               </Typography>
             </Flex>
           </Flex>
@@ -56,7 +54,7 @@ export function ProfileGithubAccount() {
           <a href="https://github.com/settings/profile" target="_blank" rel="noopener noreferrer">
             <Button variant="secondary" size="s">
               <Icon remixName="ri-github-fill" />
-              <Translate token="settings.publicProfile.githubAccount.button" />
+              <Translate token="v2.pages.settings.publicProfile.githubAccount.button" />
             </Button>
           </a>
         </Flex>

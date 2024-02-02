@@ -11,11 +11,13 @@ export function SettingsHeader({ icon, title, subtitle, children }: TSettingsHea
       <Flex className="flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
         <Flex direction="col" className="gap-2">
           <Flex alignItems="center" className="gap-2">
-            <Icon remixName={icon} size={24} />
+            {icon ? <Icon remixName={icon} size={24} /> : null}
             <Typography variant="title-m" translate={{ token: title }} />
           </Flex>
+
           <Typography variant="body-s" translate={{ token: subtitle }} className="text-spaceBlue-200" />
         </Flex>
+
         <div>{children}</div>
       </Flex>
     </Card>

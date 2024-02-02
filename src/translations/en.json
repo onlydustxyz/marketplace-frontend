@@ -1507,28 +1507,5 @@
   },
   "filters": {
     "noResults": "No results"
-  },
-  "settings": {
-    "sidebar": {
-      "publicProfile": "Public profile",
-      "payoutPreferences": "Payout preferences",
-      "verifyAccount": "Verify account"
-    },
-    "publicProfile": {
-      "title": "Public profile",
-      "subtitle": "You can edit all your public information here.",
-      "githubAccount": {
-        "title": "Connected Github account",
-        "subtitle": "To change your GitHub username or email, edit your account and allow up to 24 hours for updates.",
-        "button": "Edit on Github"
-      },
-      "informations": {
-        "avatar": "Avatar",
-        "banner": "Banner",
-        "location": "Location",
-        "bio": "Bio",
-        "website": "Website"
-      }
-    }
   }
 }
