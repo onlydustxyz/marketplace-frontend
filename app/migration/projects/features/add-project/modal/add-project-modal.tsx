@@ -13,18 +13,18 @@ import { Typography } from "components/layout/typography/typography";
 export function AddProjectModal({ startProjectCreation }: { startProjectCreation(): void }) {
   const { reset: clearStorage } = useResetStorage();
 
-  const onCancel = () => {
+  function onCancel() {
     clearStorage();
     startProjectCreation();
-  };
+  }
 
-  const onResume = () => {
+  function onResume() {
     const actualStep = localStorage.getItem(STORAGE_KEY_CREATE_PROJECT_STEP);
     if (actualStep !== ProjectCreationSteps.ORGANIZATIONS) {
       localStorage.setItem(STORAGE_KEY_CREATE_PROJECT_STEP, JSON.stringify(ProjectCreationSteps.REPOSITORIES));
     }
     startProjectCreation();
-  };
+  }
 
   return (
     <div className="w-60">
