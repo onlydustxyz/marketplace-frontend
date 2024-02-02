@@ -1,7 +1,6 @@
 import { ProjectsActions } from "actions/Projects/projects.actions";
 import { UsersActions } from "actions/Users/users.actions";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 
 import { sharedMetadata } from "../shared-metadata";
 
@@ -74,13 +73,6 @@ export async function generateMetadata(props: { params: { slug: string[] } }): P
   }
 }
 
-export default function GenericLayout({ v1, projects }: { v1: React.ReactNode; projects: React.ReactNode }) {
-  const targetUrl = headers().get("x-url") || "";
-  const splitted = targetUrl.split("/").pop();
-
-  if (!splitted || splitted === "") {
-    return projects;
-  }
-
-  return v1;
+export default function GenericLayout({ children }: { children: React.ReactNode }) {
+  return children;
 }

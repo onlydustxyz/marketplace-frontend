@@ -1,6 +1,6 @@
 export const NextMigratedRoute = [
   {
-    pathName: "/",
-    nextPathName: "/",
+    pathName: "/migration/projects",
+    nextPathName: "/migration/projects",
   },
 ];

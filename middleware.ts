@@ -8,17 +8,4 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
-
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-url", request.url);
-
-  // You can also set request headers in NextResponse.rewrite
-  const response = NextResponse.next({
-    request: {
-      // New request headers
-      headers: requestHeaders,
-    },
-  });
-
-  return response;
 }
