@@ -19,6 +19,7 @@ export function Amount({ budget }: Amount) {
         currency: Currency.USD,
         showCurrency: false,
       })}`}
+      <span className="text-title-s">&nbsp;{Currency.USD}</span>
     </>
   );
 }

@@ -71,6 +71,7 @@ export function BudgetCard({
       return (
         <AvailableConversion
           sizeClassName="h-6 w-6"
+          numberCurencyToShow={filteredCurrencies.length > 3 ? 2 : 3}
           currencies={filteredCurrencies.map(c => ({
             currency: c,
             amount: undefined,

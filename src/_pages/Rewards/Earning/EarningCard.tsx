@@ -1,6 +1,3 @@
-import { useMemo } from "react";
-
-import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import { useIntl } from "src/hooks/useIntl";
 import Folder from "src/icons/FolderLine";
 import HandCoinLine from "src/icons/HandCoinLine";
@@ -59,28 +56,9 @@ export function EarningCard({
   receivedRewards,
   rewardingProjectsCount,
   type = CardTypes.AmountRewarded,
-  filteredCurrencies,
   onClick,
 }: Props) {
   const { T } = useIntl();
-
-  const showFilteredCurrencies = useMemo(() => {
-    console.log("filteredCurrencies:", filteredCurrencies);
-    if (filteredCurrencies && (type === CardTypes.AmountRewarded || type === CardTypes.AmountPending)) {
-      return (
-        <AvailableConversion
-          sizeClassName="h-6 w-6"
-          currencies={filteredCurrencies.map(c => ({
-            currency: c,
-            amount: undefined,
-            dollar: undefined,
-          }))}
-        />
-      );
-    }
-
-    return null;
-  }, [filteredCurrencies, type]);
 
   return (
     <Card
@@ -109,7 +87,6 @@ export function EarningCard({
           <div className="flex flex-row flex-wrap items-baseline justify-between">
             {getContent(type, amount, receivedRewards, rewardingProjectsCount)}
           </div>
-          <div>{showFilteredCurrencies}</div>
         </div>
       </div>
     </Card>
