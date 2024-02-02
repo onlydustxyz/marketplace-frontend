@@ -2,14 +2,13 @@
 
 import { useContext } from "react";
 
-import { AddProject } from "app/migration/projects/features/add-project/add-project";
-import { NoResults } from "app/migration/projects/features/no-results/no-results";
-
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
 import { ProjectsContext } from "./context/project.context";
+import { AddProject } from "./features/add-project/add-project";
 import { ProjectsFilters } from "./features/filters/filters";
+import { NoResults } from "./features/no-results/no-results";
 import { ProjectList } from "./features/project-list/project-list";
 import { ProjectSearch } from "./features/project-search/project-search";
 import { ProjectsSort } from "./features/projects-sort/projects-sort";

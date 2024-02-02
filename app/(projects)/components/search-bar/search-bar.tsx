@@ -2,7 +2,7 @@ import { ChangeEvent, ReactElement, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useMediaQuery } from "usehooks-ts";
 
-import { TSearchBar } from "app/migration/projects/components/search-bar/search-bar.types";
+import { TSearchBar } from "app/project/components/search-bar/search-bar.types";
 
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";

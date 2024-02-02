@@ -2,8 +2,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
-import { AddProjectModal } from "app/migration/projects/features/add-project/modal/add-project-modal";
-
 import { RoutePaths } from "src/App";
 import { STORAGE_KEY_CREATE_PROJECT_STEP } from "src/_pages/ProjectCreation/hooks/useProjectCreationStorage";
 
@@ -14,6 +12,8 @@ import { handleLoginWithRedirect } from "components/features/auth0/handlers/hand
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { AddProjectModal } from "./modal/add-project-modal";
 
 export function AddProject() {
   const { isAuthenticated, loginWithRedirect } = useAuth0();

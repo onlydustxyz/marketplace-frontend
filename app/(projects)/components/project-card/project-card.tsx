@@ -1,8 +1,5 @@
 import { useMemo } from "react";
 
-import { Ecosystems } from "app/migration/projects/components/project-card/ecosystems/ecosystems";
-import { ProjectTags } from "app/migration/projects/features/project-tags/project-tags";
-
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
@@ -13,7 +10,9 @@ import { ProjectLeadInvitationBanner } from "components/features/project-lead-in
 import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 import { Flex } from "components/layout/flex/flex";
 
+import { ProjectTags } from "../../features/project-tags/project-tags";
 import { ContributorsCounter } from "./contributors-counter/contributors-counter";
+import { Ecosystems } from "./ecosystems/ecosystems";
 import { Leaders } from "./leaders/leaders";
 import { TProjectCard } from "./project-card.types";
 import { Summary } from "./summary/summary";
