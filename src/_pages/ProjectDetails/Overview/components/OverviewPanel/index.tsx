@@ -41,7 +41,7 @@ export default function OverviewPanel({ project }: Props) {
   }
 
   return (
-    <Card className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
+    <Card className="flex h-fit flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-2 p-0 lg:p-0">
       <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
       <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
       {/*<ProjectOverviewSponsors sponsors={sponsors} />*/}

@@ -18,7 +18,7 @@ export default function Layout() {
   const hideHeader = isMatchProjectDetail && !isMatchProjectCreation && !isXl;
 
   return (
-    <div className="flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
+    <div className="flex h-[calc(100dvh)] w-screen flex-col">
       {/*{!hideHeader && (*/}
       {/*  <Suspense*/}
       {/*    fallback={*/}

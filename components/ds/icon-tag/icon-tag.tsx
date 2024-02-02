@@ -9,7 +9,7 @@ export function IconTag({ as: Component = "span", id, testId, className, onClick
   const { customName, remixName, tooltipContent } = props;
   if (tooltipContent) {
     return (
-      <Tooltip {...props}>
+      <Tooltip content={tooltipContent} {...props}>
         <Component
           data-testId={testId}
           id={id}
