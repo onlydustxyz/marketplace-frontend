@@ -81,7 +81,7 @@ export function BudgetCard({
     }
 
     return null;
-  }, []);
+  }, [filteredCurrencies, type]);
 
   return (
     <Card
