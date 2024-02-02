@@ -22,6 +22,7 @@ export type BudgetPanelProps = {
   open: false | "remaining" | "amount";
   onPanelChange: (open: false | "remaining" | "amount") => void;
   close: () => void;
+  projectId: string;
 };
 
 export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPanelProps) {
