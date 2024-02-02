@@ -12,6 +12,9 @@ import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
 
+import { BillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack";
+import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
+
 import { RoutePaths } from "..";
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
@@ -28,6 +31,7 @@ export enum StackRoute {
   GithubWorkflowClaim = "github-workflow-claim",
   GithubWorkflowTutorial = "github-workflow-tutorial",
   Verify = "verify",
+  BillingCreate = "billing-create",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -88,6 +92,9 @@ export const Stacks = () => {
           {({ params }) => <VerifySidePanel {...params} />}
         </RegisterStack>
       ) : null}
+      <RegisterStack<TBillingCreateStack.Params> name={StackRoute.BillingCreate}>
+        {({ params }) => <BillingCreateStack {...params} />}
+      </RegisterStack>
     </>
   );
 };
@@ -181,4 +188,8 @@ export const useStackProjectOverview = (): [
     });
   };
   return [handleOpen, close];
+};
+
+export const useStackBillingCreate = () => {
+  return useStackNavigation(StackRoute.BillingCreate);
 };

@@ -12,6 +12,7 @@ import en_features_ecosystems from "src/translations/v2/en/features/ecosystems.j
 import en_features from "src/translations/v2/en/features/features.json";
 import en_features_filters from "src/translations/v2/en/features/filters.json";
 import en_features_leaders from "src/translations/v2/en/features/leaders.json";
+import en_billing_create from "src/translations/v2/en/pages/billing-create.json";
 import en_projects from "src/translations/v2/en/pages/projects.json";
 
 const en = {
@@ -31,6 +32,7 @@ const en = {
     },
     pages: {
       projects: en_projects,
+      billing_create: en_billing_create,
     },
   },
 };
