@@ -30,5 +30,5 @@ export function Tag({
   if (tooltipContent) {
     return <Tooltip content={tooltipContent}>{renderContent()}</Tooltip>;
   }
-  renderContent();
+  return renderContent();
 }
