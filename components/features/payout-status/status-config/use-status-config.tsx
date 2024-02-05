@@ -68,7 +68,7 @@ export function useStatusConfig({ status, dateRelativeToNow, date }: TStatusConf
       iconClassName: "text-orange-500",
     },
     PENDING_CONTRIBUTOR: {
-      icon: "ri-group-line",
+      icon: "ri-user-3-line",
       labelToken: "v2.features.payoutStatus.pendingContributor.label",
       tooltipToken: "v2.features.payoutStatus.pendingContributor.tooltip",
       tooltipParams: {},

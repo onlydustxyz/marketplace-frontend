@@ -31,6 +31,10 @@
     "label": "Pending verification",
     "tooltip": "You need to verify your information to get paid"
   },
+  "pendingContributor": {
+    "label": "Pending contributor",
+    "tooltip": "Contributor needs to do an action to get paid"
+  },
   "processedOnDate": "Processed on __date__",
   "lockedUntilFurther": "Locked until further notice",
   "lockedUntilDate": "Locked until __date__",
