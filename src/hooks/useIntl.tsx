@@ -12,6 +12,7 @@ import en_features_ecosystems from "src/translations/v2/en/features/ecosystems.j
 import en_features from "src/translations/v2/en/features/features.json";
 import en_features_filters from "src/translations/v2/en/features/filters.json";
 import en_features_leaders from "src/translations/v2/en/features/leaders.json";
+import en_features_payout_status from "src/translations/v2/en/features/payout-status.json";
 import en_projects from "src/translations/v2/en/pages/projects.json";
 
 const en = {
@@ -28,6 +29,7 @@ const en = {
       contributors: en_features_contributors,
       leaders: en_features_leaders,
       ecosystems: en_features_ecosystems,
+      payoutStatus: en_features_payout_status,
     },
     pages: {
       projects: en_projects,
