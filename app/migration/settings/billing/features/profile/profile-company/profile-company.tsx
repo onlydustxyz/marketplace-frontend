@@ -13,9 +13,9 @@ export function ProfileCompany({ profile }: TProfileCompany.Props) {
       <ProfileItem label="v2.pages.settings.billing.company.registrationDate">{profile.registrationDate}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.company.address">{profile.address}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.company.country">{profile.country}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.company.usEntity">{profile.usEntity}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.company.usEntity">{`${profile.usEntity}`}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.company.subjectToVatInEurope">
-        {profile.subjectToEuropeVAT}
+        {`${profile.subjectToEuropeVAT}`}
       </ProfileItem>
 
       {profile.euVATNumber ? (

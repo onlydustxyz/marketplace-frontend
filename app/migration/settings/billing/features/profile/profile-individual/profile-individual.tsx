@@ -11,7 +11,7 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
       <ProfileItem label="v2.pages.settings.billing.individual.birthdate">{profile.birthdate}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.address">{profile.address}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.country">{profile.country}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.individual.usCitizen">{profile.usCitizen}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.individual.usCitizen">{`${profile.usCitizen}`}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.idDocumentType">{profile.idDocumentType}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.validUntil">{profile.validUntil}</ProfileItem>
     </ProfileItemGrid>

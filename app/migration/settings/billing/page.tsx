@@ -7,12 +7,38 @@ import { ProfileIndividual } from "app/migration/settings/billing/features/profi
 import { VerifyButton } from "app/migration/settings/billing/features/verify-button/verify-button";
 
 import MeApi from "src/api/me";
+import { UseBillingProfileCompanyResponse, UseBillingProfileIndividualResponse } from "src/api/me/billing/queries";
 import { MeTypes } from "src/api/me/types";
 
 import { Card } from "components/ds/card/card";
 
 import { Header } from "./features/header/header";
 
+const fakeIndividualProfile: UseBillingProfileIndividualResponse = {
+  address: "value address",
+  birthdate: "value birthdate",
+  country: "value country",
+  firstName: "value firstName",
+  id: "value id",
+  idDocumentNumber: "value idDocumentNumber",
+  idDocumentType: "DRIVER_LICENSE",
+  lastName: "value lastName",
+  status: "NOT_STARTED",
+  usCitizen: true,
+  validUntil: "value validUntil",
+};
+const fakeCompanyProfile: UseBillingProfileCompanyResponse = {
+  address: "value address",
+  country: "value country",
+  euVATNumber: "value euVATNumber",
+  id: "value id",
+  name: "value name",
+  registrationDate: "value registrationDate",
+  registrationNumber: "value registrationNumber",
+  subjectToEuropeVAT: true,
+  usEntity: true,
+  status: "NOT_STARTED",
+};
 export default function ProfilePage() {
   const { user } = useCurrentUser();
   const { data } = MeApi.billing.queries.useBillingProfile({
@@ -34,6 +60,12 @@ export default function ProfilePage() {
         {data && user?.billingProfileType === MeTypes.billingProfileType.Company && <ProfileCompany profile={data} />}
         {user?.billingProfileType && data?.id ? <VerifyButton type={user.billingProfileType} id={data.id} /> : null}
       </Card>
+      {/*<Card className="w-full" background="base">*/}
+      {/*  <ProfileCompany profile={fakeCompanyProfile} />*/}
+      {/*</Card>*/}
+      {/*<Card className="w-full" background="base">*/}
+      {/*  <ProfileIndividual profile={fakeIndividualProfile} />*/}
+      {/*</Card>*/}
     </div>
   );
 }
