@@ -13,7 +13,7 @@ import { ProjectList } from "./features/project-list/project-list";
 import { ProjectSearch } from "./features/project-search/project-search";
 import { ProjectsSort } from "./features/projects-sort/projects-sort";
 
-export function SafeProjectsPage() {
+function SafeProjectsPage() {
   const { count, projects, isLoading } = useContext(ProjectsContext);
 
   return (
