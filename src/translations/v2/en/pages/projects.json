@@ -16,10 +16,13 @@
   },
   "tags": {
     "tooltips": {
-      "beginnersWelcome": "These project are ready to take some time to onboard new developers.",
-      "fastPaced": "These project have a rapid development speed. Time to merged PRs and Fast Code Review are their main metrics.",
-      "likelyToSendRewards": "These project have continuously sent rewards to their contributors in the past.",
-      "strongExpertise": "These project have some complex challenges to tackle. They are waiting for your help."
+      "BIG_WHALE":  "project that has rewarded big.",
+      "FAST_AND_FURIOUS": "project that is moving fast with a lot of contributions completed",
+      "HOT_COMMUNITY":  "project that has a high number of active contributors.",
+      "LIKELY_TO_REWARD": "project that can reward a work well done.",
+      "NEWBIES_WELCOME":  "project that onboard new contributors regularly",
+      "UPDATED_ROADMAP": "project presenting the most recent challenges.",
+      "WORK_IN_PROGRESS": "project that has open issues ready to tackle."
     }
   },
   "addProject": {

@@ -14,7 +14,6 @@ import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { ShowMore } from "src/components/Table/ShowMore";
 import Tooltip, { TooltipPosition } from "src/components/Tooltip";
@@ -28,6 +27,7 @@ import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
+import { PayoutStatus } from "components/features/payout-status/payout-status";
 
 import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";

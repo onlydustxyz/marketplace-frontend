@@ -1,10 +1,13 @@
 {
   "project": {
     "tags": {
-      "BEGINNERS_WELCOME": "Beginners welcome",
-      "FAST_PACED": "High velocity",
-      "LIKELY_TO_SEND_REWARDS": "Likely to send rewards",
-      "STRONG_EXPERTISE": "Strong expertise required"
+      "BIG_WHALE": "Big whale",
+      "FAST_AND_FURIOUS": "Fast and furious",
+      "HOT_COMMUNITY": "Hot community",
+      "LIKELY_TO_REWARD": "Likely to reward",
+      "NEWBIES_WELCOME": "Newbies welcome",
+      "UPDATED_ROADMAP": "Strong expertise required",
+      "WORK_IN_PROGRESS": "Work in progress"
     },
     "sort": {
       "NAME": "Project name",
@@ -17,11 +20,17 @@
     "billingProfileStatus": {
       "CLOSED": "Closed",
       "INVALIDATED": "Invalidated",
-      "NOT_STARTED":  "Not started",
+      "NOT_STARTED": "Not started",
       "REJECTED": "Rejected",
-      "STARTED":  "Started",
+      "STARTED": "Started",
       "UNDER_REVIEW": "Under review",
-      "VERIFIED":  "Verified"
+      "VERIFIED": "Verified"
+    },
+    "weeklyAllocatedTime": {
+      "NONE": "None",
+      "LESS_THAN_ONE_DAY": "Less than 1 day",
+      "ONE_TO_THREE_DAYS": "1 to 3 days",
+      "GREATER_THAN_THREE_DAYS": "More than 3 days"
     }
   }
 }

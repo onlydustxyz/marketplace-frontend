@@ -22,7 +22,7 @@ export function ProjectTags({ tags }: ProjectTagsProps) {
       {tags.map(tag => (
         <IconTag
           key={tag}
-          remixName={tagMapping[tag].icon}
+          icon={tagMapping[tag].icon}
           tooltipContent={<Translate token={tagMapping[tag].tooltip} />}
           active={filters.values.tags.length > 1 ? filters.values.tags.includes(tag as ProjectTypes.Tags) : false}
         />

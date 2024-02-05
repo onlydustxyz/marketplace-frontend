@@ -12,7 +12,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
         <Sidebar />
 
         <ScrollView className="bg-space bg-no-repeat xl:rounded-r-2xl">
-          <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col gap-6 px-4 py-6 xl:px-8">{children}</div>
+          <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col gap-4 px-4 py-6 xl:px-8">{children}</div>
         </ScrollView>
       </div>
     </div>
