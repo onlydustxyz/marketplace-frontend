@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { PropsWithChildren } from "react";
 
 import { Stacks } from "src/App/Stacks/Stacks";
+import { Toaster } from "src/components/Toaster";
 import { IntlProvider } from "src/hooks/useIntl";
 import { ToasterProvider } from "src/hooks/useToaster";
 
@@ -38,6 +39,7 @@ export default function Providers({ children }: PropsWithChildren) {
                       <SidePanelProvider>
                         <ToasterProvider>
                           {children}
+                          <Toaster />
                           <Stacks />
                         </ToasterProvider>
                       </SidePanelProvider>

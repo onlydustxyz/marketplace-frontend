@@ -39,7 +39,7 @@ export function Sidebar({ children, mobileHeader }: TSidebar.Props) {
           <BurgerIcon />
         </button>
       </div>
-      <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom">
+      <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom" isMenu>
         <div className="flex w-full flex-col bg-white/4 bg-noise-medium px-8 py-6 font-walsheim">
           {children({ closePanel })}
         </div>

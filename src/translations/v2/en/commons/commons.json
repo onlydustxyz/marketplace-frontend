@@ -1,1 +1,36 @@
-{}
+{
+  "alert": {
+    "profile": {
+      "success": "Changes saved",
+      "error": "An error occurred while saving your changes"
+    }
+  },
+  "form": {
+    "status": {
+      "saved": "All changes saved",
+      "unsaved": "Unsaved changes",
+      "invalid": "The form is invalid"
+    },
+    "errors": {
+      "invalidePhoneNumber": "Invalid phone number",
+      "invalidUsername": "Invalid username"
+    },
+    "contact": {
+      "telegram": {
+        "placeholder": "Telegram"
+      },
+      "whatsapp": {
+        "placeholder": "Whatsapp"
+      },
+      "twitter": {
+        "placeholder": "Twitter"
+      },
+      "discord": {
+        "placeholder": "Discord"
+      },
+      "linkedin": {
+        "placeholder": "LinkedIn"
+      }
+    }
+  }
+}

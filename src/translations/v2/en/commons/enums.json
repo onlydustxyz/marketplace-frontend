@@ -17,11 +17,17 @@
     "billingProfileStatus": {
       "CLOSED": "Closed",
       "INVALIDATED": "Invalidated",
-      "NOT_STARTED":  "Not started",
+      "NOT_STARTED": "Not started",
       "REJECTED": "Rejected",
-      "STARTED":  "Started",
+      "STARTED": "Started",
       "UNDER_REVIEW": "Under review",
-      "VERIFIED":  "Verified"
+      "VERIFIED": "Verified"
+    },
+    "weeklyAllocatedTime": {
+      "NONE": "None",
+      "LESS_THAN_ONE_DAY": "Less than 1 day",
+      "ONE_TO_THREE_DAYS": "1 to 3 days",
+      "GREATER_THAN_THREE_DAYS": "More than 3 days"
     }
   }
 }

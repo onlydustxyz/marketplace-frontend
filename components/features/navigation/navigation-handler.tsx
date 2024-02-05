@@ -19,6 +19,8 @@ export function NavigationHandler() {
         const isTargetRouteNext = NextMigratedRoute.find(route => route.pathName === newUrl);
         const isSourceRouteNext = NextMigratedRoute.find(route => route.pathName === previousUrl);
 
+        console.log(newUrl, previousUrl);
+
         if (isSourceRouteNext && !isTargetRouteNext) {
           router.push(newUrl);
         } else if (isTargetRouteNext) {
