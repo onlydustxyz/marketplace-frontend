@@ -2,9 +2,12 @@
 
 import { useCurrentUser } from "hooks/users/useCurrentUser";
 
+import { ProfileCard } from "app/migration/settings/billing/component/profile-card/profile-card";
+import { Status } from "app/migration/settings/billing/component/status/status";
 import { ProfileCompany } from "app/migration/settings/billing/features/profile/profile-company/profile-company";
 import { ProfileIndividual } from "app/migration/settings/billing/features/profile/profile-individual/profile-individual";
 import { VerifyButton } from "app/migration/settings/billing/features/verify-button/verify-button";
+import { useBillingStatus } from "app/migration/settings/billing/hooks/useBillingStatus";
 
 import MeApi from "src/api/me";
 import { UseBillingProfileCompanyResponse, UseBillingProfileIndividualResponse } from "src/api/me/billing/queries";
@@ -23,7 +26,7 @@ const fakeIndividualProfile: UseBillingProfileIndividualResponse = {
   idDocumentNumber: "value idDocumentNumber",
   idDocumentType: "DRIVER_LICENSE",
   lastName: "value lastName",
-  status: "NOT_STARTED",
+  status: "VERIFIED",
   usCitizen: true,
   validUntil: "value validUntil",
 };
@@ -53,19 +56,19 @@ export default function ProfilePage() {
           profile: (user?.billingProfileType as MeTypes.billingProfileType) || MeTypes.billingProfileType.Individual,
         }}
       />
-      <Card className="w-full" background="base">
+      <ProfileCard status={data?.status}>
         {data && user?.billingProfileType === MeTypes.billingProfileType.Individual && (
           <ProfileIndividual profile={data} />
         )}
         {data && user?.billingProfileType === MeTypes.billingProfileType.Company && <ProfileCompany profile={data} />}
         {user?.billingProfileType && data?.id ? <VerifyButton type={user.billingProfileType} id={data.id} /> : null}
-      </Card>
-      {/*<Card className="w-full" background="base">*/}
+      </ProfileCard>
+      {/*<ProfileCard status={fakeCompanyProfile?.status}>*/}
       {/*  <ProfileCompany profile={fakeCompanyProfile} />*/}
-      {/*</Card>*/}
-      {/*<Card className="w-full" background="base">*/}
+      {/*</ProfileCard>*/}
+      {/*<ProfileCard status={fakeIndividualProfile?.status}>*/}
       {/*  <ProfileIndividual profile={fakeIndividualProfile} />*/}
-      {/*</Card>*/}
+      {/*</ProfileCard>*/}
     </div>
   );
 }
