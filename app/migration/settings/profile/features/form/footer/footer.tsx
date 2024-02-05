@@ -26,7 +26,7 @@ export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props
     <Flex
       alignItems="center"
       justifyContent="between"
-      className="-mx-4 -mb-6 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium xl:-mx-8"
+      className="-mx-4 -mb-6 gap-1 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium xl:-mx-8"
     >
       <Tag size="medium">
         {isDirty || !isValid ? (
@@ -62,6 +62,7 @@ export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props
           })}
           target="_blank"
           rel="noopener noreferrer"
+          className="hidden md:block"
         >
           <Button variant="secondary">
             <Icon remixName="ri-external-link-line" size={20} />
