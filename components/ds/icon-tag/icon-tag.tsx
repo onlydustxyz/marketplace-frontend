@@ -17,7 +17,7 @@ export function IconTag({
 }: TIconTag.Props) {
   if (tooltipContent) {
     return (
-      <Tooltip {...props}>
+      <Tooltip content={tooltipContent}>
         <Component
           data-testId={testId}
           id={id}

@@ -10,7 +10,7 @@ export namespace ProjectConstants {
       label: "v2.commons.enums.project.tags.BIG_WHALE",
     },
     FAST_AND_FURIOUS: {
-      icon: { remixName: "ri-flashlight-line" },
+      icon: { remixName: "ri-flashlight-fill" },
       tooltip: "v2.pages.projects.tags.tooltips.FAST_AND_FURIOUS",
       label: "v2.commons.enums.project.tags.FAST_AND_FURIOUS",
     },
