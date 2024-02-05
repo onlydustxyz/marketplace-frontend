@@ -7,7 +7,6 @@ import { IMAGES } from "src/assets/img";
 import Card from "src/components//Card";
 import RoundedImage from "src/components//RoundedImage";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
@@ -15,6 +14,8 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
+
+import { PayoutStatus } from "components/features/payout-status/payout-status";
 
 import { MyRewardType } from "./Line";
 
