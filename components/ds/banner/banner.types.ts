@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactElement } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { TButton } from "components/ds/button/button.types";
@@ -14,5 +14,6 @@ export namespace TBanner {
     description?: string;
     icon?: TIcon.Props;
     button?: TButton.Props;
+    customButton?: ReactElement;
   }
 }

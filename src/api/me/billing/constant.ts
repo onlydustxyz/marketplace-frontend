@@ -11,7 +11,7 @@ export namespace MeBillingConstants {
     INVALIDATED: {
       icon: "ri-clockwise-line",
       label: "v2.commons.enums.me.billingProfileStatus.INVALIDATED",
-      type: "warning",
+      type: "error",
     },
     NOT_STARTED: {
       icon: "ri-information-line",

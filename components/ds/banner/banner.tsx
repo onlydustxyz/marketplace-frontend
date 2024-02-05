@@ -8,7 +8,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TBanner } from "./banner.types";
 
-export function Banner({ children, title, description, icon, button, ...props }: TBanner.Props) {
+export function Banner({ children, title, description, icon, button, customButton, ...props }: TBanner.Props) {
   const slots = bannerVariants({ ...props });
   const iconSize = {
     big: 32,
@@ -41,6 +41,7 @@ export function Banner({ children, title, description, icon, button, ...props }:
         </div>
       </div>
       {button ? <Button size={buttonSize[props.size || "medium"]} {...button} /> : null}
+      {customButton ? customButton : null}
     </div>
   );
 }

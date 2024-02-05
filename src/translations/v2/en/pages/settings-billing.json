@@ -25,8 +25,10 @@
   },
   "buttons": {
     "reValidate": "Re-do verification",
+    "contact": "Contact us",
     "resumeValidation": "Resume verification",
     "startValidation": "Start verification",
+    "viewValidation": "See verification details"
   },
   "status": {
     "descriptions": {

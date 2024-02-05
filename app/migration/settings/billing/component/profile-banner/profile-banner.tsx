@@ -1,14 +1,37 @@
+import { useMemo } from "react";
+
+import { useBillingButton } from "app/migration/settings/billing/hooks/useBillingButton";
 import { useBillingStatus } from "app/migration/settings/billing/hooks/useBillingStatus";
 
 import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
+import { TBanner } from "components/ds/banner/banner.types";
+import { Button } from "components/ds/button/button";
+import { Translate } from "components/layout/translate/translate";
 
 import { TProfileBanner } from "./profile-banner.types";
 
-export function ProfileBanner({ children, hasValidBillingProfile, status }: TProfileBanner.Props) {
+export function ProfileBanner({ children, hasValidBillingProfile, status, type, id }: TProfileBanner.Props) {
   const { T } = useIntl();
-  const { statusMapping, isWarning, isError, isSuccess } = useBillingStatus(hasValidBillingProfile, status);
+  const { statusMapping, isWarning, isError, isSuccess, isRainbow } = useBillingStatus(hasValidBillingProfile, status);
+  const button = useBillingButton({ status, id, type });
+
+  const bannerVariant: TBanner.Variants["variant"] = useMemo(() => {
+    if (isError) {
+      return "red";
+    }
+
+    if (isWarning) {
+      return "orange";
+    }
+
+    if (isRainbow) {
+      return "rainbow";
+    }
+
+    return "medium";
+  }, [isWarning, isError, isSuccess, isRainbow]);
 
   if (!statusMapping) {
     return null;
@@ -17,7 +40,19 @@ export function ProfileBanner({ children, hasValidBillingProfile, status }: TPro
   return (
     <Banner
       title={T(`v2.pages.settings.billing.status.descriptions.${status}`)}
-      // variant="multicolor"
-    />
+      size={"small"}
+      customButton={button?.element ? button.element(<Button size={"s"}>{button.label}</Button>) : undefined}
+      button={
+        button
+          ? {
+              children: <Translate token={button?.label} />,
+              onClick: button?.onClick,
+            }
+          : undefined
+      }
+      variant={bannerVariant}
+    >
+      {children}
+    </Banner>
   );
 }
