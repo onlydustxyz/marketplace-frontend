@@ -11,6 +11,8 @@ import MeApi from "src/api/me";
 import { UseBillingProfileCompanyResponse, UseBillingProfileIndividualResponse } from "src/api/me/billing/queries";
 import { MeTypes } from "src/api/me/types";
 
+import { Banner } from "components/ds/banner/banner";
+
 import { Header } from "./features/header/header";
 
 const fakeIndividualProfile: UseBillingProfileIndividualResponse = {
@@ -58,6 +60,12 @@ export default function ProfilePage() {
         )}
         {data && user?.billingProfileType === MeTypes.billingProfileType.Company && <ProfileCompany profile={data} />}
         {user?.billingProfileType && data?.id ? <VerifyButton type={user.billingProfileType} id={data.id} /> : null}
+      </ProfileCard>
+      <ProfileCard status={fakeCompanyProfile?.status} hasValidBillingProfile={true}>
+        <ProfileCompany profile={fakeCompanyProfile} />
+      </ProfileCard>
+      <ProfileCard status={fakeIndividualProfile?.status} hasValidBillingProfile={false}>
+        <ProfileIndividual profile={fakeIndividualProfile} />
       </ProfileCard>
     </div>
   );
