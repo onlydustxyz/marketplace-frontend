@@ -3,17 +3,13 @@
 import { useCurrentUser } from "hooks/users/useCurrentUser";
 
 import { ProfileCard } from "app/migration/settings/billing/component/profile-card/profile-card";
-import { Status } from "app/migration/settings/billing/component/status/status";
 import { ProfileCompany } from "app/migration/settings/billing/features/profile/profile-company/profile-company";
 import { ProfileIndividual } from "app/migration/settings/billing/features/profile/profile-individual/profile-individual";
 import { VerifyButton } from "app/migration/settings/billing/features/verify-button/verify-button";
-import { useBillingStatus } from "app/migration/settings/billing/hooks/useBillingStatus";
 
 import MeApi from "src/api/me";
 import { UseBillingProfileCompanyResponse, UseBillingProfileIndividualResponse } from "src/api/me/billing/queries";
 import { MeTypes } from "src/api/me/types";
-
-import { Card } from "components/ds/card/card";
 
 import { Header } from "./features/header/header";
 
