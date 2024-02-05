@@ -2,25 +2,21 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import MeApi from "src/api/me";
 import { FieldImage } from "src/components/New/Field/File";
-import { FieldInput } from "src/components/New/Field/Input";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
+import { Input } from "components/ds/form/input/input";
+import { Textarea } from "components/ds/form/textarea/textarea";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 
-import { TProfileForm } from "../form.types";
 import { BannerButton } from "./banner-button/banner-button";
 import { FormInformationsSection } from "./section/section";
 
 export function FormInformations() {
   const { T } = useIntl();
   const { control, setValue } = useFormContext();
-
-  const handleCoverClick = (cover: TProfileForm.Data["cover"]) => {
-    setValue("cover", cover);
-  };
 
   const {
     mutate: uploadProjectLogo,
@@ -61,15 +57,15 @@ export function FormInformations() {
         <Controller
           name="cover"
           control={control}
-          render={({ field }) => (
+          render={({ field: { value, onChange } }) => (
             <Flex
               alignItems="center"
               justifyContent="center"
               className={cn("h-36 w-full rounded-2xl bg-cover", {
-                "bg-profile-cyan": field.value === "CYAN",
-                "bg-profile-magenta": field.value === "MAGENTA",
-                "bg-profile-yellow": field.value === "YELLOW",
-                "bg-profile-blue": field.value === "BLUE",
+                "bg-profile-cyan": value === "CYAN",
+                "bg-profile-magenta": value === "MAGENTA",
+                "bg-profile-yellow": value === "YELLOW",
+                "bg-profile-blue": value === "BLUE",
               })}
             >
               <Flex
@@ -77,10 +73,10 @@ export function FormInformations() {
                 justifyContent="center"
                 className="gap-3 rounded-full border border-greyscale-50/8 bg-white/8 px-6 py-3 shadow-heavy"
               >
-                <BannerButton active={field.value === "CYAN"} cover="CYAN" onClick={handleCoverClick} />
-                <BannerButton active={field.value === "MAGENTA"} cover="MAGENTA" onClick={handleCoverClick} />
-                <BannerButton active={field.value === "YELLOW"} cover="YELLOW" onClick={handleCoverClick} />
-                <BannerButton active={field.value === "BLUE"} cover="BLUE" onClick={handleCoverClick} />
+                <BannerButton active={value === "CYAN"} cover="CYAN" onClick={onChange} />
+                <BannerButton active={value === "MAGENTA"} cover="MAGENTA" onClick={onChange} />
+                <BannerButton active={value === "YELLOW"} cover="YELLOW" onClick={onChange} />
+                <BannerButton active={value === "BLUE"} cover="BLUE" onClick={onChange} />
               </Flex>
             </Flex>
           )}
@@ -92,10 +88,10 @@ export function FormInformations() {
           name="location"
           control={control}
           render={({ field, fieldState }) => (
-            <FieldInput
+            <Input
               {...field}
               {...fieldState}
-              startIcon={({ className }) => <Icon remixName="ri-map-pin-line" className={className} />}
+              startContent={<Icon remixName="ri-map-pin-line" className="pointer-events-none" />}
             />
           )}
         />
@@ -105,7 +101,7 @@ export function FormInformations() {
         <Controller
           name="bio"
           control={control}
-          render={({ field, fieldState }) => <FieldInput {...field} {...fieldState} />}
+          render={({ field, fieldState }) => <Textarea {...field} {...fieldState} />}
         />
       </FormInformationsSection>
 
@@ -114,10 +110,10 @@ export function FormInformations() {
           name="website"
           control={control}
           render={({ field, fieldState }) => (
-            <FieldInput
+            <Input
               {...field}
               {...fieldState}
-              startIcon={({ className }) => <Icon remixName="ri-global-line" className={className} />}
+              startContent={<Icon remixName="ri-global-line" className="pointer-events-none" />}
             />
           )}
         />

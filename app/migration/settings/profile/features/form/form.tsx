@@ -19,6 +19,7 @@ import { FormWeeklyAllocatedTime } from "./weekly-allocated-time/weekly-allocate
 
 // TODO: BottomBar fixed
 // TODO: Parse on submit
+// TODO: Contact information and select input to do with NextUI
 export function ProfileForm() {
   const { T } = useIntl();
 

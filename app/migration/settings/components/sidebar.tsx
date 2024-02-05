@@ -33,7 +33,7 @@ export function Sidebar() {
 
   return (
     <LayoutSidebar
-      // TODO
+      // TODO: mobile header
       mobileHeader={<div>Mobile header</div>}
     >
       {({ closePanel }) => (
