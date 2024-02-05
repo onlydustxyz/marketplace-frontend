@@ -113,21 +113,6 @@ const PendingSignup = () => (
   </Tooltip>
 );
 
-// const InvoiceNeededTag = () => {
-//   const { T } = useIntl();
-//
-//   return (
-//     <Tag
-//       size={TagSize.Medium}
-//       borderColor={TagBorderColor.MultiColor}
-//       {...withTooltip(T("reward.status.tooltip.invoicePending"), { className: "w-64" })}
-//     >
-//       <ErrorWarningLine className="text-pink-500" />
-//       <span className="whitespace-nowrap font-normal text-greyscale-50">{T("reward.status.invoicePending")}</span>
-//     </Tag>
-//   );
-// };
-
 const InvoiceNeededTag = () => (
   <Tooltip content={<Translate token="v2.features.payoutStatus.invoicePending.tooltip" />}>
     <Tag size="medium" borderColor="multi-color">

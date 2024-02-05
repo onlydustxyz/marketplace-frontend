@@ -9,7 +9,7 @@ export function Tag({ as: Component = "div", id, testId, children, className, on
     <Component
       data-testId={testId}
       id={id}
-      className="w-fit shrink-0 overflow-hidden rounded-full p-px"
+      className="relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px"
       onClick={onClick}
     >
       <div className={cn(tagVariants({ ...props }), className)}>{children}</div>
