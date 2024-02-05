@@ -25,6 +25,7 @@ export interface UseBaseMutationProps<R = unknown> extends BaseMutationOptions<R
   invalidatesTags?: { queryKey: QueryTags; exact: boolean }[];
   stringifiedBody?: boolean;
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+  rawBody?: boolean;
 }
 export interface BaseMutationPayload {
   resourcePath?: string;

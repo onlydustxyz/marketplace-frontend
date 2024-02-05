@@ -1,0 +1,26 @@
+{
+  "title": "Billing profile",
+  "description_individual": "As an individual, you’ll need to create a dedicated entity once you reach 5,000 USD / year",
+  "description_company": "As a company, you'll need to share an invoice for each reward in order to receive the funds.",
+  "individual": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "birthdate": "Birthdate",
+    "address": "Address",
+    "country": "Country",
+    "usCitizen": "US Citizen",
+    "identityDocumentType": "Identity document Type",
+    "identityDocumentNumber": "Identity document number",
+    "validUntil": "Valid until"
+  },
+  "company": {
+    "companyName": "Company name",
+    "registrationNumber": "Registration number",
+    "registrationDate": "Registration date",
+    "address": "Address",
+    "country": "Country",
+    "usEntity": "US Entity",
+    "subjectToVatInEurope": "subject to VAT in europe",
+    "euVatNumber": "EU VAT NUMBER"
+  }
+}
