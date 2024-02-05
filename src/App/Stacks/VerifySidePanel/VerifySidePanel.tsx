@@ -14,10 +14,10 @@ const config = {
         --greyscale-600: #61605F;
         --greyscale-200: #C2C0BE;
         --greyscale-100: #DBD8D6;
-        
+
         --spacePurple-400 : #BE33FF;
         --spacePurple-500 : #AE00FF;
-      
+
         --white-color: var(--greyscale-800);
         --primary-color: var(--greyscale-100);
         --red-color: #E84E4D;
@@ -43,36 +43,36 @@ const config = {
         --green-color: #6ace8a;
         --additional-green-color: #4fa7a3
       }
-      
+
       html, body {
         background-color: var(--greyscale-900);
         font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
       }
-      
+
       a {
         color: var(--spacePurple-400);
       }
-      
+
       a:hover {
         border-bottom-color: var(--spacePurple-400);
       }
-      
+
       .list,
       .country-selector .list {
         background-color: var(--greyscale-700) !important;
       }
-      
+
       .list li.active,
       .list li:hover,
       .country-selector .list li.active,
       .country-selector .list li:hover {
         background-color: var(--greyscale-800) !important;
       }
-      
+
       .country-selector .show-hide .ss-icon {
         color: var(--spacePurple-400);
       }
-      
+
       button.submit, button[type=submit],
       button.submit:active:not(:disabled),
       button.submit:hover:not(:disabled):not(.disabled):not(:active),
@@ -80,74 +80,74 @@ const config = {
       button[type=submit]:hover:not(:disabled):not(.disabled):not(:active) {
         background-image: none;
       }
-      
+
       .upload-item,
       .upload-payment-item .upload-item,
       .mobile-button {
         box-shadow: 0px 8px 64px 0px rgba(0, 0, 0, 0.32);
       }
-      
+
       .mobile-button:hover {
         background-color: var(--white-color);
       }
-      
+
       .line-form .line-form-item>span {
         color: var(--success-color);
         font-weight: 600;
       }
-      
+
       .status-text {
         color: var(--greyscale-100) !important;
       }
-      
+
       .subitem-text {
         color: var(--greyscale-200) !important;
       }
-      
+
       input,
       select,
       textarea {
         border-bottom-color: var(--greyscale-200);
       }
-      
+
       input::placeholder,
       textarea::placeholder {
         color: var(--greyscale-200);
       }
-    
+
       .sub-steps .sub-step {
         border-color: var(--greyscale-100);
       }
-      
+
       .phone-input>input {
         box-shadow: none !important
       }
-      
+
       .identity-item {
         background-color: transparent
       }
-      
+
       .identity-item-button,
       .identity-item-button.white {
         background-color: var(--light-grey-color);
         color: var(--white-color);
       }
-      
+
       button.identity-item-text-button {
         color: var(--spacePurple-400);
         background-color: transparent;
       }
-      
+
       button.identity-item-text-button.isActive,
       button.identity-item-text-button:hover:not(:disabled):not(.disabled):not(:active) {
         color: var(--spacePurple-500);
       }
-      
+
       button.identity-item-text-button.isActive .identity-item-text-button-icon,
       button.identity-item-text-button:hover .identity-item-text-button-icon {
         fill: currentColor
       }
-      
+
       .payment-method-data {
         background-color: transparent;
       }
@@ -170,15 +170,19 @@ function errorHandler(...args) {
 
 interface Props {
   levelName: "basic-kyb-level" | "basic-kyc-level";
+  externalId?: string;
 }
 
-export function VerifySidePanel({ levelName }: Props) {
+export function VerifySidePanel({ levelName, externalId }: Props) {
   const { user } = useCurrentUser();
   const [token, setToken] = useState("");
 
   useEffect(() => {
     if (user) {
-      fetch("/api/sumsub-token", { method: "POST", body: JSON.stringify({ userId: user.id, levelName }) }).then(res => {
+      fetch("/api/sumsub-token", {
+        method: "POST",
+        body: JSON.stringify({ userId: externalId || user.id, levelName }),
+      }).then(res => {
         res.json().then(({ token }) => {
           setToken(token);
         });

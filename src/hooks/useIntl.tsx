@@ -13,6 +13,7 @@ import en_features from "src/translations/v2/en/features/features.json";
 import en_features_filters from "src/translations/v2/en/features/filters.json";
 import en_features_leaders from "src/translations/v2/en/features/leaders.json";
 import en_projects from "src/translations/v2/en/pages/projects.json";
+import en_settings_billing from "src/translations/v2/en/pages/settings-billing.json";
 
 const en = {
   ...en_base,
@@ -31,6 +32,9 @@ const en = {
     },
     pages: {
       projects: en_projects,
+      settings: {
+        billing: en_settings_billing,
+      },
     },
   },
 };
