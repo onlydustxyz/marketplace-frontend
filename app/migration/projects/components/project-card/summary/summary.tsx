@@ -1,6 +1,6 @@
-import { TSummary } from "app/project/components/project-card/summary/summary.types";
-
 import { Typography } from "components/layout/typography/typography";
+
+import { TSummary } from "./summary.types";
 
 export function Summary({ shortDescription }: TSummary.Props) {
   return (

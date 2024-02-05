@@ -2,12 +2,12 @@
 
 import { useMemo } from "react";
 
-import { TLeaders } from "app/project/components/project-card/leaders/leaders.types";
-
 import { Contributor } from "components/features/contributor/contributor";
 import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { TLeaders } from "./leaders.types";
 
 export function Leaders({ leaders }: TLeaders.Props) {
   const hasOnlyOneLead = useMemo(() => {
