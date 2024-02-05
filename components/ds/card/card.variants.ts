@@ -24,6 +24,11 @@ export const cardVariants = tv({
       medium: "bg-card-background-medium",
       heavy: "bg-card-background-heavy",
       base: "bg-card-background-base",
+      "whiteFakeOpacity-1": "bg-whiteFakeOpacity-1",
+      "whiteFakeOpacity-2": "bg-whiteFakeOpacity-2",
+      "whiteFakeOpacity-5": "bg-whiteFakeOpacity-5",
+      "whiteFakeOpacity-8": "bg-whiteFakeOpacity-8",
+      "whiteFakeOpacity-12": "bg-whiteFakeOpacity-12",
     },
     clickable: {
       true: "group relative z-[1] transition-all",

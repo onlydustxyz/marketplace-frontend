@@ -170,7 +170,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
         hasActiveFilters,
       };
     },
-    [hasActiveFilters]
+    [hasActiveFilters, currencies]
   );
 
   const filterCount = useMemo(() => {

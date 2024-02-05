@@ -1,11 +1,6 @@
 import { useContext, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
-import { ProjectsContext } from "app/migration/projects/context/project.context";
-import { FiltersEcosystems } from "app/migration/projects/features/filters/filters-ecosystems/filters-ecosystems";
-import { FiltersMine } from "app/migration/projects/features/filters/filters-mine/filters-mine";
-import { FiltersTags } from "app/migration/projects/features/filters/filters-tags/filters-tags";
-
 import FilterIcon from "src/assets/icons/FilterIcon";
 import { viewportConfig } from "src/config";
 
@@ -16,7 +11,11 @@ import { Flex } from "components/layout/flex/flex";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { ProjectsContext } from "../../context/project.context";
 import { FiltersClearAll } from "./clear-all/clear-all";
+import { FiltersEcosystems } from "./filters-ecosystems/filters-ecosystems";
+import { FiltersMine } from "./filters-mine/filters-mine";
+import { FiltersTags } from "./filters-tags/filters-tags";
 import { FiltersTechnologies } from "./filters-technologies/filters-technologies";
 
 export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
