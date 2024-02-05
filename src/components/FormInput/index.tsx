@@ -27,6 +27,7 @@ type PropsType = {
   options?: RegisterOptions;
   value?: string | number;
   errorDisplay?: InputErrorDisplay;
+  errorName?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -51,6 +52,7 @@ const Input = forwardRef(function Input(
     name,
     value,
     errorDisplay = InputErrorDisplay.Normal,
+    errorName,
     loading,
     options,
     onChange,
@@ -88,7 +90,7 @@ const Input = forwardRef(function Input(
     <View
       {...{
         label,
-        error: errors[name],
+        error: errors[errorName || name],
         errorDisplay,
         loading,
         placeholder,

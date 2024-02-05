@@ -14,8 +14,10 @@ export function SettingsHeader({ icon, title, subtitle, children }: TSettingsHea
             {icon ? <Icon remixName={icon} size={24} /> : null}
             <Typography variant="title-m" translate={{ token: title }} />
           </Flex>
+
           <Typography variant="body-s" translate={{ token: subtitle }} className="text-spaceBlue-200" />
         </Flex>
+
         <div>{children}</div>
       </Flex>
     </Card>

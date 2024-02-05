@@ -13,6 +13,7 @@ type Props = {
   placement?: "right" | "bottom";
   hasCloseButton?: boolean;
   withBackdrop?: boolean;
+  isMenu?: boolean;
 } & PropsWithChildren;
 
 export default function SidePanel({
@@ -23,6 +24,7 @@ export default function SidePanel({
   children,
   hasCloseButton = true,
   withBackdrop,
+  isMenu,
 }: Props) {
   const { open: openSidePanel, close: closeSidePanel } = useSidePanelStack();
 
@@ -71,8 +73,10 @@ export default function SidePanel({
               {
                 "inset-y-0 right-0 h-[calc(100dvh)] lg:w-[680px] lg:max-w-[80%]": placement === "right",
                 "inset-x-0 bottom-0 max-h-[calc(100dvh)] overflow-y-auto rounded-t-2xl": placement === "bottom",
+                "bg-black": isMenu,
+                "bg-greyscale-900": !isMenu,
               },
-              "fixed w-full bg-greyscale-900"
+              "fixed w-full"
             )}
             // z-index needs to start at 50 to show above tooltips on the page behind
             style={{ zIndex: 50 + panelIndex }}

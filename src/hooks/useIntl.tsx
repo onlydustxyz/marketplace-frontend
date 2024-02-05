@@ -13,8 +13,10 @@ import en_features from "src/translations/v2/en/features/features.json";
 import en_features_filters from "src/translations/v2/en/features/filters.json";
 import en_features_leaders from "src/translations/v2/en/features/leaders.json";
 import en_features_payout_status from "src/translations/v2/en/features/payout-status.json";
+import en_features_sidebar from "src/translations/v2/en/features/sidebar.json";
 import en_projects from "src/translations/v2/en/pages/projects.json";
 import en_settings_billing from "src/translations/v2/en/pages/settings-billing.json";
+import en_settings_profile from "src/translations/v2/en/pages/settings-profile.json";
 
 const en = {
   ...en_base,
@@ -31,10 +33,12 @@ const en = {
       leaders: en_features_leaders,
       ecosystems: en_features_ecosystems,
       payoutStatus: en_features_payout_status,
+      sidebar: en_features_sidebar,
     },
     pages: {
       projects: en_projects,
       settings: {
+        profile: en_settings_profile,
         billing: en_settings_billing,
       },
     },
