@@ -8,7 +8,7 @@ import MoneyBoxLine from "src/icons/MoneyBoxLine";
 import { Currency } from "src/types";
 
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
-import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
+import { SelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete";
 import { TFiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies.types";
 
 const currenciesLabel: Record<Currency, { label: string; icon: JSX.Element }> = {

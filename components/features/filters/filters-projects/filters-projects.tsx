@@ -2,7 +2,7 @@ import { useIntl } from "src/hooks/useIntl";
 import FolderLine from "src/icons/FolderLine";
 
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
-import { SelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete";
+import { SelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete";
 
 import { TFiltersProjects } from "./filters-projects.types";
 

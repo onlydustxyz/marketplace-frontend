@@ -28,7 +28,7 @@ export function Contact() {
         </Typography>
 
         <a
-          href="https://web.telegram.org/"
+          href="https://telegram.org/"
           target="_blank"
           rel="noopener noreferrer"
           className="group flex items-center gap-2 font-medium text-spacePurple-500"

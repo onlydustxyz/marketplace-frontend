@@ -1,57 +1,52 @@
 import { PropsWithChildren } from "react";
 
-import { components } from "src/__generated/api";
 import { UseInfiniteListResponse } from "src/api/Project/queries";
+import { ProjectTypes } from "src/api/Project/types";
 
-import { TFiltersDropDown } from "components/ds/drop-down/filters-drop-down.types";
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
-export interface ProjectsContextProps extends PropsWithChildren {}
+export namespace TProjectContext {
+  export interface Props extends PropsWithChildren {}
 
-export type ProjectContextReturn = {
-  projects: UseInfiniteListResponse["projects"];
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  count: number;
-  sponsors: components["schemas"]["SponsorResponse"][];
-  technologies: string[];
-  filters: {
-    values: ProjectFilter;
-    isCleared: boolean;
-    set: (filter: Partial<ProjectFilter>) => void;
-    clear: () => void;
-    options: {
-      technologies: TFiltersDropDown.Option[];
-      sponsors: TFiltersDropDown.Option[];
+  export type Return = {
+    projects: UseInfiniteListResponse["projects"];
+    fetchNextPage: () => void;
+    hasNextPage: boolean;
+    isFetchingNextPage: boolean;
+    isLoading: boolean;
+    count: number;
+    filters: {
+      values: Filter;
+      isCleared: boolean;
+      set: (filter: Partial<Filter>) => void;
+      clear: () => void;
+      count: number;
+      options: FiltersOptions;
     };
   };
-};
 
-export enum Ownership {
-  All = "All",
-  Mine = "Mine",
+  export interface Filter {
+    mine: boolean;
+    technologies: string[];
+    ecosystemId: TSelectAutocomplete.Item[];
+    search?: string;
+    sorting: ProjectTypes.Sorting;
+    tags: ProjectTypes.Tags[];
+  }
+
+  export interface FiltersOptions {
+    technologies: TSelectAutocomplete.Item[];
+    ecosystems: TSelectAutocomplete.Item[];
+  }
+
+  export const FILTER_KEY = "project_filter-v2-0-0";
+  export const DEFAULT_SORTING = ProjectTypes.Sorting.Trending;
+
+  export const DEFAULT_FILTER: Filter = {
+    mine: false,
+    technologies: [],
+    ecosystemId: [],
+    tags: [],
+    sorting: DEFAULT_SORTING,
+  };
 }
-
-export interface ProjectFilter {
-  ownership: Ownership;
-  technologies: string[];
-  sponsors: string[];
-  search?: string;
-  sorting: Sorting;
-}
-
-export enum Sorting {
-  Trending = "RANK",
-  ProjectName = "NAME",
-  ReposCount = "REPO_COUNT",
-  ContributorsCount = "CONTRIBUTOR_COUNT",
-}
-export const PROJECT_FILTER_KEY = "project_filter";
-export const DEFAULT_PROJECT_SORTING = Sorting.Trending;
-
-export const DEFAULT_PROJECTS_FILTER: ProjectFilter = {
-  ownership: Ownership.All,
-  technologies: [],
-  sponsors: [],
-  sorting: DEFAULT_PROJECT_SORTING,
-};

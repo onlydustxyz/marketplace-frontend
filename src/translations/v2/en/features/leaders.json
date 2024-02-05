@@ -1,0 +1,6 @@
+{
+  "notLed": "The project is claimable",
+  "ledBy": {
+    "many": "__count__ project leads"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "technologies": {
+    "title": "Technologies",
+    "all": "All technologies",
+    "some": "Technologies",
+    "zero": "Technologies",
+    "empty": "No technologies found",
+    "one": "__count__ technology",
+    "many": "__count__ technologies"
+  },
+  "ecosystems": {
+    "title": "Ecosystems",
+    "all": "All ecosystems",
+    "some": "Ecosystems",
+    "zero": "Ecosystems",
+    "empty": "No ecosystems found",
+    "one": "__count__ ecosystem",
+    "many": "__count__ ecosystems"
+  }
+}

@@ -18,7 +18,7 @@ const nextConfig = {
   poweredByHeader: false,
   env: {
     APP_COMMIT_HASH: getCommitHash(),
-  },
+  }
 };
 
 export default nextConfig;
