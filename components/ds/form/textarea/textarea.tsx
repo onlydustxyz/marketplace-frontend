@@ -2,7 +2,7 @@ import { Textarea as NextTextarea } from "@nextui-org/react";
 
 import { TTextarea } from "./textarea.types";
 
-export function Textarea({ type, value, onChange, startContent, endContent, ...props }: TTextarea.Props) {
+export function Textarea({ ...props }: TTextarea.Props) {
   return (
     <NextTextarea
       classNames={{
@@ -13,11 +13,6 @@ export function Textarea({ type, value, onChange, startContent, endContent, ...p
       }}
       variant="bordered"
       labelPlacement="outside"
-      type={type}
-      value={value}
-      onChange={onChange}
-      startContent={startContent}
-      endContent={endContent}
       {...props}
     />
   );

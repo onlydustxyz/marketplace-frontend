@@ -2,7 +2,7 @@ import { Input as NextInput } from "@nextui-org/react";
 
 import { TInput } from "./input.types";
 
-export function Input({ type, value, onChange, startContent, endContent, ...props }: TInput.Props) {
+export function Input({ ...props }: TInput.Props) {
   return (
     <NextInput
       classNames={{
@@ -13,11 +13,6 @@ export function Input({ type, value, onChange, startContent, endContent, ...prop
       }}
       variant="bordered"
       labelPlacement="outside"
-      type={type}
-      value={value}
-      onChange={onChange}
-      startContent={startContent}
-      endContent={endContent}
       {...props}
     />
   );

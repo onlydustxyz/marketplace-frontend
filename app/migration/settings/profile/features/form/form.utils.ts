@@ -2,7 +2,7 @@ import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 import { TProfileForm } from "./form.types";
 
-function sanitizeContactHandle(contact: string) {
+export function sanitizeContactHandle(contact: string) {
   let sanitizedContact = contact;
 
   if (contact.endsWith("/")) {
@@ -20,7 +20,7 @@ function sanitizeContactHandle(contact: string) {
   return sanitizedContact;
 }
 
-function createContact({
+export function createContact({
   channel,
   contact,
   isPublic,
@@ -40,7 +40,7 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
     const contactInfo = contacts?.find(contactInfo => contactInfo.channel === contact);
 
     return {
-      contact: contactInfo?.contact.split("/").at(-1) ?? "",
+      contact: sanitizeContactHandle(contactInfo?.contact ?? ""),
       isPublic: contactInfo?.visibility === "public",
     };
   }
