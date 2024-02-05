@@ -33,9 +33,9 @@
       "lookingForAJob": "I'm looking for a job",
       "form": {
         "none": "None",
-        "lessThan1Day": "Less than 1 day",
-        "1to3days": "1 to 3 days",
-        "moreThan3days": "More than 3 days"
+        "lessThanOneDay": "Less than 1 day",
+        "oneToThreeDays": "1 to 3 days",
+        "moreThanThreeDays": "More than 3 days"
       }
     },
     "buttons": {

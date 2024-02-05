@@ -40,7 +40,7 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
     const contactInfo = contacts?.find(contactInfo => contactInfo.channel === contact);
 
     return {
-      contact: contactInfo?.contact ?? "",
+      contact: contactInfo?.contact.split("/").at(-1) ?? "",
       isPublic: contactInfo?.visibility === "public",
     };
   }
@@ -85,7 +85,7 @@ export function formatToSchema(data: TProfileForm.Data) {
         channel: "TWITTER",
         contact: data.twitter.contact,
         isPublic: data.twitter.isPublic,
-        prefixUrl: "https://twitter.com/",
+        prefixUrl: "https://x.com/",
       }),
       createContact({
         channel: "DISCORD",

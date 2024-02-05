@@ -40,7 +40,7 @@ export function Sidebar() {
         <div className="flex w-full flex-col gap-4 xl:gap-6">
           <Flex
             alignItems="center"
-            className="gap-4 rounded-xl border-1 border-greyscale-50/8 bg-white/2 p-3 shadow-light"
+            className="gap-4 rounded-xl border-1 border-greyscale-50/8 bg-greyscale-900 p-3 shadow-light"
           >
             <img
               src={user?.picture}

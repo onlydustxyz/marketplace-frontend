@@ -7,7 +7,7 @@ import { Typography } from "components/layout/typography/typography";
 
 export function SettingsHeader({ icon, title, subtitle, children }: TSettingsHeader.Props) {
   return (
-    <Card background="base">
+    <Card background="base" className="mb-2">
       <Flex className="flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
         <Flex direction="col" className="gap-2">
           <Flex alignItems="center" className="gap-2">

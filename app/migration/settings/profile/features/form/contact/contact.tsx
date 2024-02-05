@@ -7,7 +7,8 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-// TODO: Review design component + sanitize value
+import { REGEX } from "../form.regex";
+
 export function FormContact() {
   const { T } = useIntl();
 
@@ -32,7 +33,7 @@ export function FormContact() {
             visibilityName="telegram.isPublic"
             options={{
               pattern: {
-                value: /^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w*)$/,
+                value: REGEX.telegram,
                 message: T("profile.form.contactInfo.invalidUsername"),
               },
             }}
@@ -45,7 +46,7 @@ export function FormContact() {
             visibilityName="whatsapp.isPublic"
             options={{
               pattern: {
-                value: /^\+?(?:[0-9-(). ])*$/,
+                value: REGEX.whatsapp,
                 message: T("profile.form.contactInfo.invalidePhoneNumber"),
               },
             }}
@@ -58,7 +59,7 @@ export function FormContact() {
             visibilityName="twitter.isPublic"
             options={{
               pattern: {
-                value: /^(?:@|(?:(?:(?:https?:\/\/)?(?:twitter)?)\.com\/))?(\w*)$/,
+                value: REGEX.twitter,
                 message: T("profile.form.contactInfo.invalidUsername"),
               },
             }}
@@ -71,7 +72,7 @@ export function FormContact() {
             visibilityName="discord.isPublic"
             options={{
               pattern: {
-                value: /^@?[a-zA-Z0-9_.]*$/,
+                value: REGEX.discord,
                 message: T("profile.form.contactInfo.invalidUsername"),
               },
             }}
@@ -84,7 +85,7 @@ export function FormContact() {
             visibilityName="linkedin.isPublic"
             options={{
               pattern: {
-                value: /^(?:@|(?:(?:(?:https?:)?\/\/)?(?:[\w]+\.)?linkedin\.com\/in\/))?([\w\-_À-ÿ%]*)\/?$/,
+                value: REGEX.linkedin,
                 message: T("profile.form.contactInfo.invalidUsername"),
               },
             }}
