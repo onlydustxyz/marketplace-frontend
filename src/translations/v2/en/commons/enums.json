@@ -13,7 +13,16 @@
       "RANK": "Trending projects"
     }
   },
-  "settings": {
+  "me": {
+    "billingProfileStatus": {
+      "CLOSED": "Closed",
+      "INVALIDATED": "Invalidated",
+      "NOT_STARTED": "Not started",
+      "REJECTED": "Rejected",
+      "STARTED": "Started",
+      "UNDER_REVIEW": "Under review",
+      "VERIFIED": "Verified"
+    },
     "weeklyAllocatedTime": {
       "NONE": "None",
       "LESS_THAN_ONE_DAY": "Less than 1 day",

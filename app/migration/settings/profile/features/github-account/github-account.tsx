@@ -23,13 +23,13 @@ export function ProfileGithubAccount() {
           <Typography
             variant="title-s"
             translate={{
-              token: "v2.pages.settings.publicProfile.githubAccount.title",
+              token: "v2.pages.settings.profile.githubAccount.title",
             }}
           />
           <Typography
             variant="body-s"
             translate={{
-              token: "v2.pages.settings.publicProfile.githubAccount.subtitle",
+              token: "v2.pages.settings.profile.githubAccount.subtitle",
             }}
             className="text-spaceBlue-200"
           />
@@ -54,7 +54,7 @@ export function ProfileGithubAccount() {
           <a href="https://github.com/settings/profile" target="_blank" rel="noopener noreferrer">
             <Button variant="secondary" size="s">
               <Icon remixName="ri-github-fill" />
-              <Translate token="v2.pages.settings.publicProfile.githubAccount.button" />
+              <Translate token="v2.pages.settings.profile.githubAccount.button" />
             </Button>
           </a>
         </Flex>

@@ -18,15 +18,15 @@ export function Sidebar() {
 
   const menuItems = [
     {
-      label: T("v2.pages.settings.sidebar.publicProfile"),
+      label: T("v2.features.sidebar.settings.publicProfile"),
       path: "/migration/settings/profile",
     },
     {
-      label: T("v2.pages.settings.sidebar.payoutPreferences"),
+      label: T("v2.features.sidebar.settings.payoutPreferences"),
       path: "/migration/settings/payout",
     },
     {
-      label: T("v2.pages.settings.sidebar.verifyAccount"),
+      label: T("v2.features.sidebar.settings.verifyAccount"),
       path: "/migration/settings/verify",
     },
   ];

@@ -18,14 +18,11 @@ export function FormWeeklyAllocatedTime() {
     <Card background="base">
       <Flex direction="col" className="gap-5">
         <Flex direction="col" className="gap-1">
-          <Typography
-            variant="title-s"
-            translate={{ token: "v2.pages.settings.publicProfile.weeklyAllocatedTime.title" }}
-          />
+          <Typography variant="title-s" translate={{ token: "v2.pages.settings.profile.weeklyAllocatedTime.title" }} />
 
           <Typography
             variant="body-s"
-            translate={{ token: "v2.pages.settings.publicProfile.weeklyAllocatedTime.subtitle" }}
+            translate={{ token: "v2.pages.settings.profile.weeklyAllocatedTime.subtitle" }}
             className="text-spaceBlue-200"
           />
         </Flex>
@@ -41,7 +38,7 @@ export function FormWeeklyAllocatedTime() {
                 name="weeklyAllocatedTime"
                 options={Object.entries(TProfileForm.ALLOCATED_TIME).map(([value]) => ({
                   value,
-                  label: T(`v2.commons.enums.settings.weeklyAllocatedTime.${value}`),
+                  label: T(`v2.commons.enums.me.weeklyAllocatedTime.${value}`),
                 }))}
                 control={control}
               />
@@ -56,7 +53,7 @@ export function FormWeeklyAllocatedTime() {
                 <Typography
                   variant="body-s"
                   translate={{
-                    token: "v2.pages.settings.publicProfile.weeklyAllocatedTime.lookingForAJob",
+                    token: "v2.pages.settings.profile.weeklyAllocatedTime.lookingForAJob",
                   }}
                 />
               </Toggle>

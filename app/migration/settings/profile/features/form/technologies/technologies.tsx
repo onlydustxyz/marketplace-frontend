@@ -13,11 +13,11 @@ export function FormTechnologies() {
     <Card background="base">
       <Flex direction="col" className="gap-5">
         <Flex direction="col" className="gap-1">
-          <Typography variant="title-s" translate={{ token: "v2.pages.settings.publicProfile.technologies.title" }} />
+          <Typography variant="title-s" translate={{ token: "v2.pages.settings.profile.technologies.title" }} />
 
           <Typography
             variant="body-s"
-            translate={{ token: "v2.pages.settings.publicProfile.technologies.subtitle" }}
+            translate={{ token: "v2.pages.settings.profile.technologies.subtitle" }}
             className="text-spaceBlue-200"
           />
         </Flex>

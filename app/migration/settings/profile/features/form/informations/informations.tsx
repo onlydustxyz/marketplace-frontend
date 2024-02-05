@@ -30,7 +30,7 @@ export function FormInformations() {
 
   return (
     <Card background="base">
-      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.avatar">
+      <FormInformationsSection title="v2.pages.settings.profile.informations.avatar">
         <Controller
           name="avatarUrl"
           control={control}
@@ -50,7 +50,7 @@ export function FormInformations() {
         />
       </FormInformationsSection>
 
-      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.banner">
+      <FormInformationsSection title="v2.pages.settings.profile.informations.banner">
         <Controller
           name="cover"
           control={control}
@@ -80,7 +80,7 @@ export function FormInformations() {
         />
       </FormInformationsSection>
 
-      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.location">
+      <FormInformationsSection title="v2.pages.settings.profile.informations.location">
         <Controller
           name="location"
           control={control}
@@ -94,7 +94,7 @@ export function FormInformations() {
         />
       </FormInformationsSection>
 
-      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.bio">
+      <FormInformationsSection title="v2.pages.settings.profile.informations.bio">
         <Controller
           name="bio"
           control={control}
@@ -102,7 +102,7 @@ export function FormInformations() {
         />
       </FormInformationsSection>
 
-      <FormInformationsSection title="v2.pages.settings.publicProfile.informations.website" isLast>
+      <FormInformationsSection title="v2.pages.settings.profile.informations.website" isLast>
         <Controller
           name="website"
           control={control}

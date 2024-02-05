@@ -16,11 +16,11 @@ export function FormContact() {
     <Card background="base">
       <Flex direction="col" className="gap-5">
         <Flex direction="col" className="gap-1">
-          <Typography variant="title-s" translate={{ token: "v2.pages.settings.publicProfile.contact.title" }} />
+          <Typography variant="title-s" translate={{ token: "v2.pages.settings.profile.contact.title" }} />
 
           <Typography
             variant="body-s"
-            translate={{ token: "v2.pages.settings.publicProfile.contact.subtitle" }}
+            translate={{ token: "v2.pages.settings.profile.contact.subtitle" }}
             className="text-spaceBlue-200"
           />
         </Flex>

@@ -65,7 +65,7 @@ export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props
         >
           <Button variant="secondary">
             <Icon remixName="ri-external-link-line" size={20} />
-            <Translate token="v2.pages.settings.publicProfile.buttons.preview" />
+            <Translate token="v2.pages.settings.profile.buttons.preview" />
           </Button>
         </a>
 
@@ -75,7 +75,7 @@ export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props
           ) : (
             <Icon remixName="ri-check-line" size={20} />
           )}
-          <Translate token="v2.pages.settings.publicProfile.buttons.save" />
+          <Translate token="v2.pages.settings.profile.buttons.save" />
         </Button>
       </Flex>
     </Flex>
