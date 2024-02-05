@@ -2,7 +2,6 @@ import { useContext } from "react";
 
 import { ProjectConstants } from "src/api/Project/constants";
 import { ProjectTypes } from "src/api/Project/types";
-import { useIntl } from "src/hooks/useIntl";
 
 import { SelectableTag } from "components/ds/form/selectable-tag/selectable-tag";
 import { Flex } from "components/layout/flex/flex";
@@ -12,7 +11,6 @@ import { Translate } from "components/layout/translate/translate";
 import { ProjectsContext } from "../../../context/project.context";
 
 export function FiltersTags() {
-  const { T } = useIntl();
   const { filters } = useContext(ProjectsContext);
 
   const onFilterChange = (value: ProjectTypes.Tags[]) => {
