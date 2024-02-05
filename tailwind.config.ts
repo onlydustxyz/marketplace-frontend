@@ -285,7 +285,6 @@ const config: Config = withTV({
         ".pseudo-outline": pseudoOutline,
         ...variantSizes.reduce((acc, size) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
           acc[`.pseudo-outline-${size}`] = {
             ...pseudoOutline,
             "&:before": {
@@ -473,6 +472,14 @@ const config: Config = withTV({
           fontFamily: theme("fontFamily.walsheim"),
           fontWeight: "500",
         },
+        ".od-text-special-label": {
+          fontSize: "14px",
+          lineHeight: "16px",
+          letterSpacing: "-0.12px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+        },
+
         /* ---------------------------------- CARD ---------------------------------- */
         ".card-light": {
           border: "1px solid",

@@ -425,6 +425,9 @@
       "publicProfile": "Public profile",
       "payoutInfo": "Payout information",
       "verifyIdentity": "Verify identity",
+      "manage": "Manage my account",
+      "pendingBilling": "Pending billing profiles",
+      "missingPayoutInformation": "Missing payout information",
       "verifyCompany": "Verify company"
     },
     "rewards": "Rewards",

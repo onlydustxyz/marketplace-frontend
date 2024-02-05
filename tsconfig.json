@@ -29,6 +29,7 @@
   "include": [
     "./app",
     "./components",
+    "./constants",
     "./src",
     ".storybook/**/*.tsx",
     "./dist/types/**/*.ts",
