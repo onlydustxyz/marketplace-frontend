@@ -26,7 +26,7 @@
   "buttons": {
     "reValidate": "Re-do verification",
     "resumeValidation": "Resume verification",
-    "startValidation": "Start verification"
+    "startValidation": "Start verification",
   },
   "status": {
     "descriptions": {

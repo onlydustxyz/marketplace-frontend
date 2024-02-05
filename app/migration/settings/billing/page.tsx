@@ -24,7 +24,7 @@ const fakeIndividualProfile: UseBillingProfileIndividualResponse = {
   idDocumentNumber: "value idDocumentNumber",
   idDocumentType: "DRIVER_LICENSE",
   lastName: "value lastName",
-  status: "VERIFIED",
+  status: "INVALIDATED",
   usCitizen: true,
   validUntil: "value validUntil",
 };
