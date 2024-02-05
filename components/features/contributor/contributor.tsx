@@ -1,11 +1,12 @@
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { IMAGES } from "src/assets/img";
-import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { TContributor } from "components/features/contributor/contributor.types";
+import { Translate } from "components/layout/translate/translate";
+import { Typography } from "components/layout/typography/typography";
 
 export function Contributor({
   githubUserId,
@@ -15,7 +16,6 @@ export function Contributor({
   clickable,
   className,
 }: TContributor.Props) {
-  const { T } = useIntl();
   const [open] = useStackContributorProfile();
 
   const Component = clickable ? "button" : "div";
@@ -23,7 +23,7 @@ export function Contributor({
   return (
     <Component
       type={clickable ? "button" : undefined}
-      className={cn("group flex items-center gap-2 truncate font-walsheim text-xs font-medium", className)}
+      className={cn("group flex flex-row items-center gap-1", className)}
       onClick={
         clickable
           ? e => {
@@ -35,23 +35,19 @@ export function Contributor({
     >
       {avatarUrl ? <Thumbnail src={avatarUrl} alt={login} size="xs" type="user" /> : null}
 
-      <span
+      <Typography
+        variant="body-s"
         className={cn({
-          "block truncate text-spacePurple-300 group-hover:underline": clickable,
+          "block truncate group-hover:text-spacePurple-300 group-hover:underline": clickable,
         })}
       >
         {login}
-      </span>
+      </Typography>
 
       {isRegistered ? (
-        <img
-          id={`od-logo-${login}`}
-          src={IMAGES.logo.original}
-          className="w-3.5"
-          loading="lazy"
-          alt="OnlyDust"
-          {...withTooltip(T("contributor.table.userRegisteredTooltip"), { className: "w-36" })}
-        />
+        <Tooltip content={<Translate token="v2.features.contributors.table.userRegisteredTooltip" />}>
+          <img id={`od-logo-${login}`} src={IMAGES.logo.original} className="w-3.5" loading="lazy" alt="OnlyDust" />
+        </Tooltip>
       ) : null}
     </Component>
   );

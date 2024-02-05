@@ -9,18 +9,18 @@ import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { Item } from "src/components/New/Filter/FilterSelect";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 import { FiltersUsers } from "components/features/filters/filters-users/filters-users";
 
-type Filters = {
+export type Filters = {
   period: Period;
   dateRange: DateRange;
-  contributors: Item[];
-  currency: Item[];
+  contributors: TSelectAutocomplete.Item[];
+  currency: TSelectAutocomplete.Item[];
 };
 
 const initialFilters: Filters = {
@@ -47,7 +47,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     onChange,
     position,
   }: {
-    onChange: (filterQueryParams: FilterQueryParams) => void;
+    onChange: (filterQueryParams: FilterQueryParams, filters: Partial<Filters>) => void;
     position?: FilterPosition;
   },
   ref: React.Ref<ProjectRewardsFilterRef>
@@ -69,8 +69,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     JSON.stringify(initialFilters)
   );
 
-  const contributorsQueryState = useState<string>();
-  const [contributorsQuery] = contributorsQueryState;
+  const [contributorsQuery, setContributorsQuery] = useState<string>();
 
   // Type of partial Filters is required as the shape required by the state may not exist in the user's local storage
   const [filters, setFilters] = useState<Partial<Filters>>(
@@ -99,7 +98,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
         filterQueryParams.fromDate = formatDateQueryParam(value.from);
         filterQueryParams.toDate = formatDateQueryParam(value.to);
 
-        onChange(filterQueryParams);
+        onChange(filterQueryParams, filters);
 
         // Return early to avoid updating the date range twice
         return;
@@ -117,18 +116,43 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
       updateDate(initialFilters.dateRange);
     }
 
-    onChange(filterQueryParams);
+    onChange(filterQueryParams, filters);
   }, [filters]);
 
   const hasActiveFilters = Boolean(
     filters.period !== initialFilters.period || filters.contributors?.length || filters.currency?.length
   );
 
-  const { data: contributorsData } = ProjectApi.queries.useProjectContributorsInfiniteList({
+  const {
+    data: contributorsData,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = ProjectApi.queries.useProjectContributorsInfiniteList({
     params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
     options: { enabled: Boolean(project?.id) },
   });
-  const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
+  const [contributors, setContributors] = useState<TSelectAutocomplete.Item[]>([]);
+
+  useEffect(() => {
+    const flattenContributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
+    if (flattenContributors?.length) {
+      setContributors(
+        flattenContributors.map(({ login, githubUserId, avatarUrl }) => ({
+          id: githubUserId,
+          value: `${githubUserId}`,
+          label: login,
+          image: avatarUrl,
+        }))
+      );
+    }
+  }, [contributorsData]);
+
+  const handleContributorsPagination = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
 
   function resetFilters() {
     setFilters(initialFilters);
@@ -156,11 +180,11 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     setFilters(prevState => updateState(prevState, { period }));
   }
 
-  function updateContributors(contributors: Item[]) {
+  function updateContributors(contributors: TSelectAutocomplete.Item[]) {
     setFilters(prevState => updateState(prevState, { contributors }));
   }
 
-  function updateCurrency(currency: Item[]) {
+  function updateCurrency(currency: TSelectAutocomplete.Item[]) {
     setFilters(prevState =>
       updateState(prevState, {
         currency,
@@ -208,13 +232,15 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
       </div>
       <div className="focus-within:z-10">
         <FiltersUsers
-          users={contributors.map(({ login, githubUserId, avatarUrl }) => ({
-            id: githubUserId,
-            label: login,
-            image: avatarUrl,
-          }))}
+          users={contributors}
           selected={filters.contributors ?? initialFilters.contributors}
           onChange={updateContributors}
+          onNextPage={handleContributorsPagination}
+          loadingNextPage={isFetchingNextPage}
+          controlledSearch={{
+            value: contributorsQuery || "",
+            onChange: (value: string) => setContributorsQuery(value),
+          }}
         />
       </div>
       <div className="focus-within:z-10">

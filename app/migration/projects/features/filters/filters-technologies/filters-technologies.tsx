@@ -1,25 +1,25 @@
 import { useContext } from "react";
 
-import { IMAGES } from "src/assets/img";
-
-import { FiltersDropDown } from "components/ds/drop-down/filters-drop-down";
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
+import { FiltersTechnologies as Filter } from "components/features/filters/filters-technologies/filters-technologies";
 
 import { ProjectsContext } from "../../../context/project.context";
 
 export function FiltersTechnologies() {
   const { filters } = useContext(ProjectsContext);
 
-  const handleTechnologyClick = (technologies: string[]) => {
-    filters.set({ technologies });
+  const handleTechnologyClick = (technologies: TSelectAutocomplete.Item[]) => {
+    filters.set({ technologies: technologies.map(t => t.value) });
   };
 
   return (
-    <FiltersDropDown
-      title="filter.technologies.all"
-      // TODO change svg to webp
-      image={IMAGES.svg.technology}
-      options={filters.options.technologies}
-      value={filters.values.technologies || []}
+    <Filter
+      selected={filters.values.technologies.map(name => ({
+        label: name,
+        id: name,
+        value: name,
+      }))}
+      technologies={filters.options.technologies}
       onChange={handleTechnologyClick}
     />
   );

@@ -178,7 +178,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                     <Link onClick={() => openProjectOverview({ slug: contribution.project.slug })}>
                       {contribution.project.name}
                     </Link>
-                    &nbsp;/&nbsp;{contribution.repo.name}
+                    &nbsp;/&nbsp;<Link href={contribution.repo.htmlUrl}>{contribution.repo.name}</Link>
                   </div>
                 </div>
 

@@ -24,9 +24,9 @@ export function ProjectLeadInvitationBanner({
 
   const TitleContent = useMemo(() => {
     if (on === "cards") {
-      return <Translate token={"projectLeadInvitation.prompt"} params={{ projectName }} />;
+      return <Translate token={"v2.features.banners.projectLeadInvitation.prompt"} params={{ projectName }} />;
     }
-    return <Translate token={"projectLeadInvitation.card.prompt"} />;
+    return <Translate token={"v2.features.banners.projectLeadInvitation.card.prompt"} />;
   }, [on]);
 
   const ButtonLabel = useMemo(() => {
@@ -35,10 +35,10 @@ export function ProjectLeadInvitationBanner({
     }
 
     if (isMd) {
-      return <Translate token={"projectLeadInvitation.accept"} />;
+      return <Translate token={"v2.features.banners.projectLeadInvitation.accept"} />;
     }
 
-    return <Translate token={"projectLeadInvitation.acceptShort"} />;
+    return <Translate token={"v2.features.banners.projectLeadInvitation.acceptShort"} />;
   }, [btnLabelToken]);
 
   return (

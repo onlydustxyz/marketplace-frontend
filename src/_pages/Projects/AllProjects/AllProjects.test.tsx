@@ -52,7 +52,7 @@ describe("<AllProjects />", () => {
                   sortingPanelOpen={false}
                   setSortingPanelOpen={jest.fn()}
                   setTechnologies={jest.fn()}
-                  setSponsors={jest.fn()}
+                  // setSponsors={jest.fn()}
                 />
               </QueryClientProvider>
             </ProjectFilterProvider>

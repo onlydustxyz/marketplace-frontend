@@ -6,6 +6,7 @@ export const thumbnailVariants = tv({
     type: {
       project: "",
       user: "rounded-full",
+      ecosystem: "rounded-full",
     },
     size: {
       xs: "",
@@ -63,6 +64,31 @@ export const thumbnailVariants = tv({
     },
     {
       type: "user",
+      size: "xl",
+      class: "h-12 w-12 border-4",
+    },
+    {
+      type: "ecosystem",
+      size: "xs",
+      class: "h-4 w-4 border",
+    },
+    {
+      type: "ecosystem",
+      size: "s",
+      class: "h-6 w-6 border-2",
+    },
+    {
+      type: "ecosystem",
+      size: "m",
+      class: "h-8 w-8 border-2",
+    },
+    {
+      type: "ecosystem",
+      size: "l",
+      class: "relative h-10 w-10 border-2",
+    },
+    {
+      type: "ecosystem",
       size: "xl",
       class: "h-12 w-12 border-4",
     },

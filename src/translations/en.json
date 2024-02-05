@@ -218,17 +218,29 @@
     "clearButton": "Clear all",
     "empty": "Nothing here",
     "apply": "Apply filters",
+    "showMyProject": "Show my projects only",
     "ownership": {
       "all": "All projects",
       "mine": "Mine only"
+    },
+    "tags": {
+      "BEGINNERS_WELCOME": "Beginners welcome",
+      "FAST_PACED": "High velocity",
+      "LIKELY_TO_SEND_REWARDS": "Likely to send rewards",
+      "STRONG_EXPERTISE": "Strong expertise required"
     },
     "sponsors": {
       "all": "All sponsors",
       "some": "Sponsors"
     },
     "technologies": {
+      "title": "Technologies",
       "all": "All technologies",
-      "some": "Technologies"
+      "some": "Technologies",
+      "zero": "technologies",
+      "empty": "No technologies found",
+      "one": "__count__ technology",
+      "many": "__count__ technologies"
     },
     "title": "Filter",
     "mobileButton": {
@@ -415,7 +427,8 @@
       "verifyIdentity": "Verify identity",
       "manage": "Manage my account",
       "pendingBilling": "Pending billing profiles",
-      "missingPayoutInformation": "Missing payout information"
+      "missingPayoutInformation": "Missing payout information",
+      "verifyCompany": "Verify company"
     },
     "rewards": "Rewards",
     "projects": "Projects",
@@ -1224,6 +1237,8 @@
           "spent": "Amount spent",
           "sent": "Rewards sent",
           "contributors": "Rewarded contributors",
+          "panelTitle": "Currency split",
+          "panelTotal": "Total",
           "dollars": "Dollars budget",
           "ether": "Ether budget",
           "stark": "Stark budget",
@@ -1370,7 +1385,11 @@
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
-      "one": "Led by"
+      "one": " "
+    },
+    "ecosystems": {
+      "many": "__count__ ecosystems",
+      "one": " "
     },
     "noLed": "The project is claimable",
     "projectLeadInvitation": {
@@ -1411,6 +1430,14 @@
       "REPO_COUNT": "Number of repositories",
       "CONTRIBUTOR_COUNT": "Number of contributors",
       "RANK": "Trending projects"
+    },
+    "tags": {
+      "tooltips": {
+        "beginnersWelcome": "These projects are ready to take some time to onboard new developers.",
+        "fastPaced": "These project have a rapid development speed. Time to merged PRs and Fast Code Review are their main metrics.",
+        "likelyToSendRewards": "These projects have continuously sent rewards to their contributors in the past.",
+        "strongExpertise": "These projects have some complex challenges to tackle. They are waiting for your help."
+      }
     }
   },
   "rewardBudget": {

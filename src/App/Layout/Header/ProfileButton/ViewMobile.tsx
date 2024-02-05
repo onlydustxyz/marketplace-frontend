@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
-import { useStackContributorProfile, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import { useStackVerify } from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
@@ -15,6 +15,8 @@ import { cn } from "src/utils/cn";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useLogout } from "./Logout.hooks";
 
@@ -38,8 +40,7 @@ export function ViewMobile({
   const { T } = useIntl();
 
   const [panelOpen, setPanelOpen] = useState(false);
-  const [openContributorProfilePanel] = useStackContributorProfile();
-  const [openVerifyIdentity] = useStackVerifyIdentity();
+  const [openVerify] = useStackVerify();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { handleLogout } = useLogout();
@@ -56,6 +57,14 @@ export function ViewMobile({
 
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
+
+  const getProfileButtonLink = () => {
+    if (isMissingPayoutSettingsInfo) {
+      return NEXT_ROUTER.settings.payout;
+    }
+
+    return NEXT_ROUTER.settings.profile;
+  };
 
   return (
     <>
@@ -75,38 +84,34 @@ export function ViewMobile({
           {!hideProfileItems && (
             <>
               <div>
-                {githubUserId ? (
-                  <button
-                    className="flex w-full items-center gap-1 rounded-md px-3 py-4"
-                    onClick={() => {
-                      setPanelOpen(false);
-                      openContributorProfilePanel({ githubUserId });
-                    }}
-                  >
-                    {avatarUrl ? (
-                      <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
-                    ) : null}
+                <NavLink
+                  to={getProfileButtonLink()}
+                  onClick={() => setPanelOpen(false)}
+                  className="flex w-full items-center gap-1 rounded-md px-3 py-4"
+                >
+                  {avatarUrl ? (
+                    <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
+                  ) : null}
 
-                    <Flex direction="col" alignItems="start">
-                      <Typography variant="title-s" className="text-sm leading-4">
-                        {login}
-                      </Typography>
+                  <Flex direction="col" alignItems="start">
+                    <Typography variant="title-s" className="text-sm leading-4">
+                      {login}
+                    </Typography>
 
-                      <Typography
-                        variant="body-s"
-                        translate={{
-                          token: isMissingPayoutSettingsInfo
-                            ? "navbar.profile.missingPayoutInformation"
-                            : "navbar.profile.manage",
-                        }}
-                        className={cn({
-                          "text-spaceBlue-200": !isMissingPayoutSettingsInfo,
-                          "text-orange-500": isMissingPayoutSettingsInfo,
-                        })}
-                      />
-                    </Flex>
-                  </button>
-                ) : null}
+                    <Typography
+                      variant="body-s"
+                      translate={{
+                        token: isMissingPayoutSettingsInfo
+                          ? "navbar.profile.missingPayoutInformation"
+                          : "navbar.profile.manage",
+                      }}
+                      className={cn({
+                        "text-spaceBlue-200": !isMissingPayoutSettingsInfo,
+                        "text-orange-500": isMissingPayoutSettingsInfo,
+                      })}
+                    />
+                  </Flex>
+                </NavLink>
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>
@@ -153,25 +158,38 @@ export function ViewMobile({
                   <span className="my-1 block h-px bg-greyscale-50/8" />
                 </div>
               ) : null}
+
+              <div>
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <>
+                    <button
+                      className="flex items-center gap-3 p-4"
+                      onClick={() => {
+                        setPanelOpen(false);
+                        openVerify({ levelName: "basic-kyc-level" });
+                      }}
+                    >
+                      <Icon remixName="ri-pass-valid-line" size={20} />
+                      {T("navbar.profile.verifyIdentity")}
+                    </button>
+
+                    <button
+                      className="flex items-center gap-3 p-4"
+                      onClick={() => {
+                        setPanelOpen(false);
+                        openVerify({ levelName: "basic-kyb-level" });
+                      }}
+                    >
+                      <Icon remixName="ri-pass-valid-line" size={20} />
+                      {T("navbar.profile.verifyCompany")}
+                    </button>
+
+                    <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
+                  </>
+                ) : null}
+              </div>
             </>
           )}
-
-          {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-            <div>
-              <button
-                className="flex w-full items-center gap-3 rounded-md p-4"
-                onClick={() => {
-                  setPanelOpen(false);
-                  openVerifyIdentity();
-                }}
-              >
-                <Icon remixName="ri-pass-valid-line" size={20} />
-                {T("navbar.profile.verifyIdentity")}
-              </button>
-
-              <span className="mx-4 my-1 block h-px bg-greyscale-50/8" />
-            </div>
-          ) : null}
 
           <div>
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFeedback}>

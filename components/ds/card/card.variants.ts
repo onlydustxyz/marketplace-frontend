@@ -3,28 +3,41 @@ import { tv } from "tailwind-variants";
 export const cardVariants = tv({
   base: "rounded-2xl font-walsheim",
   variants: {
-    hasBackground: {
-      true: "bg-whiteFakeOpacity-2",
-    },
     isFullWidth: {
       true: "w-full",
     },
     hasPadding: {
       true: "p-4 lg:p-6",
+      false: "p-0 lg:p-0",
     },
     cursor: {
       true: "cursor-pointer",
     },
     border: {
-      light: "border border-greyscale-50/8",
-      medium: "border border-greyscale-50/12",
+      light: "border border-card-border-light",
+      medium: "border border-card-border-medium",
+      heavy: "border border-card-border-heavy",
       multiColor: "border-multicolored before:pointer-events-none before:rounded-2xl",
+    },
+    background: {
+      light: "bg-card-background-light",
+      medium: "bg-card-background-medium",
+      heavy: "bg-card-background-heavy",
+      base: "bg-card-background-base",
+      "whiteFakeOpacity-1": "bg-whiteFakeOpacity-1",
+      "whiteFakeOpacity-2": "bg-whiteFakeOpacity-2",
+      "whiteFakeOpacity-5": "bg-whiteFakeOpacity-5",
+      "whiteFakeOpacity-8": "bg-whiteFakeOpacity-8",
+      "whiteFakeOpacity-12": "bg-whiteFakeOpacity-12",
+    },
+    clickable: {
+      true: "group relative z-[1] transition-all",
     },
   },
   defaultVariants: {
-    hasBackground: true,
     isFullWidth: true,
     hasPadding: true,
     border: "light",
+    background: "light",
   },
 });

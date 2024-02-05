@@ -9,19 +9,19 @@ import { Period } from "src/components/New/Field/Datepicker";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { Item } from "src/components/New/Filter/FilterSelect";
 import { FilterTypeOptions } from "src/components/New/Filter/FilterTypeOptions";
 import { ContributorResponse, GithubContributionType } from "src/types";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { FiltersRepos } from "components/features/filters/filters-repos/filters-repos";
 import { FiltersUsers } from "components/features/filters/filters-users/filters-users";
 
 type Filters = {
   dateRange: DateRange;
   period: Period;
-  repos: Item[];
-  contributors: Item[];
+  repos: TSelectAutocomplete.Item[];
+  contributors: TSelectAutocomplete.Item[];
   types: GithubContributionType[];
 };
 
@@ -60,8 +60,7 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
     JSON.stringify(initialFilters)
   );
 
-  const contributorsQueryState = useState<string>();
-  const [contributorsQuery] = contributorsQueryState;
+  const [contributorsQuery, setContributorsQuery] = useState<string>();
 
   function parseFiltersStorage() {
     if (filtersStorage) {
@@ -152,17 +151,43 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
   const sortedRepos = useMemo(
     () =>
       sortBy(
-        repos.map(({ id, name }) => ({ id, label: name })),
+        repos.map(({ id, name }) => ({ id, label: name, value: `${id}` })),
         ({ label }) => label
       ),
     [repos]
   );
 
-  const { data: contributorsData } = ProjectApi.queries.useProjectContributorsInfiniteList({
+  const {
+    data: contributorsData,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = ProjectApi.queries.useProjectContributorsInfiniteList({
     params: { projectId: project?.id ?? "", pageSize: 20, queryParams: { login: contributorsQuery ?? "" } },
     options: { enabled: Boolean(project?.id) },
   });
-  const contributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
+
+  const [contributors, setContributors] = useState<TSelectAutocomplete.Item[]>([]);
+
+  useEffect(() => {
+    const flattenContributors = contributorsData?.pages.flatMap(({ contributors }) => contributors) ?? [];
+    if (flattenContributors?.length) {
+      setContributors(
+        flattenContributors.map(({ login, githubUserId, avatarUrl }) => ({
+          id: githubUserId,
+          value: `${githubUserId}`,
+          label: login,
+          image: avatarUrl,
+        }))
+      );
+    }
+  }, [contributorsData]);
+
+  const handleContributorsPagination = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
 
   function resetFilters() {
     setFilters(initialFilters);
@@ -185,11 +210,11 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
     setFilters(prevState => updateState(prevState, { period }));
   }
 
-  function updateRepos(repos: Item[]) {
+  function updateRepos(repos: TSelectAutocomplete.Item[]) {
     setFilters(prevState => updateState(prevState, { repos }));
   }
 
-  function updateContributors(contributors: Item[]) {
+  function updateContributors(contributors: TSelectAutocomplete.Item[]) {
     setFilters(prevState => updateState(prevState, { contributors }));
   }
 
@@ -245,13 +270,15 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
       />
       <FiltersRepos repos={sortedRepos} selected={filters.repos ?? initialFilters.repos} onChange={updateRepos} />
       <FiltersUsers
-        users={contributors.map(({ login, githubUserId, avatarUrl }) => ({
-          id: githubUserId,
-          label: login,
-          image: avatarUrl,
-        }))}
+        users={contributors}
         selected={filters.contributors ?? initialFilters.contributors}
         onChange={updateContributors}
+        onNextPage={handleContributorsPagination}
+        loadingNextPage={isFetchingNextPage}
+        controlledSearch={{
+          value: contributorsQuery || "",
+          onChange: (value: string) => setContributorsQuery(value),
+        }}
       />
       <FilterTypeOptions selected={filters.types ?? initialFilters.types} onChange={updateTypes} />
     </Filter>

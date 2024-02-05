@@ -1,7 +1,8 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
+import { NavLink } from "react-router-dom";
 
-import { useStackContributorProfile, useStackVerifyIdentity } from "src/App/Stacks/Stacks";
+import { useStackVerify } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
@@ -11,6 +12,8 @@ import { cn } from "src/utils/cn";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useLogout } from "./Logout.hooks";
 
@@ -44,24 +47,24 @@ interface Props {
   openFeedback: () => void;
 }
 
-export function View({
-  githubUserId,
-  avatarUrl,
-  login,
-  isMissingPayoutSettingsInfo,
-  hideProfileItems,
-  openFeedback,
-}: Props) {
+export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems, openFeedback }: Props) {
   const { T } = useIntl();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [openVerifyIdentity] = useStackVerifyIdentity();
 
-  const [openContributorProfileSidePanel] = useStackContributorProfile();
+  const [openVerify] = useStackVerify();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { handleLogout } = useLogout();
+
+  const getProfileButtonLink = () => {
+    if (isMissingPayoutSettingsInfo) {
+      return NEXT_ROUTER.settings.payout;
+    }
+
+    return NEXT_ROUTER.settings.profile;
+  };
 
   return (
     <div className="relative">
@@ -113,44 +116,52 @@ export function View({
           >
             {!hideProfileItems && (
               <div>
-                <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel({ githubUserId })} isProfile>
-                  {avatarUrl ? (
-                    <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
-                  ) : null}
+                <NavLink to={getProfileButtonLink()}>
+                  <MenuItem isProfile>
+                    {avatarUrl ? (
+                      <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
+                    ) : null}
 
-                  <Flex direction="col" alignItems="start">
-                    <Typography variant="title-s" className="text-sm leading-4">
-                      {login}
-                    </Typography>
+                    <Flex direction="col" alignItems="start">
+                      <Typography variant="title-s" className="text-sm leading-4">
+                        {login}
+                      </Typography>
 
-                    <Typography
-                      variant="body-s"
-                      translate={{
-                        token: isMissingPayoutSettingsInfo
-                          ? "navbar.profile.missingPayoutInformation"
-                          : "navbar.profile.manage",
-                      }}
-                      className={cn({
-                        "text-spaceBlue-200": !isMissingPayoutSettingsInfo,
-                        "text-orange-500": isMissingPayoutSettingsInfo,
-                      })}
-                    />
-                  </Flex>
-                </MenuItem>
+                      <Typography
+                        variant="body-s"
+                        translate={{
+                          token: isMissingPayoutSettingsInfo
+                            ? "navbar.profile.missingPayoutInformation"
+                            : "navbar.profile.manage",
+                        }}
+                        className={cn({
+                          "text-spaceBlue-200": !isMissingPayoutSettingsInfo,
+                          "text-orange-500": isMissingPayoutSettingsInfo,
+                        })}
+                      />
+                    </Flex>
+                  </MenuItem>
+                </NavLink>
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
+
+                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
+                  <>
+                    <MenuItem onClick={() => openVerify({ levelName: "basic-kyc-level" })}>
+                      <Icon remixName="ri-pass-valid-line" size={20} />
+                      <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
+                    </MenuItem>
+
+                    <MenuItem onClick={() => openVerify({ levelName: "basic-kyb-level" })}>
+                      <Icon remixName="ri-pass-valid-line" size={20} />
+                      <div className="grow">{T("navbar.profile.verifyCompany")}</div>
+                    </MenuItem>
+
+                    <span className="my-1 block h-px bg-greyscale-50/8" />
+                  </>
+                ) : null}
               </div>
             )}
-
-            {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-              <div>
-                <MenuItem onClick={openVerifyIdentity}>
-                  <Icon remixName="ri-pass-valid-line" size={20} />
-                  <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
-                </MenuItem>
-                <span className="my-1 block h-px bg-greyscale-50/8" />
-              </div>
-            ) : null}
 
             <div>
               <MenuItem onClick={openFeedback}>

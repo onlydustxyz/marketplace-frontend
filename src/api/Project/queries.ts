@@ -188,7 +188,7 @@ const useCompletedRewardableItems = ({
   });
 };
 
-type UseProjectBudgetResponse = components["schemas"]["ProjectBudgetsResponse"];
+export type UseProjectBudgetResponse = components["schemas"]["ProjectBudgetsResponse"];
 
 const useProjectBudget = ({
   params,
