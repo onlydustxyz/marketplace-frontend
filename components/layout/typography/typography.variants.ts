@@ -15,6 +15,7 @@ export const typographyVariants = tv({
       "body-s-bold": "od-text-body-s-bold",
       "body-xs": "od-text-body-xs",
       "body-xs-bold": "od-text-body-xs-bold",
+      "special-label": "od-text-special-label",
     },
   },
   defaultVariants: {

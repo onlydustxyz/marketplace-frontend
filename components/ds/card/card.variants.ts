@@ -33,9 +33,18 @@ export const cardVariants = tv({
     clickable: {
       true: "group relative z-[1] transition-all",
     },
+
+    isWarning: {
+      true: "border border-orange-500 bg-orange-900",
+    },
+    isError: {
+      true: "border border-github-red bg-[#2B0000]",
+    },
   },
   defaultVariants: {
     isFullWidth: true,
+    isError: undefined,
+    isWarning: undefined,
     hasPadding: true,
     border: "light",
     background: "light",
