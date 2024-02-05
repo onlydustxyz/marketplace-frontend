@@ -14,19 +14,6 @@ export function FormWeeklyAllocatedTime() {
   const { T } = useIntl();
   const { control } = useFormContext();
 
-  const weeklyAllocatedTime: { [key in TProfileForm.ALLOCATED_TIME]: string } = {
-    [TProfileForm.ALLOCATED_TIME.NONE]: T("v2.pages.settings.publicProfile.weeklyAllocatedTime.form.none"),
-    [TProfileForm.ALLOCATED_TIME.LESS_THAN_ONE_DAY]: T(
-      "v2.pages.settings.publicProfile.weeklyAllocatedTime.form.lessThanOneDay"
-    ),
-    [TProfileForm.ALLOCATED_TIME.ONE_TO_THREE_DAYS]: T(
-      "v2.pages.settings.publicProfile.weeklyAllocatedTime.form.oneToThreeDays"
-    ),
-    [TProfileForm.ALLOCATED_TIME.GREATER_THAN_THREE_DAYS]: T(
-      "v2.pages.settings.publicProfile.weeklyAllocatedTime.form.moreThanThreeDays"
-    ),
-  };
-
   return (
     <Card background="base">
       <Flex direction="col" className="gap-5">
@@ -52,7 +39,10 @@ export function FormWeeklyAllocatedTime() {
                 {...field}
                 {...fieldState}
                 name="weeklyAllocatedTime"
-                options={Object.entries(weeklyAllocatedTime).map(([value, label]) => ({ value, label }))}
+                options={Object.entries(TProfileForm.ALLOCATED_TIME).map(([value]) => ({
+                  value,
+                  label: T(`v2.commons.enums.settings.weeklyAllocatedTime.${value}`),
+                }))}
                 control={control}
               />
             )}

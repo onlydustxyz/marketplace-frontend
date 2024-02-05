@@ -12,6 +12,7 @@ import { cn } from "src/utils/cn";
 type Props = {
   icon: ReactElement;
   name: string;
+  errorName?: string;
   placeholder?: string;
   editDisabled?: boolean;
   visibilityName: string;
@@ -22,6 +23,7 @@ type Props = {
 export default function ContactInformation({
   icon,
   name,
+  errorName,
   placeholder,
   editDisabled,
   visibilityName,
@@ -37,6 +39,7 @@ export default function ContactInformation({
       size={Size.Sm}
       withMargin={false}
       name={name}
+      errorName={errorName}
       placeholder={placeholder}
       options={
         options ?? {

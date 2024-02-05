@@ -28,65 +28,70 @@ export function FormContact() {
         <Flex direction="col" className="gap-3">
           <ContactInformation
             name="telegram.contact"
-            placeholder={T("profile.form.contactInfo.telegram")}
+            errorName="telegram"
+            placeholder={T("v2.commons.form.contact.telegram.placeholder")}
             icon={<Telegram size={16} className="fill-greyscale-400" />}
             visibilityName="telegram.isPublic"
             options={{
               pattern: {
                 value: REGEX.telegram,
-                message: T("profile.form.contactInfo.invalidUsername"),
+                message: T("v2.commons.form.errors.invalidUsername"),
               },
             }}
           />
 
           <ContactInformation
             name="whatsapp.contact"
-            placeholder={T("profile.form.contactInfo.whatsapp")}
+            errorName="whatsapp"
+            placeholder={T("v2.commons.form.contact.whatsapp.placeholder")}
             icon={<Icon remixName="ri-whatsapp-fill" />}
             visibilityName="whatsapp.isPublic"
             options={{
               pattern: {
                 value: REGEX.whatsapp,
-                message: T("profile.form.contactInfo.invalidePhoneNumber"),
+                message: T("v2.commons.form.errors.invalidePhoneNumber"),
               },
             }}
           />
 
           <ContactInformation
             name="twitter.contact"
-            placeholder={T("profile.form.contactInfo.twitter")}
+            errorName="twitter"
+            placeholder={T("v2.commons.form.contact.twitter.placeholder")}
             icon={<Icon remixName="ri-twitter-x-fill" />}
             visibilityName="twitter.isPublic"
             options={{
               pattern: {
                 value: REGEX.twitter,
-                message: T("profile.form.contactInfo.invalidUsername"),
+                message: T("v2.commons.form.errors.invalidUsername"),
               },
             }}
           />
 
           <ContactInformation
             name="discord.contact"
-            placeholder={T("profile.form.contactInfo.discord")}
+            errorName="discord"
+            placeholder={T("v2.commons.form.contact.discord.placeholder")}
             icon={<Icon remixName="ri-discord-fill" />}
             visibilityName="discord.isPublic"
             options={{
               pattern: {
                 value: REGEX.discord,
-                message: T("profile.form.contactInfo.invalidUsername"),
+                message: T("v2.commons.form.errors.invalidUsername"),
               },
             }}
           />
 
           <ContactInformation
             name="linkedin.contact"
-            placeholder={T("profile.form.contactInfo.linkedin")}
+            errorName="linkedin"
+            placeholder={T("v2.commons.form.contact.linkedin.placeholder")}
             icon={<Icon remixName="ri-linkedin-box-fill" />}
             visibilityName="linkedin.isPublic"
             options={{
               pattern: {
                 value: REGEX.linkedin,
-                message: T("profile.form.contactInfo.invalidUsername"),
+                message: T("v2.commons.form.errors.invalidUsername"),
               },
             }}
           />

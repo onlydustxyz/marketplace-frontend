@@ -41,16 +41,16 @@ export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props
 
             <Typography variant="body-s">
               {isValid ? (
-                <Translate token="profile.form.saveStatus.unsaved" />
+                <Translate token="v2.commons.form.status.unsaved" />
               ) : (
-                <Translate token="profile.form.saveStatus.invalid" />
+                <Translate token="v2.commons.form.status.invalid" />
               )}
             </Typography>
           </Flex>
         ) : (
           <>
             <Icon remixName="ri-check-line" />
-            <Translate token="profile.form.saveStatus.saved" />
+            <Translate token="v2.commons.form.status.saved" />
           </>
         )}
       </Tag>

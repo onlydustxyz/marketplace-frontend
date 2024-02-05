@@ -2,7 +2,6 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import MeApi from "src/api/me";
 import { FieldImage } from "src/components/New/Field/File";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
@@ -15,7 +14,6 @@ import { BannerButton } from "./banner-button/banner-button";
 import { FormInformationsSection } from "./section/section";
 
 export function FormInformations() {
-  const { T } = useIntl();
   const { control, setValue } = useFormContext();
 
   const {
@@ -41,7 +39,6 @@ export function FormInformations() {
               {...field}
               {...fieldState}
               className="h-13 w-13 rounded-full border-4 border-greyscale-50/12"
-              placeholder={T("project.details.create.informations.form.fields.logo.placeholder")}
               max_size_mo={10}
               upload={{
                 mutate: uploadProjectLogo,

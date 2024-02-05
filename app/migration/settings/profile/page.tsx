@@ -17,7 +17,6 @@ import { formatToData, formatToSchema } from "./features/form/form.utils";
 import { ProfileGithubAccount } from "./features/github-account/github-account";
 
 // TODO: Add zod
-// TODO: Fix error handling on contacts
 // TODO: Contact information and select input to do with NextUI
 export default function ProfilePage() {
   const { T } = useIntl();
@@ -51,10 +50,10 @@ export default function ProfilePage() {
   useMutationAlert({
     mutation: restUpdateProfileMutation,
     success: {
-      message: T("profile.form.success"),
+      message: T("v2.commons.alert.profile.success"),
     },
     error: {
-      message: T("profile.form.error"),
+      message: T("v2.commons.alert.profile.error"),
     },
   });
 
