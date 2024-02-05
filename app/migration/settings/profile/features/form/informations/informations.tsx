@@ -14,7 +14,6 @@ import { TProfileForm } from "../form.types";
 import { BannerButton } from "./banner-button/banner-button";
 import { FormInformationsSection } from "./section/section";
 
-// TODO: Change rounded image
 export function FormInformations() {
   const { T } = useIntl();
   const { control, setValue } = useFormContext();
@@ -45,6 +44,7 @@ export function FormInformations() {
             <FieldImage
               {...field}
               {...fieldState}
+              className="h-13 w-13 rounded-full border-4 border-greyscale-50/12"
               placeholder={T("project.details.create.informations.form.fields.logo.placeholder")}
               max_size_mo={10}
               upload={{

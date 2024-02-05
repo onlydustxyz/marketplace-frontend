@@ -1,5 +1,8 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { useFormContext } from "react-hook-form";
+import { generatePath } from "react-router-dom";
 
+import { RoutePaths } from "src/App";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { cn } from "src/utils/cn";
 
@@ -10,10 +13,12 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { TFormBottomBar } from "./bottom-bar.types";
+import { TFormFooter } from "./footer.types";
 
-// TODO: Add preview link
-export function FormBottomBar({ userProfilInformationIsPending }: TFormBottomBar.Props) {
+// TODO: Change Button with link using the new library
+export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props) {
+  const { user } = useAuth0();
+
   const { formState } = useFormContext();
   const { isDirty, isValid } = formState;
 
@@ -51,10 +56,18 @@ export function FormBottomBar({ userProfilInformationIsPending }: TFormBottomBar
       </Tag>
 
       <Flex alignItems="center" className="gap-5">
-        <Button variant="secondary">
-          <Icon remixName="ri-external-link-line" size={20} />
-          <Translate token="v2.pages.settings.publicProfile.buttons.preview" />
-        </Button>
+        <a
+          href={generatePath(RoutePaths.PublicProfile, {
+            userLogin: user?.nickname || "",
+          })}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button variant="secondary">
+            <Icon remixName="ri-external-link-line" size={20} />
+            <Translate token="v2.pages.settings.publicProfile.buttons.preview" />
+          </Button>
+        </a>
 
         <Button type="submit" disabled={userProfilInformationIsPending || !isValid}>
           {userProfilInformationIsPending ? (

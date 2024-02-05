@@ -9,15 +9,16 @@ import { useIntl } from "src/hooks/useIntl";
 
 import { Flex } from "components/layout/flex/flex";
 
-import { FormBottomBar } from "./bottom-bar/bottom-bar";
 import { FormContact } from "./contact/contact";
+import { FormFooter } from "./footer/footer";
 import { TProfileForm } from "./form.types";
-import { formatData } from "./form.utils";
+import { formatToData, formatToSchema } from "./form.utils";
 import { FormInformations } from "./informations/informations";
 import { FormTechnologies } from "./technologies/technologies";
 import { FormWeeklyAllocatedTime } from "./weekly-allocated-time/weekly-allocated-time";
 
 // TODO: BottomBar fixed
+// TODO: Parse on submit
 export function ProfileForm() {
   const { T } = useIntl();
 
@@ -34,7 +35,7 @@ export function ProfileForm() {
   useEffect(() => {
     if (data) {
       reset({
-        ...formatData(data),
+        ...formatToData(data),
       });
     }
   }, [data]);
@@ -60,6 +61,8 @@ export function ProfileForm() {
   const onSubmit = (formData: TProfileForm.Data) => {
     // updateUserProfileInfo(UProfileForm.mapFormDataToSchema(formData));
     console.log(formData);
+    console.log("----");
+    console.log(formatToSchema(formData));
   };
 
   return (
@@ -72,7 +75,7 @@ export function ProfileForm() {
           <FormWeeklyAllocatedTime />
         </Flex>
 
-        <FormBottomBar userProfilInformationIsPending={userProfilInformationIsPending} />
+        <FormFooter userProfilInformationIsPending={userProfilInformationIsPending} />
       </form>
     </FormProvider>
   );

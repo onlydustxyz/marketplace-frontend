@@ -1,4 +1,4 @@
-export namespace TFormBottomBar {
+export namespace TFormFooter {
   export interface Props {
     userProfilInformationIsPending: boolean;
   }

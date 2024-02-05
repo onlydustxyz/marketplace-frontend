@@ -42,7 +42,11 @@ export function Sidebar() {
             alignItems="center"
             className="gap-4 rounded-xl border-1 border-greyscale-50/8 bg-white/2 p-3 shadow-light"
           >
-            <img src={user?.picture} className="h-8 w-8 rounded-xl border-2 border-greyscale-50/12" />
+            <img
+              src={user?.picture}
+              alt={user?.nickname}
+              className="h-8 w-8 rounded-xl border-2 border-greyscale-50/12"
+            />
 
             <Typography variant="body-l-bold" className="truncate">
               {user?.nickname}
