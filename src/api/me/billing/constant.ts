@@ -4,12 +4,12 @@ import { MeBillingTypes } from "src/api/me/billing/types";
 export namespace MeBillingConstants {
   export const statusMapping: Record<UseBillingProfileResponse["status"], MeBillingTypes.statusMapping> = {
     CLOSED: {
-      icon: "ri-delete-bin-line",
+      icon: "ri-information-line",
       label: "v2.commons.enums.me.billingProfileStatus.CLOSED",
       type: "error",
     },
     INVALIDATED: {
-      icon: "ri-clockwise-line",
+      icon: "ri-information-line",
       label: "v2.commons.enums.me.billingProfileStatus.INVALIDATED",
       type: "error",
     },
@@ -19,22 +19,22 @@ export namespace MeBillingConstants {
       type: "warning",
     },
     REJECTED: {
-      icon: "ri-cross-line",
+      icon: "ri-information-line",
       label: "v2.commons.enums.me.billingProfileStatus.REJECTED",
       type: "error",
     },
     STARTED: {
-      icon: "ri-pencil-line",
+      icon: "ri-information-line",
       label: "v2.commons.enums.me.billingProfileStatus.STARTED",
       type: "warning",
     },
     UNDER_REVIEW: {
-      icon: "ri-loader-line",
+      icon: "ri-information-line",
       label: "v2.commons.enums.me.billingProfileStatus.UNDER_REVIEW",
       type: "warning",
     },
     VERIFIED: {
-      icon: "ri-seedling-line",
+      icon: "ri-information-line",
       label: "v2.commons.enums.me.billingProfileStatus.VERIFIED",
       type: "success",
     },

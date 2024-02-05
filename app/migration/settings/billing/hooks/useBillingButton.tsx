@@ -61,6 +61,13 @@ export const useBillingButton = ({ status, type, id }: UseBillingButtonProps): U
       onClick: handleVerify,
     };
   }
+  if (status === "REJECTED") {
+    return {
+      label: "v2.pages.settings.billing.buttons.reValidate",
+      onClick: handleVerify,
+    };
+  }
+
   if (status === "CLOSED") {
     return {
       label: "v2.pages.settings.billing.buttons.contact",

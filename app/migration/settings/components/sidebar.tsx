@@ -3,10 +3,15 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { usePathname } from "next/navigation";
 
+import { useBillingProfiles } from "app/migration/settings/hooks/useBillingProfile";
+import { useBillingStatus } from "app/migration/settings/hooks/useBillingStatus";
+
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import { useIntl } from "src/hooks/useIntl";
+import { cn } from "src/utils/cn";
 
 import { Flex } from "components/layout/flex/flex";
+import { Icon } from "components/layout/icon/icon";
 import { MenuItem } from "components/layout/sidebar/menu-item/menu-item";
 import { Sidebar as LayoutSidebar } from "components/layout/sidebar/sidebar";
 import { Typography } from "components/layout/typography/typography";
@@ -15,6 +20,8 @@ export function Sidebar() {
   const { isAuthenticated, user } = useAuth0();
   const { T } = useIntl();
   const pathname = usePathname();
+  const { validBillingProfile, billingProfile } = useBillingProfiles();
+  const { isWarning, isError } = useBillingStatus(validBillingProfile, billingProfile?.status);
 
   const menuItems = [
     {
@@ -24,6 +31,21 @@ export function Sidebar() {
     {
       label: T("v2.features.sidebar.settings.payoutPreferences"),
       path: "/migration/settings/payout",
+    },
+    {
+      label: T("v2.features.sidebar.settings.billingProfile"),
+      path: "/migration/settings/billing",
+      endIcon:
+        isWarning || isError ? (
+          <Icon
+            size={16}
+            remixName="ri-information-line"
+            className={cn({
+              "text-orange-500": isWarning,
+              "text-github": isError,
+            })}
+          />
+        ) : undefined,
     },
     {
       label: T("v2.features.sidebar.settings.verifyAccount"),
@@ -54,8 +76,15 @@ export function Sidebar() {
           </Flex>
 
           <div className="align-start flex flex-col gap-4 text-xl font-medium">
-            {menuItems.map(({ path, label }) => (
-              <MenuItem key={path} href={path} label={label} onClick={closePanel} isActive={pathname === path} />
+            {menuItems.map(({ path, label, endIcon }) => (
+              <MenuItem
+                key={path}
+                href={path}
+                label={label}
+                onClick={closePanel}
+                isActive={pathname === path}
+                endIcon={endIcon}
+              />
             ))}
 
             {!isAuthenticated ? (

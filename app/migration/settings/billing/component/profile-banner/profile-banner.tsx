@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { useBillingButton } from "app/migration/settings/billing/hooks/useBillingButton";
-import { useBillingStatus } from "app/migration/settings/billing/hooks/useBillingStatus";
+import { useBillingStatus } from "app/migration/settings/hooks/useBillingStatus";
 
 import { useIntl } from "src/hooks/useIntl";
 
@@ -41,9 +41,17 @@ export function ProfileBanner({ children, hasValidBillingProfile, status, type, 
     <Banner
       title={T(`v2.pages.settings.billing.status.descriptions.${status}`)}
       size={"small"}
-      customButton={button?.element ? button.element(<Button size={"s"}>{button.label}</Button>) : undefined}
+      customButton={
+        button?.element
+          ? button.element(
+              <Button size={"s"}>
+                <Translate token={button?.label} />
+              </Button>
+            )
+          : undefined
+      }
       button={
-        button
+        button && !button.element
           ? {
               children: <Translate token={button?.label} />,
               onClick: button?.onClick,
