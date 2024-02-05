@@ -11,6 +11,7 @@ import useMutationAlert from "src/api/useMutationAlert";
 
 import { SelectableTag } from "components/ds/form/selectable-tag/selectable-tag";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 import { THeader } from "./header.types";
 
@@ -78,12 +79,12 @@ export function Header({ initialData }: THeader.Props) {
               options={[
                 {
                   value: MeTypes.billingProfileType.Individual,
-                  children: "Individual",
+                  children: <Translate token="v2.pages.settings.billing.typeSwitch.individual" />,
                   icon: props => <Icon remixName="ri-user-line" {...props} />,
                 },
                 {
                   value: MeTypes.billingProfileType.Company,
-                  children: "Company",
+                  children: <Translate token="v2.pages.settings.billing.typeSwitch.company" />,
                   icon: props => <Icon remixName="ri-building-line" {...props} />,
                 },
               ]}

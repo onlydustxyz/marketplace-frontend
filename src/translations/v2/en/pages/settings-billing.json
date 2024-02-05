@@ -9,7 +9,7 @@
     "address": "Address",
     "country": "Country",
     "usCitizen": "US Citizen",
-    "identityDocumentType": "Identity document Type",
+    "identityDocumentType": "Identity document type",
     "identityDocumentNumber": "Identity document number",
     "validUntil": "Valid until"
   },
@@ -20,7 +20,7 @@
     "address": "Address",
     "country": "Country",
     "usEntity": "US Entity",
-    "subjectToVatInEurope": "subject to VAT in europe",
+    "subjectToVatInEurope": "Subject to VAT in Europe",
     "euVatNumber": "EU VAT NUMBER"
   },
   "buttons": {
@@ -31,12 +31,16 @@
   "status": {
     "descriptions": {
       "CLOSED": "Your profile got permanetly rejected, please contact us if you believe it’s an error.",
-      "INVALIDATED": "Your identity document has expired, please share an updated version",
-      "NOT_STARTED":  "You need to verify your identity in order to receive rewards",
-      "REJECTED": "Your verification got rejected",
-      "STARTED":  "You need to verify your identity in order to receive rewards",
+      "INVALIDATED": "Your identity document has expired, please share an updated version.",
+      "NOT_STARTED":  "You need to verify your identity in order to receive rewards.",
+      "REJECTED": "Your verification got rejected.",
+      "STARTED":  "You need to verify your identity in order to receive rewards.",
       "UNDER_REVIEW": "We’re reviewing your account, please come back later.",
       "VERIFIED":  "To edit any of those information, please reach out to us."
     }
+  },
+  "typeSwitch": {
+    "individual": "Individual",
+    "company": "Company"
   }
 }
