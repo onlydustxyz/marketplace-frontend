@@ -1,47 +1,35 @@
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 import * as crypto from "crypto";
-import FormData from "form-data";
 
-const SUMSUB_APP_TOKEN = process.env.SUMSUB_APP_TOKEN ?? "";
-const SUMSUB_SECRET_KEY = process.env.SUMSUB_SECRET_KEY ?? "";
-const SUMSUB_BASE_URL = "https://api.sumsub.com";
+import { SUMSUB_CONST } from "app/api/sumsub-token/constants";
+import { TSumsub } from "app/api/sumsub-token/types";
 
-interface Config {
-  baseURL: string;
-  method?: string;
-  url?: string;
-  headers?: Record<string, string>;
-  data?: string | FormData | null;
-}
+const config: TSumsub.Config = { baseURL: SUMSUB_CONST.BASE_URL };
 
-const config: Config = { baseURL: SUMSUB_BASE_URL };
-
-const validLevelNames = ["basic-kyc-level", "basic-kyb-level"];
+const validLevelNames = [SUMSUB_CONST.KYC_LEVEL, SUMSUB_CONST.KYB_LEVEL];
 
 axios.interceptors.request.use(createSignature, function (error) {
   return Promise.reject(error);
 });
 
-// This function creates signature for the request as described here: https://developers.sumsub.com/api-reference/#app-tokens
-function createSignature(config) {
+// https://developers.sumsub.com/api-reference/#app-tokens
+function createSignature(config: InternalAxiosRequestConfig<TSumsub.Config>) {
   const ts = Math.floor(Date.now() / 1000);
-  const signature = crypto.createHmac("sha256", SUMSUB_SECRET_KEY);
-  signature.update(ts + config.method.toUpperCase() + config.url);
+  const method = config.method?.toUpperCase() ?? "";
 
-  if (config.data instanceof FormData) {
-    signature.update(config.data.getBuffer());
-  } else if (config.data) {
-    signature.update(config.data);
+  const signature = crypto.createHmac("sha256", SUMSUB_CONST.SECRET_KEY);
+  signature.update(ts + method + config.url);
+
+  if (config.headers) {
+    config.headers["X-App-Access-Ts"] = String(ts);
+    config.headers["X-App-Access-Sig"] = signature.digest("hex");
   }
-
-  config.headers["X-App-Access-Ts"] = ts;
-  config.headers["X-App-Access-Sig"] = signature.digest("hex");
 
   return config;
 }
 
 // https://developers.sumsub.com/api-reference/#access-tokens-for-sdks
-function createAccessToken(externalId: string, levelName = "basic-kyc-level", ttlInSecs = 600) {
+function createAccessToken(externalId: string, levelName: TSumsub.LevelName, ttlInSecs = 600) {
   const method = "post";
   const url =
     "/resources/accessTokens?userId=" +
@@ -55,15 +43,14 @@ function createAccessToken(externalId: string, levelName = "basic-kyc-level", tt
   config.url = url;
   config.headers = {
     Accept: "application/json",
-    "X-App-Token": SUMSUB_APP_TOKEN,
+    "X-App-Token": SUMSUB_CONST.APP_TOKEN,
   };
-  config.data = null;
 
   return config;
 }
 
 export async function POST(request: Request) {
-  const { externalId, levelName = "basic-kyc-level" } = await request.json();
+  const { externalId, levelName = SUMSUB_CONST.DEFAULT_LEVEL } = await request.json();
 
   if (!externalId) {
     return new Response("externalId is required.", {
