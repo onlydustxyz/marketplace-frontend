@@ -1234,6 +1234,8 @@
           "spent": "Amount spent",
           "sent": "Rewards sent",
           "contributors": "Rewarded contributors",
+          "panelTitle": "Currency split",
+          "panelTotal": "Total",
           "dollars": "Dollars budget",
           "ether": "Ether budget",
           "stark": "Stark budget",

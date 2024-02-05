@@ -3,11 +3,12 @@ import { cn } from "src/utils/cn";
 
 type ChipsProps = {
   className?: string;
+  sizeClassName?: string;
   number: number | null;
   children: React.ReactElement[];
 };
 
-export function Chips({ children, number }: ChipsProps) {
+export function Chips({ children, number, sizeClassName }: ChipsProps) {
   return (
     <div className="flex">
       {children.map((child, key) =>
@@ -19,7 +20,7 @@ export function Chips({ children, number }: ChipsProps) {
       )}
       {number && children.length > number && (
         <div className={cn("-ml-2")}>
-          <Chip solid>
+          <Chip solid className={cn("h-6 w-6", sizeClassName)}>
             <p className="font-walsheim text-[10px] font-bold text-white">+{children.length - number}</p>
           </Chip>
         </div>
