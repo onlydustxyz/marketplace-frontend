@@ -18,6 +18,7 @@ import { ProfileGithubAccount } from "./features/github-account/github-account";
 
 // TODO: Add zod
 // TODO: Contact information and select input to do with NextUI
+// TODO: FieldImage to do with NextUI and add error handle on Input (call everywhere) and Textarea
 export default function ProfilePage() {
   const { T } = useIntl();
 
@@ -47,7 +48,6 @@ export default function ProfilePage() {
     options: {},
   });
 
-  // TODO: Check alert
   useMutationAlert({
     mutation: restUpdateProfileMutation,
     success: {

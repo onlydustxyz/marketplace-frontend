@@ -14,7 +14,7 @@ import { BannerButton } from "./banner-button/banner-button";
 import { FormInformationsSection } from "./section/section";
 
 export function FormInformations() {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, setError } = useFormContext();
 
   const {
     mutate: uploadProjectLogo,
@@ -24,6 +24,9 @@ export function FormInformations() {
     options: {
       onSuccess: data => {
         setValue("avatarUrl", data.url);
+      },
+      onError: () => {
+        setError("avatarUrl", { type: "validate", message: "test" });
       },
     },
   });
