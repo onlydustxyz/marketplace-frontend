@@ -6,7 +6,15 @@ const SUMSUB_APP_TOKEN = process.env.SUMSUB_APP_TOKEN ?? "";
 const SUMSUB_SECRET_KEY = process.env.SUMSUB_SECRET_KEY ?? "";
 const SUMSUB_BASE_URL = "https://api.sumsub.com";
 
-const config = { baseURL: SUMSUB_BASE_URL };
+interface Config {
+  baseURL: string;
+  method?: string;
+  url?: string;
+  headers?: Record<string, string>;
+  data?: string | FormData | null;
+}
+
+const config: Config = { baseURL: SUMSUB_BASE_URL };
 
 const validLevelNames = ["basic-kyc-level", "basic-kyb-level"];
 
@@ -33,24 +41,22 @@ function createSignature(config) {
 }
 
 // https://developers.sumsub.com/api-reference/#access-tokens-for-sdks
-function createAccessToken(externalUserId, levelName = "basic-kyc-level", ttlInSecs = 600) {
+function createAccessToken(externalId: string, levelName = "basic-kyc-level", ttlInSecs = 600) {
   const method = "post";
   const url =
     "/resources/accessTokens?userId=" +
-    encodeURIComponent(externalUserId) +
+    encodeURIComponent(externalId) +
     "&ttlInSecs=" +
     ttlInSecs +
     "&levelName=" +
     encodeURIComponent(levelName);
 
-  const headers = {
+  config.method = method;
+  config.url = url;
+  config.headers = {
     Accept: "application/json",
     "X-App-Token": SUMSUB_APP_TOKEN,
   };
-
-  config.method = method;
-  config.url = url;
-  config.headers = headers;
   config.data = null;
 
   return config;
