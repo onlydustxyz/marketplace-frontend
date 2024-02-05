@@ -15,28 +15,20 @@ export function Tag({
   tooltipContent,
   ...props
 }: TTag.Props) {
-  if (tooltipContent) {
+  function renderContent() {
     return (
-      <Tooltip content={tooltipContent}>
-        <Component
-          data-testId={testId}
-          id={id}
-          className="relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px"
-          onClick={onClick}
-        >
-          <div className={cn(tagVariants({ ...props }), className)}>{children}</div>
-        </Component>
-      </Tooltip>
+      <Component
+        data-testId={testId}
+        id={id}
+        className="relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px"
+        onClick={onClick}
+      >
+        <div className={cn(tagVariants({ ...props }), className)}>{children}</div>
+      </Component>
     );
   }
-  return (
-    <Component
-      data-testId={testId}
-      id={id}
-      className="relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px"
-      onClick={onClick}
-    >
-      <div className={cn(tagVariants({ ...props }), className)}>{children}</div>
-    </Component>
-  );
+  if (tooltipContent) {
+    return <Tooltip content={tooltipContent}>{renderContent()}</Tooltip>;
+  }
+  renderContent();
 }
