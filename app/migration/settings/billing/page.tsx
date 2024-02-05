@@ -8,36 +8,10 @@ import { ProfileIndividual } from "app/migration/settings/billing/features/profi
 import { VerifyButton } from "app/migration/settings/billing/features/verify-button/verify-button";
 
 import MeApi from "src/api/me";
-import { UseBillingProfileCompanyResponse, UseBillingProfileIndividualResponse } from "src/api/me/billing/queries";
 import { MeTypes } from "src/api/me/types";
 
 import { Header } from "./features/header/header";
 
-const fakeIndividualProfile: UseBillingProfileIndividualResponse = {
-  address: "value address",
-  birthdate: "value birthdate",
-  country: "value country",
-  firstName: "value firstName",
-  id: "value id",
-  idDocumentNumber: "value idDocumentNumber",
-  idDocumentType: "DRIVER_LICENSE",
-  lastName: "value lastName",
-  status: "VERIFIED",
-  usCitizen: true,
-  validUntil: "value validUntil",
-};
-const fakeCompanyProfile: UseBillingProfileCompanyResponse = {
-  address: "value address",
-  country: "value country",
-  euVATNumber: "value euVATNumber",
-  id: "value id",
-  name: "value name",
-  registrationDate: "value registrationDate",
-  registrationNumber: "value registrationNumber",
-  subjectToEuropeVAT: true,
-  usEntity: true,
-  status: "NOT_STARTED",
-};
 export default function ProfilePage() {
   const { user } = useCurrentUser();
   const { data } = MeApi.billing.queries.useBillingProfile({

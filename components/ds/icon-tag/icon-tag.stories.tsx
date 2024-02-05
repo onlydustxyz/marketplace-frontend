@@ -4,17 +4,17 @@ import { IconTag } from "components/ds/icon-tag/icon-tag";
 import { TIconTag } from "components/ds/icon-tag/icon-tag.types";
 
 const defaultProps: TIconTag.Props = {
-  remixName: "ri-seedling-line",
+  icon: { remixName: "ri-seedling-line" },
   active: false,
 };
 
 const activeProps: TIconTag.Props = {
-  remixName: "ri-rocket-2-line",
+  icon: { remixName: "ri-rocket-2-line" },
   active: true,
 };
 
 const tooltipProps: TIconTag.Props = {
-  remixName: "ri-hand-coin-line",
+  icon: { remixName: "ri-hand-coin-line" },
   tooltipContent: "Tooltip content",
 };
 
@@ -38,8 +38,8 @@ export const Default: Story = {
     return (
       <div className="flex flex-row gap-4">
         <IconTag {...defaultProps} />
-        <IconTag {...defaultProps} remixName="ri-hand-coin-line" active />
-        <IconTag {...defaultProps} remixName="ri-git-fork-line" tooltipContent="Tooltip content" />
+        <IconTag {...defaultProps} icon={{ remixName: "ri-hand-coin-line" }} active />
+        <IconTag {...defaultProps} icon={{ remixName: "ri-git-fork-line" }} tooltipContent="Tooltip content" />
       </div>
     );
   },
