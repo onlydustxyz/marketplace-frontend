@@ -2,14 +2,14 @@ import { PaymentStatus } from "src/types";
 import { compareDateToNow } from "src/utils/date";
 
 import { Tag } from "components/ds/tag/tag";
-import { TPayoutStatus } from "components/features/payout-status/payout-status.types";
-import { useStatusConfig } from "components/features/payout-status/use-status-config";
+import { useStatusConfig } from "components/features/payout-status/status-config/use-status-config";
+import { TStatusTag } from "components/features/payout-status/status-tag/status-tag.types";
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function StatusTag({ status, date }: TPayoutStatus.StatusTagProps) {
+export function StatusTag({ status, date }: TStatusTag.Props) {
   const dateRelativeToNow = date ? compareDateToNow(date) : undefined;
   const config = useStatusConfig({ status, dateRelativeToNow, date });
 

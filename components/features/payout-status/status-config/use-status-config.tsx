@@ -1,8 +1,8 @@
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
-import { TPayoutStatus } from "components/features/payout-status/payout-status.types";
+import { TStatusConfig } from "components/features/payout-status/status-config/status-config.types";
 
-export function useStatusConfig({ status, dateRelativeToNow, date }: TPayoutStatus.StatusConfigProps) {
+export function useStatusConfig({ status, dateRelativeToNow, date }: TStatusConfig.Props) {
   const defaultDate = date ? getFormattedDateToLocaleDateString(new Date(date)) : "";
 
   const statusConfigs = {
