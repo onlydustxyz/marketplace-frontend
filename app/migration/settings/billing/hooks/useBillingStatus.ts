@@ -1,7 +1,7 @@
 import { MeBillingConstants } from "src/api/me/billing/constant";
 import { UseBillingProfileResponse } from "src/api/me/billing/queries";
 
-export const useBillingStatus = (status?: UseBillingProfileResponse["status"]) => {
+export const useBillingStatus = (hasValidBillingProfile: boolean, status?: UseBillingProfileResponse["status"]) => {
   if (!status) {
     return {
       statusMapping: undefined,
@@ -12,9 +12,9 @@ export const useBillingStatus = (status?: UseBillingProfileResponse["status"]) =
   }
 
   const statusMapping = MeBillingConstants.statusMapping[status];
-  const isWarning = statusMapping.type === "warning";
+  const isWarning = statusMapping.type === "warning" && !hasValidBillingProfile;
   const isError = statusMapping.type === "error";
-  const isSuccess = statusMapping.type === "success";
+  const isSuccess = statusMapping.type === "success" || (statusMapping.type === "warning" && hasValidBillingProfile);
 
   return {
     statusMapping,

@@ -7,8 +7,8 @@ import { Tag } from "components/ds/tag/tag";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-export function Status({ status }: TStatus.Props) {
-  const { statusMapping, isWarning, isError, isSuccess } = useBillingStatus(status);
+export function Status({ status, hasValidBillingProfile }: TStatus.Props) {
+  const { statusMapping, isWarning, isError, isSuccess } = useBillingStatus(hasValidBillingProfile, status);
 
   if (!statusMapping) {
     return null;

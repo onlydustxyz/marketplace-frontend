@@ -52,19 +52,13 @@ export default function ProfilePage() {
           profile: (user?.billingProfileType as MeTypes.billingProfileType) || MeTypes.billingProfileType.Individual,
         }}
       />
-      <ProfileCard status={data?.status}>
+      <ProfileCard status={data?.status} hasValidBillingProfile={user?.hasValidBillingProfile || false}>
         {data && user?.billingProfileType === MeTypes.billingProfileType.Individual && (
           <ProfileIndividual profile={data} />
         )}
         {data && user?.billingProfileType === MeTypes.billingProfileType.Company && <ProfileCompany profile={data} />}
         {user?.billingProfileType && data?.id ? <VerifyButton type={user.billingProfileType} id={data.id} /> : null}
       </ProfileCard>
-      {/*<ProfileCard status={fakeCompanyProfile?.status}>*/}
-      {/*  <ProfileCompany profile={fakeCompanyProfile} />*/}
-      {/*</ProfileCard>*/}
-      {/*<ProfileCard status={fakeIndividualProfile?.status}>*/}
-      {/*  <ProfileIndividual profile={fakeIndividualProfile} />*/}
-      {/*</ProfileCard>*/}
     </div>
   );
 }
