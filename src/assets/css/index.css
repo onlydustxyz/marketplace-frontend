@@ -17,7 +17,6 @@
 
   body {
     @apply text-greyscale-50;
-    @apply bg-black;
   }
 
   .markdown-body {

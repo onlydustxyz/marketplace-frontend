@@ -23,7 +23,7 @@ import ProjectsLoader from "./Loaders/ProjectsLoader";
 import RewardLoader from "./Loaders/RewardsLoader";
 import ProtectedByFlag from "./ProtectedByFlag";
 
-const Projects = lazy(() => import("src/_pages/Projects"));
+const ProjectsPage = lazy(() => import("app/migration/projects/page"));
 const Contributions = lazy(() => import("src/_pages/Contributions/Contributions"));
 const Rewards = lazy(() => import("src/_pages/Rewards"));
 const ProjectDetails = lazy(() => import("src/_pages/ProjectDetails"));
@@ -172,7 +172,7 @@ function App() {
           path: RoutePaths.Projects,
           element: (
             <Suspense fallback={<ProjectsLoader />}>
-              <Projects />
+              <ProjectsPage />
             </Suspense>
           ),
         },

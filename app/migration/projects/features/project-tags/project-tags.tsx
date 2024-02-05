@@ -1,13 +1,13 @@
 import { useContext } from "react";
 
-import { ProjectsContext } from "app/migration/projects/context/project.context";
-
 import { ProjectConstants } from "src/api/Project/constants";
 import { ProjectTypes } from "src/api/Project/types";
 
 import { IconTag } from "components/ds/icon-tag/icon-tag";
 import { Flex } from "components/layout/flex/flex";
 import { Translate } from "components/layout/translate/translate";
+
+import { ProjectsContext } from "../../context/project.context";
 
 import tagMapping = ProjectConstants.tagMapping;
 
