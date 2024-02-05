@@ -2,7 +2,6 @@ import { SyntheticEvent } from "react";
 
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
@@ -13,6 +12,7 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
 import { Link } from "components/ds/link/link";
+import { PayoutStatus } from "components/features/payout-status/payout-status";
 
 export function RewardCard({
   reward,

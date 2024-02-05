@@ -1,5 +1,4 @@
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
@@ -7,6 +6,8 @@ import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
+
+import { PayoutStatus } from "components/features/payout-status/payout-status";
 
 type Props = {
   reward: RewardPageItemType;
