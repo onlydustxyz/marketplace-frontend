@@ -9,4 +9,9 @@ export namespace TSumsub {
   }
 
   export type LevelName = typeof SUMSUB_CONST.KYC_LEVEL | typeof SUMSUB_CONST.KYB_LEVEL;
+
+  export interface CreateTokenProps {
+    externalId: string;
+    levelName: LevelName;
+  }
 }

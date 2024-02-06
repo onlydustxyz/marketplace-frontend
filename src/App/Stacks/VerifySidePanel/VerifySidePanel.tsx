@@ -1,6 +1,8 @@
 import SumsubWebSdk from "@sumsub/websdk-react";
 import { useEffect, useState } from "react";
 
+import { createSumsubToken } from "app/api/sumsub-token/handlers";
+
 import { TVerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel.types";
 
 const config = {
@@ -167,18 +169,19 @@ function errorHandler(...args) {
   console.error(args);
 }
 
-export function VerifySidePanel({ levelName, externalId }: TVerifySidePanel.Props) {
+export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Props) {
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    fetch("/api/sumsub-token", {
-      method: "POST",
-      body: JSON.stringify({ externalId, levelName }),
-    }).then(res => {
-      res.json().then(({ token }) => {
+    (async () => {
+      try {
+        const { token } = await createSumsubToken({ externalId, levelName });
         setToken(token);
-      });
-    });
+      } catch (error) {
+        // TODO handle error
+        console.error(error);
+      }
+    })();
   }, []);
 
   return token ? (
