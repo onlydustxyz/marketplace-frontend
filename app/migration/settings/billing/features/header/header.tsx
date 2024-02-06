@@ -146,9 +146,7 @@ export function Header({ initialData }: THeader.Props) {
             onClick: onCancel,
           },
         }}
-      >
-        coucou
-      </ConfirmationModal>
+      />
     </>
   );
 }
