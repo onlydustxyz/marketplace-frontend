@@ -25,8 +25,7 @@ export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props
   return (
     <Flex
       alignItems="center"
-      justifyContent="between"
-      className="-mx-4 -mb-6 gap-1 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium xl:-mx-8"
+      className="-mx-4 -mb-6 flex-col gap-4 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium md:flex-row md:justify-between xl:-mx-8"
     >
       <Tag size="medium">
         {isDirty || !isValid ? (
@@ -55,22 +54,22 @@ export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props
         )}
       </Tag>
 
-      <Flex alignItems="center" className="gap-5">
+      <Flex alignItems="center" className="w-full flex-col gap-2 md:w-auto md:flex-row md:gap-5">
         <a
           href={generatePath(RoutePaths.PublicProfile, {
             userLogin: user?.nickname || "",
           })}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden md:block"
+          className="w-full md:w-auto"
         >
-          <Button variant="secondary">
+          <Button variant="secondary" className="w-full md:w-auto">
             <Icon remixName="ri-external-link-line" size={20} />
             <Translate token="v2.pages.settings.profile.buttons.preview" />
           </Button>
         </a>
 
-        <Button type="submit" disabled={userProfilInformationIsPending || !isValid}>
+        <Button type="submit" disabled={userProfilInformationIsPending || !isValid} className="w-full md:w-auto">
           {userProfilInformationIsPending ? (
             <Spinner className="h-5 w-5" />
           ) : (
