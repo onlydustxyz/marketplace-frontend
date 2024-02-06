@@ -13,7 +13,7 @@ const options = {};
 
 export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Props) {
   const [token, setToken] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(true);
 
   useEffect(() => {
     handleTokenCreation();
@@ -43,8 +43,8 @@ export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Prop
       <div className="flex h-full items-center justify-center">
         <EmptyState
           illustrationSrc={IMAGES.icons.emptyState}
-          title={{ token: "v2.pages.settings.billing.sumsub.error.title" }}
-          description={{ token: "v2.pages.settings.billing.sumsub.error.description" }}
+          title={{ token: "v2.features.verify.error.title" }}
+          description={{ token: "v2.features.verify.error.description" }}
         />
       </div>
     );
