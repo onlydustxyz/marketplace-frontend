@@ -41,6 +41,23 @@
       "VERIFIED":  "To edit any of those information, please reach out to us."
     }
   },
+  "confirmation": {
+    "title": "Are you sure?",
+    "to_company": {
+      "content": "You may have to go through additional verification steps in order to verify your business.",
+      "confirmationBtn": "Yes, switch to Company",
+      "cancelBtn": "No, stay as Individual"
+    },
+    "to_individual": {
+      "content": "You may have to go through additional verification steps in order to verify your identity.",
+      "confirmationBtn": "Yes, switch to Individidual",
+      "cancelBtn": "No, stay as Company"
+    }
+  },
+  "messages": {
+    "success_to_company": "You are successfully switched to company",
+    "success_to_individual": "You are successfully switched to individidual"
+  },
   "typeSwitch": {
     "individual": "Individual",
     "company": "Company"
