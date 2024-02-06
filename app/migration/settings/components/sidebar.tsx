@@ -58,7 +58,7 @@ export function Sidebar() {
         isActive: false,
       },
     ],
-    []
+    [isWarning, isError]
   );
 
   return (
