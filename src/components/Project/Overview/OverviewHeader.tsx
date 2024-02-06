@@ -1,3 +1,4 @@
+import { ProjectConstants } from "src/api/Project/constants";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { IMAGES } from "src/assets/img";
 import MarkdownPreview from "src/components/MarkdownPreview";
@@ -8,6 +9,7 @@ import LockFill from "src/icons/LockFill";
 
 import { SelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 export interface ProjectOverviewHeaderProps {
   project: UseGetProjectBySlugResponse;
@@ -49,26 +51,17 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
             )}
           </div>
 
-          <div className="flex gap-2">
-            <SelectableTagItem.Static>
-              <Icon remixName="ri-seedling-line" />
-              Good for beginners
-            </SelectableTagItem.Static>
+          <div className="flex flex-wrap gap-2">
+            {project?.tags?.map(tag => {
+              const { icon, label } = ProjectConstants.tagMapping[tag];
 
-            <SelectableTagItem.Static>
-              <Icon remixName="ri-git-fork-line" />
-              Strong expertise
-            </SelectableTagItem.Static>
-
-            <SelectableTagItem.Static>
-              <Icon remixName="ri-hand-coin-line" />
-              Likely to send rewards
-            </SelectableTagItem.Static>
-
-            <SelectableTagItem.Static>
-              <Icon remixName="ri-rocket-2-line" />
-              Fast paced
-            </SelectableTagItem.Static>
+              return (
+                <SelectableTagItem.Static key={label}>
+                  <Icon {...icon} />
+                  <Translate token={label} />
+                </SelectableTagItem.Static>
+              );
+            })}
           </div>
         </div>
       </div>
