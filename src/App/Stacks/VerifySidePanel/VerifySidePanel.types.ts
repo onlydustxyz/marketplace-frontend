@@ -1,8 +1,8 @@
-import { SUMSUB_CONST } from "app/api/sumsub-token/constants";
+import { TSumsub } from "app/api/sumsub-token/types";
 
 export namespace TVerifySidePanel {
   export interface Props {
-    levelName: typeof SUMSUB_CONST.KYC_LEVEL | typeof SUMSUB_CONST.KYB_LEVEL;
+    levelName: TSumsub.LevelName;
     externalId: string;
   }
 }
