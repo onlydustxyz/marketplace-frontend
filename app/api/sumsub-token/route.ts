@@ -45,39 +45,47 @@ function createAccessToken(externalId: string, levelName: TSumsub.LevelName, ttl
 }
 
 export async function POST(request: Request) {
-  const { externalId, levelName = SUMSUB_CONST.DEFAULT_LEVEL } = await request.json();
+  try {
+    const { externalId, levelName = SUMSUB_CONST.DEFAULT_LEVEL } = await request.json();
 
-  if (!externalId) {
-    return new Response("externalId is required.", {
-      status: 400,
-    });
-  }
+    if (!externalId) {
+      return new Response("externalId is required.", {
+        status: 400,
+      });
+    }
 
-  if (!validLevelNames.includes(levelName)) {
-    return new Response("Invalid levelName.", {
-      status: 400,
-    });
-  }
+    if (!validLevelNames.includes(levelName)) {
+      return new Response("Invalid levelName.", {
+        status: 400,
+      });
+    }
 
-  const response = await axios<{ token: string; userId: string }>(createAccessToken(externalId, levelName, 1200))
-    .then(function (response) {
-      if (response.status !== 200) {
-        throw new Error("Failed to fetch access token.");
-      }
+    const response = await axios<{ token: string; userId: string }>(createAccessToken(externalId, levelName, 1200))
+      .then(function (response) {
+        if (response.status !== 200) {
+          throw new Error("Failed to fetch access token.");
+        }
 
-      return response;
-    })
-    .catch(function (error) {
-      console.error("Error:\n", error.response.data);
-    });
+        return response;
+      })
+      .catch(function (error) {
+        console.error("Error:\n", error.response.data);
+      });
 
-  const json = JSON.stringify(response?.data);
+    const json = JSON.stringify(response?.data);
 
-  if (!json) {
-    return new Response("Failed to parse access token.", {
+    if (!json) {
+      return new Response("Failed to parse access token.", {
+        status: 500,
+      });
+    }
+
+    return new Response(json);
+  } catch (error) {
+    console.error(error);
+
+    return new Response("Failed to create access token.", {
       status: 500,
     });
   }
-
-  return new Response(json);
 }
