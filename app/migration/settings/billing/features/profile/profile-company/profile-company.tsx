@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { ProfileItemGrid } from "app/migration/settings/billing/component/profile-item-grid/profile-item-grid";
 import { ProfileItem } from "app/migration/settings/billing/component/profile-item/profile-item";
 
+import { Translate } from "components/layout/translate/translate";
+
 import { TProfileCompany } from "./profile-company.types";
 
 export function ProfileCompany({ profile }: TProfileCompany.Props) {
@@ -24,9 +26,19 @@ export function ProfileCompany({ profile }: TProfileCompany.Props) {
       <ProfileItem label="v2.pages.settings.billing.company.registrationDate">{registrationDate}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.company.address">{profile.address}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.company.country">{profile.country}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.company.usEntity">{`${profile.usEntity}`}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.company.usEntity">
+        {profile.usEntity ? (
+          <Translate token="v2.pages.settings.billing.format.boolean.yes" />
+        ) : (
+          <Translate token="v2.pages.settings.billing.format.boolean.no" />
+        )}
+      </ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.company.subjectToVatInEurope">
-        {`${profile.subjectToEuropeVAT}`}
+        {profile.subjectToEuropeVAT ? (
+          <Translate token="v2.pages.settings.billing.format.boolean.yes" />
+        ) : (
+          <Translate token="v2.pages.settings.billing.format.boolean.no" />
+        )}
       </ProfileItem>
 
       {profile.euVATNumber ? (

@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { ProfileItemGrid } from "app/migration/settings/billing/component/profile-item-grid/profile-item-grid";
 import { ProfileItem } from "app/migration/settings/billing/component/profile-item/profile-item";
 
+import { Translate } from "components/layout/translate/translate";
+
 import { TProfileIndividual } from "./profile-individual.types";
 
 export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
@@ -28,7 +30,13 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
       <ProfileItem label="v2.pages.settings.billing.individual.birthdate">{birthdate}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.address">{profile.address}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.country">{profile.country}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.individual.usCitizen">{`${profile.usCitizen}`}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.individual.usCitizen">
+        {profile.usCitizen ? (
+          <Translate token="v2.pages.settings.billing.format.boolean.yes" />
+        ) : (
+          <Translate token="v2.pages.settings.billing.format.boolean.no" />
+        )}
+      </ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.identityDocumentType">
         {profile.idDocumentType ? (
           <>
