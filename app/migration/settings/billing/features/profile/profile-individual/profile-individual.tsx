@@ -40,7 +40,7 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
       <ProfileItem label="v2.pages.settings.billing.individual.identityDocumentType">
         {profile.idDocumentType ? (
           <>
-            {profile.idDocumentType}
+            <Translate token={`v2.commons.enums.me.idDocumentType.${profile.idDocumentType}`} />
             {profile.idDocumentCountryCode ? (
               <span className="uppercase">&nbsp;({profile.idDocumentCountryCode})</span>
             ) : null}
