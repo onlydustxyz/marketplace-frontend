@@ -1,6 +1,8 @@
-import { Typography } from "components/layout/typography/typography";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { useIntl } from "src/hooks/useIntl";
+
+import { Typography } from "components/layout/typography/typography";
+
 import Section, { SectionIcon } from "./OverviewSection";
 
 interface Props {
