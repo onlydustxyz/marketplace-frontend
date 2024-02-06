@@ -3,8 +3,6 @@ import { useMemo } from "react";
 import { useBillingButton } from "app/migration/settings/billing/hooks/useBillingButton";
 import { useBillingStatus } from "app/migration/settings/hooks/useBillingStatus";
 
-import { useIntl } from "src/hooks/useIntl";
-
 import { Banner } from "components/ds/banner/banner";
 import { TBanner } from "components/ds/banner/banner.types";
 import { Button } from "components/ds/button/button";
@@ -13,7 +11,6 @@ import { Translate } from "components/layout/translate/translate";
 import { TProfileBanner } from "./profile-banner.types";
 
 export function ProfileBanner({ children, hasValidBillingProfile, status, type, id }: TProfileBanner.Props) {
-  const { T } = useIntl();
   const { statusMapping, isWarning, isError, isSuccess, isRainbow } = useBillingStatus(hasValidBillingProfile, status);
   const button = useBillingButton({ status, id, type });
 
@@ -39,8 +36,8 @@ export function ProfileBanner({ children, hasValidBillingProfile, status, type, 
 
   return (
     <Banner
-      title={T(`v2.pages.settings.billing.status.descriptions.${status}`)}
-      size={"small"}
+      title={<Translate token={`v2.pages.settings.billing.status.descriptions.${status}`} />}
+      size="s"
       customButton={
         button?.element
           ? button.element(

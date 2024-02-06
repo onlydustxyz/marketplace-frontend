@@ -3,4 +3,6 @@ export namespace MeTypes {
     Company = "COMPANY",
     Individual = "INDIVIDUAL",
   }
+
+  export type billingProfileUnion = `${billingProfileType}`;
 }

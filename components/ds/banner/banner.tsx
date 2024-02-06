@@ -11,15 +11,15 @@ import { TBanner } from "./banner.types";
 export function Banner({ children, title, description, icon, button, customButton, ...props }: TBanner.Props) {
   const slots = bannerVariants({ ...props });
   const iconSize = {
-    big: 32,
-    medium: 24,
-    small: 20,
+    l: 32,
+    m: 24,
+    s: 20,
   };
 
   const buttonSize: { [key: string]: TButton.Variants["size"] } = {
-    big: "l",
-    medium: "m",
-    small: "s",
+    l: "l",
+    m: "m",
+    s: "s",
   };
 
   return (
@@ -27,7 +27,7 @@ export function Banner({ children, title, description, icon, button, customButto
       <div className={slots.contentWrapper()}>
         {icon ? (
           <div className={slots.iconWrapper()}>
-            <Icon {...icon} size={iconSize[props.size || "medium"]} className={cn(icon.className, slots.icon())} />
+            <Icon {...icon} size={iconSize[props.size || "m"]} className={cn(icon.className, slots.icon())} />
           </div>
         ) : null}
         <div className="flex flex-col gap-1">
@@ -41,7 +41,7 @@ export function Banner({ children, title, description, icon, button, customButto
         </div>
       </div>
       {button ? <Button size={buttonSize[props.size || "medium"]} {...button} /> : null}
-      {customButton ? customButton : null}
+      {customButton}
     </div>
   );
 }

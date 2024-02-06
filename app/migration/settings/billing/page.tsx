@@ -19,8 +19,8 @@ export default function ProfilePage() {
         }}
       />
       <ProfileCard status={billingProfile?.status} hasValidBillingProfile={validBillingProfile}>
-        {billingProfile && isIndividual && <ProfileIndividual profile={billingProfile} />}
-        {billingProfile && isCompany && <ProfileCompany profile={billingProfile} />}
+        {billingProfile && isIndividual ? <ProfileIndividual profile={billingProfile} /> : null}
+        {billingProfile && isCompany ? <ProfileCompany profile={billingProfile} /> : null}
         <ProfileBanner
           hasValidBillingProfile={validBillingProfile}
           status={billingProfile?.status}

@@ -7,7 +7,7 @@ export namespace TProfileBanner {
   export interface Props extends PropsWithChildren {
     status?: UseBillingProfileResponse["status"];
     hasValidBillingProfile: boolean;
-    type?: `${MeTypes.billingProfileType}`;
+    type?: MeTypes.billingProfileUnion;
     id?: string;
   }
 }

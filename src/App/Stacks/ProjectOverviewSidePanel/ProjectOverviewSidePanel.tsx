@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 
 import ProjectApi from "src/api/Project";

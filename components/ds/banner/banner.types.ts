@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactElement } from "react";
+import { PropsWithChildren, ReactElement, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { TButton } from "components/ds/button/button.types";
@@ -10,8 +10,8 @@ export namespace TBanner {
   export type Variants = VariantProps<typeof bannerVariants>;
 
   export interface Props extends PropsWithChildren, Variants {
-    title: string;
-    description?: string;
+    title: ReactNode;
+    description?: ReactNode;
     icon?: TIcon.Props;
     button?: TButton.Props;
     customButton?: ReactElement;
