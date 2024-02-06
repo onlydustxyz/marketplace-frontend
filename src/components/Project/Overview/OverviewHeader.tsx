@@ -51,18 +51,20 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
             )}
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {project?.tags?.map(tag => {
-              const { icon, label } = ProjectConstants.tagMapping[tag];
+          {project.tags?.length ? (
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map(tag => {
+                const { icon, label } = ProjectConstants.tagMapping[tag];
 
-              return (
-                <SelectableTagItem.Static key={label}>
-                  <Icon {...icon} />
-                  <Translate token={label} />
-                </SelectableTagItem.Static>
-              );
-            })}
-          </div>
+                return (
+                  <SelectableTagItem.Static key={label}>
+                    <Icon {...icon} />
+                    <Translate token={label} />
+                  </SelectableTagItem.Static>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
       </div>
       {description ? (
