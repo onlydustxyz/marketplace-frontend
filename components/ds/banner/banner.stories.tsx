@@ -28,12 +28,12 @@ export const Default: Story = {
   render: args => {
     return (
       <div className="flex w-full flex-col gap-2">
-        <Banner {...defaultProps} {...args} variant="rainbow" size="medium" />
-        <Banner {...defaultProps} {...args} variant="orange" size="medium" />
-        <Banner {...defaultProps} {...args} variant="red" size="medium" />
-        <Banner {...defaultProps} {...args} variant="heavy" size="medium" />
-        <Banner {...defaultProps} {...args} variant="medium" size="medium" />
-        <Banner {...defaultProps} {...args} variant="light" size="medium" />
+        <Banner {...defaultProps} {...args} variant="rainbow" size="m" />
+        <Banner {...defaultProps} {...args} variant="orange" size="m" />
+        <Banner {...defaultProps} {...args} variant="red" size="m" />
+        <Banner {...defaultProps} {...args} variant="heavy" size="m" />
+        <Banner {...defaultProps} {...args} variant="medium" size="m" />
+        <Banner {...defaultProps} {...args} variant="light" size="m" />
       </div>
     );
   },
@@ -43,9 +43,9 @@ export const Rainbow: Story = {
   render: args => {
     return (
       <div className="flex w-full flex-col gap-2">
-        <Banner {...defaultProps} {...args} variant="rainbow" size="big" />
-        <Banner {...defaultProps} {...args} variant="rainbow" size="medium" />
-        <Banner {...defaultProps} {...args} variant="rainbow" size="small" />
+        <Banner {...defaultProps} {...args} variant="rainbow" size="l" />
+        <Banner {...defaultProps} {...args} variant="rainbow" size="m" />
+        <Banner {...defaultProps} {...args} variant="rainbow" size="s" />
       </div>
     );
   },
@@ -55,14 +55,14 @@ export const Orange: Story = {
     return (
       <div className="flex w-full flex-col gap-4">
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="orange" size="big" />
-          <Banner {...defaultProps} {...args} variant="orange" size="medium" />
-          <Banner {...defaultProps} {...args} variant="orange" size="small" />
+          <Banner {...defaultProps} {...args} variant="orange" size="l" />
+          <Banner {...defaultProps} {...args} variant="orange" size="m" />
+          <Banner {...defaultProps} {...args} variant="orange" size="s" />
         </div>
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="orange" size="big" hasBorder />
-          <Banner {...defaultProps} {...args} variant="orange" size="medium" hasBorder />
-          <Banner {...defaultProps} {...args} variant="orange" size="small" hasBorder />
+          <Banner {...defaultProps} {...args} variant="orange" size="l" hasBorder />
+          <Banner {...defaultProps} {...args} variant="orange" size="m" hasBorder />
+          <Banner {...defaultProps} {...args} variant="orange" size="s" hasBorder />
         </div>
       </div>
     );
@@ -74,14 +74,14 @@ export const Red: Story = {
     return (
       <div className="flex w-full flex-col gap-4">
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="red" size="big" />
-          <Banner {...defaultProps} {...args} variant="red" size="medium" />
-          <Banner {...defaultProps} {...args} variant="red" size="small" />
+          <Banner {...defaultProps} {...args} variant="red" size="l" />
+          <Banner {...defaultProps} {...args} variant="red" size="m" />
+          <Banner {...defaultProps} {...args} variant="red" size="s" />
         </div>
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="red" size="big" hasBorder />
-          <Banner {...defaultProps} {...args} variant="red" size="medium" hasBorder />
-          <Banner {...defaultProps} {...args} variant="red" size="small" hasBorder />
+          <Banner {...defaultProps} {...args} variant="red" size="l" hasBorder />
+          <Banner {...defaultProps} {...args} variant="red" size="m" hasBorder />
+          <Banner {...defaultProps} {...args} variant="red" size="s" hasBorder />
         </div>
       </div>
     );
@@ -93,14 +93,14 @@ export const Heavy: Story = {
     return (
       <div className="flex w-full flex-col gap-4">
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="heavy" size="big" />
-          <Banner {...defaultProps} {...args} variant="heavy" size="medium" />
-          <Banner {...defaultProps} {...args} variant="heavy" size="small" />
+          <Banner {...defaultProps} {...args} variant="heavy" size="l" />
+          <Banner {...defaultProps} {...args} variant="heavy" size="m" />
+          <Banner {...defaultProps} {...args} variant="heavy" size="s" />
         </div>
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="heavy" size="big" hasBorder />
-          <Banner {...defaultProps} {...args} variant="heavy" size="medium" hasBorder />
-          <Banner {...defaultProps} {...args} variant="heavy" size="small" hasBorder />
+          <Banner {...defaultProps} {...args} variant="heavy" size="l" hasBorder />
+          <Banner {...defaultProps} {...args} variant="heavy" size="m" hasBorder />
+          <Banner {...defaultProps} {...args} variant="heavy" size="s" hasBorder />
         </div>
       </div>
     );
@@ -112,14 +112,14 @@ export const Medium: Story = {
     return (
       <div className="flex w-full flex-col gap-4">
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="medium" size="big" />
-          <Banner {...defaultProps} {...args} variant="medium" size="medium" />
-          <Banner {...defaultProps} {...args} variant="medium" size="small" />
+          <Banner {...defaultProps} {...args} variant="medium" size="l" />
+          <Banner {...defaultProps} {...args} variant="medium" size="m" />
+          <Banner {...defaultProps} {...args} variant="medium" size="s" />
         </div>
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="medium" size="big" hasBorder />
-          <Banner {...defaultProps} {...args} variant="medium" size="medium" hasBorder />
-          <Banner {...defaultProps} {...args} variant="medium" size="small" hasBorder />
+          <Banner {...defaultProps} {...args} variant="medium" size="l" hasBorder />
+          <Banner {...defaultProps} {...args} variant="medium" size="m" hasBorder />
+          <Banner {...defaultProps} {...args} variant="medium" size="s" hasBorder />
         </div>
       </div>
     );
@@ -130,14 +130,14 @@ export const Light: Story = {
     return (
       <div className="flex w-full flex-col gap-4">
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="light" size="big" />
-          <Banner {...defaultProps} {...args} variant="light" size="medium" />
-          <Banner {...defaultProps} {...args} variant="light" size="small" />
+          <Banner {...defaultProps} {...args} variant="light" size="l" />
+          <Banner {...defaultProps} {...args} variant="light" size="m" />
+          <Banner {...defaultProps} {...args} variant="light" size="s" />
         </div>
         <div className="flex w-full flex-col gap-2">
-          <Banner {...defaultProps} {...args} variant="light" size="big" hasBorder />
-          <Banner {...defaultProps} {...args} variant="light" size="medium" hasBorder />
-          <Banner {...defaultProps} {...args} variant="light" size="small" hasBorder />
+          <Banner {...defaultProps} {...args} variant="light" size="l" hasBorder />
+          <Banner {...defaultProps} {...args} variant="light" size="m" hasBorder />
+          <Banner {...defaultProps} {...args} variant="light" size="s" hasBorder />
         </div>
       </div>
     );
