@@ -19,9 +19,8 @@ const styles: { [key: string]: CSSProperties } = {
     justifyContent: "center",
     height: "100%",
     width: "100%",
-    background: "red",
-    color: "#ffffff",
-    fontSize: "30px",
+    background: "white",
+    color: "#000",
   },
 };
 
