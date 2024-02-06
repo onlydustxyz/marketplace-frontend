@@ -6,6 +6,7 @@ import { Card } from "components/ds/card/card";
 import { Input } from "components/ds/form/input/input";
 import { Flex } from "components/layout/flex/flex";
 
+import { Currencies } from "./currencies/currencies";
 import { FormWalletSection } from "./section/section";
 
 export function PayoutForm() {
@@ -25,7 +26,7 @@ export function PayoutForm() {
               {...fieldState}
               label={T("v2.pages.settings.payout.wallets.ethereum.label")}
               placeholder={T("v2.pages.settings.payout.wallets.ethereum.placeholder")}
-              description={T("v2.pages.settings.payout.wallets.description")}
+              description={<Currencies currencies={["USDC", "ETH", "LORDS"]} />}
             />
           )}
         />
@@ -41,7 +42,7 @@ export function PayoutForm() {
               {...fieldState}
               label={T("v2.pages.settings.payout.wallets.starknet.label")}
               placeholder={T("v2.pages.settings.payout.wallets.starknet.placeholder")}
-              description={T("v2.pages.settings.payout.wallets.description")}
+              description={<Currencies currencies={["STRK"]} />}
             />
           )}
         />
@@ -57,7 +58,7 @@ export function PayoutForm() {
               {...fieldState}
               label={T("v2.pages.settings.payout.wallets.optimism.label")}
               placeholder={T("v2.pages.settings.payout.wallets.optimism.placeholder")}
-              description={T("v2.pages.settings.payout.wallets.description")}
+              description={<Currencies currencies={["OP"]} />}
             />
           )}
         />
@@ -73,7 +74,7 @@ export function PayoutForm() {
               {...fieldState}
               label={T("v2.pages.settings.payout.wallets.aptos.label")}
               placeholder={T("v2.pages.settings.payout.wallets.aptos.placeholder")}
-              description={T("v2.pages.settings.payout.wallets.description")}
+              description={<Currencies currencies={["APT"]} />}
             />
           )}
         />
@@ -89,7 +90,7 @@ export function PayoutForm() {
               {...fieldState}
               label={T("v2.pages.settings.payout.wallets.sepa.iban.label")}
               placeholder={T("v2.pages.settings.payout.wallets.sepa.iban.placeholder")}
-              description={T("v2.pages.settings.payout.wallets.description")}
+              description={<Currencies currencies={["USD"]} />}
             />
           )}
         />
