@@ -51,6 +51,7 @@ const formSchema = z.object({
 
 // TODO: Change input errors with new components
 // TODO: zod errors on sepaAccount
+// TODO: Add parser to IBAN and BIC fields
 export default function PayoutPage() {
   const { T } = useIntl();
 
@@ -76,9 +77,7 @@ export default function PayoutPage() {
     mutate: updateUserPayoutInformation,
     isPending: userPayoutInformationIsPending,
     ...restUpdatePayoutInformationMutation
-  } = MeApi.mutations.usePayoutInfo({
-    options: {},
-  });
+  } = MeApi.mutations.usePayoutInfo({});
 
   useMutationAlert({
     mutation: restUpdatePayoutInformationMutation,

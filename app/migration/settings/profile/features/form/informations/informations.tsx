@@ -13,6 +13,7 @@ import { Icon } from "components/layout/icon/icon";
 import { BannerButton } from "./banner-button/banner-button";
 import { FormInformationsSection } from "./section/section";
 
+// TODO: Handle error image
 export function FormInformations() {
   const { control, setValue, setError } = useFormContext();
 

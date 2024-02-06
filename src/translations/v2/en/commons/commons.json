@@ -13,7 +13,8 @@
     },
     "errors": {
       "invalidePhoneNumber": "Invalid phone number",
-      "invalidUsername": "Invalid username"
+      "invalidUsername": "Invalid username",
+      "invalidUrl": "Invalid URL"
     },
     "buttons": {
       "save": "Save changes"

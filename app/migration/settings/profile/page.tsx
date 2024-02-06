@@ -1,7 +1,9 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
 
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
@@ -12,22 +14,54 @@ import { Flex } from "components/layout/flex/flex";
 import { SettingsHeader } from "../components/settings-header/settings-header";
 import { FormFooter } from "./features/form/footer/footer";
 import { ProfileForm } from "./features/form/form";
+import { REGEX } from "./features/form/form.regex";
 import { TProfileForm } from "./features/form/form.types";
 import { formatToData, formatToSchema } from "./features/form/form.utils";
 import { ProfileGithubAccount } from "./features/github-account/github-account";
 
-// TODO: Add zod
+const formSchema = z.object({
+  avatarUrl: z.string().url().optional(),
+  cover: z.string(),
+  location: z.string().optional(),
+  bio: z.string().optional(),
+  website: z
+    .union([z.string().regex(REGEX.website, "v2.commons.form.errors.invalidUrl"), z.string().length(0)])
+    .optional(),
+  telegram: z.object({
+    contact: z.string().regex(REGEX.telegram, "v2.commons.form.errors.invalidUsername").optional(),
+    isPublic: z.boolean(),
+  }),
+  whatsapp: z.object({
+    contact: z.string().regex(REGEX.whatsapp, "v2.commons.form.errors.invalidePhoneNumber").optional(),
+    isPublic: z.boolean(),
+  }),
+  twitter: z.object({
+    contact: z.string().regex(REGEX.twitter, "v2.commons.form.errors.invalidUsername").optional(),
+    isPublic: z.boolean(),
+  }),
+  discord: z.object({
+    contact: z.string().regex(REGEX.discord, "v2.commons.form.errors.invalidUsername").optional(),
+    isPublic: z.boolean(),
+  }),
+  linkedin: z.object({
+    contact: z.string().regex(REGEX.linkedin, "v2.commons.form.errors.invalidUsername").optional(),
+    isPublic: z.boolean(),
+  }),
+  technologies: z.record(z.number()),
+  weeklyAllocatedTime: z.nativeEnum(TProfileForm.ALLOCATED_TIME),
+  lookingForAJob: z.boolean(),
+});
+
 // TODO: Contact information and select input to do with NextUI
 // TODO: FieldImage to do with NextUI and add error handle on Input (call everywhere) and Textarea
 export default function ProfilePage() {
   const { T } = useIntl();
 
-  const { data } = MeApi.queries.useGetMyProfileInfo({
-    options: { enabled: true },
-  });
+  const { data } = MeApi.queries.useGetMyProfileInfo({});
 
   const formMethods = useForm<TProfileForm.Data>({
     mode: "all",
+    resolver: zodResolver(formSchema),
   });
 
   const { handleSubmit, reset } = formMethods;
@@ -44,9 +78,7 @@ export default function ProfilePage() {
     mutate: updateUserProfileInfo,
     isPending: userProfilInformationIsPending,
     ...restUpdateProfileMutation
-  } = MeApi.mutations.useUpdateProfile({
-    options: {},
-  });
+  } = MeApi.mutations.useUpdateProfile({});
 
   useMutationAlert({
     mutation: restUpdateProfileMutation,
