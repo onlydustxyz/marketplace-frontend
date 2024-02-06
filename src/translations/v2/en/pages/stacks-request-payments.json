@@ -1,0 +1,7 @@
+{
+  "title": "Request payment",
+  "form": {
+    "submit": "Select 3 rewards",
+    "back": "Back"
+  }
+}

@@ -6,10 +6,15 @@ import { ProfileCompany } from "app/migration/settings/billing/features/profile/
 import { ProfileIndividual } from "app/migration/settings/billing/features/profile/profile-individual/profile-individual";
 import { useBillingProfiles } from "app/migration/settings/hooks/useBillingProfile";
 
+import { useStackRequestPayments } from "src/App/Stacks/Stacks";
+
+import { Button } from "components/ds/button/button";
+
 import { Header } from "./features/header/header";
 
 export default function ProfilePage() {
   const { billingProfile, profileType, isCompany, isIndividual, validBillingProfile } = useBillingProfiles();
+  const [open] = useStackRequestPayments();
   return (
     <div className="flex flex-col gap-6">
       <Header
@@ -27,6 +32,7 @@ export default function ProfilePage() {
           id={billingProfile?.id}
         />
       </ProfileCard>
+      <Button onClick={open}>Open request payment</Button>
     </div>
   );
 }
