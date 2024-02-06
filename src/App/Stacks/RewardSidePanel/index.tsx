@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps, useEffect } from "react";
 
 import { useIntl } from "src/hooks/useIntl";

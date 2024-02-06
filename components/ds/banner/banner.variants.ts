@@ -12,21 +12,21 @@ export const bannerVariants = tv({
   },
   variants: {
     size: {
-      big: {
+      l: {
         wrapper: "rounded-2xl px-6 py-5",
         iconWrapper: "h-14 w-14 rounded-2xl",
         icon: "h-8 w-8",
         title: "od-text-body-l-bold",
         description: "od-text-body-m",
       },
-      medium: {
+      m: {
         wrapper: "rounded-xl p-4",
         iconWrapper: "h-12 w-12 rounded-xl",
         icon: "h-6 w-6",
         title: "od-text-body-m-bold",
         description: "od-text-body-xs",
       },
-      small: {
+      s: {
         wrapper: "rounded-lg p-3",
         iconWrapper: "h-9 w-9 rounded-lg",
         icon: "h-5 w-5",
@@ -90,7 +90,7 @@ export const bannerVariants = tv({
     },
   ],
   defaultVariants: {
-    size: "medium",
+    size: "m",
     variant: "medium",
   },
 });

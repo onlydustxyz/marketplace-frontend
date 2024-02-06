@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps } from "react";
 import { Link, generatePath } from "react-router-dom";
 

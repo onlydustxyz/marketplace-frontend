@@ -14,7 +14,7 @@ export interface UseBillingButton {
 
 export interface UseBillingButtonProps {
   status?: UseBillingProfileResponse["status"];
-  type?: `${MeTypes.billingProfileType}`;
+  type?: MeTypes.billingProfileUnion;
   id?: string;
 }
 export const useBillingButton = ({ status, type, id }: UseBillingButtonProps): UseBillingButton | undefined => {
@@ -34,52 +34,43 @@ export const useBillingButton = ({ status, type, id }: UseBillingButtonProps): U
     return <FeedbackButton customButton={children} />;
   }
 
-  if (status === "NOT_STARTED") {
-    return {
-      label: "v2.pages.settings.billing.buttons.startValidation",
-      onClick: handleVerify,
-    };
+  switch (status) {
+    case "NOT_STARTED":
+      return {
+        label: "v2.pages.settings.billing.buttons.startValidation",
+        onClick: handleVerify,
+      };
+    case "STARTED":
+      return {
+        label: "v2.pages.settings.billing.buttons.resumeValidation",
+        onClick: handleVerify,
+      };
+    case "UNDER_REVIEW":
+      return {
+        label: "v2.pages.settings.billing.buttons.viewValidation",
+        onClick: handleVerify,
+      };
+    case "INVALIDATED":
+      return {
+        label: "v2.pages.settings.billing.buttons.reValidate",
+        onClick: handleVerify,
+      };
+    case "REJECTED":
+      return {
+        label: "v2.pages.settings.billing.buttons.reValidate",
+        onClick: handleVerify,
+      };
+    case "CLOSED":
+      return {
+        label: "v2.pages.settings.billing.buttons.contact",
+        element: feedBack,
+      };
+    case "VERIFIED":
+      return {
+        label: "v2.pages.settings.billing.buttons.contact",
+        element: feedBack,
+      };
+    default:
+      return undefined;
   }
-
-  if (status === "STARTED") {
-    return {
-      label: "v2.pages.settings.billing.buttons.resumeValidation",
-      onClick: handleVerify,
-    };
-  }
-
-  if (status === "UNDER_REVIEW") {
-    return {
-      label: "v2.pages.settings.billing.buttons.viewValidation",
-      onClick: handleVerify,
-    };
-  }
-
-  if (status === "INVALIDATED") {
-    return {
-      label: "v2.pages.settings.billing.buttons.reValidate",
-      onClick: handleVerify,
-    };
-  }
-  if (status === "REJECTED") {
-    return {
-      label: "v2.pages.settings.billing.buttons.reValidate",
-      onClick: handleVerify,
-    };
-  }
-
-  if (status === "CLOSED") {
-    return {
-      label: "v2.pages.settings.billing.buttons.contact",
-      element: feedBack,
-    };
-  }
-  if (status === "VERIFIED") {
-    return {
-      label: "v2.pages.settings.billing.buttons.contact",
-      element: feedBack,
-    };
-  }
-
-  return undefined;
 };
