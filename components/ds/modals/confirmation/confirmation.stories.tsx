@@ -1,16 +1,31 @@
-import { Confirmation } from "./confirmation";
-import { TConfirmation } from "./confirmation.types";
 import type { Meta, StoryObj } from "@storybook/react";
 
-type Story = StoryObj<typeof Confirmation>;
+import Button from "src/components/Button";
 
-const defaultProps: TConfirmation.Props = {
-  children: <div>Confirmation</div>,
+import StoryState from "components/features/storybooks/stateManagement";
+
+import { ConfirmationModal } from "./confirmation";
+import { TConfirmationModal } from "./confirmation.types";
+
+type Story = StoryObj<typeof ConfirmationModal>;
+
+const defaultProps: TConfirmationModal.Props = {
+  content: "Content",
+  title: "Title",
+  onClose: () => null,
+  buttons: {
+    confirm: {
+      children: "confirm",
+    },
+    cancel: {
+      children: "cancel",
+    },
+  },
 };
 
-const meta: Meta<typeof Confirmation> = {
-  component: Confirmation,
-  title: "Design system/Confirmation",
+const meta: Meta<typeof ConfirmationModal> = {
+  component: ConfirmationModal,
+  title: "Design system/Modals/Confirmation",
   tags: ["autodocs"],
   parameters: {
     backgrounds: {
@@ -21,8 +36,17 @@ const meta: Meta<typeof Confirmation> = {
 };
 
 export const Default: Story = {
-  render: (args) => {
-    return <Confirmation {...defaultProps} {...args} />;
+  render: args => {
+    return (
+      <StoryState initial={false}>
+        {(state, setState) => (
+          <div>
+            <Button onClick={() => setState(true)}>Open confirmation</Button>
+            <ConfirmationModal open={state} {...args} {...defaultProps} onClose={() => setState(false)} />
+          </div>
+        )}
+      </StoryState>
+    );
   },
 };
 
