@@ -34,11 +34,11 @@
     "descriptions": {
       "CLOSED": "Your profile got permanetly rejected, please contact us if you believe it’s an error.",
       "INVALIDATED": "Your identity document has expired, please share an updated version.",
-      "NOT_STARTED":  "You need to verify your identity in order to receive rewards.",
+      "NOT_STARTED": "You need to verify your identity in order to receive rewards.",
       "REJECTED": "Your verification got rejected.",
-      "STARTED":  "You need to verify your identity in order to receive rewards.",
+      "STARTED": "You need to verify your identity in order to receive rewards.",
       "UNDER_REVIEW": "We’re reviewing your account, please come back later.",
-      "VERIFIED":  "To edit any of those information, please reach out to us."
+      "VERIFIED": "To edit any of those information, please reach out to us."
     }
   },
   "confirmation": {
