@@ -63,44 +63,60 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
 }
 
 export function formatToSchema(data: TProfileForm.Data) {
+  const {
+    avatarUrl,
+    cover,
+    location,
+    bio,
+    website,
+    telegram,
+    whatsapp,
+    twitter,
+    discord,
+    linkedin,
+    technologies,
+    weeklyAllocatedTime,
+    lookingForAJob,
+  } = data;
+
   return {
-    avatarUrl: data.avatarUrl,
-    cover: data.cover,
-    location: data.location,
-    bio: data.bio,
-    website: data.website,
+    avatarUrl,
+    cover,
+    location,
+    bio,
+    website,
     contacts: [
       createContact({
         channel: "TELEGRAM",
-        contact: data.telegram.contact,
-        isPublic: data.telegram.isPublic,
+        contact: telegram.contact,
+        isPublic: telegram.isPublic,
         prefixUrl: "https://t.me/",
       }),
       createContact({
         channel: "WHATSAPP",
-        contact: data.whatsapp.contact,
-        isPublic: data.whatsapp.isPublic,
+        contact: whatsapp.contact,
+        isPublic: whatsapp.isPublic,
       }),
       createContact({
         channel: "TWITTER",
-        contact: data.twitter.contact,
-        isPublic: data.twitter.isPublic,
+        contact: twitter.contact,
+        isPublic: twitter.isPublic,
         prefixUrl: "https://x.com/",
       }),
       createContact({
         channel: "DISCORD",
-        contact: data.discord.contact,
-        isPublic: data.discord.isPublic,
+        contact: discord.contact,
+        isPublic: discord.isPublic,
       }),
       createContact({
         channel: "LINKEDIN",
-        contact: data.linkedin.contact,
-        isPublic: data.linkedin.isPublic,
+        contact: linkedin.contact,
+        isPublic: linkedin.isPublic,
         prefixUrl: "https://www.linkedin.com/in/",
       }),
     ],
-    technologies: data.technologies,
-    allocatedTimeToContribute: data.weeklyAllocatedTime,
-    isLookingForAJob: data.lookingForAJob,
+    technologies,
+    allocatedTimeToContribute: weeklyAllocatedTime,
+    isLookingForAJob: lookingForAJob,
   };
 }

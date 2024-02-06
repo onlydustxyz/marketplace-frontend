@@ -1,6 +1,6 @@
 {
   "alert": {
-    "profile": {
+    "global": {
       "success": "Changes saved",
       "error": "An error occurred while saving your changes"
     }

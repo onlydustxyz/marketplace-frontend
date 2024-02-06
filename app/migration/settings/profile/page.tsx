@@ -27,7 +27,7 @@ export default function ProfilePage() {
   });
 
   const formMethods = useForm<TProfileForm.Data>({
-    mode: "onChange",
+    mode: "all",
   });
 
   const { handleSubmit, reset } = formMethods;
@@ -51,10 +51,10 @@ export default function ProfilePage() {
   useMutationAlert({
     mutation: restUpdateProfileMutation,
     success: {
-      message: T("v2.commons.alert.profile.success"),
+      message: T("v2.commons.alert.global.success"),
     },
     error: {
-      message: T("v2.commons.alert.profile.error"),
+      message: T("v2.commons.alert.global.error"),
     },
   });
 
