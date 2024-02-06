@@ -13,7 +13,7 @@ const options = {};
 
 export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Props) {
   const [token, setToken] = useState("");
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     handleTokenCreation();

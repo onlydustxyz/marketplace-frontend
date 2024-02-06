@@ -1,4 +1,5 @@
 export const config = {
+  lang: "en",
   uiConf: {
     customCssStr: `
       :root {
