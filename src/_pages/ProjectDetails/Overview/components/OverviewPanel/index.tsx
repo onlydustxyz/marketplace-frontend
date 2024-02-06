@@ -16,24 +16,11 @@ interface Props {
 }
 
 export default function OverviewPanel({ project }: Props) {
-  const {
-    contributorCount,
-    topContributors,
-    leaders,
-    invitedLeaders,
-    // sponsors,
-    moreInfos,
-    technologies,
-      ecosystems
-  } = project;
+  const { contributorCount, topContributors, leaders, invitedLeaders, moreInfos, technologies, ecosystems } = project;
   const projectLeads = leaders?.filter(lead => isDefined(lead?.login)) || [];
   const projectInvited = invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
 
-  if (
-    !projectLeads.length &&
-    !contributorCount
-    // && !sponsors?.length && !moreInfos?.length
-  ) {
+  if (!projectLeads.length && !contributorCount) {
     return (
       <Card background="whiteFakeOpacity-2">
         <EmptyState
@@ -49,7 +36,6 @@ export default function OverviewPanel({ project }: Props) {
       <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
       <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
       <ProjectOverviewEcosystem ecosystems={ecosystems} />
-      {/*<ProjectOverviewSponsors sponsors={sponsors} />*/}
       <ProjectOverviewTechnologies technologies={technologies} />
       <ProjectOverviewMoreInfo moreInfos={moreInfos} />
     </Card>
