@@ -160,25 +160,28 @@ const config = {
 };
 const options = {};
 
-async function accessTokenExpirationHandler(...args) {
-  console.error(args);
-}
-
 export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Props) {
   const [token, setToken] = useState("");
   const [error, setError] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { token } = await createSumsubToken({ externalId, levelName });
-        setToken(token);
-      } catch (error) {
-        handleError();
-        console.error(error);
-      }
-    })();
+    handleTokenCreation();
   }, []);
+
+  async function handleTokenCreation() {
+    try {
+      const { token } = await createSumsubToken({ externalId, levelName });
+      setToken(token);
+    } catch (error) {
+      handleError();
+      console.error(error);
+    }
+  }
+
+  function handleExpiration() {
+    setToken("");
+    handleTokenCreation();
+  }
 
   function handleError() {
     setError(true);
@@ -200,7 +203,7 @@ export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Prop
     return (
       <SumsubWebSdk
         accessToken={token}
-        expirationHandler={accessTokenExpirationHandler}
+        expirationHandler={handleExpiration}
         config={config}
         options={options}
         onError={handleError}
