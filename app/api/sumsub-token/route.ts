@@ -32,13 +32,9 @@ function createSignature(config: InternalAxiosRequestConfig<TSumsub.Config>) {
 function createAccessToken(externalId: string, levelName: TSumsub.LevelName, ttlInSecs = 600) {
   config.method = "post";
 
-  config.url =
-    "/resources/accessTokens?userId=" +
-    encodeURIComponent(externalId) +
-    "&ttlInSecs=" +
-    ttlInSecs +
-    "&levelName=" +
-    encodeURIComponent(levelName);
+  config.url = `/resources/accessTokens?userId=${encodeURIComponent(
+    externalId
+  )}&ttlInSecs=${ttlInSecs}&levelName=${encodeURIComponent(levelName)}`;
 
   config.headers = {
     Accept: "application/json",
