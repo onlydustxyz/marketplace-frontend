@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { createSumsubToken } from "app/api/sumsub-token/handlers";
 
 import { TVerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel.types";
+import { IMAGES } from "src/assets/img";
+
+import { EmptyState } from "components/layout/placeholders/empty-state";
 
 const config = {
   uiConf: {
@@ -161,16 +164,9 @@ async function accessTokenExpirationHandler(...args) {
   console.error(args);
 }
 
-function messageHandler(...args) {
-  console.log(args);
-}
-
-function errorHandler(...args) {
-  console.error(args);
-}
-
 export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Props) {
   const [token, setToken] = useState("");
+  const [error, setError] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -178,21 +174,40 @@ export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Prop
         const { token } = await createSumsubToken({ externalId, levelName });
         setToken(token);
       } catch (error) {
-        // TODO handle error
+        handleError();
         console.error(error);
       }
     })();
   }, []);
 
-  return token ? (
-    <SumsubWebSdk
-      accessToken={token}
-      expirationHandler={accessTokenExpirationHandler}
-      config={config}
-      options={options}
-      onMessage={messageHandler}
-      onError={errorHandler}
-      className="w-full p-4"
-    />
-  ) : null;
+  function handleError() {
+    setError(true);
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <EmptyState
+          illustrationSrc={IMAGES.icons.emptyState}
+          title={{ token: "v2.pages.settings.billing.sumsub.error.title" }}
+          description={{ token: "v2.pages.settings.billing.sumsub.error.description" }}
+        />
+      </div>
+    );
+  }
+
+  if (token) {
+    return (
+      <SumsubWebSdk
+        accessToken={token}
+        expirationHandler={accessTokenExpirationHandler}
+        config={config}
+        options={options}
+        onError={handleError}
+        className="w-full p-4"
+      />
+    );
+  }
+
+  return null;
 }
