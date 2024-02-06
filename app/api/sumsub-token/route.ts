@@ -14,14 +14,14 @@ axios.interceptors.request.use(createSignature, function (error) {
 
 // https://developers.sumsub.com/api-reference/#app-tokens
 function createSignature(config: InternalAxiosRequestConfig<TSumsub.Config>) {
-  const ts = Math.floor(Date.now() / 1000);
+  const ts = String(Math.floor(Date.now() / 1000));
   const method = config.method?.toUpperCase() ?? "";
 
   const signature = crypto.createHmac("sha256", SUMSUB_CONST.SECRET_KEY);
   signature.update(ts + method + config.url);
 
   if (config.headers) {
-    config.headers["X-App-Access-Ts"] = String(ts);
+    config.headers["X-App-Access-Ts"] = ts;
     config.headers["X-App-Access-Sig"] = signature.digest("hex");
   }
 
@@ -30,8 +30,9 @@ function createSignature(config: InternalAxiosRequestConfig<TSumsub.Config>) {
 
 // https://developers.sumsub.com/api-reference/#access-tokens-for-sdks
 function createAccessToken(externalId: string, levelName: TSumsub.LevelName, ttlInSecs = 600) {
-  const method = "post";
-  const url =
+  config.method = "post";
+
+  config.url =
     "/resources/accessTokens?userId=" +
     encodeURIComponent(externalId) +
     "&ttlInSecs=" +
@@ -39,8 +40,6 @@ function createAccessToken(externalId: string, levelName: TSumsub.LevelName, ttl
     "&levelName=" +
     encodeURIComponent(levelName);
 
-  config.method = method;
-  config.url = url;
   config.headers = {
     Accept: "application/json",
     "X-App-Token": SUMSUB_CONST.APP_TOKEN,

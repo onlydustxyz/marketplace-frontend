@@ -1,7 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck - pass build
 import SumsubWebSdk from "@sumsub/websdk-react";
 import { useEffect, useState } from "react";
+
+import { TVerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel.types";
 
 const config = {
   uiConf: {
@@ -167,12 +167,7 @@ function errorHandler(...args) {
   console.error(args);
 }
 
-interface Props {
-  levelName: "basic-kyb-level" | "basic-kyc-level";
-  externalId: string;
-}
-
-export function VerifySidePanel({ levelName, externalId }: Props) {
+export function VerifySidePanel({ levelName, externalId }: TVerifySidePanel.Props) {
   const [token, setToken] = useState("");
 
   useEffect(() => {
