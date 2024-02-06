@@ -138,8 +138,7 @@ describe("formatToData", () => {
       ...baseMockData,
     };
 
-    const result = formatToData(mockData);
-    expect(result).toEqual({
+    const expectedData: TProfileForm.Data = {
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "BLUE",
       location: "Earth",
@@ -153,7 +152,10 @@ describe("formatToData", () => {
       technologies: { JavaScript: 1 },
       weeklyAllocatedTime: TProfileForm.ALLOCATED_TIME.NONE,
       lookingForAJob: true,
-    });
+    };
+
+    const result = formatToData(mockData);
+    expect(result).toEqual(expectedData);
   });
 
   it("should handle partial data correctly", () => {
@@ -166,8 +168,7 @@ describe("formatToData", () => {
       ...baseMockData,
     };
 
-    const result = formatToData(mockData);
-    expect(result).toEqual({
+    const expectedData: TProfileForm.Data = {
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "MAGENTA",
       location: "Mars",
@@ -181,7 +182,10 @@ describe("formatToData", () => {
       technologies: {},
       weeklyAllocatedTime: TProfileForm.ALLOCATED_TIME.NONE,
       lookingForAJob: false,
-    });
+    };
+
+    const result = formatToData(mockData);
+    expect(result).toEqual(expectedData);
   });
 });
 
