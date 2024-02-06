@@ -11,7 +11,7 @@ import { TProjectMissingGithubBanner } from "./project-missing-github-banner.typ
 
 export function ProjectMissingGithubBanner({ slug = "" }: TProjectMissingGithubBanner.Props) {
   return (
-    <div className="bg-oritems-center flex items-center justify-between gap-3 rounded-2xl bg-orange-800 p-3">
+    <div className="flex items-center justify-between gap-3 rounded-2xl bg-orange-800 p-3">
       <Typography variant="body-s-bold" className="text-white">
         <Translate token="v2.features.banners.missingGithubAppInstall.message" />
       </Typography>

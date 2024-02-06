@@ -2,6 +2,7 @@
   "settings": {
     "publicProfile": "Public profile",
     "payoutPreferences": "Payout preferences",
-    "verifyAccount": "Verify account"
+    "verifyAccount": "Verify account",
+    "billingProfile": "Billing profile"
   }
 }
