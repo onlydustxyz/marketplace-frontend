@@ -15,6 +15,9 @@
       "invalidePhoneNumber": "Invalid phone number",
       "invalidUsername": "Invalid username"
     },
+    "buttons": {
+      "save": "Save changes"
+    },
     "contact": {
       "telegram": {
         "placeholder": "Telegram"

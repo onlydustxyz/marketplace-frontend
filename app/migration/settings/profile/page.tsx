@@ -75,7 +75,7 @@ export default function ProfilePage() {
           </Flex>
         </Flex>
 
-        <FormFooter userProfilInformationIsPending={userProfilInformationIsPending} />
+        <FormFooter isPending={userProfilInformationIsPending} />
       </form>
     </FormProvider>
   );

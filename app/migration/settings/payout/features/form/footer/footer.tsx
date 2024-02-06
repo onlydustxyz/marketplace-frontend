@@ -1,8 +1,5 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useFormContext } from "react-hook-form";
-import { generatePath } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { cn } from "src/utils/cn";
 
@@ -15,10 +12,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TFormFooter } from "./footer.types";
 
-// TODO: Change Button with link using the new library
 export function FormFooter({ isPending }: TFormFooter.Props) {
-  const { user } = useAuth0();
-
   const { formState } = useFormContext();
   const { isDirty, isValid } = formState;
 
@@ -54,26 +48,10 @@ export function FormFooter({ isPending }: TFormFooter.Props) {
         )}
       </Tag>
 
-      <Flex alignItems="center" className="w-full flex-col gap-2 md:w-auto md:flex-row md:gap-5">
-        <a
-          href={generatePath(RoutePaths.PublicProfile, {
-            userLogin: user?.nickname || "",
-          })}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full md:w-auto"
-        >
-          <Button variant="secondary" className="w-full md:w-auto">
-            <Icon remixName="ri-external-link-line" size={20} />
-            <Translate token="v2.pages.settings.profile.buttons.preview" />
-          </Button>
-        </a>
-
-        <Button type="submit" disabled={isPending || !isValid} className="w-full md:w-auto">
-          {isPending ? <Spinner className="h-5 w-5" /> : <Icon remixName="ri-check-line" size={20} />}
-          <Translate token="v2.commons.form.buttons.save" />
-        </Button>
-      </Flex>
+      <Button type="submit" disabled={isPending || !isValid} className="w-full md:w-auto">
+        {isPending ? <Spinner className="h-5 w-5" /> : <Icon remixName="ri-check-line" size={20} />}
+        <Translate token="v2.commons.form.buttons.save" />
+      </Button>
     </Flex>
   );
 }

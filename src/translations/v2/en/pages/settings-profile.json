@@ -27,11 +27,6 @@
     "lookingForAJob": "I'm looking for a job"
   },
   "buttons": {
-    "save": "Save changes",
     "preview": "Preview profile"
-  },
-  "status": {
-    "saved": "All changes saved",
-    "unsaved": "Unsaved changes"
   }
 }

@@ -15,6 +15,7 @@ import en_features_leaders from "src/translations/v2/en/features/leaders.json";
 import en_features_sidebar from "src/translations/v2/en/features/sidebar.json";
 import en_projects from "src/translations/v2/en/pages/projects.json";
 import en_settings_billing from "src/translations/v2/en/pages/settings-billing.json";
+import en_settings_payout from "src/translations/v2/en/pages/settings-payout.json";
 import en_settings_profile from "src/translations/v2/en/pages/settings-profile.json";
 
 const en = {
@@ -38,6 +39,7 @@ const en = {
       settings: {
         profile: en_settings_profile,
         billing: en_settings_billing,
+        payout: en_settings_payout,
       },
     },
   },
