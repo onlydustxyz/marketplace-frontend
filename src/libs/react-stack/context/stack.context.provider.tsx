@@ -470,6 +470,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
           closeLast: onCloseLastPanel,
           getStack,
           getPanel,
+          getPanelFromStackName,
           open: openPanel,
           close: onClose,
         },

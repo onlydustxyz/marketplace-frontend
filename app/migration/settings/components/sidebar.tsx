@@ -18,6 +18,8 @@ import { Sidebar as LayoutSidebar } from "components/layout/sidebar/sidebar";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { NEXT_ROUTER } from "constants/router";
+
 export function Sidebar() {
   const { isAuthenticated, user } = useAuth0();
   const pathname = usePathname();
@@ -28,17 +30,17 @@ export function Sidebar() {
     () => [
       {
         label: <Translate token="v2.features.sidebar.settings.publicProfile" />,
-        href: "/migration/settings/profile",
+        href: NEXT_ROUTER.settings.profile,
         isActive: false,
       },
       {
         label: <Translate token="v2.features.sidebar.settings.payoutPreferences" />,
-        href: "/migration/settings/payout",
+        href: NEXT_ROUTER.settings.payout,
         isActive: false,
       },
       {
         label: <Translate token="v2.features.sidebar.settings.billingProfile" />,
-        href: "/migration/settings/billing",
+        href: NEXT_ROUTER.settings.billing,
         isActive: false,
         endIcon:
           isWarning || isError ? (
@@ -51,11 +53,6 @@ export function Sidebar() {
               })}
             />
           ) : undefined,
-      },
-      {
-        label: <Translate token="v2.features.sidebar.settings.verifyAccount" />,
-        href: "/migration/settings/verify",
-        isActive: false,
       },
     ],
     [isWarning, isError]

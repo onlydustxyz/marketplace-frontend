@@ -6,5 +6,6 @@ export const NEXT_ROUTER = {
   settings: {
     profile: "/migration/settings/profile",
     payout: "/migration/settings/payout",
+    billing: "/migration/settings/billing",
   },
 };
