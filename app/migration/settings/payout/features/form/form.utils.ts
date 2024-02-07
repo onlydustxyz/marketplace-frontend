@@ -1,8 +1,9 @@
+import IBANParser from "iban";
+
 import { UseGetMyPayoutInfoResponse } from "src/api/me/queries";
 
 import { TPayoutForm } from "./form.types";
 
-// TODO: iban: payoutSettings?.sepaAccount?.iban ? IBANParser.printFormat(payoutSettings?.sepaAccount?.iban) : "",
 export function formatToData(data: UseGetMyPayoutInfoResponse): TPayoutForm.Data {
   const { payoutSettings } = data;
 
@@ -12,7 +13,7 @@ export function formatToData(data: UseGetMyPayoutInfoResponse): TPayoutForm.Data
     optimismAddress: payoutSettings?.optimismAddress ?? "",
     aptosAddress: payoutSettings?.aptosAddress ?? "",
     sepaAccount: {
-      iban: payoutSettings?.sepaAccount?.iban ?? "",
+      iban: payoutSettings?.sepaAccount?.iban ? IBANParser.printFormat(payoutSettings?.sepaAccount?.iban) : "",
       bic: payoutSettings?.sepaAccount?.bic ?? "",
     },
   };

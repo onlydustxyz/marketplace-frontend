@@ -7,7 +7,7 @@ import { z } from "zod";
 
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
+import { Key, useIntl } from "src/hooks/useIntl";
 
 import { Flex } from "components/layout/flex/flex";
 
@@ -19,39 +19,53 @@ import { REGEX } from "./features/form/form.regex";
 import { TPayoutForm } from "./features/form/form.types";
 import { formatToData, formatToSchema } from "./features/form/form.utils";
 
-const formSchema = z.object({
-  ethWallet: z
-    .union([z.string().regex(REGEX.ethWallet, "Invalid Ethereum wallet address or ENS name"), z.string().length(0)])
-    .optional(),
-  starknetAddress: z
-    .union([z.string().regex(REGEX.aptosAddress, "Invalid Starknet wallet address"), z.string().length(0)])
-    .optional(),
-  optimismAddress: z
-    .union([z.string().regex(REGEX.optimismAddress, "Invalid Optimism wallet address"), z.string().length(0)])
-    .optional(),
-  aptosAddress: z
-    .union([z.string().regex(REGEX.aptosAddress, "Invalid Aptos wallet address"), z.string().length(0)])
-    .optional(),
-  sepaAccount: z
-    .object({
-      iban: z
-        .string()
-        .optional()
-        .refine(iban => iban === "" || iban, "IBAN is required if BIC is provided"),
-      bic: z
-        .string()
-        .optional()
-        .refine(bic => bic === "" || bic, "BIC is required if IBAN is provided"),
-    })
-    .refine(data => (data.iban && data.bic) || (!data.iban && !data.bic), {
-      message: "Both IBAN and BIC must be provided if one is provided.",
-      path: ["sepaAccount"],
+const keys: { [key: string]: Key } = {
+  invalidEthereumWallet: "v2.commons.form.errors.wallets.ethereum.invalid",
+  invalidStarknetAddress: "v2.commons.form.errors.wallets.starknet.invalid",
+  invalidOptimismAddress: "v2.commons.form.errors.wallets.optimism.invalid",
+  invalidAptosAddress: "v2.commons.form.errors.wallets.aptos.invalid",
+};
+
+const formSchema = z
+  .object({
+    ethWallet: z
+      .union([z.string().regex(REGEX.ethWallet, keys.invalidEthereumWallet), z.string().length(0)])
+      .optional(),
+    starknetAddress: z
+      .union([z.string().regex(REGEX.starknetAddress, keys.invalidStarknetAddress), z.string().length(0)])
+      .optional(),
+    optimismAddress: z
+      .union([z.string().regex(REGEX.optimismAddress, keys.invalidOptimismAddress), z.string().length(0)])
+      .optional(),
+    aptosAddress: z
+      .union([z.string().regex(REGEX.aptosAddress, keys.invalidAptosAddress), z.string().length(0)])
+      .optional(),
+    sepaAccount: z.object({
+      iban: z.string().optional(),
+      bic: z.string().optional(),
     }),
-});
+  })
+  .superRefine(({ sepaAccount }, context) => {
+    const { iban, bic } = sepaAccount;
+    if ((iban && !bic) || (!iban && bic)) {
+      if (!iban) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "IBAN is required when BIC is provided",
+          path: ["sepaAccount", "iban"],
+        });
+      }
+      if (!bic) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "BIC is required when IBAN is provided",
+          path: ["sepaAccount", "bic"],
+        });
+      }
+    }
+  });
 
 // TODO: Change input errors with new components
-// TODO: zod errors on sepaAccount
-// TODO: Add parser to IBAN and BIC fields
 export default function PayoutPage() {
   const { T } = useIntl();
 
@@ -62,14 +76,17 @@ export default function PayoutPage() {
     resolver: zodResolver(formSchema),
   });
 
-  const { handleSubmit, reset } = formMethods;
+  const { handleSubmit, reset, trigger, watch } = formMethods;
+
+  // We need this to trigger in realtime
+  useEffect(() => {
+    trigger("sepaAccount.iban");
+    trigger("sepaAccount.bic");
+  }, [watch("sepaAccount.iban"), watch("sepaAccount.bic")]);
 
   useEffect(() => {
     if (data) {
-      console.log(formatToData(data));
-      reset({
-        ...formatToData(data),
-      });
+      reset(formatToData(data));
     }
   }, [data]);
 
@@ -90,7 +107,6 @@ export default function PayoutPage() {
   });
 
   const onSubmit = (formData: TPayoutForm.Data) => {
-    console.log(formData, formatToSchema(formData));
     updateUserPayoutInformation(formatToSchema(formData));
   };
 

@@ -1,3 +1,4 @@
+import IBANParser from "iban";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { useIntl } from "src/hooks/useIntl";
@@ -88,6 +89,7 @@ export function PayoutForm() {
             <Input
               {...field}
               {...fieldState}
+              value={field.value && IBANParser.printFormat(field.value)}
               label={T("v2.pages.settings.payout.wallets.sepa.iban.label")}
               placeholder={T("v2.pages.settings.payout.wallets.sepa.iban.placeholder")}
               description={<Currencies currencies={["USD"]} />}

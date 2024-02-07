@@ -8,6 +8,7 @@ import { z } from "zod";
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
+import { Key } from "src/hooks/useIntl";
 
 import { Flex } from "components/layout/flex/flex";
 
@@ -19,32 +20,36 @@ import { TProfileForm } from "./features/form/form.types";
 import { formatToData, formatToSchema } from "./features/form/form.utils";
 import { ProfileGithubAccount } from "./features/github-account/github-account";
 
+const keys: { [key: string]: Key } = {
+  invalidUrl: "v2.commons.form.errors.invalidUrl",
+  invalidUsername: "v2.commons.form.errors.invalidUsername",
+  invalidPhoneNumber: "v2.commons.form.errors.invalidPhoneNumber",
+};
+
 const formSchema = z.object({
   avatarUrl: z.string().url().optional(),
   cover: z.string(),
   location: z.string().optional(),
   bio: z.string().optional(),
-  website: z
-    .union([z.string().regex(REGEX.website, "v2.commons.form.errors.invalidUrl"), z.string().length(0)])
-    .optional(),
+  website: z.union([z.string().regex(REGEX.website, keys.invalidUrl), z.string().length(0)]).optional(),
   telegram: z.object({
-    contact: z.string().regex(REGEX.telegram, "v2.commons.form.errors.invalidUsername").optional(),
+    contact: z.string().regex(REGEX.telegram, keys.invalidUsername).optional(),
     isPublic: z.boolean(),
   }),
   whatsapp: z.object({
-    contact: z.string().regex(REGEX.whatsapp, "v2.commons.form.errors.invalidePhoneNumber").optional(),
+    contact: z.string().regex(REGEX.whatsapp, keys.invalidPhoneNumber).optional(),
     isPublic: z.boolean(),
   }),
   twitter: z.object({
-    contact: z.string().regex(REGEX.twitter, "v2.commons.form.errors.invalidUsername").optional(),
+    contact: z.string().regex(REGEX.twitter, keys.invalidUsername).optional(),
     isPublic: z.boolean(),
   }),
   discord: z.object({
-    contact: z.string().regex(REGEX.discord, "v2.commons.form.errors.invalidUsername").optional(),
+    contact: z.string().regex(REGEX.discord, keys.invalidUsername).optional(),
     isPublic: z.boolean(),
   }),
   linkedin: z.object({
-    contact: z.string().regex(REGEX.linkedin, "v2.commons.form.errors.invalidUsername").optional(),
+    contact: z.string().regex(REGEX.linkedin, keys.invalidUsername).optional(),
     isPublic: z.boolean(),
   }),
   technologies: z.record(z.number()),
@@ -68,9 +73,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (data) {
-      reset({
-        ...formatToData(data),
-      });
+      reset(formatToData(data));
     }
   }, [data]);
 
