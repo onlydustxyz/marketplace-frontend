@@ -15,7 +15,9 @@ export function SettingsHeader({ icon, title, subtitle, children }: TSettingsHea
             <Typography variant="title-m" translate={{ token: title }} />
           </Flex>
 
-          <Typography variant="body-s" translate={{ token: subtitle }} className="text-spaceBlue-200" />
+          {subtitle ? (
+            <Typography variant="body-s" translate={{ token: subtitle }} className="text-spaceBlue-200" />
+          ) : null}
         </Flex>
 
         {children ? <div>{children}</div> : null}

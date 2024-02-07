@@ -22,8 +22,8 @@ export const FeedbackButton = forwardRef(function FeedbackButton(
           opacity={100}
           position="right"
           hidden={{
-            firstname: user?.firstname || "",
-            lastname: user?.lastname || "",
+            firstname: user?.firstName || "",
+            lastname: user?.lastName || "",
             email: user.email || "",
             github: user.login || "",
           }}

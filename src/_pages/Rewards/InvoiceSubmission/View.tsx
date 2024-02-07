@@ -133,8 +133,8 @@ export function buildHiddenFields({
     ),
     company_name: billingProfile?.name || "",
     company_number: billingProfile?.euVATNumber || "",
-    first_name: user?.firstname || "",
-    last_name: user?.lastname || "",
+    first_name: user?.firstName || "",
+    last_name: user?.lastName || "",
     address: billingProfile?.address || "",
     total_amount: formatMoneyAmount({
       amount: paymentRequests.map(p => p.amount.dollarsEquivalent ?? 0).reduce((acc, amount) => acc + amount, 0),

@@ -35,8 +35,8 @@ export function createContact({
 
 export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Data {
   const {
-    firstname,
-    lastname,
+    firstName,
+    lastName,
     avatarUrl,
     cover,
     location,
@@ -57,8 +57,8 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
   }
 
   return {
-    firstname: firstname ?? "",
-    lastname: lastname ?? "",
+    firstName: firstName ?? "",
+    lastName: lastName ?? "",
     avatarUrl: avatarUrl ?? "",
     cover: cover ?? "BLUE",
     location: location ?? "",
@@ -77,8 +77,8 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
 
 export function formatToSchema(data: TProfileForm.Data) {
   const {
-    firstname,
-    lastname,
+    firstName,
+    lastName,
     avatarUrl,
     cover,
     location,
@@ -95,8 +95,8 @@ export function formatToSchema(data: TProfileForm.Data) {
   } = data;
 
   return {
-    firstname,
-    lastname,
+    firstName,
+    lastName,
     avatarUrl,
     cover,
     location,

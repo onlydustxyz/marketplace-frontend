@@ -95,8 +95,8 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
           inheritParameters
           parameters={{
             lead_id: user?.id,
-            lead_first_name: user?.firstname,
-            lead_last_name: user?.lastname,
+            lead_first_name: user?.firstName,
+            lead_last_name: user?.lastName,
             lead_github: user?.login,
             lead_telegram: findContact(Channel.Telegram),
             lead_email: findContact(Channel.Email),

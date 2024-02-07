@@ -39,67 +39,71 @@ export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
   return (
     <Flex
       alignItems="center"
-      justifyContent="between"
-      className="-mx-4 -mb-6 gap-4 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium xl:-mx-8"
+      justifyContent="center"
+      className="absolute bottom-0 left-0 right-0 z-50 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium"
     >
-      <Tag size="medium">
-        {isDirty || !isValid ? (
-          <Flex
-            alignItems="center"
-            className={cn("gap-1", {
-              "text-orange-500": !isValid,
-              "text-spacePurple-300": isValid,
-            })}
-          >
-            <Icon remixName="ri-error-warning-line" />
+      <div className="w-full max-w-7xl px-4 xl:px-8">
+        <Flex alignItems="center" justifyContent="between">
+          <Tag size="medium">
+            {isDirty || !isValid ? (
+              <Flex
+                alignItems="center"
+                className={cn("gap-1", {
+                  "text-orange-500": !isValid,
+                  "text-spacePurple-300": isValid,
+                })}
+              >
+                <Icon remixName="ri-error-warning-line" />
 
-            <Typography variant="body-s">
-              {isValid ? (
-                <Translate token="v2.commons.form.status.unsaved" />
-              ) : (
-                <Translate token="v2.commons.form.status.invalid" />
-              )}
-            </Typography>
-          </Flex>
-        ) : (
-          <>
-            <Icon remixName="ri-check-line" />
-            <Translate token="v2.commons.form.status.saved" />
-          </>
-        )}
-      </Tag>
+                <Typography variant="body-s">
+                  {isValid ? (
+                    <Translate token="v2.commons.form.status.unsaved" />
+                  ) : (
+                    <Translate token="v2.commons.form.status.invalid" />
+                  )}
+                </Typography>
+              </Flex>
+            ) : (
+              <>
+                <Icon remixName="ri-check-line" />
+                <Translate token="v2.commons.form.status.saved" />
+              </>
+            )}
+          </Tag>
 
-      <Flex alignItems="center" className="gap-3">
-        {hasPreviewButton ? (
-          <a
-            href={generatePath(RoutePaths.PublicProfile, {
-              userLogin: user?.nickname || "",
-            })}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button variant="secondary" size={isMd ? "m" : "s"}>
-              {isMd ? <Icon remixName="ri-external-link-line" size={20} /> : null}
+          <Flex alignItems="center" className="gap-3">
+            {hasPreviewButton ? (
+              <a
+                href={generatePath(RoutePaths.PublicProfile, {
+                  userLogin: user?.nickname || "",
+                })}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="secondary" size={isMd ? "m" : "s"}>
+                  {isMd ? <Icon remixName="ri-external-link-line" size={20} /> : null}
+
+                  {isMd ? (
+                    <Translate token="v2.pages.settings.profile.buttons.preview" />
+                  ) : (
+                    <Translate token="v2.pages.settings.profile.buttons.previewMobile" />
+                  )}
+                </Button>
+              </a>
+            ) : null}
+
+            <Button type="submit" disabled={isPending || !isValid} size={isMd ? "m" : "s"}>
+              {renderIcon()}
 
               {isMd ? (
-                <Translate token="v2.pages.settings.profile.buttons.preview" />
+                <Translate token="v2.commons.form.buttons.save" />
               ) : (
-                <Translate token="v2.pages.settings.profile.buttons.previewMobile" />
+                <Translate token="v2.commons.form.buttons.saveMobile" />
               )}
             </Button>
-          </a>
-        ) : null}
-
-        <Button type="submit" disabled={isPending || !isValid} size={isMd ? "m" : "s"}>
-          {renderIcon()}
-
-          {isMd ? (
-            <Translate token="v2.commons.form.buttons.save" />
-          ) : (
-            <Translate token="v2.commons.form.buttons.saveMobile" />
-          )}
-        </Button>
-      </Flex>
+          </Flex>
+        </Flex>
+      </div>
     </Flex>
   );
 }

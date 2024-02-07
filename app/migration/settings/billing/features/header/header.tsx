@@ -55,14 +55,12 @@ export function Header({ initialData }: THeader.Props) {
   function onOpenConfirmation() {
     setOpenConfirmation(true);
   }
-  function onCloseConfirmation() {
-    setOpenConfirmation(false);
-  }
 
   function onConfirm() {
     handleSubmit(onSubmit)();
   }
   function onCancel() {
+    setOpenConfirmation(false);
     reset(initialData);
   }
 
@@ -99,8 +97,8 @@ export function Header({ initialData }: THeader.Props) {
           title="v2.pages.settings.billing.title"
           subtitle={
             profile === MeTypes.billingProfileType.Individual
-              ? "v2.pages.settings.billing.individual.subtitle"
-              : "v2.pages.settings.billing.company.subtitle"
+              ? "v2.pages.settings.billing.description_individual"
+              : "v2.pages.settings.billing.description_company"
           }
         >
           <Controller
@@ -133,7 +131,7 @@ export function Header({ initialData }: THeader.Props) {
       </form>
       <ConfirmationModal
         open={openConfirmation}
-        onClose={onCloseConfirmation}
+        onClose={onCancel}
         title={<Translate token="v2.pages.settings.billing.confirmation.title" />}
         content={confirmationContents.content}
         buttons={{
@@ -143,7 +141,6 @@ export function Header({ initialData }: THeader.Props) {
           },
           cancel: {
             children: confirmationContents.cancel,
-            onClick: onCancel,
           },
         }}
       />
