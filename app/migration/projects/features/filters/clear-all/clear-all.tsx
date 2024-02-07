@@ -18,6 +18,7 @@ export function FiltersClearAll() {
       onClick={filters.clear}
       variant="tertiary"
       size="xs"
+      aria-hidden={filters.count === 0}
       className={cn({
         "pointer-events-none opacity-0": filters.count === 0,
       })}
