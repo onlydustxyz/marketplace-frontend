@@ -27,6 +27,14 @@
         },
         "aptos": {
           "invalid": "Invalid Aptos wallet address"
+        },
+        "sepa": {
+          "iban": {
+            "required": "IBAN is required when BIC is provided"
+          },
+          "bic": {
+            "required": "BIC is required when IBAN is provided"
+          }
         }
       }
     },

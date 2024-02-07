@@ -24,6 +24,8 @@ const keys: { [key: string]: Key } = {
   invalidStarknetAddress: "v2.commons.form.errors.wallets.starknet.invalid",
   invalidOptimismAddress: "v2.commons.form.errors.wallets.optimism.invalid",
   invalidAptosAddress: "v2.commons.form.errors.wallets.aptos.invalid",
+  ibanIsRequired: "v2.commons.form.errors.wallets.sepa.iban.required",
+  bicIsRequired: "v2.commons.form.errors.wallets.sepa.bic.required",
 };
 
 const formSchema = z
@@ -51,14 +53,14 @@ const formSchema = z
       if (!iban) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "IBAN is required when BIC is provided",
+          message: keys.ibanIsRequired,
           path: ["sepaAccount", "iban"],
         });
       }
       if (!bic) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "BIC is required when IBAN is provided",
+          message: keys.bicIsRequired,
           path: ["sepaAccount", "bic"],
         });
       }
