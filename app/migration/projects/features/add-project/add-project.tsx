@@ -28,7 +28,7 @@ export function AddProject() {
   };
 
   return (
-    <Card background="base" border="medium" className="flex items-center gap-4">
+    <Card background="base" border="light" className="flex items-center gap-4">
       <Typography variant="body-s">
         <Translate token="v2.pages.projects.addProject.label" />
       </Typography>
