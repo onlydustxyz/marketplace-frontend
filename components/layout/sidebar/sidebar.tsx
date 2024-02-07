@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
-import BurgerIcon from "src/assets/icons/BurgerIcon";
 import SidePanel from "src/components/SidePanel";
 import { viewportConfig } from "src/config";
 
