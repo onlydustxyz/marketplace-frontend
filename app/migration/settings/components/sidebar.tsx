@@ -14,7 +14,6 @@ import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
-import { Link } from "components/ds/link/link";
 import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";

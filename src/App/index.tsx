@@ -1,6 +1,8 @@
 import React, { Suspense, lazy } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
+import SettingsLayout from "app/migration/settings/layout";
+
 import Layout from "src/App/Layout";
 import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ErrorTrigger from "src/_pages/ErrorTrigger";
@@ -200,6 +202,14 @@ function App() {
           element: (
             <AuthenticationGuard>
               <Contributions />
+            </AuthenticationGuard>
+          ),
+        },
+        {
+          path: `${RoutePaths.Settings}/*`,
+          element: (
+            <AuthenticationGuard>
+              <SettingsLayout />
             </AuthenticationGuard>
           ),
         },

@@ -4,8 +4,8 @@ export const NEXT_ROUTER = {
     details: (slug: string) => `/p/${slug}`,
   },
   settings: {
-    profile: "/migration/settings/profile",
-    payout: "/migration/settings/payout",
-    billing: "/migration/settings/billing",
+    profile: "/settings/profile",
+    payout: "/settings/payout",
+    billing: "/settings/billing",
   },
 };

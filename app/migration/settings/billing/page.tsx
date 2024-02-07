@@ -8,7 +8,7 @@ import { useBillingProfiles } from "app/migration/settings/hooks/useBillingProfi
 
 import { Header } from "./features/header/header";
 
-export default function ProfilePage() {
+export default function BillingPage() {
   const { billingProfile, profileType, isCompany, isIndividual, validBillingProfile } = useBillingProfiles();
   return (
     <div className="flex flex-col gap-6">

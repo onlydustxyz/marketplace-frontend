@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { NavLink } from "react-router-dom";
 
 import { cn } from "src/utils/cn";
 
@@ -6,8 +6,8 @@ import { TMenuItem } from "components/layout/sidebar/menu-item/menu-item.types";
 
 export function MenuItem({ href, label, onClick, isActive, endIcon }: TMenuItem.Props) {
   return (
-    <Link
-      href={href}
+    <NavLink
+      to={href}
       onClick={onClick}
       className={cn("rounded-xl px-4 py-2.5 text-base", {
         "bg-white/8 text-white": isActive,
@@ -17,6 +17,6 @@ export function MenuItem({ href, label, onClick, isActive, endIcon }: TMenuItem.
     >
       <span>{label}</span>
       {endIcon}
-    </Link>
+    </NavLink>
   );
 }
