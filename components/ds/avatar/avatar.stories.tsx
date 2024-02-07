@@ -37,7 +37,7 @@ export const Boarded: Story = {
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Avatar {...defaultProps} {...args} size="md" isBoarderd />
+        <Avatar {...defaultProps} {...args} size="md" isBorderd />
       </div>
     );
   },
