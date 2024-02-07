@@ -1,3 +1,5 @@
+"use client";
+
 import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { Fragment, useEffect } from "react";
 import { useMatch } from "react-router-dom";

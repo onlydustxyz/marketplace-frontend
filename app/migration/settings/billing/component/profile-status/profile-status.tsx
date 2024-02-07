@@ -1,5 +1,4 @@
-import { TStatus } from "app/migration/settings/billing/component/status/status.types";
-import { useBillingStatus } from "app/migration/settings/billing/hooks/useBillingStatus";
+import { useBillingStatus } from "app/migration/settings/hooks/useBillingStatus";
 
 import { cn } from "src/utils/cn";
 
@@ -7,7 +6,9 @@ import { Tag } from "components/ds/tag/tag";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-export function Status({ status, hasValidBillingProfile }: TStatus.Props) {
+import { TProfileStatus } from "./profile-status.types";
+
+export function ProfileStatus({ status, hasValidBillingProfile }: TProfileStatus.Props) {
   const { statusMapping, isWarning, isError, isSuccess } = useBillingStatus(hasValidBillingProfile, status);
 
   if (!statusMapping) {

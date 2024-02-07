@@ -2,34 +2,61 @@
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { usePathname } from "next/navigation";
+import { useMemo } from "react";
+
+import { useBillingProfiles } from "app/migration/settings/hooks/useBillingProfile";
+import { useBillingStatus } from "app/migration/settings/hooks/useBillingStatus";
 
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
-import { useIntl } from "src/hooks/useIntl";
+import { cn } from "src/utils/cn";
 
 import { Flex } from "components/layout/flex/flex";
+import { Icon } from "components/layout/icon/icon";
 import { MenuItem } from "components/layout/sidebar/menu-item/menu-item";
+import { TMenuItem } from "components/layout/sidebar/menu-item/menu-item.types";
 import { Sidebar as LayoutSidebar } from "components/layout/sidebar/sidebar";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 export function Sidebar() {
   const { isAuthenticated, user } = useAuth0();
-  const { T } = useIntl();
   const pathname = usePathname();
+  const { validBillingProfile, billingProfile } = useBillingProfiles();
+  const { isWarning, isError } = useBillingStatus(validBillingProfile, billingProfile?.status);
 
-  const menuItems = [
-    {
-      label: T("v2.features.sidebar.settings.publicProfile"),
-      path: "/migration/settings/profile",
-    },
-    {
-      label: T("v2.features.sidebar.settings.payoutPreferences"),
-      path: "/migration/settings/payout",
-    },
-    {
-      label: T("v2.features.sidebar.settings.verifyAccount"),
-      path: "/migration/settings/verify",
-    },
-  ];
+  const menuItems: TMenuItem.Props[] = useMemo(
+    () => [
+      {
+        label: <Translate token="v2.features.sidebar.settings.publicProfile" />,
+        href: NEXT_ROUTER.settings.profile,
+        isActive: false,
+      },
+      {
+        label: <Translate token="v2.features.sidebar.settings.payoutPreferences" />,
+        href: NEXT_ROUTER.settings.payout,
+        isActive: false,
+      },
+      {
+        label: <Translate token="v2.features.sidebar.settings.billingProfile" />,
+        href: NEXT_ROUTER.settings.billing,
+        isActive: false,
+        endIcon:
+          isWarning || isError ? (
+            <Icon
+              size={16}
+              remixName="ri-information-line"
+              className={cn({
+                "text-orange-500": isWarning,
+                "text-github": isError,
+              })}
+            />
+          ) : undefined,
+      },
+    ],
+    [isWarning, isError]
+  );
 
   return (
     <LayoutSidebar
@@ -54,8 +81,8 @@ export function Sidebar() {
           </Flex>
 
           <div className="align-start flex flex-col gap-4 text-xl font-medium">
-            {menuItems.map(({ path, label }) => (
-              <MenuItem key={path} href={path} label={label} onClick={closePanel} isActive={pathname === path} />
+            {menuItems.map(menu => (
+              <MenuItem {...menu} key={menu.href} onClick={closePanel} isActive={pathname === menu.href} />
             ))}
 
             {!isAuthenticated ? (

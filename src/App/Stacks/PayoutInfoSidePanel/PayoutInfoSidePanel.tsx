@@ -1,3 +1,5 @@
+"use client";
+
 import IBANParser from "iban";
 import { useEffect } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";

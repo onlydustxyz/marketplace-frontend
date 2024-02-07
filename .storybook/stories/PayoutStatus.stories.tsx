@@ -1,5 +1,6 @@
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import { PaymentStatus } from "src/types";
+
+import { PayoutStatus } from "components/features/payout-status/payout-status";
 
 export default {
   title: "PayoutStatus",

@@ -1,4 +1,4 @@
-import { ElementType, PropsWithChildren } from "react";
+import { ElementType, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { tagVariants } from "components/ds/tag/tag.variants";
@@ -12,6 +12,7 @@ export namespace TTag {
     as?: ElementType;
     id?: string;
     testId?: string;
+    tooltipContent?: ReactNode;
     className?: string;
     onClick?: () => void;
   }

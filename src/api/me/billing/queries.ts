@@ -12,7 +12,7 @@ export type UseBillingProfileResponse = UseBillingProfileIndividualResponse | Us
 const useBillingProfile = ({
   options = {},
   params,
-}: UseQueryProps<UseBillingProfileResponse, { profile?: `${MeTypes.billingProfileType}` }>) => {
+}: UseQueryProps<UseBillingProfileResponse, { profile?: MeTypes.billingProfileUnion }>) => {
   const { isAuthenticated } = useAuth0();
   return useBaseQuery<UseBillingProfileResponse>({
     resourcePath:

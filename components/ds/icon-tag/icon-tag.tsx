@@ -5,27 +5,33 @@ import { iconTagVariants } from "components/ds/icon-tag/icon-tag.variants";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { Icon } from "components/layout/icon/icon";
 
-export function IconTag({ as: Component = "span", id, testId, className, onClick, ...props }: TIconTag.Props) {
-  const { customName, remixName, tooltipContent } = props;
+export function IconTag({
+  as: Component = "span",
+  id,
+  testId,
+  className,
+  onClick,
+  icon,
+  tooltipContent,
+  ...props
+}: TIconTag.Props) {
   if (tooltipContent) {
     return (
-      <Tooltip {...props}>
+      <Tooltip content={tooltipContent} placement="top-end">
         <Component
-          data-testId={testId}
+          data-testid={testId}
           id={id}
           className={cn(iconTagVariants({ ...props }), className)}
           onClick={onClick}
         >
-          {customName ? <Icon customName={customName} size={16} /> : null}
-          {remixName ? <Icon remixName={remixName} size={16} /> : null}
+          <Icon {...icon} size={16} />
         </Component>
       </Tooltip>
     );
   }
   return (
     <Component data-testId={testId} id={id} className={cn(iconTagVariants({ ...props }), className)} onClick={onClick}>
-      {customName ? <Icon customName={customName} size={16} /> : null}
-      {remixName ? <Icon remixName={remixName} size={16} /> : null}
+      <Icon {...icon} size={16} />
     </Component>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 
