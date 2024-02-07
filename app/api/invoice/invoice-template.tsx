@@ -1,5 +1,9 @@
 import React, { CSSProperties } from "react";
 
+interface Header {
+  logoUrl: string;
+  invoiceNumber: string;
+}
 interface BillingProfile {
   name: string;
   address: string;
@@ -29,6 +33,7 @@ interface ContentItem {
 }
 
 interface InvoiceProps {
+  header: Header;
   headers: {
     billingProfile: BillingProfile;
     receiver: Receiver;
@@ -59,10 +64,25 @@ const styles: { [key: string]: CSSProperties } = {
   h4: {
     margin: "0px",
     fontWeight: "900",
-    fontSize: "18px",
+    fontSize: "16px",
   },
   paragraph: {
+    fontSize: "14px",
+    lineHeight: "1.5",
     margin: "0px",
+    color: "#535353",
+  },
+  justifyContentStart: {
+    display: "flex",
+    flex: "1",
+    justifyContent: "flex-start",
+    flexDirection: "column",
+  },
+  justifyContentEnd: {
+    display: "flex",
+    flex: "1",
+    justifyContent: "flex-end",
+    flexDirection: "column",
   },
   flexCol: {
     display: "flex",
@@ -121,40 +141,39 @@ const styles: { [key: string]: CSSProperties } = {
   },
 };
 
-export function InvoiceTemplate({ headers, invoiceInfo, content, total }: InvoiceProps) {
+export function InvoiceTemplate({ header, headers, invoiceInfo, content, total }: InvoiceProps) {
   return (
     <div style={styles["wrapper"]}>
       <div style={styles["header"]}>
         <div style={styles["logo"]}>
-          <img
-            src="https://assets-global.website-files.com/6526608bf8ef4218fa12c988/6526608bf8ef4218fa12ca2c_Left.png"
-            width="203.75"
-            height="50"
-            alt="logo"
-          />
+          <img src={header.logoUrl} width="203.75" height="50" alt="logo" />
         </div>
         <div style={styles["invoiceNumber"]}>
           <h3 style={styles["h3"]}>
-            <strong>Invoice NO: #{invoiceInfo.number}</strong>
+            <strong>Invoice NO: #{header.invoiceNumber}</strong>
           </h3>
         </div>
       </div>
       <div style={styles["invoiceInfo"]}>
         <div style={styles["flexCol"]}>
           <div style={styles["invoiceTo"]}>
-            <h4 style={styles["h4"]}>Invoice to</h4>
-            <p style={styles["paragraph"]}>{headers.billingProfile.name}</p>
-            <p style={styles["paragraph"]}>{headers.billingProfile.address}</p>
-            <p style={styles["paragraph"]}>{headers.billingProfile.zipCode}</p>
-            <p style={styles["paragraph"]}>{headers.billingProfile.country}</p>
+            <div style={{ display: "flex" }}>
+              <h4 style={styles["h4"]}>Invoice to</h4>
+              <p style={styles["paragraph"]}>{headers.billingProfile.name}</p>
+              <p style={styles["paragraph"]}>{headers.billingProfile.address}</p>
+              <p style={styles["paragraph"]}>{headers.billingProfile.zipCode}</p>
+              <p style={styles["paragraph"]}>{headers.billingProfile.country}</p>
+            </div>
           </div>
           <div style={styles["billTo"]}>
-            <h4 style={styles["h4"]}>Bill to</h4>
-            <p style={styles["paragraph"]}>{headers.receiver.name}</p>
-            <p style={styles["paragraph"]}>SIRET: {headers.receiver.siret}</p>
-            <p style={styles["paragraph"]}>{headers.receiver.address}</p>
-            <p style={styles["paragraph"]}>{headers.receiver.zipCode}</p>
-            <p style={styles["paragraph"]}>{headers.receiver.country}</p>
+            <div style={{ display: "flex" }}>
+              <h4 style={styles["h4"]}>Bill to</h4>
+              <p style={styles["paragraph"]}>{headers.receiver.name}</p>
+              <p style={styles["paragraph"]}>SIRET: {headers.receiver.siret}</p>
+              <p style={styles["paragraph"]}>{headers.receiver.address}</p>
+              <p style={styles["paragraph"]}>{headers.receiver.zipCode}</p>
+              <p style={styles["paragraph"]}>{headers.receiver.country}</p>
+            </div>
           </div>
         </div>
         <div style={styles["flexCol"]}>

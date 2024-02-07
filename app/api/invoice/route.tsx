@@ -33,6 +33,11 @@ export async function GET() {
 
   const { rewards } = await MeActions.queries.retrieveRewardsPendingInvoices({ accessToken: token ?? "" });
 
+  const header = {
+    logoUrl: "https://assets-global.website-files.com/6526608bf8ef4218fa12c988/6526608bf8ef4218fa12ca2c_Left.png",
+    invoiceNumber: "20240208-0052",
+  };
+
   const billingProfile = {
     name: "John Doe",
     address: "1234 Main St",
@@ -71,7 +76,15 @@ export async function GET() {
   const total = 300;
 
   return new ImageResponse(
-    <InvoiceTemplate headers={{ billingProfile, receiver }} invoiceInfo={invoiceInfo} content={content} total={total} />
+    (
+      <InvoiceTemplate
+        header={header}
+        headers={{ billingProfile, receiver }}
+        invoiceInfo={invoiceInfo}
+        content={content}
+        total={total}
+      />
+    )
   );
 }
 
