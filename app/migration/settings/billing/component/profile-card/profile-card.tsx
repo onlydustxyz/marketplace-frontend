@@ -6,11 +6,11 @@ import { TProfileCard } from "./profile-card.types";
 
 export function ProfileCard({ status, children, hasValidBillingProfile }: TProfileCard.Props) {
   return (
-    <Card className="relative flex w-full flex-col gap-4" background="base">
-      <div className="flex w-full flex-row justify-end">
+    <Card className="relative flex w-full flex-col" background="base">
+      <div className="mb-5 flex w-full flex-row justify-end xl:-mb-1 ">
         <ProfileStatus status={status} hasValidBillingProfile={hasValidBillingProfile} />
       </div>
-      {children}
+      <div className="flex w-full flex-col gap-9">{children}</div>
     </Card>
   );
 }

@@ -23,61 +23,61 @@ export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props
   const { isDirty, isValid } = formState;
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="between"
-      className="-mx-4 -mb-6 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium xl:-mx-8"
-    >
-      <Tag size="medium">
-        {isDirty || !isValid ? (
-          <Flex
-            alignItems="center"
-            className={cn("gap-1", {
-              "text-orange-500": !isValid,
-              "text-spacePurple-300": isValid,
-            })}
-          >
-            <Icon remixName="ri-error-warning-line" />
+    <div className="absolute bottom-0 left-0 right-0 z-50  flex flex-row items-center justify-center border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium">
+      <div className="w-full max-w-7xl px-4 xl:px-8">
+        <Flex alignItems="center" justifyContent="between">
+          <Tag size="medium">
+            {isDirty || !isValid ? (
+              <Flex
+                alignItems="center"
+                className={cn("gap-1", {
+                  "text-orange-500": !isValid,
+                  "text-spacePurple-300": isValid,
+                })}
+              >
+                <Icon remixName="ri-error-warning-line" />
 
-            <Typography variant="body-s">
-              {isValid ? (
-                <Translate token="v2.commons.form.status.unsaved" />
+                <Typography variant="body-s">
+                  {isValid ? (
+                    <Translate token="v2.commons.form.status.unsaved" />
+                  ) : (
+                    <Translate token="v2.commons.form.status.invalid" />
+                  )}
+                </Typography>
+              </Flex>
+            ) : (
+              <>
+                <Icon remixName="ri-check-line" />
+                <Translate token="v2.commons.form.status.saved" />
+              </>
+            )}
+          </Tag>
+
+          <Flex alignItems="center" className="gap-5">
+            <a
+              href={generatePath(RoutePaths.PublicProfile, {
+                userLogin: user?.nickname || "",
+              })}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="secondary">
+                <Icon remixName="ri-external-link-line" size={20} />
+                <Translate token="v2.pages.settings.profile.buttons.preview" />
+              </Button>
+            </a>
+
+            <Button type="submit" disabled={userProfilInformationIsPending || !isValid}>
+              {userProfilInformationIsPending ? (
+                <Spinner className="h-5 w-5" />
               ) : (
-                <Translate token="v2.commons.form.status.invalid" />
+                <Icon remixName="ri-check-line" size={20} />
               )}
-            </Typography>
+              <Translate token="v2.pages.settings.profile.buttons.save" />
+            </Button>
           </Flex>
-        ) : (
-          <>
-            <Icon remixName="ri-check-line" />
-            <Translate token="v2.commons.form.status.saved" />
-          </>
-        )}
-      </Tag>
-
-      <Flex alignItems="center" className="gap-5">
-        <a
-          href={generatePath(RoutePaths.PublicProfile, {
-            userLogin: user?.nickname || "",
-          })}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="secondary">
-            <Icon remixName="ri-external-link-line" size={20} />
-            <Translate token="v2.pages.settings.profile.buttons.preview" />
-          </Button>
-        </a>
-
-        <Button type="submit" disabled={userProfilInformationIsPending || !isValid}>
-          {userProfilInformationIsPending ? (
-            <Spinner className="h-5 w-5" />
-          ) : (
-            <Icon remixName="ri-check-line" size={20} />
-          )}
-          <Translate token="v2.pages.settings.profile.buttons.save" />
-        </Button>
-      </Flex>
-    </Flex>
+        </Flex>
+      </div>
+    </div>
   );
 }

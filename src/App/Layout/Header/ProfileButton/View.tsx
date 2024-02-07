@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
-import Link from "next/link";
 import { Fragment, PropsWithChildren, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
@@ -114,7 +114,7 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
           >
             {!hideProfileItems && (
               <div>
-                <Link href={getProfileButtonLink()}>
+                <NavLink to={getProfileButtonLink()}>
                   <MenuItem isProfile>
                     {avatarUrl ? (
                       <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
@@ -139,7 +139,7 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
                       />
                     </Flex>
                   </MenuItem>
-                </Link>
+                </NavLink>
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>

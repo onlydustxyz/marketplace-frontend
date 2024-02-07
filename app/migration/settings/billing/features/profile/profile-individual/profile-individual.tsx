@@ -18,7 +18,7 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
 
   const validUntil = useMemo(() => {
     if (profile.validUntil) {
-      return format(new Date(profile.validUntil), "yyyy-MM-dd");
+      return format(new Date(profile.validUntil), "MMM dd, yyyy");
     }
     return profile.validUntil;
   }, [profile]);
