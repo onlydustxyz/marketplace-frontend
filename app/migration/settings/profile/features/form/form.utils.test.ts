@@ -115,6 +115,8 @@ describe("formatToData", () => {
 
   it("should format profile info correctly", () => {
     const mockData: UseGetMyProfileInfoResponse = {
+      firstname: "John",
+      lastname: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "BLUE",
       location: "Earth",
@@ -139,6 +141,8 @@ describe("formatToData", () => {
     };
 
     const expectedData: TProfileForm.Data = {
+      firstname: "John",
+      lastname: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "BLUE",
       location: "Earth",
@@ -160,6 +164,7 @@ describe("formatToData", () => {
 
   it("should handle partial data correctly", () => {
     const mockData: UseGetMyProfileInfoResponse = {
+      firstname: "John",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "MAGENTA",
       location: "Mars",
@@ -169,6 +174,8 @@ describe("formatToData", () => {
     };
 
     const expectedData: TProfileForm.Data = {
+      firstname: "John",
+      lastname: "",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "MAGENTA",
       location: "Mars",
@@ -192,6 +199,8 @@ describe("formatToData", () => {
 describe("formatToSchema", () => {
   it("should convert formatted data to schema correctly", () => {
     const formattedData: TProfileForm.Data = {
+      firstname: "John",
+      lastname: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "YELLOW",
       location: "Earth",
@@ -208,6 +217,8 @@ describe("formatToSchema", () => {
     };
 
     const expectedSchema = {
+      firstname: "John",
+      lastname: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "YELLOW",
       location: "Earth",
@@ -251,6 +262,7 @@ describe("formatToSchema", () => {
 
   it("should handle partial data correctly", () => {
     const partialData: TProfileForm.Data = {
+      firstname: "John",
       avatarUrl: "",
       cover: "BLUE",
       location: "",
@@ -267,6 +279,8 @@ describe("formatToSchema", () => {
     };
 
     const expectedSchema = {
+      firstname: "John",
+      lastname: "",
       avatarUrl: "",
       cover: "BLUE",
       location: "",

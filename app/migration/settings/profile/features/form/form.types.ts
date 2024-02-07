@@ -24,6 +24,8 @@ export namespace TProfileForm {
   }
 
   export interface Data {
+    firstname?: string;
+    lastname?: string;
     avatarUrl?: string;
     cover: Cover;
     location: string;
