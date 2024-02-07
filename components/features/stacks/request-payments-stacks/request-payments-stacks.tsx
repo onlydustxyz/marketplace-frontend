@@ -1,6 +1,7 @@
 import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Button } from "components/ds/button/button";
+import { Tabs } from "components/ds/tabs/tabs";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -22,6 +23,7 @@ export function RequestPaymentsStacks() {
             className="text-greyscale-50"
           />
         </div>
+        <Tabs tabs={[{ children: "coucou", onClick: () => {} }]} />
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
         <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
