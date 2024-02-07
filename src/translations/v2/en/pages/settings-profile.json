@@ -27,6 +27,7 @@
     "lookingForAJob": "I'm looking for a job"
   },
   "buttons": {
-    "preview": "Preview profile"
+    "preview": "Preview profile",
+    "previewMobile": "Preview"
   }
 }

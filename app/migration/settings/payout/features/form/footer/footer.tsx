@@ -1,6 +1,8 @@
 import { useFormContext } from "react-hook-form";
+import { useMediaQuery } from "usehooks-ts";
 
 import { Spinner } from "src/components/Spinner/Spinner";
+import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
@@ -13,13 +15,16 @@ import { Typography } from "components/layout/typography/typography";
 import { TFormFooter } from "./footer.types";
 
 export function FormFooter({ isPending }: TFormFooter.Props) {
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+
   const { formState } = useFormContext();
   const { isDirty, isValid } = formState;
 
   return (
     <Flex
       alignItems="center"
-      className="-mx-4 -mb-6 flex-col gap-4 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium md:flex-row md:justify-between xl:-mx-8"
+      justifyContent="between"
+      className="-mx-4 -mb-6 gap-4 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium xl:-mx-8"
     >
       <Tag size="medium">
         {isDirty || !isValid ? (
@@ -48,9 +53,10 @@ export function FormFooter({ isPending }: TFormFooter.Props) {
         )}
       </Tag>
 
-      <Button type="submit" disabled={isPending || !isValid} className="w-full md:w-auto">
-        {isPending ? <Spinner className="h-5 w-5" /> : <Icon remixName="ri-check-line" size={20} />}
-        <Translate token="v2.commons.form.buttons.save" />
+      <Button type="submit" disabled={isPending || !isValid} size={isMd ? "m" : "s"}>
+        {isMd ? isPending ? <Spinner className="h-5 w-5" /> : <Icon remixName="ri-check-line" size={20} /> : null}
+
+        <Translate token={isMd ? "v2.commons.form.buttons.save" : "v2.commons.form.buttons.saveMobile"} />
       </Button>
     </Flex>
   );

@@ -1,9 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useFormContext } from "react-hook-form";
 import { generatePath } from "react-router-dom";
+import { useMediaQuery } from "usehooks-ts";
 
 import { RoutePaths } from "src/App";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
@@ -17,6 +19,8 @@ import { TFormFooter } from "./footer.types";
 
 // TODO: Change Button with link using the new library
 export function FormFooter({ isPending }: TFormFooter.Props) {
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+
   const { user } = useAuth0();
 
   const { formState } = useFormContext();
@@ -25,7 +29,8 @@ export function FormFooter({ isPending }: TFormFooter.Props) {
   return (
     <Flex
       alignItems="center"
-      className="-mx-4 -mb-6 flex-col gap-4 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium md:flex-row md:justify-between xl:-mx-8"
+      justifyContent="between"
+      className="-mx-4 -mb-6 gap-4 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium xl:-mx-8"
     >
       <Tag size="medium">
         {isDirty || !isValid ? (
@@ -54,24 +59,29 @@ export function FormFooter({ isPending }: TFormFooter.Props) {
         )}
       </Tag>
 
-      <Flex alignItems="center" className="w-full flex-col gap-2 md:w-auto md:flex-row md:gap-5">
+      <Flex alignItems="center" className="gap-3">
         <a
           href={generatePath(RoutePaths.PublicProfile, {
             userLogin: user?.nickname || "",
           })}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full md:w-auto"
         >
-          <Button variant="secondary" className="w-full md:w-auto">
-            <Icon remixName="ri-external-link-line" size={20} />
-            <Translate token="v2.pages.settings.profile.buttons.preview" />
+          <Button variant="secondary" size={isMd ? "m" : "s"}>
+            {isMd ? <Icon remixName="ri-external-link-line" size={20} /> : null}
+
+            <Translate
+              token={
+                isMd ? "v2.pages.settings.profile.buttons.preview" : "v2.pages.settings.profile.buttons.previewMobile"
+              }
+            />
           </Button>
         </a>
 
-        <Button type="submit" disabled={isPending || !isValid} className="w-full md:w-auto">
-          {isPending ? <Spinner className="h-5 w-5" /> : <Icon remixName="ri-check-line" size={20} />}
-          <Translate token="v2.commons.form.buttons.save" />
+        <Button type="submit" disabled={isPending || !isValid} size={isMd ? "m" : "s"}>
+          {isMd ? isPending ? <Spinner className="h-5 w-5" /> : <Icon remixName="ri-check-line" size={20} /> : null}
+
+          <Translate token={isMd ? "v2.commons.form.buttons.save" : "v2.commons.form.buttons.saveMobile"} />
         </Button>
       </Flex>
     </Flex>

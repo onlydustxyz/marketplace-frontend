@@ -39,7 +39,8 @@
       }
     },
     "buttons": {
-      "save": "Save changes"
+      "save": "Save changes",
+      "saveMobile": "Save"
     },
     "contact": {
       "telegram": {
