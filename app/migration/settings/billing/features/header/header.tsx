@@ -99,8 +99,8 @@ export function Header({ initialData }: THeader.Props) {
           title="v2.pages.settings.billing.title"
           subtitle={
             profile === MeTypes.billingProfileType.Individual
-              ? "v2.pages.settings.billing.individual.subtitle"
-              : "v2.pages.settings.billing.company.subtitle"
+              ? "v2.pages.settings.billing.description_individual"
+              : "v2.pages.settings.billing.description_company"
           }
         >
           <Controller

@@ -8,7 +8,16 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TBanner } from "./banner.types";
 
-export function Banner({ children, title, description, icon, button, customButton, ...props }: TBanner.Props) {
+export function Banner({
+  children,
+  title,
+  description,
+  icon,
+  button,
+  customButton,
+  classNames,
+  ...props
+}: TBanner.Props) {
   const slots = bannerVariants({ ...props });
   const iconSize = {
     l: 32,
@@ -23,18 +32,24 @@ export function Banner({ children, title, description, icon, button, customButto
   };
 
   return (
-    <div className={slots.wrapper()}>
-      <div className={slots.contentWrapper()}>
+    <div className={cn(slots.wrapper(), classNames?.wrapper)}>
+      <div className={cn(slots.contentWrapper(), classNames?.contentWrapper)}>
         {icon ? (
-          <div className={slots.iconWrapper()}>
-            <Icon {...icon} size={iconSize[props.size || "m"]} className={cn(icon.className, slots.icon())} />
+          <div className={cn(slots.iconWrapper(), classNames?.iconWrapper)}>
+            <Icon
+              {...icon}
+              size={iconSize[props.size || "m"]}
+              className={cn(icon.className, slots.icon(), classNames?.icon)}
+            />
           </div>
         ) : null}
         <div className="flex flex-col gap-1">
-          <Typography className={slots.title()}>{title}</Typography>
-          {description ? <Typography className={slots.description()}>{description}</Typography> : null}
+          <Typography className={cn(slots.title(), classNames?.title)}>{title}</Typography>
+          {description ? (
+            <Typography className={cn(slots.description(), classNames?.description)}>{description}</Typography>
+          ) : null}
           {children ? (
-            <Typography as={"div"} className={slots.description()}>
+            <Typography as={"div"} className={cn(slots.description(), classNames?.description)}>
               {children}
             </Typography>
           ) : null}

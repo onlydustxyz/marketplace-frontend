@@ -32,7 +32,8 @@ export default function HeaderView({ menuItems, selectedMenuItem, impersonating 
 
   const isMatchProjectDetail = useMatch(`${RoutePaths.ProjectDetails}/*`);
   const isMatchProjectCreation = useMatch(`${RoutePaths.ProjectCreation}/*`);
-  const hideHeader = isMatchProjectDetail && !isMatchProjectCreation && !isXl;
+  const isMatchSettings = useMatch(`${RoutePaths.Settings}/*`);
+  const hideHeader = ((isMatchProjectDetail && !isMatchProjectCreation) || isMatchSettings) && !isXl;
 
   if (hideHeader) {
     return null;

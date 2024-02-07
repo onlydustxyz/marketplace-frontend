@@ -1,15 +1,21 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import { NavLink } from "react-router-dom";
 
 import { useBillingProfiles } from "app/migration/settings/hooks/useBillingProfile";
 import { useBillingStatus } from "app/migration/settings/hooks/useBillingStatus";
 
+import { RoutePaths } from "src/App";
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import { cn } from "src/utils/cn";
 
+import { Button } from "components/ds/button/button";
+import { Link } from "components/ds/link/link";
+import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { MenuItem } from "components/layout/sidebar/menu-item/menu-item";
@@ -21,7 +27,9 @@ import { Typography } from "components/layout/typography/typography";
 import { NEXT_ROUTER } from "constants/router";
 
 export function Sidebar() {
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+
+  const { user } = useCurrentUser();
   const pathname = usePathname();
   const { validBillingProfile, billingProfile } = useBillingProfiles();
   const { isWarning, isError } = useBillingStatus(validBillingProfile, billingProfile?.status);
@@ -60,8 +68,19 @@ export function Sidebar() {
 
   return (
     <LayoutSidebar
-      // TODO: mobile header
-      mobileHeader={<div>Mobile header</div>}
+      mobileHeader={
+        <div className="flex items-center gap-3">
+          <NavLink to={RoutePaths.Projects}>
+            <Button as="div" iconOnly variant={"secondary"} size="s">
+              <Icon remixName="ri-arrow-left-line" />
+            </Button>
+          </NavLink>
+          <div className="flex items-center gap-2 font-belwe text-2xl">
+            <Thumbnail defaultSrc src={user?.avatarUrl || ""} alt="Project Logo" size="m" />
+            <div className="line-clamp-1">{user?.login}</div>
+          </div>
+        </div>
+      }
     >
       {({ closePanel }) => (
         <div className="flex w-full flex-col gap-4 xl:gap-6">
@@ -70,13 +89,13 @@ export function Sidebar() {
             className="gap-4 rounded-xl border-1 border-greyscale-50/8 bg-greyscale-900 p-3 shadow-light"
           >
             <img
-              src={user?.picture}
-              alt={user?.nickname}
+              src={user?.avatarUrl}
+              alt={user?.login}
               className="h-8 w-8 rounded-xl border-2 border-greyscale-50/12"
             />
 
             <Typography variant="body-l-bold" className="truncate">
-              {user?.nickname}
+              {user?.login}
             </Typography>
           </Flex>
 

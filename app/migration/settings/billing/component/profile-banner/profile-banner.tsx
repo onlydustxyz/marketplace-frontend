@@ -56,6 +56,9 @@ export function ProfileBanner({ children, hasValidBillingProfile, status, type, 
           : undefined
       }
       variant={bannerVariant}
+      classNames={{
+        wrapper: "max-sm:flex-col max-sm:justify-start max-sm:items-start",
+      }}
     >
       {children}
     </Banner>
