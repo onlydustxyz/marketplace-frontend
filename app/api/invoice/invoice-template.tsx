@@ -169,6 +169,12 @@ const styles: { [key: string]: CSSProperties } = {
     width: "100%",
     display: "flex",
   },
+  invoiceBottom: {
+    padding: "50px",
+    background: "#ffffff",
+    display: "flex",
+    flexDirection: "row",
+  },
 };
 
 export function InvoiceTemplate({ header, invoiceTo, billTo, invoiceInfo, rewards, total }: InvoiceProps) {
@@ -214,7 +220,7 @@ export function InvoiceTemplate({ header, invoiceTo, billTo, invoiceInfo, reward
         </div>
       </div>
 
-      <article style={styles["invoiceCenter"]}>
+      <section style={styles["invoiceCenter"]}>
         <div style={styles["flexRow"]}>
           <h3 style={{ ...styles["h3"], ...styles["marginBottomMedium"] }}>Rewards summary</h3>
           <div style={{ ...styles["flexCol"], ...styles["marginTopMedium"] }}>
@@ -249,7 +255,22 @@ export function InvoiceTemplate({ header, invoiceTo, billTo, invoiceInfo, reward
             </table>
           </div>
         </div>
-      </article>
+      </section>
+
+      <section style={styles["invoiceBottom"]}>
+        <div style={styles["flexRow"]}>
+          <h4 style={styles["h4"]}>Important Note</h4>
+          <ul style={styles["flexRow"]}>
+            <p>Once order done, money can t refund</p>
+            <p>Delivery might delay due to some external dependency</p>
+            <p>This is computer generated invoice and physical signature does not require.</p>
+          </ul>
+        </div>
+        <div style={styles["flexRow"]}>
+          <h4 style={styles["h4"]}>Payment Info</h4>
+          <p>This payment made by BRAC BANK master card without any problem</p>
+        </div>
+      </section>
     </div>
   );
 }
