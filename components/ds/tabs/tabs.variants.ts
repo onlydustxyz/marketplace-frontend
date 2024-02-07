@@ -2,6 +2,20 @@ import { tv } from "tailwind-variants";
 
 export const tabsVariants = tv({
   base: "",
-  variants: {},
-  defaultVariants: {},
+  slots: {
+    tabList: "",
+  },
+  variants: {
+    border: {
+      true: {
+        tabList: "border-b border-card-border-light",
+      },
+      false: {
+        tabList: "border-none",
+      },
+    },
+  },
+  defaultVariants: {
+    border: true,
+  },
 });

@@ -23,7 +23,17 @@ export function RequestPaymentsStacks() {
             className="text-greyscale-50"
           />
         </div>
-        <Tabs tabs={[{ children: "coucou", onClick: () => {} }]} />
+        <Tabs
+          mobile={{ title: "coucou", trigger: <p>open on mobile </p> }}
+          tabs={[
+            { content: "coucou", key: "coucou1", icon: { remixName: "ri-check-line" } },
+            {
+              content: "coucou2",
+              key: "coucou2",
+              icon: { remixName: "ri-close-line" },
+            },
+          ]}
+        />
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
         <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">

@@ -6,5 +6,7 @@ export namespace TBottomSheet {
     onOpen?: () => void;
     onClose: () => void;
     title?: ReactNode;
+    closeButton?: boolean;
+    color?: "grey" | "blue";
   }
 }
