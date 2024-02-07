@@ -1,45 +1,30 @@
+import { PendingInvoiceResponse } from "actions/me/me-queries.actions";
 import React, { CSSProperties } from "react";
 
 interface Header {
   logoUrl: string;
   invoiceNumber: string;
 }
-interface BillingProfile {
+interface InvoiceTo {
   name: string;
   address: string;
-  zipCode: string;
-  country: string;
 }
 
-interface Receiver {
+interface BillTo {
   name: string;
-  siret: string;
   address: string;
-  zipCode: string;
-  country: string;
 }
 
 interface InvoiceInfo {
-  number: string;
-  subject: string;
-  invoiceDate: string;
-  dueDate: string;
-}
-
-interface ContentItem {
   date: string;
-  project: string;
-  amount: number;
 }
 
 interface InvoiceProps {
   header: Header;
-  headers: {
-    billingProfile: BillingProfile;
-    receiver: Receiver;
-  };
+  invoiceTo: InvoiceTo;
+  billTo: BillTo;
   invoiceInfo: InvoiceInfo;
-  content: ContentItem[];
+  rewards: PendingInvoiceResponse;
   total: number;
 }
 
@@ -48,14 +33,33 @@ const styles: { [key: string]: CSSProperties } = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
-    height: "100%",
-    width: "100%",
     background: "white",
     color: "#000000",
     fontSize: "14px",
-    maxWidth: "1000px",
+    height: "1123px",
+    width: "794px",
   },
-
+  textUppercase: {
+    textTransform: "uppercase",
+  },
+  marginBottomSmall: {
+    marginBottom: "10px",
+  },
+  marginBottomMedium: {
+    marginBottom: "20px",
+  },
+  marginBottomLarge: {
+    marginBottom: "30px",
+  },
+  marginTopSmall: {
+    marginTop: "10px",
+  },
+  marginTopMedium: {
+    marginTop: "20px",
+  },
+  marginTopLarge: {
+    marginTop: "30px",
+  },
   h3: {
     margin: "0px",
     fontWeight: "900",
@@ -73,16 +77,10 @@ const styles: { [key: string]: CSSProperties } = {
     color: "#535353",
   },
   justifyContentStart: {
-    display: "flex",
-    flex: "1",
     justifyContent: "flex-start",
-    flexDirection: "column",
   },
   justifyContentEnd: {
-    display: "flex",
-    flex: "1",
     justifyContent: "flex-end",
-    flexDirection: "column",
   },
   flexCol: {
     display: "flex",
@@ -139,9 +137,44 @@ const styles: { [key: string]: CSSProperties } = {
     flex: "1",
     flexDirection: "column",
   },
+  invoiceCenter: {
+    padding: "50px",
+    background: "#f7f7f7",
+  },
+  defaultTable: {
+    background: "#fff",
+    border: "0",
+    width: "100%",
+    height: "100%",
+    flexDirection: "column",
+  },
+  th: {
+    position: "relative",
+    padding: "21px 30px",
+    fontSize: "14px",
+    color: "#262525",
+    fontWeight: "400",
+    flex: "1",
+  },
+  td: {
+    position: "relative",
+    padding: "21px 30px",
+    fontSize: "14px",
+    color: "#535353",
+    fontWeight: "400",
+    flex: "1",
+  },
+  tr: {
+    border: "solid 1px #f3f2f2",
+    width: "100%",
+    display: "flex",
+  },
 };
 
-export function InvoiceTemplate({ header, headers, invoiceInfo, content, total }: InvoiceProps) {
+export function InvoiceTemplate({ header, invoiceTo, billTo, invoiceInfo, rewards, total }: InvoiceProps) {
+  const [invoiceToStreetAddress, ...invoiceToRestAdress] = invoiceTo.address.split(/,(.+)/);
+  const [billToStreetAddress, ...billToRestAdress] = billTo.address.split(/,(.+)/);
+
   return (
     <div style={styles["wrapper"]}>
       <div style={styles["header"]}>
@@ -149,69 +182,74 @@ export function InvoiceTemplate({ header, headers, invoiceInfo, content, total }
           <img src={header.logoUrl} width="203.75" height="50" alt="logo" />
         </div>
         <div style={styles["invoiceNumber"]}>
-          <h3 style={styles["h3"]}>
-            <strong>Invoice NO: #{header.invoiceNumber}</strong>
+          <h3 style={{ ...styles["h3"], ...styles["textUppercase"] }}>
+            <strong>Invoice NO: # {header.invoiceNumber}</strong>
           </h3>
         </div>
       </div>
       <div style={styles["invoiceInfo"]}>
         <div style={styles["flexCol"]}>
           <div style={styles["invoiceTo"]}>
-            <div style={{ display: "flex" }}>
-              <h4 style={styles["h4"]}>Invoice to</h4>
-              <p style={styles["paragraph"]}>{headers.billingProfile.name}</p>
-              <p style={styles["paragraph"]}>{headers.billingProfile.address}</p>
-              <p style={styles["paragraph"]}>{headers.billingProfile.zipCode}</p>
-              <p style={styles["paragraph"]}>{headers.billingProfile.country}</p>
-            </div>
+            <h4 style={styles["h4"]}>Invoice to</h4>
+            <p style={styles["paragraph"]}>{invoiceTo.name}</p>
+            <p style={styles["paragraph"]}>{invoiceToStreetAddress}</p>
+            <p style={styles["paragraph"]}>{invoiceToRestAdress.join("").trim()}</p>
           </div>
           <div style={styles["billTo"]}>
-            <div style={{ display: "flex" }}>
-              <h4 style={styles["h4"]}>Bill to</h4>
-              <p style={styles["paragraph"]}>{headers.receiver.name}</p>
-              <p style={styles["paragraph"]}>SIRET: {headers.receiver.siret}</p>
-              <p style={styles["paragraph"]}>{headers.receiver.address}</p>
-              <p style={styles["paragraph"]}>{headers.receiver.zipCode}</p>
-              <p style={styles["paragraph"]}>{headers.receiver.country}</p>
-            </div>
+            <h4 style={{ ...styles["h4"], ...styles["justifyContentEnd"] }}>Bill to</h4>
+            <p style={{ ...styles["paragraph"], ...styles["justifyContentEnd"] }}>{billTo.name}</p>
+            <p style={{ ...styles["paragraph"], ...styles["justifyContentEnd"] }}>{billToStreetAddress}</p>
+            <p style={{ ...styles["paragraph"], ...styles["justifyContentEnd"] }}>{billToRestAdress.join("").trim()}</p>
           </div>
         </div>
-        <div style={styles["flexCol"]}>
+        <div style={{ ...styles["flexCol"], ...styles["marginTopMedium"] }}>
           <div style={styles["invoiceDate"]}>
-            <h4>Date</h4>
-            <p style={styles["paragraph"]}>{invoiceInfo.invoiceDate}</p>
+            <h4 style={styles["h4"]}>Date</h4>
+            <p style={styles["paragraph"]}>{invoiceInfo.date}</p>
           </div>
           <div style={styles["paymentMethod"]}>
-            <h4>Payment method</h4>
-            <p style={styles["paragraph"]}>bank transfer</p>
+            <h4 style={{ ...styles["h4"], ...styles["justifyContentEnd"] }}>Payment method</h4>
+            <p style={{ ...styles["paragraph"], ...styles["justifyContentEnd"] }}>bank transfer</p>
           </div>
         </div>
       </div>
 
-      <table style={{ width: "100%", marginBottom: "20px", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Project</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {content.map((item, index) => (
-            <tr key={index}>
-              <td>{item.date}</td>
-              <td>{item.project}</td>
-              <td>${item.amount}</td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={2}>Total</td>
-            <td>${total}</td>
-          </tr>
-        </tfoot>
-      </table>
+      <article style={styles["invoiceCenter"]}>
+        <div style={styles["flexRow"]}>
+          <h3 style={{ ...styles["h3"], ...styles["marginBottomMedium"] }}>Rewards summary</h3>
+          <div style={{ ...styles["flexCol"], ...styles["marginTopMedium"] }}>
+            <table style={styles["defaultTable"]}>
+              <thead style={styles["flexRow"]}>
+                <tr style={styles["tr"]}>
+                  <th style={styles["th"]}>Project Name</th>
+                  <th style={styles["th"]}>Amount (currency)</th>
+                  <th style={styles["th"]}>Dollars equivalent</th>
+                </tr>
+              </thead>
+              <tbody style={styles["flexRow"]}>
+                {rewards.map((item, index) => (
+                  <tr style={styles["tr"]} key={index}>
+                    <td style={styles["td"]}>{item.rewardedOnProjectName}</td>
+                    <td style={styles["td"]}>
+                      {item.amount.total} {item.amount.currency}
+                    </td>
+                    <td style={styles["td"]}>{item.amount.dollarsEquivalent?.toFixed(3)} USC</td>
+                  </tr>
+                ))}
+                <tr style={styles["tr"]}>
+                  <td style={styles["td"]}>
+                    <strong>Total Due</strong>
+                  </td>
+                  <td style={styles["td"]}></td>
+                  <td style={styles["td"]}>
+                    <strong>{total} USD</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
     </div>
   );
 }

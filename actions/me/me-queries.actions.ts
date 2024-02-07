@@ -5,7 +5,7 @@ import { BaseQueriesOptions } from "actions/type.actions";
 
 import { components } from "src/__generated/api";
 
-export type PendingInvoiceResponse = components["schemas"]["MyRewardsListResponse"];
+export type PendingInvoiceResponse = components["schemas"]["MyRewardPageItemResponse"][];
 
 export async function retrieveRewardsPendingInvoices(options?: BaseQueriesOptions) {
   "use server";

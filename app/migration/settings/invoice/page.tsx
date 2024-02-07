@@ -26,9 +26,11 @@ export default function InvoicePage() {
       });
   }
   return (
-    <>
-      <img alt="placeholder" src={imageUrl} />
+    <div className="flex h-full flex-col gap-2">
+      <div className="flex-1">
+        <img alt="placeholder" src={imageUrl} />
+      </div>
       <Button onClick={handleFetchInvoice}>Generate Invoice</Button>
-    </>
+    </div>
   );
 }
