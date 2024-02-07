@@ -8,6 +8,10 @@ export function Tooltip({ as: Component = "div", children, ...props }: TTooltip.
       {...props}
       showArrow={true}
       classNames={{
+        base: [
+          // arrow color
+          "before:bg-greyscale-800",
+        ],
         content: ["p-4 bg-greyscale-800", "od-text-body-s"],
       }}
     >
