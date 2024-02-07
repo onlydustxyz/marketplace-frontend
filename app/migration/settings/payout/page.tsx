@@ -11,15 +11,23 @@ import { Key, useIntl } from "src/hooks/useIntl";
 
 import { Flex } from "components/layout/flex/flex";
 
+import { FormFooter } from "../components/form-footer/form-footer";
 import { SettingsHeader } from "../components/settings-header/settings-header";
 import { PayoutDisclaimer } from "./features/disclaimer/disclaimer";
-import { FormFooter } from "./features/form/footer/footer";
 import { PayoutForm } from "./features/form/form";
 import { REGEX } from "./features/form/form.regex";
 import { TPayoutForm } from "./features/form/form.types";
 import { formatToData, formatToSchema } from "./features/form/form.utils";
 
-const keys: { [key: string]: Key } = {
+type KeyType =
+  | "invalidEthereumWallet"
+  | "invalidStarknetAddress"
+  | "invalidOptimismAddress"
+  | "invalidAptosAddress"
+  | "ibanIsRequired"
+  | "bicIsRequired";
+
+const keys: Record<KeyType, Key> = {
   invalidEthereumWallet: "v2.commons.form.errors.wallets.ethereum.invalid",
   invalidStarknetAddress: "v2.commons.form.errors.wallets.starknet.invalid",
   invalidOptimismAddress: "v2.commons.form.errors.wallets.optimism.invalid",
@@ -71,7 +79,7 @@ const formSchema = z
 export default function PayoutPage() {
   const { T } = useIntl();
 
-  const { data } = MeApi.queries.useGetMyPayoutInfo({});
+  const { data } = MeApi.queries.useGetMyPayoutSettings({});
 
   const formMethods = useForm<TPayoutForm.Data>({
     mode: "all",
@@ -96,7 +104,7 @@ export default function PayoutPage() {
     mutate: updateUserPayoutInformation,
     isPending: userPayoutInformationIsPending,
     ...restUpdatePayoutInformationMutation
-  } = MeApi.mutations.usePayoutInfo({});
+  } = MeApi.mutations.usePayoutSettings({});
 
   useMutationAlert({
     mutation: restUpdatePayoutInformationMutation,
@@ -109,6 +117,7 @@ export default function PayoutPage() {
   });
 
   const onSubmit = (formData: TPayoutForm.Data) => {
+    console.log(formatToSchema(formData));
     updateUserPayoutInformation(formatToSchema(formData));
   };
 

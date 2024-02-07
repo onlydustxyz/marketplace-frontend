@@ -12,15 +12,17 @@ import { Key } from "src/hooks/useIntl";
 
 import { Flex } from "components/layout/flex/flex";
 
+import { FormFooter } from "../components/form-footer/form-footer";
 import { SettingsHeader } from "../components/settings-header/settings-header";
-import { FormFooter } from "./features/form/footer/footer";
 import { ProfileForm } from "./features/form/form";
 import { REGEX } from "./features/form/form.regex";
 import { TProfileForm } from "./features/form/form.types";
 import { formatToData, formatToSchema } from "./features/form/form.utils";
 import { ProfileGithubAccount } from "./features/github-account/github-account";
 
-const keys: { [key: string]: Key } = {
+type KeyType = "invalidUrl" | "invalidUsername" | "invalidPhoneNumber";
+
+const keys: Record<KeyType, Key> = {
   invalidUrl: "v2.commons.form.errors.invalidUrl",
   invalidUsername: "v2.commons.form.errors.invalidUsername",
   invalidPhoneNumber: "v2.commons.form.errors.invalidPhoneNumber",
@@ -110,7 +112,7 @@ export default function ProfilePage() {
           </Flex>
         </Flex>
 
-        <FormFooter isPending={userProfilInformationIsPending} />
+        <FormFooter isPending={userProfilInformationIsPending} hasPreviewButton />
       </form>
     </FormProvider>
   );

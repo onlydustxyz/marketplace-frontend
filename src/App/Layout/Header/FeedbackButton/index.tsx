@@ -13,7 +13,7 @@ export const FeedbackButton = forwardRef(function FeedbackButton(
   const { user } = useCurrentUser();
   const { T } = useIntl();
 
-  const { data } = MeApi.queries.useGetMyPayoutInfo({});
+  const { data } = MeApi.queries.useGetMyPayoutSettings({});
 
   const { firstname, lastname } = useMemo(() => {
     if (data?.isCompany) {

@@ -15,16 +15,26 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { TFormFooter } from "./footer.types";
+import { TFormFooter } from "./form-footer.types";
 
 // TODO: Change Button with link using the new library
-export function FormFooter({ isPending }: TFormFooter.Props) {
+export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const { user } = useAuth0();
 
   const { formState } = useFormContext();
   const { isDirty, isValid } = formState;
+
+  function renderIcon() {
+    if (!isMd) return null;
+
+    if (isPending) {
+      return <Spinner className="h-5 w-5" />;
+    }
+
+    return <Icon remixName="ri-check-line" size={20} />;
+  }
 
   return (
     <Flex
@@ -60,28 +70,34 @@ export function FormFooter({ isPending }: TFormFooter.Props) {
       </Tag>
 
       <Flex alignItems="center" className="gap-3">
-        <a
-          href={generatePath(RoutePaths.PublicProfile, {
-            userLogin: user?.nickname || "",
-          })}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="secondary" size={isMd ? "m" : "s"}>
-            {isMd ? <Icon remixName="ri-external-link-line" size={20} /> : null}
+        {hasPreviewButton ? (
+          <a
+            href={generatePath(RoutePaths.PublicProfile, {
+              userLogin: user?.nickname || "",
+            })}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button variant="secondary" size={isMd ? "m" : "s"}>
+              {isMd ? <Icon remixName="ri-external-link-line" size={20} /> : null}
 
-            <Translate
-              token={
-                isMd ? "v2.pages.settings.profile.buttons.preview" : "v2.pages.settings.profile.buttons.previewMobile"
-              }
-            />
-          </Button>
-        </a>
+              {isMd ? (
+                <Translate token="v2.pages.settings.profile.buttons.preview" />
+              ) : (
+                <Translate token="v2.pages.settings.profile.buttons.previewMobile" />
+              )}
+            </Button>
+          </a>
+        ) : null}
 
         <Button type="submit" disabled={isPending || !isValid} size={isMd ? "m" : "s"}>
-          {isMd ? isPending ? <Spinner className="h-5 w-5" /> : <Icon remixName="ri-check-line" size={20} /> : null}
+          {renderIcon()}
 
-          <Translate token={isMd ? "v2.commons.form.buttons.save" : "v2.commons.form.buttons.saveMobile"} />
+          {isMd ? (
+            <Translate token="v2.commons.form.buttons.save" />
+          ) : (
+            <Translate token="v2.commons.form.buttons.saveMobile" />
+          )}
         </Button>
       </Flex>
     </Flex>

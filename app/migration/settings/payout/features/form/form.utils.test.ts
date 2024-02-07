@@ -1,22 +1,20 @@
 import { describe, expect, it } from "vitest";
 
-import { UseGetMyPayoutInfoResponse } from "src/api/me/queries";
+import { UseGetMyPayoutSettingsResponse } from "src/api/me/queries";
 
 import { TPayoutForm } from "./form.types";
 import { formatToData, formatToSchema } from "./form.utils";
 
 describe("formatToData", () => {
   it("should format payout info correctly with full data", () => {
-    const mockData: UseGetMyPayoutInfoResponse = {
-      payoutSettings: {
-        ethWallet: "0x123",
-        starknetAddress: "0x456",
-        optimismAddress: "0x789",
-        aptosAddress: "0xabc",
-        sepaAccount: {
-          iban: "DE89 3704 0044 0532 0130 00",
-          bic: "COLSDE33",
-        },
+    const mockData: UseGetMyPayoutSettingsResponse = {
+      ethWallet: "0x123",
+      starknetAddress: "0x456",
+      optimismAddress: "0x789",
+      aptosAddress: "0xabc",
+      sepaAccount: {
+        iban: "DE89 3704 0044 0532 0130 00",
+        bic: "COLSDE33",
       },
     };
 
@@ -36,10 +34,8 @@ describe("formatToData", () => {
   });
 
   it("should format payout info correctly with partial data", () => {
-    const mockData: UseGetMyPayoutInfoResponse = {
-      payoutSettings: {
-        ethWallet: "0x123",
-      },
+    const mockData: UseGetMyPayoutSettingsResponse = {
+      ethWallet: "0x123",
     };
 
     const expectedData: TPayoutForm.Data = {
@@ -72,15 +68,13 @@ describe("formatToSchema", () => {
     };
 
     const expectedSchema = {
-      payoutSettings: {
-        ethWallet: "0x123",
-        starknetAddress: "0x456",
-        optimismAddress: "0x789",
-        aptosAddress: "0xabc",
-        sepaAccount: {
-          iban: "DE89 3704 0044 0532 0130 00",
-          bic: "COLSDE33",
-        },
+      ethWallet: "0x123",
+      starknetAddress: "0x456",
+      optimismAddress: "0x789",
+      aptosAddress: "0xabc",
+      sepaAccount: {
+        iban: "DE89 3704 0044 0532 0130 00",
+        bic: "COLSDE33",
       },
     };
 
@@ -101,15 +95,13 @@ describe("formatToSchema", () => {
     };
 
     const expectedSchema = {
-      payoutSettings: {
-        ethWallet: "0x123",
-        starknetAddress: "",
-        optimismAddress: "",
-        aptosAddress: "",
-        sepaAccount: {
-          iban: "",
-          bic: "",
-        },
+      ethWallet: "0x123",
+      starknetAddress: undefined,
+      optimismAddress: undefined,
+      aptosAddress: undefined,
+      sepaAccount: {
+        iban: undefined,
+        bic: undefined,
       },
     };
 

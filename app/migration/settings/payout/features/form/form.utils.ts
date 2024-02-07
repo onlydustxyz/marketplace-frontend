@@ -1,20 +1,20 @@
 import IBANParser from "iban";
 
-import { UseGetMyPayoutInfoResponse } from "src/api/me/queries";
+import { UseGetMyPayoutSettingsResponse } from "src/api/me/queries";
 
 import { TPayoutForm } from "./form.types";
 
-export function formatToData(data: UseGetMyPayoutInfoResponse): TPayoutForm.Data {
-  const { payoutSettings } = data;
+export function formatToData(data: UseGetMyPayoutSettingsResponse): TPayoutForm.Data {
+  const { ethWallet, starknetAddress, optimismAddress, aptosAddress, sepaAccount } = data;
 
   return {
-    ethWallet: payoutSettings?.ethWallet ?? "",
-    starknetAddress: payoutSettings?.starknetAddress ?? "",
-    optimismAddress: payoutSettings?.optimismAddress ?? "",
-    aptosAddress: payoutSettings?.aptosAddress ?? "",
+    ethWallet: ethWallet ?? "",
+    starknetAddress: starknetAddress ?? "",
+    optimismAddress: optimismAddress ?? "",
+    aptosAddress: aptosAddress ?? "",
     sepaAccount: {
-      iban: payoutSettings?.sepaAccount?.iban ? IBANParser.printFormat(payoutSettings?.sepaAccount?.iban) : "",
-      bic: payoutSettings?.sepaAccount?.bic ?? "",
+      iban: sepaAccount?.iban ? IBANParser.printFormat(sepaAccount?.iban) : "",
+      bic: sepaAccount?.bic ?? "",
     },
   };
 }
@@ -28,16 +28,16 @@ export function formatToSchema(data: TPayoutForm.Data) {
     sepaAccount: { iban, bic },
   } = data;
 
+  const emptyStringToUndefined = (value?: string) => (value === "" ? undefined : value);
+
   return {
-    payoutSettings: {
-      ethWallet,
-      starknetAddress,
-      optimismAddress,
-      aptosAddress,
-      sepaAccount: {
-        iban,
-        bic,
-      },
+    ethWallet: emptyStringToUndefined(ethWallet),
+    starknetAddress: emptyStringToUndefined(starknetAddress),
+    optimismAddress: emptyStringToUndefined(optimismAddress),
+    aptosAddress: emptyStringToUndefined(aptosAddress),
+    sepaAccount: {
+      iban: emptyStringToUndefined(iban),
+      bic: emptyStringToUndefined(bic),
     },
   };
 }
