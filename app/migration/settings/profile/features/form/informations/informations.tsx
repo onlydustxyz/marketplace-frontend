@@ -91,7 +91,7 @@ export function FormInformations() {
         <Flex className="flex-col gap-4 md:flex-row">
           <FormInformationsSection title="v2.pages.settings.profile.informations.firstname">
             <Controller
-              name="firstname"
+              name="firstName"
               control={control}
               render={({ field, fieldState }) => <Input {...field} {...fieldState} />}
             />
@@ -99,7 +99,7 @@ export function FormInformations() {
 
           <FormInformationsSection title="v2.pages.settings.profile.informations.lastname">
             <Controller
-              name="lastname"
+              name="lastName"
               control={control}
               render={({ field, fieldState }) => <Input {...field} {...fieldState} />}
             />

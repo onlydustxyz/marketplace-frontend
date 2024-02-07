@@ -33,6 +33,8 @@ const formSchema = z.object({
   cover: z.string(),
   location: z.string().optional(),
   bio: z.string().optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   website: z.union([z.string().regex(REGEX.website, keys.invalidUrl), z.string().length(0)]).optional(),
   telegram: z.object({
     contact: z.string().regex(REGEX.telegram, keys.invalidUsername).optional(),
