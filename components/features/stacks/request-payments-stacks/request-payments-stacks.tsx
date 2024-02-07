@@ -1,3 +1,5 @@
+import { Key } from "react";
+
 import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Button } from "components/ds/button/button";
@@ -13,6 +15,14 @@ export function RequestPaymentsStacks() {
     console.log("submit");
   };
 
+  const tabContent = (selected: Key) => {
+    if (selected === "coucou1") {
+      return <div className="bg-red-300">coucou</div>;
+    } else if (selected === "coucou2") {
+      return <div className="bg-green-300">coucou</div>;
+    }
+  };
+
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex h-full flex-col px-4 pb-8">
@@ -24,12 +34,17 @@ export function RequestPaymentsStacks() {
           />
         </div>
         <Tabs
-          mobile={{ title: "coucou", trigger: <p>open on mobile </p> }}
           tabs={[
-            { content: "coucou", key: "coucou1", icon: { remixName: "ri-check-line" } },
+            {
+              content: "coucou",
+              key: "coucou1",
+              icon: { remixName: "ri-check-line" },
+              children: tabContent,
+            },
             {
               content: "coucou2",
               key: "coucou2",
+              children: tabContent,
               icon: { remixName: "ri-close-line" },
             },
           ]}

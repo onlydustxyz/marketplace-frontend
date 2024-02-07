@@ -75,7 +75,9 @@ export function Tabs({ tabs, color, border, mobile, controlled }: TTabs.Props) {
       }}
     >
       {tabs.map(t => (
-        <NextTab {...t} key={t.key} title={<Tab color={color} {...t} />} />
+        <NextTab {...t} key={t.key} title={<Tab color={color} {...t} />}>
+          {t.children?.(selected)}
+        </NextTab>
       ))}
     </NextTabs>
   );
