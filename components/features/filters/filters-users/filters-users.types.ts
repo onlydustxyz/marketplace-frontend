@@ -1,4 +1,4 @@
-import { TSelectAutocomplete } from "components/ds/Filters/select-autocomplete/select-autocomplete.types";
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 export namespace TFiltersUsers {
   export interface Props {

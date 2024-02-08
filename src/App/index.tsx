@@ -1,6 +1,8 @@
 import React, { Suspense, lazy } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
+import SettingsLayout from "app/migration/settings/layout";
+
 import Layout from "src/App/Layout";
 import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ErrorTrigger from "src/_pages/ErrorTrigger";
@@ -23,7 +25,7 @@ import ProjectsLoader from "./Loaders/ProjectsLoader";
 import RewardLoader from "./Loaders/RewardsLoader";
 import ProtectedByFlag from "./ProtectedByFlag";
 
-const Projects = lazy(() => import("src/_pages/Projects"));
+const ProjectsPage = lazy(() => import("app/migration/projects/page"));
 const Contributions = lazy(() => import("src/_pages/Contributions/Contributions"));
 const Rewards = lazy(() => import("src/_pages/Rewards"));
 const ProjectDetails = lazy(() => import("src/_pages/ProjectDetails"));
@@ -42,6 +44,7 @@ export enum RoutePaths {
   ProjectDetailsEdit = "/p/:projectKey/edit",
   ProjectDetailsEditRepos = "/p/:projectKey/edit?tab=Repos",
   Rewards = "/rewards",
+  Settings = "/settings",
   CatchAll = "*",
   Error = "/error",
   NotFound = "/not-found",
@@ -172,7 +175,7 @@ function App() {
           path: RoutePaths.Projects,
           element: (
             <Suspense fallback={<ProjectsLoader />}>
-              <Projects />
+              <ProjectsPage />
             </Suspense>
           ),
         },
@@ -199,6 +202,14 @@ function App() {
           element: (
             <AuthenticationGuard>
               <Contributions />
+            </AuthenticationGuard>
+          ),
+        },
+        {
+          path: `${RoutePaths.Settings}/*`,
+          element: (
+            <AuthenticationGuard>
+              <SettingsLayout />
             </AuthenticationGuard>
           ),
         },

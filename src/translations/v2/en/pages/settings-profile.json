@@ -1,0 +1,35 @@
+{
+  "title": "Profile",
+  "subtitle": "You can edit all your information here.",
+  "githubAccount": {
+    "title": "Connected Github account",
+    "subtitle": "To change your GitHub username or email, edit your account and allow up to 24 hours for updates.",
+    "button": "Edit on Github"
+  },
+  "informations": {
+    "avatar": "Avatar",
+    "banner": "Banner",
+    "location": "Location",
+    "bio": "Bio",
+    "website": "Website",
+    "firstname": "First name",
+    "lastname": "Last name"
+  },
+  "contact": {
+    "title": "Contact information",
+    "subtitle": "Please enter only your social networks handle (no links, no @ needed)."
+  },
+  "technologies": {
+    "title": "Technologies",
+    "subtitle": "Rank from most to least proficient."
+  },
+  "weeklyAllocatedTime": {
+    "title": "Weekly allocated time",
+    "subtitle": "This will remain private.",
+    "lookingForAJob": "I'm looking for a job"
+  },
+  "buttons": {
+    "preview": "Preview profile",
+    "previewMobile": "Preview"
+  }
+}

@@ -30,7 +30,7 @@ const project: components["schemas"]["ProjectPageItemResponse"] = {
       id: "9d2e92fd-451d-45c3-840a-7fb2290d0e92",
     },
   ],
-  sponsors: [],
+  ecosystems: [],
   technologies: {
     Java: 2063962,
     Dockerfile: 833,

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
+import { Link, generatePath } from "react-router-dom";
 
-import { HiringTag } from "app/migration/projects/components/project-card/hiring-tag/hiring-tag";
-
+import { RoutePaths } from "src/App";
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
@@ -12,29 +12,42 @@ import { ProjectLeadInvitationBanner } from "components/features/project-lead-in
 import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 import { Flex } from "components/layout/flex/flex";
 
+import { ProjectTags } from "../../features/project-tags/project-tags";
 import { ContributorsCounter } from "./contributors-counter/contributors-counter";
-import { Highlights } from "./highlights/highlights";
+import { Ecosystems } from "./ecosystems/ecosystems";
 import { Leaders } from "./leaders/leaders";
 import { TProjectCard } from "./project-card.types";
-import { ReposCounter } from "./repos-counter/repos-counter";
-import { Sponsors } from "./sponsors/sponsors";
 import { Summary } from "./summary/summary";
 import { Technologies } from "./technologies/technologies";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
-  const { hiring, isInvitedAsProjectLead, isMissingGithubAppInstallation } = project;
+  const {
+    isInvitedAsProjectLead,
+    isMissingGithubAppInstallation,
+    visibility,
+    name,
+    slug,
+    logoUrl,
+    tags,
+    shortDescription,
+    leaders,
+    contributorCount,
+    ecosystems,
+    technologies,
+  } = project;
+
   const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
-  const isPrivate = project.visibility === "PRIVATE";
+  const isPrivate = visibility === "PRIVATE";
 
   const InviteBanner = useMemo(() => {
-    if (project.isInvitedAsProjectLead) {
+    if (isInvitedAsProjectLead) {
       return (
         <ProjectLeadInvitationBanner
-          projectName={project.name}
+          projectName={name}
           on="cards"
           size={"s"}
-          btnLabelToken="project.projectLeadInvitation.view"
+          btnLabelToken="v2.features.banners.projectLeadInvitation.card.view"
         />
       );
     }
@@ -43,65 +56,74 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   }, [project]);
 
   const MissingGithubBanner = useMemo(() => {
-    if (isUserProjectLead && project.isMissingGithubAppInstallation) {
-      return <ProjectMissingGithubBanner slug={project.slug} />;
+    if (isUserProjectLead && isMissingGithubAppInstallation) {
+      return <ProjectMissingGithubBanner slug={slug} />;
     }
 
     return null;
   }, [project, isUserProjectLead]);
 
   return (
-    <Card
-      className={cn("relative", {
-        "bg-noise-light hover:bg-right": !isErrorVariant,
-        "border-orange-500 bg-orange-900": isErrorVariant,
-        "mt-3": isFirstHiringProject,
-      })}
-      border={isInvitedAsProjectLead ? "multiColor" : "medium"}
-      dataTestId="project-card"
-    >
-      <HiringTag isHiring={hiring} isErrorVariant={isErrorVariant} />
-      <Flex direction="col" className="gap-5">
-        <div className="relative flex-shrink-0">
-          <Thumbnail
-            src={project.logoUrl}
-            alt={T("project.highlights.thumbnail")}
-            size="xl"
-            className="mt-1"
-            type={"project"}
-          />
-          {isPrivate && (
-            <div className="absolute -bottom-2.5 -right-2.5">
-              <PrivateTag />
-            </div>
-          )}
-        </div>
-        <Flex direction="col"></Flex>
-      </Flex>
-
-      <Flex direction="col" className="gap-5">
-        <Flex direction="col" className="items-stretch gap-6 divide-stone-100/8 lg:flex-row lg:gap-6 lg:divide-x">
-          <Flex direction="col" className="min-w-0 basis-1/3 gap-y-5">
-            <Highlights
-              name={project.name}
-              isPrivate={isPrivate}
-              logoUrl={project.logoUrl}
-              leaders={<Leaders leaders={project.leaders} />}
+    <Link to={generatePath(RoutePaths.ProjectDetails, { projectKey: slug })} className="w-full">
+      <Card
+        className={cn("relative w-full", {
+          "border-orange-500 bg-orange-900": isErrorVariant,
+          "mt-3": isFirstHiringProject,
+        })}
+        border={isInvitedAsProjectLead ? "multiColor" : "light"}
+        dataTestId="project-card"
+        background="base"
+      >
+        <Flex direction="row" className="gap-5">
+          <div className="relative hidden flex-shrink-0 md:block">
+            <Thumbnail
+              src={logoUrl}
+              alt={T("project.highlights.thumbnail")}
+              size="xl"
+              className="mt-1"
+              type={"project"}
             />
-            <Technologies technologies={project.technologies} />
-          </Flex>
-          <Flex direction="col" className="basis-2/3 items-stretch justify-center gap-4 lg:gap-4 lg:pl-6">
-            <Summary shortDescription={project.shortDescription} />
-            <Flex direction="col" className="w-full flex-row flex-wrap gap-1 xl:gap-2">
-              <ReposCounter count={project.repoCount} />
-              <ContributorsCounter count={project.contributorCount} />
-              <Sponsors sponsors={project.sponsors} />
+            {isPrivate && (
+              <div className="absolute -bottom-2.5 -right-2.5">
+                <PrivateTag />
+              </div>
+            )}
+          </div>
+          <Flex direction="col" className="w-full flex-1 gap-2 overflow-hidden">
+            <Flex direction="row" className="items-center gap-2 md:items-start">
+              <div className="relative block flex-shrink-0 md:hidden">
+                <Thumbnail
+                  src={logoUrl}
+                  alt={T("v2.pages.projects.highlights.thumbnail")}
+                  size="l"
+                  className="mt-1"
+                  type={"project"}
+                />
+                {isPrivate && (
+                  <div className="absolute -bottom-2.5 -right-2.5">
+                    <PrivateTag />
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 truncate font-belwe text-2xl font-medium">{project.name}</div>
+              {tags?.length ? <ProjectTags tags={tags} /> : null}
             </Flex>
+            <Summary shortDescription={shortDescription} />
+            <div className="mt-5 flex flex-row flex-wrap items-center gap-4">
+              <Leaders leaders={leaders} />
+              <ContributorsCounter count={contributorCount} />
+              <Ecosystems ecosystems={ecosystems} />
+              <Technologies technologies={technologies} />
+            </div>
           </Flex>
         </Flex>
-        {InviteBanner}
-        {MissingGithubBanner}
-      </Flex>
-    </Card>
+        {isInvitedAsProjectLead || isMissingGithubAppInstallation ? (
+          <Flex direction="col" className="mt-5 gap-5">
+            {InviteBanner}
+            {MissingGithubBanner}
+          </Flex>
+        ) : null}
+      </Card>
+    </Link>
   );
 }

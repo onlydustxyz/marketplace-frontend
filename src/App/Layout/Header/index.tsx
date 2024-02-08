@@ -1,3 +1,5 @@
+"use client";
+
 import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useLocation } from "react-router-dom";
 
