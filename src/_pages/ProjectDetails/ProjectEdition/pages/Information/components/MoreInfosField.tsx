@@ -132,7 +132,7 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
                     type={ButtonType.Ternary}
                     size={ButtonSize.MdRounded}
                     iconOnly
-                    className={cn("flex h-8 w-8 justify-center p-2 text-snow", "hidden md:visible")}
+                    className={cn("h-8 w-8 justify-center p-2 text-snow", "hidden md:flex")}
                     onClick={() => deleteLink(index)}
                   >
                     <DeleteBinLine />
@@ -143,7 +143,7 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
                 type={ButtonType.Ternary}
                 size={ButtonSize.MdRounded}
                 iconOnly
-                className={cn("flex h-8 w-8 justify-center p-2 text-snow", "visible !mt-0 md:hidden")}
+                className={cn("h-8 w-8 justify-center p-2 text-snow", "!mt-0 flex md:hidden")}
                 onClick={() => deleteLink(index)}
               >
                 <DeleteBinLine />
