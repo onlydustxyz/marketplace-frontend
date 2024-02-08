@@ -14,8 +14,6 @@ import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
 
-import { PaymentsInvoiceStacks } from "components/features/stacks/payments-flow/payments-invoice-stacks/payments-invoice-stacks";
-import { TPaymentsInvoiceStacks } from "components/features/stacks/payments-flow/payments-invoice-stacks/payments-invoice-stacks.types";
 import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
 
 import { RoutePaths } from "..";
@@ -33,7 +31,6 @@ export enum StackRoute {
   GithubWorkflowTutorial = "github-workflow-tutorial",
   Verify = "verify",
   RequestPayments = "request-payments",
-  RequestPaymentsInvoice = "request-payments-invoice",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -61,7 +58,6 @@ export interface StackRouterParams {
     projectSlug: string;
   };
   Verify: ComponentProps<typeof VerifySidePanel>;
-  RequestPaymentsInvoice: TPaymentsInvoiceStacks.Props;
 }
 
 export const Stacks = () => {
@@ -93,9 +89,6 @@ export const Stacks = () => {
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>
-      <RegisterStack<StackRouterParams["RequestPaymentsInvoice"]> name={StackRoute.RequestPaymentsInvoice}>
-        {({ params }) => <PaymentsInvoiceStacks {...params} />}
-      </RegisterStack>
     </>
   );
 };
@@ -189,7 +182,4 @@ export const useStackProjectOverview = (): [
 
 export const useStackRequestPayments = () => {
   return useStackNavigation(StackRoute.RequestPayments);
-};
-export const useStackRequestPaymentsInvoice = () => {
-  return useStackNavigation<StackRouterParams["RequestPaymentsInvoice"]>(StackRoute.RequestPaymentsInvoice);
 };

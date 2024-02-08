@@ -68,6 +68,7 @@ export function Tabs({ tabs, color, border, mobile, controlled }: TTabs.Props) {
       selectedKey={controlled?.selected || selected}
       onSelectionChange={onSelectTab}
       classNames={{
+        base: "w-full",
         tabList: cn("gap-8 w-full relative rounded-none p-0 px-4", slots.tabList()),
         cursor: "w-full bg-underline h-1",
         tab: "relative max-w-fit px-0 h-auto pt-[2px] pb-2.5 data-[hover=true]:opacity-100",

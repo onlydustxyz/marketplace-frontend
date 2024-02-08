@@ -1,3 +1,9 @@
 export namespace TRequestPaymentsStacks {
-  export interface Props {}
+  export interface onNextViewProps {
+    to: Views | "close";
+  }
+  export enum Views {
+    Select = "SELECT",
+    Generate = "GENERATE",
+  }
 }
