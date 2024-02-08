@@ -23,35 +23,33 @@ export const Default: Story = {
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Avatar {...defaultProps} {...args} className="h-6 w-6 text-tiny" />
-        <Avatar {...defaultProps} {...args} size="sm" />
-        <Avatar {...defaultProps} {...args} size="md" />
-        <Avatar {...defaultProps} {...args} size="lg" />
-        <Avatar {...defaultProps} {...args} className="h-20 w-20 text-large" />
+        <Avatar {...defaultProps} {...args} size="xs" />
+        <Avatar {...defaultProps} {...args} size="s" />
+        <Avatar {...defaultProps} {...args} size="m" />
+        <Avatar {...defaultProps} {...args} size="l" />
+        <Avatar {...defaultProps} {...args} size="xl" />
       </div>
     );
   },
 };
 
-export const Boarded: Story = {
+export const Shape: Story = {
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Avatar {...defaultProps} {...args} size="md" isBorderd />
+        <Avatar {...defaultProps} {...args} shape="square" />
+        <Avatar {...defaultProps} {...args} shape="circle" />
       </div>
     );
   },
 };
 
-export const Radius: Story = {
+export const Loading: Story = {
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Avatar {...defaultProps} {...args} radius="full" />
-        <Avatar {...defaultProps} {...args} radius="lg" />
-        <Avatar {...defaultProps} {...args} radius="md" />
-        <Avatar {...defaultProps} {...args} radius="sm" />
-        <Avatar {...defaultProps} {...args} radius="none" />
+        <Avatar {...defaultProps} {...args} isLoading background="grey" />
+        <Avatar {...defaultProps} {...args} isLoading background="blue" />
       </div>
     );
   },
