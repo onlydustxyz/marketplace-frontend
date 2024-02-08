@@ -5,9 +5,10 @@ import { ReactElement } from "react";
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { ReactElement } from "react";
+import { InvoiceTemplate } from "components/features/invoice-template/invoice-template";
 
 export async function GET() {
-  async function generatePage({ content }: { content: ReactElement }) {
+  async function generatePage( content:ReactElement ) {
     const image = new ImageResponse(content, {
       width: 794,
       height: 1123,
@@ -98,7 +99,19 @@ export async function GET() {
 
   const total = 85.622;
 
-  return new Response(await image.blob(), { status: 200 });
+  const pages = [
+    rewards,
+    rewards
+  ]
+
+  return new Response(await Promise.all(pages.map((page) =>  generatePage(<InvoiceTemplate
+    header={header}
+    invoiceTo={invoiceTo}
+    billTo={billTo}
+    invoiceInfo={invoiceInfo}
+    rewards={page}
+    total={total}
+  />))), { status: 200 });
 
   // return new ImageResponse(
   //   (
