@@ -66,7 +66,7 @@ export async function GET() {
         dollarsEquivalent: 55.6196555954649,
       },
       numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Bretzel",
+      rewardedOnProjectName: "Deluge",
       rewardedOnProjectLogoUrl:
         "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
       id: "49ee3934-29f5-43c7-a9e7-6c34947a6e87",
@@ -88,9 +88,26 @@ export async function GET() {
         "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
       id: "5a761880-6175-4fc4-a10d-60a73eba5675",
     },
+    {
+      requestedAt: "2023-12-28T10:58:15.632901Z",
+      processedAt: null,
+      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
+      status: "PENDING_INVOICE",
+      unlockDate: null,
+      amount: {
+        total: 20,
+        currency: "USDC",
+        dollarsEquivalent: 20.00079477650715,
+      },
+      numberOfRewardedContributions: 1,
+      rewardedOnProjectName: "Onlydust",
+      rewardedOnProjectLogoUrl:
+        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
+      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
+    },
   ];
 
-  const total = 65.621;
+  const total = 85.622;
 
   return new ImageResponse(
     (

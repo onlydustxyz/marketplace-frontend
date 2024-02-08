@@ -60,6 +60,10 @@ const styles: { [key: string]: CSSProperties } = {
   marginTopLarge: {
     marginTop: "30px",
   },
+  width50p: {
+    width: "50%",
+    maxWidth: "50%",
+  },
   h3: {
     margin: "0px",
     fontWeight: "900",
@@ -186,6 +190,7 @@ export function InvoiceTemplate({ header, invoiceTo, billTo, invoiceInfo, reward
       <div style={styles["header"]}>
         <div style={styles["logo"]}>
           <img src={header.logoUrl} width="203.75" height="50" alt="logo" />
+          {/*<Image src={header.logoUrl} width="203.75" height="50" alt="logo" />*/}
         </div>
         <div style={styles["invoiceNumber"]}>
           <h3 style={{ ...styles["h3"], ...styles["textUppercase"] }}>
@@ -223,7 +228,7 @@ export function InvoiceTemplate({ header, invoiceTo, billTo, invoiceInfo, reward
       <section style={styles["invoiceCenter"]}>
         <div style={styles["flexRow"]}>
           <h3 style={{ ...styles["h3"], ...styles["marginBottomMedium"] }}>Rewards summary</h3>
-          <div style={{ ...styles["flexCol"], ...styles["marginTopMedium"] }}>
+          <div style={styles["flexCol"]}>
             <table style={styles["defaultTable"]}>
               <thead style={styles["flexRow"]}>
                 <tr style={styles["tr"]}>
@@ -258,17 +263,19 @@ export function InvoiceTemplate({ header, invoiceTo, billTo, invoiceInfo, reward
       </section>
 
       <section style={styles["invoiceBottom"]}>
-        <div style={styles["flexRow"]}>
+        <div style={{ ...styles["flexRow"], ...styles["width50p"] }}>
           <h4 style={styles["h4"]}>Important Note</h4>
           <ul style={styles["flexRow"]}>
-            <p>Once order done, money can t refund</p>
-            <p>Delivery might delay due to some external dependency</p>
-            <p>This is computer generated invoice and physical signature does not require.</p>
+            <p style={styles["paragraph"]}>- Once order done, money can&apos;t refund</p>
+            <p style={styles["paragraph"]}>- Delivery might delay due to some external dependency</p>
+            <p style={styles["paragraph"]}>
+              - This is computer generated invoice and physical signature does not require.
+            </p>
           </ul>
         </div>
-        <div style={styles["flexRow"]}>
-          <h4 style={styles["h4"]}>Payment Info</h4>
-          <p>This payment made by BRAC BANK master card without any problem</p>
+        <div style={{ ...styles["flexRow"], ...styles["width50p"] }}>
+          <h4 style={{ ...styles["h4"], ...styles["justifyContentEnd"] }}>Payment Info</h4>
+          <p style={{ ...styles["paragraph"], ...styles["justifyContentEnd"] }}>This payment made by XXX BANK</p>
         </div>
       </section>
     </div>
