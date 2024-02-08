@@ -115,6 +115,8 @@ describe("formatToData", () => {
 
   it("should format profile info correctly", () => {
     const mockData: UseGetMyProfileInfoResponse = {
+      firstName: "John",
+      lastName: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "BLUE",
       location: "Earth",
@@ -138,8 +140,9 @@ describe("formatToData", () => {
       ...baseMockData,
     };
 
-    const result = formatToData(mockData);
-    expect(result).toEqual({
+    const expectedData: TProfileForm.Data = {
+      firstName: "John",
+      lastName: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "BLUE",
       location: "Earth",
@@ -153,11 +156,15 @@ describe("formatToData", () => {
       technologies: { JavaScript: 1 },
       weeklyAllocatedTime: TProfileForm.ALLOCATED_TIME.NONE,
       lookingForAJob: true,
-    });
+    };
+
+    const result = formatToData(mockData);
+    expect(result).toEqual(expectedData);
   });
 
   it("should handle partial data correctly", () => {
     const mockData: UseGetMyProfileInfoResponse = {
+      firstName: "John",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "MAGENTA",
       location: "Mars",
@@ -166,8 +173,9 @@ describe("formatToData", () => {
       ...baseMockData,
     };
 
-    const result = formatToData(mockData);
-    expect(result).toEqual({
+    const expectedData: TProfileForm.Data = {
+      firstName: "John",
+      lastName: "",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "MAGENTA",
       location: "Mars",
@@ -181,13 +189,18 @@ describe("formatToData", () => {
       technologies: {},
       weeklyAllocatedTime: TProfileForm.ALLOCATED_TIME.NONE,
       lookingForAJob: false,
-    });
+    };
+
+    const result = formatToData(mockData);
+    expect(result).toEqual(expectedData);
   });
 });
 
 describe("formatToSchema", () => {
   it("should convert formatted data to schema correctly", () => {
     const formattedData: TProfileForm.Data = {
+      firstName: "John",
+      lastName: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "YELLOW",
       location: "Earth",
@@ -204,6 +217,8 @@ describe("formatToSchema", () => {
     };
 
     const expectedSchema = {
+      firstName: "John",
+      lastName: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
       cover: "YELLOW",
       location: "Earth",
@@ -247,6 +262,8 @@ describe("formatToSchema", () => {
 
   it("should handle partial data correctly", () => {
     const partialData: TProfileForm.Data = {
+      firstName: "John",
+      lastName: "",
       avatarUrl: "",
       cover: "BLUE",
       location: "",
@@ -263,6 +280,8 @@ describe("formatToSchema", () => {
     };
 
     const expectedSchema = {
+      firstName: "John",
+      lastName: "",
       avatarUrl: "",
       cover: "BLUE",
       location: "",

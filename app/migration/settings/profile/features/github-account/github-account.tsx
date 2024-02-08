@@ -35,7 +35,7 @@ export function ProfileGithubAccount() {
           />
         </Flex>
 
-        <Flex alignItems="center" className="gap-3" justifyContent="between">
+        <Flex className="flex-col justify-between gap-3 lg:flex-row lg:items-center">
           <Flex alignItems="center" className="gap-3">
             {user?.picture && (
               <img className="h-8 w-8 rounded-full" src={user?.picture} loading="lazy" alt={T("profile.avatar")} />
@@ -51,7 +51,7 @@ export function ProfileGithubAccount() {
             </Flex>
           </Flex>
 
-          <a href="https://github.com/settings/profile" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/settings/profile" target="_blank" rel="noopener noreferrer" className="w-fit">
             <Button variant="secondary" size="s">
               <Icon remixName="ri-github-fill" />
               <Translate token="v2.pages.settings.profile.githubAccount.button" />
