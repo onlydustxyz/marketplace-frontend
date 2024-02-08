@@ -60,6 +60,7 @@ export function useBaseUploader<Response = unknown>({
         headers: {
           ...options.headers,
           "Content-Type": data.type,
+          accept: data.type,
         },
         body: data,
       })
