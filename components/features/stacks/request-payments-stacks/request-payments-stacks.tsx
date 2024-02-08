@@ -1,5 +1,6 @@
-import { Key } from "react";
+import { Key, useCallback, useMemo, useState } from "react";
 
+import MeApi from "src/api/me";
 import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Button } from "components/ds/button/button";
@@ -10,18 +11,56 @@ import { Typography } from "components/layout/typography/typography";
 export function RequestPaymentsStacks() {
   const isLoading = false;
   const isDisabled = false;
+  const [excludedRewardsIds, setExcludedRewardsIds] = useState<string[]>([]);
+
+  const { data, isLoading: isLoadingRewards, isError } = MeApi.queries.useGetMePendingInvoices({});
+  const excludedRewards = useMemo(
+    () => (data?.rewards || []).filter(reward => excludedRewardsIds.includes(reward.id)),
+    [data]
+  );
+  const includedRewards = useMemo(
+    () => (data?.rewards || []).filter(reward => !excludedRewardsIds.includes(reward.id)),
+    [data]
+  );
+  function onExclude(id: string) {
+    setExcludedRewardsIds(prev => [...prev, id]);
+  }
+
+  function onInclude(id: string) {
+    setExcludedRewardsIds(prev => prev.filter(i => i !== id));
+  }
 
   const onSubmit = () => {
     console.log("submit");
   };
 
-  const tabContent = (selected: Key) => {
-    if (selected === "coucou1") {
-      return <div className="bg-red-300">coucou</div>;
-    } else if (selected === "coucou2") {
-      return <div className="bg-green-300">coucou</div>;
-    }
-  };
+  const getTabContent = useCallback(
+    (selected: Key) => {
+      console.log("data", data);
+      if (selected === "included") {
+        return (
+          <div className="bg-red-300">
+            {includedRewards.map(reward => (
+              <p onClick={() => onExclude(reward.id)} key={reward.id}>
+                {reward.id}
+              </p>
+            ))}
+          </div>
+        );
+      } else if (selected === "excluded") {
+        return (
+          <div className="bg-green-300">
+            {excludedRewards.map(reward => (
+              <p onClick={() => onInclude(reward.id)} key={reward.id}>
+                {reward.id}
+              </p>
+            ))}
+          </div>
+        );
+      }
+    },
+    [excludedRewards, includedRewards]
+  );
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -36,15 +75,15 @@ export function RequestPaymentsStacks() {
         <Tabs
           tabs={[
             {
-              content: "coucou",
-              key: "coucou1",
+              content: "included",
+              key: "included",
               icon: { remixName: "ri-check-line" },
-              children: tabContent,
+              children: getTabContent,
             },
             {
-              content: "coucou2",
-              key: "coucou2",
-              children: tabContent,
+              content: "excluded",
+              key: "excluded",
+              children: getTabContent,
               icon: { remixName: "ri-close-line" },
             },
           ]}
