@@ -19,21 +19,28 @@ import { REGEX } from "./features/form/form.regex";
 import { TPayoutForm } from "./features/form/form.types";
 import { formatToData, formatToSchema } from "./features/form/form.utils";
 
+const INVALID_ETHEREUM_WALLET = "invalidEthereumWallet";
+const INVALID_STARKNET_ADDRESS = "invalidStarknetAddress";
+const INVALID_OPTIMISM_ADDRESS = "invalidOptimismAddress";
+const INVALID_APTOS_ADDRESS = "invalidAptosAddress";
+const IBAN_IS_REQUIRED = "ibanIsRequired";
+const BIC_IS_REQUIRED = "bicIsRequired";
+
 type KeyType =
-  | "invalidEthereumWallet"
-  | "invalidStarknetAddress"
-  | "invalidOptimismAddress"
-  | "invalidAptosAddress"
-  | "ibanIsRequired"
-  | "bicIsRequired";
+  | typeof INVALID_ETHEREUM_WALLET
+  | typeof INVALID_STARKNET_ADDRESS
+  | typeof INVALID_OPTIMISM_ADDRESS
+  | typeof INVALID_APTOS_ADDRESS
+  | typeof IBAN_IS_REQUIRED
+  | typeof BIC_IS_REQUIRED;
 
 const keys: Record<KeyType, Key> = {
-  invalidEthereumWallet: "v2.commons.form.errors.wallets.ethereum.invalid",
-  invalidStarknetAddress: "v2.commons.form.errors.wallets.starknet.invalid",
-  invalidOptimismAddress: "v2.commons.form.errors.wallets.optimism.invalid",
-  invalidAptosAddress: "v2.commons.form.errors.wallets.aptos.invalid",
-  ibanIsRequired: "v2.commons.form.errors.wallets.sepa.iban.required",
-  bicIsRequired: "v2.commons.form.errors.wallets.sepa.bic.required",
+  [INVALID_ETHEREUM_WALLET]: "v2.commons.form.errors.wallets.ethereum.invalid",
+  [INVALID_STARKNET_ADDRESS]: "v2.commons.form.errors.wallets.starknet.invalid",
+  [INVALID_OPTIMISM_ADDRESS]: "v2.commons.form.errors.wallets.optimism.invalid",
+  [INVALID_APTOS_ADDRESS]: "v2.commons.form.errors.wallets.aptos.invalid",
+  [IBAN_IS_REQUIRED]: "v2.commons.form.errors.wallets.sepa.iban.required",
+  [BIC_IS_REQUIRED]: "v2.commons.form.errors.wallets.sepa.bic.required",
 };
 
 const formSchema = z

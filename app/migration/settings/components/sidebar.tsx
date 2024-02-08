@@ -2,9 +2,8 @@
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useCurrentUser } from "hooks/users/useCurrentUser";
-import { usePathname } from "next/navigation";
 import { useMemo } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import { useBillingProfiles } from "app/migration/settings/hooks/useBillingProfile";
 import { useBillingStatus } from "app/migration/settings/hooks/useBillingStatus";
@@ -29,7 +28,7 @@ export function Sidebar() {
   const { isAuthenticated } = useAuth0();
 
   const { user } = useCurrentUser();
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const { validBillingProfile, billingProfile } = useBillingProfiles();
   const { isWarning, isError } = useBillingStatus(validBillingProfile, billingProfile?.status);
 
@@ -38,17 +37,17 @@ export function Sidebar() {
       {
         label: <Translate token="v2.features.sidebar.settings.publicProfile" />,
         href: NEXT_ROUTER.settings.profile,
-        isActive: false,
       },
       {
         label: <Translate token="v2.features.sidebar.settings.payoutPreferences" />,
         href: NEXT_ROUTER.settings.payout,
-        isActive: false,
+        endIcon: !user?.hasValidPayoutInfos ? (
+          <Icon size={16} remixName="ri-information-line" className="text-orange-500" />
+        ) : undefined,
       },
       {
         label: <Translate token="v2.features.sidebar.settings.billingProfile" />,
         href: NEXT_ROUTER.settings.billing,
-        isActive: false,
         endIcon:
           isWarning || isError ? (
             <Icon

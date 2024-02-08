@@ -20,12 +20,16 @@ import { TProfileForm } from "./features/form/form.types";
 import { formatToData, formatToSchema } from "./features/form/form.utils";
 import { ProfileGithubAccount } from "./features/github-account/github-account";
 
-type KeyType = "invalidUrl" | "invalidUsername" | "invalidPhoneNumber";
+const INVALID_URL = "invalidUrl";
+const INVALID_USERNAME = "invalidUsername";
+const INVALID_PHONE_NUMBER = "invalidPhoneNumber";
+
+type KeyType = typeof INVALID_URL | typeof INVALID_USERNAME | typeof INVALID_PHONE_NUMBER;
 
 const keys: Record<KeyType, Key> = {
-  invalidUrl: "v2.commons.form.errors.invalidUrl",
-  invalidUsername: "v2.commons.form.errors.invalidUsername",
-  invalidPhoneNumber: "v2.commons.form.errors.invalidPhoneNumber",
+  [INVALID_URL]: "v2.commons.form.errors.invalidUrl",
+  [INVALID_USERNAME]: "v2.commons.form.errors.invalidUsername",
+  [INVALID_PHONE_NUMBER]: "v2.commons.form.errors.invalidPhoneNumber",
 };
 
 const formSchema = z.object({
