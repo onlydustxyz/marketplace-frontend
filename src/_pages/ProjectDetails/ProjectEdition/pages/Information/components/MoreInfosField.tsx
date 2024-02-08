@@ -61,11 +61,18 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
 
   function deleteLink(index: number) {
     const moreInfos = form?.getValues("moreInfos") || [];
-    moreInfos.splice(index, 1);
-    form?.setValue("moreInfos", moreInfos, {
-      shouldDirty: true,
-      shouldValidate: true,
-    });
+    if (moreInfos.length === 1) {
+      form?.setValue("moreInfos", [{ url: "", value: "", id: uuidv4() }], {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+    } else {
+      moreInfos.splice(index, 1);
+      form?.setValue("moreInfos", moreInfos, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+    }
   }
 
   return (
@@ -127,23 +134,22 @@ export function MoreInfosField({ onChange, value, form, error }: FormProps) {
                     onChange(updatedValue);
                   }}
                 />
-                {items.length > 1 ? (
-                  <Button
-                    type={ButtonType.Ternary}
-                    size={ButtonSize.MdRounded}
-                    iconOnly
-                    className={cn("flex h-8 w-8 justify-center p-2 text-snow", "hidden md:visible")}
-                    onClick={() => deleteLink(index)}
-                  >
-                    <DeleteBinLine />
-                  </Button>
-                ) : null}
+
+                <Button
+                  type={ButtonType.Ternary}
+                  size={ButtonSize.MdRounded}
+                  iconOnly
+                  className={cn("flex h-8 w-8 justify-center p-2 text-snow", "hidden md:flex")}
+                  onClick={() => deleteLink(index)}
+                >
+                  <DeleteBinLine />
+                </Button>
               </Flex>
               <Button
                 type={ButtonType.Ternary}
                 size={ButtonSize.MdRounded}
                 iconOnly
-                className={cn("flex h-8 w-8 justify-center p-2 text-snow", "visible !mt-0 md:hidden")}
+                className={cn("flex h-8 w-8 justify-center p-2 text-snow", "!mt-0 flex md:hidden")}
                 onClick={() => deleteLink(index)}
               >
                 <DeleteBinLine />
