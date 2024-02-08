@@ -5,6 +5,7 @@ import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Button } from "components/ds/button/button";
 import { Tabs } from "components/ds/tabs/tabs";
+import { RewardItem } from "components/features/stacks/request-payments-stacks/components/reward-item/reward-item";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -36,24 +37,19 @@ export function RequestPaymentsStacks() {
 
   const getTabContent = useCallback(
     (selected: Key) => {
-      console.log("data", data);
       if (selected === "included") {
         return (
-          <div className="bg-red-300">
+          <div className="flex w-full flex-col items-start justify-start gap-3">
             {includedRewards.map(reward => (
-              <p onClick={() => onExclude(reward.id)} key={reward.id}>
-                {reward.id}
-              </p>
+              <RewardItem key={reward.id} type="exclude" onClick={onExclude} {...reward} currency={reward.amount} />
             ))}
           </div>
         );
       } else if (selected === "excluded") {
         return (
-          <div className="bg-green-300">
-            {excludedRewards.map(reward => (
-              <p onClick={() => onInclude(reward.id)} key={reward.id}>
-                {reward.id}
-              </p>
+          <div className="flex w-full flex-col items-start justify-start gap-3">
+            {includedRewards.map(reward => (
+              <RewardItem key={reward.id} type="include" onClick={onInclude} {...reward} currency={reward.amount} />
             ))}
           </div>
         );
@@ -95,7 +91,10 @@ export function RequestPaymentsStacks() {
           {isLoading ? <Spinner /> : <div />}
           <div className="flex items-center justify-end gap-5 ">
             <Button variant="primary" size="m" disabled={isDisabled} onClick={onSubmit}>
-              <Translate token="v2.pages.stacks.request_payments.form.submit" />
+              <Translate
+                token="v2.pages.stacks.request_payments.form.submit"
+                params={{ count: includedRewards?.length }}
+              />
             </Button>
           </div>
         </div>

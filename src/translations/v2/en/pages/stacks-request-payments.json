@@ -1,7 +1,14 @@
 {
   "title": "Request payment",
   "form": {
-    "submit": "Select 3 rewards",
+    "submit": {
+      "zero": "Select (__count__) reward",
+      "one": "Select (__count__) reward",
+      "many": "Select (__count__) rewards"
+    },
     "back": "Back"
+  },
+  "item": {
+    "to": "to"
   }
 }
