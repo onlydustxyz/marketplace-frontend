@@ -47,7 +47,7 @@ export function useBaseUploader<Response = unknown>({
   const { getImpersonateHeaders } = useImpersonation();
 
   return useMutation({
-    mutationFn: async (data: File): Promise<Response> => {
+    mutationFn: async (data: File | Blob): Promise<Response> => {
       const { options } = await getHttpOptions({
         isAuthenticated,
         logout,

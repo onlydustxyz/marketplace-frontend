@@ -11,6 +11,7 @@ import en_features_contributors from "src/translations/v2/en/features/contributo
 import en_features_ecosystems from "src/translations/v2/en/features/ecosystems.json";
 import en_features from "src/translations/v2/en/features/features.json";
 import en_features_filters from "src/translations/v2/en/features/filters.json";
+import en_features_invoice_template from "src/translations/v2/en/features/invoice-template.json";
 import en_features_leaders from "src/translations/v2/en/features/leaders.json";
 import en_features_payout_status from "src/translations/v2/en/features/payout-status.json";
 import en_features_sidebar from "src/translations/v2/en/features/sidebar.json";
@@ -34,6 +35,7 @@ const en = {
       ecosystems: en_features_ecosystems,
       payoutStatus: en_features_payout_status,
       sidebar: en_features_sidebar,
+      invoiceTemplate: en_features_invoice_template,
     },
     pages: {
       projects: en_projects,

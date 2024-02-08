@@ -1,31 +1,9 @@
 import { headers } from "next/headers";
 import { ImageResponse } from "next/og";
-import { CSSProperties } from "react";
-
-import { InvoiceTemplate } from "app/api/invoice/invoice-template";
 
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
-export const runtime = "edge";
-
-export const alt = "Invoice generator";
-export const size = {
-  width: 2480,
-  height: 3508,
-};
-export const contentType = "image/png";
-
-const styles: { [key: string]: CSSProperties } = {
-  container: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-    width: "100%",
-    background: "white",
-    color: "#000",
-  },
-};
+import { InvoiceTemplate } from "components/features/invoice-template/invoice-template";
 
 export async function GET() {
   const headersList = headers();
