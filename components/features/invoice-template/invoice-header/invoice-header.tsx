@@ -7,7 +7,7 @@ export function InvoiceHeader({ logoUrl, invoiceNumber }: TInvoiceTemplate.Heade
   return (
     <div style={styles["header"]}>
       <div style={styles["logo"]}>
-        <img src={logoUrl} width="203.75" height="50" alt="logo" />
+        <img src={logoUrl} height="50" alt="logo" />
       </div>
       <div style={styles["invoiceNumber"]}>
         <strong>Invoice NO: #{invoiceNumber}</strong>

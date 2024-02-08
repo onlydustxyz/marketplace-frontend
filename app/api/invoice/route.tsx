@@ -1,11 +1,20 @@
 import { headers } from "next/headers";
 import { ImageResponse } from "next/og";
+import { ReactElement } from "react";
 
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
-import { InvoiceTemplate } from "components/features/invoice-template/invoice-template";
+import { ReactElement } from "react";
 
 export async function GET() {
+  async function generatePage({ content }: { content: ReactElement }) {
+    const image = new ImageResponse(content, {
+      width: 794,
+      height: 1123,
+    });
+    return image.blob();
+  }
+
   const headersList = headers();
 
   // const token = headersList.get("authorization");
@@ -13,9 +22,11 @@ export async function GET() {
   // const { rewards } = await MeActions.queries.retrieveRewardsPendingInvoices({ accessToken: token ?? "" });
 
   const header = {
-    logoUrl: "https://assets-global.website-files.com/6526608bf8ef4218fa12c988/6526608bf8ef4218fa12ca2c_Left.png",
+    logoUrl: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/logo.png`,
     invoiceNumber: "20240208-0052",
   };
+
+  console.log("header", header);
 
   const invoiceTo = {
     name: "My invoice to company",
@@ -87,20 +98,22 @@ export async function GET() {
 
   const total = 85.622;
 
-  return new ImageResponse(
-    (
-      <InvoiceTemplate
-        header={header}
-        invoiceTo={invoiceTo}
-        billTo={billTo}
-        invoiceInfo={invoiceInfo}
-        rewards={rewards}
-        total={total}
-      />
-    ),
-    {
-      width: 794,
-      height: 1123,
-    }
-  );
+  return new Response(await image.blob(), { status: 200 });
+
+  // return new ImageResponse(
+  //   (
+  //     <InvoiceTemplate
+  //       header={header}
+  //       invoiceTo={invoiceTo}
+  //       billTo={billTo}
+  //       invoiceInfo={invoiceInfo}
+  //       rewards={rewards}
+  //       total={total}
+  //     />
+  //   ),
+  //   {
+  //     width: 794,
+  //     height: 1123,
+  //   }
+  // );
 }

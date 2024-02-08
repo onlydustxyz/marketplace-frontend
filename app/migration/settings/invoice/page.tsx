@@ -3,21 +3,19 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 
-import MeApi from "src/api/me";
-
 import { Button } from "components/ds/button/button";
 
 export default function InvoicePage() {
   const { getAccessTokenSilently } = useAuth0();
   const [imageUrl, setImageUrl] = useState<string>("");
 
-  const { mutate: uploadProjectLogo } = MeApi.mutations.useUploadProfilePicture({
-    options: {
-      onSuccess: data => {
-        console.log(data);
-      },
-    },
-  });
+  // const { mutate: uploadProjectLogo } = MeApi.mutations.useUploadProfilePicture({
+  //   options: {
+  //     onSuccess: data => {
+  //       console.log(data);
+  //     },
+  //   },
+  // });
 
   async function handleFetchInvoice() {
     const token = await getAccessTokenSilently();
@@ -30,9 +28,10 @@ export default function InvoicePage() {
       .then(res => res)
       .then(async res => {
         const blob = await res.blob();
+        console.log("blob", blob);
         if (blob) {
           setImageUrl(window.URL.createObjectURL(blob));
-          uploadProjectLogo(blob);
+          // uploadProjectLogo(blob);
         }
       });
   }
