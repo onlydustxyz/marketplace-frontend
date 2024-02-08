@@ -6,8 +6,8 @@ import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
 import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 import { Flex } from "components/layout/flex/flex";
@@ -77,12 +77,12 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
       >
         <Flex direction="row" className="origin-center gap-5">
           <div className="relative hidden flex-shrink-0 md:block">
-            <Thumbnail
+            <Avatar
               src={logoUrl}
-              alt={T("project.highlights.thumbnail")}
+              alt={T("v2.pages.projects.highlights.thumbnail")}
               size="xl"
               className="mt-1"
-              type={"project"}
+              shape="square"
             />
             {isPrivate && (
               <div className="absolute -bottom-2.5 -right-2.5">
@@ -93,12 +93,12 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           <Flex direction="col" className="w-full flex-1 gap-1 overflow-hidden">
             <Flex direction="row" className="items-center gap-2 md:items-start">
               <div className="relative block flex-shrink-0 md:hidden">
-                <Thumbnail
+                <Avatar
                   src={logoUrl}
                   alt={T("v2.pages.projects.highlights.thumbnail")}
                   size="l"
                   className="mt-1"
-                  type={"project"}
+                  shape="square"
                 />
                 {isPrivate && (
                   <div className="absolute -bottom-2.5 -right-2.5">
