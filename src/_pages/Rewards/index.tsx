@@ -3,6 +3,7 @@ import { useContext, useEffect, useMemo, useRef } from "react";
 import { useT } from "talkr";
 
 import { UserRewardTable } from "src/_pages/Rewards/UserRewardTable";
+import { MeTypes } from "src/api/me/types";
 import { IMAGES } from "src/assets/img";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import SEO from "src/components/SEO";
@@ -32,7 +33,7 @@ function SafeRewards() {
   const filterRef = useRef<UserRewardsFilterRef>(null);
   const hasActiveFilters = !!filterRef?.current?.hasActiveFilters;
 
-  const isBillingProfileCompany = user?.billingProfileType === "COMPANY";
+  const isBillingProfileCompany = user?.billingProfileType === MeTypes.billingProfileType.Company;
 
   const emptyFallback = useMemo(() => {
     if (rewards && rewards?.length === 0) {
