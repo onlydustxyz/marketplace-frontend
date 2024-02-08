@@ -9,11 +9,21 @@ import { bannerVariants } from "./banner.variants";
 export namespace TBanner {
   export type Variants = VariantProps<typeof bannerVariants>;
 
+  export interface classNames {
+    wrapper: string;
+    contentWrapper: string;
+    iconWrapper: string;
+    icon: string;
+    title: string;
+    description: string;
+  }
+
   export interface Props extends PropsWithChildren, Variants {
     title: ReactNode;
     description?: ReactNode;
     icon?: TIcon.Props;
     button?: TButton.Props;
     customButton?: ReactElement;
+    classNames?: Partial<classNames>;
   }
 }

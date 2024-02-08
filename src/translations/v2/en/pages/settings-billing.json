@@ -54,6 +54,12 @@
       "cancelBtn": "No, stay as Company"
     }
   },
+  "format": {
+    "boolean": {
+      "no": "No",
+      "yes": "Yes"
+    }
+  },
   "messages": {
     "success_to_company": "You are successfully switched to company",
     "success_to_individual": "You are successfully switched to individidual"

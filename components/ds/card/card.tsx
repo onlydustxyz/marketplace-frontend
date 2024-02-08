@@ -21,7 +21,7 @@ export function Card({
           clickable: !!onClick || !!href,
         }),
         {
-          "duration-200 ease-in  hover:border hover:border-card-border-heavy":
+          "duration-200 ease-in hover:border hover:border-card-border-heavy":
             (onClick || href) && props.border !== "multiColor",
         },
         className

@@ -23,7 +23,7 @@ export function SelectSort({ options, value, labelToken, onChange }: TSelectSort
       popoverProps={{
         offset: 0,
         classNames: {
-          content: "border-card-border-medium border-1 border-t-0 rounded-t-none bg-card-background-base px-0",
+          content: "border-card-border-light border-1 border-t-0 rounded-t-none bg-card-background-base px-0",
         },
       }}
       listboxProps={{
@@ -37,7 +37,7 @@ export function SelectSort({ options, value, labelToken, onChange }: TSelectSort
         selectorIcon: "static",
         innerWrapper: "w-auto",
         trigger: cn(
-          "w-auto rounded-md border border-card-border-medium bg-card-background-base py-1.5 pl-4 pr-2 shadow-heavy transition-all duration-300 ease-in",
+          "w-auto rounded-md border border-card-border-light bg-card-background-base py-1.5 pl-4 pr-2 shadow-heavy transition-all duration-300 ease-in",
           "data-[open=true]:rounded-b-none  data-[open=true]:border-b-transparent",
           "data-[hover=true]:bg-spaceBlue-900"
         ),

@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
-import BurgerIcon from "src/assets/icons/BurgerIcon";
 import SidePanel from "src/components/SidePanel";
 import { viewportConfig } from "src/config";
 
+import { Button } from "components/ds/button/button";
+import { Icon } from "components/layout/icon/icon";
 import { TSidebar } from "components/layout/sidebar/sidebar.types";
 
 export function Sidebar({ children, mobileHeader }: TSidebar.Props) {
@@ -34,10 +35,9 @@ export function Sidebar({ children, mobileHeader }: TSidebar.Props) {
       <div className="flex items-center justify-between gap-2 px-6">
         {mobileHeader ?? <div />}
 
-        <button className="rounded-lg border p-2" onClick={openPanel}>
-          {/* TODO use <Icon/> */}
-          <BurgerIcon />
-        </button>
+        <Button iconOnly variant={"secondary"} size="s" onClick={openPanel}>
+          <Icon remixName="ri-menu-line" />
+        </Button>
       </div>
       <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom" isMenu>
         <div className="flex w-full flex-col bg-white/4 bg-noise-medium px-8 py-6 font-walsheim">

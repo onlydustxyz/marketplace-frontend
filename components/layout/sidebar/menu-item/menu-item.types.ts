@@ -5,7 +5,7 @@ export namespace TMenuItem {
     href: string;
     label: ReactNode;
     onClick?: () => void;
-    isActive: boolean;
+    isActive?: boolean;
     endIcon?: ReactNode;
   }
 }

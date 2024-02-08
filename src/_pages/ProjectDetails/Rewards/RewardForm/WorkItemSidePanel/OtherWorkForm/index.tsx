@@ -1,7 +1,7 @@
 import { sortBy } from "lodash";
 import { FormEventHandler, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useOutletContext } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 import { components } from "src/__generated/api";
@@ -38,6 +38,7 @@ type Props = {
 export default function OtherWorkForm({ projectId, contributorHandle, addWorkItem }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const { projectKey = "" } = useParams<{ projectKey: string }>();
 
   const workKinds = [
     { icon: <DraftLine />, label: T("reward.form.contributions.other.kinds.documentation") },
@@ -65,13 +66,11 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     author: contributorHandle,
   });
 
-  const context = useOutletContext<{
-    projectId: string;
-    projectKey: string;
-    repos?: components["schemas"]["GithubRepoResponse"][];
-  }>();
+  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectKey },
+  });
 
-  const projectRepos = context?.repos || [];
+  const projectRepos = project?.repos || [];
 
   const repos = sortBy(projectRepos, "name").filter(isDefined);
 

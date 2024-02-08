@@ -17,9 +17,9 @@ export function IconTag({
 }: TIconTag.Props) {
   if (tooltipContent) {
     return (
-      <Tooltip content={tooltipContent}>
+      <Tooltip content={tooltipContent} placement="top-end">
         <Component
-          data-testId={testId}
+          data-testid={testId}
           id={id}
           className={cn(iconTagVariants({ ...props }), className)}
           onClick={onClick}

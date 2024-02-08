@@ -21,7 +21,8 @@ export const useEditValidationSchema = () => {
           url: z
             .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the information url" })))
             .trim()
-            .min(1),
+            .nullish()
+            .optional(),
           value: z.string().nullish().optional(),
         })
       )

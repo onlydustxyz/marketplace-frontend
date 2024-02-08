@@ -12,7 +12,7 @@ import { Button } from "components/ds/button/button";
 
 import { Header } from "./features/header/header";
 
-export default function ProfilePage() {
+export default function BillingPage() {
   const { billingProfile, profileType, isCompany, isIndividual, validBillingProfile } = useBillingProfiles();
   const [open] = useStackRequestPayments();
   return (

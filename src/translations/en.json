@@ -1039,7 +1039,14 @@
           "many": "Sponsors",
           "one": "Sponsor"
         },
-        "technologies": "Technologies",
+        "ecosystems": {
+          "many": "Ecosystems",
+          "one": "Ecosystem"
+        },
+        "technologies": {
+          "many": "Technologies",
+          "one": "Technology"
+        },
         "title": "Overview",
         "totalSpentAmountInUsd": "GRANTED",
         "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend",
