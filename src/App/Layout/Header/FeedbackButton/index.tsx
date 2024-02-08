@@ -1,8 +1,7 @@
 import { SliderButton } from "@typeform/embed-react";
 import { useCurrentUser } from "hooks/users/useCurrentUser";
-import { ReactNode, Ref, forwardRef, useMemo } from "react";
+import { ReactNode, Ref, forwardRef } from "react";
 
-import MeApi from "src/api/me";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
 
@@ -12,22 +11,6 @@ export const FeedbackButton = forwardRef(function FeedbackButton(
 ) {
   const { user } = useCurrentUser();
   const { T } = useIntl();
-
-  const { data } = MeApi.queries.useGetMyPayoutInfo({});
-
-  const { firstname, lastname } = useMemo(() => {
-    if (data?.isCompany) {
-      return {
-        firstname: data?.company?.owner?.firstname || "",
-        lastname: data?.company?.owner?.lastname || "",
-      };
-    }
-
-    return {
-      firstname: data?.person?.firstname || "",
-      lastname: data?.person?.lastname || "",
-    };
-  }, [data]);
 
   return (
     <>
@@ -39,8 +22,8 @@ export const FeedbackButton = forwardRef(function FeedbackButton(
           opacity={100}
           position="right"
           hidden={{
-            firstname,
-            lastname,
+            firstname: user?.firstName || "",
+            lastname: user?.lastName || "",
             email: user.email || "",
             github: user.login || "",
           }}

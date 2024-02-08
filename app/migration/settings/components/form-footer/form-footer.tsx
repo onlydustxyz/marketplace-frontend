@@ -1,9 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useFormContext } from "react-hook-form";
 import { generatePath } from "react-router-dom";
+import { useMediaQuery } from "usehooks-ts";
 
 import { RoutePaths } from "src/App";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
@@ -13,17 +15,33 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { TFormFooter } from "./footer.types";
+import { TFormFooter } from "./form-footer.types";
 
 // TODO: Change Button with link using the new library
-export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props) {
+export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+
   const { user } = useAuth0();
 
   const { formState } = useFormContext();
   const { isDirty, isValid } = formState;
 
+  function renderIcon() {
+    if (!isMd) return null;
+
+    if (isPending) {
+      return <Spinner className="h-5 w-5" />;
+    }
+
+    return <Icon remixName="ri-check-line" size={20} />;
+  }
+
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-50  flex flex-row items-center justify-center border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium">
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      className="absolute bottom-0 left-0 right-0 z-50 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium"
+    >
       <div className="w-full max-w-7xl px-4 xl:px-8">
         <Flex alignItems="center" justifyContent="between">
           <Tag size="medium">
@@ -53,31 +71,39 @@ export function FormFooter({ userProfilInformationIsPending }: TFormFooter.Props
             )}
           </Tag>
 
-          <Flex alignItems="center" className="gap-5">
-            <a
-              href={generatePath(RoutePaths.PublicProfile, {
-                userLogin: user?.nickname || "",
-              })}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button variant="secondary">
-                <Icon remixName="ri-external-link-line" size={20} />
-                <Translate token="v2.pages.settings.profile.buttons.preview" />
-              </Button>
-            </a>
+          <Flex alignItems="center" className="gap-3">
+            {hasPreviewButton ? (
+              <a
+                href={generatePath(RoutePaths.PublicProfile, {
+                  userLogin: user?.nickname || "",
+                })}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="secondary" size={isMd ? "m" : "s"}>
+                  {isMd ? <Icon remixName="ri-external-link-line" size={20} /> : null}
 
-            <Button type="submit" disabled={userProfilInformationIsPending || !isValid}>
-              {userProfilInformationIsPending ? (
-                <Spinner className="h-5 w-5" />
+                  {isMd ? (
+                    <Translate token="v2.pages.settings.profile.buttons.preview" />
+                  ) : (
+                    <Translate token="v2.pages.settings.profile.buttons.previewMobile" />
+                  )}
+                </Button>
+              </a>
+            ) : null}
+
+            <Button type="submit" disabled={isPending || !isValid} size={isMd ? "m" : "s"}>
+              {renderIcon()}
+
+              {isMd ? (
+                <Translate token="v2.commons.form.buttons.save" />
               ) : (
-                <Icon remixName="ri-check-line" size={20} />
+                <Translate token="v2.commons.form.buttons.saveMobile" />
               )}
-              <Translate token="v2.pages.settings.profile.buttons.save" />
             </Button>
           </Flex>
         </Flex>
       </div>
-    </div>
+    </Flex>
   );
 }

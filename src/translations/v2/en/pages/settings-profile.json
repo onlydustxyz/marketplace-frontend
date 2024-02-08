@@ -11,7 +11,9 @@
     "banner": "Banner",
     "location": "Location",
     "bio": "Bio",
-    "website": "Website"
+    "website": "Website",
+    "firstname": "First name",
+    "lastname": "Last name"
   },
   "contact": {
     "title": "Contact information",
@@ -27,11 +29,7 @@
     "lookingForAJob": "I'm looking for a job"
   },
   "buttons": {
-    "save": "Save changes",
-    "preview": "Preview profile"
-  },
-  "status": {
-    "saved": "All changes saved",
-    "unsaved": "Unsaved changes"
+    "preview": "Preview profile",
+    "previewMobile": "Preview"
   }
 }

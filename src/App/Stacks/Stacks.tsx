@@ -17,13 +17,11 @@ import { StacksParams } from "src/libs/react-stack/types/Stack";
 import { RoutePaths } from "..";
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
   ProjectOverview = "project-overview",
-  PayoutInfo = "payout-info",
   ProjectLeaderReward = "project-leader-reward",
   Reward = "reward",
   Contribution = "contribution",
@@ -84,7 +82,6 @@ export const Stacks = () => {
         {({ params }) => <ProjectOverviewSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
-      <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
       {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
         <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
           {({ params }) => <VerifySidePanel {...params} />}
@@ -92,10 +89,6 @@ export const Stacks = () => {
       ) : null}
     </>
   );
-};
-
-export const useStackPayoutInfo = () => {
-  return useStackNavigation(StackRoute.PayoutInfo);
 };
 
 export const useStackVerify = () => {
