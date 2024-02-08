@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -83,8 +82,8 @@ export function ViewMobile({
           {!hideProfileItems && (
             <>
               <div>
-                <Link
-                  href={getProfileButtonLink()}
+                <NavLink
+                  to={getProfileButtonLink()}
                   onClick={() => setPanelOpen(false)}
                   className="flex w-full items-center gap-1 rounded-md px-3 py-4"
                 >
@@ -110,7 +109,7 @@ export function ViewMobile({
                       })}
                     />
                   </Flex>
-                </Link>
+                </NavLink>
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>
