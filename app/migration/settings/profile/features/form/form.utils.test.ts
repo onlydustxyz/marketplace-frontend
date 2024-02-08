@@ -263,6 +263,7 @@ describe("formatToSchema", () => {
   it("should handle partial data correctly", () => {
     const partialData: TProfileForm.Data = {
       firstName: "John",
+      lastName: "",
       avatarUrl: "",
       cover: "BLUE",
       location: "",
