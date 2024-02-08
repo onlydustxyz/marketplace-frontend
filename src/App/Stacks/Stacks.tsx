@@ -82,11 +82,9 @@ export const Stacks = () => {
         {({ params }) => <ProjectOverviewSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
-      {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-        <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
-          {({ params }) => <VerifySidePanel {...params} />}
-        </RegisterStack>
-      ) : null}
+      <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
+        {({ params }) => <VerifySidePanel {...params} />}
+      </RegisterStack>
     </>
   );
 };
