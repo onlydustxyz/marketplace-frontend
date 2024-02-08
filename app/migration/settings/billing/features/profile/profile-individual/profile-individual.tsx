@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 
 import { ProfileItemGrid } from "app/migration/settings/billing/component/profile-item-grid/profile-item-grid";
 import { ProfileItem } from "app/migration/settings/billing/component/profile-item/profile-item";
@@ -23,6 +23,17 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
     return profile.validUntil;
   }, [profile]);
 
+  const isYesOrNO = (yes: ReactNode, no: ReactNode, value?: boolean) => {
+    if (value === true) {
+      return yes;
+    }
+    if (value === false) {
+      return no;
+    }
+
+    return null;
+  };
+
   return (
     <ProfileItemGrid>
       <ProfileItem label="v2.pages.settings.billing.individual.firstName">{profile.firstName}</ProfileItem>
@@ -31,10 +42,10 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
       <ProfileItem label="v2.pages.settings.billing.individual.address">{profile.address}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.country">{profile.country}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.usCitizen">
-        {profile.usCitizen ? (
-          <Translate token="v2.pages.settings.billing.format.boolean.yes" />
-        ) : (
-          <Translate token="v2.pages.settings.billing.format.boolean.no" />
+        {isYesOrNO(
+          <Translate token="v2.pages.settings.billing.format.boolean.yes" />,
+          <Translate token="v2.pages.settings.billing.format.boolean.no" />,
+          profile.usCitizen
         )}
       </ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.individual.identityDocumentType">
