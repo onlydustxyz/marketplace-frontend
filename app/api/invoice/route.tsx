@@ -1,20 +1,18 @@
 import { headers } from "next/headers";
 import { ImageResponse } from "next/og";
-import { ReactElement } from "react";
 
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
-import { ReactElement } from "react";
 import { InvoiceTemplate } from "components/features/invoice-template/invoice-template";
 
 export async function GET() {
-  async function generatePage( content:ReactElement ) {
-    const image = new ImageResponse(content, {
-      width: 794,
-      height: 1123,
-    });
-    return image.blob();
-  }
+  // async function generatePage(content: ReactElement) {
+  //   const image = new ImageResponse(content, {
+  //     width: 794,
+  //     height: 1123,
+  //   });
+  //   return image.blob();
+  // }
 
   const headersList = headers();
 
@@ -26,8 +24,6 @@ export async function GET() {
     logoUrl: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/logo.png`,
     invoiceNumber: "20240208-0052",
   };
-
-  console.log("header", header);
 
   const invoiceTo = {
     name: "My invoice to company",
@@ -99,34 +95,42 @@ export async function GET() {
 
   const total = 85.622;
 
-  const pages = [
-    rewards,
-    rewards
-  ]
-
-  return new Response(await Promise.all(pages.map((page) =>  generatePage(<InvoiceTemplate
-    header={header}
-    invoiceTo={invoiceTo}
-    billTo={billTo}
-    invoiceInfo={invoiceInfo}
-    rewards={page}
-    total={total}
-  />))), { status: 200 });
-
-  // return new ImageResponse(
-  //   (
-  //     <InvoiceTemplate
-  //       header={header}
-  //       invoiceTo={invoiceTo}
-  //       billTo={billTo}
-  //       invoiceInfo={invoiceInfo}
-  //       rewards={rewards}
-  //       total={total}
-  //     />
-  //   ),
+  // const pages: any[][] = [rewards, rewards];
+  //
+  // return new Response(
   //   {
-  //     width: 794,
-  //     height: 1123,
-  //   }
+  //     pages: await Promise.all(
+  //       pages.map(page =>
+  //         generatePage(
+  //           <InvoiceTemplate
+  //             header={header}
+  //             invoiceTo={invoiceTo}
+  //             billTo={billTo}
+  //             invoiceInfo={invoiceInfo}
+  //             rewards={page}
+  //             total={total}
+  //           />
+  //         )
+  //       )
+  //     ),
+  //   },
+  //   { status: 200 }
   // );
+
+  return new ImageResponse(
+    (
+      <InvoiceTemplate
+        header={header}
+        invoiceTo={invoiceTo}
+        billTo={billTo}
+        invoiceInfo={invoiceInfo}
+        rewards={rewards}
+        total={total}
+      />
+    ),
+    {
+      width: 794,
+      height: 1123,
+    }
+  );
 }
