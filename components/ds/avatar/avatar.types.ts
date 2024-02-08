@@ -6,7 +6,7 @@ import { avatarVariants } from "./avatar.variants";
 export namespace TAvatar {
   export type Variants = VariantProps<typeof avatarVariants>;
 
-  export interface Props extends Omit<AvatarProps, "size" | "className">, Variants {
+  export interface Props extends Omit<AvatarProps, "size">, Variants {
     isLoading?: boolean;
   }
 }

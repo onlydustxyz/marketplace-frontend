@@ -17,10 +17,6 @@ export const avatarVariants = tv({
     isLoading: {
       true: "animate-pulse",
     },
-    background: {
-      grey: "bg-greyscale-800",
-      blue: "bg-spaceBlue-800",
-    },
   },
   compoundVariants: [
     {
@@ -77,6 +73,5 @@ export const avatarVariants = tv({
   defaultVariants: {
     size: "m",
     shape: "circle",
-    background: "grey",
   },
 });

@@ -8,12 +8,12 @@ import { avatarVariants } from "components/ds/avatar/avatar.variants";
 
 export function Avatar(props: TAvatar.Props) {
   // size prop needs to be extracted or it conflicts with the size prop from NextAvatar
-  const { size: _size, ...restProps } = props;
+  const { size, className, ...restProps } = props;
 
   return (
     <NextAvatar
       fallback={<img src={IMAGES.logo.space} alt="OnlyDust" loading="lazy" />}
-      className={cn(avatarVariants(props))}
+      className={cn(avatarVariants({ size, ...restProps }), className)}
       imgProps={{ loading: "lazy" }}
       classNames={{
         fallback: "w-full",

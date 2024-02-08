@@ -48,8 +48,7 @@ export const Loading: Story = {
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Avatar {...defaultProps} {...args} isLoading background="grey" />
-        <Avatar {...defaultProps} {...args} isLoading background="blue" />
+        <Avatar {...defaultProps} {...args} isLoading />
       </div>
     );
   },
