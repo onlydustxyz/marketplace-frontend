@@ -15,7 +15,7 @@ import { Tab } from "./tab/tab";
 import { TTabs } from "./tabs.types";
 
 export function Tabs({ tabs, color, border, mobile, controlled }: TTabs.Props) {
-  const [selected, setSelected] = useState<Key>(tabs[1].key);
+  const [selected, setSelected] = useState<Key>(tabs[0]?.key);
   const slots = tabsVariants({ border });
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [openMobilePanel, setOpenMobilePanel] = useState(false);

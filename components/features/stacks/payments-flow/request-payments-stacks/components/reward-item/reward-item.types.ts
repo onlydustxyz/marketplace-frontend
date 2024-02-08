@@ -7,6 +7,7 @@ export namespace TRewardItem {
     currency: components["schemas"]["RewardAmountResponse"];
     projectId: string;
     rewardedOnProjectLogoUrl: string;
+    numberOfRewardedContributions: number;
     rewardedOnProjectName: string;
     type: "exclude" | "include";
     onClick: (id: string) => void;

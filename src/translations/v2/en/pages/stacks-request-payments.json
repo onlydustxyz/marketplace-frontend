@@ -2,13 +2,18 @@
   "title": "Request payment",
   "form": {
     "submit": {
-      "zero": "Select (__count__) reward",
-      "one": "Select (__count__) reward",
-      "many": "Select (__count__) rewards"
+      "zero": "Select __count__ reward",
+      "one": "Select __count__ reward",
+      "many": "Select __count__ rewards"
     },
     "back": "Back"
   },
   "item": {
-    "to": "to"
+    "to": "to",
+    "contributions": {
+      "zero": "__count__ contribution",
+      "one": "__count__ contribution",
+      "many": "__count__ contributions"
+    }
   }
 }
