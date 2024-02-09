@@ -1,11 +1,11 @@
 import { Key } from "src/hooks/useIntl";
 
-import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
+import { TIcon } from "components/layout/icon/icon.types";
 
 export namespace MeBillingTypes {
   export interface statusMapping {
     type: "error" | "warning" | "success";
     label: Key;
-    icon: RemixIconsName;
+    icon: TIcon.Props;
   }
 }

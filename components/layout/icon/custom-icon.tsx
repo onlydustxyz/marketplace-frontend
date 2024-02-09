@@ -1,3 +1,5 @@
+import { VerifiedIcon } from "components/layout/icon/icons/verified";
+
 import { TCustomIcon } from "./custom-icon.types";
 import { ArrowIcon } from "./icons/arrow";
 import { DollarIcon } from "./icons/dollar";
@@ -12,6 +14,7 @@ export function CustomIcon({ name, ...props }: TCustomIcon.Props) {
     galleryLine: <GalleryLineIcon {...props} />,
     arrow: <ArrowIcon {...props} />,
     whale: <WhaleIcon {...props} />,
+    verified: <VerifiedIcon {...props} />,
   };
 
   return <>{customIcons[name as TCustomIcon.Names]}</>;
