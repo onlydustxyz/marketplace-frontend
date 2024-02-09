@@ -20,8 +20,8 @@ export const progressbarVariants = tv({
       },
       orange: {
         base: "",
-        track: "bg-warning-200",
-        indicator: "bg-warning-500",
+        track: "bg-orange-200",
+        indicator: "!bg-orange-500",
         label: "",
         value: "",
       },

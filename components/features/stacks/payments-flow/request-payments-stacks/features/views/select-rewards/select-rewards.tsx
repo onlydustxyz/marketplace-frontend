@@ -1,4 +1,5 @@
-import { Key, useCallback } from "react";
+import { useCurrentUser } from "hooks/users/useCurrentUser";
+import { Key, useCallback, useMemo } from "react";
 
 import { Button } from "components/ds/button/button";
 import { Tabs } from "components/ds/tabs/tabs";
@@ -11,6 +12,17 @@ import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 export function SelectRewards({ onExclude, onInclude, includedRewards, excludedRewards, goTo }: TSelectRewards.Props) {
+  const { user } = useCurrentUser();
+
+  const totalAmountSelectedRewards = useMemo(
+    () => includedRewards.reduce((count, reward) => (count += reward.amount.dollarsEquivalent || 0), 0),
+    [includedRewards]
+  );
+
+  const isOnlyNullRewards = useMemo(
+    () => includedRewards.find(reward => reward.amount.dollarsEquivalent === null),
+    [includedRewards]
+  );
   const onSubmit = () => {
     goTo({ to: TRequestPaymentsStacks.Views.Generate });
   };
@@ -42,7 +54,7 @@ export function SelectRewards({ onExclude, onInclude, includedRewards, excludedR
     <div className="flex h-full flex-col justify-between">
       <div className="flex h-full flex-col overflow-hidden px-1">
         <ScrollView>
-          <div className="px-3 pb-28">
+          <div className="px-3 pb-[250px]">
             <div className="mb-8">
               <Typography
                 variant={"title-m"}
@@ -68,7 +80,7 @@ export function SelectRewards({ onExclude, onInclude, includedRewards, excludedR
             />
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-            <AmountCounter total={1000} />
+            <AmountCounter total={totalAmountSelectedRewards} isCompany={user?.billingProfileType === "COMPANY"} />
             <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
               <div className="flex items-center justify-end gap-5 ">
                 <Button variant="secondary" size="m" onClick={() => goTo({ to: "close" })}>
