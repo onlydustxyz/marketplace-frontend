@@ -1,4 +1,3 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useContext, useEffect, useMemo, useRef } from "react";
 import { useT } from "talkr";
 
@@ -11,6 +10,8 @@ import Flex from "src/components/Utils/Flex";
 import { usePosthog } from "src/hooks/usePosthog";
 
 import { EmptyState } from "components/layout/placeholders/empty-state";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import { Earning } from "./Earning/Earning";
 import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";

@@ -30,6 +30,7 @@
     "./app",
     "./components",
     "./constants",
+    "./hooks",
     "./src",
     ".storybook/**/*.tsx",
     "./dist/types/**/*.ts",

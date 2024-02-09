@@ -1,6 +1,5 @@
 "use client";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useEffect, useState } from "react";
 
 import UsersApi from "src/api/Users";
@@ -9,6 +8,8 @@ import { NotFound } from "src/components/NotFound";
 import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { useShowToaster } from "src/hooks/useToaster";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import View from "./View";
 

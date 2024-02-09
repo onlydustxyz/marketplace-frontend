@@ -12,6 +12,7 @@ import en_features_ecosystems from "src/translations/v2/en/features/ecosystems.j
 import en_features from "src/translations/v2/en/features/features.json";
 import en_features_filters from "src/translations/v2/en/features/filters.json";
 import en_features_leaders from "src/translations/v2/en/features/leaders.json";
+import en_features_menu from "src/translations/v2/en/features/menu.json";
 import en_features_payout_status from "src/translations/v2/en/features/payout-status.json";
 import en_features_sidebar from "src/translations/v2/en/features/sidebar.json";
 import en_features_verify from "src/translations/v2/en/features/verify.json";
@@ -37,6 +38,7 @@ const en = {
       payoutStatus: en_features_payout_status,
       sidebar: en_features_sidebar,
       verify: en_features_verify,
+      menu: en_features_menu,
     },
     pages: {
       projects: en_projects,

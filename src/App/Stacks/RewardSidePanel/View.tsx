@@ -1,5 +1,4 @@
 import { UseMutateFunction } from "@tanstack/react-query";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { PropsWithChildren, useState } from "react";
 import { matchPath, useLocation } from "react-router-dom";
 
@@ -28,6 +27,8 @@ import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";

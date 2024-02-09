@@ -12,7 +12,7 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-import { NEXT_ROUTER } from "constants/router";
+import { TUseMenu } from "hooks/menu/useMenu/useMenu.types";
 
 import { useLogout } from "./Logout.hooks";
 
@@ -28,7 +28,7 @@ const MenuItem = ({ onClick, isProfile, children, ...rest }: MenuItemProps) => (
     className={cn(
       "flex cursor-pointer flex-row items-center gap-3 rounded-md px-4 py-2 font-walsheim text-sm ui-active:bg-white/4",
       {
-        "gap-1 px-3": isProfile,
+        "gap-2 px-3": isProfile,
       }
     )}
     onClick={onClick}
@@ -37,16 +37,24 @@ const MenuItem = ({ onClick, isProfile, children, ...rest }: MenuItemProps) => (
   </Menu.Item>
 );
 
-interface Props {
+interface Props extends TUseMenu.Return {
   avatarUrl: string | null;
   login: string;
-  isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
   openFeedback: () => void;
 }
 
-export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfileItems, openFeedback }: Props) {
+export function View({
+  avatarUrl,
+  login,
+  hideProfileItems,
+  openFeedback,
+  labelToken,
+  redirection,
+  errorColor,
+  error,
+}: Props) {
   const { T } = useIntl();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
@@ -55,14 +63,6 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { handleLogout } = useLogout();
-
-  const getProfileButtonLink = () => {
-    if (isMissingPayoutSettingsInfo) {
-      return NEXT_ROUTER.settings.payout;
-    }
-
-    return NEXT_ROUTER.settings.profile;
-  };
 
   return (
     <div className="relative">
@@ -73,26 +73,31 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
             onMouseEnter={() => setTooltipVisible(true)}
             onMouseLeave={() => setTooltipVisible(false)}
             className={cn(
-              "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
+              "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 outline-greyscale-50/12 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
               {
-                "outline-greyscale-50/12": !isMissingPayoutSettingsInfo,
-                "outline-orange-500": isMissingPayoutSettingsInfo,
+                "outline-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+                "outline-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
               }
             )}
             data-testid="profile-button"
-            {...withTooltip(T("profile.button.payoutSettingsInvalidTooltip"), {
-              visible: isMissingPayoutSettingsInfo && tooltipVisible && !menuItemsVisible,
+            {...withTooltip(T("v2.features.menu.tooltip.unableToReceiveRewards"), {
+              visible: error !== undefined && tooltipVisible && !menuItemsVisible,
             })}
           >
-            {avatarUrl && (
-              <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
-            )}
+            {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={login} />}
 
-            <Typography variant="title-s" className={cn("text-sm leading-4", { "mr-1": !isMissingPayoutSettingsInfo })}>
+            <Typography variant="title-s" className={cn("text-sm leading-4", { "mr-1": !error })}>
               {login}
             </Typography>
 
-            {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
+            {error && (
+              <ErrorWarningLine
+                className={cn("text-xl text-spaceBlue-200", {
+                  "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+                  "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
+                })}
+              />
+            )}
           </Menu.Button>
         </div>
 
@@ -114,10 +119,10 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
           >
             {!hideProfileItems && (
               <div>
-                <NavLink to={getProfileButtonLink()}>
+                <NavLink to={redirection}>
                   <MenuItem isProfile>
                     {avatarUrl ? (
-                      <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
+                      <img className="h-7 w-7 rounded-full" src={avatarUrl} loading="lazy" alt={login} />
                     ) : null}
 
                     <Flex direction="col" alignItems="start">
@@ -128,13 +133,11 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
                       <Typography
                         variant="body-s"
                         translate={{
-                          token: isMissingPayoutSettingsInfo
-                            ? "navbar.profile.missingPayoutInformation"
-                            : "navbar.profile.manage",
+                          token: labelToken,
                         }}
-                        className={cn({
-                          "text-spaceBlue-200": !isMissingPayoutSettingsInfo,
-                          "text-orange-500": isMissingPayoutSettingsInfo,
+                        className={cn("text-spaceBlue-200", {
+                          "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+                          "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
                         })}
                       />
                     </Flex>
@@ -148,17 +151,17 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
             <div>
               <MenuItem onClick={openFeedback}>
                 <Icon remixName="ri-discuss-line" size={20} />
-                <div className="grow">{T("navbar.feedback.button")}</div>
+                <div className="grow">{T("v2.features.menu.feedback")}</div>
               </MenuItem>
 
               <MenuItem onClick={openFullTermsAndConditions}>
                 <Icon remixName="ri-bill-line" size={20} />
-                <div className="grow">{T("navbar.termsAndConditions")}</div>
+                <div className="grow">{T("v2.features.menu.terms")}</div>
               </MenuItem>
 
               <MenuItem onClick={openPrivacyPolicy}>
                 <Icon remixName="ri-lock-line" size={20} />
-                <div className="grow">{T("navbar.privacyPolicy")}</div>
+                <div className="grow">{T("v2.features.menu.privacy")}</div>
               </MenuItem>
 
               <span className="my-1 block h-px bg-greyscale-50/8" />
@@ -167,7 +170,7 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
             <div>
               <MenuItem onClick={handleLogout}>
                 <Icon remixName="ri-logout-box-r-line" size={20} />
-                <div className="grow">{T("navbar.logout")}</div>
+                <div className="grow">{T("v2.features.menu.logout")}</div>
               </MenuItem>
             </div>
           </Menu.Items>
