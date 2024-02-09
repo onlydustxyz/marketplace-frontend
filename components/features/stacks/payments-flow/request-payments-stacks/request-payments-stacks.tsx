@@ -13,13 +13,22 @@ export function RequestPaymentsStacks() {
   const [, closeRequestPanel] = useStackRequestPayments();
   const { data } = MeApi.queries.useGetMePendingInvoices({});
 
+  const excludeNonLiquidToken = useMemo(
+    () =>
+      (data?.rewards || []).filter(
+        reward => !!reward.amount.dollarsEquivalent || reward.amount.dollarsEquivalent === 0
+      ),
+    [data]
+  );
+
   const excludedRewards = useMemo(
-    () => (data?.rewards || []).filter(reward => excludedRewardsIds.includes(reward.id)),
+    () => excludeNonLiquidToken.filter(reward => excludedRewardsIds.includes(reward.id)),
     [data, excludedRewardsIds]
   );
+
   const includedRewards = useMemo(
-    () => (data?.rewards || []).filter(reward => !excludedRewardsIds.includes(reward.id)),
-    [data, excludedRewardsIds]
+    () => excludeNonLiquidToken.filter(reward => !excludedRewardsIds.includes(reward.id)),
+    [excludeNonLiquidToken, excludedRewardsIds]
   );
 
   function onExclude(id: string) {

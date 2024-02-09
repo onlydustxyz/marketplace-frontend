@@ -19,17 +19,13 @@ export function SelectRewards({ onExclude, onInclude, includedRewards, excludedR
     [includedRewards]
   );
 
-  const isOnlyNullRewards = useMemo(
-    () => includedRewards.find(reward => reward.amount.dollarsEquivalent === null),
-    [includedRewards]
-  );
   const onSubmit = () => {
     goTo({ to: TRequestPaymentsStacks.Views.Generate });
   };
 
   const getTabContent = useCallback(
-    (selected: Key) => {
-      if (selected === "included") {
+    (selected: TSelectRewards.Tabs) => {
+      if (selected === TSelectRewards.Tabs.Included) {
         return (
           <div className="flex w-full flex-col items-start justify-start gap-3">
             {includedRewards.map(reward => (
@@ -37,7 +33,7 @@ export function SelectRewards({ onExclude, onInclude, includedRewards, excludedR
             ))}
           </div>
         );
-      } else if (selected === "excluded") {
+      } else if (selected === TSelectRewards.Tabs.Excluded) {
         return (
           <div className="flex w-full flex-col items-start justify-start gap-3">
             {excludedRewards.map(reward => (
@@ -65,14 +61,14 @@ export function SelectRewards({ onExclude, onInclude, includedRewards, excludedR
             <Tabs
               tabs={[
                 {
-                  content: "included",
-                  key: "included",
+                  content: <Translate token="v2.pages.stacks.request_payments.tabs.included" />,
+                  key: TSelectRewards.Tabs.Included,
                   icon: { remixName: "ri-check-line" },
                   children: getTabContent,
                 },
                 {
-                  content: "excluded",
-                  key: "excluded",
+                  content: <Translate token="v2.pages.stacks.request_payments.tabs.excluded" />,
+                  key: TSelectRewards.Tabs.Excluded,
                   children: getTabContent,
                   icon: { remixName: "ri-close-line" },
                 },
