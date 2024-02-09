@@ -7,6 +7,8 @@ export function Tooltip({ as: Component = "div", children, ...props }: TTooltip.
     <NextUiTooltip
       {...props}
       showArrow={true}
+      closeDelay={50}
+      shouldCloseOnBlur={true}
       classNames={{
         base: "before:bg-greyscale-800",
         content: "px-3 py-2 bg-greyscale-800 od-text-body-s text-greyscale-50 rounded-lg shadow-md font-walsheim",

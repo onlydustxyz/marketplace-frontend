@@ -1,12 +1,12 @@
 import isDefined from "src/utils/isDefined";
 
-import { ThumbnailGroup } from "components/ds/thumbnail-group/thumbnail-group";
+import { AvatarGroup } from "components/ds/avatar-group/avatar-group";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { Contributor } from "components/features/contributor/contributor";
 
 import { TContributorsAvatars } from "./contributors-avatars.types";
 
-export function ContributorsAvatars({ contributors, ...variant }: TContributorsAvatars.Props) {
+export function ContributorsAvatars({ contributors, avatarProps }: TContributorsAvatars.Props) {
   function contributorsContent() {
     return (
       <div className="flex flex-row flex-wrap items-center gap-4 text-snow">
@@ -31,15 +31,14 @@ export function ContributorsAvatars({ contributors, ...variant }: TContributorsA
 
   return (
     <Tooltip content={contributorsContent()}>
-      <ThumbnailGroup
-        thumbnails={contributors.map(contributor => ({
+      <AvatarGroup
+        avatars={contributors.map(contributor => ({
           src: contributor.avatarUrl
             ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_W_100_PREFIX}${contributor.avatarUrl}`
             : "",
           alt: contributor.login || "",
         }))}
-        size="xs"
-        {...variant}
+        avatarProps={avatarProps}
       />
     </Tooltip>
   );

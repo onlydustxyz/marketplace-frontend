@@ -8,8 +8,8 @@ import { RoutePaths } from "src/App";
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import { cn } from "src/utils/cn";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { MenuItem } from "components/layout/sidebar/menu-item/menu-item";
@@ -71,7 +71,7 @@ export function Sidebar() {
             </Button>
           </NavLink>
           <div className="flex items-center gap-2 font-belwe text-2xl">
-            <Thumbnail defaultSrc src={user?.avatarUrl || ""} alt="Project Logo" size="m" />
+            <Avatar src={user?.avatarUrl || ""} alt={user?.login} size="m" />
             <div className="line-clamp-1">{user?.login}</div>
           </div>
         </div>

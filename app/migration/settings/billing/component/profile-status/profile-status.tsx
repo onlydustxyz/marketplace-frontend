@@ -22,7 +22,7 @@ export function ProfileStatus({ status, hasValidBillingProfile }: TProfileStatus
     <Tag>
       <Icon
         className={cn({ "text-orange-500": isWarning, "text-spacePurple-500": isSuccess, "text-red-500": isError })}
-        remixName={statusMapping.icon}
+        {...statusMapping.icon}
         size={14}
       />
       <Translate token={statusMapping.label} />

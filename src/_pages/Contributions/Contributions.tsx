@@ -200,8 +200,8 @@ export default function Contributions() {
   return (
     <>
       <SEO />
-      <div className="h-full overflow-y-auto px-6 pb-6">
-        <div className="h-full w-full overflow-y-auto rounded-3xl bg-contributions bg-right-top bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+      <div className="od-space-background h-full overflow-y-auto pb-6">
+        <div className="h-full w-full overflow-y-auto scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
           <div className="relative min-h-full">
             <div className="bg-transparency-gradiant absolute inset-0" />
             <div className="relative z-10">

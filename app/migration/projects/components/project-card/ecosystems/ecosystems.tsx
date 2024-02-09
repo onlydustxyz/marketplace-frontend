@@ -27,7 +27,7 @@ export function Ecosystems({ ecosystems }: TEcosystems.Props) {
 
   return (
     <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
-      <EcosystemsLogos ecosystems={ecosystems} />
+      <EcosystemsLogos ecosystems={ecosystems} avatarProps={{ size: "xs" }} />
 
       <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
         {ecosystems.length > 1 ? (
