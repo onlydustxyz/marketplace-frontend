@@ -1,17 +1,25 @@
 import { renderToStream } from "@react-pdf/renderer";
+import { MeActions } from "actions/me/me.actions";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
+import { MeTypes } from "src/api/me/types";
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { InvoiceTemplate } from "components/features/invoice-template/invoice-template";
+import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 
 export async function GET() {
-  // const headersList = headers();
-  // const token = headersList.get("authorization");
+  const headersList = headers();
+  const token = headersList.get("authorization");
+  const userInfo = await MeActions.queries.retrieveMeInformations({ accessToken: token ?? "" });
+
+  const isUserIndividual = userInfo?.billingProfileType === MeTypes.billingProfileType.Individual;
+  console.log("userInfo ===>", userInfo);
   // const { rewards } = await MeActions.queries.retrieveRewardsPendingInvoices({ accessToken: token ?? "" });
 
-  const header = {
-    logoUrl: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/logo.png`,
+  const header: TInvoice.HeaderProps = {
+    type: isUserIndividual ? "receipt" : "invoice",
     invoiceNumber: "20240208-0052",
   };
 
@@ -390,7 +398,7 @@ export async function GET() {
     },
   ];
 
-  const rewardSummary = {
+  const rewardSummary: TInvoice.RewardsSummaryProps = {
     rewards,
     total: 85.622,
   };

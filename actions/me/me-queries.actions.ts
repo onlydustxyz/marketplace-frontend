@@ -5,6 +5,15 @@ import { BaseQueriesOptions } from "actions/type.actions";
 
 import { components } from "src/__generated/api";
 
+export type MeInformations = components["schemas"]["GetMeResponse"];
+export async function retrieveMeInformations(options?: BaseQueriesOptions) {
+  "use server";
+  return BaseQueries<MeInformations>(ACTION_PATH.ME, {
+    provideTag: [MeActionTags.user()],
+    ...(options || {}),
+  });
+}
+
 export type PendingInvoiceResponse = components["schemas"]["MyRewardPageItemResponse"][];
 
 export async function retrieveRewardsPendingInvoices(options?: BaseQueriesOptions) {
@@ -17,4 +26,5 @@ export async function retrieveRewardsPendingInvoices(options?: BaseQueriesOption
 
 export default {
   retrieveRewardsPendingInvoices,
+  retrieveMeInformations,
 };

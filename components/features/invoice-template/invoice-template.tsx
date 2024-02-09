@@ -26,7 +26,7 @@ export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }:
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <InvoiceHeader invoiceNumber={header.invoiceNumber} />
+        <InvoiceHeader type={header.type} invoiceNumber={header.invoiceNumber} />
         <InvoiceInfo
           senderInfos={invoiceInfos.senderInfos}
           recipientInfos={invoiceInfos.recipientInfos}

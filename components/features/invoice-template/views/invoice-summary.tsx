@@ -21,7 +21,7 @@ export function InvoiceSummary({ rewards, total }: TInvoice.RewardsSummaryProps)
               <Text style={styles.td}>
                 {item.amount.total} {item.amount.currency}
               </Text>
-              <Text style={styles.td}>{item.amount.dollarsEquivalent?.toFixed(3)} USC</Text>
+              <Text style={styles.td}>{item.amount.dollarsEquivalent?.toFixed(3)} USD</Text>
             </View>
           ))}
           <View style={styles.tr}>

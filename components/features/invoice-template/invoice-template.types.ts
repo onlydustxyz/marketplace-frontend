@@ -1,6 +1,7 @@
 import { PendingInvoiceResponse } from "actions/me/me-queries.actions";
 
 export namespace TInvoice {
+  type documentType = "invoice" | "receipt";
   interface SenderInfo {
     name: string;
     address: string;
@@ -20,6 +21,7 @@ export namespace TInvoice {
   export interface Rewards extends PendingInvoiceResponse {}
 
   export interface HeaderProps {
+    type: documentType;
     invoiceNumber: string;
   }
 
