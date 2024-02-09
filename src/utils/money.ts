@@ -19,14 +19,14 @@ export const formatMoneyAmount = ({
 }: Params) => {
   switch (currency) {
     case Currency.USD:
-      return Intl.NumberFormat("en-US", {
-        style: showCurrency ? "currency" : undefined,
-        currency: showCurrency ? currency : undefined,
+      return `${Intl.NumberFormat("en-US", {
+        //style: showCurrency ? "currency" : undefined,
+        //currency: showCurrency ? currency : undefined,
         maximumFractionDigits: maximumFractionDigits({ amount, notation }),
         notation,
       })
         .format(amount)
-        .replace("K", "k");
+        .replace("K", "k")}${showCurrency ? ` ${currency}` : ""}`;
     default:
       return `${Intl.NumberFormat("en-US", {
         // maximumFractionDigits: maximumFractionDigits({ amount, notation }), // keep this but we need to disable because when don't want to round for crypto
