@@ -6,7 +6,6 @@ import { Typography } from "components/layout/typography/typography";
 import Section, { SectionIcon } from "./OverviewSection";
 
 interface Props {
-  // TODO get ecosystems type when it's available
   technologies: UseGetProjectBySlugResponse["technologies"];
 }
 
