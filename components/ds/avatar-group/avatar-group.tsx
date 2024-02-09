@@ -6,7 +6,7 @@ import { Avatar } from "components/ds/avatar/avatar";
 
 export function AvatarGroup({ avatars, avatarProps, className, ...props }: TAvatarGroup.Props) {
   return (
-    <div className={cn(avatarGroupVariants({ ...props, size: avatarProps.size }), className)}>
+    <div className={cn(avatarGroupVariants({ ...props, size: avatarProps?.size }), className)}>
       {avatars.map((avatar, index) => (
         <Avatar
           key={index}

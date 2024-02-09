@@ -8,7 +8,7 @@ export namespace TAvatarGroup {
   export type Variants = VariantProps<typeof avatarGroupVariants>;
   export interface Props extends Omit<Variants, "size"> {
     avatars: TAvatar.Props[];
-    avatarProps: TAvatar.Variants;
+    avatarProps?: TAvatar.Variants;
     className?: string;
   }
 }
