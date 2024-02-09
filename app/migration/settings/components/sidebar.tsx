@@ -22,6 +22,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 import { useSettingsError } from "hooks/users/useSettingsError/useSettingsError";
+import { TUseSettingsError } from "hooks/users/useSettingsError/useSettingsError.types";
 
 export function Sidebar() {
   const { isAuthenticated } = useAuth0();
@@ -40,13 +41,13 @@ export function Sidebar() {
         label: <Translate token="v2.features.sidebar.settings.billingProfile" />,
         href: NEXT_ROUTER.settings.billing,
         endIcon:
-          error === "BILLING_WARNING" || error === "BILLING_ERROR" ? (
+          error === TUseSettingsError.ERRORS.BILLING_WARNING || error === TUseSettingsError.ERRORS.BILLING_ERROR ? (
             <Icon
               size={16}
               remixName="ri-error-warning-line"
               className={cn({
-                "text-orange-500": error === "BILLING_WARNING",
-                "text-github-red": error === "BILLING_ERROR",
+                "text-orange-500": error === TUseSettingsError.ERRORS.BILLING_WARNING,
+                "text-github-red": error === TUseSettingsError.ERRORS.BILLING_ERROR,
               })}
             />
           ) : null,
@@ -55,7 +56,9 @@ export function Sidebar() {
         label: <Translate token="v2.features.sidebar.settings.paymentMethods" />,
         href: NEXT_ROUTER.settings.payout,
         endIcon:
-          error === "PAYOUT" ? <Icon size={16} remixName="ri-error-warning-line" className="text-orange-500" /> : null,
+          error === TUseSettingsError.ERRORS.PAYOUT ? (
+            <Icon size={16} remixName="ri-error-warning-line" className="text-orange-500" />
+          ) : null,
       },
     ],
     [error]
