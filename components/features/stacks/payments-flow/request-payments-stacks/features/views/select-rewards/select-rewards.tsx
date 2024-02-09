@@ -1,5 +1,5 @@
 import { useCurrentUser } from "hooks/users/useCurrentUser";
-import { Key, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 import { Button } from "components/ds/button/button";
 import { Tabs } from "components/ds/tabs/tabs";

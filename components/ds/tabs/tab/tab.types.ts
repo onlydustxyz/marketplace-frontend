@@ -10,10 +10,10 @@ export namespace TTab {
   export type Variants = VariantProps<typeof tabVariants>;
   export type BaseProps = Omit<TabItemProps, "color" | "children">;
 
-  export interface Props extends Variants, BaseProps {
+  export interface Props<T extends Key> extends Variants, BaseProps {
     icon?: TIcon.Props;
     content: ReactNode;
-    key: Key;
-    children?: (selected: Key) => ReactNode;
+    key: T;
+    children?: (selected: T) => ReactNode;
   }
 }

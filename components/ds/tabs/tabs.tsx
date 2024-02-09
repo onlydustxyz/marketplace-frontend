@@ -14,7 +14,7 @@ import { tabsVariants } from "components/ds/tabs/tabs.variants";
 import { Tab } from "./tab/tab";
 import { TTabs } from "./tabs.types";
 
-export function Tabs({ tabs, color, border, mobile, controlled }: TTabs.Props) {
+export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled }: TTabs.Props<T>) {
   const [selected, setSelected] = useState<Key>(tabs[0]?.key);
   const slots = tabsVariants({ border });
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -22,7 +22,7 @@ export function Tabs({ tabs, color, border, mobile, controlled }: TTabs.Props) {
 
   function onSelectTab(tab: Key) {
     if (controlled) {
-      controlled.onSelect(tab);
+      controlled.onSelect(tab as T);
     } else {
       setSelected(tab);
     }
@@ -77,7 +77,7 @@ export function Tabs({ tabs, color, border, mobile, controlled }: TTabs.Props) {
     >
       {tabs.map(t => (
         <NextTab {...t} key={t.key} title={<Tab color={color} {...t} />}>
-          {t.children?.(selected)}
+          {t.children?.(selected as T)}
         </NextTab>
       ))}
     </NextTabs>
