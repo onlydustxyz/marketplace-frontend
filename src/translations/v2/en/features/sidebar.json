@@ -3,6 +3,7 @@
     "publicProfile": "Profile",
     "payoutPreferences": "Payout preferences",
     "verifyAccount": "Verify account",
-    "billingProfile": "Billing profile"
+    "billingProfile": "Billing profile",
+    "invoices": "Invoices"
   }
 }

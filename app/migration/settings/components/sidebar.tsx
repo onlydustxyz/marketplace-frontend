@@ -60,6 +60,10 @@ export function Sidebar() {
             />
           ) : undefined,
       },
+      {
+        label: <Translate token="v2.features.sidebar.settings.invoices" />,
+        href: NEXT_ROUTER.settings.invoices,
+      },
     ],
     [isWarning, isError]
   );

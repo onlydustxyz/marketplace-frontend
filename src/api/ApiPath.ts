@@ -50,7 +50,7 @@ export const API_PATH = {
   ME: BASE_API_V1("me"),
   ME_REWARDS: BASE_API_V1("me/rewards"),
   ME_REWARD_DETAIL: (rewardId: string) => BASE_API_V1(`me/rewards/${rewardId}`),
-  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoice-template"),
+  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoices-template"),
   ME_GITHUB_ORGANIZATIONS: BASE_API_V1("me/organizations"),
   MY_CONTRIBUTED_PROJECTS: BASE_API_V1("me/contributed-projects"),
   MY_CONTRIBUTED_REPOS: BASE_API_V1("me/contributed-repos"),

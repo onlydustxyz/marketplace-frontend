@@ -5,7 +5,7 @@ import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { InvoiceTemplate } from "components/features/invoice-template/invoice-template";
 
-export async function GET(request: Request) {
+export async function GET() {
   // const headersList = headers();
   // const token = headersList.get("authorization");
   // const { rewards } = await MeActions.queries.retrieveRewardsPendingInvoices({ accessToken: token ?? "" });
@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 
   const invoiceInfo = {
     senderInfos: {
-      name: "My invoice to company",
+      name: "My invoices to company",
       address: "1 rue de la combatte, Grandvillars, France, 90600",
     },
     recipientInfos: {
@@ -404,7 +404,7 @@ export async function GET(request: Request) {
     <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />
   );
 
-  return new NextResponse(stream, {
+  return new NextResponse(stream as unknown as BodyInit, {
     headers: {
       "Content-Type": "application/pdf",
     },
