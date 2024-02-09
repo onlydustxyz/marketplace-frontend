@@ -2,7 +2,7 @@ import { Input as NextInput } from "@nextui-org/react";
 
 import { TInput } from "./input.types";
 
-export function Input({ ...props }: TInput.Props) {
+export function Input(props: TInput.Props) {
   return (
     <NextInput
       className="h-fit flex-col items-start gap-2"

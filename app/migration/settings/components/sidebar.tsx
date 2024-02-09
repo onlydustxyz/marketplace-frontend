@@ -20,8 +20,8 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser";
-import { useSettingsError } from "hooks/users/useSettingsError";
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useSettingsError } from "hooks/users/useSettingsError/useSettingsError";
 
 export function Sidebar() {
   const { isAuthenticated } = useAuth0();

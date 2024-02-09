@@ -4,12 +4,15 @@ import { Tag } from "components/ds/tag/tag";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-import { useBillingStatus } from "hooks/users/useBillingStatus";
+import { useBillingStatus } from "hooks/users/useBillingStatus/useBillingStatus";
 
 import { TProfileStatus } from "./profile-status.types";
 
 export function ProfileStatus({ status, hasValidBillingProfile }: TProfileStatus.Props) {
-  const { statusMapping, isWarning, isError, isSuccess } = useBillingStatus(hasValidBillingProfile, status);
+  const { statusMapping, isWarning, isError, isSuccess } = useBillingStatus({
+    status,
+    hasValidBillingProfile,
+  });
 
   if (!statusMapping) {
     return null;

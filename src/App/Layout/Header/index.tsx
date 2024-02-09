@@ -10,7 +10,7 @@ import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore
 
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser";
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import View from "./View";
 

@@ -1,4 +1,3 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { debounce, uniqWith } from "lodash";
 import { FC, useContext, useMemo, useState } from "react";
 
@@ -8,6 +7,8 @@ import { Combobox, Variant } from "src/components/New/Field/Combobox/Combobox";
 import { ItemType } from "src/components/New/Field/Combobox/MultiList";
 import { FieldLabel } from "src/components/New/Field/Label";
 import { useIntl } from "src/hooks/useIntl";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
 import { FieldProjectLeadItem } from "./ProjectLeadItem";

@@ -12,7 +12,7 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-import { UseMenuReturn } from "hooks/menu/useMenu";
+import { TUseMenu } from "hooks/menu/useMenu/useMenu.types";
 
 import { useLogout } from "./Logout.hooks";
 
@@ -37,7 +37,7 @@ const MenuItem = ({ onClick, isProfile, children, ...rest }: MenuItemProps) => (
   </Menu.Item>
 );
 
-interface Props extends UseMenuReturn {
+interface Props extends TUseMenu.Return {
   avatarUrl: string | null;
   login: string;
   githubUserId?: number;
@@ -50,9 +50,9 @@ export function View({
   login,
   hideProfileItems,
   openFeedback,
-  color,
   labelToken,
   redirection,
+  errorColor,
   error,
 }: Props) {
   const { T } = useIntl();
@@ -73,11 +73,10 @@ export function View({
             onMouseEnter={() => setTooltipVisible(true)}
             onMouseLeave={() => setTooltipVisible(false)}
             className={cn(
-              "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
+              "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 outline-greyscale-50/12 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
               {
-                "outline-greyscale-50/12": color === "DEFAULT",
-                "outline-orange-500": color === "WARNING",
-                "outline-github-red": color === "ERROR",
+                "outline-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+                "outline-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
               }
             )}
             data-testid="profile-button"
@@ -93,10 +92,9 @@ export function View({
 
             {error && (
               <ErrorWarningLine
-                className={cn("text-xl", {
-                  "text-spaceBlue-200": color === "DEFAULT",
-                  "text-orange-500": color === "WARNING",
-                  "text-github-red": color === "ERROR",
+                className={cn("text-xl text-spaceBlue-200", {
+                  "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+                  "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
                 })}
               />
             )}
@@ -137,10 +135,9 @@ export function View({
                         translate={{
                           token: labelToken,
                         }}
-                        className={cn({
-                          "text-spaceBlue-200": color === "DEFAULT",
-                          "text-orange-500": color === "WARNING",
-                          "text-github-red": color === "ERROR",
+                        className={cn("text-spaceBlue-200", {
+                          "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+                          "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
                         })}
                       />
                     </Flex>

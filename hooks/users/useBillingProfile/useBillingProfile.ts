@@ -1,21 +1,12 @@
 import { useMemo } from "react";
 
 import MeApi from "src/api/me";
-import { UseBillingProfileResponse } from "src/api/me/billing/queries";
-import { UseGetUserMeResponse } from "src/api/me/queries";
 import { MeTypes } from "src/api/me/types";
 
-import { useCurrentUser } from "./useCurrentUser";
+import { useCurrentUser } from "../useCurrentUser/useCurrentUser";
+import { TUseBillingProfile } from "./useBillingProfile.types";
 
-export interface UseBillingStatus {
-  billingProfile: UseBillingProfileResponse | undefined;
-  user: UseGetUserMeResponse | undefined;
-  profileType: MeTypes.billingProfileType;
-  isIndividual: boolean;
-  isCompany: boolean;
-  validBillingProfile: boolean;
-}
-export const useBillingProfiles = (): UseBillingStatus => {
+export const useBillingProfiles = (): TUseBillingProfile.Return => {
   const { user } = useCurrentUser();
   const { data } = MeApi.billing.queries.useBillingProfile({
     params: { profile: user?.billingProfileType },

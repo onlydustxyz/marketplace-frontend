@@ -5,14 +5,14 @@ import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
 import { viewportConfig } from "src/config";
 
-import { useMenu } from "hooks/menu/useMenu";
+import { useMenu } from "hooks/menu/useMenu/useMenu";
 
 import FeedbackButton from "../FeedbackButton";
 import { View } from "./View";
 import { ViewMobile } from "./ViewMobile";
 
 const ProfileButton = () => {
-  const { color, labelToken, redirection, error } = useMenu();
+  const { labelToken, redirection, errorColor, error } = useMenu();
 
   const feedbackButtonRef = useRef<{ open: () => void }>(null);
 
@@ -32,9 +32,9 @@ const ProfileButton = () => {
     githubUserId,
     avatarUrl,
     login,
-    color,
     labelToken,
     redirection,
+    errorColor,
     error,
     hideProfileItems: onboardingInProgress,
     openFeedback,

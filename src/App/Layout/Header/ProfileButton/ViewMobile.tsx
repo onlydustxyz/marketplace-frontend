@@ -15,11 +15,11 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-import { UseMenuReturn } from "hooks/menu/useMenu";
+import { TUseMenu } from "hooks/menu/useMenu/useMenu.types";
 
 import { useLogout } from "./Logout.hooks";
 
-interface Props extends UseMenuReturn {
+interface Props extends TUseMenu.Return {
   avatarUrl: string | null;
   login: string;
   githubUserId?: number;
@@ -33,9 +33,9 @@ export function ViewMobile({
   githubUserId,
   hideProfileItems,
   openFeedback,
-  color,
   labelToken,
   redirection,
+  errorColor,
   error,
 }: Props) {
   const { T } = useIntl();
@@ -62,19 +62,20 @@ export function ViewMobile({
     <>
       <button
         onClick={() => setPanelOpen(true)}
-        className={cn("flex items-center justify-center gap-2 rounded-full border px-2 py-1.5 font-walsheim text-sm", {
-          "border-greyscale-50/12": color === "DEFAULT",
-          "border-orange-500": color === "WARNING",
-          "border-github-red": color === "ERROR",
-        })}
+        className={cn(
+          "flex items-center justify-center gap-2 rounded-full border border-greyscale-50/12 px-2 py-1.5 font-walsheim text-sm",
+          {
+            "border-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+            "border-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
+          }
+        )}
       >
         {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={login} />}
         {error && (
           <ErrorWarningLine
-            className={cn("text-xl", {
-              "text-spaceBlue-200": color === "DEFAULT",
-              "text-orange-500": color === "WARNING",
-              "text-github-red": color === "ERROR",
+            className={cn("text-xl text-spaceBlue-200", {
+              "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+              "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
             })}
           />
         )}
@@ -104,10 +105,9 @@ export function ViewMobile({
                       translate={{
                         token: labelToken,
                       }}
-                      className={cn({
-                        "text-spaceBlue-200": color === "DEFAULT",
-                        "text-orange-500": color === "WARNING",
-                        "text-github-red": color === "ERROR",
+                      className={cn("text-spaceBlue-200", {
+                        "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+                        "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
                       })}
                     />
                   </Flex>

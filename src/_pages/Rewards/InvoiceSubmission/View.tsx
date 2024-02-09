@@ -1,5 +1,4 @@
 import { SliderButton } from "@typeform/embed-react";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import MeApi from "src/api/me";
@@ -16,6 +15,8 @@ import { formatDate } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import { MyBillingProfileType, MyRewardsPendingInvoiceType } from ".";
 

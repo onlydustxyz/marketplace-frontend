@@ -7,12 +7,16 @@ import { TBanner } from "components/ds/banner/banner.types";
 import { Button } from "components/ds/button/button";
 import { Translate } from "components/layout/translate/translate";
 
-import { useBillingStatus } from "hooks/users/useBillingStatus";
+import { useBillingStatus } from "hooks/users/useBillingStatus/useBillingStatus";
 
 import { TProfileBanner } from "./profile-banner.types";
 
 export function ProfileBanner({ children, hasValidBillingProfile, status, type, id }: TProfileBanner.Props) {
-  const { statusMapping, isWarning, isError, isSuccess, isRainbow } = useBillingStatus(hasValidBillingProfile, status);
+  const { statusMapping, isWarning, isError, isSuccess, isRainbow } = useBillingStatus({
+    status,
+    hasValidBillingProfile,
+  });
+
   const button = useBillingButton({ status, id, type });
 
   const bannerVariant: TBanner.Variants["variant"] = useMemo(() => {

@@ -2,7 +2,7 @@ import { Textarea as NextTextarea } from "@nextui-org/react";
 
 import { TTextarea } from "./textarea.types";
 
-export function Textarea({ ...props }: TTextarea.Props) {
+export function Textarea(props: TTextarea.Props) {
   return (
     <NextTextarea
       className="h-fit flex-col items-start gap-2"
