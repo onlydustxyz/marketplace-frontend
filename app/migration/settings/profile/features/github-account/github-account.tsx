@@ -50,14 +50,7 @@ export function ProfileGithubAccount() {
           </Flex>
 
           <Flex alignItems="center" className="gap-3">
-            <Button
-              variant="secondary"
-              size="s"
-              className={cn({
-                "border-spacePurple-500 text-spacePurple-500": isRefetching || isLoading,
-              })}
-              onClick={onTriggerResync}
-            >
+            <Button variant="secondary" size="s" disabled={isRefetching || isLoading} onClick={onTriggerResync}>
               <Icon
                 remixName="ri-refresh-line"
                 className={cn({ "animate-spin text-spacePurple-300": isRefetching || isLoading })}
