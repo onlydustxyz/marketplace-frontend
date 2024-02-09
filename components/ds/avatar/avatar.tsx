@@ -17,6 +17,7 @@ export function Avatar(props: TAvatar.Props) {
       imgProps={{ loading: "lazy" }}
       classNames={{
         fallback: "w-full",
+        img: "bg-greyscale-900",
       }}
       {...restProps}
     />

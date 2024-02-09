@@ -1,14 +1,19 @@
 import { cn } from "src/utils/cn";
 
-import { TThumbnailGroup } from "components/ds/thumbnail-group/thumbnail-group.types";
-import { thumbnailGroupVariants } from "components/ds/thumbnail-group/thumbnail-group.variants";
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+import { TAvatarGroup } from "components/ds/avatar-group/avatar-group.types";
+import { avatarGroupVariants } from "components/ds/avatar-group/avatar-group.variants";
+import { Avatar } from "components/ds/avatar/avatar";
 
-export function AvatarGroup({ thumbnails, className, defaultSrc = true, ...props }: TThumbnailGroup.Props) {
+export function AvatarGroup({ avatars, avatarProps, className, ...props }: TAvatarGroup.Props) {
   return (
-    <div className={cn(thumbnailGroupVariants({ ...props }), className)}>
-      {thumbnails.map((thumbnail, index) => (
-        <Thumbnail key={`thumbnail-${index}`} {...thumbnail} {...props} defaultSrc={defaultSrc} />
+    <div className={cn(avatarGroupVariants({ ...props, size: avatarProps.size }), className)}>
+      {avatars.map((avatar, index) => (
+        <Avatar
+          key={index}
+          {...avatar}
+          {...avatarProps}
+          className="transition-transform hover:-translate-x-1/4 hover:last:translate-x-0"
+        />
       ))}
     </div>
   );
