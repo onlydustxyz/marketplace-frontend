@@ -62,6 +62,7 @@ export function EarningCard({
 
   return (
     <Card
+      background={"base"}
       className={cn("group px-4 py-5 transition-all lg:px-4 lg:py-5", {
         "relative z-[1] overflow-hidden": type === CardTypes.AmountRewarded,
         "cursor-pointer": !!onClick,

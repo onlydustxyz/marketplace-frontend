@@ -12,17 +12,18 @@ export function Card({
   children,
   ...props
 }: TCard.Props) {
+  const isClickable = !!onClick || !!href || props.clickable;
   return (
     <Component
       className={cn(
         cardVariants({
           ...props,
-          cursor: !!onClick || !!href,
-          clickable: !!onClick || !!href,
+          cursor: isClickable,
+          clickable: isClickable,
         }),
         {
           "duration-200 ease-in hover:border hover:border-card-border-heavy":
-            (onClick || href) && props.border !== "multiColor",
+            isClickable && props.border !== "multiColor",
         },
         className
       )}
@@ -30,7 +31,7 @@ export function Card({
       onClick={onClick}
       href={href}
     >
-      {onClick || href ? (
+      {isClickable ? (
         <div
           className={cn(
             "absolute right-0 top-0 -z-[1] h-full w-full overflow-hidden rounded-2xl after:transition-all",
