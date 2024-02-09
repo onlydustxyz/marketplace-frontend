@@ -2,9 +2,12 @@
   "title": "Profile",
   "subtitle": "You can edit all your information here.",
   "githubAccount": {
-    "title": "Connected Github account",
-    "subtitle": "To change your GitHub username or email, edit your account and allow up to 24 hours for updates.",
-    "button": "Edit on Github"
+    "title": "Github account",
+    "subtitle": "To change your username or email, edit your account on Github, then resync your account.",
+    "buttons": {
+      "resync": "Resync account",
+      "edit": "Edit on Github"
+    }
   },
   "informations": {
     "avatar": "Avatar",
