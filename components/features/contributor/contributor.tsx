@@ -23,7 +23,7 @@ export function Contributor({
   return (
     <Component
       type={clickable ? "button" : undefined}
-      className={cn("group flex flex-row items-center gap-1", className)}
+      className={cn("group/contributor flex flex-row items-center gap-1", className)}
       onClick={
         clickable
           ? e => {
@@ -38,7 +38,7 @@ export function Contributor({
       <Typography
         variant="body-s"
         className={cn({
-          "block truncate group-hover:text-spacePurple-300 group-hover:underline": clickable,
+          "block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
         })}
       >
         {login}
