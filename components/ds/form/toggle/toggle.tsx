@@ -18,7 +18,7 @@ export function Toggle({ ariaLabel, onChange, value, name, disabled, children }:
         isDisabled={disabled}
         classNames={{
           wrapper:
-            "group-data-[selected=true]:bg-spacePurple-500 border-1 border-transparent group-data-[hover=true]:border-card-border-light group-data-[selected=true]:group-data-[hover=true]:border-spacePurple-800 !transition-all duration-300 ease-in",
+            "group-data-[selected=true]:bg-spacePurple-500 bg-card-background-heavy border-1 border-transparent group-data-[hover=true]:border-card-border-light group-data-[selected=true]:group-data-[hover=true]:border-spacePurple-800 !transition-all duration-300 ease-in",
         }}
       >
         {children}

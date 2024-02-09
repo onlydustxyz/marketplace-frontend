@@ -24,7 +24,7 @@ export default function OverviewPanel({ project }: Props) {
 
   if (!projectLeads.length && !contributorCount) {
     return (
-      <Card background="whiteFakeOpacity-2">
+      <Card background="base">
         <EmptyState
           illustrationSrc={IMAGES.icons.compass}
           description={{ token: "project.details.overview.emptyStateDescription" }}
@@ -34,7 +34,7 @@ export default function OverviewPanel({ project }: Props) {
   }
 
   return (
-    <Card background="whiteFakeOpacity-2" className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
+    <Card background="base" className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
       <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
       <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
       <ProjectOverviewEcosystem ecosystems={ecosystems} />

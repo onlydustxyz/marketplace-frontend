@@ -28,7 +28,7 @@ export function SelectSort({ options, value, labelToken, onChange }: TSelectSort
       }}
       listboxProps={{
         itemClasses: {
-          base: "data-[hover=true]:bg-spaceBlue-800 hover:bg-spaceBlue-800 data-[selectable=true]:focus:bg-spaceBlue-800 focus:bg-spaceBlue-800 rounded-md py-1.5",
+          base: "ui-selected:bg-spaceBlue-800 data-[hover=true]:bg-spaceBlue-800 hover:bg-spaceBlue-800 data-[selectable=true]:focus:bg-spaceBlue-800 focus:bg-spaceBlue-800 rounded-md py-1.5",
         },
       }}
       classNames={{
@@ -37,8 +37,8 @@ export function SelectSort({ options, value, labelToken, onChange }: TSelectSort
         selectorIcon: "static",
         innerWrapper: "w-auto",
         trigger: cn(
-          "w-auto rounded-md border border-card-border-light bg-card-background-base py-1.5 pl-4 pr-2 shadow-heavy transition-all duration-300 ease-in",
-          "data-[open=true]:rounded-b-none  data-[open=true]:border-b-transparent",
+          "cursor-pointer w-auto rounded-md border border-card-border-light bg-card-background-base py-1.5 pl-4 pr-2 shadow-heavy transition-all duration-300 ease-in",
+          "data-[open=true]:rounded-b-none data-[open=true]:border-b-transparent",
           "data-[hover=true]:bg-spaceBlue-900"
         ),
       }}
