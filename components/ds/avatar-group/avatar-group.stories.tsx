@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { ComponentProps } from "react";
 
+import { AvatarGroupLoading } from "components/ds/avatar-group/avatar-group.loading";
+
 import { AvatarGroup } from "./avatar-group";
 
 type Story = StoryObj<typeof AvatarGroup>;
@@ -26,6 +28,29 @@ export const Default: Story = {
     return (
       <div className="flex w-full items-center gap-2">
         <AvatarGroup {...defaultProps} {...args} />
+      </div>
+    );
+  },
+};
+
+export const Skeleton: Story = {
+  render: args => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <div className="flex items-center gap-2">
+          <AvatarGroupLoading {...args} size="xs" />
+          <AvatarGroupLoading {...args} size="s" />
+          <AvatarGroupLoading {...args} size="m" />
+          <AvatarGroupLoading {...args} size="l" />
+          <AvatarGroupLoading {...args} size="xl" />
+        </div>
+        <div className="flex items-center gap-2">
+          <AvatarGroupLoading {...args} size="xs" skeletonProps={{ color: "grey" }} />
+          <AvatarGroupLoading {...args} size="s" skeletonProps={{ color: "grey" }} />
+          <AvatarGroupLoading {...args} size="m" skeletonProps={{ color: "grey" }} />
+          <AvatarGroupLoading {...args} size="l" skeletonProps={{ color: "grey" }} />
+          <AvatarGroupLoading {...args} size="xl" skeletonProps={{ color: "grey" }} />
+        </div>
       </div>
     );
   },

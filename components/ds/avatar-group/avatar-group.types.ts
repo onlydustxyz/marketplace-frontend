@@ -1,6 +1,7 @@
 import { VariantProps } from "tailwind-variants";
 
 import { avatarGroupVariants } from "components/ds/avatar-group/avatar-group.variants";
+import { TSkeleton } from "components/ds/skeleton/skeleton.types";
 
 import { TAvatar } from "../avatar/avatar.types";
 
@@ -10,5 +11,10 @@ export namespace TAvatarGroup {
     avatars: TAvatar.Props[];
     avatarProps?: TAvatar.Variants;
     className?: string;
+  }
+
+  export interface LoadingProps extends TAvatar.Variants {
+    className?: string;
+    skeletonProps?: Partial<TSkeleton.BaseProps>;
   }
 }
