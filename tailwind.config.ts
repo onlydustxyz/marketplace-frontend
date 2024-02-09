@@ -211,8 +211,7 @@ const config: Config = withTV({
             url('/images/dust-btm-left.webp'),
             linear-gradient(180deg, #000113 0%, #0E0D2E 100%)
         `,
-        "space-new":
-          "linear-gradient(to bottom, rgba(0,0,0) 0%, rgba(0,0,0, 1) 5%, rgba(0,0,0,0.5) 20%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 100%), url('/images/space-background.svg')",
+        "space-new": "url('/images/space-background-2.svg')",
         "multi-color-gradient":
           "conic-gradient(from 180deg at 50% 50%, #02FFE0 -8.58deg, #0100C8 16.28deg, #8F00F3 47.6deg, #0B0CCB 82.17deg, #5504EC 125.37deg, #E504A2 165.23deg, #FF7202 179.49deg, #0500CA 206.97deg, #5F00FA 254.68deg, #B501FF 288.89deg, #FF4838 296.73deg, #FB404B 310.19deg, #9138FD 320.15deg, #417CFB 334.77deg, #02FFE0 351.42deg, #0100C8 376.28deg)",
         "stripe-pattern": "url('/images/stripe-pattern.svg')",

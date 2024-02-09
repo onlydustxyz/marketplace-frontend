@@ -30,7 +30,7 @@ export default function Card({
       className={cn(
         "rounded-2xl font-walsheim",
         {
-          "bg-whiteFakeOpacity-2": withBg,
+          "bg-card-background-base": withBg,
           "w-full": fullWidth,
           "p-4 lg:p-6": padded,
           "cursor-pointer": selectable,
