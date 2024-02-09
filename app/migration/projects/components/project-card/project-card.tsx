@@ -90,7 +90,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
               </div>
             )}
           </div>
-          <Flex direction="col" className="w-full flex-1 gap-1 overflow-hidden">
+          <Flex direction="col" className="w-full flex-1 gap-1">
             <Flex direction="row" className="items-center gap-2 md:items-start">
               <div className="relative block flex-shrink-0 md:hidden">
                 <Avatar
