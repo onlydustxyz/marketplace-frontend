@@ -1,0 +1,18 @@
+{
+  "projects": "Projects",
+  "contributions": "Contributions",
+  "rewards": "Rewards",
+  "feedback": "Feedback",
+  "terms": "Terms",
+  "privacy": "Privacy",
+  "logout": "Log out",
+  "profile": {
+    "manage": "Manage my account",
+    "pendingVerification": "Pending verification",
+    "verificationError": "Verification error",
+    "missingPaymentMethods": "Missing payment methods"
+  },
+  "tooltip": {
+    "unableToReceiveRewards": "You're unable to receive rewards. Click to fill up required info"
+  }
+}

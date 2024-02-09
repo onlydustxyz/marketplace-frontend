@@ -1,12 +1,8 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useMemo } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-
-import { useBillingProfiles } from "app/migration/settings/hooks/useBillingProfile";
-import { useBillingStatus } from "app/migration/settings/hooks/useBillingStatus";
 
 import { RoutePaths } from "src/App";
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
@@ -24,13 +20,15 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useCurrentUser } from "hooks/users/useCurrentUser";
+import { useSettingsError } from "hooks/users/useSettingsError";
+
 export function Sidebar() {
   const { isAuthenticated } = useAuth0();
 
   const { user } = useCurrentUser();
+  const { error } = useSettingsError();
   const { pathname } = useLocation();
-  const { validBillingProfile, billingProfile } = useBillingProfiles();
-  const { isWarning, isError } = useBillingStatus(validBillingProfile, billingProfile?.status);
 
   const menuItems: TMenuItem.Props[] = useMemo(
     () => [
@@ -39,29 +37,28 @@ export function Sidebar() {
         href: NEXT_ROUTER.settings.profile,
       },
       {
-        label: <Translate token="v2.features.sidebar.settings.payoutPreferences" />,
-        href: NEXT_ROUTER.settings.payout,
-        endIcon: !user?.hasValidPayoutInfos ? (
-          <Icon size={16} remixName="ri-information-line" className="text-orange-500" />
-        ) : undefined,
-      },
-      {
         label: <Translate token="v2.features.sidebar.settings.billingProfile" />,
         href: NEXT_ROUTER.settings.billing,
         endIcon:
-          isWarning || isError ? (
+          error === "BILLING_WARNING" || error === "BILLING_ERROR" ? (
             <Icon
               size={16}
-              remixName="ri-information-line"
+              remixName="ri-error-warning-line"
               className={cn({
-                "text-orange-500": isWarning,
-                "text-github": isError,
+                "text-orange-500": error === "BILLING_WARNING",
+                "text-github-red": error === "BILLING_ERROR",
               })}
             />
-          ) : undefined,
+          ) : null,
+      },
+      {
+        label: <Translate token="v2.features.sidebar.settings.paymentMethods" />,
+        href: NEXT_ROUTER.settings.payout,
+        endIcon:
+          error === "PAYOUT" ? <Icon size={16} remixName="ri-error-warning-line" className="text-orange-500" /> : null,
       },
     ],
-    [isWarning, isError]
+    [error]
   );
 
   return (

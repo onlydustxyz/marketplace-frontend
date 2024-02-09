@@ -15,14 +15,13 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-import { NEXT_ROUTER } from "constants/router";
+import { UseMenuReturn } from "hooks/menu/useMenu";
 
 import { useLogout } from "./Logout.hooks";
 
-interface Props {
+interface Props extends UseMenuReturn {
   avatarUrl: string | null;
   login: string;
-  isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
   openFeedback: () => void;
@@ -31,10 +30,13 @@ interface Props {
 export function ViewMobile({
   avatarUrl,
   login,
-  isMissingPayoutSettingsInfo,
   githubUserId,
   hideProfileItems,
   openFeedback,
+  color,
+  labelToken,
+  redirection,
+  error,
 }: Props) {
   const { T } = useIntl();
 
@@ -56,25 +58,26 @@ export function ViewMobile({
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
 
-  const getProfileButtonLink = () => {
-    if (isMissingPayoutSettingsInfo) {
-      return NEXT_ROUTER.settings.payout;
-    }
-
-    return NEXT_ROUTER.settings.profile;
-  };
-
   return (
     <>
       <button
         onClick={() => setPanelOpen(true)}
         className={cn("flex items-center justify-center gap-2 rounded-full border px-2 py-1.5 font-walsheim text-sm", {
-          "border-greyscale-50/12": !isMissingPayoutSettingsInfo,
-          "border-orange-500": isMissingPayoutSettingsInfo,
+          "border-greyscale-50/12": color === "DEFAULT",
+          "border-orange-500": color === "WARNING",
+          "border-github-red": color === "ERROR",
         })}
       >
-        {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />}
-        {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
+        {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={login} />}
+        {error && (
+          <ErrorWarningLine
+            className={cn("text-xl", {
+              "text-spaceBlue-200": color === "DEFAULT",
+              "text-orange-500": color === "WARNING",
+              "text-github-red": color === "ERROR",
+            })}
+          />
+        )}
       </button>
 
       <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom">
@@ -83,12 +86,12 @@ export function ViewMobile({
             <>
               <div>
                 <NavLink
-                  to={getProfileButtonLink()}
+                  to={redirection}
                   onClick={() => setPanelOpen(false)}
-                  className="flex w-full items-center gap-1 rounded-md px-3 py-4"
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-4"
                 >
                   {avatarUrl ? (
-                    <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
+                    <img className="h-7 w-7 rounded-full" src={avatarUrl} loading="lazy" alt={login} />
                   ) : null}
 
                   <Flex direction="col" alignItems="start">
@@ -99,13 +102,12 @@ export function ViewMobile({
                     <Typography
                       variant="body-s"
                       translate={{
-                        token: isMissingPayoutSettingsInfo
-                          ? "navbar.profile.missingPayoutInformation"
-                          : "navbar.profile.manage",
+                        token: labelToken,
                       }}
                       className={cn({
-                        "text-spaceBlue-200": !isMissingPayoutSettingsInfo,
-                        "text-orange-500": isMissingPayoutSettingsInfo,
+                        "text-spaceBlue-200": color === "DEFAULT",
+                        "text-orange-500": color === "WARNING",
+                        "text-github-red": color === "ERROR",
                       })}
                     />
                   </Flex>
@@ -124,7 +126,7 @@ export function ViewMobile({
                     }
                   >
                     <Icon remixName="ri-folder-3-line" size={20} />
-                    {T("navbar.projects")}
+                    {T("v2.features.menu.projects")}
                   </NavLink>
 
                   {githubUserId ? (
@@ -136,7 +138,7 @@ export function ViewMobile({
                       }
                     >
                       <Icon remixName="ri-stack-line" size={20} />
-                      {T("navbar.contributions")}
+                      {T("v2.features.menu.contributions")}
                     </NavLink>
                   ) : null}
 
@@ -149,7 +151,7 @@ export function ViewMobile({
                       }
                     >
                       <Icon remixName="ri-exchange-dollar-line" size={20} />
-                      {T("navbar.rewards")}
+                      {T("v2.features.menu.rewards")}
                     </NavLink>
                   ) : null}
 
@@ -162,17 +164,17 @@ export function ViewMobile({
           <div>
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFeedback}>
               <Icon remixName="ri-discuss-line" size={20} />
-              {T("navbar.feedback.button")}
+              {T("v2.features.menu.feedback")}
             </button>
 
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFullTermsAndConditions}>
               <Icon remixName="ri-bill-line" size={20} />
-              {T("navbar.termsAndConditions")}
+              {T("v2.features.menu.terms")}
             </button>
 
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openPrivacyPolicy}>
               <Icon remixName="ri-lock-line" size={20} />
-              {T("navbar.privacyPolicy")}
+              {T("v2.features.menu.privacy")}
             </button>
 
             <span className="my-1 block h-px bg-greyscale-50/8" />
@@ -181,7 +183,7 @@ export function ViewMobile({
           <div>
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={handleLogout}>
               <Icon remixName="ri-logout-box-r-line" size={20} />
-              {T("navbar.logout")}
+              {T("v2.features.menu.logout")}
             </button>
           </div>
         </div>
