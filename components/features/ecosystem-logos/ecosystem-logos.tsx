@@ -1,9 +1,9 @@
-import { ThumbnailGroup } from "components/ds/thumbnail-group/thumbnail-group";
+import { AvatarGroup } from "components/ds/avatar-group/avatar-group";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { TEcosystemLogos } from "components/features/ecosystem-logos/ecosystem-logos.types";
 import { Ecosystem } from "components/features/ecosystem/ecosystem";
 
-export function EcosystemsLogos({ ecosystems, ...variant }: TEcosystemLogos.Props) {
+export function EcosystemsLogos({ ecosystems, avatarProps }: TEcosystemLogos.Props) {
   function ecosystemContent() {
     return (
       <div className="flex flex-row flex-wrap items-center gap-4 text-snow">
@@ -16,13 +16,12 @@ export function EcosystemsLogos({ ecosystems, ...variant }: TEcosystemLogos.Prop
 
   return (
     <Tooltip content={ecosystemContent()}>
-      <ThumbnailGroup
-        thumbnails={ecosystems.map(ecosystem => ({
+      <AvatarGroup
+        avatars={ecosystems.map(ecosystem => ({
           src: ecosystem.logoUrl,
           alt: ecosystem.name,
         }))}
-        size="xs"
-        {...variant}
+        avatarProps={avatarProps}
       />
     </Tooltip>
   );

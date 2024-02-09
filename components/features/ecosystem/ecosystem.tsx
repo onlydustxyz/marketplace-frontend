@@ -1,6 +1,6 @@
 import { cn } from "src/utils/cn";
 
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+import { Avatar } from "components/ds/avatar/avatar";
 import { TEcosystem } from "components/features/ecosystem/ecosystem.types";
 import { Typography } from "components/layout/typography/typography";
 
@@ -11,7 +11,8 @@ export function Ecosystem({ name, logoUrl, clickable, className }: TEcosystem.Pr
       type={clickable ? "button" : undefined}
       className={cn("group flex flex-row items-center gap-1", className)}
     >
-      <Thumbnail src={logoUrl} alt={name} size="xs" type="ecosystem" />
+      <Avatar src={logoUrl} alt={name} size="xs" />
+
       <Typography
         variant="body-s"
         className={cn({
