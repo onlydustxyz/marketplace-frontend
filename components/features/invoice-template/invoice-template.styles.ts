@@ -1,62 +1,50 @@
-import { CSSProperties } from "react";
+import { StyleSheet } from "@react-pdf/renderer";
 
-export const styles: { [key: string]: CSSProperties } = {
-  wrapper: {
-    display: "flex",
+export const styles = StyleSheet.create({
+  page: {
     flexDirection: "column",
-    justifyContent: "flex-start",
-    background: "white",
-    color: "#000000",
-    fontSize: "14px",
-    height: "1123px",
-    width: "794px",
+    backgroundColor: "#ffffff",
+    fontFamily: "GT Walsheim",
+    padding: "30 0",
   },
-  textUppercase: {
+  header: {
+    padding: "10 50 30 50",
+    borderBottom: "1px solid #d8d8d8",
+    fontWeight: "medium",
+    textAlign: "center",
     textTransform: "uppercase",
   },
-  marginBottomSmall: {
-    marginBottom: "10px",
+  section: {
+    margin: 0,
+    padding: "30 50",
   },
-  marginBottomMedium: {
-    marginBottom: "20px",
+  textLeft: {
+    textAlign: "left",
   },
-  marginBottomLarge: {
-    marginBottom: "30px",
+  textRight: {
+    textAlign: "right",
   },
-  marginTopSmall: {
-    marginTop: "10px",
+  textCenter: {
+    textAlign: "center",
   },
-  marginTopMedium: {
-    marginTop: "20px",
-  },
-  marginTopLarge: {
-    marginTop: "30px",
-  },
-  width50p: {
-    width: "50%",
-    maxWidth: "50%",
-  },
-  h3: {
-    margin: "0px",
-    fontWeight: "900",
-    fontSize: "20px",
-  },
-  h4: {
-    margin: "0px",
-    fontWeight: "900",
-    fontSize: "16px",
+  textBold: {
+    fontWeight: "bold",
   },
   paragraph: {
-    fontSize: "14px",
-    lineHeight: "1.5",
-    margin: "0px",
+    fontSize: 14,
+    fontWeight: "normal",
+    lineHeight: "1",
     color: "#535353",
   },
-  justifyContentStart: {
-    justifyContent: "flex-start",
+  h3: {
+    fontSize: "18px",
+    fontWeight: "medium",
   },
-  justifyContentEnd: {
-    justifyContent: "flex-end",
+  h4: {
+    fontWeight: "medium",
+    fontSize: "16px",
+    marginTop: "15px",
+    marginBottom: "5px",
   },
   flexCol: {
     display: "flex",
@@ -66,89 +54,69 @@ export const styles: { [key: string]: CSSProperties } = {
     display: "flex",
     flexDirection: "column",
   },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    padding: "50px",
-    borderBottom: "1px solid #d8d8d8",
+  paddingLeftSmall: {
+    paddingLeft: "5px",
   },
-  logo: {
-    display: "flex",
-    flex: "1",
+  paddingRightSmall: {
+    paddingRight: "5px",
   },
-  invoiceNumber: {
-    display: "flex",
-    flex: "1",
-    textAlign: "right",
-    fontWeight: "900",
-    fontSize: "20px",
-    color: "#262525",
+  justifyContentEnd: {
     justifyContent: "flex-end",
+    width: "100%",
   },
-  invoiceInfo: {
-    display: "flex",
-    flexDirection: "column",
+  justifyContentStart: {
+    justifyContent: "flex-start",
+  },
+  padding50P: {
     padding: "50px",
   },
-  invoiceTo: {
-    display: "flex",
-    flex: "1",
-    flexDirection: "column",
+  paddingHoriz50P: {
+    padding: "0 50px",
   },
-  billTo: {
-    display: "flex",
-    flex: "1",
-    flexDirection: "column",
-    textAlign: "right",
-    justifyContent: "flex-end",
+  paddingVert50P: {
+    padding: "50px 0",
   },
-  invoiceDate: {
-    display: "flex",
-    flex: "1",
-    flexDirection: "column",
+  width50p: {
+    width: "50%",
   },
-  paymentMethod: {
-    display: "flex",
-    flex: "1",
-    flexDirection: "column",
+  width100p: {
+    width: "100%",
+  },
+  alignItemsStart: {
+    alignItems: "flex-start",
   },
   invoiceCenter: {
-    padding: "50px",
-    background: "#f7f7f7",
+    backgroundColor: "#f7f7f7",
   },
-  defaultTable: {
-    background: "#fff",
+  table: {
+    backgroundColor: "#ffffff",
     border: "0",
     width: "100%",
-    height: "100%",
     flexDirection: "column",
+    marginTop: "20px",
   },
   th: {
     position: "relative",
-    padding: "21px 30px",
+    padding: "10px 20px",
     fontSize: "14px",
     color: "#262525",
-    fontWeight: "400",
+    fontWeight: "medium",
     flex: "1",
+    flexGrow: 1,
   },
   td: {
     position: "relative",
-    padding: "21px 30px",
+    padding: "10px 20px",
     fontSize: "14px",
     color: "#535353",
-    fontWeight: "400",
+    fontWeight: "normal",
     flex: "1",
+    flexGrow: 1,
   },
   tr: {
-    border: "solid 1px #f3f2f2",
     width: "100%",
     display: "flex",
-  },
-  invoiceBottom: {
-    padding: "50px",
-    background: "#ffffff",
-    display: "flex",
     flexDirection: "row",
+    borderBottom: "1px solid #f3f2f2",
   },
-};
+});

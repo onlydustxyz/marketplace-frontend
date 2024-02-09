@@ -4,14 +4,14 @@ import { Events } from "./Event";
 
 /**
  * Represents the interface for a subscriber function in a reference subscription.
- * @template TRef The type of the reference value.
+ * @views TRef The type of the reference value.
  * @param value The value of the reference.
  */
 export type RefSubscriptionSubscriberInterface<TRef> = (value: TRef) => void;
 
 /**
  * Represents a subscription to a reference value.
- * @template TRef - The type of the reference value.
+ * @views TRef - The type of the reference value.
  */
 export interface RefSubscriptionInterface<TRef> {
   state: TRef;

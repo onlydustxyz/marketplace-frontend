@@ -21,7 +21,7 @@ export type StackPosition = "front" | "back" | "hidden" | "front-stacked";
 
 /**
  * Represents a function that renders children with specified parameters.
- * @template P - The type of the parameters.
+ * @views P - The type of the parameters.
  * @param {P} params - The parameters for rendering the children.
  */
 export interface renderChildren<P extends StacksParams = StacksParams> {
@@ -29,7 +29,7 @@ export interface renderChildren<P extends StacksParams = StacksParams> {
 }
 /**
  * Represents an optional stack interface.
- * @template P - The type of the stack parameters.
+ * @views P - The type of the stack parameters.
  */
 export interface StackOptionalInterface<P extends StacksParams = StacksParams> {
   /**
@@ -54,7 +54,7 @@ export interface StackOptionalInterface<P extends StacksParams = StacksParams> {
 
 /**
  * Represents the interface for a stack panel.
- * @template P - The type of the stack panel's parameters.
+ * @views P - The type of the stack panel's parameters.
  */
 export interface StackPanelInterface<P extends StacksParams = StacksParams> {
   /**
@@ -87,7 +87,7 @@ export interface StackPanelInterface<P extends StacksParams = StacksParams> {
 
 /**
  * Represents a stack of panels in a React application.
- * @template P - The type of the stack parameters.
+ * @views P - The type of the stack parameters.
  */
 export interface StackInterface<P extends StacksParams = StacksParams> {
   name: string;
@@ -100,7 +100,7 @@ export interface StackInterface<P extends StacksParams = StacksParams> {
 
 /**
  * Interface representing a collection of stacks.
- * @template P - The type of the stack parameters.
+ * @views P - The type of the stack parameters.
  */
 export interface StacksInterface<P extends StacksParams = StacksParams> {
   [key: string]: RefSubscriptionInterface<StackInterface<P>>;
@@ -108,7 +108,7 @@ export interface StacksInterface<P extends StacksParams = StacksParams> {
 
 /**
  * Registers a stack with the specified props.
- * @template P - The type of the stack parameters.
+ * @views P - The type of the stack parameters.
  * @param {P} props - The props for the stack.
  * @returns {StackOptionalInterface<P>} - The registered stack props.
  */

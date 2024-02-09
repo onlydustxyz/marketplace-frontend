@@ -7,5 +7,5 @@ export const ACTION_PATH = {
   PROJECTS_BY_SLUG: (slug: string) => BASE_API_V1(`projects/slug/${slug}`),
   USER_PROFILE_BY_GITHUB_LOGIN: (githubLogin: string) => BASE_API_V1(`users/login/${githubLogin}`),
   USER_PROFILE_BY_GITHUB_ID: (githubId: string) => BASE_API_V1(`users/${githubId}`),
-  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoice"),
+  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoice-template"),
 };

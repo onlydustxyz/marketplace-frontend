@@ -9,7 +9,6 @@ import { Button } from "components/ds/button/button";
 
 import "./styles/AnnotationLayer.css";
 import "./styles/TextLayer.css";
-import "./styles/TextLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.js", import.meta.url).toString();
 
@@ -17,15 +16,24 @@ export default function InvoicePage() {
   const { getAccessTokenSilently } = useAuth0();
   const [imageUrl, setImageUrl] = useState<string>("");
 
-  const [numPages, setNumPages] = useState<number>();
+  const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
+    setPageNumber(1);
   }
 
-  function onItemClick({ pageNumber: itemPageNumber }: { pageNumber: number }): void {
-    setPageNumber(itemPageNumber);
+  function changePage(offset: number) {
+    setPageNumber(prevPageNumber => prevPageNumber + offset);
+  }
+
+  function previousPage() {
+    changePage(-1);
+  }
+
+  function nextPage() {
+    changePage(1);
   }
 
   // const { mutate: uploadProjectLogo } = MeApi.mutations.useUploadProfilePicture({
@@ -58,20 +66,27 @@ export default function InvoicePage() {
   return (
     <div className="flex h-full flex-col gap-2">
       {/*<div className="flex-1">*/}
-      {/*  <img alt="placeholder" src={imageUrl} />*/}
+      {/*  /!*<img alt="placeholder" src={imageUrl} />*!/*/}
       {/*  <a href={imageUrl} download>*/}
       {/*    Click to download*/}
       {/*  </a>*/}
       {/*</div>*/}
 
       <Button onClick={handleFetchInvoice}>Generate Invoice</Button>
-      <Document className="w-fit" file={imageUrl} onLoadSuccess={onDocumentLoadSuccess} onItemClick={onItemClick}>
+      <Document className="w-fit" file={imageUrl} onLoadSuccess={onDocumentLoadSuccess}>
         <Page pageNumber={pageNumber} />
       </Document>
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
-      <Button onClick={() => setPageNumber(pageNumber + 1)}>Nextpage</Button>
+      <div className="flex flex-row gap-4">
+        <p>
+          Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+        </p>
+        <Button disabled={pageNumber <= 1} onClick={previousPage}>
+          Previous
+        </Button>
+        <Button disabled={pageNumber >= numPages} onClick={nextPage}>
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

@@ -1,34 +1,48 @@
 import { PendingInvoiceResponse } from "actions/me/me-queries.actions";
 
-export namespace TInvoiceTemplate {
-  export interface HeaderProps {
-    logoUrl: string;
-    invoiceNumber: string;
-  }
-
-  export interface AddressInfoProps {
+export namespace TInvoice {
+  interface SenderInfo {
     name: string;
     address: string;
     justifyEnd?: boolean;
   }
 
-  export interface InvoiceInfoProps {
+  interface RecipientInfo {
+    name: string;
+    address: string;
+  }
+
+  interface LegalInfo {
     date: string;
+    paymentMethod: string;
   }
 
   export interface Rewards extends PendingInvoiceResponse {}
+
+  export interface HeaderProps {
+    invoiceNumber: string;
+  }
+
+  export interface InvoiceInfoProps {
+    senderInfos: SenderInfo;
+    recipientInfos: RecipientInfo;
+    legalInfos: LegalInfo;
+  }
 
   export interface RewardsSummaryProps {
     rewards: Rewards;
     total: number;
   }
 
-  export interface InvoiceProps {
+  export interface FooterProps {
+    importantNote: string;
+    paymentInfo: string;
+  }
+
+  export interface InvoiceTemplateProps {
     header: HeaderProps;
-    invoiceTo: AddressInfoProps;
-    billTo: AddressInfoProps;
-    invoiceInfo: InvoiceInfoProps;
-    rewards: Rewards;
-    total: number;
+    invoiceInfos: InvoiceInfoProps;
+    rewardSummary: RewardsSummaryProps;
+    footer: FooterProps;
   }
 }

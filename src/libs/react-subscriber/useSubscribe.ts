@@ -5,7 +5,7 @@ import { RefSubscriptionInterface } from "./types/RefSubscription";
 
 /**
  * Custom hook for subscribing to events and registering a reference.
- * @template TRef - The type of the reference.
+ * @views TRef - The type of the reference.
  * @param {RefSubscriptionInterface<TRef>} ref - The reference object.
  * @param {Events} event - The event to subscribe to.
  * @returns {TRef | undefined} - The state value.

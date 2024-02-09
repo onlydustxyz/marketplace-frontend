@@ -7,7 +7,7 @@ import useStackContext from "./useStackContext";
 
 /**
  * Custom hook for registering a stack.
- * @template P - The type of the stack parameters.
+ * @views P - The type of the stack parameters.
  * @param {RegisterStackProps<P>} props - The props for registering the stack.
  * @returns {StackInterface<P>} - The registered stack.
  */
