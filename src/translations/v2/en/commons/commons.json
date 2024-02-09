@@ -1,6 +1,6 @@
 {
   "alert": {
-    "profile": {
+    "global": {
       "success": "Changes saved",
       "error": "An error occurred while saving your changes"
     }
@@ -12,8 +12,35 @@
       "invalid": "The form is invalid"
     },
     "errors": {
-      "invalidePhoneNumber": "Invalid phone number",
-      "invalidUsername": "Invalid username"
+      "invalidPhoneNumber": "Invalid phone number",
+      "invalidUsername": "Invalid username",
+      "invalidUrl": "Invalid URL",
+      "wallets": {
+        "ethereum": {
+          "invalid": "Invalid Ethereum wallet address or ENS name"
+        },
+        "starknet": {
+          "invalid": "Invalid Starknet wallet address"
+        },
+        "optimism": {
+          "invalid": "Invalid Optimism wallet address"
+        },
+        "aptos": {
+          "invalid": "Invalid Aptos wallet address"
+        },
+        "sepa": {
+          "iban": {
+            "required": "IBAN is required when BIC is provided"
+          },
+          "bic": {
+            "required": "BIC is required when IBAN is provided"
+          }
+        }
+      }
+    },
+    "buttons": {
+      "save": "Save changes",
+      "saveMobile": "Save"
     },
     "contact": {
       "telegram": {

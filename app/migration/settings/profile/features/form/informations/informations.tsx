@@ -13,6 +13,7 @@ import { Icon } from "components/layout/icon/icon";
 import { BannerButton } from "./banner-button/banner-button";
 import { FormInformationsSection } from "./section/section";
 
+// TODO: Handle error image
 export function FormInformations() {
   const { control, setValue, setError } = useFormContext();
 
@@ -33,91 +34,114 @@ export function FormInformations() {
 
   return (
     <Card background="base">
-      <FormInformationsSection title="v2.pages.settings.profile.informations.avatar">
-        <Controller
-          name="avatarUrl"
-          control={control}
-          render={({ field, fieldState }) => (
-            <FieldImage
-              {...field}
-              {...fieldState}
-              className="h-13 w-13 rounded-full border-4 border-greyscale-50/12"
-              max_size_mo={10}
-              upload={{
-                mutate: uploadProjectLogo,
-                success: successUploadLogo,
-                loading: loadingUploadLogo,
-              }}
-            />
-          )}
-        />
-      </FormInformationsSection>
-
-      <FormInformationsSection title="v2.pages.settings.profile.informations.banner">
-        <Controller
-          name="cover"
-          control={control}
-          render={({ field: { value, onChange } }) => (
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              className={cn("h-36 w-full rounded-2xl bg-cover", {
-                "bg-profile-cyan": value === "CYAN",
-                "bg-profile-magenta": value === "MAGENTA",
-                "bg-profile-yellow": value === "YELLOW",
-                "bg-profile-blue": value === "BLUE",
-              })}
-            >
+      <Flex
+        direction="col"
+        className="gap-4 divide-y divide-solid divide-greyscale-50/8 [&>div:first-child]:pt-0 [&>div]:pt-4"
+      >
+        <FormInformationsSection title="v2.pages.settings.profile.informations.banner">
+          <Controller
+            name="cover"
+            control={control}
+            render={({ field: { value, onChange } }) => (
               <Flex
                 alignItems="center"
                 justifyContent="center"
-                className="gap-3 rounded-full border border-greyscale-50/8 bg-white/8 px-6 py-3 shadow-heavy"
+                className={cn("h-36 w-full rounded-2xl bg-cover", {
+                  "bg-profile-cyan": value === "CYAN",
+                  "bg-profile-magenta": value === "MAGENTA",
+                  "bg-profile-yellow": value === "YELLOW",
+                  "bg-profile-blue": value === "BLUE",
+                })}
               >
-                <BannerButton active={value === "CYAN"} cover="CYAN" onClick={onChange} />
-                <BannerButton active={value === "MAGENTA"} cover="MAGENTA" onClick={onChange} />
-                <BannerButton active={value === "YELLOW"} cover="YELLOW" onClick={onChange} />
-                <BannerButton active={value === "BLUE"} cover="BLUE" onClick={onChange} />
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  className="gap-3 rounded-full border border-greyscale-50/8 bg-white/8 px-6 py-3 shadow-heavy"
+                >
+                  <BannerButton active={value === "CYAN"} cover="CYAN" onClick={onChange} />
+                  <BannerButton active={value === "MAGENTA"} cover="MAGENTA" onClick={onChange} />
+                  <BannerButton active={value === "YELLOW"} cover="YELLOW" onClick={onChange} />
+                  <BannerButton active={value === "BLUE"} cover="BLUE" onClick={onChange} />
+                </Flex>
               </Flex>
-            </Flex>
-          )}
-        />
-      </FormInformationsSection>
+            )}
+          />
+        </FormInformationsSection>
 
-      <FormInformationsSection title="v2.pages.settings.profile.informations.location">
-        <Controller
-          name="location"
-          control={control}
-          render={({ field, fieldState }) => (
-            <Input
-              {...field}
-              {...fieldState}
-              startContent={<Icon remixName="ri-map-pin-line" className="pointer-events-none" />}
+        <FormInformationsSection title="v2.pages.settings.profile.informations.avatar">
+          <Controller
+            name="avatarUrl"
+            control={control}
+            render={({ field, fieldState }) => (
+              <FieldImage
+                {...field}
+                {...fieldState}
+                className="h-13 w-13 rounded-full border-4 border-greyscale-50/12"
+                max_size_mo={10}
+                upload={{
+                  mutate: uploadProjectLogo,
+                  success: successUploadLogo,
+                  loading: loadingUploadLogo,
+                }}
+              />
+            )}
+          />
+        </FormInformationsSection>
+
+        <Flex className="flex-col gap-4 md:flex-row">
+          <FormInformationsSection title="v2.pages.settings.profile.informations.firstname">
+            <Controller
+              name="firstName"
+              control={control}
+              render={({ field, fieldState }) => <Input {...field} {...fieldState} />}
             />
-          )}
-        />
-      </FormInformationsSection>
+          </FormInformationsSection>
 
-      <FormInformationsSection title="v2.pages.settings.profile.informations.bio">
-        <Controller
-          name="bio"
-          control={control}
-          render={({ field, fieldState }) => <Textarea {...field} {...fieldState} />}
-        />
-      </FormInformationsSection>
-
-      <FormInformationsSection title="v2.pages.settings.profile.informations.website" isLast>
-        <Controller
-          name="website"
-          control={control}
-          render={({ field, fieldState }) => (
-            <Input
-              {...field}
-              {...fieldState}
-              startContent={<Icon remixName="ri-global-line" className="pointer-events-none" />}
+          <FormInformationsSection title="v2.pages.settings.profile.informations.lastname">
+            <Controller
+              name="lastName"
+              control={control}
+              render={({ field, fieldState }) => <Input {...field} {...fieldState} />}
             />
-          )}
-        />
-      </FormInformationsSection>
+          </FormInformationsSection>
+        </Flex>
+
+        <FormInformationsSection title="v2.pages.settings.profile.informations.bio">
+          <Controller
+            name="bio"
+            control={control}
+            render={({ field, fieldState }) => <Textarea {...field} {...fieldState} />}
+          />
+        </FormInformationsSection>
+
+        <FormInformationsSection title="v2.pages.settings.profile.informations.location">
+          <Controller
+            name="location"
+            control={control}
+            render={({ field, fieldState }) => (
+              <Input
+                {...field}
+                {...fieldState}
+                startContent={<Icon remixName="ri-map-pin-line" className="pointer-events-none" />}
+              />
+            )}
+          />
+        </FormInformationsSection>
+
+        <FormInformationsSection title="v2.pages.settings.profile.informations.website">
+          <Controller
+            name="website"
+            control={control}
+            render={({ field, fieldState }) => (
+              <Input
+                {...field}
+                {...fieldState}
+                startContent={<Icon remixName="ri-global-line" className="pointer-events-none" />}
+              />
+            )}
+          />
+        </FormInformationsSection>
+      </Flex>
     </Card>
   );
 }

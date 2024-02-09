@@ -70,7 +70,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           "border-orange-500 bg-orange-900": isErrorVariant,
           "mt-3": isFirstHiringProject,
         })}
-        border={isInvitedAsProjectLead ? "multiColor" : "medium"}
+        border={isInvitedAsProjectLead ? "multiColor" : "light"}
         dataTestId="project-card"
         background="base"
       >

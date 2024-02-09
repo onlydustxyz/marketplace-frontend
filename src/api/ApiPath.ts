@@ -57,7 +57,7 @@ export const API_PATH = {
   MY_CLAIM: (projectId: string) => BASE_API_V1(`me/project-claims/${projectId}`),
   ME_APPLY_TO_PROJECT: BASE_API_V1("me/applications"),
   ME_MARK_INVOICE_AS_RECEIVED: BASE_API_V1("me/invoices"),
-  MY_PAYOUT_INFO: BASE_API_V1("me/payout-info"),
+  MY_PAYOUT_SETTINGS: BASE_API_V1("me/payout-settings"),
   ME_PROFILE: BASE_API_V1("me/profile"),
   ME_REWARDS_CURRENCIES: BASE_API_V1("me/reward-currencies"),
   ME_REWARDS_PROJECTS: BASE_API_V1("me/rewarding-projects"),

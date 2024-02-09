@@ -1,3 +1,7 @@
+"use client";
+
+import { createPortal } from "react-dom";
+
 import { useToaster } from "src/hooks/useToaster";
 
 import View from "./View";
@@ -5,5 +9,5 @@ import View from "./View";
 export const Toaster = () => {
   const { message, visible, isError, setVisible } = useToaster();
 
-  return <View {...{ message, visible, isError, setVisible }} />;
+  return createPortal(<View {...{ message, visible, isError, setVisible }} />, document.body);
 };

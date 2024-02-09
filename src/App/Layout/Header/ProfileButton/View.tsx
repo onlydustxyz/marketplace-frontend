@@ -1,8 +1,7 @@
 import { Menu, Transition } from "@headlessui/react";
-import Link from "next/link";
 import { Fragment, PropsWithChildren, useState } from "react";
+import { NavLink } from "react-router-dom";
 
-import { useStackVerify } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
@@ -53,7 +52,6 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
-  const [openVerify] = useStackVerify();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { handleLogout } = useLogout();
@@ -116,7 +114,7 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
           >
             {!hideProfileItems && (
               <div>
-                <Link href={getProfileButtonLink()}>
+                <NavLink to={getProfileButtonLink()}>
                   <MenuItem isProfile>
                     {avatarUrl ? (
                       <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={T("profile.avatar")} />
@@ -141,25 +139,9 @@ export function View({ avatarUrl, login, isMissingPayoutSettingsInfo, hideProfil
                       />
                     </Flex>
                   </MenuItem>
-                </Link>
+                </NavLink>
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
-
-                {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-                  <>
-                    <MenuItem onClick={() => openVerify({ levelName: "basic-kyc-level" })}>
-                      <Icon remixName="ri-pass-valid-line" size={20} />
-                      <div className="grow">{T("navbar.profile.verifyIdentity")}</div>
-                    </MenuItem>
-
-                    <MenuItem onClick={() => openVerify({ levelName: "basic-kyb-level" })}>
-                      <Icon remixName="ri-pass-valid-line" size={20} />
-                      <div className="grow">{T("navbar.profile.verifyCompany")}</div>
-                    </MenuItem>
-
-                    <span className="my-1 block h-px bg-greyscale-50/8" />
-                  </>
-                ) : null}
               </div>
             )}
 

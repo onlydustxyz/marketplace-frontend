@@ -87,7 +87,7 @@ const validationSchema = z.object({
   moreInfos: z
     .array(
       z.object({
-        url: z.string().trim().min(1),
+        url: z.string().trim().nullable(),
         value: z.string().nullable(),
       })
     )
@@ -177,7 +177,14 @@ export function CreateProjectProvider({
 
   const form = useForm<CreateFormData>({
     mode: "all",
-    defaultValues: initialProject || {},
+    defaultValues: initialProject
+      ? {
+          ...initialProject,
+          moreInfos: initialProject.moreInfos.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
+        }
+      : {
+          moreInfos: [{ url: "", value: "" }],
+        },
     resolver: zodResolver(validationSchema),
   });
 
@@ -193,7 +200,7 @@ export function CreateProjectProvider({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
-      moreInfos: (moreInfos || []).map(info => ({ url: info.url, value: info.value })),
+      moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
     });
   };
 

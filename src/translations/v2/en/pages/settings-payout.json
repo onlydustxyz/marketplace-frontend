@@ -1,0 +1,34 @@
+{
+  "title": "Payout preferences",
+  "subtitle": "Fill in your wallet or account number for our supported networks.",
+  "disclaimer": "Your info remains private.\n We'll only use it to process rewards.",
+  "wallets": {
+    "description": "Relevant for rewards in",
+    "ethereum": {
+      "label": "Ethereum wallet address or ENS name",
+      "placeholder": "Ethereum wallet adress"
+    },
+    "starknet": {
+      "label": "Starknet wallet address",
+      "placeholder": "Starknet wallet adress"
+    },
+    "optimism": {
+      "label": "Optimism wallet address",
+      "placeholder": "Optimism wallet adress"
+    },
+    "aptos": {
+      "label": "Aptos wallet address",
+      "placeholder": "Aptos wallet adress"
+    },
+    "sepa": {
+      "iban": {
+        "label": "Account number",
+        "placeholder": "Account number"
+      },
+      "bic": {
+        "label": "BIC / SWIFT",
+        "placeholder": "BIC / SWIFT"
+      }
+    }
+  }
+}

@@ -26,6 +26,12 @@
       "UNDER_REVIEW": "Under review",
       "VERIFIED": "Verified"
     },
+    "idDocumentType": {
+      "DRIVER_LICENSE": "Driver license",
+      "ID_CARD": "Id card",
+      "PASSPORT": "Passport",
+      "RESIDENCE_PERMIT": "Residence permit"
+    },
     "weeklyAllocatedTime": {
       "NONE": "None",
       "LESS_THAN_ONE_DAY": "Less than 1 day",

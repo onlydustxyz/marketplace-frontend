@@ -1,14 +1,20 @@
+import { NEXT_ROUTER } from "constants/router";
+
 export const NextMigratedRoute = [
   {
     pathName: "/migration/projects",
     nextPathName: "/migration/projects",
   },
   {
-    pathName: "/migration/settings/profile",
-    nextPathName: "/migration/settings/profile",
+    pathName: NEXT_ROUTER.settings.profile,
+    nextPathName: NEXT_ROUTER.settings.profile,
   },
   {
-    pathName: "/migration/settings/payout",
-    nextPathName: "/migration/settings/payout",
+    pathName: NEXT_ROUTER.settings.payout,
+    nextPathName: NEXT_ROUTER.settings.payout,
+  },
+  {
+    pathName: NEXT_ROUTER.settings.billing,
+    nextPathName: NEXT_ROUTER.settings.billing,
   },
 ];
