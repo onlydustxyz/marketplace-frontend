@@ -3,6 +3,8 @@ import { MeActions } from "actions/me/me.actions";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
+import { getHeaderProps } from "app/api/invoice/builders";
+
 import { MeTypes } from "src/api/me/types";
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
@@ -15,13 +17,10 @@ export async function GET() {
   const userInfo = await MeActions.queries.retrieveMeInformations({ accessToken: token ?? "" });
 
   const isUserIndividual = userInfo?.billingProfileType === MeTypes.billingProfileType.Individual;
-  console.log("userInfo ===>", userInfo);
+
   // const { rewards } = await MeActions.queries.retrieveRewardsPendingInvoices({ accessToken: token ?? "" });
 
-  const header: TInvoice.HeaderProps = {
-    type: isUserIndividual ? "receipt" : "invoice",
-    invoiceNumber: "20240208-0052",
-  };
+  const header: TInvoice.HeaderProps = getHeaderProps({ isUserIndividual, name: "HAMRIME" });
 
   const invoiceInfo = {
     senderInfos: {
@@ -90,316 +89,14 @@ export async function GET() {
         "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
       id: "5a761880-6175-4fc4-a10d-60a73eba5678",
     },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydustiii",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydustiiii",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
-    {
-      requestedAt: "2023-12-28T10:58:15.632901Z",
-      processedAt: null,
-      projectId: "7d04163c-4187-4313-8066-61504d34fc56",
-      status: "PENDING_INVOICE",
-      unlockDate: null,
-      amount: {
-        total: 20,
-        currency: "USDC",
-        dollarsEquivalent: 20.00079477650715,
-      },
-      numberOfRewardedContributions: 1,
-      rewardedOnProjectName: "Onlydust",
-      rewardedOnProjectLogoUrl:
-        "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-      id: "5a761880-6175-4fc4-a10d-60a73eba5678",
-    },
   ];
+
+  type VATUnion = "VAT" | "VAT not applicable" | "VAT reverse charge";
 
   const rewardSummary: TInvoice.RewardsSummaryProps = {
     rewards,
+    hasLiquidEquivalentRate: false,
+    vatSpecificity: "VAT" as VATUnion,
     total: 85.622,
   };
 

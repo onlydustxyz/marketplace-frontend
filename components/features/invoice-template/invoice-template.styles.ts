@@ -31,18 +31,18 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   paragraph: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "normal",
     lineHeight: "1",
     color: "#535353",
   },
   h3: {
-    fontSize: "18px",
+    fontSize: "16px",
     fontWeight: "medium",
   },
   h4: {
     fontWeight: "medium",
-    fontSize: "16px",
+    fontSize: "14px",
     marginTop: "15px",
     marginBottom: "5px",
   },
@@ -98,7 +98,7 @@ export const styles = StyleSheet.create({
   th: {
     position: "relative",
     padding: "10px 20px",
-    fontSize: "14px",
+    fontSize: "12px",
     color: "#262525",
     fontWeight: "medium",
     flex: "1",
@@ -107,7 +107,7 @@ export const styles = StyleSheet.create({
   td: {
     position: "relative",
     padding: "10px 20px",
-    fontSize: "14px",
+    fontSize: "12px",
     color: "#535353",
     fontWeight: "normal",
     flex: "1",
