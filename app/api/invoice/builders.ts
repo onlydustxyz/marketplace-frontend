@@ -1,3 +1,6 @@
+import { MeActions } from "actions/me/me.actions";
+import { headers } from "next/headers";
+
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
@@ -16,13 +19,15 @@ export function getHeaderProps({
   };
 }
 
-export function getInvoiceInfoProps({ isUserIndividual }: { isUserIndividual: boolean }): TInvoice.InvoiceInfoProps {
-  return {
-    senderInfos: {
-      name: "Company Name",
-      address: "Company Address",
-      fiscalCode: "Company Fiscal Code",
-    },
+export async function getInvoiceInfoProps({
+  isUserIndividual,
+}: {
+  isUserIndividual: boolean;
+}): Promise<TInvoice.InvoiceInfoProps> {
+  const headersList = headers();
+  const token = headersList.get("authorization");
+
+  const restInfos = {
     recipientInfos: {
       name: "Wagmi",
       address: "54 Rue Du faubourg montmartre, Paris, France, 75009",
@@ -32,4 +37,27 @@ export function getInvoiceInfoProps({ isUserIndividual }: { isUserIndividual: bo
       destinationWallets: ["Crypto Wallet", "Bank Account"],
     },
   };
+
+  if (isUserIndividual) {
+    const billingProfile = await MeActions.queries.retrieveIndividualBillingProfiles({ accessToken: token ?? "" });
+
+    return {
+      senderInfos: {
+        name: `${billingProfile.firstName} ${billingProfile.lastName}`,
+        address: billingProfile.address ?? "",
+        fiscalCode: billingProfile.fiscalCode,
+      },
+      ...restInfos,
+    };
+  } else {
+    const billingProfile = await MeActions.queries.retrieveCompanyBillingProfiles({ accessToken: token ?? "" });
+
+    return {
+      senderInfos: {
+        name: billingProfile.name ?? "",
+        address: billingProfile.address ?? "",
+      },
+      ...restInfos,
+    };
+  }
 }

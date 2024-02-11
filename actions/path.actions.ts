@@ -10,6 +10,8 @@ export const ACTION_PATH = {
   USER_PROFILE_BY_GITHUB_ID: (githubId: string) => BASE_API_V1(`users/${githubId}`),
 
   /* ----------------------------------- ME ----------------------------------- */
-  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoices-template"),
   ME: BASE_API_V1("me"),
+  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoices-template"),
+  ME_INDIVIDUAL_BILLING_PROFILES: BASE_API_V1("me/billing-profiles/individual"),
+  ME_COMPANY_BILLING_PROFILES: BASE_API_V1("me/billing-profiles/company"),
 };

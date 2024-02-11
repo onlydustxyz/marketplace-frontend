@@ -4,7 +4,7 @@ export namespace TInvoice {
   interface SenderInfo {
     name: string;
     address: string;
-    fiscalCode: string;
+    fiscalCode?: string;
   }
 
   interface RecipientInfo {

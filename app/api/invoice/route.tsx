@@ -14,8 +14,8 @@ import { TInvoice } from "components/features/invoice-template/invoice-template.
 export async function GET() {
   const headersList = headers();
   const token = headersList.get("authorization");
-  const userInfo = await MeActions.queries.retrieveMeInformations({ accessToken: token ?? "" });
 
+  const userInfo = await MeActions.queries.retrieveMeInformations({ accessToken: token ?? "" });
   const isUserIndividual = userInfo?.billingProfileType === MeTypes.billingProfileType.Individual;
 
   // const { rewards } = await MeActions.queries.retrieveRewardsPendingInvoices({ accessToken: token ?? "" });
