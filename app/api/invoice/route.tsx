@@ -3,10 +3,9 @@ import { MeActions } from "actions/me/me.actions";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { getHeaderProps } from "app/api/invoice/builders";
+import { getHeaderProps, getInvoiceInfoProps } from "app/api/invoice/builders";
 
 import { MeTypes } from "src/api/me/types";
-import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { InvoiceTemplate } from "components/features/invoice-template/invoice-template";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
@@ -22,20 +21,7 @@ export async function GET() {
 
   const header: TInvoice.HeaderProps = getHeaderProps({ isUserIndividual, name: "HAMRIME" });
 
-  const invoiceInfo = {
-    senderInfos: {
-      name: "My invoices to company",
-      address: "1 rue de la combatte, Grandvillars, France, 90600",
-    },
-    recipientInfos: {
-      name: "Wagmi",
-      address: "54 Rue Du faubourg montmartre, Paris, France, 75009",
-    },
-    legalInfos: {
-      date: getFormattedDateToLocaleDateString(new Date()),
-      paymentMethod: "bank transfer",
-    },
-  };
+  const invoiceInfo: TInvoice.InvoiceInfoProps = await getInvoiceInfoProps({ isUserIndividual });
 
   const rewards = [
     {

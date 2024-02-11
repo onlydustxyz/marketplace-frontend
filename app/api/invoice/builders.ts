@@ -40,7 +40,6 @@ export async function getInvoiceInfoProps({
 
   if (isUserIndividual) {
     const billingProfile = await MeActions.queries.retrieveIndividualBillingProfiles({ accessToken: token ?? "" });
-
     return {
       senderInfos: {
         name: `${billingProfile.firstName} ${billingProfile.lastName}`,
