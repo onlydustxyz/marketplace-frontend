@@ -4,7 +4,7 @@ export namespace TInvoice {
   interface SenderInfo {
     name: string;
     address: string;
-    fiscalCode?: string;
+    euVATNumber?: string;
   }
 
   interface RecipientInfo {
@@ -15,6 +15,18 @@ export namespace TInvoice {
   interface LegalInfo {
     date: string;
     destinationWallets: string[];
+  }
+
+  type VATUnion =
+    | "VAT_APPLICABLE"
+    | "VAT_NOT_APPLICABLE_NON_UE"
+    | "VAT_NOT_APPLICABLE_FRENCH_NOT_SUBJECT"
+    | "VAT_REVERSE_CHARGE";
+
+  interface Vat {
+    specificities: VATUnion;
+    euVATNumber: string;
+    rate: string;
   }
 
   export interface Rewards extends PendingInvoiceResponse {}
@@ -32,12 +44,12 @@ export namespace TInvoice {
 
   export interface RewardsSummaryProps {
     rewards: Rewards;
+    vat: Vat;
     total: number;
   }
 
   export interface FooterProps {
-    importantNote: string;
-    paymentInfo: string;
+    invoiceName: string;
   }
 
   export interface InvoiceTemplateProps {

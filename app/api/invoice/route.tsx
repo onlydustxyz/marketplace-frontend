@@ -17,9 +17,11 @@ export async function GET() {
   const userInfo = await MeActions.queries.retrieveMeInformations({ accessToken: token ?? "" });
   const isUserIndividual = userInfo?.billingProfileType === MeTypes.billingProfileType.Individual;
 
-  // const { rewards } = await MeActions.queries.retrieveRewardsPendingInvoices({ accessToken: token ?? "" });
-
-  const header: TInvoice.HeaderProps = getHeaderProps({ isUserIndividual, name: "HAMRIME" });
+  const header: TInvoice.HeaderProps = getHeaderProps({
+    isUserIndividual,
+    id: userInfo.githubUserId,
+    incrementalKey: 123,
+  });
 
   const invoiceInfo: TInvoice.InvoiceInfoProps = await getInvoiceInfoProps({ isUserIndividual });
 
@@ -77,18 +79,18 @@ export async function GET() {
     },
   ];
 
-  type VATUnion = "VAT" | "VAT not applicable" | "VAT reverse charge";
-
   const rewardSummary: TInvoice.RewardsSummaryProps = {
     rewards,
-    hasLiquidEquivalentRate: false,
-    vatSpecificity: "VAT" as VATUnion,
+    vat: {
+      specificities: "VAT_APPLICABLE",
+      euVATNumber: "FR12345678901",
+      rate: "20%",
+    },
     total: 85.622,
   };
 
   const footer = {
-    importantNote: "",
-    paymentInfo: "",
+    invoiceName: "Company or individual name",
   };
 
   const stream = await renderToStream(

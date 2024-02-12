@@ -48,8 +48,8 @@ export function Header({ initialData }: THeader.Props) {
     }
   }, [initialData]);
 
-  function onSubmit(data: THeader.formData) {
-    mutate({ type: data.profile });
+  function onSubmit() {
+    mutate({ type: profile });
   }
 
   function onOpenConfirmation() {
@@ -68,6 +68,7 @@ export function Header({ initialData }: THeader.Props) {
     value: MeTypes.billingProfileType | null,
     onChange: (value: MeTypes.billingProfileType | null) => void
   ) {
+    console.log("value ==>", value);
     if (value) {
       onChange(value);
       onOpenConfirmation();

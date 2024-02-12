@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
   paragraph: {
     fontSize: 12,
     fontWeight: "normal",
-    lineHeight: "1",
+    lineHeight: "1.2",
     color: "#535353",
   },
   h3: {

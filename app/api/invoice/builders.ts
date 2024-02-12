@@ -7,15 +7,16 @@ import { TInvoice } from "components/features/invoice-template/invoice-template.
 
 export function getHeaderProps({
   isUserIndividual,
-  name,
+  id,
+  incrementalKey,
 }: {
   isUserIndividual: boolean;
-  name: string;
+  id: number;
+  incrementalKey: number;
 }): TInvoice.HeaderProps {
-  const someIncrementalKey = 123;
   return {
     title: isUserIndividual ? "Receipt NO:" : "Invoice NO:",
-    invoiceNumber: `#OD-${name.slice(0, 5).toUpperCase()}-${someIncrementalKey}`,
+    invoiceNumber: `#OD-${id}-${incrementalKey}`,
   };
 }
 
@@ -44,17 +45,17 @@ export async function getInvoiceInfoProps({
       senderInfos: {
         name: `${billingProfile.firstName} ${billingProfile.lastName}`,
         address: billingProfile.address ?? "",
-        fiscalCode: billingProfile.fiscalCode,
       },
       ...restInfos,
     };
   } else {
     const billingProfile = await MeActions.queries.retrieveCompanyBillingProfiles({ accessToken: token ?? "" });
-
+    console.log(billingProfile);
     return {
       senderInfos: {
         name: billingProfile.name ?? "",
         address: billingProfile.address ?? "",
+        euVATNumber: billingProfile.euVATNumber,
       },
       ...restInfos,
     };

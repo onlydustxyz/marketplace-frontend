@@ -32,8 +32,8 @@ export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }:
           recipientInfos={invoiceInfos.recipientInfos}
           legalInfos={invoiceInfos.legalInfos}
         />
-        <InvoiceSummary rewards={rewardSummary.rewards} total={rewardSummary.total} />
-        <InvoiceFooter importantNote={footer.importantNote} paymentInfo={footer.paymentInfo} />
+        <InvoiceSummary rewards={rewardSummary.rewards} vat={rewardSummary.vat} total={rewardSummary.total} />
+        <InvoiceFooter invoiceName={footer.invoiceName} />
       </Page>
     </Document>
   );
