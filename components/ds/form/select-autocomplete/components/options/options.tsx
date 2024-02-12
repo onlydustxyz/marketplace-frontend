@@ -17,7 +17,7 @@ export function Options({
   onNextPage,
 }: TOptions.Props) {
   return (
-    <div className="max-h-60 divide-y divide-card-border-light overflow-auto px-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+    <>
       {selectedItems.length ? (
         <div className="flex flex-col gap-1 pb-2">
           {selectedItems.map(item => (
@@ -56,6 +56,6 @@ export function Options({
           />
         )}
       </div>
-    </div>
+    </>
   );
 }

@@ -66,8 +66,8 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   return (
     <Link to={generatePath(RoutePaths.ProjectDetails, { projectKey: slug })} className="w-full">
       <Card
-        className={cn("relative w-full transition-all hover:scale-[0.995]", {
-          "border-orange-500 bg-orange-900": isErrorVariant,
+        className={cn("relative w-full transition-all hover:scale-[0.998]", {
+          "!border-orange-500 bg-orange-900": isErrorVariant,
           "mt-3": isFirstHiringProject,
         })}
         clickable

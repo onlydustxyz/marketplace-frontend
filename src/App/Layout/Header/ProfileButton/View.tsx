@@ -2,6 +2,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
 import { NavLink } from "react-router-dom";
 
+import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
@@ -42,27 +43,15 @@ interface Props extends TUseMenu.Return {
   login: string;
   githubUserId?: number;
   hideProfileItems?: boolean;
-  openFeedback: () => void;
 }
 
-export function View({
-  avatarUrl,
-  login,
-  hideProfileItems,
-  openFeedback,
-  labelToken,
-  redirection,
-  errorColor,
-  error,
-}: Props) {
+export function View({ avatarUrl, login, hideProfileItems, labelToken, redirection, errorColor, error }: Props) {
   const { T } = useIntl();
-
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
-
   const { handleLogout } = useLogout();
+  const [openFeedback] = useStackFeedback();
 
   return (
     <div className="relative">

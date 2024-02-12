@@ -3,8 +3,10 @@ import { Popover, Transition } from "@headlessui/react";
 import { subMonths } from "date-fns";
 import { useMemo, useRef } from "react";
 import { DateRange, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
+import { useMediaQuery } from "usehooks-ts";
 
 import { Calendar } from "src/components/New/Calendar";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CalendarEventLine from "src/icons/CalendarEventLine";
@@ -73,12 +75,13 @@ export function Datepicker({
   ...props
 }: Props) {
   const calendarRef = useRef(null);
+  const isMd = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.md}px)`);
   const { T } = useIntl();
   const { refs, floatingStyles, placement } = useFloating({
     middleware: [flip()],
     whileElementsMounted: autoUpdate,
     transform: false,
-    placement: props.mode === "range" ? "top-end" : undefined,
+    placement: props.mode === "range" && !isMd ? "top-end" : undefined,
   });
 
   // This is useful if a date range only has one of two values for example
@@ -126,7 +129,7 @@ export function Datepicker({
       return (
         <Calendar
           mode="range"
-          numberOfMonths={2}
+          numberOfMonths={!isMd ? 2 : 1}
           pagedNavigation
           defaultMonth={subMonths(new Date(), 1)}
           // Sometimes date strings are passed instead of date objects
@@ -216,7 +219,20 @@ export function Datepicker({
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
-              ...(props.mode === "single" ? { right: "-6px" } : { top: "-12px", left: "-12px" }),
+              ...(props.mode === "single"
+                ? { right: "-6px" }
+                : {
+                    ...(placement === "bottom" || !isMd
+                      ? { top: "-12px" }
+                      : { top: (floatingStyles.top as number) + 45 }),
+                    left: "-12px",
+                  }),
+              ...(isMd
+                ? {
+                    position: "sticky",
+                    transform: "translateX(-12px) translateY(-44px)",
+                  }
+                : {}),
             }}
             enter="transition duration-150 ease-out delay-75"
             enterFrom="transform scale-95 opacity-0"
@@ -239,7 +255,8 @@ export function Datepicker({
               {({ close }) => (
                 <div
                   className={cn({
-                    "pt-[54px]": props.mode === "range",
+                    "pt-[54px]": props.mode === "range" && (placement === "bottom" || !isMd),
+                    "pb-[54px]": props.mode === "range" && placement === "top",
                   })}
                 >
                   {props.periods?.length ? (

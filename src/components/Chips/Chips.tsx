@@ -20,8 +20,8 @@ export function Chips({ children, number, sizeClassName }: ChipsProps) {
       )}
       {number && children.length > number && (
         <div className={cn("-ml-2")}>
-          <Chip solid className={cn("h-6 w-6", sizeClassName)}>
-            <p className="font-walsheim text-[10px] font-bold text-white">+{children.length - number}</p>
+          <Chip solid className={cn("h-4 w-4", sizeClassName)}>
+            <p className="font-walsheim text-[8px] font-medium text-white">+{children.length - number}</p>
           </Chip>
         </div>
       )}
