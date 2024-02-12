@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
+import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
@@ -24,7 +25,6 @@ interface Props extends TUseMenu.Return {
   login: string;
   githubUserId?: number;
   hideProfileItems?: boolean;
-  openFeedback: () => void;
 }
 
 export function ViewMobile({
@@ -32,18 +32,16 @@ export function ViewMobile({
   login,
   githubUserId,
   hideProfileItems,
-  openFeedback,
   labelToken,
   redirection,
   errorColor,
   error,
 }: Props) {
   const { T } = useIntl();
-
   const [panelOpen, setPanelOpen] = useState(false);
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
-
   const { handleLogout } = useLogout();
+  const [openFeedback] = useStackFeedback();
 
   const { queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -57,6 +55,11 @@ export function ViewMobile({
 
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
+
+  function handleFeedback() {
+    setPanelOpen(false);
+    openFeedback();
+  }
 
   return (
     <>
@@ -162,7 +165,7 @@ export function ViewMobile({
           )}
 
           <div>
-            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFeedback}>
+            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={handleFeedback}>
               <Icon remixName="ri-discuss-line" size={20} />
               {T("v2.features.menu.feedback")}
             </button>
