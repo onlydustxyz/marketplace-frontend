@@ -54,6 +54,7 @@ export function ProjectsSort() {
         </Button>
         <BottomSheet
           onClose={() => setOpenMobilePanel(false)}
+          background="blue"
           open={openMobilePanel}
           title={<Translate token="v2.pages.projects.sorting.label" as="div" />}
         >
