@@ -17,10 +17,7 @@ interface Positions {
       min: number;
       max: number;
     };
-    moveRange: {
-      x: number;
-      y: number;
-    };
+    moveRange: Coords;
   };
 }
 
@@ -56,26 +53,17 @@ export class Star implements IStar {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
-    const [x, y] = [Math.random() * window.innerWidth, Math.random() * window.innerHeight];
+    const coords = { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight };
     const minSpeed = window.innerWidth * 0.0005;
     const maxSpeed = window.innerWidth * 0.0004;
     this.positions = {
-      initial: {
-        x,
-        y,
-      },
-      controlled: {
-        x,
-        y,
-      },
+      initial: coords,
+      controlled: coords,
       range: {
-        max: {
-          x,
-          y,
-        },
+        max: coords,
         min: {
-          x: x - 80,
-          y: y - 80,
+          x: coords.x - 80,
+          y: coords.y - 80,
         },
       },
       config: {

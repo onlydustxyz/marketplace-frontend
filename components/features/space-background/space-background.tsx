@@ -67,8 +67,8 @@ export function SpaceBackground() {
   }, [size]);
 
   if (!isXl) {
-    return <div className="od-space-background fixed left-0 top-0 -z-[1] h-full w-full" />;
+    return <div className="od-space-background fixed inset-0 -z-[1]" />;
   }
 
-  return <canvas ref={canvasRef} className="fixed left-0 top-0 -z-[1] h-full w-full bg-space-gradient" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 -z-[1] bg-space-gradient" />;
 }
