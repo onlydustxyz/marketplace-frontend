@@ -8,5 +8,6 @@ export namespace TBottomSheet {
     onClose: () => void;
     title?: ReactNode;
     background?: "blue" | "grey";
+    fullScreen?: boolean;
   }
 }

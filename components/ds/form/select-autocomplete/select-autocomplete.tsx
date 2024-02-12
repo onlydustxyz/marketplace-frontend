@@ -128,11 +128,11 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
               </Transition>
             )}
             {isMd && (
-              <BottomSheet onClose={() => null} open={open} hasCloseButton={false}>
+              <BottomSheet onClose={() => null} open={open} hasCloseButton={false} fullScreen={true}>
                 <Combobox.Button
                   as="div"
                   className={cn(
-                    "relative flex w-full items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
+                    "relative mt-6 flex w-full items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 text-greyscale-50 shadow-light",
                     {
                       "z-20 border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                         open,
