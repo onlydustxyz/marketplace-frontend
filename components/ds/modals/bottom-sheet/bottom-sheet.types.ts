@@ -6,5 +6,6 @@ export namespace TBottomSheet {
     onOpen?: () => void;
     onClose: () => void;
     title?: ReactNode;
+    background?: "blue" | "grey";
   }
 }

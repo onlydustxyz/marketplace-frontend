@@ -1,7 +1,9 @@
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom";
 import { Combobox, Transition } from "@headlessui/react";
 import { ChangeEvent, useMemo, useRef } from "react";
+import { useMediaQuery } from "usehooks-ts";
 
+import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
 import { Button } from "./components/button/button";
@@ -20,6 +22,7 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   controlledSearch,
   ...comboProps
 }: TSelectAutocomplete.Props<T>) {
+  const isMd = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.md}px)`);
   const selectedRef = useRef(comboProps.selected);
   const { current: selected } = selectedRef;
   const { selected: selectedTracked } = comboProps;
@@ -87,7 +90,16 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
             </Combobox.Button>
             <Transition
               ref={refs.setFloating}
-              style={{ ...floatingStyles, top: "-12px" }}
+              style={{
+                ...floatingStyles,
+                top: "-12px",
+                ...(isMd
+                  ? {
+                      position: "sticky",
+                      transform: "translateX(-12px) translateY(-44px)",
+                    }
+                  : {}),
+              }}
               enter="transform transition duration-100 ease-out"
               enterFrom="scale-95 opacity-0"
               enterTo="scale-100 opacity-100"

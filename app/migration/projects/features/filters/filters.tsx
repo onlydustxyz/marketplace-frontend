@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import FilterIcon from "src/assets/icons/FilterIcon";
@@ -25,7 +25,6 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
   const isProjectLeader = useLeadProjects();
   const [openMobilePanel, setOpenMobilePanel] = useState(false);
   const { filters } = useContext(ProjectsContext);
-
   if (!isXl && showOn === "mobile") {
     return (
       <>
@@ -34,6 +33,7 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
           <Translate token="v2.pages.projects.filters.mobileButton" params={{ count: filters.count }} />
         </Button>
         <BottomSheet
+          background="blue"
           onClose={() => setOpenMobilePanel(false)}
           open={openMobilePanel}
           title={
