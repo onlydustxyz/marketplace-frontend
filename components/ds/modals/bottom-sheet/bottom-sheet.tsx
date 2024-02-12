@@ -15,6 +15,7 @@ export function BottomSheet({
   title,
   open = false,
   background = "grey",
+  hasCloseButton = true,
 }: TBottomSheet.Props) {
   return (
     <Modal
@@ -60,9 +61,11 @@ export function BottomSheet({
               <Typography as="div" variant="title-m">
                 {title}
               </Typography>
-              <Button size="s" variant="secondary" iconOnly onClick={onClose}>
-                <CloseLine />
-              </Button>
+              {hasCloseButton && (
+                <Button size="s" variant="secondary" iconOnly onClick={onClose}>
+                  <CloseLine />
+                </Button>
+              )}
             </ModalHeader>
             <ModalBody className="px-6 py-0 pb-6">{children}</ModalBody>
           </>
