@@ -250,7 +250,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                       {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
                     </span>
                   </div>
-                  {!isCurrencyUSD ? <span className="text-3xl">{data.currency}</span> : null}
+                  <span className="text-3xl">{data.currency}</span>
                 </div>
                 {!isCurrencyUSD && data.dollarsEquivalent ? (
                   <>
