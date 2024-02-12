@@ -1,19 +1,9 @@
-export interface IStar {
-  coordinate: Coordinates;
-  radius: number;
-  velocity: number;
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-  draw: () => void;
-  animate: (boost: boolean) => void;
-}
-
 interface Coords {
   x: number;
   y: number;
 }
 
-interface Coordinates {
+interface Positions {
   initial: Coords;
   controlled: Coords;
   range: {
@@ -22,8 +12,28 @@ interface Coordinates {
   };
   config: {
     direction: "bottom" | "top";
+    speed: number;
+    speedRange: {
+      min: number;
+      max: number;
+    };
+    moveRange: {
+      x: number;
+      y: number;
+    };
   };
 }
+
+export interface IStar {
+  positions: Positions;
+  radius: number;
+  opacitySpeed: number;
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+  draw: () => void;
+  animate: (boost: boolean) => void;
+}
+
 export class Star implements IStar {
   config = {
     colors: [
@@ -33,10 +43,10 @@ export class Star implements IStar {
       [174, 0, 255],
     ],
   };
-  coordinate: Coordinates;
+  positions: Positions;
   radius: number;
   color: number[];
-  velocity: number;
+  opacitySpeed: number;
   speed: number;
   opacity: number;
   factor: number;
@@ -47,8 +57,9 @@ export class Star implements IStar {
   ctx: CanvasRenderingContext2D;
   constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     const [x, y] = [Math.random() * window.innerWidth, Math.random() * window.innerHeight];
-    const sizeRange = [0.1, 3];
-    this.coordinate = {
+    const minSpeed = window.innerWidth * 0.0005;
+    const maxSpeed = window.innerWidth * 0.0004;
+    this.positions = {
       initial: {
         x,
         y,
@@ -69,12 +80,21 @@ export class Star implements IStar {
       },
       config: {
         direction: "top",
+        speed: Math.random() * (maxSpeed - minSpeed + 1) + minSpeed,
+        speedRange: {
+          min: minSpeed,
+          max: maxSpeed,
+        },
+        moveRange: {
+          x: window.innerWidth * 0.00002,
+          y: window.innerWidth * 0.00003,
+        },
       },
     };
 
     this.radius = Math.random() * 2.5;
-    this.velocity = Math.random() * 0.015;
-    this.speed = Math.random() * 1;
+    this.opacitySpeed = Math.random() * 0.005;
+    this.speed = Math.random() * (maxSpeed - minSpeed + 1) + minSpeed;
     this.shineCompleted = false;
     this.opacity = 1;
     this.factor = 1;
@@ -86,34 +106,11 @@ export class Star implements IStar {
     this.movedTo = 0;
   }
   draw() {
-    // console.log("velocity", `rgba(${this.color.join(",")}, ${this.opacity})`);
-    // console.log("this.velocity", this.velocity);
-    // console.log("this.opacity", this.opacity);
-    // console.log("this.opacity", `rgba(${this.color.join(",")}, ${this.opacity})`);
-    const { x, y } = this.coordinate.controlled;
+    const { x, y } = this.positions.controlled;
     this.ctx.beginPath();
     this.ctx.arc(x, y, this.radius, 0, Math.PI * 2);
     this.ctx.fillStyle = `rgba(${this.color.join(",")},${this.opacity})`;
-    // console.log(`rgba(${this.color.join(",")}, ${this.opacity})`);
-    // console.log(`velocity`, this.velocity);
-    // console.log(`rgba(${this.color.join(",")}, ${this.opacity})`);
     this.ctx.fill();
-  }
-  private update() {
-    if (this.opacity >= 1) {
-      this.factor = -1;
-      this.opacity = 1;
-      this.shineCompleted = true;
-    } else if (this.opacity <= 0) {
-      this.factor = 1;
-      this.opacity = 0;
-    }
-    this.opacity += this.velocity * this.factor;
-    // console.log("this.opacity", this.opacity);
-    // if (this.opacity < 0) {
-    //   this.opacity = 1;
-    // }
-    this.draw();
   }
   private shine(boost: boolean) {
     if (this.opacity >= 1) {
@@ -129,32 +126,24 @@ export class Star implements IStar {
       this.opacity = 1;
     }
 
-    this.opacity += this.velocity * this.factor;
+    this.opacity += this.opacitySpeed * this.factor;
   }
 
   private move(boost: boolean) {
-    let rangeMinY = this.coordinate.range.min.y;
-    let intialY = this.coordinate.initial.y;
+    if (this.positions.controlled.y < -10) {
+      this.positions.controlled.y = window.innerHeight + 10;
+    }
+    if (this.positions.controlled.x > window.innerWidth + 10) {
+      this.positions.controlled.x = -10;
+    }
 
-    let speed = this.speed;
+    let speed = this.positions.config.speed;
     if (boost) {
-      speed = 20;
-      rangeMinY = rangeMinY - window.innerWidth;
-      intialY = rangeMinY + window.innerWidth;
-    }
-    if (this.coordinate.controlled.y <= rangeMinY) {
-      this.coordinate.config.direction = "top";
-    } else if (this.coordinate.controlled.y >= rangeMinY && this.coordinate.controlled.y >= intialY) {
-      this.coordinate.config.direction = "bottom";
+      speed = (window.innerHeight - (this.positions.controlled.y || 0)) * 0.1;
     }
 
-    if (this.coordinate.config.direction === "bottom") {
-      this.coordinate.controlled.y -= 0.3 * speed;
-      this.coordinate.controlled.x += 0.2 * speed;
-    } else {
-      this.coordinate.controlled.x -= 0.2 * speed;
-      this.coordinate.controlled.y += 0.3 * speed;
-    }
+    this.positions.controlled.y -= this.positions.config.moveRange.y * speed;
+    this.positions.controlled.x += this.positions.config.moveRange.x * speed;
   }
 
   animate(boost: boolean) {
