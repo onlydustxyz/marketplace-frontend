@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import FilterIcon from "src/assets/icons/FilterIcon";
