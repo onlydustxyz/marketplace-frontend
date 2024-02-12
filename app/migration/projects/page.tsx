@@ -2,7 +2,6 @@
 
 import { useContext } from "react";
 
-import { SpaceBackground } from "components/features/space-background/space-background";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
