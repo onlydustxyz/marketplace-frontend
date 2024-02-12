@@ -2,7 +2,7 @@
   "title": "Request payment",
   "form": {
     "submit": {
-      "zero": "Select __count__ reward",
+      "zero": "Select __count__ rewards",
       "one": "Select __count__ reward",
       "many": "Select __count__ rewards"
     },
@@ -11,17 +11,17 @@
   "item": {
     "to": "to",
     "contributions": {
-      "zero": "__count__ contribution",
+      "zero": "__count__ contributions",
       "one": "__count__ contribution",
       "many": "__count__ contributions"
     }
   },
   "amount": {
-    "label_individual": "As an individual, you can’t exceed a total of 5,000 USD reward per year.",
+    "label_individual": "As an individual, you can’t exceed a total of 5,000 USD in rewards per year.",
     "label_company": "Total amount rewarded for this invoice "
   },
   "tabs": {
     "included": "Rewards included",
-    "excluded": "Rewards excluded",
+    "excluded": "Rewards excluded"
   }
 }
