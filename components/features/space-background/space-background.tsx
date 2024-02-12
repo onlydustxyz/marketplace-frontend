@@ -50,7 +50,6 @@ export function SpaceBackground() {
           if (frameCount % 100 === 0) {
             boost["1"] = Math.floor(Math.random() * stars.length);
             boost["2"] = Math.floor(Math.random() * stars.length);
-            boost["3"] = Math.floor(Math.random() * stars.length);
           }
           stars.forEach((star, i) => {
             const isBoosted = i === boost["1"] || i === boost["2"];
