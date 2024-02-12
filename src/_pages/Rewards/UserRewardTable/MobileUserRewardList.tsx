@@ -106,7 +106,12 @@ export function MobileUserRewardItem({
   return (
     <Card className="flex flex-col gap-3 divide-y divide-greyscale-50/8" selectable>
       <div className="flex flex-col gap-3">
-        {payoutStatus}
+        <div
+          // Required to align tooltip with the payout status tag
+          className="inline-flex"
+        >
+          {payoutStatus}
+        </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
