@@ -5,6 +5,7 @@ import { Link, generatePath } from "react-router-dom";
 
 import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
+import { FeedbackPanel } from "src/App/Stacks/FeedbackPanel/FeedbackPanel";
 import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
 import { VerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -28,6 +29,7 @@ export enum StackRoute {
   GithubWorkflowClaim = "github-workflow-claim",
   GithubWorkflowTutorial = "github-workflow-tutorial",
   Verify = "verify",
+  Feedback = "feedback",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -85,8 +87,13 @@ export const Stacks = () => {
       <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
+      <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
     </>
   );
+};
+
+export const useStackFeedback = () => {
+  return useStackNavigation(StackRoute.Feedback);
 };
 
 export const useStackVerify = () => {

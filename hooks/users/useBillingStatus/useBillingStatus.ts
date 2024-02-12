@@ -1,17 +1,11 @@
 import { MeBillingConstants } from "src/api/me/billing/constant";
-import { UseBillingProfileResponse } from "src/api/me/billing/queries";
 
-export interface UseBillingStatus {
-  statusMapping: typeof MeBillingConstants.statusMapping["CLOSED"] | undefined;
-  isWarning: boolean;
-  isError: boolean;
-  isSuccess: boolean;
-  isRainbow: boolean;
-}
-export const useBillingStatus = (
-  hasValidBillingProfile: boolean,
-  status?: UseBillingProfileResponse["status"]
-): UseBillingStatus => {
+import { TUseBillingStatus } from "./useBillingStatus.types";
+
+export const useBillingStatus = ({
+  hasValidBillingProfile,
+  status,
+}: TUseBillingStatus.Props): TUseBillingStatus.Return => {
   if (!status) {
     return {
       statusMapping: undefined,

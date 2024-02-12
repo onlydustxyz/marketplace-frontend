@@ -1,5 +1,4 @@
 import { FilloutStandardEmbed } from "@fillout/react";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useState } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
 
@@ -14,6 +13,8 @@ import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 type RewardProjectButtonProps = { project: components["schemas"]["ProjectResponse"]; size?: ButtonSize };
 

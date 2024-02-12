@@ -12,6 +12,7 @@ const config: Config = withTV({
     "./src/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./hooks/**/*.{js,ts,jsx,tsx}",
     "./.storybook/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
@@ -206,6 +207,7 @@ const config: Config = withTV({
         "profile-yellow": "url('/images/user-profile-bg-yellow.webp')",
         "space-card": "url('/images/space-card-bg.webp')",
         "public-profile": "url('/images/public-profile-bg.webp')",
+        "space-gradient": "linear-gradient(180deg, #000113 0%, #0E0D2E 100%)",
         space: `
             url('/images/dust-top-right.webp'),
             url('/images/dust-btm-left.webp'),

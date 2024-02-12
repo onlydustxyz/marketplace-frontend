@@ -113,7 +113,7 @@ export function BudgetCard({
             >
               {budgets[type].icon}
             </span>
-            <div className="truncate font-semibold">{T(budgets[type].title)}</div>
+            <div className="font-semibold">{T(budgets[type].title)}</div>
           </div>
           {!!onClick && <Icon remixName="ri-more-fill" />}
         </div>

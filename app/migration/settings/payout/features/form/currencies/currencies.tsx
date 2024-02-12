@@ -1,30 +1,24 @@
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 
 import { Flex } from "components/layout/flex/flex";
-import { Typography } from "components/layout/typography/typography";
+import { Translate } from "components/layout/translate/translate";
 
 import { TCurrencies } from "./currencies.types";
 
 export function Currencies({ currencies }: TCurrencies.Props) {
   return (
     <Flex alignItems="center" className="gap-2">
-      <Typography
-        variant="body-xs"
-        className="text-greyscale-200"
-        translate={{
-          token: "v2.pages.settings.payout.wallets.description",
-        }}
-      />
+      <p>
+        <Translate token="v2.pages.settings.payout.wallets.description" />
+      </p>
 
       {currencies.map(currency => (
         <Flex key={currency} className="gap-1" alignItems="center">
           <CurrencyIcons currency={currency} className="h-4 w-4" />
-          <Typography
-            variant="body-xs"
-            translate={{
-              token: `currencies.currency.${currency}`,
-            }}
-          />
+
+          <p className="text-gray-50">
+            <Translate token={`currencies.currency.${currency}`} />
+          </p>
         </Flex>
       ))}
     </Flex>
