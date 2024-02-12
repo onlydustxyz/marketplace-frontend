@@ -88,7 +88,7 @@ export function Combobox<T extends Record<string, unknown>>({
       multiple={multiple as false}
     >
       {({ open }) => (
-        <div className="z-1 relative">
+        <div className={cn("relative", { "z-50": open })}>
           <HeadlessCombobox.Button
             as="div"
             ref={refs.setReference}

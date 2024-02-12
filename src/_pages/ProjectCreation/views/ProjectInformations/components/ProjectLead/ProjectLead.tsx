@@ -106,7 +106,7 @@ export const FieldProjectLead: FC<FieldProjectLeadProps> = ({ name, onChange, va
     <div className="flex w-full flex-col gap-2">
       <FieldLabel id={name}>Project leads</FieldLabel>
       <div className="flex flex-col gap-3">
-        <div className="relative z-[1] sm:w-2/3">
+        <div className="relative sm:w-2/3">
           <Combobox
             items={comboboxMultiData}
             itemKeyName="githubUserId"

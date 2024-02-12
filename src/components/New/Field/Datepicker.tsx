@@ -14,6 +14,8 @@ import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB, getFormattedTimeDatepicker, parseDateRangeString, parseDateString } from "src/utils/date";
 
+import { BottomSheet } from "components/ds/modals/bottom-sheet/bottom-sheet";
+
 export enum Period {
   ThisWeek = "this_week",
   ThisMonth = "this_month",
@@ -189,19 +191,64 @@ export function Datepicker({
     return props.value ? getFormattedDateGB(new Date(props.value)) : T("form.singleDatePlaceholder");
   }
 
+  function renderPeriods() {
+    if (!props.periods?.length) {
+      return null;
+    }
+    return (
+      <div className="divide-y divide-card-border-medium border-b border-greyscale-50/8 font-walsheim">
+        {props.periods?.map(({ id, label, value, isActive }) => {
+          return (
+            <button
+              key={id}
+              type="button"
+              className="flex w-full items-center justify-between px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
+              onClick={e => {
+                if (props.mode === "single" && value instanceof Date) {
+                  props.onChange?.(value, value, {}, e);
+                }
+
+                // Not ideal, but got to please Typescript
+                if (
+                  props.mode === "range" &&
+                  "from" in value &&
+                  "to" in value &&
+                  value.from instanceof Date &&
+                  value.to instanceof Date
+                ) {
+                  props.onChange?.(value, value.from, {}, e);
+                }
+
+                props.onPeriodChange(id);
+
+                if (autoCloseOnPeriodeSelect) {
+                  close();
+                }
+              }}
+            >
+              <span>{label}</span>
+              {isActive ? <CheckLine className="text-xl leading-none" /> : null}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <Popover className="relative">
-      {({ open }) => (
+      {({ open, close: closeMain }) => (
         <>
           <Popover.Button
             ref={refs.setReference}
             className={cn(
-              "relative right-0 z-20 flex w-full origin-right items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg duration-200 ease-out transition-all",
+              "relative right-0 flex w-full origin-right items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg duration-200 ease-out transition-all",
               {
                 "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                   open,
                 "text-spaceBlue-200": !open && !selectionIsValid,
                 "text-greyScale-50": !open && selectionIsValid,
+                "z-50": open,
               },
               {
                 "w-[500px] min-w-full max-w-full": open && props.mode === "range",
@@ -219,20 +266,7 @@ export function Datepicker({
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
-              ...(props.mode === "single"
-                ? { right: "-6px" }
-                : {
-                    ...(placement === "bottom" || !isMd
-                      ? { top: "-12px" }
-                      : { top: (floatingStyles.top as number) + 45 }),
-                    left: "-12px",
-                  }),
-              ...(isMd
-                ? {
-                    position: "sticky",
-                    transform: "translateX(-12px) translateY(-44px)",
-                  }
-                : {}),
+              ...(props.mode === "single" ? { right: "-6px" } : { top: "-12px", left: "-12px" }),
             }}
             enter="transition duration-150 ease-out delay-75"
             enterFrom="transform scale-95 opacity-0"
@@ -241,8 +275,9 @@ export function Datepicker({
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
             className={cn(
-              "z-10 min-w-full rounded-xl border border-greyscale-50/8 shadow-lg",
+              "min-w-full rounded-xl border border-greyscale-50/8 shadow-lg",
               {
+                "z-50": open,
                 "bg-greyscale-800": isElevated,
                 "bg-greyscale-900": !isElevated,
                 "origin-top translate-y-1.5": placement === "bottom",
@@ -255,53 +290,27 @@ export function Datepicker({
               {({ close }) => (
                 <div
                   className={cn({
-                    "pt-[54px]": props.mode === "range" && (placement === "bottom" || !isMd),
-                    "pb-[54px]": props.mode === "range" && placement === "top",
+                    "pt-[54px]": props.mode === "range",
                   })}
                 >
-                  {props.periods?.length ? (
-                    <div className="divide-y divide-card-border-medium border-b border-greyscale-50/8 font-walsheim">
-                      {props.periods?.map(({ id, label, value, isActive }) => {
-                        return (
-                          <button
-                            key={id}
-                            type="button"
-                            className="flex w-full items-center justify-between px-4 py-1 text-left text-sm leading-6 text-greyscale-50 first-of-type:pt-2 last-of-type:pb-2 hover:bg-card-background-heavy"
-                            onClick={e => {
-                              if (props.mode === "single" && value instanceof Date) {
-                                props.onChange?.(value, value, {}, e);
-                              }
-
-                              // Not ideal, but got to please Typescript
-                              if (
-                                props.mode === "range" &&
-                                "from" in value &&
-                                "to" in value &&
-                                value.from instanceof Date &&
-                                value.to instanceof Date
-                              ) {
-                                props.onChange?.(value, value.from, {}, e);
-                              }
-
-                              props.onPeriodChange(id);
-
-                              if (autoCloseOnPeriodeSelect) {
-                                close();
-                              }
-                            }}
-                          >
-                            <span>{label}</span>
-                            {isActive ? <CheckLine className="text-xl leading-none" /> : null}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : null}
+                  {renderPeriods()}
                   {renderCalendar({ close })}
                 </div>
               )}
             </Popover.Panel>
           </Transition>
+          {isMd && (
+            <BottomSheet onClose={closeMain} open={open} fullScreen={true}>
+              <Popover.Panel ref={calendarRef}>
+                {({ close }) => (
+                  <div>
+                    {renderPeriods()}
+                    {renderCalendar({ close })}
+                  </div>
+                )}
+              </Popover.Panel>
+            </BottomSheet>
+          )}
         </>
       )}
     </Popover>
