@@ -32,12 +32,9 @@ export function SpaceBackground() {
     const boost = {
       1: -1,
       2: -1,
-      3: -1,
-      4: -1,
     };
     if (canvas && context) {
       const numberOfStars = window.innerWidth / 5;
-      //Our draw came here
       scaleCanvas(canvas, context);
       window.addEventListener("resize", () => scaleCanvas(canvas, context));
       [...Array(Math.round(numberOfStars)).keys()].forEach(() => {
