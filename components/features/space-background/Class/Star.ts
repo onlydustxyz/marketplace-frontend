@@ -12,6 +12,7 @@ interface Positions {
   };
   config: {
     direction: "bottom" | "top";
+    directionFactor?: number;
     speed: number;
     speedRange: {
       min: number;
@@ -56,6 +57,8 @@ export class Star implements IStar {
     const coords = { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight };
     const minSpeed = window.innerWidth * 0.0005;
     const maxSpeed = window.innerWidth * 0.0004;
+    const minSize = window.innerWidth * 0.0001;
+    const maxSize = window.innerWidth * 0.0005;
     this.positions = {
       initial: coords,
       controlled: coords,
@@ -69,22 +72,23 @@ export class Star implements IStar {
       config: {
         direction: "top",
         speed: Math.random() * (maxSpeed - minSpeed + 1) + minSpeed,
+        directionFactor: Math.random() * (10 - -10 + 1) + -10 > 0 ? 1 : -1,
         speedRange: {
           min: minSpeed,
           max: maxSpeed,
         },
         moveRange: {
-          x: window.innerWidth * 0.00002,
+          x: window.innerWidth * 0.00001,
           y: window.innerWidth * 0.00003,
         },
       },
     };
 
-    this.radius = Math.random() * 2.5;
+    this.radius = Math.random() * (maxSize - minSize + 1) + minSize;
     this.opacitySpeed = Math.random() * 0.005;
     this.speed = Math.random() * (maxSpeed - minSpeed + 1) + minSpeed;
     this.shineCompleted = false;
-    this.opacity = 1;
+    this.opacity = Math.random();
     this.factor = 1;
     this.speedFactor = 1;
     this.canvas = canvas;
@@ -118,11 +122,20 @@ export class Star implements IStar {
   }
 
   private move(boost: boolean) {
-    if (this.positions.controlled.y < -10) {
-      this.positions.controlled.y = window.innerHeight + 10;
-    }
-    if (this.positions.controlled.x > window.innerWidth + 10) {
-      this.positions.controlled.x = -10;
+    if (this.positions.config.directionFactor === 1) {
+      if (this.positions.controlled.y < -10) {
+        this.positions.controlled.y = window.innerHeight + 10;
+      }
+      if (this.positions.controlled.x > window.innerWidth + 10) {
+        this.positions.controlled.x = -10;
+      }
+    } else if (this.positions.config.directionFactor === -1) {
+      if (this.positions.controlled.y > window.innerHeight + 10) {
+        this.positions.controlled.y = -10;
+      }
+      if (this.positions.controlled.x < -10) {
+        this.positions.controlled.x = window.innerWidth + 10;
+      }
     }
 
     let speed = this.positions.config.speed;
@@ -130,8 +143,14 @@ export class Star implements IStar {
       speed = (window.innerHeight - (this.positions.controlled.y || 0)) * 0.1;
     }
 
-    this.positions.controlled.y -= this.positions.config.moveRange.y * speed;
-    this.positions.controlled.x += this.positions.config.moveRange.x * speed;
+    if (this.positions.config.directionFactor === 1) {
+      this.positions.controlled.y -= this.positions.config.moveRange.y * speed;
+      this.positions.controlled.x += this.positions.config.moveRange.x * speed;
+    }
+    if (this.positions.config.directionFactor === -1) {
+      this.positions.controlled.y += this.positions.config.moveRange.y * speed;
+      this.positions.controlled.x -= this.positions.config.moveRange.x * speed;
+    }
   }
 
   animate(boost: boolean) {
