@@ -33,9 +33,7 @@ export function ContributorsAvatars({ contributors, avatarProps }: TContributors
     <Tooltip content={contributorsContent()}>
       <AvatarGroup
         avatars={contributors.map(contributor => ({
-          src: contributor.avatarUrl
-            ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_W_100_PREFIX}${contributor.avatarUrl}`
-            : "",
+          src: contributor.avatarUrl,
           alt: contributor.login || "",
         }))}
         avatarProps={avatarProps}

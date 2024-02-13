@@ -7,7 +7,7 @@ export const BackDrop = ({ onClick }: { onClick: () => void }) => {
   return (
     <div
       onClick={onClick}
-      className={cn("fixed left-0 top-0 h-screen w-screen ", placement === "bottom" && "bg-greyscale-900/50")}
+      className={cn("fixed left-0 top-0 z-[2] h-screen w-screen", placement === "bottom" && "bg-greyscale-900/50")}
     ></div>
   );
 };
