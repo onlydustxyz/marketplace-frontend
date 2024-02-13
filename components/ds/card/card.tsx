@@ -23,7 +23,7 @@ export function Card({
         }),
         {
           "duration-200 ease-in hover:border hover:border-card-border-heavy":
-            isClickable && props.border !== "multiColor",
+            isClickable && props.border !== "multiColor" && !props.isWarning,
         },
         className
       )}

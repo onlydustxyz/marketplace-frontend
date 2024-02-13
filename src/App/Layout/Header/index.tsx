@@ -1,6 +1,5 @@
 "use client";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useLocation } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
@@ -10,6 +9,8 @@ import { useIntl } from "src/hooks/useIntl";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import View from "./View";
 
@@ -24,10 +25,10 @@ export default function Header() {
 
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
-  const rewardsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.rewards") : undefined;
-  const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.contributions") : undefined;
+  const rewardsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.rewards") : undefined;
+  const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.contributions") : undefined;
   const projectsMenuItem =
-    (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("navbar.projects") : undefined;
+    (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("v2.features.menu.projects") : undefined;
 
   return (
     <View

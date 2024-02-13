@@ -14,12 +14,14 @@ export const cardVariants = tv({
       true: "cursor-pointer",
     },
     border: {
+      false: "border-none",
       light: "border border-card-border-light",
       medium: "border border-card-border-medium",
       heavy: "border border-card-border-heavy",
       multiColor: "border-multicolored before:pointer-events-none before:rounded-2xl",
     },
     background: {
+      false: "bg-transparent",
       light: "bg-card-background-light",
       medium: "bg-card-background-medium",
       heavy: "bg-card-background-heavy",

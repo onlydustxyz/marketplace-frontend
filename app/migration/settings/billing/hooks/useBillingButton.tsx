@@ -1,7 +1,6 @@
 import { ReactElement, ReactNode } from "react";
 
-import FeedbackButton from "src/App/Layout/Header/FeedbackButton";
-import { useStackVerify } from "src/App/Stacks/Stacks";
+import { useStackFeedback, useStackVerify } from "src/App/Stacks/Stacks";
 import { UseBillingProfileResponse } from "src/api/me/billing/queries";
 import { MeTypes } from "src/api/me/types";
 import { Key } from "src/hooks/useIntl";
@@ -19,6 +18,7 @@ export interface UseBillingButtonProps {
 }
 export const useBillingButton = ({ status, type, id }: UseBillingButtonProps): UseBillingButton | undefined => {
   const [openVerify] = useStackVerify();
+  const [openFeedback] = useStackFeedback();
 
   function handleVerify() {
     if (type && id) {
@@ -28,10 +28,6 @@ export const useBillingButton = ({ status, type, id }: UseBillingButtonProps): U
         openVerify({ levelName: "basic-kyb-level", externalId: id });
       }
     }
-  }
-
-  function feedBack(children: React.ReactNode) {
-    return <FeedbackButton customButton={children} />;
   }
 
   switch (status) {
@@ -63,12 +59,12 @@ export const useBillingButton = ({ status, type, id }: UseBillingButtonProps): U
     case "CLOSED":
       return {
         label: "v2.pages.settings.billing.buttons.contact",
-        element: feedBack,
+        onClick: openFeedback,
       };
     case "VERIFIED":
       return {
         label: "v2.pages.settings.billing.buttons.contact",
-        element: feedBack,
+        onClick: openFeedback,
       };
     default:
       return undefined;
