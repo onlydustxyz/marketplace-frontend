@@ -43,7 +43,7 @@ export function MandateDetailStack() {
           </ul>
         </div>
 
-        <div className="prose prose-invert text-greyscale-50">
+        <div className="prose prose-invert text-greyscale-50 marker:text-greyscale-50">
           <p>
             THIS <b>INVOICING MANDATE AGREEMENT</b> (the &quot;<b>Agreement</b>&quot;) is made between:
           </p>
