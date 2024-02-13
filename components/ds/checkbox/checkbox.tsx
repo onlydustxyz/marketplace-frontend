@@ -1,10 +1,7 @@
 import { Checkbox as NextCheckbox } from "@nextui-org/react";
-import { PropsWithChildren } from "react";
 
-export function Checkbox({ children }: PropsWithChildren) {
-  return (
-    <NextCheckbox radius="sm" classNames={{ label: "text-greyscale-50" }}>
-      {children}
-    </NextCheckbox>
-  );
+import { TCheckbox } from "components/ds/checkbox/checkbox.types";
+
+export function Checkbox(props: TCheckbox.Props) {
+  return <NextCheckbox radius="sm" classNames={{ label: "text-greyscale-50" }} {...props} />;
 }
