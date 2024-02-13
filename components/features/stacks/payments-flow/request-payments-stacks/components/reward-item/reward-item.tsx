@@ -66,9 +66,9 @@ export function RewardItem({
               <Avatar src={rewardedOnProjectLogoUrl} alt={rewardedOnProjectName} size="xs" />
 
               <Typography variant="body-xs" as="p">
-                <Translate token="v2.pages.stacks.request_payments.item.to" as="span" className="text-greyscale-300" />
+                <Translate token="v2.pages.stacks.request_payments.item.on" as="span" className="text-greyscale-300" />
                 &nbsp;
-                {user?.login}
+                {rewardedOnProjectName}
               </Typography>
             </Flex>
           </Flex>

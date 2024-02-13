@@ -10,6 +10,7 @@
   },
   "item": {
     "to": "to",
+    "on": "on",
     "contributions": {
       "zero": "__count__ contributions",
       "one": "__count__ contribution",
