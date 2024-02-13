@@ -34,16 +34,16 @@ function SafeProjectsPage() {
         </div>
         <Flex className="w-full flex-1 gap-5 overflow-hidden" direction="col">
           <Flex className="w-full gap-5" direction="row" alignItems="center">
-            <div className="w-full">
+            <div className="flex justify-start gap-2">
+              <ProjectsSort />
+              <ProjectsFilters showOn="mobile" />
+            </div>
+            <div className="flex-1 text-right">
               <Typography
                 translate={{ token: "v2.pages.projects.count", params: { count } }}
                 variant="body-m-bold"
                 className="uppercase text-spaceBlue-200"
               />
-            </div>
-            <div className="flex w-full justify-end gap-2">
-              <ProjectsSort />
-              <ProjectsFilters showOn="mobile" />
             </div>
           </Flex>
           <div className="flex w-full grow flex-col gap-5">
@@ -58,7 +58,7 @@ function SafeProjectsPage() {
 export default function ProjectsPage() {
   return (
     <ProjectsContextProvider>
-      <div className="od-space-background h-full w-full overflow-y-auto bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 lg:rounded-3xl">
+      <div className="relative z-[1] h-full w-full overflow-y-auto bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 lg:rounded-3xl">
         <div className="flex max-w-7xl flex-col gap-6 px-4 py-4 md:mx-auto md:px-12 xl:pb-8 xl:pt-12 ">
           <SafeProjectsPage />
         </div>

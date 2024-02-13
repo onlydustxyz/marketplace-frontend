@@ -12,8 +12,8 @@ const PayoutPage = lazy(() => import("./payout/page"));
 const ProfilePage = lazy(() => import("./profile/page"));
 export default function SettingsLayout() {
   return (
-    <div className="flex h-full w-screen flex-col overflow-hidden">
-      <div className="flex h-0 w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:flex-row xl:gap-2 xl:p-6 xl:pt-0">
+    <div className="flex h-full w-screen flex-col overflow-hidden border-[24px] border-t-0 border-black">
+      <div className="flex h-0 w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:flex-row xl:gap-2 xl:pt-0">
         <Sidebar />
 
         <div className="od-space-background relative h-full w-full overflow-hidden xl:rounded-r-2xl">

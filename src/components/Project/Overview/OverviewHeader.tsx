@@ -1,9 +1,10 @@
+"use client";
+
 import { ProjectConstants } from "src/api/Project/constants";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { IMAGES } from "src/assets/img";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { withTooltip } from "src/components/Tooltip";
-import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import LockFill from "src/icons/LockFill";
 
@@ -26,7 +27,12 @@ Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, eu
 `;
 
 export const ProjectOverviewHeader = ({ project, description = true }: ProjectOverviewHeaderProps) => {
-  const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : IMAGES.logo.space;
+  const dpr = window.devicePixelRatio;
+  const logoUrl = project?.logoUrl
+    ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}width=${80 * dpr},height=${80 * dpr},fit=cover/${
+        project?.logoUrl
+      }`
+    : IMAGES.logo.space;
   const { T } = useIntl();
 
   return (

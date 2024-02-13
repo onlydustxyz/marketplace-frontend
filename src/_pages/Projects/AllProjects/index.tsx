@@ -1,4 +1,3 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useEffect, useMemo } from "react";
 
 import ErrorFallback from "src/ErrorFallback";
@@ -14,6 +13,8 @@ import { usePosthog } from "src/hooks/usePosthog";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 
 import { EmptyState } from "components/layout/placeholders/empty-state";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";

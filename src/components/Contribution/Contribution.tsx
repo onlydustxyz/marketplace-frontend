@@ -1,5 +1,3 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
-
 import { useStackContribution } from "src/App/Stacks/Stacks";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview, ReviewStateStatuses } from "src/components/Contribution/ContributionReview";
@@ -8,6 +6,8 @@ import { Contribution as ContributionT, GithubContributionType, GithubPullReques
 import { cn } from "src/utils/cn";
 
 import { Link } from "components/ds/link/link";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 type Props = {
   contribution: ContributionT;

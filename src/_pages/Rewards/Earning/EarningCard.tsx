@@ -62,6 +62,7 @@ export function EarningCard({
 
   return (
     <Card
+      background={"base"}
       className={cn("group px-4 py-5 transition-all lg:px-4 lg:py-5", {
         "relative z-[1] overflow-hidden": type === CardTypes.AmountRewarded,
         "cursor-pointer": !!onClick,
@@ -80,7 +81,7 @@ export function EarningCard({
       <div className="flex flex-col gap-2">
         <div className="flex items-center text-sm uppercase text-white">
           <span className="mr-2">{earnings[type].icon}</span>
-          <div className="truncate font-semibold">{T(earnings[type].title)}</div>
+          <div className="font-semibold">{T(earnings[type].title)}</div>
         </div>
 
         <div className="flex flex-wrap items-baseline justify-between font-belwe text-2xl text-greyscale-50">

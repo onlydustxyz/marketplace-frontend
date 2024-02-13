@@ -1,16 +1,16 @@
-import { Fragment, useRef } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
 import { viewportConfig } from "src/config";
 
-import FeedbackButton from "../FeedbackButton";
+import { useMenu } from "hooks/menu/useMenu/useMenu";
+
 import { View } from "./View";
 import { ViewMobile } from "./ViewMobile";
 
 const ProfileButton = () => {
-  const feedbackButtonRef = useRef<{ open: () => void }>(null);
+  const { labelToken, redirection, errorColor, error } = useMenu();
 
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -20,27 +20,17 @@ const ProfileButton = () => {
 
   const { onboardingInProgress } = useOnboarding();
 
-  const payoutSettingsInvalid = userInfo?.hasValidPayoutInfos === false;
-
-  const openFeedback = () => {
-    feedbackButtonRef?.current?.open?.();
-  };
-
   const props = {
     githubUserId,
     avatarUrl,
     login,
-    isMissingPayoutSettingsInfo: payoutSettingsInvalid && !onboardingInProgress,
+    labelToken,
+    redirection,
+    errorColor,
+    error,
     hideProfileItems: onboardingInProgress,
-    openFeedback,
   };
-
-  return (
-    <>
-      <FeedbackButton customButton={<Fragment />} ref={feedbackButtonRef} />
-      {isXl ? <View {...props} /> : <ViewMobile {...props} />}
-    </>
-  );
+  return isXl ? <View {...props} /> : <ViewMobile {...props} />;
 };
 
 export default ProfileButton;

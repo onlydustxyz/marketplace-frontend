@@ -35,6 +35,11 @@ export function FiltersTags() {
             icon: props => <Icon {...ProjectConstants.tagMapping.NEWBIES_WELCOME.icon} {...props} />,
           },
           {
+            value: ProjectTypes.Tags.BigWhale,
+            children: <Translate token={ProjectConstants.tagMapping.BIG_WHALE.label} />,
+            icon: props => <Icon {...ProjectConstants.tagMapping.BIG_WHALE.icon} {...props} />,
+          },
+          {
             value: ProjectTypes.Tags.LikelyToReward,
             children: <Translate token={ProjectConstants.tagMapping.LIKELY_TO_REWARD.label} />,
             icon: props => <Icon {...ProjectConstants.tagMapping.LIKELY_TO_REWARD.icon} {...props} />,
@@ -48,11 +53,6 @@ export function FiltersTags() {
             value: ProjectTypes.Tags.FastAndFurious,
             children: <Translate token={ProjectConstants.tagMapping.FAST_AND_FURIOUS.label} />,
             icon: props => <Icon {...ProjectConstants.tagMapping.FAST_AND_FURIOUS.icon} {...props} />,
-          },
-          {
-            value: ProjectTypes.Tags.BigWhale,
-            children: <Translate token={ProjectConstants.tagMapping.BIG_WHALE.label} />,
-            icon: props => <Icon {...ProjectConstants.tagMapping.BIG_WHALE.icon} {...props} />,
           },
         ]}
       />

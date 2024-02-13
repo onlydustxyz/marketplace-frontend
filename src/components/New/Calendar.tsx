@@ -73,7 +73,8 @@ function CustomCaptionGrouped(props: CaptionProps) {
 }
 
 const defaultOptions = (
-  mode: "single" | "range" | "default" | "multiple" | undefined
+  mode: "single" | "range" | "default" | "multiple" | undefined,
+  numberOfMonths?: number
 ): Omit<DayPickerBase, "mode" | "selected"> => ({
   classNames: {
     root: "w-full font-walsheim p-2",
@@ -95,7 +96,7 @@ const defaultOptions = (
     day_today: "text-spacePurple-300 hover:text-white ",
   },
   components: {
-    Caption: mode === "range" ? CustomCaptionSided : CustomCaptionGrouped,
+    Caption: mode === "range" && (numberOfMonths || 1) > 1 ? CustomCaptionSided : CustomCaptionGrouped,
   },
   formatters: {
     formatWeekdayName: day => day.toLocaleDateString("en-US", { weekday: "narrow" }),
@@ -182,7 +183,7 @@ export function Calendar(options: DayPickerProps) {
 
   return (
     <DayPicker
-      {...defaultOptions(options.mode)}
+      {...defaultOptions(options.mode, options.numberOfMonths)}
       {...options}
       onDayMouseEnter={onMouseEnter}
       modifiers={modifiers}
