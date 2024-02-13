@@ -23,5 +23,6 @@
   "tabs": {
     "included": "Rewards included",
     "excluded": "Rewards excluded"
-  }
+  },
+  "openButton": "Request payment"
 }
