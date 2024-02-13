@@ -19,7 +19,9 @@ export const ProjectOverviewTechnologies = ({ technologies }: Props) => {
       icon={SectionIcon.Code}
       title={T("project.details.overview.technologies", { count: technologiesArray.length })}
     >
-      <Typography variant="body-s">{technologiesArray.join(", ")}</Typography>
+      <Typography variant="body-s" className="leading-relaxed">
+        {technologiesArray.join(", ")}
+      </Typography>
     </Section>
   ) : null;
 };
