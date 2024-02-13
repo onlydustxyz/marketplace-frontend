@@ -12,6 +12,7 @@ interface Positions {
   };
   config: {
     direction: "bottom" | "top";
+    directionFactor?: number;
     speed: number;
     speedRange: {
       min: number;
@@ -69,18 +70,19 @@ export class Star implements IStar {
       config: {
         direction: "top",
         speed: Math.random() * (maxSpeed - minSpeed + 1) + minSpeed,
+        directionFactor: Math.random() * (10 - -10 + 1) + -10 > 0 ? 1 : -1,
         speedRange: {
           min: minSpeed,
           max: maxSpeed,
         },
         moveRange: {
-          x: window.innerWidth * 0.00002,
+          x: window.innerWidth * 0.00001,
           y: window.innerWidth * 0.00003,
         },
       },
     };
 
-    this.radius = Math.random() * 2.5;
+    this.radius = (Math.random() * (3 - 0.5 + 1) + 0.5) * Math.random();
     this.opacitySpeed = Math.random() * 0.005;
     this.speed = Math.random() * (maxSpeed - minSpeed + 1) + minSpeed;
     this.shineCompleted = false;
@@ -118,11 +120,20 @@ export class Star implements IStar {
   }
 
   private move(boost: boolean) {
-    if (this.positions.controlled.y < -10) {
-      this.positions.controlled.y = window.innerHeight + 10;
-    }
-    if (this.positions.controlled.x > window.innerWidth + 10) {
-      this.positions.controlled.x = -10;
+    if (this.positions.config.directionFactor === 1) {
+      if (this.positions.controlled.y < -10) {
+        this.positions.controlled.y = window.innerHeight + 10;
+      }
+      if (this.positions.controlled.x > window.innerWidth + 10) {
+        this.positions.controlled.x = -10;
+      }
+    } else if (this.positions.config.directionFactor === -1) {
+      if (this.positions.controlled.y > window.innerHeight + 10) {
+        this.positions.controlled.y = -10;
+      }
+      if (this.positions.controlled.x < -10) {
+        this.positions.controlled.x = window.innerWidth + 10;
+      }
     }
 
     let speed = this.positions.config.speed;
@@ -130,8 +141,14 @@ export class Star implements IStar {
       speed = (window.innerHeight - (this.positions.controlled.y || 0)) * 0.1;
     }
 
-    this.positions.controlled.y -= this.positions.config.moveRange.y * speed;
-    this.positions.controlled.x += this.positions.config.moveRange.x * speed;
+    if (this.positions.config.directionFactor === 1) {
+      this.positions.controlled.y -= this.positions.config.moveRange.y * speed;
+      this.positions.controlled.x += this.positions.config.moveRange.x * speed;
+    }
+    if (this.positions.config.directionFactor === -1) {
+      this.positions.controlled.y += this.positions.config.moveRange.y * speed;
+      this.positions.controlled.x -= this.positions.config.moveRange.x * speed;
+    }
   }
 
   animate(boost: boolean) {
