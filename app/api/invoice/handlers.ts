@@ -1,5 +1,7 @@
 export async function fetchInvoice({ token, rewardIds }: { token: string; rewardIds: string[] }) {
-  return await fetch("/api/invoice", {
+  const urlSearchParams = new URLSearchParams(rewardIds.map(id => ["rewardIds", id]));
+  console.log("urlSearchParams", urlSearchParams);
+  return await fetch(`/api/invoice${urlSearchParams ? "?" + rewardIds : ""}`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${token}`,

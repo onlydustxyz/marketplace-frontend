@@ -8,7 +8,6 @@ import { TInvoice } from "components/features/invoice-template/invoice-template.
 export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos }: TInvoice.InvoiceInfoProps) {
   const [senderStreetAddress, ...senderRestAdress] = senderInfos.address.split(/,(.+)/);
   const [recipientStreetAddress, ...recipientRestAdress] = recipientInfos.address.split(/,(.+)/);
-  console.log("senderInfos", senderInfos);
   return (
     <View style={{ ...styles.section, ...styles.flexRow }}>
       <View style={{ ...styles.flexCol }}>
