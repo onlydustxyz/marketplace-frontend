@@ -3,7 +3,12 @@ import { MeActions } from "actions/me/me.actions";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { getHeaderProps, getInvoiceInfoProps, getRewardsSummaryProps, invoiceMock } from "app/api/invoice/builders";
+import {
+  getHeaderProps,
+  getInvoiceInfoProps,
+  getRewardsSummaryProps,
+  invoiceMock,
+} from "app/api/invoice/builders/builders";
 
 import { MeTypes } from "src/api/me/types";
 
