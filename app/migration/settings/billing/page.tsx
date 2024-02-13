@@ -27,6 +27,7 @@ export default function BillingPage() {
           status={billingProfile?.status}
           type={profileType}
           id={billingProfile?.id}
+          reviewMessage={billingProfile?.reviewMessage}
         />
       </ProfileCard>
     </div>

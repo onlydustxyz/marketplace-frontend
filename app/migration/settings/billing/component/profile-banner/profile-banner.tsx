@@ -11,7 +11,14 @@ import { useBillingStatus } from "hooks/users/useBillingStatus/useBillingStatus"
 
 import { TProfileBanner } from "./profile-banner.types";
 
-export function ProfileBanner({ children, hasValidBillingProfile, status, type, id }: TProfileBanner.Props) {
+export function ProfileBanner({
+  children,
+  hasValidBillingProfile,
+  status,
+  type,
+  id,
+  reviewMessage,
+}: TProfileBanner.Props) {
   const { statusMapping, isWarning, isError, isSuccess, isRainbow } = useBillingStatus({
     status,
     hasValidBillingProfile,
@@ -42,6 +49,7 @@ export function ProfileBanner({ children, hasValidBillingProfile, status, type, 
   return (
     <Banner
       title={<Translate token={`v2.pages.settings.billing.status.descriptions.${status}`} />}
+      description={reviewMessage ? <div className="whitespace-pre-wrap">{reviewMessage}</div> : undefined}
       size="s"
       customButton={
         button?.element
