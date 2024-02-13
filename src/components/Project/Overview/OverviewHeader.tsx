@@ -1,7 +1,5 @@
 "use client";
 
-import process from "process";
-
 import { ProjectConstants } from "src/api/Project/constants";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { IMAGES } from "src/assets/img";

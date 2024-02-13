@@ -1,4 +1,5 @@
 import { Avatar as NextAvatar } from "@nextui-org/react";
+import Image from "next/image";
 import * as process from "process";
 import { useMemo } from "react";
 
@@ -13,7 +14,7 @@ export function Avatar(props: TAvatar.Props) {
   const { size, className, ...restProps } = props;
 
   const isRemoteImage = useMemo(() => {
-    if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX) {
+    if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && props.src) {
       return !props.src?.includes(process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX);
     }
 
@@ -22,29 +23,27 @@ export function Avatar(props: TAvatar.Props) {
 
   const sizeFromVariant = useMemo(() => {
     const size = props.size;
+    const dpr = window.devicePixelRatio;
     switch (size) {
       case "xs":
-        return { w: 16, h: 16 };
+        return { w: 16 * dpr, h: 16 * dpr };
       case "s":
-        return { w: 24, h: 24 };
+        return { w: 24 * dpr, h: 24 * dpr };
       case "m":
-        return { w: 32, h: 32 };
+        return { w: 32 * dpr, h: 32 * dpr };
       case "l":
-        return { w: 40, h: 40 };
+        return { w: 40 * dpr, h: 40 * dpr };
       case "xl":
-        return { w: 48, h: 48 };
+        return { w: 48 * dpr, h: 48 * dpr };
       default:
-        return undefined;
+        return { w: 16 * dpr, h: 16 * dpr };
     }
   }, [props]);
 
   const optimizeSrc = useMemo(() => {
     if (isRemoteImage && sizeFromVariant) {
       const size = sizeFromVariant;
-      const dpr = window.devicePixelRatio;
-      return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}width=${size.w * dpr},height=${
-        size.w * dpr
-      },fit=cover/${props.src}`;
+      return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}width=${size.w},height=${size.h},fit=cover/${props.src}`;
     }
 
     return props.src;
@@ -52,7 +51,15 @@ export function Avatar(props: TAvatar.Props) {
 
   return (
     <NextAvatar
-      fallback={<img src={IMAGES.logo.space} alt="OnlyDust" loading="lazy" />}
+      fallback={
+        <Image
+          src={IMAGES.logo.space}
+          width={sizeFromVariant.w}
+          height={sizeFromVariant.h}
+          alt="OnlyDust"
+          loading="lazy"
+        />
+      }
       className={cn(avatarVariants({ size, ...restProps }), className)}
       imgProps={{ loading: "lazy" }}
       classNames={{

@@ -82,7 +82,7 @@ export default function RoundedImage({
       const size = sizeFromVariant;
       const dpr = window.devicePixelRatio;
       return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}width=${size.w * dpr},height=${
-        size.w * dpr
+        size.h * dpr
       },fit=cover/${src}`;
     }
 
