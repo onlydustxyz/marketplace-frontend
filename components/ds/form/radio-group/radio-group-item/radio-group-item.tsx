@@ -15,7 +15,7 @@ export function RadioGroupItem({ value, children, disabled, containerClassName }
     [children, isActive, disabled, isSelected]
   );
   return (
-    <Component {...getBaseProps()} className={cn("cursor-pointer", containerClassName)}>
+    <Component {...getBaseProps()} className={cn("cursor-pointer !select-all", containerClassName)}>
       <VisuallyHidden>
         <input {...getInputProps()} />
       </VisuallyHidden>

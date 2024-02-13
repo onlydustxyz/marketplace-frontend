@@ -9,5 +9,8 @@ export namespace TBillingCreateStack {
 
   export enum Choice {
     Individual = "individual",
+    SelfEmployed = "selfEmployed",
+    Organisation = "organisation",
+    Employee = "employee",
   }
 }

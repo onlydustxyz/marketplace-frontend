@@ -8,6 +8,7 @@ export function RadioGroup<V extends string>({ onChange, ...props }: TRadioGroup
   const handleChange = (value: string) => {
     onChange(value as V);
   };
+
   return <NextRadioGroup {...props} onValueChange={handleChange} />;
 }
 

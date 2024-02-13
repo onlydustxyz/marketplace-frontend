@@ -1,10 +1,12 @@
-import { useMemo } from "react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 import { Spinner } from "src/components/Spinner/Spinner";
+import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
-import { RadioGroup } from "components/ds/form/radio-group/radio-group";
+import { RadioGroupCustom } from "components/ds/form/radio-group-custom/radio-group-custom";
 import { CheckboxItem } from "components/features/stacks/billing-create-stack/components/checkbox-item/checkbox-item";
 import { Flex } from "components/layout/flex/flex";
 import { Translate } from "components/layout/translate/translate";
@@ -12,13 +14,23 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TBillingCreateStack } from "./billing-create-stack.types";
 
-export function BillingCreateStack({ test }: TBillingCreateStack.Params) {
+export function BillingCreateStack() {
+  const { T } = useIntl();
+  const [name, setName] = useState("");
+  const [type, setType] = useState<TBillingCreateStack.Choice | null>(TBillingCreateStack.Choice.Individual | null);
   const isLoading = false;
   const isDisabled = false;
 
   const onSubmit = () => {
-    console.log("submit");
+    console.log("submit", { type, name });
   };
+
+  function onChoiceChange(value: TBillingCreateStack.Choice) {
+    setType(value);
+  }
+  function onNameChange(value: string) {
+    setName(value);
+  }
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -26,52 +38,106 @@ export function BillingCreateStack({ test }: TBillingCreateStack.Params) {
         <div className="mb-8">
           <Typography
             variant={"title-m"}
-            translate={{ token: "v2.pages.billing_create.title" }}
+            translate={{ token: "v2.pages.settings.billing_create.title" }}
             className="text-greyscale-50"
           />
         </div>
-        <Card background={false} className="p-4">
-          <Flex justifyContent="start" direction={"col"} className="gap-8">
-            <Flex justifyContent="start" direction={"col"} className="gap-1">
-              <Typography
-                variant={"title-s"}
-                translate={{ token: "v2.pages.billing_create.form.title" }}
-                className="text-greyscale-50"
-              />
-              <Typography
-                variant={"body-s"}
-                translate={{ token: "v2.pages.billing_create.form.description" }}
-                className="text-spaceBlue-200"
-              />
-            </Flex>
-            <Flex justifyContent="start" direction={"col"} className="gap-4">
-              <RadioGroup onChange={value => console.log("V", value)} value="coucou">
-                <RadioGroup.Item value="value1">
-                  {({ isDisabled, isSelected }) => (
+        <motion.div layout={"size"}>
+          <Card background={false} className="p-4">
+            <Flex justifyContent="start" direction={"col"} className="gap-8">
+              <Flex justifyContent="start" direction={"col"} className="gap-1">
+                <Typography
+                  variant={"title-s"}
+                  translate={{ token: "v2.pages.settings.billing_create.form.title" }}
+                  className="text-greyscale-50"
+                />
+                <Typography
+                  variant={"body-s"}
+                  translate={{ token: "v2.pages.settings.billing_create.form.description" }}
+                  className="text-spaceBlue-200"
+                />
+              </Flex>
+              <Flex justifyContent="start" direction={"col"} className="gap-4">
+                <RadioGroupCustom onChange={onChoiceChange} value={type}>
+                  {({ value, onChange }) => [
                     <CheckboxItem
-                      title="title2"
-                      list={["item1", "item2"]}
-                      icon={{ remixName: "ri-user-2-fill" }}
-                      selected={isSelected}
+                      key={TBillingCreateStack.Choice.Individual}
+                      title={<Translate token="v2.pages.settings.billing_create.fields.individual.title" />}
+                      list={[
+                        <Translate key={1} token="v2.pages.settings.billing_create.fields.individual.points.1" />,
+                        <Translate key={2} token="v2.pages.settings.billing_create.fields.individual.points.2" />,
+                        <Translate key={3} token="v2.pages.settings.billing_create.fields.individual.points.3" />,
+                      ]}
+                      icon={{ remixName: "ri-user-line" }}
                       disabled={isDisabled}
-                    />
-                  )}
-                </RadioGroup.Item>
-                <RadioGroup.Item value="value2">
-                  {({ isDisabled, isSelected }) => (
+                      onChange={onChange}
+                      selected={value === TBillingCreateStack.Choice.Individual}
+                      value={TBillingCreateStack.Choice.Individual}
+                      withInput={{
+                        onChange: onNameChange,
+                        value: name,
+                        label: T("v2.pages.settings.billing_create.fields.individual.name.label"),
+                        placeholder: T("v2.pages.settings.billing_create.fields.individual.name.placeholder"),
+                      }}
+                    />,
                     <CheckboxItem
-                      title="title2"
-                      list={["item1", "item2"]}
-                      icon={{ remixName: "ri-user-2-fill" }}
-                      selected={isSelected}
+                      key={TBillingCreateStack.Choice.SelfEmployed}
+                      title={<Translate token="v2.pages.settings.billing_create.fields.selfEmployed.title" />}
+                      list={[
+                        <Translate key={1} token="v2.pages.settings.billing_create.fields.selfEmployed.points.1" />,
+                        <Translate key={2} token="v2.pages.settings.billing_create.fields.selfEmployed.points.2" />,
+                      ]}
+                      icon={{ remixName: "ri-suitcase-line" }}
                       disabled={isDisabled}
-                    />
-                  )}
-                </RadioGroup.Item>
-              </RadioGroup>
+                      onChange={onChange}
+                      selected={value === TBillingCreateStack.Choice.SelfEmployed}
+                      value={TBillingCreateStack.Choice.SelfEmployed}
+                      withInput={{
+                        onChange: onNameChange,
+                        value: name,
+                        label: T("v2.pages.settings.billing_create.fields.selfEmployed.name.label"),
+                        placeholder: T("v2.pages.settings.billing_create.fields.selfEmployed.name.placeholder"),
+                      }}
+                    />,
+                    <CheckboxItem
+                      key={TBillingCreateStack.Choice.Organisation}
+                      title={<Translate token="v2.pages.settings.billing_create.fields.organisation.title" />}
+                      list={[
+                        <Translate key={1} token="v2.pages.settings.billing_create.fields.organisation.points.1" />,
+                        <Translate key={2} token="v2.pages.settings.billing_create.fields.organisation.points.2" />,
+                        <Translate key={3} token="v2.pages.settings.billing_create.fields.organisation.points.3" />,
+                      ]}
+                      icon={{ remixName: "ri-vip-crown-line" }}
+                      disabled={isDisabled}
+                      onChange={onChange}
+                      selected={value === TBillingCreateStack.Choice.Organisation}
+                      value={TBillingCreateStack.Choice.Organisation}
+                      withInput={{
+                        onChange: onNameChange,
+                        value: name,
+                        label: T("v2.pages.settings.billing_create.fields.organisation.name.label"),
+                        placeholder: T("v2.pages.settings.billing_create.fields.organisation.name.placeholder"),
+                      }}
+                    />,
+                    <CheckboxItem
+                      key={TBillingCreateStack.Choice.Employee}
+                      title={<Translate token="v2.pages.settings.billing_create.fields.employee.title" />}
+                      list={[
+                        <Translate key={1} token="v2.pages.settings.billing_create.fields.employee.points.1" />,
+                        <Translate key={2} token="v2.pages.settings.billing_create.fields.employee.points.2" />,
+                      ]}
+                      icon={{ remixName: "ri-team-line" }}
+                      disabled={isDisabled}
+                      onChange={onChange}
+                      selected={value === TBillingCreateStack.Choice.Employee}
+                      value={TBillingCreateStack.Choice.Employee}
+                    />,
+                  ]}
+                </RadioGroupCustom>
+              </Flex>
             </Flex>
-          </Flex>
-        </Card>
+          </Card>
+        </motion.div>
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
         <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
@@ -79,7 +145,7 @@ export function BillingCreateStack({ test }: TBillingCreateStack.Params) {
           {isLoading ? <Spinner /> : <div />}
           <div className="flex items-center justify-end gap-5 ">
             <Button variant="primary" size="m" disabled={isDisabled} onClick={onSubmit}>
-              <Translate token="v2.pages.billing_create.buttons.save" />
+              <Translate token="v2.pages.settings.billing_create.buttons.save" />
             </Button>
           </div>
         </div>

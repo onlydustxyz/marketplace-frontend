@@ -88,7 +88,6 @@ export const Stacks = () => {
         {({ params }) => <ProjectOverviewSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
-      <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
       <RegisterStack<TBillingCreateStack.Params> name={StackRoute.BillingCreate}>
         {({ params }) => <BillingCreateStack {...params} />}
       </RegisterStack>
