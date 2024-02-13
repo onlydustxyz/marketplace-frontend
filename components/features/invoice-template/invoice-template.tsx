@@ -3,10 +3,10 @@ import React from "react";
 
 import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
-import { InvoiceFooter } from "components/features/invoice-template/views/invoice-footer";
-import { InvoiceHeader } from "components/features/invoice-template/views/invoice-header";
-import { InvoiceInfo } from "components/features/invoice-template/views/invoice-infos";
-import { InvoiceSummary } from "components/features/invoice-template/views/invoice-summary";
+import { InvoiceFooter } from "components/features/invoice-template/sections/invoice-footer";
+import { InvoiceHeader } from "components/features/invoice-template/sections/invoice-header";
+import { InvoiceInfo } from "components/features/invoice-template/sections/invoice-infos";
+import { InvoiceSummary } from "components/features/invoice-template/sections/invoice-summary";
 
 Font.register({
   family: "GT Walsheim",

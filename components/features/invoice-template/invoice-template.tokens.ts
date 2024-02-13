@@ -17,7 +17,7 @@ export const InvoiceTokens = {
     destinationAccounts: "Destination Accounts",
   },
   rewardSummary: {
-    title: "Rewards granted on app.onlydust.com",
+    title: "Rewards granted on: app.onlydust.com",
     table: {
       id: "ID",
       rewardDate: "Reward date",
