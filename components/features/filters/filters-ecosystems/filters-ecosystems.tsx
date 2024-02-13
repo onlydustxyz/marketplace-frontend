@@ -8,7 +8,6 @@ import { TFiltersEcosystems } from "./filters-ecosystems.types";
 
 export function FiltersEcosystems({ ecosystems, selected, onChange }: TFiltersEcosystems.Props) {
   const { T } = useIntl();
-
   return (
     <FilterFieldContainer label={T("v2.features.filters.ecosystems.title")}>
       <SelectAutocomplete

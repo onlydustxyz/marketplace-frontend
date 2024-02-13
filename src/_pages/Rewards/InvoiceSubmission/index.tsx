@@ -1,5 +1,3 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
-
 import { components } from "src/__generated/api";
 import MeApi from "src/api/me";
 import BillingApi from "src/api/me/billing";
@@ -7,6 +5,8 @@ import { MeTypes } from "src/api/me/types";
 import Skeleton from "src/components/Skeleton";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import View from "./View";
 

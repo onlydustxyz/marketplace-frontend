@@ -24,6 +24,7 @@ export namespace TBanner {
     icon?: TIcon.Props;
     button?: TButton.Props;
     customButton?: ReactElement;
+    endElement?: ReactNode;
     classNames?: Partial<classNames>;
   }
 }

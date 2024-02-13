@@ -13,6 +13,7 @@ import en_features from "src/translations/v2/en/features/features.json";
 import en_features_filters from "src/translations/v2/en/features/filters.json";
 import en_features_invoice_template from "src/translations/v2/en/features/invoice-template.json";
 import en_features_leaders from "src/translations/v2/en/features/leaders.json";
+import en_features_menu from "src/translations/v2/en/features/menu.json";
 import en_features_payout_status from "src/translations/v2/en/features/payout-status.json";
 import en_features_sidebar from "src/translations/v2/en/features/sidebar.json";
 import en_features_verify from "src/translations/v2/en/features/verify.json";
@@ -20,6 +21,7 @@ import en_projects from "src/translations/v2/en/pages/projects.json";
 import en_settings_billing from "src/translations/v2/en/pages/settings-billing.json";
 import en_settings_payout from "src/translations/v2/en/pages/settings-payout.json";
 import en_settings_profile from "src/translations/v2/en/pages/settings-profile.json";
+import en_stack_request_payments from "src/translations/v2/en/pages/stacks-request-payments.json";
 
 const en = {
   ...en_base,
@@ -39,6 +41,7 @@ const en = {
       sidebar: en_features_sidebar,
       invoiceTemplate: en_features_invoice_template,
       verify: en_features_verify,
+      menu: en_features_menu,
     },
     pages: {
       projects: en_projects,
@@ -46,6 +49,9 @@ const en = {
         profile: en_settings_profile,
         billing: en_settings_billing,
         payout: en_settings_payout,
+      },
+      stacks: {
+        request_payments: en_stack_request_payments,
       },
     },
   },

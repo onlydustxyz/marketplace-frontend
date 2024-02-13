@@ -1,19 +1,15 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useMemo } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-
-import { useBillingProfiles } from "app/migration/settings/hooks/useBillingProfile";
-import { useBillingStatus } from "app/migration/settings/hooks/useBillingStatus";
 
 import { RoutePaths } from "src/App";
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import { cn } from "src/utils/cn";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { MenuItem } from "components/layout/sidebar/menu-item/menu-item";
@@ -24,13 +20,16 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useSettingsError } from "hooks/users/useSettingsError/useSettingsError";
+import { TUseSettingsError } from "hooks/users/useSettingsError/useSettingsError.types";
+
 export function Sidebar() {
   const { isAuthenticated } = useAuth0();
 
   const { user } = useCurrentUser();
+  const { error } = useSettingsError();
   const { pathname } = useLocation();
-  const { validBillingProfile, billingProfile } = useBillingProfiles();
-  const { isWarning, isError } = useBillingStatus(validBillingProfile, billingProfile?.status);
 
   const menuItems: TMenuItem.Props[] = useMemo(
     () => [
@@ -39,33 +38,34 @@ export function Sidebar() {
         href: NEXT_ROUTER.settings.profile,
       },
       {
-        label: <Translate token="v2.features.sidebar.settings.payoutPreferences" />,
-        href: NEXT_ROUTER.settings.payout,
-        endIcon: !user?.hasValidPayoutInfos ? (
-          <Icon size={16} remixName="ri-information-line" className="text-orange-500" />
-        ) : undefined,
-      },
-      {
         label: <Translate token="v2.features.sidebar.settings.billingProfile" />,
         href: NEXT_ROUTER.settings.billing,
         endIcon:
-          isWarning || isError ? (
+          error === TUseSettingsError.ERRORS.BILLING_WARNING || error === TUseSettingsError.ERRORS.BILLING_ERROR ? (
             <Icon
               size={16}
-              remixName="ri-information-line"
+              remixName="ri-error-warning-line"
               className={cn({
-                "text-orange-500": isWarning,
-                "text-github": isError,
+                "text-orange-500": error === TUseSettingsError.ERRORS.BILLING_WARNING,
+                "text-github-red": error === TUseSettingsError.ERRORS.BILLING_ERROR,
               })}
             />
-          ) : undefined,
+          ) : null,
+      },
+      {
+        label: <Translate token="v2.features.sidebar.settings.paymentMethods" />,
+        href: NEXT_ROUTER.settings.payout,
+        endIcon:
+          error === TUseSettingsError.ERRORS.PAYOUT ? (
+            <Icon size={16} remixName="ri-error-warning-line" className="text-orange-500" />
+          ) : null,
       },
       {
         label: <Translate token="v2.features.sidebar.settings.invoices" />,
         href: NEXT_ROUTER.settings.invoices,
       },
     ],
-    [isWarning, isError]
+    [error]
   );
 
   return (
@@ -78,7 +78,7 @@ export function Sidebar() {
             </Button>
           </NavLink>
           <div className="flex items-center gap-2 font-belwe text-2xl">
-            <Thumbnail defaultSrc src={user?.avatarUrl || ""} alt="Project Logo" size="m" />
+            <Avatar src={user?.avatarUrl || ""} alt={user?.login} size="m" />
             <div className="line-clamp-1">{user?.login}</div>
           </div>
         </div>

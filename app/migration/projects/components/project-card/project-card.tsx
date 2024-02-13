@@ -6,8 +6,8 @@ import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
 import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 import { Flex } from "components/layout/flex/flex";
@@ -66,22 +66,23 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   return (
     <Link to={generatePath(RoutePaths.ProjectDetails, { projectKey: slug })} className="w-full">
       <Card
-        className={cn("relative w-full", {
-          "border-orange-500 bg-orange-900": isErrorVariant,
+        className={cn("relative w-full transition-all hover:scale-[0.998]", {
+          "!border-orange-500 bg-orange-900": isErrorVariant,
           "mt-3": isFirstHiringProject,
         })}
+        clickable
         border={isInvitedAsProjectLead ? "multiColor" : "light"}
         dataTestId="project-card"
         background="base"
       >
-        <Flex direction="row" className="gap-5">
+        <Flex direction="row" className="origin-center gap-5">
           <div className="relative hidden flex-shrink-0 md:block">
-            <Thumbnail
+            <Avatar
               src={logoUrl}
-              alt={T("project.highlights.thumbnail")}
+              alt={T("v2.pages.projects.highlights.thumbnail")}
               size="xl"
               className="mt-1"
-              type={"project"}
+              shape="square"
             />
             {isPrivate && (
               <div className="absolute -bottom-2.5 -right-2.5">
@@ -89,15 +90,15 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
               </div>
             )}
           </div>
-          <Flex direction="col" className="w-full flex-1 gap-2 overflow-hidden">
+          <Flex direction="col" className="w-full flex-1 gap-1">
             <Flex direction="row" className="items-center gap-2 md:items-start">
               <div className="relative block flex-shrink-0 md:hidden">
-                <Thumbnail
+                <Avatar
                   src={logoUrl}
                   alt={T("v2.pages.projects.highlights.thumbnail")}
                   size="l"
                   className="mt-1"
-                  type={"project"}
+                  shape="square"
                 />
                 {isPrivate && (
                   <div className="absolute -bottom-2.5 -right-2.5">
@@ -109,7 +110,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
               {tags?.length ? <ProjectTags tags={tags} /> : null}
             </Flex>
             <Summary shortDescription={shortDescription} />
-            <div className="mt-5 flex flex-row flex-wrap items-center gap-4">
+            <div className="mt-4 flex flex-row flex-wrap items-center gap-4">
               <Leaders leaders={leaders} />
               <ContributorsCounter count={contributorCount} />
               <Ecosystems ecosystems={ecosystems} />

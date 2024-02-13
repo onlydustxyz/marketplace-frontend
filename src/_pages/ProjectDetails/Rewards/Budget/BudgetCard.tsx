@@ -86,6 +86,7 @@ export function BudgetCard({
 
   return (
     <Card
+      background={"base"}
       className={cn("group px-4 py-5 transition-all lg:px-4 lg:py-5", {
         "relative z-[1] overflow-hidden": type === CardTypes.Remaining,
         "cursor-pointer": !!onClick,
@@ -112,7 +113,7 @@ export function BudgetCard({
             >
               {budgets[type].icon}
             </span>
-            <div className="truncate font-semibold">{T(budgets[type].title)}</div>
+            <div className="font-semibold">{T(budgets[type].title)}</div>
           </div>
           {!!onClick && <Icon remixName="ri-more-fill" />}
         </div>

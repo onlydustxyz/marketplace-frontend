@@ -5,6 +5,7 @@ import { Link, generatePath } from "react-router-dom";
 
 import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
+import { FeedbackPanel } from "src/App/Stacks/FeedbackPanel/FeedbackPanel";
 import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
 import { VerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -13,6 +14,8 @@ import EyeLine from "src/icons/EyeLine";
 import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
+
+import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
 
 import { RoutePaths } from "..";
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
@@ -28,6 +31,8 @@ export enum StackRoute {
   GithubWorkflowClaim = "github-workflow-claim",
   GithubWorkflowTutorial = "github-workflow-tutorial",
   Verify = "verify",
+  RequestPayments = "request-payments",
+  Feedback = "feedback",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -85,8 +90,14 @@ export const Stacks = () => {
       <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
+      <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>
+      <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
     </>
   );
+};
+
+export const useStackFeedback = () => {
+  return useStackNavigation(StackRoute.Feedback);
 };
 
 export const useStackVerify = () => {
@@ -174,4 +185,8 @@ export const useStackProjectOverview = (): [
     });
   };
   return [handleOpen, close];
+};
+
+export const useStackRequestPayments = () => {
+  return useStackNavigation(StackRoute.RequestPayments);
 };

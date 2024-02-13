@@ -1,6 +1,5 @@
 "use client";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { Fragment, useEffect } from "react";
 import { useMatch } from "react-router-dom";
 
@@ -26,6 +25,8 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 
 import { Link } from "components/ds/link/link";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 
