@@ -76,6 +76,9 @@ export const styles = StyleSheet.create({
   paddingVert50P: {
     padding: "50px 0",
   },
+  paddingVert10P: {
+    padding: "10px 0",
+  },
   width50p: {
     width: "50%",
   },

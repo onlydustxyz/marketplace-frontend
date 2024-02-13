@@ -4,6 +4,7 @@ import React from "react";
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { styles } from "components/features/invoice-template/invoice-template.styles";
+import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 
 export function InvoiceSummary({
@@ -15,15 +16,15 @@ export function InvoiceSummary({
 }: TInvoice.RewardsSummaryProps) {
   return (
     <View style={{ ...styles.section, ...styles.flexRow, ...styles.invoiceCenter }}>
-      <Text style={styles.h3}>Rewards summary</Text>
+      <Text style={styles.h3}>{InvoiceTokens.rewardSummary.title}</Text>
       <View style={{ ...styles.flexCol }}>
         <View style={styles.table}>
           <View style={styles.tr}>
-            <Text style={styles.th}>ID</Text>
-            <Text style={styles.th}>Project</Text>
-            <Text style={styles.th}>Reward date</Text>
-            <Text style={styles.th}>Amount</Text>
-            <Text style={styles.th}>USD (equiv)</Text>
+            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.id}</Text>
+            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.project}</Text>
+            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.rewardDate}</Text>
+            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.amount}</Text>
+            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.equivalent}</Text>
           </View>
           {rewards.map((item, index) => (
             <View key={index} style={styles.tr}>
@@ -33,55 +34,70 @@ export function InvoiceSummary({
               <Text style={styles.td}>
                 {item.amount.total} {item.amount.currency}
               </Text>
-              <Text style={styles.td}>{item.amount.dollarsEquivalent?.toFixed(2)} USD</Text>
+              <Text style={styles.td}>
+                {item.amount.dollarsEquivalent?.toFixed(2)} {InvoiceTokens.currencies.usd}
+              </Text>
             </View>
           ))}
           <View style={styles.tr}>
-            <Text style={styles.th}>Total before tax</Text>
             <Text style={styles.th}></Text>
             <Text style={styles.th}></Text>
             <Text style={styles.th}></Text>
-            <Text style={styles.th}>{totalBeforeTax} USD</Text>
+            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalBeforeTax}</Text>
+            <Text style={styles.th}>
+              {totalBeforeTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
+            </Text>
           </View>
           {vat.vatRegulationState === "VAT_APPLICABLE" ? (
             <View style={styles.tr}>
-              <View style={styles.td}>
-                <Text>Total VAT</Text>
-                <Text>(rate {vat.rate})</Text>
-              </View>
+              <View style={styles.td}></View>
               <Text style={styles.td}></Text>
               <Text style={styles.td}></Text>
-              <Text style={styles.td}></Text>
-              <Text style={styles.td}>{totalTax} USD</Text>
+              <Text style={styles.td}>
+                <Text>{InvoiceTokens.rewardSummary.table.totalVat}</Text>
+                <Text>
+                  ({InvoiceTokens.rewardSummary.table.rate} {vat.rate})
+                </Text>
+              </Text>
+              <Text style={styles.td}>
+                {totalTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
+              </Text>
             </View>
           ) : null}
           {vat.vatRegulationState === "VAT_NOT_APPLICABLE_NON_UE" ? (
             <View style={styles.tr}>
               <Text style={{ ...styles.td, fontSize: "10px" }}>
-                VAT not applicable – Art. 259-1 of the General Tax Code
+                {InvoiceTokens.vatRegulationStates.vatNotApplicableNonUE}
               </Text>
             </View>
           ) : null}
           {vat.vatRegulationState === "VAT_NOT_APPLICABLE_FRENCH_NOT_SUBJECT" ? (
             <View style={styles.tr}>
               <Text style={{ ...styles.td, fontSize: "10px" }}>
-                VAT not applicable, article 293 B of the General Tax Code
+                {InvoiceTokens.vatRegulationStates.vatNotApplicableFrenchNotSubject}
               </Text>
             </View>
           ) : null}
           {vat.vatRegulationState === "VAT_REVERSE_CHARGE" ? (
             <View style={styles.tr}>
-              <Text style={{ ...styles.td, fontSize: "10px" }}>Reverse charge of VAT</Text>
+              <Text style={{ ...styles.td, fontSize: "10px" }}>
+                {InvoiceTokens.vatRegulationStates.vatReverseCharge}
+              </Text>
             </View>
           ) : null}
           <View style={styles.tr}>
-            <Text style={styles.th}>Total after tax</Text>
             <Text style={styles.th}></Text>
             <Text style={styles.th}></Text>
             <Text style={styles.th}></Text>
-            <Text style={styles.th}>{totalAfterTax} USD</Text>
+            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalAfterTax}</Text>
+            <Text style={styles.th}>
+              {totalAfterTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
+            </Text>
           </View>
         </View>
+      </View>
+      <View style={{ ...styles.flexCol, ...styles.paddingVert10P }}>
+        <Text style={styles.paragraph}>[number] [type of tokens] {InvoiceTokens.rewardSummary.itemsReceived}</Text>
       </View>
     </View>
   );

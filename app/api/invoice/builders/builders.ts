@@ -1,5 +1,6 @@
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
+import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 
 export function getHeaderProps({
@@ -10,7 +11,7 @@ export function getHeaderProps({
   invoiceNumber: string;
 }): TInvoice.HeaderProps {
   return {
-    title: isUserIndividual ? "Receipt NO:" : "Invoice NO:",
+    title: isUserIndividual ? InvoiceTokens.header.receiptTitle : InvoiceTokens.header.invoiceTitle,
     invoiceNumber: `#${invoiceNumber}`,
   };
 }
@@ -23,7 +24,7 @@ export function getInvoiceInfoProps({
   invoiceDetails: any;
 }): TInvoice.InvoiceInfoProps {
   const sepaAccount = invoiceDetails.destinationAccounts.sepaAccount
-    ? `Iban: ${invoiceDetails.destinationAccounts.sepaAccount.iban} / Bic: ${invoiceDetails.destinationAccounts.sepaAccount.bic}`
+    ? `IBAN: ${invoiceDetails.destinationAccounts.sepaAccount.iban} / BIC: ${invoiceDetails.destinationAccounts.sepaAccount.bic}`
     : null;
   const wallets = invoiceDetails.destinationAccounts.wallets.length
     ? invoiceDetails.destinationAccounts.wallets.map(wallet => `${wallet.network}: ${wallet.address}`)
@@ -31,10 +32,10 @@ export function getInvoiceInfoProps({
 
   const restInfos = {
     recipientInfos: {
-      name: "Wagmi",
-      address: "54 Rue Du faubourg montmartre, Paris, France, 75009",
-      registrationNumber: "908 233 638",
-      euVATNumber: "FR26908233638",
+      name: InvoiceTokens.invoiceInfos.wagmiName,
+      address: InvoiceTokens.invoiceInfos.wagmiAddress,
+      registrationNumber: InvoiceTokens.invoiceInfos.wagmiRegistrationNumber,
+      euVATNumber: InvoiceTokens.invoiceInfos.wagmiEuVATNumber,
     },
     legalInfos: {
       generationDate: getFormattedDateToLocaleDateString(new Date(invoiceDetails.generationDate)),
@@ -67,7 +68,7 @@ export function getInvoiceInfoProps({
 
 export function getRewardsSummaryProps({ invoiceDetails }: { invoiceDetails: any }): TInvoice.RewardsSummaryProps {
   const rewards = invoiceDetails.rewards;
-  const totalBeforeTax = rewards.reduce((acc, reward) => acc + reward.amount.total, 0);
+  const totalBeforeTax = rewards.reduce((acc, reward) => acc + reward.amount.dollarsEquivalent, 0);
   const totalTax = totalBeforeTax * 0.2;
   const totalAfterTax = totalBeforeTax * 1.2;
   const vat = {
