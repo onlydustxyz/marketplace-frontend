@@ -20,7 +20,6 @@ export function SpaceBackground() {
     ctx.scale(dpr, dpr);
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
-    canvas.getContext("2d", { alpha: false });
   };
 
   useEffect(() => {
