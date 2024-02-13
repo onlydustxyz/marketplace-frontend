@@ -1,4 +1,3 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useCallback, useMemo } from "react";
 
 import { Button } from "components/ds/button/button";
@@ -10,6 +9,8 @@ import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 export function SelectRewards({ onExclude, onInclude, includedRewards, excludedRewards, goTo }: TSelectRewards.Props) {
   const { user } = useCurrentUser();
