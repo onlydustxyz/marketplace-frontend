@@ -48,7 +48,7 @@ export function RequestPaymentsStacks() {
   }
 
   if (view === TRequestPaymentsStacks.Views.Mandate) {
-    return <Mandate />;
+    return <Mandate goTo={onNextView} />;
   }
 
   if (view === TRequestPaymentsStacks.Views.Generate) {

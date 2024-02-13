@@ -5,13 +5,13 @@ import { useIntl } from "src/hooks/useIntl";
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { Checkbox } from "components/ds/checkbox/checkbox";
-import { TSelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards.types";
+import { TMandate } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/mandate/mandate.types";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function Mandate({ includedRewards, goTo }: TSelectRewards.Props) {
+export function Mandate({ goTo }: TMandate.Props) {
   const { T } = useIntl();
   const [accepted, setAccepted] = useState(false);
 
@@ -81,10 +81,7 @@ export function Mandate({ includedRewards, goTo }: TSelectRewards.Props) {
                   <Translate token="v2.pages.stacks.request_payments.mandate.skip" />
                 </Button>
                 <Button variant="primary" size="m" className="w-full" onClick={onSubmit} disabled={!accepted}>
-                  <Translate
-                    token="v2.pages.stacks.request_payments.mandate.confirm"
-                    params={{ count: includedRewards?.length }}
-                  />
+                  <Translate token="v2.pages.stacks.request_payments.mandate.confirm" />
                 </Button>
               </div>
             </div>
