@@ -9,7 +9,7 @@ import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
-import config, { viewportConfig } from "src/config";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
@@ -38,9 +38,7 @@ export default function View({
   const { T } = useIntl();
   const navigate = useNavigate();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const currentProjectUrl = currentProject.logoUrl
-    ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + currentProject.logoUrl
-    : currentProject.logoUrl;
+  const currentProjectUrl = currentProject.logoUrl;
 
   return (
     <div

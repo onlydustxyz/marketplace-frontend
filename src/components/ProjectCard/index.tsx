@@ -5,7 +5,6 @@ import { components } from "src/__generated/api";
 import Card, { CardBorder } from "src/components/Card";
 import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
-import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
@@ -56,7 +55,7 @@ export default function ProjectCard({ project, className, variant = Variant.Defa
   const { githubUserId } = useCurrentUser();
 
   const isLeader = isUserProjectLead(project, githubUserId);
-  const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
+  const projectUrl = logoUrl;
   // const topSponsors = sponsors?.map(sponsor => sponsor).slice(0, 3) ?? [];
   const languages = technologies ? getTopTechnologies(technologies) : [];
 

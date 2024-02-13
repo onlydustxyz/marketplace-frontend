@@ -1,3 +1,4 @@
+import process from "process";
 import { useMemo } from "react";
 
 import { IMAGES } from "src/assets/img";
@@ -5,7 +6,7 @@ import { cn } from "src/utils/cn";
 
 export enum ImageSize {
   Xxs = "Xxs",
-  Xs = "xs",
+  Xs = ImageSize.Xxs,
   Sm = "sm",
   Md = "md",
   Lg = "lg",
@@ -45,12 +46,55 @@ export default function RoundedImage({
     return src;
   }, [src, useLogoFallback]);
 
+  const isRemoteImage = useMemo(() => {
+    if (!src?.length && useLogoFallback) {
+      return false;
+    }
+
+    if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX) {
+      return !src?.includes(process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX);
+    }
+
+    return false;
+  }, [src]);
+
+  const sizeFromVariant = useMemo(() => {
+    switch (size) {
+      case ImageSize.Xxs:
+        return { w: 16, h: 16 };
+      case ImageSize.Xs:
+        return { w: 20, h: 20 };
+      case ImageSize.Sm:
+        return { w: 24, h: 24 };
+      case ImageSize.Md:
+        return { w: 32, h: 32 };
+      case ImageSize.Lg:
+        return { w: 40, h: 40 };
+      case ImageSize.Xl:
+        return { w: 48, h: 48 };
+      default:
+        return undefined;
+    }
+  }, [size]);
+
+  const optimizeSrc = useMemo(() => {
+    if (isRemoteImage && sizeFromVariant) {
+      const size = sizeFromVariant;
+      const dpr = window.devicePixelRatio;
+      return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}width=${size.w * dpr},height=${
+        size.w * dpr
+      },fit=cover/${src}`;
+    }
+
+    return srcMemo;
+  }, [isRemoteImage, sizeFromVariant, srcMemo, src]);
+
   return (
     <div
       className={cn(
         "h-fit w-fit min-w-max shrink-0 before:border-greyscale-50/20",
         {
-          "pseudo-outline": size === ImageSize.Xs || size === ImageSize.Xxs,
+          "pseudo-outline": size === ImageSize.Xxs,
           "pseudo-outline-2": size === ImageSize.Sm || size === ImageSize.Md,
           "pseudo-outline-3": size === ImageSize.Lg,
           "pseudo-outline-4": size === ImageSize.Xl,
@@ -75,7 +119,7 @@ export default function RoundedImage({
           "h-12 w-12": size === ImageSize.Xl,
         })}
         alt={alt ?? ""}
-        src={srcMemo ?? ""}
+        src={optimizeSrc ?? ""}
         onError={e => {
           if (useLogoFallback) {
             e.currentTarget.src = IMAGES.logo.space;
