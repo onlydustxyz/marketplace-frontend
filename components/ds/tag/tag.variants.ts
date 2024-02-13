@@ -12,7 +12,7 @@ export const tagVariants = tv({
       grey: "border border-greyscale-50/8 bg-white/2",
       orange: "border border-orange-500 bg-white/2",
       "multi-color":
-        "bg-spaceBlue-900 before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen before:animate-spin-invert-slow before:rounded-full before:bg-multi-color-gradient",
+        "bg-spaceBlue-900 before:absolute before:-z-10 before:aspect-square before:w-[calc(100%_*_2)] before:animate-spin-invert-slow before:rounded-full before:bg-multi-color-gradient",
     },
     color: {
       grey: "text-white",

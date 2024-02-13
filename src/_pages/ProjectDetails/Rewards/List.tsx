@@ -14,6 +14,7 @@ import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
+import { Currency } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { EmptyState } from "components/layout/placeholders/empty-state";
@@ -23,7 +24,7 @@ import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import { EditProjectButton } from "../components/EditProjectButton";
 import { RewardProjectButton } from "../components/RewardProjectButton";
 import { Budget } from "./Budget/Budget";
-import { FilterQueryParams, ProjectRewardsFilter, ProjectRewardsFilterRef } from "./Filter";
+import { FilterQueryParams, Filters, ProjectRewardsFilter, ProjectRewardsFilterRef } from "./Filter";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
@@ -34,6 +35,11 @@ const RewardList: React.FC = () => {
   });
 
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
+  const [filterState, setFilterState] = useState<Partial<Filters>>({});
+  const onFilterChange = (filterQueryParams: FilterQueryParams, filters: Partial<Filters>) => {
+    setFilterQueryParams(filterQueryParams);
+    setFilterState(filters);
+  };
 
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -98,6 +104,14 @@ const RewardList: React.FC = () => {
     return null;
   }, [hasActiveFilters, filterRef, project, rewards]);
 
+  const getFilteredCurrencies = useMemo(() => {
+    if (filterState.currency) {
+      return filterState.currency.map(({ value }) => value).filter(Boolean) as Currency[];
+    }
+
+    return undefined;
+  }, [filterState.currency]);
+
   if (error) {
     return <ErrorFallback />;
   }
@@ -107,7 +121,7 @@ const RewardList: React.FC = () => {
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Flex className="z-10 gap-8">
           <Title>{T("project.details.rewards.title")}</Title>
-          <ProjectRewardsFilter onChange={setFilterQueryParams} position={FilterPosition.Left} ref={filterRef} />
+          <ProjectRewardsFilter onChange={onFilterChange} position={FilterPosition.Left} ref={filterRef} />
         </Flex>
         {!hasOrgsWithUnauthorizedRepos && project ? (
           <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
@@ -127,7 +141,7 @@ const RewardList: React.FC = () => {
         <Skeleton variant="projectRewards" />
       ) : (
         <>
-          <Budget {...budget} />
+          {project ? <Budget {...budget} filteredCurrencies={getFilteredCurrencies} projectId={project.id} /> : null}
           <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
             <div className="w-full">
               {(project && rewards?.length > 0) || (hasActiveFilters && project) ? (

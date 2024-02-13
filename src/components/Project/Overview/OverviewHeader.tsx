@@ -1,14 +1,16 @@
+"use client";
+
+import { ProjectConstants } from "src/api/Project/constants";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { IMAGES } from "src/assets/img";
 import MarkdownPreview from "src/components/MarkdownPreview";
-import Tag, { TagSize } from "src/components/Tag";
 import { withTooltip } from "src/components/Tooltip";
-import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
-import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import LockFill from "src/icons/LockFill";
-import { buildLanguageString } from "src/utils/languages";
-import { getTopTechnologies } from "src/utils/technologies";
+
+import { SelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item";
+import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 export interface ProjectOverviewHeaderProps {
   project: UseGetProjectBySlugResponse;
@@ -25,8 +27,12 @@ Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, eu
 `;
 
 export const ProjectOverviewHeader = ({ project, description = true }: ProjectOverviewHeaderProps) => {
-  const languages = getTopTechnologies(project?.technologies || {});
-  const logoUrl = project?.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + project.logoUrl : IMAGES.logo.space;
+  const dpr = window.devicePixelRatio;
+  const logoUrl = project?.logoUrl
+    ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}width=${80 * dpr},height=${80 * dpr},fit=cover/${
+        project?.logoUrl
+      }`
+    : IMAGES.logo.space;
   const { T } = useIntl();
 
   return (
@@ -50,12 +56,21 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
               </div>
             )}
           </div>
-          {languages.length > 0 && (
-            <Tag size={TagSize.Small}>
-              <CodeSSlashLine />
-              {buildLanguageString(languages)}
-            </Tag>
-          )}
+
+          {project.tags?.length ? (
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map(tag => {
+                const { icon, label } = ProjectConstants.tagMapping[tag];
+
+                return (
+                  <SelectableTagItem.Static key={label}>
+                    <Icon {...icon} />
+                    <Translate token={label} />
+                  </SelectableTagItem.Static>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
       </div>
       {description ? (

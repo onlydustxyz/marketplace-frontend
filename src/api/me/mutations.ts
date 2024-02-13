@@ -48,9 +48,9 @@ const useClaimProject = ({
   });
 };
 
-const usePayoutInfo = ({ options = {} }: UseMutationProps) => {
+const usePayoutSettings = ({ options = {} }: UseMutationProps) => {
   return useBaseMutation<unknown, unknown>({
-    resourcePath: API_PATH.MY_PAYOUT_INFO,
+    resourcePath: API_PATH.MY_PAYOUT_SETTINGS,
     method: "PUT",
     ...options,
   });
@@ -106,7 +106,7 @@ const useMarkInvoicesAsReceived = ({ options }: UseMutationProps<unknown, unknow
 export default {
   useAcceptProjectLeaderInvitation,
   useClaimProject,
-  usePayoutInfo,
+  usePayoutSettings,
   useApplyProject,
   useUpdateMe,
   useUpdateProfile,

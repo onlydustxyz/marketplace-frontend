@@ -425,6 +425,9 @@
       "publicProfile": "Public profile",
       "payoutInfo": "Payout information",
       "verifyIdentity": "Verify identity",
+      "manage": "Manage my account",
+      "pendingBilling": "Pending billing profiles",
+      "missingPayoutInformation": "Missing payout information",
       "verifyCompany": "Verify company"
     },
     "rewards": "Rewards",
@@ -1036,7 +1039,14 @@
           "many": "Sponsors",
           "one": "Sponsor"
         },
-        "technologies": "Technologies",
+        "ecosystems": {
+          "many": "Ecosystems",
+          "one": "Ecosystem"
+        },
+        "technologies": {
+          "many": "Technologies",
+          "one": "Technology"
+        },
         "title": "Overview",
         "totalSpentAmountInUsd": "GRANTED",
         "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend",
@@ -1234,6 +1244,8 @@
           "spent": "Amount spent",
           "sent": "Rewards sent",
           "contributors": "Rewarded contributors",
+          "panelTitle": "Currency split",
+          "panelTotal": "Total",
           "dollars": "Dollars budget",
           "ether": "Ether budget",
           "stark": "Stark budget",
@@ -1507,12 +1519,5 @@
   },
   "filters": {
     "noResults": "No results"
-  },
-  "settings": {
-    "sidebar": {
-      "publicProfile": "Public profile",
-      "payoutPreferences": "Payout preferences",
-      "verifyAccount": "Verify account"
-    }
   }
 }

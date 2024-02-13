@@ -1,4 +1,3 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useForm, useWatch } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
@@ -23,6 +22,8 @@ import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedR
 
 import { Card } from "components/ds/card/card";
 import { EmptyState } from "components/layout/placeholders/empty-state";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";

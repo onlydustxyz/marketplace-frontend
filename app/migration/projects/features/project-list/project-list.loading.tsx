@@ -1,4 +1,4 @@
-import { ProjectCardLoading } from "app/migration/projects/components/project-card/project-card.loading";
+import { ProjectCardLoading } from "../../components/project-card/project-card.loading";
 
 export function ProjectListLoading() {
   return (

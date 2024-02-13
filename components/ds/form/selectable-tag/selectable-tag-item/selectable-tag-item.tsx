@@ -1,5 +1,5 @@
 import { VisuallyHidden, useCheckbox } from "@nextui-org/react";
-import { useMemo } from "react";
+import { FC, PropsWithChildren, useMemo } from "react";
 
 import { cn } from "src/utils/cn";
 
@@ -59,3 +59,8 @@ export function SelectableTagItem<V extends string>({
     </label>
   );
 }
+
+SelectableTagItem.Static = function ({ className, children }) {
+  return <div className={cn(selectableTagItemVariants(), className)}>{children}</div>;
+} as FC<PropsWithChildren & { className?: string }>;
+SelectableTagItem.Static.displayName = "SelectableTagItem.Static";

@@ -1,4 +1,5 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
+"use client";
+
 import { Fragment, useEffect } from "react";
 import { useMatch } from "react-router-dom";
 
@@ -24,6 +25,8 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 
 import { Link } from "components/ds/link/link";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 
@@ -178,7 +181,7 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                     <Link onClick={() => openProjectOverview({ slug: contribution.project.slug })}>
                       {contribution.project.name}
                     </Link>
-                    &nbsp;/&nbsp;{contribution.repo.name}
+                    &nbsp;/&nbsp;<Link href={contribution.repo.htmlUrl}>{contribution.repo.name}</Link>
                   </div>
                 </div>
 

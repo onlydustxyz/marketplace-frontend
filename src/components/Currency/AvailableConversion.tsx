@@ -19,7 +19,7 @@ import { CurrencyIcons } from "./CurrencyIcon";
 
 export interface AvailableConversionCurrency {
   currency: BudgetCurrencyType;
-  amount: number;
+  amount: number | undefined;
   dollar: number | undefined;
 }
 
@@ -29,6 +29,7 @@ export type AvailableConversion = {
   currency?: AvailableConversionCurrency;
   totalAmount?: number;
   numberCurencyToShow?: number;
+  sizeClassName?: string;
 };
 
 const ConversionAmount = ({ amount, currency }: { amount: number | undefined; currency?: BudgetCurrencyType }) => {
@@ -79,7 +80,7 @@ const ConversionTooltip = ({
                 </Chip>
                 <div key={currency.currency} className="flex items-center justify-start gap-[2px]">
                   <p className="font-walsheim text-xs text-white">
-                    {formatMoneyAmount({ amount: currency.amount, currency: currency.currency })}
+                    {formatMoneyAmount({ amount: currency.amount || 0, currency: currency.currency })}
                   </p>
                   {currency.currency !== Currency.USD && (
                     <p className="font-walsheim text-xs text-spaceBlue-200">
@@ -104,6 +105,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
   numberCurencyToShow = 3,
   currency,
   totalAmount,
+  sizeClassName,
 }) => {
   const orderedCurrencies = useCurrenciesOrder({ currencies });
 
@@ -138,11 +140,11 @@ export const AvailableConversion: FC<AvailableConversion> = ({
         {...(orderedCurrencies.length ? tooltipIdProps : {})}
         className="flex flex-row items-center justify-start gap-1"
       >
-        <Chips number={numberCurencyToShow}>
+        <Chips number={numberCurencyToShow} className={sizeClassName}>
           {currencyArray?.map(currency => (
             <div key={currency.currency}>
-              <Chip solid>
-                <CurrencyIcons currency={currency.currency} className="h-4 w-4" />
+              <Chip solid className={sizeClassName}>
+                <CurrencyIcons currency={currency.currency} className={cn("h-4 w-4", sizeClassName)} />
               </Chip>
             </div>
           ))}

@@ -1,13 +1,14 @@
 import { components } from "src/__generated/api";
 import { IMAGES } from "src/assets/img";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage from "src/components/RoundedImage";
 import Cell from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
 import { useIntl } from "src/hooks/useIntl";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
+
+import { PayoutStatus } from "components/features/payout-status/payout-status";
 
 export type MyRewardType = components["schemas"]["MyRewardPageItemResponse"];
 

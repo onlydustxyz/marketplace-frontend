@@ -1,5 +1,4 @@
 import { FilloutStandardEmbed } from "@fillout/react";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useState } from "react";
 
 import { components } from "src/__generated/api";
@@ -8,6 +7,8 @@ import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Icon } from "components/layout/icon/icon";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 interface Props {
   project: components["schemas"]["ProjectResponse"];

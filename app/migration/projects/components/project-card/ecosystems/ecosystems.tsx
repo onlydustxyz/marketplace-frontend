@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 
-import { TEcosystems } from "app/migration/projects/components/project-card/ecosystems/ecosystems.types";
-
 import { EcosystemsLogos } from "components/features/ecosystem-logos/ecosystem-logos";
 import { Typography } from "components/layout/typography/typography";
+
+import { TEcosystems } from "./ecosystems.types";
 
 export function Ecosystems({ ecosystems }: TEcosystems.Props) {
   const hasOnlyOneEcosystem = useMemo(() => {
@@ -27,7 +27,7 @@ export function Ecosystems({ ecosystems }: TEcosystems.Props) {
 
   return (
     <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
-      <EcosystemsLogos ecosystems={ecosystems} />
+      <EcosystemsLogos ecosystems={ecosystems} avatarProps={{ size: "xs" }} />
 
       <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
         {ecosystems.length > 1 ? (

@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useRef } from "react";
 import { useT } from "talkr";
 
 import { UserRewardTable } from "src/_pages/Rewards/UserRewardTable";
+import { MeTypes } from "src/api/me/types";
 import { IMAGES } from "src/assets/img";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import SEO from "src/components/SEO";
@@ -9,6 +10,8 @@ import Flex from "src/components/Utils/Flex";
 import { usePosthog } from "src/hooks/usePosthog";
 
 import { EmptyState } from "components/layout/placeholders/empty-state";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import { Earning } from "./Earning/Earning";
 import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";
@@ -25,9 +28,13 @@ export enum RewardStatus {
 
 function SafeRewards() {
   const { T } = useT();
+  const { user } = useCurrentUser();
+
   const { rewards } = useContext(UserRewardsContext);
   const filterRef = useRef<UserRewardsFilterRef>(null);
   const hasActiveFilters = !!filterRef?.current?.hasActiveFilters;
+
+  const isBillingProfileCompany = user?.billingProfileType === MeTypes.billingProfileType.Company;
 
   const emptyFallback = useMemo(() => {
     if (rewards && rewards?.length === 0) {
@@ -60,7 +67,7 @@ function SafeRewards() {
           <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
           <UserRewardsFilter ref={filterRef} />
         </Flex>
-        <InvoiceSubmission />
+        {isBillingProfileCompany ? <InvoiceSubmission /> : null}
         <Earning />
         <UserRewardTable emptyState={emptyFallback} />
       </div>

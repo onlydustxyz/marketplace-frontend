@@ -12,6 +12,7 @@ const config: Config = withTV({
     "./src/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./hooks/**/*.{js,ts,jsx,tsx}",
     "./.storybook/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
@@ -151,6 +152,8 @@ const config: Config = withTV({
         "pulse-grow-slow": "pulse-grow 3s ease-in-out infinite alternate",
         "spin-medium": "spin 2s ease-in-out infinite",
         wave: "wave 20s ease infinite",
+        budgetcard: "budgetcard 20s ease infinite",
+        budgetcardreverse: "budgetcard 20s ease reverse",
       },
       keyframes: {
         "spin-invert": {
@@ -179,6 +182,20 @@ const config: Config = withTV({
             "background-position": "0% 50%",
           },
         },
+        budgetcard: {
+          "0%": {
+            "background-position": "0% 0%",
+            transform: "rotate(0deg)",
+          },
+          "50%": {
+            "background-position": "100% 100%",
+            transform: "rotate(360deg)",
+          },
+          "100%": {
+            "background-position": "0% 0%",
+            transform: "rotate(0deg)",
+          },
+        },
       },
       backgroundImage: {
         "noise-light": "url('/images/noise-light.webp')",
@@ -190,13 +207,13 @@ const config: Config = withTV({
         "profile-yellow": "url('/images/user-profile-bg-yellow.webp')",
         "space-card": "url('/images/space-card-bg.webp')",
         "public-profile": "url('/images/public-profile-bg.webp')",
+        "space-gradient": "linear-gradient(180deg, #000113 0%, #0E0D2E 100%)",
         space: `
             url('/images/dust-top-right.webp'),
             url('/images/dust-btm-left.webp'),
             linear-gradient(180deg, #000113 0%, #0E0D2E 100%)
         `,
-        "space-new":
-          "linear-gradient(90deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 100%), url('/images/space-background.svg')",
+        "space-new": "url('/images/space-background-2.svg')",
         "multi-color-gradient":
           "conic-gradient(from 180deg at 50% 50%, #02FFE0 -8.58deg, #0100C8 16.28deg, #8F00F3 47.6deg, #0B0CCB 82.17deg, #5504EC 125.37deg, #E504A2 165.23deg, #FF7202 179.49deg, #0500CA 206.97deg, #5F00FA 254.68deg, #B501FF 288.89deg, #FF4838 296.73deg, #FB404B 310.19deg, #9138FD 320.15deg, #417CFB 334.77deg, #02FFE0 351.42deg, #0100C8 376.28deg)",
         "stripe-pattern": "url('/images/stripe-pattern.svg')",
@@ -210,11 +227,9 @@ const config: Config = withTV({
       },
       backgroundPosition: {
         space: "right top, bottom left",
-        "space-new": "center, center",
       },
       backgroundSize: {
         space: "auto, auto, 100%",
-        "space-new": "cover, cover, 100%",
         "public-profile": "cover",
       },
       backdropBlur: {
@@ -271,7 +286,6 @@ const config: Config = withTV({
         ".pseudo-outline": pseudoOutline,
         ...variantSizes.reduce((acc, size) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
           acc[`.pseudo-outline-${size}`] = {
             ...pseudoOutline,
             "&:before": {
@@ -459,6 +473,14 @@ const config: Config = withTV({
           fontFamily: theme("fontFamily.walsheim"),
           fontWeight: "500",
         },
+        ".od-text-special-label": {
+          fontSize: "14px",
+          lineHeight: "16px",
+          letterSpacing: "-0.12px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+        },
+
         /* ---------------------------------- CARD ---------------------------------- */
         ".card-light": {
           border: "1px solid",
@@ -470,10 +492,17 @@ const config: Config = withTV({
           borderColor: theme("colors.card.border.medium"),
           background: theme("colors.card.background.medium"),
         },
-        ".card-heavy": {
-          border: "1px solid",
-          borderColor: theme("colors.card.border.heavy"),
-          background: theme("colors.card.background.heavy"),
+        ".od-space-background": {
+          background: theme("backgroundImage.space-new"),
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+          backgroundRepeat: "no-repeat",
+        },
+        ".od-bg-budget": {
+          backgroundImage: `radial-gradient(at 64% 0%, rgba(221, 106, 55, 0.6) -5%, transparent 40%),
+        radial-gradient(at 48% 0%, #e504a2 1%, transparent 80%),
+        linear-gradient(60deg, rgba(40, 3, 155, 1), rgba(100, 42, 229, 1))`,
         },
       });
     }),
@@ -496,7 +525,7 @@ const config: Config = withTV({
       themes: {
         dark: {
           colors: {
-            background: "#000000",
+            background: "transparent",
           },
           layout: {
             radius: {

@@ -2,7 +2,7 @@ import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
 
-import { Thumbnail } from "components/ds/thumbnail/thumbnail";
+import { Avatar } from "components/ds/avatar/avatar";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { TContributor } from "components/features/contributor/contributor.types";
 import { Translate } from "components/layout/translate/translate";
@@ -23,7 +23,7 @@ export function Contributor({
   return (
     <Component
       type={clickable ? "button" : undefined}
-      className={cn("group flex flex-row items-center gap-1", className)}
+      className={cn("group/contributor flex flex-row items-center gap-1", className)}
       onClick={
         clickable
           ? e => {
@@ -33,17 +33,16 @@ export function Contributor({
           : undefined
       }
     >
-      {avatarUrl ? <Thumbnail src={avatarUrl} alt={login} size="xs" type="user" /> : null}
+      {avatarUrl ? <Avatar src={avatarUrl} alt={login} size="xs" /> : null}
 
       <Typography
         variant="body-s"
         className={cn({
-          "block truncate group-hover:text-spacePurple-300 group-hover:underline": clickable,
+          "block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
         })}
       >
         {login}
       </Typography>
-
       {isRegistered ? (
         <Tooltip content={<Translate token="v2.features.contributors.table.userRegisteredTooltip" />}>
           <img id={`od-logo-${login}`} src={IMAGES.logo.original} className="w-3.5" loading="lazy" alt="OnlyDust" />

@@ -17,7 +17,13 @@ export default function View({ options, size, ...props }: Props) {
     <Listbox {...props}>
       <Listbox.Options static as="div" className="flex flex-wrap gap-x-2 gap-y-3">
         {options.map((value, index) => (
-          <Listbox.Option key={index} as={FormOption} value={value.value ?? value.label} size={size} className="w-fit">
+          <Listbox.Option
+            key={index}
+            as={FormOption}
+            value={value.value ?? value.label}
+            size={size}
+            className="z-0 w-fit"
+          >
             {value.icon}
             {value.label}
           </Listbox.Option>

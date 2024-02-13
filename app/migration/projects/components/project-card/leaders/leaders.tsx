@@ -42,7 +42,7 @@ export function Leaders({ leaders }: TLeaders.Props) {
 
   return (
     <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
-      <ContributorsAvatars contributors={leaders} />
+      <ContributorsAvatars contributors={leaders} avatarProps={{ size: "xs" }} />
 
       <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
         {leaders.length > 1 ? (

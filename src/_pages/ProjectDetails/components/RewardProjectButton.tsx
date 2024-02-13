@@ -1,5 +1,4 @@
 import { FilloutStandardEmbed } from "@fillout/react";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { useState } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
 
@@ -15,12 +14,13 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
 
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+
 type RewardProjectButtonProps = { project: components["schemas"]["ProjectResponse"]; size?: ButtonSize };
 
 export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardProjectButtonProps) {
   const { T } = useIntl();
   const { user } = useCurrentUser();
-  const { data: userInfo } = MeApi.queries.useGetMyPayoutInfo({});
   const { data: userProfile } = MeApi.queries.useGetMyProfileInfo({});
   const navigate = useNavigate();
   const isRewardDisabled = !project?.hasRemainingBudget;
@@ -96,8 +96,8 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
           inheritParameters
           parameters={{
             lead_id: user?.id,
-            lead_first_name: userInfo?.person?.firstname,
-            lead_last_name: userInfo?.person?.lastname,
+            lead_first_name: user?.firstName,
+            lead_last_name: user?.lastName,
             lead_github: user?.login,
             lead_telegram: findContact(Channel.Telegram),
             lead_email: findContact(Channel.Email),

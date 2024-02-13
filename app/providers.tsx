@@ -4,7 +4,10 @@ import { NextUIProvider } from "@nextui-org/react";
 import dynamic from "next/dynamic";
 import { PropsWithChildren } from "react";
 
+import { Stacks } from "src/App/Stacks/Stacks";
+import { Toaster } from "src/components/Toaster";
 import { IntlProvider } from "src/hooks/useIntl";
+import { ToasterProvider } from "src/hooks/useToaster";
 
 import { QueryProvider } from "components/features/api/providers/query-provider";
 import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/auth0-provider-with-navigate";
@@ -33,7 +36,13 @@ export default function Providers({ children }: PropsWithChildren) {
                 <BrowserRouter>
                   <StackProvider>
                     <SidePanelStackProvider>
-                      <SidePanelProvider>{children}</SidePanelProvider>
+                      <SidePanelProvider>
+                        <ToasterProvider>
+                          {children}
+                          <Toaster />
+                          <Stacks />
+                        </ToasterProvider>
+                      </SidePanelProvider>
                     </SidePanelStackProvider>
                   </StackProvider>
                 </BrowserRouter>

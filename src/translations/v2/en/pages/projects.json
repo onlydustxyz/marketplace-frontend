@@ -16,15 +16,18 @@
   },
   "tags": {
     "tooltips": {
-      "beginnersWelcome": "These project are ready to take some time to onboard new developers.",
-      "fastPaced": "These project have a rapid development speed. Time to merged PRs and Fast Code Review are their main metrics.",
-      "likelyToSendRewards": "These project have continuously sent rewards to their contributors in the past.",
-      "strongExpertise": "These project have some complex challenges to tackle. They are waiting for your help."
+      "BIG_WHALE":  "Project that has rewarded big.",
+      "FAST_AND_FURIOUS": "Project that is moving fast with a lot of contributions completed.",
+      "HOT_COMMUNITY":  "Project that has a high number of active contributors.",
+      "LIKELY_TO_REWARD": "Project that can reward a work well done.",
+      "NEWBIES_WELCOME":  "Project that onboard new contributors regularly.",
+      "UPDATED_ROADMAP": "Project presenting the most recent challenges.",
+      "WORK_IN_PROGRESS": "Project that has open issues ready to tackle."
     }
   },
   "addProject": {
     "label": "Managing an open source project?",
-    "btn": "Submit",
+    "btn": "Add it here",
     "resumeModal": {
       "title": "Resume project creation?",
       "description": "If you decide to start over all your previous changes will be lost.",

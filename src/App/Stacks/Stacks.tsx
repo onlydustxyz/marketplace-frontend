@@ -1,8 +1,11 @@
+"use client";
+
 import { ComponentProps } from "react";
 import { Link, generatePath } from "react-router-dom";
 
 import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
+import { FeedbackPanel } from "src/App/Stacks/FeedbackPanel/FeedbackPanel";
 import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
 import { VerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -18,13 +21,11 @@ import { TBillingCreateStack } from "components/features/stacks/billing-create-s
 import { RoutePaths } from "..";
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
 
 export enum StackRoute {
   ContributorProfile = "contributor-profile",
   ProjectOverview = "project-overview",
-  PayoutInfo = "payout-info",
   ProjectLeaderReward = "project-leader-reward",
   Reward = "reward",
   Contribution = "contribution",
@@ -32,6 +33,7 @@ export enum StackRoute {
   GithubWorkflowTutorial = "github-workflow-tutorial",
   Verify = "verify",
   BillingCreate = "billing-create",
+  Feedback = "feedback",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -87,20 +89,19 @@ export const Stacks = () => {
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack name={StackRoute.PayoutInfo}>{() => <PayoutInfoSidePanel />}</RegisterStack>
-      {process.env.NEXT_PUBLIC_IS_ALLOWED_SUMSUB === "true" ? (
-        <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
-          {({ params }) => <VerifySidePanel {...params} />}
-        </RegisterStack>
-      ) : null}
       <RegisterStack<TBillingCreateStack.Params> name={StackRoute.BillingCreate}>
         {({ params }) => <BillingCreateStack {...params} />}
       </RegisterStack>
+      <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
+        {({ params }) => <VerifySidePanel {...params} />}
+      </RegisterStack>
+      <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
     </>
   );
 };
 
-export const useStackPayoutInfo = () => {
-  return useStackNavigation(StackRoute.PayoutInfo);
+export const useStackFeedback = () => {
+  return useStackNavigation(StackRoute.Feedback);
 };
 
 export const useStackVerify = () => {

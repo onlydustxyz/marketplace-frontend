@@ -1,12 +1,17 @@
+import { useMemo } from "react";
+
 import InfoIcon from "src/assets/icons/InfoIcon";
-import Card from "src/components/Card";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import User3Line from "src/icons/User3Line";
-import { Money } from "src/types";
+import { Currency, Money } from "src/types";
 import { cn } from "src/utils/cn";
+
+import { Card } from "components/ds/card/card";
+import { Icon } from "components/layout/icon/icon";
 
 import { Amount } from "./Amount";
 import { Counter } from "./Counter";
@@ -47,32 +52,77 @@ type Props = {
   type?: CardTypes;
   sentRewards?: { count?: number; total?: number };
   rewardedContributorsCount?: number;
+  filteredCurrencies?: Currency[];
+  onClick?: () => void;
 };
 
-export function BudgetCard({ budget, sentRewards, rewardedContributorsCount, type = CardTypes.Remaining }: Props) {
+export function BudgetCard({
+  budget,
+  sentRewards,
+  rewardedContributorsCount,
+  filteredCurrencies,
+  type = CardTypes.Remaining,
+  onClick,
+}: Props) {
   const { T } = useIntl();
+
+  const showFilteredCurrencies = useMemo(() => {
+    if (filteredCurrencies && (type === CardTypes.Remaining || type === CardTypes.AmountSpent)) {
+      return (
+        <AvailableConversion
+          sizeClassName="h-6 w-6"
+          numberCurencyToShow={filteredCurrencies.length > 3 ? 2 : 3}
+          currencies={filteredCurrencies.map(c => ({
+            currency: c,
+            amount: undefined,
+            dollar: undefined,
+          }))}
+        />
+      );
+    }
+
+    return null;
+  }, [filteredCurrencies, type]);
 
   return (
     <Card
-      className={cn("px-4 py-5 lg:px-4 lg:py-5", {
-        "bg-budget bg-origin-border": type === CardTypes.Remaining,
+      background={"base"}
+      className={cn("group px-4 py-5 transition-all lg:px-4 lg:py-5", {
+        "relative z-[1] overflow-hidden": type === CardTypes.Remaining,
+        "cursor-pointer": !!onClick,
       })}
+      onClick={onClick}
     >
+      {type === CardTypes.Remaining && (
+        <div
+          className={cn(
+            "absolute bottom-0 left-1/2 top-1/2 -z-[1] aspect-square w-[calc(100%_+_20px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl bg-red-500",
+            "after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:h-full after:w-full",
+            "after:od-bg-budget after:bg-[length:110%_110%] after:group-hover:animate-budgetcard"
+          )}
+        ></div>
+      )}
       <div className="flex flex-col gap-2">
-        <div className="flex items-center text-sm uppercase text-white">
-          <span
-            className="mr-2"
-            {...withTooltip(T("project.details.remainingBudget.usdInfoBudgets"), {
-              visible: type === CardTypes.Remaining,
-            })}
-          >
-            {budgets[type].icon}
-          </span>
-          <div className="truncate font-semibold">{T(budgets[type].title)}</div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center text-sm uppercase text-white">
+            <span
+              className="mr-2"
+              {...withTooltip(T("project.details.remainingBudget.usdInfoBudgets"), {
+                visible: type === CardTypes.Remaining,
+              })}
+            >
+              {budgets[type].icon}
+            </span>
+            <div className="font-semibold">{T(budgets[type].title)}</div>
+          </div>
+          {!!onClick && <Icon remixName="ri-more-fill" />}
         </div>
 
-        <div className="flex flex-wrap items-baseline font-belwe text-2xl text-greyscale-50">
-          {getContent(type, budget, rewardedContributorsCount, sentRewards)}
+        <div className="flex flex-wrap items-baseline justify-between font-belwe text-2xl text-greyscale-50">
+          <div className="flex flex-row flex-wrap items-baseline justify-between">
+            {getContent(type, budget, rewardedContributorsCount, sentRewards)}
+          </div>
+          <div>{showFilteredCurrencies}</div>
         </div>
       </div>
     </Card>
