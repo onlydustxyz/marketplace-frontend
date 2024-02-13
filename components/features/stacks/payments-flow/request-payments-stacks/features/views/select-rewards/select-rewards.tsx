@@ -21,7 +21,7 @@ export function SelectRewards({ onExclude, onInclude, includedRewards, excludedR
   );
 
   const onSubmit = () => {
-    goTo({ to: TRequestPaymentsStacks.Views.Generate });
+    goTo({ to: TRequestPaymentsStacks.Views.Mandate });
   };
 
   const getTabContent = useCallback(

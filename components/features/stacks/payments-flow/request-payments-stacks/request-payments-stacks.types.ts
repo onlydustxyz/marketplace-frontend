@@ -5,5 +5,6 @@ export namespace TRequestPaymentsStacks {
   export enum Views {
     Select = "SELECT",
     Generate = "GENERATE",
+    Mandate = "MANDATE",
   }
 }

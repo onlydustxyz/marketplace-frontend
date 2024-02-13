@@ -25,5 +25,11 @@
     "included": "Rewards included",
     "excluded": "Rewards excluded"
   },
-  "openButton": "Request payment"
+  "openButton": "Request payment",
+  "mandate": {
+    "title": "Accept invoicing mandate",
+    "terms": "I have read and accept the invoicing mandate for my rewards",
+    "confirm": "Confirm",
+    "skip": "Skip (manual invoicing)"
+  }
 }
