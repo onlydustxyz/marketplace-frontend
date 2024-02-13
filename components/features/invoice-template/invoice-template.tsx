@@ -24,7 +24,7 @@ Font.register({
 
 export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }: TInvoice.InvoiceTemplateProps) {
   return (
-    <Document>
+    <Document pageLayout="oneColumn">
       <Page size="A4" style={styles.page}>
         <InvoiceHeader title={header.title} invoiceNumber={header.invoiceNumber} />
         <InvoiceInfo

@@ -11,7 +11,7 @@ export const ACTION_PATH = {
 
   /* ----------------------------------- ME ----------------------------------- */
   ME: BASE_API_V1("me"),
-  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoices-template"),
+  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoice"),
   ME_INDIVIDUAL_BILLING_PROFILES: BASE_API_V1("me/billing-profiles/individual"),
   ME_COMPANY_BILLING_PROFILES: BASE_API_V1("me/billing-profiles/company"),
 };

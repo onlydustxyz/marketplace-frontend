@@ -1,6 +1,12 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
+
+import { fetchInvoice } from "app/api/invoice/handlers";
+
 import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Button } from "components/ds/button/button";
+import InvoiceViewer from "components/features/invoice-viewer/invoice-viewer";
 import { AmountCounter } from "components/features/stacks/payments-flow/request-payments-stacks/components/amount-counter/amount-counter";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
@@ -9,15 +15,37 @@ import { Translate } from "components/layout/translate/translate";
 import { TGenerateInvoice } from "./generate-invoice.types";
 
 export function GenerateInvoice({ rewardIds, goTo }: TGenerateInvoice.Props) {
-  const isLoading = false;
+  const { getAccessTokenSilently } = useAuth0();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [fileUrl, setFileUrl] = useState<string>("");
+
+  useEffect(() => {
+    handleInvoiceCreation();
+  }, []);
+
+  async function handleInvoiceCreation() {
+    setIsLoading(true);
+    try {
+      const token = await getAccessTokenSilently();
+      const fileUrl = await fetchInvoice({ token, rewardIds });
+      if (fileUrl) {
+        setFileUrl(fileUrl);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+    }
+  }
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex h-full flex-col overflow-hidden px-1">
-        <ScrollView>
-          <div className="px-3 pb-28">
-            {rewardIds.map(rewardId => (
-              <div key={rewardId}>{rewardId}</div>
-            ))}
+        <ScrollView className="mt-10">
+          <div className="flex justify-center px-3 pb-44">
+            {isLoading ? <div> TODO loading component </div> : null}
+            {!isLoading && !isError && fileUrl ? <InvoiceViewer fileUrl={fileUrl} /> : null}
+            {isError ? <div> TODO error component </div> : null}
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
             <AmountCounter total={1000} />
