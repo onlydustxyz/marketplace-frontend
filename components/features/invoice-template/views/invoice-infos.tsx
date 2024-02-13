@@ -7,6 +7,7 @@ import { TInvoice } from "components/features/invoice-template/invoice-template.
 export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos }: TInvoice.InvoiceInfoProps) {
   const [senderStreetAddress, ...senderRestAdress] = senderInfos.address.split(/,(.+)/);
   const [recipientStreetAddress, ...recipientRestAdress] = recipientInfos.address.split(/,(.+)/);
+  console.log("senderInfos", senderInfos);
   return (
     <View style={{ ...styles.section, ...styles.flexRow }}>
       <View style={{ ...styles.flexCol }}>
@@ -22,16 +23,14 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos }: TInvoic
           <Text style={styles.paragraph}>{recipientInfos.name}</Text>
           <Text style={styles.paragraph}>{recipientStreetAddress}</Text>
           <Text style={styles.paragraph}>{recipientRestAdress.join("").trim()}</Text>
-          <Text style={styles.paragraph}>SIREN : 908 233 638</Text>
-          <Text style={styles.paragraph}>VAT number : FR26908233638</Text>
+          <Text style={styles.paragraph}>SIREN: {recipientInfos.registrationNumber}</Text>
+          <Text style={styles.paragraph}>VAT number: {recipientInfos.euVATNumber}</Text>
         </View>
       </View>
       <View style={{ ...styles.flexCol }}>
         <View style={styles.paddingRightSmall}>
           <Text style={styles.h4}>Issue Date</Text>
-          <Text style={styles.paragraph}>{legalInfos.date}</Text>
-          <Text style={styles.h4}>Due Date</Text>
-          <Text style={styles.paragraph}>{legalInfos.date} +10</Text>
+          <Text style={styles.paragraph}>{legalInfos.generationDate}</Text>
         </View>
         <View
           style={{
@@ -41,20 +40,18 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos }: TInvoic
             ...styles.width100p,
           }}
         >
-          <Text style={styles.h4}>Destination wallets</Text>
-          {legalInfos.destinationWallets.map(wallet => (
-            <Text key={wallet} style={styles.paragraph}>
-              {wallet}
-            </Text>
-          ))}
+          <Text style={styles.h4}>Due Date</Text>
+          <Text style={styles.paragraph}>{legalInfos.dueDate}</Text>
         </View>
+      </View>
+      <View style={{ ...styles.flexRow }}>
+        <Text style={styles.h4}>Destination accounts</Text>
+        {legalInfos.destinationAccounts.map(wallet => (
+          <Text key={wallet} style={{ ...styles.paragraph, fontSize: 11, lineHeight: 1.2 }}>
+            - {wallet}
+          </Text>
+        ))}
       </View>
     </View>
   );
 }
-
-// num de reward
-// reward date
-// before tax
-// tax VAT : zero if not applicable
-// total after tax

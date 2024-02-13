@@ -1,20 +1,24 @@
-import { PendingInvoiceResponse } from "actions/me/me-queries.actions";
-
 export namespace TInvoice {
   interface SenderInfo {
-    name: string;
+    firstName?: string;
+    lastName?: string;
+    name?: string;
     address: string;
+    registrationNumber?: string;
     euVATNumber?: string;
   }
 
   interface RecipientInfo {
     name: string;
     address: string;
+    registrationNumber?: string;
+    euVATNumber?: string;
   }
 
   interface LegalInfo {
-    date: string;
-    destinationWallets: string[];
+    generationDate: string;
+    dueDate: string;
+    destinationAccounts: string[];
   }
 
   type VATUnion =
@@ -24,12 +28,21 @@ export namespace TInvoice {
     | "VAT_REVERSE_CHARGE";
 
   interface Vat {
-    specificities: VATUnion;
+    vatRegulationState: VATUnion;
     euVATNumber: string;
     rate: string;
   }
 
-  export interface Rewards extends PendingInvoiceResponse {}
+  interface Rewards {
+    amount: {
+      total: number;
+      currency: string;
+      dollarsEquivalent: number;
+    };
+    id: string;
+    date: string;
+    projectName: string;
+  }
 
   export interface HeaderProps {
     title: string;
@@ -43,9 +56,11 @@ export namespace TInvoice {
   }
 
   export interface RewardsSummaryProps {
-    rewards: Rewards;
+    rewards: Rewards[];
     vat: Vat;
-    total: number;
+    totalBeforeTax: number;
+    totalTax: number;
+    totalAfterTax: number;
   }
 
   export interface FooterProps {

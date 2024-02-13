@@ -3,7 +3,7 @@ import { MeActions } from "actions/me/me.actions";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { getHeaderProps, getInvoiceInfoProps } from "app/api/invoice/builders";
+import { getHeaderProps, getInvoiceInfoProps, getRewardsSummaryProps, invoiceMock } from "app/api/invoice/builders";
 
 import { MeTypes } from "src/api/me/types";
 
@@ -19,11 +19,13 @@ export async function GET() {
 
   const header: TInvoice.HeaderProps = getHeaderProps({
     isUserIndividual,
-    id: userInfo.githubUserId,
-    incrementalKey: 123,
+    invoiceNumber: invoiceMock.id,
   });
 
-  const invoiceInfo: TInvoice.InvoiceInfoProps = await getInvoiceInfoProps({ isUserIndividual });
+  const invoiceInfo: TInvoice.InvoiceInfoProps = getInvoiceInfoProps({
+    isUserIndividual,
+    invoiceDetails: invoiceMock,
+  });
 
   const rewards = [
     {
@@ -79,18 +81,14 @@ export async function GET() {
     },
   ];
 
-  const rewardSummary: TInvoice.RewardsSummaryProps = {
-    rewards,
-    vat: {
-      specificities: "VAT_APPLICABLE",
-      euVATNumber: "FR12345678901",
-      rate: "20%",
-    },
-    total: 85.622,
-  };
+  const rewardSummary: TInvoice.RewardsSummaryProps = getRewardsSummaryProps({
+    invoiceDetails: invoiceMock,
+  });
 
   const footer = {
-    invoiceName: "Company or individual name",
+    invoiceName: isUserIndividual
+      ? `${invoiceMock.individualBillingProfile?.firstName} ${invoiceMock.individualBillingProfile?.lastName}`
+      : `${invoiceMock.companyBillingProfile?.name}`,
   };
 
   const stream = await renderToStream(

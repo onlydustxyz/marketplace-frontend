@@ -97,7 +97,7 @@ export const styles = StyleSheet.create({
   },
   th: {
     position: "relative",
-    padding: "10px 20px",
+    padding: "10px 10px",
     fontSize: "12px",
     color: "#262525",
     fontWeight: "medium",
@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
   },
   td: {
     position: "relative",
-    padding: "10px 20px",
+    padding: "10px 10px",
     fontSize: "12px",
     color: "#535353",
     fontWeight: "normal",

@@ -13,7 +13,7 @@ export function InvoiceFooter({ invoiceName }: TInvoice.FooterProps) {
       </Text>
       <Text style={styles.paragraph}>
         - Late payment penalties: three times the annual legal interest rate in effect calculated from the due date
-        until full payment. lump sum compensation for recovery costs in the event of late payment: 40USD
+        until full payment. lump sum compensation for recovery costs in the event of late payment: 40 USD
       </Text>
     </View>
   );
