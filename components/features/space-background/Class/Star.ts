@@ -57,6 +57,8 @@ export class Star implements IStar {
     const coords = { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight };
     const minSpeed = window.innerWidth * 0.0005;
     const maxSpeed = window.innerWidth * 0.0004;
+    const minSize = window.innerWidth * 0.0001;
+    const maxSize = window.innerWidth * 0.0005;
     this.positions = {
       initial: coords,
       controlled: coords,
@@ -82,11 +84,11 @@ export class Star implements IStar {
       },
     };
 
-    this.radius = (Math.random() * (3 - 0.5 + 1) + 0.5) * Math.random();
+    this.radius = Math.random() * (maxSize - minSize + 1) + minSize;
     this.opacitySpeed = Math.random() * 0.005;
     this.speed = Math.random() * (maxSpeed - minSpeed + 1) + minSpeed;
     this.shineCompleted = false;
-    this.opacity = 1;
+    this.opacity = Math.random();
     this.factor = 1;
     this.speedFactor = 1;
     this.canvas = canvas;
