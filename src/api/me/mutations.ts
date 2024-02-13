@@ -103,6 +103,15 @@ const useMarkInvoicesAsReceived = ({ options }: UseMutationProps<unknown, unknow
   });
 };
 
+const useSyncGithubAccount = ({ options }: UseMutationProps<unknown, unknown, unknown>) => {
+  return useBaseMutation<unknown, unknown>({
+    resourcePath: API_PATH.ME_SYNC_GITHUB_PROFILE,
+    method: "GET",
+    invalidatesTags: [{ queryKey: MeApi.tags.user, exact: false }],
+    ...(options ? options : {}),
+  });
+};
+
 export default {
   useAcceptProjectLeaderInvitation,
   useClaimProject,
@@ -111,5 +120,6 @@ export default {
   useUpdateMe,
   useUpdateProfile,
   useUploadProfilePicture,
+  useSyncGithubAccount,
   useMarkInvoicesAsReceived,
 };
