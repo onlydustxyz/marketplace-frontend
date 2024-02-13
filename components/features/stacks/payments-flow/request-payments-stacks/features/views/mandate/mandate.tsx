@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { useStackMandate } from "src/App/Stacks/Stacks";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
@@ -13,6 +14,7 @@ import { Typography } from "components/layout/typography/typography";
 
 export function Mandate({ goTo }: TMandate.Props) {
   const { T } = useIntl();
+  const [openMandateDetail] = useStackMandate();
   const [accepted, setAccepted] = useState(false);
 
   const onSubmit = () => {
@@ -70,14 +72,14 @@ export function Mandate({ goTo }: TMandate.Props) {
               <div className="flex justify-center">
                 <Checkbox onValueChange={setAccepted}>
                   {termsStart}
-                  <button className="underline" onClick={() => alert("open mandate stack")}>
+                  <button className="underline" onClick={openMandateDetail}>
                     {termsPanel}
                   </button>
                   {termsEnd}
                 </Checkbox>
               </div>
               <div className="grid w-full grid-cols-2 gap-5">
-                <Button variant="secondary" size="m" className="w-full" onClick={() => goTo({ to: "close" })}>
+                <Button variant="secondary" size="m" className="w-full" onClick={() => alert("manual invoice")}>
                   <Translate token="v2.pages.stacks.request_payments.mandate.skip" />
                 </Button>
                 <Button variant="primary" size="m" className="w-full" onClick={onSubmit} disabled={!accepted}>
