@@ -43,59 +43,53 @@ export function MandateDetailStack() {
           </ul>
         </div>
 
-        <div className="prose prose-invert text-greyscale-50 marker:text-greyscale-50">
+        <div className="prose-sm prose-invert rounded-2xl bg-card-background-heavy bg-noise-medium p-6 text-greyscale-50 marker:text-greyscale-50">
+          <h3 className="uppercase">Legal notice</h3>
+
+          <p>THIS INVOICING MANDATE AGREEMENT (the &quot;Agreement&quot;) is made between:</p>
           <p>
-            THIS <b>INVOICING MANDATE AGREEMENT</b> (the &quot;<b>Agreement</b>&quot;) is made between:
+            1. Wagmi SAS, a French simplified joint stock company, registered with the Register of Trade and Companies
+            of Paris under number 908 233 638, with registered offices located at 54 rue du Faubourg Montmartre 75009
+            PARIS, France, represented by Gregoire Gambatto, CEO, duly authorized for the purpose hereof
           </p>
+          <p>hereinafter referred to as the &quot;Wagmi&quot; or the &quot;Company&quot;,</p>
+          <p>And :</p>
           <p>
-            1. <b>Wagmi SAS</b>, a French simplified joint stock company, registered with the Register of Trade and
-            Companies of Paris under number 908 233 638, with registered offices located at 54 rue du Faubourg
-            Montmartre 75009 PARIS, France, represented by Gregoire Gambatto, CEO, duly authorized for the purpose
-            hereof
-          </p>
-          <p className="text-right">
-            hereinafter referred to as the &quot;<b>Wagmi</b>&quot; or the &quot;<b>Company</b>&quot;,
-          </p>
-          <p>
-            <span className="underline">And</span> :
-          </p>
-          <p>
-            2. <b>The Contributor</b>, the natural or legal persons providing Contributions on the digital platform
-            named Only Dust (
+            2. The Contributor, the natural or legal persons providing Contributions on the digital platform named Only
+            Dust (
             <a href="https://www.onlydust.xyz/" target="_blank" rel="noopener noreferrer">
               https://www.onlydust.xyz/
             </a>
             ).
           </p>
-          <p className="text-right">
-            hereinafter referred to as the &quot;<b>Contributor</b>&quot;,
-          </p>
-          <p className="text-right">
-            hereinafter together referred to as the &quot;<b>Parties</b>&quot;,
+          <p>hereinafter referred to as the &quot;Contributor&quot;,</p>
+          <p>hereinafter together referred to as the &quot;Parties&quot;,</p>
+          <p>
+            <span className="uppercase">Whereas</span> :
           </p>
           <p>
-            <span className="uppercase underline">Whereas</span> :
-          </p>
-          <p>
-            <b>A.</b> The Company develops and operates a digital platform under the name Only Dust (
+            A. The Company develops and operates a digital platform under the name Only Dust (
             <a href="https://www.onlydust.xyz/" target="_blank" rel="noopener noreferrer">
               https://www.onlydust.xyz/
             </a>
             ) which aims to optimize the funding of open source projects, specifically in the web3 industry, by matching
             open source projects seeking IT development contributions with developers having appropriate technical
-            skills (the &quot;<b>Platform</b>&quot;).
+            skills (the &quot;Platform&quot;).
           </p>
           <p>
-            <b>B.</b> In order to simplify invoicing, the Company proposes to establish and issue invoices for the
+            B. In order to simplify invoicing, the Company proposes to establish and issue invoices for the
             Contributions provided by the Contributor on the Platform as part of the Projects in accordance with the
             needs specified by the Project Leaders.
           </p>
           <p>
-            <b>C.</b> In this context, the Contributor wishes to give the Company the present invoicing mandate under
-            the terms of which she/he expressly agrees to entrust the Company with the traductions and issuance of
-            invoices relating to the Contribution (hereinafter, the &quot;<b>Mandate</b>&quot;).
+            C. In this context, the Contributor wishes to give the Company the present invoicing mandate under the terms
+            of which she/he expressly agrees to entrust the Company with the traductions and issuance of invoices
+            relating to the Contribution (hereinafter, the &quot;Mandate&quot;).
           </p>
-          <p className="uppercase underline">Now, therefore, the company and the contributor agree as follows.</p>
+          <p className="uppercase">Now, therefore, the company and the contributor agree as follows.</p>
+        </div>
+
+        <div className="prose prose-invert text-greyscale-50 marker:text-greyscale-50">
           <h3>1. Definitions</h3>
           <div className="px-6">
             <p>
