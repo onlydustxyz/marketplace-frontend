@@ -124,7 +124,7 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
                         translate={{
                           token: labelToken,
                         }}
-                        className={cn("text-spaceBlue-200", {
+                        className={cn("mt-1 text-spaceBlue-200", {
                           "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
                           "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
                         })}
