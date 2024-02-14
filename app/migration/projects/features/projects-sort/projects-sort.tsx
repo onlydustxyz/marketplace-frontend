@@ -31,10 +31,6 @@ export function ProjectsSort() {
         id: ProjectTypes.Sorting.ProjectName,
       },
       {
-        label: T(`v2.commons.enums.project.sort.${ProjectTypes.Sorting.ReposCount}`),
-        id: ProjectTypes.Sorting.ReposCount,
-      },
-      {
         label: T(`v2.commons.enums.project.sort.${ProjectTypes.Sorting.ContributorsCount}`),
         id: ProjectTypes.Sorting.ContributorsCount,
       },

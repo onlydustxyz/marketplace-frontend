@@ -69,6 +69,7 @@ export const API_PATH = {
   ME_BILLING_INDIVIDUAL: BASE_API_V1("me/billing-profiles/individual"),
   ME_BILLING_COMPANY: BASE_API_V1("me/billing-profiles/company"),
   ME_BILLING_PROFILES: BASE_API_V1("me/billing-profiles"),
+  ME_SYNC_GITHUB_PROFILE: BASE_API_V1("me/profile/github"),
   /* ------------------------------ TECHNOLOGIES ------------------------------ */
   TECHNOLOGIES: BASE_API_V1("technologies"),
 };

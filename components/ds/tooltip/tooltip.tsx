@@ -2,7 +2,11 @@ import { Tooltip as NextUiTooltip } from "@nextui-org/react";
 
 import { TTooltip } from "components/ds/tooltip/tooltip.types";
 
-export function Tooltip({ as: Component = "div", children, ...props }: TTooltip.Props) {
+export function Tooltip({ as: Component = "div", children, enabled = true, ...props }: TTooltip.Props) {
+  if (!enabled) {
+    return <Component>{children}</Component>;
+  }
+
   return (
     <NextUiTooltip
       {...props}

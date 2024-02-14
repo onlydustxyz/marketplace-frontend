@@ -42,7 +42,7 @@ export function Budget({
 
   return (
     <>
-      <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid w-full gap-4 max-[1470px]:grid-cols-2 max-[700px]:grid-cols-1 min-[1470px]:grid-cols-4">
         <BudgetCard
           budget={remainingBudget}
           filteredCurrencies={filteredCurrencies}
