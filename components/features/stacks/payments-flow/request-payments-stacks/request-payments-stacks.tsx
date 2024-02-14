@@ -15,7 +15,7 @@ export function RequestPaymentsStacks() {
   const { data } = MeApi.queries.useGetMePendingInvoices({});
 
   // TODO will be moved to the previous billing-profiles profiles selection step
-  const { data: billingProfiles } = BillingApi.queries.useAllBillingProfiles({});
+  const { data: billingProfilesData } = BillingApi.queries.useAllBillingProfiles({});
 
   const excludeNonLiquidToken = useMemo(
     () =>
@@ -52,7 +52,11 @@ export function RequestPaymentsStacks() {
 
   if (view === TRequestPaymentsStacks.Views.Generate) {
     return (
-      <GenerateInvoice goTo={onNextView} rewardIds={includedRewards.map(({ id }) => id)} billingProfileId="123456" />
+      <GenerateInvoice
+        goTo={onNextView}
+        rewardIds={includedRewards.map(({ id }) => id)}
+        billingProfileId={billingProfilesData?.billingProfiles?.[0].id ?? ""}
+      />
     );
   }
 
