@@ -35,37 +35,37 @@ export const useBillingButton = ({ status, type, id }: UseBillingButtonProps): U
   switch (status) {
     case "NOT_STARTED":
       return {
-        label: "v2.pages.settings.billing-profiles.buttons.startValidation",
+        label: "v2.pages.settings.billing.buttons.startValidation",
         onClick: handleVerify,
       };
     case "STARTED":
       return {
-        label: "v2.pages.settings.billing-profiles.buttons.resumeValidation",
+        label: "v2.pages.settings.billing.buttons.resumeValidation",
         onClick: handleVerify,
       };
     case "UNDER_REVIEW":
       return {
-        label: "v2.pages.settings.billing-profiles.buttons.viewValidation",
+        label: "v2.pages.settings.billing.buttons.viewValidation",
         onClick: handleVerify,
       };
     case "INVALIDATED":
       return {
-        label: "v2.pages.settings.billing-profiles.buttons.reValidate",
+        label: "v2.pages.settings.billing.buttons.reValidate",
         onClick: handleVerify,
       };
     case "REJECTED":
       return {
-        label: "v2.pages.settings.billing-profiles.buttons.reValidate",
+        label: "v2.pages.settings.billing.buttons.reValidate",
         onClick: handleVerify,
       };
     case "CLOSED":
       return {
-        label: "v2.pages.settings.billing-profiles.buttons.contact",
+        label: "v2.pages.settings.billing.buttons.contact",
         onClick: openFeedback,
       };
     case "VERIFIED":
       return {
-        label: "v2.pages.settings.billing-profiles.buttons.contact",
+        label: "v2.pages.settings.billing.buttons.contact",
         onClick: openFeedback,
       };
     default:

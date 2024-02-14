@@ -1,4 +1,4 @@
-export async function fetchInvoice({
+export async function fetchInvoicePreview({
   token,
   rewardIds,
   billingProfileId,
@@ -22,10 +22,11 @@ export async function fetchInvoice({
     .then(async res => {
       const blob = await res.blob();
       if (blob) {
-        return window.URL.createObjectURL(blob);
+        // return window.URL.createObjectURL(blob);
+        return blob;
       }
     })
     .catch(() => {
-      throw new Error("Failed to create download the blob.");
+      throw new Error("Failed to create the blob.");
     });
 }

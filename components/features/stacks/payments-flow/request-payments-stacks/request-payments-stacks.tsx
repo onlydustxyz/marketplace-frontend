@@ -52,11 +52,7 @@ export function RequestPaymentsStacks() {
 
   if (view === TRequestPaymentsStacks.Views.Generate) {
     return (
-      <GenerateInvoice
-        goTo={onNextView}
-        rewardIds={includedRewards.map(({ id }) => id)}
-        billingProfileId={billingProfiles[0].id}
-      />
+      <GenerateInvoice goTo={onNextView} rewardIds={includedRewards.map(({ id }) => id)} billingProfileId="123456" />
     );
   }
 

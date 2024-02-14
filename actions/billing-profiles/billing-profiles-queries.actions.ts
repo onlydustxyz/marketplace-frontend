@@ -5,10 +5,10 @@ import { BaseQueriesOptions } from "actions/type.actions";
 
 import { components } from "src/__generated/api";
 
-export type MeInformations = components["schemas"]["GetMeResponse"];
+export type InvoicePreviewResponse = components["schemas"]["NewInvoiceResponse"];
 export async function retrieveInvoicePreviewByBillingProfileId(billingProfileId: string, options?: BaseQueriesOptions) {
   "use server";
-  return BaseQueries<MeInformations>(ACTION_PATH.INVOICE_PREVIEW_BY_ID(billingProfileId), {
+  return BaseQueries<InvoicePreviewResponse>(ACTION_PATH.INVOICE_PREVIEW_BY_ID(billingProfileId), {
     provideTag: [BillingProfilesActionTags.invoice_preview(billingProfileId)],
     ...(options || {}),
   });

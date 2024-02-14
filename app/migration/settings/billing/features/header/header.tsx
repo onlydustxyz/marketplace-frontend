@@ -34,8 +34,8 @@ export function Header({ initialData }: THeader.Props) {
     success: {
       message:
         profile === MeTypes.billingProfileType.Individual
-          ? T("v2.pages.settings.billing-profiles.messages.success_to_individual")
-          : T("v2.pages.settings.billing-profiles.messages.success_to_company"),
+          ? T("v2.pages.settings.billing.messages.success_to_individual")
+          : T("v2.pages.settings.billing.messages.success_to_company"),
     },
     error: {
       default: true,
@@ -98,8 +98,8 @@ export function Header({ initialData }: THeader.Props) {
           title="v2.pages.settings.billing.title"
           subtitle={
             profile === MeTypes.billingProfileType.Individual
-              ? "v2.pages.settings.billing-profiles.description_individual"
-              : "v2.pages.settings.billing-profiles.description_company"
+              ? "v2.pages.settings.billing.description_individual"
+              : "v2.pages.settings.billing.description_company"
           }
         >
           <Controller
