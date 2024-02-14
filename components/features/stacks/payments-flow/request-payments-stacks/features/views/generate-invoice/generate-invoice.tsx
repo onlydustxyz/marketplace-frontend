@@ -14,7 +14,7 @@ import { Translate } from "components/layout/translate/translate";
 
 import { TGenerateInvoice } from "./generate-invoice.types";
 
-export function GenerateInvoice({ rewardIds, goTo }: TGenerateInvoice.Props) {
+export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerateInvoice.Props) {
   const { getAccessTokenSilently } = useAuth0();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -28,7 +28,7 @@ export function GenerateInvoice({ rewardIds, goTo }: TGenerateInvoice.Props) {
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const fileUrl = await fetchInvoice({ token, rewardIds });
+      const fileUrl = await fetchInvoice({ token, rewardIds, billingProfileId });
       if (fileUrl) {
         setFileUrl(fileUrl);
         setIsLoading(false);

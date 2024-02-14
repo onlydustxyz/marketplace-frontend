@@ -3,6 +3,7 @@ import { RESSOURCE_TAGS } from "src/api/ressource-tags";
 
 export const ME_BILLING_TAGS = {
   all: [RESSOURCE_TAGS.ME, "billing"],
-  anyProfile: [RESSOURCE_TAGS.ME, "billing-profile"],
+  allProfiles: [RESSOURCE_TAGS.ME, "all-billing-profiles-profiles"],
+  anyProfile: [RESSOURCE_TAGS.ME, "billing-profiles-profile"],
   profile: (profile: MeTypes.billingProfileUnion) => [...ME_BILLING_TAGS.anyProfile, { billingProfile: profile }],
 };

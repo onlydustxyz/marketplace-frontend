@@ -15,9 +15,7 @@ export default function InvoiceViewer({ fileUrl }: { fileUrl: string }) {
   return (
     <Document className="w-fit" file={fileUrl} onLoadSuccess={onDocumentLoadSuccess}>
       {Array.from(new Array(numPages), (_el, index) => (
-        <>
-          <Page key={`page_${index + 1}`} pageNumber={index + 1} className="mb-2" />
-        </>
+        <Page key={`page_${index + 1}`} pageNumber={index + 1} className="mb-2" />
       ))}
     </Document>
   );

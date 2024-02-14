@@ -11,12 +11,13 @@ import { InvoiceTemplate } from "components/features/invoice-template/invoice-te
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 
 export async function GET(request: NextRequest) {
+  const headersList = headers();
+  const token = headersList.get("authorization");
   const searchParams = request.nextUrl.searchParams;
   const rewardIds = searchParams.get("rewardIds");
   console.log("rewardIds ==>", rewardIds);
-  const headersList = headers();
-  const token = headersList.get("authorization");
 
+  // TODO will be replaced by the invoice preview endpoint
   const userInfo = await MeActions.queries.retrieveMeInformations({ accessToken: token ?? "" });
   const isUserIndividual = userInfo?.billingProfileType === MeTypes.billingProfileType.Individual;
 

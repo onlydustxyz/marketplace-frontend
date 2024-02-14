@@ -1,6 +1,15 @@
-export async function fetchInvoice({ token, rewardIds }: { token: string; rewardIds: string[] }) {
+export async function fetchInvoice({
+  token,
+  rewardIds,
+  billingProfileId,
+}: {
+  token: string;
+  rewardIds: string[];
+  billingProfileId: string;
+}) {
   const params = new URLSearchParams();
   params.append("rewardIds", rewardIds.join(","));
+  params.append("billingProfileId", billingProfileId);
   const url = `/api/invoice?${params.toString()}`;
 
   return await fetch(url, {
