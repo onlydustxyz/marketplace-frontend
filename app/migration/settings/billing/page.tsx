@@ -7,8 +7,6 @@ import { ProfileIndividual } from "app/migration/settings/billing/features/profi
 
 import { useBillingProfiles } from "hooks/users/useBillingProfile/useBillingProfile";
 
-import { useBillingProfiles } from "hooks/users/useBillingProfile/useBillingProfile";
-
 import { Header } from "./features/header/header";
 
 export default function BillingPage() {
