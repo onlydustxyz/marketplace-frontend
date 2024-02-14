@@ -46,7 +46,7 @@ export default function OrganizationList({
               isExternalFlow={org.installed}
               tooltip={disabledTooltip}
               TitleComponent={
-                <Link href={org.htmlUrl}>
+                <Link href={org.htmlUrl ?? `https://github.com/${org.login}`}>
                   <Typography variant="body-m">{org.name || org.login}</Typography>
                 </Link>
               }
