@@ -38,9 +38,9 @@ export default function Providers({ children }: PropsWithChildren) {
                     <SidePanelStackProvider>
                       <SidePanelProvider>
                         <ToasterProvider>
+                          <Stacks />
                           {children}
                           <Toaster />
-                          <Stacks />
                         </ToasterProvider>
                       </SidePanelProvider>
                     </SidePanelStackProvider>
