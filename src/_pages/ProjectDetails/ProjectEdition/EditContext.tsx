@@ -3,6 +3,7 @@ import { uniqWith } from "lodash";
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ScrollRestoration } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import { RoutePaths } from "src/App";
@@ -273,10 +274,12 @@ export function EditProvider({ children, project }: EditContextProps) {
           projectKey: data.projectSlug,
         })}`;
 
-        // Navigate before invalidating queries so the new data can use the updated params
-        navigate(newPathname, { replace: true, state: location.state });
+        if (data.projectSlug !== project.slug) {
+          // Navigate before invalidating queries so the new data can use the updated params
+          navigate(newPathname, { replace: true, state: location.state, preventScrollReset: true });
 
-        queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+          queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+        }
         queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
       },
     },

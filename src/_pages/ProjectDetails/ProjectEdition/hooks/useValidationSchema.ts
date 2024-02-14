@@ -17,14 +17,19 @@ export const useEditValidationSchema = () => {
       .min(1),
     moreInfos: z
       .array(
-        z.object({
-          url: z
-            .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the information url" })))
-            .trim()
-            .nullish()
-            .optional(),
-          value: z.string().nullish().optional(),
-        })
+        z
+          .object({
+            url: z
+              .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the information url" })))
+              .trim()
+              .nullish()
+              .optional(),
+            value: z.string().nullish().optional(),
+          })
+          .refine(data => !!data.value && !data.url, {
+            path: ["url"],
+            message: ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the information url" })),
+          })
       )
       .min(0),
     name: z
