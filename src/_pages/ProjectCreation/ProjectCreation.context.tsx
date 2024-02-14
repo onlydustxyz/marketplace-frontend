@@ -93,6 +93,7 @@ const validationSchema = z.object({
         })
         .refine(data => !!data.url || (!data.url && !data.value) || (!!data.url && !!data.value), {
           path: ["url"],
+          // not translated because it's not used in a react component
           message: "Please fill the information url",
         })
     )

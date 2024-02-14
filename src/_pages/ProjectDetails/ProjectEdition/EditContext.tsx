@@ -3,7 +3,6 @@ import { uniqWith } from "lodash";
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { ScrollRestoration } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import { RoutePaths } from "src/App";
