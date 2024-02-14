@@ -34,7 +34,7 @@ export enum StackRoute {
   Verify = "verify",
   RequestPayments = "request-payments",
   Feedback = "feedback",
-  Mandate = "mandate",
+  MandateDetail = "mandate-detail",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -94,13 +94,13 @@ export const Stacks = () => {
       </RegisterStack>
       <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>
       <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
-      <RegisterStack name={StackRoute.Mandate}>{() => <MandateDetailStack />}</RegisterStack>
+      <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
     </>
   );
 };
 
 export const useStackMandate = () => {
-  return useStackNavigation(StackRoute.Mandate);
+  return useStackNavigation(StackRoute.MandateDetail);
 };
 
 export const useStackFeedback = () => {
