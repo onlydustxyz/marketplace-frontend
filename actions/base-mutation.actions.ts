@@ -3,7 +3,7 @@ import { BaseMutationOptions } from "./type.actions";
 
 /**
  * Performs a base mutation action by sending a request to a specified URL with a given body and options.
- * @views RESPONSE - The expected response type.
+ * @template RESPONSE - The expected response type.
  * @param {string} url - The URL to which the mutation request is sent.
  * @param {object} body - The body of the request.
  * @param {BaseMutationOptions | undefined} options - Optional mutation options.
@@ -28,8 +28,8 @@ export function BaseMutationActions<RESPONSE extends object>(
 
 /**
  * Creates a lazy mutation function that can be called later with a body.
- * @views RESPONSE - The expected response type.
- * @views BODY - The type of the body that will be provided when calling the function.
+ * @template RESPONSE - The expected response type.
+ * @template BODY - The type of the body that will be provided when calling the function.
  * @param {string} url - The URL to which the mutation request will be sent.
  * @param {BaseMutationOptions | undefined} options - Optional mutation options.
  * @returns {(body: BODY) => Promise<RESPONSE>} - A function that takes a body and returns a promise with the response.

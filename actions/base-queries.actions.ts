@@ -27,7 +27,7 @@ function convertParamsToURLSearchParams(params?: BaseQueriesDefaultParams) {
 
 /**
  * Performs base queries to a specified URL with provided options.
- * @views RESPONSE - The expected response type.
+ * @template RESPONSE - The expected response type.
  * @param {string} url - The URL to which the query request is sent.
  * @param {BaseQueriesOptions | undefined} options - Optional query options including callbacks and cache settings.
  * @returns {Promise<RESPONSE>} - A promise that resolves with the response of the specified type.
@@ -82,7 +82,7 @@ export async function BaseQueries<RESPONSE extends object>(
 
 /**
  * Creates a lazy query function that can be called later.
- * @views RESPONSE - The expected response type.
+ * @template RESPONSE - The expected response type.
  * @param {string} url - The URL to which the query request will be sent.
  * @param {BaseQueriesOptions | undefined} options - Optional query options.
  * @returns {() => Promise<RESPONSE>} - A function that returns a promise with the response.
