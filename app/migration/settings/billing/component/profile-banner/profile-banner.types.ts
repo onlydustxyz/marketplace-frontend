@@ -9,6 +9,5 @@ export namespace TProfileBanner {
     hasValidBillingProfile: boolean;
     type?: MeTypes.billingProfileUnion;
     id?: string;
-    reviewMessage?: string;
   }
 }
