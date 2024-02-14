@@ -64,8 +64,8 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
                 const { icon, label, tooltip } = ProjectConstants.tagMapping[tag];
 
                 return (
-                  <Tooltip content={<Translate token={tooltip} />}>
-                    <SelectableTagItem.Static key={label}>
+                  <Tooltip key={label} content={<Translate token={tooltip} />}>
+                    <SelectableTagItem.Static>
                       <Icon {...icon} />
                       <Translate token={label} />
                     </SelectableTagItem.Static>
