@@ -44,7 +44,7 @@ export function SelectRewards({ onExclude, onInclude, includedRewards, excludedR
         );
       }
 
-      return <div>cc</div>;
+      return null;
     },
     [excludedRewards, includedRewards]
   );

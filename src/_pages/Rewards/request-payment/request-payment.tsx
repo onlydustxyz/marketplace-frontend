@@ -18,7 +18,7 @@ export function RequestPayment() {
       <Button variant="multi-color" onClick={open} size="s">
         <Translate token="v2.pages.stacks.request_payments.openButton" />
         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-card-background-heavy">
-          <Typography variant="body-s-bold">{rewardsPendingInvoice?.rewards?.length}</Typography>
+          <Typography variant="body-s-bold">{rewardsPendingInvoice.rewards.length}</Typography>
         </div>
       </Button>
     </div>

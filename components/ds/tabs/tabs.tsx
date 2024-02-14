@@ -75,7 +75,7 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled }:
   return (
     <>
       <NextTabs
-        aria-label="Options"
+        aria-label={tabs.map(tab => tab.title).join(", ")}
         variant="underlined"
         selectedKey={controlled?.selected || selected}
         onSelectionChange={onSelectTab}
@@ -87,8 +87,7 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled }:
           tabContent: "",
         }}
       >
-        {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
-        {tabs.map(({ children, ...t }) => (
+        {tabs.map(({ children: _c, ...t }) => (
           <NextTab {...t} key={t.key} title={<Tab color={color} {...t} />} />
         ))}
       </NextTabs>
