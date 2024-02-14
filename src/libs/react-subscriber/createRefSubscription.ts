@@ -7,7 +7,7 @@ import { RefSubscriptionInterface, RefSubscriptionSubscriberInterface } from "./
  * Creates a subscription object with a reference to a value of type T.
  * The subscription object allows registering event listeners, emitting events, and updating the value.
  *
- * @views T - The type of the value.
+ * @template T - The type of the value.
  * @param value - The initial value.
  * @returns The subscription object.
  */
