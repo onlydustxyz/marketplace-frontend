@@ -8,7 +8,7 @@ export interface StackNavigateFunction<P extends StacksParams> {
 /**
  * Custom hook for stack navigation.
  *
- * @views P - The type of the stack parameters.
+ * @template P - The type of the stack parameters.
  * @param {string} name - The name of the stack.
  * @returns {[StackNavigateFunction<P>, (id?: string) => void]} - An array containing the stack navigate function and the close function.
  */

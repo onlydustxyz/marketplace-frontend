@@ -62,9 +62,9 @@ export const API_PATH = {
   ME_REWARDS_CURRENCIES: BASE_API_V1("me/reward-currencies"),
   ME_REWARDS_PROJECTS: BASE_API_V1("me/rewarding-projects"),
   ME_PROFILE_PICTURE: BASE_API_V1("me/profile/avatar"),
-  ME_BILLING_INDIVIDUAL: BASE_API_V1("me/billing-profiles-profiles/individual"),
-  ME_BILLING_COMPANY: BASE_API_V1("me/billing-profiles-profiles/company"),
-  ME_BILLING_PROFILES: BASE_API_V1("me/billing-profiles-profiles"),
+  ME_BILLING_INDIVIDUAL: BASE_API_V1("me/billing-profiles/individual"),
+  ME_BILLING_COMPANY: BASE_API_V1("me/billing-profiles/company"),
+  ME_BILLING_PROFILES: BASE_API_V1("me/billing-profiles"),
   /* ------------------------------ TECHNOLOGIES ------------------------------ */
   TECHNOLOGIES: BASE_API_V1("technologies"),
 };

@@ -6,7 +6,7 @@ import { RefSubscriptionInterface, RefSubscriptionSubscriberInterface } from "./
 
 /**
  * Custom hook that creates a subscription to a value using useRef.
- * @views T The type of the value being subscribed to.
+ * @template T The type of the value being subscribed to.
  * @param {T} value The initial value of the subscription.
  * @returns {[RefSubscriptionInterface<T>, (newvalue: T | ((prev: T) => T)) => void]} An array containing the subscription object and a function to update the value.
  */

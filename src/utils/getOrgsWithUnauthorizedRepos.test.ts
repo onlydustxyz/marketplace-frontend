@@ -35,7 +35,7 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
     {
       id: 663102799,
       owner: "onlydustxyz",
-      name: "od-rust-views",
+      name: "od-rust-template",
       description: undefined,
       htmlUrl: "https://github.com/onlydustxyz/od-rust-template",
       stars: 0,
@@ -57,7 +57,7 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
         {
           id: 663102799,
           owner: "onlydustxyz",
-          name: "od-rust-views",
+          name: "od-rust-template",
           description: undefined,
           htmlUrl: "https://github.com/onlydustxyz/od-rust-template",
           stars: 0,
