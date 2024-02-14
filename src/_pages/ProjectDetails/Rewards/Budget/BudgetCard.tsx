@@ -89,8 +89,7 @@ export function BudgetCard({
       background={"base"}
       className={cn("group px-4 py-5 transition-all lg:px-4 lg:py-5", {
         "relative z-[1] overflow-hidden": type === CardTypes.Remaining,
-        "cursor-pointer": !!onClick,
-        "hover:scale-[0.99] hover:opacity-90": !!onClick,
+        "cursor-pointer hover:scale-[0.99] hover:opacity-90": !!onClick,
       })}
       onClick={onClick}
     >

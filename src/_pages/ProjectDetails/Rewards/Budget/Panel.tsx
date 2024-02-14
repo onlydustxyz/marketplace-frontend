@@ -151,10 +151,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
             ))}
           </div>
           <div className="py-6">
-            <Card
-              border="light"
-              className="od-bg-budget flex flex-row items-center justify-between border-0 p-4 lg:p-4"
-            >
+            <Card border="light" className="od-bg-budget flex items-center justify-between border-0 p-4 lg:p-4">
               <Typography
                 variant={"title-m"}
                 as={"p"}

@@ -11,11 +11,11 @@ export function Amount({ budget }: Amount) {
   if (!budget.usdEquivalent && !!budget.amount) {
     return (
       <>
-        {`${formatMoneyAmount({
+        {formatMoneyAmount({
           amount: budget.amount,
           currency: budget.currency,
           showCurrency: false,
-        })}`}
+        })}
         <span className="text-title-s">&nbsp;{budget.currency}</span>
       </>
     );
