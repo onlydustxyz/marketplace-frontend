@@ -48,8 +48,8 @@ export function Header({ initialData }: THeader.Props) {
     }
   }, [initialData]);
 
-  function onSubmit(data: THeader.formData) {
-    mutate({ type: data.profile });
+  function onSubmit() {
+    mutate({ type: profile });
   }
 
   function onOpenConfirmation() {
