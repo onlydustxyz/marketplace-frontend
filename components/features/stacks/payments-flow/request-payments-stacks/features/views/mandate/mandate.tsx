@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useStackMandate } from "src/App/Stacks/Stacks";
 import { useIntl } from "src/hooks/useIntl";
@@ -23,8 +23,8 @@ export function Mandate({ goTo }: TMandate.Props) {
 
   const [termsStart, termsPanel, termsEnd] = T("v2.pages.stacks.request_payments.mandate.terms").split("_");
 
-  function renderAnswers() {
-    return (
+  const answerList = useMemo(
+    () => (
       <ul>
         {Array.from({ length: 4 }, (_, index) => {
           const token = `v2.pages.stacks.request_payments.mandate.summary.answer_${index + 1}`;
@@ -39,8 +39,9 @@ export function Mandate({ goTo }: TMandate.Props) {
           );
         })}
       </ul>
-    );
-  }
+    ),
+    []
+  );
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -63,7 +64,7 @@ export function Mandate({ goTo }: TMandate.Props) {
               <p className="prose leading-normal text-greyscale-50">
                 <Translate token="v2.pages.stacks.request_payments.mandate.summary.question" />
                 <br />
-                {renderAnswers()}
+                {answerList}
               </p>
             </Card>
           </div>
