@@ -166,9 +166,20 @@ const useGetMePendingInvoices = ({ options = {} }: UseQueryProps<UseGetMePending
   });
 };
 
+const useSyncGithubAccount = ({ options = {} }: UseQueryProps<unknown, undefined>) => {
+  const { isAuthenticated } = useAuth0();
+
+  return useBaseQuery<unknown>({
+    resourcePath: API_PATH.ME_SYNC_GITHUB_PROFILE,
+    ...options,
+    enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
+  });
+};
+
 export default {
   useGetMe,
   useMyRewardsInfiniteList,
+  useSyncGithubAccount,
   useGetMeRewardProjects,
   useMyContributions,
   useMyContributedProjects,
