@@ -29,8 +29,7 @@ export function ProfileGithubAccount() {
       setIsLoading(true);
       await refetch();
       await queryClient.invalidateQueries({ queryKey: MeApi.tags.user });
-      setIsLoading(false);
-    } catch {
+    } finally {
       setIsLoading(false);
     }
   };
