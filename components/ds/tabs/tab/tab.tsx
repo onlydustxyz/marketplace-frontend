@@ -1,3 +1,5 @@
+import { Key } from "react";
+
 import { cn } from "src/utils/cn";
 
 import { tabVariants } from "components/ds/tabs/tab/tab.variants";
@@ -7,7 +9,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TTab } from "./tab.types";
 
-export function Tab({ content, icon, color }: TTab.Props) {
+export function Tab<T extends Key>({ content, icon, color }: TTab.Props<T>) {
   const slots = tabVariants({ color });
   return (
     <Flex justifyContent="start" alignItems="center" className="gap-1.5">

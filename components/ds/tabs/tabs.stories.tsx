@@ -7,7 +7,7 @@ import { TTabs } from "./tabs.types";
 
 type Story = StoryObj<typeof Tabs>;
 
-const defaultProps: TTabs.Props = {
+const defaultProps: TTabs.Props<string> = {
   tabs: [
     {
       content: "Tab 1",
