@@ -5,14 +5,22 @@ import { useEffect, useState } from "react";
 import { createSumsubToken } from "app/api/sumsub-token/handlers";
 
 import { StackRoute } from "src/App/Stacks/Stacks";
-import { config } from "src/App/Stacks/VerifySidePanel/VerifySidePanel.config";
 import { TVerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel.types";
 import MeApi from "src/api/me";
-import { IMAGES } from "src/assets/img";
 import { useSubscribeStacks } from "src/libs/react-stack";
 
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { Typography } from "components/layout/typography/typography";
 
+const config = {
+  lang: "en",
+  uiConf: {
+    customCssStr: `
+      html, body {
+        font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      }
+    `,
+  },
+};
 const options = {};
 
 export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Props) {
@@ -57,11 +65,18 @@ export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Prop
   if (error) {
     return (
       <div className="flex h-full items-center justify-center">
-        <EmptyState
-          illustrationSrc={IMAGES.icons.emptyState}
-          title={{ token: "v2.features.verify.error.title" }}
-          description={{ token: "v2.features.verify.error.description" }}
-        />
+        <div className="grid gap-1 p-6 text-center">
+          <Typography
+            variant="title-l"
+            className="font-belwe text-greyscale-800"
+            translate={{ token: "v2.features.verify.error.title" }}
+          />
+          <Typography
+            variant="body-s"
+            className="font-walsheim text-spaceBlue-400"
+            translate={{ token: "v2.features.verify.error.description" }}
+          />
+        </div>
       </div>
     );
   }
@@ -74,7 +89,7 @@ export function VerifySidePanel({ externalId, levelName }: TVerifySidePanel.Prop
         config={config}
         options={options}
         onError={handleError}
-        className="w-full p-4"
+        className="w-full px-6 py-12"
       />
     );
   }
