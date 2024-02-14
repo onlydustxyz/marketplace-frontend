@@ -4,6 +4,7 @@ import { useStackRequestPayments } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
 
 import { GenerateInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/generate-invoice/generate-invoice";
+import { Mandate } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/mandate/mandate";
 import { SelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 
@@ -44,6 +45,10 @@ export function RequestPaymentsStacks() {
     } else {
       setView(to);
     }
+  }
+
+  if (view === TRequestPaymentsStacks.Views.Mandate) {
+    return <Mandate goTo={onNextView} />;
   }
 
   if (view === TRequestPaymentsStacks.Views.Generate) {
