@@ -16,7 +16,7 @@ export default function SettingsLayout() {
       <div className="flex h-0 w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:flex-row xl:gap-2 xl:pt-0">
         <Sidebar />
 
-        <div className="od-space-background relative h-full w-full overflow-hidden xl:rounded-r-2xl">
+        <div className="relative h-full w-full overflow-hidden xl:rounded-r-2xl">
           <ScrollView>
             <div className="mx-auto flex max-w-7xl flex-1 flex-col gap-4 px-4 py-6 pb-32 xl:px-8">
               <Routes>
