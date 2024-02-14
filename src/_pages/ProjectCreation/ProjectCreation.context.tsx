@@ -186,7 +186,7 @@ export function CreateProjectProvider({
     defaultValues: initialProject
       ? {
           ...initialProject,
-          moreInfos: initialProject.moreInfos.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
+          moreInfos: initialProject?.moreInfos?.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
         }
       : {
           moreInfos: [{ url: "", value: "" }],
