@@ -8,7 +8,20 @@ type Amount = {
 export function Amount({ budget }: Amount) {
   if (!budget) return null;
 
-  if (budget.currency === Currency.STRK || budget.usdEquivalent === null) {
+  if (!budget.usdEquivalent && !!budget.amount) {
+    return (
+      <>
+        {`${formatMoneyAmount({
+          amount: budget.amount,
+          currency: budget.currency,
+          showCurrency: false,
+        })}`}
+        <span className="text-title-s">&nbsp;{budget.currency}</span>
+      </>
+    );
+  }
+
+  if (budget.currency === Currency.STRK) {
     return <>N/A</>;
   }
 
