@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { Contributor } from "components/features/contributor/contributor";
 import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
 import { Translate } from "components/layout/translate/translate";
@@ -41,19 +42,21 @@ export function Leaders({ leaders }: TLeaders.Props) {
   }
 
   return (
-    <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
-      <ContributorsAvatars contributors={leaders} avatarProps={{ size: "xs" }} />
+    <Tooltip content={<ContributorsAvatars.TooltipContent contributors={leaders} />} enabled={leaders.length > 1}>
+      <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
+        <ContributorsAvatars contributors={leaders} avatarProps={{ size: "xs" }} />
 
-      <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
-        {leaders.length > 1 ? (
-          <Typography
-            variant="body-s"
-            className="truncate"
-            translate={{ token: "v2.features.leaders.ledBy", params: { count: leaders.length } }}
-          />
-        ) : null}
-        {hasOnlyOneLead}
+        <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
+          {leaders.length > 1 ? (
+            <Typography
+              variant="body-s"
+              className="truncate"
+              translate={{ token: "v2.features.leaders.ledBy", params: { count: leaders.length } }}
+            />
+          ) : null}
+          {hasOnlyOneLead}
+        </div>
       </div>
-    </div>
+    </Tooltip>
   );
 }
