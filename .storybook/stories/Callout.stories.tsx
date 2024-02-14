@@ -18,7 +18,7 @@ export const Default = {
   render: ({ width }: Props) => (
     <div style={{ width }}>
       <Callout>
-        {"As a company, you’ll need to share an invoices for each payment in order to receive the funds."}
+        {"As a company, you’ll need to share an invoice for each payment in order to receive the funds."}
       </Callout>
     </div>
   ),
