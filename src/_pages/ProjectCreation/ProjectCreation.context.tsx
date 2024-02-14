@@ -86,10 +86,15 @@ const validationSchema = z.object({
   longDescription: z.string().min(1),
   moreInfos: z
     .array(
-      z.object({
-        url: z.string().trim().nullable(),
-        value: z.string().nullable(),
-      })
+      z
+        .object({
+          url: z.string().trim().nullable(),
+          value: z.string().nullable(),
+        })
+        .refine(data => !!data.url || (!data.url && !data.value) || (!!data.url && !!data.value), {
+          path: ["url"],
+          message: "Please fill the information url",
+        })
     )
     .min(0)
     .optional()

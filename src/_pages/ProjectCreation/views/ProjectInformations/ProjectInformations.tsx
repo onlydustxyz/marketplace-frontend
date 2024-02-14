@@ -118,9 +118,11 @@ export const ProjectInformationsPage = () => {
           <Controller
             name="moreInfos"
             control={form.control}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              <MoreInfosField {...{ onChange, value, form: form as UseFormReturn<CreateFormData, unknown> as any }} />
+              <MoreInfosField
+                {...{ onChange, value, form: form as UseFormReturn<CreateFormData, unknown> as any, error }}
+              />
             )}
           />
           <Controller

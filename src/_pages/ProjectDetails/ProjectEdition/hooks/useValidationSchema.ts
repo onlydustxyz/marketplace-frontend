@@ -26,7 +26,7 @@ export const useEditValidationSchema = () => {
               .optional(),
             value: z.string().nullish().optional(),
           })
-          .refine(data => !!data.value && !data.url, {
+          .refine(data => !!data.url || (!data.url && !data.value) || (!!data.url && !!data.value), {
             path: ["url"],
             message: T("forms.error.require", { fieldName: "the information url" }),
           })
