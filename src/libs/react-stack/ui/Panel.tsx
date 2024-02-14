@@ -108,7 +108,7 @@ export default function SidePanel({
           >
             {front && stacked ? <BackClick onClick={onClose} /> : null}
             <div
-              className={cn("relative h-full overflow-y-auto bg-white", {
+              className={cn("relative h-full overflow-y-auto", {
                 "pt-6": !option?.noPadding,
                 "bg-white": option?.theme === "light",
               })}
