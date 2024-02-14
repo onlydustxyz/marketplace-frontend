@@ -27,10 +27,14 @@ export const usePooling = ({ limites, delays }: UsePoolingProps): UsePoolingRetu
     }
     return 0;
   };
+  const resetPooling = () => {
+    poolingCount.current = 0;
+  };
 
   return {
     refetchOnWindowFocus,
     refetchInterval,
+    resetPooling,
     count: poolingCount.current,
     onRefetching: (isRefetching: boolean) => {
       if (isRefetching) {
