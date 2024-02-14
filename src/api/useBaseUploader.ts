@@ -26,7 +26,7 @@ export interface UseBaseUploaderProps<R = unknown> extends BaseUploaderOptions<R
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }
 
-export interface UseUploaderProps<RESULT = unknown, PARAMS = unknown> {
+export interface UseUploaderProps<RESULT = unknown, PARAMS = unknown | undefined> {
   options?: BaseUploaderOptions<RESULT>;
   params?: PARAMS;
   body?: File;
