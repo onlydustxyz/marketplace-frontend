@@ -1,19 +1,20 @@
-import MeApi from "src/api/me";
-
 import { useBillingProfiles } from "../useBillingProfile/useBillingProfile";
 import { useBillingStatus } from "../useBillingStatus/useBillingStatus";
 import { TUseSettingsError } from "./useSettingsError.types";
 
 export const useSettingsError = (): TUseSettingsError.Return => {
-  const { data } = MeApi.queries.useGetMe({});
-
-  const { validBillingProfile, billingProfile } = useBillingProfiles();
+  const { validBillingProfile, billingProfile, user } = useBillingProfiles();
   const { isWarning: isBillingWarning, isError: isBillingError } = useBillingStatus({
     hasValidBillingProfile: validBillingProfile,
     status: billingProfile?.status,
   });
 
   const getError = (): TUseSettingsError.Return["error"] => {
+    // Need to wait for billing profile to be fetched before we can determine if there's an error
+    if (!billingProfile) {
+      return undefined;
+    }
+
     if (isBillingError) {
       return TUseSettingsError.ERRORS.BILLING_ERROR;
     }
@@ -22,7 +23,7 @@ export const useSettingsError = (): TUseSettingsError.Return => {
       return TUseSettingsError.ERRORS.BILLING_WARNING;
     }
 
-    if (!data?.hasValidPayoutInfos) {
+    if (!user?.hasValidPayoutInfos) {
       return TUseSettingsError.ERRORS.PAYOUT;
     }
 
