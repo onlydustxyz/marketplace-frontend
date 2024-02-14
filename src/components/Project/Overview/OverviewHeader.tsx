@@ -9,6 +9,7 @@ import { useIntl } from "src/hooks/useIntl";
 import LockFill from "src/icons/LockFill";
 
 import { SelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
@@ -60,13 +61,15 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
           {project.tags?.length ? (
             <div className="flex flex-wrap gap-2">
               {project.tags.map(tag => {
-                const { icon, label } = ProjectConstants.tagMapping[tag];
+                const { icon, label, tooltip } = ProjectConstants.tagMapping[tag];
 
                 return (
-                  <SelectableTagItem.Static key={label}>
-                    <Icon {...icon} />
-                    <Translate token={label} />
-                  </SelectableTagItem.Static>
+                  <Tooltip content={<Translate token={tooltip} />}>
+                    <SelectableTagItem.Static key={label}>
+                      <Icon {...icon} />
+                      <Translate token={label} />
+                    </SelectableTagItem.Static>
+                  </Tooltip>
                 );
               })}
             </div>
