@@ -1,4 +1,4 @@
-export async function fetchInvoicePreview({
+export async function fetchInvoicePreviewBlob({
   token,
   rewardIds,
   billingProfileId,

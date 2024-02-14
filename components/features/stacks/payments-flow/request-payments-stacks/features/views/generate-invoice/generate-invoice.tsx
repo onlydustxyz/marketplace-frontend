@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
-import { fetchInvoicePreview } from "app/api/invoice/handlers";
+import { fetchInvoicePreviewBlob } from "app/api/invoice/handlers/fetch-invoice-preview-blob";
 
 import BillingProfilesApi from "src/api/billing-profiles";
 import useMutationAlert from "src/api/useMutationAlert";
@@ -53,7 +53,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const blob = await fetchInvoicePreview({ token, rewardIds, billingProfileId });
+      const blob = await fetchInvoicePreviewBlob({ token, rewardIds, billingProfileId });
       if (blob) {
         setFileBlob(blob);
         setFileUrl(window.URL.createObjectURL(blob));

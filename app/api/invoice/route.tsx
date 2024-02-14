@@ -3,7 +3,12 @@ import { MeActions } from "actions/me/me.actions";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-import { getHeaderProps, getInvoiceInfoProps, getRewardsSummaryProps, invoiceMock } from "app/api/invoice/builders";
+import {
+  getHeaderProps,
+  getInvoiceInfoProps,
+  getRewardsSummaryProps,
+  invoiceMock,
+} from "app/api/invoice/builders/builders";
 
 import { MeTypes } from "src/api/me/types";
 
@@ -13,11 +18,12 @@ import { TInvoice } from "components/features/invoice-template/invoice-template.
 export async function GET(request: NextRequest) {
   const headersList = headers();
   const token = headersList.get("authorization");
-  const searchParams = request.nextUrl.searchParams;
-  const rewardIds = searchParams.get("rewardIds");
-  console.log("rewardIds ==>", rewardIds);
 
-  // TODO will be replaced by the invoice preview endpoint
+  // TODO will be replaced by the following invoice preview endpoint once ready
+  // const searchParams = request.nextUrl.searchParams;
+  // const billingProfileId = searchParams.get("billingProfileId") ?? "";
+  // const rewardIds = searchParams.get("rewardIds") ?? "";
+  // const invoicePreviewData = await fetchInvoicePreviewData({ token: token ?? "", rewardIds, billingProfileId });
   const userInfo = await MeActions.queries.retrieveMeInformations({ accessToken: token ?? "" });
   const isUserIndividual = userInfo?.billingProfileType === MeTypes.billingProfileType.Individual;
 
