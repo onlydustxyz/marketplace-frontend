@@ -1,11 +1,13 @@
+import { Meta, StoryObj } from "@storybook/react";
+
 import { ProgressBar } from "./progress-bar";
 import { TProgressBar } from "./progress-bar.types";
-import type { Meta, StoryObj } from "@storybook/react";
 
 type Story = StoryObj<typeof ProgressBar>;
 
 const defaultProps: TProgressBar.Props = {
-  children: <div>ProgressBar</div>,
+  value: 100,
+  maxValue: 1000,
 };
 
 const meta: Meta<typeof ProgressBar> = {
@@ -21,7 +23,7 @@ const meta: Meta<typeof ProgressBar> = {
 };
 
 export const Default: Story = {
-  render: (args) => {
+  render: args => {
     return <ProgressBar {...defaultProps} {...args} />;
   },
 };

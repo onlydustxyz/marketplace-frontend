@@ -21,6 +21,7 @@ import en_projects from "src/translations/v2/en/pages/projects.json";
 import en_settings_billing from "src/translations/v2/en/pages/settings-billing.json";
 import en_settings_payout from "src/translations/v2/en/pages/settings-payout.json";
 import en_settings_profile from "src/translations/v2/en/pages/settings-profile.json";
+import en_stack_mandate from "src/translations/v2/en/pages/stacks-mandate.json";
 import en_stack_request_payments from "src/translations/v2/en/pages/stacks-request-payments.json";
 
 const en = {
@@ -52,6 +53,7 @@ const en = {
       },
       stacks: {
         request_payments: en_stack_request_payments,
+        mandate: en_stack_mandate,
       },
     },
   },

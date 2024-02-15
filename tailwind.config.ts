@@ -527,6 +527,7 @@ const config: Config = withTV({
         dark: {
           colors: {
             background: "transparent",
+            primary: "#AE00FF", // Space Purple 500
           },
           layout: {
             radius: {

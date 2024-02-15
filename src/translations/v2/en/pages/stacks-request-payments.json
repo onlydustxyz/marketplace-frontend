@@ -11,6 +11,7 @@
   },
   "item": {
     "to": "to",
+    "on": "on",
     "contributions": {
       "zero": "__count__ contributions",
       "one": "__count__ contribution",
@@ -30,5 +31,19 @@
       "success": "Invoice successfully sent",
       "error": "We were unable to send the invoice, please try again later"
     }
+  },
+  "openButton": "Request payment",
+  "mandate": {
+    "title": "Accept invoicing mandate",
+    "summary": {
+      "question": "Why do I need to accept an invoicing mandate?",
+      "answer_1": "_To avoid headaches._ Our system automatically creates and delivers invoices without you having to lift a finger.",
+      "answer_2": "_To avoid mistakes._ No more human errors! Our system keeps your invoices accurate and consistent.",
+      "answer_3": "_To avoid costs._ Automating your invoicing reduces administrative costs.",
+      "answer_4": "_To be compliant._ We ensure that you’re always up to date on the legal and regulatory requirements."
+    },
+    "terms": "I have read and accept the _invoicing mandate_ for my rewards",
+    "confirm": "Confirm",
+    "skip": "Skip (manual invoicing)"
   }
 }

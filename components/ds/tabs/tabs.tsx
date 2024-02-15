@@ -2,7 +2,7 @@
 
 import { Tabs as NextTabs } from "@nextui-org/react";
 import { Tab as NextTab } from "@nextui-org/tabs";
-import { Key, useState } from "react";
+import { Key, useMemo, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import { viewportConfig } from "src/config";
@@ -28,6 +28,17 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled }:
     }
   }
 
+  const getSelectedChildren = useMemo(() => {
+    if (controlled?.selected) {
+      return tabs.find(tab => tab.key === controlled.selected)?.children?.(controlled.selected);
+    }
+    if (selected) {
+      return tabs.find(tab => tab.key === selected)?.children?.(selected as T);
+    }
+
+    return tabs[0]?.children?.(selected as T);
+  }, [controlled, selected, tabs]);
+
   if (!isXl && mobile) {
     return (
       <>
@@ -35,11 +46,11 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled }:
           {mobile.trigger}
         </div>
         <BottomSheet
-          color={color}
+          background={color}
           onClose={() => setOpenMobilePanel(false)}
           open={openMobilePanel}
           title={mobile.title}
-          closeButton={false}
+          hasCloseButton={false}
         >
           {tabs.map((tab, i) => (
             <button
@@ -62,24 +73,26 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled }:
   }
 
   return (
-    <NextTabs
-      aria-label="Options"
-      variant="underlined"
-      selectedKey={controlled?.selected || selected}
-      onSelectionChange={onSelectTab}
-      classNames={{
-        base: "w-full",
-        tabList: cn("gap-8 w-full relative rounded-none p-0 px-4", slots.tabList()),
-        cursor: "w-full bg-underline h-1",
-        tab: "relative max-w-fit px-0 h-auto pt-[2px] pb-2.5 data-[hover=true]:opacity-100",
-        tabContent: "",
-      }}
-    >
-      {tabs.map(t => (
-        <NextTab {...t} key={t.key} title={<Tab color={color} {...t} />}>
-          {t.children?.(selected as T)}
-        </NextTab>
-      ))}
-    </NextTabs>
+    <>
+      <NextTabs
+        aria-label={tabs.map(tab => tab.title).join(", ")}
+        variant="underlined"
+        selectedKey={controlled?.selected || selected}
+        onSelectionChange={onSelectTab}
+        classNames={{
+          base: "w-full",
+          tabList: cn("gap-8 w-full relative rounded-none p-0 px-4", slots.tabList()),
+          cursor: "w-full bg-underline h-1",
+          tab: "relative max-w-fit px-0 h-auto pt-[2px] pb-2.5 data-[hover=true]:opacity-100",
+          tabContent: "",
+        }}
+      >
+        {tabs.map(({ children: _c, ...t }) => (
+          <NextTab {...t} key={t.key} title={<Tab color={color} {...t} />} />
+        ))}
+      </NextTabs>
+      <div className="h-3 w-full" />
+      {getSelectedChildren}
+    </>
   );
 }

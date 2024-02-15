@@ -10,8 +10,6 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
-
 export function RewardItem({
   id,
   currency,
@@ -21,8 +19,6 @@ export function RewardItem({
   onClick,
   type,
 }: TRewardItem.Props) {
-  const { user } = useCurrentUser();
-
   function onSelect() {
     onClick(id);
   }
@@ -47,28 +43,12 @@ export function RewardItem({
                 dollar: currency.dollarsEquivalent,
               }}
             />
-            {user ? (
-              <Flex justifyContent={"start"} alignItems="center" className="gap-1">
-                <Avatar src={user.avatarUrl} alt={user.login} size="xs" />
-
-                <Typography variant="body-xs" as="p">
-                  <Translate
-                    token="v2.pages.stacks.request_payments.item.to"
-                    as="span"
-                    className="text-greyscale-300"
-                  />
-                  &nbsp;
-                  {user.login}
-                </Typography>
-              </Flex>
-            ) : null}
             <Flex justifyContent={"start"} alignItems="center" className="gap-1">
-              <Avatar src={rewardedOnProjectLogoUrl} alt={rewardedOnProjectName} size="xs" />
-
+              <Avatar src={rewardedOnProjectLogoUrl} alt={rewardedOnProjectName} size="xs" shape={"square"} />
               <Typography variant="body-xs" as="p">
-                <Translate token="v2.pages.stacks.request_payments.item.to" as="span" className="text-greyscale-300" />
+                <Translate token="v2.pages.stacks.request_payments.item.on" as="span" className="text-greyscale-300" />
                 &nbsp;
-                {user?.login}
+                {rewardedOnProjectName}
               </Typography>
             </Flex>
           </Flex>
