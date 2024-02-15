@@ -31,7 +31,7 @@ function TooltipContent({ contributors }: { contributors: Leader[] }) {
   );
 }
 
-export function ContributorsAvatars({ contributors, avatarProps, enableTooltip = false }: TContributorsAvatars.Props) {
+export function ContributorsAvatars({ contributors, avatarProps, enableTooltip = true }: TContributorsAvatars.Props) {
   const Parent = useCallback(
     ({ children }: PropsWithChildren) => {
       if (enableTooltip) {

@@ -92,7 +92,7 @@ export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
               </a>
             ) : null}
 
-            <Button type="submit" disabled={isPending || !isValid} size={isMd ? "m" : "s"}>
+            <Button type="submit" disabled={isPending || !isValid || !isDirty} size={isMd ? "m" : "s"}>
               {renderIcon()}
 
               {isMd ? (
