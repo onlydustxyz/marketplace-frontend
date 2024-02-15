@@ -29,5 +29,7 @@ export const useSettingsError = (): TUseSettingsError.Return => {
 
   return {
     error,
+    isBillingWarning,
+    isBillingError,
   };
 };

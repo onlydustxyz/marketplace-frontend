@@ -1,8 +1,9 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
-import { useStackReward } from "src/App/Stacks/Stacks";
+import { StackRoute, useStackReward } from "src/App/Stacks/Stacks";
 import { viewportConfig } from "src/config";
+import { useSubscribeStacks } from "src/libs/react-stack";
 
 import { useBillingProfiles } from "hooks/users/useBillingProfile/useBillingProfile";
 import { useBillingStatus } from "hooks/users/useBillingStatus/useBillingStatus";
@@ -19,8 +20,14 @@ export function UserRewardTable({ emptyState }: { emptyState?: ReactElement }) {
     status: billingProfile?.status,
   });
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
-
+  const { open } = useSubscribeStacks(StackRoute.Reward);
   const [openRewardPanel] = useStackReward();
+
+  useEffect(() => {
+    if (!open && selectedReward) {
+      setSelectedReward(null);
+    }
+  }, [open]);
 
   const onRewardClick = (reward: MyRewardType) => {
     setSelectedReward(reward);

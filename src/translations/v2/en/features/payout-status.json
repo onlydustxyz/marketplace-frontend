@@ -21,7 +21,7 @@
   },
   "payoutInfoMissing": {
     "label": "Payment method missing",
-    "tooltip": "Fill in your payout information to get paid"
+    "tooltip": "Fill in your payment method to get paid"
   },
   "pendingSignup": {
     "label": "Pending signup",
