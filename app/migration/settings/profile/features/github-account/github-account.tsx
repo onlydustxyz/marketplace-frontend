@@ -67,7 +67,7 @@ export function ProfileGithubAccount() {
               <Translate token="v2.pages.settings.profile.githubAccount.buttons.resync" />
             </Button>
 
-            <a href="https://github.com/settings/profile" target="_blank" rel="noopener noreferrer" className="w-fit">
+            <a href="https://github.com/settings/emails" target="_blank" rel="noopener noreferrer" className="w-fit">
               <Button variant="secondary" size="s">
                 <Icon remixName="ri-github-fill" />
                 <Translate token="v2.pages.settings.profile.githubAccount.buttons.edit" />
