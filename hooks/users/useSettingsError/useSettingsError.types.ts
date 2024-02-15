@@ -7,5 +7,7 @@ export namespace TUseSettingsError {
 
   export interface Return {
     error?: keyof typeof ERRORS;
+    isBillingWarning: boolean;
+    isBillingError: boolean;
   }
 }

@@ -46,7 +46,7 @@ export function Header({ initialData }: THeader.Props) {
     if (initialData) {
       reset(initialData);
     }
-  }, [initialData]);
+  }, [initialData?.profile]);
 
   function onSubmit() {
     mutate({ type: profile });
