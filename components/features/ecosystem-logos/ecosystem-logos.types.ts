@@ -6,5 +6,6 @@ export namespace TEcosystemLogos {
   export interface Props {
     ecosystems: ProjectTypes.EcoSystem[];
     avatarProps: TAvatar.Variants;
+    enableTooltip?: boolean;
   }
 }

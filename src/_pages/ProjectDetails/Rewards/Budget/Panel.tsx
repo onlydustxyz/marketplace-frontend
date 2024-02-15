@@ -110,7 +110,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
   return createPortal(
     <>
       {open ? <BackDrop onClick={close} /> : null}
-      <SidePanel open={Boolean(open)} close={close} hasCloseButton={false}>
+      <SidePanel open={Boolean(open)} close={close}>
         <div className="flex h-full flex-col px-4 pb-8">
           <p className="mb-8 px-2 font-belwe text-2xl font-normal text-greyscale-50">
             <Translate token="project.details.remainingBudget.budget.panelTitle" />
