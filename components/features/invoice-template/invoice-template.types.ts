@@ -55,6 +55,11 @@ export namespace TInvoice {
     legalInfos: LegalInfo;
   }
 
+  export interface InvoiceVatInfoProps {
+    vat: Vat;
+    totalTax: number;
+  }
+
   export interface RewardsSummaryProps {
     rewards: Rewards[];
     vat: Vat;

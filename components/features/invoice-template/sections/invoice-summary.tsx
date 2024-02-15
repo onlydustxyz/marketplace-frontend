@@ -6,6 +6,7 @@ import { getFormattedDateToLocaleDateString } from "src/utils/date";
 import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
+import { InvoiceVat } from "components/features/invoice-template/sections/invoice-vat";
 
 export function InvoiceSummary({
   rewards,
@@ -48,43 +49,8 @@ export function InvoiceSummary({
               {totalBeforeTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
             </Text>
           </View>
-          {vat.vatRegulationState === "VAT_APPLICABLE" ? (
-            <View style={styles.tr}>
-              <View style={styles.td}></View>
-              <Text style={styles.td}></Text>
-              <Text style={styles.td}></Text>
-              <Text style={styles.td}>
-                <Text>{InvoiceTokens.rewardSummary.table.totalVat}</Text>
-                <Text>
-                  ({InvoiceTokens.rewardSummary.table.rate} {vat.rate})
-                </Text>
-              </Text>
-              <Text style={styles.td}>
-                {totalTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
-              </Text>
-            </View>
-          ) : null}
-          {vat.vatRegulationState === "VAT_NOT_APPLICABLE_NON_UE" ? (
-            <View style={styles.tr}>
-              <Text style={{ ...styles.td, fontSize: "10px" }}>
-                {InvoiceTokens.vatRegulationStates.vatNotApplicableNonUE}
-              </Text>
-            </View>
-          ) : null}
-          {vat.vatRegulationState === "VAT_NOT_APPLICABLE_FRENCH_NOT_SUBJECT" ? (
-            <View style={styles.tr}>
-              <Text style={{ ...styles.td, fontSize: "10px" }}>
-                {InvoiceTokens.vatRegulationStates.vatNotApplicableFrenchNotSubject}
-              </Text>
-            </View>
-          ) : null}
-          {vat.vatRegulationState === "VAT_REVERSE_CHARGE" ? (
-            <View style={styles.tr}>
-              <Text style={{ ...styles.td, fontSize: "10px" }}>
-                {InvoiceTokens.vatRegulationStates.vatReverseCharge}
-              </Text>
-            </View>
-          ) : null}
+
+          <InvoiceVat vat={vat} totalTax={totalTax} />
           <View style={styles.tr}>
             <Text style={styles.th}></Text>
             <Text style={styles.th}></Text>

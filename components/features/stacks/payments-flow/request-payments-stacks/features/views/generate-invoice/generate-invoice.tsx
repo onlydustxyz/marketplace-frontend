@@ -94,6 +94,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
             className="text-greyscale-50"
           />
         </div>
+        {/*TODO add guidelines info card*/}
         <ScrollView className="m-4 w-auto rounded-2xl border border-card-border-light p-4">
           <div className="relative z-0 flex justify-center">{renderInvoicePreview()}</div>
         </ScrollView>
