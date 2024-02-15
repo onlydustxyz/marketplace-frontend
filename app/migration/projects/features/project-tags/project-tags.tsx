@@ -18,7 +18,7 @@ interface ProjectTagsProps {
 export function ProjectTags({ tags }: ProjectTagsProps) {
   const { filters } = useContext(ProjectsContext);
   return (
-    <Flex direction="row" className="gap-2">
+    <Flex direction="row" className="flex-1 justify-end gap-2">
       {tags.map(tag => (
         <IconTag
           key={tag}
