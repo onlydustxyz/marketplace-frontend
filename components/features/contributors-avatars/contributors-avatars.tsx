@@ -35,7 +35,11 @@ export function ContributorsAvatars({ contributors, avatarProps, enableTooltip =
   const Parent = useCallback(
     ({ children }: PropsWithChildren) => {
       if (enableTooltip) {
-        return <Tooltip content={<TooltipContent contributors={contributors} />}>{children}</Tooltip>;
+        return (
+          <Tooltip content={<TooltipContent contributors={contributors} />} canInteract>
+            {children}
+          </Tooltip>
+        );
       }
 
       return <>{children}</>;

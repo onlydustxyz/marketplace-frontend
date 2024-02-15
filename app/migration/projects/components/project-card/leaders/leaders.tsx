@@ -42,7 +42,11 @@ export function Leaders({ leaders }: TLeaders.Props) {
   }
 
   return (
-    <Tooltip content={<ContributorsAvatars.TooltipContent contributors={leaders} />} enabled={leaders.length > 1}>
+    <Tooltip
+      content={<ContributorsAvatars.TooltipContent contributors={leaders} />}
+      enabled={leaders.length > 1}
+      canInteract
+    >
       <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
         <ContributorsAvatars contributors={leaders} avatarProps={{ size: "xs" }} enableTooltip={false} />
 
