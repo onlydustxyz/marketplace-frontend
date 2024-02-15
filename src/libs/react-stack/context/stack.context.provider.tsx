@@ -110,7 +110,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       }
     } catch (e) {
       console.warn("stacks - registerStack error", e);
-      // registerStack error
     }
   };
 
@@ -125,7 +124,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       }
     } catch (e) {
       console.warn("stacks - unRegisterStack error", e);
-      // unRegisterStack error
     }
   };
 
@@ -163,7 +161,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       }
     } catch (e) {
       console.warn("stacks - registerPanel error", e);
-      // registerPanel error
     }
   };
 
@@ -195,7 +192,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       }
     } catch (e) {
       console.warn("stacks - removePanel error", e);
-      // removePanel error
     }
   };
 
@@ -234,7 +230,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         });
       } catch (e) {
         console.warn("stacks - debounceRemove error", e);
-        // debounceRemove error
       }
     }, 300),
     [history]
@@ -259,7 +254,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         historyStore.setValue([]);
       } catch (e) {
         console.warn("stacks - debounceCloseAll error", e);
-        // debounceCloseAll error
       }
     }, 300),
     [history]
@@ -301,7 +295,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       updatePanelOrder({ newHistoryStore: updatedHistory });
     } catch (e) {
       console.warn("stacks - updateHistory error", e);
-      // updateHistory error
     }
   };
 
@@ -337,7 +330,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       });
     } catch (e) {
       console.warn("stacks - updatePanelOrder error", e);
-      // updatePanelOrder error
     }
   };
 
@@ -379,7 +371,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       }
     } catch (e) {
       console.warn("stacks - openPanel error", e);
-      // openPanel error
     }
   };
 
@@ -420,7 +411,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         }
       } catch (e) {
         console.warn("stacks - onCloseLastCopy error", e);
-        // onCloseLastCopy error
       }
     },
     [stacks]
@@ -445,7 +435,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       }
     } catch (e) {
       console.warn("stacks - onCloseLastPanel error", e);
-      // onCloseLastPanel error
     }
   }, [stacks]);
 
@@ -491,7 +480,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       });
     } catch (e) {
       console.warn("stacks - closeAll error", e);
-      // closeAll error
     }
 
     debounceCloseAll();
@@ -527,7 +515,6 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         return stacks.state[name]?.state.panels[id] || null;
       } catch (e) {
         console.warn("stacks - getPanel error", e);
-        // getPanel error
         return null;
       }
     },
