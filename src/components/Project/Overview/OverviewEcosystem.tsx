@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
@@ -13,10 +15,14 @@ interface Props {
 export const ProjectOverviewEcosystem = ({ ecosystems }: Props) => {
   const { T } = useIntl();
 
-  return ecosystems?.length ? (
-    <Section icon={SectionIcon.Global} title={T("project.details.overview.ecosystems", { count: ecosystems.length })}>
+  const sortedByName = useMemo(() => {
+    return [...ecosystems].sort((a, b) => a.name.localeCompare(b.name));
+  }, [ecosystems]);
+
+  return sortedByName?.length ? (
+    <Section icon={SectionIcon.Global} title={T("project.details.overview.ecosystems", { count: sortedByName.length })}>
       <div className="flex flex-row flex-wrap gap-3">
-        {ecosystems.map(({ id, url, name, logoUrl }) => (
+        {sortedByName.map(({ id, url, name, logoUrl }) => (
           <Link key={id} href={url} className="flex flex-row items-center gap-2 text-sm font-normal">
             <RoundedImage alt={name} rounding={Rounding.Circle} size={ImageSize.Sm} src={logoUrl} />
             {name}

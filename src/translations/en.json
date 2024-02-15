@@ -636,7 +636,7 @@
         "unlockedOnDate": "Unlocked on __date__",
         "invoicePending": "An invoice is required to process your reward. Please wait up to 5 days if you already sent it.",
         "signupPending": "You need to sign up on OnlyDust to get paid",
-        "payoutInfoMissing": "Fill in your payout information to get paid",
+        "payoutInfoMissing": "Fill in your payment method to get paid",
         "payoutInfoMissingAsContributor": "Contributor must fill his reward information to get paid",
         "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
         "processing": "Reward is being processed by our team, usually within 2 weeks"
