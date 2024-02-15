@@ -27,7 +27,7 @@ export const useMenu = (): TUseMenu.Return => {
       return {
         labelToken: "v2.features.menu.profile.missingPaymentMethods",
         redirection: NEXT_ROUTER.settings.payout,
-        errorColor: TUseMenu.ERROR_COLORS.ERROR,
+        errorColor: TUseMenu.ERROR_COLORS.WARNING,
         error,
       };
 

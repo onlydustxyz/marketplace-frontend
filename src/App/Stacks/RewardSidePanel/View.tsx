@@ -46,9 +46,17 @@ export type Props = {
   onRewardCancel?: UseMutateFunction<unknown, Error, unknown, unknown>;
   projectId: string;
   isMine?: boolean;
+  isBillingError?: boolean;
 };
 
-export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView, isMine }: Props) {
+export default function View({
+  projectId,
+  rewardId,
+  onRewardCancel,
+  projectLeaderView,
+  isMine,
+  isBillingError,
+}: Props) {
   const { T } = useIntl();
   const { githubUserId } = useCurrentUser();
   const [openStackContribution] = useStackContribution();
@@ -232,6 +240,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                 <PayoutStatus
                   status={data.status}
                   dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
+                  isBillingError={isBillingError}
                 />
                 <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
                   <InfoIcon className="h-4 w-3" />

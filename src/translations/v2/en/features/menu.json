@@ -10,7 +10,7 @@
     "manage": "Manage my account",
     "pendingVerification": "Pending verification",
     "verificationError": "Verification error",
-    "missingPaymentMethods": "Missing payment methods"
+    "missingPaymentMethods": "Payment method missing"
   },
   "tooltip": {
     "unableToReceiveRewards": "You're unable to receive rewards. Click to fill in required info"

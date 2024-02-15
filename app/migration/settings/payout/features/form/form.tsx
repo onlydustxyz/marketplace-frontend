@@ -1,6 +1,7 @@
 import IBANParser from "iban";
 import { Controller, useFormContext } from "react-hook-form";
 
+import MeApi from "src/api/me";
 import { useIntl } from "src/hooks/useIntl";
 import { Currency } from "src/types";
 
@@ -14,7 +15,7 @@ export function PayoutForm() {
   const { T } = useIntl();
 
   const { control } = useFormContext();
-
+  const { data } = MeApi.queries.useGetMyPayoutSettings({});
   return (
     <Card background="base">
       <Flex
@@ -28,6 +29,7 @@ export function PayoutForm() {
             <Input
               {...field}
               {...fieldState}
+              isInvalid={!!fieldState.error || data?.missingEthWallet}
               label={T("v2.pages.settings.payout.wallets.ethereum.label")}
               placeholder={T("v2.pages.settings.payout.wallets.ethereum.placeholder")}
               description={<Currencies currencies={[Currency.USDC, Currency.ETH, Currency.LORDS]} />}
@@ -42,6 +44,7 @@ export function PayoutForm() {
             <Input
               {...field}
               {...fieldState}
+              isInvalid={!!fieldState.error || data?.missingStarknetWallet}
               label={T("v2.pages.settings.payout.wallets.starknet.label")}
               placeholder={T("v2.pages.settings.payout.wallets.starknet.placeholder")}
               description={<Currencies currencies={[Currency.STRK]} />}
@@ -56,6 +59,7 @@ export function PayoutForm() {
             <Input
               {...field}
               {...fieldState}
+              isInvalid={!!fieldState.error || data?.missingOptimismWallet}
               label={T("v2.pages.settings.payout.wallets.optimism.label")}
               placeholder={T("v2.pages.settings.payout.wallets.optimism.placeholder")}
               description={<Currencies currencies={[Currency.OP]} />}
@@ -70,6 +74,7 @@ export function PayoutForm() {
             <Input
               {...field}
               {...fieldState}
+              isInvalid={!!fieldState.error || data?.missingAptosWallet}
               label={T("v2.pages.settings.payout.wallets.aptos.label")}
               placeholder={T("v2.pages.settings.payout.wallets.aptos.placeholder")}
               description={<Currencies currencies={[Currency.APT]} />}
@@ -85,6 +90,7 @@ export function PayoutForm() {
               <Input
                 {...field}
                 {...fieldState}
+                isInvalid={!!fieldState.error || data?.missingSepaAccount}
                 value={field.value && IBANParser.printFormat(field.value)}
                 label={T("v2.pages.settings.payout.wallets.sepa.iban.label")}
                 placeholder={T("v2.pages.settings.payout.wallets.sepa.iban.placeholder")}
@@ -100,6 +106,7 @@ export function PayoutForm() {
               <Input
                 {...field}
                 {...fieldState}
+                isInvalid={!!fieldState.error || data?.missingSepaAccount}
                 label={T("v2.pages.settings.payout.wallets.sepa.bic.label")}
                 placeholder={T("v2.pages.settings.payout.wallets.sepa.bic.placeholder")}
               />

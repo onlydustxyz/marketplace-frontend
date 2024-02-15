@@ -8,6 +8,9 @@ import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useMutationRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 
+import { useBillingProfiles } from "hooks/users/useBillingProfile/useBillingProfile";
+import { useBillingStatus } from "hooks/users/useBillingStatus/useBillingStatus";
+
 import View from "./View";
 
 export default function RewardSidePanel({
@@ -17,6 +20,11 @@ export default function RewardSidePanel({
   projectLeaderView,
   isMine,
 }: ComponentProps<typeof View>) {
+  const { validBillingProfile, billingProfile } = useBillingProfiles();
+  const { isError: isBillingError } = useBillingStatus({
+    hasValidBillingProfile: validBillingProfile,
+    status: billingProfile?.status,
+  });
   const { capture } = usePosthog();
 
   useEffect(() => {
@@ -31,6 +39,7 @@ export default function RewardSidePanel({
       onRewardCancel={onRewardCancel}
       projectLeaderView={projectLeaderView}
       isMine={isMine}
+      isBillingError={isBillingError}
       projectId={projectId}
     />
   );

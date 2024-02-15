@@ -9,6 +9,7 @@ export namespace TUseBillingProfile {
     profileType: MeTypes.billingProfileType;
     isIndividual: boolean;
     isCompany: boolean;
+    isLoading: boolean;
     validBillingProfile: boolean;
   }
 }
