@@ -16,9 +16,10 @@ type Props = {
   reward: MyRewardType;
   onClick: () => void;
   selected: boolean;
+  isBillingError?: boolean;
 };
 
-export default function RewardLine({ reward, onClick, selected }: Props) {
+export default function RewardLine({ reward, onClick, selected, isBillingError }: Props) {
   const { T } = useIntl();
 
   return (
@@ -57,6 +58,7 @@ export default function RewardLine({ reward, onClick, selected }: Props) {
         <PayoutStatus
           status={reward?.status}
           dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
+          isBillingError={isBillingError}
         />
       </Cell>
     </Line>
