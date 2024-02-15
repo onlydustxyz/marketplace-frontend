@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { EcosystemsLogos } from "components/features/ecosystem-logos/ecosystem-logos";
 import { Typography } from "components/layout/typography/typography";
 
@@ -26,19 +27,21 @@ export function Ecosystems({ ecosystems }: TEcosystems.Props) {
   }
 
   return (
-    <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
-      <EcosystemsLogos ecosystems={ecosystems} avatarProps={{ size: "xs" }} />
+    <Tooltip content={<EcosystemsLogos.TooltipContent ecosystems={ecosystems} />} enabled={ecosystems.length > 1}>
+      <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
+        <EcosystemsLogos ecosystems={ecosystems} avatarProps={{ size: "xs" }} enableTooltip={false} />
 
-      <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
-        {ecosystems.length > 1 ? (
-          <Typography
-            variant="body-s"
-            className="truncate"
-            translate={{ token: "v2.features.ecosystems.counters", params: { count: ecosystems.length } }}
-          />
-        ) : null}
-        {hasOnlyOneEcosystem}
+        <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
+          {ecosystems.length > 1 ? (
+            <Typography
+              variant="body-s"
+              className="truncate"
+              translate={{ token: "v2.features.ecosystems.counters", params: { count: ecosystems.length } }}
+            />
+          ) : null}
+          {hasOnlyOneEcosystem}
+        </div>
       </div>
-    </div>
+    </Tooltip>
   );
 }
