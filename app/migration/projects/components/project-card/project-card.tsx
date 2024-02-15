@@ -66,7 +66,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   return (
     <Link to={generatePath(RoutePaths.ProjectDetails, { projectKey: slug })} className="w-full">
       <Card
-        className={cn("relative w-full transition-all hover:scale-[0.998]", {
+        className={cn("relative w-full !pr-0 !pt-0 transition-all hover:scale-[0.998]", {
           "!border-orange-500 bg-orange-900": isErrorVariant,
           "mt-3": isFirstHiringProject,
         })}
@@ -76,7 +76,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
         background="base"
       >
         <Flex direction="row" className="origin-center gap-5">
-          <div className="relative hidden flex-shrink-0 md:block">
+          <div className="relative hidden flex-shrink-0 pt-6 md:block">
             <Avatar
               src={logoUrl}
               alt={T("v2.pages.projects.highlights.thumbnail")}
@@ -90,7 +90,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
               </div>
             )}
           </div>
-          <Flex direction="col" className="w-full flex-1 gap-1">
+          <Flex direction="col" className="w-full flex-1 gap-1 overflow-hidden pr-6 pt-6">
             <Flex direction="row" className="items-center gap-2 md:items-start">
               <div className="relative block flex-shrink-0 md:hidden">
                 <Avatar
@@ -106,7 +106,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
                   </div>
                 )}
               </div>
-              <div className="flex-1 truncate font-belwe text-2xl font-medium">{project.name}</div>
+              <div className="flex-2 truncate font-belwe text-2xl font-medium">{project.name}</div>
               {tags?.length ? <ProjectTags tags={tags} /> : null}
             </Flex>
             <Summary shortDescription={shortDescription} />
