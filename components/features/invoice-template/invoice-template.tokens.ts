@@ -5,7 +5,7 @@ export const InvoiceTokens = {
   },
   invoiceInfos: {
     wagmiName: "Wagmi",
-    wagmiAddress: "54 Rue Du faubourg montmartre, Paris, France, 75009",
+    wagmiAddress: "54 Rue Du Faubourg Montmartre, Paris, France, 75009",
     wagmiRegistrationNumber: "908 233 638",
     wagmiEuVATNumber: "FR26908233638",
     companyName: "Company Name",

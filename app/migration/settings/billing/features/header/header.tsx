@@ -68,7 +68,6 @@ export function Header({ initialData }: THeader.Props) {
     value: MeTypes.billingProfileType | null,
     onChange: (value: MeTypes.billingProfileType | null) => void
   ) {
-    console.log("value ==>", value);
     if (value) {
       onChange(value);
       onOpenConfirmation();

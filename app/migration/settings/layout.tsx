@@ -10,7 +10,6 @@ import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 const BillingPage = lazy(() => import("./billing/page"));
 const PayoutPage = lazy(() => import("./payout/page"));
 const ProfilePage = lazy(() => import("./profile/page"));
-const InvoicesPage = lazy(() => import("./invoices/page"));
 
 export default function SettingsLayout() {
   return (
@@ -44,14 +43,6 @@ export default function SettingsLayout() {
                   element={
                     <Suspense>
                       <PayoutPage />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/invoices"
-                  element={
-                    <Suspense>
-                      <InvoicesPage />
                     </Suspense>
                   }
                 />

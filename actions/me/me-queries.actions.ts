@@ -7,7 +7,6 @@ import { components } from "src/__generated/api";
 
 export type MeInformations = components["schemas"]["GetMeResponse"];
 export async function retrieveMeInformations(options?: BaseQueriesOptions) {
-  "use server";
   return BaseQueries<MeInformations>(ACTION_PATH.ME, {
     provideTag: [MeActionTags.user()],
     ...(options || {}),

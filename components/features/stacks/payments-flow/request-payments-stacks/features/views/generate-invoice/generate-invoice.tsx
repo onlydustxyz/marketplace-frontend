@@ -24,7 +24,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [fileBlob, setFileBlob] = useState<Blob>();
-  const [fileUrl, setFileUrl] = useState<string>("");
+  const [fileUrl, setFileUrl] = useState("");
 
   const {
     mutate: uploadInvoice,
@@ -58,6 +58,8 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
       if (blob) {
         setFileBlob(blob);
         setFileUrl(window.URL.createObjectURL(blob));
+      } else {
+        setIsError(true);
       }
     } catch (error) {
       setIsError(true);
@@ -82,6 +84,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
     if (fileUrl) {
       return <InvoiceViewer fileUrl={fileUrl} />;
     }
+    return null;
   }
 
   return (
