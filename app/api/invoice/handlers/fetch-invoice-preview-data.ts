@@ -9,6 +9,7 @@ export async function fetchInvoicePreviewData({
   rewardIds: string;
   billingProfileId: string;
 }) {
+  // TODO add some checks sor response status
   return await BillingProfilesActions.queries
     .retrieveInvoicePreviewByBillingProfileId(billingProfileId, {
       accessToken: token ?? "",
@@ -18,6 +19,6 @@ export async function fetchInvoicePreviewData({
     })
     .then(res => res)
     .catch(() => {
-      throw new Error("Failed to create the blob.");
+      throw new Error("Failed to fetch invoice preview data.");
     });
 }

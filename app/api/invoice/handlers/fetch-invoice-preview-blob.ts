@@ -18,11 +18,11 @@ export async function fetchInvoicePreviewBlob({
       authorization: `Bearer ${token}`,
     },
   })
+    // TODO check if is needed
     .then(res => res)
     .then(async res => {
       const blob = await res.blob();
       if (blob) {
-        // return window.URL.createObjectURL(blob);
         return blob;
       }
     })

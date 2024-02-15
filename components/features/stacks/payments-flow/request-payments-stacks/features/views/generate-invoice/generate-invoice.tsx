@@ -14,6 +14,7 @@ import { AmountCounter } from "components/features/stacks/payments-flow/request-
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
+import { Typography } from "components/layout/typography/typography";
 
 import { TGenerateInvoice } from "./generate-invoice.types";
 
@@ -57,10 +58,10 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
       if (blob) {
         setFileBlob(blob);
         setFileUrl(window.URL.createObjectURL(blob));
-        setIsLoading(false);
       }
     } catch (error) {
       setIsError(true);
+    } finally {
       setIsLoading(false);
     }
   }
@@ -74,33 +75,41 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex h-full flex-col overflow-hidden px-1">
-        <ScrollView className="mt-10">
-          <div className="relative z-0 flex justify-center px-3 pb-44">
+        <div className="mb-8 px-3">
+          <Typography
+            variant={"title-m"}
+            translate={{ token: "v2.pages.stacks.request_payments.title" }}
+            className="text-greyscale-50"
+          />
+        </div>
+        <ScrollView className="m-4 w-auto rounded-2xl border border-card-border-light p-4">
+          <div className="relative z-0 flex justify-center">
+            {/*TODO add a render function here*/}
             {isLoading ? <div> TODO loading component </div> : null}
             {!isLoading && !isError && fileUrl ? <InvoiceViewer fileUrl={fileUrl} /> : null}
             {isError ? <div> TODO error component </div> : null}
           </div>
-          <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-            <AmountCounter total={1000} />
-            <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
-              {/* // empty div to keep the flex layout */}
-              {isLoading || isPendingUploadInvoice ? <Spinner /> : <div />}
-              <div className="flex items-center justify-end gap-5 ">
-                <Button variant="secondary" size="m" onClick={() => goTo({ to: TRequestPaymentsStacks.Views.Select })}>
-                  <Translate token="v2.pages.stacks.request_payments.form.back" />
-                </Button>
-                <Button
-                  variant="primary"
-                  size="m"
-                  onClick={handleSendInvoice}
-                  disabled={isPendingUploadInvoice || !fileBlob}
-                >
-                  <Translate token="v2.pages.stacks.request_payments.form.sendInvoice" />
-                </Button>
-              </div>
+        </ScrollView>
+        <div className="w-full bg-greyscale-900">
+          <AmountCounter total={1000} />
+          <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
+            {/* // empty div to keep the flex layout */}
+            {isLoading || isPendingUploadInvoice ? <Spinner /> : <div />}
+            <div className="flex items-center justify-end gap-5 ">
+              <Button variant="secondary" size="m" onClick={() => goTo({ to: TRequestPaymentsStacks.Views.Select })}>
+                <Translate token="v2.pages.stacks.request_payments.form.back" />
+              </Button>
+              <Button
+                variant="primary"
+                size="m"
+                onClick={handleSendInvoice}
+                disabled={isPendingUploadInvoice || !fileBlob}
+              >
+                <Translate token="v2.pages.stacks.request_payments.form.sendInvoice" />
+              </Button>
             </div>
           </div>
-        </ScrollView>
+        </div>
       </div>
     </div>
   );
