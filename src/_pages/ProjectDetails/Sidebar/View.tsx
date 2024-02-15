@@ -45,7 +45,7 @@ export default function View({
       className={cn(
         "border-r-2xl xl:border-r-lg relative z-[1] flex w-full shrink-0 flex-col gap-6 overflow-hidden border-black p-6 font-walsheim xl:w-[328px] xl:rounded-l-2xl",
         "before:absolute before:inset-0 before:-z-[2] before:bg-black",
-        "after:absolute after:inset-0 after:-z-[1] after:bg-white/4 after:bg-noise-medium"
+        "after:absolute after:bottom-0 after:left-0 after:top-0 after:-z-[1] after:w-[320px] after:bg-white/4 after:bg-noise-medium"
       )}
     >
       {isXl && (
