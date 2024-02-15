@@ -117,5 +117,6 @@ export type RegisterStackProps<P extends StacksParams> = StackOptionalInterface<
 export interface Options {
   panel: {
     noPadding?: boolean;
+    theme?: "light" | "dark";
   };
 }

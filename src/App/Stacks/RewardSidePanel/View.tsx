@@ -1,7 +1,6 @@
 import { UseMutateFunction } from "@tanstack/react-query";
-import { useCurrentUser } from "hooks/users/useCurrentUser";
-import { PropsWithChildren, useState } from "react";
-import { matchPath, useLocation } from "react-router-dom";
+import { PropsWithChildren, useMemo, useState } from "react";
+import { NavLink, matchPath, useLocation } from "react-router-dom";
 
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
@@ -14,13 +13,13 @@ import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
-import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { ShowMore } from "src/components/Table/ShowMore";
 import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import { useCloseStack } from "src/libs/react-stack";
 import { Currency, GithubContributionType, PaymentStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { rewardItemToContribution } from "src/utils/formatToContribution";
@@ -28,6 +27,9 @@ import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
+import { PayoutStatus } from "components/features/payout-status/payout-status";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
@@ -45,14 +47,24 @@ export type Props = {
   onRewardCancel?: UseMutateFunction<unknown, Error, unknown, unknown>;
   projectId: string;
   isMine?: boolean;
+  isBillingError?: boolean;
+  redirectionStatus?: string;
 };
 
-export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView, isMine }: Props) {
+export default function View({
+  projectId,
+  rewardId,
+  onRewardCancel,
+  projectLeaderView,
+  isMine,
+  isBillingError,
+  redirectionStatus,
+}: Props) {
   const { T } = useIntl();
   const { githubUserId } = useCurrentUser();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
-
+  const closeRewardPanel = useCloseStack();
   const { pathname } = useLocation();
   const isMyRewardsPage = !!matchPath(`${RoutePaths.Rewards}`, pathname);
 
@@ -77,6 +89,31 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
+
+  const PayoutStatusMemo = useMemo(() => {
+    if (!data) {
+      return null;
+    }
+
+    if (redirectionStatus && (data.status === "MISSING_PAYOUT_INFO" || data.status === "PENDING_VERIFICATION"))
+      return (
+        <NavLink to={redirectionStatus} onClick={() => closeRewardPanel()}>
+          <PayoutStatus
+            status={data.status}
+            dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
+            isBillingError={isBillingError}
+          />
+        </NavLink>
+      );
+
+    return (
+      <PayoutStatus
+        status={data.status}
+        dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
+        isBillingError={isBillingError}
+      />
+    );
+  }, [data, isBillingError, redirectionStatus]);
 
   function renderRewardItems() {
     if (rewardItemsLoading) {
@@ -228,10 +265,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
           <div className="flex h-full flex-col gap-8 divide-y divide-greyscale-50/12">
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-2">
-                <PayoutStatus
-                  status={data.status}
-                  dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
-                />
+                {PayoutStatusMemo}
                 <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
                   <InfoIcon className="h-4 w-3" />
                   <span>
@@ -249,7 +283,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                       {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
                     </span>
                   </div>
-                  {!isCurrencyUSD ? <span className="text-3xl">{data.currency}</span> : null}
+                  <span className="text-3xl">{data.currency}</span>
                 </div>
                 {!isCurrencyUSD && data.dollarsEquivalent ? (
                   <>

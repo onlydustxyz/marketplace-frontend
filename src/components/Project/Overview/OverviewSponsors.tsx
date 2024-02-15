@@ -1,6 +1,6 @@
-import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
+import { Sponsor } from "src/types";
 
 import { Link } from "components/ds/link/link";
 import { Typography } from "components/layout/typography/typography";
@@ -8,11 +8,11 @@ import { Typography } from "components/layout/typography/typography";
 import Section, { SectionIcon } from "./OverviewSection";
 
 export interface ProjectOverviewSponsorsProps {
-  sponsors: UseGetProjectBySlugResponse["sponsors"];
+  sponsors?: Sponsor[];
 }
 
 interface LinkContentProps {
-  sponsor: ProjectOverviewSponsorsProps["sponsors"][0];
+  sponsor: Sponsor;
 }
 
 const LinkContent = ({ sponsor }: LinkContentProps) => {

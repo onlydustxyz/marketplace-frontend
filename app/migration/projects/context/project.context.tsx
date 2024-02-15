@@ -6,80 +6,94 @@ import { useLocalStorage } from "react-use";
 import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 
-import {
-  DEFAULT_PROJECTS_FILTER,
-  PROJECT_FILTER_KEY,
-  ProjectContextReturn,
-  ProjectFilter,
-  ProjectsContextProps,
-} from "./project.context.types";
+import { TProjectContext } from "./project.context.types";
 
-export const ProjectsContext = createContext<ProjectContextReturn>({
+export const ProjectsContext = createContext<TProjectContext.Return>({
   projects: [],
   fetchNextPage: () => null,
   hasNextPage: false,
   isFetchingNextPage: false,
+  isLoading: false,
   count: 0,
-  sponsors: [],
-  technologies: [],
   filters: {
-    values: DEFAULT_PROJECTS_FILTER,
+    values: TProjectContext.DEFAULT_FILTER,
     isCleared: true,
+    count: 0,
     set: () => null,
     clear: () => null,
     options: {
-      sponsors: [],
       technologies: [],
+      ecosystems: [],
     },
   },
 });
 
-export function ProjectsContextProvider({ children }: ProjectsContextProps) {
-  const [storage, setStorage] = useLocalStorage(PROJECT_FILTER_KEY, DEFAULT_PROJECTS_FILTER);
-  const [filters, setFilters] = useState<ProjectFilter>({ ...DEFAULT_PROJECTS_FILTER, ...storage });
-
+export function ProjectsContextProvider({ children }: TProjectContext.Props) {
+  const [storage, setStorage] = useLocalStorage(TProjectContext.FILTER_KEY, TProjectContext.DEFAULT_FILTER);
+  const [filters, setFilters] = useState<TProjectContext.Filter>({ ...TProjectContext.DEFAULT_FILTER, ...storage });
+  const [filtersOptions, setFiltersOptions] = useState<TProjectContext.FiltersOptions>({
+    technologies: [],
+    ecosystems: [],
+  });
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
-      filters.sponsors.length > 0 ? ["sponsorId", filters.sponsors.join(",")] : null,
+      filters.ecosystemId.length > 0 ? ["ecosystemId", filters.ecosystemId.map(({ id }) => id).join(",")] : null,
+      filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
-      filters.ownership ? ["mine", String(filters.ownership === "Mine")] : null,
+      filters.mine ? ["mine", filters.mine] : null,
     ].filter((param): param is string[] => Boolean(param));
 
     return params;
   }, [filters]);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = ProjectApi.queries.useInfiniteList({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = ProjectApi.queries.useInfiniteList({
     queryParams,
   });
 
-  const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(DEFAULT_PROJECTS_FILTER), [filters]);
+  const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(TProjectContext.DEFAULT_FILTER), [filters]);
   const count = useMemo(() => data?.pages[0]?.totalItemNumber || 0, [data]);
-  const technologies = useMemo(() => data?.pages[0]?.technologies || [], [data]);
-  const sponsors = useMemo(() => data?.pages[0]?.sponsors || [], [data]);
-  const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
 
-  function onFilterChange(newFilter: Partial<ProjectFilter>) {
+  const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
+  const filtersCount = useMemo(() => {
+    return filters.tags.length + filters.ecosystemId.length + filters.technologies.length + (filters.mine ? 1 : 0);
+  }, [filters]);
+
+  function onFilterChange(newFilter: Partial<TProjectContext.Filter>) {
     const filtersValues = { ...filters, ...newFilter };
     setFilters(filtersValues);
     setStorage(filtersValues);
   }
   function onClearFilter() {
-    setFilters(DEFAULT_PROJECTS_FILTER);
-    setStorage(DEFAULT_PROJECTS_FILTER);
+    setFilters(TProjectContext.DEFAULT_FILTER);
+    setStorage(TProjectContext.DEFAULT_FILTER);
   }
 
-  /** Need this to migrate existing filter for sponsor */
   useEffect(() => {
-    if (storage?.sponsors && storage.sponsors.length > 0) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const anySponsor = storage.sponsors as unknown as any;
-      if (anySponsor[0]?.id) {
-        onFilterChange({ sponsors: storage.sponsors });
-      }
+    if (data?.pages[0]) {
+      const newTechnologies = data?.pages[0]?.technologies;
+      const newEcosystems = data?.pages[0]?.ecosystems;
+      setFiltersOptions(prevOptions => ({
+        ...prevOptions,
+        technologies: newTechnologies?.length
+          ? newTechnologies.map(name => ({
+              label: name,
+              id: name,
+              value: name,
+            }))
+          : prevOptions.technologies,
+        ecosystems: newEcosystems?.length
+          ? newEcosystems.map(({ name, id, logoUrl }) => ({
+              id,
+              label: name,
+              value: id,
+              image: logoUrl,
+            }))
+          : prevOptions.technologies,
+      }));
     }
-  }, [storage]);
+  }, [data]);
 
   return (
     <ProjectsContext.Provider
@@ -87,25 +101,16 @@ export function ProjectsContextProvider({ children }: ProjectsContextProps) {
         projects,
         fetchNextPage,
         isFetchingNextPage,
+        isLoading,
         hasNextPage,
         count,
-        technologies,
-        sponsors,
         filters: {
           values: filters,
           isCleared,
           set: onFilterChange,
+          count: filtersCount,
           clear: onClearFilter,
-          options: {
-            technologies: technologies.map(name => ({
-              label: name,
-              id: name,
-            })),
-            sponsors: sponsors.map(({ id, name }) => ({
-              label: name,
-              id,
-            })),
-          },
+          options: filtersOptions,
         },
       }}
     >

@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 import { RefSubscriptionInterface } from "src/libs/react-subscriber";
 
-import { StacksInterface } from "../types/Stack";
+import { StackInterface, StackPanelInterface, StacksInterface } from "../types/Stack";
 import { HistoryStore, IReactStackContext } from "./stack.context.type";
 
 export const ReactStackContext = createContext<IReactStackContext>({
@@ -15,6 +15,13 @@ export const ReactStackContext = createContext<IReactStackContext>({
     unRegister: () => null,
     getStack: () => null,
     getPanel: () => null,
+    getPanelFromStackName: () => {
+      return {
+        panel: {} as RefSubscriptionInterface<StackPanelInterface>,
+        stack: {} as RefSubscriptionInterface<StackInterface>,
+        id: "",
+      };
+    },
     open: () => null,
     close: () => null,
     closeLast: () => null,

@@ -7,9 +7,9 @@ import { FilterPosition } from "src/components/New/Filter/DesktopView";
 import { Filter } from "src/components/New/Filter/Filter";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { useDatepickerPeriods } from "src/components/New/Filter/FilterDatepicker.hooks";
-import { Item } from "src/components/New/Filter/FilterSelect";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 
@@ -18,8 +18,8 @@ import { UserRewardsContext } from "./context/UserRewards";
 type Filters = {
   period: Period;
   dateRange: DateRange;
-  projects: Item[];
-  currency: Item[];
+  projects: TSelectAutocomplete.Item[];
+  currency: TSelectAutocomplete.Item[];
 };
 
 const initialFilters: Filters = {
@@ -130,11 +130,11 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
     setFilters(prevState => updateState(prevState, { period }));
   }
 
-  function updateProjects(projects: Item[]) {
+  function updateProjects(projects: TSelectAutocomplete.Item[]) {
     setFilters(prevState => updateState(prevState, { projects }));
   }
 
-  function updateCurrency(currencies: Item[]) {
+  function updateCurrency(currencies: TSelectAutocomplete.Item[]) {
     setFilters(prevState =>
       updateState(prevState, {
         currency: currencies,
@@ -148,6 +148,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
         id: project.id,
         label: project.name,
         image: project.logoUrl,
+        value: project.id,
       })),
     [rewards]
   );
@@ -169,7 +170,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
         hasActiveFilters,
       };
     },
-    [hasActiveFilters]
+    [hasActiveFilters, currencies]
   );
 
   const filterCount = useMemo(() => {

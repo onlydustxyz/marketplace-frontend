@@ -2,6 +2,7 @@ import { InputHTMLAttributes, PropsWithChildren } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { selectableTagItemVariants } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item.variants";
+import { TTooltip } from "components/ds/tooltip/tooltip.types";
 import { TIcon } from "components/layout/icon/icon.types";
 
 export namespace TSelectableTagItem {
@@ -16,5 +17,6 @@ export namespace TSelectableTagItem {
     activeIcon?: TIcon.renderIcon;
     disabled?: boolean;
     active?: boolean;
+    tooltipProps?: TTooltip.Props;
   }
 }

@@ -138,27 +138,34 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const form = useForm<EditFormData>({
     mode: "all",
-    defaultValues: {
-      name: project.name,
-      logoUrl: project.logoUrl,
-      shortDescription: project.shortDescription,
-      longDescription: project.longDescription,
-      moreInfos: project.moreInfos.map(info => ({ ...info, id: uuidv4() })),
-      githubRepos: (project.repos || []).map(repo => ({
-        id: repo.id,
-        isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
-      })),
-      isLookingForContributors: project.hiring,
-      inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
-      projectLeadsToKeep: project.leaders.map(leader => leader.id),
-      projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
-      rewardSettings: {
-        ...project.rewardSettings,
-        ignoreContributionsBefore: project.rewardSettings?.ignoreContributionsBefore ?? project.createdAt,
-      },
-    },
     resolver: zodResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (project) {
+      form.reset({
+        name: project.name,
+        logoUrl: project.logoUrl,
+        shortDescription: project.shortDescription,
+        longDescription: project.longDescription,
+        moreInfos: project.moreInfos?.length
+          ? project.moreInfos.map(info => ({ ...info, id: uuidv4() }))
+          : [{ url: "", value: "", id: uuidv4() }],
+        githubRepos: (project.repos || []).map(repo => ({
+          id: repo.id,
+          isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
+        })),
+        isLookingForContributors: project.hiring,
+        inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
+        projectLeadsToKeep: project.leaders.map(leader => leader.id),
+        projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
+        rewardSettings: {
+          ...project.rewardSettings,
+          ignoreContributionsBefore: project.rewardSettings?.ignoreContributionsBefore ?? project.createdAt,
+        },
+      });
+    }
+  }, [project]);
 
   const mergeOrganization = useMemo(() => {
     const merged = (project.organizations || [])?.map(projectOrg => {
@@ -257,7 +264,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         if (form.formState.dirtyFields.githubRepos) {
           lastAddedRepoStorage.setValue(new Date().toISOString());
         }
-        form.reset(form.getValues());
+        formStorage.removeValue();
         showToaster(T("form.toast.success"));
         clearSession();
 
@@ -266,19 +273,25 @@ export function EditProvider({ children, project }: EditContextProps) {
           projectKey: data.projectSlug,
         })}`;
 
-        // Navigate before invalidating queries so the new data can use the updated params
-        navigate(newPathname, { replace: true, state: location.state });
+        if (data.projectSlug !== project.slug) {
+          // Navigate before invalidating queries so the new data can use the updated params
+          navigate(newPathname, { replace: true, state: location.state, preventScrollReset: true });
 
-        queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+          queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+        }
         queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
       },
     },
   });
 
   const onSubmit = (formData: EditFormData) => {
-    const { githubRepos, ...rest } = formData;
+    const { githubRepos, moreInfos, ...rest } = formData;
     const githubRepoIds = githubRepos.map(repo => repo.id);
-    updateProject({ ...rest, githubRepoIds });
+    updateProject({
+      ...rest,
+      githubRepoIds,
+      moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
+    });
   };
 
   useEffect(() => {

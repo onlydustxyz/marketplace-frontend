@@ -1,4 +1,3 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { ComponentProps } from "react";
 
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
@@ -9,6 +8,8 @@ import { Contribution, GithubContributionType, GithubPullRequestStatus } from "s
 import { cn } from "src/utils/cn";
 
 import { Link } from "components/ds/link/link";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import Contributor from "../Contributor";
 

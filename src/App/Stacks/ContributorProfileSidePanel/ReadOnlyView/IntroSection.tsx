@@ -53,7 +53,6 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
     return find.contact;
   };
 
-  const email = findContact("EMAIL");
   const telegram = findContact("TELEGRAM");
   const twitter = findContact("TWITTER");
   const discord = findContact("DISCORD");
@@ -180,11 +179,6 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
         {linkedin && (
           <SocialLink testId="linkedin" link={linkedin}>
             <Icon remixName="ri-linkedin-box-fill" size={24} />
-          </SocialLink>
-        )}
-        {email && (
-          <SocialLink testId="email" copyableValue={email} copyableValueName={T("profile.email")}>
-            <Icon remixName="ri-mail-line" size={24} />
           </SocialLink>
         )}
       </div>

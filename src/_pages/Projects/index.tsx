@@ -18,6 +18,7 @@ import { SortingPanel } from "./Sorting/SortingPanel";
 import SubmitProject from "./SubmitProject";
 import { ProjectFilterProvider } from "./useProjectFilter";
 
+// TODO clean/delete this file once the New All Project Page is live
 export enum Sorting {
   Trending = "RANK",
   ProjectName = "NAME",
@@ -41,7 +42,10 @@ export default function Projects() {
   const [sortingPanelOpen, setSortingPanelOpen] = useState(false);
 
   const [technologies, setTechnologies] = useState<string[]>([]);
-  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+  const [
+    sponsors,
+    // setSponsors
+  ] = useState<Sponsor[]>([]);
 
   const { ref, restoreScroll } = useScrollRestoration();
 
@@ -77,7 +81,7 @@ export default function Projects() {
                   sortingPanelOpen={sortingPanelOpen}
                   setSortingPanelOpen={setSortingPanelOpen}
                   setTechnologies={setTechnologies}
-                  setSponsors={setSponsors}
+                  // setSponsors={setSponsors}
                 />
               </Suspense>
             </div>

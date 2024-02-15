@@ -103,13 +103,13 @@ const useGithubOrganizations = ({ options = {} }: UseQueryProps<UseGithubOrganiz
   });
 };
 
-export type UseGetMyPayoutInfoResponse = components["schemas"]["UserPayoutInformationResponse"];
+export type UseGetMyPayoutSettingsResponse = components["schemas"]["UserPayoutSettingsResponse"];
 
-const useGetMyPayoutInfo = ({ options = {} }: UseQueryProps<UseGetMyPayoutInfoResponse, undefined>) => {
+const useGetMyPayoutSettings = ({ options = {} }: UseQueryProps<UseGetMyPayoutSettingsResponse, undefined>) => {
   const { isAuthenticated } = useAuth0();
-  return useBaseQuery<UseGetMyPayoutInfoResponse>({
-    resourcePath: API_PATH.MY_PAYOUT_INFO,
-    tags: ME_TAGS.payoutInfo(),
+  return useBaseQuery<UseGetMyPayoutSettingsResponse>({
+    resourcePath: API_PATH.MY_PAYOUT_SETTINGS,
+    tags: ME_TAGS.payoutSettings(),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
   });
@@ -166,16 +166,27 @@ const useGetMePendingInvoices = ({ options = {} }: UseQueryProps<UseGetMePending
   });
 };
 
+const useSyncGithubAccount = ({ options = {} }: UseQueryProps<unknown, undefined>) => {
+  const { isAuthenticated } = useAuth0();
+
+  return useBaseQuery<unknown>({
+    resourcePath: API_PATH.ME_SYNC_GITHUB_PROFILE,
+    ...options,
+    enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
+  });
+};
+
 export default {
   useGetMe,
   useMyRewardsInfiniteList,
+  useSyncGithubAccount,
   useGetMeRewardProjects,
   useMyContributions,
   useMyContributedProjects,
   useMyContributedRepos,
   useGithubOrganizations,
   useGetMePendingInvoices,
-  useGetMyPayoutInfo,
+  useGetMyPayoutSettings,
   useGetMyProfileInfo,
   useGetMeRewardCurrencies,
 };

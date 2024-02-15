@@ -54,9 +54,14 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @returns An object containing the stack and panel.
    */
   const getPanelFromStackNameAndPanelId = (name: string, id: string) => {
-    const stack = stacks.state[name];
-    const panel = stack.state.panels[id];
-    return { stack, panel };
+    try {
+      const stack = stacks.state[name];
+      const panel = stack.state.panels[id];
+      return { stack, panel };
+    } catch (e) {
+      console.warn("stacks - getPanelFromStackNameAndPanelId error", e);
+      return undefined;
+    }
   };
 
   /**
@@ -65,18 +70,23 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @returns An object containing the panel, panel ID, and stack.
    */
   const getPanelFromStackName = (name: string) => {
-    const stack = stacks.state[name];
-    const lastPanelInHistory = getLastPanelInHistory(name);
-    const id = lastPanelInHistory?.panelId || stack.state.defaultPanelId;
-    const panel = stack.state.panels[id];
+    try {
+      const stack = stacks.state[name];
+      const lastPanelInHistory = getLastPanelInHistory(name);
+      const id = lastPanelInHistory?.panelId || stack.state.defaultPanelId;
+      const panel = stack.state.panels[id];
 
-    return { panel, id, stack };
+      return { panel, id, stack };
+    } catch (e) {
+      console.warn("stacks - getPanelFromStackName error", e);
+      return undefined;
+    }
   };
 
   const removeActiveBlurElement = () => {
     if (document?.activeElement) {
       const activeElement = document.activeElement as HTMLElement;
-      if (activeElement.blur) {
+      if (activeElement?.blur) {
         activeElement.blur();
       }
     }
@@ -91,21 +101,29 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @param stack - The stack to register.
    */
   const registerStack = (stack: RegisterStack) => {
-    if (!stacks.state[stack.state.name]) {
-      setStacks(prev => ({
-        ...prev,
-        [stack.state.name]: stack,
-      }));
+    try {
+      if (!stacks.state[stack.state.name]) {
+        setStacks(prev => ({
+          ...prev,
+          [stack.state.name]: stack,
+        }));
+      }
+    } catch (e) {
+      console.warn("stacks - registerStack error", e);
     }
   };
 
   const unRegisterStack = (name: string) => {
-    if (stacks.state[name]) {
-      setStacks(prev => {
-        const newState = { ...prev };
-        delete newState[name];
-        return newState;
-      });
+    try {
+      if (stacks.state[name]) {
+        setStacks(prev => {
+          const newState = { ...prev };
+          delete newState[name];
+          return newState;
+        });
+      }
+    } catch (e) {
+      console.warn("stacks - unRegisterStack error", e);
     }
   };
 
@@ -121,24 +139,28 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @param params - Optional parameters for the panel.
    */
   const registerPanel = ({ name, panelId, params }: RegisterPanel) => {
-    const stack = stacks.state[name];
+    try {
+      const stack = stacks.state[name];
 
-    if (stack) {
-      const defaultPanel = { ...stack.state.defaultPanel };
-      stack.setValue(prev => ({
-        ...prev,
-        panels: {
-          ...prev.panels,
-          [panelId]: unsafeCreateRefSubscription<StackPanelInterface>({
-            open: true,
-            position: "hidden",
-            id: panelId,
-            name,
-            params: params || {},
-            children: defaultPanel.state.children,
-          }),
-        },
-      }));
+      if (stack) {
+        const defaultPanel = { ...stack.state.defaultPanel };
+        stack.setValue(prev => ({
+          ...prev,
+          panels: {
+            ...prev.panels,
+            [panelId]: unsafeCreateRefSubscription<StackPanelInterface>({
+              open: true,
+              position: "hidden",
+              id: panelId,
+              name,
+              params: params || {},
+              children: defaultPanel.state.children,
+            }),
+          },
+        }));
+      }
+    } catch (e) {
+      console.warn("stacks - registerPanel error", e);
     }
   };
 
@@ -152,20 +174,24 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     panel: RefSubscriptionInterface<StackPanelInterface>,
     stack: RefSubscriptionInterface<StackInterface>
   ) => {
-    const { name, id } = { ...panel.state };
-    if (panel.state.open === true) {
-      if (historyStore.state.at(-1)?.panelId === panel.state.id) {
-        panel.setValue(prev => {
-          return {
-            ...prev,
-            open: false,
-            position: "hidden",
-          };
-        });
-        debounceRemove(stack, id);
+    try {
+      const { name, id } = { ...panel.state };
+      if (panel.state.open === true) {
+        if (historyStore.state.at(-1)?.panelId === panel.state.id) {
+          panel.setValue(prev => {
+            return {
+              ...prev,
+              open: false,
+              position: "hidden",
+            };
+          });
+          debounceRemove(stack, id);
 
-        updateHistory({ name, panelId: id, event: "close" });
+          updateHistory({ name, panelId: id, event: "close" });
+        }
       }
+    } catch (e) {
+      console.warn("stacks - removePanel error", e);
     }
   };
 
@@ -193,14 +219,18 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const debounceRemove = useCallback(
     debounce((stack: RefSubscriptionInterface<StackInterface>, panelId: string) => {
-      stack.setValue(prev => {
-        return {
-          ...prev,
-          panels: (prev.panels = Object.fromEntries(
-            Object.entries(prev.panels).filter(([key]) => key !== panelId || key === prev.defaultPanelId)
-          )),
-        };
-      });
+      try {
+        stack.setValue(prev => {
+          return {
+            ...prev,
+            panels: (prev.panels = Object.fromEntries(
+              Object.entries(prev.panels).filter(([key]) => key !== panelId || key === prev.defaultPanelId)
+            )),
+          };
+        });
+      } catch (e) {
+        console.warn("stacks - debounceRemove error", e);
+      }
     }, 300),
     [history]
   );
@@ -212,15 +242,19 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const debounceCloseAll = useCallback(
     debounce(() => {
-      historyStore.state.forEach(panel => {
-        stacks.state[panel.name].setValue(prev => {
-          return {
-            ...prev,
-            panels: Object.fromEntries(Object.entries(prev.panels).filter(([key]) => key === prev.defaultPanelId)),
-          };
+      try {
+        historyStore.state.forEach(panel => {
+          stacks.state[panel.name].setValue(prev => {
+            return {
+              ...prev,
+              panels: Object.fromEntries(Object.entries(prev.panels).filter(([key]) => key === prev.defaultPanelId)),
+            };
+          });
         });
-      });
-      historyStore.setValue([]);
+        historyStore.setValue([]);
+      } catch (e) {
+        console.warn("stacks - debounceCloseAll error", e);
+      }
     }, 300),
     [history]
   );
@@ -242,22 +276,26 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @param {any} options.params - Additional parameters for the panel.
    */
   const updateHistory = ({ name, panelId, event, params }: UpdateHistory) => {
-    let updatedHistory = [...historyStore.state];
+    try {
+      let updatedHistory = [...historyStore.state];
 
-    if (event === "close") {
-      updatedHistory = updatedHistory.filter(item => item.panelId !== panelId);
-      debounceHistory(updatedHistory);
-    } else {
-      const panelExists = stacks.state[name]?.state.panels[panelId] !== undefined;
+      if (event === "close") {
+        updatedHistory = updatedHistory.filter(item => item.panelId !== panelId);
+        debounceHistory(updatedHistory);
+      } else {
+        const panelExists = stacks.state[name]?.state.panels[panelId] !== undefined;
 
-      if (panelExists) {
-        updatedHistory = [...updatedHistory, { name, panelId }];
-        setHistory(prev => [...prev, { name, panelId, params }]);
-        updatedHistory = historyStore.state;
+        if (panelExists) {
+          updatedHistory = [...updatedHistory, { name, panelId }];
+          setHistory(prev => [...prev, { name, panelId, params }]);
+          updatedHistory = historyStore.state;
+        }
       }
-    }
 
-    updatePanelOrder({ newHistoryStore: updatedHistory });
+      updatePanelOrder({ newHistoryStore: updatedHistory });
+    } catch (e) {
+      console.warn("stacks - updateHistory error", e);
+    }
   };
 
   /* -------------------------------------------------------------------------- */
@@ -269,26 +307,30 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @param {UpdatePanelOrder} options - The options for updating the panel order.
    */
   const updatePanelOrder = ({ newHistoryStore }: UpdatePanelOrder) => {
-    const frontPanel = newHistoryStore.at(-1);
-    const backPanel = newHistoryStore.at(-2);
+    try {
+      const frontPanel = newHistoryStore.at(-1);
+      const backPanel = newHistoryStore.at(-2);
 
-    newHistoryStore.forEach(panel => {
-      let position: StackPosition = "hidden";
-      const panelRef = stacks.state[panel.name]?.state.panels[panel.panelId];
+      newHistoryStore.forEach(panel => {
+        let position: StackPosition = "hidden";
+        const panelRef = stacks.state[panel.name]?.state.panels[panel.panelId];
 
-      if (panel.panelId === frontPanel?.panelId) {
-        position = newHistoryStore.length === 1 ? "front" : "front-stacked";
-      } else if (panel.panelId === backPanel?.panelId) {
-        position = "back";
-      }
+        if (panel.panelId === frontPanel?.panelId) {
+          position = newHistoryStore.length === 1 ? "front" : "front-stacked";
+        } else if (panel.panelId === backPanel?.panelId) {
+          position = "back";
+        }
 
-      if (panelRef) {
-        panelRef.setValue(prev => ({
-          ...prev,
-          position,
-        }));
-      }
-    });
+        if (panelRef) {
+          panelRef.setValue(prev => ({
+            ...prev,
+            position,
+          }));
+        }
+      });
+    } catch (e) {
+      console.warn("stacks - updatePanelOrder error", e);
+    }
   };
 
   /* -------------------------------------------------------------------------- */
@@ -304,24 +346,31 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * @returns An object containing the name and ID of the opened panel.
    */
   const openPanel = (name: string, params?: StacksParams) => {
-    const { panel } = getPanelFromStackName(name);
-    removeActiveBlurElement();
-    if (panel.state.open === false) {
-      panel.setValue(prev => {
-        return {
-          ...prev,
-          open: true,
-          position: historyStore.state.length === 1 ? "front" : "front-stacked",
-          params: params || {},
-        };
-      });
-      updateHistory({ name: panel.state.name, panelId: panel.state.id, event: "open", params });
-      return { name: panel.state.name, panelId: panel.state.id };
-    } else {
-      const panelId = uuidv4();
-      registerPanel({ name: panel.state.name, panelId, params });
-      updateHistory({ name: panel.state.name, panelId, event: "open", params });
-      return { name: panel.state.name, panelId };
+    try {
+      const getPanel = getPanelFromStackName(name);
+      if (getPanel) {
+        const { panel } = getPanel;
+        removeActiveBlurElement();
+        if (panel.state.open === false) {
+          panel.setValue(prev => {
+            return {
+              ...prev,
+              open: true,
+              position: historyStore.state.length === 1 ? "front" : "front-stacked",
+              params: params || {},
+            };
+          });
+          updateHistory({ name: panel.state.name, panelId: panel.state.id, event: "open", params });
+          return { name: panel.state.name, panelId: panel.state.id };
+        } else {
+          const panelId = uuidv4();
+          registerPanel({ name: panel.state.name, panelId, params });
+          updateHistory({ name: panel.state.name, panelId, event: "open", params });
+          return { name: panel.state.name, panelId };
+        }
+      }
+    } catch (e) {
+      console.warn("stacks - openPanel error", e);
     }
   };
 
@@ -333,8 +382,16 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const onCloseByPanelId = useCallback(
     (name: string, panelId: string) => {
-      const { panel, stack } = getPanelFromStackNameAndPanelId(name, panelId);
-      removePanel(panel, stack);
+      try {
+        const getPanel = getPanelFromStackNameAndPanelId(name, panelId);
+        if (getPanel) {
+          const { panel, stack } = getPanel;
+          removePanel(panel, stack);
+        }
+      } catch (e) {
+        console.warn("stacks - onCloseByPanelId error", e);
+        // onCloseByPanelId error
+      }
     },
     [stacks]
   );
@@ -346,8 +403,15 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const onCloseLastCopy = useCallback(
     (name: string) => {
-      const { panel, stack } = getPanelFromStackName(name);
-      removePanel(panel, stack);
+      try {
+        const getPanel = getPanelFromStackName(name);
+        if (getPanel) {
+          const { panel, stack } = getPanel;
+          removePanel(panel, stack);
+        }
+      } catch (e) {
+        console.warn("stacks - onCloseLastCopy error", e);
+      }
     },
     [stacks]
   );
@@ -358,13 +422,19 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * and removes the corresponding panel from the stack.
    */
   const onCloseLastPanel = useCallback(() => {
-    const lastHistoryElement = historyStore.state.at(-1);
-    if (lastHistoryElement) {
-      const stackName = lastHistoryElement.name;
-      const panelId = lastHistoryElement.panelId;
-      const { panel, stack } = getPanelFromStackNameAndPanelId(stackName, panelId);
-
-      removePanel(panel, stack);
+    try {
+      const lastHistoryElement = historyStore.state.at(-1);
+      if (lastHistoryElement) {
+        const stackName = lastHistoryElement.name;
+        const panelId = lastHistoryElement.panelId;
+        const getPanel = getPanelFromStackNameAndPanelId(stackName, panelId);
+        if (getPanel) {
+          const { panel, stack } = getPanel;
+          removePanel(panel, stack);
+        }
+      }
+    } catch (e) {
+      console.warn("stacks - onCloseLastPanel error", e);
     }
   }, [stacks]);
 
@@ -378,12 +448,17 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const onClose = useCallback(
     (name?: string, panelId?: string) => {
-      if (name && panelId) {
-        onCloseByPanelId(name, panelId);
-      } else if (name) {
-        onCloseLastCopy(name);
-      } else {
-        onCloseLastPanel();
+      try {
+        if (name && panelId) {
+          onCloseByPanelId(name, panelId);
+        } else if (name) {
+          onCloseLastCopy(name);
+        } else {
+          onCloseLastPanel();
+        }
+      } catch (e) {
+        console.warn("stacks - onClose error", e);
+        // onClose error
       }
     },
     [stacks]
@@ -393,15 +468,19 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    * Closes all panels in the stack.
    */
   const closeAll = useCallback(() => {
-    historyStore.state.forEach(panel => {
-      stacks.state[panel.name].state.panels[panel.panelId].setValue(prev => {
-        return {
-          ...prev,
-          position: "hidden",
-          open: false,
-        };
+    try {
+      historyStore.state.forEach(panel => {
+        stacks.state[panel.name].state.panels[panel.panelId].setValue(prev => {
+          return {
+            ...prev,
+            position: "hidden",
+            open: false,
+          };
+        });
       });
-    });
+    } catch (e) {
+      console.warn("stacks - closeAll error", e);
+    }
 
     debounceCloseAll();
   }, [stacks]);
@@ -413,7 +492,13 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const getStack = useCallback(
     (name: string) => {
-      return stacks.state[name] || null;
+      try {
+        return stacks.state[name] || null;
+      } catch (e) {
+        console.warn("stacks - getStack error", e);
+        // getStack error
+        return null;
+      }
     },
     [stacks]
   );
@@ -426,7 +511,12 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
    */
   const getPanel = useCallback(
     (name: string, id: string) => {
-      return stacks.state[name]?.state.panels[id] || null;
+      try {
+        return stacks.state[name]?.state.panels[id] || null;
+      } catch (e) {
+        console.warn("stacks - getPanel error", e);
+        return null;
+      }
     },
     [stacks]
   );
@@ -470,6 +560,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
           closeLast: onCloseLastPanel,
           getStack,
           getPanel,
+          getPanelFromStackName,
           open: openPanel,
           close: onClose,
         },

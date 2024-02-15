@@ -1,48 +1,78 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
+import { useMediaQuery } from "usehooks-ts";
 
+import { ProjectTypes } from "src/api/Project/types";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 
-import { Sort } from "components/ds/sort/sort";
-import { TSort } from "components/ds/sort/sort.types";
+import { Button } from "components/ds/button/button";
+import { SelectSort } from "components/ds/form/select-sort/select-sort";
+import { TSelectSort } from "components/ds/form/select-sort/select-sort.types";
+import { SelectableTag } from "components/ds/form/selectable-tag/selectable-tag";
+import { BottomSheet } from "components/ds/modals/bottom-sheet/bottom-sheet";
+import { Translate } from "components/layout/translate/translate";
 
 import { ProjectsContext } from "../../context/project.context";
-import { Sorting } from "../../context/project.context.types";
 
 export function ProjectsSort() {
   const { T } = useIntl();
+  const [openMobilePanel, setOpenMobilePanel] = useState(false);
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { filters } = useContext(ProjectsContext);
 
-  const options: TSort.Option[] = useMemo(
+  const options: TSelectSort.Option[] = useMemo(
     () => [
       {
-        label: T(`projects.sorting.${Sorting.Trending}`),
-        id: Sorting.Trending,
+        label: T(`v2.commons.enums.project.sort.${ProjectTypes.Sorting.Trending}`),
+        id: ProjectTypes.Sorting.Trending,
       },
       {
-        label: T(`projects.sorting.${Sorting.ProjectName}`),
-        id: Sorting.ProjectName,
+        label: T(`v2.commons.enums.project.sort.${ProjectTypes.Sorting.ProjectName}`),
+        id: ProjectTypes.Sorting.ProjectName,
       },
       {
-        label: T(`projects.sorting.${Sorting.ReposCount}`),
-        id: Sorting.ReposCount,
-      },
-      {
-        label: T(`projects.sorting.${Sorting.ContributorsCount}`),
-        id: Sorting.ContributorsCount,
+        label: T(`v2.commons.enums.project.sort.${ProjectTypes.Sorting.ContributorsCount}`),
+        id: ProjectTypes.Sorting.ContributorsCount,
       },
     ],
     []
   );
 
-  const onSortChange = (value: Sorting) => {
-    filters.set({ sorting: value });
+  const onSortChange = (value: ProjectTypes.Sorting | null) => {
+    filters.set({ sorting: value || ProjectTypes.Sorting.Trending });
   };
 
+  if (!isXl) {
+    return (
+      <>
+        <Button variant={"secondary"} size="s" onClick={() => setOpenMobilePanel(true)}>
+          <Translate token="v2.pages.projects.sorting.button" />
+        </Button>
+        <BottomSheet
+          onClose={() => setOpenMobilePanel(false)}
+          background="blue"
+          open={openMobilePanel}
+          title={<Translate token="v2.pages.projects.sorting.label" as="div" />}
+        >
+          <SelectableTag
+            mode="single"
+            value={filters.values.sorting}
+            onChange={onSortChange}
+            options={options.map(({ id, label }) => ({
+              children: label,
+              value: id as ProjectTypes.Sorting,
+            }))}
+          />
+        </BottomSheet>
+      </>
+    );
+  }
+
   return (
-    <Sort
-      labelToken="projects.sorting.label"
+    <SelectSort
+      labelToken="v2.pages.projects.sorting.label"
       value={filters.values.sorting}
-      onChange={onSortChange}
+      onChange={value => onSortChange(value as ProjectTypes.Sorting)}
       options={options}
     />
   );

@@ -1,14 +1,10 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
 import { Link, generatePath } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import Card, { CardBorder } from "src/components/Card";
 import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
-import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
@@ -20,9 +16,12 @@ import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
 
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+
 import { MissingGithubAppInstall } from "../New/Project/MissingGithubAppInstall";
 import ProjectTitle from "./ProjectTitle";
 
+// TODO clean/delete this file once the New All Project Page is live
 export enum Variant {
   Default = "default",
   Error = "error",
@@ -37,7 +36,7 @@ type ProjectCardProps = {
 export default function ProjectCard({ project, className, variant = Variant.Default }: ProjectCardProps) {
   const {
     id,
-    sponsors,
+    // sponsors,
     hiring,
     name = "",
     logoUrl,
@@ -56,8 +55,8 @@ export default function ProjectCard({ project, className, variant = Variant.Defa
   const { githubUserId } = useCurrentUser();
 
   const isLeader = isUserProjectLead(project, githubUserId);
-  const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
-  const topSponsors = sponsors?.map(sponsor => sponsor).slice(0, 3) ?? [];
+  const projectUrl = logoUrl;
+  // const topSponsors = sponsors?.map(sponsor => sponsor).slice(0, 3) ?? [];
   const languages = technologies ? getTopTechnologies(technologies) : [];
 
   return (
@@ -125,39 +124,39 @@ export default function ProjectCard({ project, className, variant = Variant.Defa
                   </Tag>
                 ) : null}
 
-                {topSponsors?.length ? (
-                  <Tag
-                    testid={`sponsor-list-${id}`}
-                    size={TagSize.Small}
-                    {...withTooltip(
-                      topSponsors.length > 1
-                        ? T("project.fundedBy", {
-                            topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
-                          })
-                        : "",
-                      { position: TooltipPosition.Bottom, className: "w-fit" }
-                    )}
-                  >
-                    <div className="flex flex-row -space-x-1">
-                      {topSponsors.map(sponsor => (
-                        <RoundedImage
-                          key={sponsor.id}
-                          src={
-                            sponsor.logoUrl
-                              ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + sponsor.logoUrl
-                              : sponsor.logoUrl || ""
-                          }
-                          alt={sponsor.name || ""}
-                          size={ImageSize.Xxs}
-                          rounding={Rounding.Circle}
-                        />
-                      ))}
-                    </div>
-                    {topSponsors.length === 1
-                      ? topSponsors.at(0)?.name
-                      : T("project.sponsorsCount", { count: topSponsors.length })}
-                  </Tag>
-                ) : null}
+                {/*{topSponsors?.length ? (*/}
+                {/*  <Tag*/}
+                {/*    testid={`sponsor-list-${id}`}*/}
+                {/*    size={TagSize.Small}*/}
+                {/*    {...withTooltip(*/}
+                {/*      topSponsors.length > 1*/}
+                {/*        ? T("project.fundedBy", {*/}
+                {/*            topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),*/}
+                {/*          })*/}
+                {/*        : "",*/}
+                {/*      { position: TooltipPosition.Bottom, className: "w-fit" }*/}
+                {/*    )}*/}
+                {/*  >*/}
+                {/*    <div className="flex flex-row -space-x-1">*/}
+                {/*      {topSponsors.map(sponsor => (*/}
+                {/*        <RoundedImage*/}
+                {/*          key={sponsor.id}*/}
+                {/*          src={*/}
+                {/*            sponsor.logoUrl*/}
+                {/*              ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + sponsor.logoUrl*/}
+                {/*              : sponsor.logoUrl || ""*/}
+                {/*          }*/}
+                {/*          alt={sponsor.name || ""}*/}
+                {/*          size={ImageSize.Xxs}*/}
+                {/*          rounding={Rounding.Circle}*/}
+                {/*        />*/}
+                {/*      ))}*/}
+                {/*    </div>*/}
+                {/*    {topSponsors.length === 1*/}
+                {/*      ? topSponsors.at(0)?.name*/}
+                {/*      : T("project.sponsorsCount", { count: topSponsors.length })}*/}
+                {/*  </Tag>*/}
+                {/*) : null}*/}
               </div>
             </div>
           </div>

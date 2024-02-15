@@ -86,10 +86,16 @@ const validationSchema = z.object({
   longDescription: z.string().min(1),
   moreInfos: z
     .array(
-      z.object({
-        url: z.string().trim().min(1),
-        value: z.string().nullable(),
-      })
+      z
+        .object({
+          url: z.string().trim().nullable(),
+          value: z.string().nullable(),
+        })
+        .refine(data => !!data.url || (!data.url && !data.value) || (!!data.url && !!data.value), {
+          path: ["url"],
+          // not translated because it's not used in a react component
+          message: "Please fill the information url",
+        })
     )
     .min(0)
     .optional()
@@ -177,7 +183,14 @@ export function CreateProjectProvider({
 
   const form = useForm<CreateFormData>({
     mode: "all",
-    defaultValues: initialProject || {},
+    defaultValues: initialProject
+      ? {
+          ...initialProject,
+          moreInfos: initialProject?.moreInfos?.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
+        }
+      : {
+          moreInfos: [{ url: "", value: "" }],
+        },
     resolver: zodResolver(validationSchema),
   });
 
@@ -193,7 +206,7 @@ export function CreateProjectProvider({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
-      moreInfos: (moreInfos || []).map(info => ({ url: info.url, value: info.value })),
+      moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
     });
   };
 

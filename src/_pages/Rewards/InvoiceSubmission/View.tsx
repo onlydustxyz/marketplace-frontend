@@ -2,6 +2,7 @@ import { SliderButton } from "@typeform/embed-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import MeApi from "src/api/me";
+import { UseGetUserMeResponse } from "src/api/me/queries";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
@@ -15,16 +16,20 @@ import { pretty } from "src/utils/id";
 import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
 
-import { MyPayoutInfoType, MyRewardsPendingInvoiceType } from ".";
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+
+import { MyBillingProfileType, MyRewardsPendingInvoiceType } from ".";
 
 type Props = {
   githubUserId: number;
   paymentRequests: MyRewardsPendingInvoiceType["rewards"];
-  payoutInfo: MyPayoutInfoType;
+  billingProfile?: MyBillingProfileType;
 };
 
-export default function InvoiceSubmission({ paymentRequests, githubUserId, payoutInfo }: Props) {
+export default function InvoiceSubmission({ paymentRequests, githubUserId, billingProfile }: Props) {
   const { T } = useIntl();
+  const { user } = useCurrentUser();
+
   const showToaster = useShowToaster();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
@@ -35,8 +40,8 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, payou
   }, []);
 
   const hiddenFields = useMemo(
-    () => buildHiddenFields({ paymentRequests, githubUserId, payoutInfo }),
-    [paymentRequests, githubUserId, payoutInfo]
+    () => buildHiddenFields({ paymentRequests, githubUserId, billingProfile, user }),
+    [paymentRequests, githubUserId, billingProfile, user]
   );
 
   const { mutate: markInvoiceAsReceived } = MeApi.mutations.useMarkInvoicesAsReceived({
@@ -110,8 +115,9 @@ const MemoizedSlider = memo(Slider);
 export function buildHiddenFields({
   githubUserId,
   paymentRequests: paymentRequests,
-  payoutInfo,
-}: Props): Record<string, string> {
+  billingProfile,
+  user,
+}: Props & { user?: UseGetUserMeResponse }): Record<string, string> {
   return {
     github_id: githubUserId.toString(),
     request_ids: paymentRequests.map(p => p.id).join(","),
@@ -126,15 +132,11 @@ export function buildHiddenFields({
           })`
       )
     ),
-    company_name: payoutInfo?.company?.name || "",
-    company_number: payoutInfo?.company?.identificationNumber || "",
-    first_name: payoutInfo?.company?.owner?.firstname || "",
-    last_name: payoutInfo?.company?.owner?.lastname || "",
-    street_address: payoutInfo?.location?.address || "",
-    zip_code: payoutInfo?.location?.postalCode || "",
-    city: payoutInfo?.location?.city || "",
-    country: payoutInfo?.location?.country || "",
-    payout_info: "",
+    company_name: billingProfile?.name || "",
+    company_number: billingProfile?.euVATNumber || "",
+    first_name: user?.firstName || "",
+    last_name: user?.lastName || "",
+    address: billingProfile?.address || "",
     total_amount: formatMoneyAmount({
       amount: paymentRequests.map(p => p.amount.dollarsEquivalent ?? 0).reduce((acc, amount) => acc + amount, 0),
       currency: Currency.USD,

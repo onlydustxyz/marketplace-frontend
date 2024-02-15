@@ -1,5 +1,3 @@
-import { useCurrentUser } from "hooks/users/useCurrentUser";
-import { uniqBy } from "lodash";
 import { useEffect, useMemo } from "react";
 
 import ErrorFallback from "src/ErrorFallback";
@@ -12,10 +10,11 @@ import ProjectCard, { Variant as ProjectCardVariant } from "src/components/Proje
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
-import { Sponsor } from "src/types";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 
 import { EmptyState } from "components/layout/placeholders/empty-state";
+
+import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";
@@ -23,7 +22,7 @@ import SubmitProject from "../SubmitProject";
 import AllProjectLoading from "./AllProjectsLoading";
 
 export const DEFAULT_SORTING = Sorting.Trending;
-
+// TODO clean/delete this file once the New All Project Page is live
 type Props = {
   search: string;
   clearSearch: () => void;
@@ -35,7 +34,7 @@ type Props = {
   sortingPanelOpen: boolean;
   setSortingPanelOpen: (open: boolean) => void;
   setTechnologies: (technologies: string[]) => void;
-  setSponsors: (sponsors: Sponsor[]) => void;
+  // setSponsors: (sponsors: Sponsor[]) => void;
 };
 
 export default function AllProjects({
@@ -49,14 +48,18 @@ export default function AllProjects({
   sortingPanelOpen,
   setSortingPanelOpen,
   setTechnologies,
-  setSponsors,
-}: Props) {
+}: // setSponsors,
+Props) {
   const { T } = useIntl();
   const { githubUserId } = useCurrentUser();
   const { capture } = usePosthog();
 
   const {
-    projectFilter: { ownership, technologies, sponsors },
+    projectFilter: {
+      ownership,
+      technologies,
+      // sponsors
+    },
     clear: clearFilters,
   } = useProjectFilter();
 
@@ -68,14 +71,20 @@ export default function AllProjects({
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       technologies.length > 0 ? ["technologies", technologies.join(",")] : null,
-      sponsors.length > 0 ? ["sponsorId", sponsors.map(({ id }) => id).join(",")] : null,
+      // sponsors.length > 0 ? ["sponsorId", sponsors.map(({ id }) => id).join(",")] : null,
       search ? ["search", search] : null,
       sorting ? ["sort", sorting] : null,
       ownership ? ["mine", String(ownership === "Mine")] : null,
     ].filter((param): param is string[] => Boolean(param));
 
     return params;
-  }, [technologies, sponsors, search, sorting, ownership]);
+  }, [
+    technologies,
+    // sponsors,
+    search,
+    sorting,
+    ownership,
+  ]);
 
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
     ProjectApi.queries.useInfiniteList({
@@ -83,8 +92,16 @@ export default function AllProjects({
     });
 
   useEffect(() => {
-    capture("project_list_viewed", { technologies, sponsors: sponsors.map(({ name }) => name), ownership });
-  }, [ownership, technologies, sponsors]);
+    capture("project_list_viewed", {
+      technologies,
+      // sponsors: sponsors.map(({ name }) => name),
+      ownership,
+    });
+  }, [
+    ownership,
+    technologies,
+    // sponsors
+  ]);
 
   useEffect(() => {
     restoreScroll();
@@ -94,15 +111,15 @@ export default function AllProjects({
     if (data && !isLoading) {
       const blackListedTech = process.env.NEXT_PUBLIC_LANGUAGES_FILTER;
       const technologies = [...new Set(data?.pages?.flatMap(({ technologies = "" }) => technologies))] ?? [];
-      const sponsors = uniqBy(
-        data?.pages
-          ?.flatMap(({ sponsors = null }) => sponsors)
-          .filter((sponsor): sponsor is Sponsor => Boolean(sponsor)),
-        "id"
-      );
+      // const sponsors = uniqBy(
+      //   data?.pages
+      //     ?.flatMap(({ sponsors = null }) => sponsors)
+      //     .filter((sponsor): sponsor is Sponsor => Boolean(sponsor)),
+      //   "id"
+      // );
 
       setTechnologies(technologies.length ? technologies.filter(item => !blackListedTech?.includes(item)) : []);
-      setSponsors(sponsors);
+      // setSponsors(sponsors);
     }
   }, [data]);
 

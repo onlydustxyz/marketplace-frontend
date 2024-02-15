@@ -83,7 +83,7 @@ export function getFormattedDateToLocaleDateString(date: Date) {
   });
 }
 
-interface DateComparisonResult {
+export interface DateComparisonResult {
   status: "past" | "future" | "today" | "invalid";
 }
 

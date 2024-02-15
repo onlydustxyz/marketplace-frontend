@@ -1,9 +1,11 @@
 import { Leader } from "src/types";
 
-import { TThumbnail } from "components/ds/thumbnail/thumbnail.types";
+import { TAvatar } from "components/ds/avatar/avatar.types";
 
 export namespace TContributorsAvatars {
-  export interface Props extends TThumbnail.Variants {
+  export interface Props {
     contributors: Leader[];
+    avatarProps: TAvatar.Variants;
+    enableTooltip?: boolean;
   }
 }

@@ -24,6 +24,13 @@ export type IReactStackContext = {
     unRegister: (name: string) => void;
     getStack: (name: string) => RefSubscriptionInterface<StackInterface<AnyParams>> | null;
     getPanel: (name: string, id: string) => RefSubscriptionInterface<StackPanelInterface> | null;
+    getPanelFromStackName: (name: string) =>
+      | {
+          panel: RefSubscriptionInterface<StackPanelInterface<StacksParams>>;
+          stack: RefSubscriptionInterface<StackInterface<StacksParams>>;
+          id: string;
+        }
+      | undefined;
     open: (name: string, params?: StacksParams) => void;
     close: (name?: string, panelId?: string) => void;
     closeLast: () => void;
