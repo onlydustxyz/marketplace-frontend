@@ -3,23 +3,18 @@ import { useBillingStatus } from "../useBillingStatus/useBillingStatus";
 import { TUseSettingsError } from "./useSettingsError.types";
 
 export const useSettingsError = (): TUseSettingsError.Return => {
-  const { validBillingProfile, billingProfile, user } = useBillingProfiles();
+  const { validBillingProfile, billingProfile, user, isLoading } = useBillingProfiles();
   const { isWarning: isBillingWarning, isError: isBillingError } = useBillingStatus({
     hasValidBillingProfile: validBillingProfile,
     status: billingProfile?.status,
   });
 
   const getError = (): TUseSettingsError.Return["error"] => {
-    // Need to wait for billing profile to be fetched before we can determine if there's an error
-    if (!billingProfile) {
-      return undefined;
-    }
-
-    if (isBillingError) {
+    if (isBillingError && !isLoading) {
       return TUseSettingsError.ERRORS.BILLING_ERROR;
     }
 
-    if (isBillingWarning) {
+    if (isBillingWarning && !isLoading) {
       return TUseSettingsError.ERRORS.BILLING_WARNING;
     }
 

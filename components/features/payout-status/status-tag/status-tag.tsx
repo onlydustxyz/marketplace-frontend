@@ -8,12 +8,13 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function StatusTag({ status, date }: TStatusTag.Props) {
+export function StatusTag({ status, date, className, isBillingError }: TStatusTag.Props) {
   const dateRelativeToNow = date ? compareDateToNow(date) : undefined;
   const { icon, labelToken, tooltipToken, tooltipParams, borderColor, iconClassName } = getStatusConfig({
     status,
     dateRelativeToNow,
     date,
+    isBillingError,
   });
 
   return (
@@ -21,6 +22,7 @@ export function StatusTag({ status, date }: TStatusTag.Props) {
       size="medium"
       borderColor={borderColor}
       tooltipContent={<Translate token={tooltipToken} params={tooltipParams} />}
+      className={className}
     >
       <Icon remixName={icon} size={16} className={iconClassName} />
       <Typography variant="body-s">

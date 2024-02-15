@@ -624,7 +624,7 @@
       "locked": "Locked",
       "invoicePending": "Pending invoice",
       "signupPending": "Signup invoice",
-      "payoutInfoMissing": "Payout info missing",
+      "payoutInfoMissing": "Payment method missing",
       "pendingSignup": "Pending signup",
       "pending": "Pending",
       "processing": "Processing",

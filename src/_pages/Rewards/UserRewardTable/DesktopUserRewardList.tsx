@@ -14,9 +14,15 @@ type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;
   selectedReward: MyRewardType | null;
   emptyState?: React.ReactElement;
+  isBillingError?: boolean;
 };
 
-export default function DesktopUserRewardList({ onRewardClick, selectedReward, emptyState }: PropsType) {
+export default function DesktopUserRewardList({
+  onRewardClick,
+  selectedReward,
+  emptyState,
+  isBillingError,
+}: PropsType) {
   const { query, dateSorting } = useContext(UserRewardsContext);
 
   const { sorting, sortField } = dateSorting;
@@ -51,6 +57,7 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward, e
               reward={p}
               onClick={() => onRewardClick(p)}
               selected={p?.id === selectedReward?.id}
+              isBillingError={isBillingError}
             />
           ))}
         </Table>
