@@ -72,6 +72,18 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
     }
   }
 
+  function renderInvoicePreview() {
+    if (isLoading) {
+      return <div> TODO loading component </div>;
+    }
+    if (isError) {
+      return <div> TODO error component </div>;
+    }
+    if (fileUrl) {
+      return <InvoiceViewer fileUrl={fileUrl} />;
+    }
+  }
+
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex h-full flex-col overflow-hidden px-1">
@@ -83,12 +95,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
           />
         </div>
         <ScrollView className="m-4 w-auto rounded-2xl border border-card-border-light p-4">
-          <div className="relative z-0 flex justify-center">
-            {/*TODO add a render function here*/}
-            {isLoading ? <div> TODO loading component </div> : null}
-            {!isLoading && !isError && fileUrl ? <InvoiceViewer fileUrl={fileUrl} /> : null}
-            {isError ? <div> TODO error component </div> : null}
-          </div>
+          <div className="relative z-0 flex justify-center">{renderInvoicePreview()}</div>
         </ScrollView>
         <div className="w-full bg-greyscale-900">
           <AmountCounter total={1000} />
