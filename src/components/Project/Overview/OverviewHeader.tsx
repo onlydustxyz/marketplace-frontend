@@ -1,5 +1,8 @@
 "use client";
 
+import process from "process";
+import { useMemo, useState } from "react";
+
 import { ProjectConstants } from "src/api/Project/constants";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { IMAGES } from "src/assets/img";
@@ -28,12 +31,20 @@ Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, eu
 `;
 
 export const ProjectOverviewHeader = ({ project, description = true }: ProjectOverviewHeaderProps) => {
+  const [isError, setIsError] = useState(false);
   const dpr = window.devicePixelRatio;
-  const logoUrl = project?.logoUrl
-    ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}width=${80 * dpr},height=${80 * dpr},fit=cover/${
+  const optimizeSrc = useMemo(() => {
+    if (isError) {
+      return IMAGES.logo.space;
+    }
+    if (project?.logoUrl) {
+      return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}width=${80 * dpr},height=${80 * dpr},fit=cover/${
         project?.logoUrl
-      }`
-    : IMAGES.logo.space;
+      }`;
+    }
+
+    return IMAGES.logo.space;
+  }, [project?.logoUrl, isError]);
   const { T } = useIntl();
 
   return (
@@ -41,9 +52,10 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
       <div className="flex flex-row items-center gap-4">
         <img
           alt={project.name || ""}
-          src={logoUrl}
+          src={optimizeSrc}
           loading="lazy"
           className="h-20 w-20 flex-shrink-0 rounded-lg bg-spaceBlue-900 object-cover"
+          onError={() => setIsError(true)}
         />
         <div className="flex w-full flex-col gap-1">
           <div className="flex flex-row items-center justify-between font-belwe text-2xl font-normal text-greyscale-50">
