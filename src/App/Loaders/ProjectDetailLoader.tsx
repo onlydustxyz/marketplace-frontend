@@ -6,12 +6,16 @@ import { ContributionTableSkeleton } from "src/components/Contribution/Contribut
 import Skeleton, { SkeletonVariant } from "src/components/Skeleton";
 import { viewportConfig } from "src/config";
 
+import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
+
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "..";
 
 export default function ProjectDetailsLoader() {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const matches = {
-    isProjectOverview: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Overview}`),
+    isProjectOverview: useMatchPath(NEXT_ROUTER.projects.details.root("[slug]")),
     isProjectContributors: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Contributors}`),
     isProjectRewards: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}`),
     isProjectRewardForm: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRewardsRoutePaths.New}`),
