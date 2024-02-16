@@ -1,14 +1,14 @@
 import { cn } from "src/utils/cn";
 
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
-import { Link as InternalLink } from "components/layout/link/link";
 
 import { TLink } from "./link.types";
 import { linkVariants } from "./link.variants";
 
-export function Link({ className, children, ...props }: TLink.InternalProps) {
+export function Link({ className, children, ...props }: TLink.LinkProps) {
   return (
-    <InternalLink className={cn(linkVariants(props), className)} {...props}>
+    <BaseLink className={cn(linkVariants(props), className)} {...props}>
       {({ isExternal }) => (
         <>
           {children}
@@ -17,7 +17,7 @@ export function Link({ className, children, ...props }: TLink.InternalProps) {
           ) : null}
         </>
       )}
-    </InternalLink>
+    </BaseLink>
   );
 }
 

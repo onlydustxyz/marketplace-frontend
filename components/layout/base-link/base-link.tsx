@@ -2,9 +2,9 @@ import NextLink from "next/link";
 
 import { cn } from "src/utils/cn";
 
-import { TLink } from "./link.types";
+import { TBaseLink } from "./base-link.types";
 
-export function Link({ href, target, rel, className, children, ...props }: TLink.Props) {
+export function BaseLink({ href, target, rel, className, children, ...props }: TBaseLink.Props) {
   const isExternal = href.toString().startsWith("http") ?? false;
 
   const targetExternal = isExternal ? "_blank" : undefined;
