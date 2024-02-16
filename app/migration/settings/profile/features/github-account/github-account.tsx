@@ -61,14 +61,25 @@ export function ProfileGithubAccount() {
             </Typography>
           </Flex>
 
-          <Flex alignItems="center" className="gap-3">
-            <Button variant="secondary" size="s" disabled={isLoading} onClick={onTriggerResync}>
+          <Flex alignItems="center" className="flex-col gap-3 md:flex-row">
+            <Button
+              variant="secondary"
+              size="s"
+              disabled={isLoading}
+              onClick={onTriggerResync}
+              className="w-full md:w-fit"
+            >
               <Icon remixName="ri-refresh-line" className={cn({ "animate-spin text-spacePurple-300": isLoading })} />
               <Translate token="v2.pages.settings.profile.githubAccount.buttons.resync" />
             </Button>
 
-            <a href="https://github.com/settings/emails" target="_blank" rel="noopener noreferrer" className="w-fit">
-              <Button variant="secondary" size="s">
+            <a
+              href="https://github.com/settings/emails"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full md:w-fit"
+            >
+              <Button variant="secondary" size="s" className="w-full md:w-fit">
                 <Icon remixName="ri-github-fill" />
                 <Translate token="v2.pages.settings.profile.githubAccount.buttons.edit" />
               </Button>

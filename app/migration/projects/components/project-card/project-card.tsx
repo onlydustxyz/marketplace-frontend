@@ -76,28 +76,22 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
         background="base"
       >
         <Flex direction="row" className="origin-center gap-5">
-          <div className="relative hidden flex-shrink-0 pt-6 md:block">
-            <Avatar
-              src={logoUrl}
-              alt={T("v2.pages.projects.highlights.thumbnail")}
-              size="xl"
-              className="mt-1"
-              shape="square"
-            />
+          <div className="relative hidden flex-shrink-0 pt-4 md:block lg:pt-6">
+            <Avatar src={logoUrl} alt={T("v2.pages.projects.highlights.thumbnail")} size="xl" shape="square" />
             {isPrivate && (
               <div className="absolute -bottom-2.5 -right-2.5">
                 <PrivateTag />
               </div>
             )}
           </div>
-          <Flex direction="col" className="w-full flex-1 gap-1 overflow-hidden pr-6 pt-6">
+          <Flex direction="col" className="w-full flex-1 gap-1 overflow-hidden pr-4 pt-4 lg:pr-6 lg:pt-6">
             <Flex direction="row" className="mb-4 items-center gap-4 md:mb-0 md:items-start md:gap-2">
               <div className="relative block flex-shrink-0 md:hidden">
                 <Avatar
                   src={logoUrl}
                   alt={T("v2.pages.projects.highlights.thumbnail")}
                   size="l"
-                  className="mt-1 h-[68px] w-[68px]"
+                  className="h-[68px] w-[68px]"
                   shape="square"
                 />
                 {isPrivate && (
@@ -130,7 +124,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           </Flex>
         </Flex>
         {isInvitedAsProjectLead || isMissingGithubAppInstallation ? (
-          <Flex direction="col" className="mt-5 gap-5 pr-6">
+          <Flex direction="col" className="mt-5 gap-5 pr-4 lg:pr-6">
             {InviteBanner}
             {MissingGithubBanner}
           </Flex>
