@@ -47,6 +47,9 @@ function SafeProjectsPage() {
             </div>
           </Flex>
           <div className="flex w-full grow flex-col gap-5">
+            <div className="block w-full self-start lg:hidden">
+              <AddProject />
+            </div>
             {isLoading || projects.length > 0 ? <ProjectList /> : <NoResults />}
           </div>
         </Flex>

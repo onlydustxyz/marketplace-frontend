@@ -15,6 +15,7 @@ export namespace TTag {
     tooltipContent?: ReactNode;
     className?: string;
     onClick?: () => void;
+    containerClassName?: string;
   }
 
   export interface LoadingProps extends Variants {
