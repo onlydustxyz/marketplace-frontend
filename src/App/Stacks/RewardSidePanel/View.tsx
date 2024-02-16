@@ -340,7 +340,9 @@ export default function View({
                   />
                   <div className="flex flex-row items-center gap-1">
                     {T("reward.table.detailsPanel.on")}
-                    <Link onClick={() => openProjectOverview({ slug: data.project.slug })}>{data.project.name}</Link>
+                    <Link.Button onClick={() => openProjectOverview({ slug: data.project.slug })}>
+                      {data.project.name}
+                    </Link.Button>
                   </div>
                 </Details>
               ) : null}

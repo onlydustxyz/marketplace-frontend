@@ -85,7 +85,7 @@ export function RewardCard({
         />
         <p className="text-sm leading-none text-greyscale-300">
           {T("contributions.panel.rewards.fromUser")}&nbsp;
-          <Link onClick={handleClick}>{reward.from.login}</Link>
+          <Link.Button onClick={handleClick}>{reward.from.login}</Link.Button>
         </p>
       </div>
     </article>
