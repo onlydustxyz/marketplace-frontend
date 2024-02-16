@@ -29,7 +29,8 @@
   "invoiceSubmission": {
     "toaster": {
       "success": "Invoice successfully sent",
-      "error": "We were unable to send the invoice, please try again later"
+      "error": "We were unable to send the invoice, please try again later",
+      "emptyFile": "We Were unable to find the file, please try again later"
     }
   },
   "openButton": "Request payment",
@@ -45,5 +46,27 @@
     "terms": "I have read and accept the _invoicing mandate_ for my rewards",
     "confirm": "Confirm",
     "skip": "Skip (manual invoicing)"
+  },
+  "uploadInvoice": {
+    "title": "Guidelines",
+    "summary": {
+      "requirement": "Informations required on your invoice for acceptance:",
+      "rule_1": "Date of issuance",
+      "rule_2": "Your legal information (Name, address, country, VAT Number if in UE)",
+      "rule_3": "The invoice must be issued to WAGMI , 54 rue du Faubourg Montmartre 75009 PARIS, France, VAT Number : FR 26 908233638",
+      "rule_4": "Reward date, Reward ID number, name of the project for each reward",
+      "rule_5": "Your invoice should be issued in $ with the following mention: “[number] [type of tokens] received and accepted as payment for this invoice.”"
+    },
+    "sample_to_download": "You can download an example by ",
+    "sample_link_label": "clicking here"
   }
 }
+
+
+
+
+
+
+
+
+

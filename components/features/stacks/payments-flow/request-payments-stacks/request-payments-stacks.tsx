@@ -7,6 +7,7 @@ import BillingApi from "src/api/me/billing";
 import { GenerateInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/generate-invoice/generate-invoice";
 import { Mandate } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/mandate/mandate";
 import { SelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards";
+import { UploadInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/upload-invoice/upload-invoice";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 
 export function RequestPaymentsStacks() {
@@ -53,6 +54,16 @@ export function RequestPaymentsStacks() {
 
   if (view === TRequestPaymentsStacks.Views.Mandate) {
     return <Mandate goTo={onNextView} />;
+  }
+
+  if (view === TRequestPaymentsStacks.Views.Upload) {
+    return (
+      <UploadInvoice
+        goTo={onNextView}
+        rewardIds={includedRewards.map(({ id }) => id)}
+        billingProfileId={billingProfilesData?.billingProfiles?.[0].id ?? ""}
+      />
+    );
   }
 
   if (view === TRequestPaymentsStacks.Views.Generate) {

@@ -80,7 +80,12 @@ export function Mandate({ goTo }: TMandate.Props) {
                 </Checkbox>
               </div>
               <div className="grid w-full grid-cols-2 gap-5">
-                <Button variant="secondary" size="m" className="w-full" onClick={() => alert("manual invoice")}>
+                <Button
+                  variant="secondary"
+                  size="m"
+                  className="w-full"
+                  onClick={() => goTo({ to: TRequestPaymentsStacks.Views.Upload })}
+                >
                   <Translate token="v2.pages.stacks.request_payments.mandate.skip" />
                 </Button>
                 <Button variant="primary" size="m" className="w-full" onClick={onSubmit} disabled={!accepted}>
