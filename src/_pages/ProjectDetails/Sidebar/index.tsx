@@ -1,3 +1,5 @@
+"use client";
+
 import _ from "lodash";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
@@ -52,23 +54,23 @@ export default function ProjectsSidebar() {
   const AvailableTabs: Record<string, ProjectDetailsTab> = {
     overview: {
       label: T("project.details.sidebar.overview"),
-      path: NEXT_ROUTER.p.root(slug),
+      path: NEXT_ROUTER.projects.details.root(slug),
     },
     contributors: {
       label: T("project.details.contributors.title"),
-      path: NEXT_ROUTER.p.contributors(slug),
+      path: NEXT_ROUTER.projects.details.contributors(slug),
     },
     rewards: {
       label: T("project.details.rewards.title"),
-      path: NEXT_ROUTER.p.rewards(slug),
+      path: NEXT_ROUTER.projects.details.rewards.root(slug),
     },
     contributions: {
       label: T("project.details.contributions.title"),
-      path: NEXT_ROUTER.p.contributions(slug),
+      path: NEXT_ROUTER.projects.details.contributions(slug),
     },
     insights: {
       label: T("project.details.insights.title"),
-      path: NEXT_ROUTER.p.insights(slug),
+      path: NEXT_ROUTER.projects.details.insights(slug),
     },
   };
 

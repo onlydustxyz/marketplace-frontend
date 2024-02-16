@@ -111,7 +111,7 @@ export default function View({
               href={tab.path}
               className={cn(
                 "rounded-xl px-4 py-2.5 text-base hover:cursor-pointer",
-                "group/link-data[active=true]:bg-white/8 group/link-data[active=true]:text-white text-neutral-400"
+                "text-neutral-400 data-[active=true]:bg-white/8 data-[active=true]:text-white"
               )}
             >
               {tab.label}
