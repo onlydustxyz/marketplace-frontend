@@ -9,10 +9,10 @@ export async function fetchInvoicePreviewData({
   rewardIds: string;
   billingProfileId: string;
 }) {
-  // TODO add some checks sor response status
+  if (!token) throw new Error("Token is required");
   return await BillingProfilesActions.queries
     .retrieveInvoicePreviewByBillingProfileId(billingProfileId, {
-      accessToken: token ?? "",
+      accessToken: token,
       params: {
         rewardIds,
       },
