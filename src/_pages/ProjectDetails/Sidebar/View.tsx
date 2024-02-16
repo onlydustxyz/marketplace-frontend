@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Listbox } from "@headlessui/react";
-import { NavLink, generatePath, useNavigate } from "react-router-dom";
+import { generatePath, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 import { RoutePaths } from "src/App";
@@ -12,6 +12,8 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+
+import { BaseLink } from "components/layout/base-link/base-link";
 
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
@@ -27,10 +29,10 @@ interface Props {
 }
 
 export default function View({
+  onLinkClick,
   expandable,
   currentProject,
   availableTabs,
-  onLinkClick,
   pendingProjects,
   projects,
 }: Props) {
@@ -102,21 +104,18 @@ export default function View({
         </div>
         <div className="align-start flex flex-col gap-2 pb-2 pt-3 text-xl font-medium">
           {availableTabs.map(tab => (
-            <NavLink
-              key={tab.path}
-              to={tab.path}
+            // TODO NEXT : check active tab
+            <BaseLink
               onClick={onLinkClick}
-              className={({ isActive }) =>
-                cn("rounded-xl px-4 py-2.5 text-base hover:cursor-pointer", {
-                  "bg-white/8 text-white": isActive,
-                  "text-neutral-400": !isActive,
-                })
-              }
-              data-testid={`${tab.label}-tab`}
-              end
+              key={tab.path}
+              href={tab.path}
+              className={cn(
+                "rounded-xl px-4 py-2.5 text-base hover:cursor-pointer",
+                "group/link-data[active=true]:bg-white/8 group/link-data[active=true]:text-white text-neutral-400"
+              )}
             >
               {tab.label}
-            </NavLink>
+            </BaseLink>
           ))}
 
           {!isAuthenticated ? (

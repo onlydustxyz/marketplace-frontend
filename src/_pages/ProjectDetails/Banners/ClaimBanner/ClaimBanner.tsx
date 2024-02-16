@@ -1,5 +1,6 @@
+import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import { ClaimUtils } from "src/App/Stacks/GithubWorkflow/ClaimSidePanel/claim.utils";
 import { useStackGithubWorkflowClaim } from "src/App/Stacks/Stacks";
@@ -11,9 +12,9 @@ import { ClaimButton } from "./components/ClaimButton";
 
 export default function ClaimBanner() {
   const { T } = useIntl();
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: project } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
+  const { data: project } = ProjectApi.queries.useGetProjectBySlug({ params: { slug } });
   const [openClaimPanel, close] = useStackGithubWorkflowClaim();
 
   const canDisplay = useMemo(() => {
@@ -22,18 +23,18 @@ export default function ClaimBanner() {
 
   const onBannerClick = () => {
     if (canDisplay) {
-      openClaimPanel({ projectSlug: projectKey });
+      openClaimPanel({ projectSlug: slug });
     }
   };
 
   useEffect(() => {
-    if (searchParams?.get("claim_callback") && projectKey) {
+    if (searchParams?.get("claim_callback") && slug) {
       searchParams.delete("claim_callback");
       close();
-      openClaimPanel({ projectSlug: projectKey });
+      openClaimPanel({ projectSlug: slug });
       setSearchParams(searchParams);
     }
-  }, [searchParams, projectKey]);
+  }, [searchParams, slug]);
 
   if (!canDisplay) {
     return null;

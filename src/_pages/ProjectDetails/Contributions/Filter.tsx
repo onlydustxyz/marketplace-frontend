@@ -1,7 +1,7 @@
 import { sortBy } from "lodash";
+import { useParams } from "next/navigation";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
-import { useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 import ProjectApi from "src/api/Project";
@@ -49,10 +49,10 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
   { onChange }: { onChange: (filterQueryParams: FilterQueryParams) => void },
   ref: React.Ref<ProjectContributionsFilterRef>
 ) {
-  const { projectKey = "" } = useParams<{ projectKey?: string }>();
+  const { slug = "" } = useParams<{ slug?: string }>();
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
@@ -144,7 +144,7 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
   );
 
   const { data: reposData } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
   const repos = reposData?.repos ?? [];
 

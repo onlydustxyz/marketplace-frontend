@@ -1,38 +1,41 @@
+"use client";
+
 import { useParams } from "next/navigation";
-import { Outlet } from "react-router-dom";
+import { matchPath, useLocation } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
-import { components } from "src/__generated/api";
+import { ProjectRoutePaths, RoutePaths } from "src/App";
+import ProjectsSidebar from "src/_pages/ProjectDetails/Sidebar";
 import ProjectApi from "src/api/Project";
 import { FetchError } from "src/api/query.type";
 import { useQueriesErrorBehavior } from "src/api/useQueriesError";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import SEO from "src/components/SEO";
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
-import ProjectsSidebar from "./Sidebar";
+import { SpaceBackground } from "components/features/space-background/space-background";
 
-export type OutletContext = {
-  project: components["schemas"]["ProjectResponse"];
-};
-interface Props {
-  padded?: boolean;
-  contentClassName?: string;
-}
+import { TClientLayout } from "./client-layout.types";
 
-export default function View({ padded = true, contentClassName }: Props) {
+export function ClientLayout({ children }: TClientLayout.Props) {
+  const { pathname } = useLocation();
+  const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
+  const isProjectContributions = !!matchPath(
+    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Contributions}`,
+    pathname
+  );
+
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { slug = "" } = useParams<{ slug: string }>();
-  const { data, ...restProjectBySlugQueries } = ProjectApi.queries.useGetProjectBySlug({
+  const { error, isError, refetch } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
 
   const errorHandlingComponent = useQueriesErrorBehavior({
     queries: {
-      error: restProjectBySlugQueries.error as FetchError,
-      isError: restProjectBySlugQueries.isError,
-      refetch: restProjectBySlugQueries.refetch,
+      error: error as FetchError,
+      isError,
+      refetch,
     },
   });
 
@@ -41,8 +44,8 @@ export default function View({ padded = true, contentClassName }: Props) {
   }
 
   return (
-    <>
-      {data ? <SEO title={`${data?.name} — OnlyDust`} /> : null}
+    // TODO NEXT : should be remove
+    <div className="z-[1] flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
       <div
         className="flex w-full flex-1 flex-col overflow-hidden border-[24px] border-t-0 border-black pt-4 xl:h-0 xl:flex-row xl:pt-0"
         style={{ boxSizing: "border-box" }}
@@ -56,15 +59,17 @@ export default function View({ padded = true, contentClassName }: Props) {
             className={cn(
               "mx-auto flex h-full flex-1 flex-col gap-6",
               {
-                "max-w-7xl gap-6 px-4 py-6 xl:px-8": padded,
+                "max-w-7xl gap-6 px-4 py-6 xl:px-8": !isProjectEdition,
               },
-              contentClassName
+              isProjectContributions ? "xl:pb-0" : ""
             )}
           >
-            <Outlet />
+            {children}
           </div>
         </Background>
       </div>
-    </>
+      {/*// TODO NEXT : should be remove*/}
+      <SpaceBackground />
+    </div>
   );
 }
