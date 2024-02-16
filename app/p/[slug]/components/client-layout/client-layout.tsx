@@ -18,7 +18,6 @@ import { SpaceBackground } from "components/features/space-background/space-back
 import { TClientLayout } from "./client-layout.types";
 
 export function ClientLayout({ children }: TClientLayout.Props) {
-  console.log("OUIIII");
   const { pathname } = useLocation();
   const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
   const isProjectContributions = !!matchPath(
