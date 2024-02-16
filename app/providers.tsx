@@ -3,9 +3,12 @@
 import { NextUIProvider } from "@nextui-org/react";
 import dynamic from "next/dynamic";
 import { PropsWithChildren } from "react";
+import { useMediaQuery } from "usehooks-ts";
 
 import { Stacks } from "src/App/Stacks/Stacks";
 import { Toaster } from "src/components/Toaster";
+import Tooltip from "src/components/Tooltip";
+import { viewportConfig } from "src/config";
 import { IntlProvider } from "src/hooks/useIntl";
 import { ToasterProvider } from "src/hooks/useToaster";
 
@@ -26,6 +29,8 @@ const SidePanelProvider = dynamic(() => import("src/hooks/useSidePanel").then(mo
 const BrowserRouter = dynamic(() => import("react-router-dom").then(mod => mod.BrowserRouter), { ssr: false });
 
 export default function Providers({ children }: PropsWithChildren) {
+  const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
+
   return (
     <PosthogProvider>
       <ImpersonationProvider>
@@ -41,6 +46,7 @@ export default function Providers({ children }: PropsWithChildren) {
                           {children}
                           <Stacks />
                           <Toaster />
+                          {/* Hide tooltips on mobile */ isSm && <Tooltip />}
                         </ToasterProvider>
                       </SidePanelProvider>
                     </SidePanelStackProvider>

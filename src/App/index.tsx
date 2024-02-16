@@ -3,7 +3,6 @@ import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
 import SettingsLayout from "app/migration/settings/layout";
 
-import Layout from "src/App/Layout";
 import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ErrorTrigger from "src/_pages/ErrorTrigger";
 import ImpersonationPage from "src/_pages/Impersonation";
@@ -26,7 +25,6 @@ import RewardLoader from "./Loaders/RewardsLoader";
 import ProtectedByFlag from "./ProtectedByFlag";
 
 const ProjectsPage = lazy(() => import("app/migration/projects/page"));
-const Contributions = lazy(() => import("src/_pages/Contributions/Contributions"));
 const Rewards = lazy(() => import("src/_pages/Rewards"));
 const ProjectDetails = lazy(() => import("src/_pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/_pages/ProjectDetails/Overview"));
@@ -169,7 +167,6 @@ function App() {
       element: <PublicProfilePage />,
     },
     {
-      element: <Layout />,
       children: [
         {
           path: RoutePaths.Projects,
@@ -194,14 +191,6 @@ function App() {
               <Suspense fallback={<RewardLoader />}>
                 <Rewards />
               </Suspense>
-            </AuthenticationGuard>
-          ),
-        },
-        {
-          path: RoutePaths.Contributions,
-          element: (
-            <AuthenticationGuard>
-              <Contributions />
             </AuthenticationGuard>
           ),
         },

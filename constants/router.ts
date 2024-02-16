@@ -2,6 +2,7 @@ export const NEXT_ROUTER = {
   projects: {
     all: "/",
     details: (slug: string) => `/p/${slug}`,
+    creation: "/p/create",
   },
   p: {
     root: (slug: string) => `/p/${slug}`,
@@ -11,9 +12,16 @@ export const NEXT_ROUTER = {
     contributions: (slug: string) => `/p/${slug}/contributions`,
     insights: (slug: string) => `/p/${slug}/insights`,
   },
+  contributions: {
+    all: "/contributions",
+  },
+  rewards: {
+    all: "/rewards",
+  },
   settings: {
+    all: "/settings",
     profile: "/settings/profile",
     payout: "/settings/payout",
     billing: "/settings/billing",
   },
-};
+} as const;
