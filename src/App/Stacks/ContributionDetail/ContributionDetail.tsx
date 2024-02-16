@@ -178,9 +178,9 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
                   />
                   <div className="text-sm text-greyscale-300">
                     {T("contributions.panel.contribution.forProject")}&nbsp;
-                    <Link onClick={() => openProjectOverview({ slug: contribution.project.slug })}>
+                    <Link.Button onClick={() => openProjectOverview({ slug: contribution.project.slug })}>
                       {contribution.project.name}
-                    </Link>
+                    </Link.Button>
                     &nbsp;/&nbsp;<Link href={contribution.repo.htmlUrl}>{contribution.repo.name}</Link>
                   </div>
                 </div>

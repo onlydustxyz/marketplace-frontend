@@ -23,7 +23,7 @@ export function ContributionProjectRepo({ project, repo }: { project: ShortProje
       />
 
       <div>
-        <Link onClick={onClickProject}>{project.name}</Link>
+        <Link.Button onClick={onClickProject}>{project.name}</Link.Button>
         &nbsp;
         <Typography variant="body-s" as="span" className="text-spaceBlue-300">
           /
