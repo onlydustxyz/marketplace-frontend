@@ -1,15 +1,15 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { usePathname } from "next/navigation";
 import { useMemo } from "react";
-import { NavLink, useLocation } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import { cn } from "src/utils/cn";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { MenuItem } from "components/layout/sidebar/menu-item/menu-item";
@@ -29,7 +29,7 @@ export function Sidebar() {
 
   const { user } = useCurrentUser();
   const { error } = useSettingsError();
-  const { pathname } = useLocation();
+  const pathname = usePathname();
 
   const menuItems: TMenuItem.Props[] = useMemo(
     () => [
@@ -68,11 +68,11 @@ export function Sidebar() {
     <LayoutSidebar
       mobileHeader={
         <div className="flex items-center gap-3">
-          <NavLink to={RoutePaths.Projects}>
+          <BaseLink href={NEXT_ROUTER.projects.all}>
             <Button as="div" iconOnly variant={"secondary"} size="s">
               <Icon remixName="ri-arrow-left-line" />
             </Button>
-          </NavLink>
+          </BaseLink>
           <div className="flex items-center gap-2 font-belwe text-2xl">
             <Avatar src={user?.avatarUrl || ""} alt={user?.login} size="m" />
             <div className="line-clamp-1">{user?.login}</div>

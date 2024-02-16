@@ -26,4 +26,7 @@ export const NEXT_ROUTER = {
     payout: "/settings/payout",
     billing: "/settings/billing",
   },
+  publicProfile: {
+    root: (slug: string) => `/u/${slug}`,
+  },
 } as const;
