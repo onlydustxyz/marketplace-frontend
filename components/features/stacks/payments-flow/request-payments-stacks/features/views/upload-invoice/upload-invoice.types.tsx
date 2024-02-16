@@ -6,4 +6,8 @@ export namespace TUploadInvoice {
     billingProfileId: string;
     goTo(props?: TRequestPaymentsStacks.onNextViewProps): void;
   }
+
+  export interface Data {
+    uploadInvoice: File;
+  }
 }

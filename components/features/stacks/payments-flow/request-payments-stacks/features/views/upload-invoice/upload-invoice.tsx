@@ -1,11 +1,12 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
-import { IconTag } from "components/ds/icon-tag/icon-tag";
+import { UploadFile } from "components/features/stacks/payments-flow/request-payments-stacks/components/upload-file/upload-file";
+import { UploadedFileDisplay } from "components/features/stacks/payments-flow/request-payments-stacks/components/uploaded-file-display/uploaded-file-display";
 import { TUploadInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/upload-invoice/upload-invoice.types";
 import { useInvoicePreview } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-preview/use-invoice-preview";
 import { useInvoiceUpload } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-upload/use-invoice-upload";
@@ -16,8 +17,30 @@ import { Typography } from "components/layout/typography/typography";
 
 export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvoice.Props) {
   const { T } = useIntl();
-  const { isLoading, isError, fileBlob, fileUrl } = useInvoicePreview({ rewardIds, billingProfileId });
+  const { isLoading, isError, fileUrl } = useInvoicePreview({ rewardIds, billingProfileId });
   const { isPendingUploadInvoice, handleSendInvoice } = useInvoiceUpload({ billingProfileId });
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const [blobFile, setBlobFile] = useState<Blob>();
+
+  function fileToBlob() {
+    const reader = new FileReader();
+    if (selectedFile) {
+      reader.readAsText(selectedFile);
+      reader.onload = function () {
+        if (reader.result) {
+          setBlobFile(new Blob([reader.result], { type: "application/pdf" }));
+        }
+      };
+    }
+  }
+
+  useEffect(() => {
+    fileToBlob();
+  }, [selectedFile]);
+
+  function removeFile() {
+    setSelectedFile(undefined);
+  }
 
   const requirementList = useMemo(
     () => (
@@ -30,6 +53,14 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
     ),
     []
   );
+
+  function renderUploadFile() {
+    if (selectedFile) {
+      return <UploadedFileDisplay fileName={selectedFile.name} onRemoveFile={removeFile} />;
+    }
+
+    return <UploadFile setSelectedFile={setSelectedFile} />;
+  }
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -49,7 +80,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
               className="mb-4"
             />
             <Card background={false} className="mb-4">
-              <p className="prose leading-normal text-greyscale-50">
+              <div className="prose leading-normal text-greyscale-50">
                 <Translate token="v2.pages.stacks.request_payments.uploadInvoice.summary.requirement" />
                 <br />
                 {requirementList}
@@ -66,24 +97,14 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                     </a>
                   </>
                 ) : null}
-              </p>
+              </div>
             </Card>
             <Typography
               variant={"title-s"}
               translate={{ token: "v2.pages.stacks.request_payments.uploadInvoice.uploadInvoiceTitle" }}
               className="mb-4"
             />
-            <Card background={false} className="flex flex-col items-center gap-4 border-dashed !py-10" clickable>
-              <IconTag icon={{ remixName: "ri-upload-cloud-line" }} />
-              <div>
-                <Translate
-                  as="span"
-                  className="text-spacePurple-400"
-                  token="v2.pages.stacks.request_payments.uploadInvoice.clickToUpload"
-                />{" "}
-                <Translate token="v2.pages.stacks.request_payments.uploadInvoice.dragAndDrop" />
-              </div>
-            </Card>
+            {renderUploadFile()}
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
             <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
@@ -96,8 +117,8 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                   variant="primary"
                   size="m"
                   className="w-full"
-                  onClick={() => handleSendInvoice(fileBlob)}
-                  disabled={isPendingUploadInvoice || !fileBlob}
+                  onClick={() => handleSendInvoice(blobFile)}
+                  disabled={isPendingUploadInvoice || !blobFile}
                 >
                   <Translate token="v2.pages.stacks.request_payments.form.sendInvoice" />
                 </Button>
