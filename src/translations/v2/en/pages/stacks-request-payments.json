@@ -48,7 +48,7 @@
     "skip": "Skip (manual invoicing)"
   },
   "uploadInvoice": {
-    "title": "Guidelines",
+    "guidelinesTitle": "Guidelines",
     "summary": {
       "requirement": "Informations required on your invoice for acceptance:",
       "rule_1": "Date of issuance",
@@ -58,7 +58,10 @@
       "rule_5": "Your invoice should be issued in $ with the following mention: “[number] [type of tokens] received and accepted as payment for this invoice.”"
     },
     "sample_to_download": "You can download an example by ",
-    "sample_link_label": "clicking here"
+    "sample_link_label": "clicking here",
+    "uploadInvoiceTitle": "Upload invoice",
+    "clickToUpload": "Click to upload",
+    "dragAndDrop": "or drag and drop"
   }
 }
 

@@ -5,7 +5,7 @@ import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
-import InvoiceViewer from "components/features/invoice-viewer/invoice-viewer";
+import { IconTag } from "components/ds/icon-tag/icon-tag";
 import { TUploadInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/upload-invoice/upload-invoice.types";
 import { useInvoicePreview } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-preview/use-invoice-preview";
 import { useInvoiceUpload } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-upload/use-invoice-upload";
@@ -31,19 +31,6 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
     []
   );
 
-  function renderInvoiceSamplePreview() {
-    if (isLoading) {
-      return <div> TODO loading component </div>;
-    }
-    if (isError) {
-      return <div> TODO error component </div>;
-    }
-    if (fileUrl) {
-      return <InvoiceViewer fileUrl={fileUrl} />;
-    }
-    return null;
-  }
-
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex h-full flex-col overflow-hidden px-1">
@@ -58,24 +45,44 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
             </div>
             <Typography
               variant={"title-s"}
-              translate={{ token: "v2.pages.stacks.request_payments.mandate.title" }}
+              translate={{ token: "v2.pages.stacks.request_payments.uploadInvoice.guidelinesTitle" }}
               className="mb-4"
             />
-            <Card background={false}>
+            <Card background={false} className="mb-4">
               <p className="prose leading-normal text-greyscale-50">
                 <Translate token="v2.pages.stacks.request_payments.uploadInvoice.summary.requirement" />
                 <br />
                 {requirementList}
                 <br />
-                <Translate token="v2.pages.stacks.request_payments.uploadInvoice.sample_to_download" />
-                <a
-                  className="text-snow hover:text-spacePurple-400 active:text-spacePurple-400"
-                  href={fileUrl}
-                  download="invoice-sample.pdf"
-                >
-                  <Translate token="v2.pages.stacks.request_payments.uploadInvoice.sample_link_label" />
-                </a>
+                {!isError && !isLoading ? (
+                  <>
+                    <Translate token="v2.pages.stacks.request_payments.uploadInvoice.sample_to_download" />
+                    <a
+                      className="text-snow hover:text-spacePurple-400 active:text-spacePurple-400"
+                      href={fileUrl}
+                      download="invoice-sample.pdf"
+                    >
+                      <Translate token="v2.pages.stacks.request_payments.uploadInvoice.sample_link_label" />
+                    </a>
+                  </>
+                ) : null}
               </p>
+            </Card>
+            <Typography
+              variant={"title-s"}
+              translate={{ token: "v2.pages.stacks.request_payments.uploadInvoice.uploadInvoiceTitle" }}
+              className="mb-4"
+            />
+            <Card background={false} className="flex flex-col items-center gap-4 border-dashed !py-10" clickable>
+              <IconTag icon={{ remixName: "ri-hand-coin-line" }} />
+              <div>
+                <Translate
+                  as="span"
+                  className="text-spacePurple-400"
+                  token="v2.pages.stacks.request_payments.uploadInvoice.clickToUpload"
+                />{" "}
+                <Translate token="v2.pages.stacks.request_payments.uploadInvoice.dragAndDrop" />
+              </div>
             </Card>
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
