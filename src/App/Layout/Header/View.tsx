@@ -33,11 +33,9 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
   const { isAuthenticated, isLoading } = useAuth0();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  // TODO NEXT check this is correct
-  const isMatchProjectDetail = useMatchPath(NEXT_ROUTER.projects.details("[slug]"));
-  const isMatchProjectCreation = useMatchPath(NEXT_ROUTER.projects.creation);
+  const isMatchProjectDetail = useMatchPath(NEXT_ROUTER.projects.details("[slug]"), { exact: false });
   const isMatchSettings = useMatchPath(NEXT_ROUTER.settings.all, { exact: false });
-  const hideHeader = ((isMatchProjectDetail && !isMatchProjectCreation) || isMatchSettings) && !isXl;
+  const hideHeader = (isMatchProjectDetail || isMatchSettings) && !isXl;
 
   if (hideHeader) {
     return null;
