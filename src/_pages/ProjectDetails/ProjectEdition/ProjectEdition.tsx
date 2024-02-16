@@ -146,7 +146,7 @@ function SafeProjectEdition() {
             justify="between"
             item="center"
             gap={4}
-            className="h-full w-full flex-col items-center bg-card-background-light px-6 py-5 lg:flex-row"
+            className="h-full w-full items-center bg-card-background-light px-6 py-5"
           >
             <FormStatus
               {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
