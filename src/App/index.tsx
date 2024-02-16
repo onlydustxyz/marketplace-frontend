@@ -27,7 +27,6 @@ import ProtectedByFlag from "./ProtectedByFlag";
 const ProjectsPage = lazy(() => import("app/migration/projects/page"));
 const Rewards = lazy(() => import("src/_pages/Rewards"));
 const ProjectDetails = lazy(() => import("src/_pages/ProjectDetails"));
-const ProjectDetailsOverview = lazy(() => import("src/_pages/ProjectDetails/Overview"));
 const ProjectDetailsContributors = lazy(() => import("src/_pages/ProjectDetails/Contributors"));
 const ProjectDetailsContributions = lazy(() => import("src/_pages/ProjectDetails/Contributions"));
 const ProjectDetailsRewardsList = lazy(() => import("src/_pages/ProjectDetails/Rewards/List"));
@@ -55,7 +54,6 @@ export enum RoutePaths {
 }
 
 export enum ProjectRoutePaths {
-  Overview = "",
   Contributors = "contributors",
   Rewards = "rewards",
   Edit = "edit",
@@ -70,14 +68,6 @@ export enum ProjectRewardsRoutePaths {
 
 function App() {
   const projectRoutes: RouteObject[] = [
-    {
-      index: true,
-      element: (
-        <Suspense fallback={<Skeleton variant="projectOverview" />}>
-          <ProjectDetailsOverview />
-        </Suspense>
-      ),
-    },
     {
       path: ProjectRoutePaths.Contributors,
       element: (
