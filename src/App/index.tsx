@@ -21,11 +21,9 @@ import { LeadGuard } from "components/features/auth0/guards/lead-guard";
 
 import ProjectDetailsLoader from "./Loaders/ProjectDetailLoader";
 import ProjectsLoader from "./Loaders/ProjectsLoader";
-import RewardLoader from "./Loaders/RewardsLoader";
 import ProtectedByFlag from "./ProtectedByFlag";
 
 const ProjectsPage = lazy(() => import("app/migration/projects/page"));
-const Rewards = lazy(() => import("src/_pages/Rewards"));
 const ProjectDetails = lazy(() => import("src/_pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/_pages/ProjectDetails/Overview"));
 const ProjectDetailsContributors = lazy(() => import("src/_pages/ProjectDetails/Contributors"));
@@ -183,16 +181,6 @@ function App() {
         {
           path: RoutePaths.Onboarding,
           element: <Onboarding />,
-        },
-        {
-          path: RoutePaths.Rewards,
-          element: (
-            <AuthenticationGuard>
-              <Suspense fallback={<RewardLoader />}>
-                <Rewards />
-              </Suspense>
-            </AuthenticationGuard>
-          ),
         },
         {
           path: `${RoutePaths.Settings}/*`,
