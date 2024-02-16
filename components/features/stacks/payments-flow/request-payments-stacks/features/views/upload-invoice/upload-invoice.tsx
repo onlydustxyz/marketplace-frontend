@@ -74,7 +74,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
               className="mb-4"
             />
             <Card background={false} className="flex flex-col items-center gap-4 border-dashed !py-10" clickable>
-              <IconTag icon={{ remixName: "ri-hand-coin-line" }} />
+              <IconTag icon={{ remixName: "ri-upload-cloud-line" }} />
               <div>
                 <Translate
                   as="span"
