@@ -1,9 +1,8 @@
 import _ from "lodash";
+import { useParams } from "next/navigation";
 import { useMemo } from "react";
-import { useParams } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
-import { ProjectRoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
 import Skeleton from "src/components/Skeleton";
 import { viewportConfig } from "src/config";
@@ -16,6 +15,8 @@ import {
 } from "src/hooks/useProjectLeader/useProjectLeader";
 import { cn } from "src/utils/cn";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import View from "./View";
 import ViewMobile from "./ViewMobile";
 
@@ -25,11 +26,11 @@ export type ProjectDetailsTab = {
 };
 
 export default function ProjectsSidebar() {
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  const { data: currentProject, isLoading } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
+  const { data: currentProject, isLoading } = ProjectApi.queries.useGetProjectBySlug({ params: { slug } });
 
   const isProjectLeader = useProjectLeader({ id: currentProject?.id });
   const isPendingProjectLeader = usePendingProjectLeader({ id: currentProject?.id });
@@ -51,23 +52,23 @@ export default function ProjectsSidebar() {
   const AvailableTabs: Record<string, ProjectDetailsTab> = {
     overview: {
       label: T("project.details.sidebar.overview"),
-      path: ProjectRoutePaths.Overview,
+      path: NEXT_ROUTER.p.root(slug),
     },
     contributors: {
       label: T("project.details.contributors.title"),
-      path: ProjectRoutePaths.Contributors,
+      path: NEXT_ROUTER.p.contributors(slug),
     },
     rewards: {
       label: T("project.details.rewards.title"),
-      path: ProjectRoutePaths.Rewards,
+      path: NEXT_ROUTER.p.rewards(slug),
     },
     contributions: {
       label: T("project.details.contributions.title"),
-      path: ProjectRoutePaths.Contributions,
+      path: NEXT_ROUTER.p.contributions(slug),
     },
     insights: {
       label: T("project.details.insights.title"),
-      path: ProjectRoutePaths.Insights,
+      path: NEXT_ROUTER.p.insights(slug),
     },
   };
 

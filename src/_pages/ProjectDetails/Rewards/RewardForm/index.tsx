@@ -1,7 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
+import { generatePath, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 import { ProjectRoutePaths, RoutePaths } from "src/App";
@@ -27,13 +28,13 @@ const RewardForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
   const { capture } = usePosthog();
 
   const queryClient = useQueryClient();
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
 
   const {
@@ -66,7 +67,7 @@ const RewardForm: React.FC = () => {
         await refetch();
         showToaster(T("reward.form.sent"));
         queryClient.invalidateQueries({ queryKey: [MeApi.tags.all, ProjectApi.tags.completed_rewardable_items] });
-        navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
+        navigate(generatePath(RoutePaths.ProjectDetails, { projectKey: slug }) + "/" + ProjectRoutePaths.Rewards);
       } catch (e) {
         console.error(e);
       }

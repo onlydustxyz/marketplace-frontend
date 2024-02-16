@@ -1,6 +1,7 @@
+import { useParams } from "next/navigation";
 import { PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 import { useFormState } from "react-hook-form";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 import ErrorFallback from "src/ErrorFallback";
@@ -176,9 +177,9 @@ export default function ProjectEdition() {
     delays: 2500,
   });
 
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
   const { data, isLoading, isError, isRefetching } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
     options: {
       retry: 1,
       refetchOnWindowFocus,
