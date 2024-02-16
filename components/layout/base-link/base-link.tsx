@@ -23,7 +23,7 @@ export function BaseLink({ href, target, rel, className, children, ...props }: T
       // data-active={true}
       {...props}
     >
-      {children?.({ isExternal })}
+      {typeof children === "function" ? children?.({ isExternal }) : children}
     </NextLink>
   );
 }
