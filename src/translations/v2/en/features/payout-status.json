@@ -32,7 +32,7 @@
     "tooltip": "You need to verify your information to get paid"
   },
   "errorVerification": {
-    "label": "Verification error",
+    "label": "Failed Verification",
     "tooltip": "You need to verify your information to get paid"
   },
   "pendingContributor": {
