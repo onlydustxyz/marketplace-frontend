@@ -3,6 +3,7 @@ import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow
 export namespace TGenerateInvoice {
   export interface Props {
     rewardIds: string[];
+    billingProfileId: string;
     goTo(props?: TRequestPaymentsStacks.onNextViewProps): void;
   }
 }

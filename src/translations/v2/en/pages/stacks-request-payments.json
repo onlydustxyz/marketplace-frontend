@@ -6,7 +6,8 @@
       "one": "Select __count__ reward",
       "many": "Select __count__ rewards"
     },
-    "back": "Back"
+    "back": "Back",
+    "sendInvoice": "Send invoice"
   },
   "item": {
     "to": "to",
@@ -24,6 +25,12 @@
   "tabs": {
     "included": "Rewards included",
     "excluded": "Rewards excluded"
+  },
+  "invoiceSubmission": {
+    "toaster": {
+      "success": "Invoice successfully sent",
+      "error": "We were unable to send the invoice, please try again later"
+    }
   },
   "openButton": "Request payment",
   "mandate": {

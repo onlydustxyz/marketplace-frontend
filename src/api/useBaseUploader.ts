@@ -26,7 +26,7 @@ export interface UseBaseUploaderProps<R = unknown> extends BaseUploaderOptions<R
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }
 
-export interface UseUploaderProps<RESULT = unknown, PARAMS = unknown> {
+export interface UseUploaderProps<RESULT = unknown, PARAMS = unknown | undefined> {
   options?: BaseUploaderOptions<RESULT>;
   params?: PARAMS;
   body?: File;
@@ -47,7 +47,7 @@ export function useBaseUploader<Response = unknown>({
   const { getImpersonateHeaders } = useImpersonation();
 
   return useMutation({
-    mutationFn: async (data: File): Promise<Response> => {
+    mutationFn: async (data: File | Blob): Promise<Response> => {
       const { options } = await getHttpOptions({
         isAuthenticated,
         logout,
@@ -60,6 +60,7 @@ export function useBaseUploader<Response = unknown>({
         headers: {
           ...options.headers,
           "Content-Type": data.type,
+          accept: data.type,
         },
         body: data,
       })

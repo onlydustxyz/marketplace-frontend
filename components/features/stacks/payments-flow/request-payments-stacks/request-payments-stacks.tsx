@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
+import BillingApi from "src/api/me/billing";
 
 import { GenerateInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/generate-invoice/generate-invoice";
 import { Mandate } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/mandate/mandate";
@@ -13,6 +14,9 @@ export function RequestPaymentsStacks() {
   const [excludedRewardsIds, setExcludedRewardsIds] = useState<string[]>([]);
   const [, closeRequestPanel] = useStackRequestPayments();
   const { data } = MeApi.queries.useGetMePendingInvoices({});
+
+  // TODO will be moved to the previous billing-profiles profiles selection step
+  const { data: billingProfilesData } = BillingApi.queries.useAllBillingProfiles({});
 
   const excludeNonLiquidToken = useMemo(
     () =>
@@ -52,7 +56,13 @@ export function RequestPaymentsStacks() {
   }
 
   if (view === TRequestPaymentsStacks.Views.Generate) {
-    return <GenerateInvoice goTo={onNextView} rewardIds={includedRewards.map(({ id }) => id)} />;
+    return (
+      <GenerateInvoice
+        goTo={onNextView}
+        rewardIds={includedRewards.map(({ id }) => id)}
+        billingProfileId={billingProfilesData?.billingProfiles?.[0].id ?? ""}
+      />
+    );
   }
 
   return (

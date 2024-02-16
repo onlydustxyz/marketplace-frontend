@@ -1,0 +1,65 @@
+import { Text, View } from "@react-pdf/renderer";
+import React from "react";
+
+import { styles } from "components/features/invoice-template/invoice-template.styles";
+import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
+import { TInvoice } from "components/features/invoice-template/invoice-template.types";
+
+export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos }: TInvoice.InvoiceInfoProps) {
+  const [senderStreetAddress, ...senderRestAdress] = senderInfos.address.split(/,(.+)/);
+  const [recipientStreetAddress, ...recipientRestAdress] = recipientInfos.address.split(/,(.+)/);
+  return (
+    <View style={{ ...styles.section, ...styles.flexRow }}>
+      <View style={{ ...styles.flexCol }}>
+        <View style={styles.paddingRightSmall}>
+          <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.companyName}</Text>
+          <Text style={styles.paragraph}>{senderInfos.name}</Text>
+          <Text style={styles.paragraph}>{senderStreetAddress}</Text>
+          <Text style={styles.paragraph}>{senderRestAdress.join("").trim()}</Text>
+          {senderInfos.euVATNumber ? (
+            <Text style={styles.paragraph}>
+              {InvoiceTokens.invoiceInfos.vatNumber}: {senderInfos.euVATNumber}
+            </Text>
+          ) : null}
+        </View>
+        <View style={{ ...styles.paddingLeftSmall, ...styles.justifyContentEnd, ...styles.textRight }}>
+          <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.billedTo}</Text>
+          <Text style={styles.paragraph}>{recipientInfos.name}</Text>
+          <Text style={styles.paragraph}>{recipientStreetAddress}</Text>
+          <Text style={styles.paragraph}>{recipientRestAdress.join("").trim()}</Text>
+          <Text style={styles.paragraph}>
+            {InvoiceTokens.invoiceInfos.siren}: {recipientInfos.registrationNumber}
+          </Text>
+          <Text style={styles.paragraph}>
+            {InvoiceTokens.invoiceInfos.vatNumber}: {recipientInfos.euVATNumber}
+          </Text>
+        </View>
+      </View>
+      <View style={{ ...styles.flexCol }}>
+        <View style={styles.paddingRightSmall}>
+          <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.issueDate}</Text>
+          <Text style={styles.paragraph}>{legalInfos.generationDate}</Text>
+        </View>
+        <View
+          style={{
+            ...styles.paddingLeftSmall,
+            ...styles.justifyContentEnd,
+            ...styles.textRight,
+            ...styles.width100p,
+          }}
+        >
+          <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.dueDate}</Text>
+          <Text style={styles.paragraph}>{legalInfos.dueDate}</Text>
+        </View>
+      </View>
+      <View style={{ ...styles.flexRow }}>
+        <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.destinationAccounts}</Text>
+        {legalInfos.destinationAccounts.map(wallet => (
+          <Text key={wallet} style={{ ...styles.paragraph, fontSize: 11, lineHeight: 1.2 }}>
+            - {wallet}
+          </Text>
+        ))}
+      </View>
+    </View>
+  );
+}
