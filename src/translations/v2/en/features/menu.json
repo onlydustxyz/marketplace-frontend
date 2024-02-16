@@ -9,7 +9,7 @@
   "profile": {
     "manage": "Manage my account",
     "pendingVerification": "Pending verification",
-    "verificationError": "Verification error",
+    "verificationError": "Failed verification",
     "missingPaymentMethods": "Payment method missing"
   },
   "tooltip": {

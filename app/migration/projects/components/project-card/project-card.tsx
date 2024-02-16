@@ -91,13 +91,13 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             )}
           </div>
           <Flex direction="col" className="w-full flex-1 gap-1 overflow-hidden pr-6 pt-6">
-            <Flex direction="row" className="items-center gap-2 md:items-start">
+            <Flex direction="row" className="mb-4 items-center gap-4 md:mb-0 md:items-start md:gap-2">
               <div className="relative block flex-shrink-0 md:hidden">
                 <Avatar
                   src={logoUrl}
                   alt={T("v2.pages.projects.highlights.thumbnail")}
                   size="l"
-                  className="mt-1"
+                  className="mt-1 h-[68px] w-[68px]"
                   shape="square"
                 />
                 {isPrivate && (
@@ -106,8 +106,19 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
                   </div>
                 )}
               </div>
-              <div className="flex-2 truncate font-belwe text-2xl font-medium">{project.name}</div>
-              {tags?.length ? <ProjectTags tags={tags} /> : null}
+              <div className="flex flex-1 flex-col gap-2 overflow-hidden">
+                <div className="flex-1 truncate font-belwe text-2xl font-medium">{project.name}</div>
+                {tags?.length ? (
+                  <Flex direction="row" className="justify-start gap-2 md:hidden">
+                    <ProjectTags tags={tags} />
+                  </Flex>
+                ) : null}
+              </div>
+              {tags?.length ? (
+                <Flex direction="row" className="hidden justify-end gap-2 md:flex">
+                  <ProjectTags tags={tags} />
+                </Flex>
+              ) : null}
             </Flex>
             <Summary shortDescription={shortDescription} />
             <div className="mt-4 flex flex-row flex-wrap items-center gap-4">
@@ -119,7 +130,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           </Flex>
         </Flex>
         {isInvitedAsProjectLead || isMissingGithubAppInstallation ? (
-          <Flex direction="col" className="mt-5 gap-5">
+          <Flex direction="col" className="mt-5 gap-5 pr-6">
             {InviteBanner}
             {MissingGithubBanner}
           </Flex>
