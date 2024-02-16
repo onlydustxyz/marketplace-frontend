@@ -11,6 +11,9 @@ export const NEXT_ROUTER = {
     contributions: (slug: string) => `/p/${slug}/contributions`,
     insights: (slug: string) => `/p/${slug}/insights`,
   },
+  contributions: {
+    all: "/contributions",
+  },
   settings: {
     profile: "/settings/profile",
     payout: "/settings/payout",
