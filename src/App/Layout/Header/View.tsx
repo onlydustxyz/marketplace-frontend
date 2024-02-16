@@ -1,13 +1,17 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link, useMatch } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
-import { RoutePaths } from "src/App";
 import MenuItem from "src/App/Layout/Header/MenuItem";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
+
+import { Link } from "components/ds/link/link";
+
+import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
 
 import { GithubStatusBanner } from "./GithubStatusBanner";
 import OnlyDustLogo from "./OnlyDustLogo";
@@ -16,23 +20,23 @@ import { ProfileButtonDisplay } from "./ProfileButton/ProfileButtonDisplay";
 
 interface HeaderViewProps {
   menuItems: {
-    [RoutePaths.Projects]?: string;
-    [RoutePaths.Contributions]?: string;
-    [RoutePaths.Rewards]?: string;
+    [NEXT_ROUTER.projects.all]?: string;
+    [NEXT_ROUTER.contributions.all]?: string;
+    [NEXT_ROUTER.rewards.all]?: string;
   };
-  selectedMenuItem: string;
   impersonating?: boolean;
   profileCompletionScore?: number;
 }
 
-export default function HeaderView({ menuItems, selectedMenuItem, impersonating = false }: HeaderViewProps) {
+export default function HeaderView({ menuItems, impersonating = false }: HeaderViewProps) {
   const { T } = useIntl();
   const { isAuthenticated, isLoading } = useAuth0();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  const isMatchProjectDetail = useMatch(`${RoutePaths.ProjectDetails}/*`);
-  const isMatchProjectCreation = useMatch(`${RoutePaths.ProjectCreation}/*`);
-  const isMatchSettings = useMatch(`${RoutePaths.Settings}/*`);
+  // TODO NEXT check this is correct
+  const isMatchProjectDetail = useMatchPath(NEXT_ROUTER.projects.details("[slug]"));
+  const isMatchProjectCreation = useMatchPath(NEXT_ROUTER.projects.creation);
+  const isMatchSettings = useMatchPath(NEXT_ROUTER.settings.all, { exact: false });
   const hideHeader = ((isMatchProjectDetail && !isMatchProjectCreation) || isMatchSettings) && !isXl;
 
   if (hideHeader) {
@@ -43,33 +47,21 @@ export default function HeaderView({ menuItems, selectedMenuItem, impersonating 
     <div className="sticky left-0 top-0 z-50 w-full">
       <div className="gap-3 bg-black px-6 py-4 font-walsheim text-xl text-neutral-400 xl:gap-8" data-testid="header">
         <div className="flex items-center justify-center gap-8 xl:justify-start">
-          <Link to={RoutePaths.Projects} className="flex w-fit items-center gap-3 ">
+          <Link href={NEXT_ROUTER.projects.all} className="flex w-fit items-center gap-3 ">
             <OnlyDustLogo />
             <OnlyDustTitle />
           </Link>
-
           <div className="flex-1 items-center gap-8 xl:flex">
             {isXl && (
               <>
-                {menuItems[RoutePaths.Projects] ? (
-                  <MenuItem
-                    path={selectedMenuItem}
-                    link={RoutePaths.Projects}
-                    state={{ skipScrollRestoration: true }}
-                    activeRegex={new RegExp("^(/|/projects.+)$")}
-                  >
-                    {menuItems[RoutePaths.Projects]}
-                  </MenuItem>
+                {menuItems[NEXT_ROUTER.projects.all] ? (
+                  <MenuItem href={NEXT_ROUTER.projects.all}>{menuItems[NEXT_ROUTER.projects.all]}</MenuItem>
                 ) : null}
-                {menuItems[RoutePaths.Contributions] ? (
-                  <MenuItem path={selectedMenuItem} link={RoutePaths.Contributions}>
-                    {menuItems[RoutePaths.Contributions]}
-                  </MenuItem>
+                {menuItems[NEXT_ROUTER.contributions.all] ? (
+                  <MenuItem href={NEXT_ROUTER.contributions.all}>{menuItems[NEXT_ROUTER.contributions.all]}</MenuItem>
                 ) : null}
-                {menuItems[RoutePaths.Rewards] ? (
-                  <MenuItem path={selectedMenuItem} link={RoutePaths.Rewards}>
-                    {menuItems[RoutePaths.Rewards]}
-                  </MenuItem>
+                {menuItems[NEXT_ROUTER.rewards.all] ? (
+                  <MenuItem href={NEXT_ROUTER.rewards.all}>{menuItems[NEXT_ROUTER.rewards.all]}</MenuItem>
                 ) : null}
                 <div className="flex flex-1 justify-center">
                   {impersonating ? (
