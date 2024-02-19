@@ -29,5 +29,7 @@ export const NEXT_ROUTER = {
   publicProfile: {
     root: (slug: string) => `/u/${slug}`,
   },
+  onboarding: "/onboarding",
+  termsAndConditions: "/terms-and-conditions",
   notFound: "/not-found",
 } as const;

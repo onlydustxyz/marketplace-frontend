@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { PropsWithChildren } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
+import OnboardingProvider from "src/App/OnboardingProvider";
 import { Stacks } from "src/App/Stacks/Stacks";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
@@ -38,20 +39,22 @@ export default function Providers({ children }: PropsWithChildren) {
           <IntlProvider>
             <QueryProvider>
               <NextUIProvider>
-                <BrowserRouter>
-                  <StackProvider>
-                    <SidePanelStackProvider>
-                      <SidePanelProvider>
-                        <ToasterProvider>
-                          {children}
-                          <Stacks />
-                          <Toaster />
-                          {/* Hide tooltips on mobile */ isSm && <Tooltip />}
-                        </ToasterProvider>
-                      </SidePanelProvider>
-                    </SidePanelStackProvider>
-                  </StackProvider>
-                </BrowserRouter>
+                <OnboardingProvider>
+                  <BrowserRouter>
+                    <StackProvider>
+                      <SidePanelStackProvider>
+                        <SidePanelProvider>
+                          <ToasterProvider>
+                            {children}
+                            <Stacks />
+                            <Toaster />
+                            {/* Hide tooltips on mobile */ isSm && <Tooltip />}
+                          </ToasterProvider>
+                        </SidePanelProvider>
+                      </SidePanelStackProvider>
+                    </StackProvider>
+                  </BrowserRouter>
+                </OnboardingProvider>
               </NextUIProvider>
             </QueryProvider>
           </IntlProvider>

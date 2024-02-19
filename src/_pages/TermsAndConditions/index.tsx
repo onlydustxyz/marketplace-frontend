@@ -1,23 +1,33 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocalStorage } from "react-use";
 
-import { RoutePaths } from "src/App";
 import MeApi from "src/api/me";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import SEO from "src/components/SEO";
+
+import { ONBOARDING_COMPLETED_STORAGE_KEY } from "constants/onboarding";
+import { NEXT_ROUTER } from "constants/router";
 
 import TermsAndConditionsMainCard from "./MainCard";
 import TermsAndConditionsPromptCard from "./PromptCard";
 
 export default function TermsAndConditions() {
-  const location = useLocation();
+  const router = useRouter();
+
+  const { data } = MeApi.queries.useGetMe({});
+  const [onboardingWizardCompleted] = useLocalStorage(
+    `${ONBOARDING_COMPLETED_STORAGE_KEY}-${data?.id ?? "default"}`,
+    false
+  );
+
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
   const { mutate: updateUserMutation, isSuccess } = MeApi.mutations.useUpdateMe({
     options: {
       onSuccess: () => {
-        navigate(RoutePaths.Projects);
+        router.push(NEXT_ROUTER.projects.all);
       },
     },
   });
@@ -27,13 +37,12 @@ export default function TermsAndConditions() {
       hasAcceptedTermsAndConditions: true,
     });
   };
-  const navigate = useNavigate();
 
   return (
     <>
       <SEO />
       <Background roundedBorders={BackgroundRoundedBorders.Full}>
-        {!showTermsAndConditions && !location.state?.skipIntro ? (
+        {!showTermsAndConditions && !onboardingWizardCompleted ? (
           <div className="mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-2 pb-6 text-greyscale-50 md:p-6">
             <TermsAndConditionsPromptCard {...{ setShowTermsAndConditions }} />
           </div>

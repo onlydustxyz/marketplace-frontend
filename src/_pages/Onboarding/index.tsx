@@ -1,10 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "react-use";
 
-import { RoutePaths } from "src/App";
 import {
   AllocatedTime,
   UserProfileInfo,
@@ -20,6 +20,9 @@ import SEO from "src/components/SEO";
 import TechnologiesSelect from "src/components/TechnologiesSelect";
 import { useIntl } from "src/hooks/useIntl";
 
+import { ONBOARDING_COMPLETED_STORAGE_KEY } from "constants/onboarding";
+import { NEXT_ROUTER } from "constants/router";
+
 import Card from "./Card";
 import { Contact } from "./Contact";
 import Intro from "./Intro";
@@ -33,14 +36,20 @@ export default function Onboarding() {
 
   const { T } = useIntl();
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
+
+  const [, setOnboardingWizardCompleted] = useLocalStorage(
+    `${ONBOARDING_COMPLETED_STORAGE_KEY}-${myProfileInfo?.id ?? "default"}`,
+    false
+  );
 
   const { mutate: updateUserMutation } = MeApi.mutations.useUpdateMe({
     options: {
       onSuccess: () => {
-        navigate(RoutePaths.Projects, { state: { onboardingWizzardCompleted: true } });
+        setOnboardingWizardCompleted(true);
+        router.push(NEXT_ROUTER.projects.all);
       },
     },
   });
