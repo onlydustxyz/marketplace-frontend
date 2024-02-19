@@ -1,9 +1,9 @@
+import { TCurrencies } from "app/settings/payout/features/form/currencies/currencies.types";
+
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 
 import { Flex } from "components/layout/flex/flex";
 import { Translate } from "components/layout/translate/translate";
-
-import { TCurrencies } from "./currencies.types";
 
 export function Currencies({ currencies }: TCurrencies.Props) {
   return (

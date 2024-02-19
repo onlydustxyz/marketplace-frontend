@@ -1,8 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
-import SettingsLayout from "app/migration/settings/layout";
-
 import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ErrorTrigger from "src/_pages/ErrorTrigger";
 import ImpersonationPage from "src/_pages/Impersonation";
@@ -171,14 +169,6 @@ function App() {
         {
           path: RoutePaths.Onboarding,
           element: <Onboarding />,
-        },
-        {
-          path: `${RoutePaths.Settings}/*`,
-          element: (
-            <AuthenticationGuard>
-              <SettingsLayout />
-            </AuthenticationGuard>
-          ),
         },
         {
           path: RoutePaths.ProjectCreation,

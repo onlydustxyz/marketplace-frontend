@@ -83,7 +83,7 @@ const formSchema = z
   });
 
 // TODO: Change input errors with new components
-export default function PayoutPage() {
+export default function SettingsPayoutPage() {
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyPayoutSettings({});

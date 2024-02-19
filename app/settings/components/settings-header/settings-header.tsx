@@ -1,4 +1,4 @@
-import { TSettingsHeader } from "app/migration/settings/components/settings-header/settings-header.types";
+import { TSettingsHeader } from "app/settings/components/settings-header/settings-header.types";
 
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
