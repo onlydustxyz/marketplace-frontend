@@ -30,4 +30,6 @@ export const NEXT_ROUTER = {
     root: (slug: string) => `/u/${slug}`,
   },
   notFound: "/not-found",
+  onboarding: "/onboarding",
+  termsAndConditions: "/terms-and-conditions",
 } as const;

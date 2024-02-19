@@ -1,18 +1,19 @@
-import { useLocation } from "react-router";
+import { usePathname } from "next/navigation";
 
-import { RoutePaths } from "src/App";
 import ExternalApi from "src/api/External";
 import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import GithubWarning from "src/icons/GithubWarning";
 import { cn } from "src/utils/cn";
 
+import { NEXT_ROUTER } from "constants/router";
+
 export function GithubStatusBanner() {
   const { T } = useIntl();
-  const location = useLocation();
+  const pathname = usePathname();
 
-  const marginRoutes = [RoutePaths.Contributions];
-  const shouldAddMargin = marginRoutes.some(route => route === location.pathname);
+  const marginRoutes = [NEXT_ROUTER.contributions.all];
+  const shouldAddMargin = marginRoutes.some(route => route === pathname);
 
   const { data } = ExternalApi.queries.useGithubStatus();
 

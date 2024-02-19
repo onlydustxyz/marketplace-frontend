@@ -6,6 +6,7 @@ import { NavigationStateProvider } from "providers/navigation-state/navigation-s
 import { PropsWithChildren } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
+import OnboardingProvider from "src/App/OnboardingProvider";
 import { Stacks } from "src/App/Stacks/Stacks";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
@@ -39,22 +40,24 @@ export default function Providers({ children }: PropsWithChildren) {
           <IntlProvider>
             <QueryProvider>
               <NextUIProvider>
-                <BrowserRouter>
-                  <NavigationStateProvider>
-                    <StackProvider>
-                      <SidePanelStackProvider>
-                        <SidePanelProvider>
-                          <ToasterProvider>
-                            {children}
-                            <Stacks />
-                            <Toaster />
-                            {/* Hide tooltips on mobile */ isSm && <Tooltip />}
-                          </ToasterProvider>
-                        </SidePanelProvider>
-                      </SidePanelStackProvider>
-                    </StackProvider>
-                  </NavigationStateProvider>
-                </BrowserRouter>
+                <OnboardingProvider>
+                  <BrowserRouter>
+                    <NavigationStateProvider>
+                      <StackProvider>
+                        <SidePanelStackProvider>
+                          <SidePanelProvider>
+                            <ToasterProvider>
+                              {children}
+                              <Stacks />
+                              <Toaster />
+                              {/* Hide tooltips on mobile */ isSm && <Tooltip />}
+                            </ToasterProvider>
+                          </SidePanelProvider>
+                        </SidePanelStackProvider>
+                      </StackProvider>
+                    </NavigationStateProvider>
+                  </BrowserRouter>
+                </OnboardingProvider>
               </NextUIProvider>
             </QueryProvider>
           </IntlProvider>

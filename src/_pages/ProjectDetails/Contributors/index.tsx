@@ -1,3 +1,5 @@
+"use client";
+
 import { useParams } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 
