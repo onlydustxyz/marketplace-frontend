@@ -1,6 +1,6 @@
+import { useRouter } from "next/navigation";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 import ContributorSelect from "src/_pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
@@ -79,7 +79,7 @@ const View: React.FC<Props> = ({
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
-  const navigate = useNavigate();
+  const router = useRouter();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
@@ -162,7 +162,7 @@ const View: React.FC<Props> = ({
       {isXl && (
         <Title>
           <div className="flex flex-row items-center gap-3">
-            <div onClick={() => navigate(-1)}>
+            <div onClick={() => router.back()}>
               <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
                 <CloseLine className="text-base" />
               </Button>
