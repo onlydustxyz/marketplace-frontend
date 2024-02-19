@@ -26,4 +26,5 @@ export const NEXT_ROUTER = {
     payout: "/settings/payout",
     billing: "/settings/billing",
   },
+  notFound: "/not-found",
 } as const;
