@@ -1,6 +1,5 @@
 import { UseMutateFunction } from "@tanstack/react-query";
 import { PropsWithChildren, useMemo, useState } from "react";
-import { NavLink } from "react-router-dom";
 
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
@@ -27,6 +26,7 @@ import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
+import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -98,13 +98,13 @@ export default function View({
 
     if (redirectionStatus && (data.status === "MISSING_PAYOUT_INFO" || data.status === "PENDING_VERIFICATION"))
       return (
-        <NavLink to={redirectionStatus} onClick={() => closeRewardPanel()}>
+        <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
           <PayoutStatus
             status={data.status}
             dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
             isBillingError={isBillingError}
           />
-        </NavLink>
+        </BaseLink>
       );
 
     return (
