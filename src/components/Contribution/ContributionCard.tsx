@@ -1,4 +1,4 @@
-import { useMatch } from "react-router-dom";
+import { usePathname } from "next/navigation";
 
 import { RoutePaths } from "src/App";
 import { Contribution } from "src/components/Contribution/Contribution";
@@ -15,7 +15,9 @@ import Contributor from "../Contributor";
 
 export function ContributionCard({ contribution, className }: { contribution: ContributionT; className?: string }) {
   const { T } = useIntl();
-  const isMyContribution = Boolean(useMatch(`${RoutePaths.Contributions}/*`));
+  const pathname = usePathname();
+
+  const isMyContribution = Boolean(pathname.match(`${RoutePaths.Contributions}/*`));
 
   const date =
     contribution.status === ContributionStatus.InProgress ? contribution.createdAt : contribution.completedAt;

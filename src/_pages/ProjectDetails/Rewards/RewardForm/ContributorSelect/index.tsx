@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import { Contributor } from "src/_pages/ProjectDetails/Rewards/RewardForm/types";
@@ -25,14 +25,13 @@ type Props = {
 };
 
 export default function ContributorSelect({ projectId, contributor, setContributor, sidePanelOpened }: Props) {
-  const router = useRouter();
-  const { query } = router;
+  const searchParams = useSearchParams();
 
-  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(
-    query?.recipientGithubLogin ? decodeURIComponent(query.recipientGithubLogin as string) : null
-  );
+  const recipientGithubLogin = searchParams.get("recipientGithubLogin");
 
-  const [search, setSearch] = useState<string>(selectedGithubHandle || "");
+  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(recipientGithubLogin || null);
+
+  const [search, setSearch] = useState<string>(recipientGithubLogin || "");
 
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
