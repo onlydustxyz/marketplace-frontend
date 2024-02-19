@@ -69,7 +69,7 @@ export function SpaceBackground() {
     };
   }, [size]);
 
-  const isMatchUserProfile = useMatchPath(NEXT_ROUTER.publicProfile.base, { exact: false });
+  const isMatchUserProfile = useMatchPath(NEXT_ROUTER.publicProfile.root(""), { exact: false });
 
   if (isMatchUserProfile) {
     return null;

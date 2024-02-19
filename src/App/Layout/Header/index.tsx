@@ -29,7 +29,7 @@ export default function Header() {
   const projectsMenuItem =
     (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("v2.features.menu.projects") : undefined;
 
-  const isMatchUserProfile = useMatchPath(NEXT_ROUTER.publicProfile.base, { exact: false });
+  const isMatchUserProfile = useMatchPath(NEXT_ROUTER.publicProfile.root(""), { exact: false });
 
   if (isMatchUserProfile) {
     return null;
