@@ -1,9 +1,7 @@
 "use client";
 
 import { Fragment, useEffect } from "react";
-import { useMatch } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
 import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
 import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
 import ProjectApi from "src/api/Project";
@@ -26,6 +24,9 @@ import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 
 import { Link } from "components/ds/link/link";
 
+import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
 import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
@@ -35,7 +36,8 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
   const { githubUserId } = useCurrentUser();
   const [openRewardPanel] = useStackReward();
   const [openProjectOverview] = useStackProjectOverview();
-  const isMyContribution = Boolean(useMatch(`${RoutePaths.Contributions}/*`));
+  const isMyContribution = useMatchPath(NEXT_ROUTER.contributions.all, { exact: false });
+
   const { capture } = usePosthog();
 
   const {

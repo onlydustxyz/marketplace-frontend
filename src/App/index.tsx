@@ -34,13 +34,11 @@ export enum RoutePaths {
   ProjectDetails = "/p/:projectKey",
   ProjectDetailsEdit = "/p/:projectKey/edit",
   ProjectDetailsEditRepos = "/p/:projectKey/edit?tab=Repos",
-  Rewards = "/rewards",
   CatchAll = "*",
   Error = "/error",
   NotFound = "/not-found",
   Impersonation = "/impersonate/:userId",
   PublicProfile = "/u/:userLogin",
-  Contributions = "/contributions",
   GithubCallbacks = "/github-callbacks",
 }
 
