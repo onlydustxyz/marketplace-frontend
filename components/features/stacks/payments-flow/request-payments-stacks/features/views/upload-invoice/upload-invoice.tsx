@@ -153,7 +153,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                   size="m"
                   className="w-full"
                   onClick={() => handleSendInvoice(blobFile)}
-                  disabled={isPendingUploadInvoice || !blobFile}
+                  disabled={isPendingUploadInvoice || !selectedFile}
                 >
                   <Translate token="v2.pages.stacks.request_payments.form.sendInvoice" />
                 </Button>

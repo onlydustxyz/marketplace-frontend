@@ -13,7 +13,7 @@ export function getHeaderProps({
   invoiceNumber: string;
 }): TInvoice.HeaderProps {
   let title = "";
-  // knowing that it is a query param string
+  // provided as a query param string
   if (isSample === "true") {
     title = InvoiceTokens.header.sampleTitle;
   } else {
