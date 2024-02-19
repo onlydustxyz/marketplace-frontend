@@ -31,6 +31,10 @@
       "success": "Invoice successfully sent",
       "error": "We were unable to send the invoice, please try again later",
       "emptyFile": "We Were unable to find the file, please try again later"
+    },
+    "banner": {
+      "title": "Please double check that everything is correct",
+      "description": "Once approved it will trigger the payment process and can’t be edited."
     }
   },
   "openButton": "Request payment",
