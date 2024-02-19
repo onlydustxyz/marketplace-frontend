@@ -5,7 +5,7 @@ import { useShowToaster } from "src/hooks/useToaster";
 
 import { TUseInvoiceUpload } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-upload/use-invoice-upload.types";
 
-export function useInvoiceUpload({ billingProfileId }: TUseInvoiceUpload.Props) {
+export function useInvoiceUpload({ billingProfileId, invoiceId }: TUseInvoiceUpload.Props) {
   const { T } = useIntl();
   const showToaster = useShowToaster();
 
@@ -16,6 +16,7 @@ export function useInvoiceUpload({ billingProfileId }: TUseInvoiceUpload.Props) 
   } = BillingProfilesApi.mutations.useUploadInvoice({
     params: {
       billingProfileId,
+      invoiceId,
     },
   });
 

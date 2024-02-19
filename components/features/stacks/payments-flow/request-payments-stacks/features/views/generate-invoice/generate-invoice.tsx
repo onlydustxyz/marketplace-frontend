@@ -14,8 +14,12 @@ import { Typography } from "components/layout/typography/typography";
 import { TGenerateInvoice } from "./generate-invoice.types";
 
 export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerateInvoice.Props) {
-  const { isLoading, isError, fileBlob, fileUrl } = useInvoicePreview({ rewardIds, billingProfileId });
-  const { isPendingUploadInvoice, handleSendInvoice } = useInvoiceUpload({ billingProfileId });
+  const { isLoading, isError, fileBlob, fileUrl, invoiceId } = useInvoicePreview({
+    rewardIds,
+    billingProfileId,
+    isSample: false,
+  });
+  const { isPendingUploadInvoice, handleSendInvoice } = useInvoiceUpload({ billingProfileId, invoiceId });
 
   function renderInvoicePreview() {
     if (isLoading) {

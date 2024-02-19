@@ -24,7 +24,10 @@ export async function fetchInvoicePreviewBlob({
     .then(async res => {
       const blob = await res.blob();
       if (blob) {
-        return blob;
+        return {
+          blob,
+          invoiceId: res.headers.get("x-invoice-id"),
+        };
       } else {
         throw new Error("Failed to create the blob.");
       }

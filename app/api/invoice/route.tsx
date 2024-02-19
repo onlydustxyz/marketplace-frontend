@@ -30,6 +30,7 @@ export async function GET(request: NextRequest) {
   let invoicePreviewData;
   try {
     invoicePreviewData = await fetchInvoicePreviewData({ token: token ?? "", rewardIds, billingProfileId });
+    console.log("invoicePreviewData", invoicePreviewData);
   } catch (e) {
     return new NextResponse("Failed Dependency : Invoice Preview ", { status: 424 });
   }
@@ -76,6 +77,7 @@ export async function GET(request: NextRequest) {
   return new NextResponse(stream as unknown as BodyInit, {
     headers: {
       "Content-Type": "application/pdf",
+      "x-invoice-id": invoicePreviewData.id,
     },
     status: 201,
   });
