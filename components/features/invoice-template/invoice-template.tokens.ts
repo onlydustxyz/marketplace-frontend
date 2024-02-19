@@ -1,5 +1,6 @@
 export const InvoiceTokens = {
   header: {
+    sampleTitle: "Your invoice number",
     receiptTitle: "Receipt NO:",
     invoiceTitle: "Invoice NO:",
   },

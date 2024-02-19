@@ -5,7 +5,7 @@ import { fetchInvoicePreviewBlob } from "app/api/invoice/handlers/fetch-invoice-
 
 import { TUseInvoicePreview } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-preview/use-invoice-preview.types";
 
-export function useInvoicePreview({ rewardIds, billingProfileId }: TUseInvoicePreview.Props) {
+export function useInvoicePreview({ rewardIds, billingProfileId, isSample = false }: TUseInvoicePreview.Props) {
   const { getAccessTokenSilently } = useAuth0();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -20,7 +20,7 @@ export function useInvoicePreview({ rewardIds, billingProfileId }: TUseInvoicePr
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const blob = await fetchInvoicePreviewBlob({ token, rewardIds, billingProfileId });
+      const blob = await fetchInvoicePreviewBlob({ token, rewardIds, billingProfileId, isSample });
       if (blob) {
         setFileBlob(blob);
         setFileUrl(window.URL.createObjectURL(blob));

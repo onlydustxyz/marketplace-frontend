@@ -4,15 +4,25 @@ import { InvoiceTokens } from "components/features/invoice-template/invoice-temp
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 
 export function getHeaderProps({
+  isSample,
   isUserIndividual,
   invoiceNumber,
 }: {
+  isSample: string;
   isUserIndividual: boolean;
   invoiceNumber: string;
 }): TInvoice.HeaderProps {
+  let title = "";
+  // knowing that it is a query param string
+  if (isSample === "true") {
+    title = InvoiceTokens.header.sampleTitle;
+  } else {
+    title = `${
+      isUserIndividual ? InvoiceTokens.header.receiptTitle : InvoiceTokens.header.invoiceTitle
+    } #${invoiceNumber}`;
+  }
   return {
-    title: isUserIndividual ? InvoiceTokens.header.receiptTitle : InvoiceTokens.header.invoiceTitle,
-    invoiceNumber: `#${invoiceNumber}`,
+    title,
   };
 }
 

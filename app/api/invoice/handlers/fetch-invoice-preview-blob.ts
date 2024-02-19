@@ -2,14 +2,17 @@ export async function fetchInvoicePreviewBlob({
   token,
   rewardIds,
   billingProfileId,
+  isSample = false,
 }: {
   token: string;
   rewardIds: string[];
   billingProfileId: string;
+  isSample: boolean;
 }) {
   const params = new URLSearchParams();
   params.append("rewardIds", rewardIds.join(","));
   params.append("billingProfileId", billingProfileId);
+  params.append("isSample", `${isSample}`);
   const url = `/api/invoice?${params.toString()}`;
 
   return await fetch(url, {

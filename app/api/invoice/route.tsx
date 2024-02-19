@@ -29,7 +29,8 @@ export async function GET(request: NextRequest) {
   Retrieve the invoice preview data
   ------ */
   // TODO will be replaced by the following invoice preview endpoint once ready
-  // const searchParams = request.nextUrl.searchParams;
+  const searchParams = request.nextUrl.searchParams;
+  const isSample = searchParams.get("isSample") ?? "false";
   // const billingProfileId = searchParams.get("billingProfileId") ?? "";
   // const rewardIds = searchParams.get("rewardIds") ?? "";
   // const invoicePreviewData = await fetchInvoicePreviewData({ token: token ?? "", rewardIds, billingProfileId });
@@ -50,6 +51,7 @@ export async function GET(request: NextRequest) {
   ------ */
   const header: TInvoice.HeaderProps = getHeaderProps({
     isUserIndividual,
+    isSample,
     invoiceNumber: invoiceMock.id,
   });
   const invoiceInfo: TInvoice.InvoiceInfoProps = getInvoiceInfoProps({

@@ -46,7 +46,6 @@ export namespace TInvoice {
 
   export interface HeaderProps {
     title: string;
-    invoiceNumber: string;
   }
 
   export interface InvoiceInfoProps {
