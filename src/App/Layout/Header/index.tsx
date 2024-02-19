@@ -9,6 +9,7 @@ import { useImpersonation } from "components/features/impersonation/use-imperson
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useMatchPath } from "hooks/router/useMatchPath";
 import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import View from "./View";
@@ -27,6 +28,12 @@ export default function Header() {
   const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.contributions") : undefined;
   const projectsMenuItem =
     (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("v2.features.menu.projects") : undefined;
+
+  const isMatchUserProfile = useMatchPath(NEXT_ROUTER.publicProfile.root(""), { exact: false });
+
+  if (isMatchUserProfile) {
+    return null;
+  }
 
   return (
     <View

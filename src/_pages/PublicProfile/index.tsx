@@ -1,5 +1,7 @@
+"use client";
+
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 import UsersApi from "src/api/Users";
 import { FetchError } from "src/api/query.type";
@@ -14,11 +16,12 @@ import Header from "./Header";
 import Profile from "./Profile";
 
 const PublicProfilePage = () => {
-  const { userLogin } = useParams();
+  const { slug } = useParams<{ slug: string }>();
+
   const { capture } = usePosthog();
 
   const { data: userProfile, ...restUserProfileByGithubLoginQueries } = UsersApi.queries.useUserProfileByGithubLogin({
-    params: { login: userLogin },
+    params: { login: slug },
     options: { retry: 1 },
   });
 
@@ -40,12 +43,12 @@ const PublicProfilePage = () => {
     return errorHandlingComponent;
   }
 
-  return userProfile && userLogin ? (
+  return userProfile && slug ? (
     <>
       <SEO title={`${userProfile.login} — OnlyDust`} />
       <div className="bg-public-profile lg:h-[calc(100dvh)] lg:w-screen">
         <div className="mx-auto flex h-full max-w-7xl flex-col justify-between md:px-4">
-          <Header userLogin={userLogin} />
+          <Header userLogin={slug} />
           <Profile userProfile={userProfile} />
           <Footer />
         </div>
