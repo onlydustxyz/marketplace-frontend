@@ -57,8 +57,8 @@
       "rule_4": "Reward date, Reward ID number, name of the project for each reward",
       "rule_5": "Your invoice should be issued in $ with the following mention: “[number] [type of tokens] received and accepted as payment for this invoice.”"
     },
-    "sample_to_download": "You can download an example by ",
-    "sample_link_label": "clicking here",
+    "sample_to_download": "We highly recommend downloading our invoice sample to help you create your own correctly.",
+    "sample_link_label": "Click here to download and get started",
     "uploadInvoiceTitle": "Upload invoice",
     "clickToUpload": "Click to upload",
     "dragAndDrop": "or drag and drop"

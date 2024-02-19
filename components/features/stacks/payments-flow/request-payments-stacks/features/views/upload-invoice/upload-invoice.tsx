@@ -5,6 +5,7 @@ import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
+import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { UploadFile } from "components/features/stacks/payments-flow/request-payments-stacks/components/upload-file/upload-file";
 import { UploadedFileDisplay } from "components/features/stacks/payments-flow/request-payments-stacks/components/uploaded-file-display/uploaded-file-display";
 import { TUploadInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/upload-invoice/upload-invoice.types";
@@ -54,6 +55,39 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
     []
   );
 
+  function renderUploadSample() {
+    if (isLoading) {
+      return (
+        <div className="flex flex-col gap-2">
+          <SkeletonEl width="90%" height="9px" variant="text" color="grey" />
+          <SkeletonEl width="15%" height="9px" variant="text" color="grey" />
+          <SkeletonEl width="40%" height="9px" variant="text" color="grey" className="mt-2" />
+        </div>
+      );
+    }
+    if (!isError && !isLoading) {
+      return (
+        <>
+          <Typography
+            variant={"body-m"}
+            translate={{ token: "v2.pages.stacks.request_payments.uploadInvoice.sample_to_download" }}
+          />
+          <a
+            className="text-snow hover:text-spacePurple-400 active:text-spacePurple-400"
+            href={fileUrl}
+            download="invoice-sample.pdf"
+          >
+            <Typography
+              variant={"body-m"}
+              translate={{ token: "v2.pages.stacks.request_payments.uploadInvoice.sample_link_label" }}
+            />
+          </a>
+        </>
+      );
+    }
+    return null;
+  }
+
   function renderUploadFile() {
     if (selectedFile) {
       return <UploadedFileDisplay fileName={selectedFile.name} onRemoveFile={removeFile} />;
@@ -84,19 +118,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                 <Translate token="v2.pages.stacks.request_payments.uploadInvoice.summary.requirement" />
                 <br />
                 {requirementList}
-                <br />
-                {!isError && !isLoading ? (
-                  <>
-                    <Translate token="v2.pages.stacks.request_payments.uploadInvoice.sample_to_download" />
-                    <a
-                      className="text-snow hover:text-spacePurple-400 active:text-spacePurple-400"
-                      href={fileUrl}
-                      download="invoice-sample.pdf"
-                    >
-                      <Translate token="v2.pages.stacks.request_payments.uploadInvoice.sample_link_label" />
-                    </a>
-                  </>
-                ) : null}
+                {renderUploadSample()}
               </div>
             </Card>
             <Typography
