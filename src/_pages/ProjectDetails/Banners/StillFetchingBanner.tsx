@@ -7,9 +7,9 @@ import Loader2Line from "src/icons/Loader2Line";
 
 export default function StillFetchingBanner({ size, className }: { size?: CalloutSizes; className?: string }) {
   const { T } = useIntl();
-  const params = useParams<{ projectKey: string }>();
+  const { projectKey = "" } = useParams<{ projectKey?: string }>();
 
-  const isProjectLeader = useProjectLeader({ slug: params.projectKey });
+  const isProjectLeader = useProjectLeader({ slug: projectKey });
 
   if (!isProjectLeader) {
     return null;
