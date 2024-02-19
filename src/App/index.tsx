@@ -6,7 +6,6 @@ import ErrorTrigger from "src/_pages/ErrorTrigger";
 import ImpersonationPage from "src/_pages/Impersonation";
 import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
-import PublicProfilePage from "src/_pages/PublicProfile";
 import Loader from "src/components/Loader";
 import { NotFound } from "src/components/NotFound";
 import Skeleton from "src/components/Skeleton";
@@ -38,7 +37,6 @@ export enum RoutePaths {
   Error = "/error",
   NotFound = "/not-found",
   Impersonation = "/impersonate/:userId",
-  PublicProfile = "/u/:userLogin",
   GithubCallbacks = "/github-callbacks",
 }
 
@@ -140,10 +138,6 @@ function App() {
           <ImpersonationPage />
         </AdminGuard>
       ),
-    },
-    {
-      path: RoutePaths.PublicProfile,
-      element: <PublicProfilePage />,
     },
     {
       children: [

@@ -27,6 +27,7 @@ export const NEXT_ROUTER = {
     billing: "/settings/billing",
   },
   publicProfile: {
+    base: "/u",
     root: (slug: string) => `/u/${slug}`,
   },
   onboarding: "/onboarding",
