@@ -79,6 +79,12 @@ export const styles = StyleSheet.create({
   paddingVert10P: {
     padding: "10px 0",
   },
+  marginVert25P: {
+    margin: "25px 0",
+  },
+  marginTop50P: {
+    marginTop: "50px",
+  },
   width50p: {
     width: "50%",
   },
@@ -104,10 +110,28 @@ export const styles = StyleSheet.create({
     fontSize: "12px",
     color: "#262525",
     fontWeight: "medium",
+    flex: "2",
+    flexGrow: 2,
+  },
+  thSmall: {
+    position: "relative",
+    padding: "10px 10px",
+    fontSize: "12px",
+    color: "#262525",
+    fontWeight: "medium",
     flex: "1",
     flexGrow: 1,
   },
   td: {
+    position: "relative",
+    padding: "10px 10px",
+    fontSize: "12px",
+    color: "#535353",
+    fontWeight: "normal",
+    flex: "2",
+    flexGrow: 2,
+  },
+  tdSmall: {
     position: "relative",
     padding: "10px 10px",
     fontSize: "12px",

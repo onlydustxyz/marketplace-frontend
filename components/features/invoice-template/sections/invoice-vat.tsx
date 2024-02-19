@@ -7,14 +7,12 @@ import { TInvoice } from "components/features/invoice-template/invoice-template.
 export function InvoiceVat({ vat, totalTax }: TInvoice.InvoiceVatInfoProps) {
   const renderVATApplicable = () => (
     <View style={styles.tr}>
-      <View style={styles.td}></View>
+      <View style={styles.tdSmall}></View>
       <Text style={styles.td}></Text>
       <Text style={styles.td}></Text>
       <Text style={styles.td}>
-        <Text>{InvoiceTokens.rewardSummary.table.totalVat}</Text>
-        <Text>
-          ({InvoiceTokens.rewardSummary.table.rate} {vat.rate})
-        </Text>
+        <Text>{InvoiceTokens.rewardSummary.table.totalVat} </Text>
+        <Text>({vat.rate})</Text>
       </Text>
       <Text style={styles.td}>
         {totalTax?.toFixed(2)} {InvoiceTokens.currencies.usd}

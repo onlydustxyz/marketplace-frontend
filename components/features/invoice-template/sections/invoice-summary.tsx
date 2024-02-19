@@ -1,4 +1,5 @@
 import { Text, View } from "@react-pdf/renderer";
+import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profiles-queries.actions";
 import React from "react";
 
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
@@ -8,6 +9,23 @@ import { InvoiceTokens } from "components/features/invoice-template/invoice-temp
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 import { InvoiceVat } from "components/features/invoice-template/sections/invoice-vat";
 
+function calculateTotalAmounts(rewards: InvoicePreviewResponse["rewards"]): { currency: string; total: number }[] {
+  const totals = rewards?.reduce((acc, reward) => {
+    const { currency, amount } = reward.amount;
+    if (acc[currency]) {
+      acc[currency] += amount;
+    } else {
+      acc[currency] = amount;
+    }
+    return acc;
+  }, {} as Record<string, number>);
+
+  if (totals) {
+    return Object.entries(totals).map(([currency, total]) => ({ currency, total }));
+  }
+
+  return [];
+}
 export function InvoiceSummary({
   rewards,
   vat,
@@ -15,55 +33,65 @@ export function InvoiceSummary({
   totalTax,
   totalAfterTax,
 }: TInvoice.RewardsSummaryProps) {
+  const totalAmounts = calculateTotalAmounts(rewards);
   return (
-    <View style={{ ...styles.section, ...styles.flexRow, ...styles.invoiceCenter }}>
-      <Text style={styles.h3}>{InvoiceTokens.rewardSummary.title}</Text>
-      <View style={{ ...styles.flexCol }}>
-        <View style={styles.table}>
-          <View style={styles.tr}>
-            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.id}</Text>
-            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.project}</Text>
-            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.rewardDate}</Text>
-            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.amount}</Text>
-            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.equivalent}</Text>
-          </View>
-          {rewards?.map((item, index) => (
-            <View key={index} style={styles.tr}>
-              <Text style={styles.td}>#{item.id.slice(0, 8)}</Text>
-              <Text style={styles.td}>{item.projectName}</Text>
-              <Text style={styles.td}>{getFormattedDateToLocaleDateString(new Date(item.date))}</Text>
-              <Text style={styles.td}>
-                {item.amount.amount} {item.amount.currency}
-              </Text>
-              <Text style={styles.td}>
-                {item.amount.base.amount.toFixed(2)} {item.amount.base.currency}
+    <View style={styles.flexRow}>
+      <View style={{ ...styles.section, ...styles.flexRow, ...styles.invoiceCenter }}>
+        <Text style={styles.h3}>{InvoiceTokens.rewardSummary.title}</Text>
+        <View style={{ ...styles.flexCol }}>
+          <View style={styles.table}>
+            <View style={styles.tr}>
+              <Text style={styles.thSmall}>{InvoiceTokens.rewardSummary.table.id}</Text>
+              <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.project}</Text>
+              <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.rewardDate}</Text>
+              <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.amount}</Text>
+              <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.equivalent}</Text>
+            </View>
+            {rewards?.map((item, index) => (
+              <View key={index} style={styles.tr}>
+                <Text style={styles.tdSmall}>#{item.id.slice(0, 5)}</Text>
+                <Text style={styles.td}>
+                  {item.projectName.length > 16 ? `${item.projectName.slice(0, 15)}...` : item.projectName}
+                </Text>
+                <Text style={styles.td}>{getFormattedDateToLocaleDateString(new Date(item.date))}</Text>
+                <Text style={styles.td}>
+                  {item.amount.amount} {item.amount.currency}
+                </Text>
+                <Text style={styles.td}>
+                  {item.amount.base.amount.toFixed(2)} {item.amount.base.currency}
+                </Text>
+              </View>
+            ))}
+            <View style={styles.tr}>
+              <Text style={styles.tdSmall}></Text>
+              <Text style={styles.th}></Text>
+              <Text style={styles.th}></Text>
+              <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalBeforeTax}</Text>
+              <Text style={styles.th}>
+                {totalBeforeTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
               </Text>
             </View>
-          ))}
-          <View style={styles.tr}>
-            <Text style={styles.th}></Text>
-            <Text style={styles.th}></Text>
-            <Text style={styles.th}></Text>
-            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalBeforeTax}</Text>
-            <Text style={styles.th}>
-              {totalBeforeTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
-            </Text>
-          </View>
 
-          <InvoiceVat vat={vat} totalTax={totalTax} />
-          <View style={styles.tr}>
-            <Text style={styles.th}></Text>
-            <Text style={styles.th}></Text>
-            <Text style={styles.th}></Text>
-            <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalAfterTax}</Text>
-            <Text style={styles.th}>
-              {totalAfterTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
-            </Text>
+            <InvoiceVat vat={vat} totalTax={totalTax} />
+            <View style={styles.tr}>
+              <Text style={styles.tdSmall}></Text>
+              <Text style={styles.th}></Text>
+              <Text style={styles.th}></Text>
+              <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalAfterTax}</Text>
+              <Text style={styles.th}>
+                {totalAfterTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
-      <View style={{ ...styles.flexCol, ...styles.paddingVert10P }}>
-        <Text style={styles.paragraph}>[number] [type of tokens] {InvoiceTokens.rewardSummary.itemsReceived}</Text>
+      <View style={{ ...styles.flexRow, ...styles.marginTop50P, ...styles.paddingHoriz50P }}>
+        <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
+        {totalAmounts?.map((item, index) => (
+          <Text key={index} style={styles.paragraph}>
+            - {item.total} {item.currency} {InvoiceTokens.rewardSummary.itemsReceived}
+          </Text>
+        ))}
       </View>
     </View>
   );

@@ -31,6 +31,7 @@ export const InvoiceTokens = {
       rate: "rate",
       totalAfterTax: "Total After Tax",
     },
+    specialMentions: "Special Mentions",
     itemsReceived: "received and accepted as payment for this invoice",
   },
   currencies: {
