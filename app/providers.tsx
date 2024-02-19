@@ -2,6 +2,7 @@
 
 import { NextUIProvider } from "@nextui-org/react";
 import dynamic from "next/dynamic";
+import { NavigationStateProvider } from "providers/navigation-state/navigation-state";
 import { PropsWithChildren } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -39,18 +40,20 @@ export default function Providers({ children }: PropsWithChildren) {
             <QueryProvider>
               <NextUIProvider>
                 <BrowserRouter>
-                  <StackProvider>
-                    <SidePanelStackProvider>
-                      <SidePanelProvider>
-                        <ToasterProvider>
-                          {children}
-                          <Stacks />
-                          <Toaster />
-                          {/* Hide tooltips on mobile */ isSm && <Tooltip />}
-                        </ToasterProvider>
-                      </SidePanelProvider>
-                    </SidePanelStackProvider>
-                  </StackProvider>
+                  <NavigationStateProvider>
+                    <StackProvider>
+                      <SidePanelStackProvider>
+                        <SidePanelProvider>
+                          <ToasterProvider>
+                            {children}
+                            <Stacks />
+                            <Toaster />
+                            {/* Hide tooltips on mobile */ isSm && <Tooltip />}
+                          </ToasterProvider>
+                        </SidePanelProvider>
+                      </SidePanelStackProvider>
+                    </StackProvider>
+                  </NavigationStateProvider>
                 </BrowserRouter>
               </NextUIProvider>
             </QueryProvider>
