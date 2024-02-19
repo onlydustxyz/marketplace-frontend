@@ -47,6 +47,29 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
   }, [project?.logoUrl, isError]);
   const { T } = useIntl();
 
+  const Tags = useMemo(() => {
+    if (!project?.tags) {
+      return null;
+    }
+
+    return (
+      <>
+        {project.tags.map(tag => {
+          const { icon, label, tooltip } = ProjectConstants.tagMapping[tag];
+
+          return (
+            <Tooltip key={label} content={<Translate token={tooltip} />}>
+              <SelectableTagItem.Static>
+                <Icon {...icon} />
+                <Translate token={label} />
+              </SelectableTagItem.Static>
+            </Tooltip>
+          );
+        })}
+      </>
+    );
+  }, [project]);
+
   return (
     <>
       <div className="flex flex-row items-center gap-4">
@@ -70,24 +93,10 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
             )}
           </div>
 
-          {project.tags?.length ? (
-            <div className="flex flex-wrap gap-2">
-              {project.tags.map(tag => {
-                const { icon, label, tooltip } = ProjectConstants.tagMapping[tag];
-
-                return (
-                  <Tooltip key={label} content={<Translate token={tooltip} />}>
-                    <SelectableTagItem.Static>
-                      <Icon {...icon} />
-                      <Translate token={label} />
-                    </SelectableTagItem.Static>
-                  </Tooltip>
-                );
-              })}
-            </div>
-          ) : null}
+          {project.tags?.length ? <div className="hidden flex-wrap gap-2 lg:flex">{Tags}</div> : null}
         </div>
       </div>
+      {project.tags?.length ? <div className="flex flex-wrap gap-2 lg:hidden">{Tags}</div> : null}
       {description ? (
         <MarkdownPreview className="text-sm">{project.longDescription || LOREM_IPSUM}</MarkdownPreview>
       ) : null}
