@@ -7,7 +7,6 @@ import ImpersonationPage from "src/_pages/Impersonation";
 import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
 import PublicProfilePage from "src/_pages/PublicProfile";
-import TermsAndConditions from "src/_pages/TermsAndConditions";
 import Loader from "src/components/Loader";
 import { NotFound } from "src/components/NotFound";
 import Skeleton from "src/components/Skeleton";
@@ -160,10 +159,6 @@ function App() {
               <ProjectsPage />
             </Suspense>
           ),
-        },
-        {
-          path: RoutePaths.TermsAndConditions,
-          element: <TermsAndConditions />,
         },
         {
           path: RoutePaths.ProjectCreation,
