@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { TPayoutForm } from "app/settings/payout/features/form/form.types";
-import { formatToData, formatToSchema } from "app/settings/payout/features/form/form.utils";
 
 import { UseGetMyPayoutSettingsResponse } from "src/api/me/queries";
+
+import { formatToData, formatToSchema } from "./form.utils";
 
 describe("formatToData", () => {
   it("should format payout info correctly with full data", () => {

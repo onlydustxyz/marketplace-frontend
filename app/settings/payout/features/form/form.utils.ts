@@ -1,8 +1,8 @@
 import IBANParser from "iban";
 
-import { TPayoutForm } from "app/settings/payout/features/form/form.types";
-
 import { UseGetMyPayoutSettingsResponse } from "src/api/me/queries";
+
+import { TPayoutForm } from "./form.types";
 
 export function formatToData(data: UseGetMyPayoutSettingsResponse): TPayoutForm.Data {
   const { ethWallet, starknetAddress, optimismAddress, aptosAddress, sepaAccount } = data;
