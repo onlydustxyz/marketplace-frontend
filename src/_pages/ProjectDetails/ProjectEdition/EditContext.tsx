@@ -18,6 +18,8 @@ import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { useShowToaster } from "src/hooks/useToaster";
 import { MoreInfosField } from "src/types";
 
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
+
 import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
 import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 import { EditPanelProvider } from "./components/Panel/context";
@@ -33,6 +35,7 @@ type Edit = {
   form?: UseFormReturn<EditFormData, unknown>;
   organizations: UseGithubOrganizationsResponse[];
   PoolingFeedback: React.ReactElement;
+  ecosystems: TSelectAutocomplete.Item[];
   githubWorklow: {
     run: () => void;
     inGithubWorkflow: boolean;
@@ -54,6 +57,7 @@ export interface EditFormDataRepos {
 
 export type EditFormData = Omit<components["schemas"]["UpdateProjectRequest"], "moreInfos"> & {
   projectLeads: FieldProjectLeadValue;
+  ecosystems: TSelectAutocomplete.Item[];
   selectedRepos: EditFormDataRepos[];
   githubRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
   moreInfos: MoreInfosField[];
@@ -64,6 +68,7 @@ export const EditContext = createContext<Edit>({
   project: undefined,
   organizations: [],
   PoolingFeedback: <></>,
+  ecosystems: [],
   formHelpers: {
     resetBeforLeave: () => null,
     triggerSubmit: () => null,
@@ -298,12 +303,54 @@ export function EditProvider({ children, project }: EditContextProps) {
     form.trigger();
   }, []);
 
+  const EcoSystems = useMemo(() => {
+    const mock = [
+      {
+        id: "86f56335-fa70-4008-b266-acd915f08bb9",
+        name: "Avail",
+        url: "https://www.availproject.org/",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12011103528231014365.png",
+      },
+      {
+        id: "345a5d01-387e-41b5-9870-856cf34c856b",
+        name: "Ethereum",
+        url: "https://ethereum.foundation/",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8506434858363286425.png",
+      },
+      {
+        id: "8cf106f3-af9a-4b0b-9ca9-ab78ac550878",
+        name: "Optimism",
+        url: "https://www.optimism.io/",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12058007825795511084.png",
+      },
+      {
+        id: "870faae4-6e5b-423b-b12b-32df2ab15b7c",
+        name: "Starknet",
+        url: "https://www.starknet.io/en",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12429671188779981103.png",
+      },
+      {
+        id: "a450a83b-a98a-4d45-ac5d-82ee8e8bbd35",
+        name: "Zama",
+        url: "https://www.zama.ai/",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/599423013682223091.png",
+      },
+    ];
+    return mock.map(({ name, id, logoUrl }) => ({
+      id,
+      label: name,
+      value: id,
+      image: logoUrl,
+    }));
+  }, []);
+
   return (
     <EditContext.Provider
       value={{
         form,
         project,
         organizations: mergeOrganization,
+        ecosystems: EcoSystems,
         PoolingFeedback,
         formHelpers: {
           addRepository: onAddRepository,

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createContext, useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
@@ -14,6 +14,8 @@ import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
 import { useIntl } from "src/hooks/useIntl";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { StorageInterface } from "src/hooks/useStorage/Storage";
+
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 import { STORAGE_KEY_CREATE_PROJECT_FORM, useResetStorage } from "./hooks/useProjectCreationStorage";
 import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";
@@ -48,6 +50,7 @@ type CreateProject = {
   organizations: UseGithubOrganizationsResponse[];
   organizationsLoading: boolean;
   PoolingFeedback: React.ReactElement;
+  ecosystems: TSelectAutocomplete.Item[];
   formFn: {
     addRepository: (data: CreateFormDataRepos) => void;
     removeRepository: (data: CreateFormDataRepos) => void;
@@ -64,6 +67,7 @@ export const CreateProjectContext = createContext<CreateProject>({
   form: {} as UseFormReturn<CreateFormData, unknown>,
   currentStep: ProjectCreationSteps.ORGANIZATIONS,
   installedRepos: [],
+  ecosystems: [],
   organizations: [],
   organizationsLoading: false,
   PoolingFeedback: <></>,
@@ -259,6 +263,47 @@ export function CreateProjectProvider({
     goTo(ProjectCreationStepsPrev[currentStep]);
   }, [currentStep]);
 
+  const EcoSystems = useMemo(() => {
+    const mock = [
+      {
+        id: "86f56335-fa70-4008-b266-acd915f08bb9",
+        name: "Avail",
+        url: "https://www.availproject.org/",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12011103528231014365.png",
+      },
+      {
+        id: "345a5d01-387e-41b5-9870-856cf34c856b",
+        name: "Ethereum",
+        url: "https://ethereum.foundation/",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8506434858363286425.png",
+      },
+      {
+        id: "8cf106f3-af9a-4b0b-9ca9-ab78ac550878",
+        name: "Optimism",
+        url: "https://www.optimism.io/",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12058007825795511084.png",
+      },
+      {
+        id: "870faae4-6e5b-423b-b12b-32df2ab15b7c",
+        name: "Starknet",
+        url: "https://www.starknet.io/en",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12429671188779981103.png",
+      },
+      {
+        id: "a450a83b-a98a-4d45-ac5d-82ee8e8bbd35",
+        name: "Zama",
+        url: "https://www.zama.ai/",
+        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/599423013682223091.png",
+      },
+    ];
+    return mock.map(({ name, id, logoUrl }) => ({
+      id,
+      label: name,
+      value: id,
+      image: logoUrl,
+    }));
+  }, []);
+
   useEffect(() => {
     if (installation_id) {
       const newInstalledRepoStorage = watchInstalledRepoStorage({
@@ -288,6 +333,7 @@ export function CreateProjectProvider({
         form,
         currentStep,
         installedRepos,
+        ecosystems: EcoSystems,
         organizationsLoading: isLoading && !organizationsData?.length,
         organizations: (organizationsData || []).sort((a, b) => a.login.localeCompare(b.login)),
         PoolingFeedback,
