@@ -54,8 +54,8 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos }: TInvoic
       </View>
       <View style={{ ...styles.flexRow }}>
         <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.destinationAccounts}</Text>
-        {legalInfos.destinationAccounts.map(wallet => (
-          <Text key={wallet} style={{ ...styles.paragraph, fontSize: 11, lineHeight: 1.2 }}>
+        {legalInfos.destinationAccounts.map((wallet, index) => (
+          <Text key={index} style={{ ...styles.paragraph, fontSize: 11, lineHeight: 1.2 }}>
             - {wallet}
           </Text>
         ))}

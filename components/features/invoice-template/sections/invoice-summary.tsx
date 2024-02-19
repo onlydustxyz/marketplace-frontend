@@ -27,16 +27,16 @@ export function InvoiceSummary({
             <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.amount}</Text>
             <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.equivalent}</Text>
           </View>
-          {rewards.map((item, index) => (
+          {rewards?.map((item, index) => (
             <View key={index} style={styles.tr}>
               <Text style={styles.td}>#{item.id.slice(0, 8)}</Text>
               <Text style={styles.td}>{item.projectName}</Text>
               <Text style={styles.td}>{getFormattedDateToLocaleDateString(new Date(item.date))}</Text>
               <Text style={styles.td}>
-                {item.amount.total} {item.amount.currency}
+                {item.amount.amount} {item.amount.currency}
               </Text>
               <Text style={styles.td}>
-                {item.amount.dollarsEquivalent?.toFixed(2)} {InvoiceTokens.currencies.usd}
+                {item.amount.base.amount.toFixed(2)} {item.amount.base.currency}
               </Text>
             </View>
           ))}

@@ -1,14 +1,9 @@
 import { renderToStream } from "@react-pdf/renderer";
-import { MeActions } from "actions/me/me.actions";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-import {
-  getHeaderProps,
-  getInvoiceInfoProps,
-  getRewardsSummaryProps,
-  invoiceMock,
-} from "app/api/invoice/builders/builders";
+import { getHeaderProps, getInvoiceInfoProps, getRewardsSummaryProps } from "app/api/invoice/builders/builders";
+import { fetchInvoicePreviewData } from "app/api/invoice/handlers/fetch-invoice-preview-data";
 
 import { MeTypes } from "src/api/me/types";
 
@@ -28,23 +23,21 @@ export async function GET(request: NextRequest) {
   /* ------
   Retrieve the invoice preview data
   ------ */
-  // TODO will be replaced by the following invoice preview endpoint once ready
   const searchParams = request.nextUrl.searchParams;
   const isSample = searchParams.get("isSample") ?? "false";
-  // const billingProfileId = searchParams.get("billingProfileId") ?? "";
-  // const rewardIds = searchParams.get("rewardIds") ?? "";
-  // const invoicePreviewData = await fetchInvoicePreviewData({ token: token ?? "", rewardIds, billingProfileId });
-  let userInfo;
+  const billingProfileId = searchParams.get("billingProfileId") ?? "";
+  const rewardIds = searchParams.get("rewardIds") ?? "";
+  let invoicePreviewData;
   try {
-    userInfo = await MeActions.queries.retrieveMeInformations({ accessToken: token });
+    invoicePreviewData = await fetchInvoicePreviewData({ token: token ?? "", rewardIds, billingProfileId });
   } catch (e) {
-    return new NextResponse("Failed Dependency", { status: 424 });
+    return new NextResponse("Failed Dependency : Invoice Preview ", { status: 424 });
   }
 
   /* ------
   Determine the billing profile type
   ------ */
-  const isUserIndividual = userInfo?.billingProfileType === MeTypes.billingProfileType.Individual;
+  const isUserIndividual = invoicePreviewData?.billingProfileType === MeTypes.billingProfileType.Individual;
 
   /* ------
   Build the invoice content
@@ -52,19 +45,19 @@ export async function GET(request: NextRequest) {
   const header: TInvoice.HeaderProps = getHeaderProps({
     isUserIndividual,
     isSample,
-    invoiceNumber: invoiceMock.id,
+    invoiceNumber: invoicePreviewData.number,
   });
   const invoiceInfo: TInvoice.InvoiceInfoProps = getInvoiceInfoProps({
     isUserIndividual,
-    invoiceDetails: invoiceMock,
+    invoiceDetails: invoicePreviewData,
   });
   const rewardSummary: TInvoice.RewardsSummaryProps = getRewardsSummaryProps({
-    invoiceDetails: invoiceMock,
+    invoiceDetails: invoicePreviewData,
   });
   const footer = {
     invoiceName: isUserIndividual
-      ? `${invoiceMock.individualBillingProfile?.firstName} ${invoiceMock.individualBillingProfile?.lastName}`
-      : `${invoiceMock.companyBillingProfile?.name}`,
+      ? `${invoicePreviewData.individualBillingProfile?.firstName} ${invoicePreviewData.individualBillingProfile?.lastName}`
+      : `${invoicePreviewData.companyBillingProfile?.name}`,
   };
 
   /* ------
