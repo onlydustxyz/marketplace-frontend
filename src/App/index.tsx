@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
-import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ErrorTrigger from "src/_pages/ErrorTrigger";
 import ImpersonationPage from "src/_pages/Impersonation";
 import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
@@ -37,7 +36,6 @@ export enum RoutePaths {
   Error = "/error",
   NotFound = "/not-found",
   Impersonation = "/impersonate/:userId",
-  GithubCallbacks = "/github-callbacks",
 }
 
 export enum ProjectRoutePaths {
@@ -177,10 +175,6 @@ function App() {
         {
           path: RoutePaths.Error,
           element: <ErrorTrigger />,
-        },
-        {
-          path: RoutePaths.GithubCallbacks,
-          element: <GithubCallbackHandler />,
         },
       ],
     },
