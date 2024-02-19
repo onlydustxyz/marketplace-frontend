@@ -1,5 +1,6 @@
 "use client";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
 import { ProfileBanner } from "app/settings/billing/component/profile-banner/profile-banner";
@@ -16,7 +17,7 @@ import { useBillingProfiles } from "hooks/users/useBillingProfile/useBillingProf
 
 import { Header } from "./features/header/header";
 
-export default function SettingsBillingPage() {
+function SettingsBillingPage() {
   const { billingProfile, profileType, isCompany, isIndividual, validBillingProfile } = useBillingProfiles();
   const { open } = useSubscribeStacks(StackRoute.Verify);
   const [isPanelHasOpenedState, setIsPanelHasOpenedState] = useState(false);
@@ -71,3 +72,5 @@ export default function SettingsBillingPage() {
     </div>
   );
 }
+
+export default withAuthenticationRequired(SettingsBillingPage);

@@ -1,7 +1,3 @@
-import NextLink from "next/link";
-import { generatePath } from "react-router-dom";
-
-import { RoutePaths } from "src/App";
 import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
 import { components } from "src/__generated/api";
 import { UserProfile } from "src/api/Users/queries";
@@ -20,7 +16,10 @@ import { cn } from "src/utils/cn";
 import { formatDateShort } from "src/utils/date";
 
 import { Link } from "components/ds/link/link";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import SocialLink from "./SocialLink";
 
@@ -71,16 +70,11 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
               {T("profile.editButton")}
             </Button>
           )}
-          <NextLink
-            href={generatePath(RoutePaths.PublicProfile, {
-              userLogin: profile.login || "",
-            })}
-            target="_blank"
-          >
+          <BaseLink href={NEXT_ROUTER.publicProfile.root(profile.login ?? "")} target="_blank">
             <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
               <ExternalLinkLine />
             </Button>
-          </NextLink>
+          </BaseLink>
         </div>
       ) : null}
 

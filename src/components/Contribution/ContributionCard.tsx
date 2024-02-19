@@ -1,6 +1,3 @@
-import { usePathname } from "next/navigation";
-
-import { RoutePaths } from "src/App";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
@@ -11,13 +8,16 @@ import { ContributionStatus, Contribution as ContributionT } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
+import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
+
 import Contributor from "../Contributor";
 
 export function ContributionCard({ contribution, className }: { contribution: ContributionT; className?: string }) {
   const { T } = useIntl();
-  const pathname = usePathname();
 
-  const isMyContribution = Boolean(pathname.match(`${RoutePaths.Contributions}/*`));
+  const isMyContribution = useMatchPath(NEXT_ROUTER.contributions.all, { exact: false });
 
   const date =
     contribution.status === ContributionStatus.InProgress ? contribution.createdAt : contribution.completedAt;

@@ -4,11 +4,8 @@ import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ErrorTrigger from "src/_pages/ErrorTrigger";
 import ImpersonationPage from "src/_pages/Impersonation";
-import Onboarding from "src/_pages/Onboarding";
 import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
-import PublicProfilePage from "src/_pages/PublicProfile";
-import TermsAndConditions from "src/_pages/TermsAndConditions";
 import Loader from "src/components/Loader";
 import { NotFound } from "src/components/NotFound";
 import Skeleton from "src/components/Skeleton";
@@ -36,16 +33,10 @@ export enum RoutePaths {
   ProjectDetails = "/p/:projectKey",
   ProjectDetailsEdit = "/p/:projectKey/edit",
   ProjectDetailsEditRepos = "/p/:projectKey/edit?tab=Repos",
-  Rewards = "/rewards",
-  Settings = "/settings",
   CatchAll = "*",
   Error = "/error",
   NotFound = "/not-found",
   Impersonation = "/impersonate/:userId",
-  TermsAndConditions = "/terms-and-conditions",
-  Onboarding = "/onboarding",
-  PublicProfile = "/u/:userLogin",
-  Contributions = "/contributions",
   GithubCallbacks = "/github-callbacks",
 }
 
@@ -149,10 +140,6 @@ function App() {
       ),
     },
     {
-      path: RoutePaths.PublicProfile,
-      element: <PublicProfilePage />,
-    },
-    {
       children: [
         {
           path: RoutePaths.Projects,
@@ -161,14 +148,6 @@ function App() {
               <ProjectsPage />
             </Suspense>
           ),
-        },
-        {
-          path: RoutePaths.TermsAndConditions,
-          element: <TermsAndConditions />,
-        },
-        {
-          path: RoutePaths.Onboarding,
-          element: <Onboarding />,
         },
         {
           path: RoutePaths.ProjectCreation,
