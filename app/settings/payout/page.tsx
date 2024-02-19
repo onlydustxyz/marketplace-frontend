@@ -1,5 +1,6 @@
 "use client";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -83,7 +84,7 @@ const formSchema = z
   });
 
 // TODO: Change input errors with new components
-export default function SettingsPayoutPage() {
+function SettingsPayoutPage() {
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyPayoutSettings({});
@@ -146,3 +147,5 @@ export default function SettingsPayoutPage() {
     </FormProvider>
   );
 }
+
+export default withAuthenticationRequired(SettingsPayoutPage);

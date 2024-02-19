@@ -1,5 +1,6 @@
 "use client";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -67,7 +68,7 @@ const formSchema = z.object({
 
 // TODO: Contact information and select input to do with NextUI
 // TODO: FieldImage to do with NextUI and add error handle on Input (call everywhere) and Textarea
-export default function SettingsProfilePage() {
+function SettingsProfilePage() {
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyProfileInfo({});
@@ -123,3 +124,5 @@ export default function SettingsProfilePage() {
     </FormProvider>
   );
 }
+
+export default withAuthenticationRequired(SettingsProfilePage);
