@@ -1,6 +1,7 @@
 import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Button } from "components/ds/button/button";
+import { InvoicePreviewLoading } from "components/features/invoice-viewer/invoice-preview.loading";
 import InvoiceViewer from "components/features/invoice-viewer/invoice-viewer";
 import { AmountCounter } from "components/features/stacks/payments-flow/request-payments-stacks/components/amount-counter/amount-counter";
 import { useInvoicePreview } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-preview/use-invoice-preview";
@@ -18,7 +19,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
 
   function renderInvoicePreview() {
     if (isLoading) {
-      return <div> TODO loading component </div>;
+      return <InvoicePreviewLoading />;
     }
     if (isError) {
       return <div> TODO error component </div>;
@@ -26,7 +27,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
     if (fileUrl) {
       return <InvoiceViewer fileUrl={fileUrl} />;
     }
-    return null;
+    return <InvoicePreviewLoading />;
   }
 
   return (
