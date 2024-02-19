@@ -4,7 +4,6 @@ import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 import GithubCallbackHandler from "src/_pages/Callbacks/GithubCallbackHandler";
 import ErrorTrigger from "src/_pages/ErrorTrigger";
 import ImpersonationPage from "src/_pages/Impersonation";
-import Onboarding from "src/_pages/Onboarding";
 import ProjectCreation from "src/_pages/ProjectCreation/ProjectCreation";
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
 import PublicProfilePage from "src/_pages/PublicProfile";
@@ -165,10 +164,6 @@ function App() {
         {
           path: RoutePaths.TermsAndConditions,
           element: <TermsAndConditions />,
-        },
-        {
-          path: RoutePaths.Onboarding,
-          element: <Onboarding />,
         },
         {
           path: RoutePaths.ProjectCreation,
