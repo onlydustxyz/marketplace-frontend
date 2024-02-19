@@ -1,11 +1,9 @@
-import useScrollRestoration from "src/_pages/Projects/AllProjects/useScrollRestoration";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Skeleton from "src/components/Skeleton";
 
 export default function RewardLoader() {
-  const { ref } = useScrollRestoration();
   return (
-    <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
+    <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="h-full">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
           <div className="w-32">
