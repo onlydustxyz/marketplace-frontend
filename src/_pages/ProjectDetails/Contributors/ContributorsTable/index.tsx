@@ -1,11 +1,12 @@
+import { useRouter } from "next/navigation";
 import { ComponentProps } from "react";
-import { generatePath, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { useToggleContributor } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/useToggleContributor";
 import { ProjectContributorItem } from "src/api/Project/queries";
 import { viewportConfig } from "src/config";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import View from "./View";
 import { ViewMobile } from "./ViewMobile";
@@ -30,19 +31,13 @@ export default function ContributorsTable<C extends ProjectContributorItem>({
   rewardDisableReason,
 }: Props<C>) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const navigate = useNavigate();
+  const router = useRouter();
   const { onToggleContributor } = useToggleContributor({ projectId });
 
   const onRewardGranted = (contributor: C) => {
-    navigate(
-      generatePath(RoutePaths.ProjectDetails, { projectKey }) +
-        "/" +
-        ProjectRoutePaths.Rewards +
-        "/" +
-        ProjectRewardsRoutePaths.New,
-      {
-        state: { recipientGithubLogin: contributor.login },
-      }
+    router.push(
+      NEXT_ROUTER.projects.details.rewards.new(projectKey) +
+        `?recipientGithubLogin=${encodeURIComponent(contributor.login)}`
     );
   };
 
