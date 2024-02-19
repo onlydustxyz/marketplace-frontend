@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
 
+import { Banner } from "components/ds/banner/banner";
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
@@ -129,6 +130,18 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
             {renderUploadFile()}
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
+            <div className="bg-greyscale-900 p-4">
+              <Banner
+                title={<Translate token={"v2.pages.stacks.request_payments.invoiceSubmission.banner.title"} />}
+                description={
+                  <Translate token={"v2.pages.stacks.request_payments.invoiceSubmission.banner.description"} />
+                }
+                variant={"medium"}
+                hasBorder={false}
+                icon={{ remixName: "ri-information-line" }}
+                size={"s"}
+              />
+            </div>
             <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
               {isLoading || isPendingUploadInvoice ? <Spinner /> : <div />}
               <div className="flex items-center justify-end gap-5">
