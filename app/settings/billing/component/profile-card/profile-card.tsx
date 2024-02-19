@@ -1,4 +1,4 @@
-import { ProfileStatus } from "app/migration/settings/billing/component/profile-status/profile-status";
+import { ProfileStatus } from "app/settings/billing/component/profile-status/profile-status";
 
 import { Card } from "components/ds/card/card";
 

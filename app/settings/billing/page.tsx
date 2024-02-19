@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-import { ProfileBanner } from "app/migration/settings/billing/component/profile-banner/profile-banner";
-import { ProfileCard } from "app/migration/settings/billing/component/profile-card/profile-card";
-import { ProfileCompany } from "app/migration/settings/billing/features/profile/profile-company/profile-company";
-import { ProfileIndividual } from "app/migration/settings/billing/features/profile/profile-individual/profile-individual";
+import { ProfileBanner } from "app/settings/billing/component/profile-banner/profile-banner";
+import { ProfileCard } from "app/settings/billing/component/profile-card/profile-card";
+import { ProfileCompany } from "app/settings/billing/features/profile/profile-company/profile-company";
+import { ProfileIndividual } from "app/settings/billing/features/profile/profile-individual/profile-individual";
 
 import { StackRoute } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
@@ -16,7 +16,7 @@ import { useBillingProfiles } from "hooks/users/useBillingProfile/useBillingProf
 
 import { Header } from "./features/header/header";
 
-export default function BillingPage() {
+export default function SettingsBillingPage() {
   const { billingProfile, profileType, isCompany, isIndividual, validBillingProfile } = useBillingProfiles();
   const { open } = useSubscribeStacks(StackRoute.Verify);
   const [isPanelHasOpenedState, setIsPanelHasOpenedState] = useState(false);

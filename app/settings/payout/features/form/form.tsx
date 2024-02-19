@@ -1,6 +1,8 @@
 import IBANParser from "iban";
 import { Controller, useFormContext } from "react-hook-form";
 
+import { Currencies } from "app/settings/payout/features/form/currencies/currencies";
+
 import MeApi from "src/api/me";
 import { useIntl } from "src/hooks/useIntl";
 import { Currency } from "src/types";
@@ -8,8 +10,6 @@ import { Currency } from "src/types";
 import { Card } from "components/ds/card/card";
 import { Input } from "components/ds/form/input/input";
 import { Flex } from "components/layout/flex/flex";
-
-import { Currencies } from "./currencies/currencies";
 
 export function PayoutForm() {
   const { T } = useIntl();

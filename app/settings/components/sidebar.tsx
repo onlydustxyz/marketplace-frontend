@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
@@ -29,7 +28,6 @@ export function Sidebar() {
 
   const { user } = useCurrentUser();
   const { error } = useSettingsError();
-  const pathname = usePathname();
 
   const menuItems: TMenuItem.Props[] = useMemo(
     () => [
@@ -99,7 +97,7 @@ export function Sidebar() {
 
           <div className="align-start flex flex-col gap-4 text-xl font-medium">
             {menuItems.map(menu => (
-              <MenuItem {...menu} key={menu.href} onClick={closePanel} isActive={pathname === menu.href} />
+              <MenuItem {...menu} key={menu.href} onClick={closePanel} />
             ))}
 
             {!isAuthenticated ? (

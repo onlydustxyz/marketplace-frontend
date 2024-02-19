@@ -1,8 +1,8 @@
 import { format } from "date-fns";
 import { ReactNode, useMemo } from "react";
 
-import { ProfileItemGrid } from "app/migration/settings/billing/component/profile-item-grid/profile-item-grid";
-import { ProfileItem } from "app/migration/settings/billing/component/profile-item/profile-item";
+import { ProfileItemGrid } from "app/settings/billing/component/profile-item-grid/profile-item-grid";
+import { ProfileItem } from "app/settings/billing/component/profile-item/profile-item";
 
 import { Translate } from "components/layout/translate/translate";
 

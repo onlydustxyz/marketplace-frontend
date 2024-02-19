@@ -67,7 +67,7 @@ const formSchema = z.object({
 
 // TODO: Contact information and select input to do with NextUI
 // TODO: FieldImage to do with NextUI and add error handle on Input (call everywhere) and Textarea
-export default function ProfilePage() {
+export default function SettingsProfilePage() {
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyProfileInfo({});

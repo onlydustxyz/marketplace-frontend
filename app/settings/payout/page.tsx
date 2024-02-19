@@ -5,6 +5,12 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { PayoutDisclaimer } from "app/settings/payout/features/disclaimer/disclaimer";
+import { PayoutForm } from "app/settings/payout/features/form/form";
+import { REGEX } from "app/settings/payout/features/form/form.regex";
+import { TPayoutForm } from "app/settings/payout/features/form/form.types";
+import { formatToData, formatToSchema } from "app/settings/payout/features/form/form.utils";
+
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Key, useIntl } from "src/hooks/useIntl";
@@ -13,11 +19,6 @@ import { Flex } from "components/layout/flex/flex";
 
 import { FormFooter } from "../components/form-footer/form-footer";
 import { SettingsHeader } from "../components/settings-header/settings-header";
-import { PayoutDisclaimer } from "./features/disclaimer/disclaimer";
-import { PayoutForm } from "./features/form/form";
-import { REGEX } from "./features/form/form.regex";
-import { TPayoutForm } from "./features/form/form.types";
-import { formatToData, formatToSchema } from "./features/form/form.utils";
 
 const INVALID_ETHEREUM_WALLET = "invalidEthereumWallet";
 const INVALID_STARKNET_ADDRESS = "invalidStarknetAddress";
@@ -83,7 +84,7 @@ const formSchema = z
   });
 
 // TODO: Change input errors with new components
-export default function PayoutPage() {
+export default function SettingsPayoutPage() {
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyPayoutSettings({});
