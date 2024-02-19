@@ -1,4 +1,4 @@
-import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profiles-queries.actions";
+import { TInvoiceBuilders } from "app/api/invoice/builders/builders.types";
 
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
@@ -9,11 +9,7 @@ export function getHeaderProps({
   isSample,
   isUserIndividual,
   invoiceNumber,
-}: {
-  isSample: string;
-  isUserIndividual: boolean;
-  invoiceNumber: string;
-}): TInvoice.HeaderProps {
+}: TInvoiceBuilders.HeaderBuilderProps): TInvoice.HeaderProps {
   let title = "";
   // provided as a query param string
   if (isSample === "true") {
@@ -31,10 +27,7 @@ export function getHeaderProps({
 export function getInvoiceInfoProps({
   isUserIndividual,
   invoiceDetails,
-}: {
-  isUserIndividual: boolean;
-  invoiceDetails: InvoicePreviewResponse;
-}): TInvoice.InvoiceInfoProps {
+}: TInvoiceBuilders.InvoiceInfoBuilderProps): TInvoice.InvoiceInfoProps {
   const bankAccount = invoiceDetails.destinationAccounts.bankAccount
     ? `Account number: ${invoiceDetails.destinationAccounts.bankAccount.accountNumber} / BIC: ${invoiceDetails.destinationAccounts.bankAccount.bic}`
     : null;
@@ -82,9 +75,7 @@ export function getInvoiceInfoProps({
 
 export function getRewardsSummaryProps({
   invoiceDetails,
-}: {
-  invoiceDetails: InvoicePreviewResponse;
-}): TInvoice.RewardsSummaryProps {
+}: TInvoiceBuilders.RewardsSummaryBuilderProps): TInvoice.RewardsSummaryProps {
   const rewards = invoiceDetails.rewards;
   const totalBeforeTax = invoiceDetails.totalBeforeTax?.amount;
   const totalTax = invoiceDetails.totalTax?.amount;
