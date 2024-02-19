@@ -29,4 +29,5 @@ export const NEXT_ROUTER = {
   publicProfile: {
     root: (slug: string) => `/u/${slug}`,
   },
+  notFound: "/not-found",
 } as const;
