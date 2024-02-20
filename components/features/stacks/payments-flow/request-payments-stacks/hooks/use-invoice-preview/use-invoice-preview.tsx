@@ -17,7 +17,7 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
     if (rewardIds && billingProfileId) {
       handleInvoiceCreation();
     }
-  }, [rewardIds, billingProfileId]);
+  }, []);
 
   async function handleInvoiceCreation() {
     setIsLoading(true);

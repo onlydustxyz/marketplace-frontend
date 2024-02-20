@@ -1,3 +1,4 @@
+import { useStackRequestPayments } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/billing-profiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
@@ -8,6 +9,7 @@ import { TUseInvoiceUpload } from "components/features/stacks/payments-flow/requ
 export function useInvoiceUpload({ billingProfileId, invoiceId }: TUseInvoiceUpload.Props) {
   const { T } = useIntl();
   const showToaster = useShowToaster();
+  const [, closeRequestPanel] = useStackRequestPayments();
 
   const {
     mutate: uploadInvoice,
@@ -17,6 +19,11 @@ export function useInvoiceUpload({ billingProfileId, invoiceId }: TUseInvoiceUpl
     params: {
       billingProfileId,
       invoiceId,
+    },
+    options: {
+      onSuccess: () => {
+        closeRequestPanel();
+      },
     },
   });
 
