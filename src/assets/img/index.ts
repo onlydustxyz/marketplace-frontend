@@ -21,6 +21,7 @@ import noiseHeavy from "./noise-heavy.webp";
 import noiseLight from "./noise-light.webp";
 import noiseMedium from "./noise-medium.webp";
 import notFound from "./not-found.webp";
+import onlydustLogoCrashed from "./onlydust-logo-crashed.svg";
 import onlydustLogoSpace from "./onlydust-logo-space.webp";
 import onlydustLogoWhite from "./onlydust-logo-white.svg";
 import onlydustLogo from "./onlydust-logo.webp";
@@ -46,6 +47,7 @@ export const IMAGES = {
   logo: {
     original: onlydustLogo.src,
     space: onlydustLogoSpace.src,
+    crashed: onlydustLogoCrashed.src,
   },
   icons: {
     compass: compass.src,

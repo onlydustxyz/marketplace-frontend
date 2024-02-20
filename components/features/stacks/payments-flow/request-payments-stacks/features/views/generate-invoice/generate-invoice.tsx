@@ -1,3 +1,4 @@
+import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Banner } from "components/ds/banner/banner";
@@ -8,6 +9,7 @@ import { useInvoicePreview } from "components/features/stacks/payments-flow/requ
 import { useInvoiceUpload } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-upload/use-invoice-upload";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
+import { EmptyState } from "components/layout/placeholders/empty-state";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -26,12 +28,18 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
       return <InvoicePreviewLoading />;
     }
     if (isError) {
-      return <div> TODO error component </div>;
+      return (
+        <EmptyState
+          illustrationSrc={IMAGES.logo.crashed}
+          title={{ token: "v2.pages.stacks.request_payments.invoiceSubmission.error.title" }}
+          description={{ token: "v2.pages.stacks.request_payments.invoiceSubmission.error.description" }}
+        />
+      );
     }
     if (fileUrl) {
       return <InvoiceViewer fileUrl={fileUrl} />;
     }
-    return <InvoicePreviewLoading />;
+    return null;
   }
 
   return (
@@ -44,7 +52,6 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
             className="text-greyscale-50"
           />
         </div>
-        {/*TODO add guidelines info card*/}
         <ScrollView className="m-4 mb-0 w-auto rounded-2xl border border-card-border-light p-4">
           <div className="relative z-0 flex justify-center">{renderInvoicePreview()}</div>
         </ScrollView>

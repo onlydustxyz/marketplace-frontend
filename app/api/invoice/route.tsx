@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
   let invoicePreviewData;
   try {
     invoicePreviewData = await fetchInvoicePreviewData({ token: token ?? "", rewardIds, billingProfileId });
-    console.log("invoicePreviewData", invoicePreviewData);
   } catch (e) {
     return new NextResponse("Failed Dependency : Invoice Preview ", { status: 424 });
   }
