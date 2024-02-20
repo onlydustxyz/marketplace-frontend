@@ -1,3 +1,5 @@
+"use client";
+
 import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
