@@ -42,7 +42,6 @@ const ImpersonationPage = () => {
 
           if (userInfo && !isFetching && claimedGithubUserId) {
             if (userInfo?.githubUserId === claimedGithubUserId) {
-              console.log("test");
               router.push(NEXT_ROUTER.projects.all);
             } else {
               clearImpersonateClaim();
