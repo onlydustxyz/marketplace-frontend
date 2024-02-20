@@ -1,9 +1,32 @@
+import { ProjectsActions } from "actions/Projects/projects.actions";
+import type { Metadata } from "next";
 import { PropsWithChildren } from "react";
+
+import { sharedMetadata } from "app/shared-metadata";
 
 import ProjectsSidebar from "src/_pages/ProjectDetails/Sidebar";
 
 import { ClientLayout } from "./components/client-layout/client-layout";
 
+export async function generateMetadata(props: { params: { slug: string } }): Promise<Metadata> {
+  const { params } = props;
+  try {
+    const project = await ProjectsActions.queries.retrieveBySlug(params.slug);
+    return {
+      ...sharedMetadata,
+      title: `${project.name} - OnlyDust`,
+      openGraph: {
+        ...sharedMetadata.openGraph,
+        title: `${project.name} - OnlyDust`,
+      },
+      twitter: {
+        ...sharedMetadata.twitter,
+      },
+    };
+  } catch {
+    return sharedMetadata;
+  }
+}
 export default function ProjectLayout({ children }: PropsWithChildren) {
   return (
     <div
