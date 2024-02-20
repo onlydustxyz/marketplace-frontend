@@ -54,7 +54,7 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserInd
           <Text style={styles.paragraph}>{legalInfos.dueDate}</Text>
         </View>
       </View>
-      <View style={{ ...styles.flexRow }}>
+      <View style={{ ...styles.flexRow }} wrap={false}>
         <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.destinationAccounts}</Text>
         {legalInfos.destinationAccounts.map((wallet, index) => (
           <Text key={index} style={{ ...styles.paragraph, fontSize: 11, lineHeight: 1.2 }}>

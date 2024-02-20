@@ -31,6 +31,7 @@ export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }:
           senderInfos={invoiceInfos.senderInfos}
           recipientInfos={invoiceInfos.recipientInfos}
           legalInfos={invoiceInfos.legalInfos}
+          isUserIndividual={invoiceInfos.isUserIndividual}
         />
         <InvoiceSummary
           rewards={rewardSummary.rewards}

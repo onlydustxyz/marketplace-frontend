@@ -10,6 +10,7 @@ export function InvoiceVat({ vat, totalTax }: TInvoice.InvoiceVatInfoProps) {
       <View style={styles.tdSmall}></View>
       <Text style={styles.td}></Text>
       <Text style={styles.td}></Text>
+      <Text style={styles.td}></Text>
       <Text style={styles.td}>
         <Text>{InvoiceTokens.rewardSummary.table.totalVat} </Text>
         <Text>({vat.rate})</Text>
@@ -39,6 +40,7 @@ export function InvoiceVat({ vat, totalTax }: TInvoice.InvoiceVatInfoProps) {
       return (
         <View style={styles.tr}>
           <View style={styles.tdSmall}></View>
+          <Text style={styles.td}></Text>
           <Text style={styles.td}></Text>
           <Text style={styles.td}></Text>
           <Text style={styles.td}>

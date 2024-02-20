@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     padding: "30 0",
   },
   header: {
-    padding: "10 50 30 50",
+    padding: "10 30 30 30",
     borderBottom: "1px solid #d8d8d8",
     fontWeight: "medium",
     textAlign: "center",
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   section: {
     margin: 0,
-    padding: "30 50",
+    padding: "30 30",
   },
   textLeft: {
     textAlign: "left",
@@ -73,6 +73,9 @@ export const styles = StyleSheet.create({
   paddingHoriz50P: {
     padding: "0 50px",
   },
+  paddingHoriz30P: {
+    padding: "0 30px",
+  },
   paddingVert50P: {
     padding: "50px 0",
   },
@@ -109,7 +112,7 @@ export const styles = StyleSheet.create({
   },
   th: {
     position: "relative",
-    padding: "10px 10px",
+    padding: "10px 5px",
     fontSize: "12px",
     color: "#262525",
     fontWeight: "medium",
@@ -118,7 +121,7 @@ export const styles = StyleSheet.create({
   },
   thSmall: {
     position: "relative",
-    padding: "10px 10px",
+    padding: "10px 5px",
     fontSize: "12px",
     color: "#262525",
     fontWeight: "medium",
@@ -127,7 +130,7 @@ export const styles = StyleSheet.create({
   },
   td: {
     position: "relative",
-    padding: "10px 10px",
+    padding: "10px 5px",
     fontSize: "12px",
     color: "#535353",
     fontWeight: "normal",
@@ -136,7 +139,7 @@ export const styles = StyleSheet.create({
   },
   tdSmall: {
     position: "relative",
-    padding: "10px 10px",
+    padding: "10px 5px",
     fontSize: "12px",
     color: "#535353",
     fontWeight: "normal",
