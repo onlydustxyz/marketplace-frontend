@@ -15,7 +15,8 @@
     "postbuild": "scripts/upload-sourcemaps.sh",
     "dependency-cruiser": "depcruise --config .dependency-cruiser.js src",
     "update-languages": "scripts/generate-github-languages-file.sh",
-    "component": "ts-node tools/create-components.ts"
+    "component": "ts-node tools/create-component.js",
+    "hook": "ts-node tools/create-hook.js"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
