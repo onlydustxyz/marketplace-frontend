@@ -4,7 +4,6 @@ import { ProjectConstants } from "src/api/Project/constants";
 import { ProjectTypes } from "src/api/Project/types";
 
 import { IconTag } from "components/ds/icon-tag/icon-tag";
-import { Flex } from "components/layout/flex/flex";
 import { Translate } from "components/layout/translate/translate";
 
 import { ProjectsContext } from "../../context/project.context";
@@ -18,7 +17,7 @@ interface ProjectTagsProps {
 export function ProjectTags({ tags }: ProjectTagsProps) {
   const { filters } = useContext(ProjectsContext);
   return (
-    <Flex direction="row" className="flex-1 justify-end gap-2">
+    <>
       {tags.map(tag => (
         <IconTag
           key={tag}
@@ -27,6 +26,6 @@ export function ProjectTags({ tags }: ProjectTagsProps) {
           active={filters.values.tags.length > 1 ? filters.values.tags.includes(tag as ProjectTypes.Tags) : false}
         />
       ))}
-    </Flex>
+    </>
   );
 }

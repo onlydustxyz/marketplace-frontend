@@ -24,7 +24,7 @@
     "euVatNumber": "EU VAT NUMBER"
   },
   "buttons": {
-    "reValidate": "Re-do verification",
+    "reValidate": "Restart verification",
     "contact": "Contact us",
     "resumeValidation": "Resume verification",
     "startValidation": "Start verification",

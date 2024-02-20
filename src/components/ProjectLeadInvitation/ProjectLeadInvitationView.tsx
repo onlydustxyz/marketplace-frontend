@@ -49,7 +49,7 @@ export default function ProjectLeadInvitationView({
       )}
     >
       <div
-        className={cn("flex flex-1 text-left font-walsheim text-base sm:flex-auto", {
+        className={cn("flex flex-1 text-left font-walsheim text-base md:flex-auto", {
           "text-sm": size === CalloutSizes.Small,
           "text-md": size === CalloutSizes.Medium,
           "text-lg": size === CalloutSizes.Large,
@@ -60,7 +60,7 @@ export default function ProjectLeadInvitationView({
       <Button
         size={ButtonsSizes[size]}
         onClick={onClick}
-        data-testid="accept-invite-button flex-1 sm:flex-auto"
+        data-testid="accept-invite-button flex-1 md:flex-auto"
         disabled={isLoading}
       >
         {size === CalloutSizes.Large ? <CheckLine className="text-xl font-normal text-black" /> : null}

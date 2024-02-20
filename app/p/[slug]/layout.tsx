@@ -30,7 +30,7 @@ export async function generateMetadata(props: { params: { slug: string } }): Pro
 export default function ProjectLayout({ children }: PropsWithChildren) {
   return (
     <div
-      className="flex w-full flex-1 flex-col overflow-hidden border-[24px] border-t-0 border-black pt-4 xl:h-0 xl:flex-row xl:pt-0"
+      className="flex w-full flex-1 flex-col overflow-hidden border-0 border-t-0 border-black pt-4 xl:h-0 xl:flex-row xl:border-[24px] xl:border-t-0 xl:pt-0"
       style={{ boxSizing: "border-box" }}
     >
       <ProjectsSidebar />

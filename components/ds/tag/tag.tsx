@@ -13,6 +13,7 @@ export function Tag({
   className,
   onClick,
   tooltipContent,
+  containerClassName,
   ...props
 }: TTag.Props) {
   function renderContent() {
@@ -20,7 +21,7 @@ export function Tag({
       <Component
         data-testId={testId}
         id={id}
-        className="relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px"
+        className={cn("relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px", containerClassName)}
         onClick={onClick}
       >
         <div className={cn(tagVariants({ ...props }), className)}>{children}</div>

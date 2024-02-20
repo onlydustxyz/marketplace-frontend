@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
@@ -99,13 +98,13 @@ export function ViewMobile({
                     <img className="h-7 w-7 rounded-full" src={avatarUrl} loading="lazy" alt={login} />
                   ) : null}
 
-                  <Flex direction="col" alignItems="start">
+                  <Flex direction="col" alignItems="start" className="gap-px">
                     <Typography variant="title-s" className="text-sm leading-4">
                       {login}
                     </Typography>
 
                     <Typography
-                      variant="body-s"
+                      variant="body-m"
                       translate={{
                         token: labelToken,
                       }}
@@ -142,16 +141,14 @@ export function ViewMobile({
                     </BaseLink>
                   ) : null}
 
-                  {hasRewards ? (
-                    <BaseLink
-                      href={NEXT_ROUTER.rewards.all}
-                      onClick={() => setPanelOpen(false)}
-                      className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
-                    >
-                      <Icon remixName="ri-exchange-dollar-line" size={20} />
-                      {T("v2.features.menu.rewards")}
-                    </BaseLink>
-                  ) : null}
+                  <BaseLink
+                    href={NEXT_ROUTER.rewards.all}
+                    onClick={() => setPanelOpen(false)}
+                    className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
+                  >
+                    <Icon remixName="ri-exchange-dollar-line" size={20} />
+                    {T("v2.features.menu.rewards")}
+                  </BaseLink>
 
                   <span className="my-1 block h-px bg-greyscale-50/8" />
                 </div>

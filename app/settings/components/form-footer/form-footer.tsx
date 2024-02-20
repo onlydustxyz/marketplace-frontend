@@ -40,11 +40,11 @@ export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
     <Flex
       alignItems="center"
       justifyContent="center"
-      className="absolute bottom-0 left-0 right-0 z-50 border-t border-greyscale-50/8 bg-spaceBlue-900 px-8 py-5 shadow-medium"
+      className="absolute bottom-0 left-0 right-0 z-50 border-t border-greyscale-50/8 bg-spaceBlue-900 px-4 py-5 shadow-medium xl:px-8"
     >
-      <div className="w-full max-w-7xl px-4 xl:px-8">
-        <Flex alignItems="center" justifyContent="between">
-          <Tag size="medium">
+      <div className="w-full max-w-7xl px-0 xl:px-8">
+        <Flex alignItems="center" justifyContent="between" className="flex-col gap-4 md:flex-row md:gap-2">
+          <Tag size="medium" className="w-full md:w-fit" containerClassName="w-full md:w-fit">
             {isDirty || !isValid ? (
               <Flex
                 alignItems="center"
@@ -71,15 +71,16 @@ export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
             )}
           </Tag>
 
-          <Flex alignItems="center" className="gap-3">
+          <Flex alignItems="center" className="w-full gap-3 md:w-fit">
             {hasPreviewButton ? (
               <BaseLink
                 href={NEXT_ROUTER.publicProfile.root(user?.nickname ?? "")}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="w-full md:w-fit"
               >
-                <Button variant="secondary" size={isMd ? "m" : "s"}>
-                  {isMd ? <Icon remixName="ri-external-link-line" size={20} /> : null}
+                <Button variant="secondary" size={isMd ? "m" : "s"} className="w-full md:w-fit">
+                  <Icon remixName="ri-external-link-line" size={20} />
 
                   {isMd ? (
                     <Translate token="v2.pages.settings.profile.buttons.preview" />
@@ -95,6 +96,7 @@ export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
               disabled={isPending || !isValid || !isDirty}
               size={isMd ? "m" : "s"}
               backgroundColor={"blue"}
+              className="w-full md:w-fit"
             >
               {renderIcon()}
 
