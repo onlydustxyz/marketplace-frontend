@@ -1,11 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
-import { RoutePaths } from "src/App";
 import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Tooltip from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import LinkIcon from "src/icons/Link";
+
+import { NEXT_ROUTER } from "constants/router";
 
 type Props = {
   userLogin: string;
@@ -13,7 +14,12 @@ type Props = {
 
 export default function Header({ userLogin }: Props) {
   const { T } = useIntl();
-  const navigate = useNavigate();
+
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(NEXT_ROUTER.projects.all);
+  };
 
   return (
     <div className="flex items-center md:py-6">
@@ -44,7 +50,7 @@ export default function Header({ userLogin }: Props) {
               {T("publicProfile.urlCopied")}
             </Tooltip>
           </div>
-          <Button type={ButtonType.Primary} size={ButtonSize.LgRounded} onClick={() => navigate(RoutePaths.Projects)}>
+          <Button type={ButtonType.Primary} size={ButtonSize.LgRounded} onClick={handleClick}>
             {T("publicProfile.goToApp")}
           </Button>
         </div>

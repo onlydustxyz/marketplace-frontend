@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
-
-import { RoutePaths } from "src/App";
 import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
+
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
 
 export function NotFound() {
   const { T } = useIntl();
@@ -19,11 +20,11 @@ export function NotFound() {
         </div>
         <div className="font-walsheim text-base text-spaceBlue-200 sm:text-lg">{T("notFound.text")}</div>
       </div>
-      <Link to={RoutePaths.Projects}>
+      <BaseLink href={NEXT_ROUTER.projects.all}>
         <Button size={ButtonSize.Lg}>
           <ArrowLeftSLine className="text-xl" /> {T("notFound.button")}
         </Button>
-      </Link>
+      </BaseLink>
     </div>
   );
 }
