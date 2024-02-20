@@ -100,10 +100,6 @@ describe("formatToSchema", () => {
       starknetAddress: undefined,
       optimismAddress: undefined,
       aptosAddress: undefined,
-      sepaAccount: {
-        iban: undefined,
-        bic: undefined,
-      },
     };
 
     const result = formatToSchema(formattedData);
