@@ -1,18 +1,22 @@
-import { useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+"use client";
 
-import { RoutePaths } from "src/App";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 import MeApi from "src/api/me/index";
 import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
 
 const ImpersonationPage = () => {
   const { T } = useIntl();
   const { userId } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { getImpersonateClaim, setImpersonateClaim, clearImpersonateClaim } = useImpersonation();
   const impersonateClaims = getImpersonateClaim();
   const { refetch } = MeApi.queries.useGetMe({ options: { retry: 1 } });
@@ -20,7 +24,7 @@ const ImpersonationPage = () => {
 
   useEffect(() => {
     if (!userId) {
-      navigate(RoutePaths.Projects);
+      router.push(NEXT_ROUTER.projects.all);
     } else {
       // Reset Posthog before refetching to so once refetch completes Posthog can update with impersonated user
       reset();
@@ -33,28 +37,29 @@ const ImpersonationPage = () => {
           if (isError) {
             clearImpersonateClaim();
             reset(); // Return to initial user
-            navigate(RoutePaths.NotFound);
+            router.push(NEXT_ROUTER.notFound);
           }
 
           if (userInfo && !isFetching && claimedGithubUserId) {
             if (userInfo?.githubUserId === claimedGithubUserId) {
-              navigate(RoutePaths.Projects);
+              console.log("test");
+              router.push(NEXT_ROUTER.projects.all);
             } else {
               clearImpersonateClaim();
               reset(); // Return to initial user
-              navigate(RoutePaths.NotFound);
+              router.push(NEXT_ROUTER.notFound);
             }
           }
         })
         .catch(() => {
           clearImpersonateClaim();
           reset(); // Return to initial user
-          navigate(RoutePaths.NotFound);
+          router.push(NEXT_ROUTER.notFound);
         });
     }
   }, [userId, impersonateClaims]);
 
-  return <Link to={RoutePaths.Projects}>{T("notFound.button")}</Link>;
+  return <BaseLink href={NEXT_ROUTER.projects.all}>{T("notFound.button")}</BaseLink>;
 };
 
 export default ImpersonationPage;
