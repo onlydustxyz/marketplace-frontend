@@ -16,11 +16,7 @@ export const ConfirmationModal = () => {
 
   useEffect(() => {
     const shouldBlock = !githubWorklow.inGithubWorkflow && !!form?.formState.isDirty;
-    if (shouldBlock) {
-      setBlockState(true);
-    } else {
-      setBlockState(false);
-    }
+    setBlockState(shouldBlock);
   }, [form?.formState.isDirty, githubWorklow.inGithubWorkflow]);
   const onSaveBeforeLeave = () => {
     block.confirm();

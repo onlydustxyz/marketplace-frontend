@@ -3,7 +3,6 @@ import { createContext } from "react";
 
 export const NavigationStateContext = createContext<TNavigationStateContext.Return>({
   block: {
-    should: false,
     state: [false, () => {}],
     confirm: () => {},
     cancel: () => {},

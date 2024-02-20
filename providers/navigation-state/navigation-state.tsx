@@ -39,7 +39,6 @@ export function NavigationStateProvider({ children }: TNavigationStateContext.Pr
 
   const block = useMemo(
     () => ({
-      should: shouldBlockNavigation,
       confirm: onConfirm,
       cancel: onCancel,
       state: [shouldBlockNavigation, setBlockNavigation] as TNavigationStateContext.state,

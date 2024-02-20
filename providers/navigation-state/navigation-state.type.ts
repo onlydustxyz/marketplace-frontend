@@ -6,7 +6,6 @@ export namespace TNavigationStateContext {
   export type confirmation = [boolean, (shouldShow: boolean, url: string) => void];
   export type Return = {
     block: {
-      should: boolean;
       confirm: () => void;
       cancel: () => void;
       state: state;
