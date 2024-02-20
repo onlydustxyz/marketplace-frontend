@@ -1,3 +1,6 @@
+import { PropsWithChildren, useCallback } from "react";
+
+import { Leader } from "src/types";
 import isDefined from "src/utils/isDefined";
 
 import { AvatarGroup } from "components/ds/avatar-group/avatar-group";
@@ -6,31 +9,46 @@ import { Contributor } from "components/features/contributor/contributor";
 
 import { TContributorsAvatars } from "./contributors-avatars.types";
 
-export function ContributorsAvatars({ contributors, avatarProps }: TContributorsAvatars.Props) {
-  function contributorsContent() {
-    return (
-      <div className="flex flex-row flex-wrap items-center gap-4 text-snow">
-        {contributors
-          .filter(
-            contributor =>
-              isDefined(contributor.githubUserId) && isDefined(contributor.login) && isDefined(contributor.avatarUrl)
-          )
-          .map(contributor => (
-            <Contributor
-              key={contributor.githubUserId}
-              githubUserId={contributor.githubUserId}
-              login={contributor.login}
-              avatarUrl={contributor.avatarUrl}
-              isRegistered={false}
-              clickable
-            />
-          ))}
-      </div>
-    );
-  }
+function TooltipContent({ contributors }: { contributors: Leader[] }) {
+  return (
+    <div className="flex flex-col flex-wrap gap-4 text-snow">
+      {contributors
+        .filter(
+          contributor =>
+            isDefined(contributor.githubUserId) && isDefined(contributor.login) && isDefined(contributor.avatarUrl)
+        )
+        .map(contributor => (
+          <Contributor
+            key={contributor.githubUserId}
+            githubUserId={contributor.githubUserId}
+            login={contributor.login}
+            avatarUrl={contributor.avatarUrl}
+            isRegistered={false}
+            clickable
+          />
+        ))}
+    </div>
+  );
+}
+
+export function ContributorsAvatars({ contributors, avatarProps, enableTooltip = true }: TContributorsAvatars.Props) {
+  const Parent = useCallback(
+    ({ children }: PropsWithChildren) => {
+      if (enableTooltip) {
+        return (
+          <Tooltip content={<TooltipContent contributors={contributors} />} canInteract>
+            {children}
+          </Tooltip>
+        );
+      }
+
+      return <>{children}</>;
+    },
+    [enableTooltip, contributors]
+  );
 
   return (
-    <Tooltip content={contributorsContent()}>
+    <Parent>
       <AvatarGroup
         avatars={contributors.map(contributor => ({
           src: contributor.avatarUrl,
@@ -38,6 +56,8 @@ export function ContributorsAvatars({ contributors, avatarProps }: TContributors
         }))}
         avatarProps={avatarProps}
       />
-    </Tooltip>
+    </Parent>
   );
 }
+
+ContributorsAvatars.TooltipContent = TooltipContent;

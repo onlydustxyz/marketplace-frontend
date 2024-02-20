@@ -248,7 +248,7 @@ export function Datepicker({
                   open,
                 "text-spaceBlue-200": !open && !selectionIsValid,
                 "text-greyScale-50": !open && selectionIsValid,
-                "z-50": open,
+                "z-[51]": open,
               },
               {
                 "w-[500px] min-w-full max-w-full": open && props.mode === "range",

@@ -1,5 +1,8 @@
+import { useMemo } from "react";
+
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { useIntl } from "src/hooks/useIntl";
+import { getFilteredTechnologies } from "src/utils/technologies";
 
 import { Typography } from "components/layout/typography/typography";
 
@@ -12,14 +15,18 @@ interface Props {
 export const ProjectOverviewTechnologies = ({ technologies }: Props) => {
   const { T } = useIntl();
 
-  const technologiesArray = Object.keys(technologies);
+  const technologiesArray = useMemo(() => {
+    return getFilteredTechnologies(technologies).filteredTechArray.map(([tech]) => tech);
+  }, [technologies]);
 
   return technologiesArray?.length ? (
     <Section
       icon={SectionIcon.Code}
       title={T("project.details.overview.technologies", { count: technologiesArray.length })}
     >
-      <Typography variant="body-s">{technologiesArray.join(", ")}</Typography>
+      <Typography variant="body-s" className="leading-relaxed">
+        {technologiesArray.join(", ")}
+      </Typography>
     </Section>
   ) : null;
 };

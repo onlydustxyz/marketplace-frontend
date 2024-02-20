@@ -29,15 +29,21 @@ export function formatToSchema(data: TPayoutForm.Data) {
   } = data;
 
   const emptyStringToUndefined = (value?: string) => (value === "" ? undefined : value);
+  const hasIban = emptyStringToUndefined(iban);
+  const hasBic = emptyStringToUndefined(bic);
 
   return {
     ethWallet: emptyStringToUndefined(ethWallet),
     starknetAddress: emptyStringToUndefined(starknetAddress),
     optimismAddress: emptyStringToUndefined(optimismAddress),
     aptosAddress: emptyStringToUndefined(aptosAddress),
-    sepaAccount: {
-      iban: emptyStringToUndefined(iban),
-      bic: emptyStringToUndefined(bic),
-    },
+    ...(hasIban || hasBic
+      ? {
+          sepaAccount: {
+            iban: hasIban,
+            bic: hasBic,
+          },
+        }
+      : {}),
   };
 }

@@ -14,7 +14,7 @@ export const useSubscribeStacks = (name: string): { open: boolean } => {
   } = useStackContext();
 
   const stack = getPanelFromStackName(name);
-  const subscribe = useSubscribe(stack.panel || undefined);
+  const subscribe = useSubscribe(stack?.panel || undefined);
 
   return {
     open: subscribe?.open || false,

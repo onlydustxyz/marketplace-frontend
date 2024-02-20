@@ -15,6 +15,7 @@ export enum ButtonSize {
 export enum ButtonType {
   Primary = "type-primary",
   Secondary = "type-secondary",
+  SecondaryDark = "type-secondary-dark",
   Ternary = "type-ternary",
 }
 
@@ -77,6 +78,26 @@ const variants: Record<
       disabled: "border bg-card-background-base text-greyscale-50 border-greyscale-50",
     },
     default: "border drop-shadow-bottom-sm bg-white/5 text-greyscale-50",
+    pressed: "",
+  },
+  [ButtonType.SecondaryDark]: {
+    [ButtonAccentColor.Purple]: {
+      default:
+        "focus-visible:border-spacePurple-700 focus-visible:text-spacePurple-800 hover:border-spacePurple-700 hover:text-spacePurple-800 active:border-spacePurple-500 active:bg-spacePurple-50 active:text-spacePurple-700",
+      pressed: "border-spacePurple-500 bg-spacePurple-50 text-spacePurple-700",
+    },
+    [ButtonAccentColor.Orange]: {
+      default:
+        "focus-visible:border-orange-700 focus-visible:text-orange-800 hover:border-orange-700 hover:text-orange-800 active:border-orange-500 active:bg-orange-50 active:text-orange-700",
+      pressed: "border-orange-500 bg-orange-50 text-orange-700",
+    },
+    [ButtonOnBackground.Default]: {
+      disabled: "border bg-card-background-medium border-card-border-light text-greyscale-600",
+    },
+    [ButtonOnBackground.Blue]: {
+      disabled: "border bg-card-background-base text-greyscale-900 border-greyscale-900",
+    },
+    default: "border drop-shadow-bottom-sm bg-black/5 text-greyscale-800",
     pressed: "",
   },
   [ButtonType.Ternary]: {

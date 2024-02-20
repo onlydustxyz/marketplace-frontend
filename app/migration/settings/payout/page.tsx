@@ -124,7 +124,6 @@ export default function PayoutPage() {
   });
 
   const onSubmit = (formData: TPayoutForm.Data) => {
-    console.log(formatToSchema(formData));
     updateUserPayoutInformation(formatToSchema(formData));
   };
 
