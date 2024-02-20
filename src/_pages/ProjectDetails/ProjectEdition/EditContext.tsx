@@ -273,10 +273,12 @@ export function EditProvider({ children, project }: EditContextProps) {
           projectKey: data.projectSlug,
         })}`;
 
-        // Navigate before invalidating queries so the new data can use the updated params
-        navigate(newPathname, { replace: true, state: location.state });
+        if (data.projectSlug !== project.slug) {
+          // Navigate before invalidating queries so the new data can use the updated params
+          navigate(newPathname, { replace: true, state: location.state, preventScrollReset: true });
 
-        queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+          queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+        }
         queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
       },
     },

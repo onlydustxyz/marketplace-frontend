@@ -34,8 +34,8 @@ export function Header({ initialData }: THeader.Props) {
     success: {
       message:
         profile === MeTypes.billingProfileType.Individual
-          ? T("v2.pages.settings.billing.messages.success_to_individual")
-          : T("v2.pages.settings.billing.messages.success_to_company"),
+          ? T("v2.pages.settings.billing.messages.success_to_company")
+          : T("v2.pages.settings.billing.messages.success_to_individual"),
     },
     error: {
       default: true,
@@ -46,10 +46,10 @@ export function Header({ initialData }: THeader.Props) {
     if (initialData) {
       reset(initialData);
     }
-  }, [initialData]);
+  }, [initialData?.profile]);
 
-  function onSubmit(data: THeader.formData) {
-    mutate({ type: data.profile });
+  function onSubmit() {
+    mutate({ type: profile });
   }
 
   function onOpenConfirmation() {

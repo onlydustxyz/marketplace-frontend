@@ -53,7 +53,7 @@ export default function ShinyBanner({
         {icon && <div>{icon}</div>}
 
         <div
-          className={cn("flex flex-1 text-left font-walsheim text-base sm:flex-auto", {
+          className={cn("flex flex-1 text-left font-walsheim text-base md:flex-auto", {
             "text-sm": size === CalloutSizes.Small,
             "text-md": size === CalloutSizes.Medium,
             "text-lg": size === CalloutSizes.Large,

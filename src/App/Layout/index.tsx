@@ -7,13 +7,15 @@ import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
 
+import { SpaceBackground } from "components/features/space-background/space-background";
+
 const Header = lazy(() => import("./Header"));
 
 export default function Layout() {
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
 
   return (
-    <div className="flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
+    <div className="z-[1] flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
       <Suspense
         fallback={
           <div className="px-6 py-4 ">
@@ -22,6 +24,7 @@ export default function Layout() {
         }
       >
         <Header />
+        <SpaceBackground />
       </Suspense>
       <Outlet />
       <Toaster />

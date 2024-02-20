@@ -17,25 +17,13 @@ export const formatMoneyAmount = ({
   notation = "standard",
   showCurrency = true,
 }: Params) => {
-  switch (currency) {
-    case Currency.USD:
-      return Intl.NumberFormat("en-US", {
-        style: showCurrency ? "currency" : undefined,
-        currency: showCurrency ? currency : undefined,
-        maximumFractionDigits: maximumFractionDigits({ amount, notation }),
-        notation,
-      })
-        .format(amount)
-        .replace("K", "k");
-    default:
-      return `${Intl.NumberFormat("en-US", {
-        // maximumFractionDigits: maximumFractionDigits({ amount, notation }), // keep this but we need to disable because when don't want to round for crypto
-        notation,
-        maximumFractionDigits: 6,
-      })
-        .format(amount)
-        .replace("K", "k")}${showCurrency ? ` ${currency}` : ""}`;
-  }
+  return `${Intl.NumberFormat("en-US", {
+    notation,
+    // maximumFractionDigits: maximumFractionDigits({ amount, notation }), // keep this but we need to disable because when don't want to round for crypto
+    maximumFractionDigits: currency === Currency.USD ? maximumFractionDigits({ amount, notation }) : 6,
+  })
+    .format(amount)
+    .replace("K", "k")}${showCurrency ? ` ${currency}` : ""}`;
 };
 
 const maximumFractionDigits = ({ amount, notation }: Params) => {

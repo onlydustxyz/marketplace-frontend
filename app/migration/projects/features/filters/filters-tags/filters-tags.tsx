@@ -28,31 +28,37 @@ export function FiltersTags() {
             value: ProjectTypes.Tags.HotCommunity,
             children: <Translate token={ProjectConstants.tagMapping.HOT_COMMUNITY.label} />,
             icon: props => <Icon {...ProjectConstants.tagMapping.HOT_COMMUNITY.icon} {...props} />,
+            tooltipProps: { content: <Translate token={ProjectConstants.tagMapping.HOT_COMMUNITY.tooltip} /> },
           },
           {
             value: ProjectTypes.Tags.NewbiesWelcome,
             children: <Translate token={ProjectConstants.tagMapping.NEWBIES_WELCOME.label} />,
             icon: props => <Icon {...ProjectConstants.tagMapping.NEWBIES_WELCOME.icon} {...props} />,
-          },
-          {
-            value: ProjectTypes.Tags.LikelyToReward,
-            children: <Translate token={ProjectConstants.tagMapping.LIKELY_TO_REWARD.label} />,
-            icon: props => <Icon {...ProjectConstants.tagMapping.LIKELY_TO_REWARD.icon} {...props} />,
-          },
-          {
-            value: ProjectTypes.Tags.WorkInProgress,
-            children: <Translate token={ProjectConstants.tagMapping.WORK_IN_PROGRESS.label} />,
-            icon: props => <Icon {...ProjectConstants.tagMapping.WORK_IN_PROGRESS.icon} {...props} />,
-          },
-          {
-            value: ProjectTypes.Tags.FastAndFurious,
-            children: <Translate token={ProjectConstants.tagMapping.FAST_AND_FURIOUS.label} />,
-            icon: props => <Icon {...ProjectConstants.tagMapping.FAST_AND_FURIOUS.icon} {...props} />,
+            tooltipProps: { content: <Translate token={ProjectConstants.tagMapping.NEWBIES_WELCOME.tooltip} /> },
           },
           {
             value: ProjectTypes.Tags.BigWhale,
             children: <Translate token={ProjectConstants.tagMapping.BIG_WHALE.label} />,
             icon: props => <Icon {...ProjectConstants.tagMapping.BIG_WHALE.icon} {...props} />,
+            tooltipProps: { content: <Translate token={ProjectConstants.tagMapping.BIG_WHALE.tooltip} /> },
+          },
+          {
+            value: ProjectTypes.Tags.LikelyToReward,
+            children: <Translate token={ProjectConstants.tagMapping.LIKELY_TO_REWARD.label} />,
+            icon: props => <Icon {...ProjectConstants.tagMapping.LIKELY_TO_REWARD.icon} {...props} />,
+            tooltipProps: { content: <Translate token={ProjectConstants.tagMapping.LIKELY_TO_REWARD.tooltip} /> },
+          },
+          {
+            value: ProjectTypes.Tags.WorkInProgress,
+            children: <Translate token={ProjectConstants.tagMapping.WORK_IN_PROGRESS.label} />,
+            icon: props => <Icon {...ProjectConstants.tagMapping.WORK_IN_PROGRESS.icon} {...props} />,
+            tooltipProps: { content: <Translate token={ProjectConstants.tagMapping.WORK_IN_PROGRESS.tooltip} /> },
+          },
+          {
+            value: ProjectTypes.Tags.FastAndFurious,
+            children: <Translate token={ProjectConstants.tagMapping.FAST_AND_FURIOUS.label} />,
+            icon: props => <Icon {...ProjectConstants.tagMapping.FAST_AND_FURIOUS.icon} {...props} />,
+            tooltipProps: { content: <Translate token={ProjectConstants.tagMapping.FAST_AND_FURIOUS.tooltip} /> },
           },
         ]}
       />

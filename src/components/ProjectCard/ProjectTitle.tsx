@@ -3,7 +3,6 @@ import Contributor from "src/components/Contributor";
 import PrivateTag from "src/components/PrivateTag";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { formatList } from "src/utils/list";
 
@@ -49,7 +48,7 @@ const ProjectLeads = ({ leads }: { leads: Leaders[] }) => {
             alt={lead.login || ""}
             size={ImageSize.Xxs}
             key={lead.id}
-            src={lead.avatarUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + lead.avatarUrl : ""}
+            src={lead.avatarUrl}
           />
         ))}
       </div>

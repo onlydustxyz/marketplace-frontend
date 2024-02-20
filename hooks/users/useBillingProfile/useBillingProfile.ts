@@ -7,8 +7,8 @@ import { useCurrentUser } from "../useCurrentUser/useCurrentUser";
 import { TUseBillingProfile } from "./useBillingProfile.types";
 
 export const useBillingProfiles = (): TUseBillingProfile.Return => {
-  const { user } = useCurrentUser();
-  const { data } = MeApi.billing.queries.useBillingProfile({
+  const { user, isLoading: isLoadingUser } = useCurrentUser();
+  const { data, isLoading: isLoadingBilling } = MeApi.billing.queries.useBillingProfile({
     params: { profile: user?.billingProfileType },
   });
 
@@ -29,5 +29,6 @@ export const useBillingProfiles = (): TUseBillingProfile.Return => {
     profileType,
     isIndividual,
     isCompany,
+    isLoading: isLoadingUser || isLoadingBilling,
   };
 };

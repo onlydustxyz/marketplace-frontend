@@ -47,6 +47,9 @@ function SafeProjectsPage() {
             </div>
           </Flex>
           <div className="flex w-full grow flex-col gap-5">
+            <div className="block w-full self-start lg:hidden">
+              <AddProject />
+            </div>
             {isLoading || projects.length > 0 ? <ProjectList /> : <NoResults />}
           </div>
         </Flex>
@@ -58,7 +61,7 @@ function SafeProjectsPage() {
 export default function ProjectsPage() {
   return (
     <ProjectsContextProvider>
-      <div className="od-space-background h-full w-full overflow-y-auto bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 lg:rounded-3xl">
+      <div className="relative z-[1] h-full w-full overflow-y-auto bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 lg:rounded-3xl">
         <div className="flex max-w-7xl flex-col gap-6 px-4 py-4 md:mx-auto md:px-12 xl:pb-8 xl:pt-12 ">
           <SafeProjectsPage />
         </div>

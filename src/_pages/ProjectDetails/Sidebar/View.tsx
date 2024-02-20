@@ -9,7 +9,7 @@ import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
-import config, { viewportConfig } from "src/config";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
@@ -38,15 +38,15 @@ export default function View({
   const { T } = useIntl();
   const navigate = useNavigate();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const currentProjectUrl = currentProject.logoUrl
-    ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + currentProject.logoUrl
-    : currentProject.logoUrl;
+  const currentProjectUrl = currentProject.logoUrl;
 
   return (
     <div
-      className={
-        "flex w-full shrink-0 flex-col gap-6 bg-white/4 bg-noise-medium p-6 font-walsheim xl:w-80 xl:rounded-l-2xl"
-      }
+      className={cn(
+        "border-r-2xl xl:border-r-lg relative z-[1] flex w-full shrink-0 flex-col gap-6 overflow-hidden border-black p-6 font-walsheim xl:w-[328px] xl:rounded-l-2xl",
+        "before:absolute before:inset-0 before:-z-[2] before:bg-black",
+        "after:absolute after:bottom-0 after:left-0 after:top-0 after:-z-[1] after:w-full after:bg-white/4 after:bg-noise-medium xl:after:w-[320px]"
+      )}
     >
       {isXl && (
         <BackLink to={RoutePaths.Projects} className="divide-none">

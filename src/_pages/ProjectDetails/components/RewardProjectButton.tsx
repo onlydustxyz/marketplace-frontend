@@ -6,10 +6,9 @@ import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App
 import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { components } from "src/__generated/api";
 import MeApi from "src/api/me";
-import Button, { ButtonOnBackground, ButtonSize } from "src/components/Button";
+import { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import { ChoiceButton } from "src/components/New/Buttons/ChoiceButton/ChoiceButton";
 import SidePanel from "src/components/SidePanel";
-import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
@@ -30,29 +29,6 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
     const findContact = userProfile?.contacts?.find(contact => contact.channel === channel);
     return findContact?.contact || undefined;
   };
-
-  if (process.env.NEXT_PUBLIC_ALLOW_APPLY_FOR_BUDGET !== "true") {
-    return (
-      <Button
-        disabled={isRewardDisabled}
-        onBackground={ButtonOnBackground.Blue}
-        className="flex-1 md:flex-initial"
-        size={size}
-        {...withTooltip(T("contributor.table.noBudgetLeft"), {
-          visible: isRewardDisabled,
-        })}
-        onClick={() =>
-          navigate(
-            generatePath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`, {
-              projectKey: project.slug,
-            })
-          )
-        }
-      >
-        {T("project.rewardButton.full")}
-      </Button>
-    );
-  }
 
   return (
     <>

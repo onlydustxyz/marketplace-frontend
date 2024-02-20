@@ -152,8 +152,8 @@ const config: Config = withTV({
         "pulse-grow-slow": "pulse-grow 3s ease-in-out infinite alternate",
         "spin-medium": "spin 2s ease-in-out infinite",
         wave: "wave 20s ease infinite",
-        budgetcard: "budgetcard 20s ease infinite",
-        budgetcardreverse: "budgetcard 20s ease reverse",
+        budgetcard: "spin 5s linear infinite",
+        budgetcardreverse: "budgetcard 15s ease reverse",
       },
       keyframes: {
         "spin-invert": {
@@ -183,17 +183,11 @@ const config: Config = withTV({
           },
         },
         budgetcard: {
-          "0%": {
-            "background-position": "0% 0%",
+          from: {
             transform: "rotate(0deg)",
           },
-          "50%": {
-            "background-position": "100% 100%",
+          to: {
             transform: "rotate(360deg)",
-          },
-          "100%": {
-            "background-position": "0% 0%",
-            transform: "rotate(0deg)",
           },
         },
       },
@@ -207,6 +201,7 @@ const config: Config = withTV({
         "profile-yellow": "url('/images/user-profile-bg-yellow.webp')",
         "space-card": "url('/images/space-card-bg.webp')",
         "public-profile": "url('/images/public-profile-bg.webp')",
+        "space-gradient": "linear-gradient(180deg, #000113 0%, #0E0D2E 100%)",
         space: `
             url('/images/dust-top-right.webp'),
             url('/images/dust-btm-left.webp'),

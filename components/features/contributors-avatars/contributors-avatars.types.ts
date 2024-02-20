@@ -6,5 +6,6 @@ export namespace TContributorsAvatars {
   export interface Props {
     contributors: Leader[];
     avatarProps: TAvatar.Variants;
+    enableTooltip?: boolean;
   }
 }

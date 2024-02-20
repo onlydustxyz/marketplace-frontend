@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
+import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
@@ -24,7 +25,6 @@ interface Props extends TUseMenu.Return {
   login: string;
   githubUserId?: number;
   hideProfileItems?: boolean;
-  openFeedback: () => void;
 }
 
 export function ViewMobile({
@@ -32,18 +32,16 @@ export function ViewMobile({
   login,
   githubUserId,
   hideProfileItems,
-  openFeedback,
   labelToken,
   redirection,
   errorColor,
   error,
 }: Props) {
   const { T } = useIntl();
-
   const [panelOpen, setPanelOpen] = useState(false);
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
-
   const { handleLogout } = useLogout();
+  const [openFeedback] = useStackFeedback();
 
   const { queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -57,6 +55,11 @@ export function ViewMobile({
 
   const rewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
   const hasRewards = rewards.length && !isLoading && !isError;
+
+  function handleFeedback() {
+    setPanelOpen(false);
+    openFeedback();
+  }
 
   return (
     <>
@@ -95,13 +98,13 @@ export function ViewMobile({
                     <img className="h-7 w-7 rounded-full" src={avatarUrl} loading="lazy" alt={login} />
                   ) : null}
 
-                  <Flex direction="col" alignItems="start">
+                  <Flex direction="col" alignItems="start" className="gap-px">
                     <Typography variant="title-s" className="text-sm leading-4">
                       {login}
                     </Typography>
 
                     <Typography
-                      variant="body-s"
+                      variant="body-m"
                       translate={{
                         token: labelToken,
                       }}
@@ -142,18 +145,16 @@ export function ViewMobile({
                     </NavLink>
                   ) : null}
 
-                  {hasRewards ? (
-                    <NavLink
-                      to={RoutePaths.Rewards}
-                      onClick={() => setPanelOpen(false)}
-                      className={({ isActive }) =>
-                        cn("flex items-center gap-3 rounded-md p-4", { "bg-white/8": isActive })
-                      }
-                    >
-                      <Icon remixName="ri-exchange-dollar-line" size={20} />
-                      {T("v2.features.menu.rewards")}
-                    </NavLink>
-                  ) : null}
+                  <NavLink
+                    to={RoutePaths.Rewards}
+                    onClick={() => setPanelOpen(false)}
+                    className={({ isActive }) =>
+                      cn("flex items-center gap-3 rounded-md p-4", { "bg-white/8": isActive })
+                    }
+                  >
+                    <Icon remixName="ri-exchange-dollar-line" size={20} />
+                    {T("v2.features.menu.rewards")}
+                  </NavLink>
 
                   <span className="my-1 block h-px bg-greyscale-50/8" />
                 </div>
@@ -162,7 +163,7 @@ export function ViewMobile({
           )}
 
           <div>
-            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFeedback}>
+            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={handleFeedback}>
               <Icon remixName="ri-discuss-line" size={20} />
               {T("v2.features.menu.feedback")}
             </button>
