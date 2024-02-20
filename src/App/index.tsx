@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 
 import ErrorTrigger from "src/_pages/ErrorTrigger";
@@ -8,13 +8,7 @@ import { NotFound } from "src/components/NotFound";
 
 import { AdminGuard } from "components/features/auth0/guards/admin-guard";
 
-import ProjectsLoader from "./Loaders/ProjectsLoader";
-
-const ProjectsPage = lazy(() => import("app/migration/projects/page"));
-
 export enum RoutePaths {
-  Projects = "/",
-  ProjectDetailsEditRepos = "/p/:projectKey/edit?tab=Repos",
   CatchAll = "*",
   Error = "/error",
   NotFound = "/not-found",
@@ -45,14 +39,6 @@ function App() {
     },
     {
       children: [
-        {
-          path: RoutePaths.Projects,
-          element: (
-            <Suspense fallback={<ProjectsLoader />}>
-              <ProjectsPage />
-            </Suspense>
-          ),
-        },
         {
           path: RoutePaths.NotFound,
           element: <NotFound />,
