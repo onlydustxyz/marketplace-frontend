@@ -14,8 +14,10 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
   const [invoiceId, setInvoiceId] = useState("");
 
   useEffect(() => {
-    handleInvoiceCreation();
-  }, []);
+    if (rewardIds && billingProfileId) {
+      handleInvoiceCreation();
+    }
+  }, [rewardIds, billingProfileId]);
 
   async function handleInvoiceCreation() {
     setIsLoading(true);
