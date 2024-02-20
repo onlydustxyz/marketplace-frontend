@@ -1,5 +1,6 @@
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
@@ -29,7 +30,7 @@ export default function ViewMobile(props: Props) {
 
   const { T } = useIntl();
   const location = useLocation();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [panelOpen, setPanelOpen] = useState(!!location.state?.openMenu);
 
   const isGrantingReward = location.pathname.match("rewards/new");
@@ -53,11 +54,10 @@ export default function ViewMobile(props: Props) {
         )}
         {isGrantingReward && (
           <div className="flex flex-row items-center gap-3">
-            <div onClick={() => navigate(-1)}>
-              <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
-                <CloseLine className="text-base" />
-              </Button>
-            </div>
+            <Button onClick={() => router.back()} type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
+              <CloseLine className="text-base" />
+            </Button>
+
             <div className="font-belwe text-2xl xl:text-3xl">{T("project.details.rewards.new.title")}</div>
           </div>
         )}
