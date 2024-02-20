@@ -104,7 +104,6 @@ export const styles = StyleSheet.create({
     backgroundColor: "#f7f7f7",
   },
   table: {
-    backgroundColor: "#ffffff",
     border: "0",
     width: "100%",
     flexDirection: "column",
@@ -147,6 +146,7 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
   },
   tr: {
+    backgroundColor: "#ffffff",
     width: "100%",
     display: "flex",
     flexDirection: "row",
