@@ -1,6 +1,6 @@
 # Frontend documentation
 
-## Installation
+## Installation process
 
 Install [Vite](https://vitejs.dev/) - with Homebrew:
 
