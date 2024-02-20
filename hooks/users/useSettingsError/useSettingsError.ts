@@ -1,28 +1,24 @@
-import MeApi from "src/api/me";
-
 import { useBillingProfiles } from "../useBillingProfile/useBillingProfile";
 import { useBillingStatus } from "../useBillingStatus/useBillingStatus";
 import { TUseSettingsError } from "./useSettingsError.types";
 
 export const useSettingsError = (): TUseSettingsError.Return => {
-  const { data } = MeApi.queries.useGetMe({});
-
-  const { validBillingProfile, billingProfile } = useBillingProfiles();
+  const { validBillingProfile, billingProfile, user, isLoading } = useBillingProfiles();
   const { isWarning: isBillingWarning, isError: isBillingError } = useBillingStatus({
     hasValidBillingProfile: validBillingProfile,
     status: billingProfile?.status,
   });
 
   const getError = (): TUseSettingsError.Return["error"] => {
-    if (isBillingError) {
+    if (isBillingError && !isLoading) {
       return TUseSettingsError.ERRORS.BILLING_ERROR;
     }
 
-    if (isBillingWarning) {
+    if (isBillingWarning && !isLoading) {
       return TUseSettingsError.ERRORS.BILLING_WARNING;
     }
 
-    if (!data?.hasValidPayoutInfos) {
+    if (!user?.hasValidPayoutInfos) {
       return TUseSettingsError.ERRORS.PAYOUT;
     }
 
@@ -33,5 +29,7 @@ export const useSettingsError = (): TUseSettingsError.Return => {
 
   return {
     error,
+    isBillingWarning,
+    isBillingError,
   };
 };

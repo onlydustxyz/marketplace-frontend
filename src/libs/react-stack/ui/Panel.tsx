@@ -110,6 +110,7 @@ export default function SidePanel({
             <div
               className={cn("relative h-full overflow-y-auto", {
                 "pt-6": !option?.noPadding,
+                "bg-white": option?.theme === "light",
               })}
             >
               {topLeftComponent ? (
@@ -120,7 +121,7 @@ export default function SidePanel({
                   {action}
                   <Button
                     size={ButtonSize.Sm}
-                    type={ButtonType.Secondary}
+                    type={option?.theme === "light" ? ButtonType.SecondaryDark : ButtonType.Secondary}
                     iconOnly
                     onClick={onClose}
                     data-testid="close-add-work-item-panel-btn"

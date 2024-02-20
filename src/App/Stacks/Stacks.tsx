@@ -89,7 +89,14 @@ export const Stacks = () => {
         {({ params }) => <ProjectOverviewSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
-      <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
+      <RegisterStack<StackRouterParams["Verify"]>
+        name={StackRoute.Verify}
+        option={{
+          panel: {
+            theme: "light",
+          },
+        }}
+      >
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>

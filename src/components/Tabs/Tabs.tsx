@@ -14,6 +14,7 @@ type Props = {
   tabs: Tab[];
   variant?: Variants;
   rightElement?: React.ReactNode;
+  border?: boolean;
 };
 
 type DefaultProps = Props & {
@@ -26,7 +27,14 @@ type MobileProps = Props & {
   mobileTitle: string;
 };
 
-export function Tabs({ tabs, variant = "grey", showMobile, mobileTitle, rightElement }: DefaultProps | MobileProps) {
+export function Tabs({
+  tabs,
+  variant = "grey",
+  showMobile,
+  mobileTitle,
+  rightElement,
+  border = false,
+}: DefaultProps | MobileProps) {
   return (
     <>
       <div
@@ -34,7 +42,7 @@ export function Tabs({ tabs, variant = "grey", showMobile, mobileTitle, rightEle
           "hidden md:block": showMobile,
         })}
       >
-        <DesktopView tabs={tabs} variant={variant} rightElement={rightElement} />
+        <DesktopView tabs={tabs} variant={variant} rightElement={rightElement} border={border} />
       </div>
 
       {showMobile ? (

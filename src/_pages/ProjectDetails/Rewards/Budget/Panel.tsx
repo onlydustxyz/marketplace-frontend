@@ -85,6 +85,20 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
     );
   }, [projectBudget, open]);
 
+  const sortedByDollarsEquivalent = useMemo(() => {
+    return values.sort((a, b) => {
+      if (a.dollarAmount === null) {
+        return 1;
+      }
+
+      if (b.dollarAmount === null) {
+        return -1;
+      }
+
+      return b.dollarAmount - a.dollarAmount;
+    });
+  }, [values]);
+
   const total = useMemo(() => {
     if (open === "amount") {
       return (projectBudget?.initialDollarsEquivalent || 0) - (projectBudget?.remainingDollarsEquivalent || 0) || "N/A";
@@ -96,25 +110,25 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
   return createPortal(
     <>
       {open ? <BackDrop onClick={close} /> : null}
-      <SidePanel open={Boolean(open)} close={close} hasCloseButton={false}>
+      <SidePanel open={Boolean(open)} close={close}>
         <div className="flex h-full flex-col px-4 pb-8">
           <p className="mb-8 px-2 font-belwe text-2xl font-normal text-greyscale-50">
             <Translate token="project.details.remainingBudget.budget.panelTitle" />
           </p>
-          <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} />
-          <div className="mt-8 flex flex-col gap-4 border-b-1 border-b-card-border-light pb-6">
-            {values.map(value => (
+          <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} border={true} />
+          <div className="mt-4 flex flex-col gap-4 border-b-1 border-b-card-border-light pb-6">
+            {sortedByDollarsEquivalent.map(value => (
               <Card
                 key={value.currency}
                 border="light"
-                className="flex flex-row items-center justify-between bg-card-background-light"
+                className="flex flex-row items-center justify-between bg-card-background-light p-4 lg:p-4"
               >
                 <Flex className="gap-2" alignItems="center">
                   <Chip solid className="h-8 w-8">
                     <CurrencyIcons currency={value.currency} className="h-8 w-8" />
                   </Chip>
                   <p>
-                    <Typography variant={"title-l"} as={"span"}>
+                    <Typography variant={"title-m"} as={"span"}>
                       {formatMoneyAmount({
                         amount: value.amount,
                         currency: value.currency || Currency.USD,
@@ -136,8 +150,8 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
               </Card>
             ))}
           </div>
-          <div className="pt-6">
-            <Card border="light" className="od-bg-budget flex flex-row items-center justify-between border-0">
+          <div className="py-6">
+            <Card border="light" className="od-bg-budget flex items-center justify-between border-0 p-4 lg:p-4">
               <Typography
                 variant={"title-m"}
                 as={"p"}
@@ -146,7 +160,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
               <Typography variant={"body-l-bold"} as={"p"}>
                 {total === "N/A"
                   ? total
-                  : `${formatMoneyAmount({
+                  : `~${formatMoneyAmount({
                       amount: total,
                       currency: Currency.USD,
                       showCurrency: false,

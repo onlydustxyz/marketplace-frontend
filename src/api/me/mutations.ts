@@ -51,6 +51,7 @@ const useClaimProject = ({
 const usePayoutSettings = ({ options = {} }: UseMutationProps) => {
   return useBaseMutation<unknown, unknown>({
     resourcePath: API_PATH.MY_PAYOUT_SETTINGS,
+    invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
     method: "PUT",
     ...options,
   });

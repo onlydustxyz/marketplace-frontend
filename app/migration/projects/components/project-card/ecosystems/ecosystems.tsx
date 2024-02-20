@@ -1,14 +1,19 @@
 import { useMemo } from "react";
 
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { EcosystemsLogos } from "components/features/ecosystem-logos/ecosystem-logos";
 import { Typography } from "components/layout/typography/typography";
 
 import { TEcosystems } from "./ecosystems.types";
 
 export function Ecosystems({ ecosystems }: TEcosystems.Props) {
+  const sortedByName = useMemo(() => {
+    return [...ecosystems].sort((a, b) => a.name.localeCompare(b.name));
+  }, [ecosystems]);
+
   const hasOnlyOneEcosystem = useMemo(() => {
-    if (ecosystems.length === 1 && ecosystems[0].name) {
-      const ecosystem = ecosystems[0];
+    if (sortedByName.length === 1 && sortedByName[0].name) {
+      const ecosystem = sortedByName[0];
       return (
         <div className="flex flex-row items-center gap-1 text-snow">
           <Typography variant="body-s" className="truncate">
@@ -19,26 +24,28 @@ export function Ecosystems({ ecosystems }: TEcosystems.Props) {
     }
 
     return null;
-  }, [ecosystems]);
+  }, [sortedByName]);
 
-  if (!ecosystems.length) {
+  if (!sortedByName.length) {
     return null;
   }
 
   return (
-    <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
-      <EcosystemsLogos ecosystems={ecosystems} avatarProps={{ size: "xs" }} />
+    <Tooltip content={<EcosystemsLogos.TooltipContent ecosystems={sortedByName} />} enabled={sortedByName.length > 1}>
+      <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
+        <EcosystemsLogos ecosystems={sortedByName} avatarProps={{ size: "xs" }} enableTooltip={false} />
 
-      <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
-        {ecosystems.length > 1 ? (
-          <Typography
-            variant="body-s"
-            className="truncate"
-            translate={{ token: "v2.features.ecosystems.counters", params: { count: ecosystems.length } }}
-          />
-        ) : null}
-        {hasOnlyOneEcosystem}
+        <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
+          {sortedByName.length > 1 ? (
+            <Typography
+              variant="body-s"
+              className="truncate"
+              translate={{ token: "v2.features.ecosystems.counters", params: { count: sortedByName.length } }}
+            />
+          ) : null}
+          {hasOnlyOneEcosystem}
+        </div>
       </div>
-    </div>
+    </Tooltip>
   );
 }

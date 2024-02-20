@@ -18,6 +18,7 @@ export interface UsePoolingReturn {
   refetchInterval: () => number;
   onRefetching: (isRefetching: boolean) => void;
   onForcePooling: () => void;
+  resetPooling: () => void;
   count: number;
 }
 

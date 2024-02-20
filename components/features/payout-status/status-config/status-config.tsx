@@ -15,7 +15,12 @@ function createStatusConfig(
     borderColor: config.borderColor as VariantProps<typeof tagVariants>["borderColor"],
   };
 }
-export function getStatusConfig({ status, dateRelativeToNow, date }: TStatusConfig.Props): TStatusConfig.ReturnType {
+export function getStatusConfig({
+  status,
+  dateRelativeToNow,
+  date,
+  isBillingError,
+}: TStatusConfig.Props): TStatusConfig.ReturnType {
   const defaultDate = date ? getFormattedDateToLocaleDateString(new Date(date)) : "";
 
   const statusConfigs: Record<string, TStatusConfig.ReturnType> = {
@@ -80,6 +85,14 @@ export function getStatusConfig({ status, dateRelativeToNow, date }: TStatusConf
       borderColor: "orange",
       iconClassName: "text-orange-500",
     }),
+    ERROR_VERIFICATION: createStatusConfig({
+      icon: "ri-error-warning-line",
+      labelToken: "v2.features.payoutStatus.errorVerification.label",
+      tooltipToken: "v2.features.payoutStatus.errorVerification.tooltip",
+      tooltipParams: {},
+      borderColor: "red",
+      iconClassName: "text-github-red",
+    }),
     PENDING_CONTRIBUTOR: createStatusConfig({
       icon: "ri-user-3-line",
       labelToken: "v2.features.payoutStatus.pendingContributor.label",
@@ -89,6 +102,10 @@ export function getStatusConfig({ status, dateRelativeToNow, date }: TStatusConf
       iconClassName: "text-snow",
     }),
   };
+
+  if (status === "PENDING_VERIFICATION" && isBillingError) {
+    return statusConfigs.ERROR_VERIFICATION;
+  }
 
   return (
     statusConfigs[status] || {

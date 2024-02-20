@@ -22,15 +22,17 @@ export function DesktopView({
   tabs,
   variant = "grey",
   rightElement,
+  border = false,
 }: {
   tabs: Tab[];
   variant: Variants;
   rightElement?: React.ReactNode;
+  border?: boolean;
 }) {
   const { T } = useIntl();
 
   return (
-    <div className="flex items-center gap-8">
+    <div className={cn("flex items-center gap-8", { "border-b-1 border-b-card-border-light": border })}>
       {tabs.map(({ active, onClick, testId, children }, i) => {
         return (
           <button type="button" key={i} data-testid={testId} className="relative" onClick={onClick}>

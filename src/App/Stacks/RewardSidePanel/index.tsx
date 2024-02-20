@@ -8,6 +8,8 @@ import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useMutationRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 
+import { useMenu } from "hooks/menu/useMenu/useMenu";
+
 import View from "./View";
 
 export default function RewardSidePanel({
@@ -17,6 +19,7 @@ export default function RewardSidePanel({
   projectLeaderView,
   isMine,
 }: ComponentProps<typeof View>) {
+  const { isBillingError, redirection } = useMenu();
   const { capture } = usePosthog();
 
   useEffect(() => {
@@ -31,7 +34,9 @@ export default function RewardSidePanel({
       onRewardCancel={onRewardCancel}
       projectLeaderView={projectLeaderView}
       isMine={isMine}
+      isBillingError={isBillingError}
       projectId={projectId}
+      redirectionStatus={redirection}
     />
   );
 }
