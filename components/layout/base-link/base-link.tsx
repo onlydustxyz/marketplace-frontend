@@ -21,7 +21,7 @@ export function BaseLink({
   const { block } = useNavigationState();
   const [shouldBlock] = block.state;
   const [, setConfirmation] = block.confirmation;
-  const isExternal = href.toString().startsWith("http") ?? false;
+  const isExternal = href?.toString()?.startsWith("http") ?? false;
   const isActive = useMatchPath(String(href), matchPathOptions);
 
   const targetExternal = isExternal ? "_blank" : undefined;

@@ -1,24 +1,10 @@
 import { useParams, useRouter } from "next/navigation";
-import { ComponentType, FC, ReactElement, useEffect } from "react";
-import { Navigate, generatePath } from "react-router-dom";
+import { ComponentType, FC, useEffect } from "react";
 
-import { RoutePaths } from "src/App";
 import MeApi from "src/api/me";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 
 import { NEXT_ROUTER } from "constants/router";
-
-function LeadGuard({ children }: { children: ReactElement }) {
-  const { isLoading, isRefetching } = MeApi.queries.useGetMe({});
-  const params = useParams<{ slug: string }>();
-  const isProjectLeader = useProjectLeader({ slug: params.slug });
-
-  if (isLoading || isRefetching) {
-    return null;
-  }
-
-  return isProjectLeader ? <>{children}</> : <Navigate to={generatePath(RoutePaths.NotFound, params)} />;
-}
 
 const withLeadRequired = <P extends object>(Component: ComponentType<P>): FC<P> => {
   // eslint-disable-next-line react/display-name
@@ -41,4 +27,4 @@ const withLeadRequired = <P extends object>(Component: ComponentType<P>): FC<P> 
   };
 };
 
-export { LeadGuard, withLeadRequired };
+export { withLeadRequired };
