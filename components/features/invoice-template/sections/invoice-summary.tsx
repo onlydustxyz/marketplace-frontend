@@ -85,7 +85,7 @@ export function InvoiceSummary({
           </View>
         </View>
       </View>
-      <View style={{ ...styles.flexRow, ...styles.marginTop50P, ...styles.paddingHoriz50P }}>
+      <View style={{ ...styles.flexRow, ...styles.marginTop25P, ...styles.paddingHoriz50P }}>
         <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
         {totalAmounts?.map((item, index) => (
           <Text key={index} style={styles.paragraph}>

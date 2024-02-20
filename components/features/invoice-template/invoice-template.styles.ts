@@ -85,6 +85,9 @@ export const styles = StyleSheet.create({
   marginTop50P: {
     marginTop: "50px",
   },
+  marginTop25P: {
+    marginTop: "25px",
+  },
   width50p: {
     width: "50%",
   },

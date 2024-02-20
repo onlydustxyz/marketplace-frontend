@@ -38,7 +38,16 @@ export function InvoiceVat({ vat, totalTax }: TInvoice.InvoiceVatInfoProps) {
     default:
       return (
         <View style={styles.tr}>
+          <View style={styles.tdSmall}></View>
           <Text style={styles.td}></Text>
+          <Text style={styles.td}></Text>
+          <Text style={styles.td}>
+            <Text>{InvoiceTokens.rewardSummary.table.totalVat} </Text>
+            <Text>({vat.rate})</Text>
+          </Text>
+          <Text style={styles.td}>
+            {totalTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
+          </Text>
         </View>
       );
   }
