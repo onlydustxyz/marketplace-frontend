@@ -38,6 +38,7 @@ export namespace TInvoice {
   }
 
   export interface InvoiceInfoProps {
+    isUserIndividual: boolean;
     senderInfos: SenderInfo;
     recipientInfos: RecipientInfo;
     legalInfos: LegalInfo;

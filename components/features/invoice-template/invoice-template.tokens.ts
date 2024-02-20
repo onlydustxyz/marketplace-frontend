@@ -10,6 +10,7 @@ export const InvoiceTokens = {
     wagmiRegistrationNumber: "908 233 638",
     wagmiEuVATNumber: "FR26908233638",
     companyName: "Company Name",
+    individualName: "Name",
     billedTo: "Billed to",
     siren: "SIREN",
     vatNumber: "VAT Number",

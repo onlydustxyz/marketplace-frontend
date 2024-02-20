@@ -38,6 +38,7 @@ export function getInvoiceInfoProps({
   const accounts = [bankAccount, wallets];
 
   const restInfos = {
+    isUserIndividual,
     recipientInfos: {
       name: InvoiceTokens.invoiceInfos.wagmiName,
       address: InvoiceTokens.invoiceInfos.wagmiAddress,
