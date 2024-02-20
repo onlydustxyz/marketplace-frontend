@@ -48,11 +48,6 @@ export const useBillingButton = ({ status, type, id }: UseBillingButtonProps): U
         label: "v2.pages.settings.billing.buttons.viewValidation",
         onClick: handleVerify,
       };
-    case "INVALIDATED":
-      return {
-        label: "v2.pages.settings.billing.buttons.reValidate",
-        onClick: handleVerify,
-      };
     case "REJECTED":
       return {
         label: "v2.pages.settings.billing.buttons.reValidate",
