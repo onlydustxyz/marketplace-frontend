@@ -19,8 +19,8 @@ import { Typography } from "components/layout/typography/typography";
 
 export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvoice.Props) {
   const { T } = useIntl();
-  const { isLoading, isError, fileUrl } = useInvoicePreview({ rewardIds, billingProfileId, isSample: true });
-  const { isPendingUploadInvoice, handleSendInvoice } = useInvoiceUpload({ billingProfileId });
+  const { isLoading, isError, fileUrl, invoiceId } = useInvoicePreview({ rewardIds, billingProfileId, isSample: true });
+  const { isPendingUploadInvoice, handleSendInvoice } = useInvoiceUpload({ billingProfileId, invoiceId });
   const [selectedFile, setSelectedFile] = useState<File>();
   const [blobFile, setBlobFile] = useState<Blob>();
 
