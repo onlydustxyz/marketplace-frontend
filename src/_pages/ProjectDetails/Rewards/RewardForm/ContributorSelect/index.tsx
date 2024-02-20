@@ -27,11 +27,11 @@ type Props = {
 export default function ContributorSelect({ projectId, contributor, setContributor, sidePanelOpened }: Props) {
   const searchParams = useSearchParams();
 
-  const recipientGithubLogin = searchParams.get("recipientGithubLogin");
+  const githubLogin = searchParams.get("u");
 
-  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(recipientGithubLogin || null);
+  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(githubLogin || null);
 
-  const [search, setSearch] = useState<string>(recipientGithubLogin || "");
+  const [search, setSearch] = useState<string>(githubLogin || "");
 
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 

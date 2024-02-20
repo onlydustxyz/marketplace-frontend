@@ -35,10 +35,7 @@ export default function ContributorsTable<C extends ProjectContributorItem>({
   const { onToggleContributor } = useToggleContributor({ projectId });
 
   const onRewardGranted = (contributor: C) => {
-    router.push(
-      NEXT_ROUTER.projects.details.rewards.new(projectKey) +
-        `?recipientGithubLogin=${encodeURIComponent(contributor.login)}`
-    );
+    router.push(NEXT_ROUTER.projects.details.rewards.new(projectKey) + `?u=${encodeURIComponent(contributor.login)}`);
   };
 
   return isXl ? (
