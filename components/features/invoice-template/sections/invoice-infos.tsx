@@ -13,7 +13,7 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserInd
       <View style={{ ...styles.flexCol }}>
         <View style={styles.paddingRightSmall}>
           <Text style={styles.h4}>
-            {isUserIndividual ? InvoiceTokens.invoiceInfos.companyName : InvoiceTokens.invoiceInfos.individualName}
+            {isUserIndividual ? InvoiceTokens.invoiceInfos.individualName : InvoiceTokens.invoiceInfos.companyName}
           </Text>
           <Text style={styles.paragraph}>{senderInfos.name}</Text>
           <Text style={styles.paragraph}>{senderStreetAddress}</Text>

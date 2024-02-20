@@ -22,7 +22,7 @@ export const InvoiceTokens = {
     title: "Rewards granted on: app.onlydust.com",
     table: {
       id: "ID",
-      rewardDate: "Date",
+      rewardDate: "Reward date",
       project: "Project",
       amount: "Amount",
       equivalent: "USD (Equiv)",
