@@ -28,8 +28,6 @@ const SidePanelProvider = dynamic(() => import("src/hooks/useSidePanel").then(mo
   ssr: false,
 });
 
-const BrowserRouter = dynamic(() => import("react-router-dom").then(mod => mod.BrowserRouter), { ssr: false });
-
 export default function Providers({ children }: PropsWithChildren) {
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
 
@@ -41,22 +39,20 @@ export default function Providers({ children }: PropsWithChildren) {
             <QueryProvider>
               <NextUIProvider>
                 <OnboardingProvider>
-                  <BrowserRouter>
-                    <NavigationStateProvider>
-                      <StackProvider>
-                        <SidePanelStackProvider>
-                          <SidePanelProvider>
-                            <ToasterProvider>
-                              {children}
-                              <Stacks />
-                              <Toaster />
-                              {/* Hide tooltips on mobile */ isSm && <Tooltip />}
-                            </ToasterProvider>
-                          </SidePanelProvider>
-                        </SidePanelStackProvider>
-                      </StackProvider>
-                    </NavigationStateProvider>
-                  </BrowserRouter>
+                  <NavigationStateProvider>
+                    <StackProvider>
+                      <SidePanelStackProvider>
+                        <SidePanelProvider>
+                          <ToasterProvider>
+                            {children}
+                            <Stacks />
+                            <Toaster />
+                            {/* Hide tooltips on mobile */ isSm && <Tooltip />}
+                          </ToasterProvider>
+                        </SidePanelProvider>
+                      </SidePanelStackProvider>
+                    </StackProvider>
+                  </NavigationStateProvider>
                 </OnboardingProvider>
               </NextUIProvider>
             </QueryProvider>

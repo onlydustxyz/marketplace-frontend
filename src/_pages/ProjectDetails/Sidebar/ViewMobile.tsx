@@ -1,6 +1,5 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 
 import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
@@ -13,6 +12,8 @@ import CloseLine from "src/icons/CloseLine";
 import { Avatar } from "components/ds/avatar/avatar";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
 
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
@@ -30,11 +31,10 @@ export default function ViewMobile(props: Props) {
   const { currentProject } = props;
 
   const { T } = useIntl();
-  const location = useLocation();
   const router = useRouter();
   const [panelOpen, setPanelOpen] = useState(false);
 
-  const isGrantingReward = location.pathname.match("rewards/new");
+  const isGrantingReward = useMatchPath(NEXT_ROUTER.projects.details.rewards.new("[slug]"));
 
   return (
     <>

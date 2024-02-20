@@ -1,7 +1,9 @@
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 import { isInArray } from "src/utils/isInArray";
+
+import { useUpdateSearchParams } from "hooks/router/useUpdateSearchParams";
 
 import { useIntl } from "./useIntl";
 
@@ -16,7 +18,8 @@ const tabValues = Object.values(AllTabs);
 
 export function useContributionTabs() {
   const { T } = useIntl();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const updateSearchParams = useUpdateSearchParams();
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
@@ -27,7 +30,7 @@ export function useContributionTabs() {
 
   function updateActiveTab(tab: AllTabs) {
     setActiveTab(tab);
-    setSearchParams({ tab });
+    updateSearchParams("tab", tab);
   }
 
   function getActiveTab() {

@@ -47,6 +47,7 @@ export function BaseLink({
       className={cn("group/link", className)}
       data-active={isActive}
       onClick={handleClick}
+      prefetch={true}
       {...props}
     >
       {typeof children === "function" ? children?.({ isExternal, isActive }) : children}
