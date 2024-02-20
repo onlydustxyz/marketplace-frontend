@@ -11,13 +11,15 @@ export const ConfirmationModal = () => {
   const { T } = useIntl();
 
   const { block } = useNavigationState();
+  const [, setBlockState] = block.state;
+  const [showConfirmation] = block.confirmation;
 
   useEffect(() => {
     const shouldBlock = !githubWorklow.inGithubWorkflow && !!form?.formState.isDirty;
     if (shouldBlock) {
-      block.state.set();
+      setBlockState(true);
     } else {
-      block.state.unSet();
+      setBlockState(false);
     }
   }, [form?.formState.isDirty, githubWorklow.inGithubWorkflow]);
   const onSaveBeforeLeave = () => {
@@ -36,7 +38,7 @@ export const ConfirmationModal = () => {
 
   return (
     <Modal
-      isOpen={block.confirmation.show}
+      isOpen={showConfirmation}
       title={T("project.details.edit.confirmationModal.title")}
       description={T("project.details.edit.confirmationModal.content")}
       confirm={{

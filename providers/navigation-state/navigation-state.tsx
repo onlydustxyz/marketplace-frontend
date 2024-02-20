@@ -29,31 +29,33 @@ export function NavigationStateProvider({ children }: TNavigationStateContext.Pr
     setBlockedUrl(url);
   }
 
-  const Block = useMemo(
+  function setBlockNavigation(value: boolean) {
+    if (!value) {
+      onCancel();
+    } else {
+      setShouldBlockNavigation(true);
+    }
+  }
+
+  const block = useMemo(
     () => ({
       should: shouldBlockNavigation,
       confirm: onConfirm,
       cancel: onCancel,
-      state: {
-        set: () => setShouldBlockNavigation(true),
-        unSet: onCancel,
-      },
-      confirmation: {
-        show: showBlockConfirmation,
-        set: handleShowBlockConfirmation,
-      },
+      state: [shouldBlockNavigation, setBlockNavigation] as TNavigationStateContext.state,
+      confirmation: [showBlockConfirmation, handleShowBlockConfirmation] as TNavigationStateContext.confirmation,
     }),
     [shouldBlockNavigation, showBlockConfirmation]
   );
 
-  const Values: TNavigationStateContext.Return = useMemo(
+  const values: TNavigationStateContext.Return = useMemo(
     () => ({
-      block: Block,
+      block,
     }),
-    [Block]
+    [block]
   );
 
-  return <NavigationStateContext.Provider value={Values}>{children}</NavigationStateContext.Provider>;
+  return <NavigationStateContext.Provider value={values}>{children}</NavigationStateContext.Provider>;
 }
 
 export const useNavigationState = () => {

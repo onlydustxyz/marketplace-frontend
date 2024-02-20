@@ -19,6 +19,8 @@ export function BaseLink({
   ...props
 }: TBaseLink.Props) {
   const { block } = useNavigationState();
+  const [shouldBlock] = block.state;
+  const [, setConfirmation] = block.confirmation;
   const isExternal = href.toString().startsWith("http") ?? false;
   const isActive = useMatchPath(String(href), matchPathOptions);
 
@@ -29,9 +31,9 @@ export function BaseLink({
   const relProps = rel || relExternal;
 
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
-    if (block.should) {
+    if (shouldBlock) {
       event.preventDefault();
-      block.confirmation.set(true, event.currentTarget.pathname);
+      setConfirmation(true, event.currentTarget.pathname);
       return;
     }
     onClick?.(event);

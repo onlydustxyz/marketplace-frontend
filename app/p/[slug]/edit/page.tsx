@@ -6,7 +6,7 @@ import LegacyEditPage from "src/_pages/ProjectDetails/ProjectEdition/ProjectEdit
 
 import { withLeadRequired } from "components/features/auth0/guards/lead-guard";
 
-export function EditPage() {
+function EditPage() {
   return <LegacyEditPage />;
 }
 

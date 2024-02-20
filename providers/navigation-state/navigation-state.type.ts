@@ -2,20 +2,15 @@ import { PropsWithChildren } from "react";
 
 export namespace TNavigationStateContext {
   export interface Props extends PropsWithChildren {}
-
+  export type state = [boolean, (shouldBlock: boolean) => void];
+  export type confirmation = [boolean, (shouldShow: boolean, url: string) => void];
   export type Return = {
     block: {
       should: boolean;
       confirm: () => void;
       cancel: () => void;
-      state: {
-        set: () => void;
-        unSet: () => void;
-      };
-      confirmation: {
-        show: boolean;
-        set: (showConfirmation: boolean, url: string) => void;
-      };
+      state: state;
+      confirmation: confirmation;
     };
   };
 }
