@@ -1,8 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
 import { STORAGE_KEY_CREATE_PROJECT_STEP } from "src/_pages/ProjectCreation/hooks/useProjectCreationStorage";
 
 import { Button } from "components/ds/button/button";
@@ -13,15 +12,17 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { AddProjectModal } from "./modal/add-project-modal";
 
 export function AddProject() {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   const canResume = useMemo(() => !!localStorage.getItem(STORAGE_KEY_CREATE_PROJECT_STEP), []);
-  const navigate = useNavigate();
+  const router = useRouter();
   const startProjectCreation = async () => {
     if (isAuthenticated) {
-      navigate(RoutePaths.ProjectCreation);
+      router.push(NEXT_ROUTER.projects.creation);
     } else {
       await handleLoginWithRedirect(loginWithRedirect);
     }

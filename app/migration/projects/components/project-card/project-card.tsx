@@ -1,7 +1,5 @@
 import { useMemo } from "react";
-import { Link, generatePath } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
 import PrivateTag from "src/components/PrivateTag";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
@@ -10,7 +8,10 @@ import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
 import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { ProjectTags } from "../../features/project-tags/project-tags";
 import { ContributorsCounter } from "./contributors-counter/contributors-counter";
@@ -64,7 +65,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   }, [project, isUserProjectLead]);
 
   return (
-    <Link to={generatePath(RoutePaths.ProjectDetails, { projectKey: slug })} className="w-full">
+    <BaseLink href={NEXT_ROUTER.projects.details.root(slug)} className="w-full">
       <Card
         className={cn("relative w-full !pr-0 !pt-0 transition-all hover:scale-[0.998]", {
           "!border-orange-500 bg-orange-900": isErrorVariant,
@@ -125,6 +126,6 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           </Flex>
         ) : null}
       </Card>
-    </Link>
+    </BaseLink>
   );
 }
