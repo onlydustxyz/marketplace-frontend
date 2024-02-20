@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { fetchInvoicePreviewBlob } from "app/api/invoice/handlers/fetch-invoice-preview-blob";
 
@@ -13,13 +13,16 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
   const [fileUrl, setFileUrl] = useState("");
   const [invoiceId, setInvoiceId] = useState("");
 
+  const fetched = useRef(false);
+
   useEffect(() => {
-    if (rewardIds && billingProfileId) {
+    if (rewardIds && billingProfileId && !fetched.current) {
       handleInvoiceCreation();
     }
   }, []);
 
   async function handleInvoiceCreation() {
+    fetched.current = true;
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();

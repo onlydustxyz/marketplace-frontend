@@ -1,4 +1,12 @@
 {
   "title": "Invoices",
-  "subtitle": "Find all your invoices and download them in 1 click"
+  "subtitle": "Find all your invoices and download them in 1 click",
+  "table": {
+    "headerCells": {
+      "id": "ID",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status"
+    }
+  }
 }
