@@ -6,7 +6,7 @@ import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
   return (
-    <div className="flex h-full w-screen flex-col overflow-hidden border-[24px] border-t-0 border-black">
+    <div className="flex h-full w-screen flex-col overflow-hidden border-0 border-t-0 border-black xl:border-[24px] xl:border-t-0">
       <div className="flex h-0 w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:flex-row xl:gap-2 xl:pt-0">
         <Sidebar />
 
