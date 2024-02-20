@@ -2,11 +2,8 @@ import React, { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 
 import ErrorTrigger from "src/_pages/ErrorTrigger";
-import ImpersonationPage from "src/_pages/Impersonation";
 import Loader from "src/components/Loader";
 import { NotFound } from "src/components/NotFound";
-
-import { AdminGuard } from "components/features/auth0/guards/admin-guard";
 
 import ProjectsLoader from "./Loaders/ProjectsLoader";
 
@@ -18,7 +15,6 @@ export enum RoutePaths {
   CatchAll = "*",
   Error = "/error",
   NotFound = "/not-found",
-  Impersonation = "/impersonate/:userId",
 }
 
 export enum ProjectRoutePaths {
@@ -35,14 +31,6 @@ export enum ProjectRewardsRoutePaths {
 
 function App() {
   const routes = useRoutes([
-    {
-      path: RoutePaths.Impersonation,
-      element: (
-        <AdminGuard>
-          <ImpersonationPage />
-        </AdminGuard>
-      ),
-    },
     {
       children: [
         {
