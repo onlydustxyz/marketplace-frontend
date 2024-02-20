@@ -1,3 +1,4 @@
+import withBundleAnalyzer from '@next/bundle-analyzer';
 import * as child from "child_process";
 import fs from "fs";
 
@@ -28,4 +29,6 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig)({
+  enabled: process.env.ANALYZE === 'true',
+});
