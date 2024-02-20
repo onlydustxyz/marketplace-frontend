@@ -6,6 +6,6 @@ export const NEXT_ROUTER = {
   settings: {
     profile: "/settings/profile",
     payout: "/settings/payout",
-    billing: "/settings/billing-profiles",
+    billing: "/settings/billing",
   },
 };
