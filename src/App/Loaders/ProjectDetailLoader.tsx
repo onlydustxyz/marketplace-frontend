@@ -1,4 +1,3 @@
-import { useMatch } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 import InsightSkeleton from "src/_pages/ProjectDetails/Insights/Insights.skeleton";
@@ -10,17 +9,15 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
 
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "..";
-
 export default function ProjectDetailsLoader() {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const matches = {
     isProjectOverview: useMatchPath(NEXT_ROUTER.projects.details.root("[slug]")),
-    isProjectContributors: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Contributors}`),
-    isProjectRewards: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}`),
-    isProjectRewardForm: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRewardsRoutePaths.New}`),
-    isProjectContributions: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Contributions}`),
-    isProjectInsights: useMatch(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Insights}`),
+    isProjectContributors: useMatchPath(NEXT_ROUTER.projects.details.contributors("[slug]")),
+    isProjectRewards: useMatchPath(NEXT_ROUTER.projects.details.rewards.root("[slug]")),
+    isProjectRewardForm: useMatchPath(NEXT_ROUTER.projects.details.rewards.new("[slug]")),
+    isProjectContributions: useMatchPath(NEXT_ROUTER.projects.details.contributions("[slug]")),
+    isProjectInsights: useMatchPath(NEXT_ROUTER.projects.details.insights("[slug]")),
   };
 
   const renderSkeleton = (variant: SkeletonVariant) => <Skeleton variant={variant} />;

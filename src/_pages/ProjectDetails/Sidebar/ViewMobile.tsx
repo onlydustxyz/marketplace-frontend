@@ -2,7 +2,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import BurgerIcon from "src/assets/icons/BurgerIcon";
@@ -12,6 +11,8 @@ import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
 
 import { Avatar } from "components/ds/avatar/avatar";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
@@ -31,7 +32,7 @@ export default function ViewMobile(props: Props) {
   const { T } = useIntl();
   const location = useLocation();
   const router = useRouter();
-  const [panelOpen, setPanelOpen] = useState(!!location.state?.openMenu);
+  const [panelOpen, setPanelOpen] = useState(false);
 
   const isGrantingReward = location.pathname.match("rewards/new");
 
@@ -41,7 +42,7 @@ export default function ViewMobile(props: Props) {
         {!isGrantingReward && (
           <>
             <div className="flex items-center gap-1">
-              <BackLink to={RoutePaths.Projects} className="divide-none" />
+              <BackLink to={NEXT_ROUTER.projects.all} className="divide-none" />
               <div className="flex items-center gap-2 font-belwe text-2xl">
                 <Avatar src={currentProject?.logoUrl || ""} alt="Project Logo" size="s" />
                 <div className="line-clamp-1">{currentProject.name}</div>

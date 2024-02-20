@@ -1,10 +1,8 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { matchPath, useLocation } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
-import { ProjectRoutePaths, RoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
 import { FetchError } from "src/api/query.type";
 import { useQueriesErrorBehavior } from "src/api/useQueriesError";
@@ -12,15 +10,15 @@ import Background, { BackgroundRoundedBorders } from "src/components/Background"
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
+import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
+
 import { TClientLayout } from "./client-layout.types";
 
 export function ClientLayout({ children }: TClientLayout.Props) {
-  const { pathname } = useLocation();
-  const isProjectEdition = !!matchPath(`${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Edit}`, pathname);
-  const isProjectContributions = !!matchPath(
-    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Contributions}`,
-    pathname
-  );
+  const isProjectEdition = useMatchPath(NEXT_ROUTER.projects.details.edit("[slug]"), { exact: true });
+  const isProjectContributions = useMatchPath(NEXT_ROUTER.projects.details.contributions("[slug]"), { exact: true });
 
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { slug = "" } = useParams<{ slug: string }>();
