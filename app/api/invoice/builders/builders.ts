@@ -33,7 +33,7 @@ export function getInvoiceInfoProps({
   // bank account is an object containing only 2 fields
   // wallets is an array of objects containing 2 fields
   const bankAccount = invoiceDetails.destinationAccounts.bankAccount
-    ? `Account number: ${invoiceDetails.destinationAccounts.bankAccount.accountNumber} / BIC: ${invoiceDetails.destinationAccounts.bankAccount.bic}`
+    ? `${InvoiceTokens.invoiceInfos.accountNumber}: ${invoiceDetails.destinationAccounts.bankAccount.accountNumber} / ${InvoiceTokens.invoiceInfos.bic}: ${invoiceDetails.destinationAccounts.bankAccount.bic}`
     : null;
   const wallets = invoiceDetails.destinationAccounts.wallets?.length
     ? invoiceDetails.destinationAccounts.wallets.map(wallet => `${wallet.network}: ${wallet.address}`)

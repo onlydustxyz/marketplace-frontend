@@ -17,6 +17,8 @@ export const InvoiceTokens = {
     issueDate: "Issue Date",
     dueDate: "Due Date",
     destinationAccounts: "Destination Accounts",
+    accountNumber: "Account number",
+    bic: "BIC",
   },
   rewardSummary: {
     title: "Rewards granted on: app.onlydust.com",

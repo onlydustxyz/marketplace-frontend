@@ -56,9 +56,9 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserInd
       </View>
       <View style={styles.flexRow} wrap={false}>
         <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.destinationAccounts}</Text>
-        {legalInfos.destinationAccounts.map((wallet, index) => (
+        {legalInfos.destinationAccounts.map((account, index) => (
           <Text key={index} style={{ ...styles.paragraph, fontSize: 11, lineHeight: 1.2 }}>
-            - {wallet}
+            - {account}
           </Text>
         ))}
       </View>

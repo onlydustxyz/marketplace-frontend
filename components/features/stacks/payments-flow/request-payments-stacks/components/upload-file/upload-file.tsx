@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { ChangeEvent, useRef } from "react";
 
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -13,7 +13,7 @@ export function UploadFile({ setSelectedFile }: TUploadFile.Props) {
   const showToaster = useShowToaster();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  function handleOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
+  function handleOnChange(event: ChangeEvent<HTMLInputElement>): void {
     if (event.target.files) {
       if (event.target.files[0].size > 3000000) {
         showToaster(T("v2.pages.stacks.request_payments.uploadInvoice.errorMaxSizeFile"), { isError: true });

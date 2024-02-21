@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
 import { useInvoicesTable } from "app/migration/settings/invoices/hooks/use-invoices-table/use-invoices-table";
@@ -78,7 +78,7 @@ export default function InvoicesPage() {
   const invoices = invoicesData?.pages?.flatMap(data => data.invoices);
   const hasInvoices = Boolean(invoices?.length);
 
-  function renderDesktopContent() {
+  const renderDesktopContent = useMemo(() => {
     if (isLoadingInvoices) {
       return bodyRowLoading();
     }
@@ -106,7 +106,7 @@ export default function InvoicesPage() {
     }
 
     return invoices?.map(bodyRow);
-  }
+  }, [isLoadingInvoices, isErrorInvoices, hasInvoices, invoices]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -127,7 +127,7 @@ export default function InvoicesPage() {
               </HeaderLine>
             }
           >
-            {renderDesktopContent()}
+            {renderDesktopContent}
           </Table>
         </div>
         {hasNextPage ? (

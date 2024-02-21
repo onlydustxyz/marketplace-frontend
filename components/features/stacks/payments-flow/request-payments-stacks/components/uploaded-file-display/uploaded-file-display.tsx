@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { IconTag } from "components/ds/icon-tag/icon-tag";
