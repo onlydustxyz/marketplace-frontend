@@ -1,6 +1,8 @@
+"use client";
+
+import { useParams, useSearchParams } from "next/navigation";
 import { PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 import { useFormState } from "react-hook-form";
-import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 import ErrorFallback from "src/ErrorFallback";
@@ -24,6 +26,10 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { cn } from "src/utils/cn";
 import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
 
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
+
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import Title from "../Title";
 import { EditContext, EditProvider } from "./EditContext";
@@ -41,7 +47,7 @@ enum TabsType {
 
 function SafeProjectEdition() {
   const { T } = useIntl();
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
   const initialTab = searchParams.get("tab") ?? "";
   const [activeTab, setActiveTab] = useState<TabsType>(
@@ -109,11 +115,13 @@ function SafeProjectEdition() {
     <Flex className="mx-auto h-full max-w-7xl flex-col gap-6 pt-6">
       <Flex className="w-full flex-col gap-6 px-4 xl:px-8 2xl:px-0">
         <Flex className="items-center">
-          <Link to="../">
-            <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
-              <CloseLine />
-            </Button>
-          </Link>
+          {project?.slug && (
+            <BaseLink href={NEXT_ROUTER.projects.details.root(project?.slug)}>
+              <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
+                <CloseLine />
+              </Button>
+            </BaseLink>
+          )}
           <Title>
             <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
           </Title>
@@ -146,7 +154,7 @@ function SafeProjectEdition() {
             justify="between"
             item="center"
             gap={4}
-            className="h-full w-full flex-col items-center bg-card-background-light px-6 py-5 lg:flex-row"
+            className="h-full w-full items-center bg-card-background-light px-6 py-5"
           >
             <FormStatus
               {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
@@ -176,9 +184,9 @@ export default function ProjectEdition() {
     delays: 2500,
   });
 
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
   const { data, isLoading, isError, isRefetching } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
     options: {
       retry: 1,
       refetchOnWindowFocus,

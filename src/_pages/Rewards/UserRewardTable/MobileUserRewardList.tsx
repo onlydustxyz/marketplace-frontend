@@ -22,9 +22,11 @@ import { MyRewardType } from "./Line";
 export default function MobileUserRewardList({
   onRewardClick,
   emptyState,
+  isBillingError,
 }: {
   onRewardClick: (reward: MyRewardType) => void;
   emptyState?: React.ReactElement;
+  isBillingError?: boolean;
 }) {
   const { T } = useIntl();
   const { query, rewards } = useContext(UserRewardsContext);
@@ -65,6 +67,7 @@ export default function MobileUserRewardList({
                     <PayoutStatus
                       status={reward?.status}
                       dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
+                      isBillingError={isBillingError}
                     />
                   }
                 />

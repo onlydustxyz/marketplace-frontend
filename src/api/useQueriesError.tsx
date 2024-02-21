@@ -1,9 +1,10 @@
-import { Navigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
-import { RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
 import Button from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { FetchError } from "./query.type";
 import { HttpStatusStrings } from "./query.utils";
@@ -60,6 +61,7 @@ const UseQueriesError = ({ queries, errorComponent, errorLabel }: Props) => {
  * @returns {React.ReactElement | null} - A React element to render based on the error type, or null if no error.
  */
 function useQueriesErrorBehavior({ queries }: Props): React.ReactElement | null {
+  const router = useRouter();
   if (queries.isError) {
     const isErrorTyped = queries.error instanceof Error && "errorType" in queries.error;
     const typedError = isErrorTyped ? (queries.error as FetchError) : null;
@@ -69,7 +71,8 @@ function useQueriesErrorBehavior({ queries }: Props): React.ReactElement | null 
       typedError?.errorType === HttpStatusStrings.NOT_FOUND ||
       typedError?.errorType === HttpStatusStrings.FORBIDDEN
     ) {
-      return <Navigate to={RoutePaths.NotFound} />;
+      router.push(NEXT_ROUTER.notFound);
+      return null;
     } else if (typedError) {
       // Return a generic ErrorFallback for other types of errors
       return <ErrorFallback />;

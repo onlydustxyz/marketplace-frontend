@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import MeApi from "src/api/me";
 import Contributor from "src/components/Contributor";
@@ -20,14 +22,18 @@ export const ProjectOverviewLead = ({ projectId, projectLeads, projectInvited }:
 
   const showInvited = isProjectLeader || userInfo?.isAdmin;
 
-  return projectLeads.length ? (
+  const sortedByLogin = useMemo(() => {
+    return [...projectLeads].sort((a, b) => a.login.localeCompare(b.login));
+  }, [projectLeads]);
+
+  return sortedByLogin.length ? (
     <Section
       testId="project-leads"
       icon={SectionIcon.Star}
-      title={T("project.details.overview.projectLeader", { count: projectLeads.length })}
+      title={T("project.details.overview.projectLeader", { count: sortedByLogin.length })}
     >
       <div className="flex flex-row flex-wrap gap-3">
-        {projectLeads?.map(lead => (
+        {sortedByLogin?.map(lead => (
           <Contributor
             key={lead.id}
             contributor={{

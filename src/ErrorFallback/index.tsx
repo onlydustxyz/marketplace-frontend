@@ -1,8 +1,8 @@
+import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { FallbackProps, useErrorBoundary } from "react-error-boundary";
-import { useNavigate } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
+import { NEXT_ROUTER } from "constants/router";
 
 import View from "./View";
 
@@ -13,7 +13,7 @@ type Props = {
 export default function ErrorFallback(props?: Props) {
   const { isFixed = false } = props ?? {};
   const { resetBoundary } = useErrorBoundary();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   if (isFixed) {
     return createPortal(
@@ -21,9 +21,9 @@ export default function ErrorFallback(props?: Props) {
         isFixed={isFixed}
         onBackClicked={() => {
           resetBoundary();
-          navigate(RoutePaths.Projects);
+          router.push(NEXT_ROUTER.projects.all);
         }}
-        onRefreshClicked={() => navigate(0)}
+        onRefreshClicked={router.refresh}
       />,
       document.body
     );
@@ -33,9 +33,9 @@ export default function ErrorFallback(props?: Props) {
       isFixed={isFixed}
       onBackClicked={() => {
         resetBoundary();
-        navigate(RoutePaths.Projects);
+        router.push(NEXT_ROUTER.projects.all);
       }}
-      onRefreshClicked={() => navigate(0)}
+      onRefreshClicked={router.refresh}
     />
   );
 }

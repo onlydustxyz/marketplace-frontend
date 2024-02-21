@@ -7,6 +7,7 @@ export namespace TPayoutStatus {
       processedAt?: string | null;
       unlockDate?: string | null;
     };
+    isBillingError?: boolean;
   }
 
   export type PaymentStatusUnion = `${PaymentStatus}`;

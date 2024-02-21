@@ -1,10 +1,8 @@
 import { useCallback, useRef } from "react";
-import { useLocation } from "react-router-dom";
 
 const SCROLL_POSITION_KEY = "SCROLL_POSITION";
 
 export default function useScrollRestoration() {
-  const { state } = useLocation();
   const ref = useRef<HTMLDivElement | null>(null);
 
   const setRef = useCallback((node: HTMLDivElement) => {
@@ -23,7 +21,7 @@ export default function useScrollRestoration() {
   }, []);
 
   const restoreScroll = useCallback(() => {
-    if (!state?.skipScrollRestoration && ref.current?.scrollTo)
+    if (ref.current?.scrollTo)
       ref.current.scrollTo({ top: parseInt(sessionStorage.getItem(SCROLL_POSITION_KEY) ?? "0") });
   }, [ref.current]);
 

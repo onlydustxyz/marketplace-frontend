@@ -4,6 +4,8 @@ import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import StackLine from "src/icons/StackLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
+import { BaseLink } from "components/layout/base-link/base-link";
+
 import { LastContributionCardProps } from "./LastContributionCard.type";
 
 export default function LastContributionCard({
@@ -13,7 +15,7 @@ export default function LastContributionCard({
 }: LastContributionCardProps) {
   const { T } = useIntl();
   return (
-    <a href={linkUrl} target="_blank" rel="noopener noreferrer">
+    <BaseLink href={linkUrl}>
       <Card className="bg-card-background-light px-2 py-3 shadow-medium lg:px-2 lg:py-3">
         <div className="flex items-center gap-3">
           <div className="rounded-lg border border-card-border-medium bg-card-background-medium p-2 leading-none text-greyscale-50">
@@ -36,6 +38,6 @@ export default function LastContributionCard({
           <ArrowRightSLine />
         </div>
       </Card>
-    </a>
+    </BaseLink>
   );
 }

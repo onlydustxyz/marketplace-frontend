@@ -1,11 +1,9 @@
 import { UseMutateFunction } from "@tanstack/react-query";
-import { PropsWithChildren, useState } from "react";
-import { matchPath, useLocation } from "react-router-dom";
+import { PropsWithChildren, useMemo, useState } from "react";
 
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
-import { RoutePaths } from "src/App/index";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -19,6 +17,7 @@ import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import { useCloseStack } from "src/libs/react-stack";
 import { Currency, GithubContributionType, PaymentStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { rewardItemToContribution } from "src/utils/formatToContribution";
@@ -27,7 +26,11 @@ import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
+import { BaseLink } from "components/layout/base-link/base-link";
 
+import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
 import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 
 import MixedApi from "../../../api/Mixed";
@@ -46,16 +49,25 @@ export type Props = {
   onRewardCancel?: UseMutateFunction<unknown, Error, unknown, unknown>;
   projectId: string;
   isMine?: boolean;
+  isBillingError?: boolean;
+  redirectionStatus?: string;
 };
 
-export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView, isMine }: Props) {
+export default function View({
+  projectId,
+  rewardId,
+  onRewardCancel,
+  projectLeaderView,
+  isMine,
+  isBillingError,
+  redirectionStatus,
+}: Props) {
   const { T } = useIntl();
   const { githubUserId } = useCurrentUser();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
-
-  const { pathname } = useLocation();
-  const isMyRewardsPage = !!matchPath(`${RoutePaths.Rewards}`, pathname);
+  const closeRewardPanel = useCloseStack();
+  const isMyRewardsPage = useMatchPath(NEXT_ROUTER.rewards.all);
 
   const {
     data,
@@ -78,6 +90,31 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
+
+  const PayoutStatusMemo = useMemo(() => {
+    if (!data) {
+      return null;
+    }
+
+    if (redirectionStatus && (data.status === "MISSING_PAYOUT_INFO" || data.status === "PENDING_VERIFICATION"))
+      return (
+        <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
+          <PayoutStatus
+            status={data.status}
+            dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
+            isBillingError={isBillingError}
+          />
+        </BaseLink>
+      );
+
+    return (
+      <PayoutStatus
+        status={data.status}
+        dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
+        isBillingError={isBillingError}
+      />
+    );
+  }, [data, isBillingError, redirectionStatus]);
 
   function renderRewardItems() {
     if (rewardItemsLoading) {
@@ -229,10 +266,7 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
           <div className="flex h-full flex-col gap-8 divide-y divide-greyscale-50/12">
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-2">
-                <PayoutStatus
-                  status={data.status}
-                  dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
-                />
+                {PayoutStatusMemo}
                 <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
                   <InfoIcon className="h-4 w-3" />
                   <span>
@@ -307,7 +341,9 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
                   />
                   <div className="flex flex-row items-center gap-1">
                     {T("reward.table.detailsPanel.on")}
-                    <Link onClick={() => openProjectOverview({ slug: data.project.slug })}>{data.project.name}</Link>
+                    <Link.Button onClick={() => openProjectOverview({ slug: data.project.slug })}>
+                      {data.project.name}
+                    </Link.Button>
                   </div>
                 </Details>
               ) : null}

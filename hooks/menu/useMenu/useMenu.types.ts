@@ -14,5 +14,7 @@ export namespace TUseMenu {
     redirection: string;
     errorColor: keyof typeof ERROR_COLORS;
     error: TUseSettingsError.Return["error"];
+    isBillingWarning: boolean;
+    isBillingError: boolean;
   }
 }

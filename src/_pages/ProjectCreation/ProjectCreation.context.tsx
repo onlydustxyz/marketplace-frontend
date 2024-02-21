@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
-import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 
-import { RoutePaths } from "src/App";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
@@ -14,6 +13,8 @@ import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
 import { useIntl } from "src/hooks/useIntl";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { StorageInterface } from "src/hooks/useStorage/Storage";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { STORAGE_KEY_CREATE_PROJECT_FORM, useResetStorage } from "./hooks/useProjectCreationStorage";
 import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";
@@ -86,10 +87,16 @@ const validationSchema = z.object({
   longDescription: z.string().min(1),
   moreInfos: z
     .array(
-      z.object({
-        url: z.string().trim().nullable(),
-        value: z.string().nullable(),
-      })
+      z
+        .object({
+          url: z.string().trim().nullable(),
+          value: z.string().nullable(),
+        })
+        .refine(data => !!data.url || (!data.url && !data.value) || (!!data.url && !!data.value), {
+          path: ["url"],
+          // not translated because it's not used in a react component
+          message: "Please fill the information url",
+        })
     )
     .min(0)
     .optional()
@@ -111,11 +118,11 @@ export function CreateProjectProvider({
   const { T } = useIntl();
   const [enableAutoSaved, setEnableAutoSaved] = useState<boolean>(true);
   const [installedRepos, setInstalledRepos] = useState<number[]>(initialInstalledRepo || []);
-  const navigate = useNavigate();
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
     initialStep || ProjectCreationSteps.ORGANIZATIONS
   );
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
 
   const { reset: clearStorage } = useResetStorage();
@@ -159,7 +166,7 @@ export function CreateProjectProvider({
       onSuccess: data => {
         clearStorage();
         if (data?.projectSlug) {
-          navigate(generatePath(RoutePaths.ProjectDetails, { projectKey: data.projectSlug }));
+          router.push(NEXT_ROUTER.projects.details.root(data.projectSlug));
         }
       },
     },
@@ -180,7 +187,7 @@ export function CreateProjectProvider({
     defaultValues: initialProject
       ? {
           ...initialProject,
-          moreInfos: initialProject.moreInfos.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
+          moreInfos: initialProject?.moreInfos?.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
         }
       : {
           moreInfos: [{ url: "", value: "" }],

@@ -1,0 +1,65 @@
+{
+  "title": "Add billing profile",
+  "buttons": {
+    "save": "Create billing profile"
+  },
+  "messages": {
+    "success": "Billing profile successfully created"
+  },
+  "form": {
+    "title": "Which type of profile is relevant to you?",
+    "description": "You can create multiple billing profiles if necessary. Also don’t worry about picking the wrong type, you can update your setup anytime."
+  },
+  "fields": {
+    "individual": {
+      "title": "Individual",
+      "name": {
+        "label": "Give your billing profile a name",
+        "placeholder": "Personal"
+      },
+      "points": {
+        "1": "when you don’t have a legal structure",
+        "2": "limited to 5,000 USD rewards per year",
+        "3": "requires identity verification"
+      }
+    },
+    "selfEmployed": {
+      "title": "Self-employed",
+      "name": {
+        "label": "Give your billing profile a name",
+        "placeholder": "Self-employed"
+      },
+      "points": {
+        "1": "when you have a legal structure for yourself",
+        "2": "requires business verification"
+      }
+    },
+    "organisation": {
+      "title": "Organisation",
+      "name": {
+        "label": "Give your billing profile a name",
+        "placeholder": "Self-employed"
+      },
+      "points": {
+        "1": "when you have a legal structure",
+        "2": "when you manage a team of contributors",
+        "3": "requires business verification required"
+      }
+    },
+    "employee": {
+      "title": "Employee",
+      "name": {
+        "label": "Give your billing profile a name",
+        "placeholder": "Self-employed"
+      },
+      "points": {
+        "1": "when you work for an organisation",
+        "2": "doesn’t require any verification"
+      },
+      "information": {
+        "title": "Keep an eye on your inbox!",
+        "content": "Tell the admin of your company to create a billing profile and invite you as a coworker so you can start working together."
+      }
+    }
+  }
+}

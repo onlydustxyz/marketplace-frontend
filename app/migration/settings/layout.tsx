@@ -1,52 +1,22 @@
-"use client";
+import { PropsWithChildren } from "react";
 
-import React, { Suspense, lazy } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Sidebar } from "app/settings/components/sidebar";
 
-import { Sidebar } from "app/migration/settings/components/sidebar";
+import Header from "src/App/Layout/Header";
 
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
-const BillingPage = lazy(() => import("./billing/page"));
-const PayoutPage = lazy(() => import("./payout/page"));
-const ProfilePage = lazy(() => import("./profile/page"));
-export default function SettingsLayout() {
+export default function SettingsLayout({ children }: PropsWithChildren) {
   return (
-    <div className="flex h-full w-screen flex-col overflow-hidden border-[24px] border-t-0 border-black">
-      <div className="flex h-0 w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:flex-row xl:gap-2 xl:pt-0">
+    // This outer div should be in the root layout
+    <div className="fixed flex h-[calc(100dvh)] w-screen flex-col">
+      <Header />
+      <div className="flex h-0 w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:flex-row xl:gap-2 xl:p-6 xl:pt-0">
         <Sidebar />
 
-        <div className="od-space-background relative h-full w-full overflow-hidden xl:rounded-r-2xl">
+        <div className="relative h-full w-full overflow-hidden xl:rounded-r-2xl">
           <ScrollView>
-            <div className="mx-auto flex max-w-7xl flex-1 flex-col gap-4 px-4 py-6 pb-32 xl:px-8">
-              <Routes>
-                <Route path="/" element={<Navigate replace to="/settings/profile" />} />
-                <Route
-                  path="/profile"
-                  element={
-                    <Suspense>
-                      <ProfilePage />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/billing"
-                  element={
-                    <Suspense>
-                      <BillingPage />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/payout"
-                  element={
-                    <Suspense>
-                      <PayoutPage />
-                    </Suspense>
-                  }
-                />
-              </Routes>
-            </div>
+            <div className="mx-auto flex max-w-7xl flex-1 flex-col gap-4 px-4 py-6 pb-32 xl:px-8">{children}</div>
           </ScrollView>
         </div>
       </div>

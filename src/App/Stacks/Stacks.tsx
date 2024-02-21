@@ -1,7 +1,6 @@
 "use client";
 
 import { ComponentProps } from "react";
-import { Link, generatePath } from "react-router-dom";
 
 import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
@@ -18,7 +17,10 @@ import { StacksParams } from "src/libs/react-stack/types/Stack";
 import { BillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack";
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
 
-import { RoutePaths } from "..";
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
+
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
 import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
@@ -91,7 +93,14 @@ export const Stacks = () => {
       <RegisterStack<TBillingCreateStack.Params> name={StackRoute.BillingCreate}>
         {({ params }) => <BillingCreateStack {...params} />}
       </RegisterStack>
-      <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
+      <RegisterStack<StackRouterParams["Verify"]>
+        name={StackRoute.Verify}
+        option={{
+          panel: {
+            theme: "light",
+          },
+        }}
+      >
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
@@ -171,10 +180,8 @@ export const useStackProjectOverview = (): [
       slug,
       panelProps: {
         action: (
-          <Link
-            to={generatePath(RoutePaths.ProjectDetails, {
-              projectKey: slug,
-            })}
+          <BaseLink
+            href={NEXT_ROUTER.projects.details.root(slug)}
             className="hover:underline"
             onClick={() => closeAll()}
           >
@@ -182,7 +189,7 @@ export const useStackProjectOverview = (): [
               <EyeLine className="text-base leading-none" />
               {T("project.openOverview")}
             </Button>
-          </Link>
+          </BaseLink>
         ),
       },
     });

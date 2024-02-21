@@ -1,6 +1,8 @@
+"use client";
+
 import { useAuth0 } from "@auth0/auth0-react";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 import Title from "src/_pages/ProjectDetails/Title";
@@ -37,9 +39,9 @@ export default function Overview() {
   const showToaster = useShowToaster();
   const { capture } = usePosthog();
 
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
   const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function Overview() {
   const hiring = project?.hiring;
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
-  const { applyToProject } = useApplications(project?.id ?? "", projectKey);
+  const { applyToProject } = useApplications(project?.id ?? "", slug);
 
   const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});
 

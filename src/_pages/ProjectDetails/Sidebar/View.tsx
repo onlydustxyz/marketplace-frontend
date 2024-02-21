@@ -1,9 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Listbox } from "@headlessui/react";
-import { NavLink, generatePath, useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useMediaQuery } from "usehooks-ts";
 
-import { RoutePaths } from "src/App";
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 import { components } from "src/__generated/api";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
@@ -12,6 +11,10 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
@@ -27,16 +30,16 @@ interface Props {
 }
 
 export default function View({
+  onLinkClick,
   expandable,
   currentProject,
   availableTabs,
-  onLinkClick,
   pendingProjects,
   projects,
 }: Props) {
   const { isAuthenticated } = useAuth0();
   const { T } = useIntl();
-  const navigate = useNavigate();
+  const router = useRouter();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const currentProjectUrl = currentProject.logoUrl;
 
@@ -45,11 +48,11 @@ export default function View({
       className={cn(
         "border-r-2xl xl:border-r-lg relative z-[1] flex w-full shrink-0 flex-col gap-6 overflow-hidden border-black p-6 font-walsheim xl:w-[328px] xl:rounded-l-2xl",
         "before:absolute before:inset-0 before:-z-[2] before:bg-black",
-        "after:absolute after:inset-0 after:-z-[1] after:bg-white/4 after:bg-noise-medium"
+        "after:absolute after:bottom-0 after:left-0 after:top-0 after:-z-[1] after:w-full after:bg-white/4 after:bg-noise-medium xl:after:w-[320px]"
       )}
     >
       {isXl && (
-        <BackLink to={RoutePaths.Projects} className="divide-none">
+        <BackLink to={NEXT_ROUTER.projects.all} className="divide-none">
           {T("project.details.sidebar.backToProjects")}
         </BackLink>
       )}
@@ -57,14 +60,7 @@ export default function View({
         <div className="relative xl:h-16">
           <Listbox
             value={currentProject}
-            onChange={project =>
-              navigate(
-                generatePath(RoutePaths.ProjectDetails, {
-                  projectKey: project.slug,
-                }),
-                { state: { openMenu: true } }
-              )
-            }
+            onChange={project => router.push(NEXT_ROUTER.projects.details.root(project.slug))}
             disabled={!expandable}
           >
             <div className="z-10 flex w-full flex-col divide-y divide-neutral-700 rounded-2xl border-2 border-neutral-700 bg-white/2 bg-whiteFakeOpacity-1 xl:absolute">
@@ -102,21 +98,18 @@ export default function View({
         </div>
         <div className="align-start flex flex-col gap-2 pb-2 pt-3 text-xl font-medium">
           {availableTabs.map(tab => (
-            <NavLink
-              key={tab.path}
-              to={tab.path}
+            // TODO NEXT : check active tab
+            <BaseLink
               onClick={onLinkClick}
-              className={({ isActive }) =>
-                cn("rounded-xl px-4 py-2.5 text-base hover:cursor-pointer", {
-                  "bg-white/8 text-white": isActive,
-                  "text-neutral-400": !isActive,
-                })
-              }
-              data-testid={`${tab.label}-tab`}
-              end
+              key={tab.path}
+              href={tab.path}
+              className={cn(
+                "rounded-xl px-4 py-2.5 text-base hover:cursor-pointer",
+                "text-neutral-400 data-[active=true]:bg-white/8 data-[active=true]:text-white"
+              )}
             >
               {tab.label}
-            </NavLink>
+            </BaseLink>
           ))}
 
           {!isAuthenticated ? (

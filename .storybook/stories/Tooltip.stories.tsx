@@ -13,7 +13,7 @@ export default {
 };
 
 const args = {
-  text: "Fill in your payment information to get paid",
+  text: "Fill in your payment method to get paid",
   position: TooltipPosition.Bottom,
 };
 
