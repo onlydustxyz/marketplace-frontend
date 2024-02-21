@@ -35,7 +35,7 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
       label: T("v2.pages.settings.invoices.table.headerCells.status"),
     },
     {
-      icon: <div />,
+      icon: isDownloading ? <Spinner /> : <div />,
       label: "",
     },
   ];
@@ -53,9 +53,14 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
 
         <Cell height={CellHeight.Compact}>{status}</Cell>
         <Cell height={CellHeight.Compact}>
-          {isDownloading ? <Spinner /> : null}
-          {id && !isDownloading ? (
-            <Button variant="primary" size="m" className="w-full" onClick={() => onDownloadInvoice(id)} disabled={!id}>
+          {id ? (
+            <Button
+              variant="primary"
+              size="m"
+              className="w-full"
+              onClick={() => onDownloadInvoice(id)}
+              disabled={!id || isDownloading}
+            >
               <SendPlane2Line />
             </Button>
           ) : null}

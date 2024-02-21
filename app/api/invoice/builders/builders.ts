@@ -12,6 +12,7 @@ export function getHeaderProps({
 }: TInvoiceBuilders.HeaderBuilderProps): TInvoice.HeaderProps {
   let title = "";
   // provided as a query param string
+  // this means a exemple that user can use to make their own invoice
   if (isSample === "true") {
     title = InvoiceTokens.header.sampleTitle;
   } else {

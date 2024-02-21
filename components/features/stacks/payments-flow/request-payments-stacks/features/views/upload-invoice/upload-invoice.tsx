@@ -154,7 +154,9 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                   variant="primary"
                   size="m"
                   className="w-full"
-                  onClick={() => handleSendInvoice(blobFile)}
+                  onClick={() =>
+                    handleSendInvoice({ fileBlob: blobFile, isManualUpload: false, fileName: selectedFile?.name })
+                  }
                   disabled={isPendingUploadInvoice || !selectedFile}
                 >
                   <Translate token="v2.pages.stacks.request_payments.form.sendInvoice" />

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/billing-profiles";
 import useMutationAlert from "src/api/useMutationAlert";
@@ -10,6 +12,7 @@ export function useInvoiceUpload({ billingProfileId, invoiceId }: TUseInvoiceUpl
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const [, closeRequestPanel] = useStackRequestPayments();
+  const [queryParams, setQueryParams] = useState({});
 
   const {
     mutate: uploadInvoice,
@@ -19,6 +22,7 @@ export function useInvoiceUpload({ billingProfileId, invoiceId }: TUseInvoiceUpl
     params: {
       billingProfileId,
       invoiceId,
+      queryParams,
     },
     options: {
       onSuccess: () => {
@@ -37,7 +41,10 @@ export function useInvoiceUpload({ billingProfileId, invoiceId }: TUseInvoiceUpl
     },
   });
 
-  function handleSendInvoice(fileBlob: Blob | undefined) {
+  function handleSendInvoice({ fileBlob, isManualUpload = false, fileName }: TUseInvoiceUpload.HandleSendInvoiceProps) {
+    if (isManualUpload) {
+      setQueryParams(`filename=${fileName}`);
+    }
     if (fileBlob) {
       uploadInvoice(fileBlob);
     } else {
