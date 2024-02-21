@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-import { Sidebar } from "app/migration/settings/components/sidebar";
+import { Sidebar } from "app/settings/components/sidebar";
 
 import Header from "src/App/Layout/Header";
 

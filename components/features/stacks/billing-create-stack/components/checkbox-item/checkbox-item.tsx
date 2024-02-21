@@ -26,7 +26,7 @@ export function CheckboxItem({ title, list, icon, selected, onChange, value, wit
               <Icon {...icon} className={cn("h-4 w-4", icon.className)} />
             </Chip>
             <div>
-              <Typography variant={"title-s"} className="mb-[2px] text-greyscale-50">
+              <Typography variant={"title-s"} className="mb-0.5 text-greyscale-50">
                 {title}
               </Typography>
               <ul className="list-inside list-disc">

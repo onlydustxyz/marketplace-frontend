@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 export namespace TRadioGroupCustom {
   export interface Item<V extends string> {
     value: V;
-    onChange: (value: string) => void;
+    onChange: (value: V) => void;
   }
   export interface Props<V extends string> {
     value: V;
