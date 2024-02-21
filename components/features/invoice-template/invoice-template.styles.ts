@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     padding: "30 0",
   },
   header: {
-    padding: "10 30 30 30",
+    padding: "10px 30px 30px 30px",
     borderBottom: "1px solid #d8d8d8",
     fontWeight: "medium",
     textAlign: "center",
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   section: {
     margin: 0,
-    padding: "30 30",
+    padding: "30px 30px",
   },
   textLeft: {
     textAlign: "left",
