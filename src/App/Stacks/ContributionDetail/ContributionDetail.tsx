@@ -26,7 +26,7 @@ import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 
 import { Link } from "components/ds/link/link";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 
