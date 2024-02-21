@@ -1,6 +1,9 @@
+import { useState } from "react";
+
 import { TInvoiceTable } from "app/migration/settings/invoices/features/use-invoices-table/use-invoices-table.types";
 
 import { components } from "src/__generated/api";
+import { Spinner } from "src/components/Spinner/Spinner";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
 import { useIntl } from "src/hooks/useIntl";
@@ -12,6 +15,7 @@ import { Icon } from "components/layout/icon/icon";
 
 export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
   const { T } = useIntl();
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const headerCells: TInvoiceTable.HeaderCell[] = [
     {
@@ -49,9 +53,12 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
 
         <Cell height={CellHeight.Compact}>{status}</Cell>
         <Cell height={CellHeight.Compact}>
-          <Button variant="primary" size="m" className="w-full" onClick={() => onDownloadInvoice(id)} disabled={!id}>
-            <SendPlane2Line />
-          </Button>
+          {isDownloading ? <Spinner /> : null}
+          {id && !isDownloading ? (
+            <Button variant="primary" size="m" className="w-full" onClick={() => onDownloadInvoice(id)} disabled={!id}>
+              <SendPlane2Line />
+            </Button>
+          ) : null}
         </Cell>
       </Line>
     );
@@ -81,5 +88,5 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
     return [line(), line(), line(), line(), line()];
   }
 
-  return { headerCells, bodyRow, bodyRowLoading };
+  return { headerCells, bodyRow, bodyRowLoading, setIsDownloading };
 }

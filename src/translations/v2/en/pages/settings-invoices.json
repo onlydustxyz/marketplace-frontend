@@ -10,6 +10,7 @@
     },
     "errorPlaceholder": "An error occurred while loading the invoices",
     "emptyPlaceholderTitle": "No invoices",
-    "emptyPlaceholderDescription": "You don't have any invoices yet"
+    "emptyPlaceholderDescription": "You don't have any invoices yet",
+    "errorDownload": "An error occurred while downloading the invoice"
   }
 }

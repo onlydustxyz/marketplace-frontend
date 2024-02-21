@@ -4,7 +4,7 @@ import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 
 export namespace TInvoiceTable {
   export interface Props {
-    onDownloadInvoice: (invoiceId: string | undefined) => void;
+    onDownloadInvoice: (invoiceId: string) => void;
   }
 
   export interface HeaderCell {

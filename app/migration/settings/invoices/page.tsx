@@ -1,3 +1,5 @@
+"use client";
+
 import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
 import { useInvoicesTable } from "app/migration/settings/invoices/features/use-invoices-table/use-invoices-table";
 
@@ -8,6 +10,8 @@ import Table from "src/components/Table";
 import HeaderCell from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import { ShowMore } from "src/components/Table/ShowMore";
+import { useIntl } from "src/hooks/useIntl";
+import { useShowToaster } from "src/hooks/useToaster";
 
 import { Card } from "components/ds/card/card";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
@@ -15,29 +19,59 @@ import EmptyTablePlaceholder from "components/layout/placeholders/empty-table/em
 import { Translate } from "components/layout/translate/translate";
 
 export default function InvoicesPage() {
-  const { headerCells, bodyRow, bodyRowLoading } = useInvoicesTable({ onDownloadInvoice: () => {} });
-  const nbColumns = headerCells.length;
+  const { T } = useIntl();
+  const showToaster = useShowToaster();
+
   const { data: billingProfilesData } = BillingApi.queries.useAllBillingProfiles({});
+
+  const { headerCells, bodyRow, bodyRowLoading, setIsDownloading } = useInvoicesTable({
+    onDownloadInvoice,
+  });
+  const nbColumns = headerCells.length;
+
   const {
     data: invoicesData,
-    isLoading,
-    isError,
+    isLoading: isLoadingInvoices,
+    isError: isErrorInvoices,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
   } = BillingProfilesApi.queries.useBillingProfileInvoices({
+    // TODO this is temporary until the user can select a billing profile
     params: { billingProfileId: billingProfilesData?.billingProfiles?.[0].id ?? "" },
   });
+
+  function onDownloadInvoice(invoiceId: string) {
+    const {
+      data: downloadedInvoice,
+      isError: isDownloadError,
+      isLoading: isDownloading,
+    } = BillingProfilesApi.queries.useDownloadBillingProfileInvoice({
+      params: { billingProfileId: billingProfilesData?.billingProfiles?.[0].id ?? "", invoiceId },
+    });
+    if (isDownloading) {
+      setIsDownloading(true);
+    }
+
+    if (downloadedInvoice) {
+      window.open(downloadedInvoice.file, "_blank");
+      setIsDownloading(false);
+    }
+    if (isDownloadError) {
+      showToaster(T("v2.pages.settings.invoices.table.errorDownload"), { isError: true });
+      setIsDownloading(false);
+    }
+  }
 
   const invoices = invoicesData?.pages?.flatMap(data => data.invoices);
   const hasInvoices = Boolean(invoices?.length);
 
   function renderDesktopContent() {
-    if (isLoading) {
+    if (isLoadingInvoices) {
       return bodyRowLoading();
     }
 
-    if (isError) {
+    if (isErrorInvoices) {
       return (
         <EmptyTablePlaceholder colSpan={nbColumns}>
           <Translate token="v2.pages.settings.invoices.table.errorPlaceholder" />
@@ -62,7 +96,6 @@ export default function InvoicesPage() {
     return invoices?.map(bodyRow);
   }
 
-  console.log("invoicesData", invoicesData);
   return (
     <div className="flex flex-col gap-6">
       <SettingsHeader title="v2.pages.settings.invoices.title" subtitle="v2.pages.settings.invoices.subtitle" />
