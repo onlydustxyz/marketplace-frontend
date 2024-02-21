@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
-import { useInvoicesTable } from "app/migration/settings/invoices/features/use-invoices-table/use-invoices-table";
+import { useInvoicesTable } from "app/migration/settings/invoices/hooks/use-invoices-table/use-invoices-table";
 
 import BillingProfilesApi from "src/api/billing-profiles";
 import BillingApi from "src/api/me/billing";
@@ -22,6 +24,8 @@ export default function InvoicesPage() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
 
+  const [invoiceId, setInvoiceId] = useState("");
+
   const { data: billingProfilesData } = BillingApi.queries.useAllBillingProfiles({});
 
   const { headerCells, bodyRow, bodyRowLoading, setIsDownloading } = useInvoicesTable({
@@ -41,22 +45,30 @@ export default function InvoicesPage() {
     params: { billingProfileId: billingProfilesData?.billingProfiles?.[0].id ?? "" },
   });
 
-  function onDownloadInvoice(invoiceId: string) {
-    const {
-      data: downloadedInvoice,
-      isError: isDownloadError,
-      isLoading: isDownloading,
-    } = BillingProfilesApi.queries.useDownloadBillingProfileInvoice({
-      params: { billingProfileId: billingProfilesData?.billingProfiles?.[0].id ?? "", invoiceId },
-    });
-    if (isDownloading) {
-      setIsDownloading(true);
-    }
+  const {
+    data: downloadedInvoice,
+    isError: isDownloadError,
+    isLoading: isDownloading,
+  } = BillingProfilesApi.queries.useDownloadBillingProfileInvoice({
+    params: { billingProfileId: billingProfilesData?.billingProfiles?.[0].id ?? "", invoiceId },
+    options: { enabled: Boolean(invoiceId) },
+  });
 
+  console.log("downloadedInvoice", downloadedInvoice);
+
+  useEffect(() => {
     if (downloadedInvoice) {
       window.open(downloadedInvoice.file, "_blank");
       setIsDownloading(false);
     }
+  }, [downloadedInvoice]);
+
+  function onDownloadInvoice(invoiceId: string) {
+    setInvoiceId(invoiceId);
+    if (isDownloading) {
+      setIsDownloading(true);
+    }
+
     if (isDownloadError) {
       showToaster(T("v2.pages.settings.invoices.table.errorDownload"), { isError: true });
       setIsDownloading(false);

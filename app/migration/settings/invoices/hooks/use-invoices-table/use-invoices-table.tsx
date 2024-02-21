@@ -1,13 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-import { TInvoiceTable } from "app/migration/settings/invoices/features/use-invoices-table/use-invoices-table.types";
+import { InvoiceStatus } from "app/migration/settings/invoices/features/invoice-status/invoice-status";
+import { TInvoiceTable } from "app/migration/settings/invoices/hooks/use-invoices-table/use-invoices-table.types";
 
 import { components } from "src/__generated/api";
 import { Spinner } from "src/components/Spinner/Spinner";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
 import { useIntl } from "src/hooks/useIntl";
-import SendPlane2Line from "src/icons/SendPlane2Line";
+import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { Button } from "components/ds/button/button";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
@@ -43,25 +44,29 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
   function bodyRow(invoice?: components["schemas"]["BillingProfileInvoicesPageItemResponse"]) {
     if (!invoice) return null;
 
-    const { id, createdAt, totalAfterTax, status } = invoice;
+    const { id, number, createdAt, totalAfterTax, status } = invoice;
 
     return (
       <Line key={id} className="group border-card-border-light">
-        <Cell height={CellHeight.Compact}>{id}</Cell>
-        <Cell height={CellHeight.Compact}>{createdAt}</Cell>
-        <Cell height={CellHeight.Compact}>{`${totalAfterTax?.amount} ${totalAfterTax?.currency}`}</Cell>
-
-        <Cell height={CellHeight.Compact}>{status}</Cell>
+        <Cell height={CellHeight.Compact}>{number?.split("-").pop()}</Cell>
         <Cell height={CellHeight.Compact}>
+          {createdAt ? getFormattedDateToLocaleDateString(new Date(createdAt)) : null}
+        </Cell>
+        <Cell height={CellHeight.Compact}>{`${totalAfterTax?.amount.toFixed(2)} ${totalAfterTax?.currency}`}</Cell>
+
+        <Cell height={CellHeight.Compact}>
+          <InvoiceStatus status={status} />
+        </Cell>
+        <Cell height={CellHeight.Compact} className="justify-end">
           {id ? (
             <Button
-              variant="primary"
-              size="m"
-              className="w-full"
+              variant="tertiary"
               onClick={() => onDownloadInvoice(id)}
               disabled={!id || isDownloading}
+              iconOnly
+              className="text-spacePurple-400"
             >
-              <SendPlane2Line />
+              <Icon remixName="ri-download-cloud-line" size={20} />
             </Button>
           ) : null}
         </Cell>

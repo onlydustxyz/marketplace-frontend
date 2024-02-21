@@ -12,6 +12,11 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
   const [fileBlob, setFileBlob] = useState<Blob>();
   const [fileUrl, setFileUrl] = useState("");
   const [invoiceId, setInvoiceId] = useState("");
+  // const [invoiceCreation, setInvoiceCreation] = useState({
+  //   fileBlob: null,
+  //   fileUrl: "",
+  //   invoiceId: "",
+  // });
 
   const fetched = useRef(false);
 
@@ -28,6 +33,9 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
       const token = await getAccessTokenSilently();
       const data = await fetchInvoicePreviewBlob({ token, rewardIds, billingProfileId, isSample });
       if (data.blob) {
+        // setInvoiceCreation({
+        //   fileBlob:
+        // })
         setFileBlob(data.blob);
         setFileUrl(window.URL.createObjectURL(data.blob));
         setInvoiceId(data.invoiceId ?? "");

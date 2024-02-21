@@ -12,5 +12,11 @@
     "emptyPlaceholderTitle": "No invoices",
     "emptyPlaceholderDescription": "You don't have any invoices yet",
     "errorDownload": "An error occurred while downloading the invoice"
+  },
+  "invoiceStatus": {
+    "approved": "Approved",
+    "processing": "Processing",
+    "rejected": "Rejected",
+    "draft": "Draft"
   }
 }
