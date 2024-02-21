@@ -4,7 +4,7 @@ import { Tag } from "components/ds/tag/tag";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-import { useBillingStatus } from "hooks/users/useBillingStatus/useBillingStatus";
+import { useBillingStatus } from "hooks/users/use-billing-status/use-billing-status";
 
 import { TProfileStatus } from "./profile-status.types";
 

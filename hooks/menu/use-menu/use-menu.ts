@@ -1,9 +1,9 @@
 import { NEXT_ROUTER } from "constants/router";
 
-import { useSettingsError } from "hooks/users/useSettingsError/useSettingsError";
-import { TUseSettingsError } from "hooks/users/useSettingsError/useSettingsError.types";
+import { useSettingsError } from "hooks/users/use-settings-error/use-settings-error";
+import { TUseSettingsError } from "hooks/users/use-settings-error/use-settings-error.types";
 
-import { TUseMenu } from "../useMenu/useMenu.types";
+import { TUseMenu } from "./use-menu.types";
 
 export const useMenu = (): TUseMenu.Return => {
   const { error, isBillingError, isBillingWarning } = useSettingsError();

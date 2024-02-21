@@ -1,6 +1,6 @@
 import { MeBillingConstants } from "src/api/me/billing/constant";
 
-import { TUseBillingStatus } from "./useBillingStatus.types";
+import { TUseBillingStatus } from "./use-billing-status.types";
 
 export const useBillingStatus = ({
   hasValidBillingProfile,

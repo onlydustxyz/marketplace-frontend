@@ -16,7 +16,7 @@ import { pretty } from "src/utils/id";
 import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { MyBillingProfileType, MyRewardsPendingInvoiceType } from ".";
 

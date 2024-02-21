@@ -1,6 +1,6 @@
 import { Key } from "src/hooks/useIntl";
 
-import { TUseSettingsError } from "hooks/users/useSettingsError/useSettingsError.types";
+import { TUseSettingsError } from "hooks/users/use-settings-error/use-settings-error.types";
 
 export namespace TUseMenu {
   export const ERROR_COLORS = {
