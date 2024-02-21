@@ -3,15 +3,20 @@ import { useInvoicesTable } from "app/migration/settings/invoices/features/use-i
 
 import BillingProfilesApi from "src/api/billing-profiles";
 import BillingApi from "src/api/me/billing";
+import { IMAGES } from "src/assets/img";
 import Table from "src/components/Table";
 import HeaderCell from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import { ShowMore } from "src/components/Table/ShowMore";
 
 import { Card } from "components/ds/card/card";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
+import EmptyTablePlaceholder from "components/layout/placeholders/empty-table/empty-table-placeholder";
+import { Translate } from "components/layout/translate/translate";
 
 export default function InvoicesPage() {
-  const { headerCells, bodyRow } = useInvoicesTable({ onDownloadInvoice: () => {} });
+  const { headerCells, bodyRow, bodyRowLoading } = useInvoicesTable({ onDownloadInvoice: () => {} });
+  const nbColumns = headerCells.length;
   const { data: billingProfilesData } = BillingApi.queries.useAllBillingProfiles({});
   const {
     data: invoicesData,
@@ -25,6 +30,37 @@ export default function InvoicesPage() {
   });
 
   const invoices = invoicesData?.pages?.flatMap(data => data.invoices);
+  const hasInvoices = Boolean(invoices?.length);
+
+  function renderDesktopContent() {
+    if (isLoading) {
+      return bodyRowLoading();
+    }
+
+    if (isError) {
+      return (
+        <EmptyTablePlaceholder colSpan={nbColumns}>
+          <Translate token="v2.pages.settings.invoices.table.errorPlaceholder" />
+        </EmptyTablePlaceholder>
+      );
+    }
+
+    if (!hasInvoices) {
+      return (
+        <tr>
+          <td colSpan={nbColumns}>
+            <EmptyState
+              illustrationSrc={IMAGES.global.categories}
+              title={{ token: "v2.pages.settings.invoices.table.emptyPlaceholderTitle" }}
+              description={{ token: "v2.pages.settings.invoices.table.emptyPlaceholderDescription" }}
+            />
+          </td>
+        </tr>
+      );
+    }
+
+    return invoices?.map(bodyRow);
+  }
 
   console.log("invoicesData", invoicesData);
   return (
@@ -46,7 +82,7 @@ export default function InvoicesPage() {
               </HeaderLine>
             }
           >
-            {invoices?.map(bodyRow)}
+            {renderDesktopContent()}
           </Table>
         </div>
         {hasNextPage ? (

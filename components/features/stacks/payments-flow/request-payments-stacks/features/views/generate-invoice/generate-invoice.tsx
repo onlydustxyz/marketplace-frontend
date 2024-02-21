@@ -9,7 +9,7 @@ import { useInvoicePreview } from "components/features/stacks/payments-flow/requ
 import { useInvoiceUpload } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-upload/use-invoice-upload";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 

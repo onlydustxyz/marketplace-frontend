@@ -7,6 +7,9 @@
       "date": "Date",
       "amount": "Amount",
       "status": "Status"
-    }
+    },
+    "errorPlaceholder": "An error occurred while loading the invoices",
+    "emptyPlaceholderTitle": "No invoices",
+    "emptyPlaceholderDescription": "You don't have any invoices yet"
   }
 }

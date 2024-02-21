@@ -9,7 +9,7 @@ import SEO from "src/components/SEO";
 import Flex from "src/components/Utils/Flex";
 import { usePosthog } from "src/hooks/usePosthog";
 
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 import { Earning } from "./Earning/Earning";
 import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";

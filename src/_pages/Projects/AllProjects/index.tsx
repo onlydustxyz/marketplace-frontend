@@ -12,7 +12,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 

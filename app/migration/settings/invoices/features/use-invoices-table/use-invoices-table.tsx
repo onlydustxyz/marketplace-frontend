@@ -1,32 +1,22 @@
-import { ReactNode } from "react";
-
 import { TInvoiceTable } from "app/migration/settings/invoices/features/use-invoices-table/use-invoices-table.types";
 
 import { components } from "src/__generated/api";
 import Cell, { CellHeight } from "src/components/Table/Cell";
-import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
 import { useIntl } from "src/hooks/useIntl";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 
 import { Button } from "components/ds/button/button";
+import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Icon } from "components/layout/icon/icon";
-
-type HeaderCell = {
-  icon: ReactNode;
-  label: string;
-  width?: HeaderCellWidth;
-  className?: string;
-};
 
 export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
   const { T } = useIntl();
 
-  const headerCells: HeaderCell[] = [
+  const headerCells: TInvoiceTable.HeaderCell[] = [
     {
       icon: <span>#</span>,
       label: T("v2.pages.settings.invoices.table.headerCells.id"),
-      width: HeaderCellWidth.Fifth,
     },
     {
       icon: <Icon remixName={"ri-calendar-event-line"} size={16} />,
@@ -46,10 +36,10 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
     },
   ];
 
-  const bodyRow = (invoice?: components["schemas"]["BillingProfileInvoicesPageItemResponse"]) => {
+  function bodyRow(invoice?: components["schemas"]["BillingProfileInvoicesPageItemResponse"]) {
     if (!invoice) return null;
 
-    const { id, createdAt, totalAfterTax, status, number } = invoice;
+    const { id, createdAt, totalAfterTax, status } = invoice;
 
     return (
       <Line key={id} className="group border-card-border-light">
@@ -59,19 +49,37 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
 
         <Cell height={CellHeight.Compact}>{status}</Cell>
         <Cell height={CellHeight.Compact}>
-          <Button
-            variant="primary"
-            size="m"
-            className="w-full"
-            onClick={() => onDownloadInvoice(id)}
-            disabled={!number}
-          >
+          <Button variant="primary" size="m" className="w-full" onClick={() => onDownloadInvoice(id)} disabled={!id}>
             <SendPlane2Line />
           </Button>
         </Cell>
       </Line>
     );
-  };
+  }
 
-  return { headerCells, bodyRow };
+  function bodyRowLoading() {
+    const line = () => (
+      <tr>
+        <td className="py-2">
+          <SkeletonEl width="40%" height="16px" variant="text" color="blue" />
+        </td>
+        <td className="py-2">
+          <SkeletonEl width="50%" height="16px" variant="text" color="blue" />
+        </td>
+        <td className="py-2">
+          <SkeletonEl width="30%" height="16px" variant="text" color="blue" />
+        </td>
+        <td className="py-2">
+          <SkeletonEl width="60%" height="16px" variant="text" color="blue" />
+        </td>
+        <td className="py-2">
+          <SkeletonEl className="m-auto" width="20%" height="16px" variant="circular" color="blue" />
+        </td>
+      </tr>
+    );
+
+    return [line(), line(), line(), line(), line()];
+  }
+
+  return { headerCells, bodyRow, bodyRowLoading };
 }
