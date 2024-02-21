@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import { FieldProjectLeadValue } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
+import EcosystemApi from "src/api/Ecosystems";
 import ProjectApi from "src/api/Project";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import MeApi from "src/api/me";
@@ -116,6 +117,8 @@ export function EditProvider({ children, project }: EditContextProps) {
     },
   });
 
+  const { data: ecosystemsData } = EcosystemApi.queries.useGetEcosystems({});
+
   const PoolingFeedback = usePoolingFeedback({
     onForcePooling,
     isLoading,
@@ -146,6 +149,8 @@ export function EditProvider({ children, project }: EditContextProps) {
     resolver: zodResolver(validationSchema),
   });
 
+  console.log("form error", form?.formState.errors);
+
   useEffect(() => {
     if (project) {
       form.reset({
@@ -164,6 +169,13 @@ export function EditProvider({ children, project }: EditContextProps) {
         inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
         projectLeadsToKeep: project.leaders.map(leader => leader.id),
         projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
+        ecosystems: (project?.ecosystems || []).map(({ name, id, logoUrl }) => ({
+          id,
+          label: name,
+          value: id,
+          image: logoUrl,
+        })),
+        ecosystemIds: (project?.ecosystems || []).map(({ id }) => id),
         rewardSettings: {
           ...project.rewardSettings,
           ignoreContributionsBefore: project.rewardSettings?.ignoreContributionsBefore ?? project.createdAt,
@@ -290,12 +302,13 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const onSubmit = (formData: EditFormData) => {
-    const { githubRepos, moreInfos, ...rest } = formData;
+    const { githubRepos, moreInfos, ecosystems, ...rest } = formData;
     const githubRepoIds = githubRepos.map(repo => repo.id);
     updateProject({
       ...rest,
       githubRepoIds,
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
+      ecosystemIds: ecosystems.map(ecosystem => `${ecosystem.id}`),
     });
   };
 
@@ -304,45 +317,13 @@ export function EditProvider({ children, project }: EditContextProps) {
   }, []);
 
   const EcoSystems = useMemo(() => {
-    const mock = [
-      {
-        id: "86f56335-fa70-4008-b266-acd915f08bb9",
-        name: "Avail",
-        url: "https://www.availproject.org/",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12011103528231014365.png",
-      },
-      {
-        id: "345a5d01-387e-41b5-9870-856cf34c856b",
-        name: "Ethereum",
-        url: "https://ethereum.foundation/",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8506434858363286425.png",
-      },
-      {
-        id: "8cf106f3-af9a-4b0b-9ca9-ab78ac550878",
-        name: "Optimism",
-        url: "https://www.optimism.io/",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12058007825795511084.png",
-      },
-      {
-        id: "870faae4-6e5b-423b-b12b-32df2ab15b7c",
-        name: "Starknet",
-        url: "https://www.starknet.io/en",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12429671188779981103.png",
-      },
-      {
-        id: "a450a83b-a98a-4d45-ac5d-82ee8e8bbd35",
-        name: "Zama",
-        url: "https://www.zama.ai/",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/599423013682223091.png",
-      },
-    ];
-    return mock.map(({ name, id, logoUrl }) => ({
+    return (ecosystemsData?.ecosystems || []).map(({ name, id, logoUrl }) => ({
       id,
       label: name,
       value: id,
       image: logoUrl,
     }));
-  }, []);
+  }, [ecosystemsData]);
 
   return (
     <EditContext.Provider

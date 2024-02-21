@@ -5,6 +5,7 @@ import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 
 import { RoutePaths } from "src/App";
+import EcosystemApi from "src/api/Ecosystems";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
@@ -88,6 +89,7 @@ const validationSchema = z.object({
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
+  ecosystems: z.array(z.object({ id: z.number().or(z.string()) })).optional(),
   moreInfos: z
     .array(
       z
@@ -149,6 +151,7 @@ export function CreateProjectProvider({
       refetchInterval,
     },
   });
+  const { data: ecosystemsData } = EcosystemApi.queries.useGetEcosystems({});
 
   const PoolingFeedback = usePoolingFeedback({
     onForcePooling,
@@ -191,6 +194,8 @@ export function CreateProjectProvider({
       ? {
           ...initialProject,
           moreInfos: initialProject?.moreInfos?.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
+          ecosystems: initialProject?.ecosystems,
+          ecosystemIds: (initialProject?.ecosystems || []).map(({ id }) => `${id}`),
         }
       : {
           moreInfos: [{ url: "", value: "" }],
@@ -205,11 +210,12 @@ export function CreateProjectProvider({
   const onSubmit = () => {
     setEnableAutoSaved(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { search, projectLeads, selectedRepos, moreInfos, ...formData } = form.getValues();
+    const { search, projectLeads, selectedRepos, ecosystems, moreInfos, ...formData } = form.getValues();
     createProject({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
+      ecosystemIds: ecosystems.map(ecosystem => `${ecosystem.id}`),
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
     });
   };
@@ -264,45 +270,13 @@ export function CreateProjectProvider({
   }, [currentStep]);
 
   const EcoSystems = useMemo(() => {
-    const mock = [
-      {
-        id: "86f56335-fa70-4008-b266-acd915f08bb9",
-        name: "Avail",
-        url: "https://www.availproject.org/",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12011103528231014365.png",
-      },
-      {
-        id: "345a5d01-387e-41b5-9870-856cf34c856b",
-        name: "Ethereum",
-        url: "https://ethereum.foundation/",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8506434858363286425.png",
-      },
-      {
-        id: "8cf106f3-af9a-4b0b-9ca9-ab78ac550878",
-        name: "Optimism",
-        url: "https://www.optimism.io/",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12058007825795511084.png",
-      },
-      {
-        id: "870faae4-6e5b-423b-b12b-32df2ab15b7c",
-        name: "Starknet",
-        url: "https://www.starknet.io/en",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12429671188779981103.png",
-      },
-      {
-        id: "a450a83b-a98a-4d45-ac5d-82ee8e8bbd35",
-        name: "Zama",
-        url: "https://www.zama.ai/",
-        logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/599423013682223091.png",
-      },
-    ];
-    return mock.map(({ name, id, logoUrl }) => ({
+    return (ecosystemsData?.ecosystems || []).map(({ name, id, logoUrl }) => ({
       id,
       label: name,
       value: id,
       image: logoUrl,
     }));
-  }, []);
+  }, [ecosystemsData]);
 
   useEffect(() => {
     if (installation_id) {
