@@ -9,14 +9,11 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
   const { getAccessTokenSilently } = useAuth0();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [fileBlob, setFileBlob] = useState<Blob>();
-  const [fileUrl, setFileUrl] = useState("");
-  const [invoiceId, setInvoiceId] = useState("");
-  // const [invoiceCreation, setInvoiceCreation] = useState({
-  //   fileBlob: null,
-  //   fileUrl: "",
-  //   invoiceId: "",
-  // });
+  const [invoiceCreation, setInvoiceCreation] = useState({
+    fileBlob: Blob,
+    fileUrl: "",
+    invoiceId: "",
+  });
 
   const fetched = useRef(false);
 
@@ -33,12 +30,11 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
       const token = await getAccessTokenSilently();
       const data = await fetchInvoicePreviewBlob({ token, rewardIds, billingProfileId, isSample });
       if (data.blob) {
-        // setInvoiceCreation({
-        //   fileBlob:
-        // })
-        setFileBlob(data.blob);
-        setFileUrl(window.URL.createObjectURL(data.blob));
-        setInvoiceId(data.invoiceId ?? "");
+        setInvoiceCreation({
+          fileBlob: data.blob,
+          fileUrl: window.URL.createObjectURL(data.blob),
+          invoiceId: data.invoiceId ?? "",
+        });
       } else {
         setIsError(true);
       }
@@ -49,5 +45,9 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
     }
   }
 
-  return { isLoading, isError, fileBlob, fileUrl, invoiceId };
+  return {
+    isLoading,
+    isError,
+    ...invoiceCreation,
+  };
 }
