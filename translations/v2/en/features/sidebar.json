@@ -4,6 +4,7 @@
     "paymentMethods": "Payment methods",
     "verifyAccount": "Verify account",
     "billingProfile": "Billing profile",
-    "invoices": "Invoices"
+    "invoices": "Invoices",
+    "payoutPreferences": "Payout preferences"
   }
 }
