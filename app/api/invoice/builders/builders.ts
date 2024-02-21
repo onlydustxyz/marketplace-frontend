@@ -29,6 +29,9 @@ export function getInvoiceInfoProps({
   isUserIndividual,
   invoiceDetails,
 }: TInvoiceBuilders.InvoiceInfoBuilderProps): TInvoice.InvoiceInfoProps {
+  // as we can have multiple destination accounts, we need to handle them differently
+  // bank account is an object containing only 2 fields
+  // wallets is an array of objects containing 2 fields
   const bankAccount = invoiceDetails.destinationAccounts.bankAccount
     ? `Account number: ${invoiceDetails.destinationAccounts.bankAccount.accountNumber} / BIC: ${invoiceDetails.destinationAccounts.bankAccount.bic}`
     : null;

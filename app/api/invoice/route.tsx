@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
   const rewardIds = searchParams.get("rewardIds") ?? "";
   let invoicePreviewData;
   try {
-    invoicePreviewData = await fetchInvoicePreviewData({ token: token ?? "", rewardIds, billingProfileId });
+    invoicePreviewData = await fetchInvoicePreviewData({ token, rewardIds, billingProfileId });
   } catch (e) {
     return new NextResponse("Failed Dependency : Invoice Preview ", { status: 424 });
   }
