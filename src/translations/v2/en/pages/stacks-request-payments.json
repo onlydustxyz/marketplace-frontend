@@ -69,6 +69,7 @@
     "sample_link_label": "Click here to download and get started",
     "uploadInvoiceTitle": "Upload invoice",
     "clickToUpload": "Click to upload",
-    "dragAndDrop": "or drag and drop"
+    "dragAndDrop": "or drag and drop",
+    "errorMaxSizeFile": "The file is too large, please upload a file smaller than 3MB"
   }
 }
