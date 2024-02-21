@@ -17,7 +17,7 @@ import { TBillingCreateStack } from "./billing-create-stack.types";
 export function BillingCreateStack() {
   const { T } = useIntl();
   const [name, setName] = useState("");
-  const [type, setType] = useState<TBillingCreateStack.Choice | null>(TBillingCreateStack.Choice.Individual || null);
+  const [type, setType] = useState<TBillingCreateStack.Choice | "">("");
   const isLoading = false;
   const isDisabled = false;
 
@@ -25,7 +25,7 @@ export function BillingCreateStack() {
     console.log("submit", { type, name });
   };
 
-  function onChoiceChange(value: TBillingCreateStack.Choice) {
+  function onChoiceChange(value: TBillingCreateStack.Choice | "") {
     setType(value);
   }
   function onNameChange(value: string) {
@@ -58,7 +58,7 @@ export function BillingCreateStack() {
                 />
               </Flex>
               <Flex justifyContent="start" direction={"col"} className="gap-4">
-                <RadioGroupCustom onChange={onChoiceChange} value={type}>
+                <RadioGroupCustom<TBillingCreateStack.Choice | ""> onChange={onChoiceChange} value={type}>
                   {({ value, onChange }) => [
                     <CheckboxItem
                       key={TBillingCreateStack.Choice.Individual}
