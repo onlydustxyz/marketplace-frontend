@@ -18,5 +18,6 @@ export namespace TCheckboxItem {
       label: string;
       placeholder: string;
     };
+    withSelectedComponent?: ReactNode;
   }
 }

@@ -7,6 +7,7 @@ import categories from "./categories.webp";
 import circle from "./circle.webp";
 import compass from "./compass.webp";
 import contributionsBg from "./contributions-bg.webp";
+import drip from "./drip.webp";
 import dustBtmLeft from "./dust-btm-left.webp";
 import dustTopRight from "./dust-top-right.webp";
 import emptyState from "./empty-state.webp";
@@ -91,6 +92,7 @@ export const IMAGES = {
     categories: categories.src,
     underline: underline.src,
     payment: payment.src,
+    drip: drip.src,
     pickContributor: pickContributor.src,
     thumbnail: thumbnail.src,
     mosaic: mosaic.src,

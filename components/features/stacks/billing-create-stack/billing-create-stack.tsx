@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useState } from "react";
 
+import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -152,6 +154,32 @@ export function BillingCreateStack() {
                       onChange={onChange}
                       selected={value === TBillingCreateStack.Choice.Employee}
                       value={TBillingCreateStack.Choice.Employee}
+                      withSelectedComponent={
+                        <div className="flex h-auto w-full flex-col items-center justify-start gap-4 p-4 pt-9">
+                          <Image
+                            src={IMAGES.global.drip}
+                            width={39}
+                            height={39}
+                            alt={T("v2.pages.settings.billing_create.form.title")}
+                          />
+                          <div className="flex h-auto w-full flex-col items-center justify-start gap-1">
+                            <Typography
+                              variant={"title-s"}
+                              translate={{
+                                token: "v2.pages.settings.billing_create.fields.employee.information.title",
+                              }}
+                              className="text-center text-greyscale-50"
+                            />
+                            <Typography
+                              variant={"body-s"}
+                              translate={{
+                                token: "v2.pages.settings.billing_create.fields.employee.information.content",
+                              }}
+                              className="text-center text-greyscale-200"
+                            />
+                          </div>
+                        </div>
+                      }
                     />,
                   ]}
                 </RadioGroupCustom>

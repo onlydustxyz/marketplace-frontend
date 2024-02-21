@@ -12,7 +12,16 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TCheckboxItem } from "./checkbox-item.types";
 
-export function CheckboxItem({ title, list, icon, selected, onChange, value, withInput }: TCheckboxItem.Props) {
+export function CheckboxItem({
+  title,
+  list,
+  icon,
+  selected,
+  onChange,
+  value,
+  withInput,
+  withSelectedComponent,
+}: TCheckboxItem.Props) {
   function onClick() {
     onChange(value);
   }
@@ -70,6 +79,25 @@ export function CheckboxItem({ title, list, icon, selected, onChange, value, wit
                     value={withInput.value}
                   />
                 </div>
+              </motion.section>
+            )}
+          </AnimatePresence>
+        ) : null}
+        {withSelectedComponent ? (
+          <AnimatePresence initial={false}>
+            {selected && (
+              <motion.section
+                key="content"
+                initial="collapsed"
+                animate="open"
+                exit="collapsed"
+                variants={{
+                  open: { opacity: 1, height: "auto" },
+                  collapsed: { opacity: 0, height: 0 },
+                }}
+                transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
+              >
+                {withSelectedComponent}
               </motion.section>
             )}
           </AnimatePresence>
