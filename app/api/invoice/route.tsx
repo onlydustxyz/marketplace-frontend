@@ -63,10 +63,16 @@ export async function GET(request: NextRequest) {
   /* ------
   Create a stream containing the pdf blob
   ------ */
-  const stream = await renderToStream(
-    <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />
-  );
-  if (!stream) {
+  let stream;
+
+  try {
+    stream = await renderToStream(
+      <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />
+    );
+    if (!stream) {
+      return new NextResponse("Internal Server Error", { status: 500 });
+    }
+  } catch (e) {
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 
