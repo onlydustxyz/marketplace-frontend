@@ -72,4 +72,6 @@ export const API_PATH = {
   ME_SYNC_GITHUB_PROFILE: BASE_API_V1("me/profile/github"),
   /* ------------------------------ TECHNOLOGIES ------------------------------ */
   TECHNOLOGIES: BASE_API_V1("technologies"),
+  /* ------------------------------ ECOSYSTEM ------------------------------ */
+  ECOSYSTEM: BASE_API_V1("ecosystems"),
 };
