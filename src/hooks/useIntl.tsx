@@ -18,6 +18,8 @@ import en_features_verify from "translations/v2/en/features/verify.json";
 import en_billing_create from "translations/v2/en/pages/billing-create-stacks.json";
 import en_projects from "translations/v2/en/pages/projects.json";
 import en_settings_billing from "translations/v2/en/pages/settings-billing.json";
+import en_settings_billing_header from "translations/v2/en/pages/settings-billing/settings-billing-header.json";
+import en_settings_billing_tabs from "translations/v2/en/pages/settings-billing/settings-billing-tabs.json";
 import en_settings_payout from "translations/v2/en/pages/settings-payout.json";
 import en_settings_profile from "translations/v2/en/pages/settings-profile.json";
 
@@ -44,7 +46,7 @@ const en = {
       projects: en_projects,
       settings: {
         profile: en_settings_profile,
-        billing: en_settings_billing,
+        billing: { ...en_settings_billing, header: en_settings_billing_header, tabs: en_settings_billing_tabs },
         payout: en_settings_payout,
         billing_create: en_billing_create,
       },
