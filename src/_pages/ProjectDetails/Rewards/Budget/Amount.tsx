@@ -21,10 +21,6 @@ export function Amount({ budget }: Amount) {
     );
   }
 
-  if (budget.currency === Currency.STRK) {
-    return <>N/A</>;
-  }
-
   return (
     <>
       {`~${formatMoneyAmount({

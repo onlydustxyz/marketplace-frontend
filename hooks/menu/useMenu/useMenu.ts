@@ -3,7 +3,7 @@ import { NEXT_ROUTER } from "constants/router";
 import { useSettingsError } from "hooks/users/useSettingsError/useSettingsError";
 import { TUseSettingsError } from "hooks/users/useSettingsError/useSettingsError.types";
 
-import { TUseMenu } from "../useMenu/useMenu.types";
+import { TUseMenu } from "./useMenu.types";
 
 export const useMenu = (): TUseMenu.Return => {
   const { error, isBillingError, isBillingWarning } = useSettingsError();
