@@ -11,7 +11,7 @@ import { usePosthog } from "src/hooks/usePosthog";
 
 import { EmptyState } from "components/layout/placeholders/empty-state";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { Earning } from "./Earning/Earning";
 import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";

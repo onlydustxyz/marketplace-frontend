@@ -30,7 +30,7 @@ async function createTypes({ name, path, PascalName, camelName, options: { varia
         ${
           variants
             ? `
-        import { VariantProps } from "tailwind-variants"; 
+        import { VariantProps } from "tailwind-variants";
         import { ${camelName}Variants } from "./${name}.variants";`
             : ""
         }
