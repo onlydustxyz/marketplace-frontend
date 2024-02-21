@@ -38,7 +38,7 @@ export function InvoiceSummary({
     <View style={styles.flexRow}>
       <View style={{ ...styles.section, ...styles.flexRow, ...styles.invoiceCenter }}>
         <Text style={styles.h3}>{InvoiceTokens.rewardSummary.title}</Text>
-        <View style={{ ...styles.flexCol }}>
+        <View style={styles.flexCol}>
           <View style={styles.table}>
             <View style={styles.tr}>
               <Text style={styles.thSmall}>{InvoiceTokens.rewardSummary.table.id}</Text>
@@ -57,6 +57,8 @@ export function InvoiceSummary({
                 <Text style={styles.td}>{getFormattedDateGB(new Date(item.date))}</Text>
                 <Text style={styles.td}>{`${item.amount.amount} ${item.amount.currency}`}</Text>
                 <View style={{ ...styles.td, ...styles.flexRow }}>
+                  {/*the result should look like this*/}
+                  {/*1 ETH ~ 3,000 USD*/}
                   <Text>{`1 ${item.amount.currency}`}</Text>
                   <Text>{`~${item.amount.base.conversionRate.toFixed(2)} ${item.amount.base.currency}`}</Text>
                 </View>

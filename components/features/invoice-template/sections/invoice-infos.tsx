@@ -10,7 +10,7 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserInd
   const [recipientStreetAddress, ...recipientRestAdress] = recipientInfos.address.split(/,(.+)/);
   return (
     <View style={{ ...styles.section, ...styles.flexRow }}>
-      <View style={{ ...styles.flexCol }}>
+      <View style={styles.flexCol}>
         <View style={styles.paddingRightSmall}>
           <Text style={styles.h4}>
             {isUserIndividual ? InvoiceTokens.invoiceInfos.individualName : InvoiceTokens.invoiceInfos.companyName}
@@ -37,7 +37,7 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserInd
           </Text>
         </View>
       </View>
-      <View style={{ ...styles.flexCol }}>
+      <View style={styles.flexCol}>
         <View style={styles.paddingRightSmall}>
           <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.issueDate}</Text>
           <Text style={styles.paragraph}>{legalInfos.generationDate}</Text>
@@ -54,7 +54,7 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserInd
           <Text style={styles.paragraph}>{legalInfos.dueDate}</Text>
         </View>
       </View>
-      <View style={{ ...styles.flexRow }} wrap={false}>
+      <View style={styles.flexRow} wrap={false}>
         <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.destinationAccounts}</Text>
         {legalInfos.destinationAccounts.map((wallet, index) => (
           <Text key={index} style={{ ...styles.paragraph, fontSize: 11, lineHeight: 1.2 }}>
