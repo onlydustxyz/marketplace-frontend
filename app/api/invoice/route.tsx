@@ -62,6 +62,7 @@ export async function GET(request: NextRequest) {
 
   /* ------
   Create a stream containing the pdf blob
+
   ------ */
   let stream;
 
