@@ -17,7 +17,7 @@ import { TBillingCreateStack } from "./billing-create-stack.types";
 export function BillingCreateStack() {
   const { T } = useIntl();
   const [name, setName] = useState("");
-  const [type, setType] = useState<TBillingCreateStack.Choice | null>(TBillingCreateStack.Choice.Individual | null);
+  const [type, setType] = useState<TBillingCreateStack.Choice | null>(TBillingCreateStack.Choice.Individual || null);
   const isLoading = false;
   const isDisabled = false;
 
@@ -84,8 +84,14 @@ export function BillingCreateStack() {
                       key={TBillingCreateStack.Choice.SelfEmployed}
                       title={<Translate token="v2.pages.settings.billing_create.fields.selfEmployed.title" />}
                       list={[
-                        <Translate key={1} token="v2.pages.settings.billing_create.fields.selfEmployed.points.1" />,
-                        <Translate key={2} token="v2.pages.settings.billing_create.fields.selfEmployed.points.2" />,
+                        <Translate
+                          key="v2.pages.settings.billing_create.fields.selfEmployed.points.1"
+                          token="v2.pages.settings.billing_create.fields.selfEmployed.points.1"
+                        />,
+                        <Translate
+                          key="v2.pages.settings.billing_create.fields.selfEmployed.points.2"
+                          token="v2.pages.settings.billing_create.fields.selfEmployed.points.2"
+                        />,
                       ]}
                       icon={{ remixName: "ri-suitcase-line" }}
                       disabled={isDisabled}
@@ -103,9 +109,18 @@ export function BillingCreateStack() {
                       key={TBillingCreateStack.Choice.Organisation}
                       title={<Translate token="v2.pages.settings.billing_create.fields.organisation.title" />}
                       list={[
-                        <Translate key={1} token="v2.pages.settings.billing_create.fields.organisation.points.1" />,
-                        <Translate key={2} token="v2.pages.settings.billing_create.fields.organisation.points.2" />,
-                        <Translate key={3} token="v2.pages.settings.billing_create.fields.organisation.points.3" />,
+                        <Translate
+                          key="v2.pages.settings.billing_create.fields.selfEmployed.points.1"
+                          token="v2.pages.settings.billing_create.fields.organisation.points.1"
+                        />,
+                        <Translate
+                          key="v2.pages.settings.billing_create.fields.selfEmployed.points.2"
+                          token="v2.pages.settings.billing_create.fields.organisation.points.2"
+                        />,
+                        <Translate
+                          key="v2.pages.settings.billing_create.fields.selfEmployed.points.3"
+                          token="v2.pages.settings.billing_create.fields.organisation.points.3"
+                        />,
                       ]}
                       icon={{ remixName: "ri-vip-crown-line" }}
                       disabled={isDisabled}
@@ -123,8 +138,14 @@ export function BillingCreateStack() {
                       key={TBillingCreateStack.Choice.Employee}
                       title={<Translate token="v2.pages.settings.billing_create.fields.employee.title" />}
                       list={[
-                        <Translate key={1} token="v2.pages.settings.billing_create.fields.employee.points.1" />,
-                        <Translate key={2} token="v2.pages.settings.billing_create.fields.employee.points.2" />,
+                        <Translate
+                          key="v2.pages.settings.billing_create.fields.employee.points.1"
+                          token="v2.pages.settings.billing_create.fields.employee.points.1"
+                        />,
+                        <Translate
+                          key="v2.pages.settings.billing_create.fields.employee.points.2"
+                          token="v2.pages.settings.billing_create.fields.employee.points.2"
+                        />,
                       ]}
                       icon={{ remixName: "ri-team-line" }}
                       disabled={isDisabled}
