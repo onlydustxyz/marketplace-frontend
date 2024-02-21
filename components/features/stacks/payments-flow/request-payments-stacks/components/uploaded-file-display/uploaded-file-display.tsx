@@ -8,7 +8,7 @@ import { Icon } from "components/layout/icon/icon";
 
 export function UploadedFileDisplay({ fileName, onRemoveFile }: TUploadedFileDisplay.Props) {
   return (
-    <Card background="light" className="flex flex-row items-center gap-4 ">
+    <Card background="light" className="relative z-[0] flex flex-row items-center gap-4">
       <IconTag icon={{ remixName: "ri-file-line" }} />
       <p className="flex-1">{fileName}</p>
       <Button variant="tertiary" onClick={onRemoveFile} disabled={!fileName} iconOnly className="text-spacePurple-400">

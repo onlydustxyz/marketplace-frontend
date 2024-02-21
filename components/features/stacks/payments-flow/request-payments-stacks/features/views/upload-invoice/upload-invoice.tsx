@@ -56,7 +56,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
     []
   );
 
-  function renderUploadSample() {
+  const renderUploadSample = useMemo(() => {
     if (isLoading) {
       return (
         <div className="flex flex-col gap-2">
@@ -87,7 +87,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
       );
     }
     return null;
-  }
+  }, [fileUrl, isError, isLoading]);
 
   function renderUploadFile() {
     if (selectedFile) {
@@ -119,7 +119,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                 <Translate token="v2.pages.stacks.request_payments.uploadInvoice.summary.requirement" />
                 <br />
                 {requirementList}
-                {renderUploadSample()}
+                {renderUploadSample}
               </div>
             </Card>
             <Typography

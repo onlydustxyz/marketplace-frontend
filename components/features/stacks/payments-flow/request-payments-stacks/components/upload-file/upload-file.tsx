@@ -30,7 +30,7 @@ export function UploadFile({ setSelectedFile }: TUploadFile.Props) {
   return (
     <Card
       background={false}
-      className="flex flex-col items-center gap-4 border-dashed !py-10"
+      className="relative z-[0] flex flex-col items-center gap-4 border-dashed !py-10"
       clickable
       onClick={onChooseFile}
     >
