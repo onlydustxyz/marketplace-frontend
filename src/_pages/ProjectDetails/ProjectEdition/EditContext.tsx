@@ -149,8 +149,6 @@ export function EditProvider({ children, project }: EditContextProps) {
     resolver: zodResolver(validationSchema),
   });
 
-  console.log("form error", form?.formState.errors);
-
   useEffect(() => {
     if (project) {
       form.reset({

@@ -3,6 +3,7 @@ import { FieldLabel } from "src/components/New/Field/Label";
 
 import { SelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 import { TEcosystemSelect } from "./ecosystem-select.types";
 
@@ -13,7 +14,9 @@ export function EcosystemSelect({ selected, onChange, ecosystems, name }: TEcosy
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <FieldLabel id={name}>Ecosystems</FieldLabel>
+      <FieldLabel id={name}>
+        <Translate token="v2.features.filters.ecosystems.title" />
+      </FieldLabel>
       <div className="flex flex-col gap-3">
         <div className="w-fit">
           <SelectAutocomplete
