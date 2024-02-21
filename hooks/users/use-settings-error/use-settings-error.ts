@@ -1,6 +1,6 @@
-import { useBillingProfiles } from "../useBillingProfile/useBillingProfile";
-import { useBillingStatus } from "../useBillingStatus/useBillingStatus";
-import { TUseSettingsError } from "./useSettingsError.types";
+import { useBillingProfiles } from "../use-billing-profile/use-billing-profile";
+import { useBillingStatus } from "../use-billing-status/use-billing-status";
+import { TUseSettingsError } from "./use-settings-error.types";
 
 export const useSettingsError = (): TUseSettingsError.Return => {
   const { validBillingProfile, billingProfile, user, isLoading } = useBillingProfiles();

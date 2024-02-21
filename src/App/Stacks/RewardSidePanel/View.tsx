@@ -29,7 +29,7 @@ import { formatMoneyAmount } from "src/utils/money";
 import { Link } from "components/ds/link/link";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import MixedApi from "../../../api/Mixed";
 import ConfirmationModal from "./ConfirmationModal";
