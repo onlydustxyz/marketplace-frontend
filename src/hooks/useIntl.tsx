@@ -15,6 +15,7 @@ import en_features_menu from "translations/v2/en/features/menu.json";
 import en_features_payout_status from "translations/v2/en/features/payout-status.json";
 import en_features_sidebar from "translations/v2/en/features/sidebar.json";
 import en_features_verify from "translations/v2/en/features/verify.json";
+import en_billing_create from "translations/v2/en/pages/billing-create-stacks.json";
 import en_projects from "translations/v2/en/pages/projects.json";
 import en_settings_billing from "translations/v2/en/pages/settings-billing.json";
 import en_settings_payout from "translations/v2/en/pages/settings-payout.json";
@@ -45,6 +46,7 @@ const en = {
         profile: en_settings_profile,
         billing: en_settings_billing,
         payout: en_settings_payout,
+        billing_create: en_billing_create,
       },
     },
   },
