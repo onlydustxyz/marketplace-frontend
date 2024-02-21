@@ -65,6 +65,8 @@ const formSchema = z.object({
   lookingForAJob: z.boolean(),
 });
 
+// TODO: test
+
 // TODO: Contact information and select input to do with NextUI
 // TODO: FieldImage to do with NextUI and add error handle on Input (call everywhere) and Textarea
 export default function ProfilePage() {
