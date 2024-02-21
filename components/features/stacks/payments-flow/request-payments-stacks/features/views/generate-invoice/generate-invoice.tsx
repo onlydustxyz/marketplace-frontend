@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
 
@@ -23,7 +25,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
   });
   const { isPendingUploadInvoice, handleSendInvoice } = useInvoiceUpload({ billingProfileId, invoiceId });
 
-  function renderInvoicePreview() {
+  const renderInvoicePreview = useMemo(() => {
     if (isLoading) {
       return <InvoicePreviewLoading />;
     }
@@ -40,7 +42,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
       return <InvoiceViewer fileUrl={fileUrl} />;
     }
     return null;
-  }
+  }, [isLoading, isError, fileUrl]);
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -53,7 +55,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
           />
         </div>
         <ScrollView className="m-4 mb-0 w-auto rounded-2xl border border-card-border-light p-4">
-          <div className="relative z-0 flex justify-center">{renderInvoicePreview()}</div>
+          <div className="relative z-0 flex justify-center">{renderInvoicePreview}</div>
         </ScrollView>
         <div className="w-full bg-greyscale-900">
           <div className="bg-greyscale-900 p-4">
