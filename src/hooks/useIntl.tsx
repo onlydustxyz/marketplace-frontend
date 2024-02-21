@@ -24,6 +24,7 @@ import en_settings_billing_information from "translations/v2/en/pages/settings-b
 import en_settings_billing_sidebar from "translations/v2/en/pages/settings-billing/settings-billing-sidebar.json";
 import en_settings_billing_tabs from "translations/v2/en/pages/settings-billing/settings-billing-tabs.json";
 import en_settings_invoices from "translations/v2/en/pages/settings-invoices.json";
+import en_settings_payout_preferences from "translations/v2/en/pages/settings-payout-preferences.json";
 import en_settings_payout from "translations/v2/en/pages/settings-payout.json";
 import en_settings_profile from "translations/v2/en/pages/settings-profile.json";
 import en_stack_mandate from "translations/v2/en/pages/stacks-mandate.json";
@@ -67,6 +68,7 @@ const en = {
         request_payments: en_stack_request_payments,
         mandate: en_stack_mandate,
         billingCreate: en_billing_create,
+        payoutPreferences: en_settings_payout_preferences,
       },
     },
   },
