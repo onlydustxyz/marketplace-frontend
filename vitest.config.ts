@@ -4,7 +4,7 @@ import { configDefaults, defineConfig } from "vitest/config";
 export default defineConfig({
   plugins: [react()],
   test: {
-    globals: true,
+    threads: false,
     setupFiles: ["src/test/setup.ts"],
     environment: "jsdom",
     exclude: [...configDefaults.exclude],
