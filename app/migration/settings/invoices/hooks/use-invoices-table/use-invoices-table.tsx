@@ -36,7 +36,13 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
       label: T("v2.pages.settings.invoices.table.headerCells.status"),
     },
     {
-      icon: isDownloading ? <Spinner /> : <div />,
+      icon: isDownloading ? (
+        <div className="justify-end">
+          <Spinner />
+        </div>
+      ) : (
+        <div />
+      ),
       label: "",
     },
   ];
