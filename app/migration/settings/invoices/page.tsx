@@ -24,14 +24,11 @@ export default function InvoicesPage() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
 
-  const [invoiceId, setInvoiceId] = useState("");
+  const [invoiceMetaData, setInvoiceMetaData] = useState<{ invoiceId: string | undefined; number: string | undefined }>(
+    { invoiceId: "", number: "" }
+  );
 
   const { data: billingProfilesData } = BillingApi.queries.useAllBillingProfiles({});
-
-  const { headerCells, bodyRow, bodyRowLoading, setIsDownloading } = useInvoicesTable({
-    onDownloadInvoice,
-  });
-  const nbColumns = headerCells.length;
 
   const {
     data: invoicesData,
@@ -50,30 +47,39 @@ export default function InvoicesPage() {
     isError: isDownloadError,
     isLoading: isDownloading,
   } = BillingProfilesApi.queries.useDownloadBillingProfileInvoice({
-    params: { billingProfileId: billingProfilesData?.billingProfiles?.[0].id ?? "", invoiceId },
-    options: { enabled: Boolean(invoiceId) },
+    params: {
+      billingProfileId: billingProfilesData?.billingProfiles?.[0].id ?? "",
+      invoiceId: invoiceMetaData.invoiceId ?? "",
+    },
+    options: { enabled: Boolean(invoiceMetaData.invoiceId) },
   });
-
-  console.log("downloadedInvoice", downloadedInvoice);
 
   useEffect(() => {
     if (downloadedInvoice) {
-      window.open(downloadedInvoice.file, "_blank");
-      setIsDownloading(false);
+      console.log("downloadedInvoice", downloadedInvoice);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = window.URL.createObjectURL(downloadedInvoice as Blob);
+      downloadLink.download = invoiceMetaData.number ?? "invoice.pdf";
+      downloadLink.click();
+      setInvoiceMetaData({ invoiceId: "", number: "" });
     }
   }, [downloadedInvoice]);
 
-  function onDownloadInvoice(invoiceId: string) {
-    setInvoiceId(invoiceId);
-    if (isDownloading) {
-      setIsDownloading(true);
-    }
-
+  useEffect(() => {
     if (isDownloadError) {
       showToaster(T("v2.pages.settings.invoices.table.errorDownload"), { isError: true });
-      setIsDownloading(false);
     }
+  }, [isDownloadError]);
+
+  function onDownloadInvoice({ invoiceId, number }: { invoiceId: string | undefined; number: string | undefined }) {
+    setInvoiceMetaData({ invoiceId, number });
   }
+
+  const { headerCells, bodyRow, bodyRowLoading } = useInvoicesTable({
+    onDownloadInvoice,
+    isDownloading,
+  });
+  const nbColumns = headerCells.length;
 
   const invoices = invoicesData?.pages?.flatMap(data => data.invoices);
   const hasInvoices = Boolean(invoices?.length);

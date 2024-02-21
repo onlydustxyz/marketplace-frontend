@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 import { InvoiceStatus } from "app/migration/settings/invoices/features/invoice-status/invoice-status";
 import { TInvoiceTable } from "app/migration/settings/invoices/hooks/use-invoices-table/use-invoices-table.types";
 
@@ -14,9 +12,8 @@ import { Button } from "components/ds/button/button";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Icon } from "components/layout/icon/icon";
 
-export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
+export function useInvoicesTable({ onDownloadInvoice, isDownloading }: TInvoiceTable.Props) {
   const { T } = useIntl();
-  const [isDownloading, setIsDownloading] = useState(false);
 
   const headerCells: TInvoiceTable.HeaderCell[] = [
     {
@@ -37,7 +34,7 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
     },
     {
       icon: isDownloading ? (
-        <div className="justify-end">
+        <div className="flex w-full justify-end p-2.5">
           <Spinner />
         </div>
       ) : (
@@ -67,7 +64,7 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
           {id ? (
             <Button
               variant="tertiary"
-              onClick={() => onDownloadInvoice(id)}
+              onClick={() => onDownloadInvoice({ invoiceId: id, number })}
               disabled={!id || isDownloading}
               iconOnly
               className="text-spacePurple-400"
@@ -104,5 +101,5 @@ export function useInvoicesTable({ onDownloadInvoice }: TInvoiceTable.Props) {
     return [line(), line(), line(), line(), line()];
   }
 
-  return { headerCells, bodyRow, bodyRowLoading, setIsDownloading };
+  return { headerCells, bodyRow, bodyRowLoading };
 }
