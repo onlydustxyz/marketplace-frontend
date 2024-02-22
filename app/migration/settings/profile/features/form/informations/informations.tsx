@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 
 import MeApi from "src/api/me";
-import { FieldImage } from "src/components/New/Field/File";
+import { FieldImage } from "src/components/New/Field/FileImage";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";

@@ -60,6 +60,10 @@ export function Sidebar() {
             <Icon size={16} remixName="ri-error-warning-line" className="text-orange-500" />
           ) : null,
       },
+      {
+        label: <Translate token="v2.features.sidebar.settings.invoices" />,
+        href: NEXT_ROUTER.settings.invoices,
+      },
     ],
     [error]
   );

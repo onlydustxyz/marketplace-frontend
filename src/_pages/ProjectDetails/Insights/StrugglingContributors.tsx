@@ -8,7 +8,8 @@ import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
 import QuestionLine from "src/icons/QuestionLine";
 
-import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder/EmptyTablePlaceholder";
+import EmptyTablePlaceholder from "components/layout/placeholders/empty-table/empty-table-placeholder";
+
 import { useStrugglingContributorsTable } from "./hooks/useStrugglingContributorsTable";
 
 export default function StrugglingContributors({ projectId }: { projectId: string | undefined }) {

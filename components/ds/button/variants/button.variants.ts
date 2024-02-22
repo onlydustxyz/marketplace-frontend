@@ -29,6 +29,7 @@ export const buttonVariants = tv({
       primary: "",
       secondary: "",
       tertiary: "",
+      "multi-color": "",
     },
     accentColor: {
       purple: "",

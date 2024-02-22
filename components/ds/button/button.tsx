@@ -1,5 +1,7 @@
 import { cn } from "src/utils/cn";
 
+import { buttonMultiColorVariants } from "components/ds/button/variants/button-multi-color.variants";
+
 import { TButton } from "./button.types";
 import { buttonPrimaryVariants } from "./variants/button-primary.variants";
 import { buttonSecondaryVariants } from "./variants/button-secondary.variants";
@@ -18,6 +20,7 @@ export function Button({
         variant === "primary" && buttonPrimaryVariants({ ...props }),
         variant === "secondary" && buttonSecondaryVariants({ ...props }),
         variant === "tertiary" && buttonTertiaryVariants({ ...props }),
+        variant === "multi-color" && buttonMultiColorVariants({ ...props }),
         className
       )}
       {...props}

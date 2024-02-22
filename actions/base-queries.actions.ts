@@ -58,6 +58,9 @@ export async function BaseQueries<RESPONSE extends object>(
       ...(revalidate ? { revalidate: revalidate || defaultRevalidateValue } : {}),
       tags: provideTag,
     },
+    headers: {
+      authorization: `Bearer ${options?.accessToken || ""}`,
+    },
   });
 
   if (data.ok) {
