@@ -21,7 +21,7 @@ import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { Card } from "components/ds/card/card";
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
 

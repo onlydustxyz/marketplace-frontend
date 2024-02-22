@@ -5,14 +5,16 @@ import { styles } from "components/features/invoice-template/invoice-template.st
 import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 
-export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos }: TInvoice.InvoiceInfoProps) {
+export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserIndividual }: TInvoice.InvoiceInfoProps) {
   const [senderStreetAddress, ...senderRestAdress] = senderInfos.address.split(/,(.+)/);
   const [recipientStreetAddress, ...recipientRestAdress] = recipientInfos.address.split(/,(.+)/);
   return (
     <View style={{ ...styles.section, ...styles.flexRow }}>
-      <View style={{ ...styles.flexCol }}>
+      <View style={styles.flexCol}>
         <View style={styles.paddingRightSmall}>
-          <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.companyName}</Text>
+          <Text style={styles.h4}>
+            {isUserIndividual ? InvoiceTokens.invoiceInfos.individualName : InvoiceTokens.invoiceInfos.companyName}
+          </Text>
           <Text style={styles.paragraph}>{senderInfos.name}</Text>
           <Text style={styles.paragraph}>{senderStreetAddress}</Text>
           <Text style={styles.paragraph}>{senderRestAdress.join("").trim()}</Text>
@@ -35,7 +37,7 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos }: TInvoic
           </Text>
         </View>
       </View>
-      <View style={{ ...styles.flexCol }}>
+      <View style={styles.flexCol}>
         <View style={styles.paddingRightSmall}>
           <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.issueDate}</Text>
           <Text style={styles.paragraph}>{legalInfos.generationDate}</Text>
@@ -52,11 +54,11 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos }: TInvoic
           <Text style={styles.paragraph}>{legalInfos.dueDate}</Text>
         </View>
       </View>
-      <View style={{ ...styles.flexRow }}>
+      <View style={styles.flexRow} wrap={false}>
         <Text style={styles.h4}>{InvoiceTokens.invoiceInfos.destinationAccounts}</Text>
-        {legalInfos.destinationAccounts.map(wallet => (
-          <Text key={wallet} style={{ ...styles.paragraph, fontSize: 11, lineHeight: 1.2 }}>
-            - {wallet}
+        {legalInfos.destinationAccounts.map((account, index) => (
+          <Text key={index} style={{ ...styles.paragraph, fontSize: 11, lineHeight: 1.2 }}>
+            - {account}
           </Text>
         ))}
       </View>

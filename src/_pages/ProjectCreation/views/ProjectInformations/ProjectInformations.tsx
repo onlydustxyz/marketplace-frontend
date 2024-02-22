@@ -6,7 +6,7 @@ import { FieldProjectLead } from "src/_pages/ProjectCreation/views/ProjectInform
 import { MoreInfosField } from "src/_pages/ProjectDetails/ProjectEdition/pages/Information/components/MoreInfosField";
 import ProjectApi from "src/api/Project";
 import Button, { ButtonOnBackground } from "src/components/Button";
-import { FieldImage } from "src/components/New/Field/File";
+import { FieldImage } from "src/components/New/Field/FileImage";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";

@@ -60,18 +60,18 @@ export function useBaseUploader<Response = unknown>({
         headers: {
           ...options.headers,
           "Content-Type": data.type,
-          accept: data.type,
         },
         body: data,
       })
         .then(async res => {
           if (res.ok) {
             try {
-              const data = await res.json();
+              const text = await res.text();
+              const data = text ? JSON.parse(text) : {}; // Try to parse the response as JSON
 
               return data;
-            } catch (err: unknown) {
-              console.log("ERROR", err);
+            } catch (e) {
+              console.log("ERROR", e);
             }
           }
 

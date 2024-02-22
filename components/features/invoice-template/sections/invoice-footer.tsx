@@ -7,7 +7,7 @@ import { TInvoice } from "components/features/invoice-template/invoice-template.
 
 export function InvoiceFooter({ invoiceName }: TInvoice.FooterProps) {
   return (
-    <View style={styles.section}>
+    <View style={styles.paddingHoriz30P} wrap={false}>
       <Text style={styles.h4}>{InvoiceTokens.footer.title}</Text>
       <Text style={styles.paragraph}>- {InvoiceTokens.footer.issuedBy(invoiceName)}</Text>
       <Text style={styles.paragraph}>- {InvoiceTokens.footer.penalities}</Text>

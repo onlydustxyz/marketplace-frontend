@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     padding: "30 0",
   },
   header: {
-    padding: "10 50 30 50",
+    padding: "10px 30px 30px 30px",
     borderBottom: "1px solid #d8d8d8",
     fontWeight: "medium",
     textAlign: "center",
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   section: {
     margin: 0,
-    padding: "30 50",
+    padding: "30px 30px",
   },
   textLeft: {
     textAlign: "left",
@@ -73,11 +73,23 @@ export const styles = StyleSheet.create({
   paddingHoriz50P: {
     padding: "0 50px",
   },
+  paddingHoriz30P: {
+    padding: "0 30px",
+  },
   paddingVert50P: {
     padding: "50px 0",
   },
   paddingVert10P: {
     padding: "10px 0",
+  },
+  marginVert25P: {
+    margin: "25px 0",
+  },
+  marginTop50P: {
+    marginTop: "50px",
+  },
+  marginTop25P: {
+    marginTop: "25px",
   },
   width50p: {
     width: "50%",
@@ -92,7 +104,6 @@ export const styles = StyleSheet.create({
     backgroundColor: "#f7f7f7",
   },
   table: {
-    backgroundColor: "#ffffff",
     border: "0",
     width: "100%",
     flexDirection: "column",
@@ -100,7 +111,16 @@ export const styles = StyleSheet.create({
   },
   th: {
     position: "relative",
-    padding: "10px 10px",
+    padding: "10px 5px",
+    fontSize: "12px",
+    color: "#262525",
+    fontWeight: "medium",
+    flex: "2",
+    flexGrow: 2,
+  },
+  thSmall: {
+    position: "relative",
+    padding: "10px 5px",
     fontSize: "12px",
     color: "#262525",
     fontWeight: "medium",
@@ -109,7 +129,16 @@ export const styles = StyleSheet.create({
   },
   td: {
     position: "relative",
-    padding: "10px 10px",
+    padding: "10px 5px",
+    fontSize: "12px",
+    color: "#535353",
+    fontWeight: "normal",
+    flex: "2",
+    flexGrow: 2,
+  },
+  tdSmall: {
+    position: "relative",
+    padding: "10px 5px",
     fontSize: "12px",
     color: "#535353",
     fontWeight: "normal",
@@ -117,6 +146,7 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
   },
   tr: {
+    backgroundColor: "#ffffff",
     width: "100%",
     display: "flex",
     flexDirection: "row",

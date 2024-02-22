@@ -1,3 +1,7 @@
+import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profiles-queries.actions";
+
+import { components } from "src/__generated/api";
+
 export namespace TInvoice {
   interface SenderInfo {
     firstName?: string;
@@ -18,38 +22,23 @@ export namespace TInvoice {
   interface LegalInfo {
     generationDate: string;
     dueDate: string;
-    destinationAccounts: string[];
+    destinationAccounts: (string | string[] | null)[];
   }
-
-  type VATUnion =
-    | "VAT_APPLICABLE"
-    | "VAT_NOT_APPLICABLE_NON_UE"
-    | "VAT_NOT_APPLICABLE_FRENCH_NOT_SUBJECT"
-    | "VAT_REVERSE_CHARGE";
 
   interface Vat {
-    vatRegulationState: VATUnion;
-    euVATNumber: string;
-    rate: string;
-  }
-
-  interface Rewards {
-    amount: {
-      total: number;
-      currency: string;
-      dollarsEquivalent: number;
-    };
-    id: string;
-    date: string;
-    projectName: string;
+    vatRegulationState:
+      | components["schemas"]["InvoicePreviewResponseCompanyBillingProfile"]["vatRegulationState"]
+      | undefined;
+    euVATNumber: string | undefined;
+    rate: number | undefined;
   }
 
   export interface HeaderProps {
     title: string;
-    invoiceNumber: string;
   }
 
   export interface InvoiceInfoProps {
+    isUserIndividual: boolean;
     senderInfos: SenderInfo;
     recipientInfos: RecipientInfo;
     legalInfos: LegalInfo;
@@ -57,15 +46,15 @@ export namespace TInvoice {
 
   export interface InvoiceVatInfoProps {
     vat: Vat;
-    totalTax: number;
+    totalTax: number | undefined;
   }
 
   export interface RewardsSummaryProps {
-    rewards: Rewards[];
+    rewards: InvoicePreviewResponse["rewards"];
     vat: Vat;
-    totalBeforeTax: number;
-    totalTax: number;
-    totalAfterTax: number;
+    totalBeforeTax: number | undefined;
+    totalTax: number | undefined;
+    totalAfterTax: number | undefined;
   }
 
   export interface FooterProps {

@@ -14,5 +14,5 @@ export const ACTION_PATH = {
 
   /* ----------------------------- BILLING PROFILES --------------------------- */
   INVOICE_PREVIEW_BY_ID: (billingProfileId: string) =>
-    BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/preview`),
+    BASE_API_V1(`billing-profiles/${billingProfileId}/invoice-preview`),
 };

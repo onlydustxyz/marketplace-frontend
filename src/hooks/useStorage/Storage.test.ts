@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { StorageClass } from "./Storage";
 
@@ -25,7 +25,7 @@ describe("StorageClass", () => {
   });
 
   it("should set and get values correctly with callback", () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const storage = new StorageClass<number>(key, initialValue, localStorage, callback);
     const newValue = 100;
 
@@ -51,7 +51,7 @@ describe("StorageClass", () => {
   });
 
   it("should remove values correctly with callback", () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const storage = new StorageClass<number>(key, initialValue, localStorage, callback);
     storage.removeValue();
 

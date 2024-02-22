@@ -1,36 +1,48 @@
+import { TInvoiceBuilders } from "app/api/invoice/builders/builders.types";
+
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 
 export function getHeaderProps({
+  isSample,
   isUserIndividual,
   invoiceNumber,
-}: {
-  isUserIndividual: boolean;
-  invoiceNumber: string;
-}): TInvoice.HeaderProps {
+}: TInvoiceBuilders.HeaderBuilderProps): TInvoice.HeaderProps {
+  let title = "";
+  // provided as a query param string
+  // this means a exemple that user can use to make their own invoice
+  if (isSample === "true") {
+    title = InvoiceTokens.header.sampleTitle;
+  } else {
+    title = `${
+      isUserIndividual ? InvoiceTokens.header.receiptTitle : InvoiceTokens.header.invoiceTitle
+    } #${invoiceNumber}`;
+  }
   return {
-    title: isUserIndividual ? InvoiceTokens.header.receiptTitle : InvoiceTokens.header.invoiceTitle,
-    invoiceNumber: `#${invoiceNumber}`,
+    title,
   };
 }
 
 export function getInvoiceInfoProps({
   isUserIndividual,
   invoiceDetails,
-}: {
-  isUserIndividual: boolean;
-  invoiceDetails: any;
-}): TInvoice.InvoiceInfoProps {
-  const sepaAccount = invoiceDetails.destinationAccounts.sepaAccount
-    ? `IBAN: ${invoiceDetails.destinationAccounts.sepaAccount.iban} / BIC: ${invoiceDetails.destinationAccounts.sepaAccount.bic}`
+}: TInvoiceBuilders.InvoiceInfoBuilderProps): TInvoice.InvoiceInfoProps {
+  // as we can have multiple destination accounts, we need to handle them differently
+  // bank account is an object containing only 2 fields
+  // wallets is an array of objects containing 2 fields
+  const bankAccount = invoiceDetails.destinationAccounts.bankAccount
+    ? `${InvoiceTokens.invoiceInfos.accountNumber}: ${invoiceDetails.destinationAccounts.bankAccount.accountNumber} / ${InvoiceTokens.invoiceInfos.bic}: ${invoiceDetails.destinationAccounts.bankAccount.bic}`
     : null;
-  const wallets = invoiceDetails.destinationAccounts.wallets.length
+  const wallets = invoiceDetails.destinationAccounts.wallets?.length
     ? invoiceDetails.destinationAccounts.wallets.map(wallet => `${wallet.network}: ${wallet.address}`)
     : null;
 
+  const accounts = [bankAccount, wallets];
+
   const restInfos = {
+    isUserIndividual,
     recipientInfos: {
       name: InvoiceTokens.invoiceInfos.wagmiName,
       address: InvoiceTokens.invoiceInfos.wagmiAddress,
@@ -38,9 +50,9 @@ export function getInvoiceInfoProps({
       euVATNumber: InvoiceTokens.invoiceInfos.wagmiEuVATNumber,
     },
     legalInfos: {
-      generationDate: getFormattedDateToLocaleDateString(new Date(invoiceDetails.generationDate)),
-      dueDate: getFormattedDateToLocaleDateString(new Date(invoiceDetails.dueDate)),
-      destinationAccounts: [sepaAccount ? sepaAccount : null, ...wallets],
+      generationDate: getFormattedDateToLocaleDateString(new Date(invoiceDetails.createdAt)),
+      dueDate: getFormattedDateToLocaleDateString(new Date(invoiceDetails.dueAt)),
+      destinationAccounts: accounts.flat(),
     },
   };
 
@@ -48,8 +60,8 @@ export function getInvoiceInfoProps({
     const billingProfile = invoiceDetails.individualBillingProfile;
     return {
       senderInfos: {
-        name: `${billingProfile.firstName} ${billingProfile.lastName}`,
-        address: billingProfile.address ?? "",
+        name: `${billingProfile?.firstName} ${billingProfile?.lastName}`,
+        address: billingProfile?.address ?? "",
       },
       ...restInfos,
     };
@@ -57,24 +69,26 @@ export function getInvoiceInfoProps({
     const billingProfile = invoiceDetails.companyBillingProfile;
     return {
       senderInfos: {
-        name: billingProfile.name ?? "",
-        address: billingProfile.address ?? "",
-        euVATNumber: invoiceDetails.euVATNumber,
+        name: billingProfile?.name ?? "",
+        address: billingProfile?.address ?? "",
+        euVATNumber: billingProfile?.euVATNumber,
       },
       ...restInfos,
     };
   }
 }
 
-export function getRewardsSummaryProps({ invoiceDetails }: { invoiceDetails: any }): TInvoice.RewardsSummaryProps {
+export function getRewardsSummaryProps({
+  invoiceDetails,
+}: TInvoiceBuilders.RewardsSummaryBuilderProps): TInvoice.RewardsSummaryProps {
   const rewards = invoiceDetails.rewards;
-  const totalBeforeTax = rewards.reduce((acc, reward) => acc + reward.amount.dollarsEquivalent, 0);
-  const totalTax = totalBeforeTax * 0.2;
-  const totalAfterTax = totalBeforeTax * 1.2;
+  const totalBeforeTax = invoiceDetails.totalBeforeTax?.amount;
+  const totalTax = invoiceDetails.totalTax?.amount;
+  const totalAfterTax = invoiceDetails.totalAfterTax?.amount;
   const vat = {
-    vatRegulationState: invoiceDetails.vatRegulationState,
-    euVATNumber: invoiceDetails.euVATNumber,
-    rate: "20%",
+    vatRegulationState: invoiceDetails.companyBillingProfile?.vatRegulationState,
+    euVATNumber: invoiceDetails.companyBillingProfile?.euVATNumber,
+    rate: invoiceDetails.taxRate,
   };
 
   return {
@@ -85,91 +99,3 @@ export function getRewardsSummaryProps({ invoiceDetails }: { invoiceDetails: any
     totalAfterTax,
   };
 }
-
-export const invoiceMock = {
-  id: "OD-143011364-123",
-  generationDate: "2024-02-13T09:24:21.223Z",
-  dueDate: "2024-02-13T09:24:21.223Z",
-  billingProfileType: "INDIVIDUAL",
-  individualBillingProfile: {
-    firstName: "Mehdi",
-    lastName: "Hamri",
-    address: "1 rue de la combatte, 90600 Grandvillars, France",
-  },
-  companyBillingProfile: {
-    registrationNumber: "987 987 876 001",
-    name: "Pixelfact",
-    address: "1 rue de la combatte, 90600 Grandvillars, France",
-  },
-  destinationAccounts: {
-    sepaAccount: {
-      iban: "FR74 3000 3030 3000 0505 0001 000",
-      bic: "SOGEFRPP",
-    },
-    wallets: [
-      {
-        address: "0xa645c3bdd0dfd0c3628803075b3b133e8426061dc915ef996cc5ed4cece6d4e5",
-        network: "Etherium Network",
-      },
-      {
-        address: "0xa645c3bdd0dfd0c3628803075b3b133e8426061dc915ef996cc5ed4cece6d4e5",
-        network: "Lords Network",
-      },
-      {
-        address: "0xa645c3bdd0dfd0c3628803075b3b133e8426061dc915ef996cc5ed4cece6d4e5",
-        network: "Usdc Network",
-      },
-    ],
-  },
-  fiatEquivalents: [
-    {
-      fiat: "USD",
-      currency: "USDC",
-      value: 10.76,
-    },
-    {
-      fiat: "USD",
-      currency: "LORDS",
-      value: 0.126,
-    },
-    {
-      fiat: "USD",
-      currency: "ETH",
-      value: 108.16,
-    },
-  ],
-  vatRegulationState: "VAT_APPLICABLE",
-  euVATNumber: "FR12345678901",
-  rewards: [
-    {
-      amount: {
-        total: 34,
-        currency: "USDC",
-        dollarsEquivalent: 189.99,
-      },
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      date: "2024-02-13T09:24:21.224Z",
-      projectName: "Deluge",
-    },
-    {
-      amount: {
-        total: 12,
-        currency: "LORDS",
-        dollarsEquivalent: 39.6,
-      },
-      id: "3fa85f84-5717-4562-b3fc-2c963f66afa6",
-      date: "2024-02-11T09:24:21.224Z",
-      projectName: "Onlydust",
-    },
-    {
-      amount: {
-        total: 34,
-        currency: "ETH",
-        dollarsEquivalent: 79.29,
-      },
-      id: "3fa85f64-5787-4562-b3fc-2c963f66afa6",
-      date: "2024-01-18T09:24:21.224Z",
-      projectName: "PizzaYoshi",
-    },
-  ],
-};

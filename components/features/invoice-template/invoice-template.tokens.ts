@@ -1,5 +1,6 @@
 export const InvoiceTokens = {
   header: {
+    sampleTitle: "Your invoice number",
     receiptTitle: "Receipt NO:",
     invoiceTitle: "Invoice NO:",
   },
@@ -9,12 +10,15 @@ export const InvoiceTokens = {
     wagmiRegistrationNumber: "908 233 638",
     wagmiEuVATNumber: "FR26908233638",
     companyName: "Company Name",
+    individualName: "Name",
     billedTo: "Billed to",
     siren: "SIREN",
     vatNumber: "VAT Number",
     issueDate: "Issue Date",
     dueDate: "Due Date",
     destinationAccounts: "Destination Accounts",
+    accountNumber: "Account number",
+    bic: "BIC",
   },
   rewardSummary: {
     title: "Rewards granted on: app.onlydust.com",
@@ -27,9 +31,10 @@ export const InvoiceTokens = {
       totalBeforeTax: "Total Before Tax",
       totalTax: "Total Tax",
       totalVat: "Total VAT",
-      rate: "rate",
+      rate: "Rate (Today)",
       totalAfterTax: "Total After Tax",
     },
+    specialMentions: "Special Mentions",
     itemsReceived: "received and accepted as payment for this invoice",
   },
   currencies: {
