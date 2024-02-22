@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import MeApi from "src/api/me";
 import { MeTypes } from "src/api/me/types";
 
-import { useCurrentUser } from "../useCurrentUser/useCurrentUser";
-import { TUseBillingProfile } from "./useBillingProfile.types";
+import { useCurrentUser } from "../use-current-user/use-current-user";
+import { TUseBillingProfile } from "./use-billing-profile.types";
 
 export const useBillingProfiles = (): TUseBillingProfile.Return => {
   const { user, isLoading: isLoadingUser } = useCurrentUser();

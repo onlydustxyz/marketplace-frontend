@@ -5,7 +5,7 @@ import { ShowMore } from "src/components/Table/ShowMore";
 import { usePosthog } from "src/hooks/usePosthog";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { ProjectCard } from "../../components/project-card/project-card";
 import { ProjectsContext } from "../../context/project.context";

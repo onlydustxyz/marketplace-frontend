@@ -36,6 +36,7 @@ export const useEditValidationSchema = () => {
       .string(ZodUtils.ErrorMapToMessage(T("forms.error.require", { fieldName: "the name of the project" })))
       .min(1),
     githubRepos: z.array(z.object({ id: z.number(), isAuthorizedInGithubApp: z.boolean().optional() })).min(1),
+    ecosystems: z.array(z.object({ id: z.number().or(z.string()) })).optional(),
     projectLeadsToKeep: z.array(z.string()).min(1),
     shortDescription: z
       .string(

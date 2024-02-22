@@ -12,7 +12,7 @@ import MeApi from "src/api/me";
 import { usePooling } from "src/hooks/usePooling/usePooling";
 import { useSubscribeStacks } from "src/libs/react-stack";
 
-import { useBillingProfiles } from "hooks/users/useBillingProfile/useBillingProfile";
+import { useBillingProfiles } from "hooks/users/use-billing-profile/use-billing-profile";
 
 import { Header } from "./features/header/header";
 

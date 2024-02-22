@@ -4,7 +4,7 @@ import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
 import { viewportConfig } from "src/config";
 
-import { useMenu } from "hooks/menu/useMenu/useMenu";
+import { useMenu } from "hooks/menu/use-menu/use-menu";
 
 import { View } from "./View";
 import { ViewMobile } from "./ViewMobile";

@@ -16,7 +16,7 @@ import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { MissingGithubAppInstall } from "../New/Project/MissingGithubAppInstall";
 import ProjectTitle from "./ProjectTitle";

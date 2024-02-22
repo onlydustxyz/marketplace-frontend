@@ -5,6 +5,7 @@ import {
   FieldProjectLead,
   SelectedLeadType,
 } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
+import { EcosystemSelect } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ecosystem-select/ecosystem-select";
 import ProjectApi from "src/api/Project";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
@@ -22,7 +23,7 @@ import { MoreInfosField } from "./components/MoreInfosField";
 export function Information() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const { form } = useContext(EditContext);
+  const { form, ecosystems } = useContext(EditContext);
 
   const {
     mutate: uploadProjectLogo,
@@ -112,7 +113,6 @@ export function Information() {
             />
           )}
         />
-
         <Controller
           name="moreInfos"
           control={form?.control}
@@ -123,7 +123,6 @@ export function Information() {
             />
           )}
         />
-
         <Controller
           name="projectLeads"
           control={form?.control}
@@ -132,6 +131,20 @@ export function Information() {
               name={name}
               value={value}
               onChange={({ invited, toKeep }) => handleProjectLeadsChange({ invited, toKeep })}
+            />
+          )}
+        />
+        <Controller
+          name="ecosystems"
+          control={form?.control}
+          render={({ field: { value, name } }) => (
+            <EcosystemSelect
+              ecosystems={ecosystems}
+              name={name}
+              selected={value}
+              onChange={selected => {
+                form?.setValue("ecosystems", selected, { shouldDirty: true });
+              }}
             />
           )}
         />
@@ -149,7 +162,6 @@ export function Information() {
             );
           }}
         />
-
         <Controller
           name="isLookingForContributors"
           control={form?.control}
