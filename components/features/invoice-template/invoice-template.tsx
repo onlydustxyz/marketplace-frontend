@@ -1,4 +1,5 @@
 import { Document, Page } from "@react-pdf/renderer";
+import React from "react";
 
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 import { InvoiceFooter } from "components/features/invoice-template/sections/invoice-footer";
