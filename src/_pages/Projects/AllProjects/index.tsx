@@ -14,7 +14,7 @@ import { isUserProjectLead } from "src/utils/isUserProjectLead";
 
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { FilterButton } from "../FilterPanel/FilterButton";
 import { SortButton } from "../Sorting/SortButton";

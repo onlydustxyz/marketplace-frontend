@@ -1,6 +1,6 @@
 import MeApi from "src/api/me";
 
-import { TUseCurrentUser } from "./useCurrentUser.types";
+import { TUseCurrentUser } from "./use-current-user.types";
 
 export const useCurrentUser = (): TUseCurrentUser.Return => {
   const { data, isLoading } = MeApi.queries.useGetMe({});

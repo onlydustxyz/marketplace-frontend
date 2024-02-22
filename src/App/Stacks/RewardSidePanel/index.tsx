@@ -8,7 +8,7 @@ import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useMutationRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 
-import { useMenu } from "hooks/menu/useMenu/useMenu";
+import { useMenu } from "hooks/menu/use-menu/use-menu";
 
 import View from "./View";
 

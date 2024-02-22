@@ -8,11 +8,6 @@ export namespace MeBillingConstants {
       label: "v2.commons.enums.me.billingProfileStatus.CLOSED",
       type: "error",
     },
-    INVALIDATED: {
-      icon: { remixName: "ri-error-warning-line" },
-      label: "v2.commons.enums.me.billingProfileStatus.INVALIDATED",
-      type: "error",
-    },
     NOT_STARTED: {
       icon: { remixName: "ri-error-warning-line" },
       label: "v2.commons.enums.me.billingProfileStatus.NOT_STARTED",

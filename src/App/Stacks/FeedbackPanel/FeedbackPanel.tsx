@@ -1,6 +1,6 @@
 import { FilloutStandardEmbed } from "@fillout/react";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function FeedbackPanel() {
   const { user } = useCurrentUser();
