@@ -24,6 +24,7 @@ const useBillingProfile = ({
     enabled: isAuthenticated && !!params?.profile && (options.enabled === undefined ? true : options.enabled),
   });
 };
+
 export default {
   useBillingProfile,
 };

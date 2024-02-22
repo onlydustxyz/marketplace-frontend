@@ -1,16 +1,10 @@
-import { PropsWithChildren } from "react";
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 
 export namespace TBillingCreateStack {
-  export interface Props extends PropsWithChildren {}
-
-  export interface Params {
-    test: string;
+  export interface Props {
+    projectId?: string;
+    redirectToProfile?: boolean;
   }
 
-  export enum Choice {
-    Individual = "individual",
-    SelfEmployed = "selfEmployed",
-    Organisation = "organisation",
-    Employee = "employee",
-  }
+  export type Choice = BillingProfilesTypes.type | "employee" | "";
 }

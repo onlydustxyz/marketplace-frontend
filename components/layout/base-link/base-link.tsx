@@ -22,7 +22,7 @@ export function BaseLink({
   const [shouldBlock] = block.state;
   const [, setConfirmation] = block.confirmation;
   const isExternal = href?.toString()?.startsWith("http") ?? false;
-  const isActive = useMatchPath(String(href), matchPathOptions);
+  const isActive = useMatchPath(String(matchPathOptions?.pattern || href), matchPathOptions);
 
   const targetExternal = isExternal ? "_blank" : undefined;
   const targetProps = target || targetExternal;

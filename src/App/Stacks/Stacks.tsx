@@ -16,7 +16,6 @@ import { StacksParams } from "src/libs/react-stack/types/Stack";
 
 import { BillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack";
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
-
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -90,7 +89,7 @@ export const Stacks = () => {
         {({ params }) => <ProjectOverviewSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
-      <RegisterStack<TBillingCreateStack.Params> name={StackRoute.BillingCreate}>
+      <RegisterStack<TBillingCreateStack.Props> name={StackRoute.BillingCreate}>
         {({ params }) => <BillingCreateStack {...params} />}
       </RegisterStack>
       <RegisterStack<StackRouterParams["Verify"]>
@@ -198,5 +197,5 @@ export const useStackProjectOverview = (): [
 };
 
 export const useStackBillingCreate = () => {
-  return useStackNavigation(StackRoute.BillingCreate);
+  return useStackNavigation<TBillingCreateStack.Props>(StackRoute.BillingCreate);
 };

@@ -7,6 +7,6 @@ export namespace TBaseLink {
   export interface Props extends LinkProps, Pick<AnchorHTMLAttributes<HTMLAnchorElement>, "target" | "rel"> {
     children?: (({ isExternal, isActive }: { isExternal: boolean; isActive: boolean }) => JSX.Element) | ReactNode;
     className?: string;
-    matchPathOptions?: Parameters<typeof useMatchPath>[1];
+    matchPathOptions?: Parameters<typeof useMatchPath>[1] & { pattern?: string };
   }
 }

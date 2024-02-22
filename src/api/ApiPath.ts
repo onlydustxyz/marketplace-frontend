@@ -1,4 +1,5 @@
 export const BASE_API_V1 = (path: string) => `/api/v1/${path}`;
+export const BASE_API_V2 = (path: string) => `/api/v2/${path}`;
 
 export const API_PATH = {
   /** TO KEEP */
@@ -69,6 +70,7 @@ export const API_PATH = {
   ME_BILLING_INDIVIDUAL: BASE_API_V1("me/billing-profiles/individual"),
   ME_BILLING_COMPANY: BASE_API_V1("me/billing-profiles/company"),
   ME_BILLING_PROFILES: BASE_API_V1("me/billing-profiles"),
+  ME_BILLING_PROFILES_V2: BASE_API_V2("me/billing-profiles"),
   ME_SYNC_GITHUB_PROFILE: BASE_API_V1("me/profile/github"),
   /* ------------------------------ TECHNOLOGIES ------------------------------ */
   TECHNOLOGIES: BASE_API_V1("technologies"),
