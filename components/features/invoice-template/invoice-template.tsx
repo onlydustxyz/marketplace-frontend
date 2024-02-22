@@ -22,7 +22,6 @@ import { InvoiceSummary } from "components/features/invoice-template/sections/in
 // });
 
 export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }: TInvoice.InvoiceTemplateProps) {
-  console.log("header", { header, invoiceInfos, rewardSummary, footer });
   return (
     <Document>
       <Page size="A4">
