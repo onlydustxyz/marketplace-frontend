@@ -25,6 +25,11 @@ export const NEXT_ROUTER = {
     profile: "/settings/profile",
     payout: "/settings/payout",
     billing: "/settings/billing",
+    migration: {
+      all: "/migration/settings",
+      profile: "/migration/settings/profile",
+      payoutPreferences: "/migration/settings/payout-preferences",
+    },
   },
   publicProfile: {
     root: (slug: string) => `/u/${slug}`,
