@@ -7,7 +7,7 @@ import {
 } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { EcosystemSelect } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ecosystem-select/ecosystem-select";
 import ProjectApi from "src/api/Project";
-import { FieldImage } from "src/components/New/Field/File";
+import { FieldImage } from "src/components/New/Field/FileImage";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";

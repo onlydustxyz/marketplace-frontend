@@ -5,7 +5,7 @@ import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contrib
 import { IMAGES } from "src/assets/img";
 
 import { Card } from "components/ds/card/card";
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 interface ContributionEmptyFallBackParams {
   isMobile?: boolean;

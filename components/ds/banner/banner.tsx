@@ -16,6 +16,7 @@ export function Banner({
   button,
   customButton,
   classNames,
+  endElement,
   ...props
 }: TBanner.Props) {
   const slots = bannerVariants({ ...props });
@@ -57,6 +58,7 @@ export function Banner({
       </div>
       {button ? <Button size={buttonSize[props.size || "medium"]} {...button} /> : null}
       {customButton}
+      {endElement}
     </div>
   );
 }

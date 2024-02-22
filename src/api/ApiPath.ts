@@ -74,4 +74,12 @@ export const API_PATH = {
   TECHNOLOGIES: BASE_API_V1("technologies"),
   /* ------------------------------ ECOSYSTEM ------------------------------ */
   ECOSYSTEM: BASE_API_V1("ecosystems"),
+
+  /* ------------------------------ BILLING PROFILES ------------------------------ */
+  INVOICES_LINKED_TO_PROFILE: (billingProfileId: string) =>
+    BASE_API_V1(`billing-profiles/${billingProfileId}/invoices`),
+  DOWNLOAD_INVOICE_LINKED_TO_PROFILE: (billingProfileId: string, invoiceId: string) =>
+    BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/${invoiceId}`),
+  UPLOAD_INVOICE_LINKED_TO_PROFILE: (billingProfileId: string, invoiceId: string) =>
+    BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/${invoiceId}`),
 };
