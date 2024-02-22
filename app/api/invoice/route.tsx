@@ -2,13 +2,9 @@ import { renderToStream } from "@react-pdf/renderer";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-import { getHeaderProps, getInvoiceInfoProps, getRewardsSummaryProps } from "app/api/invoice/builders/builders";
 import { fetchInvoicePreviewData } from "app/api/invoice/handlers/fetch-invoice-preview-data";
 
-import { MeTypes } from "src/api/me/types";
-
 import { InvoiceTemplate } from "components/features/invoice-template/invoice-template";
-import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 
 export async function GET(request: NextRequest) {
   /* ------
@@ -24,7 +20,7 @@ export async function GET(request: NextRequest) {
   Retrieve the invoice preview data
   ------ */
   const searchParams = request.nextUrl.searchParams;
-  const isSample = searchParams.get("isSample") ?? "false";
+  // const isSample = searchParams.get("isSample") ?? "false";
   const billingProfileId = searchParams.get("billingProfileId") ?? "";
   const rewardIds = searchParams.get("rewardIds") ?? "";
   let invoicePreviewData;
@@ -37,28 +33,28 @@ export async function GET(request: NextRequest) {
   /* ------
   Determine the billing profile type
   ------ */
-  const isUserIndividual = invoicePreviewData?.billingProfileType === MeTypes.billingProfileType.Individual;
+  // const isUserIndividual = invoicePreviewData?.billingProfileType === MeTypes.billingProfileType.Individual;
 
   /* ------
   Build the invoice content
   ------ */
-  const header: TInvoice.HeaderProps = getHeaderProps({
-    isUserIndividual,
-    isSample,
-    invoiceNumber: invoicePreviewData.number,
-  });
-  const invoiceInfo: TInvoice.InvoiceInfoProps = getInvoiceInfoProps({
-    isUserIndividual,
-    invoiceDetails: invoicePreviewData,
-  });
-  const rewardSummary: TInvoice.RewardsSummaryProps = getRewardsSummaryProps({
-    invoiceDetails: invoicePreviewData,
-  });
-  const footer = {
-    invoiceName: isUserIndividual
-      ? `${invoicePreviewData.individualBillingProfile?.firstName} ${invoicePreviewData.individualBillingProfile?.lastName}`
-      : `${invoicePreviewData.companyBillingProfile?.name}`,
-  };
+  // const header: TInvoice.HeaderProps = getHeaderProps({
+  //   isUserIndividual,
+  //   isSample,
+  //   invoiceNumber: invoicePreviewData.number,
+  // });
+  // const invoiceInfo: TInvoice.InvoiceInfoProps = getInvoiceInfoProps({
+  //   isUserIndividual,
+  //   invoiceDetails: invoicePreviewData,
+  // });
+  // const rewardSummary: TInvoice.RewardsSummaryProps = getRewardsSummaryProps({
+  //   invoiceDetails: invoicePreviewData,
+  // });
+  // const footer = {
+  //   invoiceName: isUserIndividual
+  //     ? `${invoicePreviewData.individualBillingProfile?.firstName} ${invoicePreviewData.individualBillingProfile?.lastName}`
+  //     : `${invoicePreviewData.companyBillingProfile?.name}`,
+  // };
 
   /* ------
   Create a stream containing the pdf blob
@@ -66,9 +62,7 @@ export async function GET(request: NextRequest) {
   let stream;
 
   try {
-    stream = await renderToStream(
-      <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />
-    );
+    stream = await renderToStream(<InvoiceTemplate />);
     if (!stream) {
       return new NextResponse("Internal Server Error (!stream)", { status: 500 });
     }

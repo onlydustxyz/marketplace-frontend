@@ -45,7 +45,7 @@
     "iban": "^0.0.14",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
-    "next": "14.1.1-canary.69",
+    "next": "14.1.0",
     "posthog-js": "^1.100.0",
     "react": "^18.2.0",
     "react-day-picker": "^8.9.1",
