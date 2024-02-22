@@ -1,0 +1,30 @@
+{
+  "title": "Invite team member",
+  "buttons": {
+    "save": "Send invitation"
+  },
+  "messages": {
+    "success": "Invitation successfully sent"
+  },
+  "fields": {
+    "contributor": {
+      "title": "Contributor",
+      "search": {
+        "placeholder": "Search by Github handle"
+      }
+    },
+    "role": {
+      "title": "Role",
+      "options": {
+        "admin": {
+          "title": "Admin",
+          "description": "Can modify general information & invite team members."
+        },
+        "member": {
+          "title": "Member",
+          "description": "Can only join or leave your company and contribute."
+        }
+      }
+    }
+  }
+}

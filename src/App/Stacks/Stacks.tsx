@@ -16,7 +16,8 @@ import { StacksParams } from "src/libs/react-stack/types/Stack";
 
 import { BillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack";
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
-
+import { BillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member";
+import { TBillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member.types";
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -36,6 +37,7 @@ export enum StackRoute {
   Verify = "verify",
   BillingCreate = "billing-create",
   Feedback = "feedback",
+  BillingInviteTeamMember = "billing-invite-team-member",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -104,6 +106,9 @@ export const Stacks = () => {
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
+      <RegisterStack<TBillingInviteTeamMember.Props> name={StackRoute.BillingInviteTeamMember}>
+        {({ params }) => <BillingInviteTeamMember {...params} />}
+      </RegisterStack>
     </>
   );
 };
@@ -199,4 +204,8 @@ export const useStackProjectOverview = (): [
 
 export const useStackBillingCreate = () => {
   return useStackNavigation(StackRoute.BillingCreate);
+};
+
+export const useStackBillingInviteTeamMember = () => {
+  return useStackNavigation<TBillingInviteTeamMember.Props>(StackRoute.BillingInviteTeamMember);
 };
