@@ -1,7 +1,6 @@
 import { renderToStream } from "@react-pdf/renderer";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import * as path from "path";
 
 import { getHeaderProps, getInvoiceInfoProps, getRewardsSummaryProps } from "app/api/invoice/builders/builders";
 import { fetchInvoicePreviewData } from "app/api/invoice/handlers/fetch-invoice-preview-data";
@@ -64,8 +63,6 @@ export async function GET(request: NextRequest) {
   /* ------
   Create a stream containing the pdf blob
   ------ */
-  console.log("__dirname", __dirname);
-  console.log("path.dirname(__filename)", path.dirname(__filename));
   let stream;
 
   try {

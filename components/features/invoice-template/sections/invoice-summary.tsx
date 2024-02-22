@@ -59,10 +59,10 @@ export function InvoiceSummary({
                   {/*the result should look like this*/}
                   {/*1 ETH ~ 3,000 USD*/}
                   <Text>{`1 ${item.amount.currency}`}</Text>
-                  <Text>{`~${item.amount.base.conversionRate.toFixed(2)} ${item.amount.base.currency}`}</Text>
+                  <Text>{`~${item.amount.target.conversionRate.toFixed(2)} ${item.amount.target.currency}`}</Text>
                 </View>
                 <Text style={styles.td}>
-                  {item.amount.base.amount.toFixed(2)} {item.amount.base.currency}
+                  {item.amount.target.amount.toFixed(2)} {item.amount.target.currency}
                 </Text>
               </View>
             ))}

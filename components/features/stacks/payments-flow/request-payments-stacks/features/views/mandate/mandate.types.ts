@@ -2,6 +2,7 @@ import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow
 
 export namespace TMandate {
   export interface Props {
+    billingProfileId: string;
     goTo(props?: TRequestPaymentsStacks.onNextViewProps): void;
   }
 }

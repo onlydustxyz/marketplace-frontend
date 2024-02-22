@@ -1,6 +1,9 @@
 import { useMemo, useState } from "react";
 
 import { useStackMandate } from "src/App/Stacks/Stacks";
+import BillingProfilesApi from "src/api/billing-profiles";
+import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
@@ -12,13 +15,40 @@ import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function Mandate({ goTo }: TMandate.Props) {
+export function Mandate({ goTo, billingProfileId }: TMandate.Props) {
   const { T } = useIntl();
   const [openMandateDetail] = useStackMandate();
   const [accepted, setAccepted] = useState(false);
 
+  const {
+    mutate: acceptInvoice,
+    isPending: isPendingAcceptInvoice,
+    ...restAcceptInvoice
+  } = BillingProfilesApi.mutations.useAcceptInvoiceMandate({
+    params: {
+      billingProfileId,
+    },
+    options: {
+      onSuccess: () => {
+        goTo({ to: TRequestPaymentsStacks.Views.Generate });
+      },
+    },
+  });
+
+  useMutationAlert({
+    mutation: restAcceptInvoice,
+    success: {
+      message: T("v2.pages.stacks.request_payments.mandate.toaster.success"),
+    },
+    error: {
+      message: T("v2.pages.stacks.request_payments.mandate.toaster.error"),
+    },
+  });
+
   const onSubmit = () => {
-    goTo({ to: TRequestPaymentsStacks.Views.Generate });
+    if (accepted) {
+      acceptInvoice({ hasAcceptedInvoiceMandate: true });
+    }
   };
 
   const [termsStart, termsPanel, termsEnd] = T("v2.pages.stacks.request_payments.mandate.terms").split("_");
@@ -88,8 +118,18 @@ export function Mandate({ goTo }: TMandate.Props) {
                 >
                   <Translate token="v2.pages.stacks.request_payments.mandate.skip" />
                 </Button>
-                <Button variant="primary" size="m" className="w-full" onClick={onSubmit} disabled={!accepted}>
-                  <Translate token="v2.pages.stacks.request_payments.mandate.confirm" />
+                <Button
+                  variant="primary"
+                  size="m"
+                  className="w-full"
+                  onClick={onSubmit}
+                  disabled={!accepted || isPendingAcceptInvoice}
+                >
+                  {isPendingAcceptInvoice ? (
+                    <Spinner />
+                  ) : (
+                    <Translate token="v2.pages.stacks.request_payments.mandate.confirm" />
+                  )}
                 </Button>
               </div>
             </div>
