@@ -69,7 +69,6 @@ export async function GET(request: NextRequest) {
     stream = await renderToStream(
       <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />
     );
-    // console.error("stream", stream);
     if (!stream) {
       return new NextResponse("Internal Server Error (!stream)", { status: 500 });
     }

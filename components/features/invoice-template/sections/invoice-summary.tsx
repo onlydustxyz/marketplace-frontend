@@ -1,6 +1,5 @@
 import { Text, View } from "@react-pdf/renderer";
 import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profiles-queries.actions";
-import React from "react";
 
 import { getFormattedDateGB } from "src/utils/date";
 
