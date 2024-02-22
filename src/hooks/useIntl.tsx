@@ -54,7 +54,7 @@ const en = {
           sidebar: en_settings_billing_sidebar,
         },
         payout: en_settings_payout,
-        billing_create: en_billing_create,
+        billingCreate: en_billing_create,
       },
     },
   },

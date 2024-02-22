@@ -48,7 +48,7 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
   useMutationAlert({
     mutation: restMutation,
     success: {
-      message: T("v2.pages.settings.billing_create.messages.success"),
+      message: T("v2.pages.settings.billingCreate.messages.success"),
     },
     error: {
       default: true,
@@ -78,7 +78,7 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
         <div className="mb-8">
           <Typography
             variant={"title-m"}
-            translate={{ token: "v2.pages.settings.billing_create.title" }}
+            translate={{ token: "v2.pages.settings.billingCreate.title" }}
             className="text-greyscale-50"
           />
         </div>
@@ -88,12 +88,12 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
               <Flex justifyContent="start" direction={"col"} className="gap-1">
                 <Typography
                   variant={"title-s"}
-                  translate={{ token: "v2.pages.settings.billing_create.form.title" }}
+                  translate={{ token: "v2.pages.settings.billingCreate.form.title" }}
                   className="text-greyscale-50"
                 />
                 <Typography
                   variant={"body-s"}
-                  translate={{ token: "v2.pages.settings.billing_create.form.description" }}
+                  translate={{ token: "v2.pages.settings.billingCreate.form.description" }}
                   className="text-spaceBlue-200"
                 />
               </Flex>
@@ -102,11 +102,11 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                   {({ value, onChange }) => [
                     <CheckboxItem
                       key={BillingProfilesTypes.type.Individual}
-                      title={<Translate token="v2.pages.settings.billing_create.fields.individual.title" />}
+                      title={<Translate token="v2.pages.settings.billingCreate.fields.individual.title" />}
                       list={[
-                        <Translate key={1} token="v2.pages.settings.billing_create.fields.individual.points.1" />,
-                        <Translate key={2} token="v2.pages.settings.billing_create.fields.individual.points.2" />,
-                        <Translate key={3} token="v2.pages.settings.billing_create.fields.individual.points.3" />,
+                        <Translate key={1} token="v2.pages.settings.billingCreate.fields.individual.points.1" />,
+                        <Translate key={2} token="v2.pages.settings.billingCreate.fields.individual.points.2" />,
+                        <Translate key={3} token="v2.pages.settings.billingCreate.fields.individual.points.3" />,
                       ]}
                       icon={{ remixName: "ri-user-line" }}
                       disabled={isDisabled}
@@ -116,21 +116,21 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                       withInput={{
                         onChange: onNameChange,
                         value: name,
-                        label: T("v2.pages.settings.billing_create.fields.individual.name.label"),
-                        placeholder: T("v2.pages.settings.billing_create.fields.individual.name.placeholder"),
+                        label: T("v2.pages.settings.billingCreate.fields.individual.name.label"),
+                        placeholder: T("v2.pages.settings.billingCreate.fields.individual.name.placeholder"),
                       }}
                     />,
                     <CheckboxItem
                       key={BillingProfilesTypes.type.SelfEmployed}
-                      title={<Translate token="v2.pages.settings.billing_create.fields.selfEmployed.title" />}
+                      title={<Translate token="v2.pages.settings.billingCreate.fields.selfEmployed.title" />}
                       list={[
                         <Translate
-                          key="v2.pages.settings.billing_create.fields.selfEmployed.points.1"
-                          token="v2.pages.settings.billing_create.fields.selfEmployed.points.1"
+                          key="v2.pages.settings.billingCreate.fields.selfEmployed.points.1"
+                          token="v2.pages.settings.billingCreate.fields.selfEmployed.points.1"
                         />,
                         <Translate
-                          key="v2.pages.settings.billing_create.fields.selfEmployed.points.2"
-                          token="v2.pages.settings.billing_create.fields.selfEmployed.points.2"
+                          key="v2.pages.settings.billingCreate.fields.selfEmployed.points.2"
+                          token="v2.pages.settings.billingCreate.fields.selfEmployed.points.2"
                         />,
                       ]}
                       icon={{ remixName: "ri-suitcase-line" }}
@@ -141,25 +141,25 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                       withInput={{
                         onChange: onNameChange,
                         value: name,
-                        label: T("v2.pages.settings.billing_create.fields.selfEmployed.name.label"),
-                        placeholder: T("v2.pages.settings.billing_create.fields.selfEmployed.name.placeholder"),
+                        label: T("v2.pages.settings.billingCreate.fields.selfEmployed.name.label"),
+                        placeholder: T("v2.pages.settings.billingCreate.fields.selfEmployed.name.placeholder"),
                       }}
                     />,
                     <CheckboxItem
                       key={BillingProfilesTypes.type.Company}
-                      title={<Translate token="v2.pages.settings.billing_create.fields.company.title" />}
+                      title={<Translate token="v2.pages.settings.billingCreate.fields.company.title" />}
                       list={[
                         <Translate
-                          key="v2.pages.settings.billing_create.fields.company.points.1"
-                          token="v2.pages.settings.billing_create.fields.company.points.1"
+                          key="v2.pages.settings.billingCreate.fields.company.points.1"
+                          token="v2.pages.settings.billingCreate.fields.company.points.1"
                         />,
                         <Translate
-                          key="v2.pages.settings.billing_create.fields.company.points.2"
-                          token="v2.pages.settings.billing_create.fields.company.points.2"
+                          key="v2.pages.settings.billingCreate.fields.company.points.2"
+                          token="v2.pages.settings.billingCreate.fields.company.points.2"
                         />,
                         <Translate
-                          key="v2.pages.settings.billing_create.fields.company.points.3"
-                          token="v2.pages.settings.billing_create.fields.company.points.3"
+                          key="v2.pages.settings.billingCreate.fields.company.points.3"
+                          token="v2.pages.settings.billingCreate.fields.company.points.3"
                         />,
                       ]}
                       icon={{ remixName: "ri-vip-crown-line" }}
@@ -170,21 +170,21 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                       withInput={{
                         onChange: onNameChange,
                         value: name,
-                        label: T("v2.pages.settings.billing_create.fields.company.name.label"),
-                        placeholder: T("v2.pages.settings.billing_create.fields.company.name.placeholder"),
+                        label: T("v2.pages.settings.billingCreate.fields.company.name.label"),
+                        placeholder: T("v2.pages.settings.billingCreate.fields.company.name.placeholder"),
                       }}
                     />,
                     <CheckboxItem
                       key={"employee"}
-                      title={<Translate token="v2.pages.settings.billing_create.fields.employee.title" />}
+                      title={<Translate token="v2.pages.settings.billingCreate.fields.employee.title" />}
                       list={[
                         <Translate
-                          key="v2.pages.settings.billing_create.fields.employee.points.1"
-                          token="v2.pages.settings.billing_create.fields.employee.points.1"
+                          key="v2.pages.settings.billingCreate.fields.employee.points.1"
+                          token="v2.pages.settings.billingCreate.fields.employee.points.1"
                         />,
                         <Translate
-                          key="v2.pages.settings.billing_create.fields.employee.points.2"
-                          token="v2.pages.settings.billing_create.fields.employee.points.2"
+                          key="v2.pages.settings.billingCreate.fields.employee.points.2"
+                          token="v2.pages.settings.billingCreate.fields.employee.points.2"
                         />,
                       ]}
                       icon={{ remixName: "ri-team-line" }}
@@ -198,20 +198,20 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                             src={IMAGES.global.drip}
                             width={39}
                             height={39}
-                            alt={T("v2.pages.settings.billing_create.form.title")}
+                            alt={T("v2.pages.settings.billingCreate.form.title")}
                           />
                           <div className="flex h-auto w-full flex-col items-center justify-start gap-1">
                             <Typography
                               variant={"title-s"}
                               translate={{
-                                token: "v2.pages.settings.billing_create.fields.employee.information.title",
+                                token: "v2.pages.settings.billingCreate.fields.employee.information.title",
                               }}
                               className="text-center text-greyscale-50"
                             />
                             <Typography
                               variant={"body-s"}
                               translate={{
-                                token: "v2.pages.settings.billing_create.fields.employee.information.content",
+                                token: "v2.pages.settings.billingCreate.fields.employee.information.content",
                               }}
                               className="text-center text-greyscale-200"
                             />
@@ -232,7 +232,7 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
           {restMutation.isPending ? <Spinner /> : <div />}
           <div className="flex items-center justify-end gap-5 ">
             <Button variant="primary" size="m" disabled={isDisabled} onClick={onSubmit}>
-              <Translate token="v2.pages.settings.billing_create.buttons.save" />
+              <Translate token="v2.pages.settings.billingCreate.buttons.save" />
             </Button>
           </div>
         </div>
