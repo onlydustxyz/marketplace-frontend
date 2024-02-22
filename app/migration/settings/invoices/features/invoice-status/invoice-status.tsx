@@ -5,14 +5,14 @@ import { Translate } from "components/layout/translate/translate";
 
 export function InvoiceStatus({ status }: TInvoiceStatus.InvoiceStatusProps) {
   const statusIcons = {
-    APPROVED: <Icon remixName={"ri-check-double-line"} size={16} />,
+    COMPLETE: <Icon remixName={"ri-check-double-line"} size={16} />,
     DRAFT: <Icon remixName={"ri-draft-line"} size={16} />,
     PROCESSING: <Icon remixName={"ri-time-line"} size={16} />,
     REJECTED: <Icon remixName={"ri-close-line"} size={16} />,
   };
 
   const statusText = {
-    APPROVED: <Translate token="v2.pages.settings.invoices.invoiceStatus.approved" />,
+    COMPLETE: <Translate token="v2.pages.settings.invoices.invoiceStatus.approved" />,
     DRAFT: <Translate token="v2.pages.settings.invoices.invoiceStatus.draft" />,
     PROCESSING: <Translate token="v2.pages.settings.invoices.invoiceStatus.processing" />,
     REJECTED: <Translate token="v2.pages.settings.invoices.invoiceStatus.rejected" />,
