@@ -1,5 +1,6 @@
 import { Document, Font, Page } from "@react-pdf/renderer";
 
+import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 import { InvoiceFooter } from "components/features/invoice-template/sections/invoice-footer";
 import { InvoiceHeader } from "components/features/invoice-template/sections/invoice-header";
@@ -23,7 +24,7 @@ Font.register({
 export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }: TInvoice.InvoiceTemplateProps) {
   return (
     <Document>
-      <Page size="A4">
+      <Page size="A4" style={styles.page}>
         <InvoiceHeader title={header.title} />
         <InvoiceInfo
           senderInfos={invoiceInfos.senderInfos}
