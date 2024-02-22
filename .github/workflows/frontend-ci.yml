@@ -67,9 +67,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - name: Run unit/integration test
-        run: yarn test
+        run: yarn test --coverage
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
         if: ${{ failure() && inputs.debug_enabled }}
