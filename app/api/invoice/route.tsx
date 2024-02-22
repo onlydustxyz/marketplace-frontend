@@ -70,10 +70,10 @@ export async function GET(request: NextRequest) {
       <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />
     );
     if (!stream) {
-      return new NextResponse("Internal Server Error", { status: 500 });
+      return new NextResponse("Internal Server Error (!stream)", { status: 500 });
     }
   } catch (e) {
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse("Internal Server Error (catch)", { status: 500 });
   }
 
   /* ------
