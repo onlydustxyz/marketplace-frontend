@@ -1,4 +1,4 @@
-import { renderToFile } from "@react-pdf/renderer";
+import { renderToStream } from "@react-pdf/renderer";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -66,12 +66,8 @@ export async function GET(request: NextRequest) {
   let stream;
 
   try {
-    // stream = await renderToStream(
-    //   <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />
-    // );
-    stream = await renderToFile(
-      <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />,
-      "/tmp/my-doc.pdf"
+    stream = await renderToStream(
+      <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />
     );
     console.error("stream", stream);
     if (!stream) {
