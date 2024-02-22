@@ -10,20 +10,20 @@ import { InvoiceSummary } from "components/features/invoice-template/sections/in
 Font.register({
   family: "GT Walsheim",
   fonts: [
-    { src: "src/assets/fonts/GTWalsheimPro/GT-Walsheim-Pro-Thin.ttf", fontWeight: 100 },
-    { src: "src/assets/fonts/GTWalsheimPro/GT-Walsheim-Pro-Ultra-Light.ttf", fontWeight: 200 },
-    { src: "src/assets/fonts/GTWalsheimPro/GT-Walsheim-Pro-Light.ttf", fontWeight: 300 },
-    { src: "src/assets/fonts/GTWalsheimPro/GT-Walsheim-Pro-Regular.ttf", fontWeight: 400 },
-    { src: "src/assets/fonts/GTWalsheimPro/GT-Walsheim-Pro-Medium.ttf", fontWeight: 500 },
-    { src: "src/assets/fonts/GTWalsheimPro/GT-Walsheim-Pro-Bold.ttf", fontWeight: 700 },
-    { src: "src/assets/fonts/GTWalsheimPro/GT-Walsheim-Pro-Ultra-Bold.ttf", fontWeight: 800 },
-    { src: "src/assets/fonts/GTWalsheimPro/GT-Walsheim-Pro-Black.ttf", fontWeight: 900 },
+    { src: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/GT-Walsheim-Pro-Thin.ttf`, fontWeight: 100 },
+    { src: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/GT-Walsheim-Pro-Ultra-Light.ttf`, fontWeight: 200 },
+    { src: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/GT-Walsheim-Pro-Light.ttf`, fontWeight: 300 },
+    { src: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/GT-Walsheim-Pro-Regular.ttf`, fontWeight: 400 },
+    { src: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/GT-Walsheim-Pro-Medium.ttf`, fontWeight: 500 },
+    { src: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/GT-Walsheim-Pro-Bold.ttf`, fontWeight: 700 },
+    { src: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/GT-Walsheim-Pro-Ultra-Bold.ttf`, fontWeight: 800 },
+    { src: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/GT-Walsheim-Pro-Black.ttf`, fontWeight: 900 },
   ],
 });
 
 export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }: TInvoice.InvoiceTemplateProps) {
   return (
-    <Document>
+    <Document pageLayout="oneColumn">
       <Page size="A4" style={styles.page}>
         <InvoiceHeader title={header.title} />
         <InvoiceInfo
