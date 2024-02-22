@@ -11,7 +11,14 @@
 //     { src: "src/assets/fonts/GTWalsheimPro/GT-Walsheim-Pro-Black.ttf", fontWeight: 900 },
 //   ],
 // });
+import { Document, Page, Text } from "@react-pdf/renderer";
 
 export function InvoiceTemplate() {
-  return <div>hello</div>;
+  return (
+    <Document>
+      <Page>
+        <Text>React-pdf</Text>
+      </Page>
+    </Document>
+  );
 }
