@@ -3,10 +3,6 @@ import React from "react";
 
 import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
-import { InvoiceFooter } from "components/features/invoice-template/sections/invoice-footer";
-import { InvoiceHeader } from "components/features/invoice-template/sections/invoice-header";
-import { InvoiceInfo } from "components/features/invoice-template/sections/invoice-infos";
-import { InvoiceSummary } from "components/features/invoice-template/sections/invoice-summary";
 
 Font.register({
   family: "GT Walsheim",
@@ -23,24 +19,26 @@ Font.register({
 });
 
 export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }: TInvoice.InvoiceTemplateProps) {
+  console.log("header", { header, invoiceInfos, rewardSummary, footer });
   return (
     <Document pageLayout="oneColumn">
       <Page size="A4" style={styles.page}>
-        <InvoiceHeader title={header.title} />
-        <InvoiceInfo
-          senderInfos={invoiceInfos.senderInfos}
-          recipientInfos={invoiceInfos.recipientInfos}
-          legalInfos={invoiceInfos.legalInfos}
-          isUserIndividual={invoiceInfos.isUserIndividual}
-        />
-        <InvoiceSummary
-          rewards={rewardSummary.rewards}
-          vat={rewardSummary.vat}
-          totalBeforeTax={rewardSummary.totalBeforeTax}
-          totalTax={rewardSummary.totalTax}
-          totalAfterTax={rewardSummary.totalAfterTax}
-        />
-        <InvoiceFooter invoiceName={footer.invoiceName} />
+        {/*<InvoiceHeader title={header.title} />*/}
+        {/*<InvoiceInfo*/}
+        {/*  senderInfos={invoiceInfos.senderInfos}*/}
+        {/*  recipientInfos={invoiceInfos.recipientInfos}*/}
+        {/*  legalInfos={invoiceInfos.legalInfos}*/}
+        {/*  isUserIndividual={invoiceInfos.isUserIndividual}*/}
+        {/*/>*/}
+        {/*<InvoiceSummary*/}
+        {/*  rewards={rewardSummary.rewards}*/}
+        {/*  vat={rewardSummary.vat}*/}
+        {/*  totalBeforeTax={rewardSummary.totalBeforeTax}*/}
+        {/*  totalTax={rewardSummary.totalTax}*/}
+        {/*  totalAfterTax={rewardSummary.totalAfterTax}*/}
+        {/*/>*/}
+        {/*<InvoiceFooter invoiceName={footer.invoiceName} />*/}
+        text
       </Page>
     </Document>
   );
