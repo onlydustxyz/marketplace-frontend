@@ -22,7 +22,6 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['@react-pdf/renderer'],
   },
-  // transpilePackages: ['@react-pdf/renderer'],
   webpack: (config) => {
    config.resolve.alias.canvas = false;
    return config;
