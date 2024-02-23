@@ -32,6 +32,7 @@ export function InvoiceSummary({
   totalBeforeTax,
   totalTax,
   totalAfterTax,
+  usdToEurConversionRate,
 }: TInvoice.RewardsSummaryProps) {
   const totalAmounts = calculateTotalAmounts(rewards);
   return (
@@ -107,6 +108,9 @@ export function InvoiceSummary({
             {InvoiceTokens.rewardSummary.itemsReceived}
           </Text>
         ))}
+        <Text style={styles.paragraph}>
+          - {InvoiceTokens.rewardSummary.usdToEurConversionRate(usdToEurConversionRate?.toFixed(2))}
+        </Text>
       </View>
     </View>
   );

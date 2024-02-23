@@ -55,6 +55,7 @@ export namespace TInvoice {
     totalBeforeTax: number | undefined;
     totalTax: number | undefined;
     totalAfterTax: number | undefined;
+    usdToEurConversionRate: number | undefined;
   }
 
   export interface FooterProps {
