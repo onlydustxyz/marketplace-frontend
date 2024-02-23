@@ -38,6 +38,7 @@ export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }:
           totalBeforeTax={rewardSummary.totalBeforeTax}
           totalTax={rewardSummary.totalTax}
           totalAfterTax={rewardSummary.totalAfterTax}
+          usdToEurConversionRate={rewardSummary.usdToEurConversionRate}
         />
         <InvoiceFooter invoiceName={footer.invoiceName} />
       </Page>
