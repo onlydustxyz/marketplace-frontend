@@ -106,7 +106,7 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled, i
           <NextTab {...t} key={t.key} title={<Tab color={color} {...t} />} />
         ))}
       </NextTabs>
-      {!!getSelectedChildren ? <div className="h-3 w-full" /> : null}
+      {getSelectedChildren ? <div className="h-3 w-full" /> : null}
       {getSelectedChildren}
     </>
   );
