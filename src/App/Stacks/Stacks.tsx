@@ -94,7 +94,7 @@ export const Stacks = () => {
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
       <RegisterStack<TBillingCreateStack.Props> name={StackRoute.BillingCreate}>
-        {() => <BillingCreateStack />}
+        {({ params }) => <BillingCreateStack {...params} />}
       </RegisterStack>
       <RegisterStack<StackRouterParams["Verify"]>
         name={StackRoute.Verify}
@@ -207,7 +207,7 @@ export const useStackProjectOverview = (): [
 };
 
 export const useStackBillingCreate = () => {
-  return useStackNavigation(StackRoute.BillingCreate);
+  return useStackNavigation<TBillingCreateStack.Props>(StackRoute.BillingCreate);
 };
 
 export const useStackRequestPayments = () => {

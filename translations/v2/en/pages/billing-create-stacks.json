@@ -34,7 +34,7 @@
         "2": "requires business verification"
       }
     },
-    "organisation": {
+    "company": {
       "title": "Organisation",
       "name": {
         "label": "Give your billing profile a name",

@@ -3,6 +3,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMemo } from "react";
 
+import { SidebarBilling } from "app/migration/settings/components/sidebar/sidebar-billing/sidebar-billing";
+
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 
 import { Avatar } from "components/ds/avatar/avatar";
@@ -31,12 +33,11 @@ export function Sidebar() {
   const menuItems: TMenuItem.Props[] = useMemo(
     () => [
       {
-        label: <Translate token="v2.features.sidebar.settings.publicProfile" />,
+        label: <Translate token="v2.pages.settings.billing.sidebar.items.profile" />,
         href: NEXT_ROUTER.settings.migration.profile,
       },
       {
-        // label: <Translate token="v2.features.sidebar.settings.paymentMethods" />,
-        label: "Payout preference",
+        label: <Translate token="v2.pages.settings.billing.sidebar.items.payoutPreferences" />,
         href: NEXT_ROUTER.settings.migration.payoutPreferences,
         endIcon:
           error === TUseSettingsError.ERRORS.PAYOUT ? (
@@ -88,6 +89,7 @@ export function Sidebar() {
             {menuItems.map(menu => (
               <MenuItem {...menu} key={menu.href} onClick={closePanel} />
             ))}
+            <SidebarBilling closePanel={closePanel} />
 
             {!isAuthenticated ? (
               <div className="border-t border-card-border-medium pt-4 text-base xl:hidden">

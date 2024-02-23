@@ -32,6 +32,11 @@ const nextConfig = {
         destination: "/settings/profile",
         permanent: true,
       },
+      {
+        source: '/migration/settings/billing/:slug',
+        destination: '/migration/settings/billing/:slug/general-information',
+        permanent: true,
+      },
     ];
   },
 };

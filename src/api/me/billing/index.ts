@@ -2,10 +2,10 @@ import mutations from "./mutations";
 import queries from "./queries";
 import { ME_BILLING_TAGS as tags } from "./tags";
 
-const BillingApi = {
+const BillingProfilesMeApi = {
   tags,
   mutations,
   queries,
 };
 
-export default BillingApi;
+export default BillingProfilesMeApi;
