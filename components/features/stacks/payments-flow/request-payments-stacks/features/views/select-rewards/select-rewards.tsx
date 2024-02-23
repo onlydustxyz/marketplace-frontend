@@ -43,9 +43,6 @@ export function SelectRewards({
       if (selected === TSelectRewards.Tabs.Included) {
         return (
           <div className="flex w-full flex-col items-start justify-start gap-3">
-            {includedRewards.map(reward => (
-              <RewardItem key={reward.id} type="exclude" onClick={onExclude} {...reward} currency={reward.amount} />
-            ))}
             {!includedRewards.length ? (
               <div className="flex w-full flex-col py-6">
                 <EmptyState
@@ -54,7 +51,11 @@ export function SelectRewards({
                   description={{ token: "v2.pages.stacks.request_payments.selectRewards.emptyState.description" }}
                 />
               </div>
-            ) : null}
+            ) : (
+              includedRewards.map(reward => (
+                <RewardItem key={reward.id} type="exclude" onClick={onExclude} {...reward} currency={reward.amount} />
+              ))
+            )}
           </div>
         );
       } else if (selected === TSelectRewards.Tabs.Excluded) {
