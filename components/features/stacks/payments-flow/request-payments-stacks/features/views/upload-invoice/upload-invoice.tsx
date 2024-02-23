@@ -155,7 +155,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                   size="m"
                   className="w-full"
                   onClick={() =>
-                    handleSendInvoice({ fileBlob: blobFile, isManualUpload: false, fileName: selectedFile?.name })
+                    handleSendInvoice({ fileBlob: blobFile, isManualUpload: true, fileName: selectedFile?.name })
                   }
                   disabled={isPendingUploadInvoice || !selectedFile}
                 >
