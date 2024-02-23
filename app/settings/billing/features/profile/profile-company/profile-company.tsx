@@ -3,10 +3,9 @@ import { ReactNode, useMemo } from "react";
 
 import { ProfileItemGrid } from "app/settings/billing/component/profile-item-grid/profile-item-grid";
 import { ProfileItem } from "app/settings/billing/component/profile-item/profile-item";
+import { TProfileCompany } from "app/settings/billing/features/profile/profile-company/profile-company.types";
 
 import { Translate } from "components/layout/translate/translate";
-
-import { TProfileCompany } from "./profile-company.types";
 
 export function ProfileCompany({ profile }: TProfileCompany.Props) {
   const registrationDate = useMemo(() => {
