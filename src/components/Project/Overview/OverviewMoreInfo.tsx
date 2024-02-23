@@ -25,15 +25,17 @@ export const ProjectOverviewMoreInfo = ({ moreInfos }: ProjectOverviewMoreInfoPr
       <div data-testid="more-info-link" className="flex overflow-hidden">
         {isAuthenticated ? (
           <ul data-testid="more-info-link" className="space-y-2 overflow-hidden">
-            {moreInfos.map(moreInfo => (
-              <li key={moreInfo.url} className="flex items-center">
-                <SocialIcon search={moreInfo.url} className="mr-1 inline-flex h-4 w-4 items-center" />
+            {moreInfos.map(({ url, value }) => {
+              const validUrl = url.startsWith("http://") || url.startsWith("https://") ? url : `https://${url}`;
 
-                <Link href={moreInfo.url}>
-                  {moreInfo.value || moreInfo.url.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
-                </Link>
-              </li>
-            ))}
+              return (
+                <li key={validUrl} className="flex items-center">
+                  <SocialIcon search={validUrl} className="mr-1 inline-flex h-4 w-4 items-center" />
+
+                  <Link href={validUrl}>{value || validUrl.replace(/^https?:\/\//i, "").replace(/\/$/, "")}</Link>
+                </li>
+              );
+            })}
           </ul>
         ) : (
           <Typography variant="body-s" className="flex flex-col gap-2">
