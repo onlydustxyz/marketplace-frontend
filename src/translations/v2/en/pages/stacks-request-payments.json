@@ -56,7 +56,7 @@
     "skip": "Skip (manual invoicing)",
     "toaster": {
       "success": "Mandate successfully accepted",
-      "error": "We were unable to accept the mandate, please try again later"
+      "error": "We were unable to process the mandate acceptation, please try again later"
     }
   },
   "uploadInvoice": {
