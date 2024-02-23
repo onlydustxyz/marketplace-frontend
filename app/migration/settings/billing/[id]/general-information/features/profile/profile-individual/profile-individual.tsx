@@ -1,9 +1,9 @@
 import { format } from "date-fns";
 import { ReactNode, useMemo } from "react";
 
+import { TProfileIndividual } from "app/migration/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual.types";
 import { ProfileItemGrid } from "app/settings/billing/component/profile-item-grid/profile-item-grid";
 import { ProfileItem } from "app/settings/billing/component/profile-item/profile-item";
-import { TProfileIndividual } from "app/settings/billing/features/profile/profile-individual/profile-individual.types";
 
 import { Translate } from "components/layout/translate/translate";
 
@@ -35,19 +35,19 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
 
   return (
     <ProfileItemGrid>
-      <ProfileItem label="v2.pages.settings.billing.individual.firstName">{profile.firstName}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.individual.lastName">{profile.lastName}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.individual.birthdate">{birthdate}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.individual.address">{profile.address}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.individual.country">{profile.country}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.individual.usCitizen">
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.firstName">{profile.firstName}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.lastName">{profile.lastName}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.birthdate">{birthdate}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.address">{profile.address}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.country">{profile.country}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.usCitizen">
         {isYesOrNO(
-          <Translate token="v2.pages.settings.billing.format.boolean.yes" />,
-          <Translate token="v2.pages.settings.billing.format.boolean.no" />,
+          <Translate token="v2.pages.settings.billing.information.format.boolean.yes" />,
+          <Translate token="v2.pages.settings.billing.information.format.boolean.no" />,
           profile.usCitizen
         )}
       </ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.individual.identityDocumentType">
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.identityDocumentType">
         {profile.idDocumentType ? (
           <>
             <Translate token={`v2.commons.enums.me.idDocumentType.${profile.idDocumentType}`} />
@@ -57,7 +57,7 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
           </>
         ) : null}
       </ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.individual.validUntil">{validUntil}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.validUntil">{validUntil}</ProfileItem>
     </ProfileItemGrid>
   );
 }

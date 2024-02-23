@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 
 import { ProfileBanner } from "app/settings/billing/component/profile-banner/profile-banner";
 import { ProfileCard } from "app/settings/billing/component/profile-card/profile-card";
-import { ProfileCompany } from "app/settings/billing/features/profile/profile-company/profile-company";
-import { ProfileIndividual } from "app/settings/billing/features/profile/profile-individual/profile-individual";
 
 import { StackRoute } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
@@ -16,6 +14,8 @@ import { useSubscribeStacks } from "src/libs/react-stack";
 import { useBillingProfiles } from "hooks/users/use-billing-profile/use-billing-profile";
 
 import { Header } from "./features/header/header";
+import { ProfileCompany } from "./features/profile/profile-company/profile-company";
+import { ProfileIndividual } from "./features/profile/profile-individual/profile-individual";
 
 function SettingsBillingPage() {
   const { billingProfile, profileType, isCompany, isIndividual, validBillingProfile } = useBillingProfiles();
