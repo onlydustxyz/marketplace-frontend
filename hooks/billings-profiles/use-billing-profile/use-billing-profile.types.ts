@@ -1,10 +1,12 @@
 import { UseGetBillingProfileById } from "src/api/BillingProfiles/queries";
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 
 import { TIcon } from "components/layout/icon/icon.types";
 
 export namespace TUseBillingProfile {
   export interface Props {
     id?: string;
+    enabledPooling?: boolean;
   }
   export interface Return {
     data: UseGetBillingProfileById | undefined;
@@ -12,8 +14,10 @@ export namespace TUseBillingProfile {
       | {
           data: UseGetBillingProfileById;
           icon: TIcon.Props;
+          status: BillingProfilesTypes.status;
         }
       | undefined;
     isLoading: boolean;
+    refetch: () => void;
   }
 }
