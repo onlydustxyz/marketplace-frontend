@@ -14,7 +14,7 @@ import { cn } from "src/utils/cn";
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 type RewardProjectButtonProps = { project: components["schemas"]["ProjectResponse"]; size?: ButtonSize };
 

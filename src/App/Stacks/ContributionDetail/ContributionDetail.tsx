@@ -27,7 +27,7 @@ import { Link } from "components/ds/link/link";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 

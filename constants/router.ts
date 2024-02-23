@@ -25,6 +25,7 @@ export const NEXT_ROUTER = {
     profile: "/settings/profile",
     payout: "/settings/payout",
     billing: "/settings/billing",
+    invoices: "/settings/invoices",
     migration: {
       all: "/migration/settings",
       profile: "/migration/settings/profile",

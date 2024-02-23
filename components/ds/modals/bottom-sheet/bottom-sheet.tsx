@@ -49,7 +49,7 @@ export function BottomSheet({
     >
       <ModalContent
         className={cn(
-          "mx-0 my-0 max-w-full rounded-b-none bg-greyscale-900 sm:mx-0 sm:my-0",
+          "m-0 max-w-full rounded-b-none bg-greyscale-900",
           {
             "bg-card-background-base": background === "blue",
             "h-[calc(100%_-_48px)]": fullScreen,

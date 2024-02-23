@@ -17,7 +17,7 @@ import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { MissingGithubAppInstall } from "../New/Project/MissingGithubAppInstall";
 import ProjectTitle from "./ProjectTitle";

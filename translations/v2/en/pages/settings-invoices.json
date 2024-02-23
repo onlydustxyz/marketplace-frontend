@@ -1,0 +1,22 @@
+{
+  "title": "Invoices",
+  "subtitle": "Find all your invoices and download them in 1 click",
+  "table": {
+    "headerCells": {
+      "id": "ID",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "errorPlaceholder": "An error occurred while loading the invoices",
+    "emptyPlaceholderTitle": "No invoices",
+    "emptyPlaceholderDescription": "You don't have any invoices yet",
+    "errorDownload": "An error occurred while downloading the invoice"
+  },
+  "invoiceStatus": {
+    "approved": "Approved",
+    "processing": "Processing",
+    "rejected": "Rejected",
+    "draft": "Draft"
+  }
+}

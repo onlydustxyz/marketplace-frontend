@@ -18,6 +18,8 @@ import { BillingCreateStack } from "components/features/stacks/billing-create-st
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
 import { BillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member";
 import { TBillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member.types";
+import { MandateDetailStack } from "components/features/stacks/payments-flow/mandate-detail-stack/mandate-detail-stack";
+import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -36,8 +38,10 @@ export enum StackRoute {
   GithubWorkflowTutorial = "github-workflow-tutorial",
   Verify = "verify",
   BillingCreate = "billing-create",
+  RequestPayments = "request-payments",
   Feedback = "feedback",
   BillingInviteTeamMember = "billing-invite-team-member",
+  MandateDetail = "mandate-detail",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -92,8 +96,8 @@ export const Stacks = () => {
         {({ params }) => <ProjectOverviewSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
-      <RegisterStack<TBillingCreateStack.Params> name={StackRoute.BillingCreate}>
-        {({ params }) => <BillingCreateStack {...params} />}
+      <RegisterStack<TBillingCreateStack.Props> name={StackRoute.BillingCreate}>
+        {() => <BillingCreateStack />}
       </RegisterStack>
       <RegisterStack<StackRouterParams["Verify"]>
         name={StackRoute.Verify}
@@ -105,12 +109,18 @@ export const Stacks = () => {
       >
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
+      <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>
       <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
       <RegisterStack<TBillingInviteTeamMember.Props> name={StackRoute.BillingInviteTeamMember}>
         {({ params }) => <BillingInviteTeamMember {...params} />}
       </RegisterStack>
+      <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
     </>
   );
+};
+
+export const useStackMandate = () => {
+  return useStackNavigation(StackRoute.MandateDetail);
 };
 
 export const useStackFeedback = () => {
@@ -208,4 +218,8 @@ export const useStackBillingCreate = () => {
 
 export const useStackBillingInviteTeamMember = () => {
   return useStackNavigation<TBillingInviteTeamMember.Props>(StackRoute.BillingInviteTeamMember);
+};
+
+export const useStackRequestPayments = () => {
+  return useStackNavigation(StackRoute.RequestPayments);
 };

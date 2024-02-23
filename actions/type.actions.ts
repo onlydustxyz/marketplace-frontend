@@ -8,6 +8,7 @@ export interface BaseQueriesOptions<PARAMS extends BaseQueriesDefaultParams = Ba
   onError?: () => void;
   revalidate?: number | false;
   params?: PARAMS;
+  accessToken?: string;
 }
 
 export interface BaseMutationOptions<PARAMS extends BaseQueriesDefaultParams = BaseQueriesDefaultParams>

@@ -17,7 +17,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { TUseMenu } from "hooks/menu/useMenu/useMenu.types";
+import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
 
 import { useLogout } from "./Logout.hooks";
 

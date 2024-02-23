@@ -3,10 +3,11 @@ import { Controller, UseFormReturn } from "react-hook-form";
 
 import { MultiStepsForm } from "src/_pages/ProjectCreation/components/MultiStepsForm";
 import { FieldProjectLead } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
+import { EcosystemSelect } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ecosystem-select/ecosystem-select";
 import { MoreInfosField } from "src/_pages/ProjectDetails/ProjectEdition/pages/Information/components/MoreInfosField";
 import ProjectApi from "src/api/Project";
 import Button, { ButtonOnBackground } from "src/components/Button";
-import { FieldImage } from "src/components/New/Field/File";
+import { FieldImage } from "src/components/New/Field/FileImage";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
@@ -22,6 +23,7 @@ export const ProjectInformationsPage = () => {
   const { T } = useIntl();
   const {
     form,
+    ecosystems,
     helpers: { prev },
   } = useContext(CreateProjectContext);
 
@@ -139,6 +141,20 @@ export const ProjectInformationsPage = () => {
                     { shouldDirty: true }
                   );
                   form.setValue("projectLeads", invited, { shouldDirty: true });
+                }}
+              />
+            )}
+          />
+          <Controller
+            name="ecosystems"
+            control={form?.control}
+            render={({ field: { value, name } }) => (
+              <EcosystemSelect
+                ecosystems={ecosystems}
+                name={name}
+                selected={value}
+                onChange={selected => {
+                  form?.setValue("ecosystems", selected, { shouldDirty: true });
                 }}
               />
             )}
