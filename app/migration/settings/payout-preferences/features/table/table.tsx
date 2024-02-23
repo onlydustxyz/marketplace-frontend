@@ -4,6 +4,7 @@ import { useMemo } from "react";
 
 import { useIntl } from "src/hooks/useIntl";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 
@@ -31,7 +32,7 @@ export function PayoutPreferencesTable() {
     () => [
       {
         key: "0",
-        projects: "Project",
+        projects: <Avatar.Labelled>Project name</Avatar.Labelled>,
         billing_profiles: "Billing profile",
       },
     ],
