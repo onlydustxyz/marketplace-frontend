@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import React, { PropsWithChildren } from "react";
 
 import { Card } from "components/ds/card/card";
-import { Link } from "components/ds/link/link";
+import { Tabs } from "components/ds/tabs/tabs";
 import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -17,21 +17,32 @@ function BillingLayout({ children }: PropsWithChildren) {
     <div className="flex flex-col gap-6">
       <BillingHeader />
 
-      <Card className="relative flex w-full flex-col" background="base">
-        <div className="flex flex-row items-center justify-start gap-4">
-          <Link href={NEXT_ROUTER.settings.migration.billing.generalInformation(id)}>
-            <Translate token={"v2.pages.settings.billing.tabs.generalInformation"} />
-          </Link>
-          <Link href={NEXT_ROUTER.settings.migration.billing.paymentMethods(id)}>
-            <Translate token={"v2.pages.settings.billing.tabs.paymentMethods"} />
-          </Link>
-          <Link href={NEXT_ROUTER.settings.migration.billing.coworkers(id)}>
-            <Translate token={"v2.pages.settings.billing.tabs.coworkers"} />
-          </Link>
-          <Link href={NEXT_ROUTER.settings.migration.billing.invoices(id)}>
-            <Translate token={"v2.pages.settings.billing.tabs.invoices"} />
-          </Link>
-        </div>
+      <Card className="relative flex w-full flex-col gap-6" background="base">
+        <Tabs
+          isHref={true}
+          tabs={[
+            {
+              content: <Translate token="v2.pages.settings.billing.tabs.generalInformation" />,
+              key: NEXT_ROUTER.settings.migration.billing.generalInformation(id),
+              icon: { remixName: "ri-check-line" },
+            },
+            {
+              content: <Translate token="v2.pages.settings.billing.tabs.paymentMethods" />,
+              key: NEXT_ROUTER.settings.migration.billing.paymentMethods(id),
+              icon: { remixName: "ri-check-line" },
+            },
+            {
+              content: <Translate token="v2.pages.settings.billing.tabs.coworkers" />,
+              key: NEXT_ROUTER.settings.migration.billing.coworkers(id),
+              icon: { remixName: "ri-check-line" },
+            },
+            {
+              content: <Translate token="v2.pages.settings.billing.tabs.invoices" />,
+              key: NEXT_ROUTER.settings.migration.billing.invoices(id),
+              icon: { remixName: "ri-check-line" },
+            },
+          ]}
+        />
         <section>{children}</section>
       </Card>
     </div>
