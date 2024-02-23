@@ -22,17 +22,20 @@ export async function fetchInvoicePreviewBlob({
     },
   })
     .then(async res => {
-      const blob = await res.blob();
-      if (blob) {
-        return {
-          blob,
-          invoiceId: res.headers.get("x-invoice-id"),
-        };
+      if (res.ok) {
+        const blob = await res.blob();
+        if (blob) {
+          return {
+            blob,
+            invoiceId: res.headers.get("x-invoice-id"),
+          };
+        }
       } else {
         throw new Error("Failed to create the blob.");
       }
     })
-    .catch(() => {
+    .catch(e => {
+      console.error("error:", e);
       throw new Error("Failed to create the blob.");
     });
 }
