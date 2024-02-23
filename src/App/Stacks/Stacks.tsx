@@ -16,6 +16,8 @@ import { StacksParams } from "src/libs/react-stack/types/Stack";
 
 import { BillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack";
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
+import { MandateDetailStack } from "components/features/stacks/payments-flow/mandate-detail-stack/mandate-detail-stack";
+import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -34,7 +36,9 @@ export enum StackRoute {
   GithubWorkflowTutorial = "github-workflow-tutorial",
   Verify = "verify",
   BillingCreate = "billing-create",
+  RequestPayments = "request-payments",
   Feedback = "feedback",
+  MandateDetail = "mandate-detail",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -102,9 +106,15 @@ export const Stacks = () => {
       >
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
+      <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>
       <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
+      <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
     </>
   );
+};
+
+export const useStackMandate = () => {
+  return useStackNavigation(StackRoute.MandateDetail);
 };
 
 export const useStackFeedback = () => {
@@ -198,4 +208,8 @@ export const useStackProjectOverview = (): [
 
 export const useStackBillingCreate = () => {
   return useStackNavigation<TBillingCreateStack.Props>(StackRoute.BillingCreate);
+};
+
+export const useStackRequestPayments = () => {
+  return useStackNavigation(StackRoute.RequestPayments);
 };

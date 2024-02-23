@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createContext, useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import EcosystemApi from "src/api/Ecosystems";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
@@ -13,6 +14,8 @@ import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
 import { useIntl } from "src/hooks/useIntl";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { StorageInterface } from "src/hooks/useStorage/Storage";
+
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -49,6 +52,7 @@ type CreateProject = {
   organizations: UseGithubOrganizationsResponse[];
   organizationsLoading: boolean;
   PoolingFeedback: React.ReactElement;
+  ecosystems: TSelectAutocomplete.Item[];
   formFn: {
     addRepository: (data: CreateFormDataRepos) => void;
     removeRepository: (data: CreateFormDataRepos) => void;
@@ -65,6 +69,7 @@ export const CreateProjectContext = createContext<CreateProject>({
   form: {} as UseFormReturn<CreateFormData, unknown>,
   currentStep: ProjectCreationSteps.ORGANIZATIONS,
   installedRepos: [],
+  ecosystems: [],
   organizations: [],
   organizationsLoading: false,
   PoolingFeedback: <></>,
@@ -85,6 +90,7 @@ const validationSchema = z.object({
   inviteGithubUserIdsAsProjectLeads: z.array(z.number()).optional(),
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
+  ecosystems: z.array(z.object({ id: z.number().or(z.string()) })).optional(),
   moreInfos: z
     .array(
       z
@@ -146,6 +152,7 @@ export function CreateProjectProvider({
       refetchInterval,
     },
   });
+  const { data: ecosystemsData } = EcosystemApi.queries.useGetEcosystems({});
 
   const PoolingFeedback = usePoolingFeedback({
     onForcePooling,
@@ -188,6 +195,8 @@ export function CreateProjectProvider({
       ? {
           ...initialProject,
           moreInfos: initialProject?.moreInfos?.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
+          ecosystems: initialProject?.ecosystems,
+          ecosystemIds: (initialProject?.ecosystems || []).map(({ id }) => `${id}`),
         }
       : {
           moreInfos: [{ url: "", value: "" }],
@@ -202,11 +211,12 @@ export function CreateProjectProvider({
   const onSubmit = () => {
     setEnableAutoSaved(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { search, projectLeads, selectedRepos, moreInfos, ...formData } = form.getValues();
+    const { search, projectLeads, selectedRepos, ecosystems, moreInfos, ...formData } = form.getValues();
     createProject({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
+      ecosystemIds: ecosystems.map(ecosystem => `${ecosystem.id}`),
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
     });
   };
@@ -260,6 +270,15 @@ export function CreateProjectProvider({
     goTo(ProjectCreationStepsPrev[currentStep]);
   }, [currentStep]);
 
+  const EcoSystems = useMemo(() => {
+    return (ecosystemsData?.ecosystems || []).map(({ name, id, logoUrl }) => ({
+      id,
+      label: name,
+      value: id,
+      image: logoUrl,
+    }));
+  }, [ecosystemsData]);
+
   useEffect(() => {
     if (installation_id) {
       const newInstalledRepoStorage = watchInstalledRepoStorage({
@@ -289,6 +308,7 @@ export function CreateProjectProvider({
         form,
         currentStep,
         installedRepos,
+        ecosystems: EcoSystems,
         organizationsLoading: isLoading && !organizationsData?.length,
         organizations: (organizationsData || []).sort((a, b) => a.login.localeCompare(b.login)),
         PoolingFeedback,

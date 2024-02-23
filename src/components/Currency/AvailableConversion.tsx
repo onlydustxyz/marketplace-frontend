@@ -154,7 +154,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
           <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
         </div>
       </div>
-      {currency?.currency !== Currency.USD && currency?.currency !== Currency.STRK ? (
+      {currency?.currency !== Currency.USD ? (
         <ConversionTooltip tooltipId={tooltipId} currencies={orderedCurrencies} />
       ) : null}
     </>
