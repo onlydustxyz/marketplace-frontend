@@ -81,8 +81,8 @@ export function useInvoicesTable({ onDownloadInvoice, isDownloading }: TInvoiceT
   }
 
   function bodyRowLoading() {
-    const line = () => (
-      <tr>
+    const line = (key: number) => (
+      <tr key={key}>
         <td className="py-6">
           <SkeletonEl width="40%" height="16px" variant="rounded" color="blue" />
         </td>
@@ -101,7 +101,7 @@ export function useInvoicesTable({ onDownloadInvoice, isDownloading }: TInvoiceT
       </tr>
     );
 
-    return [line(), line(), line(), line(), line()];
+    return [line(1), line(2), line(3), line(4), line(5)];
   }
 
   return { headerCells, bodyRow, bodyRowLoading };
