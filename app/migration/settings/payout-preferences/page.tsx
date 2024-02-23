@@ -1,4 +1,5 @@
 import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
+import { PayoutPreferencesTable } from "app/migration/settings/payout-preferences/features/table/table";
 
 import { Banner } from "components/ds/banner/banner";
 import { Card } from "components/ds/card/card";
@@ -12,7 +13,9 @@ export default function PayoutPreferencesPage() {
         subtitle="v2.pages.settings.payoutPreferences.subtitle"
       />
 
-      <Card background="base">Table</Card>
+      <Card background="base">
+        <PayoutPreferencesTable />
+      </Card>
 
       <Banner
         variant="base"
