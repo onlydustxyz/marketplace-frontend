@@ -29,7 +29,7 @@
   "selectRewards": {
     "emptyState": {
       "title": "No rewards selected",
-      "description": "You need to include rewards to request payment for."
+      "description": "You need to include rewards to request their payment."
     }
   },
   "invoiceSubmission": {

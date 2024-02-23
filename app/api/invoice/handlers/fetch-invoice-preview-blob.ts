@@ -35,7 +35,7 @@ export async function fetchInvoicePreviewBlob({
       }
     })
     .catch(e => {
-      console.error("error:", e);
+      console.error("Failed to create the blob:", e);
       throw new Error("Failed to create the blob.");
     });
 }
