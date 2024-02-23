@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { components } from "src/__generated/api";
 import { FieldProjectLeadValue } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
+import EcosystemApi from "src/api/Ecosystems";
 import ProjectApi from "src/api/Project";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import MeApi from "src/api/me";
@@ -16,6 +17,8 @@ import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling"
 import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { useShowToaster } from "src/hooks/useToaster";
 import { MoreInfosField } from "src/types";
+
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -34,6 +37,7 @@ type Edit = {
   form?: UseFormReturn<EditFormData, unknown>;
   organizations: UseGithubOrganizationsResponse[];
   PoolingFeedback: React.ReactElement;
+  ecosystems: TSelectAutocomplete.Item[];
   githubWorklow: {
     run: () => void;
     inGithubWorkflow: boolean;
@@ -55,6 +59,7 @@ export interface EditFormDataRepos {
 
 export type EditFormData = Omit<components["schemas"]["UpdateProjectRequest"], "moreInfos"> & {
   projectLeads: FieldProjectLeadValue;
+  ecosystems: TSelectAutocomplete.Item[];
   selectedRepos: EditFormDataRepos[];
   githubRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
   moreInfos: MoreInfosField[];
@@ -65,6 +70,7 @@ export const EditContext = createContext<Edit>({
   project: undefined,
   organizations: [],
   PoolingFeedback: <></>,
+  ecosystems: [],
   formHelpers: {
     resetBeforLeave: () => null,
     triggerSubmit: () => null,
@@ -110,6 +116,8 @@ export function EditProvider({ children, project }: EditContextProps) {
       refetchInterval,
     },
   });
+
+  const { data: ecosystemsData } = EcosystemApi.queries.useGetEcosystems({});
 
   const PoolingFeedback = usePoolingFeedback({
     onForcePooling,
@@ -159,6 +167,13 @@ export function EditProvider({ children, project }: EditContextProps) {
         inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
         projectLeadsToKeep: project.leaders.map(leader => leader.id),
         projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
+        ecosystems: (project?.ecosystems || []).map(({ name, id, logoUrl }) => ({
+          id,
+          label: name,
+          value: id,
+          image: logoUrl,
+        })),
+        ecosystemIds: (project?.ecosystems || []).map(({ id }) => id),
         rewardSettings: {
           ...project.rewardSettings,
           ignoreContributionsBefore: project.rewardSettings?.ignoreContributionsBefore ?? project.createdAt,
@@ -284,12 +299,13 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const onSubmit = (formData: EditFormData) => {
-    const { githubRepos, moreInfos, ...rest } = formData;
+    const { githubRepos, moreInfos, ecosystems, ...rest } = formData;
     const githubRepoIds = githubRepos.map(repo => repo.id);
     updateProject({
       ...rest,
       githubRepoIds,
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
+      ecosystemIds: ecosystems.map(ecosystem => `${ecosystem.id}`),
     });
   };
 
@@ -297,12 +313,22 @@ export function EditProvider({ children, project }: EditContextProps) {
     form.trigger();
   }, []);
 
+  const EcoSystems = useMemo(() => {
+    return (ecosystemsData?.ecosystems || []).map(({ name, id, logoUrl }) => ({
+      id,
+      label: name,
+      value: id,
+      image: logoUrl,
+    }));
+  }, [ecosystemsData]);
+
   return (
     <EditContext.Provider
       value={{
         form,
         project,
         organizations: mergeOrganization,
+        ecosystems: EcoSystems,
         PoolingFeedback,
         formHelpers: {
           addRepository: onAddRepository,

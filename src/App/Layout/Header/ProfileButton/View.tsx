@@ -13,7 +13,7 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-import { TUseMenu } from "hooks/menu/useMenu/useMenu.types";
+import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
 
 import { useLogout } from "./Logout.hooks";
 

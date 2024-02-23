@@ -18,8 +18,11 @@ import en_features_verify from "translations/v2/en/features/verify.json";
 import en_billing_create from "translations/v2/en/pages/billing-create-stacks.json";
 import en_projects from "translations/v2/en/pages/projects.json";
 import en_settings_billing from "translations/v2/en/pages/settings-billing.json";
+import en_settings_invoices from "translations/v2/en/pages/settings-invoices.json";
 import en_settings_payout from "translations/v2/en/pages/settings-payout.json";
 import en_settings_profile from "translations/v2/en/pages/settings-profile.json";
+import en_stack_mandate from "translations/v2/en/pages/stacks-mandate.json";
+import en_stack_request_payments from "translations/v2/en/pages/stacks-request-payments.json";
 
 const en = {
   ...en_base,
@@ -46,6 +49,11 @@ const en = {
         profile: en_settings_profile,
         billing: en_settings_billing,
         payout: en_settings_payout,
+        invoices: en_settings_invoices,
+      },
+      stacks: {
+        request_payments: en_stack_request_payments,
+        mandate: en_stack_mandate,
         billing_create: en_billing_create,
       },
     },

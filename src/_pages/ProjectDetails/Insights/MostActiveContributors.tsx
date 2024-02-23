@@ -8,7 +8,8 @@ import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
 import Sparkling2Line from "src/icons/Sparkling2Line";
 
-import EmptyTablePlaceholder from "./commons/EmptyTablePlaceholder/EmptyTablePlaceholder";
+import EmptyTablePlaceholder from "components/layout/placeholders/empty-table/empty-table-placeholder";
+
 import { useMostActiveContributorsTable } from "./hooks/useMostActiveContributorsTable";
 
 export default function MostActiveContributors({ projectId }: { projectId: string | undefined }) {

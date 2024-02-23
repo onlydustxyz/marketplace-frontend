@@ -9,7 +9,7 @@ import { cn } from "src/utils/cn";
 
 import { Link } from "components/ds/link/link";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import Contributor from "../Contributor";
 

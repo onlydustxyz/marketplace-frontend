@@ -17,7 +17,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { Currency } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";

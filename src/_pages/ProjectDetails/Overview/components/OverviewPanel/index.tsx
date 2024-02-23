@@ -9,7 +9,7 @@ import { ProjectOverviewTechnologies } from "src/components/Project/Overview/Ove
 import isDefined from "src/utils/isDefined";
 
 import { Card } from "components/ds/card/card";
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 // TODO clean/delete this file once the New All Project Page is live
 interface Props {
