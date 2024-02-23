@@ -15,7 +15,8 @@
     "postbuild": "scripts/upload-sourcemaps.sh",
     "dependency-cruiser": "depcruise --config .dependency-cruiser.js src",
     "update-languages": "scripts/generate-github-languages-file.sh",
-    "component": "ts-node tools/create-components.ts"
+    "component": "ts-node tools/create-component.js",
+    "hook": "ts-node tools/create-hook.js"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
@@ -29,6 +30,7 @@
     "@hookform/resolvers": "^3.3.2",
     "@next/third-parties": "^14.0.4",
     "@nextui-org/react": "^2.2.9",
+    "@react-pdf/renderer": "^3.3.8",
     "@sumsub/websdk-react": "1.4.0",
     "@tag0/use-text-width": "^1.2.0",
     "@tailwindcss/typography": "^0.5.8",
@@ -43,7 +45,7 @@
     "iban": "^0.0.14",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
-    "next": "^14.0.4",
+    "next": "14.0.4",
     "posthog-js": "^1.100.0",
     "react": "^18.2.0",
     "react-day-picker": "^8.9.1",
@@ -55,6 +57,7 @@
     "react-intersection-observer": "^9.5.3",
     "react-lottie": "^1.2.3",
     "react-markdown": "^8.0.4",
+    "react-pdf": "7.7.1",
     "react-router-dom": "^6.18.0",
     "react-tooltip": "^5.21.5",
     "react-use": "^17.4.0",
@@ -125,7 +128,6 @@
     "storybook-addon-react-router-v6": "^1.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
-    "vitest": "^0.25.1",
-    "vitest-canvas-mock": "^0.2.2"
+    "vitest": "^0.25.1"
   }
 }

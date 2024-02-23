@@ -15,6 +15,9 @@ import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
 
+import { MandateDetailStack } from "components/features/stacks/payments-flow/mandate-detail-stack/mandate-detail-stack";
+import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
+
 import { RoutePaths } from "..";
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
@@ -29,7 +32,9 @@ export enum StackRoute {
   GithubWorkflowClaim = "github-workflow-claim",
   GithubWorkflowTutorial = "github-workflow-tutorial",
   Verify = "verify",
+  RequestPayments = "request-payments",
   Feedback = "feedback",
+  MandateDetail = "mandate-detail",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -94,9 +99,15 @@ export const Stacks = () => {
       >
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
+      <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>
       <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
+      <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
     </>
   );
+};
+
+export const useStackMandate = () => {
+  return useStackNavigation(StackRoute.MandateDetail);
 };
 
 export const useStackFeedback = () => {
@@ -188,4 +199,8 @@ export const useStackProjectOverview = (): [
     });
   };
   return [handleOpen, close];
+};
+
+export const useStackRequestPayments = () => {
+  return useStackNavigation(StackRoute.RequestPayments);
 };

@@ -5,8 +5,8 @@ import { StackRoute, useStackReward } from "src/App/Stacks/Stacks";
 import { viewportConfig } from "src/config";
 import { useSubscribeStacks } from "src/libs/react-stack";
 
-import { useBillingProfiles } from "hooks/users/useBillingProfile/useBillingProfile";
-import { useBillingStatus } from "hooks/users/useBillingStatus/useBillingStatus";
+import { useBillingProfiles } from "hooks/users/use-billing-profile/use-billing-profile";
+import { useBillingStatus } from "hooks/users/use-billing-status/use-billing-status";
 
 import DesktopUserRewardList from "./DesktopUserRewardList";
 import { MyRewardType } from "./Line";

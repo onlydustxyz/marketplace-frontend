@@ -1,6 +1,5 @@
 import { loadEnvConfig } from "@next/env";
 import { vi } from "vitest";
-import "vitest-canvas-mock";
 
 loadEnvConfig(process.cwd());
 
