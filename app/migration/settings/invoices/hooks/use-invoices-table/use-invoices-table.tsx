@@ -83,20 +83,20 @@ export function useInvoicesTable({ onDownloadInvoice, isDownloading }: TInvoiceT
   function bodyRowLoading() {
     const line = () => (
       <tr>
-        <td className="py-2">
-          <SkeletonEl width="40%" height="16px" variant="text" color="blue" />
+        <td className="py-6">
+          <SkeletonEl width="40%" height="16px" variant="rounded" color="blue" />
         </td>
-        <td className="py-2">
-          <SkeletonEl width="50%" height="16px" variant="text" color="blue" />
+        <td className="py-6">
+          <SkeletonEl width="50%" height="16px" variant="rounded" color="blue" />
         </td>
-        <td className="py-2">
-          <SkeletonEl width="30%" height="16px" variant="text" color="blue" />
+        <td className="py-6">
+          <SkeletonEl width="30%" height="16px" variant="rounded" color="blue" />
         </td>
-        <td className="py-2">
-          <SkeletonEl width="60%" height="16px" variant="text" color="blue" />
+        <td className="py-6">
+          <SkeletonEl width="60%" height="16px" variant="rounded" color="blue" />
         </td>
-        <td className="py-2">
-          <SkeletonEl className="m-auto" width="20%" height="16px" variant="circular" color="blue" />
+        <td className="flex justify-end py-6">
+          <SkeletonEl width="20%" height="16px" variant="circular" color="blue" />
         </td>
       </tr>
     );
