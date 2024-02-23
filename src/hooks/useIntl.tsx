@@ -62,7 +62,7 @@ const en = {
       stacks: {
         request_payments: en_stack_request_payments,
         mandate: en_stack_mandate,
-        billing_create: en_billing_create,
+        billingCreate: en_billing_create,
       },
     },
   },
