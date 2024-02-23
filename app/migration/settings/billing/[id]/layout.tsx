@@ -14,7 +14,7 @@ import { BillingHeader } from "./components/billing-header/billing-header";
 function BillingLayout({ children }: PropsWithChildren) {
   const { id } = useParams<{ id: string }>();
   return (
-    <div className="flex flex-col gap-6" id="billing-layout">
+    <div className="flex flex-col gap-6">
       <BillingHeader />
 
       <Card className="relative flex w-full flex-col gap-6" background="base">

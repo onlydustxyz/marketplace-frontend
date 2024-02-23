@@ -135,7 +135,7 @@ function SettingsPayoutPage() {
 
   return (
     <FormProvider {...formMethods}>
-      <form id="payout-form" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <PayoutForm />
 
         <FormFooter isPending={userPayoutInformationIsPending} isAbsolute={false} />

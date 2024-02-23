@@ -23,10 +23,7 @@ export function PayoutForm() {
   });
 
   return (
-    <Flex
-      direction="col"
-      className="gap-4 divide-y divide-solid divide-greyscale-50/8 [&>div:first-child]:pt-0 [&>div]:pt-4"
-    >
+    <Flex direction="col" className="gap-4 divide-y divide-greyscale-50/8 [&>div:first-child]:pt-0 [&>div]:pt-4">
       <Controller
         name="ethWallet"
         control={control}

@@ -45,7 +45,7 @@ export function FormFooter({ isPending, hasPreviewButton, isAbsolute = true }: T
         "mt-5 pt-5": !isAbsolute,
       })}
     >
-      <div className={cn("w-full", { "w-full max-w-7xl px-0 xl:px-8": isAbsolute })}>
+      <div className={cn("w-full", { "max-w-7xl px-0 xl:px-8": isAbsolute })}>
         <Flex alignItems="center" justifyContent="between" className="flex-col gap-4 md:flex-row md:gap-2">
           <Tag size="medium" className="w-full md:w-fit" containerClassName="w-full md:w-fit">
             {isDirty || !isValid ? (
