@@ -65,7 +65,7 @@ export function formatAmount({
   fixedDecimals = 2,
   currency = "",
 }: FormatAmountParams): string {
-  if (amount === undefined) {
+  if (!amount) {
     return "N/A";
   }
 
