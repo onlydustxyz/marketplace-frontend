@@ -53,7 +53,11 @@
     },
     "terms": "I have read and accept the _invoicing mandate_ for my rewards",
     "confirm": "Confirm",
-    "skip": "Skip (manual invoicing)"
+    "skip": "Skip (manual invoicing)",
+    "toaster": {
+      "success": "Mandate successfully accepted",
+      "error": "We were unable to process the mandate acceptation, please try again later"
+    }
   },
   "uploadInvoice": {
     "guidelinesTitle": "Guidelines",

@@ -12,7 +12,14 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
-export function SelectRewards({ onExclude, onInclude, includedRewards, excludedRewards, goTo }: TSelectRewards.Props) {
+export function SelectRewards({
+  onExclude,
+  onInclude,
+  includedRewards,
+  excludedRewards,
+  goTo,
+  isMandateAccepted,
+}: TSelectRewards.Props) {
   const { user } = useCurrentUser();
 
   const totalAmountSelectedRewards = useMemo(
@@ -21,7 +28,11 @@ export function SelectRewards({ onExclude, onInclude, includedRewards, excludedR
   );
 
   const onSubmit = () => {
-    goTo({ to: TRequestPaymentsStacks.Views.Mandate });
+    if (isMandateAccepted) {
+      goTo({ to: TRequestPaymentsStacks.Views.Generate });
+    } else {
+      goTo({ to: TRequestPaymentsStacks.Views.Mandate });
+    }
   };
 
   const getTabContent = useCallback(
