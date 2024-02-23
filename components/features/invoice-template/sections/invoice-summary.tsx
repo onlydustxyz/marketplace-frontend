@@ -1,8 +1,9 @@
 import { Text, View } from "@react-pdf/renderer";
 import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profiles-queries.actions";
 
+import { Currency } from "src/types";
 import { getFormattedDateGB } from "src/utils/date";
-import { formatAmount } from "src/utils/money";
+import { BudgetCurrencyType, formatAmount } from "src/utils/money";
 
 import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
@@ -18,7 +19,7 @@ function calculateTotalAmounts(rewards: InvoicePreviewResponse["rewards"]): { cu
       acc[currency] = amount;
     }
     return acc;
-  }, {} as Record<string, number>);
+  }, {} as Record<BudgetCurrencyType, number>);
 
   if (totals) {
     return Object.entries(totals).map(([currency, total]) => ({ currency, total }));
@@ -80,9 +81,7 @@ export function InvoiceSummary({
                 <Text style={styles.th}></Text>
                 <Text style={styles.th}></Text>
                 <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalBeforeTax}</Text>
-                <Text style={styles.th}>
-                  {formatAmount({ amount: totalBeforeTax, currency: InvoiceTokens.currencies.usd })}
-                </Text>
+                <Text style={styles.th}>{formatAmount({ amount: totalBeforeTax, currency: Currency.USD })}</Text>
               </View>
 
               <InvoiceVat vat={vat} totalTax={totalTax} />
@@ -92,9 +91,7 @@ export function InvoiceSummary({
                 <Text style={styles.th}></Text>
                 <Text style={styles.th}></Text>
                 <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalAfterTax}</Text>
-                <Text style={styles.th}>
-                  {formatAmount({ amount: totalAfterTax, currency: InvoiceTokens.currencies.usd })}
-                </Text>
+                <Text style={styles.th}>{formatAmount({ amount: totalAfterTax, currency: Currency.USD })}</Text>
               </View>
             </View>
           </View>
@@ -104,7 +101,7 @@ export function InvoiceSummary({
         <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
         {totalAmounts?.map((item, index) => (
           <Text key={index} style={styles.paragraph}>
-            - {formatAmount({ amount: item.total, currency: item.currency })}{" "}
+            - {formatAmount({ amount: item.total, currency: item.currency as BudgetCurrencyType })}{" "}
             {InvoiceTokens.rewardSummary.itemsReceived}
           </Text>
         ))}
