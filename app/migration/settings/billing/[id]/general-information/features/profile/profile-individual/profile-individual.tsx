@@ -1,6 +1,7 @@
 import { format } from "date-fns";
-import { ReactNode, useMemo } from "react";
+import { useMemo } from "react";
 
+import { ProfileBoolean } from "app/migration/settings/billing/[id]/general-information/component/profile-boolean/profile-boolean";
 import { TProfileIndividual } from "app/migration/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual.types";
 import { ProfileItemGrid } from "app/settings/billing/component/profile-item-grid/profile-item-grid";
 import { ProfileItem } from "app/settings/billing/component/profile-item/profile-item";
@@ -22,17 +23,6 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
     return profile.validUntil;
   }, [profile]);
 
-  const isYesOrNO = (yes: ReactNode, no: ReactNode, value?: boolean) => {
-    if (value === true) {
-      return yes;
-    }
-    if (value === false) {
-      return no;
-    }
-
-    return null;
-  };
-
   return (
     <ProfileItemGrid>
       <ProfileItem label="v2.pages.settings.billing.information.kyc.firstName">{profile.firstName}</ProfileItem>
@@ -41,11 +31,7 @@ export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
       <ProfileItem label="v2.pages.settings.billing.information.kyc.address">{profile.address}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyc.country">{profile.country}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyc.usCitizen">
-        {isYesOrNO(
-          <Translate token="v2.pages.settings.billing.information.format.boolean.yes" />,
-          <Translate token="v2.pages.settings.billing.information.format.boolean.no" />,
-          profile.usCitizen
-        )}
+        <ProfileBoolean value={profile.usCitizen} />
       </ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyc.identityDocumentType">
         {profile.idDocumentType ? (

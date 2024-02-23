@@ -1,11 +1,10 @@
 import { format } from "date-fns";
-import { ReactNode, useMemo } from "react";
+import { useMemo } from "react";
 
+import { ProfileBoolean } from "app/migration/settings/billing/[id]/general-information/component/profile-boolean/profile-boolean";
 import { TProfileCompany } from "app/migration/settings/billing/[id]/general-information/features/profile/profile-company/profile-company.types";
 import { ProfileItemGrid } from "app/settings/billing/component/profile-item-grid/profile-item-grid";
 import { ProfileItem } from "app/settings/billing/component/profile-item/profile-item";
-
-import { Translate } from "components/layout/translate/translate";
 
 export function ProfileCompany({ profile }: TProfileCompany.Props) {
   const registrationDate = useMemo(() => {
@@ -15,17 +14,6 @@ export function ProfileCompany({ profile }: TProfileCompany.Props) {
 
     return profile.registrationDate;
   }, [profile]);
-
-  const isYesOrNO = (yes: ReactNode, no: ReactNode, value?: boolean) => {
-    if (value === true) {
-      return yes;
-    }
-    if (value === false) {
-      return no;
-    }
-
-    return null;
-  };
 
   return (
     <ProfileItemGrid>
@@ -37,18 +25,10 @@ export function ProfileCompany({ profile }: TProfileCompany.Props) {
       <ProfileItem label="v2.pages.settings.billing.information.kyb.address">{profile.address}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyb.country">{profile.country}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyb.usEntity">
-        {isYesOrNO(
-          <Translate token="v2.pages.settings.billing.format.boolean.yes" />,
-          <Translate token="v2.pages.settings.billing.format.boolean.no" />,
-          profile.usEntity
-        )}
+        <ProfileBoolean value={profile.usEntity} />
       </ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyb.subjectToVatInEurope">
-        {isYesOrNO(
-          <Translate token="v2.pages.settings.billing.information.format.boolean.yes" />,
-          <Translate token="v2.pages.settings.billing.information.format.boolean.no" />,
-          profile.subjectToEuropeVAT
-        )}
+        <ProfileBoolean value={profile.subjectToEuropeVAT} />
       </ProfileItem>
 
       {profile.euVATNumber ? (
