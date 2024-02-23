@@ -1,5 +1,3 @@
-import React from "react";
-
 import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
 
 export function BillingHeader() {

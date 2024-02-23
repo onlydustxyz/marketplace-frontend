@@ -16,10 +16,10 @@ export function MenuItem({ label, endIcon, startIcon, ...restProps }: TMenuItem.
     >
       <span
         className={cn({
-          "justify-sytart flex flex-row items-center gap-1": !!startIcon,
+          "flex items-center justify-start gap-1": !!startIcon,
         })}
       >
-        {startIcon} {label}
+        {startIcon ? <span>{startIcon}</span> : null} <span>{label}</span>
       </span>
       {endIcon}
     </BaseLink>

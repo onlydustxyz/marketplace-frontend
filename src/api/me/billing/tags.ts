@@ -1,7 +1,7 @@
 import { MeTypes } from "src/api/me/types";
 import { RESSOURCE_TAGS } from "src/api/ressource-tags";
 
-// TODO SE USAGE AFTER PENNYLANE
+// TODO SEE USAGE AFTER PENNYLANE
 export const ME_BILLING_TAGS = {
   all: [RESSOURCE_TAGS.ME, "billing"],
   allProfiles: [RESSOURCE_TAGS.ME, "all-billing-profiles"],

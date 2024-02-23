@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 import { Card } from "components/ds/card/card";
 import { Tabs } from "components/ds/tabs/tabs";

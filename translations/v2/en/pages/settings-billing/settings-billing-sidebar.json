@@ -5,7 +5,7 @@
     "billing": {
       "label": "Billing profiles",
       "empty": {
-        "title": "No billing profile yet.",
+        "title": "No billing profiles yet.",
         "content": "Create a billing profile to start receiving rewards."
       }
     }
