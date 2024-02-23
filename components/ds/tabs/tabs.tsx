@@ -91,7 +91,6 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled, i
   return (
     <>
       <NextTabs
-        aria-label={tabs.map(tab => tab.title).join(", ")}
         variant="underlined"
         selectedKey={selectedTab}
         onSelectionChange={onSelectTab}
