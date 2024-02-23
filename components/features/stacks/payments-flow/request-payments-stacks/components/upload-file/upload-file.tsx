@@ -35,13 +35,20 @@ export function UploadFile({ setSelectedFile }: TUploadFile.Props) {
       onClick={onChooseFile}
     >
       <IconTag icon={{ remixName: "ri-upload-cloud-line" }} />
-      <div>
+      <div className="flex flex-col gap-1 text-center">
+        <div>
+          <Translate
+            as="span"
+            className="text-spacePurple-400"
+            token="v2.pages.stacks.request_payments.uploadInvoice.clickToUpload"
+          />{" "}
+          <Translate token="v2.pages.stacks.request_payments.uploadInvoice.dragAndDrop" />
+        </div>
         <Translate
-          as="span"
-          className="text-spacePurple-400"
-          token="v2.pages.stacks.request_payments.uploadInvoice.clickToUpload"
-        />{" "}
-        <Translate token="v2.pages.stacks.request_payments.uploadInvoice.dragAndDrop" />
+          as="div"
+          className="text-sm text-gray-500"
+          token="v2.pages.stacks.request_payments.uploadInvoice.fileType"
+        />
       </div>
       <input type="file" ref={inputRef} onChange={handleOnChange} className="hidden" accept="application/pdf" />
     </Card>
