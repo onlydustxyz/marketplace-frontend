@@ -10,8 +10,8 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { CheckboxItem } from "../billing-create-stack/components/checkbox-item/checkbox-item";
 import { TBillingInviteTeamMember } from "./billing-invite-team-member.types";
+import { CheckboxItem } from "./components/checkbox-item/checkbox-item";
 
 export function BillingInviteTeamMember() {
   const [type, setType] = useState<TBillingInviteTeamMember.Choice | "">("");
@@ -31,7 +31,7 @@ export function BillingInviteTeamMember() {
     <Flex direction="col" justifyContent="between" className="h-full">
       <Flex direction="col" className="h-full px-4 pb-8">
         <div className="mb-8">
-          <Typography variant="title-m" translate={{ token: "v2.pages.settings.billingInviteTeamMember.title" }} />
+          <Typography variant="title-m" translate={{ token: "v2.pages.stacks.billingInviteTeamMember.title" }} />
         </div>
 
         <Card background={false}>
@@ -39,7 +39,7 @@ export function BillingInviteTeamMember() {
             <Flex direction="col" className="gap-2">
               <Typography
                 variant="body-s-bold"
-                translate={{ token: "v2.pages.settings.billingInviteTeamMember.fields.contributor.title" }}
+                translate={{ token: "v2.pages.stacks.billingInviteTeamMember.fields.contributor.title" }}
                 className="text-greyscale-300"
               />
             </Flex>
@@ -49,7 +49,7 @@ export function BillingInviteTeamMember() {
             <Flex direction="col" className="gap-2">
               <Typography
                 variant="body-s-bold"
-                translate={{ token: "v2.pages.settings.billingInviteTeamMember.fields.role.title" }}
+                translate={{ token: "v2.pages.stacks.billingInviteTeamMember.fields.role.title" }}
                 className="text-greyscale-300"
               />
 
@@ -57,7 +57,7 @@ export function BillingInviteTeamMember() {
                 {({ value, onChange }) => [
                   <CheckboxItem
                     key="admin"
-                    title={<Translate token="v2.pages.settings.billing_create.fields.individual.title" />}
+                    title={<Translate token="v2.pages.stacks.billing_create.fields.individual.title" />}
                     icon={{ remixName: "ri-vip-crown-line" }}
                     disabled={isDisabled}
                     onChange={onChange}
@@ -66,7 +66,7 @@ export function BillingInviteTeamMember() {
                   />,
                   <CheckboxItem
                     key="member"
-                    title={<Translate token="v2.pages.settings.billing_create.fields.selfEmployed.title" />}
+                    title={<Translate token="v2.pages.stacks.billing_create.fields.selfEmployed.title" />}
                     icon={{ remixName: "ri-team-line" }}
                     disabled={isDisabled}
                     onChange={onChange}
@@ -90,7 +90,7 @@ export function BillingInviteTeamMember() {
           {isLoading ? <Spinner /> : <div />}
           <Button variant="primary" size="l" disabled={isDisabled} onClick={onSubmit}>
             <Icon remixName="ri-send-plane-2-line" size={24} />
-            <Translate token="v2.pages.settings.billingInviteTeamMember.buttons.save" />
+            <Translate token="v2.pages.stacks.billingInviteTeamMember.buttons.save" />
           </Button>
         </Flex>
       </div>
