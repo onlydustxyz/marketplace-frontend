@@ -1,3 +1,7 @@
+"use client";
+
+import { withAuthenticationRequired } from "@auth0/auth0-react";
+
 import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
 import { PayoutPreferencesTable } from "app/migration/settings/payout-preferences/features/table/table";
 
@@ -5,7 +9,7 @@ import { Banner } from "components/ds/banner/banner";
 import { Card } from "components/ds/card/card";
 import { Translate } from "components/layout/translate/translate";
 
-export default function PayoutPreferencesPage() {
+function PayoutPreferencesPage() {
   return (
     <>
       <SettingsHeader
@@ -27,3 +31,5 @@ export default function PayoutPreferencesPage() {
     </>
   );
 }
+
+export default withAuthenticationRequired(PayoutPreferencesPage);
