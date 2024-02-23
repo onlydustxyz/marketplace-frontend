@@ -74,6 +74,7 @@
     "uploadInvoiceTitle": "Upload invoice",
     "clickToUpload": "Click to upload",
     "dragAndDrop": "or drag and drop",
-    "errorMaxSizeFile": "The file is too large, please upload a file smaller than 3MB"
+    "errorMaxSizeFile": "The file is too large, please upload a file smaller than 3MB",
+    "fileType": "Only PDF files smaller than 3MB are accepted"
   }
 }
