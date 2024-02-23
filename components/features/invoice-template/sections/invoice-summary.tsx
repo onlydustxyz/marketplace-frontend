@@ -2,6 +2,7 @@ import { Text, View } from "@react-pdf/renderer";
 import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profiles-queries.actions";
 
 import { getFormattedDateGB } from "src/utils/date";
+import { formatAmount } from "src/utils/money";
 
 import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
@@ -54,15 +55,20 @@ export function InvoiceSummary({
                   {item.projectName.length > 12 ? `${item.projectName.slice(0, 12)}...` : item.projectName}
                 </Text>
                 <Text style={styles.td}>{getFormattedDateGB(new Date(item.date))}</Text>
-                <Text style={styles.td}>{`${item.amount.amount} ${item.amount.currency}`}</Text>
+                <Text style={styles.td}>
+                  {formatAmount({ amount: item.amount.amount, currency: item.amount.currency })}
+                </Text>
                 <View style={{ ...styles.td, ...styles.flexRow }}>
                   {/*the result should look like this*/}
                   {/*1 ETH ~ 3,000 USD*/}
                   <Text>{`1 ${item.amount.currency}`}</Text>
-                  <Text>{`~${item.amount.target.conversionRate.toFixed(2)} ${item.amount.target.currency}`}</Text>
+                  <Text>{`~${formatAmount({
+                    amount: item.amount.target.conversionRate,
+                    currency: item.amount.target.currency,
+                  })}`}</Text>
                 </View>
                 <Text style={styles.td}>
-                  {item.amount.target.amount.toFixed(2)} {item.amount.target.currency}
+                  {formatAmount({ amount: item.amount.target.amount, currency: item.amount.target.currency })}
                 </Text>
               </View>
             ))}
@@ -74,7 +80,7 @@ export function InvoiceSummary({
                 <Text style={styles.th}></Text>
                 <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalBeforeTax}</Text>
                 <Text style={styles.th}>
-                  {totalBeforeTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
+                  {formatAmount({ amount: totalBeforeTax, currency: InvoiceTokens.currencies.usd })}
                 </Text>
               </View>
 
@@ -86,7 +92,7 @@ export function InvoiceSummary({
                 <Text style={styles.th}></Text>
                 <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalAfterTax}</Text>
                 <Text style={styles.th}>
-                  {totalAfterTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
+                  {formatAmount({ amount: totalAfterTax, currency: InvoiceTokens.currencies.usd })}
                 </Text>
               </View>
             </View>
@@ -97,7 +103,8 @@ export function InvoiceSummary({
         <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
         {totalAmounts?.map((item, index) => (
           <Text key={index} style={styles.paragraph}>
-            - {item.total} {item.currency} {InvoiceTokens.rewardSummary.itemsReceived}
+            - {formatAmount({ amount: item.total, currency: item.currency })}{" "}
+            {InvoiceTokens.rewardSummary.itemsReceived}
           </Text>
         ))}
       </View>

@@ -1,5 +1,7 @@
 import { Text, View } from "@react-pdf/renderer";
 
+import { formatAmount } from "src/utils/money";
+
 import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
@@ -15,9 +17,7 @@ export function InvoiceVat({ vat, totalTax }: TInvoice.InvoiceVatInfoProps) {
         <Text>{InvoiceTokens.rewardSummary.table.totalVat} </Text>
         <Text>({vat.rate})</Text>
       </Text>
-      <Text style={styles.td}>
-        {totalTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
-      </Text>
+      <Text style={styles.td}>{formatAmount({ amount: totalTax, currency: InvoiceTokens.currencies.usd })}</Text>
     </View>
   );
 
@@ -47,9 +47,7 @@ export function InvoiceVat({ vat, totalTax }: TInvoice.InvoiceVatInfoProps) {
             <Text>{InvoiceTokens.rewardSummary.table.totalVat} </Text>
             <Text>({vat.rate})</Text>
           </Text>
-          <Text style={styles.td}>
-            {totalTax?.toFixed(2)} {InvoiceTokens.currencies.usd}
-          </Text>
+          <Text style={styles.td}>{formatAmount({ amount: totalTax, currency: InvoiceTokens.currencies.usd })}</Text>
         </View>
       );
   }
