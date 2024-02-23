@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from "react";
 
+import { IMAGES } from "src/assets/img";
+
 import { Button } from "components/ds/button/button";
 import { Tabs } from "components/ds/tabs/tabs";
 import { AmountCounter } from "components/features/stacks/payments-flow/request-payments-stacks/components/amount-counter/amount-counter";
@@ -7,6 +9,7 @@ import { RewardItem } from "components/features/stacks/payments-flow/request-pay
 import { TSelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards.types";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -43,6 +46,15 @@ export function SelectRewards({
             {includedRewards.map(reward => (
               <RewardItem key={reward.id} type="exclude" onClick={onExclude} {...reward} currency={reward.amount} />
             ))}
+            {!includedRewards.length ? (
+              <div className="flex w-full flex-col py-6">
+                <EmptyState
+                  illustrationSrc={IMAGES.global.categories}
+                  title={{ token: "v2.pages.stacks.request_payments.selectRewards.emptyState.title" }}
+                  description={{ token: "v2.pages.stacks.request_payments.selectRewards.emptyState.description" }}
+                />
+              </div>
+            ) : null}
           </div>
         );
       } else if (selected === TSelectRewards.Tabs.Excluded) {
@@ -96,7 +108,7 @@ export function SelectRewards({
                 <Button variant="secondary" size="m" onClick={() => goTo({ to: "close" })}>
                   <Translate token="v2.pages.stacks.request_payments.form.back" />
                 </Button>
-                <Button variant="primary" size="m" onClick={onSubmit}>
+                <Button variant="primary" size="m" onClick={onSubmit} disabled={includedRewards?.length < 1}>
                   <Translate
                     token="v2.pages.stacks.request_payments.form.submit"
                     params={{ count: includedRewards?.length }}
