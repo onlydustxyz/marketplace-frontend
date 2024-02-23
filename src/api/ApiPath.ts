@@ -82,4 +82,6 @@ export const API_PATH = {
     BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/${invoiceId}`),
   UPLOAD_INVOICE_LINKED_TO_PROFILE: (billingProfileId: string, invoiceId: string) =>
     BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/${invoiceId}`),
+  ACCEPT_INVOICE_MANDATE: (billingProfileId: string) =>
+    BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/mandate`),
 };

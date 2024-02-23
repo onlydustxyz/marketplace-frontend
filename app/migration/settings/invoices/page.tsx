@@ -56,7 +56,6 @@ export default function InvoicesPage() {
 
   useEffect(() => {
     if (downloadedInvoice) {
-      console.log("downloadedInvoice", downloadedInvoice);
       const downloadLink = document.createElement("a");
       downloadLink.href = window.URL.createObjectURL(downloadedInvoice as Blob);
       downloadLink.download = invoiceMetaData.number ?? "invoice.pdf";

@@ -2,7 +2,7 @@
   "title": "Request payment",
   "form": {
     "submit": {
-      "zero": "Select __count__ rewards",
+      "zero": "No rewards selected",
       "one": "Select __count__ reward",
       "many": "Select __count__ rewards"
     },
@@ -25,6 +25,12 @@
   "tabs": {
     "included": "Rewards included",
     "excluded": "Rewards excluded"
+  },
+  "selectRewards": {
+    "emptyState": {
+      "title": "No rewards selected",
+      "description": "You need to include rewards to request their payment."
+    }
   },
   "invoiceSubmission": {
     "toaster": {
@@ -53,7 +59,11 @@
     },
     "terms": "I have read and accept the _invoicing mandate_ for my rewards",
     "confirm": "Confirm",
-    "skip": "Skip (manual invoicing)"
+    "skip": "Skip (manual invoicing)",
+    "toaster": {
+      "success": "Mandate successfully accepted",
+      "error": "We were unable to process the mandate acceptation, please try again later"
+    }
   },
   "uploadInvoice": {
     "guidelinesTitle": "Guidelines",
@@ -70,6 +80,7 @@
     "uploadInvoiceTitle": "Upload invoice",
     "clickToUpload": "Click to upload",
     "dragAndDrop": "or drag and drop",
-    "errorMaxSizeFile": "The file is too large, please upload a file smaller than 3MB"
+    "errorMaxSizeFile": "The file is too large, please upload a file smaller than 3MB",
+    "fileType": "Only PDF files smaller than 3MB are accepted"
   }
 }

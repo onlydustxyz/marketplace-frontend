@@ -53,7 +53,7 @@ export function RequestPaymentsStacks() {
   }
 
   if (view === TRequestPaymentsStacks.Views.Mandate) {
-    return <Mandate goTo={onNextView} />;
+    return <Mandate goTo={onNextView} billingProfileId={billingProfilesData?.billingProfiles?.[0].id ?? ""} />;
   }
 
   if (view === TRequestPaymentsStacks.Views.Upload) {
@@ -83,6 +83,7 @@ export function RequestPaymentsStacks() {
       onInclude={onInclude}
       includedRewards={includedRewards}
       excludedRewards={excludedRewards}
+      isMandateAccepted={billingProfilesData?.billingProfiles?.[0].invoiceMandateAccepted ?? false}
     />
   );
 }
