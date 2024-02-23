@@ -1,5 +1,7 @@
+import { components } from "src/__generated/api";
 import { API_PATH } from "src/api/ApiPath";
 import MeApi from "src/api/me";
+import { UseMutationProps, useBaseMutation } from "src/api/useBaseMutation";
 import { UseUploaderProps, useBaseUploader } from "src/api/useBaseUploader";
 import { QueryParams } from "src/utils/getEndpointUrl";
 
@@ -19,4 +21,18 @@ const useUploadInvoice = ({
   });
 };
 
-export default { useUploadInvoice };
+export type UseAcceptInvoiceMandateBody = components["schemas"]["InvoiceMandateRequest"];
+
+const useAcceptInvoiceMandate = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { billingProfileId?: string }, UseAcceptInvoiceMandateBody>) => {
+  return useBaseMutation<UseAcceptInvoiceMandateBody, void>({
+    resourcePath: API_PATH.ACCEPT_INVOICE_MANDATE(params?.billingProfileId || ""),
+    method: "PUT",
+    enabled: !!params?.billingProfileId,
+    ...options,
+  });
+};
+
+export default { useUploadInvoice, useAcceptInvoiceMandate };
