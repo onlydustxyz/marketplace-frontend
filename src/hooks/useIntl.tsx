@@ -63,12 +63,12 @@ const en = {
         },
         payout: en_settings_payout,
         invoices: en_settings_invoices,
+        payoutPreferences: en_settings_payout_preferences,
       },
       stacks: {
         request_payments: en_stack_request_payments,
         mandate: en_stack_mandate,
         billingCreate: en_billing_create,
-        payoutPreferences: en_settings_payout_preferences,
       },
     },
   },
