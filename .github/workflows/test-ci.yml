@@ -23,7 +23,7 @@ jobs:
       - name: Run unit/integration test
         run: yarn test --coverage
       - name: Setup tmate session for debugging
-        uses: mxschmitt/action-tmate@v4
+        uses: mxschmitt/action-tmate@v3
         if: ${{ failure() && inputs.debug_enabled }}
       - name: Upload unit/integration tests coverage
         uses: codecov/codecov-action@v4

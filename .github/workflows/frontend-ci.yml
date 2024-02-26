@@ -30,20 +30,6 @@ jobs:
     uses: ./.github/workflows/dependencies-ci.yml
     secrets: inherit
 
-  build:
-    needs: "dependencies"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install yarn
-        run: npm install -g yarn
-      - run: yarn install --frozen-lockfile
-      - name: Build project
-        run: yarn build
-
   run-lint:
     needs: "dependencies"
     uses: ./.github/workflows/lint-ci.yml
