@@ -14,6 +14,6 @@ test("should generate project opengraph image", async ({ page }, testinfo) => {
 
 test("should generate user opengraph image", async ({ page }, testinfo) => {
   testinfo.snapshotSuffix = "";
-  await page.goto("metadata/u/alexbeno/opengraph-image");
+  await page.goto("metadata/u/PierreOucif/opengraph-image");
   await expect(page).toHaveScreenshot();
 });
