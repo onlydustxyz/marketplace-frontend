@@ -62,6 +62,7 @@ export function getInvoiceInfoProps({
       senderInfos: {
         name: `${billingProfile?.firstName} ${billingProfile?.lastName}`,
         address: billingProfile?.address ?? "",
+        country: billingProfile?.country ?? "",
       },
       ...restInfos,
     };
@@ -71,6 +72,7 @@ export function getInvoiceInfoProps({
       senderInfos: {
         name: billingProfile?.name ?? "",
         address: billingProfile?.address ?? "",
+        country: billingProfile?.country ?? "",
         euVATNumber: billingProfile?.euVATNumber,
       },
       ...restInfos,

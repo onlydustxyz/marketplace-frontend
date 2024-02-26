@@ -8,6 +8,7 @@ export namespace TInvoice {
     lastName?: string;
     name?: string;
     address: string;
+    country: string;
     registrationNumber?: string;
     euVATNumber?: string;
   }

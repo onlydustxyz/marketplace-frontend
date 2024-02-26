@@ -17,6 +17,7 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserInd
           <Text style={styles.paragraph}>{senderInfos.name}</Text>
           <Text style={styles.paragraph}>{senderStreetAddress}</Text>
           <Text style={styles.paragraph}>{senderRestAdress.join("").trim()}</Text>
+          <Text style={styles.paragraph}>{senderInfos.country}</Text>
           {senderInfos.euVATNumber ? (
             <Text style={styles.paragraph}>
               {InvoiceTokens.invoiceInfos.vatNumber}: {senderInfos.euVATNumber}
