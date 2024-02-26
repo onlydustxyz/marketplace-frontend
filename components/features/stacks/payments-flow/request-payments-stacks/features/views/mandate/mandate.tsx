@@ -115,6 +115,7 @@ export function Mandate({ goTo, billingProfileId }: TMandate.Props) {
                   size="m"
                   className="w-full"
                   onClick={() => goTo({ to: TRequestPaymentsStacks.Views.Upload })}
+                  disabled={isPendingAcceptInvoice}
                 >
                   <Translate token="v2.pages.stacks.request_payments.mandate.skip" />
                 </Button>
