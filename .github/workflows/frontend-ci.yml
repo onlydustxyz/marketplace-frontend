@@ -39,7 +39,7 @@ jobs:
         run: yarn build
 
   dependencies:
-    uses: ./.github/workflows/test-ci.yml
+    uses: ./.github/workflows/dependencies-ci.yml
     secrets: inherit
 
   run-lint:
