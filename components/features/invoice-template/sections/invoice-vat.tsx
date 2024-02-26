@@ -16,7 +16,7 @@ export function InvoiceVat({ vat, totalTax }: TInvoice.InvoiceVatInfoProps) {
       <Text style={styles.td}></Text>
       <Text style={styles.td}>
         <Text>{InvoiceTokens.rewardSummary.table.totalVat} </Text>
-        <Text>({vat.rate})</Text>
+        <Text>({vat.rate ? `${(vat.rate * 100).toFixed(0)}%` : null})</Text>
       </Text>
       <Text style={styles.td}>{formatAmount({ amount: totalTax, currency: Currency.USD })}</Text>
     </View>
@@ -46,7 +46,7 @@ export function InvoiceVat({ vat, totalTax }: TInvoice.InvoiceVatInfoProps) {
           <Text style={styles.td}></Text>
           <Text style={styles.td}>
             <Text>{InvoiceTokens.rewardSummary.table.totalVat} </Text>
-            <Text>({vat.rate})</Text>
+            <Text>({vat.rate ? `${(vat.rate * 100).toFixed(0)}%` : null})</Text>
           </Text>
           <Text style={styles.td}>{formatAmount({ amount: totalTax, currency: Currency.USD })}</Text>
         </View>

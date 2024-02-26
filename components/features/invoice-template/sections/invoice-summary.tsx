@@ -51,7 +51,7 @@ export function InvoiceSummary({
               <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.equivalent}</Text>
             </View>
             {rewards?.map((item, index) => (
-              <View key={index} style={styles.tr}>
+              <View key={index} style={styles.tr} wrap={false}>
                 <Text style={styles.tdSmall}>#{item.id.slice(0, 4)}</Text>
                 <Text style={styles.td}>
                   {item.projectName.length > 12 ? `${item.projectName.slice(0, 12)}...` : item.projectName}
