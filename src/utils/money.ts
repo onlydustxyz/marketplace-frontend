@@ -59,7 +59,7 @@ interface FormatAmountParams {
   fixedDecimals?: number;
   currency?: BudgetCurrencyType | undefined;
 }
-export function formatAmount({ amount, locale = "en-US", fixedDecimals = 5, currency }: FormatAmountParams): string {
+export function formatAmount({ amount, locale = "en-US", fixedDecimals = 2, currency }: FormatAmountParams): string {
   if (!amount) {
     return "N/A";
   }
