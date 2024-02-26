@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#ffffff",
     fontFamily: "GT Walsheim",
-    padding: "30 0",
+    padding: "20 0 50 0",
   },
   header: {
     padding: "10px 30px 30px 30px",
@@ -13,6 +13,13 @@ export const styles = StyleSheet.create({
     fontWeight: "medium",
     textAlign: "center",
     textTransform: "uppercase",
+  },
+  pageNumberFooter: {
+    position: "absolute",
+    bottom: 30,
+    right: 30,
+    fontSize: 10,
+    color: "#535353",
   },
   section: {
     margin: 0,
@@ -150,6 +157,6 @@ export const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    borderBottom: "1px solid #f3f2f2",
+    borderTop: "1px solid #f3f2f2",
   },
 });
