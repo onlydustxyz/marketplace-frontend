@@ -6,10 +6,10 @@ import { TBillingInviteTeamMember } from "../../billing-invite-team-member.types
 
 export namespace TCheckboxItem {
   export interface Props {
-    selected: boolean;
-    disabled: boolean;
-    icon: TIcon.Props;
     title: ReactNode;
+    description: ReactNode;
+    icon: TIcon.Props;
+    selected: boolean;
     onChange: (value: TBillingInviteTeamMember.Choice) => void;
     value: TBillingInviteTeamMember.Choice;
   }

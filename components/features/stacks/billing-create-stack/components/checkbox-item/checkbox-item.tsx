@@ -31,7 +31,7 @@ export function CheckboxItem({
       <Card background={false} border={selected ? "heavy" : "light"} className="p-4" onClick={onClick}>
         <Flex justifyContent="between" alignItems="center" className="gap-1">
           <Flex justifyContent="start" alignItems="center" className="gap-4">
-            <Chip className="h-8 w-8">
+            <Chip className="h-8 w-8 border-2">
               <Icon {...icon} className={cn("h-4 w-4", icon.className)} />
             </Chip>
             <div>

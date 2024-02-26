@@ -1,6 +1,7 @@
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
+
 export namespace TBillingInviteTeamMember {
-  // TODO: Change types
-  export type Choice = "admin" | "member";
+  export type Choice = `${BillingProfilesTypes.ROLE}`;
 
   export interface Props {}
 }

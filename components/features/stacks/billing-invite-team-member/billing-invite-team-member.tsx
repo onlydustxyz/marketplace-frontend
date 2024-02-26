@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Button } from "components/ds/button/button";
@@ -14,17 +15,18 @@ import { TBillingInviteTeamMember } from "./billing-invite-team-member.types";
 import { CheckboxItem } from "./components/checkbox-item/checkbox-item";
 
 export function BillingInviteTeamMember() {
-  const [type, setType] = useState<TBillingInviteTeamMember.Choice | "">("");
+  const [githubUsername, setGithubUsername] = useState("");
+  const [role, setRole] = useState<TBillingInviteTeamMember.Choice | "">("");
 
   const isLoading = false;
   const isDisabled = false;
 
   const onSubmit = () => {
-    console.log("submit");
+    console.log("submit", role);
   };
 
   function onChoiceChange(value: TBillingInviteTeamMember.Choice | "") {
-    setType(value);
+    setRole(value);
   }
 
   return (
@@ -42,9 +44,9 @@ export function BillingInviteTeamMember() {
                 translate={{ token: "v2.pages.stacks.billingInviteTeamMember.fields.contributor.title" }}
                 className="text-greyscale-300"
               />
-            </Flex>
 
-            <p>Search bar</p>
+              <p>Search bar</p>
+            </Flex>
 
             <Flex direction="col" className="gap-2">
               <Typography
@@ -53,25 +55,33 @@ export function BillingInviteTeamMember() {
                 className="text-greyscale-300"
               />
 
-              <RadioGroupCustom<TBillingInviteTeamMember.Choice | ""> onChange={onChoiceChange} value={type}>
+              <RadioGroupCustom<TBillingInviteTeamMember.Choice | ""> onChange={onChoiceChange} value={role}>
                 {({ value, onChange }) => [
                   <CheckboxItem
-                    key="admin"
-                    title={<Translate token="v2.pages.stacks.billing_create.fields.individual.title" />}
+                    key={BillingProfilesTypes.ROLE.ADMIN}
+                    title={
+                      <Translate token="v2.pages.stacks.billingInviteTeamMember.fields.role.options.admin.title" />
+                    }
+                    description={
+                      <Translate token="v2.pages.stacks.billingInviteTeamMember.fields.role.options.admin.description" />
+                    }
                     icon={{ remixName: "ri-vip-crown-line" }}
-                    disabled={isDisabled}
                     onChange={onChange}
-                    selected={value === "admin"}
-                    value="admin"
+                    selected={value === BillingProfilesTypes.ROLE.ADMIN}
+                    value={BillingProfilesTypes.ROLE.ADMIN}
                   />,
                   <CheckboxItem
-                    key="member"
-                    title={<Translate token="v2.pages.stacks.billing_create.fields.selfEmployed.title" />}
+                    key={BillingProfilesTypes.ROLE.MEMBER}
+                    title={
+                      <Translate token="v2.pages.stacks.billingInviteTeamMember.fields.role.options.member.title" />
+                    }
+                    description={
+                      <Translate token="v2.pages.stacks.billingInviteTeamMember.fields.role.options.member.description" />
+                    }
                     icon={{ remixName: "ri-team-line" }}
-                    disabled={isDisabled}
                     onChange={onChange}
-                    selected={value === "member"}
-                    value="member"
+                    selected={value === BillingProfilesTypes.ROLE.MEMBER}
+                    value={BillingProfilesTypes.ROLE.MEMBER}
                   />,
                 ]}
               </RadioGroupCustom>

@@ -7,6 +7,11 @@ export namespace BillingProfilesTypes {
     Company = "COMPANY",
   }
 
+  export enum ROLE {
+    ADMIN = "ADMIN",
+    MEMBER = "MEMBER",
+  }
+
   export interface profileTypeMapping {
     icon: TIcon.Props;
   }
