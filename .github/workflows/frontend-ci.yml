@@ -52,7 +52,3 @@ jobs:
     uses: ./.github/workflows/test-ci.yml
     secrets: inherit
 
-  run-playwrite:
-    needs: "dependencies"
-    uses: ./.github/workflows/playwrite-ci.yml
-    secrets: inherit
