@@ -23,9 +23,11 @@ export function Table({ columns, rows }: TTable.Props) {
   const classNames = useMemo(
     () => ({
       wrapper: "bg-transparent",
-      thead: "last:[&>tr]:hidden",
+      thead: "last:[&>tr]:hidden pb-1",
       th: "bg-transparent border-b border-card-border-medium text-gray-400 uppercase font-walsheim text-sm font-medium h-auto pb-2",
-      tr: "group/table-row [&>td]:h-10 [&>td]:py-0",
+      tr: "group/table-row",
+      td: "py-3 h-auto",
+      tbody: "first-of-type:tr:td:pt-50 [&>tr:first-child>td]:pt-5",
     }),
     []
   );

@@ -1,8 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { components } from "src/__generated/api";
+import { API_PATH } from "src/api/ApiPath";
+import MeApi from "src/api/me";
 
-import { API_PATH } from "../ApiPath";
 import { UseQueryProps, useBaseQuery } from "../useBaseQuery";
 import { MIXED_TAGS } from "./tags";
 
@@ -15,7 +16,7 @@ const useGetMixedReward = ({
 
   return useBaseQuery<UseGetRewards>({
     resourcePath: params?.isMine
-      ? API_PATH.ME_REWARD_DETAIL(params.rewardId)
+      ? MeApi.path.REWARD_DETAIL(params.rewardId)
       : API_PATH.PROJECT_REWARD_DETAIL(params?.rewardId || "", params?.projectId || ""),
     method: "GET",
     tags: params?.isMine ? MIXED_TAGS.me_rewards(params?.rewardId) : MIXED_TAGS.project_rewards(params?.rewardId || ""),

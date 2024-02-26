@@ -6,6 +6,7 @@ import en_base from "translations/en.json";
 import en_commons from "translations/v2/en/commons/commons.json";
 import en_commons_enum from "translations/v2/en/commons/enums.json";
 import en_features_banners from "translations/v2/en/features/banners.json";
+import en_features_billings_profile from "translations/v2/en/features/billingsProfile.json";
 import en_features_contributors from "translations/v2/en/features/contributors.json";
 import en_features_ecosystems from "translations/v2/en/features/ecosystems.json";
 import en_features from "translations/v2/en/features/features.json";
@@ -19,8 +20,8 @@ import en_billing_create from "translations/v2/en/pages/billing-create-stacks.js
 import en_projects from "translations/v2/en/pages/projects.json";
 import en_settings_billing from "translations/v2/en/pages/settings-billing.json";
 import en_settings_billing_header from "translations/v2/en/pages/settings-billing/settings-billing-header.json";
-import en_settings_billing_payout from "translations/v2/en/pages/settings-billing/settings-billing-payout.json";
 import en_settings_billing_information from "translations/v2/en/pages/settings-billing/settings-billing-informations.json";
+import en_settings_billing_payout from "translations/v2/en/pages/settings-billing/settings-billing-payout.json";
 import en_settings_billing_sidebar from "translations/v2/en/pages/settings-billing/settings-billing-sidebar.json";
 import en_settings_billing_tabs from "translations/v2/en/pages/settings-billing/settings-billing-tabs.json";
 import en_settings_invoices from "translations/v2/en/pages/settings-invoices.json";
@@ -46,6 +47,7 @@ const en = {
       ecosystems: en_features_ecosystems,
       payoutStatus: en_features_payout_status,
       sidebar: en_features_sidebar,
+      billingsProfile: en_features_billings_profile,
       verify: en_features_verify,
       menu: en_features_menu,
     },
