@@ -81,9 +81,9 @@ jobs:
       - name: Clean coverage
         run: rm -rf coverage
 
-  e_2_e_setup:
+  e2e_setup:
     needs: build
-    name: Test setup
+    name: E2E setup
     runs-on: ubuntu-latest
     outputs:
       preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
@@ -95,8 +95,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 600
           path: /api/generic
-  e_2_e_:
-    needs: e_2_e_setup
+  e2e:
+    needs: e2e_setup
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
@@ -111,7 +111,7 @@ jobs:
       - name: Run Playwright tests
         run: yarn playwright test
         env:
-          PLAYWRIGHT_TEST_BASE_URL: ${{ needs.test_setup.outputs.preview_url }}
+          PLAYWRIGHT_TEST_BASE_URL: ${{ needs.e2e_setup.outputs.preview_url }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
