@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#ffffff",
     fontFamily: "GT Walsheim",
-    padding: "20 0 50 0",
+    padding: "20px 0px 50px 0px",
   },
   header: {
     padding: "10px 30px 30px 30px",
