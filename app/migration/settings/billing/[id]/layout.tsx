@@ -43,7 +43,7 @@ function BillingLayout({ children }: PropsWithChildren) {
             },
           ]}
         />
-        <section>{children}</section>
+        <div>{children}</div>
       </Card>
     </div>
   );

@@ -7,6 +7,7 @@ import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 import { BILLING_PROFILES_TAGS } from "./tags";
 
 export type UseGetBillingProfileById = components["schemas"]["BillingProfileResponse"];
+export type UseGetBillingProfilePayout = components["schemas"]["BillingProfilePayoutInfoResponse"];
 export type UseGetBillingProfiles = components["schemas"]["MyBillingProfilesResponse"];
 
 const useGetBillingProfileById = ({
@@ -30,7 +31,16 @@ const useBillingProfiles = ({ options = {} }: UseQueryProps<UseGetBillingProfile
   });
 };
 
+const useGetPayoutInfo = ({ options = {}, params }: UseQueryProps<UseGetBillingProfilePayout, { id?: string }>) => {
+  return useBaseQuery<UseGetBillingProfilePayout>({
+    resourcePath: BILLING_PROFILES_PATH.payout(params?.id || ""),
+    tags: BILLING_PROFILES_TAGS.all,
+    ...options,
+  });
+};
+
 export default {
   useBillingProfiles,
+  useGetPayoutInfo,
   useGetBillingProfileById,
 };

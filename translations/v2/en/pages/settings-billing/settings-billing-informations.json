@@ -1,0 +1,47 @@
+{
+  "kyc": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "birthdate": "Birthdate",
+    "address": "Address",
+    "country": "Country",
+    "usCitizen": "US Citizen",
+    "identityDocumentType": "Identity document type",
+    "identityDocumentNumber": "Identity document number",
+    "validUntil": "Valid until"
+  },
+  "kyb": {
+    "companyName": "Company name",
+    "registrationNumber": "Registration number",
+    "registrationDate": "Registration date",
+    "address": "Address",
+    "country": "Country",
+    "usEntity": "US Entity",
+    "subjectToVatInEurope": "Subject to VAT in Europe",
+    "euVatNumber": "EU VAT NUMBER"
+  },
+  "buttons": {
+    "reValidate": "Restart verification",
+    "contact": "Contact us",
+    "resumeValidation": "Resume verification",
+    "startValidation": "Start verification",
+    "viewValidation": "See verification details"
+  },
+  "status": {
+    "descriptions": {
+      "CLOSED": "Your profile got permanetly rejected, please contact us if you believe it’s an error.",
+      "INVALIDATED": "Your identity document has expired, please share an updated version.",
+      "NOT_STARTED": "You need to verify your identity in order to receive rewards.",
+      "REJECTED": "Your verification got rejected.",
+      "STARTED": "You need to verify your identity in order to receive rewards.",
+      "UNDER_REVIEW": "We’re reviewing your account, please come back later.",
+      "VERIFIED": "To edit any of those information, please reach out to us."
+    }
+  },
+  "format": {
+    "boolean": {
+      "no": "No",
+      "yes": "Yes"
+    }
+  }
+}

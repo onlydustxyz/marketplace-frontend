@@ -3,10 +3,9 @@ import { ReactNode, useMemo } from "react";
 
 import { ProfileItemGrid } from "app/settings/billing/component/profile-item-grid/profile-item-grid";
 import { ProfileItem } from "app/settings/billing/component/profile-item/profile-item";
+import { TProfileIndividual } from "app/settings/billing/features/profile/profile-individual/profile-individual.types";
 
 import { Translate } from "components/layout/translate/translate";
-
-import { TProfileIndividual } from "./profile-individual.types";
 
 export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
   const birthdate = useMemo(() => {

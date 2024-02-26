@@ -7,6 +7,8 @@ import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 
 export type UseCreateBillingProfileBody = components["schemas"]["BillingProfileRequest"];
 export type UseCreateBillingProfileResponse = components["schemas"]["BillingProfileResponse"];
+export type UseUpdatePayoutSettingsBody = components["schemas"]["BillingProfilePayoutInfoRequest"];
+export type UseUpdatePayoutSettingsResponse = components["schemas"]["BillingProfilePayoutInfoResponse"];
 
 const useCreateBillingProfile = ({
   options = {},
@@ -22,6 +24,20 @@ const useCreateBillingProfile = ({
   });
 };
 
+const useUpdatePayoutSettings = ({
+  options = {},
+  params,
+}: UseMutationProps<UseUpdatePayoutSettingsResponse, { id?: string }, UseUpdatePayoutSettingsBody>) => {
+  return useBaseMutation<UseUpdatePayoutSettingsBody, UseUpdatePayoutSettingsResponse>({
+    resourcePath: BILLING_PROFILES_PATH.payout(params?.id || ""),
+    invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
+    method: "PUT",
+    enabled: options?.enabled || !params?.id,
+    ...options,
+  });
+};
+
 export default {
   useCreateBillingProfile,
+  useUpdatePayoutSettings,
 };
