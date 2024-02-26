@@ -176,7 +176,7 @@ const useSyncGithubAccount = ({ options = {} }: UseQueryProps<unknown, undefined
   });
 };
 
-export type UseGetPayoutPreferences = components["schemas"]["PayoutPreferencesPageItemResponse"][];
+export type UseGetPayoutPreferences = components["schemas"]["PayoutPreferencesItemResponse"][];
 const useGetPayoutPreferences = ({ options = {} }: UseQueryProps<UseGetPayoutPreferences, undefined>) => {
   const { isAuthenticated } = useAuth0();
 
