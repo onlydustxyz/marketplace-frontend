@@ -5,7 +5,6 @@ on:
 
 jobs:
   e2e_setup:
-    needs: build
     name: E2E setup
     runs-on: ubuntu-latest
     outputs:

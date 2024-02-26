@@ -82,5 +82,6 @@ jobs:
         run: rm -rf coverage
 
   call-wf1:
+    needs: "build"
     uses: ./.github/workflows/playwrite-ci.yml
     secrets: inherit
