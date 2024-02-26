@@ -1,25 +1,11 @@
 name: Playwrite CI
 
 on:
-  workflow_call:
+  deployment_status:
 
 jobs:
-  e2e_setup:
-    name: E2E setup
-    runs-on: ubuntu-latest
-    outputs:
-      preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
-    steps:
-      - name: Wait for Vercel preview deployment to be ready
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-        id: waitForVercelPreviewDeployment
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 600
-          path: /api/generic
   e2e:
-    needs: e2e_setup
-    timeout-minutes: 5
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
