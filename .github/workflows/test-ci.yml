@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: yarn install -frozen-lockfile --prefer-offline
+      - run: yarn install --frozen-lockfile --prefer-offline
       - name: Run unit/integration test
         run: yarn test --coverage
       - name: Setup tmate session for debugging
