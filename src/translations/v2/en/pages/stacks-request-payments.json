@@ -7,7 +7,8 @@
       "many": "Select __count__ rewards"
     },
     "back": "Back",
-    "sendInvoice": "Send invoice"
+    "sendInvoice": "Send invoice",
+    "approveInvoice": "Approve invoice"
   },
   "item": {
     "to": "to",
