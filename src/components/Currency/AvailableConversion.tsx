@@ -8,7 +8,7 @@ import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { useIntl } from "src/hooks/useIntl";
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
-import { BudgetCurrencyType, formatAmount, formatMoneyAmount } from "src/utils/money";
+import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
 
 import { CurrencyIcons } from "./CurrencyIcon";
 
@@ -49,7 +49,7 @@ const ConversionDollar = ({ dollar }: { dollar: number | undefined }) => {
 
   return (
     <p className="font-walsheim text-xs text-spaceBlue-200">
-      {`~${formatAmount({ amount: dollar, currency: Currency.USD })}`}
+      {`~${formatMoneyAmount({ amount: dollar, currency: Currency.USD })}`}
     </p>
   );
 };
