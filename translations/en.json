@@ -1238,7 +1238,7 @@
         "newReward": "Reward contributor",
         "title": "Remaining budget",
         "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
-        "usdInfo": "Dollar equivalent at today's date",
+        "usdInfo": "Dollars' equivalent at the date reward was sent",
         "budget": {
           "remaining": "Remaining budget",
           "spent": "Amount spent",
