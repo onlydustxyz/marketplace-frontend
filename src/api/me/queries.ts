@@ -2,9 +2,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { components } from "src/__generated/api";
 
-import { API_PATH } from "../ApiPath";
 import { UseQueryProps, useBaseQuery } from "../useBaseQuery";
 import { useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
+import { ME_PATH } from "./path";
 import { ME_TAGS } from "./tags";
 
 export type UseGetUserMeResponse = components["schemas"]["GetMeResponse"];
@@ -13,7 +13,7 @@ const useGetMe = ({ options = {} }: UseQueryProps<UseGetUserMeResponse, undefine
   const { isAuthenticated } = useAuth0();
 
   return useBaseQuery<UseGetUserMeResponse>({
-    resourcePath: API_PATH.ME,
+    resourcePath: ME_PATH.ROOT,
     tags: ME_TAGS.user,
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
@@ -34,7 +34,7 @@ const useMyRewardsInfiniteList = (
   return useInfiniteBaseQuery<UseMyRewardsInfiniteListResponse>(
     {
       ...params,
-      resourcePath: API_PATH.ME_REWARDS,
+      resourcePath: ME_PATH.REWARDS,
       tags: ME_TAGS.rewards(),
       pageSize: 15,
     },
@@ -52,7 +52,7 @@ const useMyContributions = (
   return useInfiniteBaseQuery<UseMyContributionsResponse>(
     {
       ...params,
-      resourcePath: API_PATH.MY_CONTRIBUTIONS,
+      resourcePath: ME_PATH.CONTRIBUTIONS,
       tags: ME_TAGS.contributions([params.queryParams]),
     },
     { ...options, enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled) }
@@ -67,7 +67,7 @@ const useMyContributedProjects = ({
 }: UseQueryProps<UseMyContributedProjectsResponse, { repositories?: string }>) => {
   const { isAuthenticated } = useAuth0();
   return useBaseQuery<UseMyContributedProjectsResponse>({
-    resourcePath: API_PATH.MY_CONTRIBUTED_PROJECTS,
+    resourcePath: ME_PATH.CONTRIBUTED_PROJECTS,
     tags: ME_TAGS.contributedProjects(),
     queryParams: params,
     ...options,
@@ -83,7 +83,7 @@ const useMyContributedRepos = ({
 }: UseQueryProps<UseMyContributedReposResponse, { projects?: string }>) => {
   const { isAuthenticated } = useAuth0();
   return useBaseQuery<UseMyContributedReposResponse>({
-    resourcePath: API_PATH.MY_CONTRIBUTED_REPOS,
+    resourcePath: ME_PATH.CONTRIBUTED_REPOS,
     queryParams: params,
     tags: ME_TAGS.contributedRepos(),
     ...options,
@@ -96,7 +96,7 @@ export type UseGithubOrganizationsResponse = components["schemas"]["GithubOrgani
 const useGithubOrganizations = ({ options = {} }: UseQueryProps<UseGithubOrganizationsResponse[], unknown>) => {
   const { isAuthenticated } = useAuth0();
   return useBaseQuery<UseGithubOrganizationsResponse[]>({
-    resourcePath: API_PATH.ME_GITHUB_ORGANIZATIONS,
+    resourcePath: ME_PATH.GITHUB_ORGANIZATIONS,
     tags: ME_TAGS.githubOrganization(),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
@@ -108,7 +108,7 @@ export type UseGetMyPayoutSettingsResponse = components["schemas"]["UserPayoutSe
 const useGetMyPayoutSettings = ({ options = {} }: UseQueryProps<UseGetMyPayoutSettingsResponse, undefined>) => {
   const { isAuthenticated } = useAuth0();
   return useBaseQuery<UseGetMyPayoutSettingsResponse>({
-    resourcePath: API_PATH.MY_PAYOUT_SETTINGS,
+    resourcePath: ME_PATH.PAYOUT_SETTINGS,
     tags: ME_TAGS.payoutSettings(),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
@@ -121,7 +121,7 @@ const useGetMyProfileInfo = ({ options = {} }: UseQueryProps<UseGetMyProfileInfo
   const { isAuthenticated } = useAuth0();
 
   return useBaseQuery<UseGetMyProfileInfoResponse>({
-    resourcePath: API_PATH.ME_PROFILE,
+    resourcePath: ME_PATH.PROFILE,
     tags: ME_TAGS.profile(),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
@@ -134,7 +134,7 @@ const useGetMeRewardCurrencies = ({ options = {} }: UseQueryProps<UseGetMeReward
   const { isAuthenticated } = useAuth0();
 
   return useBaseQuery<UseGetMeRewardCurrencies>({
-    resourcePath: API_PATH.ME_REWARDS_CURRENCIES,
+    resourcePath: ME_PATH.REWARDS_CURRENCIES,
     tags: ME_TAGS.rewarded_currencies(),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
@@ -147,7 +147,7 @@ const useGetMeRewardProjects = ({ options = {} }: UseQueryProps<UseGetMeRewardPr
   const { isAuthenticated } = useAuth0();
 
   return useBaseQuery<UseGetMeRewardProjects>({
-    resourcePath: API_PATH.ME_REWARDS_PROJECTS,
+    resourcePath: ME_PATH.REWARDS_PROJECTS,
     tags: ME_TAGS.rewarded_projects(),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
@@ -159,7 +159,7 @@ const useGetMePendingInvoices = ({ options = {} }: UseQueryProps<UseGetMePending
   const { isAuthenticated } = useAuth0();
 
   return useBaseQuery<UseGetMePendingInvoices>({
-    resourcePath: API_PATH.ME_REWARDS_PENDING_INVOICE,
+    resourcePath: ME_PATH.REWARDS_PENDING_INVOICE,
     tags: ME_TAGS.rewarded_pending_invoice(),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
@@ -170,7 +170,19 @@ const useSyncGithubAccount = ({ options = {} }: UseQueryProps<unknown, undefined
   const { isAuthenticated } = useAuth0();
 
   return useBaseQuery<unknown>({
-    resourcePath: API_PATH.ME_SYNC_GITHUB_PROFILE,
+    resourcePath: ME_PATH.SYNC_GITHUB_PROFILE,
+    ...options,
+    enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
+  });
+};
+
+export type UseGetPayoutPreferences = components["schemas"]["PayoutPreferencesItemResponse"][];
+const useGetPayoutPreferences = ({ options = {} }: UseQueryProps<UseGetPayoutPreferences, undefined>) => {
+  const { isAuthenticated } = useAuth0();
+
+  return useBaseQuery<UseGetPayoutPreferences>({
+    resourcePath: ME_PATH.PAYOUT_PREFERENCES,
+    tags: ME_TAGS.payoutPreferences(),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
   });
@@ -189,4 +201,5 @@ export default {
   useGetMyPayoutSettings,
   useGetMyProfileInfo,
   useGetMeRewardCurrencies,
+  useGetPayoutPreferences,
 };

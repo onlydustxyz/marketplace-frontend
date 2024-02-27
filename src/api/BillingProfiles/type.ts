@@ -10,6 +10,7 @@ export namespace BillingProfilesTypes {
     SelfEmployed = "SELF_EMPLOYED",
     Company = "COMPANY",
   }
+
   export type typeUnion = components["schemas"]["BillingProfileResponse"]["type"];
 
   export interface profileTypeMapping {
