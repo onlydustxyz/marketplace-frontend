@@ -11,7 +11,7 @@
   },
   "availableConversion": {
     "tooltip": {
-      "title": "Dollars equivalent at today’s date.",
+      "title": "Dollars' equivalent at the date reward was sent.",
       "na": "N/A"
     }
   },
@@ -1238,7 +1238,7 @@
         "newReward": "Reward contributor",
         "title": "Remaining budget",
         "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
-        "usdInfo": "Dollars' equivalent at the date reward was sent",
+        "usdInfo": "Dollar equivalent at today's date",
         "budget": {
           "remaining": "Remaining budget",
           "spent": "Amount spent",
