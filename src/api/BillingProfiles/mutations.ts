@@ -4,7 +4,9 @@ import { BILLING_PROFILES_TAGS } from "src/api/BillingProfiles/tags";
 import MeApi from "src/api/me";
 import { ME_TAGS } from "src/api/me/tags";
 
+import { QueryParams } from "../../utils/getEndpointUrl";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
+import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
 
 export type UseCreateBillingProfileBody = components["schemas"]["BillingProfileRequest"];
 export type UseCreateBillingProfileResponse = components["schemas"]["BillingProfileResponse"];
@@ -39,7 +41,42 @@ const useUpdatePayoutSettings = ({
   });
 };
 
+const useUploadInvoice = ({
+  params,
+  options = {},
+}: UseUploaderProps<{ url: string }, { billingProfileId: string; invoiceId: string; queryParams?: QueryParams }>) => {
+  return useBaseUploader<{ url: string }>({
+    ...params,
+    resourcePath: BILLING_PROFILES_PATH.uploadInvoiceLinkedToProfil(
+      params?.billingProfileId || "",
+      params?.invoiceId || ""
+    ),
+    invalidatesTags: [
+      { queryKey: MeApi.tags.rewarded_pending_invoice(), exact: false },
+      { queryKey: MeApi.tags.rewards(), exact: false },
+    ],
+    method: "POST",
+    ...options,
+  });
+};
+
+export type UseAcceptInvoiceMandateBody = components["schemas"]["InvoiceMandateRequest"];
+
+const useAcceptInvoiceMandate = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { billingProfileId?: string }, UseAcceptInvoiceMandateBody>) => {
+  return useBaseMutation<UseAcceptInvoiceMandateBody, void>({
+    resourcePath: BILLING_PROFILES_PATH.acceptInvoiceMandate(params?.billingProfileId || ""),
+    method: "PUT",
+    enabled: !!params?.billingProfileId,
+    ...options,
+  });
+};
+
 export default {
   useCreateBillingProfile,
   useUpdatePayoutSettings,
+  useUploadInvoice,
+  useAcceptInvoiceMandate,
 };
