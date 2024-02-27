@@ -1,5 +1,7 @@
 import { DropdownItem, DropdownMenu, DropdownTrigger, Dropdown as NextUIDropdown } from "@nextui-org/react";
 
+import { cn } from "src/utils/cn";
+
 import { Typography } from "components/layout/typography/typography";
 
 import { TDropdown } from "./dropdown.types";
@@ -15,7 +17,7 @@ export function Dropdown({ children, items, MenuProps, ...rest }: TDropdown.Prop
       }}
     >
       <DropdownTrigger className="cursor-pointer">
-        <div>{children}</div>
+        <div className="w-fit">{children}</div>
       </DropdownTrigger>
       <DropdownMenu<TDropdown.Item>
         {...(MenuProps || {})}
@@ -28,7 +30,14 @@ export function Dropdown({ children, items, MenuProps, ...rest }: TDropdown.Prop
           <DropdownItem
             key={item.key}
             {...item}
-            className="rounded-[6px] px-2 py-3 text-greyscale-50 data-[hover=true]:bg-card-background-medium"
+            className={cn(
+              "rounded-[6px] px-2 py-3 text-greyscale-50 data-[hover=true]:bg-card-background-medium data-[hover=true]:text-greyscale-50",
+              {
+                "text-orange-500 data-[hover=true]:text-orange-500": item.isWarning,
+                "text-github-red data-[hover=true]:text-github-red": item.isError,
+              },
+              item.className
+            )}
           >
             <Typography as="div" variant="body-s">
               {item.children}
