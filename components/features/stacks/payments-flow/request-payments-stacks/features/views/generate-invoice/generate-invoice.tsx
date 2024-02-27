@@ -83,7 +83,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
                 onClick={() => handleSendInvoice({ fileBlob })}
                 disabled={isPendingUploadInvoice || !fileBlob}
               >
-                <Translate token="v2.pages.stacks.request_payments.form.sendInvoice" />
+                <Translate token="v2.pages.stacks.request_payments.form.approveInvoice" />
               </Button>
             </div>
           </div>

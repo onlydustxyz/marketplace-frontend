@@ -51,24 +51,30 @@ export function InvoiceSummary({
               <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.equivalent}</Text>
             </View>
             {rewards?.map((item, index) => (
-              <View key={index} style={styles.tr}>
+              <View key={index} style={styles.tr} wrap={false}>
+                {/*  ID  */}
                 <Text style={styles.tdSmall}>#{item.id.slice(0, 4)}</Text>
+                {/*  project name  */}
                 <Text style={styles.td}>
                   {item.projectName.length > 12 ? `${item.projectName.slice(0, 12)}...` : item.projectName}
                 </Text>
+                {/*  reward date  */}
                 <Text style={styles.td}>{getFormattedDateGB(new Date(item.date))}</Text>
+                {/*  amount  */}
                 <Text style={styles.td}>
-                  {formatAmount({ amount: item.amount.amount, currency: item.amount.currency })}
+                  {formatAmount({ amount: item.amount.amount, currency: item.amount.currency, fixedDecimals: 5 })}
                 </Text>
+                {/*  rate  */}
                 <View style={{ ...styles.td, ...styles.flexRow }}>
                   {/*the result should look like this*/}
                   {/*1 ETH ~ 3,000 USD*/}
                   <Text>{`1 ${item.amount.currency}`}</Text>
-                  <Text>{`~${formatAmount({
+                  <Text>{`=${formatAmount({
                     amount: item.amount.target.conversionRate,
                     currency: item.amount.target.currency,
                   })}`}</Text>
                 </View>
+                {/*  USD equivalent  */}
                 <Text style={styles.td}>
                   {formatAmount({ amount: item.amount.target.amount, currency: item.amount.target.currency })}
                 </Text>
@@ -101,7 +107,7 @@ export function InvoiceSummary({
         <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
         {totalAmounts?.map((item, index) => (
           <Text key={index} style={styles.paragraph}>
-            - {formatAmount({ amount: item.total, currency: item.currency as BudgetCurrencyType })}{" "}
+            - {formatAmount({ amount: item.total, currency: item.currency as BudgetCurrencyType, fixedDecimals: 5 })}{" "}
             {InvoiceTokens.rewardSummary.itemsReceived}
           </Text>
         ))}

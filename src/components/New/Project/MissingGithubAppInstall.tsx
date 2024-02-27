@@ -1,12 +1,21 @@
-import { generatePath, useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
+import { SyntheticEvent } from "react";
 
-import { RoutePaths } from "src/App";
 import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 
+import { NEXT_ROUTER } from "constants/router";
+
 export function MissingGithubAppInstall({ slug = "" }: { slug: string }) {
   const { T } = useIntl();
-  const navigate = useNavigate();
+  const router = useRouter();
+
+  const handleClick = (e: SyntheticEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    router.push(NEXT_ROUTER.projects.details.edit(slug));
+  };
 
   return (
     <div className="bg-oritems-center flex items-center justify-between gap-3 rounded-2xl bg-orange-800 p-3">
@@ -17,11 +26,7 @@ export function MissingGithubAppInstall({ slug = "" }: { slug: string }) {
         className="whitespace-nowrap"
         type={ButtonType.Secondary}
         accentColor={ButtonAccentColor.Orange}
-        onClick={e => {
-          e.preventDefault();
-          e.stopPropagation();
-          navigate(generatePath(RoutePaths.ProjectDetailsEditRepos, { projectKey: slug }));
-        }}
+        onClick={handleClick}
       >
         {T("project.missingGithubAppInstall.button")}
       </Button>

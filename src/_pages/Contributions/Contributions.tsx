@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
 

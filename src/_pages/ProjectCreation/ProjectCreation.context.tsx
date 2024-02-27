@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
-import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 
-import { RoutePaths } from "src/App";
 import EcosystemApi from "src/api/Ecosystems";
 import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
@@ -17,6 +16,8 @@ import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling"
 import { StorageInterface } from "src/hooks/useStorage/Storage";
 
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { STORAGE_KEY_CREATE_PROJECT_FORM, useResetStorage } from "./hooks/useProjectCreationStorage";
 import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";
@@ -123,11 +124,11 @@ export function CreateProjectProvider({
   const { T } = useIntl();
   const [enableAutoSaved, setEnableAutoSaved] = useState<boolean>(true);
   const [installedRepos, setInstalledRepos] = useState<number[]>(initialInstalledRepo || []);
-  const navigate = useNavigate();
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
     initialStep || ProjectCreationSteps.ORGANIZATIONS
   );
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
 
   const { reset: clearStorage } = useResetStorage();
@@ -172,7 +173,7 @@ export function CreateProjectProvider({
       onSuccess: data => {
         clearStorage();
         if (data?.projectSlug) {
-          navigate(generatePath(RoutePaths.ProjectDetails, { projectKey: data.projectSlug }));
+          router.push(NEXT_ROUTER.projects.details.root(data.projectSlug));
         }
       },
     },

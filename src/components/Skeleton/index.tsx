@@ -1,3 +1,5 @@
+"use client";
+
 import SkeletonCard from "./SkeletonCard";
 import SkeletonContributorList from "./SkeletonContributorList";
 import SkeletonCounter from "./SkeletonCounter";

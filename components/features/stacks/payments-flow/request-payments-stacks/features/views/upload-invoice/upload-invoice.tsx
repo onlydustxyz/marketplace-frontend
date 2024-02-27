@@ -21,7 +21,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
   const { T } = useIntl();
   const { isLoading, isError, fileUrl, invoiceId } = useInvoicePreview({ rewardIds, billingProfileId, isSample: true });
   const { isPendingUploadInvoice, handleSendInvoice } = useInvoiceUpload({ billingProfileId, invoiceId });
-  const [selectedFileBlob, setSelectedFileBlob] = useState<Blob>();
+  const [selectedFileBlob, setSelectedFileBlob] = useState<File>();
 
   function removeFile() {
     setSelectedFileBlob(undefined);
@@ -139,7 +139,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                   className="w-full"
                   onClick={() =>
                     handleSendInvoice({
-                      fileBlob: selectedFileBlob,
+                      fileBlob: selectedFileBlob as Blob,
                       isManualUpload: true,
                       fileName: selectedFileBlob?.name,
                     })

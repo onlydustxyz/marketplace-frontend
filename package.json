@@ -28,6 +28,7 @@
     "@floating-ui/react-dom": "^2.0.4",
     "@headlessui/tailwindcss": "^0.2.0",
     "@hookform/resolvers": "^3.3.2",
+    "@next/bundle-analyzer": "^14.1.0",
     "@next/third-parties": "^14.0.4",
     "@nextui-org/react": "^2.2.9",
     "@react-pdf/renderer": "^3.3.8",
@@ -58,7 +59,6 @@
     "react-lottie": "^1.2.3",
     "react-markdown": "^8.0.4",
     "react-pdf": "7.7.1",
-    "react-router-dom": "^6.18.0",
     "react-tooltip": "^5.21.5",
     "react-use": "^17.4.0",
     "react-virtuoso": "^4.3.2",
@@ -81,7 +81,7 @@
     "@heroicons/react": "^2.0.13",
     "@inquirer/prompts": "^3.3.0",
     "@next/eslint-plugin-next": "^14.0.4",
-    "@playwright/test": "^1.31.2",
+    "@playwright/test": "^1.41.2",
     "@storybook/addon-actions": "^7.6.6",
     "@storybook/addon-docs": "^7.6.7",
     "@storybook/addon-essentials": "^7.6.6",
@@ -97,6 +97,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/iban": "^0.0.32",
+    "@types/node": "^20.11.20",
     "@types/react": "^18.0.24",
     "@types/react-currency-format": "^1.0.0",
     "@types/react-dom": "^18.0.8",
@@ -125,9 +126,9 @@
     "prettier-plugin-tailwindcss": "^0.3.0",
     "sinon": "^15.0.4",
     "storybook": "^7.6.6",
-    "storybook-addon-react-router-v6": "^1.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
+    "vite": "^5.1.4",
     "vitest": "^0.25.1"
   }
 }

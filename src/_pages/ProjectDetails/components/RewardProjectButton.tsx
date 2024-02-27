@@ -1,8 +1,7 @@
 import { FilloutStandardEmbed } from "@fillout/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { generatePath, useNavigate } from "react-router-dom";
 
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import { components } from "src/__generated/api";
 import MeApi from "src/api/me";
@@ -13,6 +12,8 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 type RewardProjectButtonProps = { project: components["schemas"]["ProjectResponse"]; size?: ButtonSize };
@@ -21,7 +22,7 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
   const { T } = useIntl();
   const { user } = useCurrentUser();
   const { data: userProfile } = MeApi.queries.useGetMyProfileInfo({});
-  const navigate = useNavigate();
+  const router = useRouter();
   const isRewardDisabled = !project?.hasRemainingBudget;
   const [isApplyOpen, setIsApplyOpen] = useState(false);
 
@@ -38,15 +39,7 @@ export function RewardProjectButton({ project, size = ButtonSize.Sm }: RewardPro
             name: "reward",
             label: T("project.rewardButton.full"),
             disabled: isRewardDisabled,
-            onClick: () =>
-              navigate(
-                generatePath(
-                  `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-                  {
-                    projectKey: project?.slug,
-                  }
-                )
-              ),
+            onClick: () => router.push(NEXT_ROUTER.projects.details.rewards.new(project?.slug)),
           },
           {
             name: "apply",

@@ -1,0 +1,9 @@
+{
+  "tag": {
+    "noBillingProfile": "Pending billing profile"
+  },
+  "selector": {
+    "addNewBillingProfile": "New billing profile",
+    "success": "Billing profile successfully selected"
+  }
+}

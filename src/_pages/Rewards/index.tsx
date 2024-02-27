@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext, useEffect, useMemo, useRef } from "react";
 import { useT } from "talkr";
 

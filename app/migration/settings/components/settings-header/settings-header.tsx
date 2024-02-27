@@ -1,9 +1,9 @@
-import { TSettingsHeader } from "app/migration/settings/components/settings-header/settings-header.types";
-
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { TSettingsHeader } from "./settings-header.types";
 
 export function SettingsHeader({ icon, title, subtitle, children }: TSettingsHeader.Props) {
   return (

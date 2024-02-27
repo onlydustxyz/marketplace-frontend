@@ -39,7 +39,7 @@ export function getInvoiceInfoProps({
     ? invoiceDetails.destinationAccounts.wallets.map(wallet => `${wallet.network}: ${wallet.address}`)
     : null;
 
-  const accounts = [bankAccount, wallets];
+  const accounts = [...(bankAccount ? [bankAccount] : []), ...(wallets ? [...wallets] : [])];
 
   const restInfos = {
     isUserIndividual,

@@ -1,6 +1,3 @@
-import { Link, generatePath } from "react-router-dom";
-
-import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import Card, { CardBorder } from "src/components/Card";
 import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
@@ -15,6 +12,10 @@ import { cn } from "src/utils/cn";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
 import { buildLanguageString } from "src/utils/languages";
 import { getTopTechnologies } from "src/utils/technologies";
+
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
@@ -60,7 +61,7 @@ export default function ProjectCard({ project, className, variant = Variant.Defa
   const languages = technologies ? getTopTechnologies(technologies) : [];
 
   return (
-    <Link to={generatePath(RoutePaths.ProjectDetails, { projectKey: slug })}>
+    <BaseLink href={NEXT_ROUTER.projects.details.root(slug)}>
       <Card
         className={cn(
           "relative",
@@ -166,6 +167,6 @@ export default function ProjectCard({ project, className, variant = Variant.Defa
           {isLeader && isMissingGithubAppInstallation ? <MissingGithubAppInstall slug={slug} /> : null}
         </div>
       </Card>
-    </Link>
+    </BaseLink>
   );
 }

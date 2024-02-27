@@ -1,5 +1,5 @@
+import { useParams } from "next/navigation";
 import { ComponentProps, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 import Title from "src/_pages/ProjectDetails/Title";
@@ -41,10 +41,10 @@ const initialSort: Record<ContributionStatus, TableSort> = {
 
 export default function Contributions() {
   const { T } = useIntl();
-  const { projectKey = "" } = useParams<{ projectKey?: string }>();
+  const { slug = "" } = useParams<{ slug?: string }>();
 
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
 
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
@@ -226,7 +226,7 @@ export default function Contributions() {
         <Title>{T("project.details.contributions.title")}</Title>
         {!hasOrgsWithUnauthorizedRepos ? (
           <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
-            <EditProjectButton projectKey={projectKey} />
+            <EditProjectButton projectKey={slug} />
             {project && <RewardProjectButton project={project} />}
           </Flex>
         ) : null}

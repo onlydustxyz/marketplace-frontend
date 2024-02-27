@@ -4,7 +4,6 @@ import { IMAGES } from "src/assets/img";
 
 import { Button } from "components/ds/button/button";
 import { Tabs } from "components/ds/tabs/tabs";
-import { AmountCounter } from "components/features/stacks/payments-flow/request-payments-stacks/components/amount-counter/amount-counter";
 import { RewardItem } from "components/features/stacks/payments-flow/request-payments-stacks/components/reward-item/reward-item";
 import { TSelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards.types";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
@@ -15,6 +14,8 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
+import { AmountCounter } from "../../../components/amount-counter/amount-counter";
+
 export function SelectRewards({
   onExclude,
   onInclude,
@@ -24,14 +25,13 @@ export function SelectRewards({
   isMandateAccepted,
 }: TSelectRewards.Props) {
   const { user } = useCurrentUser();
-
   const totalAmountSelectedRewards = useMemo(
     () => includedRewards.reduce((count, reward) => (count += reward.amount.dollarsEquivalent || 0), 0),
     [includedRewards]
   );
 
   const onSubmit = () => {
-    if (isMandateAccepted) {
+    if (user?.billingProfileType === "INDIVIDUAL" || (user?.billingProfileType === "COMPANY" && isMandateAccepted)) {
       goTo({ to: TRequestPaymentsStacks.Views.Generate });
     } else {
       goTo({ to: TRequestPaymentsStacks.Views.Mandate });

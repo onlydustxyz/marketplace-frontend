@@ -1,8 +1,10 @@
 import { ComponentProps } from "react";
-import { Link, generatePath } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
+
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import ProjectCard from "./ProjectCard";
 import { Section } from "./Section";
@@ -25,13 +27,9 @@ export default function ProjectsSection({ projects, setOpen, event }: Props) {
               <ProjectCard project={project} />
             </button>
           ) : (
-            <Link
-              onClick={setOpen}
-              key={project.id}
-              to={generatePath(RoutePaths.ProjectDetails, { projectKey: project.slug || "" })}
-            >
+            <BaseLink onClick={setOpen} key={project.id} href={NEXT_ROUTER.projects.details.root(project.slug || "")}>
               <ProjectCard project={project} />
-            </Link>
+            </BaseLink>
           )
         )}
       </div>

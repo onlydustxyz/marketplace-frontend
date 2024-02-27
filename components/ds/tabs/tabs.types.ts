@@ -8,6 +8,7 @@ export namespace TTabs {
   export type Variants = VariantProps<typeof tabsVariants>;
   export interface Props<T extends Key> extends PropsWithChildren, Variants, TTab.Variants {
     tabs: TTab.Props<T>[];
+    isHref?: boolean;
     controlled?: {
       selected: T;
       onSelect: (key: T) => void;
