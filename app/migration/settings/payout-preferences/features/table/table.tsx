@@ -52,6 +52,14 @@ export function PayoutPreferencesTable() {
       (data || []).map(row => {
         const project = row.project;
         const billing = row.billingProfile;
+        const profile = billing
+          ? {
+              icon: BillingProfileConstant.profileTypeMapping[billing.type].icon,
+              name: billing.name,
+              id: billing.id,
+            }
+          : undefined;
+
         return {
           key: project.id,
           projects: (
@@ -62,17 +70,7 @@ export function PayoutPreferencesTable() {
           billing_profiles: (
             <div className="flex justify-end">
               <BillingProfilesSelector data={billingProfilesSelector} projectId={project.id}>
-                <BillingProfileTag
-                  {...(billing
-                    ? {
-                        profile: {
-                          icon: BillingProfileConstant.profileTypeMapping[billing.type].icon,
-                          name: billing.name,
-                          id: billing.id,
-                        },
-                      }
-                    : {})}
-                />
+                <BillingProfileTag profile={profile} />
               </BillingProfilesSelector>
             </div>
           ),

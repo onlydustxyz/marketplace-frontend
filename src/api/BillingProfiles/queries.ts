@@ -4,7 +4,7 @@ import { components } from "src/__generated/api";
 import { BILLING_PROFILES_PATH } from "src/api/BillingProfiles/path";
 import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 
-import { QueryParams } from "../../utils/getEndpointUrl";
+import { QueryParams } from "src/utils/getEndpointUrl";
 import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "../useInfiniteBaseQuery";
 import { BILLING_PROFILES_TAGS } from "./tags";
 

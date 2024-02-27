@@ -4,7 +4,7 @@ import { BILLING_PROFILES_TAGS } from "src/api/BillingProfiles/tags";
 import MeApi from "src/api/me";
 import { ME_TAGS } from "src/api/me/tags";
 
-import { QueryParams } from "../../utils/getEndpointUrl";
+import { QueryParams } from "src/utils/getEndpointUrl";
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
 
