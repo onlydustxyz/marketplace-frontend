@@ -36,7 +36,7 @@ export const InvoiceTokens = {
     },
     specialMentions: "Special Mentions",
     itemsReceived: "received and accepted as payment for this invoice",
-    usdToEurConversionRate: (rate: string | undefined) => `1 USD ~ ${rate} EUR at today's rate`,
+    usdToEurConversionRate: (rate: string | undefined) => `1 USD = ${rate ?? "N/A"} EUR at today's rate`,
   },
   currencies: {
     usd: "USD",

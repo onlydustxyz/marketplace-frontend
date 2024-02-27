@@ -52,11 +52,11 @@
   "mandate": {
     "title": "Accept invoicing mandate",
     "summary": {
-      "question": "Why do I need to accept an invoicing mandate?",
-      "answer_1": "_To avoid headaches._ Our system automatically creates and delivers invoices without you having to lift a finger.",
-      "answer_2": "_To avoid mistakes._ No more human errors! Our system keeps your invoices accurate and consistent.",
-      "answer_3": "_To avoid costs._ Automating your invoicing reduces administrative costs.",
-      "answer_4": "_To be compliant._ We ensure that you’re always up to date on the legal and regulatory requirements."
+      "question": "Why should I accept an invoicing order mandate?",
+      "answer_1": "Accepting an invoicing order mandate means that you give us the authorization to generate an invoice on your behalf, in compliance with all legal and regulatory requirements needed.",
+      "answer_2": "Our system makes sure that all your information is correct, up to date and according to the recommended norms.",
+      "answer_3": "We take care of calculating the VAT and the total amount to invoice with updated token exchange rates, ensuring that all invoices reflect the most accurate and compliant financial data.",
+      "answer_4": "This is necessary when you file for a tax return, including VAT if applicable."
     },
     "terms": "I have read and accept the _invoicing mandate_ for my rewards",
     "confirm": "Confirm",
