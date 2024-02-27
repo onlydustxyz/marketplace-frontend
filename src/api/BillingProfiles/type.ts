@@ -4,7 +4,7 @@ import { Key } from "src/hooks/useIntl";
 import { TIcon } from "components/layout/icon/icon.types";
 
 export namespace BillingProfilesTypes {
-  export type status = components["schemas"]["KYBResponse"]["status"] | components["schemas"]["KYCResponse"]["status"];
+  export type status = components["schemas"]["BillingProfileResponse"]["status"];
   export enum type {
     Individual = "INDIVIDUAL",
     SelfEmployed = "SELF_EMPLOYED",
