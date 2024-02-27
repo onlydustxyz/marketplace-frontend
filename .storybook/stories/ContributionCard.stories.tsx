@@ -1,5 +1,4 @@
 import { ComponentProps } from "react";
-import { withRouter } from "storybook-addon-react-router-v6";
 
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
 
@@ -9,7 +8,7 @@ import { contribution } from "../mocks/contribution";
 export default {
   title: "ContributionCard",
   component: ContributionCard,
-  decorators: [withRouter, withQueryClientProvider],
+  decorators: [withQueryClientProvider],
 };
 
 const defaultProps: ComponentProps<typeof ContributionCard> = {

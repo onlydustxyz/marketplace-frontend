@@ -1,11 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { uniqWith } from "lodash";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
-import { generatePath, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
-import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import { FieldProjectLeadValue } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import EcosystemApi from "src/api/Ecosystems";
@@ -20,6 +19,8 @@ import { useShowToaster } from "src/hooks/useToaster";
 import { MoreInfosField } from "src/types";
 
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
 import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
@@ -91,11 +92,10 @@ export function EditProvider({ children, project }: EditContextProps) {
 
   const validationSchema = useEditValidationSchema();
   const lastAddedRepoStorage = useProjectDetailsLastAddedRepoStorage(project.slug);
-  const navigate = useNavigate();
+  const router = useRouter();
   const showToaster = useShowToaster();
-  const location = useLocation();
   const poolingCount = useRef(0);
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
 
@@ -284,13 +284,12 @@ export function EditProvider({ children, project }: EditContextProps) {
         clearSession();
 
         // Replace the current path on the history stack if different
-        const newPathname = `${generatePath(RoutePaths.ProjectDetailsEdit, {
-          projectKey: data.projectSlug,
-        })}`;
 
         if (data.projectSlug !== project.slug) {
+          const newPathname = NEXT_ROUTER.projects.details.edit(data.projectSlug);
+
           // Navigate before invalidating queries so the new data can use the updated params
-          navigate(newPathname, { replace: true, state: location.state, preventScrollReset: true });
+          router.replace(newPathname, { scroll: false });
 
           queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
         }

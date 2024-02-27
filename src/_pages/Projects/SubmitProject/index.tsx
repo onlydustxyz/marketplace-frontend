@@ -1,8 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
 import {
   STORAGE_KEY_CREATE_PROJECT_STEP,
   useResetStorage,
@@ -16,10 +15,12 @@ import { cn } from "src/utils/cn";
 
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
+import { NEXT_ROUTER } from "constants/router";
+
 export default function SubmitProject({ className }: { className?: string }) {
   const { T } = useIntl();
   const { isAuthenticated, loginWithRedirect } = useAuth0();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [modalOpened, setModalOpened] = useState(false);
   const { reset: clearStorage } = useResetStorage();
   const toggleModal = () => setModalOpened(!modalOpened);
@@ -50,7 +51,7 @@ export default function SubmitProject({ className }: { className?: string }) {
 
   const startProjectCreation = async () => {
     if (isAuthenticated) {
-      navigate(RoutePaths.ProjectCreation);
+      router.push(NEXT_ROUTER.projects.creation);
     } else {
       await handleLoginWithRedirect(loginWithRedirect);
     }

@@ -1,4 +1,5 @@
 export const BASE_API_V1 = (path: string) => `/api/v1/${path}`;
+export const BASE_API_V2 = (path: string) => `/api/v2/${path}`;
 
 export const API_PATH = {
   /** TO KEEP */
@@ -48,28 +49,6 @@ export const API_PATH = {
   USER_PROFILE_BY_GITHUB_LOGIN: (githubLogin: string) => BASE_API_V1(`users/login/${githubLogin}`),
   USER_PROFILE_BY_GITHUB_ID: (githubId: string) => BASE_API_V1(`users/${githubId}`),
 
-  /* ----------------------------------- ME ----------------------------------- */
-  MY_CONTRIBUTIONS: BASE_API_V1("me/contributions"),
-  ME_PROJECT_LEADER_INVITATIONS: (projectId: string) => BASE_API_V1(`me/project-leader-invitations/${projectId}`),
-  ME: BASE_API_V1("me"),
-  ME_REWARDS: BASE_API_V1("me/rewards"),
-  ME_REWARD_DETAIL: (rewardId: string) => BASE_API_V1(`me/rewards/${rewardId}`),
-  ME_REWARDS_PENDING_INVOICE: BASE_API_V1("me/rewards/pending-invoice"),
-  ME_GITHUB_ORGANIZATIONS: BASE_API_V1("me/organizations"),
-  MY_CONTRIBUTED_PROJECTS: BASE_API_V1("me/contributed-projects"),
-  MY_CONTRIBUTED_REPOS: BASE_API_V1("me/contributed-repos"),
-  MY_CLAIM: (projectId: string) => BASE_API_V1(`me/project-claims/${projectId}`),
-  ME_APPLY_TO_PROJECT: BASE_API_V1("me/applications"),
-  ME_MARK_INVOICE_AS_RECEIVED: BASE_API_V1("me/invoices"),
-  MY_PAYOUT_SETTINGS: BASE_API_V1("me/payout-settings"),
-  ME_PROFILE: BASE_API_V1("me/profile"),
-  ME_REWARDS_CURRENCIES: BASE_API_V1("me/reward-currencies"),
-  ME_REWARDS_PROJECTS: BASE_API_V1("me/rewarding-projects"),
-  ME_PROFILE_PICTURE: BASE_API_V1("me/profile/avatar"),
-  ME_BILLING_INDIVIDUAL: BASE_API_V1("me/billing-profiles/individual"),
-  ME_BILLING_COMPANY: BASE_API_V1("me/billing-profiles/company"),
-  ME_BILLING_PROFILES: BASE_API_V1("me/billing-profiles"),
-  ME_SYNC_GITHUB_PROFILE: BASE_API_V1("me/profile/github"),
   /* ------------------------------ TECHNOLOGIES ------------------------------ */
   TECHNOLOGIES: BASE_API_V1("technologies"),
   /* ------------------------------ ECOSYSTEM ------------------------------ */

@@ -1,17 +1,31 @@
-import { ReactElement } from "react";
-import { Navigate, generatePath, useParams } from "react-router-dom";
+import { useRouter } from "next/navigation";
+import { ComponentType, useEffect } from "react";
 
-import { RoutePaths } from "src/App";
 import MeApi from "src/api/me";
 
-export function AdminGuard({ children }: { children: ReactElement }) {
-  const params = useParams();
-  const { isLoading, isRefetching, data: userInfo } = MeApi.queries.useGetMe({});
-  const { isAdmin } = userInfo || {};
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
-  if (isLoading || isRefetching) {
-    return null;
-  }
+import { NEXT_ROUTER } from "constants/router";
 
-  return isAdmin ? <>{children}</> : <Navigate to={generatePath(RoutePaths.NotFound, params)} />;
+export function withAdminGuard<P extends object>(Component: ComponentType<P>) {
+  // eslint-disable-next-line react/display-name
+  return (props: P) => {
+    const router = useRouter();
+    const { isImpersonating } = useImpersonation();
+
+    const { isLoading, isRefetching, data } = MeApi.queries.useGetMe({});
+    const { isAdmin } = data ?? {};
+
+    useEffect(() => {
+      if (isLoading || isRefetching || isAdmin || isImpersonating) return;
+
+      router.push(NEXT_ROUTER.notFound);
+    }, [isLoading, isRefetching, isAdmin, isImpersonating]);
+
+    if (isLoading || isRefetching || !isAdmin) {
+      return <></>;
+    }
+
+    return <Component {...props} />;
+  };
 }

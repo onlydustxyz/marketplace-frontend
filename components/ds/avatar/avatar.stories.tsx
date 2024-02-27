@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { ComponentProps } from "react";
 
 import { AvatarLoading } from "components/ds/avatar/avatar.loading";
+import { Icon } from "components/layout/icon/icon";
 
 import { Avatar } from "./avatar";
 
@@ -74,6 +75,25 @@ export const Skeleton: Story = {
           <AvatarLoading {...args} size="l" skeletonProps={{ color: "grey" }} />
           <AvatarLoading {...args} size="xl" skeletonProps={{ color: "grey" }} />
         </div>
+      </div>
+    );
+  },
+};
+
+export const Labelled: Story = {
+  render: args => {
+    return (
+      <div className="flex w-full items-center gap-4">
+        <Avatar.Labelled {...args}>Static label</Avatar.Labelled>
+        <Avatar.Labelled href={"https://example.com"} {...args}>
+          With link
+        </Avatar.Labelled>
+        <Avatar.Labelled {...args}>
+          <div className="flex items-center gap-2">
+            <span>With elements</span>
+            <Icon remixName="ri-error-warning-line" className="text-red-500" />
+          </div>
+        </Avatar.Labelled>
       </div>
     );
   },

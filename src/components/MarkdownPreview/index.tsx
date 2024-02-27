@@ -1,5 +1,8 @@
-import ReactMarkdown from "react-markdown";
+import dynamic from "next/dynamic";
 import remarkGfm from "remark-gfm";
+
+// @ts-expect-error default export type is not supported by next/dynamic for some reason, but the component works
+const ReactMarkdown = dynamic(() => import("react-markdown"));
 
 export type Props = {
   className?: string;
