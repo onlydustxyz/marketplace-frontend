@@ -31,7 +31,7 @@ export function BillingProfilesSelector({ children, data, projectId, onSelect }:
     openBillingCreate({ projectId });
   }
 
-  async function onSelectBillingProfile(id: string) {
+  function onSelectBillingProfile(id: string) {
     if (projectId) {
       mutate({ billingProfileId: id, projectId });
     }

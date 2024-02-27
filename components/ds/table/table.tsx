@@ -18,7 +18,6 @@ import { EmptyState } from "components/layout/placeholders/empty-state/empty-sta
 
 // TODO load more - https://nextui.org/docs/components/table#loading-more-data
 // TODO loading state - https://nextui.org/docs/components/table#tablebody-props
-// TODO empty state - https://nextui.org/docs/components/table#tablebody-props
 // TODO sort - https://nextui.org/docs/components/table#sorting-rows
 // TODO infinite pagination - https://nextui.org/docs/components/table#infinite-pagination
 export function Table({
