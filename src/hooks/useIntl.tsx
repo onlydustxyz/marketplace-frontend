@@ -15,6 +15,7 @@ import en_features_leaders from "translations/v2/en/features/leaders.json";
 import en_features_menu from "translations/v2/en/features/menu.json";
 import en_features_payout_status from "translations/v2/en/features/payout-status.json";
 import en_features_sidebar from "translations/v2/en/features/sidebar.json";
+import en_features_table from "translations/v2/en/features/table.json";
 import en_features_verify from "translations/v2/en/features/verify.json";
 import en_billing_create from "translations/v2/en/pages/billing-create-stacks.json";
 import en_projects from "translations/v2/en/pages/projects.json";
@@ -50,6 +51,7 @@ const en = {
       billingsProfile: en_features_billings_profile,
       verify: en_features_verify,
       menu: en_features_menu,
+      table: en_features_table,
     },
     pages: {
       projects: en_projects,

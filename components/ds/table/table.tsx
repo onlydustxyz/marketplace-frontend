@@ -9,17 +9,29 @@ import {
 } from "@nextui-org/react";
 import { useMemo } from "react";
 
+import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
 
 import { TTable } from "components/ds/table/table.types";
 import { Icon } from "components/layout/icon/icon";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 // TODO load more - https://nextui.org/docs/components/table#loading-more-data
 // TODO loading state - https://nextui.org/docs/components/table#tablebody-props
 // TODO empty state - https://nextui.org/docs/components/table#tablebody-props
 // TODO sort - https://nextui.org/docs/components/table#sorting-rows
 // TODO infinite pagination - https://nextui.org/docs/components/table#infinite-pagination
-export function Table({ columns, rows }: TTable.Props) {
+export function Table({
+  columns,
+  rows,
+  TableHeaderProps,
+  TableColumnProps,
+  TableBodyProps,
+  TableRowProps,
+  TableCellProps,
+  EmptyProps,
+  ...TableProps
+}: TTable.Props) {
   const classNames = useMemo(
     () => ({
       wrapper: "bg-transparent",
@@ -33,10 +45,10 @@ export function Table({ columns, rows }: TTable.Props) {
   );
 
   return (
-    <NextTable classNames={classNames} removeWrapper>
-      <TableHeader columns={columns}>
+    <NextTable classNames={classNames} removeWrapper {...TableProps}>
+      <TableHeader columns={columns} {...(TableHeaderProps || {})}>
         {column => (
-          <TableColumn key={column.key}>
+          <TableColumn key={column.key} {...(TableColumnProps || {})}>
             <div
               className={cn("flex gap-1", {
                 "justify-start": column.align === "start",
@@ -51,22 +63,42 @@ export function Table({ columns, rows }: TTable.Props) {
         )}
       </TableHeader>
 
-      <TableBody items={rows}>
+      <TableBody
+        items={rows}
+        {...(TableBodyProps || {})}
+        emptyContent={
+          <EmptyState
+            illustrationSrc={EmptyProps?.illustrationSrc || IMAGES.global.payment}
+            title={EmptyProps?.title || { token: "v2.features.table.emptyState.title" }}
+            description={EmptyProps?.description || { token: "v2.features.table.emptyState.message" }}
+            actionLabel={EmptyProps?.actionLabel}
+            onAction={EmptyProps?.onAction}
+          />
+        }
+      >
         {item => (
           <TableRow
             key={item.key}
-            className="border-b border-card-border-light duration-200 transition hover:bg-white/5"
+            {...(TableRowProps || {})}
+            className={cn(
+              "border-b border-card-border-light duration-200 transition hover:bg-white/5",
+              TableRowProps?.className
+            )}
           >
             {columnKey => {
               const column = columns.find(({ key }) => key === columnKey);
 
               return (
                 <TableCell
-                  className={cn({
-                    "text-left": column?.align === "start",
-                    "text-center": column?.align === "center",
-                    "text-right": column?.align === "end",
-                  })}
+                  {...(TableCellProps || {})}
+                  className={cn(
+                    {
+                      "text-left": column?.align === "start",
+                      "text-center": column?.align === "center",
+                      "text-right": column?.align === "end",
+                    },
+                    TableCellProps?.className
+                  )}
                 >
                   <div
                     className={cn({
