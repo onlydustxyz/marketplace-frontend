@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { TPayoutForm } from "app/settings/payout/features/form/form.types";
+import { TPayoutForm } from "app/migration/settings/billing/[id]/payment-methods/features/form/form.types";
 
 import { UseGetMyPayoutSettingsResponse } from "src/api/me/queries";
 
@@ -73,8 +73,8 @@ describe("formatToSchema", () => {
       starknetAddress: "0x456",
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
-      sepaAccount: {
-        iban: "DE89 3704 0044 0532 0130 00",
+      bankAccount: {
+        number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
       },
     };

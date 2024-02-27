@@ -50,7 +50,7 @@ function SettingsBillingPage() {
           hasValidBillingProfile={validBillingProfile}
           status={profile?.status}
           type={profile.data.type}
-          id={profile.data.id}
+          id={profile.externalId}
         />
       </div>
     </Card>
