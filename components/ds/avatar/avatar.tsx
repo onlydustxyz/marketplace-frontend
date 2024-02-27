@@ -8,6 +8,7 @@ import { cn } from "src/utils/cn";
 
 import { TAvatar } from "components/ds/avatar/avatar.types";
 import { avatarVariants } from "components/ds/avatar/avatar.variants";
+import { Link } from "components/ds/link/link";
 
 export function Avatar(props: TAvatar.Props) {
   const [isError, setIsError] = useState(false);
@@ -80,3 +81,30 @@ export function Avatar(props: TAvatar.Props) {
     />
   );
 }
+
+Avatar.Labelled = function AvatarLabelled({ children, href, avatarProps, labelProps }: TAvatar.LabelledProps) {
+  const wrapperClassName = "flex items-center gap-2";
+
+  function renderContent() {
+    const { className, ...restProps } = labelProps ?? {};
+
+    return (
+      <>
+        <Avatar size="s" {...avatarProps} />
+        <div className={cn("od-text-body-s text-greyscale-50", className)} {...restProps}>
+          {children}
+        </div>
+      </>
+    );
+  }
+
+  if (href) {
+    return (
+      <Link href={href} className={wrapperClassName}>
+        {renderContent()}
+      </Link>
+    );
+  }
+
+  return <div className={wrapperClassName}>{renderContent()}</div>;
+};

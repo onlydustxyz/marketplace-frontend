@@ -1,10 +1,11 @@
+"use client";
+
 import { useQueryClient } from "@tanstack/react-query";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
-import { ProjectRoutePaths, RoutePaths } from "src/App";
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
 import { CompletedRewardableItem } from "src/api/Project/queries";
@@ -18,6 +19,8 @@ import { useShowToaster } from "src/hooks/useToaster";
 import { ProjectBudgetType } from "src/types";
 import { BudgetCurrencyType } from "src/utils/money";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import View from "./View";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";
 import { Contributor, Inputs } from "./types";
@@ -26,14 +29,14 @@ import { reorderBudgets } from "./utils";
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const navigate = useNavigate();
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const router = useRouter();
+  const { slug = "" } = useParams<{ slug: string }>();
   const { capture } = usePosthog();
 
   const queryClient = useQueryClient();
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
 
   const {
@@ -66,7 +69,7 @@ const RewardForm: React.FC = () => {
         await refetch();
         showToaster(T("reward.form.sent"));
         queryClient.invalidateQueries({ queryKey: [MeApi.tags.all, ProjectApi.tags.completed_rewardable_items] });
-        navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
+        router.push(NEXT_ROUTER.projects.details.rewards.root(slug));
       } catch (e) {
         console.error(e);
       }

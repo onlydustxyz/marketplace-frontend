@@ -1,5 +1,5 @@
+import { useParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 
 import ErrorFallback from "src/ErrorFallback";
 import Title from "src/_pages/ProjectDetails/Title";
@@ -28,10 +28,10 @@ import { FilterQueryParams, Filters, ProjectRewardsFilter, ProjectRewardsFilterR
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
   const filterRef = useRef<ProjectRewardsFilterRef>(null);
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
 
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
@@ -125,7 +125,7 @@ const RewardList: React.FC = () => {
         </Flex>
         {!hasOrgsWithUnauthorizedRepos && project ? (
           <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
-            <EditProjectButton projectKey={projectKey} />
+            <EditProjectButton projectKey={slug} />
             <RewardProjectButton project={project} />
           </Flex>
         ) : null}
@@ -134,7 +134,7 @@ const RewardList: React.FC = () => {
       {project && !project?.indexingComplete ? <StillFetchingBanner /> : null}
 
       {hasOrgsWithUnauthorizedRepos ? (
-        <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
+        <MissingGithubAppInstallBanner slug={slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
 
       {isRewardsLoading || isLoadingProject ? (

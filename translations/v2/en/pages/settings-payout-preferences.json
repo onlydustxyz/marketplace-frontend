@@ -1,0 +1,9 @@
+{
+  "title": "Payout preferences",
+  "subtitle": "Connect your billing profile to the projects you contribute to for receiving rewards.",
+  "table": {
+    "projects": "Projects",
+    "billingProfiles": "Billing profiles"
+  },
+  "warning": "Only projects for which you have already received rewards will appear here."
+}

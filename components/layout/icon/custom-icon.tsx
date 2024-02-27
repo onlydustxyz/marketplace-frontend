@@ -1,11 +1,13 @@
-import { VerifiedIcon } from "components/layout/icon/icons/verified";
+import dynamic from "next/dynamic";
 
 import { TCustomIcon } from "./custom-icon.types";
-import { ArrowIcon } from "./icons/arrow";
-import { DollarIcon } from "./icons/dollar";
-import { GalleryLineIcon } from "./icons/gallery-line";
-import { TechnologyIcon } from "./icons/technology";
-import { WhaleIcon } from "./icons/whale";
+
+const ArrowIcon = dynamic(() => import("./icons/arrow").then(mod => mod.ArrowIcon));
+const DollarIcon = dynamic(() => import("./icons/dollar").then(mod => mod.DollarIcon));
+const GalleryLineIcon = dynamic(() => import("./icons/gallery-line").then(mod => mod.GalleryLineIcon));
+const TechnologyIcon = dynamic(() => import("./icons/technology").then(mod => mod.TechnologyIcon));
+const WhaleIcon = dynamic(() => import("./icons/whale").then(mod => mod.WhaleIcon));
+const VerifiedIcon = dynamic(() => import("components/layout/icon/icons/verified").then(mod => mod.VerifiedIcon));
 
 export function CustomIcon({ name, ...props }: TCustomIcon.Props) {
   const customIcons: { [key in TCustomIcon.Names]: JSX.Element } = {

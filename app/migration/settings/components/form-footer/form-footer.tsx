@@ -1,24 +1,24 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useFormContext } from "react-hook-form";
-import { generatePath } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
-import { RoutePaths } from "src/App";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
 import { Tag } from "components/ds/tag/tag";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { TFormFooter } from "./form-footer.types";
 
-// TODO: Change Button with link using the new library
-export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
+export function FormFooter({ isPending, hasPreviewButton, isAbsolute = true }: TFormFooter.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const { user } = useAuth0();
@@ -40,9 +40,12 @@ export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
     <Flex
       alignItems="center"
       justifyContent="center"
-      className="absolute bottom-0 left-0 right-0 z-50 border-t border-greyscale-50/8 bg-spaceBlue-900 px-4 py-5 shadow-medium xl:px-8"
+      className={cn("border-t border-greyscale-50/8", {
+        "absolute bottom-0 left-0 right-0 z-50 bg-spaceBlue-900 px-4 shadow-medium xl:px-8": isAbsolute,
+        "mt-5 pt-5": !isAbsolute,
+      })}
     >
-      <div className="w-full max-w-7xl px-0 xl:px-8">
+      <div className={cn("w-full", { "max-w-7xl px-0 xl:px-8": isAbsolute })}>
         <Flex alignItems="center" justifyContent="between" className="flex-col gap-4 md:flex-row md:gap-2">
           <Tag size="medium" className="w-full md:w-fit" containerClassName="w-full md:w-fit">
             {isDirty || !isValid ? (
@@ -73,10 +76,8 @@ export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
 
           <Flex alignItems="center" className="w-full gap-3 md:w-fit">
             {hasPreviewButton ? (
-              <a
-                href={generatePath(RoutePaths.PublicProfile, {
-                  userLogin: user?.nickname || "",
-                })}
+              <BaseLink
+                href={NEXT_ROUTER.publicProfile.root(user?.nickname ?? "")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full md:w-fit"
@@ -90,7 +91,7 @@ export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
                     <Translate token="v2.pages.settings.profile.buttons.previewMobile" />
                   )}
                 </Button>
-              </a>
+              </BaseLink>
             ) : null}
 
             <Button

@@ -1,0 +1,31 @@
+{
+  "wallets": {
+    "description": "Relevant for rewards in",
+    "ethereum": {
+      "label": "Ethereum wallet address or ENS name",
+      "placeholder": "Ethereum wallet address"
+    },
+    "starknet": {
+      "label": "Starknet wallet address",
+      "placeholder": "Starknet wallet address"
+    },
+    "optimism": {
+      "label": "Optimism wallet address",
+      "placeholder": "Optimism wallet address"
+    },
+    "aptos": {
+      "label": "Aptos wallet address",
+      "placeholder": "Aptos wallet address"
+    },
+    "sepa": {
+      "iban": {
+        "label": "Account number",
+        "placeholder": "Account number"
+      },
+      "bic": {
+        "label": "BIC / SWIFT",
+        "placeholder": "BIC / SWIFT"
+      }
+    }
+  }
+}

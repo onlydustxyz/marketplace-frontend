@@ -1,11 +1,9 @@
 import { UseMutateFunction } from "@tanstack/react-query";
 import { PropsWithChildren, useMemo, useState } from "react";
-import { NavLink, matchPath, useLocation } from "react-router-dom";
 
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
-import { RoutePaths } from "src/App/index";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -28,7 +26,11 @@ import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
+import { BaseLink } from "components/layout/base-link/base-link";
 
+import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import MixedApi from "../../../api/Mixed";
@@ -65,8 +67,7 @@ export default function View({
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
   const closeRewardPanel = useCloseStack();
-  const { pathname } = useLocation();
-  const isMyRewardsPage = !!matchPath(`${RoutePaths.Rewards}`, pathname);
+  const isMyRewardsPage = useMatchPath(NEXT_ROUTER.rewards.all);
 
   const {
     data,
@@ -97,13 +98,13 @@ export default function View({
 
     if (redirectionStatus && (data.status === "MISSING_PAYOUT_INFO" || data.status === "PENDING_VERIFICATION"))
       return (
-        <NavLink to={redirectionStatus} onClick={() => closeRewardPanel()}>
+        <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
           <PayoutStatus
             status={data.status}
             dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
             isBillingError={isBillingError}
           />
-        </NavLink>
+        </BaseLink>
       );
 
     return (
@@ -340,7 +341,9 @@ export default function View({
                   />
                   <div className="flex flex-row items-center gap-1">
                     {T("reward.table.detailsPanel.on")}
-                    <Link onClick={() => openProjectOverview({ slug: data.project.slug })}>{data.project.name}</Link>
+                    <Link.Button onClick={() => openProjectOverview({ slug: data.project.slug })}>
+                      {data.project.name}
+                    </Link.Button>
                   </div>
                 </Details>
               ) : null}
