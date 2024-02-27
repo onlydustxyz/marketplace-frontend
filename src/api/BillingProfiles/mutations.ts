@@ -3,8 +3,8 @@ import { BILLING_PROFILES_PATH } from "src/api/BillingProfiles/path";
 import { BILLING_PROFILES_TAGS } from "src/api/BillingProfiles/tags";
 import MeApi from "src/api/me";
 import { ME_TAGS } from "src/api/me/tags";
-
 import { QueryParams } from "src/utils/getEndpointUrl";
+
 import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
 
@@ -17,7 +17,7 @@ const useCreateBillingProfile = ({
   options = {},
 }: UseMutationProps<UseCreateBillingProfileResponse, unknown, UseCreateBillingProfileBody>) => {
   return useBaseMutation<UseCreateBillingProfileBody, UseCreateBillingProfileResponse>({
-    resourcePath: BILLING_PROFILES_PATH.root,
+    resourcePath: BILLING_PROFILES_PATH.ROOT,
     method: "POST",
     invalidatesTags: [
       { queryKey: MeApi.tags.user, exact: false },
@@ -33,7 +33,7 @@ const useUpdatePayoutSettings = ({
   params,
 }: UseMutationProps<UseUpdatePayoutSettingsResponse, { id?: string }, UseUpdatePayoutSettingsBody>) => {
   return useBaseMutation<UseUpdatePayoutSettingsBody, UseUpdatePayoutSettingsResponse>({
-    resourcePath: BILLING_PROFILES_PATH.payout(params?.id || ""),
+    resourcePath: BILLING_PROFILES_PATH.PAYOUT(params?.id || ""),
     invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
     method: "PUT",
     enabled: options?.enabled || !params?.id,
@@ -47,7 +47,7 @@ const useUploadInvoice = ({
 }: UseUploaderProps<{ url: string }, { billingProfileId: string; invoiceId: string; queryParams?: QueryParams }>) => {
   return useBaseUploader<{ url: string }>({
     ...params,
-    resourcePath: BILLING_PROFILES_PATH.uploadInvoiceLinkedToProfil(
+    resourcePath: BILLING_PROFILES_PATH.UPLOAD_INVOICE_LINKED_TO_PROFILE(
       params?.billingProfileId || "",
       params?.invoiceId || ""
     ),
@@ -67,7 +67,7 @@ const useAcceptInvoiceMandate = ({
   options = {},
 }: UseMutationProps<void, { billingProfileId?: string }, UseAcceptInvoiceMandateBody>) => {
   return useBaseMutation<UseAcceptInvoiceMandateBody, void>({
-    resourcePath: BILLING_PROFILES_PATH.acceptInvoiceMandate(params?.billingProfileId || ""),
+    resourcePath: BILLING_PROFILES_PATH.ACCEPT_INVOICE_MANDATE(params?.billingProfileId || ""),
     method: "PUT",
     enabled: !!params?.billingProfileId,
     ...options,
