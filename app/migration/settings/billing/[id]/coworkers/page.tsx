@@ -3,8 +3,11 @@
 import React from "react";
 
 import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
+import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
+import { Table } from "components/ds/table/table";
+import { TTable } from "components/ds/table/table.types";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -12,6 +15,7 @@ import { Translate } from "components/layout/translate/translate";
 import { EmptyState } from "./components/empty-state/empty-state";
 
 function CoworkersPage() {
+  const { T } = useIntl();
   const [openStackBillingInviteTeamMember] = useStackBillingInviteTeamMember();
 
   function handleClick() {
@@ -19,7 +23,54 @@ function CoworkersPage() {
   }
 
   // TODO: Change with data
-  const cowokers = [];
+  const hasCoworkers = true;
+
+  const columns: TTable.Column[] = [
+    {
+      key: "coworkers",
+      label: T("v2.pages.settings.billing.coworkers.table.columns.coworkers"),
+      icon: {
+        remixName: "ri-team-line",
+      },
+    },
+    {
+      key: "role",
+      label: T("v2.pages.settings.billing.coworkers.table.columns.role"),
+      icon: {
+        remixName: "ri-information-line",
+      },
+    },
+    {
+      key: "joined",
+      label: T("v2.pages.settings.billing.coworkers.table.columns.joined"),
+      icon: {
+        remixName: "ri-check-line",
+      },
+    },
+    {
+      key: "actions",
+      label: "",
+      align: "end",
+      showOnHover: true,
+    },
+  ];
+
+  const rows: TTable.Row[] = [
+    {
+      key: "1",
+      coworkers: "John Doe",
+      role: "Admin",
+      joined: "01/01/2021",
+      actions: <Icon remixName="ri-more-line" />,
+    },
+    {
+      key: "2",
+      coworkers: "John Doe",
+      role: "Admin",
+      joined: "01/01/2021",
+      actions: <Icon remixName="ri-more-line" />,
+    },
+  ];
 
   return (
     <Flex direction="col" className="gap-4">
@@ -40,7 +91,7 @@ function CoworkersPage() {
         }}
       />
 
-      {cowokers.length > 0 ? <div>List</div> : <EmptyState />}
+      {hasCoworkers ? <Table columns={columns} rows={rows} /> : <EmptyState />}
     </Flex>
   );
 }

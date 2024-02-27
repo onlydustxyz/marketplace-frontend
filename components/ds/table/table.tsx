@@ -19,6 +19,7 @@ import { Icon } from "components/layout/icon/icon";
 // TODO empty state - https://nextui.org/docs/components/table#tablebody-props
 // TODO sort - https://nextui.org/docs/components/table#sorting-rows
 // TODO infinite pagination - https://nextui.org/docs/components/table#infinite-pagination
+// TODO: add generics type for rows
 export function Table({ columns, rows }: TTable.Props) {
   const classNames = useMemo(
     () => ({
