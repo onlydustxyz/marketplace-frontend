@@ -19,9 +19,10 @@ import en_billing_create from "translations/v2/en/pages/billing-create-stacks.js
 import en_billing_invite_team_member from "translations/v2/en/pages/billing-invite-team-member-stacks.json";
 import en_projects from "translations/v2/en/pages/projects.json";
 import en_settings_billing from "translations/v2/en/pages/settings-billing.json";
+import en_settings_billing_coworkers from "translations/v2/en/pages/settings-billing/settings-billing-coworkers.json";
 import en_settings_billing_header from "translations/v2/en/pages/settings-billing/settings-billing-header.json";
-import en_settings_billing_payout from "translations/v2/en/pages/settings-billing/settings-billing-payout.json";
 import en_settings_billing_information from "translations/v2/en/pages/settings-billing/settings-billing-informations.json";
+import en_settings_billing_payout from "translations/v2/en/pages/settings-billing/settings-billing-payout.json";
 import en_settings_billing_sidebar from "translations/v2/en/pages/settings-billing/settings-billing-sidebar.json";
 import en_settings_billing_tabs from "translations/v2/en/pages/settings-billing/settings-billing-tabs.json";
 import en_settings_invoices from "translations/v2/en/pages/settings-invoices.json";
@@ -60,6 +61,7 @@ const en = {
           sidebar: en_settings_billing_sidebar,
           payout: en_settings_billing_payout,
           information: en_settings_billing_information,
+          coworkers: en_settings_billing_coworkers,
         },
         payout: en_settings_payout,
         invoices: en_settings_invoices,

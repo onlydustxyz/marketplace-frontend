@@ -1,0 +1,28 @@
+{
+  "banner": {
+    "title": "All your coworkers will be able to contribute to your billing profile.",
+    "button": "Invite coworker"
+  },
+  "empty": {
+    "title": "Nothing to show",
+    "description": "Please invite coworkers to display more results.",
+    "imageAlt": "Empty state illustration"
+  },
+  "table": {
+    "columns": {
+      "coworkers": "Co-workers",
+      "role": "Role",
+      "joined": "Joined"
+    },
+    "roles": {
+      "admin": "Admin",
+      "employee": "Employee"
+    },
+    "actions": {
+      "cancel": "Cancel invite",
+      "remove": "Remove user",
+      "disable": "Disable user",
+      "reInvite": "Re-invite user"
+    }
+  }
+}
