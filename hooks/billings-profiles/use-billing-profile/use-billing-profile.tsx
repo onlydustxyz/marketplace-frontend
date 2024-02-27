@@ -43,7 +43,7 @@ export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile
     return {
       data,
       icon: BillingProfileConstant.profileTypeMapping[data.type].icon,
-      status: data.status,
+      status: data.status || "NOT_STARTED",
       externalId,
     };
   }, [data, externalId]);
