@@ -1,1 +1,7 @@
-{}
+{
+  "description": {
+    "INDIVIDUAL": "As an individual, when you reach 5,000 USD / year you’ll need to create a dedicated entity.",
+    "SELF_EMPLOYED": "As an self-employed, you are responsible for your statements in your country of residence.",
+    "COMPANY": "As an organisation, you are responsible for your statements in your country of residence, and for your coworkers."
+  }
+}

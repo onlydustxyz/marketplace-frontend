@@ -115,7 +115,10 @@ export default function InvoicesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <SettingsHeader title="v2.pages.settings.invoices.title" subtitle="v2.pages.settings.invoices.subtitle" />
+      <SettingsHeader
+        title={<Translate token="v2.pages.settings.invoices.title" />}
+        subtitle="v2.pages.settings.invoices.subtitle"
+      />
       <Card className="relative flex w-full flex-col" background="base">
         <div>
           <Table

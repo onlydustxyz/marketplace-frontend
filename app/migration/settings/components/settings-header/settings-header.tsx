@@ -12,7 +12,7 @@ export function SettingsHeader({ icon, title, subtitle, children }: TSettingsHea
         <Flex direction="col" className="gap-2">
           <Flex alignItems="center" className="gap-2">
             {icon ? <Icon remixName={icon} size={24} /> : null}
-            <Typography variant="title-m" translate={{ token: title }} />
+            <Typography variant="title-m">{title}</Typography>
           </Flex>
 
           {subtitle ? (

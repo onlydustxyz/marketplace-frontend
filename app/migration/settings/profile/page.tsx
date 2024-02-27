@@ -12,6 +12,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { Key } from "src/hooks/useIntl";
 
 import { Flex } from "components/layout/flex/flex";
+import { Translate } from "components/layout/translate/translate";
 
 import { FormFooter } from "../components/form-footer/form-footer";
 import { SettingsHeader } from "../components/settings-header/settings-header";
@@ -110,7 +111,10 @@ function SettingsProfilePage() {
     <FormProvider {...formMethods}>
       <form id="profile-form" className="flex h-full flex-col" onSubmit={handleSubmit(onSubmit)}>
         <Flex direction="col" className="flex-1 gap-4 pb-4">
-          <SettingsHeader title="v2.pages.settings.profile.title" subtitle="v2.pages.settings.profile.subtitle" />
+          <SettingsHeader
+            title={<Translate token="v2.pages.settings.profile.title" />}
+            subtitle="v2.pages.settings.profile.subtitle"
+          />
 
           <Flex direction="col" className="gap-4">
             <ProfileGithubAccount />

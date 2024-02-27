@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { SettingsHeader } from "app/settings/components/settings-header/settings-header";
+import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
 
 import MeApi from "src/api/me";
 import { MeTypes } from "src/api/me/types";
@@ -94,7 +94,7 @@ export function Header({ initialData }: THeader.Props) {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <SettingsHeader
-          title="v2.pages.settings.billing.title"
+          title={<Translate token="v2.pages.settings.billing.title" />}
           subtitle={
             profile === MeTypes.billingProfileType.Individual
               ? "v2.pages.settings.billing.description_individual"
