@@ -36,6 +36,18 @@ export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile
     return "NOT_STARTED";
   }, [data]);
 
+  const externalId: string | undefined = useMemo(() => {
+    if (data?.kyc?.status) {
+      return "";
+    }
+
+    if (data?.kyb?.status) {
+      return "";
+    }
+
+    return undefined;
+  }, [data]);
+
   const profile = useMemo(() => {
     if (!data) {
       return undefined;
@@ -45,8 +57,9 @@ export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile
       data,
       icon: BillingProfileConstant.profileTypeMapping[data.type].icon,
       status: kycKybStatus,
+      externalId,
     };
-  }, [data, kycKybStatus]);
+  }, [data, kycKybStatus, externalId]);
 
   async function refetchBilling() {
     await refetch();
