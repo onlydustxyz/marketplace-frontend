@@ -2,9 +2,9 @@ import { format } from "date-fns";
 import { useMemo } from "react";
 
 import { ProfileBoolean } from "app/migration/settings/billing/[id]/general-information/component/profile-boolean/profile-boolean";
+import { ProfileItemGrid } from "app/migration/settings/billing/[id]/general-information/component/profile-item-grid/profile-item-grid";
+import { ProfileItem } from "app/migration/settings/billing/[id]/general-information/component/profile-item/profile-item";
 import { TProfileIndividual } from "app/migration/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual.types";
-import { ProfileItemGrid } from "app/settings/billing/component/profile-item-grid/profile-item-grid";
-import { ProfileItem } from "app/settings/billing/component/profile-item/profile-item";
 
 import { Translate } from "components/layout/translate/translate";
 
