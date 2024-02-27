@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
@@ -21,27 +21,10 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
   const { T } = useIntl();
   const { isLoading, isError, fileUrl, invoiceId } = useInvoicePreview({ rewardIds, billingProfileId, isSample: true });
   const { isPendingUploadInvoice, handleSendInvoice } = useInvoiceUpload({ billingProfileId, invoiceId });
-  const [selectedFile, setSelectedFile] = useState<File>();
-  const [blobFile, setBlobFile] = useState<Blob>();
-
-  function fileToBlob() {
-    const reader = new FileReader();
-    if (selectedFile) {
-      reader.readAsText(selectedFile);
-      reader.onload = function () {
-        if (reader.result) {
-          setBlobFile(new Blob([reader.result], { type: "application/pdf" }));
-        }
-      };
-    }
-  }
-
-  useEffect(() => {
-    fileToBlob();
-  }, [selectedFile]);
+  const [selectedFileBlob, setSelectedFileBlob] = useState<File>();
 
   function removeFile() {
-    setSelectedFile(undefined);
+    setSelectedFileBlob(undefined);
   }
 
   const requirementList = useMemo(
@@ -90,11 +73,11 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
   }, [fileUrl, isError, isLoading]);
 
   function renderUploadFile() {
-    if (selectedFile) {
-      return <UploadedFileDisplay fileName={selectedFile.name} onRemoveFile={removeFile} />;
+    if (selectedFileBlob) {
+      return <UploadedFileDisplay fileName={selectedFileBlob.name} onRemoveFile={removeFile} />;
     }
 
-    return <UploadFile setSelectedFile={setSelectedFile} />;
+    return <UploadFile setSelectedFile={setSelectedFileBlob} />;
   }
 
   return (
@@ -130,7 +113,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
             {renderUploadFile()}
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-            {selectedFile ? (
+            {selectedFileBlob ? (
               <div className="bg-greyscale-900 p-4">
                 <Banner
                   title={<Translate token={"v2.pages.stacks.request_payments.invoiceSubmission.banner.title"} />}
@@ -155,9 +138,13 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                   size="m"
                   className="w-full"
                   onClick={() =>
-                    handleSendInvoice({ fileBlob: blobFile, isManualUpload: false, fileName: selectedFile?.name })
+                    handleSendInvoice({
+                      fileBlob: selectedFileBlob as Blob,
+                      isManualUpload: true,
+                      fileName: selectedFileBlob?.name,
+                    })
                   }
-                  disabled={isPendingUploadInvoice || !selectedFile}
+                  disabled={isPendingUploadInvoice || !selectedFileBlob}
                 >
                   <Translate token="v2.pages.stacks.request_payments.form.sendInvoice" />
                 </Button>

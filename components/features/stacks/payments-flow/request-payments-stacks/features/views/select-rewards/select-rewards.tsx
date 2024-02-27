@@ -1,16 +1,20 @@
 import { useCallback, useMemo } from "react";
 
+import { IMAGES } from "src/assets/img";
+
 import { Button } from "components/ds/button/button";
 import { Tabs } from "components/ds/tabs/tabs";
-import { AmountCounter } from "components/features/stacks/payments-flow/request-payments-stacks/components/amount-counter/amount-counter";
 import { RewardItem } from "components/features/stacks/payments-flow/request-payments-stacks/components/reward-item/reward-item";
 import { TSelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards.types";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
+import { AmountCounter } from "../../../components/amount-counter/amount-counter";
 
 export function SelectRewards({
   onExclude,
@@ -21,14 +25,13 @@ export function SelectRewards({
   isMandateAccepted,
 }: TSelectRewards.Props) {
   const { user } = useCurrentUser();
-
   const totalAmountSelectedRewards = useMemo(
     () => includedRewards.reduce((count, reward) => (count += reward.amount.dollarsEquivalent || 0), 0),
     [includedRewards]
   );
 
   const onSubmit = () => {
-    if (isMandateAccepted) {
+    if (user?.billingProfileType === "INDIVIDUAL" || (user?.billingProfileType === "COMPANY" && isMandateAccepted)) {
       goTo({ to: TRequestPaymentsStacks.Views.Generate });
     } else {
       goTo({ to: TRequestPaymentsStacks.Views.Mandate });
@@ -40,9 +43,19 @@ export function SelectRewards({
       if (selected === TSelectRewards.Tabs.Included) {
         return (
           <div className="flex w-full flex-col items-start justify-start gap-3">
-            {includedRewards.map(reward => (
-              <RewardItem key={reward.id} type="exclude" onClick={onExclude} {...reward} currency={reward.amount} />
-            ))}
+            {!includedRewards.length ? (
+              <div className="flex w-full flex-col py-6">
+                <EmptyState
+                  illustrationSrc={IMAGES.global.categories}
+                  title={{ token: "v2.pages.stacks.request_payments.selectRewards.emptyState.title" }}
+                  description={{ token: "v2.pages.stacks.request_payments.selectRewards.emptyState.description" }}
+                />
+              </div>
+            ) : (
+              includedRewards.map(reward => (
+                <RewardItem key={reward.id} type="exclude" onClick={onExclude} {...reward} currency={reward.amount} />
+              ))
+            )}
           </div>
         );
       } else if (selected === TSelectRewards.Tabs.Excluded) {
@@ -96,7 +109,7 @@ export function SelectRewards({
                 <Button variant="secondary" size="m" onClick={() => goTo({ to: "close" })}>
                   <Translate token="v2.pages.stacks.request_payments.form.back" />
                 </Button>
-                <Button variant="primary" size="m" onClick={onSubmit}>
+                <Button variant="primary" size="m" onClick={onSubmit} disabled={includedRewards?.length < 1}>
                   <Translate
                     token="v2.pages.stacks.request_payments.form.submit"
                     params={{ count: includedRewards?.length }}

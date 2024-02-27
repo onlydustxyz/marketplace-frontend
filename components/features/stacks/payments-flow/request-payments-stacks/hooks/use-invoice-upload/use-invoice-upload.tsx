@@ -42,8 +42,10 @@ export function useInvoiceUpload({ billingProfileId, invoiceId }: TUseInvoiceUpl
   });
 
   function handleSendInvoice({ fileBlob, isManualUpload = false, fileName }: TUseInvoiceUpload.HandleSendInvoiceProps) {
-    if (isManualUpload) {
-      setQueryParams(`filename=${fileName}`);
+    if (isManualUpload && fileName) {
+      const params = new URLSearchParams();
+      params.append("fileName", fileName);
+      setQueryParams(params);
     }
     if (fileBlob) {
       uploadInvoice(fileBlob);

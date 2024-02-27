@@ -27,7 +27,7 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
     try {
       const token = await getAccessTokenSilently();
       const data = await fetchInvoicePreviewBlob({ token, rewardIds, billingProfileId, isSample });
-      if (data.blob) {
+      if (data?.blob) {
         setFileBlob(data.blob);
         setFileUrl(window.URL.createObjectURL(data.blob));
         setInvoiceId(data.invoiceId ?? "");

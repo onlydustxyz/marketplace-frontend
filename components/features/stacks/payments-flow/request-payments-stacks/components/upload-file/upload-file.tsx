@@ -23,27 +23,31 @@ export function UploadFile({ setSelectedFile }: TUploadFile.Props) {
     }
   }
 
-  function onChooseFile() {
-    inputRef.current?.click();
-  }
-
   return (
-    <Card
-      background={false}
-      className="relative z-[0] flex flex-col items-center gap-4 border-dashed !py-10"
-      clickable
-      onClick={onChooseFile}
-    >
+    <Card background={false} className="relative z-[0] flex flex-col items-center gap-4 border-dashed !py-10" clickable>
       <IconTag icon={{ remixName: "ri-upload-cloud-line" }} />
-      <div>
+      <div className="flex flex-col gap-1 text-center">
+        <div>
+          <Translate
+            as="span"
+            className="text-spacePurple-400"
+            token="v2.pages.stacks.request_payments.uploadInvoice.clickToUpload"
+          />{" "}
+          <Translate token="v2.pages.stacks.request_payments.uploadInvoice.dragAndDrop" />
+        </div>
         <Translate
-          as="span"
-          className="text-spacePurple-400"
-          token="v2.pages.stacks.request_payments.uploadInvoice.clickToUpload"
-        />{" "}
-        <Translate token="v2.pages.stacks.request_payments.uploadInvoice.dragAndDrop" />
+          as="div"
+          className="text-sm text-gray-500"
+          token="v2.pages.stacks.request_payments.uploadInvoice.fileType"
+        />
       </div>
-      <input type="file" ref={inputRef} onChange={handleOnChange} className="hidden" accept="application/pdf" />
+      <input
+        type="file"
+        ref={inputRef}
+        onChange={handleOnChange}
+        className="absolute h-full w-full cursor-pointer opacity-0"
+        accept="application/pdf"
+      />
     </Card>
   );
 }

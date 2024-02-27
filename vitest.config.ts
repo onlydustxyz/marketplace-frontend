@@ -9,6 +9,6 @@ export default defineConfig({
     threads: false,
     setupFiles: ["src/test/setup.ts"],
     environment: "jsdom",
-    exclude: [...configDefaults.exclude],
+    exclude: [...configDefaults.exclude, "**/e2e/**"],
   },
 });

@@ -81,7 +81,7 @@
     "@heroicons/react": "^2.0.13",
     "@inquirer/prompts": "^3.3.0",
     "@next/eslint-plugin-next": "^14.0.4",
-    "@playwright/test": "^1.31.2",
+    "@playwright/test": "^1.41.2",
     "@storybook/addon-actions": "^7.6.6",
     "@storybook/addon-docs": "^7.6.7",
     "@storybook/addon-essentials": "^7.6.6",
@@ -97,6 +97,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/iban": "^0.0.32",
+    "@types/node": "^20.11.20",
     "@types/react": "^18.0.24",
     "@types/react-currency-format": "^1.0.0",
     "@types/react-dom": "^18.0.8",
@@ -127,6 +128,7 @@
     "storybook": "^7.6.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
+    "vite": "^5.1.4",
     "vitest": "^0.25.1"
   }
 }
