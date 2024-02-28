@@ -11,9 +11,9 @@
     "label": "Locked",
     "tooltip": "Locked until further notice"
   },
-  "invoicePending": {
-    "label": "Pending invoice",
-    "tooltip": "An invoice is required to process your reward. Please wait up to 5 days if you already sent it."
+  "pendingRequest": {
+    "label": "Pending request",
+    "tooltip": "Please request a payment to process your rewards."
   },
   "signupPending": {
     "label": "Signup invoice",
