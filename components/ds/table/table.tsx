@@ -81,7 +81,7 @@ export function Table({
             key={item.key}
             {...(TableRowProps || {})}
             className={cn(
-              "border-b border-card-border-light duration-200 transition hover:bg-white/5",
+              "border-b border-card-border-light transition duration-200 hover:bg-white/5",
               TableRowProps?.className
             )}
           >

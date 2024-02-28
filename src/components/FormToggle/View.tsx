@@ -15,10 +15,10 @@ const View = ({ checked, label, onChange }: Props) => (
         checked
           ? "border border-spacePurple-500 bg-spacePurple-500 hover:border-spacePurple-600 hover:bg-spacePurple-600"
           : "border border-white/0 bg-white/[0.08] hover:border hover:border-greyscale-50/[0.08]"
-      } h-5 w-9 items-center rounded-full px-px duration-300 transition`}
+      } h-5 w-9 items-center rounded-full px-px transition duration-300`}
     >
       <span
-        className={`h-4 w-4 transform rounded-full bg-greyscale-50 duration-300 transition ${
+        className={`h-4 w-4 transform rounded-full bg-greyscale-50 transition duration-300 ${
           checked ? "translate-x-4" : "translate-x-0"
         }`}
       />

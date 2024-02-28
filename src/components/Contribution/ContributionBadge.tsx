@@ -54,7 +54,7 @@ function ContributionBadgeContent({
     status && githubStatus !== GithubPullRequestStatus.Draft
       ? contributionIconVariants.contributionStatus[status]
       : contributionIconVariants.status[type][
-          githubStatus as keyof typeof contributionIconVariants.status[GithubContributionType]
+          githubStatus as keyof (typeof contributionIconVariants.status)[GithubContributionType]
         ];
 
   return (

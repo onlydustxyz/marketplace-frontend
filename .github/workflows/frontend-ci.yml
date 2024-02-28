@@ -69,4 +69,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN  }}
       - name: Clean coverage
         run: rm -rf coverage
-

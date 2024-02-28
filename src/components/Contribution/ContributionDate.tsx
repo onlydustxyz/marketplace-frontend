@@ -69,7 +69,7 @@ export function ContributionDate({
       <Tooltip id={tooltipId} clickable {...rest}>
         <div className={cn("flex items-center gap-2", className)}>
           <ContributionIcon type={type} status={status} contributionStatus={contributionStatus} />
-          {T(tokens[type][status as keyof typeof tokens[GithubContributionType]] ?? "", {
+          {T(tokens[type][status as keyof (typeof tokens)[GithubContributionType]] ?? "", {
             date: getFormattedDateGB(date),
             time: getFormattedTimeUS(date),
           })}

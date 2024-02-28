@@ -1,7 +1,7 @@
 {
   "items": {
-    "profile":"Public profile",
-    "payoutPreferences":"Payout preferences",
+    "profile": "Public profile",
+    "payoutPreferences": "Payout preferences",
     "billing": {
       "label": "Billing profiles",
       "empty": {

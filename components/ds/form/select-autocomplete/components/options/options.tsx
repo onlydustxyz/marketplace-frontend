@@ -35,7 +35,7 @@ export function Options({
             </Combobox.Option>
             {onNextPage && key === filteredItems.length - 1 ? (
               <InView
-                className="width-full min-h-1 flex flex-row items-center justify-center"
+                className="width-full flex min-h-1 flex-row items-center justify-center"
                 onChange={inView => {
                   if (inView) {
                     onNextPage();

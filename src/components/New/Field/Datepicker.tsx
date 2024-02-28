@@ -242,7 +242,7 @@ export function Datepicker({
           <Popover.Button
             ref={refs.setReference}
             className={cn(
-              "relative right-0 flex w-full origin-right items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg duration-200 ease-out transition-all",
+              "relative right-0 flex w-full origin-right items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg transition-all duration-200 ease-out",
               {
                 "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                   open,
