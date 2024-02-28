@@ -13,6 +13,7 @@ export namespace TInvoiceBuilders {
   }
 
   export interface RewardsSummaryBuilderProps {
+    isUserIndividual: boolean;
     invoiceDetails: InvoicePreviewResponse;
   }
 }

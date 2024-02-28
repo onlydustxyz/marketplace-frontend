@@ -52,6 +52,7 @@ export async function GET(request: NextRequest) {
     invoiceDetails: invoicePreviewData,
   });
   const rewardSummary: TInvoice.RewardsSummaryProps = getRewardsSummaryProps({
+    isUserIndividual,
     invoiceDetails: invoicePreviewData,
   });
   const footer = {

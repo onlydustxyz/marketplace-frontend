@@ -79,6 +79,7 @@ export function getInvoiceInfoProps({
 }
 
 export function getRewardsSummaryProps({
+  isUserIndividual,
   invoiceDetails,
 }: TInvoiceBuilders.RewardsSummaryBuilderProps): TInvoice.RewardsSummaryProps {
   const rewards = invoiceDetails.rewards;
@@ -93,6 +94,7 @@ export function getRewardsSummaryProps({
   };
 
   return {
+    isUserIndividual,
     rewards,
     vat,
     totalBeforeTax,
