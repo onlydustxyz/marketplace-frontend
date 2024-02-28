@@ -28,6 +28,7 @@ function calculateTotalAmounts(rewards: InvoicePreviewResponse["rewards"]): { cu
   return [];
 }
 export function InvoiceSummary({
+  isUserIndividual,
   rewards,
   vat,
   totalBeforeTax,
@@ -81,22 +82,29 @@ export function InvoiceSummary({
               </View>
             ))}
             <View wrap={false}>
-              <View style={styles.tr}>
-                <Text style={styles.tdSmall}></Text>
-                <Text style={styles.th}></Text>
-                <Text style={styles.th}></Text>
-                <Text style={styles.th}></Text>
-                <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalBeforeTax}</Text>
-                <Text style={styles.th}>{formatAmount({ amount: totalBeforeTax, currency: Currency.USD })}</Text>
-              </View>
+              {/*  For individuals, hide tax lines */}
+              {!isUserIndividual ? (
+                <View style={styles.tr}>
+                  <Text style={styles.tdSmall}></Text>
+                  <Text style={styles.th}></Text>
+                  <Text style={styles.th}></Text>
+                  <Text style={styles.th}></Text>
+                  <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalBeforeTax}</Text>
+                  <Text style={styles.th}>{formatAmount({ amount: totalBeforeTax, currency: Currency.USD })}</Text>
+                </View>
+              ) : null}
 
-              <InvoiceVat vat={vat} totalTax={totalTax} />
+              {!isUserIndividual ? <InvoiceVat vat={vat} totalTax={totalTax} /> : null}
               <View style={styles.tr}>
                 <Text style={styles.tdSmall}></Text>
                 <Text style={styles.th}></Text>
                 <Text style={styles.th}></Text>
                 <Text style={styles.th}></Text>
-                <Text style={styles.th}>{InvoiceTokens.rewardSummary.table.totalAfterTax}</Text>
+                <Text style={styles.th}>
+                  {!isUserIndividual
+                    ? InvoiceTokens.rewardSummary.table.totalAfterTax
+                    : InvoiceTokens.rewardSummary.table.totalReceipt}
+                </Text>
                 <Text style={styles.th}>{formatAmount({ amount: totalAfterTax, currency: Currency.USD })}</Text>
               </View>
             </View>
