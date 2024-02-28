@@ -60,7 +60,7 @@ interface FormatAmountParams {
   currency?: BudgetCurrencyType | undefined;
 }
 export function formatAmount({ amount, locale = "en-US", fixedDecimals = 2, currency }: FormatAmountParams): string {
-  if (!amount) {
+  if (amount === null) {
     return "N/A";
   }
 
