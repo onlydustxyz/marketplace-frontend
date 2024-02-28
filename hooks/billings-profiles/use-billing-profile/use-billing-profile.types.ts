@@ -15,6 +15,7 @@ export namespace TUseBillingProfile {
           data: UseGetBillingProfileById;
           icon: TIcon.Props;
           status: BillingProfilesTypes.status;
+          externalId: string | undefined;
         }
       | undefined;
     isLoading: boolean;

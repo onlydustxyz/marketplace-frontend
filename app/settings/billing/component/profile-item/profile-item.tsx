@@ -6,7 +6,6 @@ import { Typography } from "components/layout/typography/typography";
 import { TProfileItem } from "./profile-item.types";
 
 export function ProfileItem({ children, label, className }: TProfileItem.Props) {
-  console.log("label", children, label);
   return (
     <Flex direction="col" justifyContent="start" alignItems="start" className="gap-2">
       <Typography variant="special-label" translate={{ token: label }} className="text-spaceBlue-200" />

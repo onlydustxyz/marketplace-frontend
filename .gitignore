@@ -85,3 +85,7 @@ src/__generated/api.d.ts
 # Next.js
 .next
 next-env.d.ts
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

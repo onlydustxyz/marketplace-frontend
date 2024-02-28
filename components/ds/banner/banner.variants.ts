@@ -54,6 +54,9 @@ export const bannerVariants = tv({
       heavy: {
         wrapper: "bg-card-background-heavy",
       },
+      base: {
+        wrapper: "bg-card-background-base",
+      },
     },
     hasBorder: {
       true: "",
@@ -86,6 +89,13 @@ export const bannerVariants = tv({
       hasBorder: true,
       class: {
         wrapper: "border border-card-border-heavy",
+      },
+    },
+    {
+      variant: "base",
+      hasBorder: true,
+      class: {
+        wrapper: "border border-card-border-light",
       },
     },
   ],

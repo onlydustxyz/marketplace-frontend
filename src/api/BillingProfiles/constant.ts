@@ -1,10 +1,9 @@
-import { UseGetBillingProfileById } from "src/api/BillingProfiles/queries";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { UseBillingProfileResponse } from "src/api/me/billing/queries";
 import { MeBillingTypes } from "src/api/me/billing/types";
 
 export namespace BillingProfileConstant {
-  export const profileTypeMapping: Record<UseGetBillingProfileById["type"], BillingProfilesTypes.profileTypeMapping> = {
+  export const profileTypeMapping: Record<BillingProfilesTypes.typeUnion, BillingProfilesTypes.profileTypeMapping> = {
     SELF_EMPLOYED: {
       icon: { remixName: "ri-suitcase-line" },
     },

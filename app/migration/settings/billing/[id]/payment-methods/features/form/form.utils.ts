@@ -39,8 +39,8 @@ export function formatToSchema(data: TPayoutForm.Data) {
     aptosAddress: emptyStringToUndefined(aptosAddress),
     ...(hasIban || hasBic
       ? {
-          sepaAccount: {
-            iban: hasIban,
+          bankAccount: {
+            number: hasIban,
             bic: hasBic,
           },
         }

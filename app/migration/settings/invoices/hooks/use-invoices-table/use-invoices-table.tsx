@@ -7,6 +7,7 @@ import Cell, { CellHeight } from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
 import { useIntl } from "src/hooks/useIntl";
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
+import { formatAmount } from "src/utils/money";
 
 import { Button } from "components/ds/button/button";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
@@ -55,7 +56,9 @@ export function useInvoicesTable({ onDownloadInvoice, isDownloading }: TInvoiceT
         <Cell height={CellHeight.Compact}>
           {createdAt ? getFormattedDateToLocaleDateString(new Date(createdAt)) : null}
         </Cell>
-        <Cell height={CellHeight.Compact}>{`${totalAfterTax?.amount.toFixed(2)} ${totalAfterTax?.currency}`}</Cell>
+        <Cell height={CellHeight.Compact}>
+          {formatAmount({ amount: totalAfterTax?.amount, currency: totalAfterTax?.currency })}
+        </Cell>
 
         <Cell height={CellHeight.Compact}>
           <InvoiceStatus status={status} />
@@ -78,27 +81,27 @@ export function useInvoicesTable({ onDownloadInvoice, isDownloading }: TInvoiceT
   }
 
   function bodyRowLoading() {
-    const line = () => (
-      <tr>
-        <td className="py-2">
-          <SkeletonEl width="40%" height="16px" variant="text" color="blue" />
+    const line = (key: number) => (
+      <tr key={key}>
+        <td className="py-6">
+          <SkeletonEl width="40%" height="16px" variant="rounded" color="blue" />
         </td>
-        <td className="py-2">
-          <SkeletonEl width="50%" height="16px" variant="text" color="blue" />
+        <td className="py-6">
+          <SkeletonEl width="50%" height="16px" variant="rounded" color="blue" />
         </td>
-        <td className="py-2">
-          <SkeletonEl width="30%" height="16px" variant="text" color="blue" />
+        <td className="py-6">
+          <SkeletonEl width="30%" height="16px" variant="rounded" color="blue" />
         </td>
-        <td className="py-2">
-          <SkeletonEl width="60%" height="16px" variant="text" color="blue" />
+        <td className="py-6">
+          <SkeletonEl width="60%" height="16px" variant="rounded" color="blue" />
         </td>
-        <td className="py-2">
-          <SkeletonEl className="m-auto" width="20%" height="16px" variant="circular" color="blue" />
+        <td className="flex justify-end py-6">
+          <SkeletonEl width="20%" height="16px" variant="circular" color="blue" />
         </td>
       </tr>
     );
 
-    return [line(), line(), line(), line(), line()];
+    return [line(1), line(2), line(3), line(4), line(5)];
   }
 
   return { headerCells, bodyRow, bodyRowLoading };

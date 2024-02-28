@@ -2,7 +2,6 @@ import { useEffect, useMemo } from "react";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
-import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { usePooling } from "src/hooks/usePooling/usePooling";
 
 import { TUseBillingProfile } from "./use-billing-profile.types";
@@ -24,16 +23,16 @@ export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile
     onRefetching(isRefetching);
   }, [isRefetching]);
 
-  const kycKybStatus: BillingProfilesTypes.status = useMemo(() => {
-    if (data?.kyc?.status) {
-      return data?.kyc.status;
+  const externalId: string | undefined = useMemo(() => {
+    if (data?.kyc?.id) {
+      return data.kyc.id;
     }
 
-    if (data?.kyb?.status) {
-      return data?.kyb.status;
+    if (data?.kyb?.id) {
+      return data.kyb.id;
     }
 
-    return "NOT_STARTED";
+    return undefined;
   }, [data]);
 
   const profile = useMemo(() => {
@@ -44,9 +43,10 @@ export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile
     return {
       data,
       icon: BillingProfileConstant.profileTypeMapping[data.type].icon,
-      status: kycKybStatus,
+      status: data.status,
+      externalId,
     };
-  }, [data, kycKybStatus]);
+  }, [data, externalId]);
 
   async function refetchBilling() {
     await refetch();
