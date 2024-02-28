@@ -33,6 +33,7 @@ export const InvoiceTokens = {
       totalVat: "Total VAT",
       rate: "Rate",
       totalAfterTax: "Total After Tax",
+      totalReceipt: "Total",
     },
     specialMentions: "Special Mentions",
     itemsReceived: "received and accepted as payment for this invoice",
@@ -51,6 +52,6 @@ export const InvoiceTokens = {
     title: "Important Notes",
     issuedBy: (name: string) => `Invoice issued by Wagmi on behalf and for the account of ${name}, Self-billing`,
     penalities:
-      "Late payment penalties: three times the annual legal interest rate in effect calculated from the due date until full payment. lump sum compensation for recovery costs in the event of late payment: 40 USD",
+      "Late payment penalties: three times the annual legal interest rate in effect calculated from the due date until full payment. Lump sum compensation for recovery costs in the event of late payment: 40 USD",
   },
 };

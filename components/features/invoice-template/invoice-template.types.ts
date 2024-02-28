@@ -50,6 +50,7 @@ export namespace TInvoice {
   }
 
   export interface RewardsSummaryProps {
+    isUserIndividual: boolean;
     rewards: InvoicePreviewResponse["rewards"];
     vat: Vat;
     totalBeforeTax: number | undefined;
