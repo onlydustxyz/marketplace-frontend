@@ -2,8 +2,6 @@ import { useMemo } from "react";
 
 import { useBillingButton } from "app/migration/settings/billing/[id]/general-information/hooks/useBillingButton";
 
-import { Key } from "src/hooks/useIntl";
-
 import { Banner } from "components/ds/banner/banner";
 import { TBanner } from "components/ds/banner/banner.types";
 import { Button } from "components/ds/button/button";
@@ -43,7 +41,7 @@ export function ProfileBanner({ children, hasValidBillingProfile, status, type, 
 
   return (
     <Banner
-      title={<Translate token={`v2.pages.settings.billing.information.status.descriptions.${status}` as Key} />}
+      title={<Translate token={`v2.pages.settings.billing.information.status.descriptions.${status}`} />}
       size="s"
       customButton={
         button?.element
