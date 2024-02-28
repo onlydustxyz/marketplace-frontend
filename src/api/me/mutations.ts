@@ -112,7 +112,7 @@ const useUpdatePayoutPreferences = ({ options = {} }: UseMutationProps<unknown, 
     resourcePath: ME_PATH.PAYOUT_PREFERENCES,
     invalidatesTags: [
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
-      { queryKey: BILLING_PROFILES_TAGS.all, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.ALL, exact: false },
     ],
     method: "PUT",
     ...options,

@@ -8,6 +8,8 @@ import { UseMutationProps, useBaseMutation } from "../useBaseMutation";
 
 export type UseCreateBillingProfileBody = components["schemas"]["BillingProfileRequest"];
 export type UseCreateBillingProfileResponse = components["schemas"]["BillingProfileResponse"];
+export type UseInviteBillingCoworkerBody = components["schemas"]["BillingProfileCoworkerInvitationRequest"];
+export type UseInviteBillingCoworkerResponse = components["schemas"]["BillingProfileCoworkerInvitation"];
 export type UseUpdatePayoutSettingsBody = components["schemas"]["BillingProfilePayoutInfoRequest"];
 export type UseUpdatePayoutSettingsResponse = components["schemas"]["BillingProfilePayoutInfoResponse"];
 
@@ -15,11 +17,11 @@ const useCreateBillingProfile = ({
   options = {},
 }: UseMutationProps<UseCreateBillingProfileResponse, unknown, UseCreateBillingProfileBody>) => {
   return useBaseMutation<UseCreateBillingProfileBody, UseCreateBillingProfileResponse>({
-    resourcePath: BILLING_PROFILES_PATH.root,
+    resourcePath: BILLING_PROFILES_PATH.ROOT,
     method: "POST",
     invalidatesTags: [
       { queryKey: MeApi.tags.user, exact: false },
-      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.ME, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
     ],
     ...options,
@@ -31,7 +33,7 @@ const useUpdatePayoutSettings = ({
   params,
 }: UseMutationProps<UseUpdatePayoutSettingsResponse, { id?: string }, UseUpdatePayoutSettingsBody>) => {
   return useBaseMutation<UseUpdatePayoutSettingsBody, UseUpdatePayoutSettingsResponse>({
-    resourcePath: BILLING_PROFILES_PATH.payout(params?.id || ""),
+    resourcePath: BILLING_PROFILES_PATH.PAYOUT(params?.id || ""),
     invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
     method: "PUT",
     enabled: options?.enabled || !params?.id,
@@ -39,7 +41,37 @@ const useUpdatePayoutSettings = ({
   });
 };
 
+const useInviteBillingCoworker = ({
+  options = {},
+  params,
+}: UseMutationProps<
+  UseInviteBillingCoworkerResponse,
+  { id?: string; coworkerId?: string },
+  UseInviteBillingCoworkerBody
+>) => {
+  return useBaseMutation<UseInviteBillingCoworkerBody, UseInviteBillingCoworkerResponse>({
+    resourcePath: BILLING_PROFILES_PATH.COWORKER_BY_ID(params?.id || "", params?.coworkerId || ""),
+    method: "POST",
+    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.SINGLE(params?.id || ""), exact: false }],
+    ...options,
+  });
+};
+
+const useDeleteBillingCoworker = ({
+  options = {},
+  params,
+}: UseMutationProps<void, { id?: string; coworkerId?: string }, unknown>) => {
+  return useBaseMutation<unknown, void>({
+    resourcePath: BILLING_PROFILES_PATH.COWORKER_BY_ID(params?.id || "", params?.coworkerId || ""),
+    method: "DELETE",
+    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.SINGLE(params?.id || ""), exact: false }],
+    ...options,
+  });
+};
+
 export default {
   useCreateBillingProfile,
   useUpdatePayoutSettings,
+  useInviteBillingCoworker,
+  useDeleteBillingCoworker,
 };
