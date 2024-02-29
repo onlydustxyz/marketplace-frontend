@@ -1,4 +1,5 @@
-import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
 import { ReactNode, useMemo } from "react";
 
 import { ProfileItemGrid } from "app/migration/settings/billing/component/profile-item-grid/profile-item-grid";
@@ -11,14 +12,18 @@ import { TProfileIndividual } from "./profile-individual.types";
 export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
   const birthdate = useMemo(() => {
     if (profile.birthdate) {
-      return format(new Date(profile.birthdate), "MMM dd, yyyy");
+      // we fix the timezone issue by using the formatInTimeZone function
+      // this is a temporary solution to handle the date provided by SUMSUB
+      return formatInTimeZone(new Date(profile.birthdate), "Europe/Paris", "MMM dd, yyyy", { locale: enGB });
     }
     return profile.birthdate;
   }, [profile]);
 
   const validUntil = useMemo(() => {
     if (profile.validUntil) {
-      return format(new Date(profile.validUntil), "MMM dd, yyyy");
+      // we fix the timezone issue by using the formatInTimeZone function
+      // this is a temporary solution to handle the date provided by SUMSUB
+      return formatInTimeZone(new Date(profile.validUntil), "Europe/Paris", "MMM dd, yyyy", { locale: enGB });
     }
     return profile.validUntil;
   }, [profile]);
