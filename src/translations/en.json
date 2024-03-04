@@ -661,7 +661,8 @@
             "cancelButton": "Go back",
             "description": "Once cancelled, you won't be able to restore this reward",
             "title": "Are you sure?"
-          }
+          },
+          "tooltip": "Rewards in processing status cannot be cancelled."
         },
         "from": "from",
         "requestedAt": "Created on __requestedAt__",
