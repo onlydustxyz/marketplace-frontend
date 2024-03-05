@@ -25,6 +25,7 @@ import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
+import { Tooltip as NextUiTooltip } from "components/ds/tooltip/tooltip";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
 import { BaseLink } from "components/layout/base-link/base-link";
 
@@ -261,7 +262,9 @@ export default function View({
         <div className="flex h-full flex-col gap-8 overflow-hidden px-6">
           <div className="flex flex-wrap items-center gap-3 font-belwe text-2xl font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.title", { id: pretty(data.id) })}
-            {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
+            {shouldDisplayCancelButton && (
+              <CancelRewardButton onRewardCancel={onRewardCancel} status={data?.status as PaymentStatus} />
+            )}
           </div>
           <div className="flex h-full flex-col gap-8 divide-y divide-greyscale-50/12">
             <div className="flex flex-col gap-2">
@@ -388,9 +391,10 @@ const Details = ({ align = Align.Center, children }: PropsWithChildren & { align
 
 type CancelRewardButtonProps = {
   onRewardCancel: UseMutateFunction<unknown, Error, unknown, unknown>;
+  status: PaymentStatus;
 };
 
-function CancelRewardButton({ onRewardCancel }: CancelRewardButtonProps) {
+function CancelRewardButton({ onRewardCancel, status }: CancelRewardButtonProps) {
   const { T } = useIntl();
 
   const [modalOpened, setModalOpened] = useState(false);
@@ -398,12 +402,28 @@ function CancelRewardButton({ onRewardCancel }: CancelRewardButtonProps) {
   const toggleModal = () => setModalOpened(!modalOpened);
   const closeModal = () => setModalOpened(false);
 
-  return (
-    <div className="relative">
+  const renderCancelButton = useMemo(() => {
+    if (status === PaymentStatus.PROCESSING) {
+      return (
+        <NextUiTooltip content={<Translate token="reward.table.detailsPanel.cancelReward.tooltip" />}>
+          <Button size={ButtonSize.Sm} disabled data-testid="cancel-reward-button">
+            <ErrorWarningLine />
+            {T("reward.table.detailsPanel.cancelReward.button")}
+          </Button>
+        </NextUiTooltip>
+      );
+    }
+    return (
       <Button size={ButtonSize.Sm} onClick={toggleModal} pressed={modalOpened} data-testid="cancel-reward-button">
         <ErrorWarningLine />
         {T("reward.table.detailsPanel.cancelReward.button")}
       </Button>
+    );
+  }, [status]);
+
+  return (
+    <div className="relative">
+      {renderCancelButton}
       <div
         className={cn("absolute top-10 z-10 xl:-inset-x-10", {
           hidden: !modalOpened,
