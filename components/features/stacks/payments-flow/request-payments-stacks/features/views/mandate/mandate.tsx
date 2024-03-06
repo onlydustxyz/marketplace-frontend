@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { useStackMandate } from "src/App/Stacks/Stacks";
-import BillingProfilesApi from "src/api/billing-profiles";
+import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
