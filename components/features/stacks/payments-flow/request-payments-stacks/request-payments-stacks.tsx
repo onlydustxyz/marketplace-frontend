@@ -21,7 +21,6 @@ export function RequestPaymentsStacks() {
   const [, closeRequestPanel] = useStackRequestPayments();
   const { data } = MeApi.queries.useGetMePendingInvoices({});
 
-  // TODO will be moved to the previous billing-profiles profiles selection step
   const { data: billingProfilesData, isLoading: isLoadingBillingProfiles } = BillingApi.queries.useAllBillingProfiles(
     {}
   );
