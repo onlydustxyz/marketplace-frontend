@@ -46,7 +46,7 @@ export const RewardBudgetSelectOption = ({ budget, last, active }: RewardBudgetS
             </span>
 
             <span
-              className={cn("font-walsheim text-xs font-normal leading-none text-spaceBlue-200", {
+              className={cn("whitespace-nowrap font-walsheim text-xs font-normal leading-none text-spaceBlue-200", {
                 "text-greyscale-500": isDisabled,
               })}
             >
@@ -56,7 +56,9 @@ export const RewardBudgetSelectOption = ({ budget, last, active }: RewardBudgetS
         </div>
         {budget.currency !== Currency.USD && (
           <p
-            className={cn("font-walsheim text-xs font-normal text-spaceBlue-200", { "text-greyscale-500": isDisabled })}
+            className={cn("whitespace-nowrap font-walsheim text-xs font-normal text-spaceBlue-200", {
+              "text-greyscale-500": isDisabled,
+            })}
           >
             {budget.remainingDollarsEquivalent
               ? `~${formatMoneyAmount({
