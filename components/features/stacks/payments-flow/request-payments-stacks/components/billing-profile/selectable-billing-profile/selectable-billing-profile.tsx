@@ -4,7 +4,7 @@ import { Chip } from "src/components/Chip/Chip";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
-import { TSelectableBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/components/selectable-billing-profile/selectable-billing-profile.types";
+import { TSelectableBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/components/billing-profile/selectable-billing-profile/selectable-billing-profile.types";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -41,10 +41,7 @@ export function SelectableBillingProfile({
             >
               {title}
             </Typography>
-            <Typography
-              variant={"body-s"}
-              className={cn("mb-0.5 text-spacePurple-500", { "text-greyscale-500": disabled })}
-            >
+            <Typography variant={"body-s"} className={cn("text-spacePurple-500", { "text-greyscale-500": disabled })}>
               <Translate
                 token="v2.pages.stacks.request_payments.selectBillingProfile.rewardsCount"
                 params={{ count }}

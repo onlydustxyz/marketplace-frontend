@@ -1,14 +1,13 @@
-import { components } from "src/__generated/api";
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 
 export namespace TSelectBillingProfile {
-  export type BillingProfile = components["schemas"]["ShortBillingProfileResponse"];
   export interface Props {
     goTo: (props: TRequestPaymentsStacks.onNextViewProps) => void;
-    billingProfiles?: BillingProfile[];
+    billingProfiles?: BillingProfilesTypes.BillingProfile[];
     isLoading: boolean;
     onSelectBillingProfile: (id: string) => void;
-    selectedBillingProfile: BillingProfile | undefined;
+    selectedBillingProfile: BillingProfilesTypes.BillingProfile | undefined;
   }
 }

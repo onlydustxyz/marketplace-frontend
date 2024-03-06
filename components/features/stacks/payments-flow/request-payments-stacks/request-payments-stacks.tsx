@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import MeApi from "src/api/me";
 import BillingApi from "src/api/me/billing";
 
 import { GenerateInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/generate-invoice/generate-invoice";
 import { Mandate } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/mandate/mandate";
 import { SelectBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-billing-profile/select-billing-profile";
-import { TSelectBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-billing-profile/select-billing-profile.types";
 import { SelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards";
 import { UploadInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/upload-invoice/upload-invoice";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
@@ -15,9 +15,9 @@ import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow
 export function RequestPaymentsStacks() {
   const [view, setView] = useState<TRequestPaymentsStacks.Views>(TRequestPaymentsStacks.Views.SelectBillingProfile);
   const [excludedRewardsIds, setExcludedRewardsIds] = useState<string[]>([]);
-  const [selectedBillingProfile, setSelectedBillingProfile] = useState<
-    TSelectBillingProfile.BillingProfile | undefined
-  >(undefined);
+  const [selectedBillingProfile, setSelectedBillingProfile] = useState<BillingProfilesTypes.BillingProfile | undefined>(
+    undefined
+  );
   const [, closeRequestPanel] = useStackRequestPayments();
   const { data } = MeApi.queries.useGetMePendingInvoices({});
 

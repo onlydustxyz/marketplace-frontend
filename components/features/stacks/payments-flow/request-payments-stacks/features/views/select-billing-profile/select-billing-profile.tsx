@@ -1,14 +1,11 @@
-import { useMemo } from "react";
-
-import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Button } from "components/ds/button/button";
 import { RadioGroupCustom } from "components/ds/form/radio-group-custom/radio-group-custom";
-import { SelectableBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/components/selectable-billing-profile/selectable-billing-profile";
+import { SelectableBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/components/billing-profile/selectable-billing-profile/selectable-billing-profile";
+import { UseBillingProfileIcons } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-billing-profile-icons/use-billing-profile-icons";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { Flex } from "components/layout/flex/flex";
-import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -26,13 +23,7 @@ export function SelectBillingProfile({
     goTo({ to: TRequestPaymentsStacks.Views.SelectRewards });
   }
 
-  const billingProfilesIcons: Record<BillingProfilesTypes.type, RemixIconsName> = useMemo(() => {
-    return {
-      [BillingProfilesTypes.type.Individual]: "ri-user-line",
-      [BillingProfilesTypes.type.SelfEmployed]: "ri-suitcase-line",
-      [BillingProfilesTypes.type.Company]: "ri-vip-crown-line",
-    };
-  }, []);
+  const { billingProfilesIcons } = UseBillingProfileIcons();
 
   return (
     <div className="flex h-full flex-col justify-between">
