@@ -69,7 +69,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
           currency: budget.currency,
           amount: budget.initialAmount - budget.remaining,
           dollarAmount:
-            budget.remainingDollarsEquivalent === null || budget.currency === "STRK"
+            budget.remainingDollarsEquivalent === null
               ? null
               : (budget.initialDollarsEquivalent || 0) - (budget.remainingDollarsEquivalent || 0),
         })) || []
@@ -143,7 +143,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
                 </Flex>
 
                 <Typography variant={"body-l"} as={"p"} className="text-spaceBlue-200">
-                  {value.dollarAmount
+                  {value.dollarAmount !== null && value.dollarAmount !== undefined
                     ? `~${formatMoneyAmount({ amount: value.dollarAmount, currency: Currency.USD })}`
                     : "N/A"}
                 </Typography>
