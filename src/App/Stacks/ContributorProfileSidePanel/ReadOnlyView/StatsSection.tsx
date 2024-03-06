@@ -9,6 +9,7 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 import ArrowRightLine from "src/icons/ArrowRightLine";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
+import { Currency } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
 
 import { Section } from "./Section";
@@ -62,10 +63,16 @@ export default function StatsSection({ profile }: Props) {
           topLeftComponent={
             <AvailableConversion tooltipId={`${profile.githubUserId}-earned-details`} currencies={currenciesStats} />
           }
-          counter={formatMoneyAmount({
-            amount: stats?.totalsEarned?.totalAmount || 0,
-            notation: "compact",
-          })}
+          counter={
+            <>
+              {formatMoneyAmount({
+                amount: stats?.totalsEarned?.totalAmount || 0,
+                notation: "compact",
+                showCurrency: false,
+              })}{" "}
+              <span className="text-2xl">{Currency.USD}</span>
+            </>
+          }
         />
         <Card
           withBg={false}
