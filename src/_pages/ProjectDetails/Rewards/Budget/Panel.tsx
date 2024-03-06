@@ -115,7 +115,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
           <p className="mb-8 px-2 font-belwe text-2xl font-normal text-greyscale-50">
             <Translate token="project.details.remainingBudget.budget.panelTitle" />
           </p>
-          <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} border={true} />
+          <Tabs tabs={tabs} showMobile mobileTitle={T("project.details.edit.title")} border={true} />
           <div className="mt-4 flex flex-col gap-4 border-b-1 border-b-card-border-light pb-6">
             {sortedByDollarsEquivalent.map(value => (
               <Card
