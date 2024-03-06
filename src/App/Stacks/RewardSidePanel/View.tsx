@@ -28,6 +28,7 @@ import { Link } from "components/ds/link/link";
 import { Tooltip as NextUiTooltip } from "components/ds/tooltip/tooltip";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
 import { BaseLink } from "components/layout/base-link/base-link";
+import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
 
