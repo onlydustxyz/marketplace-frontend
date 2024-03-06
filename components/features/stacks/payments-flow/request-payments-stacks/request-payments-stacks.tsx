@@ -6,18 +6,25 @@ import BillingApi from "src/api/me/billing";
 
 import { GenerateInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/generate-invoice/generate-invoice";
 import { Mandate } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/mandate/mandate";
+import { SelectBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-billing-profile/select-billing-profile";
+import { TSelectBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-billing-profile/select-billing-profile.types";
 import { SelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards";
 import { UploadInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/upload-invoice/upload-invoice";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 
 export function RequestPaymentsStacks() {
-  const [view, setView] = useState<TRequestPaymentsStacks.Views>(TRequestPaymentsStacks.Views.Select);
+  const [view, setView] = useState<TRequestPaymentsStacks.Views>(TRequestPaymentsStacks.Views.SelectBillingProfile);
   const [excludedRewardsIds, setExcludedRewardsIds] = useState<string[]>([]);
+  const [selectedBillingProfile, setSelectedBillingProfile] = useState<
+    TSelectBillingProfile.BillingProfile | undefined
+  >(undefined);
   const [, closeRequestPanel] = useStackRequestPayments();
   const { data } = MeApi.queries.useGetMePendingInvoices({});
 
   // TODO will be moved to the previous billing-profiles profiles selection step
-  const { data: billingProfilesData } = BillingApi.queries.useAllBillingProfiles({});
+  const { data: billingProfilesData, isLoading: isLoadingBillingProfiles } = BillingApi.queries.useAllBillingProfiles(
+    {}
+  );
 
   const excludeNonLiquidToken = useMemo(
     () =>
@@ -44,12 +51,30 @@ export function RequestPaymentsStacks() {
   function onInclude(id: string) {
     setExcludedRewardsIds(prev => prev.filter(i => i !== id));
   }
+
+  function onSelectBillingProfile(billingProfile: TSelectBillingProfile.BillingProfile) {
+    setSelectedBillingProfile(billingProfile);
+  }
   function onNextView({ to }: TRequestPaymentsStacks.onNextViewProps) {
     if (to === "close") {
       closeRequestPanel();
     } else {
       setView(to);
     }
+  }
+
+  if (view === TRequestPaymentsStacks.Views.SelectRewards) {
+    return (
+      <SelectRewards
+        goTo={onNextView}
+        onExclude={onExclude}
+        onInclude={onInclude}
+        includedRewards={includedRewards}
+        excludedRewards={excludedRewards}
+        selectedBillingProfile={selectedBillingProfile}
+        isMandateAccepted={selectedBillingProfile?.invoiceMandateAccepted ?? false}
+      />
+    );
   }
 
   if (view === TRequestPaymentsStacks.Views.Mandate) {
@@ -77,13 +102,11 @@ export function RequestPaymentsStacks() {
   }
 
   return (
-    <SelectRewards
+    <SelectBillingProfile
       goTo={onNextView}
-      onExclude={onExclude}
-      onInclude={onInclude}
-      includedRewards={includedRewards}
-      excludedRewards={excludedRewards}
-      isMandateAccepted={billingProfilesData?.billingProfiles?.[0].invoiceMandateAccepted ?? false}
+      billingProfiles={billingProfilesData?.billingProfiles ?? []}
+      isLoading={isLoadingBillingProfiles}
+      onSelectBillingProfile={onSelectBillingProfile}
     />
   );
 }

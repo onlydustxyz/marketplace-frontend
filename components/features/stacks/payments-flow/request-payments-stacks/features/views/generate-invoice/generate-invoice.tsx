@@ -74,7 +74,11 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
             {/* // empty div to keep the flex layout */}
             {isLoading || isPendingUploadInvoice ? <Spinner /> : <div />}
             <div className="flex items-center justify-end gap-5">
-              <Button variant="secondary" size="m" onClick={() => goTo({ to: TRequestPaymentsStacks.Views.Select })}>
+              <Button
+                variant="secondary"
+                size="m"
+                onClick={() => goTo({ to: TRequestPaymentsStacks.Views.SelectRewards })}
+              >
                 <Translate token="v2.pages.stacks.request_payments.form.back" />
               </Button>
               <Button
