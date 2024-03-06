@@ -106,7 +106,11 @@ export function SelectRewards({
             <AmountCounter total={totalAmountSelectedRewards} isCompany={user?.billingProfileType === "COMPANY"} />
             <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
               <div className="flex items-center justify-end gap-5 ">
-                <Button variant="secondary" size="m" onClick={() => goTo({ to: "close" })}>
+                <Button
+                  variant="secondary"
+                  size="m"
+                  onClick={() => goTo({ to: TRequestPaymentsStacks.Views.SelectBillingProfile })}
+                >
                   <Translate token="v2.pages.stacks.request_payments.form.back" />
                 </Button>
                 <Button variant="primary" size="m" onClick={onSubmit} disabled={includedRewards?.length < 1}>

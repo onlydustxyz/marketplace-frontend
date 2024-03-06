@@ -52,8 +52,8 @@ export function RequestPaymentsStacks() {
     setExcludedRewardsIds(prev => prev.filter(i => i !== id));
   }
 
-  function onSelectBillingProfile(billingProfile: TSelectBillingProfile.BillingProfile) {
-    setSelectedBillingProfile(billingProfile);
+  function onSelectBillingProfile(id: string) {
+    setSelectedBillingProfile(billingProfilesData?.billingProfiles?.find(profile => profile.id === id));
   }
   function onNextView({ to }: TRequestPaymentsStacks.onNextViewProps) {
     if (to === "close") {
@@ -78,7 +78,7 @@ export function RequestPaymentsStacks() {
   }
 
   if (view === TRequestPaymentsStacks.Views.Mandate) {
-    return <Mandate goTo={onNextView} billingProfileId={billingProfilesData?.billingProfiles?.[0].id ?? ""} />;
+    return <Mandate goTo={onNextView} billingProfileId={selectedBillingProfile?.id ?? ""} />;
   }
 
   if (view === TRequestPaymentsStacks.Views.Upload) {
@@ -86,7 +86,7 @@ export function RequestPaymentsStacks() {
       <UploadInvoice
         goTo={onNextView}
         rewardIds={includedRewards.map(({ id }) => id)}
-        billingProfileId={billingProfilesData?.billingProfiles?.[0].id ?? ""}
+        billingProfileId={selectedBillingProfile?.id ?? ""}
       />
     );
   }
@@ -96,7 +96,7 @@ export function RequestPaymentsStacks() {
       <GenerateInvoice
         goTo={onNextView}
         rewardIds={includedRewards.map(({ id }) => id)}
-        billingProfileId={billingProfilesData?.billingProfiles?.[0].id ?? ""}
+        billingProfileId={selectedBillingProfile?.id ?? ""}
       />
     );
   }
@@ -107,6 +107,7 @@ export function RequestPaymentsStacks() {
       billingProfiles={billingProfilesData?.billingProfiles ?? []}
       isLoading={isLoadingBillingProfiles}
       onSelectBillingProfile={onSelectBillingProfile}
+      selectedBillingProfile={selectedBillingProfile}
     />
   );
 }

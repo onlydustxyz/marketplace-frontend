@@ -8,6 +8,7 @@ export namespace TSelectBillingProfile {
     goTo: (props: TRequestPaymentsStacks.onNextViewProps) => void;
     billingProfiles?: BillingProfile[];
     isLoading: boolean;
-    onSelectBillingProfile: (billingProfile: BillingProfile) => void;
+    onSelectBillingProfile: (id: string) => void;
+    selectedBillingProfile: BillingProfile | undefined;
   }
 }
