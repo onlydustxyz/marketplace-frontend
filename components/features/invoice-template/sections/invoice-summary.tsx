@@ -3,6 +3,7 @@ import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profile
 
 import { Currency } from "src/types";
 import { getFormattedDateGB } from "src/utils/date";
+import { pretty } from "src/utils/id";
 import { BudgetCurrencyType, formatAmount } from "src/utils/money";
 
 import { styles } from "components/features/invoice-template/invoice-template.styles";
@@ -54,7 +55,7 @@ export function InvoiceSummary({
             {rewards?.map((item, index) => (
               <View key={index} style={styles.tr} wrap={false}>
                 {/*  ID  */}
-                <Text style={styles.tdSmall}>#{item.id.slice(0, 4)}</Text>
+                <Text style={styles.tdSmall}>{`#${pretty(item.id)}`}</Text>
                 {/*  project name  */}
                 <Text style={styles.td}>
                   {item.projectName.length > 12 ? `${item.projectName.slice(0, 12)}...` : item.projectName}
@@ -73,7 +74,7 @@ export function InvoiceSummary({
                   <Text>{`=${formatAmount({
                     amount: item.amount.target.conversionRate,
                     currency: item.amount.target.currency,
-                  })}`}</Text>
+                  })}*`}</Text>
                 </View>
                 {/*  USD equivalent  */}
                 <Text style={styles.td}>
@@ -112,6 +113,11 @@ export function InvoiceSummary({
         </View>
       </View>
       <View style={{ ...styles.flexRow, ...styles.marginTop25P, ...styles.paddingHoriz30P }} wrap={false}>
+        <Text style={styles.h4}>{InvoiceTokens.rewardSummary.tokenRate.title}</Text>
+        <Text style={styles.paragraph}>{InvoiceTokens.rewardSummary.tokenRate.descriptionIntro}</Text>
+        <Text style={styles.paragraph}>{InvoiceTokens.rewardSummary.tokenRate.descriptionOutro}</Text>
+      </View>
+      <View style={{ ...styles.flexRow, ...styles.paddingHoriz30P }} wrap={false}>
         <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
         {totalAmounts?.map((item, index) => (
           <Text key={index} style={styles.paragraph}>

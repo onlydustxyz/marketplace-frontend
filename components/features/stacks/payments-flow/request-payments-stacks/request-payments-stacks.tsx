@@ -62,6 +62,7 @@ export function RequestPaymentsStacks() {
         goTo={onNextView}
         rewardIds={includedRewards.map(({ id }) => id)}
         billingProfileId={billingProfilesData?.billingProfiles?.[0].id ?? ""}
+        billingProfileType={billingProfilesData?.billingProfiles?.[0].type}
       />
     );
   }
@@ -72,6 +73,7 @@ export function RequestPaymentsStacks() {
         goTo={onNextView}
         rewardIds={includedRewards.map(({ id }) => id)}
         billingProfileId={billingProfilesData?.billingProfiles?.[0].id ?? ""}
+        billingProfileType={billingProfilesData?.billingProfiles?.[0].type}
       />
     );
   }

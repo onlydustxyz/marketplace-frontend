@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   paragraph: {
-    fontSize: 12,
+    fontSize: "11px",
     fontWeight: "normal",
     lineHeight: "1.2",
     color: "#535353",
@@ -119,7 +119,7 @@ export const styles = StyleSheet.create({
   th: {
     position: "relative",
     padding: "10px 5px",
-    fontSize: "12px",
+    fontSize: "11px",
     color: "#262525",
     fontWeight: "medium",
     flex: "2",
@@ -128,7 +128,7 @@ export const styles = StyleSheet.create({
   thSmall: {
     position: "relative",
     padding: "10px 5px",
-    fontSize: "12px",
+    fontSize: "11px",
     color: "#262525",
     fontWeight: "medium",
     flex: "1",
@@ -137,7 +137,7 @@ export const styles = StyleSheet.create({
   td: {
     position: "relative",
     padding: "10px 5px",
-    fontSize: "12px",
+    fontSize: "11px",
     color: "#535353",
     fontWeight: "normal",
     flex: "2",
@@ -146,7 +146,7 @@ export const styles = StyleSheet.create({
   tdSmall: {
     position: "relative",
     padding: "10px 5px",
-    fontSize: "12px",
+    fontSize: "11px",
     color: "#535353",
     fontWeight: "normal",
     flex: "1",
