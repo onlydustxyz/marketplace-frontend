@@ -7,8 +7,10 @@
       "many": "Select __count__ rewards"
     },
     "back": "Back",
-    "sendInvoice": "Send invoice",
-    "approveInvoice": "Approve invoice"
+    "sendLabel": "Send __fileType__",
+    "approveLabel": "Approve __fileType__",
+    "invoice": "Invoice",
+    "receipt": "Receipt"
   },
   "item": {
     "to": "to",
