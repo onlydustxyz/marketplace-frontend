@@ -74,7 +74,7 @@ export function InvoiceSummary({
                   <Text>{`=${formatAmount({
                     amount: item.amount.target.conversionRate,
                     currency: item.amount.target.currency,
-                  })}`}</Text>
+                  })}*`}</Text>
                 </View>
                 {/*  USD equivalent  */}
                 <Text style={styles.td}>
@@ -113,6 +113,11 @@ export function InvoiceSummary({
         </View>
       </View>
       <View style={{ ...styles.flexRow, ...styles.marginTop25P, ...styles.paddingHoriz30P }} wrap={false}>
+        <Text style={styles.h4}>{InvoiceTokens.rewardSummary.tokenRate.title}</Text>
+        <Text style={styles.paragraph}>{InvoiceTokens.rewardSummary.tokenRate.descriptionIntro}</Text>
+        <Text style={styles.paragraph}>{InvoiceTokens.rewardSummary.tokenRate.descriptionOutro}</Text>
+      </View>
+      <View style={{ ...styles.flexRow, ...styles.paddingHoriz30P }} wrap={false}>
         <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
         {totalAmounts?.map((item, index) => (
           <Text key={index} style={styles.paragraph}>

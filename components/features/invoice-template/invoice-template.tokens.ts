@@ -38,6 +38,13 @@ export const InvoiceTokens = {
     specialMentions: "Special Mentions",
     itemsReceived: "received and accepted as payment for this invoice",
     usdToEurConversionRate: (rate: string | undefined) => `1 USD = ${rate ?? "N/A"} EUR at today's rate`,
+    tokenRate: {
+      title: "*How is the Token Rate For Each Reward Calculated?",
+      descriptionIntro:
+        "In your invoice, the token’s exchange rate is based on the market rate on the day the project lead sent the reward.",
+      descriptionOutro:
+        "You received tokens as a reward for your contributions. Legal and accounting regulations require us to record the token value based on the rate on the day the rewards were sent, not the day the invoice was generated.",
+    },
   },
   currencies: {
     usd: "USD",
