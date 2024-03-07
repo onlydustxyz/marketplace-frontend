@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { MeTypes } from "src/api/me/types";
 import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
 import { Button } from "components/ds/button/button";
@@ -19,6 +20,7 @@ import { Typography } from "components/layout/typography/typography";
 import { TGenerateInvoice } from "./generate-invoice.types";
 
 export function GenerateInvoice({ rewardIds, billingProfileId, goTo, billingProfileType }: TGenerateInvoice.Props) {
+  const { T } = useIntl();
   const { isLoading, isError, fileBlob, fileUrl, invoiceId } = useInvoicePreview({
     rewardIds,
     billingProfileId,
@@ -87,7 +89,10 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo, billingProf
                 <Translate
                   token="v2.pages.stacks.request_payments.form.approveLabel"
                   params={{
-                    fileType: billingProfileType === MeTypes.billingProfileType.Individual ? "receipt" : "invoice",
+                    fileType:
+                      billingProfileType === MeTypes.billingProfileType.Individual
+                        ? T("v2.pages.stacks.request_payments.form.receipt")
+                        : T("v2.pages.stacks.request_payments.form.invoice"),
                   }}
                 />
               </Button>

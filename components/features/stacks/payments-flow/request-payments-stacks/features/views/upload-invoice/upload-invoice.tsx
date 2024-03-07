@@ -150,7 +150,10 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo, billingProfil
                   <Translate
                     token="v2.pages.stacks.request_payments.form.sendLabel"
                     params={{
-                      fileType: billingProfileType === MeTypes.billingProfileType.Individual ? "receipt" : "invoice",
+                      fileType:
+                        billingProfileType === MeTypes.billingProfileType.Individual
+                          ? T("v2.pages.stacks.request_payments.form.receipt")
+                          : T("v2.pages.stacks.request_payments.form.invoice"),
                     }}
                   />
                 </Button>

@@ -8,7 +8,9 @@
     },
     "back": "Back",
     "sendLabel": "Send __fileType__",
-    "approveLabel": "Approve __fileType__"
+    "approveLabel": "Approve __fileType__",
+    "invoice": "Invoice",
+    "receipt": "Receipt"
   },
   "item": {
     "to": "to",
