@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { MeTypes } from "src/api/me/types";
 import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
 
@@ -17,7 +18,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TGenerateInvoice } from "./generate-invoice.types";
 
-export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerateInvoice.Props) {
+export function GenerateInvoice({ rewardIds, billingProfileId, goTo, billingProfileType }: TGenerateInvoice.Props) {
   const { isLoading, isError, fileBlob, fileUrl, invoiceId } = useInvoicePreview({
     rewardIds,
     billingProfileId,
@@ -83,7 +84,12 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
                 onClick={() => handleSendInvoice({ fileBlob })}
                 disabled={isPendingUploadInvoice || !fileBlob}
               >
-                <Translate token="v2.pages.stacks.request_payments.form.approveInvoice" />
+                <Translate
+                  token="v2.pages.stacks.request_payments.form.approveLabel"
+                  params={{
+                    fileType: billingProfileType === MeTypes.billingProfileType.Individual ? "receipt" : "invoice",
+                  }}
+                />
               </Button>
             </div>
           </div>
