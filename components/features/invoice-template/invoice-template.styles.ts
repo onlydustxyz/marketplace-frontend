@@ -4,7 +4,8 @@ export const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     backgroundColor: "#ffffff",
-    fontFamily: "GT Walsheim",
+    fontFamily: "Go Noto Kurrent",
+    fontSize: 12,
     padding: "20px 0px 50px 0px",
   },
   header: {
