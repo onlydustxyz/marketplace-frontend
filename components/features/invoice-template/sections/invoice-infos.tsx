@@ -16,11 +16,6 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserInd
           </Text>
           <Text style={styles.paragraph}>{senderInfos.name}</Text>
           <Text style={styles.paragraph}>{senderStreetAddress}</Text>
-          <Text style={styles.paragraph}>{'"长桥一村5号, 302室, 上海市, 徐汇区, China"'}</Text>
-          <Text style={styles.paragraph}>长桥一村5号, 302室, 上海市, 徐汇区, China</Text>
-          <Text>长桥一村5号, 302室, 上海市, 徐汇区, China</Text>
-          <Text>नमस्ते दुनिया</Text>
-          <Text>โดยที่การไม่นำพาและการหมิ่นในคุณค่าของสิทธิมนุษยชน</Text>
           <Text style={styles.paragraph}>{senderRestAdress.join("").trim()}</Text>
           {senderInfos.euVATNumber ? (
             <Text style={styles.paragraph}>

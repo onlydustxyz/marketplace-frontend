@@ -62,17 +62,17 @@ export async function GET(request: NextRequest) {
       : `${invoicePreviewData.companyBillingProfile?.name}`,
   };
 
-  // const languageSample = "长桥一村5号, 302室, 上海市, 徐汇区, China";
-  const languageSample = "โดยที่การไม่นำพาและการหมิ่นในคุณค่าของสิทธิมนุษยชน";
-  // const languageSample = "โดยที่การไม่นำพาและการหมิ่นในคุณค่าของสิทธิมนุษยชน";
+  const languageSample = isUserIndividual
+    ? `${invoicePreviewData.individualBillingProfile?.firstName} ${invoicePreviewData.individualBillingProfile?.lastName}`
+    : invoicePreviewData.companyBillingProfile?.name;
 
   let fontInfo;
 
   try {
-    fontInfo = await detectLanguageAndGetFontDynamically(languageSample);
+    fontInfo = await detectLanguageAndGetFontDynamically(languageSample || "latin");
     Font.register({
-      family: fontInfo.name,
-      src: fontInfo.url,
+      family: fontInfo.family,
+      fonts: fontInfo.fonts,
     });
   } catch (error) {
     return new NextResponse("Internal Server Error (Failed to load font information)", { status: 500 });
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
   try {
     stream = await renderToStream(
       <InvoiceTemplate
-        fontFamily={fontInfo.name}
+        fontFamily={fontInfo.family}
         header={header}
         invoiceInfos={invoiceInfo}
         rewardSummary={rewardSummary}
