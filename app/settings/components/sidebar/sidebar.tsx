@@ -3,7 +3,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMemo } from "react";
 
-import { SidebarBilling } from "app/migration/settings/components/sidebar/sidebar-billing/sidebar-billing";
+import { SidebarBilling } from "app/settings/components/sidebar/sidebar-billing/sidebar-billing";
 
 import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/GithubLink";
 
@@ -34,20 +34,20 @@ export function Sidebar() {
     () => [
       {
         label: <Translate token="v2.pages.settings.billing.sidebar.items.profile" />,
-        href: NEXT_ROUTER.settings.migration.profile,
+        href: NEXT_ROUTER.settings.profile,
       },
       {
         label: <Translate token="v2.pages.settings.billing.sidebar.items.payoutPreferences" />,
-        href: NEXT_ROUTER.settings.migration.payoutPreferences,
+        href: NEXT_ROUTER.settings.payoutPreferences,
         endIcon:
           error === TUseSettingsError.ERRORS.PAYOUT ? (
             <Icon size={16} remixName="ri-error-warning-line" className="text-orange-500" />
           ) : null,
       },
-      {
-        label: <Translate token="v2.features.sidebar.settings.invoices" />,
-        href: NEXT_ROUTER.settings.invoices,
-      },
+      // {
+      //   label: <Translate token="v2.features.sidebar.settings.invoices" />,
+      //   href: NEXT_ROUTER.settings.invoices,
+      // },
     ],
     [error]
   );

@@ -4,8 +4,8 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { ProfileCompany } from "app/migration/settings/billing/[id]/general-information/features/profile/profile-company/profile-company";
-import { ProfileIndividual } from "app/migration/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual";
+import { ProfileCompany } from "app/settings/billing/[id]/general-information/features/profile/profile-company/profile-company";
+import { ProfileIndividual } from "app/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual";
 
 import { StackRoute } from "src/App/Stacks/Stacks";
 import { useSubscribeStacks } from "src/libs/react-stack";

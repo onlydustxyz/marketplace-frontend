@@ -1,5 +1,5 @@
-import { InvoiceStatus } from "app/migration/settings/billing/[id]/invoices/features/invoice-status/invoice-status";
-import { TInvoiceTable } from "app/migration/settings/billing/[id]/invoices/hooks/use-invoices-table/use-invoices-table.types";
+import { InvoiceStatus } from "app/settings/billing/[id]/invoices/features/invoice-status/invoice-status";
+import { TInvoiceTable } from "app/settings/billing/[id]/invoices/hooks/use-invoices-table/use-invoices-table.types";
 
 import { components } from "src/__generated/api";
 import { Spinner } from "src/components/Spinner/Spinner";

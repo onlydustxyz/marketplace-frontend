@@ -2,8 +2,8 @@
 
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 
-import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
-import { PayoutPreferencesTable } from "app/migration/settings/payout-preferences/features/table/table";
+import { SettingsHeader } from "app/settings/components/settings-header/settings-header";
+import { PayoutPreferencesTable } from "app/settings/payout-preferences/features/table/table";
 
 import { Banner } from "components/ds/banner/banner";
 import { Card } from "components/ds/card/card";

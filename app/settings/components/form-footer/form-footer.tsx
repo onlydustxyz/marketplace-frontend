@@ -18,7 +18,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { TFormFooter } from "./form-footer.types";
 
-export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
+export function FormFooter({ isPending, hasPreviewButton, isAbsolute = true }: TFormFooter.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const { user } = useAuth0();
@@ -40,9 +40,12 @@ export function FormFooter({ isPending, hasPreviewButton }: TFormFooter.Props) {
     <Flex
       alignItems="center"
       justifyContent="center"
-      className="absolute bottom-0 left-0 right-0 z-50 border-t border-greyscale-50/8 bg-spaceBlue-900 px-4 py-5 shadow-medium xl:px-8"
+      className={cn("border-t border-greyscale-50/8", {
+        "absolute bottom-0 left-0 right-0 z-50 bg-spaceBlue-900 px-4 shadow-medium xl:px-8": isAbsolute,
+        "mt-5 pt-5": !isAbsolute,
+      })}
     >
-      <div className="w-full max-w-7xl px-0 xl:px-8">
+      <div className={cn("w-full", { "max-w-7xl px-0 xl:px-8": isAbsolute })}>
         <Flex alignItems="center" justifyContent="between" className="flex-col gap-4 md:flex-row md:gap-2">
           <Tag size="medium" className="w-full md:w-fit" containerClassName="w-full md:w-fit">
             {isDirty || !isValid ? (

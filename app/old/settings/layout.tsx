@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react";
 
-import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
+import { Sidebar } from "app/settings/components/sidebar";
 
-import { Sidebar } from "./components/sidebar/sidebar";
+import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
   return (
