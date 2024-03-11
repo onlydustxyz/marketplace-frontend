@@ -19,7 +19,7 @@ const useGetBillingProfileById = ({
 }: UseQueryProps<UseGetBillingProfileById, { id?: string }>) => {
   return useBaseQuery<UseGetBillingProfileById>({
     resourcePath: BILLING_PROFILES_PATH.BY_ID(params?.id || ""),
-    tags: BILLING_PROFILES_TAGS.ALL,
+    tags: BILLING_PROFILES_TAGS.all,
     ...options,
   });
 };
@@ -28,7 +28,7 @@ const useBillingProfiles = ({ options = {} }: UseQueryProps<UseGetBillingProfile
   const { isAuthenticated } = useAuth0();
   return useBaseQuery<UseGetBillingProfiles>({
     resourcePath: BILLING_PROFILES_PATH.ME_BILLING_PROFILES,
-    tags: BILLING_PROFILES_TAGS.ME,
+    tags: BILLING_PROFILES_TAGS.me,
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
   });
@@ -37,7 +37,7 @@ const useBillingProfiles = ({ options = {} }: UseQueryProps<UseGetBillingProfile
 const useGetPayoutInfo = ({ options = {}, params }: UseQueryProps<UseGetBillingProfilePayout, { id?: string }>) => {
   return useBaseQuery<UseGetBillingProfilePayout>({
     resourcePath: BILLING_PROFILES_PATH.PAYOUT(params?.id || ""),
-    tags: BILLING_PROFILES_TAGS.ALL,
+    tags: BILLING_PROFILES_TAGS.all,
     ...options,
   });
 };
@@ -45,7 +45,7 @@ const useGetPayoutInfo = ({ options = {}, params }: UseQueryProps<UseGetBillingP
 const useGetBillingCoworkers = ({ options = {}, params }: UseQueryProps<UseGetBillingCoworkers, { id?: string }>) => {
   return useBaseQuery<UseGetBillingCoworkers>({
     resourcePath: BILLING_PROFILES_PATH.COWORKERS(params?.id || ""),
-    tags: BILLING_PROFILES_TAGS.SINGLE(params?.id || ""),
+    tags: BILLING_PROFILES_TAGS.single(params?.id || ""),
     ...options,
   });
 };

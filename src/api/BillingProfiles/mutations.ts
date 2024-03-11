@@ -23,7 +23,7 @@ const useCreateBillingProfile = ({
     method: "POST",
     invalidatesTags: [
       { queryKey: MeApi.tags.user, exact: false },
-      { queryKey: BILLING_PROFILES_TAGS.ME, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
     ],
     ...options,
@@ -87,7 +87,7 @@ const useInviteBillingCoworker = ({
   return useBaseMutation<UseInviteBillingCoworkerBody, UseInviteBillingCoworkerResponse>({
     resourcePath: BILLING_PROFILES_PATH.COWORKER_BY_ID(params?.id || "", params?.coworkerId || ""),
     method: "POST",
-    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.SINGLE(params?.id || ""), exact: false }],
+    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.single(params?.id || ""), exact: false }],
     ...options,
   });
 };
@@ -99,7 +99,7 @@ const useDeleteBillingCoworker = ({
   return useBaseMutation<unknown, void>({
     resourcePath: BILLING_PROFILES_PATH.COWORKER_BY_ID(params?.id || "", params?.coworkerId || ""),
     method: "DELETE",
-    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.SINGLE(params?.id || ""), exact: false }],
+    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.single(params?.id || ""), exact: false }],
     ...options,
   });
 };
