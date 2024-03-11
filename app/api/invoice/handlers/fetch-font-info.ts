@@ -73,7 +73,6 @@ const urlMapping: { [key: string]: string } = {
   ["khm"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer&display=swap",
   ["lao"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Lao&display=swap",
   ["vnm"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Vietnamese&display=swap",
-  // ["default"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
 };
 
 export async function detectLanguageAndGetFontDynamically(text: string): Promise<FontInfo> {
