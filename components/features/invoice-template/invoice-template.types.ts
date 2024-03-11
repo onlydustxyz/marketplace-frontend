@@ -64,6 +64,7 @@ export namespace TInvoice {
   }
 
   export interface InvoiceTemplateProps {
+    fontFamily: string;
     header: HeaderProps;
     invoiceInfos: InvoiceInfoProps;
     rewardSummary: RewardsSummaryProps;
