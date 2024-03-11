@@ -25,7 +25,16 @@
     "contact": "Contact us",
     "resumeValidation": "Resume verification",
     "startValidation": "Start verification",
-    "viewValidation": "See verification details"
+    "viewValidation": "See verification details",
+    "deleteBillingProfile": "Delete billing profile"
+  },
+  "manageBillingProfile": {
+    "button": "__actionType__ billing profile",
+    "title": "Are you sure?",
+    "deleteDescription": "You wan’t be able to access this billing profile anymore.",
+    "disableDescription": "You wan’t be able to receive reward on this billing profile. You’ll still be able to enable it later if needed.",
+    "confirm": "Yes, __actionType__ billing profile",
+    "cancel": "No, keep billing profile"
   },
   "status": {
     "descriptions": {
