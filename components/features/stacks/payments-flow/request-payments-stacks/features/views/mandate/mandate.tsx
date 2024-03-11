@@ -5,6 +5,7 @@ import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
+import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
@@ -17,6 +18,7 @@ import { Typography } from "components/layout/typography/typography";
 
 export function Mandate({ goTo, billingProfileId }: TMandate.Props) {
   const { T } = useIntl();
+  const { capture } = usePosthog();
   const [openMandateDetail] = useStackMandate();
   const [accepted, setAccepted] = useState(false);
 
@@ -48,7 +50,13 @@ export function Mandate({ goTo, billingProfileId }: TMandate.Props) {
   const onSubmit = () => {
     if (accepted) {
       acceptInvoice({ hasAcceptedInvoiceMandate: true });
+      capture("ft-rp-click-on-accept-mandate");
     }
+  };
+
+  const onSkip = () => {
+    capture("ft-rp-click-on-skip-mandate");
+    goTo({ to: TRequestPaymentsStacks.Views.Upload });
   };
 
   const [termsStart, termsPanel, termsEnd] = T("v2.pages.stacks.request_payments.mandate.terms").split("_");
@@ -114,7 +122,7 @@ export function Mandate({ goTo, billingProfileId }: TMandate.Props) {
                   variant="secondary"
                   size="m"
                   className="w-full"
-                  onClick={() => goTo({ to: TRequestPaymentsStacks.Views.Upload })}
+                  onClick={onSkip}
                   disabled={isPendingAcceptInvoice}
                 >
                   <Translate token="v2.pages.stacks.request_payments.mandate.skip" />

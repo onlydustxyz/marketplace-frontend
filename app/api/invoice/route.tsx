@@ -1,8 +1,9 @@
-import { renderToStream } from "@react-pdf/renderer";
+import { Font, renderToStream } from "@react-pdf/renderer";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 import { getHeaderProps, getInvoiceInfoProps, getRewardsSummaryProps } from "app/api/invoice/builders/builders";
+import { detectLanguageAndGetFontDynamically } from "app/api/invoice/handlers/fetch-font-info";
 import { fetchInvoicePreviewData } from "app/api/invoice/handlers/fetch-invoice-preview-data";
 
 import { MeTypes } from "src/api/me/types";
@@ -61,6 +62,22 @@ export async function GET(request: NextRequest) {
       : `${invoicePreviewData.companyBillingProfile?.name}`,
   };
 
+  const languageSample = isUserIndividual
+    ? `${invoicePreviewData.individualBillingProfile?.firstName} ${invoicePreviewData.individualBillingProfile?.lastName}`
+    : invoicePreviewData.companyBillingProfile?.name;
+
+  let fontInfo;
+
+  try {
+    fontInfo = await detectLanguageAndGetFontDynamically(languageSample || "latin");
+    Font.register({
+      family: fontInfo.family,
+      fonts: fontInfo.fonts,
+    });
+  } catch (error) {
+    return new NextResponse("Internal Server Error (Failed to load font information)", { status: 500 });
+  }
+
   /* ------
   Create a stream containing the pdf blob
   ------ */
@@ -68,7 +85,13 @@ export async function GET(request: NextRequest) {
 
   try {
     stream = await renderToStream(
-      <InvoiceTemplate header={header} invoiceInfos={invoiceInfo} rewardSummary={rewardSummary} footer={footer} />
+      <InvoiceTemplate
+        fontFamily={fontInfo.family}
+        header={header}
+        invoiceInfos={invoiceInfo}
+        rewardSummary={rewardSummary}
+        footer={footer}
+      />
     );
     if (!stream) {
       return new NextResponse("Internal Server Error (!stream)", { status: 500 });

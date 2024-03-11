@@ -4,7 +4,6 @@ export const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     backgroundColor: "#ffffff",
-    fontFamily: "GT Walsheim",
     padding: "20px 0px 50px 0px",
   },
   header: {
