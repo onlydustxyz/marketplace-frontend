@@ -3,7 +3,8 @@ export namespace TRequestPaymentsStacks {
     to: Views | "close";
   }
   export enum Views {
-    Select = "SELECT",
+    SelectRewards = "SELECT_REWARDS",
+    SelectBillingProfile = "SELECT_BILLING_PROFILE",
     Generate = "GENERATE",
     Upload = "UPLOAD",
     Mandate = "MANDATE",

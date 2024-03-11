@@ -60,11 +60,11 @@ interface FormatAmountParams {
   currency?: BudgetCurrencyType | undefined;
 }
 export function formatAmount({ amount, locale = "en-US", fixedDecimals = 2, currency }: FormatAmountParams): string {
-  if (!amount) {
+  if (amount === null || amount === undefined) {
     return "N/A";
   }
 
-  const fixedAmount = Number(amount.toFixed(fixedDecimals));
+  const fixedAmount = Number(amount?.toFixed(fixedDecimals));
   const formattedNumber = new Intl.NumberFormat(locale, {
     maximumFractionDigits: fixedDecimals,
   }).format(fixedAmount);

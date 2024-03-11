@@ -6,11 +6,13 @@ import { TIcon } from "components/layout/icon/icon.types";
 export namespace BillingProfilesTypes {
   export type status = components["schemas"]["BillingProfileResponse"]["status"];
 
-  export enum TYPE {
-    INDIVIDUAL = "INDIVIDUAL",
-    SELF_EMPLOYED = "SELF_EMPLOYED",
-    COMPANY = "COMPANY",
+  export type BillingProfile = components["schemas"]["ShortBillingProfileResponse"];
+  export enum type {
+    Individual = "INDIVIDUAL",
+    SelfEmployed = "SELF_EMPLOYED",
+    Company = "COMPANY",
   }
+
   export type typeUnion = components["schemas"]["BillingProfileResponse"]["type"];
 
   export enum ROLE {

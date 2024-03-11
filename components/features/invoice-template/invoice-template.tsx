@@ -33,6 +33,7 @@ export function InvoiceTemplate({ header, invoiceInfos, rewardSummary, footer }:
           isUserIndividual={invoiceInfos.isUserIndividual}
         />
         <InvoiceSummary
+          isUserIndividual={rewardSummary.isUserIndividual}
           rewards={rewardSummary.rewards}
           vat={rewardSummary.vat}
           totalBeforeTax={rewardSummary.totalBeforeTax}

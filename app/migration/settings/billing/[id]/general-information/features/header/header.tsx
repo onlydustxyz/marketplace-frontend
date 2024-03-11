@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
+import { SettingsHeader } from "app/settings/components/settings-header/settings-header";
 
 import MeApi from "src/api/me";
 import { MeTypes } from "src/api/me/types";

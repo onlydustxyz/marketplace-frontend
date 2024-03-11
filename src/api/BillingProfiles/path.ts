@@ -5,6 +5,13 @@ export const BILLING_PROFILES_PATH = {
   ROOT: BASE_API_V1("billing-profiles/"),
   BY_ID: (id: string) => BASE_API_V1(`billing-profiles/${id}/`),
   PAYOUT: (id: string) => BASE_API_V1(`billing-profiles/${id}/payout-info`),
+  INVOICE_LINKED_TO_PROFILE: (billingProfileId: string) => BASE_API_V1(`billing-profiles/${billingProfileId}/invoices`),
+  DOWNLOAD_INVOICE_LINKED_TO_PROFILE: (billingProfileId: string, invoiceId: string) =>
+    BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/${invoiceId}`),
+  UPLOAD_INVOICE_LINKED_TO_PROFILE: (billingProfileId: string, invoiceId: string) =>
+    BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/${invoiceId}`),
+  ACCEPT_INVOICE_MANDATE: (billingProfileId: string) =>
+    BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/mandate`),
   COWORKERS: (id: string) => BASE_API_V1(`billing-profiles/${id}/coworkers`),
   COWORKER_BY_ID: (id: string, coworkerId: string) => BASE_API_V1(`billing-profiles/${id}/coworkers/${coworkerId}`),
 };

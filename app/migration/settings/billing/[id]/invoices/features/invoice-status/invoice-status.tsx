@@ -1,4 +1,4 @@
-import { TInvoiceStatus } from "app/migration/settings/invoices/features/invoice-status/invoice-status.types";
+import { TInvoiceStatus } from "app/migration/settings/billing/[id]/invoices/features/invoice-status/invoice-status.types";
 
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";

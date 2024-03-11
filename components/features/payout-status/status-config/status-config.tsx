@@ -47,8 +47,8 @@ export function getStatusConfig({
     }),
     PENDING_INVOICE: createStatusConfig({
       icon: "ri-loader-2-line",
-      labelToken: "v2.features.payoutStatus.invoicePending.label",
-      tooltipToken: "v2.features.payoutStatus.invoicePending.tooltip",
+      labelToken: "v2.features.payoutStatus.pendingRequest.label",
+      tooltipToken: "v2.features.payoutStatus.pendingRequest.tooltip",
       tooltipParams: {},
       borderColor: "multi-color",
       iconClassName: "text-snow",

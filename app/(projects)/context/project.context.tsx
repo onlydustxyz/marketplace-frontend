@@ -2,6 +2,7 @@
 
 import { createContext, useEffect, useMemo, useState } from "react";
 import { useLocalStorage } from "react-use";
+import { useDebounce } from "usehooks-ts";
 
 import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
@@ -48,8 +49,10 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     return params;
   }, [filters]);
 
+  const debouncedQueryParams = useDebounce(queryParams, 300);
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = ProjectApi.queries.useInfiniteList({
-    queryParams,
+    queryParams: debouncedQueryParams,
   });
 
   const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(TProjectContext.DEFAULT_FILTER), [filters]);

@@ -66,7 +66,7 @@ export function useContributionTable() {
           />
         </Cell>
         <Cell height={CellHeight.Compact}>
-          <ContributionProjectRepo project={contribution.project} repo={repo} />
+          <ContributionProjectRepo project={contribution.project} repo={repo} truncateLength={20} />
         </Cell>
         <Cell height={CellHeight.Compact}>
           <Contribution contribution={contribution} />

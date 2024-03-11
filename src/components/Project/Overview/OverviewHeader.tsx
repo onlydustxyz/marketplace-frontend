@@ -19,6 +19,7 @@ import { Translate } from "components/layout/translate/translate";
 export interface ProjectOverviewHeaderProps {
   project: UseGetProjectBySlugResponse;
   description?: boolean;
+  isSidepanel?: boolean;
 }
 
 const LOREM_IPSUM = `
@@ -30,7 +31,11 @@ Lorem ipsum dolor sit amet, consectetur *adipiscing elit*. Sed non risus. **Susp
 Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue.
 `;
 
-export const ProjectOverviewHeader = ({ project, description = true }: ProjectOverviewHeaderProps) => {
+export const ProjectOverviewHeader = ({
+  project,
+  description = true,
+  isSidepanel = false,
+}: ProjectOverviewHeaderProps) => {
   const [isError, setIsError] = useState(false);
   const dpr = window.devicePixelRatio;
   const optimizeSrc = useMemo(() => {
@@ -72,7 +77,7 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
 
   return (
     <>
-      <div className="flex flex-row items-center gap-4">
+      <div className="flex items-center gap-4">
         <img
           alt={project.name || ""}
           src={optimizeSrc}
@@ -82,7 +87,9 @@ export const ProjectOverviewHeader = ({ project, description = true }: ProjectOv
         />
         <div className="flex w-full flex-col gap-1">
           <div className="flex flex-row items-center justify-between font-belwe text-2xl font-normal text-greyscale-50">
-            {project.name}
+            <span className={isSidepanel ? "lg:max-w-[50%] lg:truncate" : ""} title={project.name}>
+              {project.name}
+            </span>
             {project.visibility === "PRIVATE" && (
               <div
                 className="flex flex-row items-center gap-2 rounded-lg bg-orange-900 px-2.5 py-1 font-walsheim text-xs font-medium text-orange-500 hover:cursor-default"

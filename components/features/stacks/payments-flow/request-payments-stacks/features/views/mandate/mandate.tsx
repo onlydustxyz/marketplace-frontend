@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { useStackMandate } from "src/App/Stacks/Stacks";
-import BillingProfilesApi from "src/api/billing-profiles";
+import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
@@ -91,11 +91,11 @@ export function Mandate({ goTo, billingProfileId }: TMandate.Props) {
               className="mb-4"
             />
             <Card background={false}>
-              <p className="prose leading-normal text-greyscale-50">
+              <div className="prose leading-normal text-greyscale-50">
                 <Translate token="v2.pages.stacks.request_payments.mandate.summary.question" />
                 <br />
                 {answerList}
-              </p>
+              </div>
             </Card>
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
