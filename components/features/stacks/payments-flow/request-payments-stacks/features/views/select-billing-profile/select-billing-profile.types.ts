@@ -8,6 +8,6 @@ export namespace TSelectBillingProfile {
     billingProfiles?: BillingProfilesTypes.BillingProfile[];
     isLoading: boolean;
     onSelectBillingProfile: (id: string) => void;
-    selectedBillingProfile: BillingProfilesTypes.BillingProfile | undefined;
+    selectedBillingProfileId: string;
   }
 }

@@ -30,6 +30,7 @@ export const NEXT_ROUTER = {
       all: "/migration/settings",
       profile: "/migration/settings/profile",
       payoutPreferences: "/migration/settings/payout-preferences",
+      invoices: "/migration/settings/invoices",
       billing: {
         root: (slug: string) => `/migration/settings/billing/${slug}`,
         generalInformation: (slug: string) => `/migration/settings/billing/${slug}/general-information`,

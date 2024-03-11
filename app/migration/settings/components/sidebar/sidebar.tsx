@@ -46,7 +46,7 @@ export function Sidebar() {
       },
       {
         label: <Translate token="v2.features.sidebar.settings.invoices" />,
-        href: NEXT_ROUTER.settings.invoices,
+        href: NEXT_ROUTER.settings.migration.invoices,
       },
     ],
     [error]

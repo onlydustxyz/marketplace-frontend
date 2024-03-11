@@ -21,7 +21,7 @@ export function SelectBillingProfile({
   billingProfiles,
   isLoading,
   onSelectBillingProfile,
-  selectedBillingProfile,
+  selectedBillingProfileId,
   goTo,
 }: TSelectBillingProfile.Props) {
   function handleNext() {
@@ -58,8 +58,8 @@ export function SelectBillingProfile({
           className="mb-4 text-spaceBlue-200"
         />
         <Flex justifyContent="start" direction={"col"} className="gap-4">
-          <RadioGroupCustom onChange={onSelectBillingProfile} value={selectedBillingProfile?.id ?? ""}>
-            {({ value, onChange }) =>
+          <RadioGroupCustom onChange={onSelectBillingProfile} value={selectedBillingProfileId}>
+            {({ onChange }) =>
               billingProfiles?.map(profile => (
                 <SelectableBillingProfile
                   key={profile.id}
@@ -68,7 +68,7 @@ export function SelectBillingProfile({
                   icon={{ remixName: billingProfilesIcons[profile.type] }}
                   disabled={profile.rewardCount === 0}
                   onChange={onChange}
-                  selected={value === selectedBillingProfile?.id}
+                  selected={profile.id === selectedBillingProfileId}
                   value={profile.id}
                 />
               ))
@@ -77,7 +77,7 @@ export function SelectBillingProfile({
         </Flex>
       </>
     );
-  }, [isLoading, billingProfiles, selectedBillingProfile, onSelectBillingProfile]);
+  }, [isLoading, billingProfiles, selectedBillingProfileId, onSelectBillingProfile]);
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -103,7 +103,7 @@ export function SelectBillingProfile({
                   size="m"
                   className="w-full"
                   onClick={handleNext}
-                  disabled={!selectedBillingProfile}
+                  disabled={!selectedBillingProfileId}
                 >
                   <Translate token="v2.pages.stacks.request_payments.selectBillingProfile.next" />
                 </Button>
