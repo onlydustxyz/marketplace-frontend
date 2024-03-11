@@ -5,6 +5,7 @@ import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/ds/button/button";
 import { Tabs } from "components/ds/tabs/tabs";
+import { ReadonlyBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/components/billing-profile/readonly-billing-profile/readonly-billing-profile";
 import { RewardItem } from "components/features/stacks/payments-flow/request-payments-stacks/components/reward-item/reward-item";
 import { TSelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards.types";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
@@ -24,6 +25,7 @@ export function SelectRewards({
   excludedRewards,
   goTo,
   isMandateAccepted,
+  selectedBillingProfile,
 }: TSelectRewards.Props) {
   const { capture } = usePosthog();
   const { user } = useCurrentUser();
@@ -91,6 +93,14 @@ export function SelectRewards({
                 className="text-greyscale-50"
               />
             </div>
+            <div className="mb-8">
+              <Typography
+                variant={"title-s"}
+                translate={{ token: "v2.pages.stacks.request_payments.uploadInvoice.guidelinesTitle" }}
+                className="mb-4"
+              />
+              {selectedBillingProfile ? <ReadonlyBillingProfile billingProfile={selectedBillingProfile} /> : null}
+            </div>
             <Tabs
               tabs={[
                 {
@@ -112,7 +122,11 @@ export function SelectRewards({
             <AmountCounter total={totalAmountSelectedRewards} isCompany={user?.billingProfileType === "COMPANY"} />
             <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
               <div className="flex items-center justify-end gap-5 ">
-                <Button variant="secondary" size="m" onClick={() => goTo({ to: "close" })}>
+                <Button
+                  variant="secondary"
+                  size="m"
+                  onClick={() => goTo({ to: TRequestPaymentsStacks.Views.SelectBillingProfile })}
+                >
                   <Translate token="v2.pages.stacks.request_payments.form.back" />
                 </Button>
                 <Button variant="primary" size="m" onClick={onSubmit} disabled={includedRewards?.length < 1}>

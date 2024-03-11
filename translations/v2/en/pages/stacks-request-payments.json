@@ -29,6 +29,18 @@
     "included": "Rewards included",
     "excluded": "Rewards excluded"
   },
+  "selectBillingProfile": {
+    "title": "Select a billing profile",
+    "rewardsCount": {
+      "zero": "No rewards",
+      "many": "__count__ rewards"
+    },
+    "emptyState": {
+      "title": "No billing profiles",
+      "description": "You need to create a billing profile to request payment."
+    },
+    "next": "Next"
+  },
   "selectRewards": {
     "emptyState": {
       "title": "No rewards selected",
