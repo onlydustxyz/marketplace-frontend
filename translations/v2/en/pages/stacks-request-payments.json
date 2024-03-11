@@ -30,11 +30,11 @@
   "selectBillingProfile": {
     "title": "Select a billing profile",
     "rewardsCount": {
-      "zero": "No reward",
+      "zero": "No rewards",
       "many": "__count__ rewards"
     },
     "emptyState": {
-      "title": "No billing profile",
+      "title": "No billing profiles",
       "description": "You need to create a billing profile to request payment."
     },
     "next": "Next"
