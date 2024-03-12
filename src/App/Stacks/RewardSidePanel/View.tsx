@@ -98,7 +98,7 @@ export default function View({
       return null;
     }
 
-    if (redirectionStatus && (data.status === "MISSING_PAYOUT_INFO" || data.status === "PENDING_VERIFICATION"))
+    if (redirectionStatus && (data.status === "PAYOUT_INFO_MISSING" || data.status === "PENDING_VERIFICATION"))
       return (
         <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
           <PayoutStatus

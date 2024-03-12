@@ -28,7 +28,7 @@ export function StatusTag({ status, date, className, isBillingError }: TStatusTa
       <Typography variant="body-s">
         <Translate token={labelToken} />
       </Typography>
-      {status === PaymentStatus.MISSING_PAYOUT_INFO || status === PaymentStatus.PENDING_VERIFICATION ? (
+      {status === PaymentStatus.PAYOUT_INFO_MISSING || status === PaymentStatus.PENDING_VERIFICATION ? (
         <Icon remixName="ri-arrow-right-s-line" size={16} />
       ) : null}
     </Tag>

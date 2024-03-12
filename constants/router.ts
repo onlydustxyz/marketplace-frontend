@@ -21,6 +21,7 @@ export const NEXT_ROUTER = {
     all: "/rewards",
   },
   settings: {
+    // TODO delete this and old setting folder
     // all: "/settings",
     // profile: "/settings/profile",
     // payout: "/settings/payout",
