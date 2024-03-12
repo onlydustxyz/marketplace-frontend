@@ -103,18 +103,6 @@ const useGithubOrganizations = ({ options = {} }: UseQueryProps<UseGithubOrganiz
   });
 };
 
-export type UseGetMyPayoutSettingsResponse = components["schemas"]["UserPayoutSettingsResponse"];
-
-const useGetMyPayoutSettings = ({ options = {} }: UseQueryProps<UseGetMyPayoutSettingsResponse, undefined>) => {
-  const { isAuthenticated } = useAuth0();
-  return useBaseQuery<UseGetMyPayoutSettingsResponse>({
-    resourcePath: ME_PATH.PAYOUT_SETTINGS,
-    tags: ME_TAGS.payoutSettings(),
-    ...options,
-    enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
-  });
-};
-
 export type UseGetMyProfileInfoResponse = components["schemas"]["PrivateUserProfileResponse"];
 
 const useGetMyProfileInfo = ({ options = {} }: UseQueryProps<UseGetMyProfileInfoResponse, undefined>) => {
@@ -198,7 +186,6 @@ export default {
   useMyContributedRepos,
   useGithubOrganizations,
   useGetMePendingInvoices,
-  useGetMyPayoutSettings,
   useGetMyProfileInfo,
   useGetMeRewardCurrencies,
   useGetPayoutPreferences,

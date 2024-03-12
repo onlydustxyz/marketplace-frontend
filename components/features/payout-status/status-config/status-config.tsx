@@ -69,7 +69,7 @@ export function getStatusConfig({
       borderColor: "grey",
       iconClassName: "text-snow",
     }),
-    MISSING_PAYOUT_INFO: createStatusConfig({
+    PAYOUT_INFO_MISSING: createStatusConfig({
       icon: "ri-error-warning-line",
       labelToken: "v2.features.payoutStatus.payoutInfoMissing.label",
       tooltipToken: "v2.features.payoutStatus.payoutInfoMissing.tooltip",
