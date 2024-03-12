@@ -101,20 +101,12 @@ export default function View({
     if (redirectionStatus && (data.status === "PAYOUT_INFO_MISSING" || data.status === "PENDING_VERIFICATION"))
       return (
         <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
-          <PayoutStatus
-            status={data.status}
-            dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
-            isBillingError={isBillingError}
-          />
+          <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
         </BaseLink>
       );
 
     return (
-      <PayoutStatus
-        status={data.status}
-        dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
-        isBillingError={isBillingError}
-      />
+      <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
     );
   }, [data, isBillingError, redirectionStatus]);
 

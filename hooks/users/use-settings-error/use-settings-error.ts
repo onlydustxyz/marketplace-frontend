@@ -1,13 +1,13 @@
-import { useBillingProfiles } from "../use-billing-profile/use-billing-profile";
-import { useBillingStatus } from "../use-billing-status/use-billing-status";
 import { TUseSettingsError } from "./use-settings-error.types";
 
 export const useSettingsError = (): TUseSettingsError.Return => {
-  const { validBillingProfile, billingProfile, user, isLoading } = useBillingProfiles();
-  const { isWarning: isBillingWarning, isError: isBillingError } = useBillingStatus({
-    hasValidBillingProfile: validBillingProfile,
-    status: billingProfile?.status,
-  });
+  // TODO this is temp mock until backend handle billing profile validity for each one
+  const isBillingError = false;
+  const isLoading = false;
+  const isBillingWarning = false;
+  const user = {
+    hasValidPayoutInfos: true,
+  };
 
   const getError = (): TUseSettingsError.Return["error"] => {
     if (isBillingError && !isLoading) {
