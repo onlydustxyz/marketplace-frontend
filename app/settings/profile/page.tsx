@@ -110,7 +110,7 @@ function SettingsProfilePage() {
     <FormProvider {...formMethods}>
       <form id="profile-form" className="flex h-full flex-col" onSubmit={handleSubmit(onSubmit)}>
         <Flex direction="col" className="flex-1 gap-4 pb-4">
-          <SettingsHeader title="v2.pages.settings.profile.title" subtitle="v2.pages.settings.profile.subtitle" />
+          <SettingsHeader tokenTitle="v2.pages.settings.profile.title" subtitle="v2.pages.settings.profile.subtitle" />
 
           <Flex direction="col" className="gap-4">
             <ProfileGithubAccount />

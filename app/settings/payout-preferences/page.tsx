@@ -13,7 +13,7 @@ function PayoutPreferencesPage() {
   return (
     <>
       <SettingsHeader
-        title="v2.pages.settings.payoutPreferences.title"
+        tokenTitle="v2.pages.settings.payoutPreferences.title"
         subtitle="v2.pages.settings.payoutPreferences.subtitle"
       />
 

@@ -94,7 +94,7 @@ export function Header({ initialData }: THeader.Props) {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <SettingsHeader
-          title="v2.pages.settings.billing.title"
+          tokenTitle="v2.pages.settings.billing.title"
           subtitle={
             profile === MeTypes.billingProfileType.Individual
               ? "v2.pages.settings.billing.description_individual"
