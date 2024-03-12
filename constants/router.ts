@@ -21,12 +21,6 @@ export const NEXT_ROUTER = {
     all: "/rewards",
   },
   settings: {
-    // TODO delete this and old setting folder
-    // all: "/settings",
-    // profile: "/settings/profile",
-    // payout: "/settings/payout",
-    // billing: "/settings/billing",
-    // invoices: "/settings/invoices",
     all: "/settings",
     profile: "/settings/profile",
     payoutPreferences: "/settings/payout-preferences",
@@ -37,7 +31,6 @@ export const NEXT_ROUTER = {
       coworkers: (slug: string) => `/settings/billing/${slug}/coworkers`,
       invoices: (slug: string) => `/settings/billing/${slug}/invoices`,
     },
-    migration: {},
   },
   publicProfile: {
     root: (slug: string) => `/u/${slug}`,
