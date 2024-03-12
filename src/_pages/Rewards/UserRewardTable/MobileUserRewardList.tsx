@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from "react";
+import { ReactElement, ReactNode, useContext } from "react";
 
 import ErrorFallback from "src/ErrorFallback";
 import { components } from "src/__generated/api";
@@ -22,11 +22,9 @@ import { MyRewardType } from "./Line";
 export default function MobileUserRewardList({
   onRewardClick,
   emptyState,
-  isBillingError,
 }: {
   onRewardClick: (reward: MyRewardType) => void;
-  emptyState?: React.ReactElement;
-  isBillingError?: boolean;
+  emptyState?: ReactElement;
 }) {
   const { T } = useIntl();
   const { query, rewards } = useContext(UserRewardsContext);
@@ -67,7 +65,7 @@ export default function MobileUserRewardList({
                     <PayoutStatus
                       status={reward?.status}
                       dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
-                      isBillingError={isBillingError}
+                      projectId={reward?.projectId}
                     />
                   }
                 />
