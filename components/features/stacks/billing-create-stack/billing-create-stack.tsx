@@ -33,7 +33,7 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
     options: {
       onSuccess: data => {
         if (redirectToProfile) {
-          router.push(NEXT_ROUTER.settings.migration.billing.root(data.id));
+          router.push(NEXT_ROUTER.settings.billing.root(data.id));
         }
         closeStack();
       },

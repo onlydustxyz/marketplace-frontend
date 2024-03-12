@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { useInvoicesTable } from "app/migration/settings/billing/[id]/invoices/hooks/use-invoices-table/use-invoices-table";
-import { SettingsHeader } from "app/migration/settings/components/settings-header/settings-header";
+import { useInvoicesTable } from "app/settings/billing/[id]/invoices/hooks/use-invoices-table/use-invoices-table";
+import { SettingsHeader } from "app/settings/components/settings-header/settings-header";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import BillingApi from "src/api/me/billing";
