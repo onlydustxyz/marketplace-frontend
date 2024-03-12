@@ -2,19 +2,19 @@ import { describe, expect, it } from "vitest";
 
 import { TPayoutForm } from "app/settings/billing/[id]/payment-methods/features/form/form.types";
 
-import { UseGetMyPayoutSettingsResponse } from "src/api/me/queries";
+import { UseGetBillingProfilePayout } from "src/api/BillingProfiles/queries";
 
 import { formatToData, formatToSchema } from "./form.utils";
 
 describe("formatToData", () => {
   it("should format payout info correctly with full data", () => {
-    const mockData: UseGetMyPayoutSettingsResponse = {
+    const mockData: UseGetBillingProfilePayout = {
       ethWallet: "0x123",
       starknetAddress: "0x456",
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
-      sepaAccount: {
-        iban: "DE89 3704 0044 0532 0130 00",
+      bankAccount: {
+        number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
       },
     };
@@ -24,8 +24,8 @@ describe("formatToData", () => {
       starknetAddress: "0x456",
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
-      sepaAccount: {
-        iban: "DE89 3704 0044 0532 0130 00",
+      bankAccount: {
+        number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
       },
     };
@@ -35,7 +35,7 @@ describe("formatToData", () => {
   });
 
   it("should format payout info correctly with partial data", () => {
-    const mockData: UseGetMyPayoutSettingsResponse = {
+    const mockData: UseGetBillingProfilePayout = {
       ethWallet: "0x123",
     };
 
@@ -44,8 +44,8 @@ describe("formatToData", () => {
       starknetAddress: "",
       optimismAddress: "",
       aptosAddress: "",
-      sepaAccount: {
-        iban: "",
+      bankAccount: {
+        number: "",
         bic: "",
       },
     };
@@ -62,8 +62,8 @@ describe("formatToSchema", () => {
       starknetAddress: "0x456",
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
-      sepaAccount: {
-        iban: "DE89 3704 0044 0532 0130 00",
+      bankAccount: {
+        number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
       },
     };
@@ -89,8 +89,8 @@ describe("formatToSchema", () => {
       starknetAddress: "",
       optimismAddress: "",
       aptosAddress: "",
-      sepaAccount: {
-        iban: "",
+      bankAccount: {
+        number: "",
         bic: "",
       },
     };

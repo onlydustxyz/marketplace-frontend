@@ -99,9 +99,9 @@ function SettingsPayoutPage() {
 
   // We need this to trigger in realtime
   useEffect(() => {
-    trigger("sepaAccount.iban");
-    trigger("sepaAccount.bic");
-  }, [watch("sepaAccount.iban"), watch("sepaAccount.bic")]);
+    trigger("bankAccount.number");
+    trigger("bankAccount.bic");
+  }, [watch("bankAccount.number"), watch("bankAccount.bic")]);
 
   useEffect(() => {
     if (data) {

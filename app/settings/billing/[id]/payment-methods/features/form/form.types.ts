@@ -4,8 +4,8 @@ export namespace TPayoutForm {
     starknetAddress?: string;
     optimismAddress?: string;
     aptosAddress?: string;
-    sepaAccount: {
-      iban?: string;
+    bankAccount: {
+      number?: string;
       bic?: string;
     };
   }
