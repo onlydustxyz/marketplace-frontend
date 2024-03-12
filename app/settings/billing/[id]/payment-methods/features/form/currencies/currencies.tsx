@@ -1,4 +1,4 @@
-import { TCurrencies } from "app/migration/settings/billing/[id]/payment-methods/features/form/currencies/currencies.types";
+import { TCurrencies } from "app/settings/billing/[id]/payment-methods/features/form/currencies/currencies.types";
 
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 

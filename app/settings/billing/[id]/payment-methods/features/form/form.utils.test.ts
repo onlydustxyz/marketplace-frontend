@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { TPayoutForm } from "app/migration/settings/billing/[id]/payment-methods/features/form/form.types";
+import { TPayoutForm } from "app/settings/billing/[id]/payment-methods/features/form/form.types";
 
 import { UseGetMyPayoutSettingsResponse } from "src/api/me/queries";
 
