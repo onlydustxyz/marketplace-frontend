@@ -3,7 +3,7 @@ import { ReactElement, ReactNode } from "react";
 import { SUMSUB_CONST } from "app/api/sumsub-token/constants";
 
 import { useStackFeedback, useStackVerify } from "src/App/Stacks/Stacks";
-import { UseBillingProfileResponse } from "src/api/me/billing/queries";
+import { UseGetBillingProfileById } from "src/api/BillingProfiles/queries";
 import { MeTypes } from "src/api/me/types";
 import { Key } from "src/hooks/useIntl";
 
@@ -14,7 +14,7 @@ export interface UseBillingButton {
 }
 
 export interface UseBillingButtonProps {
-  status?: UseBillingProfileResponse["status"];
+  status?: UseGetBillingProfileById["status"];
   type?: MeTypes.billingProfileUnion;
   id?: string;
 }

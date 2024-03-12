@@ -1,8 +1,8 @@
-import { UseBillingProfileResponse } from "src/api/me/billing/queries";
+import { UseGetBillingProfileById } from "src/api/BillingProfiles/queries";
 import { MeBillingTypes } from "src/api/me/billing/types";
 
 export namespace MeBillingConstants {
-  export const statusMapping: Record<UseBillingProfileResponse["status"], MeBillingTypes.statusMapping> = {
+  export const statusMapping: Record<UseGetBillingProfileById["status"], MeBillingTypes.statusMapping> = {
     CLOSED: {
       icon: { remixName: "ri-error-warning-line" },
       label: "v2.commons.enums.me.billingProfileStatus.CLOSED",

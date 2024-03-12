@@ -5,6 +5,6 @@ export namespace TStatusTag {
     status: TPayoutStatus.PaymentStatusUnion;
     date?: string | null;
     className?: string;
-    isBillingError?: boolean;
+    projectId?: string;
   }
 }

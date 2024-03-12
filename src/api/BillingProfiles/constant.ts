@@ -1,5 +1,5 @@
+import { UseGetBillingProfileById } from "src/api/BillingProfiles/queries";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
-import { UseBillingProfileResponse } from "src/api/me/billing/queries";
 import { MeBillingTypes } from "src/api/me/billing/types";
 
 export namespace BillingProfileConstant {
@@ -15,7 +15,7 @@ export namespace BillingProfileConstant {
     },
   };
 
-  export const statusMapping: Record<UseBillingProfileResponse["status"], MeBillingTypes.statusMapping> = {
+  export const statusMapping: Record<UseGetBillingProfileById["status"], MeBillingTypes.statusMapping> = {
     CLOSED: {
       icon: { remixName: "ri-error-warning-line" },
       label: "v2.commons.enums.me.billingProfileStatus.CLOSED",
