@@ -2,9 +2,9 @@ import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 import { ReactNode, useMemo } from "react";
 
-import { ProfileItemGrid } from "app/settings/billing/component/profile-item-grid/profile-item-grid";
-import { ProfileItem } from "app/settings/billing/component/profile-item/profile-item";
-import { TProfileCompany } from "app/settings/billing/features/profile/profile-company/profile-company.types";
+import { ProfileItemGrid } from "app/settings/billing/[id]/general-information/component/profile-item-grid/profile-item-grid";
+import { ProfileItem } from "app/settings/billing/[id]/general-information/component/profile-item/profile-item";
+import { TProfileCompany } from "app/settings/billing/[id]/general-information/features/profile/profile-company/profile-company.types";
 
 import { Translate } from "components/layout/translate/translate";
 

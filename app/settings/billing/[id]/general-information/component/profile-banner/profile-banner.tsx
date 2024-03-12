@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { useBillingButton } from "app/migration/settings/billing/[id]/general-information/hooks/useBillingButton";
+import { useBillingButton } from "app/settings/billing/[id]/general-information/hooks/useBillingButton";
 
 import { Banner } from "components/ds/banner/banner";
 import { TBanner } from "components/ds/banner/banner.types";

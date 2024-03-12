@@ -1,10 +1,10 @@
 import { format } from "date-fns";
 import { useMemo } from "react";
 
-import { ProfileBoolean } from "app/migration/settings/billing/[id]/general-information/component/profile-boolean/profile-boolean";
-import { ProfileItemGrid } from "app/migration/settings/billing/[id]/general-information/component/profile-item-grid/profile-item-grid";
-import { ProfileItem } from "app/migration/settings/billing/[id]/general-information/component/profile-item/profile-item";
-import { TProfileCompany } from "app/migration/settings/billing/[id]/general-information/features/profile/profile-company/profile-company.types";
+import { ProfileBoolean } from "app/settings/billing/[id]/general-information/component/profile-boolean/profile-boolean";
+import { ProfileItemGrid } from "app/settings/billing/[id]/general-information/component/profile-item-grid/profile-item-grid";
+import { ProfileItem } from "app/settings/billing/[id]/general-information/component/profile-item/profile-item";
+import { TProfileCompany } from "app/settings/billing/[id]/general-information/features/profile/profile-company/profile-company.types";
 
 export function ProfileCompany({ profile }: TProfileCompany.Props) {
   const registrationDate = useMemo(() => {
