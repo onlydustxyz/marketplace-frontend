@@ -101,7 +101,7 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                 <RadioGroupCustom<TBillingCreateStack.Choice | ""> onChange={onChoiceChange} value={type}>
                   {({ value, onChange }) => [
                     <CheckboxItem
-                      key={BillingProfilesTypes.TYPE.INDIVIDUAL}
+                      key={BillingProfilesTypes.type.Individual}
                       title={<Translate token="v2.pages.stacks.settings.billingCreate.fields.individual.title" />}
                       list={[
                         <Translate key={1} token="v2.pages.stacks.settings.billingCreate.fields.individual.points.1" />,
@@ -111,8 +111,8 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                       icon={{ remixName: "ri-user-line" }}
                       disabled={isDisabled}
                       onChange={onChange}
-                      selected={value === BillingProfilesTypes.TYPE.INDIVIDUAL}
-                      value={BillingProfilesTypes.TYPE.INDIVIDUAL}
+                      selected={value === BillingProfilesTypes.type.Individual}
+                      value={BillingProfilesTypes.type.Individual}
                       withInput={{
                         onChange: onNameChange,
                         value: name,
@@ -121,7 +121,7 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                       }}
                     />,
                     <CheckboxItem
-                      key={BillingProfilesTypes.TYPE.SELF_EMPLOYED}
+                      key={BillingProfilesTypes.type.SelfEmployed}
                       title={<Translate token="v2.pages.stacks.settings.billingCreate.fields.selfEmployed.title" />}
                       list={[
                         <Translate
@@ -136,8 +136,8 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                       icon={{ remixName: "ri-suitcase-line" }}
                       disabled={isDisabled}
                       onChange={onChange}
-                      selected={value === BillingProfilesTypes.TYPE.SELF_EMPLOYED}
-                      value={BillingProfilesTypes.TYPE.SELF_EMPLOYED}
+                      selected={value === BillingProfilesTypes.type.SelfEmployed}
+                      value={BillingProfilesTypes.type.SelfEmployed}
                       withInput={{
                         onChange: onNameChange,
                         value: name,
@@ -146,7 +146,7 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                       }}
                     />,
                     <CheckboxItem
-                      key={BillingProfilesTypes.TYPE.COMPANY}
+                      key={BillingProfilesTypes.type.Company}
                       title={<Translate token="v2.pages.stacks.settings.billingCreate.fields.company.title" />}
                       list={[
                         <Translate
@@ -165,8 +165,8 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
                       icon={{ remixName: "ri-vip-crown-line" }}
                       disabled={isDisabled}
                       onChange={onChange}
-                      selected={value === BillingProfilesTypes.TYPE.COMPANY}
-                      value={BillingProfilesTypes.TYPE.COMPANY}
+                      selected={value === BillingProfilesTypes.type.Company}
+                      value={BillingProfilesTypes.type.Company}
                       withInput={{
                         onChange: onNameChange,
                         value: name,

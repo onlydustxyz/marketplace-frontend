@@ -21,7 +21,7 @@ export function useContributionTabs() {
   const searchParams = useSearchParams();
   const updateSearchParams = useUpdateSearchParams();
 
-  const tab = searchParams.get("tab") as (typeof tabValues)[number] | null;
+  const tab = searchParams.get("tab") as typeof tabValues[number] | null;
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
 
   function isActiveTab(tab: AllTabs) {

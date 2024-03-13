@@ -6,5 +6,5 @@ export namespace TBillingCreateStack {
     redirectToProfile?: boolean;
   }
 
-  export type Choice = BillingProfilesTypes.TYPE | "employee" | "";
+  export type Choice = BillingProfilesTypes.type | "employee" | "";
 }
