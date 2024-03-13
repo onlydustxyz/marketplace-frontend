@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { fetchInvoicePreviewBlob } from "app/api/invoice/handlers/fetch-invoice-preview-blob";
 
+import { useImpersonation } from "components/features/impersonation/use-impersonation";
 import { TUseInvoicePreview } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-preview/use-invoice-preview.types";
 
 export function useInvoicePreview({ rewardIds, billingProfileId, isSample = false }: TUseInvoicePreview.Props) {
@@ -12,6 +13,7 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
   const [fileBlob, setFileBlob] = useState<Blob>();
   const [fileUrl, setFileUrl] = useState("");
   const [invoiceId, setInvoiceId] = useState("");
+  const { getImpersonateHeaders } = useImpersonation();
 
   const fetched = useRef(false);
 
@@ -26,7 +28,13 @@ export function useInvoicePreview({ rewardIds, billingProfileId, isSample = fals
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const data = await fetchInvoicePreviewBlob({ token, rewardIds, billingProfileId, isSample });
+      const data = await fetchInvoicePreviewBlob({
+        token,
+        rewardIds,
+        billingProfileId,
+        isSample,
+        impersonationHeaders: getImpersonateHeaders(),
+      });
       if (data?.blob) {
         setFileBlob(data.blob);
         setFileUrl(window.URL.createObjectURL(data.blob));
