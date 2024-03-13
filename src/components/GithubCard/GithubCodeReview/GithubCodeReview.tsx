@@ -85,8 +85,10 @@ export default function GithubCodeReview({
           <div className="flex items-center gap-2">
             <ContributionBadge {...badgeProps} />
 
-            <div className="flex text-sm font-medium text-greyscale-50">
-              <Link href={htmlUrl || githubUrl || ""}>{title}</Link>
+            <div className="flex overflow-hidden text-sm font-medium text-greyscale-50">
+              <Link href={htmlUrl || githubUrl || ""} className="block">
+                {title}
+              </Link>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">

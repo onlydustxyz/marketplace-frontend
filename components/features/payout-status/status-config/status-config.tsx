@@ -3,6 +3,7 @@ import { VariantProps } from "tailwind-variants";
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { tagVariants } from "components/ds/tag/tag.variants";
+import { TPayoutStatus } from "components/features/payout-status/payout-status.types";
 import { TStatusConfig } from "components/features/payout-status/status-config/status-config.types";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 
@@ -15,15 +16,10 @@ function createStatusConfig(
     borderColor: config.borderColor as VariantProps<typeof tagVariants>["borderColor"],
   };
 }
-export function getStatusConfig({
-  status,
-  dateRelativeToNow,
-  date,
-  isBillingError,
-}: TStatusConfig.Props): TStatusConfig.ReturnType {
+export function getStatusConfig({ status, dateRelativeToNow, date }: TStatusConfig.Props): TStatusConfig.ReturnType {
   const defaultDate = date ? getFormattedDateToLocaleDateString(new Date(date)) : "";
 
-  const statusConfigs: Record<string, TStatusConfig.ReturnType> = {
+  const statusConfigs: Record<TPayoutStatus.PaymentStatusUnion, TStatusConfig.ReturnType> = {
     COMPLETE: createStatusConfig({
       icon: "ri-check-line",
       labelToken: "v2.features.payoutStatus.complete.label",
@@ -69,7 +65,7 @@ export function getStatusConfig({
       borderColor: "grey",
       iconClassName: "text-snow",
     }),
-    MISSING_PAYOUT_INFO: createStatusConfig({
+    PAYOUT_INFO_MISSING: createStatusConfig({
       icon: "ri-error-warning-line",
       labelToken: "v2.features.payoutStatus.payoutInfoMissing.label",
       tooltipToken: "v2.features.payoutStatus.payoutInfoMissing.tooltip",
@@ -85,14 +81,6 @@ export function getStatusConfig({
       borderColor: "orange",
       iconClassName: "text-orange-500",
     }),
-    ERROR_VERIFICATION: createStatusConfig({
-      icon: "ri-error-warning-line",
-      labelToken: "v2.features.payoutStatus.errorVerification.label",
-      tooltipToken: "v2.features.payoutStatus.errorVerification.tooltip",
-      tooltipParams: {},
-      borderColor: "red",
-      iconClassName: "text-github-red",
-    }),
     PENDING_CONTRIBUTOR: createStatusConfig({
       icon: "ri-user-3-line",
       labelToken: "v2.features.payoutStatus.pendingContributor.label",
@@ -101,11 +89,31 @@ export function getStatusConfig({
       borderColor: "grey",
       iconClassName: "text-snow",
     }),
+    PAYMENT_BLOCKED: createStatusConfig({
+      icon: "ri-error-warning-line",
+      labelToken: "v2.features.payoutStatus.paymentBlocked.label",
+      tooltipToken: "v2.features.payoutStatus.paymentBlocked.tooltip",
+      tooltipParams: {},
+      borderColor: "red",
+      iconClassName: "text-red-500",
+    }),
+    PENDING_BILLING_PROFILE: createStatusConfig({
+      icon: "ri-error-warning-line",
+      labelToken: "v2.features.payoutStatus.pendingBillingProfile.label",
+      tooltipToken: "v2.features.payoutStatus.pendingBillingProfile.tooltip",
+      tooltipParams: {},
+      borderColor: "orange",
+      iconClassName: "text-orange-500",
+    }),
+    PENDING_REQUEST: createStatusConfig({
+      icon: "ri-loader-2-line",
+      labelToken: "v2.features.payoutStatus.pendingRequest.label",
+      tooltipToken: "v2.features.payoutStatus.pendingRequest.tooltip",
+      tooltipParams: {},
+      borderColor: "multi-color",
+      iconClassName: "text-snow",
+    }),
   };
-
-  if (status === "PENDING_VERIFICATION" && isBillingError) {
-    return statusConfigs.ERROR_VERIFICATION;
-  }
 
   return (
     statusConfigs[status] || {

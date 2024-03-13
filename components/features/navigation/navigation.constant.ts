@@ -10,8 +10,8 @@ export const NextMigratedRoute = [
     nextPathName: NEXT_ROUTER.settings.profile,
   },
   {
-    pathName: NEXT_ROUTER.settings.payout,
-    nextPathName: NEXT_ROUTER.settings.payout,
+    pathName: NEXT_ROUTER.settings.payoutPreferences,
+    nextPathName: NEXT_ROUTER.settings.payoutPreferences,
   },
   {
     pathName: NEXT_ROUTER.settings.billing,
