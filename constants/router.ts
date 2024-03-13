@@ -23,21 +23,13 @@ export const NEXT_ROUTER = {
   settings: {
     all: "/settings",
     profile: "/settings/profile",
-    payout: "/settings/payout",
-    billing: "/settings/billing",
-    invoices: "/settings/invoices",
-    migration: {
-      all: "/migration/settings",
-      profile: "/migration/settings/profile",
-      payoutPreferences: "/migration/settings/payout-preferences",
-      invoices: "/migration/settings/invoices",
-      billing: {
-        root: (slug: string) => `/migration/settings/billing/${slug}`,
-        generalInformation: (slug: string) => `/migration/settings/billing/${slug}/general-information`,
-        paymentMethods: (slug: string) => `/migration/settings/billing/${slug}/payment-methods`,
-        coworkers: (slug: string) => `/migration/settings/billing/${slug}/coworkers`,
-        invoices: (slug: string) => `/migration/settings/billing/${slug}/invoices`,
-      },
+    payoutPreferences: "/settings/payout-preferences",
+    billing: {
+      root: (slug: string) => `/settings/billing/${slug}`,
+      generalInformation: (slug: string) => `/settings/billing/${slug}/general-information`,
+      paymentMethods: (slug: string) => `/settings/billing/${slug}/payment-methods`,
+      coworkers: (slug: string) => `/settings/billing/${slug}/coworkers`,
+      invoices: (slug: string) => `/settings/billing/${slug}/invoices`,
     },
   },
   publicProfile: {

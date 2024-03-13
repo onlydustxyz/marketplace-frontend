@@ -91,8 +91,10 @@ export default function GithubPullRequest({
           <div className="flex items-center gap-2">
             <ContributionBadge {...badgeProps} />
 
-            <div className="text-sm font-medium text-greyscale-50">
-              <Link href={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""}>{pullRequest.title}</Link>
+            <div className="overflow-hidden text-sm font-medium text-greyscale-50">
+              <Link href={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""} className="block">
+                {pullRequest.title}
+              </Link>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
