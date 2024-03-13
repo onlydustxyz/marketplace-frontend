@@ -59,6 +59,7 @@ export async function BaseQueries<RESPONSE extends object>(
       tags: provideTag,
     },
     headers: {
+      ...(options?.headers || {}),
       authorization: `Bearer ${options?.accessToken || ""}`,
     },
   });

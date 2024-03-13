@@ -4,15 +4,20 @@ export async function fetchInvoicePreviewData({
   token,
   rewardIds,
   billingProfileId,
+  impersonationHeaders,
 }: {
   token: string | null;
   rewardIds: string;
   billingProfileId: string;
+  impersonationHeaders?: string;
 }) {
   if (!token) throw new Error("Token is required");
   return await BillingProfilesActions.queries
     .retrieveInvoicePreviewByBillingProfileId(billingProfileId, {
       accessToken: token,
+      headers: {
+        ...(impersonationHeaders ? { "X-Impersonation-Claims": impersonationHeaders } : {}),
+      },
       params: {
         rewardIds,
       },
