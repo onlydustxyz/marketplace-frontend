@@ -9,6 +9,7 @@ export interface BaseQueriesOptions<PARAMS extends BaseQueriesDefaultParams = Ba
   revalidate?: number | false;
   params?: PARAMS;
   accessToken?: string;
+  headers?: Record<string, string>;
 }
 
 export interface BaseMutationOptions<PARAMS extends BaseQueriesDefaultParams = BaseQueriesDefaultParams>
