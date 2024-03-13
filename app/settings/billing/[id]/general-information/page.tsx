@@ -4,6 +4,11 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { ManageBillingProfile } from "app/migration/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile";
+import { ProfileCompany } from "app/settings/billing/[id]/general-information/features/profile/profile-company/profile-company";
+import { ProfileIndividual } from "app/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual";
+
+import { StackRoute } from "src/App/Stacks/Stacks";
 import { useSubscribeStacks } from "src/libs/react-stack";
 
 import { Card } from "components/ds/card/card";
@@ -12,16 +17,6 @@ import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profi
 
 import { ProfileBanner } from "./component/profile-banner/profile-banner";
 import { ProfileStatus } from "./component/profile-status/profile-status";
-import {
-  ManageBillingProfile
-} from "app/migration/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile";
-import {
-  ProfileIndividual
-} from "app/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual";
-import {
-  ProfileCompany
-} from "app/settings/billing/[id]/general-information/features/profile/profile-company/profile-company";
-import {StackRoute} from "src/App/Stacks/Stacks";
 
 function SettingsBillingPage() {
   const { id } = useParams<{ id: string }>();
