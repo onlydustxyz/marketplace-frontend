@@ -25,11 +25,25 @@
     "contact": "Contact us",
     "resumeValidation": "Resume verification",
     "startValidation": "Start verification",
-    "viewValidation": "See verification details"
+    "viewValidation": "See verification details",
+    "deleteBillingProfile": "Delete billing profile"
+  },
+  "manageBillingProfile": {
+    "button": "__actionType__ billing profile",
+    "title": "Are you sure?",
+    "deleteDescription": "You wan’t be able to access this billing profile anymore.",
+    "disableDescription": "You wan’t be able to receive rewards on this billing profile. You’ll still be able to enable it later if needed.",
+    "confirm": "Yes, __actionType__ billing profile",
+    "cancel": "No, keep billing profile",
+    "actionType": {
+      "delete": "Delete",
+      "disable": "Disable",
+      "enable": "Enable"
+    }
   },
   "status": {
     "descriptions": {
-      "CLOSED": "Your profile got permanetly rejected, please contact us if you believe it’s an error.",
+      "CLOSED": "Your profile got permanently rejected, please contact us if you believe it’s an error.",
       "INVALIDATED": "Your identity document has expired, please share an updated version.",
       "NOT_STARTED": "You need to verify your identity in order to receive rewards.",
       "REJECTED": "Your verification got rejected.",

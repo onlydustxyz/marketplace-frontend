@@ -4,6 +4,7 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { ManageBillingProfile } from "app/migration/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile";
 import { ProfileCompany } from "app/settings/billing/[id]/general-information/features/profile/profile-company/profile-company";
 import { ProfileIndividual } from "app/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual";
 
@@ -22,8 +23,7 @@ function SettingsBillingPage() {
   const { profile, refetch } = useBillingProfileById({ id, enabledPooling: true });
   const { open } = useSubscribeStacks(StackRoute.Verify);
   const [isPanelHasOpenedState, setIsPanelHasOpenedState] = useState(false);
-  // TODO : waiting for backends
-  const validBillingProfile = false;
+  const validBillingProfile = profile?.status === "VERIFIED";
 
   useEffect(() => {
     if (open && !isPanelHasOpenedState) {
@@ -38,22 +38,30 @@ function SettingsBillingPage() {
     return null;
   }
 
+  function onConfirm() {
+    // TODO : waiting for backend
+  }
+
   return (
-    <Card border="light" background={false}>
-      <div className="mb-5 flex w-full flex-row justify-end xl:-mb-1 ">
-        <ProfileStatus status={profile?.status} hasValidBillingProfile={true} />
-      </div>
-      <div className="flex w-full flex-col gap-9">
-        {profile.data.kyc ? <ProfileIndividual profile={profile.data.kyc} /> : null}
-        {profile.data.kyb ? <ProfileCompany profile={profile.data.kyb} /> : null}
-        <ProfileBanner
-          hasValidBillingProfile={validBillingProfile}
-          status={profile?.status}
-          type={profile.data.type}
-          id={profile.externalId}
-        />
-      </div>
-    </Card>
+    <>
+      <Card border="light" background={false}>
+        <div className="mb-5 flex w-full flex-row justify-end xl:-mb-1 ">
+          <ProfileStatus status={profile?.status} hasValidBillingProfile={true} />
+        </div>
+        <div className="flex w-full flex-col gap-9">
+          {profile.data.kyc ? <ProfileIndividual profile={profile.data.kyc} /> : null}
+          {profile.data.kyb ? <ProfileCompany profile={profile.data.kyb} /> : null}
+          <ProfileBanner
+            hasValidBillingProfile={validBillingProfile}
+            status={profile?.status}
+            type={profile.data.type}
+            id={profile.externalId}
+          />
+        </div>
+      </Card>
+      {/*TODO put the appropriate actionType depending on canDelete and disable field*/}
+      <ManageBillingProfile onConfirm={onConfirm} actionType="disable" />
+    </>
   );
 }
 

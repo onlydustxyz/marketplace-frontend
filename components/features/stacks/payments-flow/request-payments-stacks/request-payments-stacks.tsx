@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
-import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import MeApi from "src/api/me";
 import BillingApi from "src/api/me/billing";
 
@@ -15,9 +14,7 @@ import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow
 export function RequestPaymentsStacks() {
   const [view, setView] = useState<TRequestPaymentsStacks.Views>(TRequestPaymentsStacks.Views.SelectBillingProfile);
   const [excludedRewardsIds, setExcludedRewardsIds] = useState<string[]>([]);
-  const [selectedBillingProfile, setSelectedBillingProfile] = useState<BillingProfilesTypes.BillingProfile | undefined>(
-    undefined
-  );
+  const [selectedBillingProfileId, setSelectedBillingProfileId] = useState("");
   const [, closeRequestPanel] = useStackRequestPayments();
   const { data } = MeApi.queries.useGetMePendingInvoices({});
 
@@ -43,6 +40,11 @@ export function RequestPaymentsStacks() {
     [excludeNonLiquidToken, excludedRewardsIds]
   );
 
+  const selectedBillingProfile = useMemo(
+    () => billingProfilesData?.billingProfiles?.find(profile => profile.id === selectedBillingProfileId),
+    [billingProfilesData, selectedBillingProfileId]
+  );
+
   function onExclude(id: string) {
     setExcludedRewardsIds(prev => [...prev, id]);
   }
@@ -52,7 +54,7 @@ export function RequestPaymentsStacks() {
   }
 
   function onSelectBillingProfile(id: string) {
-    setSelectedBillingProfile(billingProfilesData?.billingProfiles?.find(profile => profile.id === id));
+    setSelectedBillingProfileId(id);
   }
   function onNextView({ to }: TRequestPaymentsStacks.onNextViewProps) {
     if (to === "close") {
@@ -77,7 +79,7 @@ export function RequestPaymentsStacks() {
   }
 
   if (view === TRequestPaymentsStacks.Views.Mandate) {
-    return <Mandate goTo={onNextView} billingProfileId={selectedBillingProfile?.id ?? ""} />;
+    return <Mandate goTo={onNextView} billingProfileId={selectedBillingProfileId} />;
   }
 
   if (view === TRequestPaymentsStacks.Views.Upload) {
@@ -85,7 +87,7 @@ export function RequestPaymentsStacks() {
       <UploadInvoice
         goTo={onNextView}
         rewardIds={includedRewards.map(({ id }) => id)}
-        billingProfileId={selectedBillingProfile?.id ?? ""}
+        billingProfileId={selectedBillingProfileId}
       />
     );
   }
@@ -95,7 +97,7 @@ export function RequestPaymentsStacks() {
       <GenerateInvoice
         goTo={onNextView}
         rewardIds={includedRewards.map(({ id }) => id)}
-        billingProfileId={selectedBillingProfile?.id ?? ""}
+        billingProfileId={selectedBillingProfileId}
       />
     );
   }
@@ -106,7 +108,7 @@ export function RequestPaymentsStacks() {
       billingProfiles={billingProfilesData?.billingProfiles ?? []}
       isLoading={isLoadingBillingProfiles}
       onSelectBillingProfile={onSelectBillingProfile}
-      selectedBillingProfile={selectedBillingProfile}
+      selectedBillingProfileId={selectedBillingProfileId}
     />
   );
 }
