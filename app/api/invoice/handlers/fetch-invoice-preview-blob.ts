@@ -3,11 +3,13 @@ export async function fetchInvoicePreviewBlob({
   rewardIds,
   billingProfileId,
   isSample = false,
+  impersonationHeaders,
 }: {
   token: string;
   rewardIds: string[];
   billingProfileId: string;
   isSample: boolean;
+  impersonationHeaders?: Record<string, string>;
 }) {
   const params = new URLSearchParams();
   params.append("rewardIds", rewardIds.join(","));
@@ -19,6 +21,7 @@ export async function fetchInvoicePreviewBlob({
     method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
+      ...impersonationHeaders,
     },
   })
     .then(async res => {
