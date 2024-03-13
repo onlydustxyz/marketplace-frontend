@@ -40,6 +40,11 @@ export function RequestPaymentsStacks() {
     [excludeNonLiquidToken, excludedRewardsIds]
   );
 
+  const selectedBillingProfile = useMemo(
+    () => billingProfilesData?.billingProfiles?.find(profile => profile.id === selectedBillingProfileId),
+    [billingProfilesData, selectedBillingProfileId]
+  );
+
   function onExclude(id: string) {
     setExcludedRewardsIds(prev => [...prev, id]);
   }
@@ -67,13 +72,8 @@ export function RequestPaymentsStacks() {
         onInclude={onInclude}
         includedRewards={includedRewards}
         excludedRewards={excludedRewards}
-        selectedBillingProfile={billingProfilesData?.billingProfiles?.find(
-          profile => profile.id === selectedBillingProfileId
-        )}
-        isMandateAccepted={
-          billingProfilesData?.billingProfiles?.find(profile => profile.id === selectedBillingProfileId)
-            ?.invoiceMandateAccepted ?? false
-        }
+        selectedBillingProfile={selectedBillingProfile}
+        isMandateAccepted={selectedBillingProfile?.invoiceMandateAccepted ?? false}
       />
     );
   }

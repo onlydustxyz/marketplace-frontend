@@ -2,15 +2,16 @@ import { useState } from "react";
 
 import { TManageBillingProfile } from "app/migration/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile.types";
 
+import { useIntl } from "src/hooks/useIntl";
+
 import { Button } from "components/ds/button/button";
 import { ConfirmationModal } from "components/ds/modals/confirmation/confirmation";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
 export function ManageBillingProfile({ onConfirm, actionType }: TManageBillingProfile.Props) {
+  const { T } = useIntl();
   const [openConfirmation, setOpenConfirmation] = useState(false);
-
-  const buttonCapitalizedParam = actionType.charAt(0).toUpperCase() + actionType.slice(1);
   const confirmationContent = actionType === "disable" ? "disableDescription" : "deleteDescription";
   function onOpenConfirmation() {
     setOpenConfirmation(true);
@@ -26,7 +27,9 @@ export function ManageBillingProfile({ onConfirm, actionType }: TManageBillingPr
         <Icon remixName="ri-delete-bin-2-line" />
         <Translate
           token="v2.pages.settings.billing.information.manageBillingProfile.button"
-          params={{ actionType: buttonCapitalizedParam }}
+          params={{
+            actionType: T(`v2.pages.settings.billing.information.manageBillingProfile.actionType.${actionType}`),
+          }}
         />
       </Button>
       <ConfirmationModal
