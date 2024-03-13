@@ -14,6 +14,7 @@ import { Banner } from "components/ds/banner/banner";
 import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 import { Contributor } from "components/features/contributor/contributor";
+import { RolesSelector } from "components/features/roles/role-selector/roles-selector";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -33,10 +34,7 @@ function CoworkersPage() {
   } = BillingProfilesApi.queries.useGetBillingProfileCoworkers({
     params: { billingProfileId: id },
   });
-
   const coworkers = coworkersData?.pages?.flatMap(data => data.coworkers);
-  const hasCoworkers = coworkers?.length;
-  console.log("data", coworkers);
 
   function handleClick() {
     openStackBillingInviteTeamMember();
@@ -91,7 +89,7 @@ function CoworkersPage() {
               clickable
             />
           ),
-          role,
+          role: <RolesSelector activeRole={role} billingProfileId={id} />,
           joined: joinedAt ? format(new Date(joinedAt), "dd/MM/yyyy") : "-",
           actions: (
             <Icon
@@ -137,8 +135,8 @@ function CoworkersPage() {
         }
         EmptyProps={{
           illustrationSrc: IMAGES.global.categories,
-          title: { token: "v2.pages.settings.billing.coworkers.table.emptyPlaceholderTitle" },
-          description: { token: "v2.pages.settings.billing.coworkers.table.emptyPlaceholderDescription" },
+          title: { token: "v2.pages.settings.billing.coworkers.table.emptyState.title" },
+          description: { token: "v2.pages.settings.billing.coworkers.table.emptyState.description" },
         }}
       />
     </Flex>

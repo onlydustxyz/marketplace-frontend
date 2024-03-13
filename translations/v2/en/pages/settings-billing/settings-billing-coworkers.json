@@ -16,13 +16,18 @@
     },
     "roles": {
       "admin": "Admin",
-      "employee": "Employee"
+      "employee": "Employee",
+      "empty": "No role"
     },
     "actions": {
       "cancel": "Cancel invite",
       "remove": "Remove user",
       "disable": "Disable user",
       "reInvite": "Re-invite user"
+    },
+    "emptyState": {
+      "title": "No coworkers",
+      "description": "Invite coworkers to contribute with your billing profile."
     }
   }
 }
