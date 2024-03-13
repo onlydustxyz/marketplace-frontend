@@ -1,8 +1,10 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import React from "react";
 
 import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
+import BillingProfilesApi from "src/api/BillingProfiles";
 import { IMAGES } from "src/assets/img";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -17,6 +19,20 @@ import { Translate } from "components/layout/translate/translate";
 function CoworkersPage() {
   const { T } = useIntl();
   const [openStackBillingInviteTeamMember] = useStackBillingInviteTeamMember();
+
+  const { id } = useParams<{ id: string }>();
+  const {
+    data: coworkers,
+    isLoading: isLoadingCoworkers,
+    isError: isErrorCoworkers,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = BillingProfilesApi.queries.useGetBillingProfileCoworkers({
+    params: { billingProfileId: id },
+  });
+
+  console.log("data", coworkers);
 
   function handleClick() {
     openStackBillingInviteTeamMember();

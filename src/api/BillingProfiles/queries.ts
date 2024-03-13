@@ -42,12 +42,34 @@ const useGetPayoutInfo = ({ options = {}, params }: UseQueryProps<UseGetBillingP
   });
 };
 
-const useGetBillingCoworkers = ({ options = {}, params }: UseQueryProps<UseGetBillingCoworkers, { id?: string }>) => {
-  return useBaseQuery<UseGetBillingCoworkers>({
-    resourcePath: BILLING_PROFILES_PATH.COWORKERS(params?.id || ""),
-    tags: BILLING_PROFILES_TAGS.single(params?.id || ""),
-    ...options,
-  });
+// const useGetBillingCoworkers = ({ options = {}, params }: UseQueryProps<UseGetBillingCoworkers, { id?: string }>) => {
+//   return useBaseQuery<UseGetBillingCoworkers>({
+//     resourcePath: BILLING_PROFILES_PATH.COWORKERS(params?.id || ""),
+//     tags: BILLING_PROFILES_TAGS.single(params?.id || ""),
+//     ...options,
+//   });
+// };
+
+interface BillingProfileCoworkersParams {
+  billingProfileId: string;
+  queryParams?: QueryParams;
+  pageSize?: number;
+}
+
+const useGetBillingProfileCoworkers = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<UseGetBillingCoworkers, BillingProfileCoworkersParams>) => {
+  const { isAuthenticated } = useAuth0();
+  return useInfiniteBaseQuery<UseGetBillingCoworkers>(
+    {
+      resourcePath: BILLING_PROFILES_PATH.COWORKERS(params?.billingProfileId ?? ""),
+      tags: BILLING_PROFILES_TAGS.single(params?.billingProfileId ?? ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 6,
+    },
+    { ...options, enabled: !!params?.billingProfileId && isAuthenticated }
+  );
 };
 
 export type UseBillingProfileInvoicesResponse = components["schemas"]["BillingProfileInvoicesPageResponse"];
@@ -101,5 +123,5 @@ export default {
   useGetBillingProfileById,
   useBillingProfileInvoices,
   useDownloadBillingProfileInvoice,
-  useGetBillingCoworkers,
+  useGetBillingProfileCoworkers,
 };
