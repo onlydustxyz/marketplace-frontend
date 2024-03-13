@@ -3,6 +3,7 @@
 import React from "react";
 
 import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
+import { IMAGES } from "src/assets/img";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
@@ -10,9 +11,8 @@ import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
-
-import { EmptyState } from "./components/empty-state/empty-state";
 
 function CoworkersPage() {
   const { T } = useIntl();
@@ -91,7 +91,7 @@ function CoworkersPage() {
         }}
       />
 
-      {hasCoworkers ? <Table columns={columns} rows={rows} /> : <EmptyState />}
+      {hasCoworkers ? <Table columns={columns} rows={rows} /> : <EmptyState illustrationSrc={IMAGES.logo.crashed} />}
     </Flex>
   );
 }
