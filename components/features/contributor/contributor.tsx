@@ -33,7 +33,7 @@ export function Contributor({
           : undefined
       }
     >
-      {avatarUrl ? <Avatar src={avatarUrl} alt={login} size="xs" /> : null}
+      {avatarUrl ? <Avatar src={avatarUrl} alt={login} size="s" /> : null}
 
       <Typography
         variant="body-s"

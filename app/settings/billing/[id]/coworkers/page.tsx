@@ -1,19 +1,21 @@
 "use client";
 
+import { format } from "date-fns";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useMemo } from "react";
 
 import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
 import { IMAGES } from "src/assets/img";
+import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
 import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
+import { Contributor } from "components/features/contributor/contributor";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
-import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
 
 function CoworkersPage() {
@@ -22,7 +24,7 @@ function CoworkersPage() {
 
   const { id } = useParams<{ id: string }>();
   const {
-    data: coworkers,
+    data: coworkersData,
     isLoading: isLoadingCoworkers,
     isError: isErrorCoworkers,
     hasNextPage,
@@ -32,61 +34,77 @@ function CoworkersPage() {
     params: { billingProfileId: id },
   });
 
+  const coworkers = coworkersData?.pages?.flatMap(data => data.coworkers);
+  const hasCoworkers = coworkers?.length;
   console.log("data", coworkers);
 
   function handleClick() {
     openStackBillingInviteTeamMember();
   }
 
-  // TODO: Change with data
-  const hasCoworkers = true;
+  const columns: TTable.Column[] = useMemo(
+    () => [
+      {
+        key: "coworkers",
+        label: T("v2.pages.settings.billing.coworkers.table.columns.coworkers"),
+        icon: {
+          remixName: "ri-team-line",
+        },
+      },
+      {
+        key: "role",
+        label: T("v2.pages.settings.billing.coworkers.table.columns.role"),
+        icon: {
+          remixName: "ri-information-line",
+        },
+      },
+      {
+        key: "joined",
+        label: T("v2.pages.settings.billing.coworkers.table.columns.joined"),
+        icon: {
+          remixName: "ri-check-line",
+        },
+      },
+      {
+        key: "actions",
+        label: "",
+        align: "end",
+        showOnHover: true,
+      },
+    ],
+    []
+  );
 
-  const columns: TTable.Column[] = [
-    {
-      key: "coworkers",
-      label: T("v2.pages.settings.billing.coworkers.table.columns.coworkers"),
-      icon: {
-        remixName: "ri-team-line",
-      },
-    },
-    {
-      key: "role",
-      label: T("v2.pages.settings.billing.coworkers.table.columns.role"),
-      icon: {
-        remixName: "ri-information-line",
-      },
-    },
-    {
-      key: "joined",
-      label: T("v2.pages.settings.billing.coworkers.table.columns.joined"),
-      icon: {
-        remixName: "ri-check-line",
-      },
-    },
-    {
-      key: "actions",
-      label: "",
-      align: "end",
-      showOnHover: true,
-    },
-  ];
+  const rows: TTable.Row[] = useMemo(
+    () =>
+      (coworkers || []).map(row => {
+        const { id, githubUserId, login, avatarUrl, role, joinedAt, removable: canRemove, isRegistered } = row;
 
-  const rows: TTable.Row[] = [
-    {
-      key: "1",
-      coworkers: "John Doe",
-      role: "Admin",
-      joined: "01/01/2021",
-      actions: <Icon remixName="ri-more-line" />,
-    },
-    {
-      key: "2",
-      coworkers: "John Doe",
-      role: "Admin",
-      joined: "01/01/2021",
-      actions: <Icon remixName="ri-more-line" />,
-    },
-  ];
+        return {
+          key: id,
+          coworkers: (
+            <Contributor
+              githubUserId={githubUserId}
+              login={login}
+              avatarUrl={avatarUrl}
+              isRegistered={isRegistered}
+              clickable
+            />
+          ),
+          role,
+          joined: joinedAt ? format(new Date(joinedAt), "dd/MM/yyyy") : "-",
+          actions: (
+            <Icon
+              remixName="ri-pencil-line"
+              onClick={() => {
+                console.log("edit", row);
+              }}
+            />
+          ),
+        };
+      }),
+    [coworkers]
+  );
 
   return (
     <Flex direction="col" className="gap-4">
@@ -107,7 +125,22 @@ function CoworkersPage() {
         }}
       />
 
-      {hasCoworkers ? <Table columns={columns} rows={rows} /> : <EmptyState illustrationSrc={IMAGES.logo.crashed} />}
+      <Table
+        columns={columns}
+        rows={rows}
+        bottomContent={
+          hasNextPage ? (
+            <div className="pb-4">
+              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} />
+            </div>
+          ) : null
+        }
+        EmptyProps={{
+          illustrationSrc: IMAGES.global.categories,
+          title: { token: "v2.pages.settings.billing.coworkers.table.emptyPlaceholderTitle" },
+          description: { token: "v2.pages.settings.billing.coworkers.table.emptyPlaceholderDescription" },
+        }}
+      />
     </Flex>
   );
 }
