@@ -16,6 +16,7 @@ export namespace TRolesSelector {
   export interface Props extends PropsWithChildren {
     data?: Data[];
     activeRole: TRolesSelector.roleUnion;
+    isYou?: boolean;
     billingProfileId?: string;
     onSelect?: (id: string) => void;
   }

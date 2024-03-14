@@ -11,18 +11,17 @@ import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 
-export function RolesSelector({ activeRole, billingProfileId, onSelect }: TRolesSelector.Props) {
+export function RolesSelector({ activeRole, billingProfileId, onSelect, isYou }: TRolesSelector.Props) {
   // TODO waiting for backend mutation
   const { T } = useIntl();
 
   useMutationAlert({
     // mutation: rest,
     success: {
-      // TODO add translation file
-      message: T("v2.features.role.selection.success"),
+      message: T("v2.features.roles.mutation.success"),
     },
     error: {
-      default: true,
+      message: T("v2.features.roles.mutation.error"),
     },
   });
 
@@ -38,14 +37,14 @@ export function RolesSelector({ activeRole, billingProfileId, onSelect }: TRoles
     () => [
       {
         key: TRolesSelector.roleType.Admin,
-        children: <Translate token="v2.features.roles.roles.admin" />,
+        children: <Translate token="v2.features.roles.admin" />,
         startContent: <Icon remixName="ri-star-line" size={16} />,
         onClick: () => onSelectRole(TRolesSelector.roleType.Admin),
         active: activeRole === TRolesSelector.roleType.Admin,
       },
       {
         key: TRolesSelector.roleType.Member,
-        children: <Translate token="v2.features.roles.roles.member" />,
+        children: <Translate token="v2.features.roles.member" />,
         startContent: <Icon remixName="ri-team-line" size={16} />,
         onClick: () => onSelectRole(TRolesSelector.roleType.Member),
         active: activeRole === TRolesSelector.roleType.Member,
@@ -58,9 +57,13 @@ export function RolesSelector({ activeRole, billingProfileId, onSelect }: TRoles
     const iconName: RemixIconsName = activeRole === TRolesSelector.roleType.Admin ? "ri-star-line" : "ri-team-line";
     return {
       icon: { remixName: iconName },
-      type: activeRole,
+      type: activeRole === TRolesSelector.roleType.Admin ? T("v2.features.roles.admin") : T("v2.features.roles.member"),
     };
   }, [activeRole]);
+
+  if (isYou) {
+    return <RoleTag role={role} clickable={false} />;
+  }
 
   return (
     <Dropdown items={menu}>

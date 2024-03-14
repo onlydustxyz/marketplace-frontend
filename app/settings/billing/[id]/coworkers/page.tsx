@@ -1,8 +1,11 @@
 "use client";
 
-import { format } from "date-fns";
+import { formatDistance } from "date-fns";
 import { useParams } from "next/navigation";
 import React, { useMemo } from "react";
+
+import { ManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker";
+import { TManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker.types";
 
 import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
@@ -19,15 +22,19 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 function CoworkersPage() {
   const { T } = useIntl();
   const [openStackBillingInviteTeamMember] = useStackBillingInviteTeamMember();
+  const { githubUserId: meGithubUserId } = useCurrentUser();
 
   const { id } = useParams<{ id: string }>();
   const {
     data: coworkersData,
-    isLoading: isLoadingCoworkers,
-    isError: isErrorCoworkers,
+    // TODO handle loading and error
+    // isLoading: isLoadingCoworkers,
+    // isError: isErrorCoworkers,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
@@ -38,6 +45,10 @@ function CoworkersPage() {
 
   function handleClick() {
     openStackBillingInviteTeamMember();
+  }
+
+  function onConfirm() {
+    // TODO : waiting for backend
   }
 
   const columns: TTable.Column[] = useMemo(
@@ -77,9 +88,23 @@ function CoworkersPage() {
     () =>
       (coworkers || []).map(row => {
         const { id, githubUserId, login, avatarUrl, role, joinedAt, removable: canRemove, isRegistered } = row;
-
+        const isYou = githubUserId === meGithubUserId;
+        const hasPendingInvite = !!joinedAt;
+        // TODO find out what is the information telling that user is disabled
+        const isDisabled = false;
+        const actionType = (): TManageCoworker.ActionTypeUnion => {
+          if (hasPendingInvite) {
+            return "cancel";
+          } else if (canRemove) {
+            return "delete";
+          } else if (!isDisabled) {
+            return "disable";
+          } else {
+            return "enable";
+          }
+        };
         return {
-          key: id,
+          key: id ?? "",
           coworkers: (
             <Contributor
               githubUserId={githubUserId}
@@ -87,17 +112,20 @@ function CoworkersPage() {
               avatarUrl={avatarUrl}
               isRegistered={isRegistered}
               clickable
+              isYou={isYou}
+              hasPenhdingInvite={hasPendingInvite}
             />
           ),
-          role: <RolesSelector activeRole={role} billingProfileId={id} />,
-          joined: joinedAt ? format(new Date(joinedAt), "dd/MM/yyyy") : "-",
+          role: <RolesSelector activeRole={role} billingProfileId={id} isYou={isYou} />,
+          joined: joinedAt
+            ? formatDistance(new Date(joinedAt), new Date("2023-10-04T10:19:13Z"), {
+                addSuffix: true,
+              })
+            : "-",
           actions: (
-            <Icon
-              remixName="ri-pencil-line"
-              onClick={() => {
-                console.log("edit", row);
-              }}
-            />
+            <div className="flex justify-end">
+              <ManageCoworker onConfirm={onConfirm} actionType={actionType()} />
+            </div>
           ),
         };
       }),

@@ -4,7 +4,7 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function RoleTag({ role, fallback }: TRoleTag.Props) {
+export function RoleTag({ role, fallback, clickable = true }: TRoleTag.Props) {
   if (!role) {
     return (
       <Tag size="medium" borderColor="orange" className="inline-flex">
@@ -20,7 +20,7 @@ export function RoleTag({ role, fallback }: TRoleTag.Props) {
     <Tag size="medium" borderColor="grey" className="inline-flex">
       <Icon size={16} {...role.icon} />
       <Typography variant="body-s">{role.type}</Typography>
-      <Icon remixName="ri-arrow-down-s-line" size={16} />
+      {clickable ? <Icon remixName="ri-arrow-down-s-line" size={16} /> : null}
     </Tag>
   );
 }
