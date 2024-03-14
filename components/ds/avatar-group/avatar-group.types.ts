@@ -11,6 +11,7 @@ export namespace TAvatarGroup {
     avatars: TAvatar.Props[];
     avatarProps?: TAvatar.Variants;
     className?: string;
+    max?: number;
   }
 
   export interface LoadingProps extends TAvatar.Variants {
