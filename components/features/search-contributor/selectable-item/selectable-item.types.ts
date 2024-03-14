@@ -3,6 +3,6 @@ export namespace TSelectableItem {
     avatarUrl?: string;
     login: string;
     isRegistered: boolean;
-    selected: boolean;
+    selected?: boolean;
   }
 }
