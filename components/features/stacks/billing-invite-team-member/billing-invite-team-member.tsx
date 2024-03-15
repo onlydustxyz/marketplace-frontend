@@ -24,7 +24,7 @@ import { CheckboxItem } from "./components/checkbox-item/checkbox-item";
 export function BillingInviteTeamMember() {
   const { T } = useT();
   const [githubUserId, setGithubUserId] = useState<ContributorResponse["githubUserId"] | undefined>();
-  const [role, setRole] = useState<TBillingInviteTeamMember.Choice | "">("");
+  const [role, setRole] = useState<TBillingInviteTeamMember.Choice>();
 
   const { id: billingProfileId } = useParams<{ id: string }>();
   const [, closeStackBillingInviteTeamMember] = useStackBillingInviteTeamMember();
@@ -61,7 +61,9 @@ export function BillingInviteTeamMember() {
   };
 
   function onChoiceChange(value: TBillingInviteTeamMember.Choice | "") {
-    setRole(value);
+    if (value) {
+      setRole(value);
+    }
   }
 
   function onContributorChange(contributors: ContributorResponse[]) {
@@ -96,7 +98,7 @@ export function BillingInviteTeamMember() {
                 className="text-greyscale-300"
               />
 
-              <RadioGroupCustom<TBillingInviteTeamMember.Choice | ""> onChange={onChoiceChange} value={role}>
+              <RadioGroupCustom<TBillingInviteTeamMember.Choice | ""> onChange={onChoiceChange} value={role ?? ""}>
                 {({ value, onChange }) => [
                   <CheckboxItem
                     key={BillingProfilesTypes.ROLE.ADMIN}
