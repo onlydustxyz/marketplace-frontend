@@ -75,7 +75,7 @@ export function SearchContributor({
                             <Tooltip
                               content={<Translate token="v2.features.contributors.table.userRegisteredTooltip" />}
                             >
-                              <Avatar src={IMAGES.logo.original} alt="Onlydust" size="xs" />
+                              <Avatar src={IMAGES.logo.original} alt="OnlyDust" size="xs" />
                             </Tooltip>
                           ) : null}
                         </div>
