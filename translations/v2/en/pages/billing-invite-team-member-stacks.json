@@ -4,7 +4,7 @@
     "save": "Send invitation"
   },
   "messages": {
-    "success": "Invitation successfully sent"
+    "success": "Invitation sent successfully"
   },
   "fields": {
     "contributor": {
