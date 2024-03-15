@@ -7,6 +7,7 @@ import { TSearchContributor } from "components/features/search-contributor/searc
 export namespace TUseSearchContributors {
   export interface Props {
     onSelectContributors: (contributor: ContributorResponse[]) => void;
+    initialValue?: ContributorResponse;
   }
   export interface Return {
     searchQuery: string;

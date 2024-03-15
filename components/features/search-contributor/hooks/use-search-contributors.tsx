@@ -10,12 +10,15 @@ import { Icon } from "components/layout/icon/icon";
 
 export function useSearchContributors({
   onSelectContributors,
+  initialValue,
 }: TUseSearchContributors.Props): TUseSearchContributors.Return {
   const [debounceQuery, setDebounceQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [openListbox, setOpenListbox] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<Set<Key>>(new Set());
-  const [selectedContributors, setSelectedContributors] = useState<ContributorResponse[]>([]);
+  const [selectedContributors, setSelectedContributors] = useState<ContributorResponse[]>(
+    initialValue ? [initialValue] : []
+  );
 
   const { data, isLoading } = UsersApi.queries.useUsersSearchByLogin({
     params: { login: debounceQuery },

@@ -46,7 +46,7 @@ export function SearchContributor({
           <div
             className="absolute -left-[12px] -top-[24px] z-20 flex max-h-[280px] w-[calc(100%_+_24px)] max-w-[calc(100%_+_24px)]
           translate-y-1.5 flex-col gap-4 rounded-2xl border border-default-200 border-greyscale-50/12
-          bg-greyscale-800 p-4 pt-[54px] shadow-heavy  focus:outline-none dark:border-default-100"
+          bg-greyscale-800 p-4 pt-[60px] shadow-heavy  focus:outline-none dark:border-default-100"
             ref={ref}
           >
             <div
