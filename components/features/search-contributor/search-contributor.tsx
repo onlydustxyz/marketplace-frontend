@@ -53,10 +53,7 @@ export function SearchContributor({
           bg-greyscale-800 p-4 pt-[60px] shadow-heavy  focus:outline-none dark:border-default-100"
             ref={ref}
           >
-            <div
-              className="overflow-y-scroll scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded
-          scrollbar-w-1.5"
-            >
+            <div className="scrollbar-sm overflow-y-scroll">
               <Listbox
                 selectionMode={selectionMode}
                 selectedKeys={selectedKeys}
