@@ -10,7 +10,7 @@
     "contributor": {
       "title": "Contributor",
       "search": {
-        "placeholder": "Pick a contributor or type in Github handle"
+        "placeholder": "Pick a contributor or enter a Github handle"
       }
     },
     "role": {
