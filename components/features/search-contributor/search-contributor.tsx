@@ -67,7 +67,7 @@ export function SearchContributor({
     }
   }
 
-  const selectedContributorsItems = useMemo((): TSearchContributor.ListboxItemSection[] => {
+  const selectedContributorsItems = useMemo(() => {
     if (selectedContributors.length) {
       return [
         {
@@ -80,7 +80,7 @@ export function SearchContributor({
     return [];
   }, [selectedContributors]);
 
-  const internalContributors = useMemo((): TSearchContributor.ListboxItemSection[] => {
+  const internalContributors = useMemo(() => {
     if (data?.internalContributors?.length) {
       return [
         {
@@ -96,7 +96,7 @@ export function SearchContributor({
     return [];
   }, [data, selectedContributors]);
 
-  const externalContributors = useMemo((): TSearchContributor.ListboxItemSection[] => {
+  const externalContributors = useMemo(() => {
     if (data?.externalContributors?.length) {
       return [
         {
@@ -111,6 +111,10 @@ export function SearchContributor({
     }
     return [];
   }, [data, selectedContributors]);
+
+  const contributors = useMemo(() => {
+    return [...selectedContributorsItems, ...internalContributors, ...externalContributors];
+  }, [selectedContributorsItems, internalContributors, externalContributors]);
 
   const renderValue = useMemo(() => {
     if (selectedContributors.length && !openListbox) {
@@ -149,14 +153,14 @@ export function SearchContributor({
           scrollbar-w-1.5"
             >
               <Listbox
-                items={[...selectedContributorsItems, ...internalContributors, ...externalContributors]}
                 selectionMode={selectionMode}
                 selectedKeys={selectedKeys}
                 onSelectionChange={onSelectElement}
                 bottomContent={isLoading ? <Spinner /> : null}
                 {...listboxProps}
+                items={contributors}
               >
-                {(item: TSearchContributor.ListboxItemSection) => (
+                {item => (
                   <ListboxSection key={item.name} title={item.name} showDivider={item.showDivider}>
                     {item.items?.map(item => (
                       <ListboxItem

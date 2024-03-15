@@ -9,7 +9,7 @@ export namespace TSearchContributor {
     showDivider: boolean;
   }
 
-  export type Base = Partial<ListboxProps>;
+  export type Base = Partial<ListboxProps<ListboxItemSection>>;
   export interface Props extends Base {
     onSelectContributors: (user: ContributorResponse[]) => void;
     initialValue?: ContributorResponse;
