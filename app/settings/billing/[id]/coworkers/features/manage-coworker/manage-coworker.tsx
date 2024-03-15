@@ -61,8 +61,6 @@ export function ManageCoworker({ actionType, githubUserId }: TManageCoworker.Pro
         break;
       case "enable":
         break;
-      default:
-        break;
     }
   }
 
