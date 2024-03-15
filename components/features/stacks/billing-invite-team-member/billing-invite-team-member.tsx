@@ -23,7 +23,7 @@ export function BillingInviteTeamMember() {
   const isDisabled = false;
 
   const onSubmit = () => {
-    console.log("submit", role);
+    console.log("submit", githubUser);
   };
 
   function onChoiceChange(value: TBillingInviteTeamMember.Choice | "") {
