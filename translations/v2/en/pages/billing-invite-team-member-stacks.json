@@ -28,7 +28,7 @@
     }
   },
   "invite": {
-    "success": "Invitation successfully sent",
+    "success": "Invitation sent successfully",
     "error": "We couldn't send the invitation. Please try again later."
   }
 }
