@@ -10,7 +10,7 @@
   },
   "table": {
     "columns": {
-      "coworkers": "Co-workers",
+      "coworkers": "Coworkers",
       "role": "Role",
       "joined": "Joined"
     },
