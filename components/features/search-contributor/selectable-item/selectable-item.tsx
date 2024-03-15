@@ -13,7 +13,7 @@ export function SelectableItem({ avatarUrl, login, isRegistered, selected }: TSe
 
         <span className="block flex-1 truncate">{login}</span>
 
-        {isRegistered ? <Avatar src={IMAGES.logo.original} alt="Onlydust" size="xs" /> : null}
+        {isRegistered ? <Avatar src={IMAGES.logo.original} alt="OnlyDust" size="xs" /> : null}
       </div>
 
       {selected ? <CheckLine className="h-4 w-4" /> : null}
