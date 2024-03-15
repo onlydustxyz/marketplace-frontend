@@ -114,7 +114,7 @@ function CoworkersPage() {
           ),
           role: <RolesSelector activeRole={role} billingProfileId={id} isYou={isYou} />,
           joined: joinedAt
-            ? formatDistance(new Date(joinedAt), new Date("2023-10-04T10:19:13Z"), {
+            ? formatDistance(new Date(joinedAt), new Date(), {
                 addSuffix: true,
               })
             : "-",
