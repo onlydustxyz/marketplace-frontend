@@ -25,7 +25,7 @@ const DragHandler = (
     className={cn(
       "align-center flex h-8 w-8 items-center justify-center pr-2",
       "cursor-grab text-base active:cursor-grabbing",
-      "transition duration-200 ease-in-out hover:scale-110 active:-translate-x-[2px]",
+      "duration-200 ease-in-out transition hover:scale-110 active:-translate-x-[2px]",
       "self-baseline"
     )}
   >

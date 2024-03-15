@@ -123,14 +123,14 @@ export function ContributionIcon({
   const statusClassnames =
     contributionStatus && status !== GithubPullRequestStatus.Draft
       ? variants.contributionStatus[contributionStatus]
-      : variants.status[type][status as keyof (typeof variants.status)[GithubContributionType]];
+      : variants.status[type][status as keyof typeof variants.status[GithubContributionType]];
 
   // Even though a type and status should always be defined, in development sometimes they aren't and makes the component crash.
   return type && status ? (
     <div className={cn("leading-none", isMonochrome ? "" : statusClassnames)}>
       {contributionStatus
-        ? contributionStatusIcons[contributionStatus][type][status as keyof (typeof icons)[GithubContributionType]]
-        : icons[type][status as keyof (typeof icons)[GithubContributionType]]}
+        ? contributionStatusIcons[contributionStatus][type][status as keyof typeof icons[GithubContributionType]]
+        : icons[type][status as keyof typeof icons[GithubContributionType]]}
     </div>
   ) : null;
 }

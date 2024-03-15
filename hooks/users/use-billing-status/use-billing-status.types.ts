@@ -8,7 +8,7 @@ export namespace TUseBillingStatus {
   }
 
   export interface Return {
-    statusMapping?: (typeof MeBillingConstants.statusMapping)["CLOSED"];
+    statusMapping?: typeof MeBillingConstants.statusMapping["CLOSED"];
     isWarning: boolean;
     isError: boolean;
     isSuccess: boolean;
