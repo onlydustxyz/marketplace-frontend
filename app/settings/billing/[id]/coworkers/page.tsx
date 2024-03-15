@@ -2,7 +2,7 @@
 
 import { formatDistance } from "date-fns";
 import { useParams } from "next/navigation";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 
 import { ManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker";
 import { TManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker.types";
