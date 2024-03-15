@@ -29,7 +29,7 @@ function CoworkersPage() {
   const [openStackBillingInviteTeamMember] = useStackBillingInviteTeamMember();
   const { githubUserId: meGithubUserId } = useCurrentUser();
 
-  const { id } = useParams<{ id: string }>();
+  const { id: billingProfileId } = useParams<{ id: string }>();
   const {
     data: coworkersData,
     // TODO handle loading and error
@@ -39,16 +39,12 @@ function CoworkersPage() {
     fetchNextPage,
     isFetchingNextPage,
   } = BillingProfilesApi.queries.useGetBillingProfileCoworkers({
-    params: { billingProfileId: id },
+    params: { billingProfileId },
   });
   const coworkers = coworkersData?.pages?.flatMap(data => data.coworkers);
 
   function handleClick() {
     openStackBillingInviteTeamMember();
-  }
-
-  function onConfirm() {
-    // TODO : waiting for backend
   }
 
   const columns: TTable.Column[] = useMemo(
@@ -89,7 +85,7 @@ function CoworkersPage() {
       (coworkers || []).map(row => {
         const { id, githubUserId, login, avatarUrl, role, joinedAt, removable: canRemove, isRegistered } = row;
         const isYou = githubUserId === meGithubUserId;
-        const hasPendingInvite = !!joinedAt;
+        const hasPendingInvite = !joinedAt;
         // TODO find out what is the information telling that user is disabled
         const isDisabled = false;
         const actionType = (): TManageCoworker.ActionTypeUnion => {
@@ -122,11 +118,11 @@ function CoworkersPage() {
                 addSuffix: true,
               })
             : "-",
-          actions: (
+          actions: !isYou ? (
             <div className="flex justify-end">
-              <ManageCoworker onConfirm={onConfirm} actionType={actionType()} />
+              <ManageCoworker actionType={actionType()} githubUserId={githubUserId} />
             </div>
-          ),
+          ) : null,
         };
       }),
     [coworkers]

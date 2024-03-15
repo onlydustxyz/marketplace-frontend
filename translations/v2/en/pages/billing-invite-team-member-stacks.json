@@ -26,5 +26,9 @@
         }
       }
     }
+  },
+  "invite": {
+    "success": "Invitation successfully sent",
+    "error": "We couldn't send the invitation. Please try again later."
   }
 }

@@ -2,10 +2,14 @@ import { Listbox, ListboxItem, ListboxSection, Spinner } from "@nextui-org/react
 import { useRef } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 
+import { IMAGES } from "src/assets/img";
+
 import { Avatar } from "components/ds/avatar/avatar";
 import { Input } from "components/ds/form/input/input";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { useSearchContributors } from "components/features/search-contributor/hooks/use-search-contributors";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 import { TSearchContributor } from "./search-contributor.types";
 
@@ -28,7 +32,7 @@ export function SearchContributor({
     handleClickOutside,
     onSelectElement,
     setOpenListbox,
-  } = useSearchContributors({ onSelectContributors });
+  } = useSearchContributors({ onSelectContributors, initialValue });
   useOnClickOutside(ref, handleClickOutside);
 
   return (
@@ -66,9 +70,18 @@ export function SearchContributor({
                     {item.items?.map(item => (
                       <ListboxItem
                         key={item.githubUserId}
-                        startContent={<Avatar src={item.avatarUrl} alt={item.login} shape="circle" size="xs" />}
+                        startContent={<Avatar src={item.avatarUrl} alt={item.login} shape="circle" size="s" />}
                       >
-                        {item.login}
+                        <div className="flex flex-row gap-2">
+                          {item.login}
+                          {item.isRegistered ? (
+                            <Tooltip
+                              content={<Translate token="v2.features.contributors.table.userRegisteredTooltip" />}
+                            >
+                              <Avatar src={IMAGES.logo.original} alt="Onlydust" size="xs" />
+                            </Tooltip>
+                          ) : null}
+                        </div>
                       </ListboxItem>
                     ))}
                   </ListboxSection>

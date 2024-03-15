@@ -44,6 +44,20 @@
       "disable": "Disable",
       "cancel": "Cancel invite",
       "enable": "Enable"
+    },
+    "mutationAlert": {
+      "delete": {
+        "success": "User deleted successfully",
+        "error": "An error occurred while deleting the user"
+      },
+      "disable": {
+        "success": "User disabled successfully",
+        "error": "An error occurred while disabling the user"
+      },
+      "cancel": {
+        "success": "Invite canceled successfully",
+        "error": "An error occurred while canceling the invite"
+      }
     }
   }
 }

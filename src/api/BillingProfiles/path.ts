@@ -13,5 +13,7 @@ export const BILLING_PROFILES_PATH = {
   ACCEPT_INVOICE_MANDATE: (billingProfileId: string) =>
     BASE_API_V1(`billing-profiles/${billingProfileId}/invoices/mandate`),
   COWORKERS: (id: string) => BASE_API_V1(`billing-profiles/${id}/coworkers`),
-  COWORKER_BY_ID: (id: string, coworkerId: string) => BASE_API_V1(`billing-profiles/${id}/coworkers/${coworkerId}`),
+  INVITE_COWORKER_BY_ID: (billingProfileId: string) => BASE_API_V1(`billing-profiles/${billingProfileId}/coworkers`),
+  DELETE_COWORKER_BY_ID: (billingProfileId: string, githubUserId: string) =>
+    BASE_API_V1(`billing-profiles/${billingProfileId}/coworkers/${githubUserId}`),
 };

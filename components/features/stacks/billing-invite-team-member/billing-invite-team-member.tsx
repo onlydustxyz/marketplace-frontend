@@ -1,6 +1,11 @@
+import { useParams } from "next/navigation";
 import { useState } from "react";
+import { useT } from "talkr";
 
+import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
+import BillingProfilesApi from "src/api/BillingProfiles";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
+import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { ContributorResponse } from "src/types";
 
@@ -17,13 +22,42 @@ import { TBillingInviteTeamMember } from "./billing-invite-team-member.types";
 import { CheckboxItem } from "./components/checkbox-item/checkbox-item";
 
 export function BillingInviteTeamMember() {
-  const [githubUser, setGithubUser] = useState<ContributorResponse["githubUserId"] | undefined>();
+  const { T } = useT();
+  const [githubUserId, setGithubUserId] = useState<ContributorResponse["githubUserId"] | undefined>();
   const [role, setRole] = useState<TBillingInviteTeamMember.Choice | "">("");
-  const isLoading = false;
-  const isDisabled = false;
+
+  const { id: billingProfileId } = useParams<{ id: string }>();
+  const [, closeStackBillingInviteTeamMember] = useStackBillingInviteTeamMember();
+
+  const {
+    mutate: inviteCoworker,
+    isPending: isPendingInviteCoworker,
+    ...restInviteCoworker
+  } = BillingProfilesApi.mutations.useInviteBillingCoworker({
+    params: {
+      billingProfileId,
+    },
+    options: {
+      onSuccess: () => {
+        closeStackBillingInviteTeamMember();
+      },
+    },
+  });
+
+  useMutationAlert({
+    mutation: restInviteCoworker,
+    success: {
+      message: T("v2.pages.stacks.billingInviteTeamMember.invite.success"),
+    },
+    error: {
+      message: T("v2.pages.stacks.billingInviteTeamMember.invite.error"),
+    },
+  });
 
   const onSubmit = () => {
-    console.log("submit", githubUser);
+    if (githubUserId && role) {
+      inviteCoworker({ githubUserId, role });
+    }
   };
 
   function onChoiceChange(value: TBillingInviteTeamMember.Choice | "") {
@@ -32,7 +66,7 @@ export function BillingInviteTeamMember() {
 
   function onContributorChange(contributors: ContributorResponse[]) {
     if (contributors?.[0]?.githubUserId) {
-      setGithubUser(contributors?.[0]?.githubUserId);
+      setGithubUserId(contributors?.[0]?.githubUserId);
     }
   }
 
@@ -104,8 +138,13 @@ export function BillingInviteTeamMember() {
           className="h-auto w-full gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6"
         >
           {/* Empty div to keep the flex layout */}
-          {isLoading ? <Spinner /> : <div />}
-          <Button variant="primary" size="l" disabled={isDisabled} onClick={onSubmit}>
+          {isPendingInviteCoworker ? <Spinner /> : <div />}
+          <Button
+            variant="primary"
+            size="l"
+            disabled={isPendingInviteCoworker || !role || !githubUserId}
+            onClick={onSubmit}
+          >
             <Icon remixName="ri-send-plane-2-line" size={24} />
             <Translate token="v2.pages.stacks.billingInviteTeamMember.buttons.save" />
           </Button>

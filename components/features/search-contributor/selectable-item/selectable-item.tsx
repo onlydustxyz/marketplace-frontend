@@ -9,7 +9,7 @@ export function SelectableItem({ avatarUrl, login, isRegistered, selected }: TSe
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <Avatar src={avatarUrl || ""} alt={login} shape="circle" size="xs" />
+        <Avatar src={avatarUrl || ""} alt={login} shape="circle" size="s" />
 
         <span className="block flex-1 truncate">{login}</span>
 

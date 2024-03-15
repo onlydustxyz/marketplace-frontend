@@ -79,15 +79,11 @@ const useAcceptInvoiceMandate = ({
 const useInviteBillingCoworker = ({
   options = {},
   params,
-}: UseMutationProps<
-  UseInviteBillingCoworkerResponse,
-  { id?: string; coworkerId?: string },
-  UseInviteBillingCoworkerBody
->) => {
+}: UseMutationProps<UseInviteBillingCoworkerResponse, { billingProfileId?: string }, UseInviteBillingCoworkerBody>) => {
   return useBaseMutation<UseInviteBillingCoworkerBody, UseInviteBillingCoworkerResponse>({
-    resourcePath: BILLING_PROFILES_PATH.COWORKER_BY_ID(params?.id || "", params?.coworkerId || ""),
+    resourcePath: BILLING_PROFILES_PATH.INVITE_COWORKER_BY_ID(params?.billingProfileId || ""),
     method: "POST",
-    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.single(params?.id || ""), exact: false }],
+    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false }],
     ...options,
   });
 };
@@ -95,11 +91,15 @@ const useInviteBillingCoworker = ({
 const useDeleteBillingCoworker = ({
   options = {},
   params,
-}: UseMutationProps<void, { id?: string; coworkerId?: string }, unknown>) => {
+}: UseMutationProps<void, { billingProfileId?: string; githubUserId?: string }, unknown>) => {
   return useBaseMutation<unknown, void>({
-    resourcePath: BILLING_PROFILES_PATH.COWORKER_BY_ID(params?.id || "", params?.coworkerId || ""),
+    resourcePath: BILLING_PROFILES_PATH.DELETE_COWORKER_BY_ID(
+      params?.billingProfileId || "",
+      params?.githubUserId || ""
+    ),
     method: "DELETE",
-    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.single(params?.id || ""), exact: false }],
+    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false }],
+    enabled: !!params?.billingProfileId && !!params?.githubUserId,
     ...options,
   });
 };
