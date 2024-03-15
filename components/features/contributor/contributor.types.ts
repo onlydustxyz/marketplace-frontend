@@ -7,6 +7,6 @@ export namespace TContributor {
     clickable?: boolean;
     className?: string;
     isYou?: boolean;
-    hasPenhdingInvite?: boolean;
+    hasPendingInvite?: boolean;
   }
 }

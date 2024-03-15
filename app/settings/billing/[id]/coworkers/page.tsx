@@ -109,7 +109,7 @@ function CoworkersPage() {
               isRegistered={isRegistered}
               clickable
               isYou={isYou}
-              hasPenhdingInvite={hasPendingInvite}
+              hasPendingInvite={hasPendingInvite}
             />
           ),
           role: <RolesSelector activeRole={role} billingProfileId={id} isYou={isYou} />,

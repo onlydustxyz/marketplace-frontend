@@ -16,7 +16,7 @@ export function Contributor({
   clickable,
   className,
   isYou,
-  hasPenhdingInvite,
+  hasPendingInvite,
 }: TContributor.Props) {
   const [open] = useStackContributorProfile();
 
@@ -45,7 +45,7 @@ export function Contributor({
       >
         {login}
         {isYou ? <Translate token="v2.features.contributors.isYou" /> : null}
-        {hasPenhdingInvite && !isYou ? <Translate token="v2.features.contributors.hasPendingInvite" /> : null}
+        {hasPendingInvite && !isYou ? <Translate token="v2.features.contributors.hasPendingInvite" /> : null}
       </Typography>
       {isRegistered ? (
         <Tooltip content={<Translate token="v2.features.contributors.table.userRegisteredTooltip" />}>
