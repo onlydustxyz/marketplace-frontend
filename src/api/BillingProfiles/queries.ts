@@ -41,15 +41,6 @@ const useGetPayoutInfo = ({ options = {}, params }: UseQueryProps<UseGetBillingP
     ...options,
   });
 };
-
-// const useGetBillingCoworkers = ({ options = {}, params }: UseQueryProps<UseGetBillingCoworkers, { id?: string }>) => {
-//   return useBaseQuery<UseGetBillingCoworkers>({
-//     resourcePath: BILLING_PROFILES_PATH.COWORKERS(params?.id || ""),
-//     tags: BILLING_PROFILES_TAGS.single(params?.id || ""),
-//     ...options,
-//   });
-// };
-
 interface BillingProfileCoworkersParams {
   billingProfileId: string;
   queryParams?: QueryParams;
