@@ -35,7 +35,7 @@
     "title": "Are you sure?",
     "deleteDescription": "This user will no longer be able to access this billing profile. You can always re-invite them later.",
     "disableDescription": "This user will no longer be able to access this billing profile. You’ll still be able to enable it later if needed.",
-    "cancelDescription": "This user will no longer be invited to access this billing profile. You can always re-invite him later.",
+    "cancelDescription": "This user will no longer be invited to access this billing profile. You can always re-invite them later.",
     "enableDescription": "This user will be able to access this billing profile.",
     "confirm": "Yes, __actionType__ user",
     "cancel": "No, keep this user",
