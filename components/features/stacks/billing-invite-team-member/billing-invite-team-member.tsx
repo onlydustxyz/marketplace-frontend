@@ -2,12 +2,12 @@ import { useState } from "react";
 
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { ContributorResponse } from "src/types";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { RadioGroupCustom } from "components/ds/form/radio-group-custom/radio-group-custom";
 import { SearchContributor } from "components/features/search-contributor/search-contributor";
-import { TSearchContributor } from "components/features/search-contributor/search-contributor.types";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -17,9 +17,8 @@ import { TBillingInviteTeamMember } from "./billing-invite-team-member.types";
 import { CheckboxItem } from "./components/checkbox-item/checkbox-item";
 
 export function BillingInviteTeamMember() {
-  const [githubUser, setGithubUser] = useState<TSearchContributor.Contributor | undefined>();
+  const [githubUser, setGithubUser] = useState<ContributorResponse["githubUserId"] | undefined>();
   const [role, setRole] = useState<TBillingInviteTeamMember.Choice | "">("");
-
   const isLoading = false;
   const isDisabled = false;
 
@@ -31,8 +30,10 @@ export function BillingInviteTeamMember() {
     setRole(value);
   }
 
-  function onContributorChange(contributor: TSearchContributor.Contributor) {
-    setGithubUser(contributor);
+  function onContributorChange(contributors: ContributorResponse[]) {
+    if (contributors?.[0]?.githubUserId) {
+      setGithubUser(contributors?.[0]?.githubUserId);
+    }
   }
 
   return (
@@ -51,7 +52,7 @@ export function BillingInviteTeamMember() {
                 className="text-greyscale-300"
               />
 
-              <SearchContributor onChange={onContributorChange} value={githubUser} />
+              <SearchContributor onSelectContributors={onContributorChange} />
             </Flex>
 
             <Flex direction="col" className="gap-2">

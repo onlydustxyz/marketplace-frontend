@@ -13,7 +13,15 @@ import { Icon } from "components/layout/icon/icon";
 
 import { TSearchContributor } from "./search-contributor.types";
 
-export function SearchContributor({ onChange, value }: TSearchContributor.Props) {
+export function SearchContributor({
+  onSelectContributors,
+  initialValue,
+  selectionMode = "single",
+  ...listboxProps
+}: TSearchContributor.Props) {
+  const ref = useRef(null);
+  useOnClickOutside(ref, handleClickOutside);
+
   const [debounceQuery, setDebounceQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [openListbox, setOpenListbox] = useState(false);
@@ -33,55 +41,11 @@ export function SearchContributor({ onChange, value }: TSearchContributor.Props)
     setSearchQuery(query);
   }
 
-  function handleChange(contributor: TSearchContributor.Contributor) {
-    console.log("change", contributor);
-    onChange(contributor);
+  function handleClickOutside() {
+    setOpenListbox(false);
+    setDebounceQuery("");
+    setSearchQuery("");
   }
-
-  const selectedContributorsItems = useMemo(() => {
-    if (selectedContributors.length) {
-      return [
-        {
-          name: "selected",
-          items: selectedContributors,
-          showDivider: true,
-        },
-      ];
-    }
-    return [];
-  }, [selectedContributors]);
-
-  const internalContributors = useMemo(() => {
-    if (data?.internalContributors?.length) {
-      return [
-        {
-          name: "internal",
-          items:
-            data?.internalContributors.filter(
-              c => !selectedContributors.find(s => s.githubUserId === c.githubUserId)
-            ) || [],
-          showDivider: !!data?.externalContributors?.length,
-        },
-      ];
-    }
-    return [];
-  }, [data, selectedContributors]);
-
-  const externalContributors = useMemo(() => {
-    if (data?.externalContributors?.length) {
-      return [
-        {
-          name: "external",
-          items:
-            data?.externalContributors.filter(
-              c => !selectedContributors.find(s => s.githubUserId === c.githubUserId)
-            ) || [],
-          showDivider: false,
-        },
-      ];
-    }
-    return [];
-  }, [data, selectedContributors]);
 
   function onSelectElement(selectedGithubUserId: "all" | Set<Key>) {
     if (selectedGithubUserId === "all") {
@@ -99,8 +63,54 @@ export function SearchContributor({ onChange, value }: TSearchContributor.Props)
       setSelectedKeys(selectedGithubUserId);
       setDebounceQuery("");
       setSearchQuery("");
+      onSelectContributors(selectedContributor);
     }
   }
+
+  const selectedContributorsItems = useMemo((): TSearchContributor.ListboxItemSection[] => {
+    if (selectedContributors.length) {
+      return [
+        {
+          name: "Selected",
+          items: selectedContributors,
+          showDivider: true,
+        },
+      ];
+    }
+    return [];
+  }, [selectedContributors]);
+
+  const internalContributors = useMemo((): TSearchContributor.ListboxItemSection[] => {
+    if (data?.internalContributors?.length) {
+      return [
+        {
+          name: "Internal",
+          items:
+            data?.internalContributors.filter(
+              c => !selectedContributors.find(s => s.githubUserId === c.githubUserId)
+            ) || [],
+          showDivider: !!data?.externalContributors?.length,
+        },
+      ];
+    }
+    return [];
+  }, [data, selectedContributors]);
+
+  const externalContributors = useMemo((): TSearchContributor.ListboxItemSection[] => {
+    if (data?.externalContributors?.length) {
+      return [
+        {
+          name: "External",
+          items:
+            data?.externalContributors.filter(
+              c => !selectedContributors.find(s => s.githubUserId === c.githubUserId)
+            ) || [],
+          showDivider: false,
+        },
+      ];
+    }
+    return [];
+  }, [data, selectedContributors]);
 
   const renderValue = useMemo(() => {
     if (selectedContributors.length && !openListbox) {
@@ -115,15 +125,6 @@ export function SearchContributor({ onChange, value }: TSearchContributor.Props)
     }
     return <Icon remixName="ri-user-line" className="pointer-events-none" />;
   }, [selectedContributors, openListbox]);
-
-  function handleClickOutside() {
-    setOpenListbox(false);
-    setDebounceQuery("");
-    setSearchQuery("");
-  }
-
-  const ref = useRef(null);
-  useOnClickOutside(ref, handleClickOutside);
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -149,18 +150,18 @@ export function SearchContributor({ onChange, value }: TSearchContributor.Props)
             >
               <Listbox
                 items={[...selectedContributorsItems, ...internalContributors, ...externalContributors]}
-                selectionMode="multiple"
+                selectionMode={selectionMode}
                 selectedKeys={selectedKeys}
                 onSelectionChange={onSelectElement}
                 bottomContent={isLoading ? <Spinner /> : null}
+                {...listboxProps}
               >
-                {item => (
+                {(item: TSearchContributor.ListboxItemSection) => (
                   <ListboxSection key={item.name} title={item.name} showDivider={item.showDivider}>
                     {item.items?.map(item => (
                       <ListboxItem
                         key={item.githubUserId}
                         startContent={<Avatar src={item.avatarUrl} alt={item.login} shape="circle" size="xs" />}
-                        onClick={() => handleChange(item)}
                       >
                         {item.login}
                       </ListboxItem>
