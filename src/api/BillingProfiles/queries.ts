@@ -11,6 +11,7 @@ import { BILLING_PROFILES_TAGS } from "./tags";
 export type UseGetBillingProfileById = components["schemas"]["BillingProfileResponse"];
 export type UseGetBillingProfilePayout = components["schemas"]["BillingProfilePayoutInfoResponse"];
 export type UseGetBillingProfiles = components["schemas"]["MyBillingProfilesResponse"];
+export type UseGetBillingCoworkers = components["schemas"]["BillingProfileCoworkersPageResponse"];
 
 const useGetBillingProfileById = ({
   options = {},
@@ -39,6 +40,27 @@ const useGetPayoutInfo = ({ options = {}, params }: UseQueryProps<UseGetBillingP
     tags: BILLING_PROFILES_TAGS.all,
     ...options,
   });
+};
+interface BillingProfileCoworkersParams {
+  billingProfileId: string;
+  queryParams?: QueryParams;
+  pageSize?: number;
+}
+
+const useGetBillingProfileCoworkers = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<UseGetBillingCoworkers, BillingProfileCoworkersParams>) => {
+  const { isAuthenticated } = useAuth0();
+  return useInfiniteBaseQuery<UseGetBillingCoworkers>(
+    {
+      resourcePath: BILLING_PROFILES_PATH.COWORKERS(params?.billingProfileId ?? ""),
+      tags: BILLING_PROFILES_TAGS.single(params?.billingProfileId ?? ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 6,
+    },
+    { ...options, enabled: !!params?.billingProfileId && isAuthenticated }
+  );
 };
 
 export type UseBillingProfileInvoicesResponse = components["schemas"]["BillingProfileInvoicesPageResponse"];
@@ -92,4 +114,5 @@ export default {
   useGetBillingProfileById,
   useBillingProfileInvoices,
   useDownloadBillingProfileInvoice,
+  useGetBillingProfileCoworkers,
 };

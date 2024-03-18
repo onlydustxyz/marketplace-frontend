@@ -15,6 +15,11 @@ export namespace BillingProfilesTypes {
 
   export type typeUnion = components["schemas"]["BillingProfileResponse"]["type"];
 
+  export enum ROLE {
+    ADMIN = "ADMIN",
+    MEMBER = "MEMBER",
+  }
+
   export interface profileTypeMapping {
     icon: TIcon.Props;
   }

@@ -10,6 +10,8 @@ import { UseUploaderProps, useBaseUploader } from "../useBaseUploader";
 
 export type UseCreateBillingProfileBody = components["schemas"]["BillingProfileRequest"];
 export type UseCreateBillingProfileResponse = components["schemas"]["BillingProfileResponse"];
+export type UseInviteBillingCoworkerBody = components["schemas"]["BillingProfileCoworkerInvitationRequest"];
+export type UseInviteBillingCoworkerResponse = components["schemas"]["BillingProfileCoworkerInvitation"];
 export type UseUpdatePayoutSettingsBody = components["schemas"]["BillingProfilePayoutInfoRequest"];
 export type UseUpdatePayoutSettingsResponse = components["schemas"]["BillingProfilePayoutInfoResponse"];
 
@@ -74,9 +76,39 @@ const useAcceptInvoiceMandate = ({
   });
 };
 
+const useInviteBillingCoworker = ({
+  options = {},
+  params,
+}: UseMutationProps<UseInviteBillingCoworkerResponse, { billingProfileId?: string }, UseInviteBillingCoworkerBody>) => {
+  return useBaseMutation<UseInviteBillingCoworkerBody, UseInviteBillingCoworkerResponse>({
+    resourcePath: BILLING_PROFILES_PATH.INVITE_COWORKER_BY_ID(params?.billingProfileId || ""),
+    method: "POST",
+    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false }],
+    ...options,
+  });
+};
+
+const useDeleteBillingCoworker = ({
+  options = {},
+  params,
+}: UseMutationProps<void, { billingProfileId?: string; githubUserId?: string }, unknown>) => {
+  return useBaseMutation<unknown, void>({
+    resourcePath: BILLING_PROFILES_PATH.DELETE_COWORKER_BY_ID(
+      params?.billingProfileId || "",
+      params?.githubUserId || ""
+    ),
+    method: "DELETE",
+    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false }],
+    enabled: !!params?.billingProfileId && !!params?.githubUserId,
+    ...options,
+  });
+};
+
 export default {
   useCreateBillingProfile,
   useUpdatePayoutSettings,
   useUploadInvoice,
   useAcceptInvoiceMandate,
+  useInviteBillingCoworker,
+  useDeleteBillingCoworker,
 };

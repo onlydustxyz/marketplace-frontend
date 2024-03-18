@@ -26,7 +26,7 @@ const items: { id: number; label: string }[] = [
 export const Default = {
   render: () => (
     <div className="flex">
-      <FilterCombobox<typeof items[number]>
+      <FilterCombobox<(typeof items)[number]>
         items={items}
         selected={[items[0]]}
         onChange={() => {}}

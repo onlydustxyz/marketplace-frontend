@@ -1,0 +1,63 @@
+{
+  "banner": {
+    "title": "All your coworkers will be able to contribute to your billing profile.",
+    "button": "Invite coworker"
+  },
+  "empty": {
+    "title": "Nothing to show",
+    "description": "Please invite coworkers to display more results.",
+    "imageAlt": "Empty state illustration"
+  },
+  "table": {
+    "columns": {
+      "coworkers": "Coworkers",
+      "role": "Role",
+      "joined": "Joined"
+    },
+    "roles": {
+      "admin": "Admin",
+      "employee": "Employee",
+      "empty": "No role"
+    },
+    "actions": {
+      "cancel": "Cancel invite",
+      "remove": "Remove user",
+      "disable": "Disable user",
+      "reInvite": "Re-invite user"
+    },
+    "emptyState": {
+      "title": "No coworkers",
+      "description": "Invite coworkers to contribute with your billing profile."
+    }
+  },
+  "manageCoworker": {
+    "button": "__actionType__ user",
+    "title": "Are you sure?",
+    "deleteDescription": "This user will no longer be able to access this billing profile. You can always re-invite them later.",
+    "disableDescription": "This user will no longer be able to access this billing profile. You’ll still be able to enable it later if needed.",
+    "cancelDescription": "This user will no longer be invited to access this billing profile. You can always re-invite them later.",
+    "enableDescription": "This user will be able to access this billing profile.",
+    "confirm": "Yes, __actionType__ user",
+    "cancel": "No, keep this user",
+    "actionType": {
+      "delete": "Delete",
+      "disable": "Disable",
+      "cancel": "Cancel invite",
+      "enable": "Enable"
+    },
+    "mutationAlert": {
+      "delete": {
+        "success": "User deleted successfully",
+        "error": "An error occurred while deleting the user"
+      },
+      "disable": {
+        "success": "User disabled successfully",
+        "error": "An error occurred while disabling the user"
+      },
+      "cancel": {
+        "success": "Invite canceled successfully",
+        "error": "An error occurred while canceling the invite"
+      }
+    }
+  }
+}
