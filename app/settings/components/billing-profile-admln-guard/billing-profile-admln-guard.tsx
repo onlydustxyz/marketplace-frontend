@@ -16,12 +16,12 @@ export function withBillingProfileAdminGuard<P extends object>(Component: Compon
     const isBillingProfileAdmin = profile?.data?.me?.role === BillingProfilesTypes.ROLE.ADMIN;
 
     useEffect(() => {
-      if (isLoading || isLoading || isBillingProfileAdmin) return;
+      if (isLoading || isBillingProfileAdmin) return;
 
       router.push(NEXT_ROUTER.notFound);
     }, [isLoading, isLoading, isBillingProfileAdmin]);
 
-    if (isLoading || isLoading || !isBillingProfileAdmin) {
+    if (isLoading || !isBillingProfileAdmin) {
       return <></>;
     }
 
