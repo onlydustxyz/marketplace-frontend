@@ -1,5 +1,5 @@
 import { Checkbox } from "@nextui-org/react";
-import { motion } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 
 import { Chip } from "src/components/Chip/Chip";
 import { cn } from "src/utils/cn";
@@ -17,40 +17,42 @@ export function CheckboxItem({ title, description, icon, selected, onChange, val
   }
 
   return (
-    <motion.div layout="size" className="origin-top">
-      <Card
-        background={selected ? "spacePurple" : false}
-        border={selected ? "spacePurple" : "light"}
-        className={cn("p-4", {
-          "hover:border-spacePurple-500": selected,
-        })}
-        onClick={onClick}
-      >
-        <Flex justifyContent="between" alignItems="center" className="gap-1">
-          <Flex alignItems="center" className="gap-4">
-            <Chip className="h-8 w-8 border-2">
-              <Icon {...icon} className={cn("h-4 w-4", icon.className)} />
-            </Chip>
+    <LazyMotion features={domAnimation}>
+      <m.div layout="size" className="origin-top">
+        <Card
+          background={selected ? "spacePurple" : false}
+          border={selected ? "spacePurple" : "light"}
+          className={cn("p-4", {
+            "hover:border-spacePurple-500": selected,
+          })}
+          onClick={onClick}
+        >
+          <Flex justifyContent="between" alignItems="center" className="gap-1">
+            <Flex alignItems="center" className="gap-4">
+              <Chip className="h-8 w-8 border-2">
+                <Icon {...icon} className={cn("h-4 w-4", icon.className)} />
+              </Chip>
 
-            <Flex direction="col" className="gap-0.5">
-              <Typography variant="title-s">{title}</Typography>
+              <Flex direction="col" className="gap-0.5">
+                <Typography variant="title-s">{title}</Typography>
 
-              <Typography variant="body-s" className="text-greyscale-200">
-                {description}
-              </Typography>
+                <Typography variant="body-s" className="text-greyscale-200">
+                  {description}
+                </Typography>
+              </Flex>
             </Flex>
-          </Flex>
 
-          <Checkbox
-            radius="full"
-            isSelected={selected}
-            className="pointer-events-none"
-            classNames={{
-              wrapper: "after:bg-spacePurple-500",
-            }}
-          />
-        </Flex>
-      </Card>
-    </motion.div>
+            <Checkbox
+              radius="full"
+              isSelected={selected}
+              className="pointer-events-none"
+              classNames={{
+                wrapper: "after:bg-spacePurple-500",
+              }}
+            />
+          </Flex>
+        </Card>
+      </m.div>
+    </LazyMotion>
   );
 }
