@@ -22,6 +22,8 @@ export const ME_PATH = {
   BILLING_COMPANY: BASE_API_V1("me/billing-profiles/company"),
   BILLING_PROFILES: BASE_API_V1("me/billing-profiles"),
   BILLING_PROFILES_V2: BASE_API_V2("me/billing-profiles"),
+  BILLING_PROFILES_INVITATIONS: (billingProfileId: string) =>
+    BASE_API_V1(`me/billing-profiles/${billingProfileId}/invitations`),
   SYNC_GITHUB_PROFILE: BASE_API_V1("me/profile/github"),
   PAYOUT_PREFERENCES: BASE_API_V1("me/payout-preferences"),
 };

@@ -21,7 +21,7 @@ import { ProfileStatus } from "./component/profile-status/profile-status";
 
 function SettingsBillingPage() {
   const { id } = useParams<{ id: string }>();
-  const { profile, refetch } = useBillingProfileById({ id, enabledPooling: true });
+  const { profile, refetch } = useBillingProfileById({ id });
   const { open } = useSubscribeStacks(StackRoute.Verify);
   const [isPanelHasOpenedState, setIsPanelHasOpenedState] = useState(false);
   const validBillingProfile = profile?.status === "VERIFIED";

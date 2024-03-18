@@ -57,5 +57,13 @@
       "no": "No",
       "yes": "Yes"
     }
+  },
+  "invitation": {
+    "title": "You’ve been invited to the __title__ payout profile.",
+    "description": "Please accept only if you are a member of this company.",
+    "buttons": {
+      "accept": "Accept",
+      "decline": "Decline"
+    }
   }
 }
