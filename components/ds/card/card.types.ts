@@ -12,5 +12,6 @@ export namespace TCard {
     className?: string;
     dataTestId?: string;
     onClick?: () => void;
+    noHover?: boolean;
   }
 }

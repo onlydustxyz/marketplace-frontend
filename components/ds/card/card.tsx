@@ -10,6 +10,7 @@ export function Card({
   onClick,
   href,
   children,
+  noHover,
   ...props
 }: TCard.Props) {
   const isClickable = !!onClick || !!href || props.clickable;
@@ -23,7 +24,7 @@ export function Card({
         }),
         {
           "duration-200 ease-in hover:border hover:border-card-border-heavy":
-            isClickable && props.border !== "multiColor" && !props.isWarning,
+            isClickable && props.border !== "multiColor" && !props.isWarning && !noHover,
         },
         className
       )}
@@ -37,7 +38,9 @@ export function Card({
             "absolute right-0 top-0 -z-[1] h-full w-full overflow-hidden rounded-2xl after:transition-all",
             "after:duration-200 after:ease-in",
             "after:absolute after:right-0 after:top-0 after:h-full after:w-full after:rounded-2xl after:bg-card-background-medium after:opacity-0",
-            "group-hover:after:opacity-100"
+            {
+              "group-hover:after:opacity-100": !noHover,
+            }
           )}
         />
       ) : null}

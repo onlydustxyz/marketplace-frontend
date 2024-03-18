@@ -21,7 +21,8 @@
         "1": "when you don’t have a legal structure",
         "2": "limited to 5,000 USD in rewards per year",
         "3": "requires identity verification"
-      }
+      },
+      "tooltip": "You can only have 1 individual billing profile"
     },
     "selfEmployed": {
       "title": "Self-employed",
