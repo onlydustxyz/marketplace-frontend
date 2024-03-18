@@ -21,7 +21,6 @@ export function SearchContributor({
   ...listboxProps
 }: TSearchContributor.Props) {
   const { T } = useIntl();
-  const ref = useRef(null);
 
   const {
     searchQuery,
@@ -35,6 +34,8 @@ export function SearchContributor({
     onSelectElement,
     setOpenListbox,
   } = useSearchContributors({ onSelectContributors, initialValue });
+
+  const ref = useRef(null);
   useOnClickOutside(ref, handleClickOutside);
 
   return (

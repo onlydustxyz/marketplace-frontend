@@ -2,6 +2,7 @@ import { debounce } from "lodash";
 import { Key, useMemo, useState } from "react";
 
 import UsersApi from "src/api/Users";
+import { useIntl } from "src/hooks/useIntl";
 import { ContributorResponse } from "src/types";
 
 import { TUseSearchContributors } from "components/features/search-contributor/hooks/use-search-contributors.types";
@@ -12,6 +13,7 @@ export function useSearchContributors({
   onSelectContributors,
   initialValue,
 }: TUseSearchContributors.Props): TUseSearchContributors.Return {
+  const { T } = useIntl();
   const [debounceQuery, setDebounceQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [openListbox, setOpenListbox] = useState(false);
@@ -63,7 +65,7 @@ export function useSearchContributors({
     if (selectedContributors.length) {
       return [
         {
-          name: "Selected",
+          name: T("v2.pages.stacks.billingInviteTeamMember.sections.selected"),
           items: selectedContributors,
           showDivider: true,
         },
@@ -76,7 +78,7 @@ export function useSearchContributors({
     if (data?.internalContributors?.length) {
       return [
         {
-          name: "Internal",
+          name: T("v2.pages.stacks.billingInviteTeamMember.sections.internal"),
           items:
             data?.internalContributors.filter(
               c => !selectedContributors.find(s => s.githubUserId === c.githubUserId)
@@ -92,7 +94,7 @@ export function useSearchContributors({
     if (data?.externalContributors?.length) {
       return [
         {
-          name: "External",
+          name: T("v2.pages.stacks.billingInviteTeamMember.sections.external"),
           items:
             data?.externalContributors.filter(
               c => !selectedContributors.find(s => s.githubUserId === c.githubUserId)

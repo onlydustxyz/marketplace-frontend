@@ -27,6 +27,11 @@
       }
     }
   },
+  "sections": {
+    "selected": "Selected",
+    "internal": "Internal",
+    "external": "External"
+  },
   "invite": {
     "success": "Invitation sent successfully",
     "error": "We couldn't send the invitation. Please try again later."

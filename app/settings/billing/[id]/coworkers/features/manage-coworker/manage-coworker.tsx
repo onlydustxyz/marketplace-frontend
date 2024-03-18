@@ -1,5 +1,5 @@
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
@@ -34,7 +34,7 @@ export function ManageCoworker({ actionType, githubUserId }: TManageCoworker.Pro
     },
   });
 
-  const confirmationContent = () => {
+  const confirmationContent = useMemo(() => {
     if (actionType === "disable") {
       return "disableDescription";
     } else if (actionType === "delete") {
@@ -44,7 +44,8 @@ export function ManageCoworker({ actionType, githubUserId }: TManageCoworker.Pro
     } else {
       return "enableDescription";
     }
-  };
+  }, [actionType]);
+
   function onOpenConfirmation() {
     setOpenConfirmation(true);
   }
@@ -83,7 +84,7 @@ export function ManageCoworker({ actionType, githubUserId }: TManageCoworker.Pro
         open={openConfirmation}
         onClose={onCancel}
         title={<Translate token="v2.pages.settings.billing.coworkers.manageCoworker.title" />}
-        content={<Translate token={`v2.pages.settings.billing.coworkers.manageCoworker.${confirmationContent()}`} />}
+        content={<Translate token={`v2.pages.settings.billing.coworkers.manageCoworker.${confirmationContent}`} />}
         buttons={{
           confirm: {
             children: (
