@@ -19,4 +19,9 @@ export const BILLING_PROFILES_TAGS = {
     "download-invoice",
     { billingProfileId, invoiceId },
   ],
+  invoiceable_rewards: (billingProfileId: string) => [
+    RESSOURCE_TAGS.BILLING_PROFILES,
+    "invoiceable-rewards",
+    { billingProfileId },
+  ],
 };

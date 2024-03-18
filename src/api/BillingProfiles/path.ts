@@ -16,4 +16,6 @@ export const BILLING_PROFILES_PATH = {
   INVITE_COWORKER_BY_ID: (billingProfileId: string) => BASE_API_V1(`billing-profiles/${billingProfileId}/coworkers`),
   DELETE_COWORKER_BY_ID: (billingProfileId: string, githubUserId: string) =>
     BASE_API_V1(`billing-profiles/${billingProfileId}/coworkers/${githubUserId}`),
+  INVOICEABLE_REWARDS: (billingProfileId: string) =>
+    BASE_API_V1(`billing-profiles/${billingProfileId}/invoiceable-rewards`),
 };
