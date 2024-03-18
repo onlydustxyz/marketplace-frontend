@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { IMAGES } from "src/assets/img";
+import { useIntl } from "src/hooks/useIntl";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Input } from "components/ds/form/input/input";
@@ -19,6 +20,7 @@ export function SearchContributor({
   selectionMode = "single",
   ...listboxProps
 }: TSearchContributor.Props) {
+  const { T } = useIntl();
   const ref = useRef(null);
 
   const {
@@ -45,6 +47,7 @@ export function SearchContributor({
           className="relative z-30 flex w-full flex-col"
           onFocus={() => setOpenListbox(true)}
           value={searchQuery}
+          placeholder={T("v2.pages.stacks.billingInviteTeamMember.fields.contributor.search.placeholder")}
         />
         {openListbox ? (
           <div
