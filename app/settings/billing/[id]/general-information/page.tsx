@@ -10,6 +10,7 @@ import { ProfileIndividual } from "app/settings/billing/[id]/general-information
 
 import { StackRoute } from "src/App/Stacks/Stacks";
 import { useSubscribeStacks } from "src/libs/react-stack";
+import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
 
@@ -45,7 +46,11 @@ function SettingsBillingPage() {
   return (
     <>
       <Card border="light" background={false}>
-        <div className="mb-5 flex w-full flex-row justify-end xl:-mb-1 ">
+        <div
+          className={cn("mb-1 flex w-full flex-row justify-end", {
+            "mb-4": !profile.data.kyc && !profile.data.kyb,
+          })}
+        >
           <ProfileStatus status={profile?.status} hasValidBillingProfile={true} />
         </div>
         <div className="flex w-full flex-col gap-9">
