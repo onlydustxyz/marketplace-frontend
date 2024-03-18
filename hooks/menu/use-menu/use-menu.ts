@@ -12,7 +12,7 @@ export const useMenu = (): TUseMenu.Return => {
     case TUseSettingsError.ERRORS.BILLING_ERROR:
       return {
         labelToken: "v2.features.menu.profile.verificationError",
-        redirection: NEXT_ROUTER.settings.billing,
+        redirection: NEXT_ROUTER.settings.profile,
         errorColor: TUseMenu.ERROR_COLORS.ERROR,
         error,
         isBillingError,
@@ -21,7 +21,7 @@ export const useMenu = (): TUseMenu.Return => {
     case TUseSettingsError.ERRORS.BILLING_WARNING:
       return {
         labelToken: "v2.features.menu.profile.pendingVerification",
-        redirection: NEXT_ROUTER.settings.billing,
+        redirection: NEXT_ROUTER.settings.profile,
         errorColor: TUseMenu.ERROR_COLORS.WARNING,
         error,
         isBillingError,
@@ -30,7 +30,7 @@ export const useMenu = (): TUseMenu.Return => {
     case TUseSettingsError.ERRORS.PAYOUT:
       return {
         labelToken: "v2.features.menu.profile.missingPaymentMethods",
-        redirection: NEXT_ROUTER.settings.payout,
+        redirection: NEXT_ROUTER.settings.payoutPreferences,
         errorColor: TUseMenu.ERROR_COLORS.WARNING,
         error,
         isBillingError,

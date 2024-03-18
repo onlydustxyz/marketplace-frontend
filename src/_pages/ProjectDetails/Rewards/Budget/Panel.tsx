@@ -69,7 +69,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
           currency: budget.currency,
           amount: budget.initialAmount - budget.remaining,
           dollarAmount:
-            budget.remainingDollarsEquivalent === null || budget.currency === "STRK"
+            budget.remainingDollarsEquivalent === null
               ? null
               : (budget.initialDollarsEquivalent || 0) - (budget.remainingDollarsEquivalent || 0),
         })) || []
@@ -115,7 +115,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
           <p className="mb-8 px-2 font-belwe text-2xl font-normal text-greyscale-50">
             <Translate token="project.details.remainingBudget.budget.panelTitle" />
           </p>
-          <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} border={true} />
+          <Tabs tabs={tabs} showMobile mobileTitle={T("project.details.edit.title")} border={true} />
           <div className="mt-4 flex flex-col gap-4 border-b-1 border-b-card-border-light pb-6">
             {sortedByDollarsEquivalent.map(value => (
               <Card
@@ -143,7 +143,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
                 </Flex>
 
                 <Typography variant={"body-l"} as={"p"} className="text-spaceBlue-200">
-                  {value.dollarAmount
+                  {value.dollarAmount !== null && value.dollarAmount !== undefined
                     ? `~${formatMoneyAmount({ amount: value.dollarAmount, currency: Currency.USD })}`
                     : "N/A"}
                 </Typography>

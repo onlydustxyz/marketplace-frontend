@@ -1,36 +1,43 @@
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+"use client";
 
-import { RoutePaths } from "src/App";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+
 import { GithubState } from "src/utils/githubSetupLink";
 
-function handleNavigation(searchParams: URLSearchParams, navigate: (path: string) => void) {
+import { NEXT_ROUTER } from "constants/router";
+
+function handleNavigation(searchParams: ReturnType<typeof useSearchParams>, router: ReturnType<typeof useRouter>) {
   const installationId = searchParams.get("installation_id");
   const state = searchParams.get("state");
 
   if (installationId && !state) {
-    navigate(`${RoutePaths.ProjectCreation}?installation_id=${installationId}`);
+    router.push(`${NEXT_ROUTER.projects.creation}?installation_id=${installationId}`);
   } else if (installationId && state) {
     const isEdit = state.includes(GithubState.edit);
     const isClaim = state.includes(GithubState.claim);
     if (isEdit) {
-      navigate(`/p/${state.replace(GithubState.edit, "")}/edit?installation_id=${installationId}`);
+      router.push(
+        `${NEXT_ROUTER.projects.details.edit(state.replace(GithubState.edit, ""))}?installation_id=${installationId}`
+      );
     } else if (isClaim) {
-      navigate(`/p/${state.replace(GithubState.claim, "")}?claim_callback=${installationId}`);
+      router.push(
+        `${NEXT_ROUTER.projects.details.root(state.replace(GithubState.claim, ""))}?claim_callback=${installationId}`
+      );
     }
   }
 }
 
 export default function GithubCallbackHandler() {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
-    handleNavigation(searchParams, navigate);
-  }, [searchParams, navigate]);
+    handleNavigation(searchParams, router);
+  }, [searchParams, router]);
 
   if (!searchParams.has("installation_id") && !searchParams.has("state")) {
-    navigate(RoutePaths.Projects);
+    router.push(NEXT_ROUTER.projects.all);
   }
 
   return null;

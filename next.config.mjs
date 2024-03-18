@@ -1,3 +1,4 @@
+import withBundleAnalyzer from "@next/bundle-analyzer";
 import * as child from "child_process";
 import fs from "fs";
 
@@ -12,13 +13,34 @@ function getCommitHash() {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  //output: "export", // Outputs a Single-Page Application (SPA).
-  // distDir: "./dist", // Changes the build output directory to `./dist/`.
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   poweredByHeader: false,
   env: {
     APP_COMMIT_HASH: getCommitHash(),
-  }
+  },
+  experimental: {
+    serverComponentsExternalPackages: ["@react-pdf/renderer"],
+  },
+  webpack: config => {
+    config.resolve.alias.canvas = false;
+    return config;
+  },
+  async redirects() {
+    return [
+      {
+        source: "/settings",
+        destination: "/settings/profile",
+        permanent: true,
+      },
+      {
+        source: "/migration/settings/billing/:slug",
+        destination: "/migration/settings/billing/:slug/general-information",
+        permanent: true,
+      },
+    ];
+  },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+})(nextConfig);

@@ -1,7 +1,6 @@
 "use client";
 
 import { ComponentProps } from "react";
-import { Link, generatePath } from "react-router-dom";
 
 import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
 import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
@@ -15,7 +14,16 @@ import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
 
-import { RoutePaths } from "..";
+import { BillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack";
+import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
+import { BillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member";
+import { TBillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member.types";
+import { MandateDetailStack } from "components/features/stacks/payments-flow/mandate-detail-stack/mandate-detail-stack";
+import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
+
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
 import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
@@ -29,7 +37,11 @@ export enum StackRoute {
   GithubWorkflowClaim = "github-workflow-claim",
   GithubWorkflowTutorial = "github-workflow-tutorial",
   Verify = "verify",
+  BillingCreate = "billing-create",
+  RequestPayments = "request-payments",
   Feedback = "feedback",
+  BillingInviteTeamMember = "billing-invite-team-member",
+  MandateDetail = "mandate-detail",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -84,6 +96,9 @@ export const Stacks = () => {
         {({ params }) => <ProjectOverviewSidePanel {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
+      <RegisterStack<TBillingCreateStack.Props> name={StackRoute.BillingCreate}>
+        {({ params }) => <BillingCreateStack {...params} />}
+      </RegisterStack>
       <RegisterStack<StackRouterParams["Verify"]>
         name={StackRoute.Verify}
         option={{
@@ -94,9 +109,18 @@ export const Stacks = () => {
       >
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
+      <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>
       <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
+      <RegisterStack<TBillingInviteTeamMember.Props> name={StackRoute.BillingInviteTeamMember}>
+        {({ params }) => <BillingInviteTeamMember {...params} />}
+      </RegisterStack>
+      <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
     </>
   );
+};
+
+export const useStackMandate = () => {
+  return useStackNavigation(StackRoute.MandateDetail);
 };
 
 export const useStackFeedback = () => {
@@ -171,10 +195,8 @@ export const useStackProjectOverview = (): [
       slug,
       panelProps: {
         action: (
-          <Link
-            to={generatePath(RoutePaths.ProjectDetails, {
-              projectKey: slug,
-            })}
+          <BaseLink
+            href={NEXT_ROUTER.projects.details.root(slug)}
             className="hover:underline"
             onClick={() => closeAll()}
           >
@@ -182,10 +204,22 @@ export const useStackProjectOverview = (): [
               <EyeLine className="text-base leading-none" />
               {T("project.openOverview")}
             </Button>
-          </Link>
+          </BaseLink>
         ),
       },
     });
   };
   return [handleOpen, close];
+};
+
+export const useStackBillingCreate = () => {
+  return useStackNavigation<TBillingCreateStack.Props>(StackRoute.BillingCreate);
+};
+
+export const useStackBillingInviteTeamMember = () => {
+  return useStackNavigation<TBillingInviteTeamMember.Props>(StackRoute.BillingInviteTeamMember);
+};
+
+export const useStackRequestPayments = () => {
+  return useStackNavigation(StackRoute.RequestPayments);
 };

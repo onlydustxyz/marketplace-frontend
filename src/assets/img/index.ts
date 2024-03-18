@@ -7,6 +7,7 @@ import categories from "./categories.webp";
 import circle from "./circle.webp";
 import compass from "./compass.webp";
 import contributionsBg from "./contributions-bg.webp";
+import drip from "./drip.webp";
 import dustBtmLeft from "./dust-btm-left.webp";
 import dustTopRight from "./dust-top-right.webp";
 import emptyState from "./empty-state.webp";
@@ -21,6 +22,7 @@ import noiseHeavy from "./noise-heavy.webp";
 import noiseLight from "./noise-light.webp";
 import noiseMedium from "./noise-medium.webp";
 import notFound from "./not-found.webp";
+import onlydustLogoCrashed from "./onlydust-logo-crashed.svg";
 import onlydustLogoSpace from "./onlydust-logo-space.webp";
 import onlydustLogoWhite from "./onlydust-logo-white.svg";
 import onlydustLogo from "./onlydust-logo.webp";
@@ -46,6 +48,7 @@ export const IMAGES = {
   logo: {
     original: onlydustLogo.src,
     space: onlydustLogoSpace.src,
+    crashed: onlydustLogoCrashed.src,
   },
   icons: {
     compass: compass.src,
@@ -91,6 +94,7 @@ export const IMAGES = {
     categories: categories.src,
     underline: underline.src,
     payment: payment.src,
+    drip: drip.src,
     pickContributor: pickContributor.src,
     thumbnail: thumbnail.src,
     mosaic: mosaic.src,

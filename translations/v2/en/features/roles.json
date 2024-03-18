@@ -1,0 +1,8 @@
+{
+  "admin": "Admin",
+  "member": "Employee",
+  "mutation": {
+    "success": "The role was successfully updated",
+    "error": "We were unable to update the role"
+  }
+}

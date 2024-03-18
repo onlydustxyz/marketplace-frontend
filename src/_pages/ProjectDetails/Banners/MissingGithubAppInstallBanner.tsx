@@ -1,10 +1,11 @@
-import { Link, generatePath } from "react-router-dom";
-
-import { RoutePaths } from "src/App";
 import { components } from "src/__generated/api";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
+
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
 
 export function MissingGithubAppInstallBanner({
   slug = "",
@@ -31,7 +32,7 @@ export function MissingGithubAppInstallBanner({
         </div>
       </div>
 
-      <Link to={generatePath(RoutePaths.ProjectDetailsEditRepos, { projectKey: slug })}>
+      <BaseLink href={NEXT_ROUTER.projects.details.edit(slug)}>
         <Button
           size={ButtonSize.Sm}
           type={ButtonType.Secondary}
@@ -40,7 +41,7 @@ export function MissingGithubAppInstallBanner({
         >
           {T("project.details.banners.missingGithubAppInstall.button")}
         </Button>
-      </Link>
+      </BaseLink>
     </div>
   );
 }

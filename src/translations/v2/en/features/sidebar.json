@@ -1,8 +1,0 @@
-{
-  "settings": {
-    "publicProfile": "Profile",
-    "paymentMethods": "Payment methods",
-    "verifyAccount": "Verify account",
-    "billingProfile": "Billing profile"
-  }
-}

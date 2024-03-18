@@ -1,5 +1,7 @@
+"use client";
+
+import { useParams } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
-import { useParams } from "react-router-dom";
 
 import ErrorFallback from "src/ErrorFallback";
 import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
@@ -21,7 +23,7 @@ import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { Card } from "components/ds/card/card";
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
@@ -34,10 +36,10 @@ import { RewardProjectButton } from "../components/RewardProjectButton";
 export default function Contributors() {
   const { T } = useIntl();
   const { githubUserId } = useCurrentUser();
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
 
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
 
   const isProjectLeader = useProjectLeader({ id: project?.id });
@@ -116,7 +118,7 @@ export default function Contributors() {
           {T("project.details.contributors.title")}
           {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
             <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
-              <EditProjectButton projectKey={projectKey} />
+              <EditProjectButton projectKey={slug} />
               <RewardProjectButton project={project} />
             </Flex>
           ) : null}
@@ -138,7 +140,7 @@ export default function Contributors() {
       <ProjectLeadInvitation
         projectId={project.id}
         size={CalloutSizes.Large}
-        projectSlug={projectKey}
+        projectSlug={slug}
         isInvited={isInvited}
         projectName={project?.name}
       />
@@ -160,7 +162,7 @@ export default function Contributors() {
             isFetchingNextPage,
             isProjectLeader,
             projectId: project.id,
-            projectKey,
+            projectKey: slug,
             sorting,
             sortField,
             rewardDisableReason: getRewardDisableReason(),

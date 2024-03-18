@@ -1,0 +1,12 @@
+{
+  "table": {
+    "userRegisteredTooltip": "User has linked their OnlyDust profile"
+  },
+  "count": {
+    "many": "__count__ contributors",
+    "one": "1 contributor",
+    "zero": "No contributors"
+  },
+  "isYou": "(you)",
+  "hasPendingInvite": "(invite sent)"
+}

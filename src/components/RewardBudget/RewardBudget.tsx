@@ -73,7 +73,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
   return (
     <div className="flex w-full flex-col rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 shadow-light">
-      <div className="flex w-full flex-col px-8 pb-2 pt-4">
+      <div className="flex w-full flex-col p-6 pb-2">
         <div className="flex w-full flex-col gap-2">
           <div className="z-10 flex flex-1 flex-row items-stretch justify-between gap-4">
             <RewardBudgetSelect {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
@@ -116,7 +116,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           selectedBudgetDollarEquivalent={selectedBudgetDollarEquivalent}
         />
       </div>
-      <div className="flex w-full flex-col px-6 pb-6 pt-4">
+      <div className="flex w-full flex-col p-6">
         <Button
           width={Width.Full}
           disabled={!canRewards || props.loading}

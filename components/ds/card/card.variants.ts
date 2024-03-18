@@ -14,12 +14,15 @@ export const cardVariants = tv({
       true: "cursor-pointer",
     },
     border: {
+      false: "border-none",
       light: "border border-card-border-light",
       medium: "border border-card-border-medium",
       heavy: "border border-card-border-heavy",
+      spacePurple: "border border-spacePurple-500",
       multiColor: "border-multicolored before:pointer-events-none before:rounded-2xl",
     },
     background: {
+      false: "bg-transparent",
       light: "bg-card-background-light",
       medium: "bg-card-background-medium",
       heavy: "bg-card-background-heavy",
@@ -29,6 +32,7 @@ export const cardVariants = tv({
       "whiteFakeOpacity-5": "bg-whiteFakeOpacity-5",
       "whiteFakeOpacity-8": "bg-whiteFakeOpacity-8",
       "whiteFakeOpacity-12": "bg-whiteFakeOpacity-12",
+      spacePurple: "bg-spacePurple-900",
     },
     clickable: {
       true: "group relative z-[1] transition-all",

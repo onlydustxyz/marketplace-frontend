@@ -49,9 +49,9 @@ export default function Contributor({ contributor, clickable, className }: Props
   };
 
   return clickable ? (
-    <Link onClick={handleClick} className={cn("group flex items-center gap-2 truncate", className)}>
+    <Link.Button onClick={handleClick} className={cn("group flex items-center gap-2 truncate", className)}>
       <ContributorContent contributor={contributor} clickable={clickable} />
-    </Link>
+    </Link.Button>
   ) : (
     <div className={cn("group flex items-center gap-2 truncate", className)}>
       <ContributorContent contributor={contributor} clickable={clickable} />

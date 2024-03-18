@@ -1,28 +1,22 @@
-import { useContext } from "react";
+import { ReactElement, useContext } from "react";
 
 import ErrorFallback from "src/ErrorFallback";
 import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 import Skeleton from "../../../components/Skeleton";
-import { ShowMore } from "../../../components/Table/ShowMore";
 import Headers from "./Headers";
 import RewardLine, { MyRewardType } from "./Line";
 
 type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;
   selectedReward: MyRewardType | null;
-  emptyState?: React.ReactElement;
-  isBillingError?: boolean;
+  emptyState?: ReactElement;
 };
 
-export default function DesktopUserRewardList({
-  onRewardClick,
-  selectedReward,
-  emptyState,
-  isBillingError,
-}: PropsType) {
+export default function DesktopUserRewardList({ onRewardClick, selectedReward, emptyState }: PropsType) {
   const { query, dateSorting } = useContext(UserRewardsContext);
 
   const { sorting, sortField } = dateSorting;
@@ -57,7 +51,6 @@ export default function DesktopUserRewardList({
               reward={p}
               onClick={() => onRewardClick(p)}
               selected={p?.id === selectedReward?.id}
-              isBillingError={isBillingError}
             />
           ))}
         </Table>

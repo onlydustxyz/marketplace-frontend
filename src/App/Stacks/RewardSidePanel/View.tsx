@@ -1,11 +1,9 @@
 import { UseMutateFunction } from "@tanstack/react-query";
 import { PropsWithChildren, useMemo, useState } from "react";
-import { NavLink, matchPath, useLocation } from "react-router-dom";
 
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
-import { RoutePaths } from "src/App/index";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -27,8 +25,14 @@ import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
+import { Tooltip as NextUiTooltip } from "components/ds/tooltip/tooltip";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
+import { BaseLink } from "components/layout/base-link/base-link";
+import { Translate } from "components/layout/translate/translate";
 
+import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import MixedApi from "../../../api/Mixed";
@@ -65,8 +69,7 @@ export default function View({
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
   const closeRewardPanel = useCloseStack();
-  const { pathname } = useLocation();
-  const isMyRewardsPage = !!matchPath(`${RoutePaths.Rewards}`, pathname);
+  const isMyRewardsPage = useMatchPath(NEXT_ROUTER.rewards.all);
 
   const {
     data,
@@ -95,23 +98,15 @@ export default function View({
       return null;
     }
 
-    if (redirectionStatus && (data.status === "MISSING_PAYOUT_INFO" || data.status === "PENDING_VERIFICATION"))
+    if (redirectionStatus && (data.status === "PAYOUT_INFO_MISSING" || data.status === "PENDING_VERIFICATION"))
       return (
-        <NavLink to={redirectionStatus} onClick={() => closeRewardPanel()}>
-          <PayoutStatus
-            status={data.status}
-            dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
-            isBillingError={isBillingError}
-          />
-        </NavLink>
+        <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
+          <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
+        </BaseLink>
       );
 
     return (
-      <PayoutStatus
-        status={data.status}
-        dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
-        isBillingError={isBillingError}
-      />
+      <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
     );
   }, [data, isBillingError, redirectionStatus]);
 
@@ -260,7 +255,9 @@ export default function View({
         <div className="flex h-full flex-col gap-8 overflow-hidden px-6">
           <div className="flex flex-wrap items-center gap-3 font-belwe text-2xl font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.title", { id: pretty(data.id) })}
-            {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
+            {shouldDisplayCancelButton && (
+              <CancelRewardButton onRewardCancel={onRewardCancel} status={data?.status as PaymentStatus} />
+            )}
           </div>
           <div className="flex h-full flex-col gap-8 divide-y divide-greyscale-50/12">
             <div className="flex flex-col gap-2">
@@ -340,7 +337,9 @@ export default function View({
                   />
                   <div className="flex flex-row items-center gap-1">
                     {T("reward.table.detailsPanel.on")}
-                    <Link onClick={() => openProjectOverview({ slug: data.project.slug })}>{data.project.name}</Link>
+                    <Link.Button onClick={() => openProjectOverview({ slug: data.project.slug })}>
+                      {data.project.name}
+                    </Link.Button>
                   </div>
                 </Details>
               ) : null}
@@ -385,9 +384,10 @@ const Details = ({ align = Align.Center, children }: PropsWithChildren & { align
 
 type CancelRewardButtonProps = {
   onRewardCancel: UseMutateFunction<unknown, Error, unknown, unknown>;
+  status: PaymentStatus;
 };
 
-function CancelRewardButton({ onRewardCancel }: CancelRewardButtonProps) {
+function CancelRewardButton({ onRewardCancel, status }: CancelRewardButtonProps) {
   const { T } = useIntl();
 
   const [modalOpened, setModalOpened] = useState(false);
@@ -395,12 +395,28 @@ function CancelRewardButton({ onRewardCancel }: CancelRewardButtonProps) {
   const toggleModal = () => setModalOpened(!modalOpened);
   const closeModal = () => setModalOpened(false);
 
-  return (
-    <div className="relative">
+  const renderCancelButton = useMemo(() => {
+    if (status === PaymentStatus.PROCESSING) {
+      return (
+        <NextUiTooltip content={<Translate token="reward.table.detailsPanel.cancelReward.tooltip" />}>
+          <Button size={ButtonSize.Sm} disabled data-testid="cancel-reward-button">
+            <ErrorWarningLine />
+            {T("reward.table.detailsPanel.cancelReward.button")}
+          </Button>
+        </NextUiTooltip>
+      );
+    }
+    return (
       <Button size={ButtonSize.Sm} onClick={toggleModal} pressed={modalOpened} data-testid="cancel-reward-button">
         <ErrorWarningLine />
         {T("reward.table.detailsPanel.cancelReward.button")}
       </Button>
+    );
+  }, [status]);
+
+  return (
+    <div className="relative">
+      {renderCancelButton}
       <div
         className={cn("absolute top-10 z-10 xl:-inset-x-10", {
           hidden: !modalOpened,

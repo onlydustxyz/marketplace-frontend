@@ -1,32 +1,30 @@
-import { ReactElement } from "react";
-import { Navigate, generatePath, useParams } from "react-router-dom";
+import { useParams, useRouter } from "next/navigation";
+import { ComponentType, FC, useEffect } from "react";
 
-import { RoutePaths } from "src/App";
 import MeApi from "src/api/me";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 
-function LeadGuard({ children }: { children: ReactElement }) {
-  const { isLoading, isRefetching } = MeApi.queries.useGetMe({});
-  const params = useParams();
-  const isProjectLeader = useProjectLeader({ slug: params.projectKey });
+import { NEXT_ROUTER } from "constants/router";
 
-  if (isLoading || isRefetching) {
-    return null;
-  }
+const withLeadRequired = <P extends object>(Component: ComponentType<P>): FC<P> => {
+  // eslint-disable-next-line react/display-name
+  return (props: P): JSX.Element => {
+    const router = useRouter();
+    const { isLoading, isRefetching } = MeApi.queries.useGetMe({});
+    const params = useParams<{ slug: string }>();
+    const isProjectLeader = useProjectLeader({ slug: params.slug });
 
-  return isProjectLeader ? <>{children}</> : <Navigate to={generatePath(RoutePaths.NotFound, params)} />;
-}
+    useEffect(() => {
+      if (isLoading || isRefetching || isProjectLeader) return;
+      router.push(NEXT_ROUTER.notFound);
+    }, [isLoading, isRefetching, isProjectLeader]);
 
-function LeadComponentGuard({ children }: { children: ReactElement }) {
-  const { isLoading } = MeApi.queries.useGetMe({});
-  const params = useParams();
-  const isProjectLeader = useProjectLeader({ slug: params.projectKey });
+    if (isLoading || isRefetching) {
+      return <></>;
+    }
 
-  if (isLoading) {
-    return null;
-  }
+    return isProjectLeader ? <Component {...props} /> : <></>;
+  };
+};
 
-  return isProjectLeader ? <>{children}</> : null;
-}
-
-export { LeadGuard, LeadComponentGuard };
+export { withLeadRequired };
