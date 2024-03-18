@@ -47,7 +47,11 @@ export function SearchContributor({
           className="relative z-30 flex w-full flex-col"
           onFocus={() => setOpenListbox(true)}
           value={searchQuery}
-          placeholder={T("v2.pages.stacks.billingInviteTeamMember.fields.contributor.search.placeholder")}
+          placeholder={
+            !selectedKeys.size
+              ? T("v2.pages.stacks.billingInviteTeamMember.fields.contributor.search.placeholder")
+              : undefined
+          }
         />
         {openListbox ? (
           <div

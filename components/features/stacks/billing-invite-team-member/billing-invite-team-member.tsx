@@ -67,8 +67,8 @@ export function BillingInviteTeamMember() {
   }
 
   function onContributorChange(contributors: ContributorResponse[]) {
-    if (contributors?.[0]?.githubUserId) {
-      setGithubUserId(contributors?.[0]?.githubUserId);
+    if (contributors[0]?.githubUserId) {
+      setGithubUserId(contributors[0].githubUserId);
     }
   }
 
