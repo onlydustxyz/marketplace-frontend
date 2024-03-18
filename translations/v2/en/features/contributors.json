@@ -7,6 +7,6 @@
     "one": "1 contributor",
     "zero": "No contributors"
   },
-  "isYou": " (you)",
-  "hasPendingInvite": " (invite sent)"
+  "isYou": "(you)",
+  "hasPendingInvite": "(invite sent)"
 }

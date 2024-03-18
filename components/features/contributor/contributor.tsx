@@ -43,9 +43,11 @@ export function Contributor({
           "block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
         })}
       >
-        {login}
-        {isYou ? <Translate token="v2.features.contributors.isYou" /> : null}
-        {hasPendingInvite && !isYou ? <Translate token="v2.features.contributors.hasPendingInvite" /> : null}
+        <div className="flex flex-row gap-1">
+          <span>{login}</span>
+          {isYou ? <Translate token="v2.features.contributors.isYou" /> : null}
+          {hasPendingInvite && !isYou ? <Translate token="v2.features.contributors.hasPendingInvite" /> : null}
+        </div>
       </Typography>
       {isRegistered ? (
         <Tooltip content={<Translate token="v2.features.contributors.table.userRegisteredTooltip" />}>
