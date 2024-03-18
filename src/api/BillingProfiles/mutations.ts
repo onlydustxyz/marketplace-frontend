@@ -30,6 +30,22 @@ const useCreateBillingProfile = ({
   });
 };
 
+const useDeleteBillingProfile = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { billingProfileId?: string }, void>) => {
+  return useBaseMutation<void, void>({
+    resourcePath: BILLING_PROFILES_PATH.BY_ID(params?.billingProfileId || ""),
+    method: "DELETE",
+    invalidatesTags: [
+      { queryKey: MeApi.tags.user, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: ME_TAGS.payoutPreferences(), exact: false },
+    ],
+    ...options,
+  });
+};
+
 const useUpdatePayoutSettings = ({
   options = {},
   params,
@@ -106,6 +122,7 @@ const useDeleteBillingCoworker = ({
 
 export default {
   useCreateBillingProfile,
+  useDeleteBillingProfile,
   useUpdatePayoutSettings,
   useUploadInvoice,
   useAcceptInvoiceMandate,

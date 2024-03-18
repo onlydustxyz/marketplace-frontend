@@ -1,7 +1,10 @@
+import { redirect, useParams } from "next/navigation";
 import { useState } from "react";
 
 import { TManageBillingProfile } from "app/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile.types";
 
+import BillingProfilesApi from "src/api/BillingProfiles";
+import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
@@ -9,16 +12,54 @@ import { ConfirmationModal } from "components/ds/modals/confirmation/confirmatio
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-export function ManageBillingProfile({ onConfirm, actionType }: TManageBillingProfile.Props) {
+import { NEXT_ROUTER } from "constants/router";
+
+export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props) {
   const { T } = useIntl();
+  const { id: billingProfileId } = useParams<{ id: string }>();
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const confirmationContent = actionType === "disable" ? "disableDescription" : "deleteDescription";
+
+  const { mutate: deleteBillingProfile, ...restDeleteBillingProfile } =
+    BillingProfilesApi.mutations.useDeleteBillingProfile({
+      params: {
+        billingProfileId,
+      },
+      options: {
+        onSuccess: () => {
+          redirect(NEXT_ROUTER.settings.profile);
+        },
+      },
+    });
+
+  useMutationAlert({
+    mutation: restDeleteBillingProfile,
+    success: {
+      message: T("v2.pages.settings.billing.information.manageBillingProfile.toaster.delete.success"),
+    },
+    error: {
+      message: T("v2.pages.settings.billing.information.manageBillingProfile.toaster.delete.error"),
+    },
+  });
   function onOpenConfirmation() {
     setOpenConfirmation(true);
   }
 
   function onCancel() {
     setOpenConfirmation(false);
+  }
+
+  function onConfirm() {
+    // TODO waiting for rest mutations
+    switch (actionType) {
+      case "delete":
+        deleteBillingProfile();
+        break;
+      case "disable":
+        break;
+      case "enable":
+        break;
+    }
   }
 
   return (

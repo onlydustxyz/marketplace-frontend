@@ -39,6 +39,20 @@
       "delete": "Delete",
       "disable": "Disable",
       "enable": "Enable"
+    },
+    "toaster": {
+      "delete": {
+        "success": "Billing profile deleted",
+        "error": "An error occurred while deleting the billing profile"
+      },
+      "disable": {
+        "success": "Billing profile disabled",
+        "error": "An error occurred while disabling the billing profile"
+      },
+      "enable": {
+        "success": "Billing profile enabled",
+        "error": "An error occurred while enabling the billing profile"
+      }
     }
   },
   "status": {

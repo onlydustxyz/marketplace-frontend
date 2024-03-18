@@ -21,7 +21,7 @@ import { ProfileStatus } from "./component/profile-status/profile-status";
 
 function SettingsBillingPage() {
   const { id } = useParams<{ id: string }>();
-  const { profile, refetch } = useBillingProfileById({ id, enabledPooling: true });
+  const { profile, refetch } = useBillingProfileById({ id, enabledPooling: false });
   const { open } = useSubscribeStacks(StackRoute.Verify);
   const [isPanelHasOpenedState, setIsPanelHasOpenedState] = useState(false);
   const validBillingProfile = profile?.status === "VERIFIED";
@@ -48,10 +48,6 @@ function SettingsBillingPage() {
     return null;
   }
 
-  function onConfirm() {
-    // TODO : waiting for backend
-  }
-
   return (
     <>
       <Card border="light" background={false}>
@@ -69,7 +65,7 @@ function SettingsBillingPage() {
         </div>
       </Card>
       {/*TODO put the appropriate actionType depending on canDelete and disable field*/}
-      <ManageBillingProfile onConfirm={onConfirm} actionType="disable" />
+      <ManageBillingProfile actionType="delete" />
     </>
   );
 }
