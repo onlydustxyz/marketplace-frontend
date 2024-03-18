@@ -14,12 +14,15 @@ import en_features_filters from "translations/v2/en/features/filters.json";
 import en_features_leaders from "translations/v2/en/features/leaders.json";
 import en_features_menu from "translations/v2/en/features/menu.json";
 import en_features_payout_status from "translations/v2/en/features/payout-status.json";
+import en_features_roles from "translations/v2/en/features/roles.json";
 import en_features_sidebar from "translations/v2/en/features/sidebar.json";
 import en_features_table from "translations/v2/en/features/table.json";
 import en_features_verify from "translations/v2/en/features/verify.json";
 import en_billing_create from "translations/v2/en/pages/billing-create-stacks.json";
+import en_billing_invite_team_member from "translations/v2/en/pages/billing-invite-team-member-stacks.json";
 import en_projects from "translations/v2/en/pages/projects.json";
 import en_settings_billing from "translations/v2/en/pages/settings-billing.json";
+import en_settings_billing_coworkers from "translations/v2/en/pages/settings-billing/settings-billing-coworkers.json";
 import en_settings_billing_header from "translations/v2/en/pages/settings-billing/settings-billing-header.json";
 import en_settings_billing_information from "translations/v2/en/pages/settings-billing/settings-billing-informations.json";
 import en_settings_billing_payout from "translations/v2/en/pages/settings-billing/settings-billing-payout.json";
@@ -52,6 +55,7 @@ const en = {
       verify: en_features_verify,
       menu: en_features_menu,
       table: en_features_table,
+      roles: en_features_roles,
     },
     pages: {
       projects: en_projects,
@@ -64,6 +68,7 @@ const en = {
           sidebar: en_settings_billing_sidebar,
           payout: en_settings_billing_payout,
           information: en_settings_billing_information,
+          coworkers: en_settings_billing_coworkers,
         },
         payout: en_settings_payout,
         invoices: en_settings_invoices,
@@ -73,6 +78,7 @@ const en = {
         request_payments: en_stack_request_payments,
         mandate: en_stack_mandate,
         billingCreate: en_billing_create,
+        billingInviteTeamMember: en_billing_invite_team_member,
       },
     },
   },

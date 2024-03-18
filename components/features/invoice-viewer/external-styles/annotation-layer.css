@@ -52,13 +52,13 @@
   z-index: 3;
 }
 
-.annotationLayer[data-main-rotation='90'] .norotate {
+.annotationLayer[data-main-rotation="90"] .norotate {
   transform: rotate(270deg) translateX(-100%);
 }
-.annotationLayer[data-main-rotation='180'] .norotate {
+.annotationLayer[data-main-rotation="180"] .norotate {
   transform: rotate(180deg) translate(-100%, -100%);
 }
-.annotationLayer[data-main-rotation='270'] .norotate {
+.annotationLayer[data-main-rotation="270"] .norotate {
   transform: rotate(90deg) translateY(-100%);
 }
 
@@ -183,7 +183,7 @@
 .annotationLayer .buttonWidgetAnnotation.checkBox input:checked::after,
 .annotationLayer .buttonWidgetAnnotation.radioButton input:checked::before {
   background-color: CanvasText;
-  content: '';
+  content: "";
   display: block;
   position: absolute;
 }
@@ -252,8 +252,7 @@
   position: absolute;
   max-width: calc(180px * var(--scale-factor));
   background-color: rgba(255, 255, 153, 1);
-  box-shadow: 0 calc(2px * var(--scale-factor)) calc(5px * var(--scale-factor))
-    rgba(136, 136, 136, 1);
+  box-shadow: 0 calc(2px * var(--scale-factor)) calc(5px * var(--scale-factor)) rgba(136, 136, 136, 1);
   border-radius: calc(2px * var(--scale-factor));
   padding: calc(6px * var(--scale-factor));
   margin-left: calc(5px * var(--scale-factor));

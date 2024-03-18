@@ -4,7 +4,7 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { ManageBillingProfile } from "app/migration/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile";
+import { ManageBillingProfile } from "app/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile";
 import { ProfileCompany } from "app/settings/billing/[id]/general-information/features/profile/profile-company/profile-company";
 import { ProfileIndividual } from "app/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual";
 

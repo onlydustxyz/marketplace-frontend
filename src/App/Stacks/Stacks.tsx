@@ -16,6 +16,8 @@ import { StacksParams } from "src/libs/react-stack/types/Stack";
 
 import { BillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack";
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
+import { BillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member";
+import { TBillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member.types";
 import { MandateDetailStack } from "components/features/stacks/payments-flow/mandate-detail-stack/mandate-detail-stack";
 import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -38,6 +40,7 @@ export enum StackRoute {
   BillingCreate = "billing-create",
   RequestPayments = "request-payments",
   Feedback = "feedback",
+  BillingInviteTeamMember = "billing-invite-team-member",
   MandateDetail = "mandate-detail",
 }
 export interface StackRouterParams {
@@ -108,6 +111,9 @@ export const Stacks = () => {
       </RegisterStack>
       <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>
       <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
+      <RegisterStack<TBillingInviteTeamMember.Props> name={StackRoute.BillingInviteTeamMember}>
+        {({ params }) => <BillingInviteTeamMember {...params} />}
+      </RegisterStack>
       <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
     </>
   );
@@ -208,6 +214,10 @@ export const useStackProjectOverview = (): [
 
 export const useStackBillingCreate = () => {
   return useStackNavigation<TBillingCreateStack.Props>(StackRoute.BillingCreate);
+};
+
+export const useStackBillingInviteTeamMember = () => {
+  return useStackNavigation<TBillingInviteTeamMember.Props>(StackRoute.BillingInviteTeamMember);
 };
 
 export const useStackRequestPayments = () => {

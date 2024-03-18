@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { TManageBillingProfile } from "app/migration/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile.types";
+import { TManageBillingProfile } from "app/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile.types";
 
 import { useIntl } from "src/hooks/useIntl";
 

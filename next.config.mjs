@@ -1,4 +1,4 @@
-import withBundleAnalyzer from '@next/bundle-analyzer';
+import withBundleAnalyzer from "@next/bundle-analyzer";
 import * as child from "child_process";
 import fs from "fs";
 
@@ -19,11 +19,11 @@ const nextConfig = {
     APP_COMMIT_HASH: getCommitHash(),
   },
   experimental: {
-    serverComponentsExternalPackages: ['@react-pdf/renderer'],
+    serverComponentsExternalPackages: ["@react-pdf/renderer"],
   },
-  webpack: (config) => {
-   config.resolve.alias.canvas = false;
-   return config;
+  webpack: config => {
+    config.resolve.alias.canvas = false;
+    return config;
   },
   async redirects() {
     return [
@@ -33,8 +33,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/migration/settings/billing/:slug',
-        destination: '/migration/settings/billing/:slug/general-information',
+        source: "/migration/settings/billing/:slug",
+        destination: "/migration/settings/billing/:slug/general-information",
         permanent: true,
       },
     ];
@@ -42,5 +42,5 @@ const nextConfig = {
 };
 
 export default withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
+  enabled: process.env.ANALYZE === "true",
 })(nextConfig);

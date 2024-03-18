@@ -20,6 +20,7 @@ import { EmptyState } from "components/layout/placeholders/empty-state/empty-sta
 // TODO loading state - https://nextui.org/docs/components/table#tablebody-props
 // TODO sort - https://nextui.org/docs/components/table#sorting-rows
 // TODO infinite pagination - https://nextui.org/docs/components/table#infinite-pagination
+// TODO: add generics type for rows
 export function Table({
   columns,
   rows,
