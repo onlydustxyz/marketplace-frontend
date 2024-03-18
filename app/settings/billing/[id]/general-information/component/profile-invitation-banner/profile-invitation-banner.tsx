@@ -1,7 +1,9 @@
 import { useRouter } from "next/navigation";
 
 import MeApi from "src/api/me";
+import { useMutationAlert } from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
 import { Button } from "components/ds/button/button";
@@ -14,15 +16,18 @@ import { NEXT_ROUTER } from "constants/router";
 import { TProfileInvitationBanner } from "./profile-invitation-banner.types";
 
 export function ProfileInvitationBanner({ profile }: TProfileInvitationBanner.Props) {
+  const { T } = useIntl();
   const router = useRouter();
 
-  const { mutate: acceptInvitation, isPending: loadingAcceptInvitation } = MeApi.mutations.useAcceptOrDeclineInvitation(
-    {
-      params: {
-        billingProfileId: profile?.id || "",
-      },
-    }
-  );
+  const {
+    mutate: acceptInvitation,
+    isPending: loadingAcceptInvitation,
+    ...restAcceptInvitation
+  } = MeApi.mutations.useAcceptOrDeclineInvitation({
+    params: {
+      billingProfileId: profile?.id || "",
+    },
+  });
 
   const { mutate: declineInvitation, isPending: loadingDeclineInvitation } =
     MeApi.mutations.useAcceptOrDeclineInvitation({
@@ -35,6 +40,20 @@ export function ProfileInvitationBanner({ profile }: TProfileInvitationBanner.Pr
         },
       },
     });
+
+  useMutationAlert({
+    mutation: restAcceptInvitation,
+    success: {
+      message: T("v2.pages.settings.billing.information.invitation.alert.success", {
+        name: profile?.name || "",
+      }),
+    },
+    error: {
+      message: T("v2.pages.settings.billing.information.invitation.alert.error", {
+        name: profile?.name || "",
+      }),
+    },
+  });
 
   function handleAccept() {
     acceptInvitation({
@@ -55,7 +74,7 @@ export function ProfileInvitationBanner({ profile }: TProfileInvitationBanner.Pr
         <Translate
           token="v2.pages.settings.billing.information.invitation.title"
           params={{
-            title: profile?.name || "",
+            name: profile?.name || "",
           }}
         />
       }
