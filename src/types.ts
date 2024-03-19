@@ -1,3 +1,5 @@
+import { Money as NMoney } from "utils/Money";
+
 import { components } from "./__generated/api";
 
 export type Branded<T, B> = T & { __brand: B };
@@ -203,7 +205,7 @@ export type ContributorT = {
   contributionToRewardCount: number | null; // not rewarded yet
   earned: {
     details?: {
-      currency: CurrencyUnion;
+      currency: NMoney.Currency;
       totalAmount: number;
       totalDollarsEquivalent?: number;
     }[];

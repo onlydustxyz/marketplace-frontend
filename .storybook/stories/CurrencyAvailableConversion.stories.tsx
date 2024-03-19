@@ -1,4 +1,5 @@
 import { ComponentProps } from "react";
+import { Money } from "utils/Money";
 
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import Tooltip from "src/components/Tooltip";
@@ -12,17 +13,17 @@ const defaultProps: ComponentProps<typeof AvailableConversion> = {
   currencies: [
     {
       amount: 1200,
-      currency: "USD",
+      currency: Money.fromSchema({ code: Money.Static.Currency.USD }),
       dollar: 100,
     },
     {
       amount: 1200,
-      currency: "OP",
+      currency: Money.fromSchema({ code: Money.Static.Currency.OP }),
       dollar: 100,
     },
     {
       amount: 1200,
-      currency: "APT",
+      currency: Money.fromSchema({ code: Money.Static.Currency.APT }),
       dollar: 100,
     },
   ],
@@ -75,7 +76,7 @@ export const OneCurrency = {
         currencies={[
           {
             amount: 1200,
-            currency: "OP",
+            currency: Money.fromSchema({ code: Money.Static.Currency.OP }),
             dollar: 100,
           },
         ]}
