@@ -162,12 +162,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
     const updatedState = { ...prevState, ...newState };
 
-    const removeCurrenciesJsx = updatedState.currency?.map(c => ({
-      ...c,
-      label: "",
-    }));
-
-    setFiltersStorage(JSON.stringify({ ...updatedState, currency: removeCurrenciesJsx }));
+    setFiltersStorage(JSON.stringify({ ...updatedState }));
 
     return updatedState;
   }

@@ -3,7 +3,7 @@ import Folder from "src/icons/FolderLine";
 import HandCoinLine from "src/icons/HandCoinLine";
 import Loader3Line from "src/icons/Loader3Line";
 import StackLine from "src/icons/StackLine";
-import { Currency, Money } from "src/types";
+import { Money } from "src/types";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
@@ -47,7 +47,6 @@ type Props = {
   type?: CardTypes;
   receivedRewards?: { count?: number; total?: number };
   rewardingProjectsCount?: number;
-  filteredCurrencies?: Currency[];
   onClick?: () => void;
 };
 
