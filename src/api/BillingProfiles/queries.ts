@@ -118,6 +118,7 @@ const useGetBillingProfileInvoiceableRewards = ({
     resourcePath: BILLING_PROFILES_PATH.INVOICEABLE_REWARDS(params?.billingProfileId || ""),
     tags: BILLING_PROFILES_TAGS.invoiceable_rewards(params?.billingProfileId || ""),
     ...options,
+    enabled: !!params?.billingProfileId,
   });
 };
 
