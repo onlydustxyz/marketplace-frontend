@@ -305,7 +305,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       ...rest,
       githubRepoIds,
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
-      ecosystemIds: ecosystems.map(ecosystem => `${ecosystem.id}`),
+      ecosystemIds: ecosystems?.map(ecosystem => `${ecosystem.id}`),
     });
   };
 
