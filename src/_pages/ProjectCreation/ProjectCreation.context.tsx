@@ -215,7 +215,7 @@ export function CreateProjectProvider({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
-      ecosystemIds: ecosystems.map(ecosystem => `${ecosystem.id}`),
+      ecosystemIds: ecosystems?.map(ecosystem => `${ecosystem.id}`),
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
     });
   };
