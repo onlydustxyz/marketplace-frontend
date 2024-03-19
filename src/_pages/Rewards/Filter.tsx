@@ -156,8 +156,10 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   const currenciesFilters = useMemo(
     () =>
       currencies.map(currency => ({
-        id: currency,
-        value: currency,
+        id: currency.id,
+        value: currency.id,
+        label: currency.name,
+        image: currency.logoUrl,
       })),
     [currencies]
   );
