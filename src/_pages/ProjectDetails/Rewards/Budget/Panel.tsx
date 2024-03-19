@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { createPortal } from "react-dom";
+import { Money } from "utils/Money";
 
 import ProjectApi from "src/api/Project";
 import InfoIcon from "src/assets/icons/InfoIcon";
@@ -10,8 +11,6 @@ import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
 import { BackDrop } from "src/libs/react-stack";
 import SidePanel from "src/libs/react-stack/ui/Panel";
-import { Currency } from "src/types";
-import { formatMoneyAmount } from "src/utils/money";
 
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
@@ -119,7 +118,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
           <div className="mt-4 flex flex-col gap-4 border-b-1 border-b-card-border-light pb-6">
             {sortedByDollarsEquivalent.map(value => (
               <Card
-                key={value.currency}
+                key={value.currency.id}
                 border="light"
                 className="flex flex-row items-center justify-between bg-card-background-light p-4 lg:p-4"
               >
@@ -127,25 +126,25 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
                   <Chip solid className="h-8 w-8">
                     <CurrencyIcons currency={value.currency} className="h-8 w-8" />
                   </Chip>
-                  <p>
-                    <Typography variant={"title-m"} as={"span"}>
-                      {formatMoneyAmount({
+                  <p className="text-title-m">
+                    {
+                      Money.format({
                         amount: value.amount,
-                        currency: value.currency || Currency.USD,
-                        showCurrency: false,
-                      })}
-                      &nbsp;
-                    </Typography>
-                    <Typography variant={"title-s"} as={"span"}>
-                      {value.currency}
-                    </Typography>
+                        currency: value.currency,
+                        options: { currencyClassName: "text-title-s" },
+                      }).html
+                    }
                   </p>
                 </Flex>
 
                 <Typography variant={"body-l"} as={"p"} className="text-spaceBlue-200">
-                  {value.dollarAmount !== null && value.dollarAmount !== undefined
-                    ? `~${formatMoneyAmount({ amount: value.dollarAmount, currency: Currency.USD })}`
-                    : "N/A"}
+                  {
+                    Money.format({
+                      amount: value.dollarAmount,
+                      currency: Money.USD,
+                      options: { prefixAmountWithTilde: true },
+                    }).string
+                  }
                 </Typography>
               </Card>
             ))}
@@ -160,11 +159,11 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
               <Typography variant={"body-l-bold"} as={"p"}>
                 {total === "N/A"
                   ? total
-                  : `~${formatMoneyAmount({
+                  : Money.format({
                       amount: total,
-                      currency: Currency.USD,
-                      showCurrency: false,
-                    })} ${Currency.USD}`}
+                      currency: Money.USD,
+                      options: { prefixAmountWithTilde: true },
+                    }).string}
               </Typography>
             </Card>
           </div>

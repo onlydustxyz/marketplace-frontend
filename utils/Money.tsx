@@ -15,7 +15,7 @@ export namespace Money {
   };
 
   export interface IFormat {
-    amount?: number;
+    amount?: number | null;
     currency?: Currency;
     options?: {
       showCurrency?: boolean;
@@ -25,7 +25,8 @@ export namespace Money {
     };
   }
 
-  export function format({ amount, currency, options = { showCurrency: true, locale: "en-US" } }: IFormat) {
+  export function format({ amount, currency, options }: IFormat) {
+    const { showCurrency = true, locale = "en-US", currencyClassName, prefixAmountWithTilde } = options || {};
     if (amount === null || amount === undefined || !currency) {
       return {
         string: "N/A",
@@ -33,18 +34,19 @@ export namespace Money {
       };
     }
 
-    const formattedNumber = new Intl.NumberFormat(options.locale, {
+    const formattedNumber = new Intl.NumberFormat(locale, {
       maximumFractionDigits: currency.decimals,
     }).format(amount);
 
-    const string = options.showCurrency
-      ? `${options.prefixAmountWithTilde ? "~" : ""}${formattedNumber} ${currency.code}`
+    const string = showCurrency
+      ? `${prefixAmountWithTilde ? "~" : ""}${formattedNumber} ${currency.code}`
       : formattedNumber;
+
     const html = (
       <span>
-        {options.prefixAmountWithTilde && "~"}
+        {prefixAmountWithTilde && "~"}
         {formattedNumber}
-        {options.showCurrency ? <span className={options.currencyClassName}>&nbsp;{currency.code}</span> : null}
+        {showCurrency ? <span className={currencyClassName}>&nbsp;{currency.code}</span> : null}
       </span>
     );
 
