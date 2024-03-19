@@ -10,31 +10,31 @@ import { Translate } from "components/layout/translate/translate";
 
 export function ProfileIndividual({ profile }: TProfileIndividual.Props) {
   const birthdate = useMemo(() => {
-    if (profile.birthdate) {
+    if (profile?.birthdate) {
       return format(new Date(profile.birthdate), "MMM dd, yyyy");
     }
-    return profile.birthdate;
+    return profile?.birthdate;
   }, [profile]);
 
   const validUntil = useMemo(() => {
-    if (profile.validUntil) {
-      return format(new Date(profile.validUntil), "MMM dd, yyyy");
+    if (profile?.validUntil) {
+      return format(new Date(profile?.validUntil), "MMM dd, yyyy");
     }
-    return profile.validUntil;
+    return profile?.validUntil;
   }, [profile]);
 
   return (
     <ProfileItemGrid>
-      <ProfileItem label="v2.pages.settings.billing.information.kyc.firstName">{profile.firstName}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.information.kyc.lastName">{profile.lastName}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.firstName">{profile?.firstName}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.lastName">{profile?.lastName}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyc.birthdate">{birthdate}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.information.kyc.address">{profile.address}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.information.kyc.country">{profile.country}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.address">{profile?.address}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyc.country">{profile?.country}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyc.usCitizen">
-        <ProfileBoolean value={profile.usCitizen} />
+        <ProfileBoolean value={profile?.usCitizen} />
       </ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyc.identityDocumentType">
-        {profile.idDocumentType ? (
+        {profile?.idDocumentType ? (
           <>
             <Translate token={`v2.commons.enums.me.idDocumentType.${profile.idDocumentType}`} />
             {profile.idDocumentCountryCode ? (
