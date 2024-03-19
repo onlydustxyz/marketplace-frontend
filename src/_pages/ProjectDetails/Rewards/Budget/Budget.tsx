@@ -1,20 +1,21 @@
 import { useState } from "react";
+import { Money } from "utils/Money";
 
 import { BudgetPanel } from "src/_pages/ProjectDetails/Rewards/Budget/Panel";
-import { Currency, Money } from "src/types";
+import { Money as TMoney } from "src/types";
 
 import { BudgetCard, CardTypes } from "./BudgetCard";
 
 export type BudgetProps = {
   projectId: string;
-  remainingBudget?: Money;
-  spentAmount?: Money;
+  remainingBudget?: TMoney;
+  spentAmount?: TMoney;
   sentRewards: {
     count?: number;
     total?: number;
   };
   rewardedContributorsCount?: number;
-  filteredCurrencies?: Currency[];
+  filteredCurrencies?: Money.Currency[];
 };
 
 export function Budget({

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Money } from "utils/Money";
 
 import InfoIcon from "src/assets/icons/InfoIcon";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
@@ -7,7 +8,7 @@ import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import User3Line from "src/icons/User3Line";
-import { Currency, Money } from "src/types";
+import { Money as TMoney } from "src/types";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
@@ -32,7 +33,7 @@ const budgets = {
 
 const getContent = (
   type: CardTypes,
-  budget?: Money,
+  budget?: TMoney,
   rewardedContributorsCount?: number,
   sentRewards?: { count?: number; total?: number }
 ) => {
@@ -48,11 +49,11 @@ const getContent = (
 };
 
 type Props = {
-  budget?: Money;
+  budget?: TMoney;
   type?: CardTypes;
   sentRewards?: { count?: number; total?: number };
   rewardedContributorsCount?: number;
-  filteredCurrencies?: Currency[];
+  filteredCurrencies?: Money.Currency[];
   onClick?: () => void;
 };
 

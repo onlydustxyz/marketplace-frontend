@@ -20,6 +20,8 @@ export namespace Money {
     options?: {
       showCurrency?: boolean;
       locale?: string;
+      currencyClassName?: string;
+      prefixAmountWithTilde?: boolean;
     };
   }
 
@@ -35,10 +37,14 @@ export namespace Money {
       maximumFractionDigits: currency.decimals,
     }).format(amount);
 
-    const string = options.showCurrency ? `${formattedNumber} ${currency.code}` : formattedNumber;
+    const string = options.showCurrency
+      ? `${options.prefixAmountWithTilde ? "~" : ""}${formattedNumber} ${currency.code}`
+      : formattedNumber;
     const html = (
       <span>
-        {formattedNumber} {options.showCurrency ? <span>{currency.code}</span> : null}
+        {options.prefixAmountWithTilde && "~"}
+        {formattedNumber}
+        {options.showCurrency ? <span className={options.currencyClassName}>&nbsp;{currency.code}</span> : null}
       </span>
     );
 
@@ -52,5 +58,21 @@ export namespace Money {
     if (!currency) return false;
 
     return Money.CodeMapping.USD.includes(currency.code);
+  }
+
+  export function fromSchema(props: {
+    code?: string | null;
+    id?: string | null;
+    name?: string | null;
+    logoUrl?: string | null;
+    decimals?: number | null;
+  }): Currency {
+    return {
+      id: props.id || "",
+      code: props.code || "",
+      name: props.name || "",
+      logoUrl: props.logoUrl || "",
+      decimals: props.decimals || 0,
+    };
   }
 }
