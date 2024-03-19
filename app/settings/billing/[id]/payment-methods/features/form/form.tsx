@@ -95,7 +95,7 @@ export function PayoutForm() {
 
       <Flex className="flex-col gap-4 md:flex-row">
         <Controller
-          name="sepaAccount.iban"
+          name="bankAccount.number"
           control={control}
           render={({ field, fieldState }) => (
             <Input
@@ -113,7 +113,7 @@ export function PayoutForm() {
         />
 
         <Controller
-          name="sepaAccount.bic"
+          name="bankAccount.bic"
           control={control}
           render={({ field, fieldState }) => (
             <Input
