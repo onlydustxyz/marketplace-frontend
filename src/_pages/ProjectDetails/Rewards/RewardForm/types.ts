@@ -1,6 +1,7 @@
+import { Money } from "utils/Money";
+
 import { components } from "src/__generated/api";
 import { WorkItemType } from "src/types";
-import { BudgetCurrencyType } from "src/utils/money";
 
 export interface WorkItem {
   id: string;
@@ -22,6 +23,6 @@ export type Inputs = {
   contributor: Contributor;
   memo: string;
   remainingBudget: number;
-  currency: BudgetCurrencyType;
+  currency: Money.Currency;
   amountToWire: number;
 };

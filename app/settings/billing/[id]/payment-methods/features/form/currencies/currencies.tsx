@@ -1,3 +1,5 @@
+import { Money } from "utils/Money";
+
 import { TCurrencies } from "app/settings/billing/[id]/payment-methods/features/form/currencies/currencies.types";
 
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -14,7 +16,7 @@ export function Currencies({ currencies }: TCurrencies.Props) {
 
       {currencies.map(currency => (
         <Flex key={currency} className="gap-1" alignItems="center">
-          <CurrencyIcons currency={currency} className="h-4 w-4" />
+          <CurrencyIcons currency={Money.fromSchema({ code: currency })} className="h-4 w-4" />
 
           <p className="text-gray-50">
             <Translate token={`currencies.currency.${currency}`} />

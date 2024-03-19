@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useMediaQuery } from "usehooks-ts";
+import { Money } from "utils/Money";
 
 import ContributorSelect from "src/_pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 import {
@@ -24,7 +25,6 @@ import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
 import CloseLine from "src/icons/CloseLine";
 import { GithubContributionType, ProjectBudgetType } from "src/types";
-import { BudgetCurrencyType } from "src/utils/money";
 
 import { AutoAddOrIgnore } from "./AutoAdd/AutoAddOrIgnore";
 import { WorkItem } from "./WorkItem";
@@ -35,7 +35,7 @@ import useWorkItems from "./useWorkItems";
 interface Props {
   projectId: string;
   projectBudget: ProjectBudgetType;
-  preferredCurrency?: BudgetCurrencyType;
+  preferredCurrency?: Money.Currency;
   onWorkItemsChange: (workItems: RewardableWorkItem[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;

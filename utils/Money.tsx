@@ -1,5 +1,56 @@
 import { components } from "src/__generated/api";
 
+const staticCurrency = {
+  APT: {
+    code: "APT",
+    decimals: 8,
+    logoUrl: "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/fb39d6f11124d3c6ac6d9e28e2d0d0b1.png",
+    name: "Aptos",
+  },
+  ETH: {
+    code: "ETH",
+    decimals: 18,
+    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
+    name: "Ethereum",
+  },
+  EUR: {
+    code: "EUR",
+    decimals: 2,
+    logoUrl: "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/6c8c210d95fccd6ce25b2b44cd70a012.png",
+    name: "Euro",
+  },
+  LORDS: {
+    code: "LORDS",
+    decimals: 18,
+    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/17445.png",
+    name: "Lords",
+  },
+  OP: {
+    code: "OP",
+    decimals: 18,
+    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/11840.png",
+    name: "Optimism",
+  },
+  STRK: {
+    code: "STRK",
+    decimals: 18,
+    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+    name: "StarkNet Token",
+  },
+  USD: {
+    code: "USD",
+    decimals: 2,
+    logoUrl: "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/f171e9690f6658e106a049cd62843ec4.png",
+    name: "US Dollar",
+  },
+  USDC: {
+    code: "USDC",
+    decimals: 6,
+    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+    name: "USD Coin",
+  },
+};
+
 /**
  * Namespace for handling money-related operations.
  * @namespace Money
@@ -120,12 +171,13 @@ export namespace Money {
    * @returns {Currency} The currency object.
    */
   export function fromSchema(props: IFromSchema): Currency {
+    const staticCurrencyProps = staticCurrency[props.code as keyof typeof staticCurrency];
     return {
       id: props.id || "",
-      code: props.code || "",
-      name: props.name || "",
-      logoUrl: props.logoUrl || "",
-      decimals: props.decimals || 0,
+      code: props.code || staticCurrencyProps?.code || "",
+      name: props.name || staticCurrencyProps?.name || "",
+      logoUrl: props.logoUrl || staticCurrencyProps?.logoUrl || "",
+      decimals: props.decimals || staticCurrencyProps?.decimals || 0,
     };
   }
 }

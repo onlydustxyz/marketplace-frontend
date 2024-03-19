@@ -17,7 +17,7 @@ export const CurrencyIcons: FC<CurrencyIconsProps> = ({ currency, className }) =
     <img
       src={currency?.logoUrl}
       alt={currency.name}
-      className={cn("h-8 w-8", className ? className : null)}
+      className={cn("h-8 w-8 overflow-hidden rounded-full", className ? className : null)}
       loading="lazy"
     />
   );
