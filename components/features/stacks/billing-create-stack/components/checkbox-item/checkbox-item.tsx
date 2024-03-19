@@ -1,4 +1,4 @@
-import { Checkbox } from "@nextui-org/react";
+import { Checkbox as CheckboxNextUI } from "@nextui-org/react";
 import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 
 import { Chip } from "src/components/Chip/Chip";
@@ -32,6 +32,19 @@ export function CheckboxItem({
     }
   }
 
+  function Checkbox() {
+    return (
+      <CheckboxNextUI
+        radius="full"
+        isSelected={selected}
+        className="pointer-events-none"
+        classNames={{
+          wrapper: "after:bg-spacePurple-500",
+        }}
+      />
+    );
+  }
+
   return (
     <LazyMotion features={domAnimation}>
       <m.div layout={"size"} className="origin-top">
@@ -62,28 +75,14 @@ export function CheckboxItem({
                 </ul>
               </div>
             </Flex>
-            {tooltipToken ? (
+            {tooltipToken && unselectable ? (
               <Tooltip content={<Translate token={tooltipToken} />} placement="left">
                 <span className="pointer-events-auto cursor-default">
-                  <Checkbox
-                    radius="full"
-                    isSelected={selected}
-                    className="pointer-events-none"
-                    classNames={{
-                      wrapper: "after:bg-spacePurple-500",
-                    }}
-                  />
+                  <Checkbox />
                 </span>
               </Tooltip>
             ) : (
-              <Checkbox
-                radius="full"
-                isSelected={selected}
-                className="pointer-events-none"
-                classNames={{
-                  wrapper: "after:bg-spacePurple-500",
-                }}
-              />
+              <Checkbox />
             )}
           </Flex>
           {withInput ? (

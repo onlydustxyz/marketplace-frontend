@@ -60,13 +60,13 @@
   },
   "invitation": {
     "title": "You’ve been invited to the __name__ payout profile.",
-    "description": "Please accept only if you are a member of this company.",
+    "description": "Please only accept if you are a member of this company.",
     "buttons": {
       "accept": "Accept",
       "decline": "Decline"
     },
     "alert": {
-      "success": "You successfully joined __name__",
+      "success": "You joined __name__ successfully",
       "error": "An error occurred while joining __name__"
     }
   }
