@@ -13,12 +13,12 @@ import { BillingHeader } from "./components/billing-header/billing-header";
 import { Tabs } from "./components/tabs/tabs";
 import { ProfileInvitationBanner } from "./general-information/component/profile-invitation-banner/profile-invitation-banner";
 
-// TODO: Ajouter un acceptedAt pour condition de la banner invitation - @NeoxAzrot
 function BillingLayout({ children }: PropsWithChildren) {
   const { id } = useParams<{ id: string }>();
   const { profile } = useBillingProfileById({ id });
 
   const isInvited = profile?.data.me?.invitation;
+  const hasRole = profile?.data.me?.role;
   const isAdmin = profile?.data.me?.role === BillingProfilesTypes.ROLE.ADMIN;
 
   return (
@@ -30,7 +30,7 @@ function BillingLayout({ children }: PropsWithChildren) {
 
         <div>{children}</div>
 
-        {isInvited ? <ProfileInvitationBanner profile={profile.data} /> : null}
+        {isInvited && !hasRole ? <ProfileInvitationBanner profile={profile.data} /> : null}
       </Card>
     </div>
   );
