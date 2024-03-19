@@ -1,4 +1,5 @@
 import { FC, useMemo } from "react";
+import { Money } from "utils/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { Chips } from "src/components/Chips/Chips";
@@ -6,19 +7,13 @@ import Tooltip from "src/components/Tooltip";
 import { TooltipPosition } from "src/components/Tooltip";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { useIntl } from "src/hooks/useIntl";
-import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
-import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
+import { formatMoneyAmount } from "src/utils/money";
 
 import { CurrencyIcons } from "./CurrencyIcon";
 
-// TODO : doc
-/**
- * Used in https://www.figma.com/file/8PqNt4K2uKLu3DvxF3rVDX/%F0%9F%A7%AA-Only-Dust-%E2%80%A2-[…]ype=design&node-id=8306-28771&mode=design&t=zDkHPxvit6rCDHmj-4
- */
-
 export interface AvailableConversionCurrency {
-  currency: BudgetCurrencyType;
+  currency: Money.Currency;
   amount: number | undefined;
   dollar: number | undefined;
 }
@@ -32,14 +27,12 @@ export type AvailableConversion = {
   sizeClassName?: string;
 };
 
-const ConversionAmount = ({ amount, currency }: { amount: number | undefined; currency?: BudgetCurrencyType }) => {
+const ConversionAmount = ({ amount, currency }: { amount: number | undefined; currency?: Money.Currency }) => {
   if (!amount) {
     return null;
   }
 
-  return (
-    <p className="text-body-s leading-[14px]">{formatMoneyAmount({ amount, currency: currency || Currency.USD })}</p>
-  );
+  return <p className="text-body-s leading-[14px]">{Money.format({ amount, currency }).string}</p>;
 };
 
 const ConversionDollar = ({ dollar }: { dollar: number | undefined }) => {
@@ -49,7 +42,7 @@ const ConversionDollar = ({ dollar }: { dollar: number | undefined }) => {
 
   return (
     <p className="font-walsheim text-xs text-spaceBlue-200">
-      {`~${formatMoneyAmount({ amount: dollar, currency: Currency.USD })}`}
+      {`~${Money.format({ amount: dollar, currency: Money.USD }).string}`}
     </p>
   );
 };
@@ -74,18 +67,18 @@ const ConversionTooltip = ({
         {currencies && currencies.length > 0 && (
           <div className="flex flex-col gap-1">
             {currencies.map(currency => (
-              <div key={currency.currency} className="flex items-center justify-start gap-1">
+              <div key={currency.currency.id} className="flex items-center justify-start gap-1">
                 <Chip>
                   <CurrencyIcons currency={currency.currency} className="h-4 w-4" />
                 </Chip>
-                <div key={currency.currency} className="flex items-center justify-start gap-[2px]">
+                <div key={currency.currency.id} className="flex items-center justify-start gap-[2px]">
                   <p className="font-walsheim text-xs text-white">
                     {formatMoneyAmount({ amount: currency.amount || 0, currency: currency.currency })}
                   </p>
-                  {currency.currency !== Currency.USD && (
+                  {!Money.isUsd(currency.currency) && (
                     <p className="font-walsheim text-xs text-spaceBlue-200">
                       {currency.dollar
-                        ? `~${formatMoneyAmount({ amount: currency.dollar, currency: Currency.USD })}`
+                        ? `~${Money.format({ amount: currency.dollar, currency: Money.USD })}`
                         : T("availableConversion.tooltip.na")}
                     </p>
                   )}
@@ -118,7 +111,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
 
     /** if we have only one currency and the she is USD don't show the tooltips */
     if (!orderedCurrencies && currency) {
-      props["data-tooltip-hidden"] = currency.currency === Currency.USD || !currency.dollar;
+      props["data-tooltip-hidden"] = Money.isUsd(currency?.currency) || !currency.dollar;
     }
 
     return props;
@@ -142,7 +135,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
       >
         <Chips number={numberCurencyToShow} className={sizeClassName}>
           {currencyArray?.map(currency => (
-            <div key={currency.currency}>
+            <div key={currency.currency.id}>
               <Chip solid className={sizeClassName}>
                 <CurrencyIcons currency={currency.currency} className={cn("h-4 w-4", sizeClassName)} />
               </Chip>
@@ -151,10 +144,10 @@ export const AvailableConversion: FC<AvailableConversion> = ({
         </Chips>
         <ConversionAmount amount={totalAmount || currency?.amount} currency={currency?.currency} />
         <div {...(currency ? tooltipIdProps : {})}>
-          <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
+          <ConversionDollar dollar={!Money.isUsd(currency?.currency) ? currency?.dollar : undefined} />
         </div>
       </div>
-      {currency?.currency !== Currency.USD ? (
+      {!Money.isUsd(currency?.currency) ? (
         <ConversionTooltip tooltipId={tooltipId} currencies={orderedCurrencies} />
       ) : null}
     </>
