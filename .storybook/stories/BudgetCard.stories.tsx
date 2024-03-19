@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
+import { Money } from "utils/Money";
 
 import { BudgetCard, CardTypes } from "src/_pages/ProjectDetails/Rewards/Budget/BudgetCard";
-import { Currency } from "src/types";
 
 export default {
   title: "BudgetCard",
@@ -11,10 +11,10 @@ export default {
 const mockBudget = {
   remainingBudget: {
     amount: 10000,
-    currency: Currency.USD,
+    currency: Money.fromSchema({ code: Money.Static.Currency.USD }),
     usdEquivalent: 1000,
   },
-  spentAmount: { amount: 5000, currency: Currency.USD, usdEquivalent: 1000 },
+  spentAmount: { amount: 5000, currency: Money.fromSchema({ code: Money.Static.Currency.USD }), usdEquivalent: 1000 },
   sentRewards: {
     count: 10,
     total: 50,

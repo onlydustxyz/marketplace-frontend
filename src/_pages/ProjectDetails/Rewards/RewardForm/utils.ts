@@ -1,9 +1,11 @@
-import { CurrencyOrder, ProjectBudgetType } from "src/types";
+import { Money } from "utils/Money";
+
+import { ProjectBudgetType } from "src/types";
 
 type BudgetT = ProjectBudgetType["budgets"];
 
 export function reorderBudgets(projectBudget: ProjectBudgetType): ProjectBudgetType {
-  const order = CurrencyOrder;
+  const order = Money.Static.CurrencyOrder;
 
   const sortedBudgets = projectBudget.budgets.sort((a: BudgetT[number], b: BudgetT[number]) => {
     if (a.remaining === 0 && b.remaining === 0) {

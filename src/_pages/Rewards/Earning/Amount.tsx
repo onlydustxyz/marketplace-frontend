@@ -4,7 +4,7 @@ import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import { Currency, Money as TMoney } from "src/types";
+import { Money as TMoney } from "src/types";
 
 type Amount = {
   amount?: TMoney;
@@ -16,7 +16,7 @@ export function Amount({ amount }: Amount) {
   if (!amount) return null;
 
   const asCurrencyToDisplay = !Money.isUsd(amount.currency) && amount.currency;
-  const currency = amount.currency ?? Currency.USD;
+  const currency = amount.currency;
 
   return (
     <>

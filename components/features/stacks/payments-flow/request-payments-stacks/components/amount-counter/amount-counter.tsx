@@ -1,7 +1,5 @@
 import { Money } from "utils/Money";
 
-import { Currency } from "src/types";
-
 import { Banner } from "components/ds/banner/banner";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -30,7 +28,7 @@ export function AmountCounter({ total }: TAmountCounter.Props) {
           <Typography variant="title-m" as="p">
             {Money.format({ amount: total, currency: Money.USD }).string}
             <Typography variant="title-s" as="span">
-              &nbsp;{Currency.USD}
+              &nbsp;{Money.Static.Currency.USD}
             </Typography>
           </Typography>
         }

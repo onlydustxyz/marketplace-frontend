@@ -3,8 +3,6 @@ import { renderHook } from "@testing-library/react-hooks";
 import { Money } from "utils/Money";
 import { describe, expect, it } from "vitest";
 
-import { CurrencyOrder } from "src/types";
-
 import { useCurrenciesOrder } from "./useCurrenciesOrder";
 
 describe("useCurrenciesOrder", () => {
@@ -22,7 +20,7 @@ describe("useCurrenciesOrder", () => {
     const { result } = renderHook(() => useCurrenciesOrder({ currencies }));
     const sortedCurrencies = result.current;
 
-    expect(sortedCurrencies.map(currency => currency.currency)).toEqual(CurrencyOrder);
+    expect(sortedCurrencies.map(currency => currency.currency)).toEqual(Money.Static.CurrencyOrder);
   });
 
   it("Handle empty array", () => {

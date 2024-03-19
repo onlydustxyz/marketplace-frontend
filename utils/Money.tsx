@@ -78,6 +78,21 @@ export namespace Money {
     decimals?: number | null;
   }
 
+  export namespace Static {
+    export enum Currency {
+      USD = "USD",
+      ETH = "ETH",
+      STRK = "STRK",
+      LORDS = "LORDS",
+      APT = "APT",
+      OP = "OP",
+      USDC = "USDC",
+    }
+
+    export type CurrencyUnion = `${Currency}`;
+    export const CurrencyOrder = ["USDC", "USD", "ETH", "STRK", "OP", "APT", "LORDS"];
+  }
+
   /**
    * Represents the US Dollar currency.
    * @type {Currency}

@@ -1,15 +1,11 @@
 import { useMemo } from "react";
 import { Money } from "utils/Money";
 
-import { CurrencyOrder, CurrencyUnion } from "src/types";
-
-export type useCurrenciesOrderCurrency = CurrencyUnion;
-
 export interface useCurrenciesOrderProps<T extends { currency: Money.Currency }> {
   currencies: T[] | undefined;
 }
 
-const order = CurrencyOrder;
+const order = Money.Static.CurrencyOrder;
 
 export function useCurrenciesOrder<T extends { currency: Money.Currency }>({
   currencies,
