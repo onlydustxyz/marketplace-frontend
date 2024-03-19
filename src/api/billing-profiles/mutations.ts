@@ -17,6 +17,7 @@ const useUploadInvoice = ({
       { queryKey: MeApi.tags.rewards(), exact: false },
     ],
     method: "POST",
+    enabled: !!params?.billingProfileId || !!params?.invoiceId,
     ...options,
   });
 };
