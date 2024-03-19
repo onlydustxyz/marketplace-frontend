@@ -9,10 +9,15 @@ import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
+
 import { BillingHeader } from "./components/billing-header/billing-header";
+import { ProfileInvitationBanner } from "./general-information/component/profile-invitation-banner/profile-invitation-banner";
 
 function BillingLayout({ children }: PropsWithChildren) {
   const { id } = useParams<{ id: string }>();
+  const { profile } = useBillingProfileById({ id });
+
   return (
     <div className="flex flex-col gap-6">
       <BillingHeader />
@@ -43,7 +48,10 @@ function BillingLayout({ children }: PropsWithChildren) {
             },
           ]}
         />
+
         <div>{children}</div>
+
+        {profile?.data.me?.invitation ? <ProfileInvitationBanner profile={profile.data} /> : null}
       </Card>
     </div>
   );

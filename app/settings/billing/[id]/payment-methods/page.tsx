@@ -55,26 +55,26 @@ const formSchema = z
     aptosAddress: z
       .union([z.string().regex(REGEX.aptosAddress, keys.invalidAptosAddress), z.string().length(0)])
       .optional(),
-    sepaAccount: z.object({
-      iban: z.string().optional(),
+    bankAccount: z.object({
+      number: z.string().optional(),
       bic: z.string().optional(),
     }),
   })
-  .superRefine(({ sepaAccount }, context) => {
-    const { iban, bic } = sepaAccount;
-    if ((iban && !bic) || (!iban && bic)) {
-      if (!iban) {
+  .superRefine(({ bankAccount }, context) => {
+    const { number, bic } = bankAccount;
+    if ((number && !bic) || (!number && bic)) {
+      if (!number) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
           message: keys.ibanIsRequired,
-          path: ["sepaAccount", "iban"],
+          path: ["bankAccount", "number"],
         });
       }
       if (!bic) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
           message: keys.bicIsRequired,
-          path: ["sepaAccount", "bic"],
+          path: ["bankAccount", "bic"],
         });
       }
     }

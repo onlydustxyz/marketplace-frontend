@@ -20,28 +20,20 @@ export function formatToData(data: UseGetBillingProfilePayout): TPayoutForm.Data
 }
 
 export function formatToSchema(data: TPayoutForm.Data) {
-  const {
-    ethWallet,
-    starknetAddress,
-    optimismAddress,
-    aptosAddress,
-    bankAccount: { number, bic },
-  } = data;
-
+  const { ethWallet, starknetAddress, optimismAddress, aptosAddress, bankAccount } = data;
   const emptyStringToUndefined = (value?: string) => (value === "" ? undefined : value);
-  const hasIban = emptyStringToUndefined(number);
-  const hasBic = emptyStringToUndefined(bic);
-
+  const number = emptyStringToUndefined(bankAccount?.number);
+  const bic = emptyStringToUndefined(bankAccount?.bic);
   return {
     ethWallet: emptyStringToUndefined(ethWallet),
     starknetAddress: emptyStringToUndefined(starknetAddress),
     optimismAddress: emptyStringToUndefined(optimismAddress),
     aptosAddress: emptyStringToUndefined(aptosAddress),
-    ...(hasIban || hasBic
+    ...(number && bic
       ? {
           bankAccount: {
-            number: hasIban,
-            bic: hasBic,
+            number,
+            bic,
           },
         }
       : {}),

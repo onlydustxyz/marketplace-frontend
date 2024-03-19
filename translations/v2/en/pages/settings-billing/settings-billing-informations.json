@@ -71,5 +71,17 @@
       "no": "No",
       "yes": "Yes"
     }
+  },
+  "invitation": {
+    "title": "You’ve been invited to the __name__ payout profile.",
+    "description": "Please only accept if you are a member of this company.",
+    "buttons": {
+      "accept": "Accept",
+      "decline": "Decline"
+    },
+    "alert": {
+      "success": "You joined __name__ successfully",
+      "error": "An error occurred while joining __name__"
+    }
   }
 }
