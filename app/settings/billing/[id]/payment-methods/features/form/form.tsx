@@ -8,6 +8,7 @@ import { Currency } from "src/types";
 
 import { Input } from "components/ds/form/input/input";
 import { Flex } from "components/layout/flex/flex";
+import { Translate } from "components/layout/translate/translate";
 
 import { Currencies } from "./currencies/currencies";
 
@@ -31,7 +32,9 @@ export function PayoutForm() {
           <Input
             {...field}
             {...fieldState}
-            isInvalid={!!fieldState.error || data?.missingEthWallet}
+            isInvalid={!!fieldState.error}
+            errorMessage={<Translate token={fieldState.error?.message || ""} />}
+            isInvalidFromBackend={data?.missingEthWallet}
             label={T("v2.pages.settings.billing.payout.wallets.ethereum.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.ethereum.placeholder")}
             description={<Currencies currencies={[Currency.USDC, Currency.ETH, Currency.LORDS]} />}
@@ -46,7 +49,9 @@ export function PayoutForm() {
           <Input
             {...field}
             {...fieldState}
-            isInvalid={!!fieldState.error || data?.missingStarknetWallet}
+            isInvalid={!!fieldState.error}
+            errorMessage={<Translate token={fieldState.error?.message || ""} />}
+            isInvalidFromBackend={data?.missingStarknetWallet}
             label={T("v2.pages.settings.billing.payout.wallets.starknet.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.starknet.placeholder")}
             description={<Currencies currencies={[Currency.STRK]} />}
@@ -61,7 +66,9 @@ export function PayoutForm() {
           <Input
             {...field}
             {...fieldState}
-            isInvalid={!!fieldState.error || data?.missingOptimismWallet}
+            isInvalid={!!fieldState.error}
+            errorMessage={<Translate token={fieldState.error?.message || ""} />}
+            isInvalidFromBackend={data?.missingOptimismWallet}
             label={T("v2.pages.settings.billing.payout.wallets.optimism.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.optimism.placeholder")}
             description={<Currencies currencies={[Currency.OP]} />}
@@ -76,7 +83,9 @@ export function PayoutForm() {
           <Input
             {...field}
             {...fieldState}
-            isInvalid={!!fieldState.error || data?.missingAptosWallet}
+            isInvalid={!!fieldState.error}
+            errorMessage={<Translate token={fieldState.error?.message || ""} />}
+            isInvalidFromBackend={data?.missingAptosWallet}
             label={T("v2.pages.settings.billing.payout.wallets.aptos.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.aptos.placeholder")}
             description={<Currencies currencies={[Currency.APT]} />}
@@ -92,7 +101,9 @@ export function PayoutForm() {
             <Input
               {...field}
               {...fieldState}
-              isInvalid={!!fieldState.error || data?.missingBankAccount}
+              isInvalid={!!fieldState.error}
+              errorMessage={<Translate token={fieldState.error?.message || ""} />}
+              isInvalidFromBackend={data?.missingBankAccount}
               value={field.value && IBANParser.printFormat(field.value)}
               label={T("v2.pages.settings.billing.payout.wallets.sepa.iban.label")}
               placeholder={T("v2.pages.settings.billing.payout.wallets.sepa.iban.placeholder")}
@@ -108,7 +119,9 @@ export function PayoutForm() {
             <Input
               {...field}
               {...fieldState}
-              isInvalid={!!fieldState.error || data?.missingBankAccount}
+              isInvalid={!!fieldState.error}
+              errorMessage={<Translate token={fieldState.error?.message || ""} />}
+              isInvalidFromBackend={data?.missingBankAccount}
               label={T("v2.pages.settings.billing.payout.wallets.sepa.bic.label")}
               placeholder={T("v2.pages.settings.billing.payout.wallets.sepa.bic.placeholder")}
             />
