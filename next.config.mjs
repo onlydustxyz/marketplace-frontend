@@ -18,11 +18,13 @@ const nextConfig = {
   env: {
     APP_COMMIT_HASH: getCommitHash(),
   },
+  productionBrowserSourceMaps: true,
   experimental: {
     serverComponentsExternalPackages: ["@react-pdf/renderer"],
   },
   webpack: config => {
     config.resolve.alias.canvas = false;
+    config.devtool = 'hidden-source-map'
     return config;
   },
   async redirects() {
