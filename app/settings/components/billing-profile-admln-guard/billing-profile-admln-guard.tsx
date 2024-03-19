@@ -19,7 +19,7 @@ export function withBillingProfileAdminGuard<P extends object>(Component: Compon
       if (isLoading || isBillingProfileAdmin) return;
 
       router.push(NEXT_ROUTER.notFound);
-    }, [isLoading, isLoading, isBillingProfileAdmin]);
+    }, [isLoading, isBillingProfileAdmin]);
 
     if (isLoading || !isBillingProfileAdmin) {
       return <></>;
