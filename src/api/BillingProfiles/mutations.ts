@@ -57,6 +57,7 @@ const useUploadInvoice = ({
       { queryKey: MeApi.tags.rewarded_pending_invoice(), exact: false },
       { queryKey: MeApi.tags.rewards(), exact: false },
     ],
+    enabled: !!params?.billingProfileId || !!params?.invoiceId,
     method: "POST",
     ...options,
   });
