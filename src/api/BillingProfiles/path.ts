@@ -4,6 +4,7 @@ export const BILLING_PROFILES_PATH = {
   ME_BILLING_PROFILES: BASE_API_V1("me/billing-profiles"),
   ROOT: BASE_API_V1("billing-profiles/"),
   BY_ID: (id: string) => BASE_API_V1(`billing-profiles/${id}`),
+  ENABLE_OR_DISABLE_BY_ID: (id: string) => BASE_API_V1(`billing-profiles/${id}/enable`),
   PAYOUT: (id: string) => BASE_API_V1(`billing-profiles/${id}/payout-info`),
   INVOICE_LINKED_TO_PROFILE: (billingProfileId: string) => BASE_API_V1(`billing-profiles/${billingProfileId}/invoices`),
   DOWNLOAD_INVOICE_LINKED_TO_PROFILE: (billingProfileId: string, invoiceId: string) =>

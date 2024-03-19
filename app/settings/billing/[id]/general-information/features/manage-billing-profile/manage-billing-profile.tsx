@@ -18,7 +18,6 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
   const { T } = useIntl();
   const { id: billingProfileId } = useParams<{ id: string }>();
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const confirmationContent = actionType === "disable" ? "disableDescription" : "deleteDescription";
 
   const { mutate: deleteBillingProfile, ...restDeleteBillingProfile } =
     BillingProfilesApi.mutations.useDeleteBillingProfile({
@@ -35,12 +34,30 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
   useMutationAlert({
     mutation: restDeleteBillingProfile,
     success: {
-      message: T("v2.pages.settings.billing.information.manageBillingProfile.toaster.delete.success"),
+      message: T(`v2.pages.settings.billing.information.manageBillingProfile.toaster.${actionType}.success`),
     },
     error: {
-      message: T("v2.pages.settings.billing.information.manageBillingProfile.toaster.delete.error"),
+      message: T(`v2.pages.settings.billing.information.manageBillingProfile.toaster.${actionType}.error`),
     },
   });
+
+  const { mutate: enableOrDisableBillingProfile, ...restEnableOrDisableBillingProfile } =
+    BillingProfilesApi.mutations.useEnableOrDisableBillingProfile({
+      params: {
+        billingProfileId,
+      },
+    });
+
+  useMutationAlert({
+    mutation: restEnableOrDisableBillingProfile,
+    success: {
+      message: T(`v2.pages.settings.billing.information.manageBillingProfile.toaster.${actionType}.success`),
+    },
+    error: {
+      message: T(`v2.pages.settings.billing.information.manageBillingProfile.toaster.${actionType}.error`),
+    },
+  });
+
   function onOpenConfirmation() {
     setOpenConfirmation(true);
   }
@@ -50,14 +67,15 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
   }
 
   function onConfirm() {
-    // TODO waiting for rest mutations
     switch (actionType) {
       case "delete":
         deleteBillingProfile();
         break;
       case "disable":
+        enableOrDisableBillingProfile({ enable: false });
         break;
       case "enable":
+        enableOrDisableBillingProfile({ enable: true });
         break;
     }
   }
@@ -65,7 +83,7 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
   return (
     <>
       <Button variant="secondary" size="s" onClick={onOpenConfirmation} className="mt-6">
-        <Icon remixName="ri-delete-bin-2-line" />
+        <Icon remixName={actionType === "delete" ? "ri-delete-bin-2-line" : "ri-forbid-2-line"} />
         <Translate
           token="v2.pages.settings.billing.information.manageBillingProfile.button"
           params={{
@@ -78,7 +96,7 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
         onClose={onCancel}
         title={<Translate token="v2.pages.settings.billing.information.manageBillingProfile.title" />}
         content={
-          <Translate token={`v2.pages.settings.billing.information.manageBillingProfile.${confirmationContent}`} />
+          <Translate token={`v2.pages.settings.billing.information.manageBillingProfile.confirmation.${actionType}`} />
         }
         buttons={{
           confirm: {

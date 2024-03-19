@@ -25,8 +25,19 @@ function SettingsBillingPage() {
   const { profile, refetch } = useBillingProfileById({ id, enabledPooling: false });
   const { open } = useSubscribeStacks(StackRoute.Verify);
   const [isPanelHasOpenedState, setIsPanelHasOpenedState] = useState(false);
+
   const validBillingProfile = profile?.status === "VERIFIED";
   const isBillingProfileIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
+
+  const actionTye = useMemo(() => {
+    if (!profile?.data.enabled) {
+      return "enable";
+    } else if (profile?.data?.me.canDelete) {
+      return "delete";
+    } else {
+      return "disable";
+    }
+  }, [profile]);
 
   useEffect(() => {
     if (open && !isPanelHasOpenedState) {
@@ -69,8 +80,8 @@ function SettingsBillingPage() {
           />
         </div>
       </Card>
-      {/*TODO put the appropriate actionType depending on canDelete and disable field*/}
-      <ManageBillingProfile actionType="delete" />
+      {/*<ManageBillingProfile actionType={actionTye} />*/}
+      <ManageBillingProfile actionType={actionTye} />
     </>
   );
 }

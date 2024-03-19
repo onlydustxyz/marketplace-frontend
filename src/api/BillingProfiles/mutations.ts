@@ -14,6 +14,7 @@ export type UseInviteBillingCoworkerBody = components["schemas"]["BillingProfile
 export type UseInviteBillingCoworkerResponse = components["schemas"]["BillingProfileCoworkerInvitation"];
 export type UseUpdatePayoutSettingsBody = components["schemas"]["BillingProfilePayoutInfoRequest"];
 export type UseUpdatePayoutSettingsResponse = components["schemas"]["BillingProfilePayoutInfoResponse"];
+export type UseEnableOrDisableBillingProfileBody = components["schemas"]["BillingProfileEnableRequest"];
 
 const useCreateBillingProfile = ({
   options = {},
@@ -40,6 +41,23 @@ const useDeleteBillingProfile = ({
     invalidatesTags: [
       { queryKey: MeApi.tags.user, exact: false },
       { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: ME_TAGS.payoutPreferences(), exact: false },
+    ],
+    ...options,
+  });
+};
+
+const useEnableOrDisableBillingProfile = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { billingProfileId?: string }, UseEnableOrDisableBillingProfileBody>) => {
+  return useBaseMutation<UseEnableOrDisableBillingProfileBody, void>({
+    resourcePath: BILLING_PROFILES_PATH.ENABLE_OR_DISABLE_BY_ID(params?.billingProfileId || ""),
+    method: "PUT",
+    invalidatesTags: [
+      { queryKey: MeApi.tags.user, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
     ],
     ...options,
@@ -129,4 +147,5 @@ export default {
   useAcceptInvoiceMandate,
   useInviteBillingCoworker,
   useDeleteBillingCoworker,
+  useEnableOrDisableBillingProfile,
 };

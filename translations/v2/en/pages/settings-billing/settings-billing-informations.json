@@ -31,14 +31,17 @@
   "manageBillingProfile": {
     "button": "__actionType__ billing profile",
     "title": "Are you sure?",
-    "deleteDescription": "You wan’t be able to access this billing profile anymore.",
-    "disableDescription": "You wan’t be able to receive rewards on this billing profile. You’ll still be able to enable it later if needed.",
     "confirm": "Yes, __actionType__ billing profile",
     "cancel": "No, keep billing profile",
     "actionType": {
       "delete": "Delete",
       "disable": "Disable",
       "enable": "Enable"
+    },
+    "confirmation": {
+      "delete": "You wan’t be able to access this billing profile anymore.",
+      "disable": "You wan’t be able to receive rewards on this billing profile. You’ll still be able to enable it later if needed.",
+      "enable": "You’ll be able to receive rewards on this billing profile."
     },
     "toaster": {
       "delete": {
