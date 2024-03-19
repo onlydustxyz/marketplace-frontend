@@ -34,6 +34,7 @@ export function SidebarBilling({ closePanel }: TSidebarBilling.Props) {
         href: NEXT_ROUTER.settings.billing.generalInformation(profile.data.id),
         startIcon: <Icon {...profile.icon} size={16} />,
         matchPathOptions: { pattern: NEXT_ROUTER.settings.billing.generalInformation(profile.data.id) },
+        pendingInvitationResponse: profile.data.pendingInvitationResponse,
       })),
 
     [profiles]

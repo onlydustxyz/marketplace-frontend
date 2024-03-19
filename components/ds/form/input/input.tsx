@@ -11,7 +11,6 @@ import { TInput } from "./input.types";
 export function Input(props: TInput.Props) {
   return (
     <NextInput
-      {...props}
       className="h-fit flex-col items-start gap-2"
       classNames={{
         mainWrapper: "w-full",
@@ -29,6 +28,7 @@ export function Input(props: TInput.Props) {
       }}
       variant="bordered"
       labelPlacement="outside-left"
+      {...props}
       label={
         <div className="flex w-full flex-row items-center justify-between">
           {props.label}

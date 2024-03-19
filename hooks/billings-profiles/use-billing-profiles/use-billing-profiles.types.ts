@@ -11,5 +11,6 @@ export namespace TUseBillingProfiles {
       icon: TIcon.Props;
     }[];
     isLoading: boolean;
+    hasIndividualProfile: boolean;
   }
 }
