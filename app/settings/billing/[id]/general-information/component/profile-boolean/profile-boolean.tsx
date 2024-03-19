@@ -1,4 +1,5 @@
 import { Translate } from "components/layout/translate/translate";
+import { Typography } from "components/layout/typography/typography";
 
 import { TProfileBoolean } from "./profile-boolean.types";
 
@@ -10,5 +11,9 @@ export function ProfileBoolean({ value, yes, no }: TProfileBoolean.Props) {
     return no ? <>{no}</> : <Translate token="v2.pages.settings.billing.format.boolean.no" />;
   }
 
-  return null;
+  return (
+    <Typography variant="body-s" className="line max-w-[80%] uppercase leading-5 text-greyscale-50">
+      -
+    </Typography>
+  );
 }

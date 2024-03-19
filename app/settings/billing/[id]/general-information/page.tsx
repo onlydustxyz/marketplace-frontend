@@ -9,6 +9,7 @@ import { ProfileCompany } from "app/settings/billing/[id]/general-information/fe
 import { ProfileIndividual } from "app/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual";
 
 import { StackRoute } from "src/App/Stacks/Stacks";
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { useSubscribeStacks } from "src/libs/react-stack";
 import { cn } from "src/utils/cn";
 
@@ -25,6 +26,8 @@ function SettingsBillingPage() {
   const { open } = useSubscribeStacks(StackRoute.Verify);
   const [isPanelHasOpenedState, setIsPanelHasOpenedState] = useState(false);
   const validBillingProfile = profile?.status === "VERIFIED";
+
+  const isAdmin = profile?.data.me?.role === BillingProfilesTypes.ROLE.ADMIN;
 
   useEffect(() => {
     if (open && !isPanelHasOpenedState) {
@@ -56,12 +59,15 @@ function SettingsBillingPage() {
         <div className="flex w-full flex-col gap-9">
           {profile.data.kyc ? <ProfileIndividual profile={profile.data.kyc} /> : null}
           {profile.data.kyb ? <ProfileCompany profile={profile.data.kyb} /> : null}
-          <ProfileBanner
-            hasValidBillingProfile={validBillingProfile}
-            status={profile?.status}
-            type={profile.data.type}
-            id={profile.externalId}
-          />
+
+          {isAdmin ? (
+            <ProfileBanner
+              hasValidBillingProfile={validBillingProfile}
+              status={profile?.status}
+              type={profile.data.type}
+              id={profile.externalId}
+            />
+          ) : null}
         </div>
       </Card>
       {/*TODO put the appropriate actionType depending on canDelete and disable field*/}

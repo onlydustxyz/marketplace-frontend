@@ -19,6 +19,7 @@ import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles
 
 import { TSidebarBilling } from "./sidebar-billing.types";
 
+// TODO: Changer icone quand on est member - @NeoxAzrot
 export function SidebarBilling({ closePanel }: TSidebarBilling.Props) {
   const { profiles, isLoading } = useBillingProfiles();
   const [openBillingCreate] = useStackBillingCreate();
