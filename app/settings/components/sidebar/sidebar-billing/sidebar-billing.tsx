@@ -19,7 +19,6 @@ import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles
 
 import { TSidebarBilling } from "./sidebar-billing.types";
 
-// TODO: Changer icone quand on est member - @NeoxAzrot
 export function SidebarBilling({ closePanel }: TSidebarBilling.Props) {
   const { profiles, isLoading } = useBillingProfiles();
   const [openBillingCreate] = useStackBillingCreate();
@@ -28,12 +27,26 @@ export function SidebarBilling({ closePanel }: TSidebarBilling.Props) {
     openBillingCreate({ redirectToProfile: true });
   }
 
+  function getIconRemixName(profile: TSidebarBilling.profile) {
+    if (!profile.data.enabled) {
+      return "ri-forbid-2-line";
+    }
+
+    // TODO: Changer icone quand on est member - @NeoxAzrot
+    // if (profile.data.me?.role === "MEMBER") {
+    //   return "ri-team-line";
+    // }
+
+    // Add to use a defaut icon because of the types of Icon
+    return profile.icon.remixName || "ri-team-line";
+  }
+
   const menuItems: TMenuItem.Props[] = useMemo(
     () =>
       profiles.map(profile => ({
         label: profile.data.name,
         href: NEXT_ROUTER.settings.billing.generalInformation(profile.data.id),
-        startIcon: <Icon {...profile.icon} size={16} />,
+        startIcon: <Icon remixName={getIconRemixName(profile)} size={16} />,
         matchPathOptions: { pattern: NEXT_ROUTER.settings.billing.root(profile.data.id) },
         pendingInvitationResponse: profile.data.pendingInvitationResponse,
       })),
