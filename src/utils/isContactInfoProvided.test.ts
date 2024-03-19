@@ -1,3 +1,4 @@
+import { Money } from "utils/Money";
 import { describe, expect, it } from "vitest";
 
 import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
@@ -75,7 +76,7 @@ const userProfile = {
     totalsEarned: {
       details: [
         {
-          currency: "APT" as const,
+          currency: Money.fromSchema({ code: "APT" }),
           totalAmount: 0,
           totalDollarsEquivalent: 0,
         },

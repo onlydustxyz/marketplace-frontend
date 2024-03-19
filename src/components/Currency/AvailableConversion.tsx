@@ -8,7 +8,6 @@ import { TooltipPosition } from "src/components/Tooltip";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
-import { formatMoneyAmount } from "src/utils/money";
 
 import { CurrencyIcons } from "./CurrencyIcon";
 
@@ -73,7 +72,7 @@ const ConversionTooltip = ({
                 </Chip>
                 <div key={currency.currency.id} className="flex items-center justify-start gap-[2px]">
                   <p className="font-walsheim text-xs text-white">
-                    {formatMoneyAmount({ amount: currency.amount || 0, currency: currency.currency })}
+                    {Money.format({ amount: currency.amount || 0, currency: currency.currency }).string}
                   </p>
                   {!Money.isUsd(currency.currency) && (
                     <p className="font-walsheim text-xs text-spaceBlue-200">

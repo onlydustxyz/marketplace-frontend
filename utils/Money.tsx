@@ -22,11 +22,16 @@ export namespace Money {
       locale?: string;
       currencyClassName?: string;
       prefixAmountWithTilde?: boolean;
+      notation?: "standard" | "scientific" | "engineering" | "compact";
     };
   }
 
   export function format({ amount, currency, options }: IFormat) {
-    const { showCurrency = true, locale = "en-US", currencyClassName, prefixAmountWithTilde } = options || {};
+    const { showCurrency = true, locale = "en-US", currencyClassName, prefixAmountWithTilde, notation } = options || {};
+
+    /** need this to have fixed decimal places for compact notation */
+    const maximumFractionDigits = notation === "compact" ? 1 : currency?.decimals;
+
     if (amount === null || amount === undefined || !currency) {
       return {
         string: "N/A",
@@ -35,8 +40,11 @@ export namespace Money {
     }
 
     const formattedNumber = new Intl.NumberFormat(locale, {
-      maximumFractionDigits: currency.decimals,
-    }).format(amount);
+      maximumFractionDigits,
+      notation,
+    })
+      .format(amount)
+      .toLowerCase();
 
     const string = showCurrency
       ? `${prefixAmountWithTilde ? "~" : ""}${formattedNumber} ${currency.code}`

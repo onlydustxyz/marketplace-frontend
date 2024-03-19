@@ -181,7 +181,7 @@ const RewardForm: React.FC = () => {
 const mapFormDataToVariables = ({ workItems, amountToWire, currency, contributor }: Inputs) => {
   return {
     amount: amountToWire,
-    currency,
+    currencyId: currency.id,
     recipientId: contributor.githubUserId,
     items: workItems,
   };
