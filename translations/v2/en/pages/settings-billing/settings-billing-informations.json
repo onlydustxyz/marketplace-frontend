@@ -33,6 +33,7 @@
     "title": "Are you sure?",
     "confirm": "Yes, __actionType__ billing profile",
     "cancel": "No, keep billing profile",
+    "disabledDescription": "This billing profile has been disabled, enable it to receive rewards",
     "actionType": {
       "delete": "Delete",
       "disable": "Disable",

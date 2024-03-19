@@ -1,4 +1,4 @@
-import { redirect, useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { TManageBillingProfile } from "app/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile.types";
@@ -16,6 +16,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props) {
   const { T } = useIntl();
+  const router = useRouter();
   const { id: billingProfileId } = useParams<{ id: string }>();
   const [openConfirmation, setOpenConfirmation] = useState(false);
 
@@ -26,7 +27,7 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
       },
       options: {
         onSuccess: () => {
-          redirect(NEXT_ROUTER.settings.profile);
+          router.push(NEXT_ROUTER.settings.profile);
         },
       },
     });
@@ -81,8 +82,8 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
   }
 
   return (
-    <>
-      <Button variant="secondary" size="s" onClick={onOpenConfirmation} className="mt-6">
+    <div className="w-max">
+      <Button variant="secondary" size="s" onClick={onOpenConfirmation}>
         <Icon remixName={actionType === "delete" ? "ri-delete-bin-2-line" : "ri-forbid-2-line"} />
         <Translate
           token="v2.pages.settings.billing.information.manageBillingProfile.button"
@@ -113,6 +114,6 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
           },
         }}
       />
-    </>
+    </div>
   );
 }

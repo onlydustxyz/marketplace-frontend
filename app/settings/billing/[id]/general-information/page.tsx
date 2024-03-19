@@ -14,6 +14,8 @@ import { useSubscribeStacks } from "src/libs/react-stack";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
+import { Translate } from "components/layout/translate/translate";
+import { Typography } from "components/layout/typography/typography";
 
 import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
 
@@ -80,8 +82,15 @@ function SettingsBillingPage() {
           />
         </div>
       </Card>
-      {/*<ManageBillingProfile actionType={actionTye} />*/}
-      <ManageBillingProfile actionType={actionTye} />
+      <div className="mt-6 flex flex-row items-center gap-4">
+        <ManageBillingProfile actionType={actionTye} />
+
+        {!profile?.data?.enabled ? (
+          <Typography as="div" variant="body-s" className="text-spaceBlue-200">
+            <Translate token="v2.pages.settings.billing.information.manageBillingProfile.disabledDescription" />
+          </Typography>
+        ) : null}
+      </div>
     </>
   );
 }

@@ -55,9 +55,8 @@ const useEnableOrDisableBillingProfile = ({
     resourcePath: BILLING_PROFILES_PATH.ENABLE_OR_DISABLE_BY_ID(params?.billingProfileId || ""),
     method: "PUT",
     invalidatesTags: [
-      { queryKey: MeApi.tags.user, exact: false },
-      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
       { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
     ],
     ...options,
