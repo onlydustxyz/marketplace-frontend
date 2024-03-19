@@ -7,7 +7,7 @@ import { TBanner } from "components/ds/banner/banner.types";
 import { Button } from "components/ds/button/button";
 import { Translate } from "components/layout/translate/translate";
 
-import { useBillingStatus } from "hooks/users/useBillingStatus/useBillingStatus";
+import { useBillingStatus } from "hooks/users/use-billing-status/use-billing-status";
 
 import { TProfileBanner } from "./profile-banner.types";
 

@@ -18,7 +18,14 @@ const nextConfig = {
   poweredByHeader: false,
   env: {
     APP_COMMIT_HASH: getCommitHash(),
-  }
+  },
+  experimental: {
+    serverComponentsExternalPackages: ['@react-pdf/renderer'],
+  },
+  webpack: (config) => {
+   config.resolve.alias.canvas = false;
+   return config;
+  },
 };
 
 export default nextConfig;

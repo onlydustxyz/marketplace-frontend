@@ -32,6 +32,7 @@
     "./constants",
     "./hooks",
     "./src",
+    "./tools",
     ".storybook/**/*.tsx",
     "./dist/types/**/*.ts",
     "./next-env.d.ts",

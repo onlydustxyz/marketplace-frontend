@@ -21,9 +21,9 @@ import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { Card } from "components/ds/card/card";
-import { EmptyState } from "components/layout/placeholders/empty-state";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
-import { useCurrentUser } from "hooks/users/useCurrentUser/useCurrentUser";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";

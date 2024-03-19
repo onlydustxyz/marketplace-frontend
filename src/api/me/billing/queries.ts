@@ -6,6 +6,18 @@ import { ME_BILLING_TAGS } from "src/api/me/billing/tags";
 import { MeTypes } from "src/api/me/types";
 import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 
+export type UseAllBillingProfilesResponse = components["schemas"]["MyBillingProfilesResponse"];
+const useAllBillingProfiles = ({ options = {} }: UseQueryProps<UseAllBillingProfilesResponse, undefined>) => {
+  const { isAuthenticated } = useAuth0();
+
+  return useBaseQuery<UseAllBillingProfilesResponse>({
+    resourcePath: API_PATH.ME_BILLING_PROFILES,
+    tags: ME_BILLING_TAGS.allProfiles,
+    ...options,
+    enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
+  });
+};
+
 export type UseBillingProfileIndividualResponse = components["schemas"]["IndividualBillingProfileResponse"];
 export type UseBillingProfileCompanyResponse = components["schemas"]["CompanyBillingProfileResponse"];
 export type UseBillingProfileResponse = UseBillingProfileIndividualResponse | UseBillingProfileCompanyResponse;
@@ -24,6 +36,8 @@ const useBillingProfile = ({
     enabled: isAuthenticated && !!params?.profile && (options.enabled === undefined ? true : options.enabled),
   });
 };
+
 export default {
+  useAllBillingProfiles,
   useBillingProfile,
 };

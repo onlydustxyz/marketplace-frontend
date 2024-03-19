@@ -57,6 +57,9 @@ export function useBaseQuery<R = unknown>({
       return fetch(getEndpointUrl({ resourcePath, queryParams }), options)
         .then(res => {
           if (res.ok) {
+            if (res.headers.get("Content-Type") === "application/pdf") {
+              return res.blob();
+            }
             return res.json();
           }
 
