@@ -120,6 +120,22 @@ const useUpdatePayoutPreferences = ({ options = {} }: UseMutationProps<unknown, 
   });
 };
 
+const useAcceptOrDeclineInvitation = ({
+  params,
+  options,
+}: UseMutationProps<unknown, { billingProfileId: string }, { accepted: boolean }>) => {
+  return useBaseMutation<{ accepted: boolean }, unknown>({
+    resourcePath: ME_PATH.BILLING_PROFILES_INVITATIONS(params?.billingProfileId || ""),
+    enabled: !!params?.billingProfileId,
+    method: "POST",
+    invalidatesTags: [
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
+    ],
+    ...(options ? options : {}),
+  });
+};
+
 export default {
   useAcceptProjectLeaderInvitation,
   useClaimProject,
@@ -130,4 +146,5 @@ export default {
   useUploadProfilePicture,
   useMarkInvoicesAsReceived,
   useUpdatePayoutPreferences,
+  useAcceptOrDeclineInvitation,
 };

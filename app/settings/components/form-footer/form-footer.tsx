@@ -41,7 +41,7 @@ export function FormFooter({ isPending, hasPreviewButton, isAbsolute = true }: T
       alignItems="center"
       justifyContent="center"
       className={cn("border-t border-greyscale-50/8", {
-        "absolute bottom-0 left-0 right-0 z-50 bg-spaceBlue-900 px-4 shadow-medium xl:px-8": isAbsolute,
+        "absolute bottom-0 left-0 right-0 z-50 bg-spaceBlue-900 p-4 shadow-medium xl:px-8": isAbsolute,
         "mt-5 pt-5": !isAbsolute,
       })}
     >
