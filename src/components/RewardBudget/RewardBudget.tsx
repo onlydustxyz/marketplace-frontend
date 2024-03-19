@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
+import { Money } from "utils/Money";
 
 import Button, { ButtonOnBackground } from "src/components/Button";
 import { Width } from "src/components/Button";
@@ -7,7 +8,6 @@ import { FieldInput } from "src/components/New/Field/Input";
 import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
-import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
 
 import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
@@ -80,7 +80,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
             <FieldInput
               min="0"
               step="0.000001"
-              placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency}`)}
+              placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency.code}`)}
               name="budget-amount-input"
               type="number"
               value={amount === null ? "" : amount}
@@ -93,12 +93,12 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           <FieldInfoMessage
             icon={({ className }) => <InformationLine className={className} />}
             className={cn({
-              "items-start": selectedBudget.currency === Currency.USD,
+              "items-start": Money.isUsd(selectedBudget.currency),
             })}
           >
-            {selectedBudget.currency === Currency.USD
+            {Money.isUsd(selectedBudget.currency)
               ? T("currencies.network.label_dollar")
-              : T("currencies.network.label", { currency: T(`currencies.network.${selectedBudget.currency}`) })}
+              : T("currencies.network.label", { currency: T(`currencies.network.${selectedBudget.currency.code}`) })}
           </FieldInfoMessage>
         </div>
       </div>

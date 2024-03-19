@@ -1,3 +1,5 @@
+import { Money } from "utils/Money";
+
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { WorkEstimationBudgetDetails } from "src/components/RewardBudget/RewardBudget.type";
@@ -5,9 +7,7 @@ import { RewardBudgetUtils } from "src/components/RewardBudget/RewardBudget.util
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import InformationLine from "src/icons/InformationLine";
-import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
-import { formatMoneyAmount } from "src/utils/money";
 
 interface RewardBudgetDetailsProps {
   budget: WorkEstimationBudgetDetails;
@@ -50,14 +50,14 @@ const RewardBudgetDetailsRow = ({
         <p className="font-walsheim text-sm text-greyscale-300">{label}</p>
       </div>
       <div className="flex flex-row items-center justify-end gap-1">
-        {dollar && currency !== Currency.USD ? (
+        {dollar && !Money.isUsd(currency) ? (
           <p
             className="font-walsheim text-xs font-normal text-spaceBlue-200"
             {...withTooltip(T("rewardBudget.detail.dollarTooltip"), {
               position: TooltipPosition.Bottom,
             })}
           >
-            {`~${formatMoneyAmount({ amount: dollar, currency: Currency.USD })}`}
+            {Money.format({ amount: dollar, currency: Money.USD, options: { prefixAmountWithTilde: true } }).string}
           </p>
         ) : null}
         <p
@@ -67,11 +67,15 @@ const RewardBudgetDetailsRow = ({
             purple && " text-spacePurple-500"
           )}
         >
-          {formatMoneyAmount({
-            amount,
-            currency,
-            showCurrency: false,
-          })}
+          {
+            Money.format({
+              amount,
+              currency,
+              options: {
+                showCurrency: false,
+              },
+            }).string
+          }
         </p>
         <Chip solid>
           <CurrencyIcons currency={currency} className="h-full w-full" />

@@ -1,13 +1,12 @@
 import { Listbox } from "@headlessui/react";
 import { useMemo } from "react";
+import { Money } from "utils/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { WorkEstimationBudgetDetails } from "src/components/RewardBudget/RewardBudget.type";
 import { useIntl } from "src/hooks/useIntl";
-import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
-import { formatMoneyAmount } from "src/utils/money";
 
 export interface RewardBudgetSelectOptionProps {
   budget: WorkEstimationBudgetDetails;
@@ -22,7 +21,7 @@ export const RewardBudgetSelectOption = ({ budget, last, active }: RewardBudgetS
 
   return (
     <Listbox.Option
-      key={budget.currency}
+      key={budget.currency.id}
       disabled={isDisabled}
       value={budget}
       className={cn("cursor-pointer border-b border-greyscale-50/12 px-4 py-2.5 hover:bg-greyscale-50/20", {
@@ -42,7 +41,7 @@ export const RewardBudgetSelectOption = ({ budget, last, active }: RewardBudgetS
                 "font-medium text-spacePurple-300": active,
               })}
             >
-              {T(`currencies.currency.${budget.currency}`)}
+              {budget.currency.name}
             </span>
 
             <span
@@ -50,21 +49,24 @@ export const RewardBudgetSelectOption = ({ budget, last, active }: RewardBudgetS
                 "text-greyscale-500": isDisabled,
               })}
             >
-              {`(${formatMoneyAmount({ amount: budget.remaining, currency: budget.currency })})`}
+              {`(${Money.format({ amount: budget.remaining, currency: budget.currency }).string})`}
             </span>
           </div>
         </div>
-        {budget.currency !== Currency.USD && (
+        {!Money.isUsd(budget.currency) && (
           <p
             className={cn("whitespace-nowrap font-walsheim text-xs font-normal text-spaceBlue-200", {
               "text-greyscale-500": isDisabled,
             })}
           >
             {budget.remainingDollarsEquivalent
-              ? `~${formatMoneyAmount({
+              ? Money.format({
                   amount: budget.remainingDollarsEquivalent,
-                  currency: Currency.USD,
-                })}`
+                  currency: Money.USD,
+                  options: {
+                    prefixAmountWithTilde: true,
+                  },
+                }).string
               : T("availableConversion.tooltip.na")}
           </p>
         )}

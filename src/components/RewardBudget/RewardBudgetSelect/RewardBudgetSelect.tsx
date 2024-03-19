@@ -28,10 +28,10 @@ export const RewardBudgetSelect: FC<RewardBudgetSelectProps> = ({ budgets, onCha
             <div className="scrollbar-sm max-h-[240px] w-auto min-w-full overflow-y-auto overflow-x-hidden">
               {budgets.map((budget, i) => (
                 <RewardBudgetSelectOption
-                  key={budget.currency}
+                  key={budget.currency.id}
                   budget={budget}
                   last={i === budgets.length - 1}
-                  active={value.currency === budget.currency}
+                  active={value.currency.id === budget.currency.id}
                 />
               ))}
             </div>
