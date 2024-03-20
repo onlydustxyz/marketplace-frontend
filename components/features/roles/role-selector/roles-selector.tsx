@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -11,12 +12,21 @@ import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 
-export function RolesSelector({ activeRole, billingProfileId, onSelect, isYou }: TRolesSelector.Props) {
-  // TODO waiting for backend mutation
+export function RolesSelector({ activeRole, billingProfileId, githubUserId, isYou }: TRolesSelector.Props) {
   const { T } = useIntl();
+  const {
+    mutate: updateCoworkerRole,
+    isPending,
+    ...restUpdateCoworkerRole
+  } = BillingProfilesApi.mutations.useUpdateCoworkerRole({
+    params: {
+      billingProfileId,
+      githubUserId: `${githubUserId}`,
+    },
+  });
 
   useMutationAlert({
-    // mutation: rest,
+    mutation: restUpdateCoworkerRole,
     success: {
       message: T("v2.features.roles.mutation.success"),
     },
@@ -26,11 +36,9 @@ export function RolesSelector({ activeRole, billingProfileId, onSelect, isYou }:
   });
 
   function onSelectRole(type: TRolesSelector.roleUnion) {
-    if (billingProfileId) {
-      // mutate({ billingProfileId: id, type: type });
+    if (billingProfileId && githubUserId) {
+      updateCoworkerRole({ role: type });
     }
-
-    onSelect?.(type);
   }
 
   const menu: TDropdown.Item[] = useMemo(
@@ -67,7 +75,7 @@ export function RolesSelector({ activeRole, billingProfileId, onSelect, isYou }:
 
   return (
     <Dropdown items={menu}>
-      <RoleTag role={role} />
+      <RoleTag role={role} isLoading={isPending} />
     </Dropdown>
   );
 }
