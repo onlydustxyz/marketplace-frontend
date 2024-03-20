@@ -32,10 +32,9 @@ export function SidebarBilling({ closePanel }: TSidebarBilling.Props) {
       return "ri-forbid-2-line";
     }
 
-    // TODO: Changer icone quand on est member - @NeoxAzrot
-    // if (profile.data.me?.role === "MEMBER") {
-    //   return "ri-team-line";
-    // }
+    if (profile.data.role === "MEMBER") {
+      return "ri-team-line";
+    }
 
     // Add to use a defaut icon because of the types of Icon
     return profile.icon.remixName || "ri-team-line";
