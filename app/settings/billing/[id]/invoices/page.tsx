@@ -1,7 +1,10 @@
 "use client";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+import { withBillingProfileAdminGuard } from "app/settings/components/billing-profile-admln-guard/billing-profile-admln-guard";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import { IMAGES } from "src/assets/img";
@@ -133,4 +136,4 @@ function InvoicesPage() {
   );
 }
 
-export default InvoicesPage;
+export default withAuthenticationRequired(withBillingProfileAdminGuard(InvoicesPage));
