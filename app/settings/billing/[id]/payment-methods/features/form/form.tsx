@@ -1,10 +1,10 @@
 import IBANParser from "iban";
 import { useParams } from "next/navigation";
 import { Controller, useFormContext } from "react-hook-form";
+import { Money } from "utils/Money/Money";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import { useIntl } from "src/hooks/useIntl";
-import { Currency } from "src/types";
 
 import { Input } from "components/ds/form/input/input";
 import { Flex } from "components/layout/flex/flex";
@@ -37,7 +37,11 @@ export function PayoutForm() {
             isInvalidFromBackend={data?.missingEthWallet}
             label={T("v2.pages.settings.billing.payout.wallets.ethereum.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.ethereum.placeholder")}
-            description={<Currencies currencies={[Currency.USDC, Currency.ETH, Currency.LORDS]} />}
+            description={
+              <Currencies
+                currencies={[Money.Static.Currency.USDC, Money.Static.Currency.ETH, Money.Static.Currency.LORDS]}
+              />
+            }
           />
         )}
       />
@@ -54,7 +58,7 @@ export function PayoutForm() {
             isInvalidFromBackend={data?.missingStarknetWallet}
             label={T("v2.pages.settings.billing.payout.wallets.starknet.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.starknet.placeholder")}
-            description={<Currencies currencies={[Currency.STRK]} />}
+            description={<Currencies currencies={[Money.Static.Currency.STRK]} />}
           />
         )}
       />
@@ -71,7 +75,7 @@ export function PayoutForm() {
             isInvalidFromBackend={data?.missingOptimismWallet}
             label={T("v2.pages.settings.billing.payout.wallets.optimism.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.optimism.placeholder")}
-            description={<Currencies currencies={[Currency.OP]} />}
+            description={<Currencies currencies={[Money.Static.Currency.OP]} />}
           />
         )}
       />
@@ -88,7 +92,7 @@ export function PayoutForm() {
             isInvalidFromBackend={data?.missingAptosWallet}
             label={T("v2.pages.settings.billing.payout.wallets.aptos.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.aptos.placeholder")}
-            description={<Currencies currencies={[Currency.APT]} />}
+            description={<Currencies currencies={[Money.Static.Currency.APT]} />}
           />
         )}
       />
@@ -107,7 +111,7 @@ export function PayoutForm() {
               value={field.value && IBANParser.printFormat(field.value)}
               label={T("v2.pages.settings.billing.payout.wallets.sepa.iban.label")}
               placeholder={T("v2.pages.settings.billing.payout.wallets.sepa.iban.placeholder")}
-              description={<Currencies currencies={[Currency.USD]} />}
+              description={<Currencies currencies={[Money.Static.Currency.USD]} />}
             />
           )}
         />

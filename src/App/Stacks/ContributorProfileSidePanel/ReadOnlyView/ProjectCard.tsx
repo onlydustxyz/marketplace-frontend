@@ -1,3 +1,5 @@
+import { Money } from "utils/Money/Money";
+
 import { components } from "src/__generated/api";
 import { IMAGES } from "src/assets/img";
 import Card from "src/components/Card";
@@ -10,7 +12,6 @@ import FundsLine from "src/icons/FundsLine";
 import StarLine from "src/icons/StarLine";
 import User3Line from "src/icons/User3Line";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { formatMoneyAmount } from "src/utils/money";
 
 export default function ProjectCard({ project }: { project: components["schemas"]["UserProfileProjects"] }) {
   const {
@@ -52,7 +53,8 @@ export default function ProjectCard({ project }: { project: components["schemas"
               size={TagSize.Small}
               {...withTooltip(T("profile.sections.projects.moneyGranted"), { className: "w-fit" })}
             >
-              <FundsLine /> {formatMoneyAmount({ amount: totalGranted, notation: "compact" })}
+              <FundsLine />
+              {Money.format({ amount: totalGranted, currency: Money.USD, options: { notation: "compact" } }).string}
             </Tag>
           </div>
         </div>

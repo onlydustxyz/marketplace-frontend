@@ -1,5 +1,6 @@
 import { useParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
+import { Money } from "utils/Money/Money";
 
 import ErrorFallback from "src/ErrorFallback";
 import Title from "src/_pages/ProjectDetails/Title";
@@ -14,7 +15,6 @@ import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
-import { Currency } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
@@ -106,7 +106,11 @@ const RewardList: React.FC = () => {
 
   const getFilteredCurrencies = useMemo(() => {
     if (filterState.currency) {
-      return filterState.currency.map(({ value }) => value).filter(Boolean) as Currency[];
+      return filterState.currency
+        .map(({ value, label, image }) =>
+          Money.fromSchema({ id: value, name: label?.toString(), logoUrl: image || undefined })
+        )
+        .filter(Boolean) as Money.Currency[];
     }
 
     return undefined;

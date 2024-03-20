@@ -1,7 +1,5 @@
 import { Text, View } from "@react-pdf/renderer";
-
-import { Currency } from "src/types";
-import { formatAmount } from "src/utils/money";
+import { Money } from "utils/Money/Money";
 
 import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
@@ -18,7 +16,7 @@ export function InvoiceVat({ vat, totalTax }: TInvoice.InvoiceVatInfoProps) {
         <Text>{InvoiceTokens.rewardSummary.table.totalVat} </Text>
         <Text>{vat.rate ? `(${(vat.rate * 100).toFixed(0)}%)` : null}</Text>
       </Text>
-      <Text style={styles.td}>{formatAmount({ amount: totalTax, currency: Currency.USD })}</Text>
+      <Text style={styles.td}>{Money.format({ amount: totalTax, currency: Money.USD }).string}</Text>
     </View>
   );
 
