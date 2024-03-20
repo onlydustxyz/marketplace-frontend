@@ -33,8 +33,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/migration/settings/billing/:slug",
-        destination: "/migration/settings/billing/:slug/general-information",
+        source: "/settings/billing/:id",
+        destination: "/settings/billing/:id/general-information",
         permanent: true,
       },
     ];
