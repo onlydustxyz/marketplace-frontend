@@ -1,5 +1,5 @@
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { TManageBillingProfile } from "app/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile.types";
 
@@ -81,10 +81,21 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
     }
   }
 
+  const iconName = useMemo(() => {
+    switch (actionType) {
+      case "delete":
+        return "ri-delete-bin-2-line";
+      case "disable":
+        return "ri-forbid-2-line";
+      case "enable":
+        return "ri-refresh-line";
+    }
+  }, [actionType]);
+
   return (
     <div className="mt-6 w-max">
       <Button variant="secondary" size="s" onClick={onOpenConfirmation}>
-        <Icon remixName={actionType === "delete" ? "ri-delete-bin-2-line" : "ri-forbid-2-line"} />
+        <Icon remixName={iconName} />
         <Translate
           token="v2.pages.settings.billing.information.manageBillingProfile.button"
           params={{
