@@ -82,7 +82,7 @@ export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props
   }
 
   return (
-    <div className="w-max">
+    <div className="mt-6 w-max">
       <Button variant="secondary" size="s" onClick={onOpenConfirmation}>
         <Icon remixName={actionType === "delete" ? "ri-delete-bin-2-line" : "ri-forbid-2-line"} />
         <Translate

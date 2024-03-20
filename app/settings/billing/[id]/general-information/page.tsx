@@ -32,7 +32,7 @@ function SettingsBillingPage() {
   const validBillingProfile = profile?.status === "VERIFIED";
   const isBillingProfileIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
 
-  const actionTye = useMemo(() => {
+  const actionType = useMemo(() => {
     if (!profile?.data.enabled) {
       return "enable";
     } else if (profile?.data?.me.canDelete) {
@@ -86,11 +86,15 @@ function SettingsBillingPage() {
           </AdminContentWrapper>
         </div>
       </Card>
-      <div className="mt-6 flex flex-row items-center gap-4">
-        <ManageBillingProfile actionType={actionTye} />
+      <div className="flex flex-row items-center gap-4">
+        <AdminContentWrapper role={profile?.data.me?.role}>
+          <ManageBillingProfile actionType={actionType} />
+        </AdminContentWrapper>
+
+        {/* TODO: Add leave button @pixelfact */}
 
         {!profile?.data?.enabled ? (
-          <Typography as="div" variant="body-s" className="text-spaceBlue-200">
+          <Typography as="div" variant="body-s" className="mt-6 text-spaceBlue-200">
             <Translate token="v2.pages.settings.billing.information.manageBillingProfile.disabledDescription" />
           </Typography>
         ) : null}
