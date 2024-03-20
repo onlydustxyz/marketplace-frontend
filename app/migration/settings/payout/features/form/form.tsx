@@ -32,7 +32,7 @@ export function PayoutForm() {
               isInvalid={!!fieldState.error || data?.missingEthWallet}
               label={T("v2.pages.settings.payout.wallets.ethereum.label")}
               placeholder={T("v2.pages.settings.payout.wallets.ethereum.placeholder")}
-              description={<Currencies currencies={[Currency.USDC, Currency.ETH, Currency.LORDS]} />}
+              description={<Currencies currencies={[Currency.USDC, Currency.LORDS]} />}
             />
           )}
         />
@@ -47,7 +47,7 @@ export function PayoutForm() {
               isInvalid={!!fieldState.error || data?.missingStarknetWallet}
               label={T("v2.pages.settings.payout.wallets.starknet.label")}
               placeholder={T("v2.pages.settings.payout.wallets.starknet.placeholder")}
-              description={<Currencies currencies={[Currency.STRK]} />}
+              description={<Currencies currencies={[Currency.STRK, Currency.ETH]} />}
             />
           )}
         />
