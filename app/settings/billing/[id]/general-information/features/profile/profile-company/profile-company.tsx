@@ -8,30 +8,30 @@ import { TProfileCompany } from "app/settings/billing/[id]/general-information/f
 
 export function ProfileCompany({ profile }: TProfileCompany.Props) {
   const registrationDate = useMemo(() => {
-    if (profile.registrationDate) {
+    if (profile?.registrationDate) {
       return format(new Date(profile.registrationDate), "MMM dd, yyyy");
     }
 
-    return profile.registrationDate;
+    return profile?.registrationDate;
   }, [profile]);
 
   return (
     <ProfileItemGrid>
-      <ProfileItem label="v2.pages.settings.billing.information.kyb.companyName">{profile.name}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyb.companyName">{profile?.name}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyb.registrationNumber">
-        {profile.registrationNumber}
+        {profile?.registrationNumber}
       </ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyb.registrationDate">{registrationDate}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.information.kyb.address">{profile.address}</ProfileItem>
-      <ProfileItem label="v2.pages.settings.billing.information.kyb.country">{profile.country}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyb.address">{profile?.address}</ProfileItem>
+      <ProfileItem label="v2.pages.settings.billing.information.kyb.country">{profile?.country}</ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyb.usEntity">
-        <ProfileBoolean value={profile.usEntity} />
+        <ProfileBoolean value={profile?.usEntity} />
       </ProfileItem>
       <ProfileItem label="v2.pages.settings.billing.information.kyb.subjectToVatInEurope">
-        <ProfileBoolean value={profile.subjectToEuropeVAT} />
+        <ProfileBoolean value={profile?.subjectToEuropeVAT} />
       </ProfileItem>
 
-      {profile.euVATNumber ? (
+      {profile?.euVATNumber ? (
         <ProfileItem label="v2.pages.settings.billing.information.kyb.euVatNumber">{profile.euVATNumber}</ProfileItem>
       ) : null}
     </ProfileItemGrid>
