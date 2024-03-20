@@ -25,7 +25,7 @@ function BillingLayout({ children }: PropsWithChildren) {
 
       <Card className="relative flex w-full flex-col gap-6" background="base">
         <AdminContentWrapper role={profile?.data.me?.role}>
-          <Tabs id={id} />
+          <Tabs id={id} type={profile?.data.type} />
         </AdminContentWrapper>
 
         <div>{children}</div>

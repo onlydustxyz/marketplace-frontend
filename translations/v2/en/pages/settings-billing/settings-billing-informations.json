@@ -84,8 +84,13 @@
       "decline": "Decline"
     },
     "alert": {
-      "success": "You joined __name__ successfully",
-      "error": "An error occurred while joining __name__"
+      "accept": {
+        "success": "You joined __name__ successfully",
+        "error": "An error occurred while joining __name__"
+      },
+      "decline": {
+        "error": "An error occurred while declining the invitation to join __name__"
+      }
     }
   }
 }

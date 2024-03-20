@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { ManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker";
 import { TManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker.types";
 import { withBillingProfileAdminGuard } from "app/settings/components/billing-profile-admln-guard/billing-profile-admln-guard";
+import { withBillingProfileCompanyGuard } from "app/settings/components/billing-profile-company-guard copy/billing-profile-company-guard";
 
 import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
@@ -169,4 +170,4 @@ function CoworkersPage() {
   );
 }
 
-export default withAuthenticationRequired(withBillingProfileAdminGuard(CoworkersPage));
+export default withAuthenticationRequired(withBillingProfileAdminGuard(withBillingProfileCompanyGuard(CoworkersPage)));

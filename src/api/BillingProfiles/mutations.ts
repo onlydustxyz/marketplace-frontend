@@ -138,6 +138,23 @@ const useDeleteBillingCoworker = ({
   });
 };
 
+export type UseUpdateBillingTypeBody = components["schemas"]["BillingProfileTypeRequest"];
+const useUpdateBillingType = ({
+  params,
+  options,
+}: UseMutationProps<unknown, { billingProfileId: string }, UseUpdateBillingTypeBody>) => {
+  return useBaseMutation<UseUpdateBillingTypeBody, unknown>({
+    resourcePath: BILLING_PROFILES_PATH.BILLING_PROFILES_TYPE(params?.billingProfileId || ""),
+    enabled: !!params?.billingProfileId,
+    method: "PUT",
+    invalidatesTags: [
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
+    ],
+    ...(options ? options : {}),
+  });
+};
+
 export default {
   useCreateBillingProfile,
   useDeleteBillingProfile,
@@ -147,4 +164,5 @@ export default {
   useInviteBillingCoworker,
   useDeleteBillingCoworker,
   useEnableOrDisableBillingProfile,
+  useUpdateBillingType,
 };

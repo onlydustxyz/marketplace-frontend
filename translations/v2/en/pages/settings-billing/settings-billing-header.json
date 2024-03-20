@@ -11,9 +11,14 @@
     "title": "Self employed",
     "subtitle": "As an self-employed, you are responsible for your statements in your country of residence."
   },
-  "description": {
-    "INDIVIDUAL": "As an individual, when you reach 5,000 USD / year you’ll need to create a dedicated entity.",
-    "SELF_EMPLOYED": "As a self-employed worker, you are responsible for your statements in your country of residence.",
-    "COMPANY": "As an organisation, you are responsible for your statements in your country of residence, and for your coworkers'."
+  "member": {
+    "subtitle": "As an employee, you can contribute to this company with your rewards."
+  },
+  "invitedBy": "Invited by",
+  "invidivualProgression": "__amountLeft__ USD left",
+  "teamwork": {
+    "title": "Teamwork mode",
+    "tooltip": "Enable teamwork mode if you wish to invite co-workers to manage rewards on their behalf.",
+    "unswitchable": "Remove all your coworkers to switch back to a self employed account."
   }
 }

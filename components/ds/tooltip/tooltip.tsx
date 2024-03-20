@@ -23,7 +23,8 @@ export function Tooltip({
       shouldCloseOnBlur
       classNames={{
         base: cn("before:bg-greyscale-800", { "pointer-events-none": !canInteract }),
-        content: "px-3 py-2 bg-greyscale-800 od-text-body-s text-greyscale-50 rounded-lg shadow-md font-walsheim",
+        content:
+          "px-3 py-2 bg-greyscale-800 od-text-body-s text-greyscale-50 rounded-lg shadow-md font-walsheim max-w-[192px] text-center",
       }}
     >
       <Component className="flex">{children}</Component>
