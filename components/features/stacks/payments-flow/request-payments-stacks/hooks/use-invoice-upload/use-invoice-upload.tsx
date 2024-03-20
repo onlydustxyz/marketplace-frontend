@@ -48,13 +48,11 @@ export function useInvoiceUpload({ billingProfileId, invoiceId }: TUseInvoiceUpl
       const params = new URLSearchParams();
       params.append("fileName", fileName);
       setQueryParams(params);
-      capture("ft-rp-click-on-submit-invoice");
-      capture("ft-rp-upload-invoice");
+      capture("invoice_submitted", { type: "manuel" });
     }
     if (fileBlob) {
       uploadInvoice(fileBlob);
-      capture("ft-rp-click-on-submit-invoice");
-      capture("ft-rp-click-send-invoice");
+      capture("invoice_submitted", { type: "auto-generated" });
     } else {
       showToaster(T("v2.pages.stacks.request_payments.invoiceSubmission.toaster.emptyFile"), { isError: true });
     }

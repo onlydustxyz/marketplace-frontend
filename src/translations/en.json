@@ -312,7 +312,7 @@
     },
     "network": {
       "APT": "Aptos",
-      "ETH": "Ethereum",
+      "ETH": "Starknet",
       "OP": "Optimism",
       "STRK": "Starknet",
       "LORDS": "Ethereum",

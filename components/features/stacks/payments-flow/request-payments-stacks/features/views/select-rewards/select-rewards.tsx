@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 
 import { IMAGES } from "src/assets/img";
+import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/ds/button/button";
 import { Tabs } from "components/ds/tabs/tabs";
@@ -24,6 +25,7 @@ export function SelectRewards({
   goTo,
   isMandateAccepted,
 }: TSelectRewards.Props) {
+  const { capture } = usePosthog();
   const { user } = useCurrentUser();
   const totalAmountSelectedRewards = useMemo(
     () => includedRewards.reduce((count, reward) => (count += reward.amount.dollarsEquivalent || 0), 0),
@@ -31,6 +33,10 @@ export function SelectRewards({
   );
 
   const onSubmit = () => {
+    capture("payments_request_rewards_selected", {
+      includedRewards,
+      excludedRewards,
+    });
     if (user?.billingProfileType === "INDIVIDUAL" || (user?.billingProfileType === "COMPANY" && isMandateAccepted)) {
       goTo({ to: TRequestPaymentsStacks.Views.Generate });
     } else {
