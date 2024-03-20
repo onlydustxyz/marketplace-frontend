@@ -1,4 +1,4 @@
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { components } from "src/__generated/api";
 import { WorkItemType } from "src/types";

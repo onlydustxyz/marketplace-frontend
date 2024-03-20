@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { BudgetPanel } from "src/_pages/ProjectDetails/Rewards/Budget/Panel";
 import { Money as TMoney } from "src/types";

@@ -1,6 +1,6 @@
 import { useParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import ErrorFallback from "src/ErrorFallback";
 import Title from "src/_pages/ProjectDetails/Title";
@@ -107,7 +107,9 @@ const RewardList: React.FC = () => {
   const getFilteredCurrencies = useMemo(() => {
     if (filterState.currency) {
       return filterState.currency
-        .map(({ value, label, image }) => Money.fromSchema({ id: value, name: label?.toString(), logoUrl: image }))
+        .map(({ value, label, image }) =>
+          Money.fromSchema({ id: value, name: label?.toString(), logoUrl: image || undefined })
+        )
         .filter(Boolean) as Money.Currency[];
     }
 

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 export interface useCurrenciesOrderProps<T extends { currency: Money.Currency }> {
   currencies: T[] | undefined;

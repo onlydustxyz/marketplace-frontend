@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { BudgetCard, CardTypes } from "src/_pages/ProjectDetails/Rewards/Budget/BudgetCard";
 

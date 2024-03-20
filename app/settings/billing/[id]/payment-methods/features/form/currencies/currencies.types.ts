@@ -1,4 +1,4 @@
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 export namespace TCurrencies {
   export interface Props {

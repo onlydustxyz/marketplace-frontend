@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import Button, { ButtonOnBackground } from "src/components/Button";
 import { Width } from "src/components/Button";
@@ -93,10 +93,10 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           <FieldInfoMessage
             icon={({ className }) => <InformationLine className={className} />}
             className={cn({
-              "items-start": Money.isUsd(selectedBudget.currency),
+              "items-start": Money.isFiat(selectedBudget.currency),
             })}
           >
-            {Money.isUsd(selectedBudget.currency)
+            {Money.isFiat(selectedBudget.currency)
               ? T("currencies.network.label_dollar")
               : T("currencies.network.label", { currency: T(`currencies.network.${selectedBudget.currency.code}`) })}
           </FieldInfoMessage>

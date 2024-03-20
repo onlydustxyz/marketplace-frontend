@@ -1,6 +1,6 @@
 import { Listbox } from "@headlessui/react";
 import { useMemo } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -53,7 +53,7 @@ export const RewardBudgetSelectOption = ({ budget, last, active }: RewardBudgetS
             </span>
           </div>
         </div>
-        {!Money.isUsd(budget.currency) && (
+        {!Money.isFiat(budget.currency) && (
           <p
             className={cn("whitespace-nowrap font-walsheim text-xs font-normal text-spaceBlue-200", {
               "text-greyscale-500": isDisabled,

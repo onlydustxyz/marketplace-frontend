@@ -1,4 +1,4 @@
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { ProjectBudgetType } from "src/types";
 

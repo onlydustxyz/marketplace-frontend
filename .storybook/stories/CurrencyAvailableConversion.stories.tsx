@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import Tooltip from "src/components/Tooltip";

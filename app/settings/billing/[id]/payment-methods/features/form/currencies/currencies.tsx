@@ -1,4 +1,4 @@
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { TCurrencies } from "app/settings/billing/[id]/payment-methods/features/form/currencies/currencies.types";
 

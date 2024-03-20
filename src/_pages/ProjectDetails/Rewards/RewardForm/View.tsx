@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useMediaQuery } from "usehooks-ts";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import ContributorSelect from "src/_pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 import {

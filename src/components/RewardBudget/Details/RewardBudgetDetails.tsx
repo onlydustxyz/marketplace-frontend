@@ -1,4 +1,4 @@
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -50,7 +50,7 @@ const RewardBudgetDetailsRow = ({
         <p className="font-walsheim text-sm text-greyscale-300">{label}</p>
       </div>
       <div className="flex flex-row items-center justify-end gap-1">
-        {dollar && !Money.isUsd(currency) ? (
+        {dollar && !Money.isFiat(currency) ? (
           <p
             className="font-walsheim text-xs font-normal text-spaceBlue-200"
             {...withTooltip(T("rewardBudget.detail.dollarTooltip"), {

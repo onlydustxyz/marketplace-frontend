@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { cn } from "src/utils/cn";
 

@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { UserProfile } from "src/api/Users/queries";
 import Card from "src/components/Card";

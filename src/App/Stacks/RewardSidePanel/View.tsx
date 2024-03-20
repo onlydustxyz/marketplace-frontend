@@ -1,6 +1,6 @@
 import { UseMutateFunction } from "@tanstack/react-query";
 import { PropsWithChildren, useMemo, useState } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
@@ -91,7 +91,7 @@ export default function View({
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
-  const isCurrencyUSD = Money.isUsd(data?.currency);
+  const isCurrencyUSD = Money.isFiat(data?.currency);
 
   const PayoutStatusMemo = useMemo(() => {
     if (!data) {
@@ -266,7 +266,7 @@ export default function View({
                 <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
                   <InfoIcon className="h-4 w-3" />
                   <span>
-                    {Money.isUsd(data.currency)
+                    {Money.isFiat(data.currency)
                       ? T("currencies.network.label_dollar")
                       : T("currencies.network.label", { currency: T(`currencies.network.${data.currency}`) })}
                   </span>

@@ -1,4 +1,4 @@
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { Banner } from "components/ds/banner/banner";
 import { Translate } from "components/layout/translate/translate";

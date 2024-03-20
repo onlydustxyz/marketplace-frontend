@@ -1,5 +1,5 @@
 import { Text, View } from "@react-pdf/renderer";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";

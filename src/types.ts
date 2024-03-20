@@ -1,4 +1,4 @@
-import { Money as NMoney } from "utils/Money";
+import { Money as NMoney } from "utils/Money/Money";
 
 import { components } from "./__generated/api";
 

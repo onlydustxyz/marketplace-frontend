@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import InfoIcon from "src/assets/icons/InfoIcon";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";

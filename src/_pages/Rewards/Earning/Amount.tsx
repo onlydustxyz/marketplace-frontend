@@ -1,4 +1,4 @@
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -15,7 +15,7 @@ export function Amount({ amount }: Amount) {
 
   if (!amount) return null;
 
-  const asCurrencyToDisplay = !Money.isUsd(amount.currency) && amount.currency;
+  const asCurrencyToDisplay = !Money.isFiat(amount.currency) && amount.currency;
   const currency = amount.currency;
 
   return (

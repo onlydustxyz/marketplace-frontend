@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { Chips } from "src/components/Chips/Chips";
@@ -74,7 +74,7 @@ const ConversionTooltip = ({
                   <p className="font-walsheim text-xs text-white">
                     {Money.format({ amount: currency.amount || 0, currency: currency.currency }).string}
                   </p>
-                  {!Money.isUsd(currency.currency) && (
+                  {!Money.isFiat(currency.currency) && (
                     <p className="font-walsheim text-xs text-spaceBlue-200">
                       {currency.dollar
                         ? `~${Money.format({ amount: currency.dollar, currency: Money.USD })}`
@@ -110,7 +110,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
 
     /** if we have only one currency and the she is USD don't show the tooltips */
     if (!orderedCurrencies && currency) {
-      props["data-tooltip-hidden"] = Money.isUsd(currency?.currency) || !currency.dollar;
+      props["data-tooltip-hidden"] = Money.isFiat(currency?.currency) || !currency.dollar;
     }
 
     return props;
@@ -143,10 +143,10 @@ export const AvailableConversion: FC<AvailableConversion> = ({
         </Chips>
         <ConversionAmount amount={totalAmount || currency?.amount} currency={currency?.currency} />
         <div {...(currency ? tooltipIdProps : {})}>
-          <ConversionDollar dollar={!Money.isUsd(currency?.currency) ? currency?.dollar : undefined} />
+          <ConversionDollar dollar={!Money.isFiat(currency?.currency) ? currency?.dollar : undefined} />
         </div>
       </div>
-      {!Money.isUsd(currency?.currency) ? (
+      {!Money.isFiat(currency?.currency) ? (
         <ConversionTooltip tooltipId={tooltipId} currencies={orderedCurrencies} />
       ) : null}
     </>

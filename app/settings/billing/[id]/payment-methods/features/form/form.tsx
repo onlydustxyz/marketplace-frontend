@@ -1,7 +1,7 @@
 import IBANParser from "iban";
 import { useParams } from "next/navigation";
 import { Controller, useFormContext } from "react-hook-form";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import { useIntl } from "src/hooks/useIntl";

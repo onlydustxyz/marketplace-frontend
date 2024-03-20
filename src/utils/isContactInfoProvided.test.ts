@@ -1,4 +1,4 @@
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 import { describe, expect, it } from "vitest";
 
 import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";

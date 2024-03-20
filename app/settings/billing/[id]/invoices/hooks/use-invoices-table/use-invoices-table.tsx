@@ -1,4 +1,4 @@
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import { InvoiceStatus } from "app/settings/billing/[id]/invoices/features/invoice-status/invoice-status";
 import { TInvoiceTable } from "app/settings/billing/[id]/invoices/hooks/use-invoices-table/use-invoices-table.types";

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { createPortal } from "react-dom";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import ProjectApi from "src/api/Project";
 import InfoIcon from "src/assets/icons/InfoIcon";

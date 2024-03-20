@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocalStorage } from "usehooks-ts";
-import { Money } from "utils/Money";
+import { Money } from "utils/Money/Money";
 
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
