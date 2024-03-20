@@ -1,3 +1,11 @@
+import apt from "public/images/currencyStatic/apt.png";
+import eth from "public/images/currencyStatic/eth.png";
+import eur from "public/images/currencyStatic/eur.png";
+import lords from "public/images/currencyStatic/lords.png";
+import op from "public/images/currencyStatic/op.png";
+import strk from "public/images/currencyStatic/strk.png";
+import usd from "public/images/currencyStatic/usd.png";
+import usdc from "public/images/currencyStatic/usdc.png";
 import { Money } from "utils/Money/Money";
 
 export const MoneyStatic: { [key: string]: Money.Currency } = {
@@ -5,56 +13,56 @@ export const MoneyStatic: { [key: string]: Money.Currency } = {
     id: "",
     code: "APT",
     decimals: 8,
-    logoUrl: "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/fb39d6f11124d3c6ac6d9e28e2d0d0b1.png",
+    logoUrl: apt.src,
     name: "Aptos",
   },
   ETH: {
     code: "ETH",
     id: "",
     decimals: 18,
-    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
+    logoUrl: eth.src,
     name: "Ethereum",
   },
   EUR: {
     code: "EUR",
     id: "",
     decimals: 2,
-    logoUrl: "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/6c8c210d95fccd6ce25b2b44cd70a012.png",
+    logoUrl: eur.src,
     name: "Euro",
   },
   LORDS: {
     code: "LORDS",
     id: "",
     decimals: 18,
-    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/17445.png",
+    logoUrl: lords.src,
     name: "Lords",
   },
   OP: {
     code: "OP",
     id: "",
     decimals: 18,
-    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/11840.png",
+    logoUrl: op.src,
     name: "Optimism",
   },
   STRK: {
     code: "STRK",
     id: "",
     decimals: 18,
-    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+    logoUrl: strk.src,
     name: "StarkNet Token",
   },
   USD: {
     code: "USD",
     id: "",
     decimals: 2,
-    logoUrl: "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/f171e9690f6658e106a049cd62843ec4.png",
+    logoUrl: usd.src,
     name: "US Dollar",
   },
   USDC: {
     code: "USDC",
     id: "",
     decimals: 6,
-    logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+    logoUrl: usdc.src,
     name: "USD Coin",
   },
 };
