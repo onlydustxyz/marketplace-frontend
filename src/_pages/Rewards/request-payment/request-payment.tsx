@@ -14,7 +14,7 @@ export function RequestPayment() {
   const { data: rewardsPendingInvoice } = MeApi.queries.useGetMePendingInvoices({});
   useEffect(() => {
     if (rewardsPendingInvoice?.rewards?.length) {
-      capture("reward_viewed", { pending_request: rewardsPendingInvoice?.rewards?.length });
+      capture("reward_list_viewed", { pending_rewards: rewardsPendingInvoice?.rewards?.length });
     }
   }, [rewardsPendingInvoice]);
 
