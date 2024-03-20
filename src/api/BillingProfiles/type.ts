@@ -20,6 +20,8 @@ export namespace BillingProfilesTypes {
     MEMBER = "MEMBER",
   }
 
+  export type roleUnion = components["schemas"]["BillingProfileResponse"]["me"]["role"];
+
   export interface profileTypeMapping {
     icon: TIcon.Props;
   }

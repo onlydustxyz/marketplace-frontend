@@ -19,6 +19,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
 
+import { AdminContentWrapper } from "../components/admin-content-wrapper/admin-content-wrapper";
 import { ProfileBanner } from "./component/profile-banner/profile-banner";
 import { ProfileStatus } from "./component/profile-status/profile-status";
 
@@ -40,8 +41,6 @@ function SettingsBillingPage() {
       return "disable";
     }
   }, [profile]);
-
-  const isAdmin = profile?.data.me?.role === BillingProfilesTypes.ROLE.ADMIN;
 
   useEffect(() => {
     if (open && !isPanelHasOpenedState) {
@@ -77,14 +76,14 @@ function SettingsBillingPage() {
         <div className="flex w-full flex-col gap-9">
           {renderValue}
 
-          {isAdmin ? (
+          <AdminContentWrapper role={profile?.data.me?.role}>
             <ProfileBanner
               hasValidBillingProfile={validBillingProfile}
               status={profile?.status}
               type={profile.data.type}
               id={profile.externalId}
             />
-          ) : null}
+          </AdminContentWrapper>
         </div>
       </Card>
       <div className="mt-6 flex flex-row items-center gap-4">
