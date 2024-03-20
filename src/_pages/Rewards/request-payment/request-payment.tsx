@@ -14,13 +14,13 @@ export function RequestPayment() {
   const { data: rewardsPendingInvoice } = MeApi.queries.useGetMePendingInvoices({});
   useEffect(() => {
     if (rewardsPendingInvoice?.rewards?.length) {
-      capture("ft-rp-has-rewards-to-request");
+      capture("reward_list_viewed", { pending_rewards: rewardsPendingInvoice?.rewards?.length });
     }
   }, [rewardsPendingInvoice]);
 
   function handleOpen() {
     open();
-    capture("ft-rp-click-on-request-payment");
+    capture("payments_request_started");
   }
 
   if (!rewardsPendingInvoice?.rewards?.length) {
