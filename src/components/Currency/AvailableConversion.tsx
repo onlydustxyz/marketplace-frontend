@@ -41,7 +41,7 @@ const ConversionDollar = ({ dollar }: { dollar: number | undefined }) => {
 
   return (
     <p className="font-walsheim text-xs text-spaceBlue-200">
-      {`~${Money.format({ amount: dollar, currency: Money.USD }).string}`}
+      {Money.format({ amount: dollar, currency: Money.USD, options: { prefixAmountWithTilde: true } }).string}
     </p>
   );
 };
@@ -77,7 +77,11 @@ const ConversionTooltip = ({
                   {!Money.isFiat(currency.currency) && (
                     <p className="font-walsheim text-xs text-spaceBlue-200">
                       {currency.dollar
-                        ? `~${Money.format({ amount: currency.dollar, currency: Money.USD })}`
+                        ? Money.format({
+                            amount: currency.dollar,
+                            currency: Money.USD,
+                            options: { prefixAmountWithTilde: true },
+                          }).string
                         : T("availableConversion.tooltip.na")}
                     </p>
                   )}

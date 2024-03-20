@@ -15,13 +15,13 @@ export function Amount({ amount }: Amount) {
 
   if (!amount) return null;
 
-  const asCurrencyToDisplay = !Money.isFiat(amount.currency) && amount.currency;
   const currency = amount.currency;
+  const asCurrencyToDisplay = !Money.isFiat(amount.currency) && currency;
 
   return (
     <>
       {asCurrencyToDisplay ? (
-        <Chip className="mr-1 h-5 w-5">{<CurrencyIcons className="h-4 w-4" currency={amount.currency} />}</Chip>
+        <Chip className="mr-1 h-5 w-5">{<CurrencyIcons className="h-4 w-4" currency={currency} />}</Chip>
       ) : null}
 
       {

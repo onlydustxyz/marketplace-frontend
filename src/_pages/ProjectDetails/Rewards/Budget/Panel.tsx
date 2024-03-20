@@ -126,7 +126,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
                   <Chip solid className="h-8 w-8">
                     <CurrencyIcons currency={value.currency} className="h-8 w-8" />
                   </Chip>
-                  <p className="text-title-m">
+                  <Typography variant={"title-m"}>
                     {
                       Money.format({
                         amount: value.amount,
@@ -134,7 +134,7 @@ export function BudgetPanel({ open, close, onPanelChange, projectId }: BudgetPan
                         options: { currencyClassName: "text-title-s" },
                       }).html
                     }
-                  </p>
+                  </Typography>
                 </Flex>
 
                 <Typography variant={"body-l"} as={"p"} className="text-spaceBlue-200">

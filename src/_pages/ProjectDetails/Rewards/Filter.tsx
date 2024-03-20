@@ -244,11 +244,11 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
             selected={filters.currency ?? initialFilters.currency}
             onChange={updateCurrency}
             currencies={
-              orderedCurrencies?.map(currency => ({
-                id: currency.currency.id,
-                value: currency.currency.id,
-                label: currency.currency.name,
-                image: currency.currency.logoUrl,
+              orderedCurrencies?.map(({ currency }) => ({
+                id: currency.id,
+                value: currency.id,
+                label: currency.name,
+                image: currency.logoUrl,
               })) ?? []
             }
           />

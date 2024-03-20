@@ -10,33 +10,21 @@ export function Amount({ budget }: Amount) {
   if (!budget) return null;
 
   if (!budget.usdEquivalent && !!budget.amount) {
-    return (
-      <>
-        {
-          Money.format({
-            amount: budget.amount,
-            currency: budget.currency,
-            options: {
-              currencyClassName: "text-title-s",
-            },
-          }).html
-        }
-      </>
-    );
+    return Money.format({
+      amount: budget.amount,
+      currency: budget.currency,
+      options: {
+        currencyClassName: "text-title-s",
+      },
+    }).html;
   }
 
-  return (
-    <>
-      {
-        Money.format({
-          amount: budget.usdEquivalent,
-          currency: Money.USD,
-          options: {
-            currencyClassName: "text-title-s",
-            prefixAmountWithTilde: true,
-          },
-        }).html
-      }
-    </>
-  );
+  return Money.format({
+    amount: budget.usdEquivalent,
+    currency: Money.USD,
+    options: {
+      currencyClassName: "text-title-s",
+      prefixAmountWithTilde: true,
+    },
+  }).html;
 }
