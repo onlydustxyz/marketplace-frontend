@@ -84,6 +84,7 @@ class MoneyClass implements IMoneyClass {
     const { showCurrency = true, prefixAmountWithTilde = false } = options || {};
     return this.withCurrency(this.withTilde(amount, prefixAmountWithTilde), currency.code, showCurrency);
   }
+
   public format({ amount, currency, options }: IMoneyClassFormat) {
     if (amount === null || amount === undefined || !currency) {
       return {
