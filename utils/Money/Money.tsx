@@ -136,6 +136,7 @@ export namespace Money {
 
   export type Currency = components["schemas"]["ShortCurrencyResponse"];
   export const USD = MoneyStaticUSD;
+
   export function format({ amount, currency, options }: IMoneyClassFormat) {
     const money = new MoneyClass();
     return money.format({ amount, currency, options });
