@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { withBillingProfileAdminGuard } from "app/settings/components/billing-profile-admln-guard/billing-profile-admln-guard";
+
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Key, useIntl } from "src/hooks/useIntl";
@@ -144,4 +146,4 @@ function SettingsPayoutPage() {
   );
 }
 
-export default withAuthenticationRequired(SettingsPayoutPage);
+export default withAuthenticationRequired(withBillingProfileAdminGuard(SettingsPayoutPage));

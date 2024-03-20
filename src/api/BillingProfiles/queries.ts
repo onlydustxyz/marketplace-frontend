@@ -19,7 +19,7 @@ const useGetBillingProfileById = ({
 }: UseQueryProps<UseGetBillingProfileById, { id?: string }>) => {
   return useBaseQuery<UseGetBillingProfileById>({
     resourcePath: BILLING_PROFILES_PATH.BY_ID(params?.id || ""),
-    tags: BILLING_PROFILES_TAGS.all,
+    tags: BILLING_PROFILES_TAGS.single(params?.id || ""),
     ...options,
   });
 };

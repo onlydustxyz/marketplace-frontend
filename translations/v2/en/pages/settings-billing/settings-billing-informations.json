@@ -31,14 +31,32 @@
   "manageBillingProfile": {
     "button": "__actionType__ billing profile",
     "title": "Are you sure?",
-    "deleteDescription": "You wan’t be able to access this billing profile anymore.",
-    "disableDescription": "You wan’t be able to receive rewards on this billing profile. You’ll still be able to enable it later if needed.",
     "confirm": "Yes, __actionType__ billing profile",
     "cancel": "No, keep billing profile",
+    "disabledDescription": "This billing profile has been disabled, enable it to receive rewards",
     "actionType": {
       "delete": "Delete",
       "disable": "Disable",
       "enable": "Enable"
+    },
+    "confirmation": {
+      "delete": "You wan’t be able to access this billing profile anymore.",
+      "disable": "You wan’t be able to receive rewards on this billing profile. You’ll still be able to enable it later if needed.",
+      "enable": "You’ll be able to receive rewards on this billing profile."
+    },
+    "toaster": {
+      "delete": {
+        "success": "Billing profile deleted",
+        "error": "An error occurred while deleting the billing profile"
+      },
+      "disable": {
+        "success": "Billing profile disabled",
+        "error": "An error occurred while disabling the billing profile"
+      },
+      "enable": {
+        "success": "Billing profile enabled",
+        "error": "An error occurred while enabling the billing profile"
+      }
     }
   },
   "status": {

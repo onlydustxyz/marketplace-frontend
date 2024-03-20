@@ -1,5 +1,6 @@
+import { Money as NMoney } from "utils/Money/Money";
+
 import { components } from "./__generated/api";
-import { useInstallationByIdResponse } from "./api/Github/queries";
 
 export type Branded<T, B> = T & { __brand: B };
 
@@ -31,11 +32,6 @@ export type TokenSet = {
 export type AccessToken = Branded<string, "AccessToken">;
 export type RefreshToken = Branded<Uuid, "RefreshToken">;
 
-export type ImpersonationSet = {
-  password: string;
-  userId: Uuid;
-};
-
 export type TokenSetUser = {
   id: Uuid;
   createdAt: Date;
@@ -60,24 +56,6 @@ type Uuid = string;
 export type Email = string;
 export type PhoneNumber = string;
 
-export enum Currency {
-  USD = "USD",
-  ETH = "ETH",
-  STRK = "STRK",
-  LORDS = "LORDS",
-  APT = "APT",
-  OP = "OP",
-  USDC = "USDC",
-}
-
-export type CurrencyUnion = `${Currency}`;
-export const CurrencyOrder = ["USDC", "USD", "ETH", "STRK", "OP", "APT", "LORDS"];
-
-export enum PreferredMethod {
-  Crypto = "CRYPTO",
-  Fiat = "FIAT",
-}
-
 export enum PaymentStatus {
   COMPLETE = "COMPLETE",
   LOCKED = "LOCKED",
@@ -94,29 +72,7 @@ export enum PaymentStatus {
 
 export type Locale = "en" | "fr";
 
-export const CLAIMS_KEY = "https://hasura.io/jwt/claims";
-export const PROJECTS_LED_KEY = "x-hasura-projectsLeaded";
-export const GITHUB_USERID_KEY = "x-hasura-githubUserId";
-
-export interface HasuraJWT {
-  [CLAIMS_KEY]?: {
-    [PROJECTS_LED_KEY]?: string;
-    [GITHUB_USERID_KEY]?: string;
-  };
-}
-
 export type LanguageMap = { [languageName: string]: number };
-
-export type PayoutSettings = {
-  EthTransfer?: {
-    Address?: string;
-    Name?: string;
-  };
-  WireTransfer?: {
-    IBAN?: string;
-    BIC?: string;
-  };
-};
 
 export type Contributor = {
   githubUserId: number;
@@ -124,11 +80,6 @@ export type Contributor = {
   avatarUrl: string | null;
   userId?: string;
 };
-
-export enum GithubIssueType {
-  Issue,
-  PullRequest,
-}
 
 export enum GithubPullRequestStatus {
   Open = "OPEN",
@@ -156,11 +107,6 @@ export enum GithubPullRequestReviewState {
   UnderReview = "UNDER_REVIEW",
   ChangesRequested = "CHANGES_REQUESTED",
   PendingReviewer = "PENDING_REVIEWER",
-}
-
-export enum GithubCodeReviewOutcome {
-  Approved = "APPROVED",
-  ChangeRequested = "CHANGE_REQUESTED",
 }
 
 export enum GithubContributionType {
@@ -259,7 +205,7 @@ export type ContributorT = {
   contributionToRewardCount: number | null; // not rewarded yet
   earned: {
     details?: {
-      currency: CurrencyUnion;
+      currency: NMoney.Currency;
       totalAmount: number;
       totalDollarsEquivalent?: number;
     }[];
@@ -285,20 +231,6 @@ export type Sorting = {
   field: string | undefined;
   isAscending: boolean | undefined;
 };
-
-type Repos = components["schemas"]["ShortGithubRepoResponse"] & {
-  selected?: boolean;
-  isIncludedInProject: boolean;
-};
-
-type Organization = Omit<components["schemas"]["GithubOrganizationResponse"], "repos"> & {
-  installationId: number;
-  repos: Repos[];
-};
-
-export interface OrganizationSessionStorageInterface extends useInstallationByIdResponse {
-  organization: Organization;
-}
 
 export type Contribution = components["schemas"]["ContributionPageItemResponse"];
 export type ContributionDetail = components["schemas"]["ContributionDetailsResponse"];

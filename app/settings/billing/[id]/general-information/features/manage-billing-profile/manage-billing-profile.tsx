@@ -1,7 +1,10 @@
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { TManageBillingProfile } from "app/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile.types";
 
+import BillingProfilesApi from "src/api/BillingProfiles";
+import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
@@ -9,10 +12,53 @@ import { ConfirmationModal } from "components/ds/modals/confirmation/confirmatio
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-export function ManageBillingProfile({ onConfirm, actionType }: TManageBillingProfile.Props) {
+import { NEXT_ROUTER } from "constants/router";
+
+export function ManageBillingProfile({ actionType }: TManageBillingProfile.Props) {
   const { T } = useIntl();
+  const router = useRouter();
+  const { id: billingProfileId } = useParams<{ id: string }>();
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const confirmationContent = actionType === "disable" ? "disableDescription" : "deleteDescription";
+
+  const { mutate: deleteBillingProfile, ...restDeleteBillingProfile } =
+    BillingProfilesApi.mutations.useDeleteBillingProfile({
+      params: {
+        billingProfileId,
+      },
+      options: {
+        onSuccess: () => {
+          router.push(NEXT_ROUTER.settings.profile);
+        },
+      },
+    });
+
+  useMutationAlert({
+    mutation: restDeleteBillingProfile,
+    success: {
+      message: T(`v2.pages.settings.billing.information.manageBillingProfile.toaster.${actionType}.success`),
+    },
+    error: {
+      message: T(`v2.pages.settings.billing.information.manageBillingProfile.toaster.${actionType}.error`),
+    },
+  });
+
+  const { mutate: enableOrDisableBillingProfile, ...restEnableOrDisableBillingProfile } =
+    BillingProfilesApi.mutations.useEnableOrDisableBillingProfile({
+      params: {
+        billingProfileId,
+      },
+    });
+
+  useMutationAlert({
+    mutation: restEnableOrDisableBillingProfile,
+    success: {
+      message: T(`v2.pages.settings.billing.information.manageBillingProfile.toaster.${actionType}.success`),
+    },
+    error: {
+      message: T(`v2.pages.settings.billing.information.manageBillingProfile.toaster.${actionType}.error`),
+    },
+  });
+
   function onOpenConfirmation() {
     setOpenConfirmation(true);
   }
@@ -21,10 +67,24 @@ export function ManageBillingProfile({ onConfirm, actionType }: TManageBillingPr
     setOpenConfirmation(false);
   }
 
+  function onConfirm() {
+    switch (actionType) {
+      case "delete":
+        deleteBillingProfile();
+        break;
+      case "disable":
+        enableOrDisableBillingProfile({ enable: false });
+        break;
+      case "enable":
+        enableOrDisableBillingProfile({ enable: true });
+        break;
+    }
+  }
+
   return (
-    <>
-      <Button variant="secondary" size="s" onClick={onOpenConfirmation} className="mt-6">
-        <Icon remixName="ri-delete-bin-2-line" />
+    <div className="mt-6 w-max">
+      <Button variant="secondary" size="s" onClick={onOpenConfirmation}>
+        <Icon remixName={actionType === "delete" ? "ri-delete-bin-2-line" : "ri-forbid-2-line"} />
         <Translate
           token="v2.pages.settings.billing.information.manageBillingProfile.button"
           params={{
@@ -37,7 +97,7 @@ export function ManageBillingProfile({ onConfirm, actionType }: TManageBillingPr
         onClose={onCancel}
         title={<Translate token="v2.pages.settings.billing.information.manageBillingProfile.title" />}
         content={
-          <Translate token={`v2.pages.settings.billing.information.manageBillingProfile.${confirmationContent}`} />
+          <Translate token={`v2.pages.settings.billing.information.manageBillingProfile.confirmation.${actionType}`} />
         }
         buttons={{
           confirm: {
@@ -54,6 +114,6 @@ export function ManageBillingProfile({ onConfirm, actionType }: TManageBillingPr
           },
         }}
       />
-    </>
+    </div>
   );
 }

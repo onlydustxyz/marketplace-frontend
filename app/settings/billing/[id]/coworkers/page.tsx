@@ -1,11 +1,13 @@
 "use client";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { formatDistance } from "date-fns";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
 import { ManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker";
 import { TManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker.types";
+import { withBillingProfileAdminGuard } from "app/settings/components/billing-profile-admln-guard/billing-profile-admln-guard";
 
 import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
@@ -167,4 +169,4 @@ function CoworkersPage() {
   );
 }
 
-export default CoworkersPage;
+export default withAuthenticationRequired(withBillingProfileAdminGuard(CoworkersPage));
