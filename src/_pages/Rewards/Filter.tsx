@@ -48,7 +48,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   const { rewards, setFilterQueryParams, currencies, projects } = useContext(UserRewardsContext);
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    "my-rewards-table-filters-v2-0-0",
+    "my-rewards-table-filters-v3-0-0",
     JSON.stringify(initialFilters)
   );
 
@@ -112,12 +112,7 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
     const updatedState = { ...prevState, ...newState };
 
-    const removeCurrenciesJsx = updatedState.currency?.map(c => ({
-      ...c,
-      label: "",
-    }));
-
-    setFiltersStorage(JSON.stringify({ ...updatedState, currency: removeCurrenciesJsx }));
+    setFiltersStorage(JSON.stringify({ ...updatedState }));
 
     return updatedState;
   }
@@ -156,8 +151,10 @@ export const UserRewardsFilter = forwardRef(function UserRewardsFilter(
   const currenciesFilters = useMemo(
     () =>
       currencies.map(currency => ({
-        id: currency,
-        value: currency,
+        id: currency.id,
+        value: currency.id,
+        label: currency.name,
+        image: currency.logoUrl,
       })),
     [currencies]
   );

@@ -1,7 +1,7 @@
-import { Currency } from "src/types";
+import { Money } from "utils/Money/Money";
 
 export namespace TCurrencies {
   export interface Props {
-    currencies: Currency[];
+    currencies: Money.Static.Currency[];
   }
 }

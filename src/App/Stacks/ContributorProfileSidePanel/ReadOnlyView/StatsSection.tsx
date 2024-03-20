@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
+import { Money } from "utils/Money/Money";
 
 import { UserProfile } from "src/api/Users/queries";
 import Card from "src/components/Card";
@@ -9,8 +10,6 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 import ArrowRightLine from "src/icons/ArrowRightLine";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-import { Currency } from "src/types";
-import { formatMoneyAmount } from "src/utils/money";
 
 import { Section } from "./Section";
 import StatCard from "./StatCard";
@@ -64,14 +63,11 @@ export default function StatsSection({ profile }: Props) {
             <AvailableConversion tooltipId={`${profile.githubUserId}-earned-details`} currencies={currenciesStats} />
           }
           counter={
-            <>
-              {formatMoneyAmount({
-                amount: stats?.totalsEarned?.totalAmount || 0,
-                notation: "compact",
-                showCurrency: false,
-              })}{" "}
-              <span className="text-2xl">{Currency.USD}</span>
-            </>
+            Money.format({
+              amount: stats?.totalsEarned?.totalAmount || 0,
+              currency: Money.USD,
+              options: { notation: "compact", currencyClassName: "text-2xl" },
+            }).html
           }
         />
         <Card

@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocalStorage } from "usehooks-ts";
+import { Money } from "utils/Money/Money";
 
 import ErrorFallback from "src/ErrorFallback";
 import ProjectApi from "src/api/Project";
@@ -17,7 +18,6 @@ import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { useShowToaster } from "src/hooks/useToaster";
 import { ProjectBudgetType } from "src/types";
-import { BudgetCurrencyType } from "src/utils/money";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -79,7 +79,7 @@ const RewardForm: React.FC = () => {
     },
   });
 
-  const [preferredCurrency, setPreferredCurrency] = useLocalStorage<BudgetCurrencyType | undefined>(
+  const [preferredCurrency, setPreferredCurrency] = useLocalStorage<Money.Currency | undefined>(
     `preferredCurrency-${project?.id}`,
     undefined
   );
@@ -181,7 +181,7 @@ const RewardForm: React.FC = () => {
 const mapFormDataToVariables = ({ workItems, amountToWire, currency, contributor }: Inputs) => {
   return {
     amount: amountToWire,
-    currency,
+    currencyId: currency.id,
     recipientId: contributor.githubUserId,
     items: workItems,
   };

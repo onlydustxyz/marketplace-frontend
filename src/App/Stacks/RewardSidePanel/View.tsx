@@ -1,5 +1,6 @@
 import { UseMutateFunction } from "@tanstack/react-query";
 import { PropsWithChildren, useMemo, useState } from "react";
+import { Money } from "utils/Money/Money";
 
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
@@ -18,11 +19,10 @@ import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { useCloseStack } from "src/libs/react-stack";
-import { Currency, GithubContributionType, PaymentStatus } from "src/types";
+import { GithubContributionType, PaymentStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { rewardItemToContribution } from "src/utils/formatToContribution";
 import { pretty } from "src/utils/id";
-import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
 import { Tooltip as NextUiTooltip } from "components/ds/tooltip/tooltip";
@@ -91,7 +91,7 @@ export default function View({
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
-  const isCurrencyUSD = data?.currency === Currency.USD;
+  const isCurrencyUSD = Money.isFiat(data?.currency);
 
   const PayoutStatusMemo = useMemo(() => {
     if (!data) {
@@ -266,7 +266,7 @@ export default function View({
                 <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
                   <InfoIcon className="h-4 w-3" />
                   <span>
-                    {data.currency === Currency.USD
+                    {Money.isFiat(data.currency)
                       ? T("currencies.network.label_dollar")
                       : T("currencies.network.label", { currency: T(`currencies.network.${data.currency}`) })}
                   </span>
@@ -277,10 +277,13 @@ export default function View({
                   <div className="flex items-center gap-1">
                     <CurrencyIcons currency={data.currency} className="h-8 w-8" />
                     <span>
-                      {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
+                      {
+                        Money.format({ amount: data.amount, currency: data.currency, options: { showCurrency: false } })
+                          .string
+                      }
                     </span>
                   </div>
-                  <span className="text-3xl">{data.currency}</span>
+                  <span className="text-3xl">{data.currency.code}</span>
                 </div>
                 {!isCurrencyUSD && data.dollarsEquivalent ? (
                   <>
@@ -288,7 +291,13 @@ export default function View({
                       {T("reward.table.detailsPanel.usdEstimateTooltip")}
                     </Tooltip>
                     <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">
-                      ~{formatMoneyAmount({ amount: data.dollarsEquivalent })}
+                      {
+                        Money.format({
+                          amount: data.dollarsEquivalent,
+                          currency: Money.USD,
+                          options: { prefixAmountWithTilde: false },
+                        }).string
+                      }
                     </span>
                   </>
                 ) : null}
