@@ -59,6 +59,17 @@
       }
     }
   },
+  "leaveBillingProfile": {
+    "title": "Are you sure?",
+    "toaster": {
+      "success": "You left the billing profile successfully",
+      "error": "An error occurred while leaving the billing profile"
+    },
+    "confirmDescription": "You won’t be able to receive rewards on this billing profile anymore.",
+    "confirmButton": "Yes, leave",
+    "cancelButton": "No, stay",
+    "button": "Leave billing profile"
+  },
   "status": {
     "descriptions": {
       "CLOSED": "Your profile got permanently rejected, please contact us if you believe it’s an error.",

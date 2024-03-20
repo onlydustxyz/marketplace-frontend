@@ -8,6 +8,11 @@ export const BILLING_PROFILES_TAGS = {
     "billing-profile-single",
     { billingProfileId },
   ],
+  billing_profile_coworkers: (billingProfileId: string) => [
+    RESSOURCE_TAGS.BILLING_PROFILES,
+    "billing-profile-coworkers",
+    { billingProfileId },
+  ],
   upload_invoice_linked_to_profile: (billingProfileId: string) => [
     RESSOURCE_TAGS.BILLING_PROFILES,
     "upload-invoice",

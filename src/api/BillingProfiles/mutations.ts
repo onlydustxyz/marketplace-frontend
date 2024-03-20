@@ -15,6 +15,9 @@ export type UseInviteBillingCoworkerResponse = components["schemas"]["BillingPro
 export type UseUpdatePayoutSettingsBody = components["schemas"]["BillingProfilePayoutInfoRequest"];
 export type UseUpdatePayoutSettingsResponse = components["schemas"]["BillingProfilePayoutInfoResponse"];
 export type UseEnableOrDisableBillingProfileBody = components["schemas"]["BillingProfileEnableRequest"];
+export type UseAcceptInvoiceMandateBody = components["schemas"]["InvoiceMandateRequest"];
+export type UseUpdateBillingTypeBody = components["schemas"]["BillingProfileTypeRequest"];
+export type UseUpdateCoworkerRoleBody = components["schemas"]["UpdateCoworkerRoleRequest"];
 
 const useCreateBillingProfile = ({
   options = {},
@@ -96,8 +99,6 @@ const useUploadInvoice = ({
   });
 };
 
-export type UseAcceptInvoiceMandateBody = components["schemas"]["InvoiceMandateRequest"];
-
 const useAcceptInvoiceMandate = ({
   params,
   options = {},
@@ -138,7 +139,6 @@ const useDeleteBillingCoworker = ({
   });
 };
 
-export type UseUpdateBillingTypeBody = components["schemas"]["BillingProfileTypeRequest"];
 const useUpdateBillingType = ({
   params,
   options,
@@ -155,6 +155,25 @@ const useUpdateBillingType = ({
   });
 };
 
+const useUpdateCoworkerRole = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { billingProfileId?: string; githubUserId?: string }, UseUpdateCoworkerRoleBody>) => {
+  return useBaseMutation<UseUpdateCoworkerRoleBody, void>({
+    resourcePath: BILLING_PROFILES_PATH.UPDATE_COWORKER_ROLE(
+      params?.billingProfileId || "",
+      params?.githubUserId || ""
+    ),
+    invalidatesTags: [
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.billing_profile_coworkers(params?.billingProfileId || ""), exact: false },
+    ],
+    method: "PUT",
+    enabled: !!params?.billingProfileId && !!params?.githubUserId,
+    ...options,
+  });
+};
+
 export default {
   useCreateBillingProfile,
   useDeleteBillingProfile,
@@ -165,4 +184,5 @@ export default {
   useDeleteBillingCoworker,
   useEnableOrDisableBillingProfile,
   useUpdateBillingType,
+  useUpdateCoworkerRole,
 };

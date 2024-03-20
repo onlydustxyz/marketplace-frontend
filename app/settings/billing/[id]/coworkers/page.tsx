@@ -115,7 +115,7 @@ function CoworkersPage() {
               hasPendingInvite={hasPendingInvite}
             />
           ),
-          role: <RolesSelector activeRole={role} billingProfileId={id} isYou={isYou} />,
+          role: <RolesSelector activeRole={role} billingProfileId={id} githubUserId={githubUserId} isYou={isYou} />,
           joined: joinedAt
             ? formatDistance(new Date(joinedAt), new Date(), {
                 addSuffix: true,
