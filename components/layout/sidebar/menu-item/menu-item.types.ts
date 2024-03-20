@@ -11,5 +11,6 @@ export namespace TMenuItem {
     startIcon?: ReactNode;
     matchPathOptions?: TBaseLink.Props["matchPathOptions"];
     pendingInvitationResponse?: boolean;
+    hasSeparator?: boolean;
   }
 }

@@ -35,6 +35,7 @@ export function Sidebar() {
       {
         label: <Translate token="v2.pages.settings.billing.sidebar.items.profile" />,
         href: NEXT_ROUTER.settings.profile,
+        hasSeparator: true,
       },
       {
         label: <Translate token="v2.pages.settings.billing.sidebar.items.payoutPreferences" />,
