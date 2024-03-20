@@ -4,6 +4,7 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
+import { LeaveBillingProfile } from "app/settings/billing/[id]/general-information/features/leave-billing-profile/leave-billing-profile";
 import { ManageBillingProfile } from "app/settings/billing/[id]/general-information/features/manage-billing-profile/manage-billing-profile";
 import { ProfileCompany } from "app/settings/billing/[id]/general-information/features/profile/profile-company/profile-company";
 import { ProfileIndividual } from "app/settings/billing/[id]/general-information/features/profile/profile-individual/profile-individual";
@@ -24,13 +25,22 @@ import { ProfileBanner } from "./component/profile-banner/profile-banner";
 import { ProfileStatus } from "./component/profile-status/profile-status";
 
 function SettingsBillingPage() {
-  const { id } = useParams<{ id: string }>();
-  const { profile, refetch } = useBillingProfileById({ id, enabledPooling: false });
+  const { id: billingProfileId } = useParams<{ id: string }>();
+  const { profile, refetch } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
   const { open } = useSubscribeStacks(StackRoute.Verify);
   const [isPanelHasOpenedState, setIsPanelHasOpenedState] = useState(false);
 
   const validBillingProfile = profile?.status === "VERIFIED";
   const isBillingProfileIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
+
+  useEffect(() => {
+    if (open && !isPanelHasOpenedState) {
+      setIsPanelHasOpenedState(true);
+    } else if (!open && isPanelHasOpenedState) {
+      refetch();
+      setIsPanelHasOpenedState(false);
+    }
+  }, [open, isPanelHasOpenedState]);
 
   const actionType = useMemo(() => {
     if (!profile?.data.enabled) {
@@ -41,15 +51,6 @@ function SettingsBillingPage() {
       return "disable";
     }
   }, [profile]);
-
-  useEffect(() => {
-    if (open && !isPanelHasOpenedState) {
-      setIsPanelHasOpenedState(true);
-    } else if (!open && isPanelHasOpenedState) {
-      refetch();
-      setIsPanelHasOpenedState(false);
-    }
-  }, [open, isPanelHasOpenedState]);
 
   const renderValue = useMemo(() => {
     if (isBillingProfileIndividual) {
@@ -91,7 +92,7 @@ function SettingsBillingPage() {
           <ManageBillingProfile actionType={actionType} />
         </AdminContentWrapper>
 
-        {/* TODO: Add leave button @pixelfact */}
+        <LeaveBillingProfile actionType="leave" />
 
         {!profile?.data?.enabled ? (
           <Typography as="div" variant="body-s" className="mt-6 text-spaceBlue-200">
