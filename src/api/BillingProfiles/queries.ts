@@ -55,7 +55,7 @@ const useGetBillingProfileCoworkers = ({
   return useInfiniteBaseQuery<UseGetBillingCoworkers>(
     {
       resourcePath: BILLING_PROFILES_PATH.COWORKERS(params?.billingProfileId ?? ""),
-      tags: BILLING_PROFILES_TAGS.single(params?.billingProfileId ?? ""),
+      tags: BILLING_PROFILES_TAGS.billing_profile_coworkers(params?.billingProfileId ?? ""),
       queryParams: params?.queryParams,
       pageSize: params?.pageSize || 6,
     },
