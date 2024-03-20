@@ -18,9 +18,7 @@ export function Currencies({ currencies }: TCurrencies.Props) {
         <Flex key={currency} className="gap-1" alignItems="center">
           <CurrencyIcons currency={Money.fromSchema({ code: currency })} className="h-4 w-4" />
 
-          <p className="text-gray-50">
-            <Translate token={`currencies.currency.${currency}`} />
-          </p>
+          <p className="text-gray-50">{Money.fromSchema({ code: currency }).name}</p>
         </Flex>
       ))}
     </Flex>
