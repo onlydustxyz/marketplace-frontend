@@ -32,7 +32,7 @@ class MoneyClass implements IMoneyClass {
     return str;
   }
 
-  private withTilde(str: string | number, prefixAmountWithTilde: boolean) {
+  private withTilde(str: string, prefixAmountWithTilde: boolean) {
     if (prefixAmountWithTilde) {
       return `~${str}`;
     }
