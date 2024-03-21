@@ -142,7 +142,7 @@ const useDeleteBillingCoworker = ({
 const useUpdateBillingType = ({
   params,
   options,
-}: UseMutationProps<unknown, { billingProfileId: string }, UseUpdateBillingTypeBody>) => {
+}: UseMutationProps<void, { billingProfileId: string }, UseUpdateBillingTypeBody>) => {
   return useBaseMutation<UseUpdateBillingTypeBody, void>({
     resourcePath: BILLING_PROFILES_PATH.UPDATE_BILLING_PROFILES_TYPE(params?.billingProfileId || ""),
     enabled: !!params?.billingProfileId,
