@@ -7,5 +7,6 @@ export namespace TToggle {
     name?: string;
     value: boolean;
     disabled?: boolean;
+    reverse?: boolean;
   }
 }

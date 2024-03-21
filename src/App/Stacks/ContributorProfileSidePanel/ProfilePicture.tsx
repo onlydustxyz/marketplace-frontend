@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useEffect, useRef, useState } from "react";
+import { ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import MeApi from "src/api/me";
@@ -64,7 +64,7 @@ const ProfilePicture = ({ editable, avatarUrl, onChange }: Props) => {
       )}
       <img
         src={preview}
-        className={cn("-mt-12 ml-8 h-24 w-24 rounded-full", {
+        className={cn("-mt-12 ml-8 h-24 w-24 rounded-full object-cover", {
           "outline outline-4 outline-greyscale-50/12": isXl,
         })}
         data-testid="avatarUrl"
