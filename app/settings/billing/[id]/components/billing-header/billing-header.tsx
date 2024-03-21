@@ -1,15 +1,15 @@
 import { useParams } from "next/navigation";
+import { useMemo } from "react";
 
 import { SettingsHeader } from "app/settings/components/settings-header/settings-header";
 
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { MeTypes } from "src/api/me/types";
 
-import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
-
 import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
 
 import { AdminContentWrapper } from "../admin-content-wrapper/admin-content-wrapper";
+import { TBillingHeader } from "./billing-header.types";
 import { IndividualProgression } from "./components/individual-progression/individual-progression";
 import { InvitedBy } from "./components/invited-by/invited-by";
 import { TeamworkMode } from "./components/teamwork-mode/teamwork-mode";
@@ -18,43 +18,51 @@ export function BillingHeader() {
   const { id } = useParams<{ id: string }>();
   const { profile } = useBillingProfileById({ id, enabledPooling: false });
 
-  const isAdmin = profile?.data?.me?.role === BillingProfilesTypes.ROLE.ADMIN;
+  const role = profile?.data.me.role;
+
+  const isAdmin = role === BillingProfilesTypes.ROLE.ADMIN;
   const isInvited = profile?.data.me?.invitation;
   const isIndividual = profile?.data?.type === MeTypes.billingProfileType.Individual;
+
+  const headerArgs: TBillingHeader.HeaderArgs = {
+    [MeTypes.billingProfileType.Individual]: {
+      icon: "ri-user-line",
+      title: profile?.data?.name,
+      subtitle: "v2.pages.settings.billing.header.individual.subtitle",
+    },
+    [MeTypes.billingProfileType.SelfEmployed]: {
+      icon: "ri-suitcase-line",
+      title: profile?.data?.name,
+      subtitle: "v2.pages.settings.billing.header.selfEmployed.subtitle",
+    },
+    [MeTypes.billingProfileType.Company]: {
+      icon: "ri-vip-crown-line",
+      title: profile?.data?.name,
+      subtitle: "v2.pages.settings.billing.header.company.subtitle",
+    },
+    MEMBER: {
+      icon: "ri-team-line",
+      title: profile?.data?.name,
+      subtitle: "v2.pages.settings.billing.header.member.subtitle",
+    },
+  };
+
+  const getHeaderArg = useMemo(() => {
+    if (
+      role === BillingProfilesTypes.ROLE.MEMBER ||
+      profile?.data.me.invitation?.role === BillingProfilesTypes.ROLE.MEMBER
+    ) {
+      return "MEMBER";
+    }
+
+    return profile?.data?.type ?? MeTypes.billingProfileType.Individual;
+  }, [role, profile]);
 
   if (!profile) {
     return null;
   }
 
-  const headerArgsBis = {
-    [MeTypes.billingProfileType.Individual]: {
-      icon: "ri-user-line" as RemixIconsName,
-      title: profile.data?.name,
-      subtitle: "v2.pages.settings.billing.header.individual.subtitle",
-    },
-    [MeTypes.billingProfileType.SelfEmployed]: {
-      icon: "ri-suitcase-line" as RemixIconsName,
-      title: profile.data?.name,
-      subtitle: "v2.pages.settings.billing.header.selfEmployed.subtitle",
-    },
-    [MeTypes.billingProfileType.Company]: {
-      icon: "ri-vip-crown-line" as RemixIconsName,
-      title: profile.data?.name,
-      subtitle: "v2.pages.settings.billing.header.company.subtitle",
-    },
-  };
-
-  const props = headerArgsBis[profile.data?.type ?? MeTypes.billingProfileType.Individual];
-
-  if (
-    profile.data.me.role === BillingProfilesTypes.ROLE.MEMBER ||
-    profile.data.me.invitation?.role === BillingProfilesTypes.ROLE.MEMBER
-  ) {
-    props.icon = "ri-team-line" as RemixIconsName;
-    props.subtitle = "v2.pages.settings.billing.header.member.subtitle";
-  }
-
-  const renderChildren = () => {
+  const renderValue = () => {
     if (isInvited && !isAdmin) {
       return <InvitedBy invitation={profile.data.me.invitation} />;
     }
@@ -69,7 +77,7 @@ export function BillingHeader() {
     }
 
     return (
-      <AdminContentWrapper role={profile.data.me.role}>
+      <AdminContentWrapper role={role}>
         <TeamworkMode
           type={profile.data.type}
           isSwitchableToSelfEmployed={profile.data.isSwitchableToSelfEmployed}
@@ -79,9 +87,5 @@ export function BillingHeader() {
     );
   };
 
-  return (
-    <SettingsHeader {...headerArgsBis[profile.data?.type ?? MeTypes.billingProfileType.Individual]}>
-      {renderChildren()}
-    </SettingsHeader>
-  );
+  return <SettingsHeader {...headerArgs[getHeaderArg]}>{renderValue()}</SettingsHeader>;
 }

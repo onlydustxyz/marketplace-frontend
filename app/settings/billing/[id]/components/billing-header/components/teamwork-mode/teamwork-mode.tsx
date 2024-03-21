@@ -1,7 +1,7 @@
-import { useState } from "react";
-
 import BillingProfilesApi from "src/api/BillingProfiles";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
+import useMutationAlert from "src/api/useMutationAlert";
+import { useIntl } from "src/hooks/useIntl";
 
 import { Toggle } from "components/ds/form/toggle/toggle";
 import { Tooltip } from "components/ds/tooltip/tooltip";
@@ -13,19 +13,25 @@ import { Typography } from "components/layout/typography/typography";
 import { TTeamworkMode } from "./teamwork-mode.types";
 
 export function TeamworkMode({ type, isSwitchableToSelfEmployed, id }: TTeamworkMode.Props) {
-  const [isChecked, setIsChecked] = useState(type === BillingProfilesTypes.type.Company);
+  const { T } = useIntl();
 
-  const disabled = !isSwitchableToSelfEmployed && type === BillingProfilesTypes.type.Company;
+  const isChecked = type === BillingProfilesTypes.type.Company;
+  const disabled = !isSwitchableToSelfEmployed && isChecked;
 
-  const { mutate: updateBillingType } = BillingProfilesApi.mutations.useUpdateBillingType({
+  const { mutate: updateBillingType, ...restUpdateBillingType } = BillingProfilesApi.mutations.useUpdateBillingType({
     params: {
       billingProfileId: id,
     },
   });
 
-  const handleToggle = () => {
-    setIsChecked(!isChecked);
+  useMutationAlert({
+    mutation: restUpdateBillingType,
+    error: {
+      message: T("v2.pages.settings.billing.header.teamwork.alert.error"),
+    },
+  });
 
+  const handleToggle = () => {
     updateBillingType({
       type: isChecked ? BillingProfilesTypes.type.SelfEmployed : BillingProfilesTypes.type.Company,
     });
@@ -33,12 +39,17 @@ export function TeamworkMode({ type, isSwitchableToSelfEmployed, id }: TTeamwork
 
   return (
     <Flex alignItems="center" className="gap-1">
-      <Tooltip placement="bottom" content={<Translate token="v2.pages.settings.billing.header.teamwork.tooltip" />}>
+      <Tooltip
+        placement="bottom"
+        hasMaxWidth
+        content={<Translate token="v2.pages.settings.billing.header.teamwork.tooltip" />}
+      >
         <Icon remixName="ri-information-line" className="text-spaceBlue-200" />
       </Tooltip>
 
       <Tooltip
-        placement="bottom"
+        placement="bottom-end"
+        hasMaxWidth
         isDisabled={!disabled}
         content={<Translate token="v2.pages.settings.billing.header.teamwork.unswitchable" />}
       >

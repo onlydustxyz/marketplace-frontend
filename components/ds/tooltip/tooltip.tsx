@@ -9,6 +9,7 @@ export function Tooltip({
   children,
   enabled = true,
   canInteract = false,
+  hasMaxWidth,
   ...props
 }: TTooltip.Props) {
   if (!enabled) {
@@ -23,8 +24,12 @@ export function Tooltip({
       shouldCloseOnBlur
       classNames={{
         base: cn("before:bg-greyscale-800", { "pointer-events-none": !canInteract }),
-        content:
-          "px-3 py-2 bg-greyscale-800 od-text-body-s text-greyscale-50 rounded-lg shadow-md font-walsheim max-w-[192px] text-center",
+        content: cn(
+          "px-3 py-2 bg-greyscale-800 od-text-body-s text-greyscale-50 rounded-lg shadow-md font-walsheim text-center",
+          {
+            "max-w-[192px]": hasMaxWidth,
+          }
+        ),
       }}
     >
       <Component className="flex">{children}</Component>

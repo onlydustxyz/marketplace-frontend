@@ -19,6 +19,9 @@
   "teamwork": {
     "title": "Teamwork mode",
     "tooltip": "Enable teamwork mode if you wish to invite co-workers to manage rewards on their behalf.",
-    "unswitchable": "Remove all your coworkers to switch back to a self employed account."
+    "unswitchable": "Remove all your coworkers to switch back to a self employed account.",
+    "alert": {
+      "error": "An error occured while switching to teamwork mode."
+    }
   }
 }

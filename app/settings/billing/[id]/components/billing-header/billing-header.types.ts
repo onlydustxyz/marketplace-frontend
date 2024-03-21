@@ -1,5 +1,15 @@
 import { PropsWithChildren } from "react";
 
+import { TSettingsHeader } from "app/settings/components/settings-header/settings-header.types";
+
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
+
 export namespace TBillingHeader {
+  type HeaderArgsKeys = BillingProfilesTypes.typeUnion | "MEMBER";
+
+  export type HeaderArgs = {
+    [key in HeaderArgsKeys]: TSettingsHeader.Props;
+  };
+
   export interface Props extends PropsWithChildren {}
 }
