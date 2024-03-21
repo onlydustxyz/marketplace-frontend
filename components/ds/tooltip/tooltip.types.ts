@@ -5,5 +5,6 @@ export namespace TTooltip {
     className?: string;
     enabled?: boolean;
     canInteract?: boolean;
+    hasMaxWidth?: boolean;
   }
 }
