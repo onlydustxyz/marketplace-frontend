@@ -1,4 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
+import { useRouter } from "next/navigation";
 import { Fragment, PropsWithChildren, useState } from "react";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
@@ -12,6 +13,8 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
 
@@ -47,11 +50,16 @@ interface Props extends TUseMenu.Return {
 
 export function View({ avatarUrl, login, hideProfileItems, labelToken, redirection, errorColor, error }: Props) {
   const { T } = useIntl();
+  const router = useRouter();
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
+
+  function handleSponsorClick() {
+    router.push(NEXT_ROUTER.sponsor.all);
+  }
 
   return (
     <div className="relative">
@@ -132,6 +140,12 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
                     </Flex>
                   </MenuItem>
                 </BaseLink>
+
+                {/* TODO @hayden feature flag */}
+                <MenuItem onClick={handleSponsorClick}>
+                  <Icon remixName="ri-service-line" size={20} />
+                  <div className="grow">{T("v2.features.menu.sponsoring")}</div>
+                </MenuItem>
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>
