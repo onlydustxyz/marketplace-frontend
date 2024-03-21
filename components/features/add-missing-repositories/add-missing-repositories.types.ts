@@ -4,7 +4,7 @@ export namespace TAddMissingRepositories {
   export interface Props {
     url: string;
     disabled?: boolean;
-    tooltip?: string;
+    tooltip: string;
     backgroundColor?: TButton.Props["backgroundColor"];
     className?: string;
   }
