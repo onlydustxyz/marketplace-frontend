@@ -5,7 +5,7 @@ import { TSettingsHeader } from "app/settings/components/settings-header/setting
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 
 export namespace TBillingHeader {
-  type HeaderArgsKeys = BillingProfilesTypes.typeUnion | "MEMBER";
+  type HeaderArgsKeys = BillingProfilesTypes.typeUnion | BillingProfilesTypes.ROLE.MEMBER;
 
   export type HeaderArgs = {
     [key in HeaderArgsKeys]: TSettingsHeader.Props;

@@ -52,26 +52,22 @@ export function BillingHeader() {
       role === BillingProfilesTypes.ROLE.MEMBER ||
       profile?.data.me.invitation?.role === BillingProfilesTypes.ROLE.MEMBER
     ) {
-      return "MEMBER";
+      return BillingProfilesTypes.ROLE.MEMBER;
     }
 
     return profile?.data?.type ?? MeTypes.billingProfileType.Individual;
   }, [role, profile]);
 
-  if (!profile) {
-    return null;
-  }
-
-  const renderValue = () => {
+  const renderValue = useMemo(() => {
     if (isInvited && !isAdmin) {
-      return <InvitedBy invitation={profile.data.me.invitation} />;
+      return <InvitedBy invitation={profile?.data.me.invitation} />;
     }
 
     if (isIndividual) {
       return (
         <IndividualProgression
-          amount={profile.data.currentYearPaymentAmount}
-          limit={profile.data.currentYearPaymentLimit}
+          amount={profile?.data.currentYearPaymentAmount}
+          limit={profile?.data.currentYearPaymentLimit}
         />
       );
     }
@@ -79,13 +75,17 @@ export function BillingHeader() {
     return (
       <AdminContentWrapper role={role}>
         <TeamworkMode
-          type={profile.data.type}
-          isSwitchableToSelfEmployed={profile.data.isSwitchableToSelfEmployed}
+          type={profile?.data.type}
+          isSwitchableToSelfEmployed={profile?.data.isSwitchableToSelfEmployed}
           id={id}
         />
       </AdminContentWrapper>
     );
-  };
+  }, [isInvited, isAdmin, isIndividual, profile, role, id]);
 
-  return <SettingsHeader {...headerArgs[getHeaderArg]}>{renderValue()}</SettingsHeader>;
+  if (!profile) {
+    return null;
+  }
+
+  return <SettingsHeader {...headerArgs[getHeaderArg]}>{renderValue}</SettingsHeader>;
 }
