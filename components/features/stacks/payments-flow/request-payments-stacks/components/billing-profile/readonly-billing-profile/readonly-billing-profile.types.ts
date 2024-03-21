@@ -1,7 +1,7 @@
-import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
+import { UseGetBillingProfileById } from "src/api/BillingProfiles/queries";
 
 export namespace TReadonlyBillingProfile {
   export interface Props {
-    billingProfile: BillingProfilesTypes.BillingProfile;
+    billingProfile: UseGetBillingProfileById;
   }
 }

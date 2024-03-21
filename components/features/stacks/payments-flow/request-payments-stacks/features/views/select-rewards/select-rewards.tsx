@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { IMAGES } from "src/assets/img";
 import { usePosthog } from "src/hooks/usePosthog";
 
@@ -14,7 +15,7 @@ import { EmptyState } from "components/layout/placeholders/empty-state/empty-sta
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
 
 import { AmountCounter } from "../../../components/amount-counter/amount-counter";
 
@@ -24,14 +25,30 @@ export function SelectRewards({
   includedRewards,
   excludedRewards,
   goTo,
-  isMandateAccepted,
-  selectedBillingProfile,
+  billingProfileId,
 }: TSelectRewards.Props) {
   const { capture } = usePosthog();
-  const { user } = useCurrentUser();
+
+  const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
+  // TODO find out if the limit can be required and always fulfilled
+  const currentYearPaymentLimit = profile?.data?.currentYearPaymentLimit ?? 5000;
+
   const totalAmountSelectedRewards = useMemo(
     () => includedRewards.reduce((count, reward) => (count += reward.amount.dollarsEquivalent || 0), 0),
     [includedRewards]
+  );
+
+  const totalAmountCumulated = useMemo(
+    // TODO find out if the limit can be required and always fulfilled
+    () => totalAmountSelectedRewards + (profile?.data?.currentYearPaymentLimit ?? 0),
+    [totalAmountSelectedRewards, profile?.data?.currentYearPaymentLimit]
+  );
+
+  const isDisabled = useMemo(
+    () =>
+      includedRewards.length < 1 ||
+      (profile?.data?.type === BillingProfilesTypes.type.Individual && totalAmountCumulated > currentYearPaymentLimit),
+    [includedRewards, currentYearPaymentLimit, totalAmountCumulated, profile?.data?.type]
   );
 
   const onSubmit = () => {
@@ -39,7 +56,10 @@ export function SelectRewards({
       includedRewards,
       excludedRewards,
     });
-    if (user?.billingProfileType === "INDIVIDUAL" || (user?.billingProfileType === "COMPANY" && isMandateAccepted)) {
+    if (
+      profile?.data?.type === BillingProfilesTypes.type.Individual ||
+      (profile?.data?.type === BillingProfilesTypes.type.Company && profile?.data?.invoiceMandateAccepted)
+    ) {
       goTo({ to: TRequestPaymentsStacks.Views.Generate });
     } else {
       goTo({ to: TRequestPaymentsStacks.Views.Mandate });
@@ -99,7 +119,7 @@ export function SelectRewards({
                 translate={{ token: "v2.pages.stacks.request_payments.uploadInvoice.guidelinesTitle" }}
                 className="mb-4"
               />
-              {selectedBillingProfile ? <ReadonlyBillingProfile billingProfile={selectedBillingProfile} /> : null}
+              {profile?.data ? <ReadonlyBillingProfile billingProfile={profile?.data} /> : null}
             </div>
             <Tabs
               tabs={[
@@ -119,7 +139,11 @@ export function SelectRewards({
             />
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-            <AmountCounter total={totalAmountSelectedRewards} isCompany={user?.billingProfileType === "COMPANY"} />
+            <AmountCounter
+              total={totalAmountCumulated}
+              isCompany={profile?.data?.type === BillingProfilesTypes.type.Company}
+              limit={currentYearPaymentLimit}
+            />
             <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
               <div className="flex items-center justify-end gap-5 ">
                 <Button
@@ -129,7 +153,7 @@ export function SelectRewards({
                 >
                   <Translate token="v2.pages.stacks.request_payments.form.back" />
                 </Button>
-                <Button variant="primary" size="m" onClick={onSubmit} disabled={includedRewards?.length < 1}>
+                <Button variant="primary" size="m" onClick={onSubmit} disabled={isDisabled}>
                   <Translate
                     token="v2.pages.stacks.request_payments.form.submit"
                     params={{ count: includedRewards?.length }}
