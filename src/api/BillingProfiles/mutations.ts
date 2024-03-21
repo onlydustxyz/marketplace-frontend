@@ -143,7 +143,7 @@ const useUpdateBillingType = ({
   params,
   options,
 }: UseMutationProps<unknown, { billingProfileId: string }, UseUpdateBillingTypeBody>) => {
-  return useBaseMutation<UseUpdateBillingTypeBody, unknown>({
+  return useBaseMutation<UseUpdateBillingTypeBody, void>({
     resourcePath: BILLING_PROFILES_PATH.UPDATE_BILLING_PROFILES_TYPE(params?.billingProfileId || ""),
     enabled: !!params?.billingProfileId,
     method: "PUT",
