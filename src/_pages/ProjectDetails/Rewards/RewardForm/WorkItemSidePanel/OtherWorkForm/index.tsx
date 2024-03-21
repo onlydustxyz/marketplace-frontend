@@ -70,7 +70,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     params: { slug },
   });
 
-  const projectRepos = project?.repos || [];
+  const projectRepos = project?.organizations?.flatMap(organization => organization.repos) || [];
 
   const repos = sortBy(projectRepos, "name").filter(isDefined);
 
