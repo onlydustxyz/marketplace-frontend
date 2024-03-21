@@ -1,7 +1,6 @@
-import { withTooltip } from "src/components/Tooltip";
-
 import { Button } from "components/ds/button/button";
 import { CalloutAlert } from "components/ds/callout-alert/callout-alert";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -9,8 +8,6 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TAddMissingRepositories } from "./add-missing-repositories.types";
 
-// TODO: Change Tooltip to use the new Tooltip component
-// TODO: Change Button with link using the new library
 export function AddMissingRepositories({
   url,
   disabled,
@@ -36,19 +33,14 @@ export function AddMissingRepositories({
         </Flex>
       </Flex>
 
-      <a href={url} target="_blank" rel="noreferrer">
-        <Button
-          size="s"
-          className="whitespace-nowrap"
-          disabled={disabled}
-          backgroundColor={backgroundColor}
-          {...withTooltip(tooltip || "", {
-            visible: disabled && !!tooltip,
-          })}
-        >
-          <Translate token="callout.missingRepositories.button" />
-        </Button>
-      </a>
+      <Tooltip content={tooltip} enabled={disabled && Boolean(tooltip)}>
+        {/* TODO @hayden replace with Button.Link */}
+        <a href={url} target="_blank" rel="noreferrer">
+          <Button size="s" className="whitespace-nowrap" disabled={disabled} backgroundColor={backgroundColor}>
+            <Translate token="callout.missingRepositories.button" />
+          </Button>
+        </a>
+      </Tooltip>
     </CalloutAlert>
   );
 }
