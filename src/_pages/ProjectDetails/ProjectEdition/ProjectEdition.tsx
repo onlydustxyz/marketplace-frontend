@@ -72,6 +72,8 @@ function SafeProjectEdition() {
     return true;
   }, [errorsKeys]);
 
+  const repos = project?.organizations?.flatMap(organization => organization.repos);
+
   const tabs = useMemo(
     () => [
       {
@@ -97,7 +99,7 @@ function SafeProjectEdition() {
         },
         children: (
           <TabContents>
-            {(hasUnauthorizedInGithubRepo(project?.repos) || errorsKeys?.includes("githubRepos")) &&
+            {(hasUnauthorizedInGithubRepo(repos) || errorsKeys?.includes("githubRepos")) &&
             activeTab !== TabsType.Repos ? (
               <ErrorWarningLine className="text-orange-500" />
             ) : (
