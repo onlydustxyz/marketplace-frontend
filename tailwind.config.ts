@@ -412,6 +412,20 @@ const config: Config = withTV({
           lineHeight: "20px",
           letterSpacing: "-0.16px",
         },
+        ".od-text-body-xl": {
+          fontSize: "21px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+          lineHeight: "28px",
+          letterSpacing: "-0.21px",
+        },
+        ".od-text-body-xl-bold": {
+          fontSize: "21px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+          lineHeight: "28px",
+          letterSpacing: "-0.21px",
+        },
         ".od-text-body-l": {
           fontSize: "18px",
           fontFamily: theme("fontFamily.walsheim"),

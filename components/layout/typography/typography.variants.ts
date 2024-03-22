@@ -7,6 +7,8 @@ export const typographyVariants = tv({
       "title-l": "od-text-title-l",
       "title-m": "od-text-title-m",
       "title-s": "od-text-title-s",
+      "body-xl": "od-text-body-xl",
+      "body-xl-bold": "od-text-body-xl-bold",
       "body-l": "od-text-body-l",
       "body-l-bold": "od-text-body-l-bold",
       "body-m": "od-text-body-m",
