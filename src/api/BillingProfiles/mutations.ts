@@ -89,10 +89,7 @@ const useUploadInvoice = ({
       params?.billingProfileId || "",
       params?.invoiceId || ""
     ),
-    invalidatesTags: [
-      { queryKey: MeApi.tags.rewarded_pending_invoice(), exact: false },
-      { queryKey: MeApi.tags.rewards(), exact: false },
-    ],
+    invalidatesTags: [{ queryKey: MeApi.tags.rewards(), exact: false }],
     enabled: !!params?.billingProfileId || !!params?.invoiceId,
     method: "POST",
     ...options,

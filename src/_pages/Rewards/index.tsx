@@ -18,13 +18,6 @@ import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";
 import { UserRewardsContext } from "./context/UserRewards";
 import { UserRewardsProvider } from "./context/UserRewards.provider";
 
-export enum RewardStatus {
-  COMPLETE = "COMPLETE",
-  PENDING_INVOICE = "PENDING_INVOICE",
-  PENDING_SIGNUP = "PENDING_SIGNUP",
-  PROCESSING = "PROCESSING",
-}
-
 function SafeRewards() {
   const { T } = useT();
 

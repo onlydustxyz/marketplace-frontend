@@ -15,7 +15,7 @@ const useUpdateBillingProfileType = ({
     invalidatesTags: [
       { queryKey: MeApi.tags.user, exact: false },
       { queryKey: ME_BILLING_TAGS.allProfiles, exact: false },
-      { queryKey: ME_TAGS.rewarded_pending_invoice(), exact: false },
+      { queryKey: ME_TAGS.rewards(), exact: false },
     ],
     ...options,
   });
