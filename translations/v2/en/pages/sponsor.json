@@ -3,5 +3,9 @@
   "newDeposit": "New Deposit",
   "budget": {
     "title": "Budget available"
+  },
+  "deposit": {
+    "newCurrency": "New currency",
+    "makeDeposit": "Make a deposit"
   }
 }
