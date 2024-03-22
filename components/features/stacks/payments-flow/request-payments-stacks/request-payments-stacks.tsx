@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
-import MeApi from "src/api/me";
+import BillingProfilesApi from "src/api/BillingProfiles";
 import BillingApi from "src/api/me/billing";
 
 import { GenerateInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/generate-invoice/generate-invoice";
@@ -16,7 +16,9 @@ export function RequestPaymentsStacks() {
   const [excludedRewardsIds, setExcludedRewardsIds] = useState<string[]>([]);
   const [selectedBillingProfileId, setSelectedBillingProfileId] = useState("");
   const [, closeRequestPanel] = useStackRequestPayments();
-  const { data } = MeApi.queries.useGetMePendingInvoices({});
+  const { data } = BillingProfilesApi.queries.useGetBillingProfileInvoiceableRewards({
+    params: { billingProfileId: selectedBillingProfileId },
+  });
 
   const { data: billingProfilesData, isLoading: isLoadingBillingProfiles } = BillingApi.queries.useAllBillingProfiles(
     {}

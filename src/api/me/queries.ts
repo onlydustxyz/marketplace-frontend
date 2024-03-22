@@ -142,18 +142,6 @@ const useGetMeRewardProjects = ({ options = {} }: UseQueryProps<UseGetMeRewardPr
   });
 };
 
-export type UseGetMePendingInvoices = components["schemas"]["MyRewardsListResponse"];
-const useGetMePendingInvoices = ({ options = {} }: UseQueryProps<UseGetMePendingInvoices, undefined>) => {
-  const { isAuthenticated } = useAuth0();
-
-  return useBaseQuery<UseGetMePendingInvoices>({
-    resourcePath: ME_PATH.REWARDS_PENDING_INVOICE,
-    tags: ME_TAGS.rewarded_pending_invoice(),
-    ...options,
-    enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
-  });
-};
-
 const useSyncGithubAccount = ({ options = {} }: UseQueryProps<unknown, undefined>) => {
   const { isAuthenticated } = useAuth0();
 
@@ -185,7 +173,6 @@ export default {
   useMyContributedProjects,
   useMyContributedRepos,
   useGithubOrganizations,
-  useGetMePendingInvoices,
   useGetMyProfileInfo,
   useGetMeRewardCurrencies,
   useGetPayoutPreferences,
