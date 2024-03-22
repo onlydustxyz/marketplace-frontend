@@ -24,6 +24,7 @@ export type UserRewardsContextProps = {
 };
 
 export type UserRewardsType = {
+  pendingRequestCount?: number;
   earning?: Earning;
   rewards: MyReward[];
   filterQueryParams: FilterQueryParams;
