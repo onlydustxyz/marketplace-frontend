@@ -7,5 +7,11 @@
   "deposit": {
     "newCurrency": "New currency",
     "makeDeposit": "Make a deposit"
+  },
+  "project": {
+    "title": "Sponsored projects",
+    "sponsorProject": "Sponsor project",
+    "totalBudget": "Total budget",
+    "perCurrency": "Per currency"
   }
 }

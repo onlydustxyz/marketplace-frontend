@@ -1,6 +1,7 @@
 "use client";
 
 import { SponsorSectionBudget } from "app/sponsor/features/sponsor-section-budget/sponsor-section-budget";
+import { SponsorSectionProject } from "app/sponsor/features/sponsor-section-project/sponsor-section-project";
 
 import { Button } from "components/ds/button/button";
 import { Icon } from "components/layout/icon/icon";
@@ -23,6 +24,7 @@ export default function SponsorPage() {
 
         <div className={"grid gap-10"}>
           <SponsorSectionBudget />
+          <SponsorSectionProject />
         </div>
       </div>
     </div>
