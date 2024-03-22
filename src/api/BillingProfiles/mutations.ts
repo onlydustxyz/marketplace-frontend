@@ -133,7 +133,10 @@ const useDeleteBillingCoworker = ({
       params?.githubUserId || ""
     ),
     method: "DELETE",
-    invalidatesTags: [{ queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false }],
+    invalidatesTags: [
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.billing_profile_coworkers(params?.billingProfileId || ""), exact: false },
+    ],
     enabled: !!params?.billingProfileId && !!params?.githubUserId,
     ...options,
   });

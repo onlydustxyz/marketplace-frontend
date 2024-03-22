@@ -89,18 +89,14 @@ function CoworkersPage() {
         const { id, githubUserId, login, avatarUrl, role, joinedAt, removable: canRemove, isRegistered } = row;
         const isYou = githubUserId === meGithubUserId;
         const hasPendingInvite = !joinedAt;
-        // TODO find out what is the information telling that user is disabled
-        const isDisabled = false;
         const actionType = (): TManageCoworker.ActionTypeUnion => {
           if (hasPendingInvite) {
             return "cancel";
-          } else if (canRemove) {
-            return "delete";
-          } else if (!isDisabled) {
-            return "disable";
-          } else {
-            return "enable";
           }
+          if (canRemove) {
+            return "delete";
+          }
+          return "delete";
         };
         return {
           key: id ?? "",

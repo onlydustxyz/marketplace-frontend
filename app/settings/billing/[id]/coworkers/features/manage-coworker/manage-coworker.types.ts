@@ -1,5 +1,5 @@
 export namespace TManageCoworker {
-  export type ActionTypeUnion = "delete" | "cancel" | "disable" | "enable";
+  export type ActionTypeUnion = "delete" | "cancel";
   export interface Props {
     actionType: ActionTypeUnion;
     githubUserId: number;
