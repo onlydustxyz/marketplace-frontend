@@ -27,13 +27,27 @@ export function SidebarBilling({ closePanel }: TSidebarBilling.Props) {
     openBillingCreate({ redirectToProfile: true });
   }
 
+  function getIconRemixName(profile: TSidebarBilling.profile) {
+    if (!profile.data.enabled) {
+      return "ri-forbid-2-line";
+    }
+
+    if (profile.data.role === "MEMBER") {
+      return "ri-team-line";
+    }
+
+    // Add to use a defaut icon because of the types of Icon
+    return profile.icon.remixName || "ri-team-line";
+  }
+
   const menuItems: TMenuItem.Props[] = useMemo(
     () =>
       profiles.map(profile => ({
         label: profile.data.name,
         href: NEXT_ROUTER.settings.billing.generalInformation(profile.data.id),
-        startIcon: <Icon {...profile.icon} size={16} />,
-        matchPathOptions: { pattern: NEXT_ROUTER.settings.billing.generalInformation(profile.data.id) },
+        startIcon: <Icon remixName={getIconRemixName(profile)} size={16} />,
+        matchPathOptions: { pattern: NEXT_ROUTER.settings.billing.root(profile.data.id) },
+        pendingInvitationResponse: profile.data.pendingInvitationResponse,
       })),
 
     [profiles]

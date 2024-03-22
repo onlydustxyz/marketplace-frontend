@@ -1,11 +1,14 @@
 "use client";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { formatDistance } from "date-fns";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
 import { ManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker";
 import { TManageCoworker } from "app/settings/billing/[id]/coworkers/features/manage-coworker/manage-coworker.types";
+import { withBillingProfileAdminGuard } from "app/settings/components/billing-profile-admln-guard/billing-profile-admln-guard";
+import { withBillingProfileCompanyGuard } from "app/settings/components/billing-profile-company-guard copy/billing-profile-company-guard";
 
 import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
@@ -112,7 +115,7 @@ function CoworkersPage() {
               hasPendingInvite={hasPendingInvite}
             />
           ),
-          role: <RolesSelector activeRole={role} billingProfileId={id} isYou={isYou} />,
+          role: <RolesSelector activeRole={role} billingProfileId={id} githubUserId={githubUserId} isYou={isYou} />,
           joined: joinedAt
             ? formatDistance(new Date(joinedAt), new Date(), {
                 addSuffix: true,
@@ -167,4 +170,4 @@ function CoworkersPage() {
   );
 }
 
-export default CoworkersPage;
+export default withAuthenticationRequired(withBillingProfileAdminGuard(withBillingProfileCompanyGuard(CoworkersPage)));

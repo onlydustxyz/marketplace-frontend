@@ -9,6 +9,7 @@ import { Input } from "components/ds/form/input/input";
 import { Textarea } from "components/ds/form/textarea/textarea";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 import { BannerButton } from "./banner-button/banner-button";
 import { FormInformationsSection } from "./section/section";
@@ -136,6 +137,8 @@ export function FormInformations() {
               <Input
                 {...field}
                 {...fieldState}
+                isInvalid={!!fieldState.error}
+                errorMessage={<Translate token={fieldState.error?.message || ""} />}
                 startContent={<Icon remixName="ri-global-line" className="pointer-events-none" />}
               />
             )}

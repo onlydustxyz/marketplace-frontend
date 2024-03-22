@@ -1,4 +1,4 @@
-import { Checkbox } from "@nextui-org/react";
+import { Checkbox as CheckboxNextUI } from "@nextui-org/react";
 import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 
 import { Chip } from "src/components/Chip/Chip";
@@ -6,8 +6,10 @@ import { FieldInput } from "src/components/New/Field/Input";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { TCheckboxItem } from "./checkbox-item.types";
@@ -21,15 +23,40 @@ export function CheckboxItem({
   value,
   withInput,
   withSelectedComponent,
+  unselectable,
+  tooltipToken,
 }: TCheckboxItem.Props) {
   function onClick() {
-    onChange(value);
+    if (!unselectable) {
+      onChange(value);
+    }
+  }
+
+  function Checkbox() {
+    return (
+      <CheckboxNextUI
+        radius="full"
+        isSelected={selected}
+        className="pointer-events-none"
+        classNames={{
+          wrapper: "after:bg-spacePurple-500",
+        }}
+      />
+    );
   }
 
   return (
     <LazyMotion features={domAnimation}>
       <m.div layout={"size"} className="origin-top">
-        <Card background={false} border={selected ? "heavy" : "light"} className="p-4" onClick={onClick}>
+        <Card
+          background={false}
+          border={selected ? "heavy" : "light"}
+          className={cn("p-4", {
+            "pointer-events-none opacity-40": unselectable,
+          })}
+          onClick={onClick}
+          noHover={unselectable}
+        >
           <Flex justifyContent="between" alignItems="center" className="gap-1">
             <Flex justifyContent="start" alignItems="center" className="gap-4">
               <Chip className="h-8 w-8">
@@ -48,14 +75,15 @@ export function CheckboxItem({
                 </ul>
               </div>
             </Flex>
-            <Checkbox
-              radius="full"
-              isSelected={selected}
-              className="pointer-events-none"
-              classNames={{
-                wrapper: "after:bg-spacePurple-500",
-              }}
-            />
+            {tooltipToken && unselectable ? (
+              <Tooltip content={<Translate token={tooltipToken} />} placement="left">
+                <span className="pointer-events-auto cursor-default">
+                  <Checkbox />
+                </span>
+              </Tooltip>
+            ) : (
+              <Checkbox />
+            )}
           </Flex>
           {withInput ? (
             <AnimatePresence initial={false}>

@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { withBillingProfileAdminGuard } from "app/settings/components/billing-profile-admln-guard/billing-profile-admln-guard";
+
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Key, useIntl } from "src/hooks/useIntl";
@@ -55,26 +57,26 @@ const formSchema = z
     aptosAddress: z
       .union([z.string().regex(REGEX.aptosAddress, keys.invalidAptosAddress), z.string().length(0)])
       .optional(),
-    sepaAccount: z.object({
-      iban: z.string().optional(),
+    bankAccount: z.object({
+      number: z.string().optional(),
       bic: z.string().optional(),
     }),
   })
-  .superRefine(({ sepaAccount }, context) => {
-    const { iban, bic } = sepaAccount;
-    if ((iban && !bic) || (!iban && bic)) {
-      if (!iban) {
+  .superRefine(({ bankAccount }, context) => {
+    const { number, bic } = bankAccount;
+    if ((number && !bic) || (!number && bic)) {
+      if (!number) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
           message: keys.ibanIsRequired,
-          path: ["sepaAccount", "iban"],
+          path: ["bankAccount", "number"],
         });
       }
       if (!bic) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
           message: keys.bicIsRequired,
-          path: ["sepaAccount", "bic"],
+          path: ["bankAccount", "bic"],
         });
       }
     }
@@ -144,4 +146,4 @@ function SettingsPayoutPage() {
   );
 }
 
-export default withAuthenticationRequired(SettingsPayoutPage);
+export default withAuthenticationRequired(withBillingProfileAdminGuard(SettingsPayoutPage));

@@ -50,12 +50,11 @@ export function Mandate({ goTo, billingProfileId }: TMandate.Props) {
   const onSubmit = () => {
     if (accepted) {
       acceptInvoice({ hasAcceptedInvoiceMandate: true });
-      capture("ft-rp-click-on-accept-mandate");
+      capture("mandate_accepted");
     }
   };
 
   const onSkip = () => {
-    capture("ft-rp-click-on-skip-mandate");
     goTo({ to: TRequestPaymentsStacks.Views.Upload });
   };
 

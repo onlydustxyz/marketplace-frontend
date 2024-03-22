@@ -8,7 +8,7 @@ test("should generate generic metadata image", async ({ page }, testinfo) => {
 
 test("should generate project opengraph image", async ({ page }, testinfo) => {
   testinfo.snapshotSuffix = "";
-  await page.goto("/p/deluge/opengraph-image");
+  await page.goto("/p/bretzel/opengraph-image");
   await expect(page).toHaveScreenshot();
 });
 

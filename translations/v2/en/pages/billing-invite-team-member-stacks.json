@@ -22,7 +22,7 @@
         },
         "member": {
           "title": "Member",
-          "description": "Can only join or leave your company and contribute."
+          "description": "Can allocate their rewards to this billing profile."
         }
       }
     }

@@ -21,7 +21,7 @@ const useGetBillingProfileById = ({
 }: UseQueryProps<UseGetBillingProfileById, { id?: string }>) => {
   return useBaseQuery<UseGetBillingProfileById>({
     resourcePath: BILLING_PROFILES_PATH.BY_ID(params?.id || ""),
-    tags: BILLING_PROFILES_TAGS.all,
+    tags: BILLING_PROFILES_TAGS.single(params?.id || ""),
     ...options,
   });
 };
@@ -57,7 +57,7 @@ const useGetBillingProfileCoworkers = ({
   return useInfiniteBaseQuery<UseGetBillingCoworkers>(
     {
       resourcePath: BILLING_PROFILES_PATH.COWORKERS(params?.billingProfileId ?? ""),
-      tags: BILLING_PROFILES_TAGS.single(params?.billingProfileId ?? ""),
+      tags: BILLING_PROFILES_TAGS.billing_profile_coworkers(params?.billingProfileId ?? ""),
       queryParams: params?.queryParams,
       pageSize: params?.pageSize || 6,
     },

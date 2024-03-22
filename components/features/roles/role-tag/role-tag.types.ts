@@ -10,5 +10,6 @@ export namespace TRoleTag {
       icon: TIcon.Props;
     };
     clickable?: boolean;
+    isLoading?: boolean;
   }
 }

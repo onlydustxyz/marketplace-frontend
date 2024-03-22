@@ -14,6 +14,10 @@ export type UseInviteBillingCoworkerBody = components["schemas"]["BillingProfile
 export type UseInviteBillingCoworkerResponse = components["schemas"]["BillingProfileCoworkerInvitation"];
 export type UseUpdatePayoutSettingsBody = components["schemas"]["BillingProfilePayoutInfoRequest"];
 export type UseUpdatePayoutSettingsResponse = components["schemas"]["BillingProfilePayoutInfoResponse"];
+export type UseEnableOrDisableBillingProfileBody = components["schemas"]["BillingProfileEnableRequest"];
+export type UseAcceptInvoiceMandateBody = components["schemas"]["InvoiceMandateRequest"];
+export type UseUpdateBillingTypeBody = components["schemas"]["BillingProfileTypeRequest"];
+export type UseUpdateCoworkerRoleBody = components["schemas"]["UpdateCoworkerRoleRequest"];
 
 const useCreateBillingProfile = ({
   options = {},
@@ -23,6 +27,38 @@ const useCreateBillingProfile = ({
     method: "POST",
     invalidatesTags: [
       { queryKey: MeApi.tags.user, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: ME_TAGS.payoutPreferences(), exact: false },
+    ],
+    ...options,
+  });
+};
+
+const useDeleteBillingProfile = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { billingProfileId?: string }, void>) => {
+  return useBaseMutation<void, void>({
+    resourcePath: BILLING_PROFILES_PATH.BY_ID(params?.billingProfileId || ""),
+    method: "DELETE",
+    invalidatesTags: [
+      { queryKey: MeApi.tags.user, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: ME_TAGS.payoutPreferences(), exact: false },
+    ],
+    ...options,
+  });
+};
+
+const useEnableOrDisableBillingProfile = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { billingProfileId?: string }, UseEnableOrDisableBillingProfileBody>) => {
+  return useBaseMutation<UseEnableOrDisableBillingProfileBody, void>({
+    resourcePath: BILLING_PROFILES_PATH.ENABLE_OR_DISABLE_BY_ID(params?.billingProfileId || ""),
+    method: "PUT",
+    invalidatesTags: [
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
       { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
     ],
@@ -57,12 +93,11 @@ const useUploadInvoice = ({
       { queryKey: MeApi.tags.rewarded_pending_invoice(), exact: false },
       { queryKey: MeApi.tags.rewards(), exact: false },
     ],
+    enabled: !!params?.billingProfileId || !!params?.invoiceId,
     method: "POST",
     ...options,
   });
 };
-
-export type UseAcceptInvoiceMandateBody = components["schemas"]["InvoiceMandateRequest"];
 
 const useAcceptInvoiceMandate = ({
   params,
@@ -104,11 +139,50 @@ const useDeleteBillingCoworker = ({
   });
 };
 
+const useUpdateBillingType = ({
+  params,
+  options,
+}: UseMutationProps<void, { billingProfileId: string }, UseUpdateBillingTypeBody>) => {
+  return useBaseMutation<UseUpdateBillingTypeBody, void>({
+    resourcePath: BILLING_PROFILES_PATH.UPDATE_BILLING_PROFILES_TYPE(params?.billingProfileId || ""),
+    enabled: !!params?.billingProfileId,
+    method: "PUT",
+    invalidatesTags: [
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
+    ],
+    ...(options ? options : {}),
+  });
+};
+
+const useUpdateCoworkerRole = ({
+  params,
+  options = {},
+}: UseMutationProps<void, { billingProfileId?: string; githubUserId?: string }, UseUpdateCoworkerRoleBody>) => {
+  return useBaseMutation<UseUpdateCoworkerRoleBody, void>({
+    resourcePath: BILLING_PROFILES_PATH.UPDATE_COWORKER_ROLE(
+      params?.billingProfileId || "",
+      params?.githubUserId || ""
+    ),
+    invalidatesTags: [
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.billing_profile_coworkers(params?.billingProfileId || ""), exact: false },
+    ],
+    method: "PUT",
+    enabled: !!params?.billingProfileId && !!params?.githubUserId,
+    ...options,
+  });
+};
+
 export default {
   useCreateBillingProfile,
+  useDeleteBillingProfile,
   useUpdatePayoutSettings,
   useUploadInvoice,
   useAcceptInvoiceMandate,
   useInviteBillingCoworker,
   useDeleteBillingCoworker,
+  useEnableOrDisableBillingProfile,
+  useUpdateBillingType,
+  useUpdateCoworkerRole,
 };

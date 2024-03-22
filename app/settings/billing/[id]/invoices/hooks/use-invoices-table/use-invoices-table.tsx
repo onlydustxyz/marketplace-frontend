@@ -1,3 +1,5 @@
+import { Money } from "utils/Money/Money";
+
 import { InvoiceStatus } from "app/settings/billing/[id]/invoices/features/invoice-status/invoice-status";
 import { TInvoiceTable } from "app/settings/billing/[id]/invoices/hooks/use-invoices-table/use-invoices-table.types";
 
@@ -7,7 +9,6 @@ import Cell, { CellHeight } from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
 import { useIntl } from "src/hooks/useIntl";
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
-import { formatAmount } from "src/utils/money";
 
 import { Button } from "components/ds/button/button";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
@@ -57,7 +58,7 @@ export function useInvoicesTable({ onDownloadInvoice, isDownloading }: TInvoiceT
           {createdAt ? getFormattedDateToLocaleDateString(new Date(createdAt)) : null}
         </Cell>
         <Cell height={CellHeight.Compact}>
-          {formatAmount({ amount: totalAfterTax?.amount, currency: totalAfterTax?.currency })}
+          {Money.format({ amount: totalAfterTax?.amount, currency: totalAfterTax?.currency }).string}
         </Cell>
 
         <Cell height={CellHeight.Compact}>

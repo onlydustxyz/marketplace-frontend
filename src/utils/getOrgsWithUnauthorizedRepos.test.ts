@@ -31,20 +31,6 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
     },
   ],
   ecosystems: [],
-  repos: [
-    {
-      id: 663102799,
-      owner: "onlydustxyz",
-      name: "od-rust-template",
-      description: undefined,
-      htmlUrl: "https://github.com/onlydustxyz/od-rust-template",
-      stars: 0,
-      forkCount: 0,
-      hasIssues: true,
-      isIncludedInProject: true,
-      isAuthorizedInGithubApp: true,
-    },
-  ],
   organizations: [
     {
       githubUserId: 98735558,

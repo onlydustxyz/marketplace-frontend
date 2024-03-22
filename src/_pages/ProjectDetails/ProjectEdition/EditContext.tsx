@@ -159,7 +159,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         moreInfos: project.moreInfos?.length
           ? project.moreInfos.map(info => ({ ...info, id: uuidv4() }))
           : [{ url: "", value: "", id: uuidv4() }],
-        githubRepos: (project.repos || []).map(repo => ({
+        githubRepos: (project.organizations?.flatMap(organization => organization.repos) || []).map(repo => ({
           id: repo.id,
           isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
         })),
@@ -305,7 +305,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       ...rest,
       githubRepoIds,
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
-      ecosystemIds: ecosystems.map(ecosystem => `${ecosystem.id}`),
+      ecosystemIds: ecosystems?.map(ecosystem => `${ecosystem.id}`),
     });
   };
 
