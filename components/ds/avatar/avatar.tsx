@@ -84,8 +84,14 @@ export function Avatar(props: TAvatar.Props) {
   );
 }
 
-Avatar.Labelled = function AvatarLabelled({ children, href, avatarProps, labelProps }: TAvatar.LabelledProps) {
-  const wrapperClassName = "flex items-center gap-2 truncate";
+Avatar.Labelled = function AvatarLabelled({
+  children,
+  href,
+  avatarProps,
+  labelProps,
+  className,
+}: TAvatar.LabelledProps) {
+  const wrapperClassName = cn("flex items-center gap-2 truncate", className);
 
   function renderContent() {
     const { className, ...restProps } = labelProps ?? {};

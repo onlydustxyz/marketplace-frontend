@@ -1,5 +1,5 @@
 import type { AvatarProps } from "@nextui-org/react";
-import { ComponentProps, ReactNode } from "react";
+import { ComponentProps, PropsWithChildren } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { TSkeleton } from "components/ds/skeleton/skeleton.types";
@@ -19,8 +19,8 @@ export namespace TAvatar {
     animate?: boolean;
   }
 
-  export interface LabelledProps {
-    children: ReactNode;
+  export interface LabelledProps extends PropsWithChildren {
+    className?: string;
     href?: string;
     avatarProps?: Props;
     labelProps?: ComponentProps<"div">;
