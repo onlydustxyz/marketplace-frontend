@@ -61,6 +61,7 @@ export function UserRewardsProvider({ children }: UserRewardsContextProps) {
         query: myRewardsInfiniteList,
         currencies: orderedCurrencies.map(c => c.currency) || [],
         projects: projectsData?.projects || [],
+        pendingRequestCount: myRewardsInfiniteList.data?.pages[0].pendingRequestCount,
       }}
     >
       {children}

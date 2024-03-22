@@ -16,6 +16,7 @@ export type UseUpdatePayoutSettingsBody = components["schemas"]["BillingProfileP
 export type UseUpdatePayoutSettingsResponse = components["schemas"]["BillingProfilePayoutInfoResponse"];
 export type UseEnableOrDisableBillingProfileBody = components["schemas"]["BillingProfileEnableRequest"];
 export type UseAcceptInvoiceMandateBody = components["schemas"]["InvoiceMandateRequest"];
+export type UseUpdateBillingTypeBody = components["schemas"]["BillingProfileTypeRequest"];
 export type UseUpdateCoworkerRoleBody = components["schemas"]["UpdateCoworkerRoleRequest"];
 
 const useCreateBillingProfile = ({
@@ -88,10 +89,7 @@ const useUploadInvoice = ({
       params?.billingProfileId || "",
       params?.invoiceId || ""
     ),
-    invalidatesTags: [
-      { queryKey: MeApi.tags.rewarded_pending_invoice(), exact: false },
-      { queryKey: MeApi.tags.rewards(), exact: false },
-    ],
+    invalidatesTags: [{ queryKey: MeApi.tags.rewards(), exact: false }],
     enabled: !!params?.billingProfileId || !!params?.invoiceId,
     method: "POST",
     ...options,
@@ -138,6 +136,22 @@ const useDeleteBillingCoworker = ({
   });
 };
 
+const useUpdateBillingType = ({
+  params,
+  options,
+}: UseMutationProps<void, { billingProfileId: string }, UseUpdateBillingTypeBody>) => {
+  return useBaseMutation<UseUpdateBillingTypeBody, void>({
+    resourcePath: BILLING_PROFILES_PATH.UPDATE_BILLING_PROFILES_TYPE(params?.billingProfileId || ""),
+    enabled: !!params?.billingProfileId,
+    method: "PUT",
+    invalidatesTags: [
+      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
+    ],
+    ...(options ? options : {}),
+  });
+};
+
 const useUpdateCoworkerRole = ({
   params,
   options = {},
@@ -166,5 +180,6 @@ export default {
   useInviteBillingCoworker,
   useDeleteBillingCoworker,
   useEnableOrDisableBillingProfile,
+  useUpdateBillingType,
   useUpdateCoworkerRole,
 };

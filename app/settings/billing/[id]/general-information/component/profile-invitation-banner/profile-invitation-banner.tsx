@@ -29,27 +29,39 @@ export function ProfileInvitationBanner({ profile }: TProfileInvitationBanner.Pr
     },
   });
 
-  const { mutate: declineInvitation, isPending: loadingDeclineInvitation } =
-    MeApi.mutations.useAcceptOrDeclineInvitation({
-      params: {
-        billingProfileId: profile?.id || "",
+  const {
+    mutate: declineInvitation,
+    isPending: loadingDeclineInvitation,
+    ...restDeclineInvitation
+  } = MeApi.mutations.useAcceptOrDeclineInvitation({
+    params: {
+      billingProfileId: profile?.id || "",
+    },
+    options: {
+      onSuccess: () => {
+        router.push(NEXT_ROUTER.settings.profile);
       },
-      options: {
-        onSuccess: () => {
-          router.push(NEXT_ROUTER.settings.profile);
-        },
-      },
-    });
+    },
+  });
 
   useMutationAlert({
     mutation: restAcceptInvitation,
     success: {
-      message: T("v2.pages.settings.billing.information.invitation.alert.success", {
+      message: T("v2.pages.settings.billing.information.invitation.alert.accept.success", {
         name: profile?.name || "",
       }),
     },
     error: {
-      message: T("v2.pages.settings.billing.information.invitation.alert.error", {
+      message: T("v2.pages.settings.billing.information.invitation.alert.accept.error", {
+        name: profile?.name || "",
+      }),
+    },
+  });
+
+  useMutationAlert({
+    mutation: restDeclineInvitation,
+    error: {
+      message: T("v2.pages.settings.billing.information.invitation.alert.decline.error", {
         name: profile?.name || "",
       }),
     },

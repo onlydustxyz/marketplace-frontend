@@ -53,8 +53,8 @@ export function SelectRewards({
 
   const onSubmit = () => {
     capture("payments_request_rewards_selected", {
-      includedRewards,
-      excludedRewards,
+      includedRewards: includedRewards?.length,
+      excludedRewards: excludedRewards?.length,
     });
     if (
       profile?.data?.type === BillingProfilesTypes.type.Individual ||

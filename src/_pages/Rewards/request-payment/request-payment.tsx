@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
-import MeApi from "src/api/me";
+import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/ds/button/button";
@@ -11,19 +11,19 @@ import { Typography } from "components/layout/typography/typography";
 export function RequestPayment() {
   const { capture } = usePosthog();
   const [open] = useStackRequestPayments();
-  const { data: rewardsPendingInvoice } = MeApi.queries.useGetMePendingInvoices({});
+  const { pendingRequestCount } = useContext(UserRewardsContext);
   useEffect(() => {
-    if (rewardsPendingInvoice?.rewards?.length) {
-      capture("reward_list_viewed", { pending_rewards: rewardsPendingInvoice?.rewards?.length });
+    if (pendingRequestCount) {
+      capture("reward_list_viewed", { pending_rewards: pendingRequestCount });
     }
-  }, [rewardsPendingInvoice]);
+  }, [pendingRequestCount]);
 
   function handleOpen() {
     open();
     capture("payments_request_started");
   }
 
-  if (!rewardsPendingInvoice?.rewards?.length) {
+  if (!pendingRequestCount) {
     return null;
   }
 
@@ -32,7 +32,7 @@ export function RequestPayment() {
       <Button variant="primary" onClick={handleOpen} size="s">
         <Translate token="v2.pages.stacks.request_payments.openButton" />
         <div className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-spaceBlue-900 bg-card-background-heavy">
-          <Typography variant="body-s-bold">{rewardsPendingInvoice.rewards.length}</Typography>
+          <Typography variant="body-s-bold">{pendingRequestCount}</Typography>
         </div>
       </Button>
     </div>

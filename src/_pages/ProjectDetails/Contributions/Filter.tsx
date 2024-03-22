@@ -146,7 +146,7 @@ export const ProjectContributionsFilter = forwardRef(function ProjectContributio
   const { data: reposData } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
-  const repos = reposData?.repos ?? [];
+  const repos = reposData?.organizations?.flatMap(organization => organization.repos) ?? [];
 
   const sortedRepos = useMemo(
     () =>

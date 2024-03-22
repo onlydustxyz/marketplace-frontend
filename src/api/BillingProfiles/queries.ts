@@ -12,6 +12,8 @@ export type UseGetBillingProfileById = components["schemas"]["BillingProfileResp
 export type UseGetBillingProfilePayout = components["schemas"]["BillingProfilePayoutInfoResponse"];
 export type UseGetBillingProfiles = components["schemas"]["MyBillingProfilesResponse"];
 export type UseGetBillingCoworkers = components["schemas"]["BillingProfileCoworkersPageResponse"];
+export type UseGetBillingProfileInvoiceableRewardsResponse =
+  components["schemas"]["BillingProfileInvoiceableRewardsResponse"];
 
 const useGetBillingProfileById = ({
   options = {},
@@ -108,6 +110,18 @@ const useDownloadBillingProfileInvoice = ({
   });
 };
 
+const useGetBillingProfileInvoiceableRewards = ({
+  options = {},
+  params,
+}: UseQueryProps<UseGetBillingProfileInvoiceableRewardsResponse, { billingProfileId?: string }>) => {
+  return useBaseQuery<UseGetBillingProfileInvoiceableRewardsResponse>({
+    resourcePath: BILLING_PROFILES_PATH.INVOICEABLE_REWARDS(params?.billingProfileId || ""),
+    tags: BILLING_PROFILES_TAGS.invoiceable_rewards(params?.billingProfileId || ""),
+    ...options,
+    enabled: !!params?.billingProfileId,
+  });
+};
+
 export default {
   useBillingProfiles,
   useGetPayoutInfo,
@@ -115,4 +129,5 @@ export default {
   useBillingProfileInvoices,
   useDownloadBillingProfileInvoice,
   useGetBillingProfileCoworkers,
+  useGetBillingProfileInvoiceableRewards,
 };

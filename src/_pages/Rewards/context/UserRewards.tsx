@@ -16,6 +16,7 @@ export const UserRewardsContext = createContext<UserRewardsType>({
     rewardingProjectsCount: undefined,
   },
   rewards: [],
+  pendingRequestCount: undefined,
   filterQueryParams: {},
   setFilterQueryParams: () => null,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
