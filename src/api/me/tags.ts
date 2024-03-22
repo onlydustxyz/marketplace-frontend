@@ -12,6 +12,5 @@ export const ME_TAGS = {
   profile: () => [RESSOURCE_TAGS.ME, "profile"],
   rewarded_currencies: () => [RESSOURCE_TAGS.ME, "rewarded_currencies"],
   rewarded_projects: () => [RESSOURCE_TAGS.ME, "rewarded_projects"],
-  rewarded_pending_invoice: () => [RESSOURCE_TAGS.ME, "rewarded_pending_invoice"],
   payoutPreferences: () => [RESSOURCE_TAGS.ME, "payout_references"],
 };
