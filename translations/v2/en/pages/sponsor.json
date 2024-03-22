@@ -1,4 +1,7 @@
 {
   "title": "Sponsor",
-  "newDeposit": "New Deposit"
+  "newDeposit": "New Deposit",
+  "budget": {
+    "title": "Budget available"
+  }
 }
