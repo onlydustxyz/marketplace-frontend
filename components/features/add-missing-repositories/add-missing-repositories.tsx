@@ -33,14 +33,25 @@ export function AddMissingRepositories({
         </Flex>
       </Flex>
 
-      <Tooltip content={tooltip} enabled={disabled && Boolean(tooltip)}>
-        {/* TODO @hayden replace with Button.Link */}
-        <a href={url} target="_blank" rel="noreferrer">
-          <Button size="s" className="whitespace-nowrap" disabled={disabled} backgroundColor={backgroundColor}>
+      {disabled ? (
+        <Tooltip content={tooltip}>
+          <Button size="s" className="whitespace-nowrap" backgroundColor={backgroundColor} disabled>
             <Translate token="callout.missingRepositories.button" />
           </Button>
-        </a>
-      </Tooltip>
+        </Tooltip>
+      ) : (
+        <Button
+          as="a"
+          href={url}
+          target="_blank"
+          rel="noreferrer"
+          size="s"
+          className="whitespace-nowrap"
+          backgroundColor={backgroundColor}
+        >
+          <Translate token="callout.missingRepositories.button" />
+        </Button>
+      )}
     </CalloutAlert>
   );
 }
