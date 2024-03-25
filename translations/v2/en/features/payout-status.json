@@ -35,6 +35,10 @@
     "label": "Pending contributor",
     "tooltip": "Contributor needs to do an action to get paid"
   },
+  "pendingCompany": {
+    "label": "Pending company",
+    "tooltip": "Company needs to do an action to get paid"
+  },
   "paymentBlocked": {
     "label": "Payment blocked",
     "tooltip": "Your payment cannot be processed"
