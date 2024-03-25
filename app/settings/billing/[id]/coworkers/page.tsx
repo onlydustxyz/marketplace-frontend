@@ -151,6 +151,7 @@ function CoworkersPage() {
       />
 
       <Table
+        label={T("v2.pages.settings.billing.coworkers.table.label")}
         columns={columns}
         rows={rows}
         bottomContent={

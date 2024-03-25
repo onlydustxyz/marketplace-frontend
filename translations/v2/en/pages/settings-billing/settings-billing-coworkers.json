@@ -9,6 +9,7 @@
     "imageAlt": "Empty state illustration"
   },
   "table": {
+    "label": "Coworkers",
     "columns": {
       "coworkers": "Coworkers",
       "role": "Role",
