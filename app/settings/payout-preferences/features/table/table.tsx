@@ -52,12 +52,12 @@ export function PayoutPreferencesTable() {
     () => [
       {
         key: "projects",
-        label: T("v2.pages.settings.payoutPreferences.table.projects"),
+        children: T("v2.pages.settings.payoutPreferences.table.projects"),
         icon: { remixName: "ri-folder-3-line" },
       },
       {
         key: "billing_profiles",
-        label: T("v2.pages.settings.payoutPreferences.table.billingProfiles"),
+        children: T("v2.pages.settings.payoutPreferences.table.billingProfiles"),
         icon: { remixName: "ri-money-dollar-circle-line" },
         align: "end",
       },
