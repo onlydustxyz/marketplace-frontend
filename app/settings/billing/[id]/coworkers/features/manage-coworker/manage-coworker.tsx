@@ -35,15 +35,10 @@ export function ManageCoworker({ actionType, githubUserId }: TManageCoworker.Pro
   });
 
   const confirmationContent = useMemo(() => {
-    if (actionType === "disable") {
-      return "disableDescription";
-    } else if (actionType === "delete") {
+    if (actionType === "delete") {
       return "deleteDescription";
-    } else if (actionType === "cancel") {
-      return "cancelDescription";
-    } else {
-      return "enableDescription";
     }
+    return "cancelDescription";
   }, [actionType]);
 
   function onOpenConfirmation() {
@@ -51,18 +46,7 @@ export function ManageCoworker({ actionType, githubUserId }: TManageCoworker.Pro
   }
 
   function onConfirm() {
-    // TODO waiting for rest mutations
-    switch (actionType) {
-      case "cancel":
-        break;
-      case "delete":
-        deleteCoworker({});
-        break;
-      case "disable":
-        break;
-      case "enable":
-        break;
-    }
+    deleteCoworker({});
   }
 
   function onCancel() {
