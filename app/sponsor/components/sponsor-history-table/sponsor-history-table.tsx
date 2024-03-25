@@ -1,5 +1,6 @@
+import { SortDescriptor } from "@nextui-org/react";
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
 import { SponsorHistoryTransaction } from "app/sponsor/components/sponsor-history-transaction/sponsor-history-transaction";
@@ -19,6 +20,12 @@ import { Typography } from "components/layout/typography/typography";
 export function SponsorHistoryTable() {
   const { T } = useIntl();
 
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
+
+  function handleSort(sort: SortDescriptor) {
+    setSortDescriptor(sort);
+  }
+
   const hasNextPage = true;
   const fetchNextPage = () => {};
   const isFetchingNextPage = false;
@@ -27,20 +34,21 @@ export function SponsorHistoryTable() {
     () => [
       {
         key: "date",
-        label: T("v2.pages.sponsor.history.date"),
+        children: T("v2.pages.sponsor.history.date"),
         width: "50%",
+        allowsSorting: true,
       },
       {
         key: "transaction",
-        label: T("v2.pages.sponsor.history.transaction"),
+        children: T("v2.pages.sponsor.history.transaction"),
       },
       {
         key: "amount",
-        label: T("v2.pages.sponsor.history.amount"),
+        children: T("v2.pages.sponsor.history.amount"),
       },
       {
         key: "project",
-        label: T("v2.pages.sponsor.history.project"),
+        children: T("v2.pages.sponsor.history.project"),
       },
     ],
     []
@@ -82,11 +90,14 @@ export function SponsorHistoryTable() {
 
   return (
     <Card background={"base"} className={"grid gap-5"}>
+      {/* TODO */}
       <header>Filters</header>
       <Table
         label={T("v2.pages.sponsor.history.title")}
         columns={columns}
         rows={rows}
+        sortDescriptor={sortDescriptor}
+        onSortChange={handleSort}
         bottomContent={
           hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} /> : null
         }

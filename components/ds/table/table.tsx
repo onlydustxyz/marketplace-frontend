@@ -16,8 +16,6 @@ import { TTable } from "components/ds/table/table.types";
 import { Icon } from "components/layout/icon/icon";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
-// TODO sort - https://nextui.org/docs/components/table#sorting-rows
-// TODO infinite pagination - https://nextui.org/docs/components/table#infinite-pagination
 export function Table({
   label,
   columns,
@@ -39,6 +37,7 @@ export function Table({
       td: "py-3 h-auto",
       // TODO do we need these classes ? Check coworkers page
       tbody: "first-of-type:tr:td:pt-50 [&>tr:first-child>td]:pt-5",
+      sortIcon: "data-[visible=true]:text-spacePurple-500 mb-1",
     }),
     []
   );
@@ -46,17 +45,17 @@ export function Table({
   return (
     <NextTable aria-label={label} classNames={classNames} removeWrapper {...TableProps}>
       <TableHeader columns={columns} {...(TableHeaderProps || {})}>
-        {({ key, align, icon, label, ...restColumn }) => (
+        {({ key, align, icon, children, ...restColumn }) => (
           <TableColumn {...TableColumnProps} key={key} {...(restColumn ?? {})}>
             <div
-              className={cn("flex gap-1", {
+              className={cn("inline-flex gap-1", {
                 "justify-start": align === "start",
                 "justify-center": align === "center",
                 "justify-end": align === "end",
               })}
             >
               {icon ? <Icon {...icon} /> : null}
-              {label}
+              {children}
             </div>
           </TableColumn>
         )}

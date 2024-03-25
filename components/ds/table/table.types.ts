@@ -7,7 +7,7 @@ import { Key } from "src/hooks/useIntl";
 import { Icon } from "components/layout/icon/icon";
 
 export namespace TTable {
-  export type Base = Partial<TableProps>;
+  export type Base = Omit<TableProps, "aria-label" | "classNames" | "removeWrapper">;
   export type TableHeader = Partial<TableHeaderProps<Column>>;
   export type TableColumn = Partial<TableColumnProps<Column>>;
   export type TableBody = Partial<TableBodyProps<Row>>;
@@ -18,13 +18,10 @@ export namespace TTable {
     token: Key;
     params?: Record<string, string>;
   }
-  export interface Column {
+  export interface Column extends TableColumnProps<unknown> {
     key: string;
-    label: string;
     icon?: ComponentProps<typeof Icon>;
-    align?: TableColumnProps<unknown>["align"];
     showOnHover?: boolean;
-    width?: TableColumnProps<unknown>["width"];
   }
 
   export interface Row {

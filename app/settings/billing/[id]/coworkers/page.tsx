@@ -54,28 +54,28 @@ function CoworkersPage() {
     () => [
       {
         key: "coworkers",
-        label: T("v2.pages.settings.billing.coworkers.table.columns.coworkers"),
+        children: T("v2.pages.settings.billing.coworkers.table.columns.coworkers"),
         icon: {
           remixName: "ri-team-line",
         },
       },
       {
         key: "role",
-        label: T("v2.pages.settings.billing.coworkers.table.columns.role"),
+        children: T("v2.pages.settings.billing.coworkers.table.columns.role"),
         icon: {
           remixName: "ri-information-line",
         },
       },
       {
         key: "joined",
-        label: T("v2.pages.settings.billing.coworkers.table.columns.joined"),
+        children: T("v2.pages.settings.billing.coworkers.table.columns.joined"),
         icon: {
           remixName: "ri-check-line",
         },
       },
       {
         key: "actions",
-        label: "",
+        children: "",
         align: "end",
         showOnHover: true,
       },
