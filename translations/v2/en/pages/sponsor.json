@@ -13,5 +13,15 @@
     "sponsorProject": "Sponsor project",
     "totalBudget": "Total budget",
     "perCurrency": "Per currency"
+  },
+  "history": {
+    "title": "Transaction history",
+    "date": "Date",
+    "transaction": "Transaction",
+    "amount": "Amount",
+    "project": "Project",
+    "deposit": "Deposit",
+    "allocated": "Allocated",
+    "unallocated": "Unallocated"
   }
 }
