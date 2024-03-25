@@ -14,8 +14,22 @@ import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
+import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
+
+const projects = [
+  {
+    id: 123,
+    label: "test project",
+    value: "test project",
+  },
+  {
+    id: 1234,
+    label: "test project",
+    value: "test project",
+  },
+];
 
 export function SponsorHistoryTable() {
   const { T } = useIntl();
@@ -90,8 +104,11 @@ export function SponsorHistoryTable() {
 
   return (
     <Card background={"base"} className={"grid gap-5"}>
-      {/* TODO */}
-      <header>Filters</header>
+      <header>
+        <Flex>
+          <FiltersProjects projects={projects} selected={[]} onChange={() => {}} hideLabel />
+        </Flex>
+      </header>
       <Table
         label={T("v2.pages.sponsor.history.title")}
         columns={columns}

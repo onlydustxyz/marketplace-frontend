@@ -6,10 +6,10 @@ import { SelectAutocomplete } from "components/ds/form/select-autocomplete/selec
 
 import { TFiltersProjects } from "./filters-projects.types";
 
-export function FiltersProjects({ projects, selected, onChange }: TFiltersProjects.Props) {
+export function FiltersProjects({ projects, selected, onChange, hideLabel }: TFiltersProjects.Props) {
   const { T } = useIntl();
   return (
-    <FilterFieldContainer label={T("filter.project.title")}>
+    <FilterFieldContainer label={T("filter.project.title")} hideLabel={hideLabel}>
       <SelectAutocomplete
         type="square"
         icon={({ className }) => <FolderLine className={className} />}
