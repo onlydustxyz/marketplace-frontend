@@ -12,9 +12,10 @@ export function SponsorProjectCard() {
     <Card background={"base"} className={"grid gap-6"}>
       <header className={"flex items-center justify-between overflow-hidden"}>
         <Avatar.Labelled
-          avatarProps={{ src: "", alt: "", size: "m", shape: "square", className: "flex-shrink-0" }}
-          labelProps={{ title: "", className: "truncate" }}
-          className={"flex-1 overflow-hidden"}
+          avatarProps={{ src: "", alt: "", size: "m", shape: "square" }}
+          labelProps={{ title: "" }}
+          className={"flex-1"}
+          truncate
         >
           <Typography variant={"body-xl-bold"} className={"truncate"}>
             Madara

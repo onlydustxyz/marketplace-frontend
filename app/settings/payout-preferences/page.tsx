@@ -16,11 +16,10 @@ function PayoutPreferencesPage() {
         tokenTitle="v2.pages.settings.payoutPreferences.title"
         subtitle="v2.pages.settings.payoutPreferences.subtitle"
       />
-
+      w
       <Card background="base">
         <PayoutPreferencesTable />
       </Card>
-
       <Banner
         variant="base"
         title={<Translate token="v2.pages.settings.payoutPreferences.warning" />}

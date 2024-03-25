@@ -47,9 +47,9 @@ export function SponsorHistoryCard() {
           <Translate token="v2.pages.sponsor.history.project" />
         </Typography>
         <Avatar.Labelled
-          avatarProps={{ src: "", alt: "", size: "s", shape: "square", className: "flex-shrink-0" }}
-          labelProps={{ title: "", className: "truncate" }}
-          className={"overflow-hidden"}
+          avatarProps={{ src: "", alt: "", size: "s", shape: "square" }}
+          labelProps={{ title: "" }}
+          truncate
         >
           <Typography variant={"body-s"} className={"truncate"}>
             Madara
