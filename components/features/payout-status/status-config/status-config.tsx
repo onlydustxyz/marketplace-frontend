@@ -41,14 +41,6 @@ export function getStatusConfig({ status, dateRelativeToNow, date }: TStatusConf
       borderColor: "grey",
       iconClassName: "text-snow",
     }),
-    PENDING_INVOICE: createStatusConfig({
-      icon: "ri-loader-2-line",
-      labelToken: "v2.features.payoutStatus.pendingRequest.label",
-      tooltipToken: "v2.features.payoutStatus.pendingRequest.tooltip",
-      tooltipParams: {},
-      borderColor: "multi-color",
-      iconClassName: "text-snow",
-    }),
     PENDING_SIGNUP: createStatusConfig({
       icon: "ri-error-warning-line",
       labelToken: "v2.features.payoutStatus.pendingSignup.label",
@@ -82,6 +74,14 @@ export function getStatusConfig({ status, dateRelativeToNow, date }: TStatusConf
       iconClassName: "text-orange-500",
     }),
     PENDING_CONTRIBUTOR: createStatusConfig({
+      icon: "ri-team-line",
+      labelToken: "v2.features.payoutStatus.pendingCompany.label",
+      tooltipToken: "v2.features.payoutStatus.pendingCompany.tooltip",
+      tooltipParams: {},
+      borderColor: "grey",
+      iconClassName: "text-snow",
+    }),
+    PENDING_COMPANY: createStatusConfig({
       icon: "ri-user-3-line",
       labelToken: "v2.features.payoutStatus.pendingContributor.label",
       tooltipToken: "v2.features.payoutStatus.pendingContributor.tooltip",
