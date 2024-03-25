@@ -28,6 +28,7 @@ export function SponsorHistoryTable() {
       {
         key: "date",
         label: T("v2.pages.sponsor.history.date"),
+        width: "50%",
       },
       {
         key: "transaction",
@@ -66,7 +67,16 @@ export function SponsorHistoryTable() {
           </Typography>
         </Flex>
       ),
-      project: <Avatar.Labelled avatarProps={{ src: "", shape: "square" }}>Madara</Avatar.Labelled>,
+      project: (
+        <Avatar.Labelled
+          avatarProps={{ src: "", alt: "", shape: "square" }}
+          labelProps={{ title: "" }}
+          className={"max-w-[120px]"}
+          truncate
+        >
+          Madara
+        </Avatar.Labelled>
+      ),
     },
   ];
 

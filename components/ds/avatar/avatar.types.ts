@@ -24,5 +24,6 @@ export namespace TAvatar {
     href?: string;
     avatarProps?: Props;
     labelProps?: ComponentProps<"div">;
+    truncate?: boolean;
   }
 }

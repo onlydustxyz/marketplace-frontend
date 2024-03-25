@@ -90,16 +90,33 @@ Avatar.Labelled = function AvatarLabelled({
   avatarProps,
   labelProps,
   className,
+  truncate,
 }: TAvatar.LabelledProps) {
-  const wrapperClassName = cn("flex items-center gap-2 truncate", className);
+  const wrapperClassName = cn(
+    "flex items-center gap-2 truncate",
+    {
+      "overflow-hidden": truncate,
+    },
+    className
+  );
 
   function renderContent() {
-    const { className, ...restProps } = labelProps ?? {};
+    const { className: labelClassName, ...restLabelProps } = labelProps ?? {};
+    const { className: avatarClassName, ...restAvatarProps } = avatarProps ?? {};
 
     return (
       <>
-        <Avatar size="s" {...avatarProps} />
-        <div className={cn("od-text-body-s truncate text-greyscale-50", className)} {...restProps}>
+        <Avatar size="s" className={cn({ "flex-shrink-0": truncate }, avatarClassName)} {...restAvatarProps} />
+        <div
+          className={cn(
+            "od-text-body-s truncate text-greyscale-50",
+            {
+              truncate: truncate,
+            },
+            labelClassName
+          )}
+          {...restLabelProps}
+        >
           {children}
         </div>
       </>
