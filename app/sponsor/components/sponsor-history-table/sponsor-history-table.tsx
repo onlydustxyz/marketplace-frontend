@@ -1,17 +1,23 @@
 import { SortDescriptor } from "@nextui-org/react";
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
+import { DateRange } from "react-day-picker";
+import { useLocalStorage } from "react-use";
 import { Money } from "utils/Money/Money";
 
 import { SponsorHistoryTransaction } from "app/sponsor/components/sponsor-history-transaction/sponsor-history-transaction";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
+import { Period } from "src/components/New/Field/Datepicker";
+import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
+import { allTime } from "src/utils/date";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
+import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
@@ -31,10 +37,42 @@ const projects = [
   },
 ];
 
+type Filters = {
+  dateRange: DateRange;
+  period: Period;
+  projects: TSelectAutocomplete.Item[];
+};
+
+const initialFilters: Filters = {
+  dateRange: allTime,
+  period: Period.AllTime,
+  projects: [],
+};
+
 export function SponsorHistoryTable() {
   const { T } = useIntl();
 
+  const [filtersStorage, setFiltersStorage] = useLocalStorage("sponsor-table-filters", JSON.stringify(initialFilters));
+  const [filters, setFilters] = useState<Partial<Filters>>(
+    filtersStorage ? JSON.parse(filtersStorage) : initialFilters
+  );
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
+
+  function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
+    const updatedState = { ...prevState, ...newState };
+
+    setFiltersStorage(JSON.stringify(updatedState));
+
+    return updatedState;
+  }
+
+  function updateDate(dateRange: DateRange) {
+    setFilters(prevState => updateState(prevState, { dateRange }));
+  }
+
+  function updatePeriod(period: Period) {
+    setFilters(prevState => updateState(prevState, { period }));
+  }
 
   function handleSort(sort: SortDescriptor) {
     setSortDescriptor(sort);
@@ -104,7 +142,16 @@ export function SponsorHistoryTable() {
 
   return (
     <Card background={"base"} className={"grid gap-5"}>
-      <header>
+      <header className={"flex gap-3"}>
+        <Flex>
+          <FilterDatepicker
+            selected={filters.dateRange ?? initialFilters.dateRange}
+            onChange={updateDate}
+            selectedPeriod={filters.period ?? initialFilters.period}
+            onPeriodChange={updatePeriod}
+            hideLabel
+          />
+        </Flex>
         <Flex>
           <FiltersProjects projects={projects} selected={[]} onChange={() => {}} hideLabel />
         </Flex>
