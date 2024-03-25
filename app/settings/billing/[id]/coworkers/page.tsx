@@ -90,14 +90,16 @@ function CoworkersPage() {
         const isYou = githubUserId === meGithubUserId;
         const hasPendingInvite = !joinedAt;
         const actionType = (): TManageCoworker.ActionTypeUnion => {
-          if (hasPendingInvite) {
+          if (hasPendingInvite && canRemove) {
             return "cancel";
           }
-          if (canRemove) {
+          if (!hasPendingInvite && canRemove) {
             return "delete";
           }
-          return "delete";
+          return "none";
         };
+
+        const canManageCoworker = actionType() !== "none" && !isYou;
         return {
           key: id ?? "",
           coworkers: (
@@ -117,7 +119,7 @@ function CoworkersPage() {
                 addSuffix: true,
               })
             : "-",
-          actions: !isYou ? (
+          actions: canManageCoworker ? (
             <div className="flex justify-end">
               <ManageCoworker actionType={actionType()} githubUserId={githubUserId} />
             </div>
