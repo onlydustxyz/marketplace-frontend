@@ -104,23 +104,23 @@ export function SelectRewards({
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex h-full flex-col overflow-hidden px-1">
+        <div className="mb-8 px-3">
+          <Typography
+            variant={"title-m"}
+            translate={{ token: "v2.pages.stacks.request_payments.title" }}
+            className="text-greyscale-50"
+          />
+        </div>
+        <div className="mb-8 px-3">
+          <Typography
+            variant={"title-s"}
+            translate={{ token: "v2.pages.stacks.request_payments.selectRewards.billingProfileTitle" }}
+            className="mb-4"
+          />
+          {profile?.data ? <ReadonlyBillingProfile billingProfile={profile?.data} /> : null}
+        </div>
         <ScrollView>
-          <div className="px-3 pb-[250px]">
-            <div className="mb-8">
-              <Typography
-                variant={"title-m"}
-                translate={{ token: "v2.pages.stacks.request_payments.title" }}
-                className="text-greyscale-50"
-              />
-            </div>
-            <div className="mb-8">
-              <Typography
-                variant={"title-s"}
-                translate={{ token: "v2.pages.stacks.request_payments.uploadInvoice.guidelinesTitle" }}
-                className="mb-4"
-              />
-              {profile?.data ? <ReadonlyBillingProfile billingProfile={profile?.data} /> : null}
-            </div>
+          <div className="px-3">
             <Tabs
               tabs={[
                 {
@@ -138,31 +138,31 @@ export function SelectRewards({
               ]}
             />
           </div>
-          <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-            <AmountCounter
-              total={totalAmountCumulated}
-              isCompany={profile?.data?.type === BillingProfilesTypes.type.Company}
-              limit={currentYearPaymentLimit}
-            />
-            <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
-              <div className="flex items-center justify-end gap-5 ">
-                <Button
-                  variant="secondary"
-                  size="m"
-                  onClick={() => goTo({ to: TRequestPaymentsStacks.Views.SelectBillingProfile })}
-                >
-                  <Translate token="v2.pages.stacks.request_payments.form.back" />
-                </Button>
-                <Button variant="primary" size="m" onClick={onSubmit} disabled={isDisabled}>
-                  <Translate
-                    token="v2.pages.stacks.request_payments.form.submit"
-                    params={{ count: includedRewards?.length }}
-                  />
-                </Button>
-              </div>
+        </ScrollView>
+        <div className="w-full bg-greyscale-900">
+          <AmountCounter
+            total={totalAmountCumulated}
+            isCompany={profile?.data?.type === BillingProfilesTypes.type.Company}
+            limit={currentYearPaymentLimit}
+          />
+          <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
+            <div className="flex items-center justify-end gap-5 ">
+              <Button
+                variant="secondary"
+                size="m"
+                onClick={() => goTo({ to: TRequestPaymentsStacks.Views.SelectBillingProfile })}
+              >
+                <Translate token="v2.pages.stacks.request_payments.form.back" />
+              </Button>
+              <Button variant="primary" size="m" onClick={onSubmit} disabled={isDisabled}>
+                <Translate
+                  token="v2.pages.stacks.request_payments.form.submit"
+                  params={{ count: includedRewards?.length }}
+                />
+              </Button>
             </div>
           </div>
-        </ScrollView>
+        </div>
       </div>
     </div>
   );
