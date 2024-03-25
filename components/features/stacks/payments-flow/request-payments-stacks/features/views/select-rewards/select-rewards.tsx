@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { IMAGES } from "src/assets/img";
 import { usePosthog } from "src/hooks/usePosthog";
 
@@ -39,7 +40,10 @@ export function SelectRewards({
       includedRewards: includedRewards?.length,
       excludedRewards: excludedRewards?.length,
     });
-    if (user?.billingProfileType === "INDIVIDUAL" || (user?.billingProfileType === "COMPANY" && isMandateAccepted)) {
+    if (
+      user?.billingProfileType === BillingProfilesTypes.type.Individual ||
+      (user?.billingProfileType === BillingProfilesTypes.type.Company && isMandateAccepted)
+    ) {
       goTo({ to: TRequestPaymentsStacks.Views.Generate });
     } else {
       goTo({ to: TRequestPaymentsStacks.Views.Mandate });
@@ -119,7 +123,10 @@ export function SelectRewards({
             />
           </div>
           <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-            <AmountCounter total={totalAmountSelectedRewards} isCompany={user?.billingProfileType === "COMPANY"} />
+            <AmountCounter
+              total={totalAmountSelectedRewards}
+              isCompany={user?.billingProfileType === BillingProfilesTypes.type.Company}
+            />
             <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
               <div className="flex items-center justify-end gap-5 ">
                 <Button
