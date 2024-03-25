@@ -30,8 +30,13 @@ export function SelectRewards({
   const { capture } = usePosthog();
 
   const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
+  const isIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
+  const isCompany = profile?.data?.type === BillingProfilesTypes.type.Company;
+  const isMandateAccepted = profile?.data?.invoiceMandateAccepted;
+
   // TODO find out if the limit can be required and always fulfilled
   const currentYearPaymentLimit = profile?.data?.currentYearPaymentLimit ?? 5000;
+  const currentYearPaymentAmount = profile?.data?.currentYearPaymentAmount ?? 0;
 
   const totalAmountSelectedRewards = useMemo(
     () => includedRewards.reduce((count, reward) => (count += reward.amount.dollarsEquivalent || 0), 0),
@@ -39,16 +44,13 @@ export function SelectRewards({
   );
 
   const totalAmountCumulated = useMemo(
-    // TODO find out if the limit can be required and always fulfilled
-    () => totalAmountSelectedRewards + (profile?.data?.currentYearPaymentLimit ?? 0),
-    [totalAmountSelectedRewards, profile?.data?.currentYearPaymentLimit]
+    () => totalAmountSelectedRewards + currentYearPaymentAmount,
+    [totalAmountSelectedRewards, currentYearPaymentAmount]
   );
 
   const isDisabled = useMemo(
-    () =>
-      includedRewards.length < 1 ||
-      (profile?.data?.type === BillingProfilesTypes.type.Individual && totalAmountCumulated > currentYearPaymentLimit),
-    [includedRewards, currentYearPaymentLimit, totalAmountCumulated, profile?.data?.type]
+    () => includedRewards.length < 1 || (isIndividual && totalAmountCumulated > currentYearPaymentLimit),
+    [includedRewards, currentYearPaymentLimit, totalAmountCumulated, isIndividual]
   );
 
   const onSubmit = () => {
@@ -56,10 +58,7 @@ export function SelectRewards({
       includedRewards: includedRewards?.length,
       excludedRewards: excludedRewards?.length,
     });
-    if (
-      profile?.data?.type === BillingProfilesTypes.type.Individual ||
-      (profile?.data?.type === BillingProfilesTypes.type.Company && profile?.data?.invoiceMandateAccepted)
-    ) {
+    if (isIndividual || (isCompany && isMandateAccepted)) {
       goTo({ to: TRequestPaymentsStacks.Views.Generate });
     } else {
       goTo({ to: TRequestPaymentsStacks.Views.Mandate });
@@ -140,11 +139,7 @@ export function SelectRewards({
           </div>
         </ScrollView>
         <div className="w-full bg-greyscale-900">
-          <AmountCounter
-            total={totalAmountCumulated}
-            isCompany={profile?.data?.type === BillingProfilesTypes.type.Company}
-            limit={currentYearPaymentLimit}
-          />
+          <AmountCounter total={totalAmountCumulated} isCompany={isCompany} limit={currentYearPaymentLimit} />
           <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
             <div className="flex items-center justify-end gap-5 ">
               <Button
