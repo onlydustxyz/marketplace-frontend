@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import { Key, useMemo, useState } from "react";
+import { Key, useCallback, useMemo, useState } from "react";
 
 import UsersApi from "src/api/Users";
 import { useIntl } from "src/hooks/useIntl";
@@ -12,6 +12,7 @@ import { Icon } from "components/layout/icon/icon";
 export function useSearchContributors({
   onSelectContributors,
   initialValue,
+  isMultiple,
 }: TUseSearchContributors.Props): TUseSearchContributors.Return {
   const { T } = useIntl();
   const [debounceQuery, setDebounceQuery] = useState("");
@@ -26,9 +27,12 @@ export function useSearchContributors({
     params: { login: debounceQuery },
   });
 
-  const handleDebounceQuery = debounce(async (query: string) => {
-    setDebounceQuery(query);
-  }, 300);
+  const handleDebounceQuery = useCallback(
+    debounce((query: string) => {
+      setDebounceQuery(query);
+    }, 300),
+    []
+  );
 
   function handleQuery(query: string) {
     handleDebounceQuery(query);
@@ -57,6 +61,9 @@ export function useSearchContributors({
       setSelectedKeys(selectedGithubUserId);
       setDebounceQuery("");
       setSearchQuery("");
+      if (!isMultiple) {
+        setOpenListbox(false);
+      }
       onSelectContributors(selectedContributor);
     }
   }

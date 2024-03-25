@@ -8,6 +8,7 @@ export namespace TUseSearchContributors {
   export interface Props {
     onSelectContributors: (contributors: ContributorResponse[]) => void;
     initialValue?: ContributorResponse;
+    isMultiple?: boolean;
   }
   export interface Return {
     searchQuery: string;

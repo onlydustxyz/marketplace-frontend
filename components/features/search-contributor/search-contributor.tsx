@@ -33,7 +33,7 @@ export function SearchContributor({
     handleClickOutside,
     onSelectElement,
     setOpenListbox,
-  } = useSearchContributors({ onSelectContributors, initialValue });
+  } = useSearchContributors({ onSelectContributors, initialValue, isMultiple: selectionMode === "multiple" });
 
   const ref = useRef(null);
   useOnClickOutside(ref, handleClickOutside);
