@@ -8,6 +8,7 @@ import { Table } from "./table";
 type Story = StoryObj<typeof Table>;
 
 const defaultProps: ComponentProps<typeof Table> = {
+  label: "Table label",
   columns: [
     { key: "col1", label: "Column 1", icon: { remixName: "ri-error-warning-line" } },
     { key: "col2", label: "Column 2", icon: { customName: "dollar" } },

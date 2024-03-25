@@ -101,5 +101,5 @@ export function PayoutPreferencesTable() {
     [data, billingProfilesSelector]
   );
 
-  return <Table columns={columns} rows={rows} />;
+  return <Table label={T("v2.pages.settings.payoutPreferences.title")} columns={columns} rows={rows} />;
 }

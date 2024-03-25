@@ -24,6 +24,7 @@ export namespace TTable {
     icon?: ComponentProps<typeof Icon>;
     align?: TableColumnProps<unknown>["align"];
     showOnHover?: boolean;
+    width?: TableColumnProps<unknown>["width"];
   }
 
   export interface Row {
@@ -32,6 +33,7 @@ export namespace TTable {
   }
 
   export interface Props extends Base {
+    label: string;
     columns: Column[];
     rows: Row[];
     TableHeaderProps?: TableHeader;

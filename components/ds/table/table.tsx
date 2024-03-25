@@ -16,19 +16,17 @@ import { TTable } from "components/ds/table/table.types";
 import { Icon } from "components/layout/icon/icon";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
-// TODO load more - https://nextui.org/docs/components/table#loading-more-data
-// TODO loading state - https://nextui.org/docs/components/table#tablebody-props
 // TODO sort - https://nextui.org/docs/components/table#sorting-rows
 // TODO infinite pagination - https://nextui.org/docs/components/table#infinite-pagination
-// TODO: add generics type for rows
 export function Table({
+  label,
   columns,
   rows,
-  TableHeaderProps,
-  TableColumnProps,
-  TableBodyProps,
-  TableRowProps,
-  TableCellProps,
+  TableHeaderProps = {},
+  TableColumnProps = {},
+  TableBodyProps = {},
+  TableRowProps = {},
+  TableCellProps = {},
   EmptyProps,
   ...TableProps
 }: TTable.Props) {
@@ -39,33 +37,34 @@ export function Table({
       th: "bg-transparent border-b border-card-border-medium text-gray-400 uppercase font-walsheim text-sm font-medium h-auto pb-2",
       tr: "group/table-row",
       td: "py-3 h-auto",
+      // TODO do we need these classes ? Check coworkers page
       tbody: "first-of-type:tr:td:pt-50 [&>tr:first-child>td]:pt-5",
     }),
     []
   );
 
   return (
-    <NextTable classNames={classNames} removeWrapper {...TableProps}>
+    <NextTable aria-label={label} classNames={classNames} removeWrapper {...TableProps}>
       <TableHeader columns={columns} {...(TableHeaderProps || {})}>
-        {column => (
-          <TableColumn key={column.key} {...(TableColumnProps || {})}>
+        {({ key, align, icon, label, ...restColumn }) => (
+          <TableColumn {...TableColumnProps} key={key} {...(restColumn ?? {})}>
             <div
               className={cn("flex gap-1", {
-                "justify-start": column.align === "start",
-                "justify-center": column.align === "center",
-                "justify-end": column.align === "end",
+                "justify-start": align === "start",
+                "justify-center": align === "center",
+                "justify-end": align === "end",
               })}
             >
-              {column.icon ? <Icon {...column.icon} /> : null}
-              {column.label}
+              {icon ? <Icon {...icon} /> : null}
+              {label}
             </div>
           </TableColumn>
         )}
       </TableHeader>
 
       <TableBody
+        {...TableBodyProps}
         items={rows}
-        {...(TableBodyProps || {})}
         emptyContent={
           <EmptyState
             illustrationSrc={EmptyProps?.illustrationSrc || IMAGES.global.payment}
@@ -78,8 +77,8 @@ export function Table({
       >
         {item => (
           <TableRow
+            {...TableRowProps}
             key={item.key}
-            {...(TableRowProps || {})}
             className={cn(
               "border-b border-card-border-light duration-200 transition hover:bg-white/5",
               TableRowProps?.className
@@ -90,7 +89,7 @@ export function Table({
 
               return (
                 <TableCell
-                  {...(TableCellProps || {})}
+                  {...TableCellProps}
                   className={cn(
                     {
                       "text-left": column?.align === "start",
