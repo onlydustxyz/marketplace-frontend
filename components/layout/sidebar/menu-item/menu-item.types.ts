@@ -12,5 +12,9 @@ export namespace TMenuItem {
     matchPathOptions?: TBaseLink.Props["matchPathOptions"];
     pendingInvitationResponse?: boolean;
     hasSeparator?: boolean;
+    alerting?: {
+      warning?: boolean;
+      error?: boolean;
+    };
   }
 }
