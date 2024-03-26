@@ -21,6 +21,7 @@ import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/sele
 import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
+import { FiltersTransactions } from "components/features/filters/filters-transactions/filters-transactions";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
@@ -34,6 +35,24 @@ const projects = [
     id: 1234,
     label: "test project",
     value: "test project",
+  },
+];
+
+const transactions = [
+  {
+    id: "deposit",
+    label: "Deposit",
+    value: "deposit",
+  },
+  {
+    id: "allocated",
+    label: "Allocated",
+    value: "allocated",
+  },
+  {
+    id: "unallocated",
+    label: "Unallocated",
+    value: "unallocated",
   },
 ];
 
@@ -151,6 +170,9 @@ export function SponsorHistoryTable() {
             onPeriodChange={updatePeriod}
             hideLabel
           />
+        </Flex>
+        <Flex>
+          <FiltersTransactions transactions={transactions} selected={[]} onChange={() => {}} hideLabel />
         </Flex>
         <Flex>
           <FiltersProjects projects={projects} selected={[]} onChange={() => {}} hideLabel />
