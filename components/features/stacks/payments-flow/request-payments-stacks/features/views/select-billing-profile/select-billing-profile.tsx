@@ -64,9 +64,9 @@ export function SelectBillingProfile({
                 <SelectableBillingProfile
                   key={profile.id}
                   title={profile.name}
-                  count={profile.rewardCount ?? 0}
+                  count={profile.invoiceableRewardCount}
                   icon={{ remixName: billingProfilesIcons[profile.type] }}
-                  disabled={profile.rewardCount === 0}
+                  disabled={profile.invoiceableRewardCount === 0}
                   onChange={onChange}
                   selected={profile.id === selectedBillingProfileId}
                   value={profile.id}
