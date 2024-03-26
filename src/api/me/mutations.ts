@@ -1,5 +1,6 @@
 import { components } from "src/__generated/api";
 import { BILLING_PROFILES_TAGS } from "src/api/BillingProfiles/tags";
+import { ME_BILLING_TAGS } from "src/api/me/billing/tags";
 import { ME_TAGS } from "src/api/me/tags";
 
 import MeApi from ".";
@@ -112,25 +113,10 @@ const useUpdatePayoutPreferences = ({ options = {} }: UseMutationProps<unknown, 
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
       { queryKey: ME_TAGS.rewards(), exact: false },
       { queryKey: BILLING_PROFILES_TAGS.all, exact: false },
+      { queryKey: ME_BILLING_TAGS.allProfiles(), exact: false },
     ],
     method: "PUT",
     ...options,
-  });
-};
-
-const useAcceptOrDeclineInvitation = ({
-  params,
-  options,
-}: UseMutationProps<unknown, { billingProfileId: string }, { accepted: boolean }>) => {
-  return useBaseMutation<{ accepted: boolean }, unknown>({
-    resourcePath: ME_PATH.BILLING_PROFILES_INVITATIONS(params?.billingProfileId || ""),
-    enabled: !!params?.billingProfileId,
-    method: "POST",
-    invalidatesTags: [
-      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
-      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
-    ],
-    ...(options ? options : {}),
   });
 };
 
@@ -144,5 +130,4 @@ export default {
   useUploadProfilePicture,
   useMarkInvoicesAsReceived,
   useUpdatePayoutPreferences,
-  useAcceptOrDeclineInvitation,
 };

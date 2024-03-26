@@ -12,7 +12,7 @@ const useAllBillingProfiles = ({ options = {} }: UseQueryProps<UseAllBillingProf
 
   return useBaseQuery<UseAllBillingProfilesResponse>({
     resourcePath: ME_PATH.BILLING_PROFILES,
-    tags: ME_BILLING_TAGS.allProfiles,
+    tags: ME_BILLING_TAGS.allProfiles(),
     ...options,
     enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
   });

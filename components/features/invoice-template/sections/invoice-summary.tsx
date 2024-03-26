@@ -3,6 +3,7 @@ import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profile
 import { Money } from "utils/Money/Money";
 
 import { getFormattedDateGB } from "src/utils/date";
+import { pretty } from "src/utils/id";
 
 import { styles } from "components/features/invoice-template/invoice-template.styles";
 import { InvoiceTokens } from "components/features/invoice-template/invoice-template.tokens";
@@ -55,7 +56,7 @@ export function InvoiceSummary({
             {rewards?.map((item, index) => (
               <View key={index} style={styles.tr} wrap={false}>
                 {/*  ID  */}
-                <Text style={styles.tdSmall}>#{item.id.slice(0, 4)}</Text>
+                <Text style={styles.tdSmall}>{`#${pretty(item.id)}`}</Text>
                 {/*  project name  */}
                 <Text style={styles.td}>
                   {item.projectName.length > 12 ? `${item.projectName.slice(0, 12)}...` : item.projectName}
@@ -70,13 +71,13 @@ export function InvoiceSummary({
                 <View style={{ ...styles.td, ...styles.flexRow }}>
                   {/*the result should look like this*/}
                   {/*1 ETH ~ 3,000 USD*/}
-                  <Text>{`1 ${item.amount.currency}`}</Text>
+                  <Text>{`1 ${item.amount.currency.code}`}</Text>
                   <Text>{`=${
                     Money.format({
                       amount: item.amount.target.conversionRate,
                       currency: item.amount.target.currency,
                     }).string
-                  }`}</Text>
+                  }*`}</Text>
                 </View>
                 {/*  USD equivalent  */}
                 <Text style={styles.td}>
@@ -115,6 +116,11 @@ export function InvoiceSummary({
         </View>
       </View>
       <View style={{ ...styles.flexRow, ...styles.marginTop25P, ...styles.paddingHoriz30P }} wrap={false}>
+        <Text style={styles.h4}>{InvoiceTokens.rewardSummary.tokenRate.title}</Text>
+        <Text style={styles.paragraph}>{InvoiceTokens.rewardSummary.tokenRate.descriptionIntro}</Text>
+        <Text style={styles.paragraph}>{InvoiceTokens.rewardSummary.tokenRate.descriptionOutro}</Text>
+      </View>
+      <View style={{ ...styles.flexRow, ...styles.paddingHoriz30P }} wrap={false}>
         <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
         {totalAmounts?.map((item, index) => (
           <Text key={index} style={styles.paragraph}>

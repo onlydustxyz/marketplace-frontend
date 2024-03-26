@@ -11,7 +11,6 @@ export default {
       },
       options: [
         PaymentStatus.COMPLETE,
-        PaymentStatus.PENDING_INVOICE,
         PaymentStatus.PENDING_SIGNUP,
         PaymentStatus.PROCESSING,
         PaymentStatus.PAYOUT_INFO_MISSING,
@@ -44,13 +43,6 @@ export const PendingSignup = {
 
 export const Processing = {
   render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PROCESSING }} {...args} />,
-  parameters: {
-    backgrounds: { default: "space" },
-  },
-};
-
-export const PendingInvoice = {
-  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PENDING_INVOICE }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },
   },

@@ -22,6 +22,7 @@ export function SelectableBillingProfile({
   function onClick() {
     onChange(value);
   }
+
   return (
     <Card
       background={false}

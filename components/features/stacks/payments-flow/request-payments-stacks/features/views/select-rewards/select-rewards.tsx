@@ -15,7 +15,7 @@ import { EmptyState } from "components/layout/placeholders/empty-state/empty-sta
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
 
 import { AmountCounter } from "../../../components/amount-counter/amount-counter";
 
@@ -25,14 +25,32 @@ export function SelectRewards({
   includedRewards,
   excludedRewards,
   goTo,
-  isMandateAccepted,
-  selectedBillingProfile,
+  billingProfileId,
 }: TSelectRewards.Props) {
   const { capture } = usePosthog();
-  const { user } = useCurrentUser();
+
+  const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
+  const isIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
+  const isCompany = profile?.data?.type === BillingProfilesTypes.type.Company;
+  const isMandateAccepted = profile?.data?.invoiceMandateAccepted;
+
+  // TODO find out if the limit can be required and always fulfilled
+  const currentYearPaymentLimit = profile?.data?.currentYearPaymentLimit ?? 5000;
+  const currentYearPaymentAmount = profile?.data?.currentYearPaymentAmount ?? 0;
+
   const totalAmountSelectedRewards = useMemo(
     () => includedRewards.reduce((count, reward) => (count += reward.amount.dollarsEquivalent || 0), 0),
     [includedRewards]
+  );
+
+  const totalAmountCumulated = useMemo(
+    () => totalAmountSelectedRewards + currentYearPaymentAmount,
+    [totalAmountSelectedRewards, currentYearPaymentAmount]
+  );
+
+  const isDisabled = useMemo(
+    () => includedRewards.length < 1 || (isIndividual && totalAmountCumulated > currentYearPaymentLimit),
+    [includedRewards, currentYearPaymentLimit, totalAmountCumulated, isIndividual]
   );
 
   const onSubmit = () => {
@@ -40,10 +58,7 @@ export function SelectRewards({
       includedRewards: includedRewards?.length,
       excludedRewards: excludedRewards?.length,
     });
-    if (
-      user?.billingProfileType === BillingProfilesTypes.type.Individual ||
-      (user?.billingProfileType === BillingProfilesTypes.type.Company && isMandateAccepted)
-    ) {
+    if (isIndividual || (isCompany && isMandateAccepted)) {
       goTo({ to: TRequestPaymentsStacks.Views.Generate });
     } else {
       goTo({ to: TRequestPaymentsStacks.Views.Mandate });
@@ -88,23 +103,23 @@ export function SelectRewards({
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex h-full flex-col overflow-hidden px-1">
+        <div className="mb-8 px-3">
+          <Typography
+            variant={"title-m"}
+            translate={{ token: "v2.pages.stacks.request_payments.title" }}
+            className="text-greyscale-50"
+          />
+        </div>
+        <div className="mb-8 px-3">
+          <Typography
+            variant={"title-s"}
+            translate={{ token: "v2.pages.stacks.request_payments.selectRewards.billingProfileTitle" }}
+            className="mb-4"
+          />
+          {profile?.data ? <ReadonlyBillingProfile billingProfile={profile?.data} /> : null}
+        </div>
         <ScrollView>
-          <div className="px-3 pb-[250px]">
-            <div className="mb-8">
-              <Typography
-                variant={"title-m"}
-                translate={{ token: "v2.pages.stacks.request_payments.title" }}
-                className="text-greyscale-50"
-              />
-            </div>
-            <div className="mb-8">
-              <Typography
-                variant={"title-s"}
-                translate={{ token: "v2.pages.stacks.request_payments.uploadInvoice.guidelinesTitle" }}
-                className="mb-4"
-              />
-              {selectedBillingProfile ? <ReadonlyBillingProfile billingProfile={selectedBillingProfile} /> : null}
-            </div>
+          <div className="px-3">
             <Tabs
               tabs={[
                 {
@@ -122,30 +137,27 @@ export function SelectRewards({
               ]}
             />
           </div>
-          <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-            <AmountCounter
-              total={totalAmountSelectedRewards}
-              isCompany={user?.billingProfileType === BillingProfilesTypes.type.Company}
-            />
-            <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
-              <div className="flex items-center justify-end gap-5 ">
-                <Button
-                  variant="secondary"
-                  size="m"
-                  onClick={() => goTo({ to: TRequestPaymentsStacks.Views.SelectBillingProfile })}
-                >
-                  <Translate token="v2.pages.stacks.request_payments.form.back" />
-                </Button>
-                <Button variant="primary" size="m" onClick={onSubmit} disabled={includedRewards?.length < 1}>
-                  <Translate
-                    token="v2.pages.stacks.request_payments.form.submit"
-                    params={{ count: includedRewards?.length }}
-                  />
-                </Button>
-              </div>
+        </ScrollView>
+        <div className="w-full bg-greyscale-900">
+          <AmountCounter total={totalAmountCumulated} isCompany={isCompany} limit={currentYearPaymentLimit} />
+          <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
+            <div className="flex items-center justify-end gap-5 ">
+              <Button
+                variant="secondary"
+                size="m"
+                onClick={() => goTo({ to: TRequestPaymentsStacks.Views.SelectBillingProfile })}
+              >
+                <Translate token="v2.pages.stacks.request_payments.form.back" />
+              </Button>
+              <Button variant="primary" size="m" onClick={onSubmit} disabled={isDisabled}>
+                <Translate
+                  token="v2.pages.stacks.request_payments.form.submit"
+                  params={{ count: includedRewards?.length }}
+                />
+              </Button>
             </div>
           </div>
-        </ScrollView>
+        </div>
       </div>
     </div>
   );

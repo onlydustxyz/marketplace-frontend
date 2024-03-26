@@ -1,6 +1,6 @@
 export namespace TAmountCounter {
   export interface Props {
-    limit?: number;
+    limit: number;
     total: number;
     isCompany?: boolean;
   }

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -17,11 +18,15 @@ import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
+
 export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvoice.Props) {
   const { T } = useIntl();
   const { isLoading, isError, fileUrl, invoiceId } = useInvoicePreview({ rewardIds, billingProfileId, isSample: true });
   const { isPendingUploadInvoice, handleSendInvoice } = useInvoiceUpload({ billingProfileId, invoiceId });
   const [selectedFileBlob, setSelectedFileBlob] = useState<File>();
+
+  const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
 
   function removeFile() {
     setSelectedFileBlob(undefined);
@@ -146,7 +151,15 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                   }
                   disabled={isPendingUploadInvoice || !selectedFileBlob}
                 >
-                  <Translate token="v2.pages.stacks.request_payments.form.sendInvoice" />
+                  <Translate
+                    token="v2.pages.stacks.request_payments.form.sendLabel"
+                    params={{
+                      fileType:
+                        profile?.data.type === BillingProfilesTypes.type.Individual
+                          ? T("v2.pages.stacks.request_payments.form.receipt")
+                          : T("v2.pages.stacks.request_payments.form.invoice"),
+                    }}
+                  />
                 </Button>
               </div>
             </div>

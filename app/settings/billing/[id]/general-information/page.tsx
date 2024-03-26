@@ -92,7 +92,7 @@ function SettingsBillingPage() {
           <ManageBillingProfile actionType={actionType} />
         </AdminContentWrapper>
 
-        <LeaveBillingProfile actionType="leave" />
+        {profile?.data.me.canLeave ? <LeaveBillingProfile actionType="leave" /> : null}
 
         {!profile?.data?.enabled ? (
           <Typography as="div" variant="body-s" className="mt-6 text-spaceBlue-200">

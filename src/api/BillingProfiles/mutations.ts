@@ -2,6 +2,7 @@ import { components } from "src/__generated/api";
 import { BILLING_PROFILES_PATH } from "src/api/BillingProfiles/path";
 import { BILLING_PROFILES_TAGS } from "src/api/BillingProfiles/tags";
 import MeApi from "src/api/me";
+import { ME_BILLING_TAGS } from "src/api/me/billing/tags";
 import { ME_TAGS } from "src/api/me/tags";
 import { QueryParams } from "src/utils/getEndpointUrl";
 
@@ -134,7 +135,7 @@ const useDeleteBillingCoworker = ({
     ),
     method: "DELETE",
     invalidatesTags: [
-      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
+      { queryKey: ME_BILLING_TAGS.allProfiles(), exact: false },
       { queryKey: BILLING_PROFILES_TAGS.billing_profile_coworkers(params?.billingProfileId || ""), exact: false },
     ],
     enabled: !!params?.billingProfileId && !!params?.githubUserId,
@@ -151,7 +152,7 @@ const useUpdateBillingType = ({
     enabled: !!params?.billingProfileId,
     method: "PUT",
     invalidatesTags: [
-      { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
+      { queryKey: ME_BILLING_TAGS.allProfiles(), exact: false },
       { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
     ],
     ...(options ? options : {}),
