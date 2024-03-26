@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { MeTypes } from "src/api/me/types";
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
@@ -97,7 +97,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerate
                   token="v2.pages.stacks.request_payments.form.approveLabel"
                   params={{
                     fileType:
-                      profile?.data?.type === MeTypes.billingProfileType.Individual
+                      profile?.data?.type === BillingProfilesTypes.type.Individual
                         ? T("v2.pages.stacks.request_payments.form.receipt")
                         : T("v2.pages.stacks.request_payments.form.invoice"),
                   }}

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { MeTypes } from "src/api/me/types";
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -155,7 +155,7 @@ export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvo
                     token="v2.pages.stacks.request_payments.form.sendLabel"
                     params={{
                       fileType:
-                        profile?.data.type === MeTypes.billingProfileType.Individual
+                        profile?.data.type === BillingProfilesTypes.type.Individual
                           ? T("v2.pages.stacks.request_payments.form.receipt")
                           : T("v2.pages.stacks.request_payments.form.invoice"),
                     }}
