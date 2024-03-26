@@ -8,9 +8,8 @@
   "logout": "Log out",
   "profile": {
     "manage": "Manage my account",
-    "pendingVerification": "Pending verification",
-    "verificationError": "Failed verification",
-    "missingPaymentMethods": "Payment method missing"
+    "actionRequired": "Action required",
+    "contactUs": "Contact us"
   },
   "tooltip": {
     "unableToReceiveRewards": "You're unable to receive rewards. Click to fill in required info"

@@ -21,14 +21,11 @@ import { Typography } from "components/layout/typography/typography";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
-import { useSettingsError } from "hooks/users/use-settings-error/use-settings-error";
-import { TUseSettingsError } from "hooks/users/use-settings-error/use-settings-error.types";
 
 export function Sidebar() {
   const { isAuthenticated } = useAuth0();
 
   const { user } = useCurrentUser();
-  const { error } = useSettingsError();
 
   const menuItems: TMenuItem.Props[] = useMemo(
     () => [
@@ -40,13 +37,12 @@ export function Sidebar() {
       {
         label: <Translate token="v2.pages.settings.billing.sidebar.items.payoutPreferences" />,
         href: NEXT_ROUTER.settings.payoutPreferences,
-        endIcon:
-          error === TUseSettingsError.ERRORS.PAYOUT ? (
-            <Icon size={16} remixName="ri-error-warning-line" className="text-orange-500" />
-          ) : null,
+        endIcon: user?.missingPayoutPreference ? (
+          <Icon size={16} remixName="ri-error-warning-line" className="text-orange-500" />
+        ) : null,
       },
     ],
-    [error]
+    [user]
   );
 
   return (
