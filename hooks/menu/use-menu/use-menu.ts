@@ -1,50 +1,51 @@
+import { useMemo } from "react";
+
 import { NEXT_ROUTER } from "constants/router";
 
-import { useSettingsError } from "hooks/users/use-settings-error/use-settings-error";
-import { TUseSettingsError } from "hooks/users/use-settings-error/use-settings-error.types";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { TUseMenu } from "./use-menu.types";
 
 export const useMenu = (): TUseMenu.Return => {
-  const { error, isBillingError, isBillingWarning } = useSettingsError();
+  const { user } = useCurrentUser();
 
-  switch (error) {
-    case TUseSettingsError.ERRORS.BILLING_ERROR:
+  const getWarningOrError = () => {
+    const findWarning = (user?.billingProfiles || [])?.find(
+      profile => profile.missingPayoutInfo || profile.missingVerification
+    );
+    const findError = (user?.billingProfiles || [])?.find(profile => profile.verificationBlocked);
+
+    return {
+      warning: !!findWarning,
+      error: !!findError,
+    };
+  };
+
+  return useMemo(() => {
+    const { warning, error } = getWarningOrError();
+
+    if (error) {
       return {
-        labelToken: "v2.features.menu.profile.verificationError",
+        labelToken: "v2.features.menu.profile.contactUs",
         redirection: NEXT_ROUTER.settings.profile,
         errorColor: TUseMenu.ERROR_COLORS.ERROR,
-        error,
-        isBillingError,
-        isBillingWarning,
+        error: true,
       };
-    case TUseSettingsError.ERRORS.BILLING_WARNING:
-      return {
-        labelToken: "v2.features.menu.profile.pendingVerification",
-        redirection: NEXT_ROUTER.settings.profile,
-        errorColor: TUseMenu.ERROR_COLORS.WARNING,
-        error,
-        isBillingError,
-        isBillingWarning,
-      };
-    case TUseSettingsError.ERRORS.PAYOUT:
-      return {
-        labelToken: "v2.features.menu.profile.missingPaymentMethods",
-        redirection: NEXT_ROUTER.settings.payoutPreferences,
-        errorColor: TUseMenu.ERROR_COLORS.WARNING,
-        error,
-        isBillingError,
-        isBillingWarning,
-      };
+    }
 
-    default:
+    if (warning || user?.missingPayoutPreference) {
       return {
-        labelToken: "v2.features.menu.profile.manage",
+        labelToken: "v2.features.menu.profile.actionRequired",
         redirection: NEXT_ROUTER.settings.profile,
-        errorColor: TUseMenu.ERROR_COLORS.DEFAULT,
-        error,
-        isBillingError,
-        isBillingWarning,
+        errorColor: TUseMenu.ERROR_COLORS.WARNING,
+        error: true,
       };
-  }
+    }
+
+    return {
+      labelToken: "v2.features.menu.profile.manage",
+      redirection: NEXT_ROUTER.settings.profile,
+      errorColor: TUseMenu.ERROR_COLORS.DEFAULT,
+    };
+  }, [user]);
 };
