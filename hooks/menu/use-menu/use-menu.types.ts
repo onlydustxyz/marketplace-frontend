@@ -11,6 +11,6 @@ export namespace TUseMenu {
     labelToken: Key;
     redirection: string;
     errorColor: keyof typeof ERROR_COLORS;
-    isBillingError?: boolean;
+    error?: boolean;
   }
 }

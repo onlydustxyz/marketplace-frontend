@@ -29,7 +29,7 @@ export const useMenu = (): TUseMenu.Return => {
         labelToken: "v2.features.menu.profile.contactUs",
         redirection: NEXT_ROUTER.settings.profile,
         errorColor: TUseMenu.ERROR_COLORS.ERROR,
-        isBillingError: true,
+        error: true,
       };
     }
 
@@ -38,7 +38,7 @@ export const useMenu = (): TUseMenu.Return => {
         labelToken: "v2.features.menu.profile.actionRequired",
         redirection: NEXT_ROUTER.settings.profile,
         errorColor: TUseMenu.ERROR_COLORS.WARNING,
-        isBillingError: true,
+        error: true,
       };
     }
 
