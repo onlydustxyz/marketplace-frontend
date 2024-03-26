@@ -108,6 +108,7 @@ const useUpdatePayoutPreferences = ({ options = {} }: UseMutationProps<unknown, 
   return useBaseMutation<UseUpdatePayoutPreferencesBody, unknown>({
     resourcePath: ME_PATH.PAYOUT_PREFERENCES,
     invalidatesTags: [
+      { queryKey: ME_TAGS.user, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
       { queryKey: ME_TAGS.rewards(), exact: false },
       { queryKey: BILLING_PROFILES_TAGS.all, exact: false },

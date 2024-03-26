@@ -10,7 +10,7 @@ import { View } from "./View";
 import { ViewMobile } from "./ViewMobile";
 
 const ProfileButton = () => {
-  const { labelToken, redirection, errorColor, error, isBillingError, isBillingWarning } = useMenu();
+  const { labelToken, redirection, errorColor } = useMenu();
 
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -27,9 +27,6 @@ const ProfileButton = () => {
     labelToken,
     redirection,
     errorColor,
-    error,
-    isBillingError,
-    isBillingWarning,
     hideProfileItems: onboardingInProgress,
   };
   return isXl ? <View {...props} /> : <ViewMobile {...props} />;
