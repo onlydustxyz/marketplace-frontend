@@ -12,6 +12,7 @@ import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { Period } from "src/components/New/Field/Datepicker";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ShowMore } from "src/components/Table/ShowMore";
+import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { useIntl } from "src/hooks/useIntl";
 import { allTime } from "src/utils/date";
 
@@ -20,6 +21,7 @@ import { Card } from "components/ds/card/card";
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
+import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 import { FiltersTransactions } from "components/features/filters/filters-transactions/filters-transactions";
 import { Flex } from "components/layout/flex/flex";
@@ -59,13 +61,17 @@ const transactions = [
 type Filters = {
   dateRange: DateRange;
   period: Period;
+  transactions: TSelectAutocomplete.Item[];
   projects: TSelectAutocomplete.Item[];
+  currency: TSelectAutocomplete.Item[];
 };
 
 const initialFilters: Filters = {
   dateRange: allTime,
   period: Period.AllTime,
+  transactions: [],
   projects: [],
+  currency: [],
 };
 
 export function SponsorHistoryTable() {
@@ -76,6 +82,13 @@ export function SponsorHistoryTable() {
     filtersStorage ? JSON.parse(filtersStorage) : initialFilters
   );
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
+  const orderedCurrencies = useCurrenciesOrder({
+    currencies: [
+      {
+        currency: Money.fromSchema({ code: Money.Static.Currency.USD }),
+      },
+    ],
+  });
 
   function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
     const updatedState = { ...prevState, ...newState };
@@ -91,6 +104,14 @@ export function SponsorHistoryTable() {
 
   function updatePeriod(period: Period) {
     setFilters(prevState => updateState(prevState, { period }));
+  }
+
+  function updateCurrency(currency: TSelectAutocomplete.Item[]) {
+    setFilters(prevState =>
+      updateState(prevState, {
+        currency,
+      })
+    );
   }
 
   function handleSort(sort: SortDescriptor) {
@@ -173,6 +194,21 @@ export function SponsorHistoryTable() {
         </Flex>
         <Flex>
           <FiltersTransactions transactions={transactions} selected={[]} onChange={() => {}} hideLabel />
+        </Flex>
+        <Flex>
+          <FiltersCurrencies
+            selected={filters.currency ?? initialFilters.currency}
+            onChange={updateCurrency}
+            currencies={
+              orderedCurrencies?.map(({ currency }) => ({
+                id: currency.id,
+                value: currency.id,
+                label: currency.name,
+                image: currency.logoUrl,
+              })) ?? []
+            }
+            hideLabel
+          />
         </Flex>
         <Flex>
           <FiltersProjects projects={projects} selected={[]} onChange={() => {}} hideLabel />
