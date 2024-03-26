@@ -1,0 +1,10 @@
+{
+  "title": "Sponsor project",
+  "budget": {
+    "title": "Project budget",
+    "currentBudget": "Current budget",
+    "amountAllocated": "Amount allocated",
+    "budgetAfterAllocation": "Budget after allocation"
+  },
+  "submit": "Sponsor project"
+}
