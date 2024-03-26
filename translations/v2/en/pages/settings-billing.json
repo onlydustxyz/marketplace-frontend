@@ -32,7 +32,7 @@
   },
   "status": {
     "descriptions": {
-      "CLOSED": "Your profile got permanetly rejected, please contact us if you believe it’s an error.",
+      "CLOSED": "Your profile got permanently rejected, please contact us if you believe it’s an error.",
       "INVALIDATED": "Your identity document has expired, please share an updated version.",
       "NOT_STARTED": "You need to verify your identity in order to receive rewards.",
       "REJECTED": "Your verification got rejected.",
