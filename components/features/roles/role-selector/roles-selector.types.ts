@@ -11,7 +11,6 @@ export namespace TRolesSelector {
   export interface Props extends PropsWithChildren {
     activeRole: TRolesSelector.roleUnion;
     isYou: boolean;
-    billingProfileId: string | undefined;
     githubUserId: number | undefined;
   }
 }
