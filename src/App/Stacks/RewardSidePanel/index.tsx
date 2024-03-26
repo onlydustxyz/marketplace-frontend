@@ -1,5 +1,3 @@
-"use client";
-
 import { ComponentProps, useEffect } from "react";
 
 import { useIntl } from "src/hooks/useIntl";
@@ -19,7 +17,7 @@ export default function RewardSidePanel({
   projectLeaderView,
   isMine,
 }: ComponentProps<typeof View>) {
-  const { isBillingError, redirection } = useMenu();
+  const { error, redirection } = useMenu();
   const { capture } = usePosthog();
 
   useEffect(() => {
@@ -34,7 +32,7 @@ export default function RewardSidePanel({
       onRewardCancel={onRewardCancel}
       projectLeaderView={projectLeaderView}
       isMine={isMine}
-      isBillingError={isBillingError}
+      isBillingError={error}
       projectId={projectId}
       redirectionStatus={redirection}
     />
