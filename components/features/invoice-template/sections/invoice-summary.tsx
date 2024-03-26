@@ -70,7 +70,7 @@ export function InvoiceSummary({
                 <View style={{ ...styles.td, ...styles.flexRow }}>
                   {/*the result should look like this*/}
                   {/*1 ETH ~ 3,000 USD*/}
-                  <Text>{`1 ${item.amount.currency}`}</Text>
+                  <Text>{`1 ${item.amount.currency.code}`}</Text>
                   <Text>{`=${
                     Money.format({
                       amount: item.amount.target.conversionRate,
