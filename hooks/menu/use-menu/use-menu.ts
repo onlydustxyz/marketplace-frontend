@@ -16,7 +16,7 @@ export const useMenu = (): TUseMenu.Return => {
     const findError = (user?.billingProfiles || [])?.find(profile => profile.verificationBlocked);
 
     return {
-      warning: !!findWarning,
+      warning: !!findWarning || user?.missingPayoutPreference,
       error: !!findError,
     };
   };
@@ -33,7 +33,7 @@ export const useMenu = (): TUseMenu.Return => {
       };
     }
 
-    if (warning || user?.missingPayoutPreference) {
+    if (warning) {
       return {
         labelToken: "v2.features.menu.profile.actionRequired",
         redirection: NEXT_ROUTER.settings.profile,
