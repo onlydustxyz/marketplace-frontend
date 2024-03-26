@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 
-import BillingProfilesMeApi from "src/api/me/billing";
+import MeBillingProfilesApi from "src/api/me/billing";
 import { useMutationAlert } from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
@@ -23,7 +23,7 @@ export function ProfileInvitationBanner({ profile }: TProfileInvitationBanner.Pr
     mutate: acceptInvitation,
     isPending: loadingAcceptInvitation,
     ...restAcceptInvitation
-  } = BillingProfilesMeApi.mutations.useAcceptInvitation({
+  } = MeBillingProfilesApi.mutations.useAcceptInvitation({
     params: {
       billingProfileId: profile?.id || "",
     },
@@ -33,7 +33,7 @@ export function ProfileInvitationBanner({ profile }: TProfileInvitationBanner.Pr
     mutate: declineInvitation,
     isPending: loadingDeclineInvitation,
     ...restDeclineInvitation
-  } = BillingProfilesMeApi.mutations.useDeclineInvitation({
+  } = MeBillingProfilesApi.mutations.useDeclineInvitation({
     params: {
       billingProfileId: profile?.id || "",
     },

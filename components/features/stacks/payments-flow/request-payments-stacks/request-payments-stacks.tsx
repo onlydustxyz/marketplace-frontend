@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
-import BillingApi from "src/api/me/billing";
+import MeBillingProfilesApi from "src/api/me/billing";
 
 import { GenerateInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/generate-invoice/generate-invoice";
 import { Mandate } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/mandate/mandate";
@@ -20,9 +20,8 @@ export function RequestPaymentsStacks() {
     params: { billingProfileId: selectedBillingProfileId },
   });
 
-  const { data: billingProfilesData, isLoading: isLoadingBillingProfiles } = BillingApi.queries.useAllBillingProfiles(
-    {}
-  );
+  const { data: billingProfilesData, isLoading: isLoadingBillingProfiles } =
+    MeBillingProfilesApi.queries.useAllBillingProfiles({});
 
   const excludeNonLiquidToken = useMemo(
     () =>
