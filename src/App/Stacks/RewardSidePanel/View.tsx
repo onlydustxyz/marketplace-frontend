@@ -18,7 +18,6 @@ import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import { useCloseStack } from "src/libs/react-stack";
 import { GithubContributionType, PaymentStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { rewardItemToContribution } from "src/utils/formatToContribution";
@@ -27,7 +26,6 @@ import { pretty } from "src/utils/id";
 import { Link } from "components/ds/link/link";
 import { Tooltip as NextUiTooltip } from "components/ds/tooltip/tooltip";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
-import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -51,7 +49,6 @@ export type Props = {
   onRewardCancel?: UseMutateFunction<unknown, Error, unknown, unknown>;
   projectId: string;
   isMine?: boolean;
-  isBillingError?: boolean;
   redirectionStatus?: string;
 };
 
@@ -61,14 +58,13 @@ export default function View({
   onRewardCancel,
   projectLeaderView,
   isMine,
-  isBillingError,
   redirectionStatus,
 }: Props) {
   const { T } = useIntl();
   const { githubUserId } = useCurrentUser();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
-  const closeRewardPanel = useCloseStack();
+  // const closeRewardPanel = useCloseStack();
   const isMyRewardsPage = useMatchPath(NEXT_ROUTER.rewards.all);
 
   const {
@@ -98,17 +94,19 @@ export default function View({
       return null;
     }
 
-    if (redirectionStatus && (data.status === "PAYOUT_INFO_MISSING" || data.status === "PENDING_VERIFICATION"))
-      return (
-        <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
-          <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
-        </BaseLink>
-      );
+    // TODO IMPLEMENT REDIRECTION STATUS woth billing profile ID
+    //
+    // if (redirectionStatus && (data.status === "PAYOUT_INFO_MISSING" || data.status === "PENDING_VERIFICATION"))
+    //   return (
+    //     <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
+    //       <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
+    //     </BaseLink>
+    //   );
 
     return (
       <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
     );
-  }, [data, isBillingError, redirectionStatus]);
+  }, [data, redirectionStatus]);
 
   function renderRewardItems() {
     if (rewardItemsLoading) {

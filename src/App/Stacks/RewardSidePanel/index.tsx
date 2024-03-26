@@ -17,7 +17,7 @@ export default function RewardSidePanel({
   projectLeaderView,
   isMine,
 }: ComponentProps<typeof View>) {
-  const { error, redirection } = useMenu();
+  const { redirection } = useMenu();
   const { capture } = usePosthog();
 
   useEffect(() => {
@@ -32,7 +32,6 @@ export default function RewardSidePanel({
       onRewardCancel={onRewardCancel}
       projectLeaderView={projectLeaderView}
       isMine={isMine}
-      isBillingError={error}
       projectId={projectId}
       redirectionStatus={redirection}
     />
