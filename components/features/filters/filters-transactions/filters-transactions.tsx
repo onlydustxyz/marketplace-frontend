@@ -6,7 +6,13 @@ import { Icon } from "components/layout/icon/icon";
 
 import { TFiltersTransactions } from "./filters-transactions.types";
 
-export function FiltersTransactions({ transactions, selected, onChange, hideLabel }: TFiltersTransactions.Props) {
+export function FiltersTransactions({
+  transactions,
+  selected,
+  onChange,
+  hideLabel,
+  isElevated,
+}: TFiltersTransactions.Props) {
   const { T } = useIntl();
   return (
     <FilterFieldContainer label={T("v2.features.filters.transactions.title")} hideLabel={hideLabel}>
@@ -23,6 +29,7 @@ export function FiltersTransactions({ transactions, selected, onChange, hideLabe
         selected={selected}
         onChange={onChange}
         disabled={transactions.length <= 1}
+        isElevated={isElevated}
       />
     </FilterFieldContainer>
   );

@@ -183,36 +183,36 @@ export function SponsorHistoryTable() {
   return (
     <Card background={"base"} className={"grid gap-5"}>
       <header className={"flex gap-3"}>
-        <Flex>
-          <FilterDatepicker
-            selected={filters.dateRange ?? initialFilters.dateRange}
-            onChange={updateDate}
-            selectedPeriod={filters.period ?? initialFilters.period}
-            onPeriodChange={updatePeriod}
-            hideLabel
-          />
-        </Flex>
-        <Flex>
-          <FiltersTransactions transactions={transactions} selected={[]} onChange={() => {}} hideLabel />
-        </Flex>
-        <Flex>
-          <FiltersCurrencies
-            selected={filters.currency ?? initialFilters.currency}
-            onChange={updateCurrency}
-            currencies={
-              orderedCurrencies?.map(({ currency }) => ({
-                id: currency.id,
-                value: currency.id,
-                label: currency.name,
-                image: currency.logoUrl,
-              })) ?? []
-            }
-            hideLabel
-          />
-        </Flex>
-        <Flex>
-          <FiltersProjects projects={projects} selected={[]} onChange={() => {}} hideLabel />
-        </Flex>
+        <FilterDatepicker
+          selected={filters.dateRange ?? initialFilters.dateRange}
+          onChange={updateDate}
+          selectedPeriod={filters.period ?? initialFilters.period}
+          onPeriodChange={updatePeriod}
+          hideLabel
+          isElevated={false}
+        />
+        <FiltersTransactions
+          transactions={transactions}
+          selected={[]}
+          onChange={() => {}}
+          hideLabel
+          isElevated={false}
+        />
+        <FiltersCurrencies
+          selected={filters.currency ?? initialFilters.currency}
+          onChange={updateCurrency}
+          currencies={
+            orderedCurrencies?.map(({ currency }) => ({
+              id: currency.id,
+              value: currency.id,
+              label: currency.name,
+              image: currency.logoUrl,
+            })) ?? []
+          }
+          hideLabel
+          isElevated={false}
+        />
+        <FiltersProjects projects={projects} selected={[]} onChange={() => {}} hideLabel isElevated={false} />
       </header>
       <Table
         label={T("v2.pages.sponsor.history.title")}

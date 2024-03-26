@@ -15,12 +15,14 @@ export function FilterDatepicker({
   selectedPeriod,
   onPeriodChange,
   hideLabel,
+  isElevated = true,
 }: {
   selected: DateRange;
   onChange: (value: DateRange) => void;
   selectedPeriod: NonNullable<ComponentProps<typeof Datepicker>["selectedPeriod"]>;
   onPeriodChange: NonNullable<ComponentProps<typeof Datepicker>["onPeriodChange"]>;
   hideLabel?: TFilterFieldContainer.Props["hideLabel"];
+  isElevated?: boolean;
 }) {
   const { T } = useIntl();
   const periods = useDatepickerPeriods({ selectedPeriod });
@@ -38,7 +40,7 @@ export function FilterDatepicker({
         selectedPeriod={selectedPeriod}
         onPeriodChange={onPeriodChange}
         periods={periods}
-        isElevated
+        isElevated={isElevated}
       />
     </FilterFieldContainer>
   );
