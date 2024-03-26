@@ -1,3 +1,4 @@
+import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
@@ -12,8 +13,9 @@ import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 
-export function RolesSelector({ activeRole, billingProfileId, githubUserId, isYou }: TRolesSelector.Props) {
+export function RolesSelector({ activeRole, githubUserId, isYou }: TRolesSelector.Props) {
   const { T } = useIntl();
+  const { id: billingProfileId } = useParams<{ id: string }>();
   const {
     mutate: updateCoworkerRole,
     isPending,
