@@ -6,5 +6,6 @@ export namespace TFiltersProjects {
     projects: TSelectAutocomplete.Item[];
     selected: TSelectAutocomplete.Item[];
     onChange: (projects: TSelectAutocomplete.Item[]) => void;
+    isElevated?: boolean;
   }
 }

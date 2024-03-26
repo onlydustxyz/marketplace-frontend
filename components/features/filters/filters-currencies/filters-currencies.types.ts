@@ -7,5 +7,6 @@ export namespace TFiltersCurrencies {
     selected: TSelectAutocomplete.Item[];
     onChange: (currencies: TSelectAutocomplete.Item[]) => void;
     hideLabel?: TFilterFieldContainer.Props["hideLabel"];
+    isElevated?: boolean;
   }
 }

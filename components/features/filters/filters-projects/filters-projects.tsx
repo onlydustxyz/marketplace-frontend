@@ -6,7 +6,7 @@ import { SelectAutocomplete } from "components/ds/form/select-autocomplete/selec
 
 import { TFiltersProjects } from "./filters-projects.types";
 
-export function FiltersProjects({ projects, selected, onChange, hideLabel }: TFiltersProjects.Props) {
+export function FiltersProjects({ projects, selected, onChange, hideLabel, isElevated }: TFiltersProjects.Props) {
   const { T } = useIntl();
   return (
     <FilterFieldContainer label={T("filter.project.title")} hideLabel={hideLabel}>
@@ -19,6 +19,7 @@ export function FiltersProjects({ projects, selected, onChange, hideLabel }: TFi
         selected={selected}
         onChange={onChange}
         disabled={projects.length <= 1}
+        isElevated={isElevated}
       />
     </FilterFieldContainer>
   );

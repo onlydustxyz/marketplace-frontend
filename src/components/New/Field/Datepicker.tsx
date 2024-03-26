@@ -196,7 +196,7 @@ export function Datepicker({
       return null;
     }
     return (
-      <div className="divide-y divide-card-border-medium border-b border-greyscale-50/8 font-walsheim">
+      <div className="divide-y divide-card-border-medium border-b border-card-border-light font-walsheim">
         {props.periods?.map(({ id, label, value, isActive }) => {
           return (
             <button
@@ -242,7 +242,7 @@ export function Datepicker({
           <Popover.Button
             ref={refs.setReference}
             className={cn(
-              "relative right-0 flex w-full origin-right items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 shadow-lg duration-200 ease-out transition-all",
+              "relative right-0 flex w-full origin-right items-center gap-6 rounded-lg border border-card-border-light bg-card-background-medium px-2.5 py-1.5 shadow-light duration-200 ease-out transition-all",
               {
                 "border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                   open,
@@ -260,7 +260,11 @@ export function Datepicker({
               <CalendarEventLine className="text-base leading-none" />
               <span className="font-walsheim text-sm leading-none">{renderPlaceholder()}</span>
             </span>
-            <ArrowDownSLine className="text-xl leading-none" />
+            <ArrowDownSLine
+              className={cn("text-xl leading-none text-spaceBlue-200", {
+                "text-spacePurple-400": open,
+              })}
+            />
           </Popover.Button>
           <Transition
             ref={refs.setFloating}
@@ -275,7 +279,7 @@ export function Datepicker({
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
             className={cn(
-              "min-w-full rounded-xl border border-greyscale-50/8 shadow-lg",
+              "min-w-full rounded-xl border border-card-border-light shadow-medium",
               {
                 "z-50": open,
                 "bg-greyscale-800": isElevated,
