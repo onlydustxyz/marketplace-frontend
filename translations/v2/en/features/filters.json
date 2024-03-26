@@ -16,5 +16,14 @@
     "empty": "No ecosystems found",
     "one": "__count__ ecosystem",
     "many": "__count__ ecosystems"
+  },
+  "transactions": {
+    "title": "Transactions",
+    "all": "All transactions",
+    "some": "Transactions",
+    "zero": "Transactions",
+    "empty": "No transactions found",
+    "one": "__count__ transaction",
+    "many": "__count__ transactions"
   }
 }
