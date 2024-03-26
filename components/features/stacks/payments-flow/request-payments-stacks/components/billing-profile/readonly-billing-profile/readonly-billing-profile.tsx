@@ -9,7 +9,7 @@ import { Typography } from "components/layout/typography/typography";
 
 export function ReadonlyBillingProfile({ billingProfile }: TReadonlyBillingProfile.Props) {
   const { billingProfilesIcons } = UseBillingProfileIcons();
-  const { name, rewardCount, type } = billingProfile;
+  const { name, invoiceableRewardCount, type } = billingProfile;
   return (
     <Card background={false} border="heavy" className="p-4">
       <Flex justifyContent="between" alignItems="center" className="gap-1">
@@ -25,7 +25,7 @@ export function ReadonlyBillingProfile({ billingProfile }: TReadonlyBillingProfi
         </Flex>
         <Chip className="h-fit w-fit border-none bg-spacePurple-900 px-2 py-1 text-spacePurple-400">
           <Icon remixName="ri-medal-2-fill" className="h-3 w-3 text-spacePurple-500" size={12} />
-          <Typography variant="body-s-bold">{rewardCount ?? 0}</Typography>
+          <Typography variant="body-s-bold">{invoiceableRewardCount}</Typography>
         </Chip>
       </Flex>
     </Card>

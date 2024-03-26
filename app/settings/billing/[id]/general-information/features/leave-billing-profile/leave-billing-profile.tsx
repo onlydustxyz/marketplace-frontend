@@ -14,10 +14,13 @@ import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 export function LeaveBillingProfile({ actionType }: TLeaveBillingProfile.Props) {
   const { T } = useIntl();
   const router = useRouter();
   const { id: billingProfileId } = useParams<{ id: string }>();
+  const { githubUserId } = useCurrentUser();
   const [openConfirmation, setOpenConfirmation] = useState(false);
 
   function onOpenConfirmation() {
@@ -28,10 +31,11 @@ export function LeaveBillingProfile({ actionType }: TLeaveBillingProfile.Props) 
     setOpenConfirmation(false);
   }
 
-  const { mutate: deleteBillingProfile, ...restDeleteBillingProfile } =
-    BillingProfilesApi.mutations.useDeleteBillingProfile({
+  const { mutate: leaveBillingProfile, ...restLeaveBillingProfile } =
+    BillingProfilesApi.mutations.useDeleteBillingCoworker({
       params: {
         billingProfileId,
+        githubUserId: `${githubUserId}`,
       },
       options: {
         onSuccess: () => {
@@ -41,7 +45,7 @@ export function LeaveBillingProfile({ actionType }: TLeaveBillingProfile.Props) 
     });
 
   useMutationAlert({
-    mutation: restDeleteBillingProfile,
+    mutation: restLeaveBillingProfile,
     success: {
       message: T("v2.pages.settings.billing.information.leaveBillingProfile.toaster.success"),
     },
@@ -51,7 +55,7 @@ export function LeaveBillingProfile({ actionType }: TLeaveBillingProfile.Props) 
   });
 
   function onConfirm() {
-    deleteBillingProfile();
+    leaveBillingProfile({});
   }
 
   return (

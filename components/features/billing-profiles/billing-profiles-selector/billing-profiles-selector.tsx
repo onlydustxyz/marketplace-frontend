@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useStackBillingCreate } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Dropdown } from "components/ds/dropdown/dropdown";
@@ -14,7 +15,7 @@ import { TBillingProfilesSelector } from "./billing-profiles-selector.types";
 
 export function BillingProfilesSelector({ children, data, projectId, onSelect }: TBillingProfilesSelector.Props) {
   const [openBillingCreate] = useStackBillingCreate();
-  const { mutate, ...rest } = MeApi.mutations.useUpdatePayoutPreferences({});
+  const { mutate, isPending, ...rest } = MeApi.mutations.useUpdatePayoutPreferences({});
   const { T } = useIntl();
 
   useMutationAlert({
@@ -65,5 +66,5 @@ export function BillingProfilesSelector({ children, data, projectId, onSelect }:
     [dynamicMenu]
   );
 
-  return <Dropdown items={menu}>{children}</Dropdown>;
+  return <Dropdown items={menu}>{isPending ? <Spinner /> : children}</Dropdown>;
 }

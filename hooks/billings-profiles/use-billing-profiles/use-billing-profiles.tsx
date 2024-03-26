@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 
-import BillingProfilesApi from "src/api/BillingProfiles";
 import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
+import MeBillingProfilesApi from "src/api/me/billing";
 
 import { TUseBillingProfiles } from "./use-billing-profiles.types";
 
 export const useBillingProfiles = (): TUseBillingProfiles.Return => {
-  const { data, isLoading } = BillingProfilesApi.queries.useBillingProfiles({});
+  const { data, isLoading } = MeBillingProfilesApi.queries.useAllBillingProfiles({});
 
   const profiles = useMemo(() => {
     if (!data?.billingProfiles?.length) {

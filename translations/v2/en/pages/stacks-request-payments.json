@@ -33,6 +33,7 @@
     "title": "Select a billing profile",
     "rewardsCount": {
       "zero": "No rewards",
+      "one": "1 reward",
       "many": "__count__ rewards"
     },
     "emptyState": {
@@ -45,7 +46,8 @@
     "emptyState": {
       "title": "No rewards selected",
       "description": "You need to include rewards to request their payment."
-    }
+    },
+    "billingProfileTitle": "Billing profile"
   },
   "invoiceSubmission": {
     "toaster": {

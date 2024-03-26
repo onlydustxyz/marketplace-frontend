@@ -64,9 +64,9 @@ export function SelectBillingProfile({
                 <SelectableBillingProfile
                   key={profile.id}
                   title={profile.name}
-                  count={profile.rewardCount ?? 0}
+                  count={profile.invoiceableRewardCount}
                   icon={{ remixName: billingProfilesIcons[profile.type] }}
-                  disabled={profile.rewardCount === 0}
+                  disabled={profile.invoiceableRewardCount === 0}
                   onChange={onChange}
                   selected={profile.id === selectedBillingProfileId}
                   value={profile.id}
@@ -82,35 +82,32 @@ export function SelectBillingProfile({
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex h-full flex-col overflow-hidden px-1">
+        <div className="p-3">
+          <Typography
+            variant={"title-m"}
+            translate={{ token: "v2.pages.stacks.request_payments.title" }}
+            className="text-greyscale-50"
+          />
+        </div>
         <ScrollView>
-          <div className="px-3 pb-[250px]">
-            <div className="mb-8">
-              <Typography
-                variant={"title-m"}
-                translate={{ token: "v2.pages.stacks.request_payments.title" }}
-                className="text-greyscale-50"
-              />
-            </div>
-
-            {renderBillingProfiles}
-          </div>
-          <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
-            <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
-              {isLoading ? <Spinner /> : <div />}
-              <div className="flex items-center justify-end gap-5">
-                <Button
-                  variant="primary"
-                  size="m"
-                  className="w-full"
-                  onClick={handleNext}
-                  disabled={!selectedBillingProfileId}
-                >
-                  <Translate token="v2.pages.stacks.request_payments.selectBillingProfile.next" />
-                </Button>
-              </div>
-            </div>
-          </div>
+          <div className="p-3">{renderBillingProfiles}</div>
         </ScrollView>
+        <div className="w-full bg-greyscale-900">
+          <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
+            {isLoading ? <Spinner /> : <div />}
+            <div className="flex items-center justify-end gap-5">
+              <Button
+                variant="primary"
+                size="m"
+                className="w-full"
+                onClick={handleNext}
+                disabled={!selectedBillingProfileId}
+              >
+                <Translate token="v2.pages.stacks.request_payments.selectBillingProfile.next" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

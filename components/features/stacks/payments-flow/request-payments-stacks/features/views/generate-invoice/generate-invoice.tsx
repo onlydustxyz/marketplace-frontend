@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { MeTypes } from "src/api/me/types";
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
@@ -17,10 +17,13 @@ import { EmptyState } from "components/layout/placeholders/empty-state/empty-sta
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
+
 import { TGenerateInvoice } from "./generate-invoice.types";
 
-export function GenerateInvoice({ rewardIds, billingProfileId, goTo, billingProfileType }: TGenerateInvoice.Props) {
+export function GenerateInvoice({ rewardIds, billingProfileId, goTo }: TGenerateInvoice.Props) {
   const { T } = useIntl();
+  const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
   const { isLoading, isError, fileBlob, fileUrl, invoiceId } = useInvoicePreview({
     rewardIds,
     billingProfileId,
@@ -94,7 +97,7 @@ export function GenerateInvoice({ rewardIds, billingProfileId, goTo, billingProf
                   token="v2.pages.stacks.request_payments.form.approveLabel"
                   params={{
                     fileType:
-                      billingProfileType === MeTypes.billingProfileType.Individual
+                      profile?.data?.type === BillingProfilesTypes.type.Individual
                         ? T("v2.pages.stacks.request_payments.form.receipt")
                         : T("v2.pages.stacks.request_payments.form.invoice"),
                   }}

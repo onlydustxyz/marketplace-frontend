@@ -23,17 +23,15 @@ export function RequestPayment() {
     capture("payments_request_started");
   }
 
-  if (!pendingRequestCount) {
-    return null;
-  }
-
   return (
     <div className="item-center flex w-full flex-row justify-end">
-      <Button variant="primary" onClick={handleOpen} size="s">
+      <Button variant="primary" onClick={handleOpen} size="s" disabled={!pendingRequestCount} backgroundColor="blue">
         <Translate token="v2.pages.stacks.request_payments.openButton" />
-        <div className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-spaceBlue-900 bg-card-background-heavy">
-          <Typography variant="body-s-bold">{pendingRequestCount}</Typography>
-        </div>
+        {pendingRequestCount ? (
+          <div className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-spaceBlue-900 bg-card-background-heavy">
+            <Typography variant="body-s-bold">{pendingRequestCount}</Typography>
+          </div>
+        ) : null}
       </Button>
     </div>
   );
