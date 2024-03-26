@@ -20,6 +20,7 @@ import { BillingInviteTeamMember } from "components/features/stacks/billing-invi
 import { TBillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member.types";
 import { MandateDetailStack } from "components/features/stacks/payments-flow/mandate-detail-stack/mandate-detail-stack";
 import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
+import { SponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack";
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -42,6 +43,7 @@ export enum StackRoute {
   Feedback = "feedback",
   BillingInviteTeamMember = "billing-invite-team-member",
   MandateDetail = "mandate-detail",
+  SponsorProject = "sponsor-project",
 }
 export interface StackRouterParams {
   ContributorProfile: {
@@ -115,8 +117,13 @@ export const Stacks = () => {
         {({ params }) => <BillingInviteTeamMember {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
+      <RegisterStack name={StackRoute.SponsorProject}>{() => <SponsorProjectStack />}</RegisterStack>
     </>
   );
+};
+
+export const useStackSponsorProject = () => {
+  return useStackNavigation(StackRoute.SponsorProject);
 };
 
 export const useStackMandate = () => {
