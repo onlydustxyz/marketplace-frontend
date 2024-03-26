@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 
 import { useStackBillingCreate } from "src/App/Stacks/Stacks";
+import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
@@ -48,6 +49,10 @@ export function SidebarBilling({ closePanel }: TSidebarBilling.Props) {
         startIcon: <Icon remixName={getIconRemixName(profile)} size={16} />,
         matchPathOptions: { pattern: NEXT_ROUTER.settings.billing.root(profile.data.id) },
         pendingInvitationResponse: profile.data.pendingInvitationResponse,
+        alerting: {
+          warning: profile.data.missingVerification || profile.data.missingPayoutInfo,
+          error: profile.data.verificationBlocked,
+        },
       })),
 
     [profiles]
@@ -62,7 +67,19 @@ export function SidebarBilling({ closePanel }: TSidebarBilling.Props) {
       return (
         <div className="align-start flex flex-col gap-4">
           {menuItems.map(menu => (
-            <MenuItem {...menu} key={menu.href} onClick={closePanel} />
+            <MenuItem
+              {...menu}
+              key={menu.href}
+              onClick={closePanel}
+              endIcon={
+                menu.alerting?.warning || menu.alerting?.error ? (
+                  <Icon
+                    remixName={"ri-error-warning-line"}
+                    className={cn("text-orange-500", { "text-github-red": menu.alerting?.error })}
+                  />
+                ) : undefined
+              }
+            />
           ))}
         </div>
       );
