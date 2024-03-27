@@ -539,7 +539,7 @@ const config: Config = withTV({
           },
           layout: {
             radius: {
-              large: "10px",
+              large: "10px", // TODO @hayden why do we override this value? When compared to the other nextui values it doesn't make sense
             },
             boxShadow: {
               medium: "0px 8px 64px 0px rgba(0, 0, 0, 0.32)",
