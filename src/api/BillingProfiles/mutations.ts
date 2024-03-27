@@ -30,6 +30,7 @@ const useCreateBillingProfile = ({
       { queryKey: MeApi.tags.user, exact: false },
       { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
+      { queryKey: ME_TAGS.rewards(), exact: false },
     ],
     ...options,
   });

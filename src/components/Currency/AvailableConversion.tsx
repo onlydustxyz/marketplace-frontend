@@ -145,7 +145,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
             </div>
           ))}
         </Chips>
-        <ConversionAmount amount={totalAmount || currency?.amount} currency={currency?.currency} />
+        <ConversionAmount amount={totalAmount || currency?.amount} currency={currency?.currency || Money.USD} />
         <div {...(currency ? tooltipIdProps : {})}>
           <ConversionDollar dollar={!Money.isFiat(currency?.currency) ? currency?.dollar : undefined} />
         </div>

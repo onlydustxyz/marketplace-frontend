@@ -266,7 +266,7 @@ export default function View({
                   <span>
                     {Money.isFiat(data.currency)
                       ? T("currencies.network.label_dollar")
-                      : T("currencies.network.label", { currency: T(`currencies.network.${data.currency}`) })}
+                      : T("currencies.network.label", { currency: T(`currencies.network.${data.currency.code}`) })}
                   </span>
                 </div>
               </div>
