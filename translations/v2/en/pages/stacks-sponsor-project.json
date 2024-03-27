@@ -1,5 +1,9 @@
 {
   "title": "Sponsor project",
+  "amount": {
+    "title": "Select an amount",
+    "balance": "Balance"
+  },
   "budget": {
     "title": "Project budget",
     "currentBudget": "Current budget",

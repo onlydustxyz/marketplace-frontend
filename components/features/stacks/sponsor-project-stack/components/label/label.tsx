@@ -1,5 +1,5 @@
-import { PropsWithChildren } from "react";
+import { LabelHTMLAttributes } from "react";
 
-export function Label({ children }: PropsWithChildren) {
-  return <label className={"font-walsheim text-sm font-medium uppercase text-greyscale-300"}>{children}</label>;
+export function Label(props: LabelHTMLAttributes<HTMLLabelElement>) {
+  return <label className={"font-walsheim text-sm font-medium uppercase text-greyscale-300"} {...props} />;
 }

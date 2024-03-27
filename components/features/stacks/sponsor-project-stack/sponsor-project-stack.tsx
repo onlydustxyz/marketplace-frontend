@@ -1,4 +1,5 @@
 import { Button } from "components/ds/button/button";
+import { AmountSelect } from "components/features/stacks/sponsor-project-stack/components/amount-select/amount-select";
 import { Budget } from "components/features/stacks/sponsor-project-stack/components/budget/budget";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -19,8 +20,10 @@ export function SponsorProjectStack() {
             <div>hey</div>
           </div>
           <div className={"grid gap-3 py-6"}>
-            <Label>test</Label>
-            <div>hey</div>
+            <Label htmlFor={"sponsor-project-amount"}>
+              <Translate token="v2.pages.stacks.sponsorProject.amount.title" />
+            </Label>
+            <AmountSelect />
           </div>
           <div className={"grid gap-3 py-6"}>
             <Label>
