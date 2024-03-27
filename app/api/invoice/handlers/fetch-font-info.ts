@@ -53,9 +53,9 @@ const urlMapping: { [key: string]: string } = {
   ["arb"]: "https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap",
   ["ell"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
   ["chn"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap",
-  ["rus"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Cyrillic&display=swap",
+  ["rus"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
   ["jpn"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap",
-  ["grc"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Greek&display=swap",
+  ["grc"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
   ["kor"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap",
   ["sau"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic&display=swap",
   ["irn"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic&display=swap",
@@ -64,19 +64,20 @@ const urlMapping: { [key: string]: string } = {
   ["isr"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew&display=swap",
   ["arm"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Armenian&display=swap",
   ["geo"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian&display=swap",
-  ["ukr"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Cyrillic&display=swap",
-  ["srb"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Cyrillic&display=swap",
-  ["blr"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Cyrillic&display=swap",
-  ["bgr"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Cyrillic&display=swap",
-  ["kaz"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Cyrillic&display=swap",
+  ["ukr"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
+  ["srb"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
+  ["blr"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
+  ["bgr"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
+  ["kaz"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
   ["mmr"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar&display=swap",
   ["khm"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer&display=swap",
   ["lao"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Lao&display=swap",
-  ["vnm"]: "https://fonts.googleapis.com/css2?family=Noto+Sans+Vietnamese&display=swap",
+  ["vnm"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
 };
 
 export async function detectLanguageAndGetFontDynamically(text: string): Promise<FontInfo> {
-  const languageCode = franc(text);
+  const languageCode = franc(text, { minLength: 3 });
+  console.info("Detected language :", { languageCode, text });
 
   if (languageCode && Object.keys(urlMapping)?.includes(languageCode)) {
     return await fetchFontInfo(urlMapping[languageCode]);
