@@ -34,8 +34,8 @@ export function SelectRewards({
 
   const onSubmit = () => {
     capture("payments_request_rewards_selected", {
-      includedRewards,
-      excludedRewards,
+      includedRewards: includedRewards?.length,
+      excludedRewards: excludedRewards?.length,
     });
     if (user?.billingProfileType === "INDIVIDUAL" || (user?.billingProfileType === "COMPANY" && isMandateAccepted)) {
       goTo({ to: TRequestPaymentsStacks.Views.Generate });
