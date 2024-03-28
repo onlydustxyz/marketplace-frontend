@@ -75,12 +75,50 @@ const urlMapping: { [key: string]: string } = {
   ["vnm"]: "https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap",
 };
 
+const latinScriptCountries = [
+  "arg", // Argentina
+  "aus", // Australia
+  "aut", // Austria
+  "bel", // Belgium
+  "bra", // Brazil
+  "can", // Canada
+  "che", // Switzerland
+  "chl", // Chile
+  "col", // Colombia
+  "cri", // Costa Rica
+  "cze", // Czech Republic
+  "deu", // Germany
+  "dnk", // Denmark
+  "esp", // Spain
+  "fin", // Finland
+  "fra", // France
+  "gbr", // United Kingdom
+  "grc", // Greece
+  "hun", // Hungary
+  "irl", // Ireland
+  "ita", // Italy
+  "mex", // Mexico
+  "nld", // Netherlands
+  "nor", // Norway
+  "nzl", // New Zealand
+  "pol", // Poland
+  "prt", // Portugal
+  "rou", // Romania
+  "swe", // Sweden
+  "usa", // United States
+  "ury", // Uruguay
+];
+
 export async function detectLanguageAndGetFontDynamically(text: string): Promise<FontInfo> {
-  const languageCode = franc(text, { minLength: 3 });
+  const languageCode = franc(text);
   console.info("Detected language :", { languageCode, text });
 
-  if (languageCode && Object.keys(urlMapping)?.includes(languageCode)) {
-    return await fetchFontInfo(urlMapping[languageCode]);
+  if (languageCode) {
+    if (languageCode === "und" || latinScriptCountries.includes(languageCode)) {
+      return defaultFont;
+    } else if (Object.keys(urlMapping)?.includes(languageCode)) {
+      return await fetchFontInfo(urlMapping[languageCode]);
+    }
   }
 
   return defaultFont;
