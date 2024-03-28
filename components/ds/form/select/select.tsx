@@ -18,16 +18,15 @@ export function Select({ selectItemProps, isElevated, ...props }: TSelect.Props)
           "bg-greyscale-800": isElevated,
         }),
       }}
+      listboxProps={{
+        itemClasses: {
+          base: "rounded-md p-2 data-[hover=true]:bg-card-background-medium data-[selectable=true]:focus:bg-card-background-medium",
+        },
+      }}
       {...props}
     >
       {({ value, label, ...item }) => (
-        <SelectItem
-          key={value}
-          value={value}
-          className={"rounded-md p-2 hover:bg-card-background-medium"}
-          {...item}
-          {...selectItemProps}
-        >
+        <SelectItem key={value} value={value} {...item} {...selectItemProps}>
           {label}
         </SelectItem>
       )}
