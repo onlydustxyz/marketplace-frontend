@@ -66,7 +66,7 @@ export function AmountSelect() {
           </div>
         }
         endContent={
-          <div className="flex w-[150px] items-center">
+          <div className="flex w-[260px] items-center">
             <Select
               aria-label={T("v2.pages.stacks.sponsorProject.amount.currency")}
               startContent={
