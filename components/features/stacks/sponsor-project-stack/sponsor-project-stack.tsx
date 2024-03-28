@@ -1,3 +1,5 @@
+import { useIntl } from "src/hooks/useIntl";
+
 import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
 import { Select } from "components/ds/form/select/select";
@@ -18,6 +20,11 @@ const animals = [
   },
 ] as const;
 export function SponsorProjectStack() {
+  const { T } = useIntl();
+
+  // TODO get available projects
+  // TODO get available balance & budget
+
   return (
     <div className={"flex h-full flex-col"}>
       <div className={"flex flex-1 flex-col gap-6 px-6"}>
@@ -31,6 +38,7 @@ export function SponsorProjectStack() {
               <Translate token="v2.pages.stacks.sponsorProject.project.title" />
             </Label>
             <Select
+              aria-label={T("v2.pages.stacks.sponsorProject.project.title")}
               id={"sponsor-project-project"}
               items={animals}
               placeholder="Select an animal"

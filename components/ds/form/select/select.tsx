@@ -4,7 +4,7 @@ import { cn } from "src/utils/cn";
 
 import { TSelect } from "components/ds/form/select/select.types";
 
-export function Select({ selectItemProps, ...props }: TSelect.Props) {
+export function Select({ selectItemProps, isElevated, ...props }: TSelect.Props) {
   return (
     <NextSelect
       classNames={{
@@ -13,7 +13,10 @@ export function Select({ selectItemProps, ...props }: TSelect.Props) {
           "data-[open=true]:border-spacePurple-400 data-[open=true]:bg-spacePurple-900 data-[open=true]:hover:bg-spacePurple-900 data-[open=true]:text-spacePurple-400 data-[open=true]:outline-double data-[open=true]:outline-1 data-[open=true]:outline-spacePurple-400 data-[open=true]:outline-offset-0"
         ),
         value: cn("text-greyscale-50 text-base placeholder:text-greyscale-50", "data-[open=true]:text-spacePurple-400"),
-        popoverContent: "bg-greyscale-800 border border-card-border-light shadow-medium",
+        popoverContent: cn("border border-card-border-light shadow-medium", {
+          "bg-greyscale-900": !isElevated,
+          "bg-greyscale-800": isElevated,
+        }),
       }}
       {...props}
     >
@@ -21,7 +24,7 @@ export function Select({ selectItemProps, ...props }: TSelect.Props) {
         <SelectItem
           key={value}
           value={value}
-          className={"rounded-md p-2 hover:bg-card-background-heavy"}
+          className={"rounded-md p-2 hover:bg-card-background-medium"}
           {...item}
           {...selectItemProps}
         >

@@ -7,5 +7,6 @@ export namespace TSelect {
   }
   export interface Props extends Omit<SelectProps<Item>, "children"> {
     selectItemProps?: Omit<ListboxItemProps, "key">;
+    isElevated?: boolean;
   }
 }

@@ -6,7 +6,8 @@
   },
   "amount": {
     "title": "Select an amount",
-    "balance": "Balance"
+    "balance": "Balance",
+    "currency": "Currency"
   },
   "budget": {
     "title": "Project budget",

@@ -3,6 +3,7 @@ import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
+import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { Input } from "components/ds/form/input/input";
@@ -27,6 +28,8 @@ const items = [
 ];
 
 export function AmountSelect() {
+  const { T } = useIntl();
+
   return (
     <div className={"grid gap-5"}>
       <Input
@@ -59,10 +62,8 @@ export function AmountSelect() {
         }
         endContent={
           <div className="flex w-[150px] items-center">
-            <label className="sr-only" htmlFor="currency">
-              Currency
-            </label>
             <Select
+              aria-label={T("v2.pages.stacks.sponsorProject.amount.currency")}
               startContent={
                 <Chip solid className="h-5 w-5 flex-shrink-0">
                   <CurrencyIcons currency={Money.fromSchema({ code: "USD" })} className="h-5 w-5" />
@@ -72,14 +73,14 @@ export function AmountSelect() {
               classNames={{
                 trigger: "p-0 h-auto !bg-transparent shadow-none",
                 innerWrapper: "!pt-0",
-                popoverContent: "bg-greyscale-800 border border-card-border-light shadow-medium",
+                popoverContent: "bg-greyscale-900 border border-card-border-light shadow-medium",
               }}
             >
               {items.map(({ value, label, code }) => (
                 <SelectItem
                   key={value}
                   value={value}
-                  className={"rounded-md px-2 py-2 hover:bg-card-background-heavy"}
+                  className={"rounded-md px-2 py-2 hover:bg-card-background-medium"}
                   startContent={
                     <Chip solid className="h-5 w-5">
                       <CurrencyIcons currency={Money.fromSchema({ code })} className="h-5 w-5" />
