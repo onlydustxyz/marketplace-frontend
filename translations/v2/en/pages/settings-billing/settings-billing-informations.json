@@ -40,8 +40,8 @@
       "enable": "Enable"
     },
     "confirmation": {
-      "delete": "You wan’t be able to access this billing profile anymore.",
-      "disable": "You wan’t be able to receive rewards on this billing profile. You’ll still be able to enable it later if needed.",
+      "delete": "You won’t be able to access this billing profile anymore.",
+      "disable": "You won’t be able to receive rewards on this billing profile. You’ll still be able to enable it later if needed.",
       "enable": "You’ll be able to receive rewards on this billing profile."
     },
     "toaster": {
