@@ -1,4 +1,6 @@
+import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
+import { Select } from "components/ds/form/select/select";
 import { AmountSelect } from "components/features/stacks/sponsor-project-stack/components/amount-select/amount-select";
 import { Budget } from "components/features/stacks/sponsor-project-stack/components/budget/budget";
 import { Translate } from "components/layout/translate/translate";
@@ -6,6 +8,15 @@ import { Typography } from "components/layout/typography/typography";
 
 import { Label } from "./components/label/label";
 
+const animals = [
+  { label: "Dog", value: "dog", startContent: <Avatar src={""} shape={"square"} size={"s"} /> },
+  { label: "Cat", value: "cat", startContent: <Avatar src={""} shape={"square"} size={"s"} /> },
+  {
+    label: "Fish",
+    value: "fish",
+    startContent: <Avatar src={""} shape={"square"} size={"s"} />,
+  },
+] as const;
 export function SponsorProjectStack() {
   return (
     <div className={"flex h-full flex-col"}>
@@ -16,8 +27,16 @@ export function SponsorProjectStack() {
 
         <div className={"divide-y divide-card-border-light"}>
           <div className={"grid gap-3 py-6"}>
-            <Label>test</Label>
-            <div>hey</div>
+            <Label htmlFor={"sponsor-project-project"}>
+              <Translate token="v2.pages.stacks.sponsorProject.project.title" />
+            </Label>
+            <Select
+              id={"sponsor-project-project"}
+              items={animals}
+              placeholder="Select an animal"
+              size={"sm"}
+              startContent={<Avatar src={""} shape={"square"} size={"s"} />}
+            />
           </div>
           <div className={"grid gap-3 py-6"}>
             <Label htmlFor={"sponsor-project-amount"}>
