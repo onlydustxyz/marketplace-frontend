@@ -8,6 +8,7 @@ import { useIntl } from "src/hooks/useIntl";
 
 import { Dropdown } from "components/ds/dropdown/dropdown";
 import { TDropdown } from "components/ds/dropdown/dropdown.types";
+import { Tag } from "components/ds/tag/tag";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
@@ -47,8 +48,13 @@ export function BillingProfilesSelector({ children, data, projectId, onSelect }:
           key: item.id,
           children: item.name,
           startContent: <Icon {...item.icon} size={16} />,
+          endContent: item.hasPendingInvitation ? (
+            <Tag borderColor="multi-color" className="bg-greyscale-900 bg-noise-medium">
+              <Translate token="v2.pages.settings.billing.sidebar.items.billing.new" />
+            </Tag>
+          ) : null,
           onClick: () => onSelectBillingProfile(item.id),
-          isDisabled: !item.enabled,
+          isDisabled: !item.enabled || item.hasPendingInvitation,
         };
       }),
     [data]
