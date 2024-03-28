@@ -11,21 +11,26 @@ import { Translate } from "components/layout/translate/translate";
 
 const items = [
   {
-    label: "OP",
-    value: "OP",
-    code: "OP",
-  },
-  {
-    label: "ETH",
-    value: "ETH",
-    code: "ETH",
-  },
-  {
-    label: "USD",
+    label: "Dollars (USD)",
     value: "USD",
-    code: "USD",
   },
-];
+  {
+    label: "Aptos (APT)",
+    value: "APT",
+  },
+  {
+    label: "Optimism (OP)",
+    value: "OP",
+  },
+  {
+    label: "Ether (ETH)",
+    value: "ETH",
+  },
+  {
+    label: "Stark (STRK)",
+    value: "STRK",
+  },
+] as const;
 
 export function AmountSelect() {
   const { T } = useIntl();
@@ -76,14 +81,16 @@ export function AmountSelect() {
                 popoverContent: "bg-greyscale-900 border border-card-border-light shadow-medium",
               }}
             >
-              {items.map(({ value, label, code }) => (
+              {items.map(({ value, label }) => (
                 <SelectItem
                   key={value}
                   value={value}
-                  className={"rounded-md px-2 py-2 hover:bg-card-background-medium"}
+                  className={
+                    "rounded-md p-2 data-[hover=true]:bg-card-background-medium data-[selectable=true]:focus:bg-card-background-medium"
+                  }
                   startContent={
                     <Chip solid className="h-5 w-5">
-                      <CurrencyIcons currency={Money.fromSchema({ code })} className="h-5 w-5" />
+                      <CurrencyIcons currency={Money.fromSchema({ code: value })} className="h-5 w-5" />
                     </Chip>
                   }
                 >
