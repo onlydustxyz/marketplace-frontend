@@ -1,7 +1,8 @@
 import { Money } from "utils/Money/Money";
 
+import { SponsorSidePanels } from "app/sponsor/components/sponsor-side-panels/sponsor-side-panels";
+
 import { Avatar } from "components/ds/avatar/avatar";
-import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -22,10 +23,21 @@ export function SponsorProjectCard() {
           </Typography>
         </Avatar.Labelled>
 
-        <Button variant={"secondary"} size={"s"} className={"hidden lg:flex"}>
-          <Icon remixName={"ri-service-line"} />
-          <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
-        </Button>
+        <SponsorSidePanels
+          // TODO add current project
+          panel={"project"}
+          buttonProps={{
+            variant: "secondary",
+            size: "s",
+            className: "hidden lg:flex",
+            children: (
+              <>
+                <Icon remixName={"ri-service-line"} />
+                <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
+              </>
+            ),
+          }}
+        />
       </header>
 
       <Card className={"grid gap-2 !p-3"} hasPadding={false}>
@@ -77,10 +89,21 @@ export function SponsorProjectCard() {
         </ul>
       </div>
 
-      <Button variant={"secondary"} size={"s"} className={"w-full lg:hidden"}>
-        <Icon remixName={"ri-service-line"} />
-        <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
-      </Button>
+      <SponsorSidePanels
+        // TODO add current project
+        panel={"project"}
+        buttonProps={{
+          variant: "secondary",
+          size: "s",
+          className: "w-full lg:hidden",
+          children: (
+            <>
+              <Icon remixName={"ri-service-line"} />
+              <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
+            </>
+          ),
+        }}
+      />
     </Card>
   );
 }

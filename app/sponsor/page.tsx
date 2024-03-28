@@ -1,10 +1,10 @@
 "use client";
 
+import { SponsorSidePanels } from "app/sponsor/components/sponsor-side-panels/sponsor-side-panels";
 import { SponsorSectionBudget } from "app/sponsor/features/sponsor-section-budget/sponsor-section-budget";
 import { SponsorSectionHistory } from "app/sponsor/features/sponsor-section-history/sponsor-section-history";
 import { SponsorSectionProject } from "app/sponsor/features/sponsor-section-project/sponsor-section-project";
 
-import { Button } from "components/ds/button/button";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -18,10 +18,19 @@ export default function SponsorPage() {
             <Translate token="v2.pages.sponsor.title" />
           </Typography>
 
-          <Button size={"s"} className={"w-full sm:w-auto"}>
-            <Icon remixName={"ri-add-line"} />
-            <Translate token="v2.pages.sponsor.newDeposit" />
-          </Button>
+          <SponsorSidePanels
+            panel={"fillout"}
+            buttonProps={{
+              size: "s",
+              className: "w-full sm:w-auto",
+              children: (
+                <>
+                  <Icon remixName={"ri-add-line"} />
+                  <Translate token="v2.pages.sponsor.newDeposit" />
+                </>
+              ),
+            }}
+          />
         </header>
 
         <div className={"grid gap-10"}>
