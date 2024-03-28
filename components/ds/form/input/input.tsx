@@ -17,11 +17,10 @@ export function Input(props: TInput.Props) {
       classNames={{
         mainWrapper: "w-full",
         inputWrapper: cn(
-          "border border-greyscale-50/8 bg-white/5 focus-within:!border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500 hover:border hover:border-greyscale-50/8 min-h-8 px-3 py-2 !transition-all",
+          "border border-greyscale-50/8 bg-white/5 focus-within:!border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500 hover:border hover:border-greyscale-50/8 px-3 py-2 !transition-all",
           "group-data-[invalid=true]:!border-github-red-light group-data-[invalid=true]:focus-within:!border-spacePurple-500",
           {
-            "h-12": props.size === "lg",
-            "h-8": props.size !== "lg",
+            "min-h-8 h-8": !props.size,
           }
         ),
         innerWrapper: "gap-2",
