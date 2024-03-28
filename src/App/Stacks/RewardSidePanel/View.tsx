@@ -105,7 +105,11 @@ export default function View({
     //   );
 
     return (
-      <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
+      <PayoutStatus
+        status={data.status}
+        dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
+        billingProfileId={data?.billingProfileId}
+      />
     );
   }, [data, redirectionStatus]);
 

@@ -6,5 +6,6 @@ export namespace TStatusTag {
     date?: string | null;
     className?: string;
     projectId?: string;
+    billingProfileId?: string;
   }
 }
