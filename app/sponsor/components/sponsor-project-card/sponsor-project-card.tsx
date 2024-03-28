@@ -24,7 +24,6 @@ export function SponsorProjectCard() {
         </Avatar.Labelled>
 
         <SponsorSidePanels
-          // TODO add current project
           panel={"project"}
           buttonProps={{
             variant: "secondary",
@@ -36,6 +35,10 @@ export function SponsorProjectCard() {
                 <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
               </>
             ),
+          }}
+          projectParams={{
+            // TODO @hayden add current project
+            projectId: "123",
           }}
         />
       </header>
@@ -90,7 +93,6 @@ export function SponsorProjectCard() {
       </div>
 
       <SponsorSidePanels
-        // TODO add current project
         panel={"project"}
         buttonProps={{
           variant: "secondary",
@@ -102,6 +104,10 @@ export function SponsorProjectCard() {
               <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
             </>
           ),
+        }}
+        projectParams={{
+          // TODO @hayden add current project
+          projectId: "123",
         }}
       />
     </Card>

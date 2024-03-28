@@ -35,7 +35,7 @@ export function Table({
       th: "bg-transparent border-b border-card-border-medium text-gray-400 uppercase font-walsheim text-sm font-medium h-auto pb-2",
       tr: "group/table-row",
       td: "py-3 h-auto",
-      // TODO do we need these classes ? Check coworkers page
+      // TODO @hayden do we need these classes ? Check coworkers page
       tbody: "first-of-type:tr:td:pt-50 [&>tr:first-child>td]:pt-5",
       sortIcon: "data-[visible=true]:text-spacePurple-500 mb-1",
     }),

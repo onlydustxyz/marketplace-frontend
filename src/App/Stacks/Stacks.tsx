@@ -21,6 +21,7 @@ import { TBillingInviteTeamMember } from "components/features/stacks/billing-inv
 import { MandateDetailStack } from "components/features/stacks/payments-flow/mandate-detail-stack/mandate-detail-stack";
 import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
 import { SponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack";
+import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -71,6 +72,7 @@ export interface StackRouterParams {
     projectSlug: string;
   };
   Verify: ComponentProps<typeof VerifySidePanel>;
+  SponsorProject: ComponentProps<typeof SponsorProjectStack>;
 }
 
 export const Stacks = () => {
@@ -117,13 +119,15 @@ export const Stacks = () => {
         {({ params }) => <BillingInviteTeamMember {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
-      <RegisterStack name={StackRoute.SponsorProject}>{() => <SponsorProjectStack />}</RegisterStack>
+      <RegisterStack<TSponsorProjectStack.Props> name={StackRoute.SponsorProject}>
+        {({ params }) => <SponsorProjectStack {...params} />}
+      </RegisterStack>
     </>
   );
 };
 
 export const useStackSponsorProject = () => {
-  return useStackNavigation(StackRoute.SponsorProject);
+  return useStackNavigation<TSponsorProjectStack.Props>(StackRoute.SponsorProject);
 };
 
 export const useStackMandate = () => {

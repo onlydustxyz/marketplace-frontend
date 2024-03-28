@@ -10,14 +10,14 @@ import { Button } from "components/ds/button/button";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
-export function SponsorSidePanels({ buttonProps, panel }: TSponsorSidePanels.Props) {
+export function SponsorSidePanels({ buttonProps, panel, projectParams }: TSponsorSidePanels.Props) {
   const { user } = useCurrentUser();
   const [isFilloutOpen, setIsFilloutOpen] = useState(false);
   const [openSponsorProjectStack] = useStackSponsorProject();
 
   function handleClick() {
     if (panel === "project") {
-      openSponsorProjectStack();
+      openSponsorProjectStack(projectParams);
       return;
     }
 
