@@ -29,7 +29,7 @@ const useGetBillingProfileById = ({
 const useGetPayoutInfo = ({ options = {}, params }: UseQueryProps<UseGetBillingProfilePayout, { id?: string }>) => {
   return useBaseQuery<UseGetBillingProfilePayout>({
     resourcePath: BILLING_PROFILES_PATH.PAYOUT(params?.id || ""),
-    tags: BILLING_PROFILES_TAGS.all,
+    tags: BILLING_PROFILES_TAGS.billing_profile_payment_methods(params?.id || ""),
     ...options,
   });
 };
