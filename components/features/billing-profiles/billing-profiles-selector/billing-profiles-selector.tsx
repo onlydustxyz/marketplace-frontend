@@ -48,6 +48,7 @@ export function BillingProfilesSelector({ children, data, projectId, onSelect }:
           children: item.name,
           startContent: <Icon {...item.icon} size={16} />,
           onClick: () => onSelectBillingProfile(item.id),
+          isDisabled: !item.enabled,
         };
       }),
     [data]

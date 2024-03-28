@@ -31,6 +31,7 @@ export function StatusTag({ status, projectId, date, className }: TStatusTag.Pro
         name: profile.data.name,
         icon: profile.icon,
         id: profile.data.id,
+        enabled: profile.data.enabled && !profile.data.pendingInvitationResponse,
       })),
     [profiles]
   );
