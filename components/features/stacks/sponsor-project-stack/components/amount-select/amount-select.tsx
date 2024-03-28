@@ -70,10 +70,9 @@ export function AmountSelect() {
               }
               defaultSelectedKeys={["OP"]}
               classNames={{
-                trigger:
-                  "h-auto bg-transparent group-data-[focus=true]:bg-transparent shadow-none hover:bg-greyscale-50/8 focus:bg-greyscale-50/8 data-[open=true]:bg-greyscale-50/8",
+                trigger: "p-0 h-auto !bg-transparent shadow-none",
                 innerWrapper: "!pt-0",
-                popoverContent: "bg-greyscale-800 rounded-2xl border border-card-border-light shadow-medium",
+                popoverContent: "bg-greyscale-800 border border-card-border-light shadow-medium",
               }}
             >
               {items.map(({ value, label, code }) => (
