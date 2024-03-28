@@ -64,13 +64,17 @@ export async function GET(request: NextRequest) {
   };
 
   const languageSample = isUserIndividual
-    ? `${invoicePreviewData.individualBillingProfile?.firstName} ${invoicePreviewData.individualBillingProfile?.lastName}`
-    : invoicePreviewData.companyBillingProfile?.name;
+    ? `${invoicePreviewData.individualBillingProfile?.firstName ?? ""} ${
+        invoicePreviewData.individualBillingProfile?.lastName ?? ""
+      } ${invoicePreviewData.individualBillingProfile?.address ?? ""}`
+    : `${invoicePreviewData.companyBillingProfile?.name ?? ""} ${
+        invoicePreviewData.companyBillingProfile?.address ?? ""
+      }`;
 
   let fontInfo;
 
   try {
-    fontInfo = await detectLanguageAndGetFontDynamically(languageSample || "latin");
+    fontInfo = await detectLanguageAndGetFontDynamically(languageSample);
     Font.register({
       family: fontInfo.family,
       fonts: fontInfo.fonts,
