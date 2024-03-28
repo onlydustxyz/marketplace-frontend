@@ -65,7 +65,6 @@ export default function View({
   const { githubUserId } = useCurrentUser();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
-  // const closeRewardPanel = useCloseStack();
   const isMyRewardsPage = useMatchPath(NEXT_ROUTER.rewards.all);
 
   const {
@@ -94,15 +93,6 @@ export default function View({
     if (!data) {
       return null;
     }
-
-    // TODO IMPLEMENT REDIRECTION STATUS woth billing profile ID
-    //
-    // if (redirectionStatus && (data.status === "PAYOUT_INFO_MISSING" || data.status === "PENDING_VERIFICATION"))
-    //   return (
-    //     <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
-    //       <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
-    //     </BaseLink>
-    //   );
 
     return (
       <PayoutStatus

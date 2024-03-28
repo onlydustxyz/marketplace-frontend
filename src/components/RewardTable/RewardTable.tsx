@@ -66,11 +66,23 @@ export default function RewardTable({ rewards, options, projectId, emptyFallback
           emptyFallback={emptyFallback}
         >
           {rewards.map(p => (
-            <RewardLine key={p.id} reward={p} onClick={() => onRewardClick(p)} selected={p.id === selectedReward?.id} />
+            <RewardLine
+              key={p.id}
+              reward={p}
+              onClick={() => onRewardClick(p)}
+              selected={p.id === selectedReward?.id}
+              projectId={projectId}
+            />
           ))}
         </Table>
       ) : (
-        <>{emptyFallback ? emptyFallback : <MobileRewardList rewards={rewards} onRewardClick={onRewardClick} />}</>
+        <>
+          {emptyFallback ? (
+            emptyFallback
+          ) : (
+            <MobileRewardList rewards={rewards} onRewardClick={onRewardClick} projectId={projectId} />
+          )}
+        </>
       )}
       {hasNextPage && (
         <div className="pt-6">
