@@ -28,6 +28,7 @@ const useCreateBillingProfile = ({
     method: "POST",
     invalidatesTags: [
       { queryKey: MeApi.tags.user, exact: false },
+      { queryKey: ME_BILLING_TAGS.allProfiles(), exact: false },
       { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
       { queryKey: ME_TAGS.rewards(), exact: false },
@@ -44,6 +45,7 @@ const useDeleteBillingProfile = ({
     resourcePath: BILLING_PROFILES_PATH.BY_ID(params?.billingProfileId || ""),
     method: "DELETE",
     invalidatesTags: [
+      { queryKey: ME_BILLING_TAGS.allProfiles(), exact: false },
       { queryKey: MeApi.tags.user, exact: false },
       { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
@@ -63,6 +65,7 @@ const useEnableOrDisableBillingProfile = ({
       { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
       { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
+      { queryKey: ME_BILLING_TAGS.allProfiles(), exact: false },
     ],
     ...options,
   });
@@ -74,7 +77,11 @@ const useUpdatePayoutSettings = ({
 }: UseMutationProps<UseUpdatePayoutSettingsResponse, { id?: string }, UseUpdatePayoutSettingsBody>) => {
   return useBaseMutation<UseUpdatePayoutSettingsBody, UseUpdatePayoutSettingsResponse>({
     resourcePath: BILLING_PROFILES_PATH.PAYOUT(params?.id || ""),
-    invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
+    invalidatesTags: [
+      { queryKey: MeApi.tags.all, exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.id || ""), exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.billing_profile_payment_methods(params?.id || ""), exact: false },
+    ],
     method: "PUT",
     enabled: options?.enabled || !params?.id,
     ...options,
@@ -137,6 +144,7 @@ const useDeleteBillingCoworker = ({
     method: "DELETE",
     invalidatesTags: [
       { queryKey: ME_BILLING_TAGS.allProfiles(), exact: false },
+      { queryKey: BILLING_PROFILES_TAGS.single(params?.billingProfileId || ""), exact: false },
       { queryKey: BILLING_PROFILES_TAGS.billing_profile_coworkers(params?.billingProfileId || ""), exact: false },
     ],
     enabled: !!params?.billingProfileId && !!params?.githubUserId,

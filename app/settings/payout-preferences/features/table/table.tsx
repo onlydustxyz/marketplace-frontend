@@ -26,6 +26,7 @@ export function PayoutPreferencesTable() {
         name: profile.data.name,
         icon: profile.icon,
         id: profile.data.id,
+        enabled: profile.data.enabled && !profile.data.pendingInvitationResponse,
       })),
     [profiles]
   );

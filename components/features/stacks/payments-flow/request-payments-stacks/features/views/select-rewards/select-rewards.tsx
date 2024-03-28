@@ -31,10 +31,9 @@ export function SelectRewards({
 
   const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
   const isIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
-  const isCompany = profile?.data?.type === BillingProfilesTypes.type.Company;
+  const isCompany = !isIndividual;
   const isMandateAccepted = profile?.data?.invoiceMandateAccepted;
 
-  // TODO find out if the limit can be required and always fulfilled
   const currentYearPaymentLimit = profile?.data?.currentYearPaymentLimit ?? 5000;
   const currentYearPaymentAmount = profile?.data?.currentYearPaymentAmount ?? 0;
 

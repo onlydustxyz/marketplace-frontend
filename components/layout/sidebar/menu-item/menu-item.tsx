@@ -31,7 +31,7 @@ export function MenuItem({
               "flex items-center justify-start gap-1": !!startIcon,
             })}
           >
-            {startIcon ? <span>{startIcon}</span> : null} <span>{label}</span>
+            {startIcon ? <span>{startIcon}</span> : null} <span className="line-clamp-1">{label}</span>
           </span>
 
           {pendingInvitationResponse && (

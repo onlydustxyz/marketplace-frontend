@@ -24,7 +24,7 @@ export function Tag({
         className={cn("relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px", containerClassName)}
         onClick={onClick}
       >
-        <div className={cn(tagVariants({ ...props }), className)}>{children}</div>
+        <div className={cn(tagVariants({ ...props }), className, { "cursor-pointer": onClick })}>{children}</div>
       </Component>
     );
   }

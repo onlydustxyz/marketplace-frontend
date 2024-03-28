@@ -15,8 +15,8 @@ export function Amount({ amount }: Amount) {
 
   if (!amount) return null;
 
-  const currency = amount.currency;
-  const asCurrencyToDisplay = !Money.isFiat(amount.currency) && currency;
+  const currency = amount.currency || Money.USD;
+  const asCurrencyToDisplay = !Money.isFiat(amount.currency) && amount.currency;
 
   return (
     <>

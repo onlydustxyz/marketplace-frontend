@@ -6,6 +6,7 @@ import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherCo
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
 import InfoIcon from "src/assets/icons/InfoIcon";
+import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -64,7 +65,6 @@ export default function View({
   const { githubUserId } = useCurrentUser();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
-  // const closeRewardPanel = useCloseStack();
   const isMyRewardsPage = useMatchPath(NEXT_ROUTER.rewards.all);
 
   const {
@@ -94,17 +94,12 @@ export default function View({
       return null;
     }
 
-    // TODO IMPLEMENT REDIRECTION STATUS woth billing profile ID
-    //
-    // if (redirectionStatus && (data.status === "PAYOUT_INFO_MISSING" || data.status === "PENDING_VERIFICATION"))
-    //   return (
-    //     <BaseLink href={redirectionStatus} onClick={() => closeRewardPanel()}>
-    //       <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
-    //     </BaseLink>
-    //   );
-
     return (
-      <PayoutStatus status={data.status} dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }} />
+      <PayoutStatus
+        status={data.status}
+        dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
+        billingProfileId={data?.billingProfileId}
+      />
     );
   }, [data, redirectionStatus]);
 
@@ -338,7 +333,7 @@ export default function View({
                 <Details>
                   <RoundedImage
                     alt={data.project.name || ""}
-                    src={data.project.logoUrl}
+                    src={data.project.logoUrl || IMAGES.logo.original}
                     size={ImageSize.Xxs}
                     rounding={Rounding.Circle}
                   />
