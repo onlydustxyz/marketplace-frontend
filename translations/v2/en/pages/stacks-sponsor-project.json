@@ -1,0 +1,19 @@
+{
+  "title": "Sponsor project",
+  "project": {
+    "title": "Project to sponsor",
+    "placeholder": "Select a project"
+  },
+  "amount": {
+    "title": "Select an amount",
+    "balance": "Balance",
+    "currency": "Currency"
+  },
+  "budget": {
+    "title": "Project budget",
+    "currentBudget": "Current budget",
+    "amountAllocated": "Amount allocated",
+    "budgetAfterAllocation": "Budget after allocation"
+  },
+  "submit": "Sponsor project"
+}

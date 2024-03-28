@@ -412,6 +412,20 @@ const config: Config = withTV({
           lineHeight: "20px",
           letterSpacing: "-0.16px",
         },
+        ".od-text-body-xl": {
+          fontSize: "21px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+          lineHeight: "28px",
+          letterSpacing: "-0.21px",
+        },
+        ".od-text-body-xl-bold": {
+          fontSize: "21px",
+          fontFamily: theme("fontFamily.walsheim"),
+          fontWeight: "500",
+          lineHeight: "28px",
+          letterSpacing: "-0.21px",
+        },
         ".od-text-body-l": {
           fontSize: "18px",
           fontFamily: theme("fontFamily.walsheim"),
@@ -525,7 +539,7 @@ const config: Config = withTV({
           },
           layout: {
             radius: {
-              large: "10px",
+              large: "10px", // TODO @hayden why do we override this value? When compared to the other nextui values it doesn't make sense
             },
             boxShadow: {
               medium: "0px 8px 64px 0px rgba(0, 0, 0, 0.32)",

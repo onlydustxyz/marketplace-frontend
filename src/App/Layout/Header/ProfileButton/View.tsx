@@ -13,6 +13,8 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
 
 import { useLogout } from "./Logout.hooks";
@@ -130,6 +132,14 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
                         })}
                       />
                     </Flex>
+                  </MenuItem>
+                </BaseLink>
+
+                {/* TODO @hayden feature flag */}
+                <BaseLink href={NEXT_ROUTER.sponsor.all}>
+                  <MenuItem>
+                    <Icon remixName="ri-service-line" size={20} />
+                    <div className="grow">{T("v2.features.menu.sponsoring")}</div>
                   </MenuItem>
                 </BaseLink>
 

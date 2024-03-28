@@ -24,6 +24,7 @@ export namespace TSelectAutocomplete {
       value: string;
       onChange: (value: string) => void;
     };
+    isElevated?: boolean;
   }
 
   export interface SingleProps<T> extends BaseProps<T> {

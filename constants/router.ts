@@ -20,6 +20,9 @@ export const NEXT_ROUTER = {
   rewards: {
     all: "/rewards",
   },
+  sponsor: {
+    all: "/sponsor",
+  },
   settings: {
     all: "/settings",
     profile: "/settings/profile",

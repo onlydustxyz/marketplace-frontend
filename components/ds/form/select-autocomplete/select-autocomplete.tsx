@@ -22,6 +22,7 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   onNextPage,
   loadingNextPage,
   controlledSearch,
+  isElevated = true,
   ...comboProps
 }: TSelectAutocomplete.Props<T>) {
   const isMd = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.md}px)`);
@@ -110,10 +111,14 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
                   setQuery("");
                 }}
                 className={cn(
-                  "absolute -left-1.5 -right-1.5 z-10 w-[calc(100%_+_24px)] overflow-hidden rounded-2xl border border-card-border-light bg-card-background-medium shadow-medium"
+                  "absolute -left-1.5 -right-1.5 z-10 w-[calc(100%_+_24px)] overflow-hidden rounded-2xl border border-card-border-light shadow-medium",
+                  {
+                    "bg-greyscale-800": isElevated,
+                    "bg-greyscale-900": !isElevated,
+                  }
                 )}
               >
-                <Combobox.Options className="bg-greyscale-800 p-1 py-2 pt-[54px]">
+                <Combobox.Options className="p-1 py-2 pt-[54px]">
                   <div className="max-h-60 divide-y divide-card-border-light overflow-auto px-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                     <Options
                       selectedItems={selectedItems}

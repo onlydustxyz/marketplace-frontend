@@ -1,0 +1,28 @@
+{
+  "title": "Sponsor",
+  "newDeposit": "New Deposit",
+  "budget": {
+    "title": "Budget available"
+  },
+  "deposit": {
+    "newCurrency": "New currency",
+    "makeDeposit": "Make a deposit"
+  },
+  "project": {
+    "title": "Sponsored projects",
+    "sponsorNewProject": "Sponsor new project",
+    "sponsorProject": "Sponsor project",
+    "totalBudget": "Total budget",
+    "perCurrency": "Per currency"
+  },
+  "history": {
+    "title": "Transaction history",
+    "date": "Date",
+    "transaction": "Transaction",
+    "amount": "Amount",
+    "project": "Project",
+    "deposit": "Deposit",
+    "allocated": "Allocated",
+    "unallocated": "Unallocated"
+  }
+}
