@@ -1,5 +1,7 @@
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
+import { useCloseStack } from "src/libs/react-stack";
 import { PaymentStatus } from "src/types";
 import { compareDateToNow } from "src/utils/date";
 
@@ -13,9 +15,13 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 
-export function StatusTag({ status, projectId, date, className }: TStatusTag.Props) {
+export function StatusTag({ status, projectId, billingProfileId, date, className }: TStatusTag.Props) {
+  const router = useRouter();
+  const closeRewardPanel = useCloseStack();
   const dateRelativeToNow = date ? compareDateToNow(date) : undefined;
   const { icon, labelToken, tooltipToken, tooltipParams, borderColor, iconClassName } = getStatusConfig({
     status,
@@ -29,11 +35,44 @@ export function StatusTag({ status, projectId, date, className }: TStatusTag.Pro
     () =>
       profiles.map(profile => ({
         name: profile.data.name,
-        icon: profile.icon,
+        icon: profile.data.enabled ? profile.icon : { remixName: "ri-forbid-2-line" },
         id: profile.data.id,
+        enabled: profile.data.enabled,
+        hasPendingInvitation: profile.data.pendingInvitationResponse || false,
       })),
     [profiles]
   );
+
+  const additionalArgs = useMemo(() => {
+    if (!billingProfileId) return {};
+
+    if (status === PaymentStatus.PAYOUT_INFO_MISSING) {
+      return {
+        onClick: () => {
+          closeRewardPanel();
+          router.push(NEXT_ROUTER.settings.billing.paymentMethods(billingProfileId));
+        },
+      };
+    }
+    if (status === PaymentStatus.PENDING_VERIFICATION) {
+      return {
+        onClick: () => {
+          closeRewardPanel();
+          router.push(NEXT_ROUTER.settings.billing.generalInformation(billingProfileId));
+        },
+      };
+    }
+    if (status === PaymentStatus.PENDING_BILLING_PROFILE) {
+      return {
+        onClick: () => {
+          closeRewardPanel();
+          router.push(NEXT_ROUTER.settings.payoutPreferences);
+        },
+      };
+    }
+
+    return {};
+  }, [projectId, status]);
 
   if (status === PaymentStatus.PENDING_BILLING_PROFILE) {
     return (
@@ -49,6 +88,7 @@ export function StatusTag({ status, projectId, date, className }: TStatusTag.Pro
       borderColor={borderColor}
       tooltipContent={<Translate token={tooltipToken} params={tooltipParams} />}
       className={className}
+      {...additionalArgs}
     >
       <Icon remixName={icon} size={16} className={iconClassName} />
       <Typography variant="body-s">

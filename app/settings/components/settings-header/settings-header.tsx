@@ -1,3 +1,5 @@
+import { cn } from "src/utils/cn";
+
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
@@ -8,8 +10,8 @@ import { TSettingsHeader } from "./settings-header.types";
 export function SettingsHeader({ icon, tokenTitle, title, subtitle, children }: TSettingsHeader.Props) {
   return (
     <Card background="base">
-      <Flex className="flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
-        <Flex direction="col" className="gap-2">
+      <div className="grid gap-4 lg:grid-cols-3 lg:items-center">
+        <Flex direction="col" className={cn("gap-2", { "lg:col-span-2": children })}>
           <Flex alignItems="center" className="gap-2">
             {icon ? <Icon remixName={icon} size={24} /> : null}
             {tokenTitle ? (
@@ -25,7 +27,7 @@ export function SettingsHeader({ icon, tokenTitle, title, subtitle, children }: 
         </Flex>
 
         {children ? <div>{children}</div> : null}
-      </Flex>
+      </div>
     </Card>
   );
 }

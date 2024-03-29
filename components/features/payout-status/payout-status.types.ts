@@ -8,6 +8,7 @@ export namespace TPayoutStatus {
       unlockDate?: string | null;
     };
     projectId?: string;
+    billingProfileId?: string;
   }
 
   export type PaymentStatusUnion = `${PaymentStatus}`;

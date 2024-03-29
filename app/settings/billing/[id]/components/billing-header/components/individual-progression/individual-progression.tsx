@@ -16,7 +16,7 @@ export function IndividualProgression({ amount, limit }: TIndividualProgression.
         translate={{
           token: "v2.pages.settings.billing.header.invidivualProgression",
           params: {
-            amountLeft: (limit - amount).toString(),
+            amountLeft: (limit - amount).toFixed(2).toString(),
           },
         }}
         className="whitespace-nowrap"
