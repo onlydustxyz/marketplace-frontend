@@ -24,8 +24,10 @@ export function PayoutPreferencesTable() {
     () =>
       profiles.map(profile => ({
         name: profile.data.name,
-        icon: profile.icon,
+        icon: profile.data.enabled ? profile.icon : { remixName: "ri-forbid-2-line" },
         id: profile.data.id,
+        enabled: profile.data.enabled,
+        hasPendingInvitation: profile.data.pendingInvitationResponse || false,
       })),
     [profiles]
   );

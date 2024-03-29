@@ -10,29 +10,33 @@ import { PayoutStatus } from "components/features/payout-status/payout-status";
 export default function MobileRewardList({
   rewards,
   onRewardClick,
+  projectId,
 }: {
   rewards: RewardPageItemType[];
   onRewardClick: (reward: RewardPageItemType) => void;
+  projectId: string;
 }) {
   return (
     <div className="flex flex-col gap-4">
       {rewards.map(reward => (
         <button onClick={() => onRewardClick(reward)} key={reward.id}>
-          <MobileRewardItemContainer reward={reward} />
+          <MobileRewardItemContainer reward={reward} projectId={projectId} />
         </button>
       ))}
     </div>
   );
 }
 
-function MobileRewardItemContainer({ reward }: { reward: RewardPageItemType }) {
+function MobileRewardItemContainer({ reward, projectId }: { reward: RewardPageItemType; projectId: string }) {
   const { T } = useIntl();
 
   return (
     <MobileUserRewardItem
       id={reward.id}
-      image={<RoundedImage src={reward.rewardedUserAvatar} alt={reward.rewardedUserLogin} rounding={Rounding.Circle} />}
-      title={reward.rewardedUserLogin}
+      image={
+        <RoundedImage src={reward.rewardedUser.avatarUrl} alt={reward.rewardedUser.login} rounding={Rounding.Circle} />
+      }
+      title={reward.rewardedUser.login}
       request={T("reward.table.reward", {
         id: pretty(reward.id),
         count: reward.numberOfRewardedContributions,
@@ -43,6 +47,7 @@ function MobileRewardItemContainer({ reward }: { reward: RewardPageItemType }) {
         <PayoutStatus
           status={PaymentStatus[reward.status]}
           dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
+          projectId={projectId}
         />
       }
     />

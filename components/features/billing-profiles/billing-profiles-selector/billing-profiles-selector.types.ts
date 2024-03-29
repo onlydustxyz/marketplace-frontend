@@ -7,6 +7,8 @@ export namespace TBillingProfilesSelector {
     name: string;
     icon: TIcon.Props;
     id: string;
+    enabled: boolean;
+    hasPendingInvitation: boolean;
   }
   export interface Props extends PropsWithChildren {
     data?: Data[];

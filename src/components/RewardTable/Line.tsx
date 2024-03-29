@@ -13,31 +13,23 @@ type Props = {
   reward: RewardPageItemType;
   onClick: () => void;
   selected: boolean;
+  projectId: string;
 };
 
-export function RewardLine({ reward, onClick, selected }: Props) {
+export function RewardLine({ reward, onClick, selected, projectId }: Props) {
   const { T } = useIntl();
 
-  const {
-    id,
-    amount,
-    numberOfRewardedContributions,
-    requestedAt,
-    rewardedUserAvatar,
-    rewardedUserLogin,
-    status,
-    unlockDate,
-    processedAt,
-  } = reward || {};
+  const { id, amount, numberOfRewardedContributions, requestedAt, rewardedUser, status, unlockDate, processedAt } =
+    reward || {};
 
   return (
     <>
       <Line rewardId={id} selected={selected} onClick={onClick}>
         <Cell height={CellHeight.Medium}>{displayRelativeDate(new Date(requestedAt))}</Cell>
         <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
-          <RoundedImage src={rewardedUserAvatar} alt={rewardedUserLogin} rounding={Rounding.Circle} />
+          <RoundedImage src={rewardedUser.avatarUrl} alt={rewardedUser.login} rounding={Rounding.Circle} />
           <div className="flex flex-col justify-center truncate pb-0.5">
-            <div className="font-walsheim text-sm font-medium text-greyscale-50">{rewardedUserLogin}</div>
+            <div className="font-walsheim text-sm font-medium text-greyscale-50">{rewardedUser.login}</div>
             <div className="text-spaceBlue-200">
               {T("reward.table.reward", {
                 id: pretty(reward.id),
@@ -59,7 +51,7 @@ export function RewardLine({ reward, onClick, selected }: Props) {
           </div>
         </Cell>
         <Cell height={CellHeight.Medium}>
-          <PayoutStatus status={status} dates={{ unlockDate, processedAt }} />
+          <PayoutStatus status={status} dates={{ unlockDate, processedAt }} projectId={projectId} />
         </Cell>
       </Line>
     </>
