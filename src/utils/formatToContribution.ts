@@ -11,7 +11,6 @@ export function rewardableItemToContribution(rewardableItem: RewardableItem) {
     githubAuthor: {
       avatarUrl: rewardableItem.author?.avatarUrl ?? "",
       githubUserId: rewardableItem.author?.githubUserId ?? 0,
-      htmlUrl: rewardableItem.author?.htmlUrl ?? "",
       login: rewardableItem.author?.login ?? "",
     },
     githubBody: rewardableItem.githubBody,

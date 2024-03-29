@@ -38,7 +38,7 @@ export function TeamworkMode({ type, isSwitchableToSelfEmployed, id }: TTeamwork
   };
 
   return (
-    <Flex alignItems="center" className="gap-1">
+    <Flex alignItems="center" className="gap-1" justifyContent="end">
       <Tooltip
         placement="bottom"
         hasMaxWidth

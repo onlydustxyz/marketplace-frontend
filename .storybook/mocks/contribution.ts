@@ -15,7 +15,6 @@ export const contribution: Contribution = {
   githubAuthor: {
     githubUserId: 5160414,
     login: "haydencleary",
-    htmlUrl: "https://github.com/haydencleary",
     avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
   },
   githubNumber: 1242,
@@ -42,7 +41,6 @@ export const contribution: Contribution = {
       githubAuthor: {
         githubUserId: 5160414,
         login: "haydencleary",
-        htmlUrl: "https://github.com/haydencleary",
         avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
       },
       githubNumber: 1242,
@@ -56,7 +54,6 @@ export const contribution: Contribution = {
   contributor: {
     avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
     githubUserId: 5160414,
-    htmlUrl: "",
     login: "haydencleary",
     isRegistered: true,
   },
