@@ -9,27 +9,39 @@ export function IndividualProgression({ amount, limit }: TIndividualProgression.
     return null;
   }
 
-  return (
-    <Flex alignItems="center" className="gap-2">
+  const amountLeft = (limit - amount).toFixed(2).toString();
+  const isLimitReached = amount >= limit;
+
+  const renderValue = () => {
+    if (isLimitReached) {
+      return (
+        <Typography
+          variant="body-s"
+          translate={{ token: "v2.pages.settings.billing.header.limitReached" }}
+          className="whitespace-nowrap"
+        />
+      );
+    }
+
+    return (
       <Typography
         variant="body-s"
         translate={{
-          token: "v2.pages.settings.billing.header.invidivualProgression",
+          token: "v2.pages.settings.billing.header.individualProgression",
           params: {
-            amountLeft: (limit - amount).toFixed(2).toString(),
+            amountLeft,
           },
         }}
         className="whitespace-nowrap"
       />
+    );
+  };
 
-      <ProgressBar
-        value={amount}
-        maxValue={limit}
-        color="spacePurple"
-        classNames={{
-          base: "w-40",
-        }}
-      />
+  return (
+    <Flex alignItems="center" className="gap-2">
+      {renderValue()}
+
+      <ProgressBar value={amount} maxValue={limit} color={isLimitReached ? "orange" : "spacePurple"} />
     </Flex>
   );
 }
