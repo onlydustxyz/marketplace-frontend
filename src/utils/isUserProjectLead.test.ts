@@ -18,14 +18,12 @@ const project: components["schemas"]["ProjectPageItemResponse"] = {
     {
       githubUserId: 16590657,
       login: "PierreOucif",
-      htmlUrl: "https://github.com/PierreOucif",
       avatarUrl: "https://avatars.githubusercontent.com/u/16590657?v=4",
       id: "41b46107-9e4c-4e31-8acf-8371e4ca566a",
     },
     {
       githubUserId: 17259618,
       login: "alexbeno",
-      htmlUrl: "https://github.com/alexbeno",
       avatarUrl: "https://avatars.githubusercontent.com/u/17259618?v=4",
       id: "9d2e92fd-451d-45c3-840a-7fb2290d0e92",
     },

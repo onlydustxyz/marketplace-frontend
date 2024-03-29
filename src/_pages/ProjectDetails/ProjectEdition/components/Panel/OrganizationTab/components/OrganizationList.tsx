@@ -39,6 +39,16 @@ export default function OrganizationList({
             projectSlug: project?.slug,
           });
 
+          const titleComponentArg = org.htmlUrl
+            ? {
+                TitleComponent: (
+                  <Link href={org.htmlUrl}>
+                    <Typography variant="body-m">{org.name || org.login}</Typography>
+                  </Link>
+                ),
+              }
+            : {};
+
           return (
             <HorizontalListItemCard
               key={`${org.login}+${index}`}
@@ -50,11 +60,7 @@ export default function OrganizationList({
               isExternalFlow={org.installed}
               disabled={!org.isCurrentUserAdmin}
               tooltip={disabledTooltip}
-              TitleComponent={
-                <Link href={org.htmlUrl}>
-                  <Typography variant="body-m">{org.name || org.login}</Typography>
-                </Link>
-              }
+              {...titleComponentArg}
             />
           );
         })}

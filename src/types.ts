@@ -138,7 +138,6 @@ export interface Leader {
   id: string;
   githubUserId: number;
   login: string;
-  htmlUrl: string | null;
   avatarUrl: string;
 }
 export interface MoreInfosField {
