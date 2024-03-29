@@ -13,6 +13,7 @@ export function useSearchContributors({
   onSelectContributors,
   initialValue,
   isMultiple,
+  displaySection,
 }: TUseSearchContributors.Props): TUseSearchContributors.Return {
   const { T } = useIntl();
   const [debounceQuery, setDebounceQuery] = useState("");
@@ -113,7 +114,30 @@ export function useSearchContributors({
     return [];
   }, [data, selectedContributors]);
 
+  const mixedContributors = useMemo(() => {
+    if (data?.externalContributors?.length || data?.internalContributors?.length) {
+      return [
+        {
+          name: "",
+          items: [
+            ...(data?.internalContributors || []).filter(
+              c => !selectedContributors.find(s => s.githubUserId === c.githubUserId)
+            ),
+            ...(data?.externalContributors || []).filter(
+              c => !selectedContributors.find(s => s.githubUserId === c.githubUserId)
+            ),
+          ],
+          showDivider: false,
+        },
+      ];
+    }
+    return [];
+  }, [data, selectedContributors]);
+
   const contributors = useMemo(() => {
+    if (!displaySection) {
+      return [...selectedContributorsItems, ...mixedContributors];
+    }
     return [...selectedContributorsItems, ...internalContributors, ...externalContributors];
   }, [selectedContributorsItems, internalContributors, externalContributors]);
 
