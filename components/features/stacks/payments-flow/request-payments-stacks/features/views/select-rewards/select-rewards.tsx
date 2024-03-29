@@ -31,7 +31,6 @@ export function SelectRewards({
 
   const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
   const isIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
-  const isCompany = !isIndividual;
   const isMandateAccepted = profile?.data?.invoiceMandateAccepted;
 
   const currentYearPaymentLimit = profile?.data?.currentYearPaymentLimit ?? 5000;
@@ -57,7 +56,7 @@ export function SelectRewards({
       includedRewards: includedRewards?.length,
       excludedRewards: excludedRewards?.length,
     });
-    if (isIndividual || (isCompany && isMandateAccepted)) {
+    if (isIndividual || (!isIndividual && isMandateAccepted)) {
       goTo({ to: TRequestPaymentsStacks.Views.Generate });
     } else {
       goTo({ to: TRequestPaymentsStacks.Views.Mandate });
@@ -138,7 +137,7 @@ export function SelectRewards({
           </div>
         </ScrollView>
         <div className="w-full bg-greyscale-900">
-          <AmountCounter total={totalAmountCumulated} isCompany={isCompany} limit={currentYearPaymentLimit} />
+          <AmountCounter total={totalAmountCumulated} isCompany={!isIndividual} limit={currentYearPaymentLimit} />
           <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
             <div className="flex items-center justify-end gap-5 ">
               <Button
