@@ -13,5 +13,6 @@ export namespace TSearchContributor {
   export interface Props extends Base {
     onSelectContributors: (user: ContributorResponse[]) => void;
     initialValue?: ContributorResponse;
+    displaySection?: boolean;
   }
 }

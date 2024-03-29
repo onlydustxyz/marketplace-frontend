@@ -18,6 +18,7 @@ export function SearchContributor({
   onSelectContributors,
   initialValue,
   selectionMode = "single",
+  displaySection = false,
   ...listboxProps
 }: TSearchContributor.Props) {
   const { T } = useIntl();
@@ -33,7 +34,12 @@ export function SearchContributor({
     handleClickOutside,
     onSelectElement,
     setOpenListbox,
-  } = useSearchContributors({ onSelectContributors, initialValue, isMultiple: selectionMode === "multiple" });
+  } = useSearchContributors({
+    onSelectContributors,
+    initialValue,
+    isMultiple: selectionMode === "multiple",
+    displaySection,
+  });
 
   const ref = useRef(null);
   useOnClickOutside(ref, handleClickOutside);

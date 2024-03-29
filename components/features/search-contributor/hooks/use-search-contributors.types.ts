@@ -9,6 +9,7 @@ export namespace TUseSearchContributors {
     onSelectContributors: (contributors: ContributorResponse[]) => void;
     initialValue?: ContributorResponse;
     isMultiple?: boolean;
+    displaySection: boolean;
   }
   export interface Return {
     searchQuery: string;
