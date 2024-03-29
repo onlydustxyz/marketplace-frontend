@@ -48,7 +48,6 @@ function MobileRewardItemContainer({ reward, projectId }: { reward: RewardPageIt
           status={PaymentStatus[reward.status]}
           dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
           projectId={projectId}
-          billingProfileId={reward.billingProfileId}
         />
       }
     />

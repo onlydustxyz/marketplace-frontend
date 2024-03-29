@@ -19,17 +19,8 @@ type Props = {
 export function RewardLine({ reward, onClick, selected, projectId }: Props) {
   const { T } = useIntl();
 
-  const {
-    id,
-    amount,
-    numberOfRewardedContributions,
-    requestedAt,
-    rewardedUser,
-    status,
-    unlockDate,
-    processedAt,
-    billingProfileId,
-  } = reward || {};
+  const { id, amount, numberOfRewardedContributions, requestedAt, rewardedUser, status, unlockDate, processedAt } =
+    reward || {};
 
   return (
     <>
@@ -60,12 +51,7 @@ export function RewardLine({ reward, onClick, selected, projectId }: Props) {
           </div>
         </Cell>
         <Cell height={CellHeight.Medium}>
-          <PayoutStatus
-            status={status}
-            dates={{ unlockDate, processedAt }}
-            billingProfileId={billingProfileId}
-            projectId={projectId}
-          />
+          <PayoutStatus status={status} dates={{ unlockDate, processedAt }} projectId={projectId} />
         </Cell>
       </Line>
     </>
