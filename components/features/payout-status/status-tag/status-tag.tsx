@@ -53,14 +53,16 @@ export function StatusTag({ status, projectId, billingProfileId, date, className
           router.push(NEXT_ROUTER.settings.billing.paymentMethods(billingProfileId));
         },
       };
-    } else if (status === PaymentStatus.PENDING_VERIFICATION) {
+    }
+    if (status === PaymentStatus.PENDING_VERIFICATION) {
       return {
         onClick: () => {
           closeRewardPanel();
           router.push(NEXT_ROUTER.settings.billing.generalInformation(billingProfileId));
         },
       };
-    } else if (status === PaymentStatus.PENDING_BILLING_PROFILE) {
+    }
+    if (status === PaymentStatus.PENDING_BILLING_PROFILE) {
       return {
         onClick: () => {
           closeRewardPanel();

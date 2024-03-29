@@ -21,10 +21,14 @@ export function Tag({
       <Component
         data-testid={testId}
         id={id}
-        className={cn("relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px", containerClassName)}
+        className={cn(
+          "relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px",
+          { "cursor-pointer": onClick },
+          containerClassName
+        )}
         onClick={onClick}
       >
-        <div className={cn(tagVariants({ ...props }), className, { "cursor-pointer": onClick })}>{children}</div>
+        <div className={cn(tagVariants({ ...props }), className)}>{children}</div>
       </Component>
     );
   }
