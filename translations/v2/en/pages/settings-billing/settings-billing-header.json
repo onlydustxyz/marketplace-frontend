@@ -15,7 +15,8 @@
     "subtitle": "As an employee, you can contribute to this company with your rewards."
   },
   "invitedBy": "Invited by",
-  "invidivualProgression": "__amountLeft__ USD left",
+  "individualProgression": "__amountLeft__ USD left",
+  "limitReached": "Maximum amount of 5000 USD reached",
   "teamwork": {
     "title": "Teamwork mode",
     "tooltip": "Enable teamwork mode if you wish to invite co-workers to manage rewards on their behalf.",
