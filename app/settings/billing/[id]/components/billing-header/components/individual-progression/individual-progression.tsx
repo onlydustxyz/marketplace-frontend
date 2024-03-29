@@ -41,14 +41,7 @@ export function IndividualProgression({ amount, limit }: TIndividualProgression.
     <Flex alignItems="center" className="gap-2">
       {renderValue()}
 
-      <ProgressBar
-        value={amount}
-        maxValue={limit}
-        color={isLimitReached ? "orange" : "spacePurple"}
-        // classNames={{
-        //   base: "w-40",
-        // }}
-      />
+      <ProgressBar value={amount} maxValue={limit} color={isLimitReached ? "orange" : "spacePurple"} />
     </Flex>
   );
 }
