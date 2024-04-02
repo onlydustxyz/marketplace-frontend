@@ -12,6 +12,7 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
+import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 
@@ -141,7 +142,11 @@ export function MobileUserRewardItem({
         </div>
       </div>
 
-      <div className="grid gap-y-3 pt-3 font-walsheim text-sm sm:grid-cols-2 md:grid-cols-3">
+      <div
+        className={cn("grid gap-y-3 pt-3 font-walsheim text-sm sm:grid-cols-2", {
+          "md:grid-cols-3": showContributor,
+        })}
+      >
         <div className="flex flex-col items-start pr-4">
           <div className="flex items-center gap-1 font-semibold uppercase text-spaceBlue-200">
             <MoneyDollarCircleLine className="text-base font-medium" />

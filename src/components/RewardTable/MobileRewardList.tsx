@@ -50,6 +50,7 @@ function MobileRewardItemContainer({ reward, projectId }: { reward: RewardPageIt
           projectId={projectId}
         />
       }
+      rewardedUser={reward.rewardedUser}
     />
   );
 }
