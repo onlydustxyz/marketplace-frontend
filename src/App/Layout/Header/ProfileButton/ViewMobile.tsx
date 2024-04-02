@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
@@ -43,6 +44,7 @@ export function ViewMobile({
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
+  const { isAllowed: isAllowedSponsor } = useSponsorGuard();
 
   const { queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -117,15 +119,16 @@ export function ViewMobile({
                   </Flex>
                 </BaseLink>
 
-                {/* TODO @hayden feature flag */}
-                <BaseLink
-                  href={NEXT_ROUTER.sponsor.all}
-                  onClick={() => setPanelOpen(false)}
-                  className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
-                >
-                  <Icon remixName="ri-service-line" size={20} />
-                  {T("v2.features.menu.sponsoring")}
-                </BaseLink>
+                {isAllowedSponsor ? (
+                  <BaseLink
+                    href={NEXT_ROUTER.sponsor.all}
+                    onClick={() => setPanelOpen(false)}
+                    className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
+                  >
+                    <Icon remixName="ri-service-line" size={20} />
+                    {T("v2.features.menu.sponsoring")}
+                  </BaseLink>
+                ) : null}
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>

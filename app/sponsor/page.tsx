@@ -1,5 +1,7 @@
 "use client";
 
+import { withSponsorGuard } from "utils/guards/sponsor-guard";
+
 import { SponsorSidePanels } from "app/sponsor/components/sponsor-side-panels/sponsor-side-panels";
 import { SponsorSectionBudget } from "app/sponsor/features/sponsor-section-budget/sponsor-section-budget";
 import { SponsorSectionHistory } from "app/sponsor/features/sponsor-section-history/sponsor-section-history";
@@ -9,7 +11,7 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export default function SponsorPage() {
+function SponsorPage() {
   return (
     <div className={"scrollbar-sm h-full w-full overflow-y-auto"}>
       <div className={"mx-auto grid max-w-7xl gap-6 px-4 py-8 xl:p-8"}>
@@ -43,4 +45,4 @@ export default function SponsorPage() {
   );
 }
 
-// TODO @hayden feature flag
+export default withSponsorGuard(SponsorPage);
