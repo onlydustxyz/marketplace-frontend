@@ -83,7 +83,7 @@ export function Avatar(props: TAvatar.Props) {
 }
 
 Avatar.Labelled = function AvatarLabelled({ children, href, avatarProps, labelProps }: TAvatar.LabelledProps) {
-  const wrapperClassName = "flex items-center gap-2";
+  const wrapperClassName = "flex items-center gap-2 truncate";
 
   function renderContent() {
     const { className, ...restProps } = labelProps ?? {};
@@ -91,7 +91,7 @@ Avatar.Labelled = function AvatarLabelled({ children, href, avatarProps, labelPr
     return (
       <>
         <Avatar size="s" {...avatarProps} />
-        <div className={cn("od-text-body-s text-greyscale-50", className)} {...restProps}>
+        <div className={cn("od-text-body-s truncate text-greyscale-50", className)} {...restProps}>
           {children}
         </div>
       </>
