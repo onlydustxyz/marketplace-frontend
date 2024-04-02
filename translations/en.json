@@ -644,9 +644,11 @@
     },
     "table": {
       "amount": "Amount",
-      "contributor": "Contribution",
+      "contribution": "Contribution",
+      "contributor": "Contributor",
       "project": "Project",
       "date": "Sent",
+      "you": "you",
       "githubLink": "#__pullRequestNumber__ · Github",
       "reward": {
         "many": "#__id__ · __count__ contributions",

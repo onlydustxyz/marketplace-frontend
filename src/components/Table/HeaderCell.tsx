@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
 
 export enum HeaderCellWidth {
+  Eighth = "w-[12%]",
   Sixth = "w-1/6",
   Fifth = "w-1/5",
   Quarter = "w-1/4",

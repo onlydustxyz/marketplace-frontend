@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { components } from "src/__generated/api";
 import { IMAGES } from "src/assets/img";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
@@ -8,7 +10,10 @@ import { useIntl } from "src/hooks/useIntl";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
+
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export type MyRewardType = components["schemas"]["MyRewardPageItemResponse"];
 
@@ -16,21 +21,27 @@ type Props = {
   reward: MyRewardType;
   onClick: () => void;
   selected: boolean;
+  showContributor?: boolean;
 };
 
-export default function RewardLine({ reward, onClick, selected }: Props) {
+export default function RewardLine({ reward, onClick, selected, showContributor }: Props) {
   const { T } = useIntl();
+  const { user } = useCurrentUser();
+
+  const isCurrentUser = useMemo(() => user?.githubUserId === reward?.rewardedUser.githubUserId, [user, reward]);
 
   return (
     <Line onClick={onClick} selected={selected}>
-      <Cell>{displayRelativeDate(new Date(reward?.requestedAt))}</Cell>
+      <Cell>
+        <span className="first-letter:uppercase">{displayRelativeDate(new Date(reward?.requestedAt))}</span>
+      </Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage
           src={reward?.rewardedOnProjectLogoUrl || IMAGES.logo.space}
           alt={reward?.rewardedOnProjectName || ""}
         />
         <div className="flex flex-col justify-center truncate">
-          <div className="font-belwe text-base font-normal">{reward?.rewardedOnProjectName}</div>
+          <div className="truncate font-belwe text-base font-normal">{reward?.rewardedOnProjectName}</div>
           <div className="text-spaceBlue-200">
             {T("reward.table.reward", { id: pretty(reward?.id), count: reward?.numberOfRewardedContributions })}
           </div>
@@ -53,6 +64,13 @@ export default function RewardLine({ reward, onClick, selected }: Props) {
           "-"
         )}
       </Cell>
+      {showContributor ? (
+        <Cell>
+          <Avatar.Labelled avatarProps={{ src: reward.rewardedUser.avatarUrl }}>
+            {reward.rewardedUser.login} {isCurrentUser ? `(${T("reward.table.you")})` : ""}
+          </Avatar.Labelled>
+        </Cell>
+      ) : null}
       <Cell>
         <PayoutStatus
           status={reward?.status}

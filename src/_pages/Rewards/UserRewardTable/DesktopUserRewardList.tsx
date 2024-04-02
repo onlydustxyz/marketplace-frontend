@@ -1,10 +1,12 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement, useContext, useMemo } from "react";
 
 import ErrorFallback from "src/ErrorFallback";
 import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
 import { ShowMore } from "src/components/Table/ShowMore";
+
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import Skeleton from "../../../components/Skeleton";
 import Headers from "./Headers";
@@ -22,6 +24,12 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward, e
   const { sorting, sortField } = dateSorting;
 
   const { data, error, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = query ?? {};
+
+  const { user } = useCurrentUser();
+  const showContributorColumn = useMemo(
+    () => Boolean(user?.billingProfiles?.find(({ type, role }) => type === "COMPANY" && role === "ADMIN")),
+    [user]
+  );
 
   if (error) {
     return (
@@ -42,7 +50,7 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward, e
       <div>
         <Table
           id="reward_table"
-          headers={<Headers sorting={sorting} sortField={sortField} />}
+          headers={<Headers sorting={sorting} sortField={sortField} showContributor={showContributorColumn} />}
           emptyFallback={rewards.length === 0 ? emptyState : undefined}
         >
           {rewards.map(p => (
@@ -51,6 +59,7 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward, e
               reward={p}
               onClick={() => onRewardClick(p)}
               selected={p?.id === selectedReward?.id}
+              showContributor={showContributorColumn}
             />
           ))}
         </Table>
