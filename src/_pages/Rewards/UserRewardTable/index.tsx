@@ -1,9 +1,11 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import { StackRoute, useStackReward } from "src/App/Stacks/Stacks";
 import { viewportConfig } from "src/config";
 import { useSubscribeStacks } from "src/libs/react-stack";
+
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import DesktopUserRewardList from "./DesktopUserRewardList";
 import { MyRewardType } from "./Line";
@@ -15,6 +17,12 @@ export function UserRewardTable({ emptyState }: { emptyState?: ReactElement }) {
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
   const { open } = useSubscribeStacks(StackRoute.Reward);
   const [openRewardPanel] = useStackReward();
+
+  const { user } = useCurrentUser();
+  const showContributor = useMemo(
+    () => Boolean(user?.billingProfiles?.find(({ type, role }) => type === "COMPANY" && role === "ADMIN")),
+    [user]
+  );
 
   useEffect(() => {
     if (!open && selectedReward) {
@@ -32,9 +40,14 @@ export function UserRewardTable({ emptyState }: { emptyState?: ReactElement }) {
   return (
     <>
       {isXl ? (
-        <DesktopUserRewardList onRewardClick={onRewardClick} selectedReward={selectedReward} emptyState={emptyState} />
+        <DesktopUserRewardList
+          onRewardClick={onRewardClick}
+          selectedReward={selectedReward}
+          emptyState={emptyState}
+          showContributor={showContributor}
+        />
       ) : (
-        <MobileUserRewardList onRewardClick={onRewardClick} />
+        <MobileUserRewardList onRewardClick={onRewardClick} showContributor={showContributor} />
       )}
     </>
   );

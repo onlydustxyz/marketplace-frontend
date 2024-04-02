@@ -32,7 +32,7 @@ export default function Headers({ sorting, sortField }: Props) {
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Third} horizontalMargin onClick={() => sortField(Fields.Contributor)}>
         <Folder3Line className="pl-px font-normal" />
-        <span>{T("reward.table.contributor")}</span>
+        <span>{T("reward.table.contribution")}</span>
         <SortingArrow direction={sorting.isAscending ? "up" : "down"} visible={sorting.field === Fields.Contributor} />
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => sortField(Fields.Amount)} horizontalMargin>

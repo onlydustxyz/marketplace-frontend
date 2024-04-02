@@ -67,7 +67,7 @@ export function ViewMobile({
       <button
         onClick={() => setPanelOpen(true)}
         className={cn(
-          "flex items-center justify-center gap-2 rounded-full border border-greyscale-50/12 px-2 py-1.5 font-walsheim text-sm",
+          "flex items-center justify-center gap-2 rounded-full border border-greyscale-50/12 p-1.5 font-walsheim text-sm",
           {
             "border-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
             "border-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,

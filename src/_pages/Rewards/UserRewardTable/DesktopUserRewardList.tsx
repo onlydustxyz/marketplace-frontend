@@ -14,9 +14,15 @@ type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;
   selectedReward: MyRewardType | null;
   emptyState?: ReactElement;
+  showContributor?: boolean;
 };
 
-export default function DesktopUserRewardList({ onRewardClick, selectedReward, emptyState }: PropsType) {
+export default function DesktopUserRewardList({
+  onRewardClick,
+  selectedReward,
+  emptyState,
+  showContributor,
+}: PropsType) {
   const { query, dateSorting } = useContext(UserRewardsContext);
 
   const { sorting, sortField } = dateSorting;
@@ -42,7 +48,7 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward, e
       <div>
         <Table
           id="reward_table"
-          headers={<Headers sorting={sorting} sortField={sortField} />}
+          headers={<Headers sorting={sorting} sortField={sortField} showContributor={showContributor} />}
           emptyFallback={rewards.length === 0 ? emptyState : undefined}
         >
           {rewards.map(p => (
@@ -51,6 +57,7 @@ export default function DesktopUserRewardList({ onRewardClick, selectedReward, e
               reward={p}
               onClick={() => onRewardClick(p)}
               selected={p?.id === selectedReward?.id}
+              showContributor={showContributor}
             />
           ))}
         </Table>

@@ -62,7 +62,7 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
             onMouseEnter={() => setTooltipVisible(true)}
             onMouseLeave={() => setTooltipVisible(false)}
             className={cn(
-              "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 outline-greyscale-50/12 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
+              "flex items-center justify-center gap-2 rounded-full p-1.5 font-belwe text-sm outline outline-1 outline-greyscale-50/12 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
               {
                 "outline-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
                 "outline-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
