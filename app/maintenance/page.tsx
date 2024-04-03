@@ -1,8 +1,11 @@
+"use client";
+
 import MaintenanceAnimation from "src/assets/animations/Maintenance";
-import Button from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 
-export default function Maintenance() {
+import { Button } from "components/ds/button/button";
+
+export default function MaintenancePage() {
   const { T } = useIntl();
 
   return (
@@ -16,8 +19,11 @@ export default function Maintenance() {
           {T("state.maintenance.description")}
         </div>
       </div>
-      <a href="https://onlydust.xyz" rel="noreferrer">
-        <Button>{T("state.maintenance.visitButton")}</Button>
+
+      <a href="https://onlydust.com" rel="noreferrer">
+        <Button as={"span"} size={"l"}>
+          {T("state.maintenance.visitButton")}
+        </Button>
       </a>
     </div>
   );

@@ -1489,7 +1489,7 @@
     },
     "maintenance": {
       "description": "We're hard at work to make OnlyDust better. Check back later!",
-      "visitButton": "Visit onlydust.xyz",
+      "visitButton": "Visit onlydust.com",
       "title": "We're under maintenance"
     },
     "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
