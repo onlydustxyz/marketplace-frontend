@@ -7,7 +7,6 @@ export namespace TSelectableBillingProfile {
     selected: boolean;
     disabled: boolean;
     icon: TIcon.Props;
-
     title: ReactNode;
     count: number;
     onChange: (value: string) => void;
