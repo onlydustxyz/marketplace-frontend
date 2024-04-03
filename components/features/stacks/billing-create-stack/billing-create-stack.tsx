@@ -77,7 +77,7 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
 
   return (
     <div className="flex h-full flex-col justify-between">
-      <div className="flex h-full flex-col px-4 pb-8">
+      <div className="flex flex-col px-4 pb-8">
         <div className="mb-8">
           <Typography
             variant={"title-m"}
@@ -233,7 +233,8 @@ export function BillingCreateStack({ projectId, redirectToProfile }: TBillingCre
           </m.div>
         </LazyMotion>
       </div>
-      <div className="absolute bottom-0 left-0 w-full bg-greyscale-900">
+
+      <div className="w-full bg-greyscale-900">
         <div className="flex h-auto w-full items-center justify-between gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
           {/* // empty div to keep the flex layout */}
           {restMutation.isPending ? <Spinner /> : <div />}
