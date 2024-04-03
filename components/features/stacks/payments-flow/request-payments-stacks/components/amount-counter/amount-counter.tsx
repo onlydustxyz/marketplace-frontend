@@ -26,10 +26,10 @@ export function AmountCounter({ limit = 5000, total, isCompany }: TAmountCounter
           size={"s"}
           endElement={
             <Typography variant="title-m" as="p">
-              {Money.format({ amount: total, currency: Money.USD }).string}
-              <Typography variant="title-s" as="span">
-                &nbsp;{Money.Static.Currency.USD}
-              </Typography>
+              {
+                Money.format({ amount: total, currency: Money.USD, options: { currencyClassName: "od-text-title-s" } })
+                  .html
+              }
             </Typography>
           }
         />
