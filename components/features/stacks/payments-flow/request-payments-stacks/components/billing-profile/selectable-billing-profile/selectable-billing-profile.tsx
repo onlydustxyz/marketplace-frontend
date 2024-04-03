@@ -14,7 +14,6 @@ export function SelectableBillingProfile({
   title,
   count,
   icon,
-  role,
   selected,
   onChange,
   value,
@@ -22,15 +21,6 @@ export function SelectableBillingProfile({
 }: TSelectableBillingProfile.Props) {
   function onClick() {
     onChange(value);
-  }
-
-  function getIconRemixName() {
-    if (role === "MEMBER") {
-      return "ri-team-line";
-    }
-
-    // Add to use a defaut icon because of the types of Icon
-    return icon.remixName || "ri-team-line";
   }
 
   return (
@@ -43,10 +33,7 @@ export function SelectableBillingProfile({
       <Flex justifyContent="between" alignItems="center" className="gap-1">
         <Flex justifyContent="start" alignItems="center" className="gap-4">
           <Chip className="h-8 w-8">
-            <Icon
-              remixName={getIconRemixName()}
-              className={cn("h-4 w-4", icon.className, { "text-greyscale-500": disabled })}
-            />
+            <Icon {...icon} className={cn("h-4 w-4", icon.className, { "text-greyscale-500": disabled })} />
           </Chip>
           <div>
             <Typography
