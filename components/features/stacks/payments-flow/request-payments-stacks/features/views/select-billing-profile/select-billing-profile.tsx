@@ -28,6 +28,8 @@ export function SelectBillingProfile({
     goTo({ to: TRequestPaymentsStacks.Views.SelectRewards });
   }
 
+  console.log("billingProfiles", billingProfiles);
+
   const { billingProfilesIcons } = UseBillingProfileIcons();
 
   const renderBillingProfiles = useMemo(() => {
@@ -66,6 +68,7 @@ export function SelectBillingProfile({
                   title={profile.name}
                   count={profile.invoiceableRewardCount}
                   icon={{ remixName: billingProfilesIcons[profile.type] }}
+                  role={profile.role}
                   disabled={profile.invoiceableRewardCount === 0}
                   onChange={onChange}
                   selected={profile.id === selectedBillingProfileId}

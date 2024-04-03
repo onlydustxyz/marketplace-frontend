@@ -10,12 +10,21 @@ import { Typography } from "components/layout/typography/typography";
 export function ReadonlyBillingProfile({ billingProfile }: TReadonlyBillingProfile.Props) {
   const { billingProfilesIcons } = UseBillingProfileIcons();
   const { name, invoiceableRewardCount, type } = billingProfile;
+
+  function getIconRemixName() {
+    if (billingProfile.me.role === "MEMBER") {
+      return "ri-team-line";
+    }
+
+    return billingProfilesIcons[type];
+  }
+
   return (
     <Card background={false} border="heavy" className="p-4">
       <Flex justifyContent="between" alignItems="center" className="gap-1">
         <Flex justifyContent="start" alignItems="center" className="gap-4">
           <Chip className="h-8 w-8">
-            <Icon remixName={billingProfilesIcons[type]} className="h-4 w-4" />
+            <Icon remixName={getIconRemixName()} className="h-4 w-4" />
           </Chip>
           <div>
             <Typography variant={"title-s"} className="mb-0.5 capitalize text-greyscale-50">
