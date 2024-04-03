@@ -13,6 +13,7 @@ export default function MaintenanceAnimation() {
           preserveAspectRatio: "xMidYMid slice",
         },
       }}
+      ariaRole="img"
     />
   );
 }
