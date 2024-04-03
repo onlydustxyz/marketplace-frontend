@@ -3,13 +3,15 @@
 import Countdown from "react-countdown";
 import { isInMaintenanceMode } from "utils/maintenance/maintenance";
 
+import { withMaintenanceEnabled } from "app/maintenance/features/guard/maintenance-guard";
+
 import MaintenanceAnimation from "src/assets/animations/Maintenance";
 
 import { Button } from "components/ds/button/button";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export default function MaintenancePage() {
+function MaintenancePage() {
   const { endsAt } = isInMaintenanceMode();
 
   return (
@@ -60,3 +62,5 @@ export default function MaintenancePage() {
     </div>
   );
 }
+
+export default withMaintenanceEnabled(MaintenancePage);
