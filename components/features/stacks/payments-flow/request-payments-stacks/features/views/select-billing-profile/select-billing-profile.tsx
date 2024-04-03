@@ -66,7 +66,7 @@ export function SelectBillingProfile({
                   title={profile.name}
                   count={profile.invoiceableRewardCount}
                   icon={{ remixName: profile.role === "MEMBER" ? "ri-team-line" : billingProfilesIcons[profile.type] }}
-                  disabled={profile.invoiceableRewardCount === 0}
+                  disabled={profile.invoiceableRewardCount === 0 || profile.role === "MEMBER"}
                   onChange={onChange}
                   selected={profile.id === selectedBillingProfileId}
                   value={profile.id}
