@@ -2,6 +2,8 @@
 
 import { useMemo } from "react";
 
+import { TSidebarBilling } from "app/settings/components/sidebar/sidebar-billing/sidebar-billing.types";
+
 import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
 import MeApi from "src/api/me";
 import { useIntl } from "src/hooks/useIntl";
@@ -12,6 +14,8 @@ import { TTable } from "components/ds/table/table.types";
 import { BillingProfileTag } from "components/features/billing-profiles/billing-profile-tag/billing-profile-tag";
 import { BillingProfilesSelector } from "components/features/billing-profiles/billing-profiles-selector/billing-profiles-selector";
 import { TBillingProfilesSelector } from "components/features/billing-profiles/billing-profiles-selector/billing-profiles-selector.types";
+import { TIcon } from "components/layout/icon/icon.types";
+import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 
@@ -20,11 +24,23 @@ export function PayoutPreferencesTable() {
   const { data } = MeApi.queries.useGetPayoutPreferences({});
   const { profiles } = useBillingProfiles();
 
+  function getIconRemixName(profile: TSidebarBilling.profile): TIcon.Props {
+    if (!profile.data.enabled) {
+      return { remixName: "ri-forbid-2-line" };
+    }
+
+    if (profile.data.role === "MEMBER") {
+      return { remixName: "ri-team-line" };
+    }
+
+    return profile.icon;
+  }
+
   const billingProfilesSelector: TBillingProfilesSelector.Data[] = useMemo(
     () =>
       profiles.map(profile => ({
         name: profile.data.name,
-        icon: profile.data.enabled ? profile.icon : { remixName: "ri-forbid-2-line" },
+        icon: getIconRemixName(profile),
         id: profile.data.id,
         enabled: profile.data.enabled,
         hasPendingInvitation: profile.data.pendingInvitationResponse || false,
@@ -53,10 +69,14 @@ export function PayoutPreferencesTable() {
     () =>
       (data || []).map(row => {
         const project = row.project;
+        const role = profiles.find(profile => profile.data.id === row.billingProfile?.id)?.data.role;
         const billing = row.billingProfile;
         const profile = billing
           ? {
-              icon: BillingProfileConstant.profileTypeMapping[billing.type].icon,
+              icon:
+                role === "MEMBER"
+                  ? { remixName: "ri-team-line" as RemixIconsName }
+                  : BillingProfileConstant.profileTypeMapping[billing.type].icon,
               name: billing.name,
               id: billing.id,
             }

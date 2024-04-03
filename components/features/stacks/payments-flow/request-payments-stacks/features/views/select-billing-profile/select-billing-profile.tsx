@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
 
@@ -10,6 +11,7 @@ import { SelectableBillingProfileLoading } from "components/features/stacks/paym
 import { UseBillingProfileIcons } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-billing-profile-icons/use-billing-profile-icons";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { Flex } from "components/layout/flex/flex";
+import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
@@ -29,6 +31,18 @@ export function SelectBillingProfile({
   }
 
   const { billingProfilesIcons } = UseBillingProfileIcons();
+
+  function getIconRemixName(profile: BillingProfilesTypes.BillingProfile): RemixIconsName {
+    if (!profile.enabled) {
+      return "ri-forbid-2-line";
+    }
+
+    if (profile.role === "MEMBER") {
+      return "ri-team-line";
+    }
+
+    return billingProfilesIcons[profile.type];
+  }
 
   const renderBillingProfiles = useMemo(() => {
     if (isLoading) {
@@ -65,7 +79,7 @@ export function SelectBillingProfile({
                   key={profile.id}
                   title={profile.name}
                   count={profile.invoiceableRewardCount}
-                  icon={{ remixName: profile.role === "MEMBER" ? "ri-team-line" : billingProfilesIcons[profile.type] }}
+                  icon={{ remixName: getIconRemixName(profile) }}
                   disabled={profile.invoiceableRewardCount === 0 || profile.role === "MEMBER"}
                   onChange={onChange}
                   selected={profile.id === selectedBillingProfileId}
