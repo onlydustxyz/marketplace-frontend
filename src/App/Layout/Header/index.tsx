@@ -1,5 +1,7 @@
 "use client";
 
+import { isInMaintenanceMode } from "utils/maintenance/maintenance";
+
 import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
 import { useIntl } from "src/hooks/useIntl";
@@ -30,8 +32,11 @@ export default function Header() {
     (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("v2.features.menu.projects") : undefined;
 
   const isMatchUserProfile = useMatchPath(NEXT_ROUTER.publicProfile.root(""), { exact: false });
+  const isMatchMaintenance = useMatchPath(NEXT_ROUTER.maintenance, { exact: false });
 
-  if (isMatchUserProfile) {
+  const { inMaintenance } = isInMaintenanceMode();
+
+  if (isMatchUserProfile || isMatchMaintenance || inMaintenance) {
     return null;
   }
 
