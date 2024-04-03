@@ -28,8 +28,6 @@ export function SelectBillingProfile({
     goTo({ to: TRequestPaymentsStacks.Views.SelectRewards });
   }
 
-  console.log("billingProfiles", billingProfiles);
-
   const { billingProfilesIcons } = UseBillingProfileIcons();
 
   const renderBillingProfiles = useMemo(() => {
