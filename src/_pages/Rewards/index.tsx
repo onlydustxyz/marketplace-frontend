@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext, useEffect, useMemo, useRef } from "react";
 import { useT } from "talkr";
 
@@ -15,13 +17,6 @@ import { Earning } from "./Earning/Earning";
 import { UserRewardsFilter, UserRewardsFilterRef } from "./Filter";
 import { UserRewardsContext } from "./context/UserRewards";
 import { UserRewardsProvider } from "./context/UserRewards.provider";
-
-export enum RewardStatus {
-  COMPLETE = "COMPLETE",
-  PENDING_INVOICE = "PENDING_INVOICE",
-  PENDING_SIGNUP = "PENDING_SIGNUP",
-  PROCESSING = "PROCESSING",
-}
 
 function SafeRewards() {
   const { T } = useT();

@@ -30,7 +30,7 @@ export function IconTag({
     );
   }
   return (
-    <Component data-testId={testId} id={id} className={cn(iconTagVariants({ ...props }), className)} onClick={onClick}>
+    <Component data-testid={testId} id={id} className={cn(iconTagVariants({ ...props }), className)} onClick={onClick}>
       <Icon {...icon} size={14} />
     </Component>
   );

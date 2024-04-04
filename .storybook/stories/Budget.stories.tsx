@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
+import { Money } from "utils/Money/Money";
 
 import { Budget } from "src/_pages/ProjectDetails/Rewards/Budget/Budget";
-import { Currency } from "src/types";
 
 export default {
   title: "Budget",
@@ -11,10 +11,10 @@ export default {
 const mockBudget = {
   remainingBudget: {
     amount: 10000,
-    currency: Currency.USD,
+    currency: Money.fromSchema({ code: Money.Static.Currency.USD }),
     usdEquivalent: 1000,
   },
-  spentAmount: { amount: 5000, currency: Currency.USD, usdEquivalent: 1000 },
+  spentAmount: { amount: 5000, currency: Money.fromSchema({ code: Money.Static.Currency.USD }), usdEquivalent: 1000 },
   sentRewards: {
     count: 10,
     total: 50,
@@ -24,32 +24,32 @@ const mockBudget = {
 
 const mockEthBudget = {
   ...mockBudget,
-  remainingBudget: { ...mockBudget.remainingBudget, currency: Currency.ETH },
-  spentAmount: { ...mockBudget.remainingBudget, currency: Currency.ETH },
+  remainingBudget: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.ETH }) },
+  spentAmount: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.ETH }) },
 };
 
 const mockOPBudget = {
   ...mockBudget,
-  remainingBudget: { ...mockBudget.remainingBudget, currency: Currency.OP },
-  spentAmount: { ...mockBudget.remainingBudget, currency: Currency.OP },
+  remainingBudget: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.OP }) },
+  spentAmount: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.OP }) },
 };
 
 const mockAPTBudget = {
   ...mockBudget,
-  remainingBudget: { ...mockBudget.remainingBudget, currency: Currency.APT },
-  spentAmount: { ...mockBudget.remainingBudget, currency: Currency.APT },
+  remainingBudget: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.APT }) },
+  spentAmount: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.APT }) },
 };
 
 const mockStarkBudget = {
   ...mockBudget,
-  remainingBudget: { ...mockBudget.remainingBudget, currency: Currency.STRK },
-  spentAmount: { ...mockBudget.remainingBudget, currency: Currency.STRK },
+  remainingBudget: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.STRK }) },
+  spentAmount: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.STRK }) },
 };
 
 const mockLordsBudget = {
   ...mockBudget,
-  remainingBudget: { ...mockBudget.remainingBudget, currency: Currency.LORDS },
-  spentAmount: { ...mockBudget.remainingBudget, currency: Currency.LORDS },
+  remainingBudget: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.LORDS }) },
+  spentAmount: { ...mockBudget.remainingBudget, currency: Money.fromSchema({ code: Money.Static.Currency.LORDS }) },
 };
 
 export const Default = {

@@ -1,4 +1,4 @@
-import { MeBillingConstants } from "src/api/me/billing/constant";
+import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
 
 import { TUseBillingStatus } from "./use-billing-status.types";
 
@@ -16,7 +16,7 @@ export const useBillingStatus = ({
     };
   }
 
-  const statusMapping = MeBillingConstants.statusMapping[status];
+  const statusMapping = BillingProfileConstant.statusMapping[status];
   const isWarning = statusMapping.type === "warning" && !hasValidBillingProfile;
   const isRainbow = statusMapping.type === "warning" && hasValidBillingProfile;
   const isError = statusMapping.type === "error";

@@ -1,19 +1,22 @@
+import dynamic from "next/dynamic";
 import { useMemo } from "react";
+import { Money } from "utils/Money/Money";
 
 import { UserProfile } from "src/api/Users/queries";
 import Card from "src/components/Card";
-import { AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
-import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 import ArrowRightLine from "src/icons/ArrowRightLine";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-import { formatMoneyAmount } from "src/utils/money";
 
-import ContributionGraph from "./ContributionGraph";
 import { Section } from "./Section";
 import StatCard from "./StatCard";
+
+const ContributionGraph = dynamic(() => import("./ContributionGraph"), {
+  loading: () => <div className="h-48 w-full animate-pulse rounded-lg bg-white/8" />,
+});
 
 type Props = {
   profile: UserProfile;
@@ -59,10 +62,13 @@ export default function StatsSection({ profile }: Props) {
           topLeftComponent={
             <AvailableConversion tooltipId={`${profile.githubUserId}-earned-details`} currencies={currenciesStats} />
           }
-          counter={formatMoneyAmount({
-            amount: stats?.totalsEarned?.totalAmount || 0,
-            notation: "compact",
-          })}
+          counter={
+            Money.format({
+              amount: stats?.totalsEarned?.totalAmount || 0,
+              currency: Money.USD,
+              options: { notation: "compact", currencyClassName: "text-2xl" },
+            }).html
+          }
         />
         <Card
           withBg={false}

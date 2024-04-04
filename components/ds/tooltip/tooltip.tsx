@@ -9,24 +9,30 @@ export function Tooltip({
   children,
   enabled = true,
   canInteract = false,
+  hasMaxWidth,
   ...props
 }: TTooltip.Props) {
   if (!enabled) {
-    return <Component>{children}</Component>;
+    return <Component className="flex">{children}</Component>;
   }
 
   return (
     <NextUiTooltip
       {...props}
-      showArrow={true}
+      showArrow
       closeDelay={50}
-      shouldCloseOnBlur={true}
+      shouldCloseOnBlur
       classNames={{
         base: cn("before:bg-greyscale-800", { "pointer-events-none": !canInteract }),
-        content: "px-3 py-2 bg-greyscale-800 od-text-body-s text-greyscale-50 rounded-lg shadow-md font-walsheim",
+        content: cn(
+          "px-3 py-2 bg-greyscale-800 od-text-body-s text-greyscale-50 rounded-lg shadow-md font-walsheim text-center",
+          {
+            "max-w-[192px]": hasMaxWidth,
+          }
+        ),
       }}
     >
-      <Component>{children}</Component>
+      <Component className="flex">{children}</Component>
     </NextUiTooltip>
   );
 }

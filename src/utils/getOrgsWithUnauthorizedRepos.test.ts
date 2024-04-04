@@ -26,25 +26,10 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
     {
       githubUserId: 31901905,
       login: "kaelsky",
-      htmlUrl: "https://github.com/kaelsky",
       avatarUrl: "https://avatars.githubusercontent.com/u/31901905?v=4",
     },
   ],
   ecosystems: [],
-  repos: [
-    {
-      id: 663102799,
-      owner: "onlydustxyz",
-      name: "od-rust-template",
-      description: undefined,
-      htmlUrl: "https://github.com/onlydustxyz/od-rust-template",
-      stars: 0,
-      forkCount: 0,
-      hasIssues: true,
-      isIncludedInProject: true,
-      isAuthorizedInGithubApp: true,
-    },
-  ],
   organizations: [
     {
       githubUserId: 98735558,
@@ -75,21 +60,18 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
     {
       githubUserId: 16590657,
       login: "PierreOucif",
-      htmlUrl: "https://github.com/PierreOucif",
       avatarUrl: "https://avatars.githubusercontent.com/u/16590657?v=4",
       id: "41b46107-9e4c-4e31-8acf-8371e4ca566a",
     },
     {
       githubUserId: 31901905,
       login: "kaelsky",
-      htmlUrl: "https://github.com/kaelsky",
       avatarUrl: "https://avatars.githubusercontent.com/u/31901905?v=4",
       id: "91422361-44aa-4286-9ed2-eb8b4c49d06d",
     },
     {
       githubUserId: 5160414,
       login: "haydencleary",
-      htmlUrl: "https://github.com/haydencleary",
       avatarUrl: "https://avatars.githubusercontent.com/u/5160414?v=4",
       id: "e90bf93b-baac-48d6-9189-54de46ea0d57",
     },

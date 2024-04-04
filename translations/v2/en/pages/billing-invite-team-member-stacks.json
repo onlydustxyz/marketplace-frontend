@@ -1,0 +1,39 @@
+{
+  "title": "Invite team member",
+  "buttons": {
+    "save": "Send invitation"
+  },
+  "messages": {
+    "success": "Invitation sent successfully"
+  },
+  "fields": {
+    "contributor": {
+      "title": "Contributor",
+      "search": {
+        "placeholder": "Pick a contributor or enter a Github handle"
+      }
+    },
+    "role": {
+      "title": "Role",
+      "options": {
+        "admin": {
+          "title": "Admin",
+          "description": "Can modify general information & invite team members."
+        },
+        "member": {
+          "title": "Member",
+          "description": "Can allocate their rewards to this billing profile."
+        }
+      }
+    }
+  },
+  "sections": {
+    "selected": "Selected",
+    "internal": "Internal",
+    "external": "External"
+  },
+  "invite": {
+    "success": "Invitation sent successfully",
+    "error": "We couldn't send the invitation. Please try again later."
+  }
+}

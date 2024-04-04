@@ -1,5 +1,6 @@
+import { useParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Money } from "utils/Money/Money";
 
 import ErrorFallback from "src/ErrorFallback";
 import Title from "src/_pages/ProjectDetails/Title";
@@ -14,7 +15,6 @@ import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
-import { Currency } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
@@ -28,10 +28,10 @@ import { FilterQueryParams, Filters, ProjectRewardsFilter, ProjectRewardsFilterR
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
   const filterRef = useRef<ProjectRewardsFilterRef>(null);
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
 
   const [filterQueryParams, setFilterQueryParams] = useState<FilterQueryParams>();
@@ -106,7 +106,11 @@ const RewardList: React.FC = () => {
 
   const getFilteredCurrencies = useMemo(() => {
     if (filterState.currency) {
-      return filterState.currency.map(({ value }) => value).filter(Boolean) as Currency[];
+      return filterState.currency
+        .map(({ value, label, image }) =>
+          Money.fromSchema({ id: value, name: label?.toString(), logoUrl: image || undefined })
+        )
+        .filter(Boolean) as Money.Currency[];
     }
 
     return undefined;
@@ -125,7 +129,7 @@ const RewardList: React.FC = () => {
         </Flex>
         {!hasOrgsWithUnauthorizedRepos && project ? (
           <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
-            <EditProjectButton projectKey={projectKey} />
+            <EditProjectButton projectKey={slug} />
             <RewardProjectButton project={project} />
           </Flex>
         ) : null}
@@ -134,7 +138,7 @@ const RewardList: React.FC = () => {
       {project && !project?.indexingComplete ? <StillFetchingBanner /> : null}
 
       {hasOrgsWithUnauthorizedRepos ? (
-        <MissingGithubAppInstallBanner slug={projectKey} orgs={orgsWithUnauthorizedRepos} />
+        <MissingGithubAppInstallBanner slug={slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
 
       {isRewardsLoading || isLoadingProject ? (

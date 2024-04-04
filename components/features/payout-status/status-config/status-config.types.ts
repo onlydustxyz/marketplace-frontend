@@ -12,7 +12,6 @@ export namespace TStatusConfig {
     status: TPayoutStatus.PaymentStatusUnion;
     dateRelativeToNow?: DateComparisonResult | undefined;
     date?: string | null;
-    isBillingError?: boolean;
   }
 
   export interface ReturnType {

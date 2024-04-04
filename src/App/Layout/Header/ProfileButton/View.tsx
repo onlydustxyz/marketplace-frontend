@@ -1,6 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
-import { NavLink } from "react-router-dom";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
@@ -9,6 +8,7 @@ import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
 
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
@@ -62,7 +62,7 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
             onMouseEnter={() => setTooltipVisible(true)}
             onMouseLeave={() => setTooltipVisible(false)}
             className={cn(
-              "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 outline-greyscale-50/12 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
+              "flex items-center justify-center gap-2 rounded-full p-1.5 font-belwe text-sm outline outline-1 outline-greyscale-50/12 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
               {
                 "outline-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
                 "outline-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
@@ -108,7 +108,7 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
           >
             {!hideProfileItems && (
               <div>
-                <NavLink to={redirection}>
+                <BaseLink href={redirection}>
                   <MenuItem isProfile>
                     {avatarUrl ? (
                       <img className="h-7 w-7 rounded-full" src={avatarUrl} loading="lazy" alt={login} />
@@ -131,7 +131,7 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
                       />
                     </Flex>
                   </MenuItem>
-                </NavLink>
+                </BaseLink>
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>

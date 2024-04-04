@@ -14,6 +14,6 @@ export namespace TSelectRewards {
     onExclude(id: string): void;
     goTo(props?: TRequestPaymentsStacks.onNextViewProps): void;
     onInclude(id: string): void;
-    isMandateAccepted: boolean;
+    billingProfileId: string;
   }
 }

@@ -1,5 +1,5 @@
 import { Disclosure, Transition } from "@headlessui/react";
-import { ComponentProps, FC, PropsWithChildren } from "react";
+import { ComponentProps, FC, PropsWithChildren, ReactElement } from "react";
 
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
@@ -20,9 +20,9 @@ export interface VerticalListItemDropProps extends PropsWithChildren {
   ChildrenContainerProps?: {
     className?: string;
   };
-  titleComponent?: React.ReactElement;
-  avatarComponent?: React.ReactElement;
-  actionComponent?: React.ReactElement;
+  titleComponent?: ReactElement;
+  avatarComponent?: ReactElement;
+  actionComponent?: ReactElement;
   title: string;
   avatarSrc: string;
   avatarAlt: string;

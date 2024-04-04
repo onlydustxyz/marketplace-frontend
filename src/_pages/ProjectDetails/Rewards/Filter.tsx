@@ -1,6 +1,6 @@
+import { useParams } from "next/navigation";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
-import { useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 import ProjectApi from "src/api/Project";
@@ -52,10 +52,10 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   },
   ref: React.Ref<ProjectRewardsFilterRef>
 ) {
-  const { projectKey = "" } = useParams<{ projectKey?: string }>();
+  const { slug = "" } = useParams<{ slug?: string }>();
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectKey },
+    params: { slug },
   });
 
   const { data: projectBudget } = ProjectApi.queries.useProjectBudget({
@@ -65,7 +65,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   const orderedCurrencies = useCurrenciesOrder({ currencies: projectBudget?.budgets });
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    `project-rewards-table-filters-${projectKey}-v2-0-0`,
+    `project-rewards-table-filters-${slug}-v3-0-0`,
     JSON.stringify(initialFilters)
   );
 
@@ -162,12 +162,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
     const updatedState = { ...prevState, ...newState };
 
-    const removeCurrenciesJsx = updatedState.currency?.map(c => ({
-      ...c,
-      label: "",
-    }));
-
-    setFiltersStorage(JSON.stringify({ ...updatedState, currency: removeCurrenciesJsx }));
+    setFiltersStorage(JSON.stringify({ ...updatedState }));
 
     return updatedState;
   }
@@ -249,9 +244,11 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
             selected={filters.currency ?? initialFilters.currency}
             onChange={updateCurrency}
             currencies={
-              orderedCurrencies?.map(currency => ({
-                id: currency.currency,
-                value: currency.currency,
+              orderedCurrencies?.map(({ currency }) => ({
+                id: currency.id,
+                value: currency.id,
+                label: currency.name,
+                image: currency.logoUrl,
               })) ?? []
             }
           />

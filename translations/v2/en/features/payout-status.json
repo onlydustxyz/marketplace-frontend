@@ -1,0 +1,54 @@
+{
+  "complete": {
+    "label": "Complete",
+    "tooltip": "Reward successful"
+  },
+  "processing": {
+    "label": "Processing",
+    "tooltip": "Reward is being processed by our team, usually within 2 weeks"
+  },
+  "locked": {
+    "label": "Locked",
+    "tooltip": "Locked until further notice"
+  },
+  "pendingRequest": {
+    "label": "Pending request",
+    "tooltip": "Please request a payment to process your rewards."
+  },
+  "signupPending": {
+    "label": "Signup invoice",
+    "tooltip": "You need to sign up on OnlyDust to get paid"
+  },
+  "payoutInfoMissing": {
+    "label": "Payment method missing",
+    "tooltip": "Fill in your payment method to get paid"
+  },
+  "pendingSignup": {
+    "label": "Pending signup",
+    "tooltip": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid"
+  },
+  "pendingVerification": {
+    "label": "Pending verification",
+    "tooltip": "You need to verify your information to get paid"
+  },
+  "pendingContributor": {
+    "label": "Pending contributor",
+    "tooltip": "Contributor needs to do an action to get paid"
+  },
+  "pendingCompany": {
+    "label": "Pending company",
+    "tooltip": "Company needs to do an action to get paid"
+  },
+  "paymentBlocked": {
+    "label": "Payment blocked",
+    "tooltip": "Your payment cannot be processed"
+  },
+  "pendingBillingProfile": {
+    "label": "Pending billing profile",
+    "tooltip": "You need to select a billing profile for this reward"
+  },
+  "processedOnDate": "Processed on __date__",
+  "lockedUntilFurther": "Locked until further notice",
+  "lockedUntilDate": "Locked until __date__",
+  "unlockedOnDate": "Unlocked on __date__"
+}

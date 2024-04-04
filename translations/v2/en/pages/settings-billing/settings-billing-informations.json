@@ -1,0 +1,107 @@
+{
+  "kyc": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "birthdate": "Birthdate",
+    "address": "Address",
+    "country": "Country",
+    "usCitizen": "US Citizen",
+    "identityDocumentType": "Identity document type",
+    "identityDocumentNumber": "Identity document number",
+    "validUntil": "Valid until"
+  },
+  "kyb": {
+    "companyName": "Company name",
+    "registrationNumber": "Registration number",
+    "registrationDate": "Registration date",
+    "address": "Address",
+    "country": "Country",
+    "usEntity": "US Entity",
+    "subjectToVatInEurope": "Subject to VAT in Europe",
+    "euVatNumber": "EU VAT NUMBER"
+  },
+  "buttons": {
+    "reValidate": "Restart verification",
+    "contact": "Contact us",
+    "resumeValidation": "Resume verification",
+    "startValidation": "Start verification",
+    "viewValidation": "See verification details",
+    "deleteBillingProfile": "Delete billing profile"
+  },
+  "manageBillingProfile": {
+    "button": "__actionType__ billing profile",
+    "title": "Are you sure?",
+    "confirm": "Yes, __actionType__ billing profile",
+    "cancel": "No, keep billing profile",
+    "disabledDescription": "This billing profile has been disabled, enable it to receive rewards",
+    "actionType": {
+      "delete": "Delete",
+      "disable": "Disable",
+      "enable": "Enable"
+    },
+    "confirmation": {
+      "delete": "You won’t be able to access this billing profile anymore.",
+      "disable": "You won’t be able to receive rewards on this billing profile. You’ll still be able to enable it later if needed.",
+      "enable": "You’ll be able to receive rewards on this billing profile."
+    },
+    "toaster": {
+      "delete": {
+        "success": "Billing profile deleted",
+        "error": "An error occurred while deleting the billing profile"
+      },
+      "disable": {
+        "success": "Billing profile disabled",
+        "error": "An error occurred while disabling the billing profile"
+      },
+      "enable": {
+        "success": "Billing profile enabled",
+        "error": "An error occurred while enabling the billing profile"
+      }
+    }
+  },
+  "leaveBillingProfile": {
+    "title": "Are you sure?",
+    "toaster": {
+      "success": "You left the billing profile successfully",
+      "error": "An error occurred while leaving the billing profile"
+    },
+    "confirmDescription": "You won’t be able to receive rewards on this billing profile anymore.",
+    "confirmButton": "Yes, leave",
+    "cancelButton": "No, stay",
+    "button": "Leave billing profile"
+  },
+  "status": {
+    "descriptions": {
+      "CLOSED": "Your profile got permanently rejected, please contact us if you believe it’s an error.",
+      "INVALIDATED": "Your identity document has expired, please share an updated version.",
+      "NOT_STARTED": "You need to verify your identity in order to receive rewards.",
+      "REJECTED": "Your verification got rejected.",
+      "STARTED": "You need to verify your identity in order to receive rewards.",
+      "UNDER_REVIEW": "We’re reviewing your account, please come back later.",
+      "VERIFIED": "To edit any of those information, please reach out to us."
+    }
+  },
+  "format": {
+    "boolean": {
+      "no": "No",
+      "yes": "Yes"
+    }
+  },
+  "invitation": {
+    "title": "You’ve been invited to the __name__ payout profile.",
+    "description": "Please only accept if you are a member of this company.",
+    "buttons": {
+      "accept": "Accept",
+      "decline": "Decline"
+    },
+    "alert": {
+      "accept": {
+        "success": "You joined __name__ successfully",
+        "error": "An error occurred while joining __name__"
+      },
+      "decline": {
+        "error": "An error occurred while declining the invitation to join __name__"
+      }
+    }
+  }
+}

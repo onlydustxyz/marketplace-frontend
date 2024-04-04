@@ -1,27 +1,27 @@
-import { useContext } from "react";
+import { ReactElement, useContext } from "react";
 
 import ErrorFallback from "src/ErrorFallback";
 import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 import Card from "src/components/Card";
 import Table from "src/components/Table";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 import Skeleton from "../../../components/Skeleton";
-import { ShowMore } from "../../../components/Table/ShowMore";
 import Headers from "./Headers";
 import RewardLine, { MyRewardType } from "./Line";
 
 type PropsType = {
   onRewardClick: (reward: MyRewardType) => void;
   selectedReward: MyRewardType | null;
-  emptyState?: React.ReactElement;
-  isBillingError?: boolean;
+  emptyState?: ReactElement;
+  showContributor?: boolean;
 };
 
 export default function DesktopUserRewardList({
   onRewardClick,
   selectedReward,
   emptyState,
-  isBillingError,
+  showContributor,
 }: PropsType) {
   const { query, dateSorting } = useContext(UserRewardsContext);
 
@@ -48,7 +48,7 @@ export default function DesktopUserRewardList({
       <div>
         <Table
           id="reward_table"
-          headers={<Headers sorting={sorting} sortField={sortField} />}
+          headers={<Headers sorting={sorting} sortField={sortField} showContributor={showContributor} />}
           emptyFallback={rewards.length === 0 ? emptyState : undefined}
         >
           {rewards.map(p => (
@@ -57,7 +57,7 @@ export default function DesktopUserRewardList({
               reward={p}
               onClick={() => onRewardClick(p)}
               selected={p?.id === selectedReward?.id}
-              isBillingError={isBillingError}
+              showContributor={showContributor}
             />
           ))}
         </Table>

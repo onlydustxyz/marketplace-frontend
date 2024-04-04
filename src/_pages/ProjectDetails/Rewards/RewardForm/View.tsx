@@ -1,7 +1,8 @@
+import { useRouter } from "next/navigation";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
+import { Money } from "utils/Money/Money";
 
 import ContributorSelect from "src/_pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 import {
@@ -24,7 +25,6 @@ import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
 import CloseLine from "src/icons/CloseLine";
 import { GithubContributionType, ProjectBudgetType } from "src/types";
-import { BudgetCurrencyType } from "src/utils/money";
 
 import { AutoAddOrIgnore } from "./AutoAdd/AutoAddOrIgnore";
 import { WorkItem } from "./WorkItem";
@@ -35,7 +35,7 @@ import useWorkItems from "./useWorkItems";
 interface Props {
   projectId: string;
   projectBudget: ProjectBudgetType;
-  preferredCurrency?: BudgetCurrencyType;
+  preferredCurrency?: Money.Currency;
   onWorkItemsChange: (workItems: RewardableWorkItem[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
@@ -79,7 +79,7 @@ const View: React.FC<Props> = ({
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
-  const navigate = useNavigate();
+  const router = useRouter();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
@@ -162,7 +162,7 @@ const View: React.FC<Props> = ({
       {isXl && (
         <Title>
           <div className="flex flex-row items-center gap-3">
-            <div onClick={() => navigate(-1)}>
+            <div onClick={() => router.back()}>
               <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
                 <CloseLine className="text-base" />
               </Button>

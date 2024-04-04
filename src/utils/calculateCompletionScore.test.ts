@@ -1,3 +1,4 @@
+import { Money } from "utils/Money/Money";
 import { describe, expect, it } from "vitest";
 
 import { AllocatedTime, ProfileCover } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
@@ -61,7 +62,7 @@ describe("calculateUserCompletionScore", () => {
         totalsEarned: {
           details: [
             {
-              currency: "APT" as const,
+              currency: Money.fromSchema({ code: "APT" }),
               totalAmount: 0,
               totalDollarsEquivalent: 0,
             },

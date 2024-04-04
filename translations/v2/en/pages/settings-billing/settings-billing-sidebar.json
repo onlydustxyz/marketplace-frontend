@@ -1,0 +1,14 @@
+{
+  "items": {
+    "profile": "Public profile",
+    "payoutPreferences": "Payout preferences",
+    "billing": {
+      "label": "Billing profiles",
+      "empty": {
+        "title": "No billing profiles yet.",
+        "content": "Create a billing profile to start receiving rewards."
+      },
+      "new": "New"
+    }
+  }
+}

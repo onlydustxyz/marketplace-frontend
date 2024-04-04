@@ -6,5 +6,7 @@ export namespace TContributor {
     isRegistered: boolean;
     clickable?: boolean;
     className?: string;
+    isYou?: boolean;
+    hasPendingInvite?: boolean;
   }
 }

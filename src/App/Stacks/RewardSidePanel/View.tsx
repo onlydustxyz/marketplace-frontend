@@ -1,12 +1,12 @@
 import { UseMutateFunction } from "@tanstack/react-query";
 import { PropsWithChildren, useMemo, useState } from "react";
-import { NavLink, matchPath, useLocation } from "react-router-dom";
+import { Money } from "utils/Money/Money";
 
 import { OtherContributionTooltip } from "src/App/Stacks/RewardSidePanel/OtherContributionTooltip";
 import { RewardTransactionDetails } from "src/App/Stacks/RewardSidePanel/TransactionDetails/RewardTransactionDetails";
 import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/Stacks";
-import { RoutePaths } from "src/App/index";
 import InfoIcon from "src/assets/icons/InfoIcon";
+import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -19,18 +19,19 @@ import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import { useCloseStack } from "src/libs/react-stack";
-import { Currency, GithubContributionType, PaymentStatus } from "src/types";
+import { GithubContributionType, PaymentStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { rewardItemToContribution } from "src/utils/formatToContribution";
 import { pretty } from "src/utils/id";
-import { formatMoneyAmount } from "src/utils/money";
 
 import { Link } from "components/ds/link/link";
 import { Tooltip as NextUiTooltip } from "components/ds/tooltip/tooltip";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
 import { Translate } from "components/layout/translate/translate";
 
+import { NEXT_ROUTER } from "constants/router";
+
+import { useMatchPath } from "hooks/router/useMatchPath";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import MixedApi from "../../../api/Mixed";
@@ -49,7 +50,6 @@ export type Props = {
   onRewardCancel?: UseMutateFunction<unknown, Error, unknown, unknown>;
   projectId: string;
   isMine?: boolean;
-  isBillingError?: boolean;
   redirectionStatus?: string;
 };
 
@@ -59,16 +59,13 @@ export default function View({
   onRewardCancel,
   projectLeaderView,
   isMine,
-  isBillingError,
   redirectionStatus,
 }: Props) {
   const { T } = useIntl();
   const { githubUserId } = useCurrentUser();
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
-  const closeRewardPanel = useCloseStack();
-  const { pathname } = useLocation();
-  const isMyRewardsPage = !!matchPath(`${RoutePaths.Rewards}`, pathname);
+  const isMyRewardsPage = useMatchPath(NEXT_ROUTER.rewards.all);
 
   const {
     data,
@@ -90,32 +87,21 @@ export default function View({
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
-  const isCurrencyUSD = data?.currency === Currency.USD;
+  const isCurrencyUSD = Money.isFiat(data?.currency);
 
   const PayoutStatusMemo = useMemo(() => {
     if (!data) {
       return null;
     }
 
-    if (redirectionStatus && (data.status === "MISSING_PAYOUT_INFO" || data.status === "PENDING_VERIFICATION"))
-      return (
-        <NavLink to={redirectionStatus} onClick={() => closeRewardPanel()}>
-          <PayoutStatus
-            status={data.status}
-            dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
-            isBillingError={isBillingError}
-          />
-        </NavLink>
-      );
-
     return (
       <PayoutStatus
         status={data.status}
         dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
-        isBillingError={isBillingError}
+        billingProfileId={data?.billingProfileId}
       />
     );
-  }, [data, isBillingError, redirectionStatus]);
+  }, [data, redirectionStatus]);
 
   function renderRewardItems() {
     if (rewardItemsLoading) {
@@ -273,9 +259,9 @@ export default function View({
                 <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
                   <InfoIcon className="h-4 w-3" />
                   <span>
-                    {data.currency === Currency.USD
+                    {Money.isFiat(data.currency)
                       ? T("currencies.network.label_dollar")
-                      : T("currencies.network.label", { currency: T(`currencies.network.${data.currency}`) })}
+                      : T("currencies.network.label", { currency: T(`currencies.network.${data.currency.code}`) })}
                   </span>
                 </div>
               </div>
@@ -284,10 +270,13 @@ export default function View({
                   <div className="flex items-center gap-1">
                     <CurrencyIcons currency={data.currency} className="h-8 w-8" />
                     <span>
-                      {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
+                      {
+                        Money.format({ amount: data.amount, currency: data.currency, options: { showCurrency: false } })
+                          .string
+                      }
                     </span>
                   </div>
-                  <span className="text-3xl">{data.currency}</span>
+                  <span className="text-3xl">{data.currency.code}</span>
                 </div>
                 {!isCurrencyUSD && data.dollarsEquivalent ? (
                   <>
@@ -295,7 +284,13 @@ export default function View({
                       {T("reward.table.detailsPanel.usdEstimateTooltip")}
                     </Tooltip>
                     <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">
-                      ~{formatMoneyAmount({ amount: data.dollarsEquivalent })}
+                      {
+                        Money.format({
+                          amount: data.dollarsEquivalent,
+                          currency: Money.USD,
+                          options: { prefixAmountWithTilde: false },
+                        }).string
+                      }
                     </span>
                   </>
                 ) : null}
@@ -338,13 +333,15 @@ export default function View({
                 <Details>
                   <RoundedImage
                     alt={data.project.name || ""}
-                    src={data.project.logoUrl}
+                    src={data.project.logoUrl || IMAGES.logo.original}
                     size={ImageSize.Xxs}
                     rounding={Rounding.Circle}
                   />
                   <div className="flex flex-row items-center gap-1">
                     {T("reward.table.detailsPanel.on")}
-                    <Link onClick={() => openProjectOverview({ slug: data.project.slug })}>{data.project.name}</Link>
+                    <Link.Button onClick={() => openProjectOverview({ slug: data.project.slug })}>
+                      {data.project.name}
+                    </Link.Button>
                   </div>
                 </Details>
               ) : null}

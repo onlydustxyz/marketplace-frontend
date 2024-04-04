@@ -595,20 +595,6 @@ vi.mock("jwt-decode", () => ({
 }));
 ```
 
-### Mocking history
-
-The browser history can be mocked using our `MemoryRouterProviderFactory` utility wrapper as follows (this is a modified example from the `src/App/App.test.tsx` file:
-
-```tsx
-import App, { RoutePaths } from "src/App";
-
-render(<App />, {
-  wrapper: MemoryRouterProviderFactory({
-    route: `${RoutePaths.Projects}`,
-  }),
-});
-```
-
 ### Mocking GraphQL stuff
 
 GraphQL queries / mutations are often called in high-level components and can be mocked using the same wrapper:

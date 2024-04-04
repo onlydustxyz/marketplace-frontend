@@ -1,6 +1,6 @@
 import { debounce } from "lodash";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 
 import { Contributor } from "src/_pages/ProjectDetails/Rewards/RewardForm/types";
 import ProjectApi from "src/api/Project";
@@ -25,13 +25,14 @@ type Props = {
 };
 
 export default function ContributorSelect({ projectId, contributor, setContributor, sidePanelOpened }: Props) {
-  const location = useLocation();
+  const searchParams = useSearchParams();
 
-  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(
-    location.state?.recipientGithubLogin || null
-  );
+  const githubLogin = searchParams.get("u");
 
-  const [search, setSearch] = useState<string>(location.state?.recipientGithubLogin || "");
+  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(githubLogin || null);
+
+  const [search, setSearch] = useState<string>(githubLogin || "");
+
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
   const debounceSearch = useCallback(
@@ -88,7 +89,6 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       unpaidMergedPullsCount: completedUnpaidPullRequestCount,
       unpaidCompletedIssuesCount: completedUnpaidIssueCount,
       unpaidCompletedCodeReviewsCount: completedUnpaidCodeReviewCount,
-      htmlUrl: c.htmlUrl,
       isRegistered: c.isRegistered,
     };
   });
@@ -106,7 +106,6 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       login: c.login,
       avatarUrl: c.avatarUrl,
       unpaidCompletedContributions: 0,
-      htmlUrl: c.htmlUrl,
       isRegistered: c.isRegistered,
     }));
 

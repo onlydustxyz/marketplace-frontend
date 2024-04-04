@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
-import BillingProfilesApi from "src/api/billing-profiles";
+import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";

@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from "react";
+import { ReactElement, ReactNode, useContext, useMemo } from "react";
 
 import ErrorFallback from "src/ErrorFallback";
 import { components } from "src/__generated/api";
@@ -12,21 +12,26 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
+import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
+import { Icon } from "components/layout/icon/icon";
+
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { MyRewardType } from "./Line";
 
 export default function MobileUserRewardList({
   onRewardClick,
   emptyState,
-  isBillingError,
+  showContributor,
 }: {
   onRewardClick: (reward: MyRewardType) => void;
-  emptyState?: React.ReactElement;
-  isBillingError?: boolean;
+  emptyState?: ReactElement;
+  showContributor?: boolean;
 }) {
   const { T } = useIntl();
   const { query, rewards } = useContext(UserRewardsContext);
@@ -67,9 +72,11 @@ export default function MobileUserRewardList({
                     <PayoutStatus
                       status={reward?.status}
                       dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
-                      isBillingError={isBillingError}
+                      projectId={reward?.projectId}
                     />
                   }
+                  rewardedUser={reward?.rewardedUser}
+                  showContributor={showContributor}
                 />
               </button>
             ))}
@@ -95,6 +102,8 @@ export function MobileUserRewardItem({
   amount,
   date,
   payoutStatus,
+  rewardedUser,
+  showContributor,
 }: {
   image: ReactNode;
   title?: string | null;
@@ -103,8 +112,13 @@ export function MobileUserRewardItem({
   amount: components["schemas"]["RewardAmountResponse"];
   date: Date;
   payoutStatus: ReactNode;
+  rewardedUser: components["schemas"]["ContributorResponse"];
+  showContributor?: boolean;
 }) {
   const { T } = useIntl();
+  const { user } = useCurrentUser();
+
+  const isCurrentUser = useMemo(() => user?.githubUserId === rewardedUser?.githubUserId, [user, rewardedUser]);
 
   return (
     <Card className="flex flex-col gap-3 divide-y divide-greyscale-50/8" selectable>
@@ -128,8 +142,12 @@ export function MobileUserRewardItem({
         </div>
       </div>
 
-      <div className="flex gap-4 divide-x divide-greyscale-50/8 pt-3 font-walsheim text-sm">
-        <div className="flex w-1/2 flex-col items-start">
+      <div
+        className={cn("grid gap-y-3 pt-3 font-walsheim text-sm sm:grid-cols-2", {
+          "md:grid-cols-3": showContributor,
+        })}
+      >
+        <div className="flex flex-col items-start pr-4">
           <div className="flex items-center gap-1 font-semibold uppercase text-spaceBlue-200">
             <MoneyDollarCircleLine className="text-base font-medium" />
             {T("reward.table.amount")}
@@ -147,13 +165,25 @@ export function MobileUserRewardItem({
           </div>
         </div>
 
-        <div className="flex flex-col items-start pl-4 text-left">
+        <div className="flex flex-col items-start text-left sm:border-l sm:border-l-greyscale-50/8 sm:px-4">
           <div className="flex items-center gap-1 font-semibold uppercase text-spaceBlue-200">
             <TimeLine className="text-base font-medium" />
             {T("reward.table.date")}
           </div>
           {displayRelativeDate(date)}
         </div>
+
+        {showContributor ? (
+          <div className={"flex flex-col items-start sm:border-l-greyscale-50/8 md:border-l md:pl-4"}>
+            <div className="flex items-center gap-1 font-semibold uppercase text-spaceBlue-200">
+              <Icon remixName={"ri-user-3-line"} className="text-base font-medium" />
+              {T("reward.table.contributor")}
+            </div>
+            <Avatar.Labelled avatarProps={{ src: rewardedUser.avatarUrl }}>
+              {rewardedUser.login} {isCurrentUser ? `(${T("reward.table.you")})` : ""}
+            </Avatar.Labelled>
+          </div>
+        ) : null}
       </div>
     </Card>
   );

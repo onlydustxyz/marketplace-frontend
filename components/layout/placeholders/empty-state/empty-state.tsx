@@ -39,7 +39,7 @@ export function EmptyState({
         {title?.token ? (
           <Typography
             variant="title-l"
-            className="mb-1 font-belwe"
+            className="mb-1 font-belwe text-greyscale-50"
             translate={{ token: title?.token, params: title?.params }}
           />
         ) : null}

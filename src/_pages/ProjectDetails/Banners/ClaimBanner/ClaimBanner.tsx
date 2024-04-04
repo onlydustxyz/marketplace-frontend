@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef } from "react";
 
 import { ClaimUtils } from "src/App/Stacks/GithubWorkflow/ClaimSidePanel/claim.utils";
 import { useStackGithubWorkflowClaim } from "src/App/Stacks/Stacks";
@@ -7,33 +7,35 @@ import ProjectApi from "src/api/Project";
 import RainbowBanner from "src/components/New/Banners/RainbowBanner";
 import { useIntl } from "src/hooks/useIntl";
 
+import { useDeleteSearchParams } from "hooks/router/useDeleteSearchParams";
+
 import { ClaimButton } from "./components/ClaimButton";
 
 export default function ClaimBanner() {
   const { T } = useIntl();
-  const { projectKey = "" } = useParams<{ projectKey: string }>();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { data: project } = ProjectApi.queries.useGetProjectBySlug({ params: { slug: projectKey } });
-  const [openClaimPanel, close] = useStackGithubWorkflowClaim();
-
+  const { slug = "" } = useParams<{ slug: string }>();
+  const searchParams = useSearchParams();
+  const deleteSearchParams = useDeleteSearchParams();
+  const { data: project } = ProjectApi.queries.useGetProjectBySlug({ params: { slug } });
+  const [openClaimPanel] = useStackGithubWorkflowClaim();
+  const isPanelOpen = useRef(false);
   const canDisplay = useMemo(() => {
     return ClaimUtils.canDisplay({ project });
   }, [project]);
 
   const onBannerClick = () => {
     if (canDisplay) {
-      openClaimPanel({ projectSlug: projectKey });
+      openClaimPanel({ projectSlug: slug });
     }
   };
 
   useEffect(() => {
-    if (searchParams?.get("claim_callback") && projectKey) {
-      searchParams.delete("claim_callback");
-      close();
-      openClaimPanel({ projectSlug: projectKey });
-      setSearchParams(searchParams);
+    if (searchParams?.has("claim_callback") && slug && !isPanelOpen.current) {
+      deleteSearchParams("claim_callback");
+      openClaimPanel({ projectSlug: slug });
+      isPanelOpen.current = true;
     }
-  }, [searchParams, projectKey]);
+  }, [slug, isPanelOpen]);
 
   if (!canDisplay) {
     return null;

@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
 
-import { RoutePaths } from "src/App";
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
@@ -12,9 +10,12 @@ import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
 
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
 
@@ -66,7 +67,7 @@ export function ViewMobile({
       <button
         onClick={() => setPanelOpen(true)}
         className={cn(
-          "flex items-center justify-center gap-2 rounded-full border border-greyscale-50/12 px-2 py-1.5 font-walsheim text-sm",
+          "flex items-center justify-center gap-2 rounded-full border border-greyscale-50/12 p-1.5 font-walsheim text-sm",
           {
             "border-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
             "border-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
@@ -89,8 +90,8 @@ export function ViewMobile({
           {!hideProfileItems && (
             <>
               <div>
-                <NavLink
-                  to={redirection}
+                <BaseLink
+                  href={redirection}
                   onClick={() => setPanelOpen(false)}
                   className="flex w-full items-center gap-2 rounded-md px-3 py-4"
                 >
@@ -114,47 +115,41 @@ export function ViewMobile({
                       })}
                     />
                   </Flex>
-                </NavLink>
+                </BaseLink>
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>
 
               {githubUserId || hasRewards ? (
                 <div>
-                  <NavLink
-                    to={RoutePaths.Projects}
+                  <BaseLink
+                    href={NEXT_ROUTER.projects.all}
                     onClick={() => setPanelOpen(false)}
-                    className={({ isActive }) =>
-                      cn("flex items-center gap-3 rounded-md p-4", { "bg-white/8": isActive })
-                    }
+                    className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
                   >
                     <Icon remixName="ri-folder-3-line" size={20} />
                     {T("v2.features.menu.projects")}
-                  </NavLink>
+                  </BaseLink>
 
                   {githubUserId ? (
-                    <NavLink
-                      to={RoutePaths.Contributions}
+                    <BaseLink
+                      href={NEXT_ROUTER.contributions.all}
                       onClick={() => setPanelOpen(false)}
-                      className={({ isActive }) =>
-                        cn("flex items-center gap-3 rounded-md p-4", { "bg-white/8": isActive })
-                      }
+                      className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
                     >
                       <Icon remixName="ri-stack-line" size={20} />
                       {T("v2.features.menu.contributions")}
-                    </NavLink>
+                    </BaseLink>
                   ) : null}
 
-                  <NavLink
-                    to={RoutePaths.Rewards}
+                  <BaseLink
+                    href={NEXT_ROUTER.rewards.all}
                     onClick={() => setPanelOpen(false)}
-                    className={({ isActive }) =>
-                      cn("flex items-center gap-3 rounded-md p-4", { "bg-white/8": isActive })
-                    }
+                    className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
                   >
                     <Icon remixName="ri-exchange-dollar-line" size={20} />
                     {T("v2.features.menu.rewards")}
-                  </NavLink>
+                  </BaseLink>
 
                   <span className="my-1 block h-px bg-greyscale-50/8" />
                 </div>

@@ -1,10 +1,10 @@
+import { UseGetBillingProfileById } from "src/api/BillingProfiles/queries";
 import { MeBillingConstants } from "src/api/me/billing/constant";
-import { UseBillingProfileResponse } from "src/api/me/billing/queries";
 
 export namespace TUseBillingStatus {
   export interface Props {
     hasValidBillingProfile: boolean;
-    status?: UseBillingProfileResponse["status"];
+    status?: UseGetBillingProfileById["status"];
   }
 
   export interface Return {

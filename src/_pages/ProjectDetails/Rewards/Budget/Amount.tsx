@@ -1,34 +1,30 @@
-import { Currency, Money } from "src/types";
-import { formatMoneyAmount } from "src/utils/money";
+import { Money } from "utils/Money/Money";
+
+import { Money as TMoney } from "src/types";
 
 type Amount = {
-  budget?: Money;
+  budget?: TMoney;
 };
 
 export function Amount({ budget }: Amount) {
   if (!budget) return null;
 
   if (!budget.usdEquivalent && !!budget.amount) {
-    return (
-      <>
-        {formatMoneyAmount({
-          amount: budget.amount,
-          currency: budget.currency,
-          showCurrency: false,
-        })}
-        <span className="text-title-s">&nbsp;{budget.currency}</span>
-      </>
-    );
+    return Money.format({
+      amount: budget.amount,
+      currency: budget.currency,
+      options: {
+        currencyClassName: "text-title-s",
+      },
+    }).html;
   }
 
-  return (
-    <>
-      {`~${formatMoneyAmount({
-        amount: budget.usdEquivalent,
-        currency: Currency.USD,
-        showCurrency: false,
-      })}`}
-      <span className="text-title-s">&nbsp;{Currency.USD}</span>
-    </>
-  );
+  return Money.format({
+    amount: budget.usdEquivalent,
+    currency: Money.USD,
+    options: {
+      currencyClassName: "text-title-s",
+      prefixAmountWithTilde: true,
+    },
+  }).html;
 }

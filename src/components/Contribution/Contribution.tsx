@@ -64,9 +64,9 @@ export function Contribution({ contribution, isMobile = false, showExternal = fa
     >
       <div className={cn("flex items-center gap-2 font-walsheim", isMobile ? "w-full" : "min-w-0")}>
         <ContributionBadge contribution={contribution} showExternal={showExternal} />
-        <Link onClick={handleClick} className="truncate break-all text-left">
+        <Link.Button onClick={handleClick} className="truncate break-all text-left">
           {githubTitle}
-        </Link>
+        </Link.Button>
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
         {rewardIds?.length ? (
