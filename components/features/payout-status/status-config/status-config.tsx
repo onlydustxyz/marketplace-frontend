@@ -89,14 +89,6 @@ export function getStatusConfig({ status, dateRelativeToNow, date }: TStatusConf
       borderColor: "grey",
       iconClassName: "text-snow",
     }),
-    PAYMENT_BLOCKED: createStatusConfig({
-      icon: "ri-error-warning-line",
-      labelToken: "v2.features.payoutStatus.paymentBlocked.label",
-      tooltipToken: "v2.features.payoutStatus.paymentBlocked.tooltip",
-      tooltipParams: {},
-      borderColor: "red",
-      iconClassName: "text-red-500",
-    }),
     PENDING_BILLING_PROFILE: createStatusConfig({
       icon: "ri-error-warning-line",
       labelToken: "v2.features.payoutStatus.pendingBillingProfile.label",
@@ -112,6 +104,22 @@ export function getStatusConfig({ status, dateRelativeToNow, date }: TStatusConf
       tooltipParams: {},
       borderColor: "multi-color",
       iconClassName: "text-snow",
+    }),
+    GEO_BLOCKED: createStatusConfig({
+      icon: "ri-error-warning-line",
+      labelToken: "v2.features.payoutStatus.GEO_BLOCKED.label",
+      tooltipToken: "v2.features.payoutStatus.GEO_BLOCKED.tooltip",
+      tooltipParams: {},
+      borderColor: "red",
+      iconClassName: "text-red-500",
+    }),
+    INDIVIDUAL_LIMIT_REACHED: createStatusConfig({
+      icon: "ri-error-warning-line",
+      labelToken: "v2.features.payoutStatus.INDIVIDUAL_LIMIT_REACHED.label",
+      tooltipToken: "v2.features.payoutStatus.INDIVIDUAL_LIMIT_REACHED.tooltip",
+      tooltipParams: {},
+      borderColor: "red",
+      iconClassName: "text-red-500",
     }),
   };
 
