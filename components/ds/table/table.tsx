@@ -48,7 +48,7 @@ export function Table({
         {({ key, align, icon, children, ...restColumn }) => (
           <TableColumn {...TableColumnProps} key={key} {...(restColumn ?? {})}>
             <div
-              className={cn("inline-flex gap-1", {
+              className={cn("inline-flex w-full gap-1", {
                 "justify-start": align === "start",
                 "justify-center": align === "center",
                 "justify-end": align === "end",
