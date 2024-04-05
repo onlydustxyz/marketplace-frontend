@@ -39,13 +39,17 @@
     "label": "Pending company",
     "tooltip": "Company needs to do an action to get paid"
   },
-  "paymentBlocked": {
-    "label": "Payment blocked",
-    "tooltip": "Your payment cannot be processed"
-  },
   "pendingBillingProfile": {
     "label": "Pending billing profile",
     "tooltip": "You need to select a billing profile for this reward"
+  },
+  "GEO_BLOCKED": {
+    "label": "Payment blocked",
+    "tooltip": "This currency not allowed in your territory. Please change your billing profile or contact support."
+  },
+  "INDIVIDUAL_LIMIT_REACHED": {
+    "label": "Payment blocked",
+    "tooltip": "You've exceeded the $5000 limit for an individual. Please create a company or legal entity and add it as a new billing profile."
   },
   "processedOnDate": "Processed on __date__",
   "lockedUntilFurther": "Locked until further notice",
