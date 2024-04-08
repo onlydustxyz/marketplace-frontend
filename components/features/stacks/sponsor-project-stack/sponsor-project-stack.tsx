@@ -1,12 +1,13 @@
 import { Selection } from "@nextui-org/react";
 import { FormEvent, useMemo, useState } from "react";
+import { Money } from "utils/Money/Money";
 
 import { useIntl } from "src/hooks/useIntl";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
 import { Select } from "components/ds/form/select/select";
-import { AmountSelect } from "components/features/stacks/sponsor-project-stack/components/amount-select/amount-select";
+import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { Budget } from "components/features/stacks/sponsor-project-stack/components/budget/budget";
 import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { Translate } from "components/layout/translate/translate";
@@ -77,7 +78,48 @@ export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
             <Label htmlFor={"sponsor-project-amount"}>
               <Translate token="v2.pages.stacks.sponsorProject.amount.title" />
             </Label>
-            <AmountSelect />
+            <div className={"grid gap-5"}>
+              <AmountSelect
+                inputProps={{
+                  description: (
+                    <div className={"od-text-body-s flex items-center justify-between"}>
+                      {
+                        Money.format({
+                          amount: 123123,
+                          currency: Money.USD,
+                          options: {
+                            prefixAmountWithTilde: true,
+                          },
+                        }).html
+                      }
+                      <span>
+                        <Translate token="v2.pages.stacks.sponsorProject.amount.balance" />:{" "}
+                        {
+                          Money.format({
+                            amount: 123123,
+                            currency: Money.USD,
+                          }).string
+                        }
+                      </span>
+                    </div>
+                  ),
+                }}
+              />
+              <div className={"grid grid-cols-4 gap-3"}>
+                <Button variant={"secondary"} size={"s"} className={"w-full"}>
+                  25%
+                </Button>
+                <Button variant={"secondary"} size={"s"} className={"w-full"}>
+                  50%
+                </Button>
+                <Button variant={"secondary"} size={"s"} className={"w-full"}>
+                  75%
+                </Button>
+                <Button variant={"secondary"} size={"s"} className={"w-full"}>
+                  100%
+                </Button>
+              </div>
+            </div>
           </div>
           <div className={"grid gap-3 py-6"}>
             <Label>
