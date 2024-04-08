@@ -1,4 +1,5 @@
 import { Select, SelectItem } from "@nextui-org/react";
+import { ChangeEvent, useState } from "react";
 import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
@@ -8,33 +9,14 @@ import { useIntl } from "src/hooks/useIntl";
 import { Input } from "components/ds/form/input/input";
 import { TAmoutSelect } from "components/features/currency/amount-select/amount-select.types";
 
-const items = [
-  {
-    label: "Dollars (USD)",
-    value: "USD",
-  },
-  {
-    label: "Aptos (APT)",
-    value: "APT",
-  },
-  {
-    label: "Optimism (OP)",
-    value: "OP",
-  },
-  {
-    label: "Ether (ETH)",
-    value: "ETH",
-  },
-  {
-    label: "Stark (STRK)",
-    value: "STRK",
-  },
-] as const;
-
 // TODO handle blue style
-// TODO handle dynamic select items
-export function AmountSelect({ inputProps }: TAmoutSelect.Props) {
+export function AmountSelect({ inputProps, currencies }: TAmoutSelect.Props) {
   const { T } = useIntl();
+  const [selectedCurrencyCode, setSelectedCurrencyCode] = useState<Money.Static.Currency>(Money.Static.Currency.OP);
+
+  const handleSelectionChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCurrencyCode(e.target.value as Money.Static.Currency);
+  };
 
   return (
     <Input
@@ -43,35 +25,46 @@ export function AmountSelect({ inputProps }: TAmoutSelect.Props) {
       size={"lg"}
       radius={"lg"}
       endContent={
-        <div className="flex w-[260px] items-center">
+        <div className="flex w-fit items-center">
           <Select
             aria-label={T("v2.commons.currency")}
-            startContent={
-              <Chip solid className="h-5 w-5 flex-shrink-0">
-                <CurrencyIcons currency={Money.fromSchema({ code: "USD" })} className="h-5 w-5" />
-              </Chip>
-            }
-            defaultSelectedKeys={["OP"]}
+            defaultSelectedKeys={[selectedCurrencyCode]}
             classNames={{
-              trigger: "p-0 h-auto !bg-transparent shadow-none",
+              trigger: "p-0 h-auto !bg-transparent shadow-none flex flex-row items-center space-x-4",
               innerWrapper: "!pt-0",
-              popoverContent: "bg-greyscale-900 border border-card-border-light shadow-medium",
+              popoverContent: "bg-greyscale-900 border border-card-border-light shadow-medium w-fit",
+              selectorIcon: "relative right-0 left-0 !mx-2",
             }}
+            onChange={handleSelectionChange}
+            renderValue={items => {
+              return items.map(item => (
+                <div key={item.key} className="flex flex-row gap-2">
+                  <Chip solid className="h-5 w-5 flex-shrink-0">
+                    <CurrencyIcons
+                      currency={Money.fromSchema({ code: item.key as Money.Static.Currency })}
+                      className="h-5 w-5"
+                    />
+                  </Chip>
+                  <span>{item.key}</span>
+                </div>
+              ));
+            }}
+            popoverProps={{ placement: "right-start" }}
           >
-            {items.map(({ value, label }) => (
+            {currencies?.map(({ code, name }) => (
               <SelectItem
-                key={value}
-                value={value}
+                key={code}
+                value={code}
                 className={
                   "rounded-md p-2 data-[hover=true]:bg-card-background-medium data-[selectable=true]:focus:bg-card-background-medium"
                 }
                 startContent={
                   <Chip solid className="h-5 w-5">
-                    <CurrencyIcons currency={Money.fromSchema({ code: value })} className="h-5 w-5" />
+                    <CurrencyIcons currency={Money.fromSchema({ code })} className="h-5 w-5" />
                   </Chip>
                 }
               >
-                {label}
+                {`${name} (${code})`}
               </SelectItem>
             ))}
           </Select>
