@@ -13,7 +13,6 @@ import { TAmoutSelect } from "components/features/currency/amount-select/amount-
 export function AmountSelect({ inputProps, currencies }: TAmoutSelect.Props) {
   const { T } = useIntl();
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState<Money.Static.Currency>(Money.Static.Currency.OP);
-
   const handleSelectionChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedCurrencyCode(e.target.value as Money.Static.Currency);
   };
@@ -47,14 +46,14 @@ export function AmountSelect({ inputProps, currencies }: TAmoutSelect.Props) {
                       className="h-5 w-5"
                     />
                   </Chip>
-                  <label className="align-middle">{item.key}</label>
+                  <label>{item.key}</label>
                 </div>
               ));
             }}
             popoverProps={{ placement: "right-start" }}
             isDisabled={inputProps?.disabled || !currencies?.length}
           >
-            {currencies?.map(({ code, name }) => (
+            {currencies?.map(({ currency: { code, name } }) => (
               <SelectItem
                 key={code}
                 value={code}
