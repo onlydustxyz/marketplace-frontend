@@ -8,12 +8,12 @@ import { Icon } from "components/layout/icon/icon";
 
 import { TInput } from "./input.types";
 
-export function Input(props: TInput.Props) {
+export function Input({ className, radius, ...props }: TInput.Props) {
   return (
     <NextInput
       {...props}
-      radius={props.radius ?? "sm"}
-      className="h-fit flex-col items-start gap-2"
+      radius={radius ?? "sm"}
+      className={cn("h-fit flex-col items-start gap-2", className)}
       classNames={{
         mainWrapper: "w-full",
         inputWrapper: cn(
