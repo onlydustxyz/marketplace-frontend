@@ -22,8 +22,10 @@ export function AmountSelect({ inputProps, currencies }: TAmoutSelect.Props) {
     <Input
       type="number"
       placeholder="0.00"
-      size={"lg"}
-      radius={"lg"}
+      size="lg"
+      radius="full"
+      className="h-11"
+      disabled={inputProps?.disabled || !currencies?.length}
       endContent={
         <div className="flex w-fit items-center">
           <Select
@@ -33,23 +35,24 @@ export function AmountSelect({ inputProps, currencies }: TAmoutSelect.Props) {
               trigger: "p-0 h-auto !bg-transparent shadow-none flex flex-row items-center space-x-4",
               innerWrapper: "!pt-0",
               popoverContent: "bg-greyscale-900 border border-card-border-light shadow-medium w-fit",
-              selectorIcon: "relative right-0 left-0 !mx-2",
+              selectorIcon: "relative right-0 left-0 !ml-2",
             }}
             onChange={handleSelectionChange}
             renderValue={items => {
               return items.map(item => (
-                <div key={item.key} className="flex flex-row gap-2">
+                <div key={item.key} className="flex flex-row items-center gap-2">
                   <Chip solid className="h-5 w-5 flex-shrink-0">
                     <CurrencyIcons
                       currency={Money.fromSchema({ code: item.key as Money.Static.Currency })}
                       className="h-5 w-5"
                     />
                   </Chip>
-                  <span>{item.key}</span>
+                  <label className="align-middle">{item.key}</label>
                 </div>
               ));
             }}
             popoverProps={{ placement: "right-start" }}
+            isDisabled={inputProps?.disabled || !currencies?.length}
           >
             {currencies?.map(({ code, name }) => (
               <SelectItem
