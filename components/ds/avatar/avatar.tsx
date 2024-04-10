@@ -111,7 +111,7 @@ Avatar.Labelled = function AvatarLabelled({
           className={cn(
             "od-text-body-s truncate text-greyscale-50",
             {
-              truncate: truncate,
+              truncate,
             },
             labelClassName
           )}
