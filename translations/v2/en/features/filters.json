@@ -25,5 +25,10 @@
     "empty": "No transactions found",
     "one": "__count__ transaction",
     "many": "__count__ transactions"
+  },
+  "projects": {
+    "selected": "Selected projects",
+    "projects": "Projects",
+    "placeholder": "Search for projects"
   }
 }

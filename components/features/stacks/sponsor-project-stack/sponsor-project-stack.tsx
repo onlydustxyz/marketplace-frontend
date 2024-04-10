@@ -1,13 +1,11 @@
-import { Selection } from "@nextui-org/react";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Money } from "utils/Money/Money";
 
-import { useIntl } from "src/hooks/useIntl";
+import { ProjectPageItemResponse } from "src/types";
 
-import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
-import { Select } from "components/ds/form/select/select";
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
+import { SearchProjects } from "components/features/search-projects/search-projects";
 import { Budget } from "components/features/stacks/sponsor-project-stack/components/budget/budget";
 import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { Translate } from "components/layout/translate/translate";
@@ -16,28 +14,19 @@ import { Typography } from "components/layout/typography/typography";
 import { Label } from "./components/label/label";
 
 export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
-  const { T } = useIntl();
-
-  // TODO @hayden get available projects
-  const projects = useMemo(
-    () => [
-      { label: "Bretzel", value: "123", startContent: <Avatar src={""} shape={"square"} size={"s"} /> },
-      { label: "Madara", value: "456", startContent: <Avatar src={""} shape={"square"} size={"s"} /> },
-    ],
-    []
+  const [selectedProjectId, setSelectedProjectId] = useState<ProjectPageItemResponse["id"] | undefined>(
+    projectId ? projectId : undefined
   );
 
-  const [selectedProjectId, setSelectedProjectId] = useState<Exclude<Selection, "all">>(
-    new Set(projectId ? [projectId] : [])
-  );
+  console.log({ selectedProjectId });
 
-  // TODO @hayden get available balance & budget
-
-  function handleChange(value: Selection) {
-    if (value !== "all") {
-      setSelectedProjectId(value);
+  function handleProjectChange(projects: ProjectPageItemResponse[]) {
+    if (projects[0]?.id) {
+      setSelectedProjectId(projects[0].id);
     }
   }
+
+  // TODO @hayden get available balance & budget
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,10 +34,6 @@ export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
     // TODO @hayden form validation
 
     alert("Submit");
-  }
-
-  function renderSelectedProjectAvatar() {
-    return projects.find(({ value }) => selectedProjectId.has(value))?.startContent ?? null;
   }
 
   return (
@@ -63,17 +48,9 @@ export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
             <Label htmlFor={"sponsor-project-project"}>
               <Translate token="v2.pages.stacks.sponsorProject.project.title" />
             </Label>
-            <Select
-              aria-label={T("v2.pages.stacks.sponsorProject.project.title")}
-              id={"sponsor-project-project"}
-              items={projects}
-              placeholder={T("v2.pages.stacks.sponsorProject.project.placeholder")}
-              size={"sm"}
-              startContent={renderSelectedProjectAvatar()}
-              selectedKeys={selectedProjectId}
-              onSelectionChange={handleChange}
-            />
+            <SearchProjects onSelectProjects={handleProjectChange} size={"lg"} />
           </div>
+
           <div className={"grid gap-3 py-6"}>
             <Label htmlFor={"sponsor-project-amount"}>
               <Translate token="v2.pages.stacks.sponsorProject.amount.title" />
