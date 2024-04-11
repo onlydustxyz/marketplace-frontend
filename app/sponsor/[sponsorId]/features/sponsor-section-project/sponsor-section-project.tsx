@@ -1,5 +1,5 @@
-import { SponsorProjectCard } from "app/sponsor/components/sponsor-project-card/sponsor-project-card";
-import { SponsorSidePanels } from "app/sponsor/components/sponsor-side-panels/sponsor-side-panels";
+import { SponsorProjectCard } from "app/sponsor/[sponsorId]/components/sponsor-project-card/sponsor-project-card";
+import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
 
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";

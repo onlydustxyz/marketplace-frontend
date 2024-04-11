@@ -1,4 +1,4 @@
-import { TSponsorHistoryTransaction } from "app/sponsor/components/sponsor-history-transaction/sponsor-history-transaction.types";
+import { TSponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction.types";
 
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";

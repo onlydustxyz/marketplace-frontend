@@ -1,6 +1,6 @@
 import { Image } from "@nextui-org/react";
 
-import { SponsorSidePanels } from "app/sponsor/components/sponsor-side-panels/sponsor-side-panels";
+import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
 
 import { Card } from "components/ds/card/card";
 import { Translate } from "components/layout/translate/translate";

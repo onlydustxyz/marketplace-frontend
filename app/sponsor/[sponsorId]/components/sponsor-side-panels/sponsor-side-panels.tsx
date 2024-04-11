@@ -1,7 +1,7 @@
 import { FilloutStandardEmbed } from "@fillout/react";
 import { useState } from "react";
 
-import { TSponsorSidePanels } from "app/sponsor/components/sponsor-side-panels/sponsor-side-panels.types";
+import { TSponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels.types";
 
 import { useStackSponsorProject } from "src/App/Stacks/Stacks";
 import SidePanel from "src/components/SidePanel";

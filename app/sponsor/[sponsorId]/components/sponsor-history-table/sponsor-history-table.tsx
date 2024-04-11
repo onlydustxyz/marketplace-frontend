@@ -5,7 +5,7 @@ import { DateRange } from "react-day-picker";
 import { useLocalStorage } from "react-use";
 import { Money } from "utils/Money/Money";
 
-import { SponsorHistoryTransaction } from "app/sponsor/components/sponsor-history-transaction/sponsor-history-transaction";
+import { SponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";

@@ -1,6 +1,6 @@
 import { Money } from "utils/Money/Money";
 
-import { SponsorHistoryTransaction } from "app/sponsor/components/sponsor-history-transaction/sponsor-history-transaction";
+import { SponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";

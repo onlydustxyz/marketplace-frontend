@@ -1,6 +1,6 @@
 import { Money } from "utils/Money/Money";
 
-import { SponsorSidePanels } from "app/sponsor/components/sponsor-side-panels/sponsor-side-panels";
+import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";

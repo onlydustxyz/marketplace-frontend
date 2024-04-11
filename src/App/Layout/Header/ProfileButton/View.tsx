@@ -55,7 +55,7 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
-  const { isAllowed: isAllowedSponsor } = useSponsorGuard();
+  const { isAllowed: isAllowedSponsor, sponsors } = useSponsorGuard();
 
   return (
     <div className="relative">
@@ -138,7 +138,7 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
                 </BaseLink>
 
                 {isAllowedSponsor ? (
-                  <BaseLink href={NEXT_ROUTER.sponsor.all}>
+                  <BaseLink href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}>
                     <MenuItem>
                       <Icon remixName="ri-service-line" size={20} />
                       <div className="grow">{T("v2.features.menu.sponsoring")}</div>

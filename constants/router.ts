@@ -21,7 +21,9 @@ export const NEXT_ROUTER = {
     all: "/rewards",
   },
   sponsor: {
-    all: "/sponsor",
+    details: {
+      root: (sponsorId: string) => `/sponsor/${sponsorId}`,
+    },
   },
   settings: {
     all: "/settings",

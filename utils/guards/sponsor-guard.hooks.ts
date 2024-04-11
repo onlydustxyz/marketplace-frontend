@@ -5,7 +5,8 @@ import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 export function useSponsorGuard() {
   const { user, ...rest } = useCurrentUser();
 
-  const isAllowed = useMemo(() => Boolean(user?.sponsors?.length) ?? false, [user]);
+  const sponsors = useMemo(() => user?.sponsors ?? [], [user]);
+  const isAllowed = useMemo(() => Boolean(sponsors.length) ?? false, [sponsors]);
 
-  return { isAllowed, ...rest };
+  return { isAllowed, sponsors, ...rest };
 }

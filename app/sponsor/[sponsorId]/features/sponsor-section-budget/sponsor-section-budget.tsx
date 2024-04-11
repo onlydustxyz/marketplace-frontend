@@ -1,5 +1,5 @@
-import { SponsorBudgetCard } from "app/sponsor/components/sponsor-budget-card/sponsor-budget-card";
-import { SponsorDepositCard } from "app/sponsor/components/sponsor-deposit-card/sponsor-deposit-card";
+import { SponsorBudgetCard } from "app/sponsor/[sponsorId]/components/sponsor-budget-card/sponsor-budget-card";
+import { SponsorDepositCard } from "app/sponsor/[sponsorId]/components/sponsor-deposit-card/sponsor-deposit-card";
 
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";

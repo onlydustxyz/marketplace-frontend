@@ -44,7 +44,7 @@ export function ViewMobile({
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
-  const { isAllowed: isAllowedSponsor } = useSponsorGuard();
+  const { isAllowed: isAllowedSponsor, sponsors } = useSponsorGuard();
 
   const { queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -121,7 +121,7 @@ export function ViewMobile({
 
                 {isAllowedSponsor ? (
                   <BaseLink
-                    href={NEXT_ROUTER.sponsor.all}
+                    href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}
                     onClick={() => setPanelOpen(false)}
                     className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
                   >
