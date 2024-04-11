@@ -12,6 +12,7 @@ import { SponsorSectionHistory } from "./features/sponsor-section-history/sponso
 import { SponsorSectionProject } from "./features/sponsor-section-project/sponsor-section-project";
 
 function SponsorPage() {
+  // TODO @hayden handle data error
   return (
     <div className={"scrollbar-sm h-full w-full overflow-y-auto"}>
       <div className={"mx-auto grid max-w-7xl gap-6 px-4 py-8 xl:p-8"}>

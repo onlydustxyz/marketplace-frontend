@@ -9,6 +9,19 @@ import { Typography } from "components/layout/typography/typography";
 export function SponsorDepositCard() {
   return (
     <Card background={"base"}>
+      <div className={"flex items-center justify-between sm:hidden"}>
+        <SponsorSidePanels
+          panel={"fillout"}
+          buttonProps={{
+            variant: "secondary",
+            size: "xs",
+            children: <Translate token="v2.pages.sponsor.deposit.makeDeposit" />,
+          }}
+        />
+
+        <Image src={"/images/payment-96.png"} alt={""} width={28} height={28} loading={"lazy"} disableSkeleton />
+      </div>
+
       <div className={"hidden justify-center gap-5 sm:grid"}>
         <div className={"grid justify-items-center gap-2"}>
           <Image src={"/images/payment-96.png"} alt={""} width={40} height={40} loading={"lazy"} disableSkeleton />
