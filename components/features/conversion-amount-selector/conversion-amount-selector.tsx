@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
@@ -11,12 +11,67 @@ import { TConversionAmountSelector } from "components/features/conversion-amount
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 
 export function ConversionAmountSelector({ budgets, value, onChange }: TConversionAmountSelector.Props) {
-  const [amountValue, setAmountValue] = useState("");
-  function handleQuery(value: string) {
-    setAmountValue(value);
+  const [usdAmountValue, setUsdAmountValue] = useState("");
+  const [currencyValue, setCurrencyValue] = useState<TConversionAmountSelector.CurrencyAmount>({
+    amount: "",
+    currencyCode: Money.Static.Currency.OP,
+  });
+
+  const [isUsdAmountOnFocus, setIsUsdAmountOnFocus] = useState(false);
+  function handleUsdAmount(value: string) {
+    setUsdAmountValue(value);
+    if (parseFloat(value) === 0) {
+      setCurrencyValue({ amount: "", currencyCode: currencyValue.currencyCode });
+    }
+    if (isUsdAmountOnFocus && selectedCurrencyBudget?.dollarsConversionRate) {
+      const convertedCurrencyValue = parseFloat(usdAmountValue) / selectedCurrencyBudget.dollarsConversionRate;
+      setCurrencyValue({
+        amount: Money.format({
+          amount: convertedCurrencyValue,
+          currency: selectedCurrencyBudget.currency,
+          options: { showCurrency: false },
+        }).string,
+        currencyCode: currencyValue.currencyCode,
+      });
+    }
+  }
+
+  function handleCurrencyValue(amount: string, currencyCode: Money.Static.Currency) {
+    if (parseFloat(amount) === 0) {
+      setUsdAmountValue("");
+    }
+    setCurrencyValue({ amount, currencyCode });
   }
 
   const orderedCurrencies = useCurrenciesOrder({ currencies: budgets });
+
+  const selectedCurrencyBudget = useMemo(
+    () => budgets.find(budget => budget.currency.code === currencyValue.currencyCode),
+    [currencyValue.currencyCode]
+  );
+
+  useEffect(() => {
+    if (currencyValue.amount && !isUsdAmountOnFocus && selectedCurrencyBudget?.dollarsConversionRate) {
+      const convertedDollarValue = selectedCurrencyBudget.dollarsConversionRate * parseFloat(currencyValue.amount);
+      setUsdAmountValue(
+        Money.format({ amount: convertedDollarValue, currency: Money.USD, options: { showCurrency: false } }).string
+      );
+    }
+  }, [currencyValue.amount]);
+
+  useEffect(() => {
+    if (usdAmountValue && !isUsdAmountOnFocus && selectedCurrencyBudget?.dollarsConversionRate) {
+      const convertedCurrencyValue = parseFloat(usdAmountValue) / selectedCurrencyBudget.dollarsConversionRate;
+      setCurrencyValue({
+        amount: Money.format({
+          amount: convertedCurrencyValue,
+          currency: selectedCurrencyBudget.currency,
+          options: { showCurrency: false },
+        }).string,
+        currencyCode: currencyValue.currencyCode,
+      });
+    }
+  }, [currencyValue.currencyCode]);
 
   return (
     <div className="flex flex-col">
@@ -29,19 +84,21 @@ export function ConversionAmountSelector({ budgets, value, onChange }: TConversi
             <label className="od-text-body-s">{Money.USD.code}</label>
           </div>
         }
-        onChange={e => handleQuery(e.target.value)}
+        onChange={e => handleUsdAmount(e.target.value)}
         type="number"
         placeholder="0.00"
         size="lg"
         radius="full"
         className="h-11"
-        value={amountValue}
+        value={usdAmountValue}
+        onFocus={() => setIsUsdAmountOnFocus(true)}
+        onBlur={() => setIsUsdAmountOnFocus(false)}
       />
       <IconTag
         icon={{ remixName: "ri-arrow-down-line" }}
         className="relative z-10 m-auto -my-2 bg-whiteFakeOpacity-2 text-spaceBlue-400"
       />
-      <AmountSelect currencies={orderedCurrencies} />
+      <AmountSelect currencies={orderedCurrencies} value={currencyValue} onChange={handleCurrencyValue} />
     </div>
   );
 }

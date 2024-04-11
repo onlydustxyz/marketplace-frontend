@@ -7,14 +7,24 @@ import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Input } from "components/ds/form/input/input";
-import { TAmoutSelect } from "components/features/currency/amount-select/amount-select.types";
+import { TAmountSelect } from "components/features/currency/amount-select/amount-select.types";
 
 // TODO handle blue style
-export function AmountSelect({ inputProps, currencies }: TAmoutSelect.Props) {
+export function AmountSelect({ inputProps, currencies, value, onChange }: TAmountSelect.Props) {
   const { T } = useIntl();
-  const [selectedCurrencyCode, setSelectedCurrencyCode] = useState<Money.Static.Currency>(Money.Static.Currency.OP);
+  const [currentValue] = useState<{
+    amount: string;
+    currencyCode: Money.Static.Currency;
+  }>({ amount: value?.amount || "", currencyCode: value?.currencyCode || Money.Static.Currency.OP });
+
   const handleSelectionChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCurrencyCode(e.target.value as Money.Static.Currency);
+    if (e.target.value) {
+      onChange?.(currentValue.amount, e.target.value as Money.Static.Currency);
+    }
+  };
+
+  const handleAmountChange = (value: string) => {
+    onChange?.(value, currentValue.currencyCode);
   };
 
   return (
@@ -25,11 +35,14 @@ export function AmountSelect({ inputProps, currencies }: TAmoutSelect.Props) {
       radius="full"
       className="h-11"
       disabled={inputProps?.disabled || !currencies?.length}
+      value={value.amount}
+      onChange={e => handleAmountChange(e.target.value)}
       endContent={
         <div className="flex w-fit items-center">
           <Select
             aria-label={T("v2.commons.currency")}
-            defaultSelectedKeys={[selectedCurrencyCode]}
+            defaultSelectedKeys={[currentValue.currencyCode]}
+            selectedKeys={[value?.currencyCode]}
             classNames={{
               trigger: "p-0 h-auto !bg-transparent shadow-none flex flex-row items-center space-x-4",
               innerWrapper: "!pt-0",
@@ -50,7 +63,7 @@ export function AmountSelect({ inputProps, currencies }: TAmoutSelect.Props) {
                 </div>
               ));
             }}
-            popoverProps={{ placement: "right-start" }}
+            // popoverProps={{ placement: "right-start" }}
             isDisabled={inputProps?.disabled || !currencies?.length}
           >
             {currencies?.map(({ currency: { code, name } }) => (

@@ -4,7 +4,6 @@ import { Money } from "utils/Money/Money";
 import Button, { ButtonOnBackground } from "src/components/Button";
 import { Width } from "src/components/Button";
 import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
-import { FieldInput } from "src/components/New/Field/Input";
 import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
@@ -16,7 +15,6 @@ import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
 import RewardBudgetDetails from "./Details/RewardBudgetDetails";
 import { RewardBudgetProps, WorkEstimationBudgetDetails } from "./RewardBudget.type";
 import { RewardBudgetUtils } from "./RewardBudget.utils";
-import { RewardBudgetSelect } from "./RewardBudgetSelect/RewardBudgetSelect";
 
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
@@ -80,21 +78,21 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           <div>
             <ConversionAmountSelector {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
           </div>
-          <div className="z-10 flex flex-1 flex-row items-stretch justify-between gap-4">
-            <RewardBudgetSelect {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
-            <FieldInput
-              min="0"
-              step="0.000001"
-              placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency.code}`)}
-              name="budget-amount-input"
-              type="number"
-              value={amount === null ? "" : amount}
-              fieldClassName="flex-1 max-w-[96px] min-w-[96px]"
-              className="h-full flex-1 rounded-2xl"
-              onChange={onChangeAmount}
-              inputClassName="font-medium text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-            />
-          </div>
+          {/*<div className="z-10 flex flex-1 flex-row items-stretch justify-between gap-4">*/}
+          {/*  <RewardBudgetSelect {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />*/}
+          {/*  <FieldInput*/}
+          {/*    min="0"*/}
+          {/*    step="0.000001"*/}
+          {/*    placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency.code}`)}*/}
+          {/*    name="budget-amount-input"*/}
+          {/*    type="number"*/}
+          {/*    value={amount === null ? "" : amount}*/}
+          {/*    fieldClassName="flex-1 max-w-[96px] min-w-[96px]"*/}
+          {/*    className="h-full flex-1 rounded-2xl"*/}
+          {/*    onChange={onChangeAmount}*/}
+          {/*    inputClassName="font-medium text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"*/}
+          {/*  />*/}
+          {/*</div>*/}
           <FieldInfoMessage
             icon={({ className }) => <InformationLine className={className} />}
             className={cn({
