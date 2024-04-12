@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
-import { TCurrencyConverter } from "components/features/currency-converter/currency-converter.types";
-import { TUseCurrencyConverter } from "components/features/currency-converter/hooks/use-currency-converter.types";
+import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
+import { TUseCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter.types";
 
 export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
   const [usdValue, setUsdValue] = useState<string>("");
@@ -15,7 +15,7 @@ export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
   const [isCurrencyFieldOnFocus, setIsCurrencyFieldOnFocus] = useState<boolean>(false);
 
   const selectedCurrencyBudget = useMemo(
-    () => budgets?.find(budget => budget.currency.code === currencyValue.currency.code) || null,
+    () => budgets?.find(budget => budget.currency.code === currencyValue.currency.code),
     [currencyValue.currency]
   );
   function convertValues(value: string, isUSD: boolean) {
@@ -26,9 +26,11 @@ export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
 
     if (isUSD) {
       const convertedCurrencyValue = parseFloat(value) / conversionRate;
+      if (isNaN(convertedCurrencyValue)) return;
       setCurrencyValue(prev => ({ ...prev, amount: convertedCurrencyValue.toFixed(decimals) }));
     } else {
       const convertedUsdValue = parseFloat(value) * conversionRate;
+      if (isNaN(convertedUsdValue)) return;
       setUsdValue(convertedUsdValue.toFixed(2));
     }
   }

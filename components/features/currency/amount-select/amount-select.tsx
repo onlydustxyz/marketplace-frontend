@@ -33,14 +33,14 @@ export function AmountSelect({ inputProps, budgets, value, onChange, onFocus }: 
 
   return (
     <Input
-      type="number"
+      type="text"
       placeholder="0.00"
       size="lg"
       radius="full"
       className="h-11"
       disabled={inputProps?.disabled || !orderedCurrencies?.length}
       value={value.amount}
-      onChange={e => handleAmountChange(e.target.value)}
+      onChange={e => handleAmountChange(e.target.value.replace(/[^0-9.,]+/g, "").replace(/,/g, "."))}
       endContent={
         <div className="flex w-fit items-center">
           <Select

@@ -4,13 +4,13 @@ import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
 import { IconTag } from "components/ds/icon-tag/icon-tag";
-import { TCurrencyConverter } from "components/features/currency-converter/currency-converter.types";
-import { UseCurrencyConverter } from "components/features/currency-converter/hooks/use-currency-converter";
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
-import { UsdInput } from "components/features/usd-input/usd-input";
+import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
+import { UseCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
+import { UsdInput } from "components/features/currency/usd-input/usd-input";
 import { Translate } from "components/layout/translate/translate";
 
-export function CurrencyConverter({ budgets, value, onChange }: TCurrencyConverter.Props) {
+export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Props) {
   const { usdValue, setUsdValue, currencyValue, setCurrencyValue, setIsCurrencyFieldOnFocus, setIsUsdFieldOnFocus } =
     UseCurrencyConverter({
       budgets,
@@ -33,7 +33,7 @@ export function CurrencyConverter({ budgets, value, onChange }: TCurrencyConvert
         onChange={setCurrencyValue}
         onFocus={setIsCurrencyFieldOnFocus}
       />
-      <div className="my-4 grid grid-cols-4 gap-2">
+      <div className="mt-4 grid grid-cols-4 gap-2">
         <Button
           variant="secondary"
           onClick={() => setUsdValue("150")}

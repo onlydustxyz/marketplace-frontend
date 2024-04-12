@@ -1,4 +1,4 @@
-import { TCurrencyConverter } from "components/features/currency-converter/currency-converter.types";
+import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
 
 export namespace TUseCurrencyConverter {
   export interface Props {

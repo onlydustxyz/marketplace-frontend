@@ -296,6 +296,7 @@ const View: React.FC<Props> = ({
                   budgets={projectBudget.budgets}
                   preferedCurrency={preferredCurrency}
                   onChange={({ amount, currency }: RewardBudgetChangeProps) => {
+                    console.log("amount", amount);
                     setValue("amountToWire", amount);
                     setValue("currency", currency);
                   }}

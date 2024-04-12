@@ -12,7 +12,6 @@ export namespace TCurrencyConverter {
 
   export interface Props {
     budgets: BudgetResponse[];
-    value: BudgetResponse;
     onChange: (value: TCurrencyConverter.CurrencyAmount) => void;
   }
 }

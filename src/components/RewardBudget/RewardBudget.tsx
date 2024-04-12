@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import { Money } from "utils/Money/Money";
 
 import Button, { ButtonOnBackground } from "src/components/Button";
@@ -9,53 +9,74 @@ import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
 import { cn } from "src/utils/cn";
 
-import { CurrencyConverter } from "components/features/currency-converter/currency-converter";
+import { CurrencyConverter } from "components/features/currency/currency-converter/currency-converter";
+import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
+import { UseCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
+import { ProjectBudget } from "components/features/project-budget/project-budget";
 
-import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
-import RewardBudgetDetails from "./Details/RewardBudgetDetails";
-import { RewardBudgetProps, WorkEstimationBudgetDetails } from "./RewardBudget.type";
+import { RewardBudgetProps } from "./RewardBudget.type";
 import { RewardBudgetUtils } from "./RewardBudget.utils";
 
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
-  const [selectedBudget, setSelectedBudget] = useState<WorkEstimationBudgetDetails>(props.budgets[0]);
-  const [amount, setAmount] = useState<number | null>(null);
-  const withDefaultAmount = useMemo(() => amount || 0, [amount]);
+  // const [selectedBudget, setSelectedBudget] = useState<WorkEstimationBudgetDetails>(props.budgets[0]);
+  // const [amount, setAmount] = useState<number | null>(null);
+  //
+  // useEffect(() => {
+  //   if (props.preferedCurrency) {
+  //     const find = props.budgets.find(b => b.currency === props.preferedCurrency);
+  //     if (find) {
+  //       setSelectedBudget(find);
+  //     }
+  //   }
+  // }, [props.preferedCurrency]);
+  //
+  // useEffect(() => {
+  //   const _amount = amount || 0;
+  //   if (props.onChange && selectedBudget.remaining > 0 && selectedBudget.remaining - _amount >= 0) {
+  //     props.onChange({
+  //       amount: _amount,
+  //       currency: selectedBudget.currency,
+  //     });
+  //   }
+  // }, [amount, selectedBudget]);
+  //
+  // const selectedBudgetDollarEquivalent = useMemo(
+  //   () =>
+  //     RewardBudgetUtils.getDollarEquivalent({ rate: selectedBudget.dollarsConversionRate, amount: withDefaultAmount }),
+  //   [selectedBudget, withDefaultAmount]
+  // );
+  //
 
-  useEffect(() => {
-    if (props.preferedCurrency) {
-      const find = props.budgets.find(b => b.currency === props.preferedCurrency);
-      if (find) {
-        setSelectedBudget(find);
-      }
-    }
-  }, [props.preferedCurrency]);
+  const { budgets } = props;
 
-  useEffect(() => {
-    const _amount = amount || 0;
-    if (props.onChange && selectedBudget.remaining > 0 && selectedBudget.remaining - _amount >= 0) {
+  const { currencyValue, setCurrencyValue, selectedCurrencyBudget } = UseCurrencyConverter({
+    budgets,
+  });
+
+  const onSelectedBudgetChange = (value: TCurrencyConverter.CurrencyAmount) => {
+    setCurrencyValue(value);
+    const amount = parseFloat(value.amount) || 0;
+    if (
+      props.onChange &&
+      selectedCurrencyBudget?.remaining &&
+      selectedCurrencyBudget?.remaining > 0 &&
+      selectedCurrencyBudget?.remaining - amount >= 0
+    ) {
       props.onChange({
-        amount: _amount,
-        currency: selectedBudget.currency,
+        amount: parseFloat(value.amount),
+        currency: value.currency,
       });
     }
-  }, [amount, selectedBudget]);
+  };
 
-  const selectedBudgetDollarEquivalent = useMemo(
-    () =>
-      RewardBudgetUtils.getDollarEquivalent({ rate: selectedBudget.dollarsConversionRate, amount: withDefaultAmount }),
-    [selectedBudget, withDefaultAmount]
-  );
+  const withDefaultAmount = useMemo(() => parseFloat(currencyValue.amount) || 0, [currencyValue.amount]);
 
   const canRewards = useMemo(
-    () => RewardBudgetUtils.canRewards({ remaining: selectedBudget.remaining, amount: withDefaultAmount }),
-    [selectedBudget, withDefaultAmount]
+    () =>
+      RewardBudgetUtils.canRewards({ remaining: selectedCurrencyBudget?.remaining ?? 0, amount: withDefaultAmount }),
+    [selectedCurrencyBudget, withDefaultAmount]
   );
-
-  const onSelectedBudgetChange = (newBudget: WorkEstimationBudgetDetails) => {
-    setSelectedBudget(newBudget);
-    setAmount(null);
-  };
 
   // const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
   //   const fieldValue = e.target.value;
@@ -72,55 +93,12 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   // };
 
   return (
-    <div className="flex w-full flex-col rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 shadow-light">
-      <div className="flex w-full flex-col p-6 pb-2">
-        <div className="flex w-full flex-col gap-2">
-          <div className="flex flex-col">
-            <CurrencyConverter {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
-          </div>
-          {/*<div className="z-10 flex flex-1 flex-row items-stretch justify-between gap-4">*/}
-          {/*  <RewardBudgetSelect {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />*/}
-          {/*  <FieldInput*/}
-          {/*    min="0"*/}
-          {/*    step="0.000001"*/}
-          {/*    placeholder={T(`currencies.amount_placeholder.${selectedBudget.currency.code}`)}*/}
-          {/*    name="budget-amount-input"*/}
-          {/*    type="number"*/}
-          {/*    value={amount === null ? "" : amount}*/}
-          {/*    fieldClassName="flex-1 max-w-[96px] min-w-[96px]"*/}
-          {/*    className="h-full flex-1 rounded-2xl"*/}
-          {/*    onChange={onChangeAmount}*/}
-          {/*    inputClassName="font-medium text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"*/}
-          {/*  />*/}
-          {/*</div>*/}
-          <FieldInfoMessage
-            icon={({ className }) => <InformationLine className={className} />}
-            className={cn({
-              "items-start": Money.isFiat(selectedBudget.currency),
-            })}
-          >
-            {Money.isFiat(selectedBudget.currency)
-              ? T("currencies.network.label_dollar")
-              : T("currencies.network.label", { currency: T(`currencies.network.${selectedBudget.currency.code}`) })}
-          </FieldInfoMessage>
-        </div>
-      </div>
+    <div className="flex w-full flex-col gap-3 rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 p-8 shadow-light">
+      <CurrencyConverter budgets={budgets} onChange={onSelectedBudgetChange} />
 
-      <div className="flex w-full flex-col px-8 pb-3 pt-3">
-        <RewardBudgetBar
-          total={selectedBudget.initialAmount || 0}
-          spending={withDefaultAmount}
-          remaining={selectedBudget.remaining || 0}
-        />
-      </div>
-      <div className="flex w-full flex-col border-b border-greyscale-50/8 px-8 pb-6 pt-3">
-        <RewardBudgetDetails
-          amount={withDefaultAmount}
-          budget={selectedBudget}
-          selectedBudgetDollarEquivalent={selectedBudgetDollarEquivalent}
-        />
-      </div>
-      <div className="flex w-full flex-col p-6">
+      <ProjectBudget selectedBudget={selectedCurrencyBudget} rewardAmount={currencyValue.amount} />
+
+      <div className="flex w-full flex-col gap-2">
         <Button
           width={Width.Full}
           disabled={!canRewards || props.loading}
@@ -130,6 +108,16 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           <CheckLine />
           {T("rewardBudget.submit")}
         </Button>
+        <FieldInfoMessage
+          icon={({ className }) => <InformationLine className={className} />}
+          className={cn({
+            "items-start": Money.isFiat(currencyValue.currency),
+          })}
+        >
+          {Money.isFiat(currencyValue.currency)
+            ? T("currencies.network.label_dollar")
+            : T("currencies.network.label", { currency: T(`currencies.network.${currencyValue.currency.code}`) })}
+        </FieldInfoMessage>
       </div>
     </div>
   );
