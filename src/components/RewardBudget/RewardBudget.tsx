@@ -9,7 +9,7 @@ import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
 import { cn } from "src/utils/cn";
 
-import { ConversionAmountSelector } from "components/features/conversion-amount-selector/conversion-amount-selector";
+import { CurrencyConverter } from "components/features/currency-converter/currency-converter";
 
 import RewardBudgetBar from "./BudgetBar/RewardBudgetBar";
 import RewardBudgetDetails from "./Details/RewardBudgetDetails";
@@ -75,8 +75,8 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     <div className="flex w-full flex-col rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 shadow-light">
       <div className="flex w-full flex-col p-6 pb-2">
         <div className="flex w-full flex-col gap-2">
-          <div>
-            <ConversionAmountSelector {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
+          <div className="flex flex-col">
+            <CurrencyConverter {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />
           </div>
           {/*<div className="z-10 flex flex-1 flex-row items-stretch justify-between gap-4">*/}
           {/*  <RewardBudgetSelect {...props} value={selectedBudget} onChange={onSelectedBudgetChange} />*/}
