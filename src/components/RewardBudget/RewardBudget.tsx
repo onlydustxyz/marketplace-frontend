@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
 import Button, { ButtonOnBackground } from "src/components/Button";
@@ -57,19 +57,19 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     setAmount(null);
   };
 
-  const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
-    const fieldValue = e.target.value;
-
-    if (fieldValue === "") {
-      setAmount(null);
-    }
-    const value = parseFloat(fieldValue);
-    if (value < 0) {
-      setAmount(0);
-    } else if (!isNaN(value)) {
-      setAmount(value);
-    }
-  };
+  // const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const fieldValue = e.target.value;
+  //
+  //   if (fieldValue === "") {
+  //     setAmount(null);
+  //   }
+  //   const value = parseFloat(fieldValue);
+  //   if (value < 0) {
+  //     setAmount(0);
+  //   } else if (!isNaN(value)) {
+  //     setAmount(value);
+  //   }
+  // };
 
   return (
     <div className="flex w-full flex-col rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 shadow-light">

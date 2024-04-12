@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
+import { TCurrencyConverter } from "components/features/currency-converter/currency-converter.types";
 import { TUseCurrencyConverter } from "components/features/currency-converter/hooks/use-currency-converter.types";
 
 export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
   const [usdValue, setUsdValue] = useState<string>("");
-  const [currencyValue, setCurrencyValue] = useState<TUseCurrencyConverter.CurrencyAmount>({
+  const [currencyValue, setCurrencyValue] = useState<TCurrencyConverter.CurrencyAmount>({
     amount: "",
     currency: Money.fromSchema({ code: Money.Static.Currency.OP }),
   });
