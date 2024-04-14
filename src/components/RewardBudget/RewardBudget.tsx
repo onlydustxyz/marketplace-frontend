@@ -78,6 +78,11 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     [selectedCurrencyBudget, withDefaultAmount]
   );
 
+  const renderProjectBudget = useMemo(() => {
+    console.log("renderProjectBudget currency", currencyValue.currency);
+    return <ProjectBudget selectedBudget={selectedCurrencyBudget} rewardAmount={currencyValue.amount} />;
+  }, [selectedCurrencyBudget, currencyValue.amount]);
+
   // const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
   //   const fieldValue = e.target.value;
   //
@@ -96,7 +101,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     <div className="flex w-full flex-col gap-3 rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 p-8 shadow-light">
       <CurrencyConverter budgets={budgets} onChange={onSelectedBudgetChange} />
 
-      <ProjectBudget selectedBudget={selectedCurrencyBudget} rewardAmount={currencyValue.amount} />
+      {renderProjectBudget}
 
       <div className="flex w-full flex-col gap-2">
         <Button

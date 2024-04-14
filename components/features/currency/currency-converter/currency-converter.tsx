@@ -11,10 +11,17 @@ import { UsdInput } from "components/features/currency/usd-input/usd-input";
 import { Translate } from "components/layout/translate/translate";
 
 export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Props) {
-  const { usdValue, setUsdValue, currencyValue, setCurrencyValue, setIsCurrencyFieldOnFocus, setIsUsdFieldOnFocus } =
-    UseCurrencyConverter({
-      budgets,
-    });
+  const {
+    usdValue,
+    setUsdValue,
+    currencyValue,
+    setCurrencyValue,
+    setIsCurrencyFieldOnFocus,
+    setIsUsdFieldOnFocus,
+    setIsCurrencySelectOnFocus,
+  } = UseCurrencyConverter({
+    budgets,
+  });
 
   useEffect(() => {
     onChange(currencyValue);
@@ -31,7 +38,8 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
         budgets={budgets}
         value={currencyValue}
         onChange={setCurrencyValue}
-        onFocus={setIsCurrencyFieldOnFocus}
+        onFieldFocus={setIsCurrencyFieldOnFocus}
+        onSelectFocus={setIsCurrencySelectOnFocus}
       />
       <div className="mt-4 grid grid-cols-4 gap-2">
         <Button

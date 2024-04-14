@@ -11,7 +11,14 @@ import { Input } from "components/ds/form/input/input";
 import { TAmountSelect } from "components/features/currency/amount-select/amount-select.types";
 
 // TODO handle blue style
-export function AmountSelect({ inputProps, budgets, value, onChange, onFocus }: TAmountSelect.Props) {
+export function AmountSelect({
+  inputProps,
+  budgets,
+  value,
+  onChange,
+  onFieldFocus,
+  onSelectFocus,
+}: TAmountSelect.Props) {
   const { T } = useIntl();
   const orderedCurrencies = useCurrenciesOrder({ currencies: budgets });
 
@@ -67,6 +74,8 @@ export function AmountSelect({ inputProps, budgets, value, onChange, onFocus }: 
                 </div>
               ));
             }}
+            onFocus={() => onSelectFocus(true)}
+            onBlur={() => onSelectFocus(false)}
             // popoverProps={{ placement: "right-start" }}
             isDisabled={inputProps?.disabled || !orderedCurrencies?.length}
           >
@@ -89,8 +98,8 @@ export function AmountSelect({ inputProps, budgets, value, onChange, onFocus }: 
           </Select>
         </div>
       }
-      onFocus={() => onFocus(true)}
-      onBlur={() => onFocus(false)}
+      onFocus={() => onFieldFocus(true)}
+      onBlur={() => onFieldFocus(false)}
       {...inputProps}
     />
   );

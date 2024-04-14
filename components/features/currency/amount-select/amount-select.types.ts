@@ -7,6 +7,7 @@ export namespace TAmountSelect {
     budgets: TCurrencyConverter.BudgetResponse[];
     value: TCurrencyConverter.CurrencyAmount;
     onChange: (value: TCurrencyConverter.CurrencyAmount) => void;
-    onFocus: (isOnFocus: boolean) => void;
+    onFieldFocus: (isOnFocus: boolean) => void;
+    onSelectFocus: (isOnFocus: boolean) => void;
   }
 }

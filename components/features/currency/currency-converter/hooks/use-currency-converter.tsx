@@ -13,12 +13,14 @@ export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
 
   const [isUsdFieldOnFocus, setIsUsdFieldOnFocus] = useState<boolean>(false);
   const [isCurrencyFieldOnFocus, setIsCurrencyFieldOnFocus] = useState<boolean>(false);
+  const [isCurrencySelectOnFocus, setIsCurrencySelectOnFocus] = useState<boolean>(false);
 
   const selectedCurrencyBudget = useMemo(
     () => budgets?.find(budget => budget.currency.code === currencyValue.currency.code),
     [currencyValue.currency]
   );
   function convertValues(value: string, isUSD: boolean) {
+    console.log("convertValues", value);
     if (!selectedCurrencyBudget?.dollarsConversionRate) return;
 
     const conversionRate = selectedCurrencyBudget.dollarsConversionRate;
@@ -26,25 +28,31 @@ export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
 
     if (isUSD) {
       const convertedCurrencyValue = parseFloat(value) / conversionRate;
-      if (isNaN(convertedCurrencyValue)) return;
+      if (isNaN(convertedCurrencyValue)) {
+        setCurrencyValue(prev => ({ ...prev, amount: "" }));
+        return;
+      }
       setCurrencyValue(prev => ({ ...prev, amount: convertedCurrencyValue.toFixed(decimals) }));
     } else {
       const convertedUsdValue = parseFloat(value) * conversionRate;
-      if (isNaN(convertedUsdValue)) return;
+      if (isNaN(convertedUsdValue)) {
+        setUsdValue("");
+        return;
+      }
       setUsdValue(convertedUsdValue.toFixed(2));
     }
   }
 
   useEffect(() => {
-    if (!isCurrencyFieldOnFocus) convertValues(usdValue, true);
+    if (!isCurrencyFieldOnFocus && !isCurrencySelectOnFocus) convertValues(usdValue, true);
   }, [usdValue]);
 
   useEffect(() => {
-    if (!isUsdFieldOnFocus) convertValues(currencyValue.amount, false);
+    if (!isUsdFieldOnFocus && !isCurrencySelectOnFocus) convertValues(currencyValue.amount, false);
   }, [currencyValue.amount]);
 
   useEffect(() => {
-    convertValues(usdValue, true);
+    if (!isUsdFieldOnFocus && !isCurrencyFieldOnFocus && isCurrencySelectOnFocus) convertValues(usdValue, true);
   }, [currencyValue.currency]);
 
   return {
@@ -53,9 +61,11 @@ export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
     currencyValue,
     isUsdFieldOnFocus,
     isCurrencyFieldOnFocus,
+    isCurrencySelectOnFocus,
     setUsdValue,
     setCurrencyValue,
     setIsUsdFieldOnFocus,
     setIsCurrencyFieldOnFocus,
+    setIsCurrencySelectOnFocus,
   };
 }
