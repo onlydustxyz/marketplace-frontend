@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 
-import { cn } from "src/utils/cn";
-
-import { Button } from "components/ds/button/button";
 import { IconTag } from "components/ds/icon-tag/icon-tag";
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
-import { UseCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
+import { useCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
 import { UsdInput } from "components/features/currency/usd-input/usd-input";
-import { Translate } from "components/layout/translate/translate";
+
+import { QuickValueButton } from "./components/quick-value-button";
 
 export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Props) {
   const {
@@ -18,7 +16,7 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
     handleSetUsdValue,
     handleSetCurrencyAmount,
     handleSetCurrencySelection,
-  } = UseCurrencyConverter({
+  } = useCurrencyConverter({
     budgets,
   });
 
@@ -34,6 +32,8 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
     }
   }, [currencySelection]);
 
+  const quickValues = ["150", "500", "1000", "2000"];
+
   return (
     <div className="flex flex-col">
       <UsdInput value={usdValue} onChange={handleSetUsdValue} />
@@ -41,7 +41,7 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
         icon={{ remixName: "ri-arrow-down-line" }}
         className="relative z-10 m-auto -my-2 bg-whiteFakeOpacity-2 text-spaceBlue-400"
       />
-      {currencySelection ? (
+      {currencySelection && (
         <AmountSelect
           budgets={budgets}
           amountValue={currencyAmount}
@@ -49,48 +49,11 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
           onAmountChange={handleSetCurrencyAmount}
           onSelectionChange={handleSetCurrencySelection}
         />
-      ) : null}
+      )}
       <div className="mt-4 grid grid-cols-4 gap-2">
-        <Button
-          variant="secondary"
-          onClick={() => handleSetUsdValue("150")}
-          size="s"
-          className={cn("w-full border border-greyscale-50/8", {
-            "border-spacePurple-500": parseFloat(usdValue) === 150,
-          })}
-        >
-          <Translate token="v2.features.currencyConverter.quickValues.150Usd" />
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => handleSetUsdValue("500")}
-          size="s"
-          className={cn("w-full border border-greyscale-50/8", {
-            "border-spacePurple-500": parseFloat(usdValue) === 500,
-          })}
-        >
-          <Translate token="v2.features.currencyConverter.quickValues.500Usd" />
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => handleSetUsdValue("1000")}
-          size="s"
-          className={cn("w-full border border-greyscale-50/8", {
-            "border-spacePurple-500": parseFloat(usdValue) === 1000,
-          })}
-        >
-          <Translate token="v2.features.currencyConverter.quickValues.1000Usd" />
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => handleSetUsdValue("2000")}
-          size="s"
-          className={cn("w-full border border-greyscale-50/8", {
-            "border-spacePurple-500": parseFloat(usdValue) === 2000,
-          })}
-        >
-          <Translate token="v2.features.currencyConverter.quickValues.2000Usd" />
-        </Button>
+        {quickValues.map(value => (
+          <QuickValueButton key={value} value={value} currentUsdValue={usdValue} onSetUsdValue={handleSetUsdValue} />
+        ))}
       </div>
     </div>
   );

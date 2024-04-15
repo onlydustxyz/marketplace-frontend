@@ -9,12 +9,12 @@ import { Typography } from "components/layout/typography/typography";
 
 function BudgetInfoRow({ label, amount, currency }: TProjectBudget.BudgetInfoRowProps) {
   return (
-    <div className="flex flex-row justify-between">
-      <Typography variant="body-s" className="text-greyscale-50">
+    <div className="flex flex-row items-center justify-between gap-2">
+      <Typography variant="body-s" className="line-clamp-1 text-greyscale-50">
         {label}
       </Typography>
       <div className="flex flex-row items-center gap-2">
-        <Typography variant="body-s" className="text-greyscale-50">
+        <Typography variant="body-s" className="text-right text-greyscale-50">
           {Money.format({ amount, currency }).string}
         </Typography>
         <Chip solid className="h-5 w-5 flex-shrink-0">

@@ -10,7 +10,7 @@ import InformationLine from "src/icons/InformationLine";
 import { cn } from "src/utils/cn";
 
 import { CurrencyConverter } from "components/features/currency/currency-converter/currency-converter";
-import { UseCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
+import { useCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
 import { ProjectBudget } from "components/features/project-budget/project-budget";
 
 import { RewardBudgetProps } from "./RewardBudget.type";
@@ -21,7 +21,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
   const { budgets } = props;
   const { currencyAmount, handleSetCurrencyAmount, handleSetCurrencySelection, currencySelection, currencyBudget } =
-    UseCurrencyConverter({
+    useCurrencyConverter({
       budgets,
     });
 
