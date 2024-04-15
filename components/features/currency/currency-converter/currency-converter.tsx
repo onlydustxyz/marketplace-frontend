@@ -13,38 +13,36 @@ import { Translate } from "components/layout/translate/translate";
 export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Props) {
   const {
     usdValue,
-    setUsdValue,
-    currencyValue,
-    setCurrencyValue,
-    setIsCurrencyFieldOnFocus,
-    setIsUsdFieldOnFocus,
-    setIsCurrencySelectOnFocus,
+    currencyAmount,
+    currencySelection,
+    handleSetUsdValue,
+    handleSetCurrencyAmount,
+    handleSetCurrencySelection,
   } = UseCurrencyConverter({
     budgets,
   });
 
   useEffect(() => {
-    onChange(currencyValue);
-  }, [currencyValue]);
+    onChange({ amount: currencyAmount, currency: currencySelection });
+  }, [currencyAmount, currencySelection]);
 
   return (
     <div className="flex flex-col">
-      <UsdInput value={usdValue} onChange={setUsdValue} onFocus={setIsUsdFieldOnFocus} />
+      <UsdInput value={usdValue} onChange={handleSetUsdValue} />
       <IconTag
         icon={{ remixName: "ri-arrow-down-line" }}
         className="relative z-10 m-auto -my-2 bg-whiteFakeOpacity-2 text-spaceBlue-400"
       />
       <AmountSelect
         budgets={budgets}
-        value={currencyValue}
-        onChange={setCurrencyValue}
-        onFieldFocus={setIsCurrencyFieldOnFocus}
-        onSelectFocus={setIsCurrencySelectOnFocus}
+        value={{ amount: currencyAmount, currency: currencySelection }}
+        onAmountChange={handleSetCurrencyAmount}
+        onSelectionChange={handleSetCurrencySelection}
       />
       <div className="mt-4 grid grid-cols-4 gap-2">
         <Button
           variant="secondary"
-          onClick={() => setUsdValue("150")}
+          onClick={() => handleSetUsdValue("150")}
           size="s"
           className={cn("w-full border border-greyscale-50/8", {
             "border-spacePurple-500": parseFloat(usdValue) === 150,
@@ -54,7 +52,7 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
         </Button>
         <Button
           variant="secondary"
-          onClick={() => setUsdValue("500")}
+          onClick={() => handleSetUsdValue("500")}
           size="s"
           className={cn("w-full border border-greyscale-50/8", {
             "border-spacePurple-500": parseFloat(usdValue) === 500,
@@ -64,7 +62,7 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
         </Button>
         <Button
           variant="secondary"
-          onClick={() => setUsdValue("1000")}
+          onClick={() => handleSetUsdValue("1000")}
           size="s"
           className={cn("w-full border border-greyscale-50/8", {
             "border-spacePurple-500": parseFloat(usdValue) === 1000,
@@ -74,7 +72,7 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
         </Button>
         <Button
           variant="secondary"
-          onClick={() => setUsdValue("2000")}
+          onClick={() => handleSetUsdValue("2000")}
           size="s"
           className={cn("w-full border border-greyscale-50/8", {
             "border-spacePurple-500": parseFloat(usdValue) === 2000,

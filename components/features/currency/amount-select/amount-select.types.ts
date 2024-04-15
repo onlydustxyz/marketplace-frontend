@@ -6,8 +6,7 @@ export namespace TAmountSelect {
     inputProps?: TInput.Props;
     budgets: TCurrencyConverter.BudgetResponse[];
     value: TCurrencyConverter.CurrencyAmount;
-    onChange: (value: TCurrencyConverter.CurrencyAmount) => void;
-    onFieldFocus: (isOnFocus: boolean) => void;
-    onSelectFocus: (isOnFocus: boolean) => void;
+    onAmountChange: (amount: TCurrencyConverter.CurrencyAmount["amount"]) => void;
+    onSelectionChange: (currency: TCurrencyConverter.CurrencyAmount["currency"]) => void;
   }
 }

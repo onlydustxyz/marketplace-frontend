@@ -6,7 +6,7 @@ import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { Input } from "components/ds/form/input/input";
 import { TUsdInput } from "components/features/currency/usd-input/usd-input.types";
 
-export function UsdInput({ value, onChange, onFocus }: TUsdInput.Props) {
+export function UsdInput({ inputProps, value, onChange }: TUsdInput.Props) {
   return (
     <Input
       endContent={
@@ -24,8 +24,7 @@ export function UsdInput({ value, onChange, onFocus }: TUsdInput.Props) {
       radius="full"
       className="h-11"
       value={value}
-      onFocus={() => onFocus(true)}
-      onBlur={() => onFocus(false)}
+      {...inputProps}
     />
   );
 }

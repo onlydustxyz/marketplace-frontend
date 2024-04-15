@@ -1,71 +1,80 @@
-import { useEffect, useMemo, useState } from "react";
-import { Money } from "utils/Money/Money";
+import { useState } from "react";
 
 import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
 import { TUseCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter.types";
 
 export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
   const [usdValue, setUsdValue] = useState<string>("");
-  const [currencyValue, setCurrencyValue] = useState<TCurrencyConverter.CurrencyAmount>({
-    amount: "",
-    currency: Money.fromSchema({ code: Money.Static.Currency.OP }),
-  });
-
-  const [isUsdFieldOnFocus, setIsUsdFieldOnFocus] = useState<boolean>(false);
-  const [isCurrencyFieldOnFocus, setIsCurrencyFieldOnFocus] = useState<boolean>(false);
-  const [isCurrencySelectOnFocus, setIsCurrencySelectOnFocus] = useState<boolean>(false);
-
-  const selectedCurrencyBudget = useMemo(
-    () => budgets?.find(budget => budget.currency.code === currencyValue.currency.code),
-    [currencyValue.currency]
+  const [currencyAmount, setCurrencyAmount] = useState<string>("");
+  const [currencySelection, setCurrencySelection] = useState<TCurrencyConverter.CurrencyAmount["currency"] | undefined>(
+    budgets?.[0].currency
   );
-  function convertValues(value: string, isUSD: boolean) {
-    console.log("convertValues", value);
-    if (!selectedCurrencyBudget?.dollarsConversionRate) return;
+  const [currencyBudget, setCurrencyBudget] = useState<TCurrencyConverter.BudgetResponse | undefined>(budgets?.[0]);
 
-    const conversionRate = selectedCurrencyBudget.dollarsConversionRate;
-    const decimals = selectedCurrencyBudget.currency.decimals;
+  // const selectedCurrencyBudget = useMemo(
+  //   () => budgets?.find(budget => budget.currency.code === currencySelection.code),
+  //   [currencySelection]
+  // );
+  function convertValues({
+    value,
+    currency,
+    isUSD,
+  }: {
+    value: string;
+    currency?: TCurrencyConverter.CurrencyAmount["currency"];
+    isUSD: boolean;
+  }) {
+    // const currencyBudget = budgets?.find(budget => budget.currency.code === currency?.code) || selectedCurrencyBudget;
+
+    if (!value) {
+      setUsdValue("");
+      setCurrencyAmount("");
+      return;
+    }
+
+    if (!currencyBudget) {
+      return;
+    }
+
+    console.log("convert", currencyBudget.currency.code);
+
+    const conversionRate = currencyBudget?.dollarsConversionRate || 1;
+    const decimals = currencyBudget?.currency.decimals;
 
     if (isUSD) {
       const convertedCurrencyValue = parseFloat(value) / conversionRate;
-      if (isNaN(convertedCurrencyValue)) {
-        setCurrencyValue(prev => ({ ...prev, amount: "" }));
-        return;
-      }
-      setCurrencyValue(prev => ({ ...prev, amount: convertedCurrencyValue.toFixed(decimals) }));
+      setUsdValue(value);
+      setCurrencyAmount(convertedCurrencyValue.toFixed(decimals));
     } else {
       const convertedUsdValue = parseFloat(value) * conversionRate;
-      if (isNaN(convertedUsdValue)) {
-        setUsdValue("");
-        return;
-      }
+      setCurrencyAmount(value);
       setUsdValue(convertedUsdValue.toFixed(2));
     }
   }
 
-  useEffect(() => {
-    if (!isCurrencyFieldOnFocus && !isCurrencySelectOnFocus) convertValues(usdValue, true);
-  }, [usdValue]);
+  function handleSetUsdValue(value: string) {
+    convertValues({ value, isUSD: true, currency: currencyBudget?.currency });
+  }
 
-  useEffect(() => {
-    if (!isUsdFieldOnFocus && !isCurrencySelectOnFocus) convertValues(currencyValue.amount, false);
-  }, [currencyValue.amount]);
-
-  useEffect(() => {
-    if (!isUsdFieldOnFocus && !isCurrencyFieldOnFocus && isCurrencySelectOnFocus) convertValues(usdValue, true);
-  }, [currencyValue.currency]);
+  function handleSetCurrencyAmount(amount: TCurrencyConverter.CurrencyAmount["amount"]) {
+    convertValues({ value: amount, isUSD: false });
+  }
+  function handleSetCurrencySelection(currency: TCurrencyConverter.CurrencyAmount["currency"]) {
+    if (currency) {
+      setCurrencySelection(currency);
+      setCurrencyBudget(budgets?.find(budget => budget.currency.code === currency.code));
+      convertValues({ value: usdValue, isUSD: true, currency });
+    }
+  }
 
   return {
-    selectedCurrencyBudget,
+    currencyBudget,
     usdValue,
-    currencyValue,
-    isUsdFieldOnFocus,
-    isCurrencyFieldOnFocus,
-    isCurrencySelectOnFocus,
+    currencyAmount,
+    currencySelection,
     setUsdValue,
-    setCurrencyValue,
-    setIsUsdFieldOnFocus,
-    setIsCurrencyFieldOnFocus,
-    setIsCurrencySelectOnFocus,
+    handleSetUsdValue,
+    handleSetCurrencyAmount,
+    handleSetCurrencySelection,
   };
 }

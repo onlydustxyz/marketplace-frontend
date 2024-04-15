@@ -11,31 +11,18 @@ import { Input } from "components/ds/form/input/input";
 import { TAmountSelect } from "components/features/currency/amount-select/amount-select.types";
 
 // TODO handle blue style
-export function AmountSelect({
-  inputProps,
-  budgets,
-  value,
-  onChange,
-  onFieldFocus,
-  onSelectFocus,
-}: TAmountSelect.Props) {
+export function AmountSelect({ inputProps, budgets, value, onAmountChange, onSelectionChange }: TAmountSelect.Props) {
   const { T } = useIntl();
   const orderedCurrencies = useCurrenciesOrder({ currencies: budgets });
 
   const handleSelectionChange = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value) {
-      onChange?.({
-        amount: value.amount,
-        currency: Money.fromSchema({ code: e.target.value as Money.Static.Currency }),
-      });
+      onSelectionChange?.(Money.fromSchema({ code: e.target.value as Money.Static.Currency }));
     }
   };
 
   const handleAmountChange = (amount: string) => {
-    onChange?.({
-      amount,
-      currency: value.currency,
-    });
+    onAmountChange?.(amount);
   };
 
   return (
@@ -52,8 +39,8 @@ export function AmountSelect({
         <div className="flex w-fit items-center">
           <Select
             aria-label={T("v2.commons.currency")}
-            defaultSelectedKeys={[value.currency.code]}
-            selectedKeys={[value?.currency.code]}
+            defaultSelectedKeys={[value?.currency?.code]}
+            selectedKeys={[value?.currency?.code]}
             classNames={{
               trigger: "p-0 h-auto !bg-transparent shadow-none flex flex-row items-center space-x-4",
               innerWrapper: "!pt-0",
@@ -74,8 +61,6 @@ export function AmountSelect({
                 </div>
               ));
             }}
-            onFocus={() => onSelectFocus(true)}
-            onBlur={() => onSelectFocus(false)}
             // popoverProps={{ placement: "right-start" }}
             isDisabled={inputProps?.disabled || !orderedCurrencies?.length}
           >
@@ -98,8 +83,6 @@ export function AmountSelect({
           </Select>
         </div>
       }
-      onFocus={() => onFieldFocus(true)}
-      onBlur={() => onFieldFocus(false)}
       {...inputProps}
     />
   );
