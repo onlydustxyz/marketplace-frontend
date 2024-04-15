@@ -8851,10 +8851,12 @@ datadog-metrics@0.9.3:
     debug "3.1.0"
     dogapi "2.8.4"
 
-date-fns-tz@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-2.0.0.tgz#1b14c386cb8bc16fc56fe333d4fc34ae1d1099d5"
-  integrity sha512-OAtcLdB9vxSXTWHdT8b398ARImVwQMyjfYGkKD2zaGpHseG2UPHbHjXELReErZFxWdSLph3c2zOaaTyHfOhERQ==
+date-fns-tz@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-3.0.1.tgz#9e22ca9226126b757fd00a375797f5d89713c207"
+  integrity sha512-LGKFMKEllm9tCirgYhha3rqfw5nstTULXnKKCk2qO/qju1rfxpUI9IXzmpOd5w727TtrfenAVafql0B/vs6aQQ==
+  dependencies:
+    lodash.clonedeep "^4.5.0"
 
 date-fns@^2.30.0:
   version "2.30.0"
@@ -12010,6 +12012,11 @@ lodash.castarray@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.castarray/-/lodash.castarray-4.4.0.tgz#c02513515e309daddd4c24c60cfddcf5976d9115"
   integrity sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q==
+
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==
 
 lodash.debounce@^4.0.8:
   version "4.0.8"
