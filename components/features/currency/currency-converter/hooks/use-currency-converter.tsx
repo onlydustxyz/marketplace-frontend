@@ -25,7 +25,7 @@ export function useCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
       return;
     }
 
-    if (!currencyBudget) {
+    if (!currentBudget) {
       return;
     }
 
