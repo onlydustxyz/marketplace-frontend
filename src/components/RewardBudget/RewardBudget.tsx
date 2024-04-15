@@ -9,9 +9,9 @@ import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
 import { cn } from "src/utils/cn";
 
+import { CurrencyBudget } from "components/features/currency/currency-budget/currency-budget";
 import { CurrencyConverter } from "components/features/currency/currency-converter/currency-converter";
 import { useCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
-import { ProjectBudget } from "components/features/project-budget/project-budget";
 
 import { RewardBudgetProps } from "./RewardBudget.type";
 import { RewardBudgetUtils } from "./RewardBudget.utils";
@@ -26,13 +26,14 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     });
 
   const onSelectedBudgetChange = ({ amount, currency }: { amount?: string; currency?: Money.Currency }) => {
-    if (amount && props.onChange) {
+    if (!props.onChange) return;
+    if (amount) {
       handleSetCurrencyAmount(amount);
       props.onChange({
         amount: parseFloat(amount) || 0,
       });
     }
-    if (currency && props.onChange) {
+    if (currency) {
       handleSetCurrencySelection(currency);
       props.onChange({
         currency,
@@ -51,7 +52,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     <div className="flex w-full flex-col gap-3 rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 p-8 shadow-light">
       <CurrencyConverter budgets={budgets} onChange={onSelectedBudgetChange} />
 
-      <ProjectBudget selectedBudget={currencyBudget} rewardAmount={currencyAmount} />
+      <CurrencyBudget selectedBudget={currencyBudget} rewardAmount={currencyAmount} />
 
       <div className="flex w-full flex-col gap-2">
         <Button

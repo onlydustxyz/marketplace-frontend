@@ -4,10 +4,10 @@ import { Money } from "utils/Money/Money";
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 
-import { TProjectBudget } from "components/features/project-budget/project-budget.types";
+import { TCurrencyBudget } from "components/features/currency/currency-budget/currency-budget.types";
 import { Typography } from "components/layout/typography/typography";
 
-function BudgetInfoRow({ label, amount, currency }: TProjectBudget.BudgetInfoRowProps) {
+function BudgetInfoRow({ label, amount, currency }: TCurrencyBudget.BudgetInfoRowProps) {
   return (
     <div className="flex flex-row items-center justify-between gap-2">
       <Typography variant="body-s" className="line-clamp-1 text-greyscale-50">
@@ -25,7 +25,7 @@ function BudgetInfoRow({ label, amount, currency }: TProjectBudget.BudgetInfoRow
   );
 }
 
-export function ProjectBudget({ selectedBudget, rewardAmount }: TProjectBudget.ProjectBudgetProps) {
+export function CurrencyBudget({ selectedBudget, rewardAmount }: TCurrencyBudget.CurrencyBudgetProps) {
   const rewardAmountParsed = useMemo(() => parseFloat(rewardAmount) || 0, [rewardAmount]);
   const budgetAfterReward = useMemo(() => {
     if (!selectedBudget) return 0;

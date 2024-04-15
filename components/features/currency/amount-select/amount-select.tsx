@@ -23,8 +23,9 @@ export function AmountSelect({
   const orderedCurrencies = useCurrenciesOrder({ currencies: budgets });
 
   const handleSelectionChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value) {
-      onSelectionChange?.(Money.fromSchema({ code: e.target.value as Money.Static.Currency }));
+    const relatedBudgetCurrency = budgets?.find(budget => budget.currency.code === e.target.value)?.currency;
+    if (e.target.value && relatedBudgetCurrency) {
+      onSelectionChange?.(relatedBudgetCurrency);
     }
   };
 
