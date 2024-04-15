@@ -6,8 +6,8 @@ export namespace TCurrencyConverter {
   export type BudgetResponse = components["schemas"]["BudgetResponse"];
 
   export interface CurrencyAmount {
-    amount: string;
-    currency: Money.Currency;
+    amount?: string;
+    currency?: Money.Currency;
   }
 
   export interface Props {

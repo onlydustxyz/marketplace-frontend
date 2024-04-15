@@ -1,10 +1,12 @@
+import { Money } from "utils/Money/Money";
+
 import { components } from "src/__generated/api";
 
 export type WorkEstimationBudgetDetails = components["schemas"]["BudgetResponse"];
 
 export interface RewardBudgetChangeProps {
-  currency: WorkEstimationBudgetDetails["currency"];
-  amount: number;
+  currency?: Money.Currency;
+  amount?: number;
 }
 
 export interface RewardBudgetProps {

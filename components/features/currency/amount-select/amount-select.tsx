@@ -11,7 +11,14 @@ import { Input } from "components/ds/form/input/input";
 import { TAmountSelect } from "components/features/currency/amount-select/amount-select.types";
 
 // TODO handle blue style
-export function AmountSelect({ inputProps, budgets, value, onAmountChange, onSelectionChange }: TAmountSelect.Props) {
+export function AmountSelect({
+  inputProps,
+  budgets,
+  amountValue,
+  selectionValue,
+  onAmountChange,
+  onSelectionChange,
+}: TAmountSelect.Props) {
   const { T } = useIntl();
   const orderedCurrencies = useCurrenciesOrder({ currencies: budgets });
 
@@ -33,14 +40,14 @@ export function AmountSelect({ inputProps, budgets, value, onAmountChange, onSel
       radius="full"
       className="h-11"
       disabled={inputProps?.disabled || !orderedCurrencies?.length}
-      value={value.amount}
+      value={amountValue}
       onChange={e => handleAmountChange(e.target.value.replace(/[^0-9.,]+/g, "").replace(/,/g, "."))}
       endContent={
         <div className="flex w-fit items-center">
           <Select
             aria-label={T("v2.commons.currency")}
-            defaultSelectedKeys={[value?.currency?.code]}
-            selectedKeys={[value?.currency?.code]}
+            defaultSelectedKeys={[selectionValue?.code]}
+            selectedKeys={[selectionValue?.code]}
             classNames={{
               trigger: "p-0 h-auto !bg-transparent shadow-none flex flex-row items-center space-x-4",
               innerWrapper: "!pt-0",

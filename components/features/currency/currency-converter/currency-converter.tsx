@@ -23,8 +23,16 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
   });
 
   useEffect(() => {
-    onChange({ amount: currencyAmount, currency: currencySelection });
-  }, [currencyAmount, currencySelection]);
+    if (currencyAmount) {
+      onChange({ amount: currencyAmount });
+    }
+  }, [currencyAmount]);
+
+  useEffect(() => {
+    if (currencySelection) {
+      onChange({ currency: currencySelection });
+    }
+  }, [currencySelection]);
 
   return (
     <div className="flex flex-col">
@@ -33,12 +41,15 @@ export function CurrencyConverter({ budgets, onChange }: TCurrencyConverter.Prop
         icon={{ remixName: "ri-arrow-down-line" }}
         className="relative z-10 m-auto -my-2 bg-whiteFakeOpacity-2 text-spaceBlue-400"
       />
-      <AmountSelect
-        budgets={budgets}
-        value={{ amount: currencyAmount, currency: currencySelection }}
-        onAmountChange={handleSetCurrencyAmount}
-        onSelectionChange={handleSetCurrencySelection}
-      />
+      {currencySelection ? (
+        <AmountSelect
+          budgets={budgets}
+          amountValue={currencyAmount}
+          selectionValue={currencySelection}
+          onAmountChange={handleSetCurrencyAmount}
+          onSelectionChange={handleSetCurrencySelection}
+        />
+      ) : null}
       <div className="mt-4 grid grid-cols-4 gap-2">
         <Button
           variant="secondary"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Money } from "utils/Money/Money";
 
 import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
@@ -10,12 +10,14 @@ export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
   const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(budgets?.[0].currency);
   const [currencyBudget, setCurrencyBudget] = useState<TCurrencyConverter.BudgetResponse | undefined>(budgets?.[0]);
 
-  // const selectedCurrencyBudget = useMemo(
-  //   () => budgets?.find(budget => budget.currency.code === currencySelection.code),
-  //   [currencySelection]
-  // );
+  useEffect(() => {
+    if (currencySelection) {
+      setCurrencyBudget(budgets?.find(budget => budget.currency.code === currencySelection.code));
+    }
+  }, [currencySelection]);
+
   function convertValues({ value, currency, isUSD }: { value: string; currency?: Money.Currency; isUSD: boolean }) {
-    // const currencyBudget = budgets?.find(budget => budget.currency.code === currency?.code) || selectedCurrencyBudget;
+    const currentBudget = budgets?.find(budget => budget.currency.code === currency?.code);
 
     if (!value) {
       setUsdValue("");
@@ -27,10 +29,8 @@ export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
       return;
     }
 
-    console.log("convert", currencyBudget.currency.code);
-
-    const conversionRate = currencyBudget?.dollarsConversionRate || 1;
-    const decimals = currencyBudget?.currency.decimals;
+    const conversionRate = currentBudget?.dollarsConversionRate || 1;
+    const decimals = currentBudget?.currency.decimals;
 
     if (isUSD) {
       const convertedCurrencyValue = parseFloat(value) / conversionRate;
@@ -47,13 +47,12 @@ export function UseCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
     convertValues({ value, isUSD: true, currency: currencyBudget?.currency });
   }
 
-  function handleSetCurrencyAmount(amount: TCurrencyConverter.CurrencyAmount["amount"]) {
-    convertValues({ value: amount, isUSD: false });
+  function handleSetCurrencyAmount(amount: string) {
+    convertValues({ value: amount, isUSD: false, currency: currencyBudget?.currency });
   }
   function handleSetCurrencySelection(currency: Money.Currency) {
     if (currency) {
       setCurrencySelection(currency);
-      setCurrencyBudget(budgets?.find(budget => budget.currency.code === currency.code));
       convertValues({ value: usdValue, isUSD: true, currency });
     }
   }

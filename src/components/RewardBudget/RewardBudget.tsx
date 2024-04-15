@@ -10,7 +10,6 @@ import InformationLine from "src/icons/InformationLine";
 import { cn } from "src/utils/cn";
 
 import { CurrencyConverter } from "components/features/currency/currency-converter/currency-converter";
-import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
 import { UseCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
 import { ProjectBudget } from "components/features/project-budget/project-budget";
 
@@ -21,26 +20,22 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
 
   const { budgets } = props;
-
   const { currencyAmount, handleSetCurrencyAmount, handleSetCurrencySelection, currencySelection, currencyBudget } =
     UseCurrencyConverter({
       budgets,
     });
 
-  const onSelectedBudgetChange = (value: TCurrencyConverter.CurrencyAmount) => {
-    console.log({ value, currency: currencyBudget?.currency.code });
-    handleSetCurrencyAmount(value.amount);
-    handleSetCurrencySelection(value.currency);
-    const amount = parseFloat(value.amount) || 0;
-    if (
-      props.onChange &&
-      currencyBudget?.remaining &&
-      currencyBudget?.remaining > 0 &&
-      currencyBudget?.remaining - amount >= 0
-    ) {
+  const onSelectedBudgetChange = ({ amount, currency }: { amount?: string; currency?: Money.Currency }) => {
+    if (amount && props.onChange) {
+      handleSetCurrencyAmount(amount);
       props.onChange({
-        amount: parseFloat(value.amount),
-        currency: value.currency,
+        amount: parseFloat(amount) || 0,
+      });
+    }
+    if (currency && props.onChange) {
+      handleSetCurrencySelection(currency);
+      props.onChange({
+        currency,
       });
     }
   };
