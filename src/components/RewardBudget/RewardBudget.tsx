@@ -28,7 +28,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
     });
 
   const onSelectedBudgetChange = (value: TCurrencyConverter.CurrencyAmount) => {
-    console.log({ value, currencyBudget });
+    console.log({ value, currency: currencyBudget?.currency.code });
     handleSetCurrencyAmount(value.amount);
     handleSetCurrencySelection(value.currency);
     const amount = parseFloat(value.amount) || 0;
