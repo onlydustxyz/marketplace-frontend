@@ -10,14 +10,14 @@ import { Card } from "components/ds/card/card";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Typography } from "components/layout/typography/typography";
 
-export function SponsorBudgetCard({ currency, currentAllowance }: TSponsorBudgetCard.Props) {
+export function SponsorBudgetCard({ currency, amount }: TSponsorBudgetCard.Props) {
   return (
     <Card background={"base"}>
       <div className={"flex items-center justify-between sm:hidden"}>
         <Typography variant={"body-l-bold"}>
           {
             Money.format({
-              amount: currentAllowance,
+              amount,
               currency,
               options: { currencyClassName: "od-text-body-m" },
             }).html
@@ -27,7 +27,7 @@ export function SponsorBudgetCard({ currency, currentAllowance }: TSponsorBudget
         <Avatar src={currency.logoUrl} alt={currency.name} size={"s"} />
       </div>
 
-      <div className={"hidden justify-center gap-5 sm:grid"}>
+      <div className={"hidden justify-center gap-5 text-center sm:grid"}>
         <div className={"grid justify-items-center gap-2"}>
           <Avatar src={currency.logoUrl} alt={currency.name} size={"l"} />
           <Typography variant={"body-l"}>{currency.name}</Typography>
@@ -36,7 +36,7 @@ export function SponsorBudgetCard({ currency, currentAllowance }: TSponsorBudget
         <Typography variant={"body-xl-bold"}>
           {
             Money.format({
-              amount: currentAllowance,
+              amount,
               currency,
               options: { currencyClassName: "od-text-body-l-bold" },
             }).html

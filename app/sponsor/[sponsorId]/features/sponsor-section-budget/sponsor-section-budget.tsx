@@ -29,9 +29,7 @@ export function SponsorSectionBudget() {
     }
 
     if (data) {
-      return data.availableBudgets.map((budget, i) => (
-        <SponsorBudgetCard key={`${budget.currentAllowance}_${i}`} {...budget} />
-      ));
+      return data.availableBudgets.map((budget, i) => <SponsorBudgetCard key={`${budget.amount}_${i}`} {...budget} />);
     }
 
     return null;
