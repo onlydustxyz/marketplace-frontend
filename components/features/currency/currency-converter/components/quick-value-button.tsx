@@ -16,7 +16,7 @@ export function QuickValueButton({ value, currentUsdValue, onSetUsdValue }: TQui
         "border-spacePurple-500": parseFloat(currentUsdValue) === parseFloat(value),
       })}
     >
-      <Translate token={`v2.features.currencyConverter.quickValues.${value}Usd`} />
+      <Translate token={`v2.features.currency.converter.quickValues.${value}Usd`} />
     </Button>
   );
 }

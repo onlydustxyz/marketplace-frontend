@@ -1,10 +1,13 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
+import { useIntl } from "src/hooks/useIntl";
+import { cn } from "src/utils/cn";
 
 import { TCurrencyBudget } from "components/features/currency/currency-budget/currency-budget.types";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 function BudgetInfoRow({ label, amount, currency }: TCurrencyBudget.BudgetInfoRowProps) {
@@ -25,7 +28,8 @@ function BudgetInfoRow({ label, amount, currency }: TCurrencyBudget.BudgetInfoRo
   );
 }
 
-export function CurrencyBudget({ selectedBudget, rewardAmount }: TCurrencyBudget.CurrencyBudgetProps) {
+export function CurrencyBudget({ className, selectedBudget, rewardAmount }: TCurrencyBudget.CurrencyBudgetProps) {
+  const { T } = useIntl();
   const rewardAmountParsed = useMemo(() => parseFloat(rewardAmount) || 0, [rewardAmount]);
   const budgetAfterReward = useMemo(() => {
     if (!selectedBudget) return 0;
@@ -33,15 +37,27 @@ export function CurrencyBudget({ selectedBudget, rewardAmount }: TCurrencyBudget
   }, [selectedBudget, rewardAmountParsed]);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className={cn("flex flex-col gap-3", className)}>
       <Typography variant="body-s" className="uppercase text-spaceBlue-200">
-        Project Budget
+        <Translate token={"v2.features.currency.budget.title"} />
       </Typography>
       {selectedBudget && (
         <>
-          <BudgetInfoRow label="Current budget" amount={selectedBudget.remaining} currency={selectedBudget.currency} />
-          <BudgetInfoRow label="Amount rewarded" amount={rewardAmountParsed} currency={selectedBudget.currency} />
-          <BudgetInfoRow label="Budget after reward" amount={budgetAfterReward} currency={selectedBudget.currency} />
+          <BudgetInfoRow
+            label={T("v2.features.currency.budget.currentBudget")}
+            amount={selectedBudget.remaining}
+            currency={selectedBudget.currency}
+          />
+          <BudgetInfoRow
+            label={T("v2.features.currency.budget.amountRewarded")}
+            amount={rewardAmountParsed}
+            currency={selectedBudget.currency}
+          />
+          <BudgetInfoRow
+            label={T("v2.features.currency.budget.budgetAfterReward")}
+            amount={budgetAfterReward}
+            currency={selectedBudget.currency}
+          />
         </>
       )}
     </div>

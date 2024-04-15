@@ -9,6 +9,7 @@ export namespace TCurrencyBudget {
     currency: Money.Currency;
   }
   export interface CurrencyBudgetProps {
+    className?: string;
     selectedBudget?: components["schemas"]["BudgetResponse"];
     rewardAmount: string;
   }

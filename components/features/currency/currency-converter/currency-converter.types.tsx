@@ -11,6 +11,7 @@ export namespace TCurrencyConverter {
   }
 
   export interface Props {
+    className?: string;
     budgets: BudgetResponse[];
     onChange: (value: TCurrencyConverter.CurrencyAmount) => void;
   }
