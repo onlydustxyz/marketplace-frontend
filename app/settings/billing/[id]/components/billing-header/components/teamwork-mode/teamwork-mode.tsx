@@ -1,6 +1,7 @@
 import BillingProfilesApi from "src/api/BillingProfiles";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Toggle } from "components/ds/form/toggle/toggle";
@@ -15,14 +16,18 @@ import { TTeamworkMode } from "./teamwork-mode.types";
 export function TeamworkMode({ type, isSwitchableToSelfEmployed, id }: TTeamworkMode.Props) {
   const { T } = useIntl();
 
-  const isChecked = type === BillingProfilesTypes.type.Company;
-  const disabled = !isSwitchableToSelfEmployed && isChecked;
-
-  const { mutate: updateBillingType, ...restUpdateBillingType } = BillingProfilesApi.mutations.useUpdateBillingType({
+  const {
+    mutate: updateBillingType,
+    isPending,
+    ...restUpdateBillingType
+  } = BillingProfilesApi.mutations.useUpdateBillingType({
     params: {
       billingProfileId: id,
     },
   });
+
+  const isChecked = type === BillingProfilesTypes.type.Company;
+  const disabled = !isSwitchableToSelfEmployed && isChecked;
 
   useMutationAlert({
     mutation: restUpdateBillingType,
@@ -36,6 +41,14 @@ export function TeamworkMode({ type, isSwitchableToSelfEmployed, id }: TTeamwork
       type: isChecked ? BillingProfilesTypes.type.SelfEmployed : BillingProfilesTypes.type.Company,
     });
   };
+
+  if (isPending) {
+    return (
+      <Flex alignItems="center" className="gap-1" justifyContent="end">
+        <Spinner />
+      </Flex>
+    );
+  }
 
   return (
     <Flex alignItems="center" className="gap-1" justifyContent="end">
