@@ -4,6 +4,8 @@ import { ProjectOverviewContributor } from "src/components/Project/Overview/Over
 import { ProjectOverviewEcosystem } from "src/components/Project/Overview/OverviewEcosystem";
 import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
 import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
+import { ProjectOverviewRepos } from "src/components/Project/Overview/OverviewRepos/OverviewRepos";
+import SectionTitle from "src/components/Project/Overview/OverviewSectionTitle";
 import { ProjectOverviewSponsors } from "src/components/Project/Overview/OverviewSponsors";
 import { ProjectOverviewTechnologies } from "src/components/Project/Overview/OverviewTechnologies";
 import isDefined from "src/utils/isDefined";
@@ -34,13 +36,23 @@ export default function OverviewPanel({ project }: Props) {
   }
 
   return (
-    <Card background="base" className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
-      <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
-      <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
-      <ProjectOverviewEcosystem ecosystems={ecosystems} />
-      <ProjectOverviewSponsors sponsors={sponsors} />
-      <ProjectOverviewTechnologies technologies={technologies} />
-      <ProjectOverviewMoreInfo moreInfos={moreInfos} />
-    </Card>
+    <>
+      <Card background="base" className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
+        <SectionTitle titleKey="project.details.overview.projectDetails" remixIconName="ri-folder-line" />
+
+        <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
+        <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
+        <ProjectOverviewEcosystem ecosystems={ecosystems} />
+        <ProjectOverviewSponsors sponsors={sponsors} />
+        <ProjectOverviewTechnologies technologies={technologies} />
+        <ProjectOverviewMoreInfo moreInfos={moreInfos} />
+      </Card>
+
+      <Card background="base" className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
+        <SectionTitle titleKey="project.details.overview.repositories.title" remixIconName="ri-git-repository-line" />
+
+        <ProjectOverviewRepos project={project} />
+      </Card>
+    </>
   );
 }

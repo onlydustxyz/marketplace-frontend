@@ -40,4 +40,5 @@ export const PROJECT_TAGS = {
     "show-contributors",
     { projectId, githubUserId },
   ],
+  good_first_issues: (projectId: string) => [RESSOURCE_TAGS.PROJECTS, "good-first-issues", { projectId }],
 };
