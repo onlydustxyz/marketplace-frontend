@@ -7,7 +7,6 @@ import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { TCurrencyBudget } from "components/features/currency/currency-budget/currency-budget.types";
-import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 function BudgetInfoRow({ label, amount, currency }: TCurrencyBudget.BudgetInfoRowProps) {
@@ -38,9 +37,11 @@ export function CurrencyBudget({ className, selectedBudget, rewardAmount }: TCur
 
   return (
     <div className={cn("flex flex-col gap-3", className)}>
-      <Typography variant="body-s" className="uppercase text-spaceBlue-200">
-        <Translate token={"v2.features.currency.budget.title"} />
-      </Typography>
+      <Typography
+        variant="body-s"
+        className="uppercase text-spaceBlue-200"
+        translate={{ token: "v2.features.currency.budget.title" }}
+      />
       {selectedBudget && (
         <>
           <BudgetInfoRow
