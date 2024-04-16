@@ -11,11 +11,11 @@ import { Typography } from "components/layout/typography/typography";
 
 function BudgetInfoRow({ label, amount, currency }: TCurrencyBudget.BudgetInfoRowProps) {
   return (
-    <div className="flex flex-row items-center justify-between gap-2">
+    <div className="flex items-center justify-between gap-2">
       <Typography variant="body-s" className="line-clamp-1 text-greyscale-50">
         {label}
       </Typography>
-      <div className="flex flex-row items-center gap-2">
+      <div className="flex items-center gap-2">
         <Typography variant="body-s" className="text-right text-greyscale-50">
           {Money.format({ amount, currency }).string}
         </Typography>
