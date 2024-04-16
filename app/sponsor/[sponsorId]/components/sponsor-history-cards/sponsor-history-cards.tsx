@@ -37,9 +37,8 @@ export function SponsorHistoryCards() {
 
   return (
     <div className={"grid gap-3"}>
-      {transactions.map((t, i) => (
-        // TODO @hayden get transaction id as key
-        <SponsorHistoryCard key={i} {...t} />
+      {transactions.map(t => (
+        <SponsorHistoryCard key={t.id} {...t} />
       ))}
       {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
     </div>
