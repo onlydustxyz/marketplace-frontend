@@ -9,9 +9,11 @@ import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { CurrencyBudget } from "components/features/currency/currency-budget/currency-budget";
 import { CurrencyConverter } from "components/features/currency/currency-converter/currency-converter";
 import { useCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
+import { Translate } from "components/layout/translate/translate";
 
 import { RewardBudgetProps } from "./RewardBudget.type";
 import { RewardBudgetUtils } from "./RewardBudget.utils";
@@ -60,17 +62,22 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
       </div>
 
       <div className="flex w-full flex-col gap-2 border-t border-t-greyscale-50/8 p-8 pt-4">
-        <Button
-          variant="primary"
-          disabled={!canRewards || loading}
-          size="l"
-          backgroundColor="blue"
-          className="w-full"
-          type={"submit"}
+        <Tooltip
+          content={<Translate token="v2.features.currency.budget.budgetExceededOrEmpty" />}
+          isDisabled={canRewards}
         >
-          <CheckLine />
-          {T("rewardBudget.submit")}
-        </Button>
+          <Button
+            variant="primary"
+            disabled={!canRewards || loading}
+            size="l"
+            backgroundColor="blue"
+            className="w-full"
+            type={"submit"}
+          >
+            <CheckLine />
+            {T("rewardBudget.submit")}
+          </Button>
+        </Tooltip>
         <FieldInfoMessage
           icon={({ className }) => <InformationLine className={className} />}
           className={cn({

@@ -6,30 +6,25 @@ import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
-import { Tooltip } from "components/ds/tooltip/tooltip";
 import { TCurrencyBudget } from "components/features/currency/currency-budget/currency-budget.types";
-import { Icon } from "components/layout/icon/icon";
-import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 function BudgetInfoRow({ label, amount, currency, isWarning }: TCurrencyBudget.BudgetInfoRowProps) {
   return (
     <div className="flex items-center justify-between gap-2">
-      <div className="flex gap-1">
-        {isWarning ? (
-          <Tooltip content={<Translate token="v2.features.currency.budget.budgetExceeded" />}>
-            <Icon remixName="ri-information-line" size={16} color="orange" />
-          </Tooltip>
-        ) : null}
-        <Typography variant="body-s" className="line-clamp-1 text-greyscale-50">
-          {label}
-        </Typography>
-      </div>
+      <Typography variant="body-s" className="text-greyscale-50">
+        {label}
+      </Typography>
       <div className="flex items-center gap-2">
-        <Typography variant="body-s" className={cn("text-right text-greyscale-50", { "text-orange-500": isWarning })}>
+        <Typography
+          variant="body-s"
+          className={cn("whitespace-nowrap text-right text-greyscale-50", {
+            "text-orange-500": isWarning,
+          })}
+        >
           {Money.format({ amount, currency }).string}
         </Typography>
-        <Chip solid className="h-5 w-5 flex-shrink-0">
+        <Chip solid className="h-4 w-4 flex-shrink-0">
           <CurrencyIcons currency={Money.fromSchema({ code: currency.code })} className="h-4 w-4" />
         </Chip>
       </div>

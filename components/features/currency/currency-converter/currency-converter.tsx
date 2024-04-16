@@ -46,7 +46,7 @@ export function CurrencyConverter({ className, budgets, onChange }: TCurrencyCon
         <UsdInput value={usdValue} onChange={handleSetUsdValue} />
         <IconTag
           icon={{ remixName: "ri-arrow-down-line" }}
-          className="relative z-10 m-auto -my-2 bg-whiteFakeOpacity-2 text-spaceBlue-400"
+          className="relative z-10 m-auto -my-2 bg-card-background-base text-spaceBlue-400"
         />
         {currencySelection && (
           <AmountSelect
