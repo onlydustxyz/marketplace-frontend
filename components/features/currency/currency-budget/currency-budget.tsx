@@ -29,7 +29,7 @@ function BudgetInfoRow({ label, amount, currency, isWarning }: TCurrencyBudget.B
         <Typography variant="body-s" className={cn("text-right text-greyscale-50", { "text-orange-500": isWarning })}>
           {Money.format({ amount, currency }).string}
         </Typography>
-        <Chip solid className="h-5 w-5 flex-shrink-0">
+        <Chip solid className="h-4 w-4 flex-shrink-0">
           <CurrencyIcons currency={Money.fromSchema({ code: currency.code })} className="h-4 w-4" />
         </Chip>
       </div>
