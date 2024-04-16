@@ -1,0 +1,11 @@
+{
+  "converter": {
+    "title": "Select an amount"
+  },
+  "budget": {
+    "title": "Project Budget",
+    "currentBudget": "Current Budget",
+    "amountRewarded": "Amount rewarded",
+    "budgetAfterReward": "Budget after reward"
+  }
+}
