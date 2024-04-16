@@ -17,13 +17,13 @@ export function useCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
   }, [currencySelection]);
 
   function convertValues({ value, currency, isUSD }: { value: string; currency?: Money.Currency; isUSD: boolean }) {
-    const currentBudget = budgets?.find(budget => budget.currency.code === currency?.code);
-
     if (!value) {
       setUsdValue("");
       setCurrencyAmount("");
       return;
     }
+
+    const currentBudget = budgets?.find(budget => budget.currency.code === currency?.code);
 
     if (!currentBudget) {
       return;
