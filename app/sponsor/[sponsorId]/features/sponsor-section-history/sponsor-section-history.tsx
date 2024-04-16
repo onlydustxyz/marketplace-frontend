@@ -1,6 +1,6 @@
 import { useMediaQuery } from "usehooks-ts";
 
-import { SponsorHistoryCard } from "app/sponsor/[sponsorId]/components/sponsor-history-card/sponsor-history-card";
+import { SponsorHistoryCards } from "app/sponsor/[sponsorId]/components/sponsor-history-cards/sponsor-history-cards";
 import { SponsorHistoryTable } from "app/sponsor/[sponsorId]/components/sponsor-history-table/sponsor-history-table";
 
 import { viewportConfig } from "src/config";
@@ -17,13 +17,7 @@ export function SponsorSectionHistory() {
         <Translate token="v2.pages.sponsor.history.title" />
       </Typography>
 
-      {isLg ? (
-        <SponsorHistoryTable />
-      ) : (
-        <div className={"grid gap-3"}>
-          <SponsorHistoryCard />
-        </div>
-      )}
+      {isLg ? <SponsorHistoryTable /> : <SponsorHistoryCards />}
     </section>
   );
 }

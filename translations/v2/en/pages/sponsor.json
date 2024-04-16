@@ -23,6 +23,8 @@
     "project": "Project",
     "deposit": "Deposit",
     "allocated": "Allocated",
-    "unallocated": "Unallocated"
+    "unallocated": "Unallocated",
+    "withdrawal": "Withdrawal",
+    "empty": "No transactions yet"
   }
 }

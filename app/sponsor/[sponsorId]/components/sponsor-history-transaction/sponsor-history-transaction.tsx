@@ -11,20 +11,26 @@ export function SponsorHistoryTransaction({ type }: TSponsorHistoryTransaction.P
   const { T } = useIntl();
 
   const map: Record<typeof type, { className: string; icon: RemixIconsName; label: string }> = {
-    deposit: {
+    DEPOSIT: {
       className: "border-github-green-light text-github-green-light",
       icon: "ri-arrow-left-down-line",
       label: T("v2.pages.sponsor.history.deposit"),
     },
-    allocated: {
+    ALLOCATION: {
       className: "border-spacePurple-500 text-spacePurple-500",
       icon: "ri-arrow-right-up-line",
       label: T("v2.pages.sponsor.history.allocated"),
     },
-    unallocated: {
+    UNALLOCATION: {
       className: "border-github-red text-github-red",
       icon: "ri-arrow-left-line",
       label: T("v2.pages.sponsor.history.unallocated"),
+    },
+    // TODO @hayden handle design
+    WITHDRAWAL: {
+      className: "border-github-red text-github-red",
+      icon: "ri-arrow-left-line",
+      label: T("v2.pages.sponsor.history.withdrawal"),
     },
   };
 
