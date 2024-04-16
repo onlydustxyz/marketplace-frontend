@@ -10,7 +10,7 @@ export function UsdInput({ inputProps, value, onChange }: TUsdInput.Props) {
   return (
     <Input
       endContent={
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex items-center gap-2">
           <Chip solid className="h-5 w-5 flex-shrink-0">
             <CurrencyIcons currency={Money.fromSchema({ code: Money.USD.code })} className="h-5 w-5" />
           </Chip>
