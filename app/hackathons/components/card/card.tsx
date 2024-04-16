@@ -1,4 +1,4 @@
-import { format, isSameMonth, isSameYear } from "date-fns";
+import { format } from "date-fns";
 import Image from "next/image";
 import background from "public/images/hackathons-cards-bg.webp";
 import { useMemo } from "react";
@@ -18,30 +18,13 @@ export function Card({ title, ...props }: TCard.Props) {
     };
     const end = {
       day: format(endDate, "dd"),
-      month: format(endDate, "MMMM"),
-      year: format(endDate, "yyyy"),
     };
-
-    const sameMonth = isSameMonth(startDate, endDate);
-    const sameYear = isSameYear(startDate, endDate);
 
     // March 18 - 24 2024
     // March 18 - April 24 2024
     // March 18 2024 - March 24 2025
 
-    if (!sameYear && !sameMonth) {
-      return `${start.month} ${start.day} - ${end.month}  ${end.day} ${end.year}`;
-    }
-
-    if (!sameYear) {
-      return `${start.month} ${start.day} - ${end.day} ${end.year}`;
-    }
-
-    if (!sameMonth) {
-      return `${start.month} ${start.day} - ${end.month}  ${end.day}`;
-    }
-
-    return `${start.month} ${start.day} - ${end.day}`;
+    return `${start.month} ${start.day} - ${end.day} ${start.year}`;
   }, [props]);
 
   return (
