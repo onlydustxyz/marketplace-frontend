@@ -7,6 +7,6 @@
     "currentBudget": "Current Budget",
     "amountRewarded": "Amount rewarded",
     "budgetAfterReward": "Budget after reward",
-    "budgetExceeded": "Not enough budget"
+    "budgetExceededOrEmpty": "Budget exceeded or empty"
   }
 }
