@@ -6,6 +6,7 @@
     "title": "Project Budget",
     "currentBudget": "Current Budget",
     "amountRewarded": "Amount rewarded",
-    "budgetAfterReward": "Budget after reward"
+    "budgetAfterReward": "Budget after reward",
+    "budgetExceeded": "Not enough budget"
   }
 }
