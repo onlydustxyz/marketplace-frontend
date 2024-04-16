@@ -5,8 +5,8 @@ import { TCurrencyConverter } from "components/features/currency/currency-conver
 import { TUseCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter.types";
 
 export function useCurrencyConverter({ budgets }: TUseCurrencyConverter.Props) {
-  const [usdValue, setUsdValue] = useState<string>("");
-  const [currencyAmount, setCurrencyAmount] = useState<string>("");
+  const [usdValue, setUsdValue] = useState("");
+  const [currencyAmount, setCurrencyAmount] = useState("");
   const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(budgets?.[0].currency);
   const [currencyBudget, setCurrencyBudget] = useState<TCurrencyConverter.BudgetResponse | undefined>(budgets?.[0]);
 
