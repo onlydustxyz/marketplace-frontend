@@ -27,7 +27,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
   const onSelectedBudgetChange = ({ amount, currency }: { amount?: string; currency?: Money.Currency }) => {
     if (!props.onChange) return;
-    if (amount) {
+    if (amount || amount === "") {
       handleSetCurrencyAmount(amount);
       props.onChange({
         amount: parseFloat(amount) || 0,
@@ -50,7 +50,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
   return (
     <div className="flex w-full flex-col rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 shadow-light">
-      <div className="flex flex-col p-6 pb-4">
+      <div className="flex flex-col p-8 pb-4">
         <CurrencyConverter
           budgets={budgets}
           onChange={onSelectedBudgetChange}
@@ -59,7 +59,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
         <CurrencyBudget selectedBudget={currencyBudget} rewardAmount={currencyAmount} className="pt-4" />
       </div>
 
-      <div className="flex w-full flex-col gap-2 border-t border-t-greyscale-50/8 p-6 pt-4">
+      <div className="flex w-full flex-col gap-2 border-t border-t-greyscale-50/8 p-8 pt-4">
         <Button
           width={Width.Full}
           disabled={!canRewards || props.loading}
