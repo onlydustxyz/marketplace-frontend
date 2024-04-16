@@ -65,7 +65,7 @@ export function AmountSelect({
                       className="h-5 w-5"
                     />
                   </Chip>
-                  <label>{item.key}</label>
+                  <span>{item.key}</span>
                 </div>
               ));
             }}
