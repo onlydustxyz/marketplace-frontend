@@ -2,6 +2,8 @@ import { components } from "src/__generated/api";
 import { API_PATH } from "src/api/ApiPath";
 import { SPONSORS_TAGS } from "src/api/Sponsors/tags";
 import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
+import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "src/api/useInfiniteBaseQuery";
+import { QueryParams } from "src/utils/getEndpointUrl";
 
 type UseGetSponsorByIdResponse = components["schemas"]["SponsorDetailsResponse"];
 
@@ -17,6 +19,30 @@ const useGetSponsorById = ({
   });
 };
 
+type UseGetSponsorTransactionsResponse = components["schemas"]["TransactionHistoryPageResponse"];
+
+interface SponsorTransactionsParams {
+  sponsorId: string;
+  queryParams?: QueryParams;
+  pageSize?: number;
+}
+
+const useGetSponsorTransactions = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<UseGetSponsorTransactionsResponse, SponsorTransactionsParams>) => {
+  return useInfiniteBaseQuery<UseGetSponsorTransactionsResponse>(
+    {
+      resourcePath: API_PATH.SPONSOR_TRANSACTIONS(params?.sponsorId || ""),
+      tags: SPONSORS_TAGS.transactions(),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 10,
+    },
+    options
+  );
+};
+
 export default {
   useGetSponsorById,
+  useGetSponsorTransactions,
 };
