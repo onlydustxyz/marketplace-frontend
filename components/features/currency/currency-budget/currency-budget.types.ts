@@ -7,6 +7,7 @@ export namespace TCurrencyBudget {
     label: string;
     amount: number;
     currency: Money.Currency;
+    isWarning?: boolean;
   }
   export interface CurrencyBudgetProps {
     className?: string;
