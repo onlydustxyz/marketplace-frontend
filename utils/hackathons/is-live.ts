@@ -6,9 +6,5 @@ export function isHackathonLive(hackathon: components["schemas"]["HackathonsList
   const start = new Date(hackathon.startDate);
   const end = new Date(hackathon.endDate);
 
-  if (isPast(start) && isPast(end)) {
-    return false;
-  }
-
   return isPast(start) && isFuture(end);
 }
