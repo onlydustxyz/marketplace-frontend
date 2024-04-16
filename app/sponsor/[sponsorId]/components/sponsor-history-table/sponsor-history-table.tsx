@@ -6,6 +6,7 @@ import { useLocalStorage } from "react-use";
 import { Money } from "utils/Money/Money";
 
 import { SponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction";
+import { useSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -23,7 +24,6 @@ import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
-import { FiltersTransactions } from "components/features/filters/filters-transactions/filters-transactions";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
@@ -40,23 +40,23 @@ const projects = [
   },
 ];
 
-const transactions = [
-  {
-    id: "deposit",
-    label: "Deposit",
-    value: "deposit",
-  },
-  {
-    id: "allocated",
-    label: "Allocated",
-    value: "allocated",
-  },
-  {
-    id: "unallocated",
-    label: "Unallocated",
-    value: "unallocated",
-  },
-];
+// const transactions = [
+//   {
+//     id: "deposit",
+//     label: "Deposit",
+//     value: "deposit",
+//   },
+//   {
+//     id: "allocated",
+//     label: "Allocated",
+//     value: "allocated",
+//   },
+//   {
+//     id: "unallocated",
+//     label: "Unallocated",
+//     value: "unallocated",
+//   },
+// ];
 
 type Filters = {
   dateRange: DateRange;
@@ -90,6 +90,10 @@ export function SponsorHistoryTable() {
     ],
   });
 
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSponsorHistory();
+
+  const transactions = useMemo(() => data?.pages.flatMap(({ transactions }) => transactions) ?? [], [data]);
+
   function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
     const updatedState = { ...prevState, ...newState };
 
@@ -118,67 +122,70 @@ export function SponsorHistoryTable() {
     setSortDescriptor(sort);
   }
 
-  const hasNextPage = true;
-  const fetchNextPage = () => {};
-  const isFetchingNextPage = false;
-
   const columns: TTable.Column[] = useMemo(
     () => [
       {
-        key: "date",
+        key: "DATE",
         children: T("v2.pages.sponsor.history.date"),
         width: "50%",
         allowsSorting: true,
       },
       {
-        key: "transaction",
+        key: "TYPE",
         children: T("v2.pages.sponsor.history.transaction"),
+        allowsSorting: true,
       },
       {
-        key: "amount",
+        key: "AMOUNT",
         children: T("v2.pages.sponsor.history.amount"),
+        allowsSorting: true,
       },
       {
-        key: "project",
+        key: "PROJECT",
         children: T("v2.pages.sponsor.history.project"),
+        allowsSorting: true,
       },
     ],
     []
   );
 
-  const rows: TTable.Row[] = [
-    {
-      key: "123",
-      date: format(new Date(), "MMMM dd yyyy, KK:mm a"),
-      transaction: <SponsorHistoryTransaction type={"deposit"} />,
-      amount: (
-        <Flex className="gap-2" alignItems="center">
-          <Chip solid className="h-5 w-5">
-            <CurrencyIcons currency={Money.fromSchema({ code: "USD" })} className="h-5 w-5" />
-          </Chip>
-          <Typography variant={"body-s"}>
-            {
-              Money.format({
-                amount: 123,
-                currency: Money.fromSchema({ code: "USD" }),
-                options: { currencyClassName: "text-body-xs" },
-              }).html
-            }
-          </Typography>
-        </Flex>
-      ),
-      project: (
-        <Avatar.Labelled
-          avatarProps={{ src: "", alt: "", shape: "square" }}
-          labelProps={{ title: "" }}
-          className={"max-w-[120px]"}
-          truncate
-        >
-          Madara
-        </Avatar.Labelled>
-      ),
-    },
-  ];
+  const rows: TTable.Row[] = useMemo(
+    () =>
+      transactions?.map((t, i) => ({
+        key: t.id ?? String(i),
+        DATE: format(new Date(t.date), "MMMM dd yyyy, KK:mm a"),
+        TYPE: <SponsorHistoryTransaction type={t.type} />,
+        AMOUNT: (
+          <Flex className="gap-2" alignItems="center">
+            <Chip solid className="h-5 w-5">
+              <CurrencyIcons currency={t.amount.currency} className="h-5 w-5" />
+            </Chip>
+            <Typography variant={"body-s"}>
+              {
+                Money.format({
+                  amount: t.amount.amount,
+                  currency: t.amount.currency,
+                  options: { currencyClassName: "text-body-xs" },
+                }).html
+              }
+            </Typography>
+          </Flex>
+        ),
+        PROJECT: t.project ? (
+          <Avatar.Labelled
+            avatarProps={{ src: t.project.logoUrl, alt: t.project.name, shape: "square" }}
+            labelProps={{ title: t.project.name }}
+            className={"max-w-[120px]"}
+            truncate
+          >
+            {t.project.name}
+          </Avatar.Labelled>
+        ) : (
+          "-"
+        ),
+      })) ?? ([] as TTable.Row[]),
+    [transactions]
+  );
 
   return (
     <Card background={"base"} className={"grid gap-5"}>
@@ -191,13 +198,13 @@ export function SponsorHistoryTable() {
           hideLabel
           isElevated={false}
         />
-        <FiltersTransactions
-          transactions={transactions}
-          selected={[]}
-          onChange={() => {}}
-          hideLabel
-          isElevated={false}
-        />
+        {/*<FiltersTransactions*/}
+        {/*  transactions={transactions}*/}
+        {/*  selected={[]}*/}
+        {/*  onChange={() => {}}*/}
+        {/*  hideLabel*/}
+        {/*  isElevated={false}*/}
+        {/*/>*/}
         <FiltersCurrencies
           selected={filters.currency ?? initialFilters.currency}
           onChange={updateCurrency}
@@ -220,9 +227,7 @@ export function SponsorHistoryTable() {
         rows={rows}
         sortDescriptor={sortDescriptor}
         onSortChange={handleSort}
-        bottomContent={
-          hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite={false} /> : null
-        }
+        bottomContent={hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} /> : null}
       />
     </Card>
   );
