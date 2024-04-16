@@ -7,7 +7,6 @@ import { AmountSelect } from "components/features/currency/amount-select/amount-
 import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
 import { useCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
 import { UsdInput } from "components/features/currency/usd-input/usd-input";
-import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { QuickValueButton } from "./components/quick-value-button";
@@ -38,9 +37,11 @@ export function CurrencyConverter({ className, budgets, onChange }: TCurrencyCon
 
   return (
     <div className={cn("flex flex-col gap-3", className)}>
-      <Typography variant="body-s" className="uppercase text-spaceBlue-200">
-        <Translate token={"v2.features.currency.converter.title"} />
-      </Typography>
+      <Typography
+        variant="body-s"
+        className="uppercase text-spaceBlue-200"
+        translate={{ token: "v2.features.currency.converter.title" }}
+      />
       <div>
         <UsdInput value={usdValue} onChange={handleSetUsdValue} />
         <IconTag
