@@ -1,5 +1,3 @@
-import React from "react";
-
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
