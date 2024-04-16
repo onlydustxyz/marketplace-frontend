@@ -8,6 +8,7 @@ import InformationLine from "src/icons/InformationLine";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
+import { Card } from "components/ds/card/card";
 import { CurrencyBudget } from "components/features/currency/currency-budget/currency-budget";
 import { CurrencyConverter } from "components/features/currency/currency-converter/currency-converter";
 import { useCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
@@ -18,7 +19,7 @@ import { RewardBudgetUtils } from "./RewardBudget.utils";
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
 
-  const { budgets } = props;
+  const { budgets, loading } = props;
   const { currencyAmount, handleSetCurrencyAmount, handleSetCurrencySelection, currencySelection, currencyBudget } =
     useCurrencyConverter({
       budgets,
@@ -48,7 +49,7 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   );
 
   return (
-    <div className="flex w-full flex-col rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-2 shadow-light">
+    <Card background="base" hasPadding={false}>
       <div className="flex flex-col p-8 pb-4">
         <CurrencyConverter
           budgets={budgets}
@@ -61,10 +62,11 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
       <div className="flex w-full flex-col gap-2 border-t border-t-greyscale-50/8 p-8 pt-4">
         <Button
           variant="primary"
-          disabled={!canRewards || props.loading}
+          disabled={!canRewards || loading}
           size="l"
           backgroundColor="blue"
           className="w-full"
+          type={"submit"}
         >
           <CheckLine />
           {T("rewardBudget.submit")}
@@ -80,6 +82,6 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
             : T("currencies.network.label", { currency: T(`currencies.network.${currencySelection?.code}`) })}
         </FieldInfoMessage>
       </div>
-    </div>
+    </Card>
   );
 };
