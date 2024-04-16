@@ -1,14 +1,13 @@
 import { FC, useMemo } from "react";
 import { Money } from "utils/Money/Money";
 
-import Button, { ButtonOnBackground } from "src/components/Button";
-import { Width } from "src/components/Button";
 import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
 import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
 import { cn } from "src/utils/cn";
 
+import { Button } from "components/ds/button/button";
 import { CurrencyBudget } from "components/features/currency/currency-budget/currency-budget";
 import { CurrencyConverter } from "components/features/currency/currency-converter/currency-converter";
 import { useCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
@@ -61,10 +60,11 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
 
       <div className="flex w-full flex-col gap-2 border-t border-t-greyscale-50/8 p-8 pt-4">
         <Button
-          width={Width.Full}
+          variant="primary"
           disabled={!canRewards || props.loading}
-          htmlType="submit"
-          onBackground={ButtonOnBackground.Blue}
+          size="l"
+          backgroundColor="blue"
+          className="w-full"
         >
           <CheckLine />
           {T("rewardBudget.submit")}
