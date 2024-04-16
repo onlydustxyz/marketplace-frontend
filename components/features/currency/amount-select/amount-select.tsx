@@ -69,7 +69,7 @@ export function AmountSelect({
                 </div>
               ));
             }}
-            // popoverProps={{ placement: "right-start" }}
+            popoverProps={{ placement: "right-start" }}
             isDisabled={inputProps?.disabled || !orderedCurrencies?.length}
           >
             {orderedCurrencies?.map(({ currency: { code, name } }) => (

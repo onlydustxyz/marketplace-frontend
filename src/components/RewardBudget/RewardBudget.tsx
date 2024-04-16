@@ -56,7 +56,6 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           onChange={onSelectedBudgetChange}
           className="border-b border-b-greyscale-50/8 pb-4"
         />
-
         <CurrencyBudget selectedBudget={currencyBudget} rewardAmount={currencyAmount} className="pt-4" />
       </div>
 
