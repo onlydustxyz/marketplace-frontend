@@ -1,12 +1,6 @@
 {
   "converter": {
-    "title": "Select an amount",
-    "quickValues": {
-      "150Usd": "150 USD",
-      "500Usd": "500 USD",
-      "1000Usd": "1000 USD",
-      "2000Usd": "2000 USD"
-    }
+    "title": "Select an amount"
   },
   "budget": {
     "title": "Project Budget",

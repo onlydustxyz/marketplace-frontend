@@ -4,7 +4,6 @@ import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
 import { TQuickValueButton } from "components/features/currency/currency-converter/components/quick-value-button.types";
-import { Translate } from "components/layout/translate/translate";
 
 export function QuickValueButton({ value, currentUsdValue, onSetUsdValue }: TQuickValueButton.Props) {
   return (
@@ -16,7 +15,7 @@ export function QuickValueButton({ value, currentUsdValue, onSetUsdValue }: TQui
         "border-spacePurple-500": parseFloat(currentUsdValue) === parseFloat(value),
       })}
     >
-      <Translate token={`v2.features.currency.converter.quickValues.${value}Usd`} />
+      {`${value} USD`}
     </Button>
   );
 }
