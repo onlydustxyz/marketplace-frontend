@@ -21,7 +21,6 @@ import en_features_table from "translations/v2/en/features/table.json";
 import en_features_verify from "translations/v2/en/features/verify.json";
 import en_billing_create from "translations/v2/en/pages/billing-create-stacks.json";
 import en_billing_invite_team_member from "translations/v2/en/pages/billing-invite-team-member-stacks.json";
-import en_hackathons from "translations/v2/en/pages/hackathons.json";
 import en_projects from "translations/v2/en/pages/projects.json";
 import en_settings_billing from "translations/v2/en/pages/settings-billing.json";
 import en_settings_billing_coworkers from "translations/v2/en/pages/settings-billing/settings-billing-coworkers.json";
@@ -76,7 +75,6 @@ const en = {
         payout: en_settings_payout,
         invoices: en_settings_invoices,
         payoutPreferences: en_settings_payout_preferences,
-        hackathons: en_hackathons,
       },
       stacks: {
         request_payments: en_stack_request_payments,
