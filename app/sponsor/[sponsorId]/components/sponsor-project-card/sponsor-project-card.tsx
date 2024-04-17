@@ -13,7 +13,7 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function SponsorProjectCard({ name, logoUrl, remainingBudgets }: TSponsorProjectCard.Props) {
+export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBudget }: TSponsorProjectCard.Props) {
   return (
     <Card background={"base"} className={"grid content-start gap-6"}>
       <header className={"flex items-center justify-between overflow-hidden"}>
@@ -56,9 +56,8 @@ export function SponsorProjectCard({ name, logoUrl, remainingBudgets }: TSponsor
         <Avatar.Labelled avatarProps={{ src: Money.USD.logoUrl, alt: Money.USD.name, size: "s" }}>
           <Typography variant={"body-l-bold"}>
             {
-              // TODO @hayden get total USD amount
               Money.format({
-                amount: 123123,
+                amount: totalUsdBudget,
                 currency: Money.USD,
                 options: { currencyClassName: "od-text-body-m" },
               }).html
