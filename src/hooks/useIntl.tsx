@@ -8,6 +8,7 @@ import en_commons_enum from "translations/v2/en/commons/enums.json";
 import en_features_banners from "translations/v2/en/features/banners.json";
 import en_features_billings_profile from "translations/v2/en/features/billingsProfile.json";
 import en_features_contributors from "translations/v2/en/features/contributors.json";
+import en_features_currency from "translations/v2/en/features/currency.json";
 import en_features_ecosystems from "translations/v2/en/features/ecosystems.json";
 import en_features from "translations/v2/en/features/features.json";
 import en_features_filters from "translations/v2/en/features/filters.json";
@@ -20,6 +21,7 @@ import en_features_table from "translations/v2/en/features/table.json";
 import en_features_verify from "translations/v2/en/features/verify.json";
 import en_billing_create from "translations/v2/en/pages/billing-create-stacks.json";
 import en_billing_invite_team_member from "translations/v2/en/pages/billing-invite-team-member-stacks.json";
+import en_hackathons from "translations/v2/en/pages/hackathons.json";
 import en_project_details_header from "translations/v2/en/pages/project-details/project-header.json";
 import en_project_overview from "translations/v2/en/pages/project-overview.json";
 import en_projects from "translations/v2/en/pages/projects.json";
@@ -58,6 +60,7 @@ const en = {
       menu: en_features_menu,
       table: en_features_table,
       roles: en_features_roles,
+      currency: en_features_currency,
     },
     pages: {
       projects: en_projects,
@@ -81,6 +84,7 @@ const en = {
         payout: en_settings_payout,
         invoices: en_settings_invoices,
         payoutPreferences: en_settings_payout_preferences,
+        hackathons: en_hackathons,
       },
       stacks: {
         request_payments: en_stack_request_payments,

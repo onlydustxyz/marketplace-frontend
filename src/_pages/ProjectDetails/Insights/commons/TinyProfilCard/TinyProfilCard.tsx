@@ -5,8 +5,9 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import MapPinLine from "src/icons/MapPinLine";
-import SendPlane2Line from "src/icons/SendPlane2Line";
 import { cn } from "src/utils/cn";
+
+import { Icon } from "components/layout/icon/icon";
 
 import { ProfileCover, Props } from "./TinyProfilCard.type";
 import { OptionalSection, getCoverClass } from "./TinyProfilCard.utils";
@@ -30,7 +31,7 @@ export default function TinyProfileCard({
     <div className="overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base shadow-heavy">
       <div className={cn("h-14 w-full shrink-0 bg-cover p-4", coverClass)}>
         <Button className="ml-auto" type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={onAction}>
-          <SendPlane2Line />
+          <Icon remixName="ri-user-line" size={14} />
           {actionLabel}
         </Button>
       </div>

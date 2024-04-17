@@ -1066,7 +1066,7 @@
         "newcomers": {
           "sectionTitle": "New contributors",
           "sectionSubtitle": "All contrbutors that have joined one of your repositories during last month.",
-          "buttonLabel": "Say hello",
+          "buttonLabel": "Open profile",
           "dateSince": "Since __since__",
           "descriptionPlaceholder": "This contributor has no bio"
         },
@@ -1113,7 +1113,7 @@
         "churned": {
           "sectionTitle": "Churned contributors",
           "sectionSubtitle": "User that are inactive for a long time period and stop contributing to your project.",
-          "buttonLabel": "Reactivate",
+          "buttonLabel": "Open profile",
           "lastContribution": {
             "title": "Last contribution",
             "on": "on"

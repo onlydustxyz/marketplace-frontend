@@ -1,4 +1,5 @@
-import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
 import { useMemo } from "react";
 
 import { ProfileBoolean } from "app/settings/billing/[id]/general-information/components/profile-boolean/profile-boolean";
@@ -9,7 +10,9 @@ import { TProfileCompany } from "app/settings/billing/[id]/general-information/f
 export function ProfileCompany({ profile }: TProfileCompany.Props) {
   const registrationDate = useMemo(() => {
     if (profile?.registrationDate) {
-      return format(new Date(profile.registrationDate), "MMM dd, yyyy");
+      // we fix the timezone issue by using the formatInTimeZone function
+      // this is a temporary solution to handle the date provided by SUMSUB
+      return formatInTimeZone(new Date(profile.registrationDate), "Europe/Paris", "MMM dd, yyyy", { locale: enGB });
     }
 
     return profile?.registrationDate;
