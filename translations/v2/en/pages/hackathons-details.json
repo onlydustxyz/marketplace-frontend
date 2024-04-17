@@ -2,5 +2,13 @@
   "navigation": {
     "overview": "Overview",
     "tracks": "Tracks"
+  },
+  "overview": {
+    "startDate": "Start date",
+    "endDate": "End date",
+    "totalBudget": "Total budget",
+    "sponsors": "Sponsors",
+    "links": "Links",
+    "projects": "Projects"
   }
 }

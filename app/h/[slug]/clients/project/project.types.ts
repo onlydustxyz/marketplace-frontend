@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 
-export namespace TWrapper {
+export namespace TProject {
   export interface Props extends PropsWithChildren {
-    className?: string;
+    slug: string;
   }
 }

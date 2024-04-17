@@ -3,8 +3,7 @@
 import { format } from "date-fns";
 import { useMemo } from "react";
 
-import { TDisplayDate } from "app/hackathons/components/display-date/display-date.types";
-
+import { TDisplayDate } from "components/features/hackathons/display-date/display-date.types";
 import { Typography } from "components/layout/typography/typography";
 
 export function DisplayDate(props: TDisplayDate.Props) {

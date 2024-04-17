@@ -2,8 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import background from "public/images/hackathons-cards-bg.webp";
 
-import { DisplayDate } from "app/hackathons/components/display-date/display-date";
-
+import { DisplayDate } from "components/features/hackathons/display-date/display-date";
 import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -19,7 +18,7 @@ export function Card({ title, startDate, endDate, slug }: TCard.Props) {
           <Typography
             variant="special-label"
             className="uppercase"
-            translate={{ token: "v2.pages.settings.hackathons.defaultLocation" }}
+            translate={{ token: "v2.pages.hackathons.defaultLocation" }}
           />
           <Typography variant="title-xl">{title}</Typography>
           <DisplayDate endDate={endDate} startDate={startDate} />

@@ -77,8 +77,8 @@ const en = {
         payout: en_settings_payout,
         invoices: en_settings_invoices,
         payoutPreferences: en_settings_payout_preferences,
-        hackathons: { ...en_hackathons, details: en_hackathons_details },
       },
+      hackathons: { ...en_hackathons, details: en_hackathons_details },
       stacks: {
         request_payments: en_stack_request_payments,
         mandate: en_stack_mandate,

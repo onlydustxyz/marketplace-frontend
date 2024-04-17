@@ -1,80 +1,42 @@
 import { ScrollableView } from "app/h/[slug]/clients/scrollable-view/scrollable-view";
 import { Navigation } from "app/h/[slug]/components/navigation/navigation";
 import { Wrapper } from "app/h/[slug]/components/wrapper/wrapper";
-
-import { components } from "src/__generated/api";
+import { Intro } from "app/h/[slug]/features/intro/intro";
+import { MainDescription } from "app/h/[slug]/features/main-description/main-description";
+import { Overview } from "app/h/[slug]/features/overview/overview";
+import { mock } from "app/h/[slug]/mock";
 
 import { Header } from "./components/header/header";
 
-const mock: components["schemas"]["HackathonsDetailsResponse"] = {
-  description: "string",
-  startDate: "2024-04-10T00:00:00Z",
-  endDate: "2024-04-30T00:00:00Z",
-  title: "ODHack #2.0",
-  id: "e1dad47e-0b29-4198-8aec-9fc0ea5a649d",
-  slug: "od-hack-2-0",
-  links: [
-    {
-      url: "string",
-      value: "string",
-    },
-  ],
-  location: "string",
-  me: {
-    hasRegistered: false,
-  },
-  projects: [
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      logoUrl: "string",
-      name: "string",
-      slug: "my-awesome-project",
-    },
-  ],
-  sponsors: [
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8506434858363286425.png",
-      name: "Ethereum Foundation",
-      url: "https://ethereum.org",
-    },
-  ],
-  subtitle: "string",
-  totalBudget: "string",
-  tracks: [
-    {
-      description: "string",
-      iconSlug: "string",
-      name: "string",
-      projects: [
-        {
-          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
-          name: "Verkle Tries",
-          shortDescription: "A short project description",
-          slug: "my-awesome-project",
-          visibility: "PRIVATE",
-        },
-      ],
-      subtitle: "string",
-    },
-  ],
-};
-
 export default function HackathonPage({ params }: { params: { slug: string } }) {
   const { slug = "" } = params;
-
+  const data = mock;
   return (
     <ScrollableView>
-      <Header />
+      <Header endDate={data.endDate} startDate={data.startDate} title={data.title} />
       <Navigation slug={slug} />
-      <Wrapper>
-        <div className={"flex w-full flex-row items-start justify-start gap-6 pt-6"}>
-          <div className={"sticky left-0 top-6 h-12 w-[384px] bg-pink-500"}>sidecards</div>
-          <div className={"h-auto flex-1 bg-blue-500"}>
-            <div className={"h-[1500px] flex-1 bg-green-500"}>content 1</div>
-            <div className={"h-[1500px] flex-1 bg-blue-500"} id={"tracks"}>
-              tracks
+      <Wrapper className="max-md:p-2">
+        <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14" id={"overview"}>
+          <Intro title={data.title} subtitle={data.subtitle} />
+          <div className="flex w-full flex-col items-start justify-start gap-6 md:flex-row">
+            <div className="w-full md:sticky md:left-0 md:top-6 md:w-[400px]">
+              <Overview
+                startDate={data.startDate}
+                endDate={data.endDate}
+                totalBudget={data.totalBudget}
+                links={data.links}
+                sponsors={data.sponsors}
+                projects={data.projects}
+              />
+            </div>
+            <div className="h-auto flex-1">
+              <div>
+                <MainDescription description={data.description} />
+              </div>
+              {/*// KEEP FOR V2 */}
+              {/*<div className="h-[1500px] flex-1 bg-blue-500" id={"tracks"}>*/}
+              {/*  tracks*/}
+              {/*</div>*/}
             </div>
           </div>
         </div>

@@ -43,6 +43,7 @@ export const NEXT_ROUTER = {
     root: "/hackathons",
     details: {
       root: (slug: string) => `/h/${slug}`,
+      overview: (slug: string) => `/h/${slug}#overview`,
       tracks: (slug: string) => `/h/${slug}#tracks`,
     },
   },
