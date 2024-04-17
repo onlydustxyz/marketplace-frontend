@@ -1064,7 +1064,7 @@
         "errorPlaceholder": "An error occurred, please try again later.",
         "newcomers": {
           "sectionTitle": "New contributors",
-          "sectionSubtitle": "All contrbutors that have joined one of your repositories during last month.",
+          "sectionSubtitle": "All contributors that have joined one of your repositories during last month.",
           "buttonLabel": "Open profile",
           "dateSince": "Since __since__",
           "descriptionPlaceholder": "This contributor has no bio"
