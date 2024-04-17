@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { TScrollableView } from "./scrollable-view.types";
 
 const scrollValue = {
-  full: 254 - 32,
+  full: 254,
   compact: 120 - 32,
   navigation: 56,
 };

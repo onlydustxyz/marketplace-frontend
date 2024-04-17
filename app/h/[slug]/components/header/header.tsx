@@ -10,21 +10,23 @@ import { Typography } from "components/layout/typography/typography";
 
 export function Header({ startDate, endDate, title }: THeader.Props) {
   return (
-    <div className="relative flex h-full w-full flex-col items-start justify-start gap-11 overflow-hidden rounded-t-[32px] bg-spacePurple-500 pt-8">
+    <div className="relative flex h-full w-full flex-1 flex-col items-start justify-start gap-11 overflow-hidden rounded-t-[32px] bg-spacePurple-500 pt-8">
       <Image src={background} alt={title} className="absolute inset-0 h-full w-full object-cover object-center" />
       <Wrapper>
-        <div className="relative z-[1] flex flex-col items-start justify-start gap-3">
+        <div className="relative z-[1] flex flex-1 flex-col items-start justify-between gap-1 pb-8">
           <BackButton />
-          <Typography
-            variant="special-label"
-            className="uppercase transition-opacity group-data-[header-compact=true]:opacity-0"
-            translate={{ token: "v2.pages.hackathons.defaultLocation" }}
-          />
-          <Typography variant="title-xl" className="transition-opacity group-data-[header-compact=true]:opacity-0">
-            {title}
-          </Typography>
-          <div className="transition-opacity group-data-[header-compact=true]:opacity-0">
-            <DisplayDate endDate={endDate} startDate={startDate} />
+          <div className="relative z-[1] flex flex-col items-start justify-start gap-3">
+            <Typography
+              variant="special-label"
+              className="uppercase transition-opacity group-data-[header-compact=true]:opacity-0"
+              translate={{ token: "v2.pages.hackathons.defaultLocation" }}
+            />
+            <Typography variant="title-xl" className="transition-opacity group-data-[header-compact=true]:opacity-0">
+              {title}
+            </Typography>
+            <div className="transition-opacity group-data-[header-compact=true]:opacity-0">
+              <DisplayDate endDate={endDate} startDate={startDate} />
+            </div>
           </div>
         </div>
       </Wrapper>

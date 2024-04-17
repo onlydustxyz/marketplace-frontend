@@ -33,8 +33,8 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
     "Select issues that match your skills, get assigned, and start making your mark! FIRST COME FIRST SERVE!\n" +
     "\n" +
     "And lastly, enjoy! If your contribution is eligible, you’ll get rewarded via OnlyDust.",
-  startDate: "2024-04-22T10:30:00Z",
-  endDate: "2024-05-01T11:59:00Z",
+  startDate: "2024-04-22T10:30:00+02:00",
+  endDate: "2024-05-01T11:59:00+02:00",
   title: "ODHack #3.0",
   id: "e1dad47e-0b29-4198-8aec-9fc0ea5a649d",
   slug: "od-hack-3-0",
