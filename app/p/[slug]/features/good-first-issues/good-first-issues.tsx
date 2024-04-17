@@ -12,7 +12,6 @@ import { EmptyState } from "./components/empty-state/empty-state";
 import { IssueCard } from "./components/issue-card/issue-card";
 import { TGoodFirstIssues } from "./good-first-issues.types";
 
-// TODO: Add in translate
 // TODO: Refacto ShowMore
 export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: TGoodFirstIssues.Props) {
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
@@ -57,7 +56,7 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
             <Icon remixName="ri-thumb-up-line" size={20} />
           </Flex>
 
-          <Flex direction="col" className="gap-1">
+          <Flex direction="col" className="gap-1" width="full">
             <Flex alignItems="center" justifyContent="between">
               <Typography
                 variant="body-m-bold"

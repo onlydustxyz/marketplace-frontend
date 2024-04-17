@@ -1,3 +1,6 @@
+import { useMediaQuery } from "usehooks-ts";
+
+import { viewportConfig } from "src/config";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
 import { Button } from "components/ds/button/button";
@@ -13,23 +16,27 @@ import { Typography } from "components/layout/typography/typography";
 import { TIssueCard } from "./issue-card.types";
 
 // TODO: Add applicants (back too)
-// TODO: Truncante title after 2 lines
-// TODO: Mobile
 export function IssueCard({ issue }: TIssueCard.Props) {
-  return (
-    <Card key={issue.id} background="base">
-      <Flex direction="col" className="gap-3">
-        <Flex justifyContent="between" className="gap-6">
-          <Typography variant="body-m-bold">{issue.title}</Typography>
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-          <BaseLink href={issue.htmlUrl}>
-            <Button variant="secondary" size="xs">
-              <Translate token="v2.pages.project.overview.goodFirstIssues.button" />
-            </Button>
-          </BaseLink>
+  return (
+    <Card key={issue.id} background="base" hasPadding={false}>
+      <Flex direction="col" className="gap-4 p-5 md:gap-3">
+        <Flex justifyContent="between" className="gap-6">
+          <Typography variant="body-m-bold" className="line-clamp-2">
+            {issue.title}
+          </Typography>
+
+          {isMd ? (
+            <BaseLink href={issue.htmlUrl}>
+              <Button variant="secondary" size="xs">
+                <Translate token="v2.pages.project.overview.goodFirstIssues.button" />
+              </Button>
+            </BaseLink>
+          ) : null}
         </Flex>
 
-        <Flex alignItems="center" className="gap-3">
+        <Flex alignItems="center" className="gap-3 gap-y-2" wrap="wrap">
           <Flex alignItems="center" className="gap-1">
             <Icon remixName="ri-time-line" className="text-spaceBlue-100" />
 
@@ -57,7 +64,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           </Flex>
         </Flex>
 
-        <Flex alignItems="center" className="gap-2">
+        <Flex wrap="wrap" className="gap-2">
           <Flex alignItems="center" className="gap-1">
             <Icon remixName="ri-price-tag-3-line" className="text-spaceBlue-100" />
 
@@ -87,6 +94,14 @@ export function IssueCard({ issue }: TIssueCard.Props) {
             </Flex>
           )}
         </Flex>
+
+        {!isMd ? (
+          <BaseLink href={issue.htmlUrl}>
+            <Button variant="secondary" size="xs" width="full">
+              <Translate token="v2.pages.project.overview.goodFirstIssues.button" />
+            </Button>
+          </BaseLink>
+        ) : null}
       </Flex>
     </Card>
   );
