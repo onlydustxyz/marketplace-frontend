@@ -2,14 +2,12 @@ import { ReactNode } from "react";
 
 import { components } from "src/__generated/api";
 import IssueOpen from "src/assets/icons/IssueOpen";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Contributor from "src/components/Contributor";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
 import { useIntl } from "src/hooks/useIntl";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
@@ -52,10 +50,7 @@ export function useMostActiveContributorsTable() {
       ),
       label: T("project.details.insights.mostActives.table.activity"),
       width: HeaderCellWidth.Fifth,
-    },
-    {
-      icon: <div />,
-      label: "",
+      className: "justify-end",
     },
   ];
 
@@ -79,19 +74,8 @@ export function useMostActiveContributorsTable() {
         <Cell height={CellHeight.Compact}>{completedIssueCount}</Cell>
 
         <Cell height={CellHeight.Compact}>{completedCodeReviewCount}</Cell>
-        <Cell height={CellHeight.Compact}>
+        <Cell height={CellHeight.Compact} className="justify-end">
           <ActivityGraph data={contributionCountPerWeeks ?? []} />
-        </Cell>
-        <Cell height={CellHeight.Compact} className="invisible flex justify-end group-hover:visible">
-          <Button
-            type={ButtonType.Secondary}
-            size={ButtonSize.Sm}
-            onClick={() => console.log("Congratulate")}
-            data-testid="congratulate-contributor-button"
-          >
-            <SendPlane2Line />
-            {T("project.details.insights.mostActives.table.buttonLabel")}
-          </Button>
         </Cell>
       </Line>
     );

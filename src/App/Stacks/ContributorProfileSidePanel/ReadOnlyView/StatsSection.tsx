@@ -36,8 +36,8 @@ export default function StatsSection({ profile }: Props) {
     () =>
       (stats?.totalsEarned?.details || []).map(currencies => ({
         currency: currencies.currency,
-        amount: currencies.totalAmount,
-        dollar: currencies.totalDollarsEquivalent,
+        amount: currencies.amount,
+        dollar: currencies.usdEquivalent,
       })),
     [profile]
   );

@@ -14,7 +14,7 @@ import { compareDateToNow, formatDateTime } from "src/utils/date";
 interface Props {
   isMine: boolean | undefined;
   status: UseGetRewards["status"];
-  currency: UseGetRewards["currency"];
+  amount: UseGetRewards["amount"];
   createdAt: string;
   unlockDate?: string;
   processedAt?: string;
@@ -24,7 +24,7 @@ interface Props {
 export function RewardTransactionDetails({
   isMine,
   status,
-  currency,
+  amount,
   createdAt,
   unlockDate,
   processedAt,
@@ -51,7 +51,7 @@ export function RewardTransactionDetails({
           icon={
             <div className="pseudo-outline h-fit w-fit min-w-max shrink-0 rounded-md before:border-greyscale-50/20">
               <CurrencyIcons
-                currency={currency}
+                currency={amount.currency}
                 className={cn("h-4 w-4", { grayscale: unlockDateRelativeToNow.status !== "past" })}
               />
             </div>

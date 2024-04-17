@@ -24,10 +24,7 @@ export function RequestPaymentsStacks() {
     MeBillingProfilesApi.queries.useAllBillingProfiles({});
 
   const excludeNonLiquidToken = useMemo(
-    () =>
-      (data?.rewards || []).filter(
-        reward => !!reward.amount.dollarsEquivalent || reward.amount.dollarsEquivalent === 0
-      ),
+    () => (data?.rewards || []).filter(reward => !!reward.amount.usdEquivalent || reward.amount.usdEquivalent === 0),
     [data]
   );
 

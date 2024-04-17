@@ -1,3 +1,4 @@
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import TinyProfilCard from "src/_pages/ProjectDetails/Insights/commons/TinyProfilCard/TinyProfilCard";
 import ProjectApi from "src/api/Project";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
@@ -9,6 +10,7 @@ import TeamLine from "src/icons/TeamLine";
 
 export default function NewcomersContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
+  const [open] = useStackContributorProfile();
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
     ProjectApi.queries.useProjectContributorsNewcomersInfiniteList({
       params: { projectId: projectId ?? "" },
@@ -51,9 +53,7 @@ export default function NewcomersContributors({ projectId }: { projectId: string
               location={contributor.location}
               sinceDate={contributor.firstContributedAt ? new Date(contributor.firstContributedAt) : undefined}
               actionLabel={T("project.details.insights.newcomers.buttonLabel")}
-              onAction={() => {
-                console.log("action");
-              }}
+              onAction={() => open({ githubUserId: contributor.githubUserId })}
             />
           ))}
         </div>

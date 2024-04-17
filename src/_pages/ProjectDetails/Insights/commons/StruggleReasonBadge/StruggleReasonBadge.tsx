@@ -11,8 +11,8 @@ export default function StruggleReasonBadge({ date, githubStatus }: StruggleReas
 
   return (
     <div className={`flex flex-row items-center gap-2 rounded-xl px-3 py-2 ${colorClass}`}>
-      <div className="flex h-4 flex-row items-end justify-center gap-1">
-        {[2, 3, 4].map(height => (
+      <div className="flex flex-row items-end justify-center gap-0.5">
+        {[4, 10, 16].map(height => (
           <Bar key={height} daysAgo={daysAgo} height={height} />
         ))}
       </div>

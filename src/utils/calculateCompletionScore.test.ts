@@ -63,8 +63,9 @@ describe("calculateUserCompletionScore", () => {
           details: [
             {
               currency: Money.fromSchema({ code: "APT" }),
-              totalAmount: 0,
-              totalDollarsEquivalent: 0,
+              amount: 0,
+              prettyAmount: 0,
+              usdEquivalent: 0,
             },
           ],
           totalAmount: 0,

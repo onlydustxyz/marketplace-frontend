@@ -37,7 +37,7 @@ export function SelectRewards({
   const currentYearPaymentAmount = profile?.data?.currentYearPaymentAmount ?? 0;
 
   const totalAmountSelectedRewards = useMemo(
-    () => includedRewards.reduce((count, reward) => (count += reward.amount.dollarsEquivalent || 0), 0),
+    () => includedRewards.reduce((count, reward) => (count += reward.amount.usdEquivalent || 0), 0),
     [includedRewards]
   );
 

@@ -4,19 +4,19 @@ import { getRangeKey } from "./StruggleReasonBadge.utils";
 export default function Bar({ daysAgo, height }: { daysAgo: number; height: number }) {
   const colorClasses: Record<ReasonStatuses, Record<string, string>> = {
     [ReasonStatuses.GreenStatus]: {
-      "2": "bg-struggleBadge-bar-solid-green",
-      "3": "bg-struggleBadge-bar-fade-green",
-      "4": "bg-struggleBadge-bar-fade-green",
+      "4": "bg-struggleBadge-bar-solid-green",
+      "10": "bg-struggleBadge-bar-fade-green",
+      "16": "bg-struggleBadge-bar-fade-green",
     },
     [ReasonStatuses.OrangeStatus]: {
-      "2": "bg-struggleBadge-bar-solid-orange",
-      "3": "bg-struggleBadge-bar-solid-orange",
-      "4": "bg-struggleBadge-bar-fade-orange",
+      "4": "bg-struggleBadge-bar-solid-orange",
+      "10": "bg-struggleBadge-bar-solid-orange",
+      "16": "bg-struggleBadge-bar-fade-orange",
     },
     [ReasonStatuses.RedStatus]: {
-      "2": "bg-struggleBadge-bar-solid-red",
-      "3": "bg-struggleBadge-bar-solid-red",
       "4": "bg-struggleBadge-bar-solid-red",
+      "10": "bg-struggleBadge-bar-solid-red",
+      "16": "bg-struggleBadge-bar-solid-red",
     },
   };
 
@@ -24,5 +24,5 @@ export default function Bar({ daysAgo, height }: { daysAgo: number; height: numb
   const heightKey = height.toString();
   const colorClass = colorClasses[rangeKey][heightKey] || "";
 
-  return <div className={`h-${height} w-1 ${colorClass}`} />;
+  return <div className={`w-1 ${colorClass}`} style={{ height }} />;
 }

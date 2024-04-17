@@ -39,8 +39,8 @@ export function RewardItem({
             <AvailableConversion
               currency={{
                 currency: currency.currency,
-                amount: currency.total,
-                dollar: currency.dollarsEquivalent,
+                amount: currency.amount,
+                dollar: currency.usdEquivalent,
               }}
             />
             <Flex justifyContent={"start"} alignItems="center" className="gap-1">

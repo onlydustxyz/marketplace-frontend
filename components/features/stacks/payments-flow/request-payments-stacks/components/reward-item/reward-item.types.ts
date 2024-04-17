@@ -4,7 +4,7 @@ export namespace TRewardItem {
   export interface Props {
     id: string;
     contributors?: number[];
-    currency: components["schemas"]["RewardAmountResponse"];
+    currency: components["schemas"]["Money"];
     projectId: string;
     rewardedOnProjectLogoUrl: string;
     numberOfRewardedContributions: number;
