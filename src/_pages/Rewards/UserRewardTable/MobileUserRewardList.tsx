@@ -109,7 +109,7 @@ export function MobileUserRewardItem({
   title?: string | null;
   id: string;
   request: string;
-  amount: components["schemas"]["RewardAmountResponse"];
+  amount: components["schemas"]["Money"];
   date: Date;
   payoutStatus: ReactNode;
   rewardedUser: components["schemas"]["ContributorResponse"];
@@ -155,11 +155,11 @@ export function MobileUserRewardItem({
           <div className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]">
             <AvailableConversion
               tooltipId={`${id}-contributors-earned-details`}
-              totalAmount={amount?.total}
+              totalAmount={amount?.amount}
               currency={{
                 currency: amount?.currency,
-                amount: amount?.total,
-                dollar: amount?.dollarsEquivalent,
+                amount: amount?.amount,
+                dollar: amount?.usdEquivalent,
               }}
             />
           </div>

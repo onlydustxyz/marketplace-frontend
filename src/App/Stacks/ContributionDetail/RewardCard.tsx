@@ -69,9 +69,9 @@ export function RewardCard({
         <AvailableConversion
           tooltipId={`${reward.id}-reward-conversion`}
           currency={{
-            currency: reward.currency,
-            amount: reward.amount,
-            dollar: reward.dollarsEquivalent,
+            currency: reward.amount.currency,
+            amount: reward.amount.amount,
+            dollar: reward.amount.usdEquivalent,
           }}
         />
       </Tag>
