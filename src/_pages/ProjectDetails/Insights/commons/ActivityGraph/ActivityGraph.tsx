@@ -80,7 +80,7 @@ export default function ActivityGraph({ data }: Props) {
   const maxCount = Math.max(...data.flatMap(d => [d.codeReviewCount, d.issueCount, d.pullRequestCount]));
 
   return data ? (
-    <div className="flex flex-row items-end justify-end gap-1">
+    <div className="flex h-10 flex-row items-end justify-end gap-1">
       {data.map((weekData, index) => (
         <ActivityGraphItem key={`activity-graph-item${index}`} weekData={weekData} index={index} maxCount={maxCount} />
       ))}
