@@ -17,7 +17,7 @@ import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { useIntl } from "src/hooks/useIntl";
-import { allTime } from "src/utils/date";
+import { allTime, formatDateQueryParam } from "src/utils/date";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
@@ -100,6 +100,11 @@ export function SponsorHistoryTable() {
 
   const queryParams = useMemo(() => {
     const params: TUseSponsorHistory.Props["queryParams"] = {};
+
+    if (filters.dateRange?.from && filters.dateRange?.to) {
+      params["fromDate"] = formatDateQueryParam(filters.dateRange.from);
+      params["toDate"] = formatDateQueryParam(filters.dateRange.to);
+    }
 
     if (filters.types?.length) {
       params["types"] = filters.types.map(({ value }) => value).join(",");
