@@ -21,7 +21,7 @@ export function ScrollableView({ children }: TScrollableView.Props) {
         const target = e.currentTarget as HTMLElement;
         if (target.scrollTop >= scrollValue.compact - scrollValue.navigation) {
           setIsHeaderCompact(true);
-        } else if (isHeaderCompact) {
+        } else {
           setIsHeaderCompact(false);
         }
       }

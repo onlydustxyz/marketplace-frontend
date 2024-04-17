@@ -23,6 +23,7 @@ interface HeaderViewProps {
     [NEXT_ROUTER.projects.all]?: string;
     [NEXT_ROUTER.contributions.all]?: string;
     [NEXT_ROUTER.rewards.all]?: string;
+    [NEXT_ROUTER.hackathons.root]?: string;
   };
   impersonating?: boolean;
   profileCompletionScore?: number;
@@ -60,6 +61,9 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
                 ) : null}
                 {menuItems[NEXT_ROUTER.rewards.all] ? (
                   <MenuItem href={NEXT_ROUTER.rewards.all}>{menuItems[NEXT_ROUTER.rewards.all]}</MenuItem>
+                ) : null}
+                {menuItems[NEXT_ROUTER.hackathons.root] ? (
+                  <MenuItem href={NEXT_ROUTER.hackathons.root}>{menuItems[NEXT_ROUTER.hackathons.root]}</MenuItem>
                 ) : null}
                 <div className="flex flex-1 justify-center">
                   {impersonating ? (

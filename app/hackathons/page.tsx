@@ -11,20 +11,12 @@ import { Typography } from "components/layout/typography/typography";
 const mock: components["schemas"]["HackathonsListResponse"] = {
   hackathons: [
     {
-      title: "ODHack #2.0",
-      startDate: "2024-04-10T00:00:00Z",
-      endDate: "2024-04-30T00:00:00Z",
-      id: "e1dad47e-0b29-4198-8aec-9fc0ea5a649d",
-      slug: "od-hack-2-0",
-      location: "",
-    },
-    {
       title: "ODHack #3.0",
-      slug: "odhack-3-0",
+      startDate: "2024-04-22T10:30:00+02:00",
+      endDate: "2024-05-01T11:59:00+02:00",
+      id: "e1dad47e-0b29-4198-8aec-9fc0ea5a649d",
+      slug: "od-hack-3-0",
       location: "",
-      startDate: "2024-05-10T00:00:00Z",
-      endDate: "2024-05-20T00:00:00Z",
-      id: "f1dad47e-0b29-4198-8aec-9fc0ea5a649d",
     },
   ],
 };
