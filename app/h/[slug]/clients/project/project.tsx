@@ -10,5 +10,6 @@ export function Project({ children, slug }: TProject.Props) {
   const onClickProject = () => {
     openProjectOverview({ slug });
   };
+
   return <button onClick={onClickProject}>{children}</button>;
 }

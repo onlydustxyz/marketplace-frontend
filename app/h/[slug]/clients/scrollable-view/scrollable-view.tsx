@@ -10,6 +10,7 @@ const scrollValue = {
   compact: 120 - 32,
   navigation: 56,
 };
+
 export function ScrollableView({ children }: TScrollableView.Props) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [isHeaderCompact, setIsHeaderCompact] = useState(false);
@@ -18,10 +19,9 @@ export function ScrollableView({ children }: TScrollableView.Props) {
     const onScroll = (e: Event) => {
       if (e.currentTarget) {
         const target = e.currentTarget as HTMLElement;
-        console.log("target.scrollTop", target.scrollTop);
         if (target.scrollTop >= scrollValue.compact - scrollValue.navigation) {
           setIsHeaderCompact(true);
-        } else {
+        } else if (isHeaderCompact) {
           setIsHeaderCompact(false);
         }
       }
