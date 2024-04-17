@@ -79,9 +79,7 @@ export default function ProjectsSidebar() {
     AvailableTabs.contributors,
     ...(isProjectLeader ? [AvailableTabs.contributions] : []),
     ...(isProjectLeader ? [AvailableTabs.rewards] : []),
-    ...(process.env.NEXT_PUBLIC_FLAG_ALLOW_PROJECT_INSIGHTS === "true" && isProjectLeader
-      ? [AvailableTabs.insights]
-      : []),
+    ...(isProjectLeader ? [AvailableTabs.insights] : []),
   ];
 
   if (isLoading && isXl)

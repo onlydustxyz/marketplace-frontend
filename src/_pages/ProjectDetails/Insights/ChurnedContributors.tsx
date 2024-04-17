@@ -1,3 +1,4 @@
+import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import TinyProfilCard from "src/_pages/ProjectDetails/Insights/commons/TinyProfilCard/TinyProfilCard";
 import ProjectApi from "src/api/Project";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
@@ -11,6 +12,7 @@ import LastContributionCard from "./commons/LastContributionCard/LastContributio
 
 export default function ChurnedContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
+  const [open] = useStackContributorProfile();
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
     ProjectApi.queries.useProjectContributorsChurnedInfiniteList({
       params: { projectId: projectId ?? "" },
@@ -42,9 +44,7 @@ export default function ChurnedContributors({ projectId }: { projectId: string |
               name={contributor.login}
               isRegistered={contributor.isRegistered}
               actionLabel={T("project.details.insights.churned.buttonLabel")}
-              onAction={() => {
-                console.log("action");
-              }}
+              onAction={() => open({ githubUserId: contributor.githubUserId })}
             >
               <LastContributionCard
                 lastContributionDate={contributor?.lastContribution?.completedAt}
