@@ -2,13 +2,22 @@ import { SponsorBudgetCard } from "app/sponsor/[sponsorId]/components/sponsor-bu
 import { SponsorDepositCard } from "app/sponsor/[sponsorId]/components/sponsor-deposit-card/sponsor-deposit-card";
 import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
 
+import { Card } from "components/ds/card/card";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 export function SponsorSectionBudget() {
-  const { data, isLoading } = useSponsorDetail();
+  const { data, isLoading, isError } = useSponsorDetail();
 
   function renderBudgets() {
+    if (isError) {
+      return (
+        <Card background={"base"}>
+          <Translate token={"v2.pages.sponsor.budget.error"} />
+        </Card>
+      );
+    }
+
     if (isLoading) {
       return Array.from({ length: 4 }).map((_, i) => <SponsorBudgetCard.Skeleton key={i} />);
     }

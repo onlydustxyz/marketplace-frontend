@@ -2,13 +2,22 @@ import { SponsorProjectCard } from "app/sponsor/[sponsorId]/components/sponsor-p
 import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
 import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
 
+import { Card } from "components/ds/card/card";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 export function SponsorSectionProject() {
-  const { data, isLoading } = useSponsorDetail();
+  const { data, isLoading, isError } = useSponsorDetail();
 
   function renderProjects() {
+    if (isError) {
+      return (
+        <Card background={"base"}>
+          <Translate token={"v2.pages.sponsor.project.error"} />
+        </Card>
+      );
+    }
+
     if (isLoading) {
       return Array.from({ length: 3 }).map((_, i) => <SponsorProjectCard.Skeleton key={i} />);
     }

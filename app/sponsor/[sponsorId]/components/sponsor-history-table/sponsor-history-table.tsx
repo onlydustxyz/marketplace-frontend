@@ -86,7 +86,7 @@ export function SponsorHistoryTable() {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSponsorHistory({ queryParams });
   const transactions = useMemo(() => data?.pages.flatMap(({ transactions }) => transactions) ?? [], [data]);
 
-  const { data: sponsorDetail } = useSponsorDetail();
+  const { data: sponsorDetail, isError: sponsorDetailError } = useSponsorDetail();
 
   const types = useMemo(
     () => [
@@ -253,20 +253,24 @@ export function SponsorHistoryTable() {
           hideLabel
           isElevated={false}
         />
-        <FiltersCurrencies
-          currencies={currencies}
-          selected={filters.currencies ?? initialFilters.currencies}
-          onChange={updateCurrencies}
-          hideLabel
-          isElevated={false}
-        />
-        <FiltersProjects
-          projects={projects}
-          selected={filters.projects ?? initialFilters.projects}
-          onChange={updateProjects}
-          hideLabel
-          isElevated={false}
-        />
+        {!sponsorDetailError ? (
+          <>
+            <FiltersCurrencies
+              currencies={currencies}
+              selected={filters.currencies ?? initialFilters.currencies}
+              onChange={updateCurrencies}
+              hideLabel
+              isElevated={false}
+            />
+            <FiltersProjects
+              projects={projects}
+              selected={filters.projects ?? initialFilters.projects}
+              onChange={updateProjects}
+              hideLabel
+              isElevated={false}
+            />
+          </>
+        ) : null}
       </header>
       <Table
         label={T("v2.pages.sponsor.history.title")}

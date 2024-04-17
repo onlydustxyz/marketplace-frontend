@@ -2,7 +2,8 @@
   "title": "Sponsor",
   "newDeposit": "New Deposit",
   "budget": {
-    "title": "Budget available"
+    "title": "Budget available",
+    "error": "An error occurred while loading your budgets."
   },
   "deposit": {
     "newCurrency": "New currency",
@@ -13,7 +14,8 @@
     "sponsorNewProject": "Sponsor new project",
     "sponsorProject": "Sponsor project",
     "totalBudget": "Total budget",
-    "perCurrency": "Per currency"
+    "perCurrency": "Per currency",
+    "error": "An error occurred while loading your sponsored projects."
   },
   "history": {
     "title": "Transaction history",
