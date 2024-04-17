@@ -37,7 +37,7 @@ export default function Insights() {
       </div>
 
       <div className="h-full overflow-y-auto">
-        <div className="h-full w-full overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+        <div className="scrollbar-sm h-full w-full overflow-y-auto pr-1.5">
           <div className="relative flex min-h-full flex-col gap-6">
             <NewcomersContributors projectId={project?.id} />
             <MostActiveContributors projectId={project?.id} />

@@ -26,7 +26,7 @@ export default function LastContributionCard({
           <div className="text-sm font-normal text-greyscale-200">
             {T("project.details.insights.churned.lastContribution.title")}
           </div>
-          <div className=" line-clamp-1 text-xs font-medium">
+          <div className="line-clamp-1 text-xs font-medium">
             <span>
               {displayRelativeDate(new Date(lastContributionDate))}{" "}
               {T("project.details.insights.churned.lastContribution.on")}{" "}
