@@ -5,8 +5,10 @@ import { DateRange } from "react-day-picker";
 import { useLocalStorage } from "react-use";
 import { Money } from "utils/Money/Money";
 
+import { TSponsorHistoryTable } from "app/sponsor/[sponsorId]/components/sponsor-history-table/sponsor-history-table.types";
 import { SponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction";
 import { useSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history";
+import { TUseSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history.types";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -24,6 +26,7 @@ import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 import { FiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies";
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
+import { FiltersTransactions } from "components/features/filters/filters-transactions/filters-transactions";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
@@ -40,48 +43,53 @@ const projects = [
   },
 ];
 
-// const transactions = [
-//   {
-//     id: "deposit",
-//     label: "Deposit",
-//     value: "deposit",
-//   },
-//   {
-//     id: "allocated",
-//     label: "Allocated",
-//     value: "allocated",
-//   },
-//   {
-//     id: "unallocated",
-//     label: "Unallocated",
-//     value: "unallocated",
-//   },
-// ];
-
-type Filters = {
-  dateRange: DateRange;
-  period: Period;
-  transactions: TSelectAutocomplete.Item[];
-  projects: TSelectAutocomplete.Item[];
-  currency: TSelectAutocomplete.Item[];
-};
-
-const initialFilters: Filters = {
+const initialFilters: Required<TSponsorHistoryTable.Filters> = {
   dateRange: allTime,
   period: Period.AllTime,
-  transactions: [],
+  types: [],
   projects: [],
   currency: [],
+  sort: "DATE",
+  direction: "descending",
 };
 
 export function SponsorHistoryTable() {
   const { T } = useIntl();
 
+  const types = useMemo(
+    () => [
+      {
+        id: "DEPOSIT",
+        label: T("v2.pages.sponsor.history.deposit"),
+        value: "DEPOSIT",
+      },
+      {
+        id: "ALLOCATION",
+        label: T("v2.pages.sponsor.history.allocated"),
+        value: "ALLOCATION",
+      },
+      {
+        id: "UNALLOCATION",
+        label: T("v2.pages.sponsor.history.unallocated"),
+        value: "UNALLOCATION",
+      },
+      {
+        id: "WITHDRAWAL",
+        label: T("v2.pages.sponsor.history.withdrawal"),
+        value: "WITHDRAWAL",
+      },
+    ],
+    []
+  );
+
   const [filtersStorage, setFiltersStorage] = useLocalStorage("sponsor-table-filters", JSON.stringify(initialFilters));
-  const [filters, setFilters] = useState<Partial<Filters>>(
+  const [filters, setFilters] = useState<TSponsorHistoryTable.Filters>(
     filtersStorage ? JSON.parse(filtersStorage) : initialFilters
   );
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+    column: filters.sort,
+    direction: filters.direction,
+  });
   const orderedCurrencies = useCurrenciesOrder({
     currencies: [
       {
@@ -90,11 +98,29 @@ export function SponsorHistoryTable() {
     ],
   });
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSponsorHistory();
+  const queryParams = useMemo(() => {
+    const params: TUseSponsorHistory.Props["queryParams"] = {};
+
+    if (filters.types?.length) {
+      params["types"] = filters.types.map(({ value }) => value).join(",");
+    }
+
+    if (filters.sort) {
+      params["sort"] = String(filters.sort);
+    }
+
+    if (filters.direction) {
+      params["direction"] = filters.direction === "ascending" ? "ASC" : "DESC";
+    }
+
+    return params;
+  }, [filters]);
+
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSponsorHistory({ queryParams });
 
   const transactions = useMemo(() => data?.pages.flatMap(({ transactions }) => transactions) ?? [], [data]);
 
-  function updateState(prevState: Partial<Filters>, newState: Partial<Filters>) {
+  function updateState(prevState: TSponsorHistoryTable.Filters, newState: TSponsorHistoryTable.Filters) {
     const updatedState = { ...prevState, ...newState };
 
     setFiltersStorage(JSON.stringify(updatedState));
@@ -104,6 +130,10 @@ export function SponsorHistoryTable() {
 
   function updateDate(dateRange: DateRange) {
     setFilters(prevState => updateState(prevState, { dateRange }));
+  }
+
+  function updateType(types: TSelectAutocomplete.Item[]) {
+    setFilters(prevState => updateState(prevState, { types }));
   }
 
   function updatePeriod(period: Period) {
@@ -120,6 +150,7 @@ export function SponsorHistoryTable() {
 
   function handleSort(sort: SortDescriptor) {
     setSortDescriptor(sort);
+    setFilters(prevState => updateState(prevState, { sort: sort.column, direction: sort.direction }));
   }
 
   const columns: TTable.Column[] = useMemo(
@@ -198,13 +229,13 @@ export function SponsorHistoryTable() {
           hideLabel
           isElevated={false}
         />
-        {/*<FiltersTransactions*/}
-        {/*  transactions={transactions}*/}
-        {/*  selected={[]}*/}
-        {/*  onChange={() => {}}*/}
-        {/*  hideLabel*/}
-        {/*  isElevated={false}*/}
-        {/*/>*/}
+        <FiltersTransactions
+          transactions={types}
+          selected={filters.types ?? initialFilters.types}
+          onChange={updateType}
+          hideLabel
+          isElevated={false}
+        />
         <FiltersCurrencies
           selected={filters.currency ?? initialFilters.currency}
           onChange={updateCurrency}
