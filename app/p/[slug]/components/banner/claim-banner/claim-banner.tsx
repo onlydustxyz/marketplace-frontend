@@ -53,7 +53,7 @@ export function ClaimBanner({ project }: TClaimBanner.Props) {
     <Banner
       title={
         <Translate
-          token="project.claim.banner.content"
+          token="v2.features.banners.claim.content"
           params={{
             projectName: project.name,
           }}
@@ -66,7 +66,7 @@ export function ClaimBanner({ project }: TClaimBanner.Props) {
         children: (
           <>
             <Icon remixName="ri-magic-line" size={20} />
-            <Translate token="project.claim.banner.button" />
+            <Translate token="v2.features.banners.claim.button" />
           </>
         ),
       }}

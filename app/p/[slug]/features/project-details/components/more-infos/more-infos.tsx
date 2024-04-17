@@ -16,15 +16,15 @@ export function MoreInfos({ moreInfos }: TMoreInfos.Props) {
   const fakeExternalLinks = [
     {
       url: "t.me/",
-      value: <Translate token="common.channel.telegram" />,
+      value: <Translate token="v2.commons.form.contact.telegram.placeholder" />,
     },
     {
       url: "discord.com/",
-      value: <Translate token="common.channel.discord" />,
+      value: <Translate token="v2.commons.form.contact.discord.placeholder" />,
     },
     {
       url: "x.com/",
-      value: <Translate token="common.channel.twitter" />,
+      value: <Translate token="v2.commons.form.contact.twitter.placeholder" />,
     },
   ];
 
@@ -35,7 +35,7 @@ export function MoreInfos({ moreInfos }: TMoreInfos.Props) {
   return (
     <Section
       title={{
-        token: "project.details.overview.moreInfo",
+        token: "v2.pages.project.overview.projectDetails.moreInfo",
       }}
       remixIconName="ri-link"
     >
@@ -50,7 +50,7 @@ export function MoreInfos({ moreInfos }: TMoreInfos.Props) {
                   <SocialIcon url={validUrl} />
 
                   <Link href={validUrl}>
-                    <Typography variant="body-s">
+                    <Typography variant="body-s" className="truncate">
                       {value || validUrl.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
                     </Typography>
                   </Link>
@@ -61,11 +61,17 @@ export function MoreInfos({ moreInfos }: TMoreInfos.Props) {
         ) : (
           <>
             {fakeExternalLinks.map(({ url, value }) => (
-              <Tooltip key={url} content={<Translate token="common.channel.preventAnonymousTooltips" />}>
+              <Tooltip
+                key={url}
+                content={<Translate token="v2.pages.project.overview.projectDetails.links.preventAnonymous" />}
+                className="w-fit"
+              >
                 <Flex alignItems="center" className="cursor-not-allowed gap-1">
                   <SocialIcon url={url} />
 
-                  <Typography variant="body-s">{value}</Typography>
+                  <Typography variant="body-s" className="truncate">
+                    {value}
+                  </Typography>
                 </Flex>
               </Tooltip>
             ))}

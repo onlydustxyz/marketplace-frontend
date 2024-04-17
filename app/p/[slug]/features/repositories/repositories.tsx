@@ -20,7 +20,7 @@ export function Repositories({ organizations }: TRepositories.Props) {
           <Flex alignItems="center" className="gap-2">
             <Icon remixName="ri-git-repository-line" size={20} />
 
-            <Typography variant="body-m-bold" translate={{ token: "project.details.overview.repositories.title" }} />
+            <Typography variant="body-m-bold" translate={{ token: "v2.pages.project.overview.repositories.title" }} />
           </Flex>
 
           <Badge value={reposNumber} size="s" />

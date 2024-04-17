@@ -27,20 +27,19 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
       <Card background="base" hasPadding={false}>
         <EmptyState
           illustrationSrc={IMAGES.icons.compass}
-          description={{ token: "project.details.overview.emptyStateDescription" }}
+          description={{ token: "v2.pages.project.overview.projectDetails.empty" }}
         />
       </Card>
     );
   }
 
-  // TODO: Check all truncate
   return (
     <Card background="base" hasPadding={false}>
       <Flex direction="col" className="divide-y divide-greyscale-50/8">
         <Flex alignItems="center" className="gap-2 px-6 py-4">
           <Icon remixName="ri-folder-line" size={20} />
 
-          <Typography variant="body-m-bold" translate={{ token: "project.details.overview.projectDetails" }} />
+          <Typography variant="body-m-bold" translate={{ token: "v2.pages.project.overview.projectDetails.title" }} />
         </Flex>
 
         <ProjectLeads projectId={project.id} projectLeads={projectLeads} projectInvited={projectInvited} />

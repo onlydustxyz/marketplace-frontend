@@ -1,0 +1,8 @@
+{
+  "buttons": {
+    "edit": "Edit project",
+    "reward": "Reward contributor",
+    "budget": "Add budget",
+    "sponsor": "Sponsor project"
+  }
+}

@@ -19,7 +19,7 @@ export function SponsorButton({ project }: TSponsorButton.Props) {
     <>
       <Button backgroundColor="blue" className="flex-1 md:flex-initial" size="s" onClick={() => setIsOpen(true)}>
         <Icon remixName="ri-service-line" />
-        <Translate token="project.sponsorButton.full" />
+        <Translate token="v2.pages.project.details.header.buttons.sponsor" />
       </Button>
 
       <SidePanel open={isOpen} setOpen={setIsOpen}>

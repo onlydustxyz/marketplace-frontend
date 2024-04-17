@@ -13,7 +13,6 @@ import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
-import { useShowToaster } from "src/hooks/useToaster";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
@@ -26,17 +25,15 @@ import { ClaimBanner } from "./components/banner/claim-banner/claim-banner";
 import { MissingGithubAppInstallBanner } from "./components/banner/missing-github-app-install-banner/missing-github-app-install-banner";
 import { StillFetchingBanner } from "./components/banner/still-fetching-banner/still-fetching-banner";
 import { ProjectHeader } from "./components/project-header/project-header";
+import { ApplyCallout } from "./features/apply-callout/apply-callout";
 import { GoodFirstIssues } from "./features/good-first-issues/good-first-issues";
 import { OverviewInformations } from "./features/overview-informations/overview-informations";
 import { ProjectDetails } from "./features/project-details/project-details";
 import { Repositories } from "./features/repositories/repositories";
 
-// TODO: Add translate in new files
-// TODO: Refacto Flex with md:
 // TODO: Refacto Skeleton with new one
 export default function ProjectPage() {
   const { T } = useIntl();
-  const showToaster = useShowToaster();
   const { capture } = usePosthog();
 
   const { slug = "" } = useParams<{ slug: string }>();
@@ -48,13 +45,13 @@ export default function ProjectPage() {
       params: { projectId: project?.id || "", projectSlug: slug },
     });
 
-  const { isAuthenticated, user } = useAuth0();
+  const { user } = useAuth0();
 
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
   const { applyToProject } = useApplication({ projectId: project?.id ?? "", projectSlug: slug });
 
-  const { data: myProfileInfo, isError } = MeApi.queries.useGetMyProfileInfo({});
+  const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
   const githubUserId = getGithubUserIdFromSub(user?.sub);
 
@@ -72,7 +69,7 @@ export default function ProjectPage() {
   useMutationAlert({
     mutation: restAcceptProjectLeadInvitation,
     success: {
-      message: T("projectLeadInvitation.success", { projectName: project?.name }),
+      message: T("v2.features.banners.projectLeadInvitation.success", { projectName: project?.name }),
     },
     error: {
       default: true,
@@ -84,10 +81,6 @@ export default function ProjectPage() {
       capture("project_viewed", { id_project: project.id, type: "full" });
     }
   }, [project]);
-
-  if (isError) {
-    showToaster(T("profile.error.cantFetch"), { isError: true });
-  }
 
   if (isLoading) return <Skeleton variant="projectOverview" />;
 
@@ -120,16 +113,42 @@ export default function ProjectPage() {
       <ClaimBanner project={project} />
 
       <Flex className="flex-col gap-6 md:flex-row">
-        <Flex direction="col" className="grow gap-4">
+        <Flex direction="col" className="grow gap-6 md:gap-4">
           <OverviewInformations project={project} />
-          <GoodFirstIssues projectId={project.id} organizations={project.organizations} />
+
+          {!isMd && project.hiring && !project.me?.isMember && myProfileInfo && (
+            <ApplyCallout
+              profile={myProfileInfo}
+              applyToProject={applyToProject}
+              alreadyApplied={project.me?.hasApplied || false}
+            />
+          )}
+
+          {!isMd ? <ProjectDetails project={project} /> : null}
+
+          <GoodFirstIssues
+            projectId={project.id}
+            organizations={project.organizations}
+            isProjectLeader={isProjectLeader}
+          />
+
+          {!isMd ? <Repositories organizations={project.organizations} /> : null}
         </Flex>
 
-        <Flex direction="col" className="shrink-0 gap-4 md:w-72 xl:w-80">
-          {/* ApplyCallout */}
-          <ProjectDetails project={project} />
-          <Repositories organizations={project.organizations} />
-        </Flex>
+        {isMd ? (
+          <Flex direction="col" className="shrink-0 gap-4 md:w-72 xl:w-80">
+            {project.hiring && !project.me?.isMember && myProfileInfo && (
+              <ApplyCallout
+                profile={myProfileInfo}
+                applyToProject={applyToProject}
+                alreadyApplied={project.me?.hasApplied || false}
+              />
+            )}
+
+            <ProjectDetails project={project} />
+            <Repositories organizations={project.organizations} />
+          </Flex>
+        ) : null}
       </Flex>
     </>
   );

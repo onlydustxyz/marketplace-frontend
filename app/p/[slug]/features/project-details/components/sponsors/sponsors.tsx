@@ -14,20 +14,32 @@ export function Sponsors({ sponsors }: TSponsors.Props) {
   return (
     <Section
       title={{
-        token: "project.details.overview.sponsors",
+        token: "v2.pages.project.overview.projectDetails.sponsors",
         params: { count: sponsors?.length || 0 },
       }}
       remixIconName="ri-service-line"
     >
       <Flex wrap="wrap" className="gap-1">
         {sponsors?.map(sponsor => (
-          <Link key={sponsor.id} href={sponsor.url} className="gap-2">
-            <Avatar src={sponsor.logoUrl} alt={sponsor.name} size="s" />
+          <>
+            {sponsor.url ? (
+              <Link key={sponsor.id} href={sponsor.url} className="gap-2">
+                <Avatar src={sponsor.logoUrl} alt={sponsor.name} size="s" />
 
-            <Typography variant="body-s" className="truncate">
-              {sponsor.name}
-            </Typography>
-          </Link>
+                <Typography variant="body-s" className="truncate">
+                  {sponsor.name}
+                </Typography>
+              </Link>
+            ) : (
+              <Flex alignItems="center" className="gap-2">
+                <Avatar src={sponsor.logoUrl} alt={sponsor.name} size="s" />
+
+                <Typography key={sponsor.id} variant="body-s" className="truncate">
+                  {sponsor.name}
+                </Typography>
+              </Flex>
+            )}
+          </>
         ))}
       </Flex>
     </Section>

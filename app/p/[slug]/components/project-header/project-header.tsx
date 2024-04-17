@@ -1,3 +1,5 @@
+import { cn } from "src/utils/cn";
+
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
@@ -6,26 +8,30 @@ import { RewardButton } from "./components/reward-button/reward-button";
 import { SponsorButton } from "./components/sponsor-button/sponsor-button";
 import { TProjectHeader } from "./project-header.types";
 
-// TODO: Review css
 export function ProjectHeader({ isProjectLeader, hasOrgsWithUnauthorizedRepos, project }: TProjectHeader.Props) {
   return (
-    <Flex className="flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
+    <Flex
+      className={cn("justify-between", {
+        "flex-col items-start  gap-4 md:flex-row md:items-center md:gap-6": isProjectLeader,
+        "items-center gap-6": !isProjectLeader,
+      })}
+    >
       <Typography
         variant="title-l"
         translate={{
-          token: "project.details.overview.title",
+          token: "v2.pages.project.overview.title",
         }}
       />
 
       {isProjectLeader && !hasOrgsWithUnauthorizedRepos ? (
-        <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
+        <Flex alignItems="center" className="gap-2">
           <EditButton slug={project.slug} />
           <RewardButton project={project} />
         </Flex>
       ) : null}
 
       {!isProjectLeader ? (
-        <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
+        <Flex>
           <SponsorButton project={project} />
         </Flex>
       ) : null}

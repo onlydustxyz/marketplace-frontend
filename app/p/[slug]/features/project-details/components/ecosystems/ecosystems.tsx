@@ -20,7 +20,7 @@ export function Ecosystems({ ecosystems }: TEcosystems.Props) {
   return (
     <Section
       title={{
-        token: "project.details.overview.ecosystems",
+        token: "v2.pages.project.overview.projectDetails.ecosystems",
         params: {
           count: sortedByName.length,
         },

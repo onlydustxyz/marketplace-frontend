@@ -37,13 +37,13 @@ export function RewardButton({ project }: TRewardButton.Props) {
         choices={[
           {
             name: "reward",
-            label: T("project.rewardButton.full"),
+            label: T("v2.pages.project.details.header.buttons.reward"),
             disabled: isRewardDisabled,
             onClick: () => router.push(NEXT_ROUTER.projects.details.rewards.new(project?.slug)),
           },
           {
             name: "apply",
-            label: T("project.addBudgetButton"),
+            label: T("v2.pages.project.details.header.buttons.budget"),
             onClick: () => setIsApplyOpen(true),
           },
         ]}

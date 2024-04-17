@@ -20,7 +20,7 @@ export function Technologies({ technologies }: TTechnologies.Props) {
   return (
     <Section
       title={{
-        token: "project.details.overview.technologies",
+        token: "v2.pages.project.overview.projectDetails.technologies",
         params: { count: technologiesArray.length },
       }}
       remixIconName="ri-code-s-slash-line"

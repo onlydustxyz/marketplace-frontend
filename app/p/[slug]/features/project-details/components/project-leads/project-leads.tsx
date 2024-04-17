@@ -28,7 +28,7 @@ export function ProjectLeads({ projectId, projectInvited, projectLeads }: TProje
   return (
     <Section
       title={{
-        token: "project.details.overview.projectLeader",
+        token: "v2.pages.project.overview.projectDetails.projectLeads",
         params: {
           count: sortedByLogin.length,
         },
@@ -57,8 +57,9 @@ export function ProjectLeads({ projectId, projectInvited, projectLeads }: TProje
                 isRegistered={false}
                 clickable={true}
               />
+
               <Typography variant="body-s" className="text-spaceBlue-200">
-                (<Translate token="common.pendingInvite" />)
+                (<Translate token="v2.commons.pendingInvite" />)
               </Typography>
             </Flex>
           ))}

@@ -15,7 +15,7 @@ export const useApplication = ({ projectId, projectSlug }: TUseApplication.Props
   useMutationAlert({
     mutation: restMutation,
     success: {
-      message: T("applications.confirmationToaster"),
+      message: T("v2.pages.project.overview.apply.confirmationToaster"),
     },
     error: {
       default: true,

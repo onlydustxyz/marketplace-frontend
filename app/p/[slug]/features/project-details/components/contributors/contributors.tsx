@@ -15,7 +15,7 @@ export function Contributors({ contributorCount, topContributors }: TContributor
   return (
     <Section
       title={{
-        token: "project.details.overview.contributors",
+        token: "v2.pages.project.overview.projectDetails.contributors",
         params: {
           count: contributorCount,
         },

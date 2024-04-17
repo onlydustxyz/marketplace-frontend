@@ -10,7 +10,7 @@ export function EditButton({ slug }: TEditButton.Props) {
   return (
     <BaseLink href={NEXT_ROUTER.projects.details.edit(slug)}>
       <Button as="div" variant="secondary" size="s" className="flex-1 bg-spaceBlue-900 lg:flex-initial">
-        <Translate token="project.details.edit.title" />
+        <Translate token="v2.pages.project.details.header.buttons.edit" />
       </Button>
     </BaseLink>
   );

@@ -11,7 +11,7 @@ import { TMissingGithubAppInstallBanner } from "./missing-github-app-install-ban
 export function MissingGithubAppInstallBanner({ slug, organizations }: TMissingGithubAppInstallBanner.Props) {
   return (
     <Banner
-      title={<Translate token="project.details.banners.missingGithubAppInstall.message" />}
+      title={<Translate token="v2.features.banners.missingGithubAppInstall.message" />}
       variant="orange"
       hasBorder
       icon={{ remixName: "ri-information-line", className: "text-orange-500" }}
@@ -19,7 +19,7 @@ export function MissingGithubAppInstallBanner({ slug, organizations }: TMissingG
       endElement={
         <BaseLink href={NEXT_ROUTER.projects.details.edit(slug)}>
           <Button size="s" variant="secondary" accentColor="orange" className="whitespace-nowrap">
-            <Translate token="project.details.banners.missingGithubAppInstall.button" />
+            <Translate token="v2.features.banners.missingGithubAppInstall.button" />
           </Button>
         </BaseLink>
       }
