@@ -44,8 +44,8 @@ export function ViewMobile<C extends ProjectContributorItem>({
           const hasNothing = contributionToRewardCount === 0 && contributionCount === 0;
           const currencies: AvailableConversionCurrency[] = (earned.details || []).map(currency => ({
             currency: currency.currency,
-            amount: currency.totalAmount,
-            dollar: currency.totalDollarsEquivalent,
+            amount: currency.amount,
+            dollar: currency.usdEquivalent,
           }));
 
           return (
