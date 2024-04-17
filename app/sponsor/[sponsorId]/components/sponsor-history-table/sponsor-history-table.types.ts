@@ -11,7 +11,7 @@ export namespace TSponsorHistoryTable {
     period?: Period;
     types?: TSelectAutocomplete.Item[];
     projects?: TSelectAutocomplete.Item[];
-    currency?: TSelectAutocomplete.Item[];
+    currencies?: TSelectAutocomplete.Item[];
     sort?: SortDescriptor["column"];
     direction?: SortDescriptor["direction"];
   }

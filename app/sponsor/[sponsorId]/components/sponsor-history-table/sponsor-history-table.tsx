@@ -31,31 +31,62 @@ import { FiltersTransactions } from "components/features/filters/filters-transac
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
-const projects = [
-  {
-    id: 123,
-    label: "test project",
-    value: "test project",
-  },
-  {
-    id: 1234,
-    label: "test project",
-    value: "test project",
-  },
-];
-
 const initialFilters: Required<TSponsorHistoryTable.Filters> = {
   dateRange: allTime,
   period: Period.AllTime,
   types: [],
   projects: [],
-  currency: [],
+  currencies: [],
   sort: "DATE",
   direction: "descending",
 };
 
 export function SponsorHistoryTable() {
   const { T } = useIntl();
+  const [filtersStorage, setFiltersStorage] = useLocalStorage("sponsor-table-filters", JSON.stringify(initialFilters));
+  const [filters, setFilters] = useState<TSponsorHistoryTable.Filters>(
+    filtersStorage ? JSON.parse(filtersStorage) : initialFilters
+  );
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+    column: filters.sort,
+    direction: filters.direction,
+  });
+
+  const queryParams = useMemo(() => {
+    const params: TUseSponsorHistory.Props["queryParams"] = {};
+
+    if (filters.dateRange?.from && filters.dateRange?.to) {
+      params["fromDate"] = formatDateQueryParam(filters.dateRange.from);
+      params["toDate"] = formatDateQueryParam(filters.dateRange.to);
+    }
+
+    if (filters.types?.length) {
+      params["types"] = filters.types.map(({ value }) => value).join(",");
+    }
+
+    if (filters.currencies?.length) {
+      params["currencies"] = filters.currencies.map(({ value }) => value).join(",");
+    }
+
+    if (filters.projects?.length) {
+      params["projects"] = filters.projects.map(({ value }) => value).join(",");
+    }
+
+    if (filters.sort) {
+      params["sort"] = String(filters.sort);
+    }
+
+    if (filters.direction) {
+      params["direction"] = filters.direction === "ascending" ? "ASC" : "DESC";
+    }
+
+    return params;
+  }, [filters]);
+
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSponsorHistory({ queryParams });
+  const transactions = useMemo(() => data?.pages.flatMap(({ transactions }) => transactions) ?? [], [data]);
+
+  const { data: sponsorDetail } = useSponsorDetail();
 
   const types = useMemo(
     () => [
@@ -83,54 +114,28 @@ export function SponsorHistoryTable() {
     []
   );
 
-  const [filtersStorage, setFiltersStorage] = useLocalStorage("sponsor-table-filters", JSON.stringify(initialFilters));
-  const [filters, setFilters] = useState<TSponsorHistoryTable.Filters>(
-    filtersStorage ? JSON.parse(filtersStorage) : initialFilters
-  );
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: filters.sort,
-    direction: filters.direction,
-  });
-
-  const queryParams = useMemo(() => {
-    const params: TUseSponsorHistory.Props["queryParams"] = {};
-
-    if (filters.dateRange?.from && filters.dateRange?.to) {
-      params["fromDate"] = formatDateQueryParam(filters.dateRange.from);
-      params["toDate"] = formatDateQueryParam(filters.dateRange.to);
-    }
-
-    if (filters.currency?.length) {
-      params["currencies"] = filters.currency.map(({ value }) => value).join(",");
-    }
-
-    if (filters.types?.length) {
-      params["types"] = filters.types.map(({ value }) => value).join(",");
-    }
-
-    if (filters.sort) {
-      params["sort"] = String(filters.sort);
-    }
-
-    if (filters.direction) {
-      params["direction"] = filters.direction === "ascending" ? "ASC" : "DESC";
-    }
-
-    return params;
-  }, [filters]);
-
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSponsorHistory({ queryParams });
-
-  const transactions = useMemo(() => data?.pages.flatMap(({ transactions }) => transactions) ?? [], [data]);
-
-  const { data: sponsorDetail } = useSponsorDetail();
-
   const orderedCurrencies = useCurrenciesOrder({
     currencies:
       sponsorDetail?.availableBudgets.map(budget => ({
         currency: budget.currency,
       })) ?? [],
   });
+
+  const currencies = useMemo(
+    () =>
+      orderedCurrencies?.map(({ currency: { id, name, logoUrl } }) => ({
+        id,
+        value: id,
+        label: name,
+        image: logoUrl,
+      })) ?? [],
+    [orderedCurrencies]
+  );
+
+  const projects = useMemo(
+    () => sponsorDetail?.projects.map(p => ({ label: p.name, value: p.id, ...p })) ?? [],
+    [sponsorDetail]
+  );
 
   function updateState(prevState: TSponsorHistoryTable.Filters, newState: TSponsorHistoryTable.Filters) {
     const updatedState = { ...prevState, ...newState };
@@ -144,20 +149,20 @@ export function SponsorHistoryTable() {
     setFilters(prevState => updateState(prevState, { dateRange }));
   }
 
-  function updateType(types: TSelectAutocomplete.Item[]) {
-    setFilters(prevState => updateState(prevState, { types }));
-  }
-
   function updatePeriod(period: Period) {
     setFilters(prevState => updateState(prevState, { period }));
   }
 
-  function updateCurrency(currency: TSelectAutocomplete.Item[]) {
-    setFilters(prevState =>
-      updateState(prevState, {
-        currency,
-      })
-    );
+  function updateTypes(types: TSelectAutocomplete.Item[]) {
+    setFilters(prevState => updateState(prevState, { types }));
+  }
+
+  function updateCurrencies(currencies: TSelectAutocomplete.Item[]) {
+    setFilters(prevState => updateState(prevState, { currencies }));
+  }
+
+  function updateProjects(projects: TSelectAutocomplete.Item[]) {
+    setFilters(prevState => updateState(prevState, { projects }));
   }
 
   function handleSort(sort: SortDescriptor) {
@@ -244,25 +249,24 @@ export function SponsorHistoryTable() {
         <FiltersTransactions
           transactions={types}
           selected={filters.types ?? initialFilters.types}
-          onChange={updateType}
+          onChange={updateTypes}
           hideLabel
           isElevated={false}
         />
         <FiltersCurrencies
-          selected={filters.currency ?? initialFilters.currency}
-          onChange={updateCurrency}
-          currencies={
-            orderedCurrencies?.map(({ currency }) => ({
-              id: currency.id,
-              value: currency.id,
-              label: currency.name,
-              image: currency.logoUrl,
-            })) ?? []
-          }
+          currencies={currencies}
+          selected={filters.currencies ?? initialFilters.currencies}
+          onChange={updateCurrencies}
           hideLabel
           isElevated={false}
         />
-        <FiltersProjects projects={projects} selected={[]} onChange={() => {}} hideLabel isElevated={false} />
+        <FiltersProjects
+          projects={projects}
+          selected={filters.projects ?? initialFilters.projects}
+          onChange={updateProjects}
+          hideLabel
+          isElevated={false}
+        />
       </header>
       <Table
         label={T("v2.pages.sponsor.history.title")}
