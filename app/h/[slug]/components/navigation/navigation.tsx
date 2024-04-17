@@ -17,7 +17,7 @@ export function Navigation({ slug }: TNavigation.Props) {
           tabs={[
             {
               content: <Translate token="v2.pages.hackathons.details.navigation.overview" />,
-              key: NEXT_ROUTER.hackathons.details.overview(slug),
+              key: NEXT_ROUTER.hackathons.details.root(slug),
             },
             // KEEP FOR V2
             // {

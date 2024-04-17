@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import { ScrollableView } from "app/h/[slug]/clients/scrollable-view/scrollable-view";
 import { Navigation } from "app/h/[slug]/components/navigation/navigation";
 import { Wrapper } from "app/h/[slug]/components/wrapper/wrapper";
@@ -11,6 +13,11 @@ import { Header } from "./components/header/header";
 export default function HackathonPage({ params }: { params: { slug: string } }) {
   const { slug = "" } = params;
   const data = mock;
+
+  if (data.slug !== params.slug) {
+    redirect("/not-found");
+  }
+
   return (
     <ScrollableView>
       <Header endDate={data.endDate} startDate={data.startDate} title={data.title} />

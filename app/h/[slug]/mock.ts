@@ -33,15 +33,19 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
     "Select issues that match your skills, get assigned, and start making your mark! FIRST COME FIRST SERVE!\n" +
     "\n" +
     "And lastly, enjoy! If your contribution is eligible, you’ll get rewarded via OnlyDust.",
-  startDate: "2024-04-10T00:00:00Z",
-  endDate: "2024-04-30T00:00:00Z",
-  title: "ODHack #2.0",
+  startDate: "2024-04-22T10:30:00Z",
+  endDate: "2024-05-01T11:59:00Z",
+  title: "ODHack #3.0",
   id: "e1dad47e-0b29-4198-8aec-9fc0ea5a649d",
-  slug: "od-hack-2-0",
+  slug: "od-hack-3-0",
   links: [
     {
-      url: "string",
-      value: "string",
+      url: "https://www.notion.so/onlydust/ODHack-Common-Guidelines-Project-leads-5e21836f85ad493f9ca429770af0ad40",
+      value: "Guidelines",
+    },
+    {
+      url: "https://t.me/+Q1Oin_LMxpM0MTk8",
+      value: "Telegram group",
     },
   ],
   location: "string",
@@ -50,38 +54,62 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
   },
   projects: [
     {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      logoUrl: "string",
-      name: "string",
-      slug: "my-awesome-project",
+      id: "cd986a49-080d-4382-b5df-055f240f3ee6",
+      slug: "starknet-scaffold",
+      name: "Starknet-Scaffold",
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6bf61288485406191c63302feb4a5a2e.png",
     },
-  ],
-  sponsors: [
     {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8506434858363286425.png",
-      name: "Ethereum Foundation",
-      url: "https://ethereum.org",
+      id: "32e92e68-13a5-4859-a122-69c0e738a8d1",
+      slug: "giza",
+      name: "Giza",
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6334491632144580844.jpg",
+    },
+    {
+      id: "3123156c-020b-4d60-88c7-987f6572a37f",
+      slug: "starknet-quest",
+      name: "Starknet Quest",
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6389731051816904853.png",
+    },
+    {
+      id: "671737da-126b-463e-b1c1-ca1b21a56221",
+      slug: "unruggable-meme",
+      name: "Unruggable Meme",
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/fbc1545b7288ab6d3166d5c3f59ad117.png",
+    },
+    {
+      id: "8e46e508-e2f8-4f08-aba7-c526795a6f5e",
+      slug: "realmsworld",
+      name: "RealmsWorld",
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/15324398531406700543.jpg",
+    },
+    {
+      id: "b3ef25fa-7d7e-4395-86c4-872b9acc59ef",
+      slug: "starknetjs",
+      name: "starknet.js",
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/18298069080201905327.png",
+    },
+    {
+      id: "1e595f55-824a-4ecb-ba6d-73ba4f2a4d61",
+      slug: "devnet-rs",
+      name: "Devnet-rs",
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/4347705012411834597.png",
+    },
+    {
+      id: "6c5aa090-8b98-4793-a95e-27f134549a18",
+      slug: "cairo-vm-in-go",
+      name: "Cairo VM in Go",
+      logoUrl: null as unknown as string,
+    },
+    {
+      id: "bd409207-62c1-4a02-8349-46d9169638fb",
+      slug: "cairo-native",
+      name: "Cairo Native",
+      logoUrl: null as unknown as string,
     },
   ],
-  subtitle: "string",
+  sponsors: [],
+  subtitle: "Contribute to the best open-source projects and get rewarded.",
   totalBudget: "$45,000",
-  tracks: [
-    {
-      description: "string",
-      iconSlug: "string",
-      name: "string",
-      projects: [
-        {
-          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
-          name: "Verkle Tries",
-          shortDescription: "A short project description",
-          slug: "my-awesome-project",
-          visibility: "PRIVATE",
-        },
-      ],
-      subtitle: "string",
-    },
-  ],
+  tracks: [],
 };
