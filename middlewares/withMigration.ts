@@ -2,9 +2,11 @@ import { NextFetchEvent, NextMiddleware, NextRequest, NextResponse } from "next/
 
 import { MiddlewareFactory } from "./type";
 
+const paths = ["/migration", "/hackathons", "/h"];
 export const withMigration: MiddlewareFactory = (next: NextMiddleware) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
-    if (request.nextUrl.pathname.startsWith("/migration")) {
+    const find = paths.find(path => request.nextUrl.pathname.startsWith(path));
+    if (find) {
       if (process.env.NEXT_PUBLIC_ALLOW_MIGRATION_FOLDER !== "true") {
         return NextResponse.redirect(new URL("/", request.url));
       }
