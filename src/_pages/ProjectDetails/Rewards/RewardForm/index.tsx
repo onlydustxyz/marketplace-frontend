@@ -49,6 +49,8 @@ const RewardForm: React.FC = () => {
     pathParam: { projectId: project?.id || "" },
     method: "GET",
     enabled: !!project?.id,
+    // 5 minutes interval to get the latest dollar rates
+    refetchInterval: 300000,
   });
 
   const { mutate: createProjectReward, isPending: isCreateProjectRewardLoading } = useMutationRestfulData({
