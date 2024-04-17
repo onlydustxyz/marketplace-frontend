@@ -44,14 +44,17 @@ export function Table({
     <NextTable aria-label={label} classNames={classNames} removeWrapper {...TableProps}>
       <TableHeader columns={columns} {...(TableHeaderProps || {})}>
         {({ key, align, icon, children, ...restColumn }) => (
-          <TableColumn {...TableColumnProps} key={key} {...(restColumn ?? {})}>
-            <div
-              className={cn("inline-flex w-full gap-1", {
-                "justify-start": align === "start",
-                "justify-center": align === "center",
-                "justify-end": align === "end",
-              })}
-            >
+          <TableColumn
+            {...TableColumnProps}
+            key={key}
+            {...(restColumn ?? {})}
+            className={cn({
+              "text-left": align === "start",
+              "text-center": align === "center",
+              "text-right": align === "end",
+            })}
+          >
+            <div className={cn("inline-flex gap-1")}>
               {icon ? <Icon {...icon} /> : null}
               {children}
             </div>
