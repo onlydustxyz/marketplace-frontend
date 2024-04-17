@@ -1,27 +1,12 @@
-import { isString } from "lodash";
-import { useParams } from "next/navigation";
-
 import { SponsorProjectCard } from "app/sponsor/[sponsorId]/components/sponsor-project-card/sponsor-project-card";
 import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
-
-import SponsorApi from "src/api/Sponsors";
+import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
 
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 export function SponsorSectionProject() {
-  const { sponsorId } = useParams();
-
-  const sponsorIdIsString = isString(sponsorId);
-
-  const { data, isLoading } = SponsorApi.queries.useGetSponsorById({
-    params: {
-      sponsorId: sponsorIdIsString ? sponsorId : "",
-    },
-    options: {
-      enabled: sponsorIdIsString,
-    },
-  });
+  const { data, isLoading } = useSponsorDetail();
 
   function renderProjects() {
     if (isLoading) {

@@ -7,8 +7,9 @@ import { Money } from "utils/Money/Money";
 
 import { TSponsorHistoryTable } from "app/sponsor/[sponsorId]/components/sponsor-history-table/sponsor-history-table.types";
 import { SponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction";
-import { useSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history";
-import { TUseSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history.types";
+import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
+import { useSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history";
+import { TUseSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history.types";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
@@ -90,13 +91,6 @@ export function SponsorHistoryTable() {
     column: filters.sort,
     direction: filters.direction,
   });
-  const orderedCurrencies = useCurrenciesOrder({
-    currencies: [
-      {
-        currency: Money.fromSchema({ code: Money.Static.Currency.USD }),
-      },
-    ],
-  });
 
   const queryParams = useMemo(() => {
     const params: TUseSponsorHistory.Props["queryParams"] = {};
@@ -104,6 +98,10 @@ export function SponsorHistoryTable() {
     if (filters.dateRange?.from && filters.dateRange?.to) {
       params["fromDate"] = formatDateQueryParam(filters.dateRange.from);
       params["toDate"] = formatDateQueryParam(filters.dateRange.to);
+    }
+
+    if (filters.currency?.length) {
+      params["currencies"] = filters.currency.map(({ value }) => value).join(",");
     }
 
     if (filters.types?.length) {
@@ -124,6 +122,15 @@ export function SponsorHistoryTable() {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSponsorHistory({ queryParams });
 
   const transactions = useMemo(() => data?.pages.flatMap(({ transactions }) => transactions) ?? [], [data]);
+
+  const { data: sponsorDetail } = useSponsorDetail();
+
+  const orderedCurrencies = useCurrenciesOrder({
+    currencies:
+      sponsorDetail?.availableBudgets.map(budget => ({
+        currency: budget.currency,
+      })) ?? [],
+  });
 
   function updateState(prevState: TSponsorHistoryTable.Filters, newState: TSponsorHistoryTable.Filters) {
     const updatedState = { ...prevState, ...newState };
