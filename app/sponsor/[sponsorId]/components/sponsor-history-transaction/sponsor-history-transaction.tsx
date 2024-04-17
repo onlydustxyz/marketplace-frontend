@@ -13,23 +13,22 @@ export function SponsorHistoryTransaction({ type }: TSponsorHistoryTransaction.P
   const map: Record<typeof type, { className: string; icon: RemixIconsName; label: string }> = {
     DEPOSIT: {
       className: "border-github-green-light text-github-green-light",
-      icon: "ri-arrow-left-down-line",
+      icon: "ri-download-2-line",
       label: T("v2.pages.sponsor.history.deposit"),
     },
     ALLOCATION: {
       className: "border-spacePurple-500 text-spacePurple-500",
-      icon: "ri-arrow-right-up-line",
+      icon: "ri-arrow-right-double-line",
       label: T("v2.pages.sponsor.history.allocated"),
     },
     UNALLOCATION: {
-      className: "border-github-red text-github-red",
-      icon: "ri-arrow-left-line",
+      className: "border-github-grey text-github-grey",
+      icon: "ri-arrow-left-double-line",
       label: T("v2.pages.sponsor.history.unallocated"),
     },
-    // TODO @hayden handle design
     WITHDRAWAL: {
       className: "border-github-red text-github-red",
-      icon: "ri-arrow-left-line",
+      icon: "ri-upload-2-line",
       label: T("v2.pages.sponsor.history.withdrawal"),
     },
   };
