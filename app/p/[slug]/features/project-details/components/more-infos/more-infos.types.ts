@@ -1,7 +1,7 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 
-export namespace TProjectDetails {
+export namespace TMoreInfos {
   export interface Props {
-    project: UseGetProjectBySlugResponse;
+    moreInfos: UseGetProjectBySlugResponse["moreInfos"];
   }
 }

@@ -28,11 +28,12 @@ import { StillFetchingBanner } from "./components/banner/still-fetching-banner/s
 import { ProjectHeader } from "./components/project-header/project-header";
 import { GoodFirstIssues } from "./features/good-first-issues/good-first-issues";
 import { OverviewInformations } from "./features/overview-informations/overview-informations";
+import { ProjectDetails } from "./features/project-details/project-details";
 import { Repositories } from "./features/repositories/repositories";
 
 // TODO: Add translate in new files
 // TODO: Refacto Flex with md:
-// TODO: Refacto Skeleton
+// TODO: Refacto Skeleton with new one
 export default function ProjectPage() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
@@ -125,6 +126,8 @@ export default function ProjectPage() {
         </Flex>
 
         <Flex direction="col" className="shrink-0 gap-4 md:w-72 xl:w-80">
+          {/* ApplyCallout */}
+          <ProjectDetails project={project} />
           <Repositories organizations={project.organizations} />
         </Flex>
       </Flex>

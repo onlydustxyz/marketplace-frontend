@@ -13,7 +13,7 @@ export function Tooltip({
   ...props
 }: TTooltip.Props) {
   if (!enabled) {
-    return <Component className="flex">{children}</Component>;
+    return <Component className="flex w-fit">{children}</Component>;
   }
 
   return (
@@ -32,7 +32,7 @@ export function Tooltip({
         ),
       }}
     >
-      <Component className="flex">{children}</Component>
+      <Component className="flex w-fit">{children}</Component>
     </NextUiTooltip>
   );
 }

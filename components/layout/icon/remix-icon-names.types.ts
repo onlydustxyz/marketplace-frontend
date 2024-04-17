@@ -1,4 +1,5 @@
 export type RemixIconsName =
+  | "ri-link"
   | "ri-arrow-left-up-line"
   | "ri-arrow-up-line"
   | "ri-arrow-right-up-line"

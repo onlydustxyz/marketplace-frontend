@@ -15,10 +15,12 @@ import { TEmptyState } from "./empty-state.types";
 export function EmptyState({ organizations }: TEmptyState.Props) {
   const { T } = useIntl();
 
-  const repositories = organizations?.flatMap(({ repos }) => repos);
+  const repositories = organizations?.flatMap(organization =>
+    organization.repos.map(repo => `${organization.login}/${repo.name}`)
+  );
 
-  const baseUrl = "https://github.com/search?type=issues&q=";
-  const repoQueries = repositories?.map(repo => `repo:${repo.name}`).join("+");
+  const baseUrl = "https://github.com/search?type=issues&state=open&q=";
+  const repoQueries = repositories?.map(repo => `repo:${repo}`).join("+");
   const url = `${baseUrl}${repoQueries}`;
 
   return (
@@ -26,10 +28,12 @@ export function EmptyState({ organizations }: TEmptyState.Props) {
       <Flex direction="col" alignItems="center" className="gap-4">
         <Image src={IMAGES.global.categories} width={80} height={80} alt={T("emptyStatePictureFallback")} />
 
-        <Flex direction="col" alignItems="center" className="gap-1">
-          <Typography variant="title-m">No good first issues listed.</Typography>
+        <Flex direction="col" className="gap-1">
+          <Typography variant="title-m" className="text-center">
+            No good first issues listed.
+          </Typography>
 
-          <Typography variant="body-s" className="text-spaceBlue-200">
+          <Typography variant="body-s" className="text-center text-spaceBlue-200">
             This project might have other open issues on its Github page.
           </Typography>
         </Flex>
