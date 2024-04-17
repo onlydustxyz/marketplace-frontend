@@ -21,6 +21,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
 import { Avatar } from "components/ds/avatar/avatar";
+import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 import { Table } from "components/ds/table/table";
@@ -29,6 +30,7 @@ import { FiltersCurrencies } from "components/features/filters/filters-currencie
 import { FiltersProjects } from "components/features/filters/filters-projects/filters-projects";
 import { FiltersTransactions } from "components/features/filters/filters-transactions/filters-transactions";
 import { Flex } from "components/layout/flex/flex";
+import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 const initialFilters: Required<TSponsorHistoryTable.Filters> = {
@@ -137,6 +139,15 @@ export function SponsorHistoryTable() {
     [sponsorDetail]
   );
 
+  const hasActiveFilters = Boolean(
+    filters.period !== initialFilters.period ||
+      filters.types?.length ||
+      filters.currencies?.length ||
+      filters.projects?.length ||
+      filters.sort !== initialFilters.sort ||
+      filters.direction !== initialFilters.direction
+  );
+
   function updateState(prevState: TSponsorHistoryTable.Filters, newState: TSponsorHistoryTable.Filters) {
     const updatedState = { ...prevState, ...newState };
 
@@ -163,6 +174,11 @@ export function SponsorHistoryTable() {
 
   function updateProjects(projects: TSelectAutocomplete.Item[]) {
     setFilters(prevState => updateState(prevState, { projects }));
+  }
+
+  function resetFilters() {
+    setFilters(prevState => updateState(prevState, initialFilters));
+    setSortDescriptor({ column: initialFilters.sort, direction: initialFilters.direction });
   }
 
   function handleSort(sort: SortDescriptor) {
@@ -237,7 +253,7 @@ export function SponsorHistoryTable() {
 
   return (
     <Card background={"base"} className={"grid gap-5"}>
-      <header className={"flex gap-3"}>
+      <header className={"flex items-center gap-3"}>
         <FilterDatepicker
           selected={filters.dateRange ?? initialFilters.dateRange}
           onChange={updateDate}
@@ -246,6 +262,7 @@ export function SponsorHistoryTable() {
           hideLabel
           isElevated={false}
         />
+
         <FiltersTransactions
           transactions={types}
           selected={filters.types ?? initialFilters.types}
@@ -253,6 +270,7 @@ export function SponsorHistoryTable() {
           hideLabel
           isElevated={false}
         />
+
         {!sponsorDetailError ? (
           <>
             <FiltersCurrencies
@@ -271,7 +289,15 @@ export function SponsorHistoryTable() {
             />
           </>
         ) : null}
+
+        {hasActiveFilters ? (
+          <Button variant={"tertiary"} size={"xs"} onClick={resetFilters}>
+            <Icon remixName={"ri-refresh-line"} />
+            {T("filter.clearButton")}
+          </Button>
+        ) : null}
       </header>
+
       <Table
         label={T("v2.pages.sponsor.history.title")}
         columns={columns}
