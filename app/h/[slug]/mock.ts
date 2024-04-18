@@ -14,27 +14,27 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
     "\n" +
     "🙌 Be fair and respectful please! No more than one issue assigned at a time to give everyone a chance. \n" +
     "\n" +
-    "**How to join the ODHack**\n" +
+    "### How to join the ODHack\n" +
     "\n" +
-    "STEP 1 : Register on OnlyDust\n" +
+    "**Step 1: Register on OnlyDust**\n" +
     "\n" +
     "If you haven't already, make sure to sign up on OnlyDust to participate and qualify for rewards.\n" +
     "\n" +
-    "Step 2: Join the Telegram group:\n" +
+    "**Step 2: Join the Telegram group:**\n" +
     "\n" +
     "**[Telegram group](https://t.me/+Q1Oin_LMxpM0MTk8)** to stay posted, ask questions and so forth.\n" +
     "\n" +
-    "Step 3: Pick your project\n" +
+    "**Step 3: Pick your project**\n" +
     "\n" +
     "Check out the projects participating in this edition to become familiar with it and when the D-day (April 22nd) is here, go, go, go!\n" +
     "\n" +
-    "Step 4: Contribute (starting April 22nd)\n" +
+    "**Step 4: Contribute (starting April 22nd)**\n" +
     "\n" +
     "Select issues that match your skills, get assigned, and start making your mark! FIRST COME FIRST SERVE!\n" +
     "\n" +
     "And lastly, enjoy! If your contribution is eligible, you’ll get rewarded via OnlyDust.",
   startDate: "2024-04-22T10:30:00+02:00",
-  endDate: "2024-05-01T11:59:00+02:00",
+  endDate: "2024-05-01T23:59:00+02:00",
   title: "ODHack #3.0",
   id: "e1dad47e-0b29-4198-8aec-9fc0ea5a649d",
   slug: "od-hack-3-0",
@@ -106,6 +106,18 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
       slug: "cairo-native",
       name: "Cairo Native",
       logoUrl: null as unknown as string,
+    },
+    {
+      id: "2660a5b7-f141-460c-844c-6cedfc99d781",
+      slug: "loot-underworld",
+      name: "Loot Underworld",
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/98b04f28db28874c48f32e3bdeeee347.jpeg",
+    },
+    {
+      id: "7d04163c-4187-4313-8066-61504d34fc56",
+      slug: "bretzel",
+      name: "Bretzel",
+      logoUrl: "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
     },
   ],
   sponsors: [],
