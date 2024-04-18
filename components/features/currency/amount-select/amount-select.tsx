@@ -39,7 +39,6 @@ export function AmountSelect({
       placeholder="0.00"
       size="lg"
       radius="full"
-      className="h-11"
       disabled={inputProps?.disabled || !orderedCurrencies?.length}
       value={amountValue}
       onChange={e => handleAmountChange(e.target.value.replace(/[^0-9.,]+/g, "").replace(/,/g, "."))}
