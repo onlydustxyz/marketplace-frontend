@@ -1,4 +1,5 @@
-import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
 
 import { Project } from "app/h/[slug]/clients/project/project";
 import { CardItem } from "app/h/[slug]/components/card-item/card-item";
@@ -10,8 +11,9 @@ import { Link } from "components/ds/link/link";
 import { TOverview } from "./overview.types";
 
 export function Overview({ startDate, endDate, totalBudget, sponsors, links, projects }: TOverview.Props) {
-  const start = format(new Date(startDate), "MMMM dd, yyyy hh:mm aa OOO");
-  const end = format(new Date(endDate), "MMMM dd, yyyy hh:mm aa OOO");
+  const start = formatInTimeZone(new Date(startDate), "Europe/Paris", "MMMM dd, yyyy hh:mm aa OOO", { locale: enGB });
+  const end = formatInTimeZone(new Date(endDate), "Europe/Paris", "MMMM dd, yyyy hh:mm aa OOO", { locale: enGB });
+
   return (
     <div className="flex w-full flex-col items-start justify-start gap-6">
       <Card background={"base"} border={"light"} hasPadding={false}>
