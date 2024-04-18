@@ -7,7 +7,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { TNavigation } from "./navigation.types";
 
-export function Navigation({ slug }: TNavigation.Props) {
+export function Navigation({ slug, hasTracks }: TNavigation.Props) {
   return (
     <div className="h-auto w-full bg-card-background-base pt-6">
       <Wrapper className="max-md:px-0">
@@ -19,11 +19,14 @@ export function Navigation({ slug }: TNavigation.Props) {
               content: <Translate token="v2.pages.hackathons.details.navigation.overview" />,
               key: NEXT_ROUTER.hackathons.details.root(slug),
             },
-            // KEEP FOR V2
-            // {
-            //   content: <Translate token="v2.pages.hackathons.details.navigation.tracks" />,
-            //   key: NEXT_ROUTER.hackathons.details.tracks(slug),
-            // },
+            ...(hasTracks
+              ? [
+                  {
+                    content: <Translate token="v2.pages.hackathons.details.navigation.tracks" />,
+                    key: NEXT_ROUTER.hackathons.details.tracks(slug),
+                  },
+                ]
+              : []),
           ]}
         />
       </Wrapper>

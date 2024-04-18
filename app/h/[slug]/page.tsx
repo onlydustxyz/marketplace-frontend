@@ -21,7 +21,7 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
   return (
     <ScrollableView>
       <Header endDate={data.endDate} startDate={data.startDate} title={data.title} />
-      <Navigation slug={slug} />
+      <Navigation slug={slug} hasTracks={!!data.tracks.length} />
       <Wrapper className="max-md:p-2">
         <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14" id={"overview"}>
           <Intro title={data.title} subtitle={data.subtitle} />
