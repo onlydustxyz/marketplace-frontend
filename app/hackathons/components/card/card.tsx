@@ -1,44 +1,29 @@
-import { format } from "date-fns";
 import Image from "next/image";
+import Link from "next/link";
 import background from "public/images/hackathons-cards-bg.webp";
-import { useMemo } from "react";
 
+import { DisplayDate } from "components/features/hackathons/display-date/display-date";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { TCard } from "./card.types";
 
-export function Card({ title, ...props }: TCard.Props) {
-  const dateLabel = useMemo(() => {
-    const startDate = new Date(props.startDate);
-    const endDate = new Date(props.endDate);
-    const start = {
-      day: format(startDate, "dd"),
-      month: format(startDate, "MMMM"),
-      year: format(startDate, "yyyy"),
-    };
-    const end = {
-      day: format(endDate, "dd"),
-    };
-
-    // March 18 - 24 2024
-    // March 18 - April 24 2024
-    // March 18 2024 - March 24 2025
-
-    return `${start.month} ${start.day} - ${end.day} ${start.year}`;
-  }, [props]);
-
+export function Card({ title, startDate, endDate, slug }: TCard.Props) {
   return (
-    <div className="relative z-[1] h-auto w-full cursor-pointer overflow-hidden rounded-[32px] pb-12 pl-16 pr-8 pt-24 outline outline-[6px] outline-card-border-medium">
-      <Image src={background} alt={title} className="absolute inset-0 h-full w-full object-cover object-center" />
-      <div className="relative z-[1] flex flex-col items-start justify-start gap-3">
-        <Typography
-          variant="special-label"
-          className="uppercase"
-          translate={{ token: "v2.pages.settings.hackathons.defaultLocation" }}
-        />
-        <Typography variant="title-xl">{title}</Typography>
-        <Typography variant="body-l">{dateLabel}</Typography>
+    <Link href={NEXT_ROUTER.hackathons.details.root(slug)} className="w-full">
+      <div className="relative z-[1] h-auto w-full cursor-pointer overflow-hidden rounded-[32px] pb-12 pl-16 pr-8 pt-24 outline outline-[6px] outline-card-border-medium">
+        <Image src={background} alt={title} className="absolute inset-0 h-full w-full object-cover object-center" />
+        <div className="relative z-[1] flex flex-col items-start justify-start gap-3">
+          <Typography
+            variant="special-label"
+            className="uppercase"
+            translate={{ token: "v2.pages.hackathons.defaultLocation" }}
+          />
+          <Typography variant="title-xl">{title}</Typography>
+          <DisplayDate endDate={endDate} startDate={startDate} />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

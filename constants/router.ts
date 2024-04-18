@@ -39,4 +39,12 @@ export const NEXT_ROUTER = {
   onboarding: "/onboarding",
   termsAndConditions: "/terms-and-conditions",
   maintenance: "/maintenance",
+  hackathons: {
+    root: "/hackathons",
+    details: {
+      root: (slug: string) => `/h/${slug}`,
+      overview: (slug: string) => `/h/${slug}#overview`,
+      tracks: (slug: string) => `/h/${slug}#tracks`,
+    },
+  },
 } as const;
