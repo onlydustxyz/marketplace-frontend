@@ -37,7 +37,11 @@ export const bannerVariants = tv({
     variant: {
       rainbow: {
         wrapper:
-          "bg-rainbow relative animate-wave overflow-hidden after:pointer-events-none after:absolute after:h-full after:w-full after:bg-noise-light",
+          "bg-rainbow relative animate-wave after:pointer-events-none after:absolute after:h-full after:w-full after:bg-noise-light",
+      },
+      multiColor: {
+        wrapper:
+          "before:animate-glow-border-slow relative z-10 flex h-full w-full items-center justify-center overflow-hidden rounded-2xl before:absolute before:-z-10 before:aspect-square before:w-full before:animate-spin-invert-slow before:bg-multi-color-gradient after:absolute after:left-px after:top-px after:-z-[1] after:h-[calc(100%-2px)] after:w-[calc(100%-2px)] after:rounded-[15px] after:bg-card-background-base",
       },
       orange: {
         wrapper: "bg-orange-800",
@@ -63,6 +67,27 @@ export const bannerVariants = tv({
     },
   },
   compoundVariants: [
+    {
+      variant: "multiColor",
+      size: "s",
+      class: {
+        wrapper: "min-h-[60px]",
+      },
+    },
+    {
+      variant: "multiColor",
+      size: "m",
+      class: {
+        wrapper: "min-h-[80px]",
+      },
+    },
+    {
+      variant: "multiColor",
+      size: "l",
+      class: {
+        wrapper: "min-h-[90px]",
+      },
+    },
     {
       variant: "orange",
       hasBorder: true,

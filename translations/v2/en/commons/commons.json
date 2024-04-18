@@ -60,5 +60,6 @@
       }
     }
   },
-  "currency": "Currency"
+  "currency": "Currency",
+  "pendingInvite": "Pending invite"
 }

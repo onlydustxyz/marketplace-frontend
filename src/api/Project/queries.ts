@@ -290,6 +290,26 @@ const useProjectContributorsChurnedInfiniteList = ({
   );
 };
 
+export type UseProjectGoodFirstIssuesInfiniteListResponse = components["schemas"]["GoodFirstIssuesPageResponse"];
+
+const useProjectGoodFirstIssuesInfiniteList = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<
+  UseProjectGoodFirstIssuesInfiniteListResponse,
+  { projectId?: string; queryParams?: QueryParams; pageSize?: number }
+>) => {
+  return useInfiniteBaseQuery<UseProjectGoodFirstIssuesInfiniteListResponse>(
+    {
+      resourcePath: API_PATH.PROJECT_GOOD_FIRST_ISSUES(params?.projectId || ""),
+      tags: PROJECT_TAGS.good_first_issues(params?.projectId || ""),
+      queryParams: params?.queryParams,
+      pageSize: params?.pageSize || 6,
+    },
+    { ...options, enabled: !!params?.projectId }
+  );
+};
+
 export default {
   useGetProjectBySlug,
   useGetProjectContributionDetail,
@@ -303,4 +323,5 @@ export default {
   useProjectContributorsMostActivesInfiniteList,
   useProjectContributionsStaledInfiniteList,
   useProjectContributorsChurnedInfiniteList,
+  useProjectGoodFirstIssuesInfiniteList,
 };

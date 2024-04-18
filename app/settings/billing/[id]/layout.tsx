@@ -10,7 +10,7 @@ import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profi
 import { AdminContentWrapper } from "./components/admin-content-wrapper/admin-content-wrapper";
 import { BillingHeader } from "./components/billing-header/billing-header";
 import { Tabs } from "./components/tabs/tabs";
-import { ProfileInvitationBanner } from "./general-information/component/profile-invitation-banner/profile-invitation-banner";
+import { ProfileInvitationBanner } from "./general-information/components/profile-invitation-banner/profile-invitation-banner";
 
 function BillingLayout({ children }: PropsWithChildren) {
   const { id } = useParams<{ id: string }>();
