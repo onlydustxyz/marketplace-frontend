@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import { TScrollableView } from "./scrollable-view.types";
@@ -9,21 +8,19 @@ const scrollValue = {
   full: 254,
   compact: 120 - 32,
   navigation: 56,
+  shouldHideContent: 177,
 };
 
 export function ScrollableView({ children }: TScrollableView.Props) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const [isHeaderCompact, setIsHeaderCompact] = useState(false);
+  const [headerValue, setHeaderValue] = useState(scrollValue.full);
 
   useEffect(() => {
     const onScroll = (e: Event) => {
       if (e.currentTarget) {
         const target = e.currentTarget as HTMLElement;
-        if (target.scrollTop >= scrollValue.compact - scrollValue.navigation) {
-          setIsHeaderCompact(true);
-        } else {
-          setIsHeaderCompact(false);
-        }
+        const headerValue = scrollValue.full - target.scrollTop;
+        setHeaderValue(headerValue <= scrollValue.compact ? scrollValue.compact : headerValue);
       }
     };
     scrollRef?.current?.removeEventListener("scroll", onScroll);
@@ -34,22 +31,14 @@ export function ScrollableView({ children }: TScrollableView.Props) {
   return (
     <div
       className={"scrollbar-sm group flex h-full w-full flex-col overflow-y-scroll px-2 md:px-6"}
-      data-header-compact={isHeaderCompact}
+      data-header-compact={headerValue <= scrollValue.shouldHideContent}
       ref={scrollRef}
     >
       <div className="sticky top-0 z-10 w-full">
         <div className="w-full" style={{ height: scrollValue.full + scrollValue.navigation }}>
-          <motion.div
-            className="w-full"
-            initial="full"
-            animate={isHeaderCompact ? "compact" : "full"}
-            variants={{
-              full: { height: scrollValue.full },
-              compact: { height: scrollValue.compact },
-            }}
-          >
+          <div className="w-full" style={{ height: headerValue }}>
             {children[0]}
-          </motion.div>
+          </div>
           {children[1]}
         </div>
       </div>
