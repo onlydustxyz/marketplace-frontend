@@ -26,7 +26,7 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
         <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14" id={"overview"}>
           <Intro title={data.title} subtitle={data.subtitle} />
           <div className="flex w-full flex-col items-start justify-start gap-6 md:flex-row">
-            <div className="w-full md:sticky md:left-0 md:top-6 md:w-[400px]">
+            <div className="w-full md:w-[400px]">
               <Overview
                 startDate={data.startDate}
                 endDate={data.endDate}

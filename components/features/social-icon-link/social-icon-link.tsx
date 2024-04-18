@@ -2,11 +2,10 @@ import { useMemo } from "react";
 
 import Telegram from "src/assets/icons/Telegram";
 
+import { TSocialIconLink } from "components/features/social-icon-link/social-icon-link.types";
 import { Icon } from "components/layout/icon/icon";
 
-import { TSocialIcon } from "./social-icon.types";
-
-export function SocialIcon({ url }: TSocialIcon.Props) {
+export function SocialIconLink({ url }: TSocialIconLink.Props) {
   const socialIcons = {
     ["t.me/"]: <Telegram className="h-4 w-4" />,
     ["discord.com/"]: <Icon remixName="ri-discord-fill" />,
