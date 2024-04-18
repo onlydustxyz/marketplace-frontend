@@ -14,11 +14,11 @@ function calculateTotalAmounts(
   rewards: InvoicePreviewResponse["rewards"]
 ): { currency: Money.Currency; total: number }[] {
   const totals = rewards?.reduce((acc, reward) => {
-    const { currency, amount } = reward.amount;
+    const { currency, prettyAmount } = reward.amount;
     if (acc[currency.id]) {
-      acc[currency.id].amount += amount;
+      acc[currency.id].amount += prettyAmount;
     } else {
-      acc[currency.id] = { amount, currency };
+      acc[currency.id] = { amount: prettyAmount, currency };
     }
     return acc;
   }, {} as Record<Money.Currency["id"], { amount: number; currency: Money.Currency }>);
