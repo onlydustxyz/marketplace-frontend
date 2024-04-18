@@ -2,14 +2,12 @@ import { useMediaQuery } from "usehooks-ts";
 import { Money } from "utils/Money/Money";
 
 import { TSponsorProjectCard } from "app/sponsor/[sponsorId]/components/sponsor-project-card/sponsor-project-card.types";
-import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
 
 import { viewportConfig } from "src/config";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
-import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -100,24 +98,24 @@ export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBu
         </div>
       ) : null}
 
-      <SponsorSidePanels
-        panel={"project"}
-        buttonProps={{
-          variant: "secondary",
-          size: "s",
-          className: "w-full lg:hidden",
-          children: (
-            <>
-              <Icon remixName={"ri-service-line"} />
-              <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
-            </>
-          ),
-        }}
-        projectParams={{
-          // TODO @hayden add current project
-          projectId: "123",
-        }}
-      />
+      {/*<SponsorSidePanels*/}
+      {/*  panel={"project"}*/}
+      {/*  buttonProps={{*/}
+      {/*    variant: "secondary",*/}
+      {/*    size: "s",*/}
+      {/*    className: "w-full lg:hidden",*/}
+      {/*    children: (*/}
+      {/*      <>*/}
+      {/*        <Icon remixName={"ri-service-line"} />*/}
+      {/*        <Translate token={"v2.pages.sponsor.project.sponsorProject"} />*/}
+      {/*      </>*/}
+      {/*    ),*/}
+      {/*  }}*/}
+      {/*  projectParams={{*/}
+      {/*    // TODO @hayden add current project*/}
+      {/*    projectId: "123",*/}
+      {/*  }}*/}
+      {/*/>*/}
     </Card>
   );
 }
