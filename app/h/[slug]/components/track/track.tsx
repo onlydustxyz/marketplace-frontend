@@ -1,14 +1,13 @@
-import { components } from "src/__generated/api";
+import { TrackAccordion } from "app/h/[slug]/clients/track-accordion/track-accordion";
+
+import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 
 import { TTrack } from "./track.types";
 
-// interface test implements components["schemas"]["HackathonsTrackResponse"] {
-//   id: number;
-//   name: string;
-//   description: string;
-//   slug: string;
-//   hackathons: number[];
-// }
-export function Track({ children }: TTrack.Props) {
-  return <div>{children}</div>;
+export function Track({ data }: TTrack.Props) {
+  return (
+    <TrackAccordion title={data.name} subtitle={data.subtitle} icon={{ remixName: data.iconSlug as RemixIconsName }}>
+      <div>cocou</div>
+    </TrackAccordion>
+  );
 }

@@ -1,5 +1,7 @@
-import { PropsWithChildren } from "react";
+import { components } from "src/__generated/api";
 
 export namespace TTracks {
-  export interface Props extends PropsWithChildren {}
+  export interface Props {
+    data: components["schemas"]["HackathonsTrackResponse"][];
+  }
 }

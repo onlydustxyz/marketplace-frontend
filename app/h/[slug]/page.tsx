@@ -6,6 +6,7 @@ import { Wrapper } from "app/h/[slug]/components/wrapper/wrapper";
 import { Intro } from "app/h/[slug]/features/intro/intro";
 import { MainDescription } from "app/h/[slug]/features/main-description/main-description";
 import { Overview } from "app/h/[slug]/features/overview/overview";
+import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 import { mock } from "app/h/[slug]/mock";
 
 import { Header } from "./components/header/header";
@@ -40,10 +41,9 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
               <div>
                 <MainDescription description={data.description} />
               </div>
-              {/*// KEEP FOR V2 */}
-              {/*<div className="h-[1500px] flex-1 bg-blue-500" id={"tracks"}>*/}
-              {/*  tracks*/}
-              {/*</div>*/}
+              <div className="h-[1500px] flex-1 bg-blue-500" id={"tracks"}>
+                <Tracks data={mock.tracks} />
+              </div>
             </div>
           </div>
         </div>
