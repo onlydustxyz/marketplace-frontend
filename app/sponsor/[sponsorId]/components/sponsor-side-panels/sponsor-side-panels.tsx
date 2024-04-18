@@ -35,10 +35,7 @@ export function SponsorSidePanels({ buttonProps, panel, projectParams }: TSponso
         <FilloutStandardEmbed
           filloutId="1cTn46XDDVus"
           inheritParameters
-          // TODO @hayden check params
           parameters={{
-            // project_id: project.id,
-            // project_name: project.name,
             user_id: user?.id,
             user_github: user?.login,
             user_email: user?.email,
