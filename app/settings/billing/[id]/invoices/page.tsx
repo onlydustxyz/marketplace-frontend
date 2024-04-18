@@ -53,7 +53,7 @@ function InvoicesPage() {
   useEffect(() => {
     if (downloadedInvoice) {
       const downloadLink = document.createElement("a");
-      downloadLink.href = window.URL.createObjectURL(downloadedInvoice as Blob);
+      downloadLink.href = window.URL.createObjectURL(downloadedInvoice);
       downloadLink.download = invoiceMetaData.number ?? "invoice.pdf";
       downloadLink.click();
       setInvoiceMetaData({ invoiceId: "", number: "" });
