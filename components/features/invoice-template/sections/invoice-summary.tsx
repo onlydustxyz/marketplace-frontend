@@ -65,7 +65,7 @@ export function InvoiceSummary({
                 <Text style={styles.td}>{getFormattedDateGB(new Date(item.date))}</Text>
                 {/*  amount  */}
                 <Text style={styles.td}>
-                  {Money.format({ amount: item.amount.amount, currency: item.amount.currency }).string}
+                  {Money.format({ amount: item.amount.prettyAmount, currency: item.amount.currency }).string}
                 </Text>
                 {/*  rate  */}
                 <View style={{ ...styles.td, ...styles.flexRow }}>
