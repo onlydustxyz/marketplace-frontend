@@ -37,11 +37,9 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
                 projects={data.projects}
               />
             </div>
-            <div className="h-auto flex-1">
-              <div>
-                <MainDescription description={data.description} />
-              </div>
-              <div className="h-[1500px] flex-1 bg-blue-500" id={"tracks"}>
+            <div className="flex h-auto w-full flex-1 flex-col items-start justify-start gap-6">
+              <MainDescription description={data.description} />
+              <div className="w-full" id={"tracks"}>
                 <Tracks data={mock.tracks} />
               </div>
             </div>
