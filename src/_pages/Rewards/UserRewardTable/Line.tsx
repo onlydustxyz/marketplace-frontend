@@ -48,14 +48,14 @@ export default function RewardLine({ reward, onClick, selected, showContributor 
         </div>
       </Cell>
       <Cell>
-        {reward?.amount.amount ? (
+        {reward?.amount.prettyAmount ? (
           <div className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]">
             <AvailableConversion
               tooltipId={`${reward?.id}-contributors-earned-details`}
-              totalAmount={reward?.amount?.amount}
+              totalAmount={reward?.amount?.prettyAmount}
               currency={{
                 currency: reward?.amount?.currency,
-                amount: reward?.amount?.amount,
+                amount: reward?.amount?.prettyAmount,
                 dollar: reward?.amount?.usdEquivalent,
               }}
             />

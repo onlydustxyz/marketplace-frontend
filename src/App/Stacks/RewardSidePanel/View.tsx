@@ -274,7 +274,7 @@ export default function View({
                     <span>
                       {
                         Money.format({
-                          amount: data.amount.amount,
+                          amount: data.amount.prettyAmount,
                           currency: data.amount.currency,
                           options: { showCurrency: false },
                         }).string

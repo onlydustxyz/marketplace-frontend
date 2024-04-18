@@ -39,7 +39,7 @@ export function RewardItem({
             <AvailableConversion
               currency={{
                 currency: currency.currency,
-                amount: currency.amount,
+                amount: currency.prettyAmount,
                 dollar: currency.usdEquivalent,
               }}
             />
