@@ -27,9 +27,9 @@ export default function Header() {
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
   const rewardsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.rewards") : undefined;
+  const hackathonsMenuItem = T("v2.features.menu.hackathons");
   const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.contributions") : undefined;
-  const projectsMenuItem =
-    (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("v2.features.menu.projects") : undefined;
+  const projectsMenuItem = T("v2.features.menu.projects");
 
   const isMatchUserProfile = useMatchPath(NEXT_ROUTER.publicProfile.root(""), { exact: false });
   const isMatchMaintenance = useMatchPath(NEXT_ROUTER.maintenance, { exact: false });
@@ -46,6 +46,7 @@ export default function Header() {
         [NEXT_ROUTER.projects.all]: projectsMenuItem,
         [NEXT_ROUTER.contributions.all]: contributionsMenuItem,
         [NEXT_ROUTER.rewards.all]: rewardsMenuItem,
+        [NEXT_ROUTER.hackathons.root]: hackathonsMenuItem,
       }}
       impersonating={isImpersonating}
       profileCompletionScore={myProfileInfo ? calculateUserCompletionScore(myProfileInfo) : undefined}
