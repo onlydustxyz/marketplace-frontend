@@ -135,7 +135,7 @@ export function SponsorHistoryTable() {
   );
 
   const projects = useMemo(
-    () => sponsorDetail?.projects.map(p => ({ label: p.name, value: p.id, ...p })) ?? [],
+    () => sponsorDetail?.projects.map(p => ({ label: p.name, value: p.id, image: p.logoUrl, ...p })) ?? [],
     [sponsorDetail]
   );
 
