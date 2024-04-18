@@ -111,5 +111,22 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
   sponsors: [],
   subtitle: "Contribute to the best open-source projects and get rewarded.",
   totalBudget: "$45,000",
-  tracks: [],
+  tracks: [
+    {
+      description: "string",
+      iconSlug: "string",
+      name: "string",
+      projects: [
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+      ],
+      subtitle: "string",
+    },
+  ],
 };
