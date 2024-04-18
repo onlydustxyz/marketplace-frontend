@@ -22,7 +22,7 @@ export function ImageMetadataContent({ title, description, subtitle }: TContent.
       >
         {title}
       </div>
-      {!!subtitle && (
+      {subtitle ? (
         <div
           style={{
             fontSize: "32px",
@@ -31,7 +31,7 @@ export function ImageMetadataContent({ title, description, subtitle }: TContent.
         >
           {subtitle}
         </div>
-      )}
+      ) : null}
       <div
         style={{
           fontSize: "32px",
