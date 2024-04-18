@@ -1,10 +1,8 @@
 import { FormEvent, useState } from "react";
-import { Money } from "utils/Money/Money";
 
 import { ProjectPageItemResponse } from "src/types";
 
 import { Button } from "components/ds/button/button";
-import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { SearchProjects } from "components/features/search-projects/search-projects";
 import { Budget } from "components/features/stacks/sponsor-project-stack/components/budget/budget";
 import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
@@ -56,32 +54,32 @@ export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
               <Translate token="v2.pages.stacks.sponsorProject.amount.title" />
             </Label>
             <div className={"grid gap-5"}>
-              <AmountSelect
-                inputProps={{
-                  description: (
-                    <div className={"od-text-body-s flex items-center justify-between"}>
-                      {
-                        Money.format({
-                          amount: 123123,
-                          currency: Money.USD,
-                          options: {
-                            prefixAmountWithTilde: true,
-                          },
-                        }).html
-                      }
-                      <span>
-                        <Translate token="v2.pages.stacks.sponsorProject.amount.balance" />:{" "}
-                        {
-                          Money.format({
-                            amount: 123123,
-                            currency: Money.USD,
-                          }).string
-                        }
-                      </span>
-                    </div>
-                  ),
-                }}
-              />
+              {/*<AmountSelect*/}
+              {/*  inputProps={{*/}
+              {/*    description: (*/}
+              {/*      <div className={"od-text-body-s flex items-center justify-between"}>*/}
+              {/*        {*/}
+              {/*          Money.format({*/}
+              {/*            amount: 123123,*/}
+              {/*            currency: Money.USD,*/}
+              {/*            options: {*/}
+              {/*              prefixAmountWithTilde: true,*/}
+              {/*            },*/}
+              {/*          }).html*/}
+              {/*        }*/}
+              {/*        <span>*/}
+              {/*          <Translate token="v2.pages.stacks.sponsorProject.amount.balance" />:{" "}*/}
+              {/*          {*/}
+              {/*            Money.format({*/}
+              {/*              amount: 123123,*/}
+              {/*              currency: Money.USD,*/}
+              {/*            }).string*/}
+              {/*          }*/}
+              {/*        </span>*/}
+              {/*      </div>*/}
+              {/*    ),*/}
+              {/*  }}*/}
+              {/*/>*/}
               <div className={"grid grid-cols-4 gap-3"}>
                 <Button variant={"secondary"} size={"s"} className={"w-full"}>
                   25%

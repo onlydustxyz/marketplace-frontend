@@ -28,24 +28,24 @@ export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBu
           </Typography>
         </Avatar.Labelled>
 
-        <SponsorSidePanels
-          panel={"project"}
-          buttonProps={{
-            variant: "secondary",
-            size: "s",
-            className: "hidden lg:flex",
-            children: (
-              <>
-                <Icon remixName={"ri-service-line"} />
-                <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
-              </>
-            ),
-          }}
-          projectParams={{
-            // TODO @hayden add current project
-            projectId: "123",
-          }}
-        />
+        {/*<SponsorSidePanels*/}
+        {/*  panel={"project"}*/}
+        {/*  buttonProps={{*/}
+        {/*    variant: "secondary",*/}
+        {/*    size: "s",*/}
+        {/*    className: "hidden lg:flex",*/}
+        {/*    children: (*/}
+        {/*      <>*/}
+        {/*        <Icon remixName={"ri-service-line"} />*/}
+        {/*        <Translate token={"v2.pages.sponsor.project.sponsorProject"} />*/}
+        {/*      </>*/}
+        {/*    ),*/}
+        {/*  }}*/}
+        {/*  projectParams={{*/}
+        {/*    // TODO @hayden add current project*/}
+        {/*    projectId: "123",*/}
+        {/*  }}*/}
+        {/*/>*/}
       </header>
 
       <Card className={"grid gap-2 !p-3"} hasPadding={false}>
