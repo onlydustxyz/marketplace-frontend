@@ -4,6 +4,7 @@ import { Tabs as NextTabs } from "@nextui-org/react";
 import { Tab as NextTab } from "@nextui-org/tabs";
 import { usePathname, useRouter } from "next/navigation";
 import { Key, useMemo, useState } from "react";
+import { useLocation } from "react-use";
 import { useMediaQuery } from "usehooks-ts";
 
 import { viewportConfig } from "src/config";
@@ -21,6 +22,7 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled, i
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [openMobilePanel, setOpenMobilePanel] = useState(false);
   const pathname = usePathname();
+  const location = useLocation();
   const router = useRouter();
   function onSelectTab(tab: Key) {
     if (controlled) {
@@ -38,11 +40,11 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled, i
     }
 
     if (isHref) {
-      return pathname;
+      return `${pathname}${window.location.hash || ""}`;
     }
 
     return selected;
-  }, [pathname, controlled?.selected, selected]);
+  }, [pathname, controlled?.selected, location]);
 
   const getSelectedChildren = useMemo(() => {
     if (controlled?.selected) {

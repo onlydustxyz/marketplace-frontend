@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar as NextAvatar } from "@nextui-org/react";
 import Image from "next/image";
 import * as process from "process";

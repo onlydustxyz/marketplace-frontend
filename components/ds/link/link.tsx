@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "src/utils/cn";
 
 import { BaseLink } from "components/layout/base-link/base-link";

@@ -79,7 +79,7 @@ const useBillingProfileInvoices = ({
   );
 };
 
-export type UseDownloadBillingProfileInvoiceResponse = components["schemas"]["ResourceRes"];
+export type UseDownloadBillingProfileInvoiceResponse = Blob;
 
 const useDownloadBillingProfileInvoice = ({
   params,
