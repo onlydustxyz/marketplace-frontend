@@ -41,19 +41,19 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
       );
     }
 
-    if (!issues?.length) {
-      return <EmptyState organizations={organizations} isProjectLeader={isProjectLeader} />;
+    if (issues?.length) {
+      return (
+        <Flex direction="col" className="gap-4 p-6 pt-0">
+          {issues.map(issue => (
+            <IssueCard key={issue.id} issue={issue} />
+          ))}
+
+          {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite /> : null}
+        </Flex>
+      );
     }
 
-    return (
-      <Flex direction="col" className="gap-4 p-6 pt-0">
-        {issues?.map(issue => (
-          <IssueCard key={issue.id} issue={issue} />
-        ))}
-
-        {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite /> : null}
-      </Flex>
-    );
+    return <EmptyState organizations={organizations} isProjectLeader={isProjectLeader} />;
   }
 
   return (
