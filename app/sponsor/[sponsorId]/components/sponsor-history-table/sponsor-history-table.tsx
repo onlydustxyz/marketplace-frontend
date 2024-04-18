@@ -191,7 +191,6 @@ export function SponsorHistoryTable() {
       {
         key: "DATE",
         children: T("v2.pages.sponsor.history.date"),
-        width: "50%",
         allowsSorting: true,
       },
       {
@@ -239,8 +238,7 @@ export function SponsorHistoryTable() {
           <Avatar.Labelled
             avatarProps={{ src: t.project.logoUrl, alt: t.project.name, shape: "square" }}
             labelProps={{ title: t.project.name }}
-            className={"max-w-[120px]"}
-            truncate
+            className={"max-w-[200px]"}
           >
             {t.project.name}
           </Avatar.Labelled>

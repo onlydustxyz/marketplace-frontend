@@ -53,7 +53,6 @@ export function SponsorHistoryCard({ date, type, amount, project }: TSponsorHist
           <Avatar.Labelled
             avatarProps={{ src: project.logoUrl, alt: project.name, size: "s", shape: "square" }}
             labelProps={{ title: project.name }}
-            truncate
           >
             <Typography variant={"body-s"} className={"truncate"}>
               {project.name}

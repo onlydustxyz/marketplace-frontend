@@ -21,7 +21,6 @@ export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBu
           avatarProps={{ src: logoUrl, alt: name, size: "m", shape: "square" }}
           labelProps={{ title: name }}
           className={"flex-1"}
-          truncate
         >
           <Typography variant={"body-xl-bold"} className={"truncate"}>
             {name}
