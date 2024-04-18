@@ -12,7 +12,7 @@ export function ProjectHeader({ isProjectLeader, hasOrgsWithUnauthorizedRepos, p
   return (
     <Flex
       className={cn("justify-between", {
-        "flex-col items-start  gap-4 md:flex-row md:items-center md:gap-6": isProjectLeader,
+        "flex-col items-start gap-4 md:flex-row md:items-center md:gap-6": isProjectLeader,
         "items-center gap-6": !isProjectLeader,
       })}
     >

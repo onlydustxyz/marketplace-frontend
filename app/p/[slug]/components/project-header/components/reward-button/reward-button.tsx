@@ -1,6 +1,6 @@
 import { FilloutStandardEmbed } from "@fillout/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Channel } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import MeApi from "src/api/me";
@@ -26,10 +26,13 @@ export function RewardButton({ project }: TRewardButton.Props) {
   const isRewardDisabled = !project?.hasRemainingBudget;
   const [isApplyOpen, setIsApplyOpen] = useState(false);
 
-  const findContact = (channel: Channel) => {
-    const findContact = userProfile?.contacts?.find(contact => contact.channel === channel);
-    return findContact?.contact || undefined;
-  };
+  const findContact = useCallback(
+    (channel: Channel) => {
+      const findContact = userProfile?.contacts?.find(contact => contact.channel === channel);
+      return findContact?.contact || undefined;
+    },
+    [userProfile]
+  );
 
   return (
     <>

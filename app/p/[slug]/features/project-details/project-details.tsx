@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { IMAGES } from "src/assets/img";
 import isDefined from "src/utils/isDefined";
 
@@ -19,8 +21,13 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
   const { contributorCount, topContributors, leaders, invitedLeaders, moreInfos, technologies, ecosystems, sponsors } =
     project;
 
-  const projectLeads = leaders?.filter(lead => isDefined(lead?.login)) || [];
-  const projectInvited = invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
+  const projectLeads = useMemo(() => {
+    return leaders?.filter(lead => isDefined(lead?.login)) || [];
+  }, [leaders]);
+
+  const projectInvited = useMemo(() => {
+    return invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
+  }, [invitedLeaders]);
 
   if (!projectLeads.length && !contributorCount) {
     return (

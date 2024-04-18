@@ -2,19 +2,19 @@ import { Key } from "src/hooks/useIntl";
 
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
-import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
+import { TIcon } from "components/layout/icon/icon.types";
 import { Typography } from "components/layout/typography/typography";
 
 type Props = {
-  titleKey: Key;
-  remixIconName: RemixIconsName;
+  title: Key;
+  icon: TIcon.Props;
 };
 
-export default function SectionTitle({ titleKey, remixIconName }: Props) {
+export default function SectionTitle({ title, icon }: Props) {
   return (
     <Flex alignItems="center" className="gap-2 px-6 py-4">
-      <Icon remixName={remixIconName} size={20} />
-      <Typography variant="body-m-bold" translate={{ token: titleKey }} />
+      <Icon {...icon} size={20} />
+      <Typography variant="body-m-bold" translate={{ token: title }} />
     </Flex>
   );
 }

@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
@@ -22,8 +24,12 @@ export const useApplication = ({ projectId, projectSlug }: TUseApplication.Props
     },
   });
 
+  const alreadyApplied = useMemo(() => {
+    return !!userData?.projectsAppliedTo?.find(appliedTo => appliedTo === projectId);
+  }, [userData?.projectsAppliedTo, projectId]);
+
   return {
-    alreadyApplied: !!userData?.projectsAppliedTo?.find(appliedTo => appliedTo === projectId),
+    alreadyApplied,
     applyToProject: () => (projectId ? applyProjectMutation({ projectId }) : undefined),
   };
 };

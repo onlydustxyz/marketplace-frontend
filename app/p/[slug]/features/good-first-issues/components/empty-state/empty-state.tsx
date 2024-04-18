@@ -1,5 +1,7 @@
 import Image from "next/image";
+import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
+import { getSearchLink } from "utils/github/search";
 
 import { IMAGES } from "src/assets/img";
 import { viewportConfig } from "src/config";
@@ -19,13 +21,19 @@ export function EmptyState({ organizations, isProjectLeader }: TEmptyState.Props
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const repositories = organizations?.flatMap(organization =>
-    organization.repos.map(repo => `${organization.login}/${repo.name}`)
-  );
+  const repositories = useMemo(() => {
+    return organizations?.flatMap(organization => organization.repos.map(repo => `${organization.login}/${repo.name}`));
+  }, [organizations]);
 
-  const baseUrl = "https://github.com/search?type=issues&state=open&q=";
-  const repoQueries = repositories?.map(repo => `repo:${repo}`).join("+");
-  const url = `${baseUrl}${repoQueries}`;
+  const repoQueries = useMemo(() => {
+    return repositories?.map(repo => `repo:${repo}`).join("+");
+  }, [repositories]);
+
+  const url = getSearchLink({
+    type: "issues",
+    state: "open",
+    query: repoQueries,
+  });
 
   return (
     <Flex direction="col" alignItems="center" className="gap-6 px-6 pb-12 pt-4">
@@ -40,11 +48,13 @@ export function EmptyState({ organizations, isProjectLeader }: TEmptyState.Props
           />
 
           <Typography variant="body-s" className="text-center text-spaceBlue-200">
-            {isProjectLeader ? (
-              <Translate token="v2.pages.project.overview.goodFirstIssues.empty.description.lead" />
-            ) : (
-              <Translate token="v2.pages.project.overview.goodFirstIssues.empty.description.contributor" />
-            )}
+            <Translate
+              token={
+                isProjectLeader
+                  ? "v2.pages.project.overview.goodFirstIssues.empty.description.lead"
+                  : "v2.pages.project.overview.goodFirstIssues.empty.description.contributor"
+              }
+            />
           </Typography>
         </Flex>
       </Flex>
@@ -52,11 +62,13 @@ export function EmptyState({ organizations, isProjectLeader }: TEmptyState.Props
       <BaseLink href={url}>
         <Button variant="primary" size={isMd ? "m" : "s"}>
           <Icon remixName="ri-github-fill" size={20} className="text-spaceBlue-900" />
-          {isProjectLeader ? (
-            <Translate token="v2.pages.project.overview.goodFirstIssues.empty.button.lead" />
-          ) : (
-            <Translate token="v2.pages.project.overview.goodFirstIssues.empty.button.contributor" />
-          )}
+          <Translate
+            token={
+              isProjectLeader
+                ? "v2.pages.project.overview.goodFirstIssues.empty.button.lead"
+                : "v2.pages.project.overview.goodFirstIssues.empty.button.contributor"
+            }
+          />
         </Button>
       </BaseLink>
     </Flex>

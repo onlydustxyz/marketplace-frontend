@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-import MeApi from "src/api/me";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 
 import { Contributor } from "components/features/contributor/contributor";
@@ -12,10 +11,9 @@ import { Section } from "../section/section";
 import { TProjectLeads } from "./project-leads.types";
 
 export function ProjectLeads({ projectId, projectInvited, projectLeads }: TProjectLeads.Props) {
-  const { data: userInfo } = MeApi.queries.useGetMe({});
   const isProjectLeader = useProjectLeader({ id: projectId });
 
-  const showInvited = isProjectLeader || userInfo?.isAdmin;
+  const showInvited = isProjectLeader;
 
   const sortedByLogin = useMemo(() => {
     return [...projectLeads].sort((a, b) => a.login.localeCompare(b.login));
@@ -48,7 +46,7 @@ export function ProjectLeads({ projectId, projectInvited, projectLeads }: TProje
         ))}
 
         {showInvited &&
-          (projectInvited || []).map(lead => (
+          projectInvited?.map(lead => (
             <Flex key={lead.login} alignItems="center" className="gap-1">
               <Contributor
                 login={lead.login}

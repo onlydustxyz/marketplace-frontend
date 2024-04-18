@@ -13,7 +13,7 @@ export function Technologies({ technologies }: TTechnologies.Props) {
     return getFilteredTechnologies(technologies).filteredTechArray.map(([tech]) => tech);
   }, [technologies]);
 
-  if (technologiesArray.length === 0) {
+  if (!technologiesArray.length) {
     return null;
   }
 

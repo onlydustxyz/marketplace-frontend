@@ -3,19 +3,16 @@ import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
-import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { Link } from "components/ds/link/link";
 import { Contributor } from "components/features/contributor/contributor";
-import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
-import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { ApplyButton } from "./components/apply-button/apply-button";
 import { TIssueCard } from "./issue-card.types";
 
-// TODO: Add applicants (back too)
 export function IssueCard({ issue }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
@@ -27,13 +24,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
             {issue.title}
           </Typography>
 
-          {isMd ? (
-            <BaseLink href={issue.htmlUrl}>
-              <Button variant="secondary" size="xs">
-                <Translate token="v2.pages.project.overview.goodFirstIssues.button" />
-              </Button>
-            </BaseLink>
-          ) : null}
+          {isMd ? <ApplyButton url={issue.htmlUrl} /> : null}
         </Flex>
 
         <Flex alignItems="center" className="gap-3 gap-y-2" wrap="wrap">
@@ -51,8 +42,8 @@ export function IssueCard({ issue }: TIssueCard.Props) {
             githubUserId={issue.author.githubUserId}
             isRegistered={issue.author.isRegistered}
             clickable={true}
-            typograhyVariant="body-xs"
-            avatarSize="xs"
+            typograhy={{ variant: "body-xs" }}
+            avatarProps={{ size: "xs" }}
           />
 
           <Flex alignItems="center" className="gap-1">
@@ -95,13 +86,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           )}
         </Flex>
 
-        {!isMd ? (
-          <BaseLink href={issue.htmlUrl}>
-            <Button variant="secondary" size="xs" width="full">
-              <Translate token="v2.pages.project.overview.goodFirstIssues.button" />
-            </Button>
-          </BaseLink>
-        ) : null}
+        {!isMd ? <ApplyButton url={issue.htmlUrl} /> : null}
       </Flex>
     </Card>
   );

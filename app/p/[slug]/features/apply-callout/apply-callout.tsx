@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import {
+  Channel,
   UserProfileInfo,
   fromFragment,
   mapFormDataToSchema,
@@ -11,6 +12,7 @@ import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import ContactInformations from "src/components/ContactInformations";
 import { useIntl } from "src/hooks/useIntl";
+import isContactInfoProvided from "src/utils/isContactInfoProvided";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
@@ -29,7 +31,13 @@ export function ApplyCallout({ profile, applyToProject, alreadyApplied }: TApply
   const { T } = useIntl();
   const { loginWithRedirect, isAuthenticated } = useAuth0();
 
-  const contactInfoProvided = false;
+  const contactInfoProvided = isContactInfoProvided(profile, [
+    Channel.Telegram,
+    Channel.Whatsapp,
+    Channel.Twitter,
+    Channel.Discord,
+    Channel.LinkedIn,
+  ]);
 
   const [showContactInfos, setShowContactInfos] = useState(false);
 
@@ -132,11 +140,13 @@ export function ApplyCallout({ profile, applyToProject, alreadyApplied }: TApply
             ) : (
               <Tooltip
                 content={
-                  alreadyApplied ? (
-                    <Translate token="v2.pages.project.overview.apply.tooltip.applied" />
-                  ) : (
-                    <Translate token="v2.pages.project.overview.apply.tooltip.notYetApplied" />
-                  )
+                  <Translate
+                    token={
+                      alreadyApplied
+                        ? "v2.pages.project.overview.apply.tooltip.applied"
+                        : "v2.pages.project.overview.apply.tooltip.notYetApplied"
+                    }
+                  />
                 }
                 hasMaxWidth={!alreadyApplied}
               >
@@ -153,11 +163,13 @@ export function ApplyCallout({ profile, applyToProject, alreadyApplied }: TApply
         )}
 
         <Typography variant="body-s" className="text-spaceBlue-200">
-          {alreadyApplied ? (
-            <Translate token="v2.pages.project.overview.apply.informations.alreadyApply" />
-          ) : (
-            <Translate token="v2.pages.project.overview.apply.informations.notYetApply" />
-          )}
+          <Translate
+            token={
+              alreadyApplied
+                ? "v2.pages.project.overview.apply.informations.alreadyApply"
+                : "v2.pages.project.overview.apply.informations.notYetApply"
+            }
+          />
         </Typography>
       </Flex>
     </Card>

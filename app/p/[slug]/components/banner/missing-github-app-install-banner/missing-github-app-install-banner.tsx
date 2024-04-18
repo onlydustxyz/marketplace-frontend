@@ -24,9 +24,9 @@ export function MissingGithubAppInstallBanner({ slug, organizations }: TMissingG
         </BaseLink>
       }
     >
-      {organizations && organizations?.length > 0 ? (
+      {organizations?.length ? (
         <ul className="list-inside list-disc">
-          {organizations?.map(({ githubUserId, name, login }) => (
+          {organizations.map(({ githubUserId, name, login }) => (
             <Typography as="li" variant="body-s" key={githubUserId}>
               {name || login}
             </Typography>

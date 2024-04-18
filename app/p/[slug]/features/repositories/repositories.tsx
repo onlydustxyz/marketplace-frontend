@@ -11,7 +11,7 @@ import { RepositoryCard } from "./components/repository-card/repository-card";
 import { TRepositories } from "./repositories.types";
 
 export function Repositories({ organizations }: TRepositories.Props) {
-  const reposNumber = useMemo(() => organizations?.flatMap(({ repos }) => repos).length ?? 0, [organizations]);
+  const repoCount = useMemo(() => organizations?.flatMap(({ repos }) => repos).length ?? 0, [organizations]);
 
   return (
     <Card background="base" hasPadding={false}>
@@ -23,7 +23,7 @@ export function Repositories({ organizations }: TRepositories.Props) {
             <Typography variant="body-m-bold" translate={{ token: "v2.pages.project.overview.repositories.title" }} />
           </Flex>
 
-          <Badge value={reposNumber} size="s" />
+          <Badge value={repoCount} size="s" />
         </Flex>
 
         <Flex direction="col" className="divide-y divide-greyscale-50/8">

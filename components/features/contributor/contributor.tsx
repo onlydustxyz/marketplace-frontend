@@ -17,8 +17,8 @@ export function Contributor({
   className,
   isYou,
   hasPendingInvite,
-  typograhyVariant = "body-s",
-  avatarSize = "s",
+  typograhy,
+  avatarProps,
 }: TContributor.Props) {
   const [open] = useStackContributorProfile();
 
@@ -37,10 +37,11 @@ export function Contributor({
           : undefined
       }
     >
-      {avatarUrl ? <Avatar src={avatarUrl} alt={login} size={avatarSize} /> : null}
+      {avatarUrl ? <Avatar src={avatarUrl} alt={login} size="s" {...avatarProps} /> : null}
 
       <Typography
-        variant={typograhyVariant}
+        variant="body-s"
+        {...typograhy}
         className={cn({
           "block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
         })}

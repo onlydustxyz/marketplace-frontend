@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import ProjectApi from "src/api/Project";
 import { ShowMore } from "src/components/Table/ShowMore";
 
@@ -19,10 +21,16 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
       params: { projectId },
     });
 
-  const issues = data?.pages?.flatMap(data => data.issues);
+  const issues = useMemo(() => {
+    return data?.pages?.flatMap(data => data.issues);
+  }, [data]);
   const totalIssues = data?.pages[0]?.totalItemNumber;
 
   function renderContent() {
+    if (isError) {
+      return <EmptyState organizations={organizations} isProjectLeader={isProjectLeader} />;
+    }
+
     if (isLoading) {
       return (
         <Flex direction="col" className="gap-4 p-6 pt-0">
@@ -33,7 +41,7 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
       );
     }
 
-    if (issues?.length === 0 || isError) {
+    if (!issues?.length) {
       return <EmptyState organizations={organizations} isProjectLeader={isProjectLeader} />;
     }
 

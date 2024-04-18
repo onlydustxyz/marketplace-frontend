@@ -2,7 +2,7 @@
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import ProjectApi from "src/api/Project";
@@ -55,7 +55,9 @@ export default function ProjectPage() {
 
   const githubUserId = getGithubUserIdFromSub(user?.sub);
 
-  const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
+  const isInvited = useMemo(() => {
+    return !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
+  }, [project?.invitedLeaders, githubUserId]);
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 

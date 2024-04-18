@@ -11,7 +11,7 @@ export namespace TContributor {
     className?: string;
     isYou?: boolean;
     hasPendingInvite?: boolean;
-    typograhyVariant?: TTypography.Variants["variant"];
-    avatarSize?: TAvatar.Variants["size"];
+    typograhy?: TTypography.Props;
+    avatarProps?: TAvatar.Props;
   }
 }

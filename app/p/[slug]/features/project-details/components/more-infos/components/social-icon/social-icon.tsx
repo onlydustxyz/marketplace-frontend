@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import Telegram from "src/assets/icons/Telegram";
 
 import { Icon } from "components/layout/icon/icon";
@@ -15,7 +17,9 @@ export function SocialIcon({ url }: TSocialIcon.Props) {
     ["wa.me/"]: <Icon remixName="ri-whatsapp-fill" />,
   };
 
-  const key = Object.keys(socialIcons).find(key => url.includes(key));
+  const key = useMemo(() => {
+    return Object.keys(socialIcons).find(key => url.includes(key));
+  }, [socialIcons, url]);
 
   return key ? socialIcons[key as keyof typeof socialIcons] : <Icon remixName="ri-link" />;
 }

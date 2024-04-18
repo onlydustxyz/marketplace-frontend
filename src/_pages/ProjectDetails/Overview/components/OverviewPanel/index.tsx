@@ -37,8 +37,8 @@ export default function OverviewPanel({ project }: Props) {
 
   return (
     <>
-      <Card background="base" className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
-        <SectionTitle titleKey="project.details.overview.projectDetails" remixIconName="ri-folder-line" />
+      <Card background="base" className="flex h-fit flex-col divide-y divide-greyscale-50/8" hasPadding={false}>
+        <SectionTitle title="project.details.overview.projectDetails" icon={{ remixName: "ri-folder-line" }} />
 
         <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
         <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
@@ -48,8 +48,11 @@ export default function OverviewPanel({ project }: Props) {
         <ProjectOverviewMoreInfo moreInfos={moreInfos} />
       </Card>
 
-      <Card background="base" className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0 lg:p-0">
-        <SectionTitle titleKey="project.details.overview.repositories.title" remixIconName="ri-git-repository-line" />
+      <Card background="base" className="flex h-fit flex-col divide-y divide-greyscale-50/8" hasPadding={false}>
+        <SectionTitle
+          title="project.details.overview.repositories.title"
+          icon={{ remixName: "ri-git-repository-line" }}
+        />
 
         <ProjectOverviewRepos project={project} />
       </Card>

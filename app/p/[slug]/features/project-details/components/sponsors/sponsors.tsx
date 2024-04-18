@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 import { Avatar } from "components/ds/avatar/avatar";
 import { Link } from "components/ds/link/link";
 import { Flex } from "components/layout/flex/flex";
@@ -7,7 +9,7 @@ import { Section } from "../section/section";
 import { TSponsors } from "./sponsors.types";
 
 export function Sponsors({ sponsors }: TSponsors.Props) {
-  if (sponsors?.length === 0) {
+  if (!sponsors?.length) {
     return null;
   }
 
@@ -15,15 +17,15 @@ export function Sponsors({ sponsors }: TSponsors.Props) {
     <Section
       title={{
         token: "v2.pages.project.overview.projectDetails.sponsors",
-        params: { count: sponsors?.length || 0 },
+        params: { count: sponsors.length },
       }}
       remixIconName="ri-service-line"
     >
       <Flex wrap="wrap" className="gap-1">
-        {sponsors?.map(sponsor => (
-          <>
+        {sponsors.map(sponsor => (
+          <Fragment key={sponsor.id}>
             {sponsor.url ? (
-              <Link key={sponsor.id} href={sponsor.url} className="gap-2">
+              <Link href={sponsor.url} className="gap-2">
                 <Avatar src={sponsor.logoUrl} alt={sponsor.name} size="s" />
 
                 <Typography variant="body-s" className="truncate">
@@ -34,12 +36,12 @@ export function Sponsors({ sponsors }: TSponsors.Props) {
               <Flex alignItems="center" className="gap-2">
                 <Avatar src={sponsor.logoUrl} alt={sponsor.name} size="s" />
 
-                <Typography key={sponsor.id} variant="body-s" className="truncate">
+                <Typography variant="body-s" className="truncate">
                   {sponsor.name}
                 </Typography>
               </Flex>
             )}
-          </>
+          </Fragment>
         ))}
       </Flex>
     </Section>

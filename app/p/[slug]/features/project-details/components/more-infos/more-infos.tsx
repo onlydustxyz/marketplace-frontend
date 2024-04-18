@@ -28,7 +28,7 @@ export function MoreInfos({ moreInfos }: TMoreInfos.Props) {
     },
   ];
 
-  if (moreInfos.length === 0) {
+  if (!moreInfos.length) {
     return null;
   }
 

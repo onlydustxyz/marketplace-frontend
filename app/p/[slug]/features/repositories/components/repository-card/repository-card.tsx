@@ -10,7 +10,7 @@ import { TRepositoryCard } from "./repository-card.types";
 
 export function RepositoryCard({ repository }: TRepositoryCard.Props) {
   return (
-    <Card key={repository.id} background="base" hasPadding={false}>
+    <Card background="base" hasPadding={false}>
       <Flex direction="col" className="gap-3 p-4">
         <Flex direction="col" className="gap-2">
           <Flex alignItems="center" justifyContent="between" className="gap-4">
