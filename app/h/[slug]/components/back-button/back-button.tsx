@@ -7,7 +7,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 export function BackButton() {
   return (
-    <Link href={NEXT_ROUTER.hackathons.root}>
+    <Link href={NEXT_ROUTER.hackathons.root} className="pointer-events-auto">
       <Button iconOnly variant={"secondary"} size={"s"}>
         <Icon remixName={"ri-arrow-left-s-line"} />
       </Button>

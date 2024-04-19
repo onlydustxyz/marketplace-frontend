@@ -14,7 +14,7 @@ export default async function Image(props: { params: { slug: string } }) {
       children: (
         <HackathonImageMetadata
           name={hackathon?.title}
-          location="Worlwide"
+          location="Worldwide"
           dates={hackathonShortenDate({ startDate: mock.startDate, endDate: mock.endDate })}
         />
       ),

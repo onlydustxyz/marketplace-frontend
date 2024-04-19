@@ -7,6 +7,9 @@ import { CardItem } from "app/h/[slug]/components/card-item/card-item";
 import { AvatarLabelled } from "components/ds/avatar/avatar.labelled";
 import { Card } from "components/ds/card/card";
 import { Link } from "components/ds/link/link";
+import { SocialIconLink } from "components/features/social-icon-link/social-icon-link";
+import { Flex } from "components/layout/flex/flex";
+import { Typography } from "components/layout/typography/typography";
 
 import { TOverview } from "./overview.types";
 
@@ -15,7 +18,7 @@ export function Overview({ startDate, endDate, totalBudget, sponsors, links, pro
   const end = formatInTimeZone(new Date(endDate), "Europe/Paris", "MMMM dd, yyyy hh:mm aa OOO", { locale: enGB });
 
   return (
-    <div className="flex w-full flex-col items-start justify-start gap-6">
+    <div className="relative flex w-full flex-col items-start justify-start gap-6">
       <Card background={"base"} border={"light"} hasPadding={false}>
         <CardItem
           label={"v2.pages.hackathons.details.overview.startDate"}
@@ -62,13 +65,19 @@ export function Overview({ startDate, endDate, totalBudget, sponsors, links, pro
           icon={{ remixName: "ri-links-line" }}
           show={!!links.length}
         >
-          {links.map(link => (
-            <div key={link.value}>
-              <Link href={link.url} size="m">
-                {link.value}
-              </Link>
-            </div>
-          ))}
+          <div className="flex flex-col items-start justify-start gap-2">
+            {links.map(link => (
+              <Flex key={link.value} as="li" alignItems="center" className="gap-1">
+                <SocialIconLink url={link.url} />
+
+                <Link href={link.url}>
+                  <Typography variant="body-s" className="truncate">
+                    {link.value}
+                  </Typography>
+                </Link>
+              </Flex>
+            ))}
+          </div>
         </CardItem>
         <CardItem
           label={"v2.pages.hackathons.details.overview.projects"}

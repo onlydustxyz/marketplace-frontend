@@ -1,4 +1,4 @@
-export namespace TSocialIcon {
+export namespace TSocialIconLink {
   export interface Props {
     url: string;
   }
