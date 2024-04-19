@@ -26,7 +26,7 @@ export function Amount({ amount }: Amount) {
 
       {
         Money.format({
-          amount: amount.amount || amount.usdEquivalent,
+          amount: amount.prettyAmount || amount.usdEquivalent,
           currency,
           options: {
             currencyClassName: "text-title-s",

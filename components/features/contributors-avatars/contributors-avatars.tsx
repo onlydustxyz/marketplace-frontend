@@ -1,6 +1,5 @@
 import { PropsWithChildren, useCallback } from "react";
 
-import { Leader } from "src/types";
 import isDefined from "src/utils/isDefined";
 
 import { AvatarGroup } from "components/ds/avatar-group/avatar-group";
@@ -9,7 +8,7 @@ import { Contributor } from "components/features/contributor/contributor";
 
 import { TContributorsAvatars } from "./contributors-avatars.types";
 
-function TooltipContent({ contributors }: { contributors: Leader[] }) {
+function TooltipContent({ contributors }: { contributors: TContributorsAvatars.ContributorProps[] }) {
   return (
     <div className="flex flex-col flex-wrap gap-4 text-snow">
       {contributors

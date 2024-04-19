@@ -87,7 +87,7 @@ export default function View({
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
-  const isCurrencyUSD = Money.isFiat(data?.currency);
+  const isCurrencyUSD = Money.isFiat(data?.amount.currency);
 
   const PayoutStatusMemo = useMemo(() => {
     if (!data) {
@@ -259,26 +259,31 @@ export default function View({
                 <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
                   <InfoIcon className="h-4 w-3" />
                   <span>
-                    {Money.isFiat(data.currency)
+                    {Money.isFiat(data.amount.currency)
                       ? T("currencies.network.label_dollar")
-                      : T("currencies.network.label", { currency: T(`currencies.network.${data.currency.code}`) })}
+                      : T("currencies.network.label", {
+                          currency: T(`currencies.network.${data.amount.currency.code}`),
+                        })}
                   </span>
                 </div>
               </div>
               <div className="flex items-baseline gap-2">
                 <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
                   <div className="flex items-center gap-1">
-                    <CurrencyIcons currency={data.currency} className="h-8 w-8" />
+                    <CurrencyIcons currency={data.amount.currency} className="h-8 w-8" />
                     <span>
                       {
-                        Money.format({ amount: data.amount, currency: data.currency, options: { showCurrency: false } })
-                          .string
+                        Money.format({
+                          amount: data.amount.prettyAmount,
+                          currency: data.amount.currency,
+                          options: { showCurrency: false },
+                        }).string
                       }
                     </span>
                   </div>
-                  <span className="text-3xl">{data.currency.code}</span>
+                  <span className="text-3xl">{data.amount.currency.code}</span>
                 </div>
-                {!isCurrencyUSD && data.dollarsEquivalent ? (
+                {!isCurrencyUSD && data.amount.usdEquivalent ? (
                   <>
                     <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Bottom}>
                       {T("reward.table.detailsPanel.usdEstimateTooltip")}
@@ -286,7 +291,7 @@ export default function View({
                     <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">
                       {
                         Money.format({
-                          amount: data.dollarsEquivalent,
+                          amount: data.amount.usdEquivalent,
                           currency: Money.USD,
                           options: { prefixAmountWithTilde: false },
                         }).string
@@ -349,7 +354,7 @@ export default function View({
             <RewardTransactionDetails
               isMine={isMine}
               status={data?.status}
-              currency={data?.currency}
+              amount={data?.amount}
               createdAt={data?.createdAt}
               processedAt={data?.processedAt}
               unlockDate={data?.unlockDate}

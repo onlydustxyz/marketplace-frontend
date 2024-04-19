@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { Money } from "utils/Money/Money";
 
-import { UserProfile } from "src/api/Users/queries";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import Card from "src/components/Card";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
 import { withTooltip } from "src/components/Tooltip";
@@ -19,7 +19,7 @@ const ContributionGraph = dynamic(() => import("./ContributionGraph"), {
 });
 
 type Props = {
-  profile: UserProfile;
+  profile: UseGetMyProfileInfoResponse;
 };
 
 export default function StatsSection({ profile }: Props) {
@@ -36,8 +36,8 @@ export default function StatsSection({ profile }: Props) {
     () =>
       (stats?.totalsEarned?.details || []).map(currencies => ({
         currency: currencies.currency,
-        amount: currencies.totalAmount,
-        dollar: currencies.totalDollarsEquivalent,
+        amount: currencies.amount,
+        dollar: currencies.usdEquivalent,
       })),
     [profile]
   );

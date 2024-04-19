@@ -12,5 +12,12 @@
   "missingGithubAppInstall": {
     "message": "To continue rewarding your contributors, please install the OnlyDust Github app.",
     "button": "Edit project"
+  },
+  "stillFetching": {
+    "title": "We are still fetching some project information. Please come back in approx. 5-10 min."
+  },
+  "claim": {
+    "content": "Working at __projectName__ ? You’re 3 clicks away to claim access to your own project on OnlyDust!",
+    "button": "Claim project"
   }
 }

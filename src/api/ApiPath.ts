@@ -43,6 +43,7 @@ export const API_PATH = {
     BASE_API_V1(`projects/${projectId}/contributors/${githubUserId}/hidden`),
   PROJECT_SHOW_CONTRIBUTOR: (projectId: string, githubUserId: string) =>
     BASE_API_V1(`projects/${projectId}/contributors/${githubUserId}/hidden`),
+  PROJECT_GOOD_FIRST_ISSUES: (projectId: string) => BASE_API_V1(`projects/${projectId}/good-first-issues`),
 
   /* --------------------------------- USERS -------------------------------- */
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),

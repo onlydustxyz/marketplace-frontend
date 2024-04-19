@@ -44,8 +44,8 @@ export function RewardLine({ reward, onClick, selected, projectId }: Props) {
               tooltipId={`${reward.id}-reward-conversion`}
               currency={{
                 currency: amount.currency,
-                amount: amount.total,
-                dollar: amount.dollarsEquivalent,
+                amount: amount.prettyAmount,
+                dollar: amount.usdEquivalent,
               }}
             />
           </div>

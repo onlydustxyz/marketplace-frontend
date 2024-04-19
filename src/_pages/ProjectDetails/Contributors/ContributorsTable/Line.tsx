@@ -47,8 +47,8 @@ export default function ContributorLine<C extends ProjectContributorItem>({
     () =>
       (contributor.earned.details || []).map(currency => ({
         currency: currency.currency,
-        amount: currency.totalAmount,
-        dollar: currency.totalDollarsEquivalent,
+        amount: currency.amount,
+        dollar: currency.usdEquivalent,
       })),
     [contributor]
   );

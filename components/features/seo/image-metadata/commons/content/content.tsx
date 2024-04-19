@@ -1,6 +1,6 @@
 import { TContent } from "./content.types";
 
-export function ImageMetadataContent({ title, description }: TContent.Props) {
+export function ImageMetadataContent({ title, description, subtitle }: TContent.Props) {
   return (
     <div
       style={{
@@ -22,6 +22,16 @@ export function ImageMetadataContent({ title, description }: TContent.Props) {
       >
         {title}
       </div>
+      {subtitle ? (
+        <div
+          style={{
+            fontSize: "32px",
+            fontFamily: "Belwe",
+          }}
+        >
+          {subtitle}
+        </div>
+      ) : null}
       <div
         style={{
           fontSize: "32px",

@@ -21,8 +21,8 @@ import { Typography } from "components/layout/typography/typography";
 import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
 
 import { AdminContentWrapper } from "../components/admin-content-wrapper/admin-content-wrapper";
-import { ProfileBanner } from "./component/profile-banner/profile-banner";
-import { ProfileStatus } from "./component/profile-status/profile-status";
+import { ProfileBanner } from "./components/profile-banner/profile-banner";
+import { ProfileStatus } from "./components/profile-status/profile-status";
 
 function SettingsBillingPage() {
   const { id: billingProfileId } = useParams<{ id: string }>();

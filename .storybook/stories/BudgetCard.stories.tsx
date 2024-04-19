@@ -11,10 +11,16 @@ export default {
 const mockBudget = {
   remainingBudget: {
     amount: 10000,
+    prettyAmount: 10000,
     currency: Money.fromSchema({ code: Money.Static.Currency.USD }),
     usdEquivalent: 1000,
   },
-  spentAmount: { amount: 5000, currency: Money.fromSchema({ code: Money.Static.Currency.USD }), usdEquivalent: 1000 },
+  spentAmount: {
+    amount: 5000,
+    prettyAmount: 5000,
+    currency: Money.fromSchema({ code: Money.Static.Currency.USD }),
+    usdEquivalent: 1000,
+  },
   sentRewards: {
     count: 10,
     total: 50,
