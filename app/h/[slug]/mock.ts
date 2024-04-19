@@ -111,5 +111,164 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
   sponsors: [],
   subtitle: "Contribute to the best open-source projects and get rewarded.",
   totalBudget: "$45,000",
-  tracks: [],
+  tracks: [
+    {
+      description:
+        "**Welcome all for this third edition of the ODHack set to start on April 22nd!**  \n" +
+        "\n" +
+        "🫡 Objective? Supporting the open-source journey by w**elcoming newcomers, giving opportunities to explore new projects & giving projects a boost looking for future contributions.**\n" +
+        "\n" +
+        "🙌 Join us for 10 days starting the 22nd to contribute, collaborate and earn rewards (+merch). \n" +
+        "\n" +
+        "🫶 Following exchanges with past contributors and project leads, we're introducing detailed guidelines to enhance your ODHack experience: **[Please find them here](https://www.notion.so/ODHack-Common-Guidelines-Project-leads-5e21836f85ad493f9ca429770af0ad40?pvs=21)**.  \n" +
+        "\n" +
+        "🔥Stay connected and updated by joining our [Telegram group](https://t.me/+Q1Oin_LMxpM0MTk8)! To facilitate better collaboration and communication, each project will also have its own dedicated Telegram group. \n" +
+        "\n" +
+        "🙌 Be fair and respectful please! No more than one issue assigned at a time to give everyone a chance. \n" +
+        "\n" +
+        "**How to join the ODHack**\n" +
+        "\n" +
+        "STEP 1 : Register on OnlyDust\n" +
+        "\n" +
+        "If you haven't already, make sure to sign up on OnlyDust to participate and qualify for rewards.\n" +
+        "\n" +
+        "Step 2: Join the Telegram group:\n" +
+        "\n" +
+        "**Telegram group** to stay posted, ask questions and so forth.\n" +
+        "\n" +
+        "Step 3: Pick your project\n" +
+        "\n" +
+        "Check out the projects participating in this edition to become familiar with it and when the D-day (April 22nd) is here, go, go, go!\n" +
+        "\n" +
+        "Step 4: Contribute (starting April 22nd)\n" +
+        "\n" +
+        "Select issues that match your skills, get assigned, and start making your mark! FIRST COME FIRST SERVE!\n" +
+        "\n" +
+        "And lastly, enjoy! If your contribution is eligible, you’ll get rewarded via OnlyDust.",
+      iconSlug: "ri-contrast-drop-2-fill",
+      name: "Gaming and Art",
+      projects: [
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 1",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 2",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 3",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 4",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 5",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+      ],
+      subtitle: "Innovate and build on top of AVNU and you'll compete for a prize pool of $2000.",
+    },
+    {
+      description:
+        "**Welcome all for this third edition of the ODHack set to start on April 22nd!**  \n" +
+        "\n" +
+        "🫡 Objective? Supporting the open-source journey by w**elcoming newcomers, giving opportunities to explore new projects & giving projects a boost looking for future contributions.**\n" +
+        "\n" +
+        "🙌 Join us for 10 days starting the 22nd to contribute, collaborate and earn rewards (+merch). \n" +
+        "\n" +
+        "🫶 Following exchanges with past contributors and project leads, we're introducing detailed guidelines to enhance your ODHack experience: **[Please find them here](https://www.notion.so/ODHack-Common-Guidelines-Project-leads-5e21836f85ad493f9ca429770af0ad40?pvs=21)**.  \n" +
+        "\n" +
+        "🔥Stay connected and updated by joining our [Telegram group](https://t.me/+Q1Oin_LMxpM0MTk8)! To facilitate better collaboration and communication, each project will also have its own dedicated Telegram group. \n" +
+        "\n" +
+        "🙌 Be fair and respectful please! No more than one issue assigned at a time to give everyone a chance. \n" +
+        "\n" +
+        "**How to join the ODHack**\n" +
+        "\n" +
+        "STEP 1 : Register on OnlyDust\n" +
+        "\n" +
+        "If you haven't already, make sure to sign up on OnlyDust to participate and qualify for rewards.\n" +
+        "\n" +
+        "Step 2: Join the Telegram group:\n" +
+        "\n" +
+        "**Telegram group** to stay posted, ask questions and so forth.\n" +
+        "\n" +
+        "Step 3: Pick your project\n" +
+        "\n" +
+        "Check out the projects participating in this edition to become familiar with it and when the D-day (April 22nd) is here, go, go, go!\n" +
+        "\n" +
+        "Step 4: Contribute (starting April 22nd)\n" +
+        "\n" +
+        "Select issues that match your skills, get assigned, and start making your mark! FIRST COME FIRST SERVE!\n" +
+        "\n" +
+        "And lastly, enjoy! If your contribution is eligible, you’ll get rewarded via OnlyDust.",
+      iconSlug: "ri-contrast-drop-2-fill",
+      name: "Gaming and Art 2",
+      projects: [
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 1",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 2",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 3",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 4",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg",
+          name: "Verkle Tries 5",
+          shortDescription: "A short project description",
+          slug: "my-awesome-project",
+          visibility: "PRIVATE",
+        },
+      ],
+      subtitle: "Innovate and build on top of AVNU and you'll compete for a prize pool of $2000.",
+    },
+  ],
 };

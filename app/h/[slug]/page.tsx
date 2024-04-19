@@ -6,6 +6,7 @@ import { Wrapper } from "app/h/[slug]/components/wrapper/wrapper";
 import { Intro } from "app/h/[slug]/features/intro/intro";
 import { MainDescription } from "app/h/[slug]/features/main-description/main-description";
 import { Overview } from "app/h/[slug]/features/overview/overview";
+import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 import { mock } from "app/h/[slug]/mock";
 
 import { Header } from "./components/header/header";
@@ -21,7 +22,7 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
   return (
     <ScrollableView>
       <Header endDate={data.endDate} startDate={data.startDate} title={data.title} />
-      <Navigation slug={slug} />
+      <Navigation slug={slug} hasTracks={!!data.tracks.length} />
       <Wrapper className="max-md:p-2">
         <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14" id={"overview"}>
           <Intro title={data.title} subtitle={data.subtitle} />
@@ -36,14 +37,11 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
                 projects={data.projects}
               />
             </div>
-            <div className="h-auto flex-1">
-              <div>
-                <MainDescription description={data.description} />
+            <div className="flex h-auto w-full flex-1 flex-col items-start justify-start gap-6">
+              <MainDescription description={data.description} />
+              <div className="w-full" id={"tracks"}>
+                <Tracks data={mock.tracks} />
               </div>
-              {/*// KEEP FOR V2 */}
-              {/*<div className="h-[1500px] flex-1 bg-blue-500" id={"tracks"}>*/}
-              {/*  tracks*/}
-              {/*</div>*/}
             </div>
           </div>
         </div>
