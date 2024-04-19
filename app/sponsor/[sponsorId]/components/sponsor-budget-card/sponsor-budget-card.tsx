@@ -11,19 +11,18 @@ import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Typography } from "components/layout/typography/typography";
 
 export function SponsorBudgetCard({ currency, prettyAmount }: TSponsorBudgetCard.Props) {
+  function renderMoney(options: Parameters<typeof Money.format>[0]["options"]) {
+    return Money.format({
+      amount: prettyAmount,
+      currency,
+      options,
+    }).html;
+  }
+
   return (
     <Card background={"base"}>
       <div className={"flex items-center justify-between sm:hidden"}>
-        <Typography variant={"body-l-bold"}>
-          {
-            Money.format({
-              amount: prettyAmount,
-              currency,
-              options: { currencyClassName: "od-text-body-m" },
-            }).html
-          }
-        </Typography>
-
+        <Typography variant={"body-l-bold"}>{renderMoney({ currencyClassName: "od-text-body-m" })}</Typography>
         <Avatar src={currency.logoUrl} alt={currency.name} size={"s"} />
       </div>
 
@@ -32,16 +31,7 @@ export function SponsorBudgetCard({ currency, prettyAmount }: TSponsorBudgetCard
           <Avatar src={currency.logoUrl} alt={currency.name} size={"l"} />
           <Typography variant={"body-l"}>{currency.name}</Typography>
         </div>
-
-        <Typography variant={"body-xl-bold"}>
-          {
-            Money.format({
-              amount: prettyAmount,
-              currency,
-              options: { currencyClassName: "od-text-body-l-bold" },
-            }).html
-          }
-        </Typography>
+        <Typography variant={"body-xl-bold"}>{renderMoney({ currencyClassName: "od-text-body-l-bold" })}</Typography>
       </div>
     </Card>
   );
