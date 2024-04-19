@@ -7,6 +7,7 @@ import { PayoutPreferencesTable } from "app/settings/payout-preferences/features
 
 import { Banner } from "components/ds/banner/banner";
 import { Card } from "components/ds/card/card";
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Translate } from "components/layout/translate/translate";
 
 function PayoutPreferencesPage() {
@@ -32,4 +33,4 @@ function PayoutPreferencesPage() {
   );
 }
 
-export default withAuthenticationRequired(PayoutPreferencesPage);
+export default withClientOnly(withAuthenticationRequired(PayoutPreferencesPage));
