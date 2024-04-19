@@ -14,6 +14,15 @@ export async function getHackathonsList(options?: BaseQueriesOptions) {
   });
 }
 
+export type HackathonsBySlugResponse = components["schemas"]["HackathonsDetailsResponse"];
+export async function getHackathonsBySlug(slug: string, options?: BaseQueriesOptions) {
+  return BaseQueries<HackathonsBySlugResponse>(HACKATHONS_ACTION_PATH.BY_SLUG(slug), {
+    provideTag: [HackathonsActionTags.hackathons_by_slug(slug)],
+    ...(options || {}),
+  });
+}
+
 export default {
   getHackathonsList,
+  getHackathonsBySlug,
 };

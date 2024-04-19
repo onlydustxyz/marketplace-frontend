@@ -1,4 +1,4 @@
-import { getHackathonsList } from "actions/billing-profiles/hackathons-queries.actions";
+import { HackathonsActions } from "actions/billing-profiles/hackathons.actions";
 import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
 
@@ -8,7 +8,7 @@ import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 async function HackathonsPage() {
-  const data = await getHackathonsList();
+  const data = await HackathonsActions.queries.getHackathonsList();
 
   const liveNow = data.hackathons.filter(hackathon => isHackathonLive(hackathon));
   const comingSoon = data.hackathons.filter(hackathon => isHackathonFuture(hackathon));
