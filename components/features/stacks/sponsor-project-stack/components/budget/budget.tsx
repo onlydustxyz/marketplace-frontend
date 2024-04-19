@@ -24,13 +24,13 @@ export function Budget({ label, isAllocation }: TBudget.Props) {
           {`${isAllocation ? "+" : ""}${
             Money.format({
               amount: 123,
-              currency: Money.fromSchema({ code: "USD" }),
+              currency: Money.USD,
               options: { showCurrency: false },
             }).string
           }`}
         </Typography>
         <Chip solid className="h-5 w-5">
-          <CurrencyIcons currency={Money.fromSchema({ code: "USD" })} className="h-5 w-5" />
+          <CurrencyIcons currency={Money.USD} className="h-5 w-5" />
         </Chip>
       </div>
     </li>

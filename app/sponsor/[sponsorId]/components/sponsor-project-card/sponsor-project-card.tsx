@@ -69,13 +69,13 @@ export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBu
             <Translate token={"v2.pages.sponsor.project.perCurrency"} />
           </Typography>
           <ul className={"grid gap-2"}>
-            {remainingBudgets.map(({ amount, currency, usdEquivalent }, i) => (
-              <li key={`${amount}_${i}`} className={"flex items-center justify-between"}>
+            {remainingBudgets.map(({ prettyAmount, currency, usdEquivalent }, i) => (
+              <li key={`${prettyAmount}_${i}`} className={"flex items-center justify-between"}>
                 <Avatar.Labelled avatarProps={{ src: currency.logoUrl, alt: currency.name, size: "xs" }}>
                   <Typography variant={"body-m"}>
                     {
                       Money.format({
-                        amount,
+                        amount: prettyAmount,
                         currency,
                         options: { currencyClassName: "od-text-body-s" },
                       }).html

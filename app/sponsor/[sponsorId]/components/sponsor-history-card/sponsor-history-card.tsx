@@ -37,7 +37,7 @@ export function SponsorHistoryCard({ date, type, amount, project }: TSponsorHist
           <Typography variant={"body-s"}>
             {
               Money.format({
-                amount: amount.amount,
+                amount: amount.prettyAmount,
                 currency: amount.currency,
               }).string
             }
