@@ -1,9 +1,10 @@
+import type { UseQueryResult } from "@tanstack/react-query";
+
 import { UseGetUserMeResponse } from "src/api/me/queries";
 
 export namespace TUseCurrentUser {
-  export interface Return {
+  export type Return = {
     user?: UseGetUserMeResponse;
     githubUserId?: number;
-    isLoading: boolean;
-  }
+  } & Omit<UseQueryResult<UseGetUserMeResponse>, "data">;
 }

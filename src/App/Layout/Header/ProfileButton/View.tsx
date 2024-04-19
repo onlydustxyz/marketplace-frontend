@@ -1,5 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
+import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
@@ -12,6 +13,8 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
 
@@ -52,6 +55,7 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
+  const { sponsors } = useSponsorGuard();
 
   return (
     <div className="relative">
@@ -132,6 +136,15 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
                     </Flex>
                   </MenuItem>
                 </BaseLink>
+
+                {sponsors.length ? (
+                  <BaseLink href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}>
+                    <MenuItem>
+                      <Icon remixName="ri-service-line" size={20} />
+                      <div className="grow">{T("v2.features.menu.sponsoring")}</div>
+                    </MenuItem>
+                  </BaseLink>
+                ) : null}
 
                 <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>

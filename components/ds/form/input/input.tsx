@@ -8,20 +8,25 @@ import { Icon } from "components/layout/icon/icon";
 
 import { TInput } from "./input.types";
 
-export function Input(props: TInput.Props) {
+export function Input({ className, radius, ...props }: TInput.Props) {
   return (
     <NextInput
-      className="h-fit flex-col items-start gap-2"
+      {...props}
+      radius={radius ?? "sm"}
+      className={cn("h-fit flex-col items-start gap-2", className)}
       classNames={{
         mainWrapper: "w-full",
         inputWrapper: cn(
-          "rounded-lg border border-greyscale-50/8 bg-white/5 focus-within:!border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500 hover:border hover:border-greyscale-50/8 h-8 min-h-8 px-3 py-2 !transition-all",
+          "rounded-lg border border-greyscale-50/8 bg-white/5 focus-within:!border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500 hover:border hover:border-greyscale-50/8 px-3 py-2 !transition-all",
           "group-data-[invalid=true]:!border-github-red-light group-data-[invalid=true]:focus-within:!border-spacePurple-500",
-          { "cursor-not-allowed placeholder:text-greyscale-600 text-greyscale-600": props.disabled }
+          { "cursor-not-allowed placeholder:text-greyscale-600 text-greyscale-600": props.disabled },
+          {
+            "min-h-8 h-8": !props.size,
+          }
         ),
         innerWrapper: "gap-2",
         input:
-          "!p-0 !od-text-body-s text-greyscale-50 group-data-[invalid=true]:!text-greyscale-50 focus:placeholder:text-spacePurple-200/60 placeholder:text-spaceBlue-200",
+          "text-greyscale-50 group-data-[invalid=true]:!text-greyscale-50 focus:placeholder:text-spacePurple-200/60 placeholder:text-spaceBlue-200",
         label:
           "!od-text-body-s-bold !p-0 pointer-events-auto text-greyscale-50 group-data-[invalid=true]:!text-greyscale-50 w-full",
         helperWrapper: "p-0 mt-2",
@@ -29,10 +34,9 @@ export function Input(props: TInput.Props) {
       }}
       variant="bordered"
       labelPlacement="outside-left"
-      {...props}
       label={
         props.label ? (
-          <div className="flex w-full flex-row items-center justify-between">
+          <div className="flex w-full items-center justify-between">
             {props.label}
             {props.isInvalidFromBackend ? <Icon remixName="ri-error-warning-line" className="text-orange-500" /> : null}
           </div>
