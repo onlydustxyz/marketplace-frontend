@@ -4,7 +4,7 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
   description:
     "**Welcome all for this third edition of the ODHack set to start on April 22nd!**  \n" +
     "\n" +
-    "🫡 Objective? Supporting the open-source journey by w**elcoming newcomers, giving opportunities to explore new projects & giving projects a boost looking for future contributions.**\n" +
+    "🫡 Objective? Supporting the open-source journey by **welcoming newcomers, giving opportunities to explore new projects & giving projects a boost looking for future contributions.**\n" +
     "\n" +
     "🙌 Join us for 10 days starting the 22nd to contribute, collaborate and earn rewards (+merch). \n" +
     "\n" +
@@ -30,7 +30,7 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
     "\n" +
     "**Step 4: Contribute (starting April 22nd)**\n" +
     "\n" +
-    "Select issues that match your skills, get assigned, and start making your mark! FIRST COME FIRST SERVE!\n" +
+    "Select issues that match your skills, get assigned, and start making your mark! FIRST COME FIRST SERVED!\n" +
     "\n" +
     "And lastly, enjoy! If your contribution is eligible, you’ll get rewarded via OnlyDust.",
   startDate: "2024-04-22T10:30:00+02:00",
@@ -112,12 +112,6 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
       slug: "loot-underworld",
       name: "Loot Underworld",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/98b04f28db28874c48f32e3bdeeee347.jpeg",
-    },
-    {
-      id: "7d04163c-4187-4313-8066-61504d34fc56",
-      slug: "bretzel",
-      name: "Bretzel",
-      logoUrl: "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
     },
   ],
   sponsors: [],
