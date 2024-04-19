@@ -3,10 +3,13 @@ import { Money } from "utils/Money/Money";
 
 import ProjectApi from "src/api/Project";
 import SponsorApi from "src/api/Sponsors";
+import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
+import { useIntl } from "src/hooks/useIntl";
+import { useCloseStack } from "src/libs/react-stack";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
-import { Tooltip } from "components/ds/tooltip/tooltip";
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { SearchProjects } from "components/features/search-projects/search-projects";
 import { TSearchProjects } from "components/features/search-projects/search-projects.types";
@@ -22,6 +25,9 @@ import { Label } from "./components/label/label";
 const shortcuts = [25, 50, 75, 100] as const;
 
 export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props) {
+  const { T } = useIntl();
+  const closeStack = useCloseStack();
+
   const { data: initialProject } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug: projectSlug },
     options: {
@@ -33,7 +39,7 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
 
   const sponsorId = user?.sponsors?.[0].id ?? "";
 
-  const { data: sponsor } = SponsorApi.queries.useGetSponsorById({
+  const { data: sponsor, isLoading } = SponsorApi.queries.useGetSponsorById({
     params: {
       sponsorId,
     },
@@ -44,7 +50,7 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
 
   const currencies = useMemo(() => sponsor?.availableBudgets ?? [], [sponsor]);
 
-  const [_selectedProjectId, setSelectedProjectId] = useState("");
+  const [selectedProjectId, setSelectedProjectId] = useState("");
   const [currencyAmount, setCurrencyAmount] = useState("");
   const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(currencies[0].currency);
 
@@ -52,6 +58,22 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
     () => currencies.find(c => c.currency.id === currencySelection?.id),
     [currencies, currencySelection]
   );
+
+  const { mutateAsync, isPending, ...restAllocation } = SponsorApi.mutations.useAllocateBudget({
+    params: {
+      sponsorId,
+    },
+  });
+
+  useMutationAlert({
+    mutation: restAllocation,
+    success: {
+      message: T("v2.pages.sponsor.sponsorProject.success"),
+    },
+    error: {
+      message: T("v2.pages.sponsor.sponsorProject.error"),
+    },
+  });
 
   // const canAllocate = parseFloat(currencyAmount) < (currentBudget?.amount ?? 0);
 
@@ -61,10 +83,20 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
     }
   }
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    alert("Submit");
+    try {
+      await mutateAsync({
+        projectId: selectedProjectId,
+        amount: parseFloat(currencyAmount),
+        currencyId: currencySelection?.id ?? "",
+      });
+
+      closeStack();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function renderShortcuts() {
@@ -179,17 +211,15 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
       <footer className={"flex justify-end border-t border-card-border-light bg-card-background-light p-6"}>
         {/* TODO @hayden budget exceeded or empty tooltip like currency converter */}
         {/* TODO @hayden disable if form error or loading */}
-        <Tooltip
-          content={<Translate token="v2.features.currency.budget.budgetExceededOrEmpty" />}
-          // isDisabled={canAllocate}
-        >
-          <Button
-            type={"submit"}
-            // disabled={!canAllocate || loading}
-          >
-            <Translate token="v2.pages.stacks.sponsorProject.submit" />
-          </Button>
-        </Tooltip>
+        {/*<Tooltip*/}
+        {/*  content={<Translate token="v2.features.currency.budget.budgetExceededOrEmpty" />}*/}
+        {/*  isDisabled={canAllocate}*/}
+        {/*>*/}
+        <Button type={"submit"} disabled={isLoading || isPending}>
+          {isPending ? <Spinner className="mr-1" /> : null}
+          <Translate token="v2.pages.stacks.sponsorProject.submit" />
+        </Button>
+        {/*</Tooltip>*/}
       </footer>
     </form>
   );

@@ -1,5 +1,5 @@
 import { components } from "src/__generated/api";
-import { SponsorPaths } from "src/api/Sponsors/paths";
+import { SPONSOR_PATHS } from "src/api/Sponsors/paths";
 import { SPONSORS_TAGS } from "src/api/Sponsors/tags";
 import { UseQueryProps, useBaseQuery } from "src/api/useBaseQuery";
 import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "src/api/useInfiniteBaseQuery";
@@ -12,7 +12,7 @@ const useGetSponsorById = ({
   options = {},
 }: UseQueryProps<UseGetSponsorByIdResponse, { sponsorId?: string }>) => {
   return useBaseQuery<UseGetSponsorByIdResponse>({
-    resourcePath: SponsorPaths.SPONSOR_BY_ID(params?.sponsorId ?? ""),
+    resourcePath: SPONSOR_PATHS.SPONSOR_BY_ID(params?.sponsorId ?? ""),
     enabled: !!params?.sponsorId,
     tags: SPONSORS_TAGS.detail_by_id(params?.sponsorId ?? ""),
     ...options,
@@ -33,7 +33,7 @@ const useGetSponsorTransactions = ({
 }: UseInfiniteBaseQueryProps<UseGetSponsorTransactionsResponse, SponsorTransactionsParams>) => {
   return useInfiniteBaseQuery<UseGetSponsorTransactionsResponse>(
     {
-      resourcePath: SponsorPaths.SPONSOR_TRANSACTIONS(params?.sponsorId || ""),
+      resourcePath: SPONSOR_PATHS.SPONSOR_TRANSACTIONS(params?.sponsorId || ""),
       tags: SPONSORS_TAGS.transactions(),
       queryParams: params?.queryParams,
       pageSize: params?.pageSize || 10,
