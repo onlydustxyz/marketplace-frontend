@@ -14,7 +14,7 @@ export function HackathonSection({ title, icon, items }: THackathonSection.Props
         <Icon {...icon} />
         <Typography variant="title-m">{title}</Typography>
       </div>
-      <div className="flex w-full flex-col items-start justify-start gap-3">
+      <div className="flex w-full flex-col items-start justify-start gap-8">
         {items.map(item => (
           <Card key={item.slug} {...item} />
         ))}
