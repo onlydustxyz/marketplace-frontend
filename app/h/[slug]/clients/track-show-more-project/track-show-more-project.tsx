@@ -27,7 +27,7 @@ export function TrackShowMoreProject({ projects }: TTrackShowMoreProject.Props) 
   }
 
   return (
-    <div className="flex w-full  flex-row items-center justify-center">
+    <div className="flex w-full flex-row items-center justify-center">
       <Link.Button onClick={onShowMore}>
         <ArrowDownSLine className="text-base" />
         <Translate token={"showMore"} as={"span"} />
