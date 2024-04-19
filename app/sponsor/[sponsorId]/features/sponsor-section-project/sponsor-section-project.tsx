@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import {
   SponsorProjectCard,
   SponsorProjectCardSkeleton,
@@ -11,7 +13,7 @@ import { Typography } from "components/layout/typography/typography";
 export function SponsorSectionProject() {
   const { data, isLoading, isError } = useSponsorDetail();
 
-  function renderProjects() {
+  const renderProjects = useCallback(() => {
     if (isError) {
       return (
         <Card background={"base"}>
@@ -29,7 +31,7 @@ export function SponsorSectionProject() {
     }
 
     return null;
-  }
+  }, [isError, isLoading, data]);
 
   return (
     <section className={"grid gap-5"}>
