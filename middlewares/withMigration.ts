@@ -2,7 +2,7 @@ import { NextFetchEvent, NextMiddleware, NextRequest, NextResponse } from "next/
 
 import { MiddlewareFactory } from "./type";
 
-const paths = ["/migration", "/hackathons", "/h"];
+const paths = ["/migration"];
 export const withMigration: MiddlewareFactory = (next: NextMiddleware) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const find = paths.find(path => request.nextUrl.pathname.startsWith(path));
