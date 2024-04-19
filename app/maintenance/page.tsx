@@ -8,6 +8,7 @@ import { withMaintenanceEnabled } from "app/maintenance/features/guard/maintenan
 import MaintenanceAnimation from "src/assets/animations/Maintenance";
 
 import { Button } from "components/ds/button/button";
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -63,4 +64,4 @@ function MaintenancePage() {
   );
 }
 
-export default withMaintenanceEnabled(MaintenancePage);
+export default withClientOnly(withMaintenanceEnabled(MaintenancePage));

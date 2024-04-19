@@ -17,6 +17,7 @@ import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedR
 
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 
 import { useApplication } from "hooks/projects/use-application/use-application";
@@ -32,7 +33,7 @@ import { ProjectDetails } from "./features/project-details/project-details";
 import { Repositories } from "./features/repositories/repositories";
 
 // TODO: Refacto Skeleton with new one
-export default function ProjectPage() {
+function ProjectPage() {
   const { T } = useIntl();
   const { capture } = usePosthog();
 
@@ -155,3 +156,5 @@ export default function ProjectPage() {
     </>
   );
 }
+
+export default withClientOnly(ProjectPage);

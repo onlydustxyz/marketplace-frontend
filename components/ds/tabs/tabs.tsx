@@ -40,7 +40,7 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled, i
     }
 
     if (isHref) {
-      return `${pathname}${window.location.hash || ""}`;
+      return `${pathname}${window?.location?.hash || ""}`;
     }
 
     return selected;

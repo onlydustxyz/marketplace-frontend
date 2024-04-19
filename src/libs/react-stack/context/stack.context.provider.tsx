@@ -1,7 +1,7 @@
 "use client";
 
 import { debounce } from "lodash";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { v4 as uuidv4 } from "uuid";
 
@@ -21,6 +21,8 @@ import {
 } from "./stack.context.type";
 
 export default function ReactStackprovider({ children }: reactStackContextProps) {
+  const [mounted, setMounted] = useState(false);
+
   /* -------------------------------------------------------------------------- */
   /*                                STACKS STORE                                */
   /* -------------------------------------------------------------------------- */
@@ -208,7 +210,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     debounce((newHistory: { name: string; panelId: string }[]) => {
       setHistory(() => newHistory);
     }, 300),
-    [history]
+    [historyStore]
   );
 
   /**
@@ -232,7 +234,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         console.warn("stacks - debounceRemove error", e);
       }
     }, 300),
-    [history]
+    [historyStore]
   );
 
   /**
@@ -256,7 +258,7 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
         console.warn("stacks - debounceCloseAll error", e);
       }
     }, 300),
-    [history]
+    [historyStore]
   );
 
   /* -------------------------------------------------------------------------- */
@@ -547,6 +549,10 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
     };
   }, []);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <ReactStackContext.Provider
       value={{
@@ -567,12 +573,13 @@ export default function ReactStackprovider({ children }: reactStackContextProps)
       }}
     >
       {children}
-      {createPortal(
-        <div data-stack-root="true" id="stack-panel-root">
-          <HistoryComponent />
-        </div>,
-        document.body
-      )}
+      {mounted &&
+        createPortal(
+          <div data-stack-root="true" id="stack-panel-root">
+            <HistoryComponent />
+          </div>,
+          document.body
+        )}
     </ReactStackContext.Provider>
   );
 }

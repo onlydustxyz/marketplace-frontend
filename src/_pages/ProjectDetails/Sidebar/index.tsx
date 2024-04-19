@@ -17,6 +17,8 @@ import {
 } from "src/hooks/useProjectLeader/useProjectLeader";
 import { cn } from "src/utils/cn";
 
+import { withClientOnly } from "components/layout/client-only/client-only";
+
 import { NEXT_ROUTER } from "constants/router";
 
 import View from "./View";
@@ -27,7 +29,7 @@ export type ProjectDetailsTab = {
   path: string;
 };
 
-export default function ProjectsSidebar() {
+function ProjectsSidebar() {
   const { slug = "" } = useParams<{ slug: string }>();
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -108,3 +110,5 @@ export default function ProjectsSidebar() {
 
   return isXl ? <View {...props} /> : <ViewMobile {...props} />;
 }
+
+export default withClientOnly(ProjectsSidebar);
