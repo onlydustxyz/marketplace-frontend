@@ -1,6 +1,8 @@
-import { Image } from "@nextui-org/react";
+import Image from "next/image";
 
 import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
+
+import { IMAGES } from "src/assets/img";
 
 import { Card } from "components/ds/card/card";
 import { Translate } from "components/layout/translate/translate";
@@ -19,15 +21,18 @@ export function SponsorDepositCard() {
           }}
         />
 
-        <Image src={"/images/payment-96.png"} alt={""} width={28} height={28} loading={"lazy"} disableSkeleton />
+        <Image src={IMAGES.global.payment} alt={""} width={28} height={28} loading={"lazy"} />
       </div>
 
       <div className={"hidden justify-center gap-5 sm:grid"}>
         <div className={"grid justify-items-center gap-2"}>
-          <Image src={"/images/payment-96.png"} alt={""} width={40} height={40} loading={"lazy"} disableSkeleton />
-          <Typography variant={"body-l"} className={"text-spaceBlue-300"}>
-            <Translate token="v2.pages.sponsor.deposit.newCurrency" />
-          </Typography>
+          <Image src={IMAGES.global.payment} alt={""} width={40} height={40} loading={"lazy"} />
+
+          <Typography
+            variant={"body-l"}
+            className={"text-spaceBlue-300"}
+            translate={{ token: "v2.pages.sponsor.deposit.newCurrency" }}
+          />
         </div>
 
         <SponsorSidePanels
