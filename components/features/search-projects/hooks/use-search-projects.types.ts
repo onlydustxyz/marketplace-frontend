@@ -1,14 +1,19 @@
 import { Dispatch, Key, ReactElement, SetStateAction } from "react";
 
 import ProjectApi from "src/api/Project";
-import { ProjectPageItemResponse } from "src/types";
 
 import { TSearchProjects } from "components/features/search-projects/search-projects.types";
 
 export namespace TUseSearchProjects {
+  export interface Project {
+    id: string;
+    slug: string;
+    name: string;
+    logoUrl: string;
+  }
   export interface Props {
-    onSelectProjects: (projects: ProjectPageItemResponse[]) => void;
-    initialValue?: ProjectPageItemResponse;
+    onSelectProjects: (projects: Project[]) => void;
+    initialValue?: Project;
     isMultiple?: boolean;
   }
   export interface Return {

@@ -13,7 +13,13 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBudget, id }: TSponsorProjectCard.Props) {
+export function SponsorProjectCard({
+  name,
+  logoUrl,
+  remainingBudgets,
+  totalUsdBudget,
+  slug,
+}: TSponsorProjectCard.Props) {
   return (
     <Card background={"base"} className={"grid content-start gap-6"}>
       <header className={"flex items-center justify-between overflow-hidden"}>
@@ -41,7 +47,7 @@ export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBu
             ),
           }}
           projectParams={{
-            projectId: id,
+            projectSlug: slug,
           }}
         />
       </header>
@@ -113,7 +119,7 @@ export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBu
           ),
         }}
         projectParams={{
-          projectId: id,
+          projectSlug: slug,
         }}
       />
     </Card>

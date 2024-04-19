@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import { Key, useCallback, useMemo, useState } from "react";
+import { Key, useCallback, useEffect, useMemo, useState } from "react";
 
 import ProjectApi from "src/api/Project";
 import { useIntl } from "src/hooks/useIntl";
@@ -19,9 +19,15 @@ export function useSearchProjects({
   const [searchQuery, setSearchQuery] = useState("");
   const [openListbox, setOpenListbox] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<Set<Key>>(new Set());
-  const [selectedProjects, setSelectedProjects] = useState<ProjectPageItemResponse[]>(
-    initialValue ? [initialValue] : []
-  );
+  const [selectedProjects, setSelectedProjects] = useState<TUseSearchProjects.Project[]>([]);
+
+  useEffect(() => {
+    // Need to set initial value inside an effect because the value may come from a deferred source (ex: a request)
+    if (initialValue) {
+      setSelectedProjects([initialValue]);
+      setSelectedKeys(new Set([`${initialValue.id}`]));
+    }
+  }, [initialValue]);
 
   const { data, ...query } = ProjectApi.queries.useInfiniteList({
     queryParams: {
