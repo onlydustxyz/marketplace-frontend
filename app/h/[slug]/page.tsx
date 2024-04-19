@@ -9,11 +9,18 @@ import { Overview } from "app/h/[slug]/features/overview/overview";
 import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 import { mock } from "app/h/[slug]/mock";
 
+import MeApi from "src/api/me";
+
+import { ApplyCallout } from "components/features/apply-callout/apply-callout";
+import { Flex } from "components/layout/flex/flex";
+
 import { Header } from "./components/header/header";
 
 export default function HackathonPage({ params }: { params: { slug: string } }) {
   const { slug = "" } = params;
   const data = mock;
+
+  const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
   if (data.slug !== params.slug) {
     redirect("/not-found");
@@ -28,14 +35,33 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
           <Intro title={data.title} subtitle={data.subtitle} />
           <div className="flex w-full flex-col items-start justify-start gap-6 md:flex-row">
             <div className="w-full md:sticky md:left-0 md:top-6 md:w-[400px]">
-              <Overview
-                startDate={data.startDate}
-                endDate={data.endDate}
-                totalBudget={data.totalBudget}
-                links={data.links}
-                sponsors={data.sponsors}
-                projects={data.projects}
-              />
+              <Flex direction="col" className="gap-6">
+                {myProfileInfo ? (
+                  <ApplyCallout
+                    icon={{ remixName: "ri-user-3-line" }}
+                    title="v2.pages.hackathons.details.application.title"
+                    formDescription="v2.pages.hackathons.details.application.description"
+                    buttonNotConnected="v2.pages.hackathons.details.application.button.connectToApply"
+                    buttonConnected={
+                      data.me.hasRegistered
+                        ? "v2.pages.hackathons.details.application.button.alreadyApplied"
+                        : "v2.pages.hackathons.details.application.button.apply"
+                    }
+                    profile={myProfileInfo}
+                    // applyToProject={applyToProject}
+                    alreadyApplied={data.me.hasRegistered}
+                  />
+                ) : null}
+
+                <Overview
+                  startDate={data.startDate}
+                  endDate={data.endDate}
+                  totalBudget={data.totalBudget}
+                  links={data.links}
+                  sponsors={data.sponsors}
+                  projects={data.projects}
+                />
+              </Flex>
             </div>
             <div className="flex h-auto w-full flex-1 flex-col items-start justify-start gap-6">
               <MainDescription description={data.description} />

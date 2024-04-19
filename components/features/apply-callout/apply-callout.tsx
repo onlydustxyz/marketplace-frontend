@@ -1,6 +1,9 @@
+"use client";
+
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useMediaQuery } from "usehooks-ts";
 
 import {
   Channel,
@@ -10,13 +13,14 @@ import {
 } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
-import ContactInformations from "src/components/ContactInformations";
+import Telegram from "src/assets/icons/Telegram";
+import ContactInformation from "src/components/ContactInformations/ContactInformation";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import isContactInfoProvided from "src/utils/isContactInfoProvided";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
-import { Tooltip } from "components/ds/tooltip/tooltip";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
@@ -27,17 +31,23 @@ import { TApplyCallout } from "./apply-callout.types";
 
 // TODO: Refacto isContactInfoProvided
 // TODO: Refacto ContactInformations
-export function ApplyCallout({ profile, applyToProject, alreadyApplied }: TApplyCallout.Props) {
+export function ApplyCallout({
+  icon,
+  title,
+  description,
+  formDescription,
+  buttonNotConnected,
+  buttonConnected,
+  profile,
+  applyToProject,
+  alreadyApplied,
+}: TApplyCallout.Props) {
   const { T } = useIntl();
   const { loginWithRedirect, isAuthenticated } = useAuth0();
 
-  const contactInfoProvided = isContactInfoProvided(profile, [
-    Channel.Telegram,
-    Channel.Whatsapp,
-    Channel.Twitter,
-    Channel.Discord,
-    Channel.LinkedIn,
-  ]);
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+
+  const contactInfoProvided = isContactInfoProvided(profile, [Channel.Telegram]);
 
   const [showContactInfos, setShowContactInfos] = useState(false);
 
@@ -102,13 +112,9 @@ export function ApplyCallout({ profile, applyToProject, alreadyApplied }: TApply
     <Card background="base" hasPadding={false}>
       <Flex direction="col" className="gap-3 p-4">
         <Flex alignItems="center" className="gap-1">
-          <Icon remixName="ri-user-3-line" size={20} className="text-spaceBlue-200" />
+          <Icon {...icon} className="text-spaceBlue-200" />
 
-          <Typography
-            variant="special-label"
-            translate={{ token: "v2.pages.project.overview.apply.title" }}
-            className="uppercase text-spaceBlue-200"
-          />
+          <Typography variant="special-label" translate={{ token: title }} className="uppercase text-spaceBlue-200" />
         </Flex>
 
         {isAuthenticated ? (
@@ -117,60 +123,64 @@ export function ApplyCallout({ profile, applyToProject, alreadyApplied }: TApply
               <FormProvider {...formMethods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <Flex direction="col" className="gap-4 rounded-xl border border-orange-500 p-4">
-                    <Typography
-                      variant="body-s-bold"
-                      className="text-orange-500"
-                      translate={{ token: "v2.pages.project.overview.apply.contactNeeded" }}
+                    {formDescription ? (
+                      <Typography
+                        variant="body-s-bold"
+                        className="text-orange-500"
+                        translate={{ token: formDescription }}
+                      />
+                    ) : null}
+
+                    <ContactInformation
+                      name="telegram"
+                      placeholder={T("profile.form.contactInfo.telegram")}
+                      icon={<Telegram size={16} className="fill-greyscale-400" />}
+                      visibilityName="isTelegramPublic"
+                      options={{
+                        pattern: {
+                          value: /^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w*)$/,
+                          message: T("profile.form.contactInfo.invalidUsername"),
+                        },
+                      }}
                     />
 
-                    <ContactInformations onlyEditable />
-
-                    <Tooltip
-                      content={<Translate token="v2.pages.project.overview.apply.tooltip.notYetApplied" />}
-                      hasMaxWidth
-                      isDisabled={submitDisabled}
+                    <Button
+                      disabled={submitDisabled}
+                      size={isMd ? "m" : "s"}
+                      width="full"
+                      backgroundColor="blue"
+                      type="submit"
                     >
-                      <Button disabled={submitDisabled} width="full" type="submit">
-                        {T("v2.pages.project.overview.apply.button.apply")}
-                      </Button>
-                    </Tooltip>
+                      <Icon remixName="ri-send-plane-2-line" size={20} />
+                      <Translate token={buttonConnected} />
+                    </Button>
                   </Flex>
                 </form>
               </FormProvider>
             ) : (
-              <Tooltip
-                content={
-                  <Translate
-                    token={
-                      alreadyApplied
-                        ? "v2.pages.project.overview.apply.tooltip.applied"
-                        : "v2.pages.project.overview.apply.tooltip.notYetApplied"
-                    }
-                  />
-                }
-                hasMaxWidth={!alreadyApplied}
+              <Button
+                onClick={handleApplyClick}
+                disabled={alreadyApplied}
+                size={isMd ? "m" : "s"}
+                width="full"
+                backgroundColor="blue"
               >
-                <Button onClick={handleApplyClick} disabled={alreadyApplied} width="full">
-                  <Translate token="v2.pages.project.overview.apply.button.apply" />
-                </Button>
-              </Tooltip>
+                <Icon remixName={alreadyApplied ? "ri-check-line" : "ri-send-plane-2-line"} size={20} />
+                <Translate token={buttonConnected} />
+              </Button>
             )}
           </>
         ) : (
-          <Button onClick={handleLoginClick} width="full">
-            <Translate token="v2.pages.project.overview.apply.button.connectToApply" />
+          <Button onClick={handleLoginClick} size={isMd ? "m" : "s"} width="full">
+            <Translate token={buttonNotConnected} />
           </Button>
         )}
 
-        <Typography variant="body-s" className="text-spaceBlue-200">
-          <Translate
-            token={
-              alreadyApplied
-                ? "v2.pages.project.overview.apply.informations.alreadyApply"
-                : "v2.pages.project.overview.apply.informations.notYetApply"
-            }
-          />
-        </Typography>
+        {description ? (
+          <Typography variant="body-s" className="text-spaceBlue-200">
+            <Translate token={description} />
+          </Typography>
+        ) : null}
       </Flex>
     </Card>
   );

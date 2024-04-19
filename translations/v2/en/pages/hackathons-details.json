@@ -10,5 +10,15 @@
     "sponsors": "Sponsors",
     "links": "Links",
     "projects": "Projects"
+  },
+  "application": {
+    "title": "Applications open",
+    "description": "Please share first your telegram handle to reach you out.",
+    "button": {
+      "apply": "Register now",
+      "connectToApply": "Connect to register",
+      "alreadyApplied": "Registered"
+    },
+    "confirmationToaster": "You have successfully registered."
   }
 }
