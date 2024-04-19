@@ -47,8 +47,8 @@ export function SponsorBudgetCard({ currency, amount }: TSponsorBudgetCard.Props
   );
 }
 
-SponsorBudgetCard.Skeleton = function SponsorBudgetCardSkeleton() {
+export function SponsorBudgetCardSkeleton() {
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
   const height = isSm ? "174px" : "62px";
   return <SkeletonEl width="100%" height={height} variant="rounded" />;
-};
+}

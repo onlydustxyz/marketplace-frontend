@@ -1,4 +1,7 @@
-import { SponsorProjectCard } from "app/sponsor/[sponsorId]/components/sponsor-project-card/sponsor-project-card";
+import {
+  SponsorProjectCard,
+  SponsorProjectCardSkeleton,
+} from "app/sponsor/[sponsorId]/components/sponsor-project-card/sponsor-project-card";
 import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
 
 import { Card } from "components/ds/card/card";
@@ -18,7 +21,7 @@ export function SponsorSectionProject() {
     }
 
     if (isLoading) {
-      return Array.from({ length: 3 }).map((_, i) => <SponsorProjectCard.Skeleton key={i} />);
+      return Array.from({ length: 3 }).map((_, i) => <SponsorProjectCardSkeleton key={i} />);
     }
 
     if (data) {

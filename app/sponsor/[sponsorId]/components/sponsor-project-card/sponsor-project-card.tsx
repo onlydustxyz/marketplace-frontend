@@ -120,8 +120,8 @@ export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBu
   );
 }
 
-SponsorProjectCard.Skeleton = function SponsorProjectCardSkeleton() {
+export function SponsorProjectCardSkeleton() {
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
   const height = isSm ? "256px" : "296px";
   return <SkeletonEl width="100%" height={height} variant="rounded" />;
-};
+}

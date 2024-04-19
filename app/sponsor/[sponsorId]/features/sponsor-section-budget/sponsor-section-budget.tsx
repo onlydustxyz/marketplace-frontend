@@ -1,4 +1,7 @@
-import { SponsorBudgetCard } from "app/sponsor/[sponsorId]/components/sponsor-budget-card/sponsor-budget-card";
+import {
+  SponsorBudgetCard,
+  SponsorBudgetCardSkeleton,
+} from "app/sponsor/[sponsorId]/components/sponsor-budget-card/sponsor-budget-card";
 import { SponsorDepositCard } from "app/sponsor/[sponsorId]/components/sponsor-deposit-card/sponsor-deposit-card";
 import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
 
@@ -19,7 +22,7 @@ export function SponsorSectionBudget() {
     }
 
     if (isLoading) {
-      return Array.from({ length: 4 }).map((_, i) => <SponsorBudgetCard.Skeleton key={i} />);
+      return Array.from({ length: 4 }).map((_, i) => <SponsorBudgetCardSkeleton key={i} />);
     }
 
     if (data) {
