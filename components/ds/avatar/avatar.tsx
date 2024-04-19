@@ -11,8 +11,10 @@ import { cn } from "src/utils/cn";
 import { TAvatar } from "components/ds/avatar/avatar.types";
 import { avatarVariants } from "components/ds/avatar/avatar.variants";
 import { Link } from "components/ds/link/link";
+import { useClientOnly } from "components/layout/client-only/client-only";
 
 export function Avatar(props: TAvatar.Props) {
+  const isClient = useClientOnly();
   const [isError, setIsError] = useState(false);
   // size prop needs to be extracted or it conflicts with the size prop from NextAvatar
   const { size, className, ...restProps } = props;
@@ -23,11 +25,11 @@ export function Avatar(props: TAvatar.Props) {
     }
 
     return false;
-  }, [props]);
+  }, [props, isClient]);
 
   const sizeFromVariant = useMemo(() => {
     const size = props.size;
-    const dpr = window.devicePixelRatio;
+    const dpr = isClient ? window.devicePixelRatio : 1;
     switch (size) {
       case "xs":
         return { w: 16 * dpr, h: 16 * dpr };
@@ -42,7 +44,7 @@ export function Avatar(props: TAvatar.Props) {
       default:
         return { w: 16 * dpr, h: 16 * dpr };
     }
-  }, [props]);
+  }, [props, isClient]);
 
   const optimizeSrc = useMemo(() => {
     if (isError) {
@@ -54,7 +56,7 @@ export function Avatar(props: TAvatar.Props) {
     }
 
     return props.src;
-  }, [isRemoteImage, sizeFromVariant, isError]);
+  }, [isRemoteImage, sizeFromVariant, isError, isClient]);
 
   return (
     <NextAvatar
@@ -76,7 +78,7 @@ export function Avatar(props: TAvatar.Props) {
       }}
       classNames={{
         fallback: "w-full",
-        img: "bg-greyscale-900",
+        img: "bg-greyscale-900 !opacity-100",
       }}
       {...restProps}
       src={optimizeSrc}

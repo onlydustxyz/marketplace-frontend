@@ -7,12 +7,13 @@ import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 
 import { IStar, Star } from "components/features/space-background/Class/Star";
+import { withClientOnly } from "components/layout/client-only/client-only";
 
 import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
 
-export function SpaceBackground() {
+function SpaceBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const size = useWindowSize();
@@ -81,3 +82,5 @@ export function SpaceBackground() {
 
   return <canvas ref={canvasRef} className="fixed inset-0 -z-[1] bg-space-gradient" />;
 }
+
+export default withClientOnly(SpaceBackground);

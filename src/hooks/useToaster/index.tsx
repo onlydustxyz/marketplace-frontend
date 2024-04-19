@@ -28,7 +28,6 @@ export const ToasterProvider = ({ children }: PropsWithChildren) => {
   const [message, setMessage] = useState<string>("");
   const [visible, setVisible] = useState(false);
   const [options, setOptions] = useState<StrictShowToasterOptions>(DEFAULT_TOASTER_OPTIONS);
-
   const showToaster = useMemo(
     () => (message: string, options?: ShowToasterOptions) => {
       setOptions({ ...DEFAULT_TOASTER_OPTIONS, ...options });

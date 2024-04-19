@@ -15,6 +15,7 @@ import { useSubscribeStacks } from "src/libs/react-stack";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -104,4 +105,4 @@ function SettingsBillingPage() {
   );
 }
 
-export default withAuthenticationRequired(SettingsBillingPage);
+export default withClientOnly(withAuthenticationRequired(SettingsBillingPage));

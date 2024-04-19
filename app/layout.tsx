@@ -14,7 +14,7 @@ import config from "src/config";
 
 import { PosthogIdentifyUser } from "components/features/posthog/components/posthog-identify-user";
 import { PosthogPageView } from "components/features/posthog/components/posthog-page-view";
-import { SpaceBackground } from "components/features/space-background/space-background";
+import SpaceBackground from "components/features/space-background/space-background";
 
 import { sharedMetadata } from "./shared-metadata";
 
