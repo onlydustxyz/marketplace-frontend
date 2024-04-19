@@ -1,3 +1,6 @@
+import { TAvatar } from "components/ds/avatar/avatar.types";
+import { TTypography } from "components/layout/typography/typography.types";
+
 export namespace TContributor {
   export interface Props {
     login: string;
@@ -8,5 +11,7 @@ export namespace TContributor {
     className?: string;
     isYou?: boolean;
     hasPendingInvite?: boolean;
+    typograhy?: TTypography.Props;
+    avatarProps?: TAvatar.Props;
   }
 }

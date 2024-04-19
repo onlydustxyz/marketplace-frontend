@@ -1,5 +1,5 @@
 import Header from "src/App/Stacks/ContributorProfileSidePanel/Header";
-import { UserProfile } from "src/api/Users/queries";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { useCloseAllStack } from "src/libs/react-stack";
 
 import { useStackProjectOverview } from "../../Stacks";
@@ -9,7 +9,7 @@ import StatsSection from "./StatsSection";
 import TechnologiesSection from "./TechnologiesSection";
 
 type Props = {
-  profile: UserProfile;
+  profile: UseGetMyProfileInfoResponse;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
 };

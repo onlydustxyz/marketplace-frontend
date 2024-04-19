@@ -39,6 +39,22 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "develop-onlydust-app-images.s3.eu-west-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "staging-onlydust-app-images.s3.eu-west-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "onlydust-app-images.s3.eu-west-1.amazonaws.com",
+      },
+    ],
+  },
 };
 
 export default withBundleAnalyzer({

@@ -1,6 +1,6 @@
 import { parseWebsite } from "src/App/Stacks/ContributorProfileSidePanel/utils";
 import { components } from "src/__generated/api";
-import { UserProfile } from "src/api/Users/queries";
+import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import Telegram from "src/assets/icons/Telegram";
 import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -24,7 +24,7 @@ import { NEXT_ROUTER } from "constants/router";
 import SocialLink from "./SocialLink";
 
 type Props = {
-  profile: UserProfile;
+  profile: UseGetMyProfileInfoResponse;
   setEditMode: (value: boolean) => void;
   completionScore?: number | undefined;
   isOwn?: boolean;

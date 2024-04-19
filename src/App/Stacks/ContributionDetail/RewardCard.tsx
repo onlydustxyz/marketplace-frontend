@@ -70,7 +70,7 @@ export function RewardCard({
           tooltipId={`${reward.id}-reward-conversion`}
           currency={{
             currency: reward.amount.currency,
-            amount: reward.amount.amount,
+            amount: reward.amount.prettyAmount,
             dollar: reward.amount.usdEquivalent,
           }}
         />

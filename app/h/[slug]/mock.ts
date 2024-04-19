@@ -22,7 +22,7 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
     "\n" +
     "Step 2: Join the Telegram group:\n" +
     "\n" +
-    "**Telegram group** to stay posted, ask questions and so forth.\n" +
+    "**[Telegram group](https://t.me/+Q1Oin_LMxpM0MTk8)** to stay posted, ask questions and so forth.\n" +
     "\n" +
     "Step 3: Pick your project\n" +
     "\n" +

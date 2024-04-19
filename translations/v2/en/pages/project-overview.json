@@ -1,0 +1,61 @@
+{
+  "title": "Overview",
+  "banner": {
+    "stillFetching": {
+      "title": "We are still fetching some project information. Please come back in approx. 5-10 min."
+    }
+  },
+  "apply": {
+    "title": "Looking for contributors",
+    "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
+    "contactNeeded": "Please share at least one way to reach you out in case it's a match.",
+    "informations": {
+      "notYetApply": "Should your profile align with the requirements of the project, we will reach out to you using one of your provided contact details.",
+      "alreadyApply": "You have already requested connection."
+    },
+    "button": {
+      "apply": "Get in touch",
+      "connectToApply": "Connect to show interest"
+    },
+    "tooltip": {
+      "notYetApplied": "Increase your chance of being contacted by filling out your Telegram on your profile",
+      "applied": "Thanks for showing your interest!"
+    }
+  },
+  "projectDetails": {
+    "title": "Project details",
+    "empty": "This project has no additional information to showcase for now.",
+    "projectLeads": "Project leads",
+    "contributors": "Contributors",
+    "ecosystems": "Ecosystems",
+    "sponsors": "Sponsors",
+    "technologies": "Technologies",
+    "moreInfo": "More info",
+    "links": {
+      "preventAnonymous": "Connect to OnlyDust to access more info links"
+    }
+  },
+  "goodFirstIssues": {
+    "title": "Good first issues",
+    "description": "Apply to a list of curated issues well suited for beginners to kickstart your journey.",
+    "button": "Apply",
+    "labels": {
+      "title": "Labels",
+      "none": "None"
+    },
+    "empty": {
+      "title": "No good first issues listed.",
+      "description": {
+        "lead": "Start taging issues with “good first issue” on GitHub to add them on this section.",
+        "contributor": "This project might have other open issues on its Github page."
+      },
+      "button": {
+        "lead": "List issues on Github",
+        "contributor": "See all issues on Github"
+      }
+    }
+  },
+  "repositories": {
+    "title": "Repositories"
+  }
+}
