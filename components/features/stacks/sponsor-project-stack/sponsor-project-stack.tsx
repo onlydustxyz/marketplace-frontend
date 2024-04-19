@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
 import ProjectApi from "src/api/Project";
@@ -74,6 +74,13 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
       message: T("v2.pages.sponsor.sponsorProject.error"),
     },
   });
+
+  useEffect(() => {
+    // Need to set initial value inside an effect because the value may come from a deferred source (ex: a request)
+    if (initialProject) {
+      setSelectedProjectId(initialProject.id);
+    }
+  }, [initialProject]);
 
   // const canAllocate = parseFloat(currencyAmount) < (currentBudget?.amount ?? 0);
 
