@@ -31,6 +31,7 @@
   },
   "sponsorProject": {
     "success": "The project has been sponsored successfully.",
-    "error": "An error occurred while sponsoring the project."
+    "error": "An error occurred while sponsoring the project.",
+    "submitTooltip": "A project and a valid amount is required."
   }
 }

@@ -10,6 +10,7 @@ import { useCloseStack } from "src/libs/react-stack";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { SearchProjects } from "components/features/search-projects/search-projects";
 import { TSearchProjects } from "components/features/search-projects/search-projects.types";
@@ -82,11 +83,17 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
     }
   }, [initialProject]);
 
-  // const canAllocate = parseFloat(currencyAmount) < (currentBudget?.amount ?? 0);
+  const canAllocate = useMemo(() => {
+    // TODO @hayden handle when amount > budget
+    // parseFloat(currencyAmount) < (currentBudget?.amount ?? 0);
+    return Boolean(selectedProjectId && currencyAmount && currencySelection);
+  }, [selectedProjectId, currencyAmount, currencySelection]);
 
   function handleProjectChange(projects: TSearchProjects.Project[]) {
-    if (projects[0]?.id) {
+    if (projects.length) {
       setSelectedProjectId(projects[0].id);
+    } else {
+      setSelectedProjectId("");
     }
   }
 
@@ -216,17 +223,16 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
       </div>
 
       <footer className={"flex justify-end border-t border-card-border-light bg-card-background-light p-6"}>
-        {/* TODO @hayden budget exceeded or empty tooltip like currency converter */}
-        {/* TODO @hayden disable if form error or loading */}
-        {/*<Tooltip*/}
-        {/*  content={<Translate token="v2.features.currency.budget.budgetExceededOrEmpty" />}*/}
-        {/*  isDisabled={canAllocate}*/}
-        {/*>*/}
-        <Button type={"submit"} disabled={isLoading || isPending}>
-          {isPending ? <Spinner className="mr-1" /> : null}
-          <Translate token="v2.pages.stacks.sponsorProject.submit" />
-        </Button>
-        {/*</Tooltip>*/}
+        <Tooltip
+          content={<Translate token="v2.pages.sponsor.sponsorProject.submitTooltip" />}
+          isDisabled={canAllocate}
+          placement={"top-end"}
+        >
+          <Button type={"submit"} disabled={!canAllocate || isLoading || isPending}>
+            {isPending ? <Spinner className="mr-1" /> : null}
+            <Translate token="v2.pages.stacks.sponsorProject.submit" />
+          </Button>
+        </Tooltip>
       </footer>
     </form>
   );
