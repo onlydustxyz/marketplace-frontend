@@ -54,21 +54,21 @@ function CoworkersPage() {
     () => [
       {
         key: "coworkers",
-        children: T("v2.pages.settings.billing.coworkers.table.columns.coworkers"),
+        children: <Translate token={"v2.pages.settings.billing.coworkers.table.columns.coworkers"} />,
         icon: {
           remixName: "ri-team-line",
         },
       },
       {
         key: "role",
-        children: T("v2.pages.settings.billing.coworkers.table.columns.role"),
+        children: <Translate token={"v2.pages.settings.billing.coworkers.table.columns.role"} />,
         icon: {
           remixName: "ri-information-line",
         },
       },
       {
         key: "joined",
-        children: T("v2.pages.settings.billing.coworkers.table.columns.joined"),
+        children: <Translate token={"v2.pages.settings.billing.coworkers.table.columns.joined"} />,
         icon: {
           remixName: "ri-check-line",
         },
