@@ -25,7 +25,7 @@ export function Avatar(props: TAvatar.Props) {
     }
 
     return false;
-  }, [props]);
+  }, [props, isClient]);
 
   const sizeFromVariant = useMemo(() => {
     const size = props.size;
@@ -78,7 +78,7 @@ export function Avatar(props: TAvatar.Props) {
       }}
       classNames={{
         fallback: "w-full",
-        img: "bg-greyscale-900",
+        img: "bg-greyscale-900 !opacity-100",
       }}
       {...restProps}
       src={optimizeSrc}
