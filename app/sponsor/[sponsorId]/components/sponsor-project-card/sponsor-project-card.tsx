@@ -26,7 +26,7 @@ export function SponsorProjectCard({
   return (
     <Card background={"base"} className={"grid content-start gap-6"}>
       <header className={"flex items-center justify-between overflow-hidden"}>
-        <BaseLink href={NEXT_ROUTER.projects.details.root(slug)}>
+        <BaseLink href={NEXT_ROUTER.projects.details.root(slug)} className={"truncate"}>
           <Avatar.Labelled
             avatarProps={{ src: logoUrl, alt: name, size: "m", shape: "square" }}
             labelProps={{ title: name }}
@@ -43,7 +43,7 @@ export function SponsorProjectCard({
           buttonProps={{
             variant: "secondary",
             size: "s",
-            className: "hidden lg:flex",
+            className: "hidden lg:flex whitespace-nowrap",
             children: (
               <>
                 <Icon remixName={"ri-service-line"} />
