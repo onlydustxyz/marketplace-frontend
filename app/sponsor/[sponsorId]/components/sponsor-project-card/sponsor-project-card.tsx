@@ -9,9 +9,12 @@ import { viewportConfig } from "src/config";
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 export function SponsorProjectCard({
   name,
@@ -23,15 +26,17 @@ export function SponsorProjectCard({
   return (
     <Card background={"base"} className={"grid content-start gap-6"}>
       <header className={"flex items-center justify-between overflow-hidden"}>
-        <Avatar.Labelled
-          avatarProps={{ src: logoUrl, alt: name, size: "m", shape: "square" }}
-          labelProps={{ title: name }}
-          className={"flex-1"}
-        >
-          <Typography variant={"body-xl-bold"} className={"truncate"}>
-            {name}
-          </Typography>
-        </Avatar.Labelled>
+        <BaseLink href={NEXT_ROUTER.projects.details.root(slug)}>
+          <Avatar.Labelled
+            avatarProps={{ src: logoUrl, alt: name, size: "m", shape: "square" }}
+            labelProps={{ title: name }}
+            className={"flex-1"}
+          >
+            <Typography variant={"body-xl-bold"} className={"truncate"}>
+              {name}
+            </Typography>
+          </Avatar.Labelled>
+        </BaseLink>
 
         <SponsorSidePanels
           panel={"project"}
