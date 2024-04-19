@@ -44,7 +44,7 @@ export function ViewMobile({
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
-  const { isAllowed: isAllowedSponsor, sponsors } = useSponsorGuard();
+  const { sponsors } = useSponsorGuard();
 
   const { queryParams } = useQueryParamsSorting({
     field: Fields.Date,
@@ -119,7 +119,7 @@ export function ViewMobile({
                   </Flex>
                 </BaseLink>
 
-                {isAllowedSponsor ? (
+                {sponsors.length ? (
                   <BaseLink
                     href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}
                     onClick={() => setPanelOpen(false)}
