@@ -52,7 +52,8 @@ export function AmountSelect({
             classNames={{
               trigger: "p-0 h-auto !bg-transparent shadow-none flex flex-row items-center space-x-4",
               innerWrapper: "!pt-0",
-              popoverContent: "bg-greyscale-900 border border-card-border-light shadow-medium w-fit",
+              // Need to translate to try and align popover correctly. w-fit messes up the math, but we need it to show the full currency names.
+              popoverContent: "bg-greyscale-900 border border-card-border-light shadow-medium w-fit -translate-x-1/2",
               selectorIcon: "relative right-0 left-0 !ml-2",
             }}
             onChange={handleSelectionChange}
@@ -69,7 +70,7 @@ export function AmountSelect({
                 </div>
               ));
             }}
-            popoverProps={{ placement: "right-start" }}
+            popoverProps={{ placement: "bottom-end" }}
             isDisabled={inputProps?.disabled || !orderedCurrencies?.length}
           >
             {orderedCurrencies?.map(({ currency: { code, name } }) => (

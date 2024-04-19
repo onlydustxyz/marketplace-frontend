@@ -8,11 +8,12 @@ import { Table } from "./table";
 type Story = StoryObj<typeof Table>;
 
 const defaultProps: ComponentProps<typeof Table> = {
+  label: "Table label",
   columns: [
-    { key: "col1", label: "Column 1", icon: { remixName: "ri-error-warning-line" } },
-    { key: "col2", label: "Column 2", icon: { customName: "dollar" } },
-    { key: "col3", label: "Column 3" },
-    { key: "col4", label: "Actions", align: "end", showOnHover: true },
+    { key: "col1", children: "Column 1", icon: { remixName: "ri-error-warning-line" } },
+    { key: "col2", children: "Column 2", icon: { customName: "dollar" } },
+    { key: "col3", children: "Column 3" },
+    { key: "col4", children: "Actions", align: "end", showOnHover: true },
   ],
   rows: [
     {

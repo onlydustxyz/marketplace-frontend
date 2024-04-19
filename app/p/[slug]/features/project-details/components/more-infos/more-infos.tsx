@@ -2,12 +2,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { Link } from "components/ds/link/link";
 import { Tooltip } from "components/ds/tooltip/tooltip";
+import { SocialIconLink } from "components/features/social-icon-link/social-icon-link";
 import { Flex } from "components/layout/flex/flex";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { Section } from "../section/section";
-import { SocialIcon } from "./components/social-icon/social-icon";
 import { TMoreInfos } from "./more-infos.types";
 
 export function MoreInfos({ moreInfos }: TMoreInfos.Props) {
@@ -47,7 +47,7 @@ export function MoreInfos({ moreInfos }: TMoreInfos.Props) {
 
               return (
                 <Flex key={validUrl} as="li" alignItems="center" className="gap-1">
-                  <SocialIcon url={validUrl} />
+                  <SocialIconLink url={validUrl} />
 
                   <Link href={validUrl}>
                     <Typography variant="body-s" className="truncate">
@@ -67,7 +67,7 @@ export function MoreInfos({ moreInfos }: TMoreInfos.Props) {
                 className="w-fit"
               >
                 <Flex alignItems="center" className="cursor-not-allowed gap-1">
-                  <SocialIcon url={url} />
+                  <SocialIconLink url={url} />
 
                   <Typography variant="body-s" className="truncate">
                     {value}

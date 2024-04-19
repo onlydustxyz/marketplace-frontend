@@ -71,6 +71,6 @@ export const MoneyStaticUSD: Money.Currency = {
   id: "",
   code: "USD",
   name: "US Dollar",
-  logoUrl: "https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/f171e9690f6658e106a049cd62843ec4.png",
+  logoUrl: usd.src,
   decimals: 0,
 };

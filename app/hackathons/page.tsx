@@ -23,7 +23,7 @@ const mock: components["schemas"]["HackathonsListResponse"] = {
 
 function HackathonsPage() {
   const liveNow = mock.hackathons.filter(hackathon => isHackathonLive(hackathon));
-  const nextMonths = mock.hackathons.filter(hackathon => isHackathonFuture(hackathon));
+  const comingSoon = mock.hackathons.filter(hackathon => isHackathonFuture(hackathon));
 
   return (
     <div className="scrollbar-sm relative z-[1] h-full w-full overflow-y-auto bg-no-repeat lg:rounded-3xl">
@@ -36,9 +36,9 @@ function HackathonsPage() {
             items={liveNow}
           />
           <HackathonSection
-            title={<Translate token={"v2.pages.hackathons.nextMonths"} />}
+            title={<Translate token={"v2.pages.hackathons.comingSoon"} />}
             icon={{ remixName: "ri-calendar-event-line" }}
-            items={nextMonths}
+            items={comingSoon}
           />
         </div>
       </div>
