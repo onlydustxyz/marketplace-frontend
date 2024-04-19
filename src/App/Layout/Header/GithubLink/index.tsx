@@ -11,10 +11,15 @@ export enum Variant {
   GreyNoise = "greyNoise",
 }
 
-export default function GithubLink({ variant = Variant.Default }: { variant?: Variant }) {
+export default function GithubLink({
+  variant = Variant.Default,
+  showText = true,
+}: {
+  variant?: Variant;
+  showText?: boolean;
+}) {
   const { T } = useIntl();
   const { loginWithRedirect } = useAuth0();
-
   const loginHandler = () => {
     handleLoginWithRedirect(loginWithRedirect);
   };
@@ -37,7 +42,7 @@ export default function GithubLink({ variant = Variant.Default }: { variant?: Va
             })}
           >
             <GithubLogo size={Size.Large} />
-            <div className="mr-1 flex font-belwe">{T("navbar.signInWithGithub")}</div>
+            {showText && <div className="mr-1 flex font-belwe">{T("navbar.signInWithGithub")}</div>}
           </div>
         </div>
       </div>

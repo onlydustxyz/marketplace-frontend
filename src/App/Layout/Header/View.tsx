@@ -8,6 +8,7 @@ import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Link } from "components/ds/link/link";
+import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -33,6 +34,7 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
   const { T } = useIntl();
   const { isAuthenticated, isLoading } = useAuth0();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isSm = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
 
   const isMatchProjectDetail = useMatchPath(NEXT_ROUTER.projects.details.root("[slug]"), { exact: false });
   const isMatchSettings = useMatchPath(NEXT_ROUTER.settings.all, { exact: false });
@@ -48,9 +50,21 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
         <div className="flex items-center justify-center gap-8 xl:justify-start">
           <Link href={NEXT_ROUTER.projects.all} className="flex w-fit items-center gap-3 ">
             <OnlyDustLogo />
-            <OnlyDustTitle />
+            {!isSm && <OnlyDustTitle />}
           </Link>
-          <div className="flex-1 items-center gap-8 xl:flex">
+          {isSm && (
+            <div className="flex flex-1 items-center justify-center xl:hidden">
+              <div className="rounded-xl border border-card-border-medium bg-card-background-light px-4 py-2">
+                <BaseLink
+                  href={NEXT_ROUTER.hackathons.root}
+                  className="od-text-body-m-bold text-white data-[active=true]:text-spacePurple-500"
+                >
+                  {T("v2.features.menu.hackathons")}
+                </BaseLink>
+              </div>
+            </div>
+          )}
+          <div className="items-center gap-8 xl:flex xl:flex-1">
             {isXl && (
               <>
                 {menuItems[NEXT_ROUTER.projects.all] ? (
