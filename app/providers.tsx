@@ -21,15 +21,6 @@ import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/a
 import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
 import { PosthogProvider } from "components/features/posthog/providers/posthog.provider";
 
-// const StackProvider = dynamic(() => import("src/libs/react-stack").then(mod => mod.StackProvider), { ssr: false });
-// const SidePanelStackProvider = dynamic(
-//   () => import("src/hooks/useSidePanelStack").then(mod => mod.SidePanelStackProvider),
-//   { ssr: false }
-// );
-// const SidePanelProvider = dynamic(() => import("src/hooks/useSidePanel").then(mod => mod.SidePanelProvider), {
-//   ssr: false,
-// });
-
 export default function Providers({ children }: PropsWithChildren) {
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
 
