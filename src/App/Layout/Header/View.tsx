@@ -52,18 +52,16 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
             <OnlyDustLogo />
             {!isSm && <OnlyDustTitle />}
           </Link>
-          {isSm && (
-            <div className="flex flex-1 items-center justify-center xl:hidden">
-              <div className="rounded-xl border border-card-border-medium bg-card-background-light px-4 py-2">
-                <BaseLink
-                  href={NEXT_ROUTER.hackathons.root}
-                  className="od-text-body-m-bold text-white data-[active=true]:text-spacePurple-500"
-                >
-                  {T("v2.features.menu.hackathons")}
-                </BaseLink>
-              </div>
+          <div className="flex flex-1 items-center justify-center xl:hidden">
+            <div className="rounded-xl border border-card-border-medium bg-card-background-light px-4 py-2">
+              <BaseLink
+                href={NEXT_ROUTER.hackathons.root}
+                className="od-text-body-m-bold text-white data-[active=true]:text-spacePurple-500"
+              >
+                {T("v2.features.menu.hackathons")}
+              </BaseLink>
             </div>
-          )}
+          </div>
           <div className="items-center gap-8 xl:flex xl:flex-1">
             {isXl && (
               <>
