@@ -109,9 +109,9 @@ export const mock: components["schemas"]["HackathonsDetailsResponse"] = {
     },
     {
       id: "2660a5b7-f141-460c-844c-6cedfc99d781",
-      slug: "loot-underworld",
-      name: "Loot Underworld",
-      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/98b04f28db28874c48f32e3bdeeee347.jpeg",
+      slug: "underware",
+      name: "Underware",
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/d1525b0f1e339cd4159168ac7795da87.jpeg",
     },
   ],
   sponsors: [],
