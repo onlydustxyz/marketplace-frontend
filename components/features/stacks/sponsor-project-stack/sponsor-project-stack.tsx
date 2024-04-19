@@ -1,13 +1,15 @@
 import { FormEvent, useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
+import ProjectApi from "src/api/Project";
 import SponsorApi from "src/api/Sponsors";
-import { ProjectPageItemResponse } from "src/types";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { SearchProjects } from "components/features/search-projects/search-projects";
+import { TSearchProjects } from "components/features/search-projects/search-projects.types";
 import { Budget } from "components/features/stacks/sponsor-project-stack/components/budget/budget";
 import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { Translate } from "components/layout/translate/translate";
@@ -19,7 +21,14 @@ import { Label } from "./components/label/label";
 
 const shortcuts = [25, 50, 75, 100] as const;
 
-export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
+export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props) {
+  const { data: initialProject } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug: projectSlug },
+    options: {
+      enabled: Boolean(projectSlug),
+    },
+  });
+
   const { user } = useCurrentUser();
 
   const sponsorId = user?.sponsors?.[0].id ?? "";
@@ -35,9 +44,7 @@ export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
 
   const currencies = useMemo(() => sponsor?.availableBudgets ?? [], [sponsor]);
 
-  const [selectedProjectId, setSelectedProjectId] = useState<ProjectPageItemResponse["id"] | undefined>(
-    projectId ? projectId : undefined
-  );
+  const [_selectedProjectId, setSelectedProjectId] = useState("");
   const [currencyAmount, setCurrencyAmount] = useState("");
   const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(currencies[0].currency);
 
@@ -46,7 +53,9 @@ export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
     [currencies, currencySelection]
   );
 
-  function handleProjectChange(projects: ProjectPageItemResponse[]) {
+  // const canAllocate = parseFloat(currencyAmount) < (currentBudget?.amount ?? 0);
+
+  function handleProjectChange(projects: TSearchProjects.Project[]) {
     if (projects[0]?.id) {
       setSelectedProjectId(projects[0].id);
     }
@@ -92,7 +101,7 @@ export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
             <Label htmlFor={"sponsor-project-project"}>
               <Translate token="v2.pages.stacks.sponsorProject.project.title" />
             </Label>
-            <SearchProjects onSelectProjects={handleProjectChange} size={"lg"} />
+            <SearchProjects initialValue={initialProject} onSelectProjects={handleProjectChange} size={"lg"} />
           </div>
 
           {currencySelection && currentBudget ? (
@@ -170,9 +179,17 @@ export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
       <footer className={"flex justify-end border-t border-card-border-light bg-card-background-light p-6"}>
         {/* TODO @hayden budget exceeded or empty tooltip like currency converter */}
         {/* TODO @hayden disable if form error or loading */}
-        <Button type={"submit"}>
-          <Translate token="v2.pages.stacks.sponsorProject.submit" />
-        </Button>
+        <Tooltip
+          content={<Translate token="v2.features.currency.budget.budgetExceededOrEmpty" />}
+          // isDisabled={canAllocate}
+        >
+          <Button
+            type={"submit"}
+            // disabled={!canAllocate || loading}
+          >
+            <Translate token="v2.pages.stacks.sponsorProject.submit" />
+          </Button>
+        </Tooltip>
       </footer>
     </form>
   );
