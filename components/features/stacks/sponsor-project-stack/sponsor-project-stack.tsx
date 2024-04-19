@@ -5,6 +5,7 @@ import ProjectApi from "src/api/Project";
 import SponsorApi from "src/api/Sponsors";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
 import { useIntl } from "src/hooks/useIntl";
 import { useCloseStack } from "src/libs/react-stack";
 import { cn } from "src/utils/cn";
@@ -50,14 +51,15 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
   });
 
   const currencies = useMemo(() => sponsor?.availableBudgets ?? [], [sponsor]);
+  const orderedCurrencies = useCurrenciesOrder({ currencies });
 
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [currencyAmount, setCurrencyAmount] = useState("");
-  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(currencies[0].currency);
+  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(orderedCurrencies[0].currency);
 
   const currentBudget = useMemo(
-    () => currencies.find(c => c.currency.id === currencySelection?.id),
-    [currencies, currencySelection]
+    () => orderedCurrencies.find(c => c.currency.id === currencySelection?.id),
+    [orderedCurrencies, currencySelection]
   );
 
   const { mutateAsync, isPending, ...restAllocation } = SponsorApi.mutations.useAllocateBudget({
@@ -160,7 +162,7 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
                 </Label>
                 <div className={"grid gap-5"}>
                   <AmountSelect
-                    budgets={currencies}
+                    budgets={orderedCurrencies}
                     amountValue={currencyAmount}
                     selectionValue={currencySelection}
                     onAmountChange={setCurrencyAmount}
