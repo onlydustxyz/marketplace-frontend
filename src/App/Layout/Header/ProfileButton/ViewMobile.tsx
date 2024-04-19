@@ -151,6 +151,15 @@ export function ViewMobile({
                     {T("v2.features.menu.rewards")}
                   </BaseLink>
 
+                  <BaseLink
+                    href={NEXT_ROUTER.hackathons.root}
+                    onClick={() => setPanelOpen(false)}
+                    className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
+                  >
+                    <Icon remixName="ri-medal-line" size={20} />
+                    {T("v2.features.menu.hackathons")}
+                  </BaseLink>
+
                   <span className="my-1 block h-px bg-greyscale-50/8" />
                 </div>
               ) : null}
