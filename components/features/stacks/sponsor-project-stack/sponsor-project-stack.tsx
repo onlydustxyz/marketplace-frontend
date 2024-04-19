@@ -83,11 +83,13 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
     }
   }, [initialProject]);
 
+  const balanceExceeded = useMemo(() => {
+    return parseFloat(currencyAmount) > (currentBudget?.amount ?? 0);
+  }, [currencyAmount, currentBudget]);
+
   const canAllocate = useMemo(() => {
-    // TODO @hayden handle when amount > budget
-    // parseFloat(currencyAmount) < (currentBudget?.amount ?? 0);
-    return Boolean(selectedProjectId && currencyAmount && currencySelection);
-  }, [selectedProjectId, currencyAmount, currencySelection]);
+    return Boolean(selectedProjectId && currencyAmount && currencySelection && !balanceExceeded);
+  }, [selectedProjectId, currencyAmount, currencySelection, balanceExceeded]);
 
   function handleProjectChange(projects: TSearchProjects.Project[]) {
     if (projects.length) {
@@ -207,11 +209,12 @@ export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props)
                     label={"v2.pages.stacks.sponsorProject.budget.amountAllocated"}
                     amount={currencyAmount ? parseFloat(currencyAmount) : 0}
                     currency={currencySelection}
-                    isAllocation
+                    prefix={currencyAmount ? "+" : ""}
+                    color={balanceExceeded ? "orange" : currencyAmount ? "green" : undefined}
                   />
                   <Budget
                     label={"v2.pages.stacks.sponsorProject.budget.budgetAfterAllocation"}
-                    // TODO @hayden make this turn orange if the budget is exceeded like currency converter
+                    // TODO @hayden selected project budget + currencyAmount
                     amount={123}
                     currency={currencySelection}
                   />

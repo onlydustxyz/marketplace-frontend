@@ -7,6 +7,7 @@ export namespace TBudget {
     label: Key;
     amount: number;
     currency: Money.Currency;
-    isAllocation?: boolean;
+    prefix?: string;
+    color?: "green" | "orange";
   }
 }

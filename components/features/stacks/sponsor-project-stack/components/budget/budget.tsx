@@ -8,7 +8,7 @@ import { TBudget } from "components/features/stacks/sponsor-project-stack/compon
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function Budget({ label, amount, currency, isAllocation }: TBudget.Props) {
+export function Budget({ label, amount, currency, prefix, color }: TBudget.Props) {
   return (
     <li className={"flex items-center justify-between"}>
       <Typography variant={"body-s"}>
@@ -18,16 +18,18 @@ export function Budget({ label, amount, currency, isAllocation }: TBudget.Props)
         <Typography
           variant={"body-m"}
           className={cn({
-            "text-github-green-light": isAllocation,
+            "text-github-green-light": color === "green",
+            "text-orange-500": color === "orange",
           })}
         >
-          {`${isAllocation ? "+" : ""}${
+          {prefix}
+          {
             Money.format({
               amount,
               currency,
               options: { showCurrency: false },
             }).string
-          }`}
+          }
         </Typography>
         <Chip solid className="h-5 w-5">
           <CurrencyIcons currency={currency} className="h-5 w-5" />
