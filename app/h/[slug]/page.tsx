@@ -1,4 +1,4 @@
-import { HackathonsActions } from "actions/billing-profiles/hackathons.actions";
+import { HackathonsActions } from "actions/hackathons/hackathons.actions";
 import { notFound } from "next/navigation";
 
 import { ScrollableView } from "app/h/[slug]/clients/scrollable-view/scrollable-view";

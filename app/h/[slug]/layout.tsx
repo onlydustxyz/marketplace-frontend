@@ -1,4 +1,4 @@
-import { HackathonsActions } from "actions/billing-profiles/hackathons.actions";
+import { HackathonsActions } from "actions/hackathons/hackathons.actions";
 import type { Metadata } from "next";
 import { PropsWithChildren } from "react";
 

@@ -25,7 +25,7 @@ export function FormInformations() {
   } = MeApi.mutations.useUploadProfilePicture({
     options: {
       onSuccess: data => {
-        setValue("avatarUrl", data.url);
+        setValue("avatarUrl", data.url, { shouldDirty: true });
       },
       onError: () => {
         setError("avatarUrl", { type: "validate", message: "test" });

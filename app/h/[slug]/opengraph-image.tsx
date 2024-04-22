@@ -1,4 +1,4 @@
-import { HackathonsActions } from "actions/billing-profiles/hackathons.actions";
+import { HackathonsActions } from "actions/hackathons/hackathons.actions";
 
 import { hackathonShortenDate } from "components/features/hackathons/display-date/display-date.utils";
 import { Generator } from "components/features/seo/image-metadata/commons/generator/generator";

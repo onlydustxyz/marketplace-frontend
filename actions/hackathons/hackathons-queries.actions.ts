@@ -1,5 +1,5 @@
 import { BaseQueries } from "actions/base-queries.actions";
-import { HACKATHONS_ACTION_PATH } from "actions/billing-profiles/hackathons-path.actions";
+import { HACKATHONS_ACTION_PATH } from "actions/hackathons/hackathons-path.actions";
 import { BaseQueriesOptions } from "actions/type.actions";
 
 import { components } from "src/__generated/api";

@@ -1,4 +1,4 @@
-import { HackathonsActions } from "actions/billing-profiles/hackathons.actions";
+import { HackathonsActions } from "actions/hackathons/hackathons.actions";
 import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
 
