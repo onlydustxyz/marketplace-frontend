@@ -1,9 +1,9 @@
-import { FilloutStandardEmbed } from "@fillout/react";
-import { useState } from "react";
+import { isString } from "lodash";
+import { useMemo } from "react";
 
-import SidePanel from "src/components/SidePanel";
+import SponsorApi from "src/api/Sponsors";
 
-import { Button } from "components/ds/button/button";
+import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
@@ -13,28 +13,38 @@ import { TSponsorButton } from "./sponsor-button.types";
 
 export function SponsorButton({ project }: TSponsorButton.Props) {
   const { user } = useCurrentUser();
-  const [isOpen, setIsOpen] = useState(false);
+  const { sponsors } = user ?? {};
+  const [sponsor] = sponsors ?? [];
+  const { id: sponsorId } = sponsor ?? {};
+
+  const sponsorIdIsString = isString(sponsorId);
+
+  const { data } = SponsorApi.queries.useGetSponsorById({
+    params: {
+      sponsorId: sponsorIdIsString ? sponsorId : "",
+    },
+    options: {
+      enabled: sponsorIdIsString,
+    },
+  });
+
+  const hasSponsorBudget = useMemo(() => (data?.availableBudgets.length ?? 0) > 0, [data]);
 
   return (
-    <>
-      <Button backgroundColor="blue" className="flex-1 md:flex-initial" size="s" onClick={() => setIsOpen(true)}>
-        <Icon remixName="ri-service-line" />
-        <Translate token="v2.pages.project.details.header.buttons.sponsor" />
-      </Button>
-
-      <SidePanel open={isOpen} setOpen={setIsOpen}>
-        <FilloutStandardEmbed
-          filloutId="1cTn46XDDVus"
-          inheritParameters
-          parameters={{
-            project_id: project.id,
-            project_name: project.name,
-            user_id: user?.id,
-            user_github: user?.login,
-            user_email: user?.email,
-          }}
-        />
-      </SidePanel>
-    </>
+    <SponsorSidePanels
+      panel={hasSponsorBudget ? "project" : "fillout"}
+      project={project}
+      buttonProps={{
+        backgroundColor: "blue",
+        size: "s",
+        className: "flex-1 md:flex-initial",
+        children: (
+          <>
+            <Icon remixName="ri-service-line" />
+            <Translate token="v2.pages.project.details.header.buttons.sponsor" />
+          </>
+        ),
+      }}
+    />
   );
 }

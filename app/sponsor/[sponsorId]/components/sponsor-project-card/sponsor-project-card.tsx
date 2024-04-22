@@ -2,13 +2,13 @@ import { useMediaQuery } from "usehooks-ts";
 import { Money } from "utils/Money/Money";
 
 import { TSponsorProjectCard } from "app/sponsor/[sponsorId]/components/sponsor-project-card/sponsor-project-card.types";
-import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
 
 import { viewportConfig } from "src/config";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -16,13 +16,9 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
-export function SponsorProjectCard({
-  name,
-  logoUrl,
-  remainingBudgets,
-  totalUsdBudget,
-  slug,
-}: TSponsorProjectCard.Props) {
+export function SponsorProjectCard({ project }: TSponsorProjectCard.Props) {
+  const { name, logoUrl, remainingBudgets, totalUsdBudget, slug } = project;
+
   return (
     <Card background={"base"} className={"grid content-start gap-6"}>
       <header className={"flex items-center justify-between overflow-hidden"}>
@@ -51,9 +47,7 @@ export function SponsorProjectCard({
               </>
             ),
           }}
-          projectParams={{
-            projectSlug: slug,
-          }}
+          project={project}
         />
       </header>
 
@@ -123,9 +117,7 @@ export function SponsorProjectCard({
             </>
           ),
         }}
-        projectParams={{
-          projectSlug: slug,
-        }}
+        project={project}
       />
     </Card>
   );

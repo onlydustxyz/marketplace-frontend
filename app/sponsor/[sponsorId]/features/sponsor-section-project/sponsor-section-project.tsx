@@ -4,10 +4,10 @@ import {
   SponsorProjectCard,
   SponsorProjectCardSkeleton,
 } from "app/sponsor/[sponsorId]/components/sponsor-project-card/sponsor-project-card";
-import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
 import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
 
 import { Card } from "components/ds/card/card";
+import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -28,7 +28,7 @@ export function SponsorSectionProject() {
     }
 
     if (data) {
-      return data.projects.map((project, i) => <SponsorProjectCard key={`${project.name}_${i}`} {...project} />);
+      return data.projects.map(project => <SponsorProjectCard key={project.id} project={project} />);
     }
 
     return null;

@@ -26,14 +26,15 @@ import { Label } from "./components/label/label";
 
 const shortcuts = [25, 50, 75, 100] as const;
 
-export function SponsorProjectStack({ projectSlug }: TSponsorProjectStack.Props) {
+export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   const { T } = useIntl();
   const closeStack = useCloseStack();
 
+  // TODO @hayden replace with passed project
   const { data: initialProject } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: projectSlug },
+    params: { slug: project?.slug },
     options: {
-      enabled: Boolean(projectSlug),
+      enabled: Boolean(project?.slug),
     },
   });
 
