@@ -1,3 +1,3 @@
-export enum apiRessources {
+export enum apiResources {
   hackathons = "HACKATHONS",
 }

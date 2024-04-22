@@ -1,7 +1,6 @@
-import { ACTIONS_RESSOURCES } from "actions/ressources.actions";
-import { apiRessources } from "api-client/config/ressources";
+import { apiResources } from "api-client/config/resources";
 
 export default {
-  root: `${apiRessources.hackathons}-root`,
-  by_slug: (slug: string) => `${ACTIONS_RESSOURCES.HACKATHONS}-by-slug-${slug}`,
+  root: `${apiResources.hackathons}-root`,
+  by_slug: (slug: string) => `${apiResources.hackathons}-by-slug-${slug}`,
 };

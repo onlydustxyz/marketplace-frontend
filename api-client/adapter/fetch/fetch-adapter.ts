@@ -1,6 +1,6 @@
 import { AuthAdapter } from "api-client/adapter/auth/auth-adapter.types";
+import { apiClientConfig } from "api-client/config";
 import { apiVersions } from "api-client/config/api-versions";
-import { ApiClientBasePaths } from "api-client/config/base-path";
 
 import { FetchError } from "src/api/query.type";
 
@@ -27,7 +27,7 @@ export class FetchAdapter implements IFetchAdapater {
   private getEndpointUrl(url: string, params: { [key: string]: string }) {
     const searchParams = new URLSearchParams(params).toString();
 
-    const path = ApiClientBasePaths[this.version](url);
+    const path = apiClientConfig.basePaths[this.version](url);
 
     return `${path}${searchParams ? `?${searchParams}` : ""}`;
   }
