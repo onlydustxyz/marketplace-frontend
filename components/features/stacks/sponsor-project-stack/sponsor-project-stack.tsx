@@ -82,7 +82,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   }, [currencyAmount, currentBudget]);
 
   const canAllocate = useMemo(() => {
-    return Boolean(selectedProjectId && currencyAmount && currencySelection && !balanceExceeded);
+    return Boolean(selectedProjectId && parseFloat(currencyAmount) && currencySelection && !balanceExceeded);
   }, [selectedProjectId, currencyAmount, currencySelection, balanceExceeded]);
 
   function handleProjectChange(projects: TSearchProjects.Project[]) {
