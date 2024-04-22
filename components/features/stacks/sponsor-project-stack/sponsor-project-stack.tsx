@@ -1,7 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
-import ProjectApi from "src/api/Project";
 import SponsorApi from "src/api/Sponsors";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
@@ -29,14 +28,6 @@ const shortcuts = [25, 50, 75, 100] as const;
 export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   const { T } = useIntl();
   const closeStack = useCloseStack();
-
-  // TODO @hayden replace with passed project
-  const { data: initialProject } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug: project?.slug },
-    options: {
-      enabled: Boolean(project?.slug),
-    },
-  });
 
   const { user } = useCurrentUser();
 
@@ -81,10 +72,10 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
 
   useEffect(() => {
     // Need to set initial value inside an effect because the value may come from a deferred source (ex: a request)
-    if (initialProject) {
-      setSelectedProjectId(initialProject.id);
+    if (project) {
+      setSelectedProjectId(project.id);
     }
-  }, [initialProject]);
+  }, [project]);
 
   const balanceExceeded = useMemo(() => {
     return parseFloat(currencyAmount) > (currentBudget?.amount ?? 0);
@@ -152,7 +143,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
             <Label htmlFor={"sponsor-project-project"}>
               <Translate token="v2.pages.stacks.sponsorProject.project.title" />
             </Label>
-            <SearchProjects initialValue={initialProject} onSelectProjects={handleProjectChange} size={"lg"} />
+            <SearchProjects initialValue={project} onSelectProjects={handleProjectChange} size={"lg"} />
           </div>
 
           {currencySelection && currentBudget ? (
