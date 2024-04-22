@@ -1,5 +1,11 @@
+"use client";
+
 import LegacyPublicProfilePage from "src/_pages/PublicProfile";
 
-export default function PublicProfilePage() {
+import { withClientOnly } from "components/layout/client-only/client-only";
+
+function PublicProfilePage() {
   return <LegacyPublicProfilePage />;
 }
+
+export default withClientOnly(PublicProfilePage);

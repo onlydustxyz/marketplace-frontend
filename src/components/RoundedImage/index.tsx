@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
 
+import { withClientOnly } from "components/layout/client-only/client-only";
+
 export enum ImageSize {
   Xxs = "Xxs",
   Xs = ImageSize.Xxs,
@@ -27,7 +29,7 @@ interface RoundedImageProps {
   useLogoFallback?: boolean;
 }
 
-export default function RoundedImage({
+function RoundedImage({
   src,
   alt,
   className,
@@ -130,3 +132,5 @@ export default function RoundedImage({
     </div>
   );
 }
+
+export default withClientOnly(RoundedImage);

@@ -6,7 +6,7 @@ import { sharedMetadata } from "app/shared-metadata";
 
 import ProjectsSidebar from "src/_pages/ProjectDetails/Sidebar";
 
-import { ClientLayout } from "./components/client-layout/client-layout";
+import ClientLayout from "./components/client-layout/client-layout";
 
 export async function generateMetadata(props: { params: { slug: string } }): Promise<Metadata> {
   const { params } = props;

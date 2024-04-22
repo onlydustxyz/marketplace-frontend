@@ -21,6 +21,7 @@ import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 import { Contributor } from "components/features/contributor/contributor";
 import { RolesSelector } from "components/features/roles/role-selector/roles-selector";
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -169,4 +170,6 @@ function CoworkersPage() {
   );
 }
 
-export default withAuthenticationRequired(withBillingProfileAdminGuard(withBillingProfileCompanyGuard(CoworkersPage)));
+export default withClientOnly(
+  withAuthenticationRequired(withBillingProfileAdminGuard(withBillingProfileCompanyGuard(CoworkersPage)))
+);

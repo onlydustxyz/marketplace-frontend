@@ -11,6 +11,7 @@ import useMutationAlert from "src/api/useMutationAlert";
 import { useIntl } from "src/hooks/useIntl";
 import { Key } from "src/hooks/useIntl";
 
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 
 import { FormFooter } from "../components/form-footer/form-footer";
@@ -125,4 +126,4 @@ function SettingsProfilePage() {
   );
 }
 
-export default withAuthenticationRequired(SettingsProfilePage);
+export default withClientOnly(withAuthenticationRequired(SettingsProfilePage));

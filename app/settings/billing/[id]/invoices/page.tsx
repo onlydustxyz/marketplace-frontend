@@ -15,6 +15,7 @@ import { ShowMore } from "src/components/Table/ShowMore";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import EmptyTablePlaceholder from "components/layout/placeholders/empty-table/empty-table-placeholder";
 import { Translate } from "components/layout/translate/translate";
@@ -136,4 +137,4 @@ function InvoicesPage() {
   );
 }
 
-export default withAuthenticationRequired(withBillingProfileAdminGuard(InvoicesPage));
+export default withClientOnly(withAuthenticationRequired(withBillingProfileAdminGuard(InvoicesPage)));
