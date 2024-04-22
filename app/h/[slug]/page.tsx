@@ -1,4 +1,4 @@
-import { HackathonsActions } from "actions/hackathons/hackathons.actions";
+import { hackathonsApiClient } from "api-client/resources/hackathons";
 import { notFound } from "next/navigation";
 
 import { ScrollableView } from "app/h/[slug]/clients/scrollable-view/scrollable-view";
@@ -13,7 +13,7 @@ import { Header } from "./components/header/header";
 
 async function getHackathon(slug: string) {
   try {
-    return await HackathonsActions.queries.getHackathonsBySlug(slug);
+    return await hackathonsApiClient.fetch.getHackathonBySlug(slug);
   } catch {
     notFound();
   }

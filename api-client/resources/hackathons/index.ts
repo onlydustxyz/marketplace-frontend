@@ -1,9 +1,11 @@
+import definitions from "./definitions";
 import * as fetch from "./fetch";
-import paths from "./paths";
+import * as query from "./query";
 import tags from "./tags";
 
 export const hackathonsApiClient = {
-  paths,
+  definitions,
   fetch,
+  query,
   tags,
 };

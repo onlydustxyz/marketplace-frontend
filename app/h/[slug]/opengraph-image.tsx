@@ -1,4 +1,4 @@
-import { HackathonsActions } from "actions/hackathons/hackathons.actions";
+import { hackathonsApiClient } from "api-client/resources/hackathons";
 
 import { hackathonShortenDate } from "components/features/hackathons/display-date/display-date.utils";
 import { Generator } from "components/features/seo/image-metadata/commons/generator/generator";
@@ -7,8 +7,7 @@ import { HackathonImageMetadata } from "components/features/seo/image-metadata/h
 
 export default async function Image(props: { params: { slug: string } }) {
   try {
-    const hackathon = await HackathonsActions.queries.getHackathonsBySlug(props.params.slug);
-
+    const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug);
     return Generator({
       children: (
         <HackathonImageMetadata
