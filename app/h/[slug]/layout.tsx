@@ -1,4 +1,4 @@
-import { HackathonsActions } from "actions/billing-profiles/hackathons.actions";
+import { hackathonsApiClient } from "api-client/resources/hackathons";
 import type { Metadata } from "next";
 import { PropsWithChildren } from "react";
 
@@ -6,7 +6,7 @@ import { sharedMetadata } from "app/shared-metadata";
 
 export async function generateMetadata(props: { params: { slug: string } }): Promise<Metadata> {
   try {
-    const hackathon = await HackathonsActions.queries.getHackathonsBySlug(props.params.slug);
+    const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug);
     return {
       ...sharedMetadata,
       title: `${hackathon.title}`,
