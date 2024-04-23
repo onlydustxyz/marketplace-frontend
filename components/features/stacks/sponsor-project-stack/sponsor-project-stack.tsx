@@ -48,6 +48,8 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   const [currencyAmount, setCurrencyAmount] = useState("");
   const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(orderedCurrencies[0].currency);
 
+  const currencyAmountFloat = parseFloat(currencyAmount);
+
   const currentBudget = useMemo(
     () => orderedCurrencies.find(c => c.currency.id === currencySelection?.id),
     [orderedCurrencies, currencySelection]
@@ -77,12 +79,12 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   }, [project]);
 
   const balanceExceeded = useMemo(() => {
-    return parseFloat(currencyAmount) > (currentBudget?.amount ?? 0);
-  }, [currencyAmount, currentBudget]);
+    return currencyAmountFloat > (currentBudget?.amount ?? 0);
+  }, [currencyAmountFloat, currentBudget]);
 
   const canAllocate = useMemo(() => {
-    return Boolean(selectedProjectId && parseFloat(currencyAmount) && currencySelection && !balanceExceeded);
-  }, [selectedProjectId, currencyAmount, currencySelection, balanceExceeded]);
+    return Boolean(selectedProjectId && currencyAmountFloat && currencySelection && !balanceExceeded);
+  }, [selectedProjectId, currencyAmountFloat, currencySelection, balanceExceeded]);
 
   function handleProjectChange(projects: TSearchProjects.Project[]) {
     if (projects.length) {
@@ -98,7 +100,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
     try {
       await mutateAsync({
         projectId: selectedProjectId,
-        amount: parseFloat(currencyAmount),
+        amount: currencyAmountFloat,
         currencyId: currencySelection?.id ?? "",
       });
 
@@ -121,7 +123,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
           size={"s"}
           onClick={() => setCurrencyAmount(String(shortcutAmount))}
           className={cn("w-full", {
-            "border-spacePurple-500": shortcutAmount === parseFloat(currencyAmount),
+            "border-spacePurple-500": shortcutAmount === currencyAmountFloat,
           })}
         >
           {shortcut}%
@@ -161,9 +163,9 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
                     inputProps={{
                       description: (
                         <div className={"od-text-body-s flex items-center justify-between"}>
-                          {currentBudget?.usdConversionRate ? (
+                          {currencyAmountFloat && currentBudget?.usdConversionRate ? (
                             Money.format({
-                              amount: parseFloat(currencyAmount) * currentBudget.usdConversionRate,
+                              amount: currencyAmountFloat * currentBudget.usdConversionRate,
                               currency: Money.USD,
                               options: {
                                 prefixAmountWithTilde: true,
@@ -202,7 +204,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
               {/*    />*/}
               {/*    <Budget*/}
               {/*      label={"v2.pages.stacks.sponsorProject.budget.amountAllocated"}*/}
-              {/*      amount={currencyAmount ? parseFloat(currencyAmount) : 0}*/}
+              {/*      amount={currencyAmount ? currencyAmountFloat : 0}*/}
               {/*      currency={currencySelection}*/}
               {/*      prefix={currencyAmount ? "+" : ""}*/}
               {/*      color={balanceExceeded ? "orange" : currencyAmount ? "green" : undefined}*/}
