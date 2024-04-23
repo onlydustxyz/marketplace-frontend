@@ -42,6 +42,8 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
     },
   });
 
+  console.log({ sponsor });
+
   const currencies = useMemo(() => sponsor?.availableBudgets ?? [], [sponsor]);
   const orderedCurrencies = useCurrenciesOrder({ currencies });
 
@@ -162,15 +164,17 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
                     inputProps={{
                       description: (
                         <div className={"od-text-body-s flex items-center justify-between"}>
-                          {
+                          {currentBudget?.usdConversionRate ? (
                             Money.format({
-                              amount: currentBudget.usdEquivalent,
+                              amount: parseFloat(currencyAmount) * currentBudget.usdConversionRate,
                               currency: Money.USD,
                               options: {
                                 prefixAmountWithTilde: true,
                               },
                             }).html
-                          }
+                          ) : (
+                            <div />
+                          )}
                           <span>
                             <Translate token="v2.pages.stacks.sponsorProject.amount.balance" />:{" "}
                             {
