@@ -1,4 +1,3 @@
-import { isString } from "lodash";
 import { useMemo } from "react";
 
 import SponsorApi from "src/api/Sponsors";
@@ -17,7 +16,7 @@ export function SponsorButton({ project }: TSponsorButton.Props) {
   const [sponsor] = sponsors ?? [];
   const { id: sponsorId } = sponsor ?? {};
 
-  const sponsorIdIsString = isString(sponsorId);
+  const sponsorIdIsString = typeof sponsorId === "string";
 
   const { data } = SponsorApi.queries.useGetSponsorById({
     params: {

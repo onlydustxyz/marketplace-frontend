@@ -1,4 +1,3 @@
-import { isString } from "lodash";
 import { useParams } from "next/navigation";
 
 import { TUseSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history.types";
@@ -10,7 +9,7 @@ export function useSponsorHistory(props?: TUseSponsorHistory.Props) {
 
   const { sponsorId } = useParams();
 
-  const sponsorIdIsString = isString(sponsorId);
+  const sponsorIdIsString = typeof sponsorId === "string";
 
   return SponsorApi.queries.useGetSponsorTransactions({
     params: {
