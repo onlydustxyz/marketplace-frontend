@@ -41,7 +41,8 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
     },
   });
 
-  const currencies = useMemo(() => sponsor?.availableBudgets ?? [], [sponsor]);
+  // We only want to show currencies that have a budget
+  const currencies = useMemo(() => sponsor?.availableBudgets.filter(b => Boolean(b.amount)) ?? [], [sponsor]);
   const orderedCurrencies = useCurrenciesOrder({ currencies });
 
   const [selectedProjectId, setSelectedProjectId] = useState("");
