@@ -14,7 +14,6 @@ import { Tooltip } from "components/ds/tooltip/tooltip";
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { SearchProjects } from "components/features/search-projects/search-projects";
 import { TSearchProjects } from "components/features/search-projects/search-projects.types";
-import { Budget } from "components/features/stacks/sponsor-project-stack/components/budget/budget";
 import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -41,8 +40,6 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
       enabled: Boolean(sponsorId),
     },
   });
-
-  console.log({ sponsor });
 
   const currencies = useMemo(() => sponsor?.availableBudgets ?? [], [sponsor]);
   const orderedCurrencies = useCurrenciesOrder({ currencies });
@@ -192,32 +189,32 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
                 </div>
               </div>
 
-              <div className={"grid gap-3 py-6"}>
-                <Label>
-                  <Translate token="v2.pages.stacks.sponsorProject.budget.title" />
-                </Label>
-                <ul className={"grid gap-3"}>
-                  <Budget
-                    label={"v2.pages.stacks.sponsorProject.budget.currentBudget"}
-                    // TODO @hayden get selected project budget
-                    amount={123}
-                    currency={currencySelection}
-                  />
-                  <Budget
-                    label={"v2.pages.stacks.sponsorProject.budget.amountAllocated"}
-                    amount={currencyAmount ? parseFloat(currencyAmount) : 0}
-                    currency={currencySelection}
-                    prefix={currencyAmount ? "+" : ""}
-                    color={balanceExceeded ? "orange" : currencyAmount ? "green" : undefined}
-                  />
-                  <Budget
-                    label={"v2.pages.stacks.sponsorProject.budget.budgetAfterAllocation"}
-                    // TODO @hayden selected project budget + currencyAmount
-                    amount={123}
-                    currency={currencySelection}
-                  />
-                </ul>
-              </div>
+              {/*<div className={"grid gap-3 py-6"}>*/}
+              {/*  <Label>*/}
+              {/*    <Translate token="v2.pages.stacks.sponsorProject.budget.title" />*/}
+              {/*  </Label>*/}
+              {/*  <ul className={"grid gap-3"}>*/}
+              {/*    <Budget*/}
+              {/*      label={"v2.pages.stacks.sponsorProject.budget.currentBudget"}*/}
+              {/*      // TODO @hayden get selected project budget*/}
+              {/*      amount={123}*/}
+              {/*      currency={currencySelection}*/}
+              {/*    />*/}
+              {/*    <Budget*/}
+              {/*      label={"v2.pages.stacks.sponsorProject.budget.amountAllocated"}*/}
+              {/*      amount={currencyAmount ? parseFloat(currencyAmount) : 0}*/}
+              {/*      currency={currencySelection}*/}
+              {/*      prefix={currencyAmount ? "+" : ""}*/}
+              {/*      color={balanceExceeded ? "orange" : currencyAmount ? "green" : undefined}*/}
+              {/*    />*/}
+              {/*    <Budget*/}
+              {/*      label={"v2.pages.stacks.sponsorProject.budget.budgetAfterAllocation"}*/}
+              {/*      // TODO @hayden selected project budget + currencyAmount*/}
+              {/*      amount={123}*/}
+              {/*      currency={currencySelection}*/}
+              {/*    />*/}
+              {/*  </ul>*/}
+              {/*</div>*/}
             </>
           ) : null}
         </div>
