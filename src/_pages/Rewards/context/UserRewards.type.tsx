@@ -5,13 +5,13 @@ import { components } from "src/__generated/api";
 import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import { UseGetMeRewardCurrencies, UseMyRewardsInfiniteListResponse } from "src/api/me/queries";
 import { useQueryParamsSortingReturn } from "src/components/RewardTable/useQueryParamsSorting";
-import { Money, MyReward } from "src/types";
+import { DetailedTotalMoney, MyReward } from "src/types";
 
 import { FilterQueryParams } from "../Filter";
 
 export type Earning = {
-  rewardedAmount?: Money;
-  pendingAmount?: Money;
+  rewardedAmount?: DetailedTotalMoney;
+  pendingAmount?: DetailedTotalMoney;
   receivedRewards: {
     count?: number;
     total?: number;
