@@ -1,9 +1,11 @@
-import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
+import { components } from "src/__generated/api";
 import { Key } from "src/hooks/useIntl";
 
 import { TIcon } from "components/layout/icon/icon.types";
 
 export namespace TApplyCallout {
+  export type Channel = components["schemas"]["ContactInformation"]["channel"];
+
   export interface Props {
     icon: TIcon.Props;
     title: Key;
@@ -11,8 +13,7 @@ export namespace TApplyCallout {
     formDescription?: Key;
     buttonNotConnected: Key;
     buttonConnected: Key;
-    profile: UseGetMyProfileInfoResponse;
-    applyToProject: () => void;
+    onApply: () => void;
     alreadyApplied?: boolean;
   }
 }

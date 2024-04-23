@@ -9,8 +9,6 @@ import { Overview } from "app/h/[slug]/features/overview/overview";
 import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 import { mock } from "app/h/[slug]/mock";
 
-import MeApi from "src/api/me";
-
 import { ApplyCallout } from "components/features/apply-callout/apply-callout";
 import { Flex } from "components/layout/flex/flex";
 
@@ -20,7 +18,11 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
   const { slug = "" } = params;
   const data = mock;
 
-  const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
+  async function handleApply() {
+    "use server";
+
+    console.log("handleApply");
+  }
 
   if (data.slug !== params.slug) {
     redirect("/not-found");
@@ -36,22 +38,19 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
           <div className="flex w-full flex-col items-start justify-start gap-6 md:flex-row">
             <div className="w-full md:w-[400px]">
               <Flex direction="col" className="gap-6">
-                {myProfileInfo ? (
-                  <ApplyCallout
-                    icon={{ remixName: "ri-user-3-line" }}
-                    title="v2.pages.hackathons.details.application.title"
-                    formDescription="v2.pages.hackathons.details.application.description"
-                    buttonNotConnected="v2.pages.hackathons.details.application.button.connectToApply"
-                    buttonConnected={
-                      data.me.hasRegistered
-                        ? "v2.pages.hackathons.details.application.button.alreadyApplied"
-                        : "v2.pages.hackathons.details.application.button.apply"
-                    }
-                    profile={myProfileInfo}
-                    // applyToProject={applyToProject}
-                    alreadyApplied={data.me.hasRegistered}
-                  />
-                ) : null}
+                <ApplyCallout
+                  icon={{ remixName: "ri-user-3-line" }}
+                  title="v2.pages.hackathons.details.application.title"
+                  formDescription="v2.pages.hackathons.details.application.description"
+                  buttonNotConnected="v2.pages.hackathons.details.application.button.connectToApply"
+                  buttonConnected={
+                    data.me.hasRegistered
+                      ? "v2.pages.hackathons.details.application.button.alreadyApplied"
+                      : "v2.pages.hackathons.details.application.button.apply"
+                  }
+                  onApply={handleApply}
+                  alreadyApplied={data.me.hasRegistered}
+                />
 
                 <Overview
                   startDate={data.startDate}
