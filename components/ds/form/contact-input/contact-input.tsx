@@ -8,8 +8,9 @@ import { Translate } from "components/layout/translate/translate";
 import { Input } from "../input/input";
 import { TContactInput } from "./contact-input.types";
 
+// TODO: Translate and move the useIntl
 export function ContactInput({ isVisible, ...props }: TContactInput.Props) {
-  function handleDeleteClick() {
+  function handleClearClick() {
     // if (!props.disabled) {
     //   setValue(name, "", { shouldDirty: true });
     // }
@@ -26,7 +27,7 @@ export function ContactInput({ isVisible, ...props }: TContactInput.Props) {
               "text-greyscale-600": props.disabled,
               "cursor-pointer": !props.disabled,
             })}
-            onClick={handleDeleteClick}
+            onClick={handleClearClick}
           />
 
           {isVisible ? (

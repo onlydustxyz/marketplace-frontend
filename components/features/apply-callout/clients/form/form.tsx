@@ -18,7 +18,7 @@ import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { TApplyForm } from "./form.types";
-import { fromFragment, mapFormDataToSchema } from "./form.utils";
+import { formatToData, formatToSchema } from "./form.utils";
 
 // TODO: @NeoxAzrot Refacto ContactInformations
 export function ApplyForm({ formDescription, buttonConnected, onApply, profile, setShowForm }: TApplyForm.Props) {
@@ -27,7 +27,7 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const formMethods = useForm<TApplyForm.UserProfileInfo>({
-    defaultValues: fromFragment(profile),
+    defaultValues: formatToData(profile),
     mode: "onChange",
   });
 
@@ -50,7 +50,12 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
   const submitDisabled = !isDirty || !isValid || userProfilInformationIsPending;
 
   const onSubmit = (formData: TApplyForm.UserProfileInfo) => {
-    updateUserProfileInfo(mapFormDataToSchema(formData));
+    updateUserProfileInfo(
+      formatToSchema({
+        oldData: profile,
+        newData: formData,
+      })
+    );
   };
 
   useMutationAlert({
@@ -66,8 +71,8 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
   useEffect(() => {
     const values = getValues();
     // If the form state is modified without this component remounting, this state will be unsynced from the "profile" value so we need to reset the state
-    if (JSON.stringify(values) !== JSON.stringify(fromFragment(profile))) {
-      reset(fromFragment(profile));
+    if (JSON.stringify(values) !== JSON.stringify(formatToData(profile))) {
+      reset(formatToData(profile));
     }
   }, []);
 
@@ -80,10 +85,10 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
           ) : null}
 
           <ContactInformation
-            name="telegram"
+            name="telegram.contact"
             placeholder={T("profile.form.contactInfo.telegram")}
             icon={<Telegram size={16} className="fill-greyscale-400" />}
-            visibilityName="isTelegramPublic"
+            visibilityName="telegram.isPublic"
             options={{
               pattern: {
                 value: /^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w*)$/,
