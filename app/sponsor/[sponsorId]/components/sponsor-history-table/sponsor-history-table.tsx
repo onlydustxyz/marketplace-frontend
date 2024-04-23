@@ -31,7 +31,6 @@ import { FiltersProjects } from "components/features/filters/filters-projects/fi
 import { FiltersTransactions } from "components/features/filters/filters-transactions/filters-transactions";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
-import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 const initialFilters: Required<TSponsorHistoryTable.Filters> = {
@@ -95,42 +94,22 @@ export function SponsorHistoryTable() {
     () => [
       {
         id: "DEPOSIT",
-        label: (
-          <>
-            <Icon remixName={"ri-download-2-line"} className="mr-2" />
-            <Translate token={"v2.pages.sponsor.history.deposit"} />
-          </>
-        ),
+        label: T("v2.pages.sponsor.history.deposit"),
         value: "DEPOSIT",
       },
       {
         id: "ALLOCATION",
-        label: (
-          <>
-            <Icon remixName={"ri-arrow-right-double-line"} className="mr-2" />
-            <Translate token={"v2.pages.sponsor.history.allocated"} />
-          </>
-        ),
+        label: T("v2.pages.sponsor.history.allocated"),
         value: "ALLOCATION",
       },
       {
         id: "UNALLOCATION",
-        label: (
-          <>
-            <Icon remixName={"ri-arrow-left-double-line"} className="mr-2" />
-            <Translate token={"v2.pages.sponsor.history.unallocated"} />
-          </>
-        ),
+        label: T("v2.pages.sponsor.history.unallocated"),
         value: "UNALLOCATION",
       },
       {
         id: "WITHDRAWAL",
-        label: (
-          <>
-            <Icon remixName={"ri-upload-2-line"} className="mr-2" />
-            <Translate token={"v2.pages.sponsor.history.withdrawal"} />
-          </>
-        ),
+        label: T("v2.pages.sponsor.history.withdrawal"),
         value: "WITHDRAWAL",
       },
     ],
