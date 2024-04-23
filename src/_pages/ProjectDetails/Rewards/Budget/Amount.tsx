@@ -1,26 +1,16 @@
 import { Money } from "utils/Money/Money";
 
-import { Money as TMoney } from "src/types";
+import { DetailedTotalMoney } from "src/types";
 
 type Amount = {
-  budget?: TMoney;
+  budget?: DetailedTotalMoney;
 };
 
 export function Amount({ budget }: Amount) {
   if (!budget) return null;
 
-  if (!budget.usdEquivalent && !!budget.amount) {
-    return Money.format({
-      amount: budget.amount,
-      currency: budget.currency,
-      options: {
-        currencyClassName: "text-title-s",
-      },
-    }).html;
-  }
-
   return Money.format({
-    amount: budget.usdEquivalent,
+    amount: budget.totalUsdEquivalent,
     currency: Money.USD,
     options: {
       currencyClassName: "text-title-s",

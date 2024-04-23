@@ -3,7 +3,7 @@ import Folder from "src/icons/FolderLine";
 import HandCoinLine from "src/icons/HandCoinLine";
 import Loader3Line from "src/icons/Loader3Line";
 import StackLine from "src/icons/StackLine";
-import { Money } from "src/types";
+import { DetailedTotalMoney } from "src/types";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
@@ -27,7 +27,7 @@ const earnings = {
 
 const getContent = (
   type: CardTypes,
-  amount?: Money,
+  amount?: DetailedTotalMoney,
   receivedRewards?: { count?: number; total?: number },
   rewardingProjectsCount?: number
 ) => {
@@ -43,7 +43,7 @@ const getContent = (
 };
 
 type Props = {
-  amount?: Money;
+  amount?: DetailedTotalMoney;
   type?: CardTypes;
   receivedRewards?: { count?: number; total?: number };
   rewardingProjectsCount?: number;
@@ -75,7 +75,7 @@ export function EarningCard({
             "after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:h-full after:w-full",
             "after:od-bg-budget after:bg-[length:110%_110%] after:group-hover:animate-budgetcard"
           )}
-        ></div>
+        />
       )}
       <div className="flex flex-col gap-2">
         <div className="flex items-center text-sm uppercase text-white">
