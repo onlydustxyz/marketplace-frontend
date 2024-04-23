@@ -9,12 +9,14 @@ import adapters from "../adapters";
 import tags from "../tags";
 
 export const useGetHackathonBySlug = (slug: string) => {
-  const fetcher = useReactQueryAdapter(adapters.by_slug(slug));
+  const fetcher = adapters.by_slug();
+  fetcher.setPathParams({ slug });
+  useReactQueryAdapter(fetcher);
   const { isAuthenticated } = useAuth0();
 
   return useQuery<GetHackathonDetailsReponse>({
     queryKey: [tags.by_slug(slug)],
-    queryFn: () => fetcher.get(),
+    queryFn: () => fetcher.request(),
     enabled: isAuthenticated,
   });
 };

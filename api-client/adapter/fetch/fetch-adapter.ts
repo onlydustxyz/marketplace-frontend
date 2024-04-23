@@ -1,31 +1,42 @@
 import { AuthAdapter } from "api-client/adapter/auth/auth-adapter.types";
 import { apiClientConfig } from "api-client/config";
 import { apiVersions } from "api-client/config/api-versions";
+import { HTTP_METHOD } from "next/dist/server/web/http";
 
 import { FetchError } from "src/api/query.type";
 
 import {
-  FetchAdapaterParams,
+  Body,
   FetchParams,
   HttpStatusStrings,
   IFetchAdapater,
+  Params,
+  PathParams,
   impersonationHeaders,
 } from "./fetch-adapter.types";
 
 export class FetchAdapter implements IFetchAdapater {
-  private readonly version: apiVersions;
-  impersonationHeaders?: impersonationHeaders;
+  private version: apiVersions;
+  private impersonationHeaders?: impersonationHeaders;
   private authAdapter?: AuthAdapter;
-  private fetchFn: FetchParams;
-  constructor(params: FetchAdapaterParams) {
-    this.version = params.version || apiVersions.v1;
-    this.impersonationHeaders = params.impersonationHeaders;
-    this.authAdapter = params.authAdapter;
-    this.fetchFn = params.fetchFn;
+  private url: string = "";
+  private methods: HTTP_METHOD = "GET";
+  private body?: Body = undefined;
+  private params?: Params = undefined;
+
+  public tags: string[] = [];
+  public pathParams: PathParams = {};
+  constructor() {
+    this.version = apiVersions.v1;
   }
 
-  private getEndpointUrl(url: string, params: { [key: string]: string }) {
+  private getEndpointUrl(url: string, params?: { [key: string]: string }) {
     const searchParams = new URLSearchParams(params).toString();
+    const pathParams = url.split("/").filter(param => param.startsWith(":"));
+    pathParams.forEach(param => {
+      const key = param.replace(":", "");
+      url = url.replace(param, `${this.pathParams[key]}`);
+    });
 
     const path = apiClientConfig.basePaths[this.version](url);
 
@@ -81,42 +92,66 @@ export class FetchAdapter implements IFetchAdapater {
     throw this.createFetchError(res, this.mapHttpStatusToString);
   }
 
-  public setAuthAdapter(authAdapter: AuthAdapter) {
-    this.authAdapter = authAdapter;
-  }
-
-  public async fetch({ url, body, params = {}, method = "GET" }: FetchParams) {
-    const endpointUrl = this.getEndpointUrl(url, params);
+  private async fetch(params?: Partial<FetchParams>) {
+    const endpointUrl = this.getEndpointUrl(this.url, this.params);
     const headers = await this.getHeaders();
 
     return fetch(endpointUrl, {
-      method,
+      ...params,
+      method: params?.method || this.methods,
       headers,
-      body,
+      body: params?.body || this.body,
+      next: {
+        tags: this.tags,
+        ...params?.next,
+      },
     });
   }
 
-  public async get<T>(params?: Partial<FetchParams>): Promise<T> {
-    const res = await this.fetch({ method: "GET", ...this.fetchFn, ...(params || {}) });
-
-    return this.formatResponse<T>(res, params?.onSuccess || this.fetchFn.onSuccess);
+  public setAuthAdapter(authAdapter: AuthAdapter) {
+    this.authAdapter = authAdapter;
+    return this;
   }
 
-  public async post<T>(params?: Partial<FetchParams>): Promise<T> {
-    const res = await this.fetch({ method: "POST", ...this.fetchFn, ...(params || {}) });
-
-    return this.formatResponse<T>(res, params?.onSuccess || this.fetchFn.onSuccess);
+  public setVersion(version: apiVersions) {
+    this.version = version;
+    return this;
   }
 
-  public async put<T>(params?: Partial<FetchParams>): Promise<T> {
-    const res = await this.fetch({ method: "PUT", ...this.fetchFn, ...(params || {}) });
-
-    return this.formatResponse<T>(res, params?.onSuccess || this.fetchFn.onSuccess);
+  public setUrl(url: string) {
+    this.url = url;
+    return this;
+  }
+  public setMethod(methods: HTTP_METHOD) {
+    this.methods = methods;
+    return this;
+  }
+  public setBody(body: Body) {
+    this.body = body;
+    return this;
+  }
+  public setParams(params: Params) {
+    this.params = params;
+    return this;
   }
 
-  public async delete<T>(params?: Partial<FetchParams>): Promise<T> {
-    const res = await this.fetch({ method: "DELETE", ...this.fetchFn, ...(params || {}) });
+  public setPathParams(pathParams: PathParams) {
+    this.pathParams = pathParams;
+    return this;
+  }
 
-    return this.formatResponse<T>(res, params?.onSuccess || this.fetchFn.onSuccess);
+  public setTags(tags: string[]) {
+    this.tags = tags;
+    return this;
+  }
+  public setImpersonationHeaders(impersonationHeaders: impersonationHeaders) {
+    this.impersonationHeaders = impersonationHeaders;
+    return this;
+  }
+
+  public async request<T>(params?: Partial<FetchParams>): Promise<T> {
+    const res = await this.fetch(params);
+
+    return this.formatResponse<T>(res);
   }
 }

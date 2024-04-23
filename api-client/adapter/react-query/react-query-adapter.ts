@@ -10,7 +10,7 @@ export const useReactQueryAdapter = (fetcher: FetchAdapter): FetchAdapter => {
   const { getImpersonateHeaders } = useImpersonation();
 
   fetcher.setAuthAdapter({ isAuthenticated, getAccessToken: getAccessTokenSilently, logout });
-  fetcher.impersonationHeaders = getImpersonateHeaders();
+  fetcher.setImpersonationHeaders(getImpersonateHeaders());
 
   return fetcher;
 };

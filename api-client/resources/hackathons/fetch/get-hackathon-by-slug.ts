@@ -3,5 +3,5 @@ import { GetHackathonDetailsReponse } from "api-client/resources/hackathons/type
 import adapters from "../adapters";
 
 export async function getHackathonBySlug(slug: string): Promise<GetHackathonDetailsReponse> {
-  return adapters.by_slug(slug).get<GetHackathonDetailsReponse>();
+  return adapters.by_slug().setPathParams({ slug }).request<GetHackathonDetailsReponse>();
 }

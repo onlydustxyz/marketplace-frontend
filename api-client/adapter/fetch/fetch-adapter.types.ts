@@ -5,13 +5,24 @@ import { HTTP_METHOD } from "next/dist/server/web/http";
 export type impersonationHeaders = Record<string, string> | undefined;
 
 export interface IFetchAdapater {
-  fetch(params: FetchParams): Promise<Response>;
-  get<T>(params?: Partial<FetchParams>): Promise<T>;
-  post<T>(params?: Partial<FetchParams>): Promise<T>;
-  put<T>(params?: Partial<FetchParams>): Promise<T>;
-  delete<T>(params?: Partial<FetchParams>): Promise<T>;
+  request<T>(params?: Partial<FetchParams>): Promise<T>;
   setAuthAdapter(authAdapter: AuthAdapter): void;
+  setVersion(version: apiVersions): void;
+  setImpersonationHeaders(header: impersonationHeaders): void;
+  setTags(tags: string[]): void;
+  setUrl(url: string): void;
+  setMethod(method: HTTP_METHOD): void;
+  setBody(body: Body): void;
+  setParams(params: Params): void;
+  setPathParams(params: PathParams): void;
+  tags: string[];
+  pathParams: PathParams;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Body = any;
+export type Params = { [key: string]: string };
+export type PathParams = { [key: string]: string | number };
 
 export interface FetchParams extends Partial<RequestInit> {
   url: string;
