@@ -1,17 +1,19 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useMediaQuery } from "usehooks-ts";
+import { z } from "zod";
 
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import Telegram from "src/assets/icons/Telegram";
-import ContactInformation from "src/components/ContactInformations/ContactInformation";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
+import { ContactInput } from "components/ds/form/contact-input/contact-input";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -20,7 +22,16 @@ import { Typography } from "components/layout/typography/typography";
 import { TApplyForm } from "./form.types";
 import { formatToData, formatToSchema } from "./form.utils";
 
-// TODO: @NeoxAzrot Refacto ContactInformations
+const formSchema = z.object({
+  telegram: z.object({
+    contact: z
+      .string()
+      .regex(/^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w*)$/, "v2.commons.form.errors.invalidUsername")
+      .optional(),
+    isPublic: z.boolean(),
+  }),
+});
+
 export function ApplyForm({ formDescription, buttonConnected, onApply, profile, setShowForm }: TApplyForm.Props) {
   const { T } = useIntl();
 
@@ -28,10 +39,11 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
 
   const formMethods = useForm<TApplyForm.UserProfileInfo>({
     defaultValues: formatToData(profile),
-    mode: "onChange",
+    mode: "all",
+    resolver: zodResolver(formSchema),
   });
 
-  const { handleSubmit, formState, getValues, reset } = formMethods;
+  const { handleSubmit, formState, reset, control } = formMethods;
   const { isDirty, isValid } = formState;
 
   const {
@@ -69,12 +81,8 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
   });
 
   useEffect(() => {
-    const values = getValues();
-    // If the form state is modified without this component remounting, this state will be unsynced from the "profile" value so we need to reset the state
-    if (JSON.stringify(values) !== JSON.stringify(formatToData(profile))) {
-      reset(formatToData(profile));
-    }
-  }, []);
+    reset(formatToData(profile));
+  }, [profile]);
 
   return (
     <FormProvider {...formMethods}>
@@ -84,17 +92,18 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
             <Typography variant="body-s-bold" className="text-orange-500" translate={{ token: formDescription }} />
           ) : null}
 
-          <ContactInformation
+          <Controller
             name="telegram.contact"
-            placeholder={T("profile.form.contactInfo.telegram")}
-            icon={<Telegram size={16} className="fill-greyscale-400" />}
-            visibilityName="telegram.isPublic"
-            options={{
-              pattern: {
-                value: /^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w*)$/,
-                message: T("profile.form.contactInfo.invalidUsername"),
-              },
-            }}
+            control={control}
+            render={({ field, fieldState }) => (
+              <ContactInput
+                {...field}
+                {...fieldState}
+                placeholder={T("v2.commons.form.contact.telegram.placeholder")}
+                startContent={<Telegram size={16} />}
+                visibilityName="telegram.isPublic"
+              />
+            )}
           />
 
           <Button disabled={submitDisabled} size={isMd ? "m" : "s"} width="full" backgroundColor="blue" type="submit">
