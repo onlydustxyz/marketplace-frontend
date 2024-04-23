@@ -1,11 +1,15 @@
+"use client";
+
 import { useContext } from "react";
 
 import { useIntl } from "src/hooks/useIntl";
 
+import { withClientOnly } from "components/layout/client-only/client-only";
+
 import { SearchBar } from "../../components/search-bar/search-bar";
 import { ProjectsContext } from "../../context/project.context";
 
-export function ProjectSearch() {
+function ProjectSearch() {
   const { filters } = useContext(ProjectsContext);
   const { T } = useIntl();
 
@@ -21,3 +25,5 @@ export function ProjectSearch() {
     />
   );
 }
+
+export default withClientOnly(ProjectSearch);

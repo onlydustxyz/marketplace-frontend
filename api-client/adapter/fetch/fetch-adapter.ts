@@ -1,6 +1,7 @@
 import { AuthAdapter } from "api-client/adapter/auth/auth-adapter.types";
 import { apiClientConfig } from "api-client/config";
 import { apiVersions } from "api-client/config/api-versions";
+import { isArray } from "lodash";
 
 import { FetchError } from "src/api/query.type";
 
@@ -9,6 +10,7 @@ import {
   FetchParams,
   HttpStatusStrings,
   IFetchAdapater,
+  defaultParams,
   impersonationHeaders,
 } from "./fetch-adapter.types";
 
@@ -24,9 +26,7 @@ export class FetchAdapter implements IFetchAdapater {
     this.fetchFn = params.fetchFn;
   }
 
-  private getEndpointUrl(url: string, params: { [key: string]: string }) {
-    const searchParams = new URLSearchParams(params).toString();
-
+  private getEndpointUrl(url: string, searchParams?: string) {
     const path = apiClientConfig.basePaths[this.version](url);
 
     return `${path}${searchParams ? `?${searchParams}` : ""}`;
@@ -82,8 +82,31 @@ export class FetchAdapter implements IFetchAdapater {
     this.authAdapter = authAdapter;
   }
 
+  public objectToURLSearchParams(params?: defaultParams) {
+    if (!params) return undefined;
+
+    return Object.entries(params).reduce((acc, [key, value]) => {
+      if (value !== undefined) {
+        if (isArray(value)) {
+          acc.append(key, value.join(","));
+        }
+        if (typeof value === "string" || typeof value === "number") {
+          acc.append(key, value.toString());
+        }
+        if (typeof value === "boolean") {
+          if (value) {
+            acc.append(key, "true");
+          } else {
+            acc.append(key, "false");
+          }
+        }
+      }
+      return acc;
+    }, new URLSearchParams());
+  }
+
   public async fetch({ url, body, params = {}, method = "GET" }: FetchParams) {
-    const endpointUrl = this.getEndpointUrl(url, params);
+    const endpointUrl = this.getEndpointUrl(url, this.objectToURLSearchParams(params)?.toString());
     const headers = await this.getHeaders();
     return fetch(endpointUrl, {
       method,

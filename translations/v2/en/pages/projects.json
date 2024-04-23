@@ -49,6 +49,7 @@
     }
   },
   "highlights": {
-    "thumbnail": "Project logo"
+    "thumbnail": "__name__ logo",
+    "thumbnailMobile": "__name__ mobile logo"
   }
 }

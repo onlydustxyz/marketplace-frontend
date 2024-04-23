@@ -13,11 +13,14 @@ export interface IFetchAdapater {
   setAuthAdapter(authAdapter: AuthAdapter): void;
 }
 
+export type defaultParamsType = string | number | boolean | undefined | string[] | number[];
+export type defaultParams = Record<string, defaultParamsType>;
+
 export interface FetchParams extends Partial<RequestInit> {
   url: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body?: any;
-  params?: { [key: string]: string };
+  params?: defaultParams;
   method?: HTTP_METHOD;
 }
 export interface FetchAdapaterParams {

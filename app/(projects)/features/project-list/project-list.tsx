@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext, useEffect } from "react";
 
 import { ProjectTypes } from "src/api/Project/types";

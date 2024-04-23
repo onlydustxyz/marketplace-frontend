@@ -1,12 +1,12 @@
 "use client";
 
+import { projectsApiClient } from "api-client/resources/projects";
 import { createContext, useEffect, useMemo, useState } from "react";
 import { useLocalStorage } from "react-use";
 import { useDebounce } from "usehooks-ts";
 
-import ProjectApi from "src/api/Project";
-import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
-
+// import ProjectApi from "src/api/Project";
+// import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 import { TProjectContext } from "./project.context.types";
 
 export const ProjectsContext = createContext<TProjectContext.Return>({
@@ -36,24 +36,40 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     technologies: [],
     ecosystems: [],
   });
-  const queryParams = useMemo(() => {
-    const params: useInfiniteBaseQueryProps["queryParams"] = [
-      filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
-      filters.ecosystemId.length > 0 ? ["ecosystemId", filters.ecosystemId.map(({ id }) => id).join(",")] : null,
-      filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
-      filters.search ? ["search", filters.search] : null,
-      filters.sorting ? ["sort", filters.sorting] : null,
-      filters.mine ? ["mine", filters.mine] : null,
-    ].filter((param): param is string[] => Boolean(param));
+  // const queryParams = useMemo(() => {
+  //   const params: useInfiniteBaseQueryProps["queryParams"] = [
+  //     filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
+  //     filters.ecosystemId.length > 0 ? ["ecosystemId", filters.ecosystemId.map(({ id }) => id).join(",")] : null,
+  //     filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
+  //     filters.search ? ["search", filters.search] : null,
+  //     filters.sorting ? ["sort", filters.sorting] : null,
+  //     filters.mine ? ["mine", filters.mine] : null,
+  //   ].filter((param): param is string[] => Boolean(param));
+  //
+  //   return params;
+  // }, [filters]);
 
-    return params;
+  const params = useMemo(() => {
+    return {
+      sort: filters.sorting,
+      ...(filters.search && { search: filters.search }),
+      ...(filters.technologies.length && { technologies: filters.technologies }),
+      ...(filters.ecosystemId.length && { ecosystemId: filters.ecosystemId as unknown as string[] }),
+      mine: filters.mine,
+    };
   }, [filters]);
 
-  const debouncedQueryParams = useDebounce(queryParams, 300);
+  const debouncedParams = useDebounce(params, 300);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = ProjectApi.queries.useInfiniteList({
-    queryParams: debouncedQueryParams,
-  });
+  // const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = ProjectApi.queries.useInfiniteList({
+  //   queryParams: debouncedQueryParams,
+  // });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, refetch } =
+    projectsApiClient.queries.useGetProjectsList(debouncedParams);
+
+  useEffect(() => {
+    refetch();
+  }, [debouncedParams]);
 
   const isCleared = useMemo(() => JSON.stringify(filters) == JSON.stringify(TProjectContext.DEFAULT_FILTER), [filters]);
   const count = useMemo(() => data?.pages[0]?.totalItemNumber || 0, [data]);

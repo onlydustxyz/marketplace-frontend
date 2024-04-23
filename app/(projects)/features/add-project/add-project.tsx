@@ -8,6 +8,7 @@ import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { Popover } from "components/ds/modals/popover/popover";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -16,7 +17,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { AddProjectModal } from "./modal/add-project-modal";
 
-export function AddProject() {
+function AddProject() {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   const canResume = useMemo(() => !!localStorage.getItem(STORAGE_KEY_CREATE_PROJECT_STEP), []);
   const router = useRouter();
@@ -50,3 +51,5 @@ export function AddProject() {
     </Card>
   );
 }
+
+export default withClientOnly(AddProject);

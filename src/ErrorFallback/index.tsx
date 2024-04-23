@@ -1,6 +1,8 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
-import { FallbackProps, useErrorBoundary } from "react-error-boundary";
+import { FallbackProps } from "react-error-boundary";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -12,7 +14,7 @@ type Props = {
 
 export default function ErrorFallback(props?: Props) {
   const { isFixed = false } = props ?? {};
-  const { resetBoundary } = useErrorBoundary();
+  // const { resetBoundary } = useErrorBoundary();
   const router = useRouter();
 
   if (isFixed) {
@@ -20,7 +22,7 @@ export default function ErrorFallback(props?: Props) {
       <View
         isFixed={isFixed}
         onBackClicked={() => {
-          resetBoundary();
+          // resetBoundary();
           router.push(NEXT_ROUTER.projects.all);
         }}
         onRefreshClicked={router.refresh}
@@ -32,7 +34,7 @@ export default function ErrorFallback(props?: Props) {
     <View
       isFixed={isFixed}
       onBackClicked={() => {
-        resetBoundary();
+        // resetBoundary();
         router.push(NEXT_ROUTER.projects.all);
       }}
       onRefreshClicked={router.refresh}
