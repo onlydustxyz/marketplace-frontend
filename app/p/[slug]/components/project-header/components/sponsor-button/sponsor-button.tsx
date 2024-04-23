@@ -27,7 +27,7 @@ export function SponsorButton({ project }: TSponsorButton.Props) {
     },
   });
 
-  const hasSponsorBudget = useMemo(() => (data?.availableBudgets.length ?? 0) > 0, [data]);
+  const hasSponsorBudget = useMemo(() => !!data?.availableBudgets.length, [data]);
 
   return (
     <SponsorSidePanels
