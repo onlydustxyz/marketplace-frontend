@@ -97,17 +97,13 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    try {
-      await mutateAsync({
-        projectId: selectedProjectId,
-        amount: currencyAmountFloat,
-        currencyId: currencySelection?.id ?? "",
-      });
+    await mutateAsync({
+      projectId: selectedProjectId,
+      amount: currencyAmountFloat,
+      currencyId: currencySelection?.id ?? "",
+    });
 
-      closeStack();
-    } catch (error) {
-      console.error(error);
-    }
+    closeStack();
   }
 
   function renderShortcuts() {
