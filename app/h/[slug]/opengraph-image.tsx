@@ -1,4 +1,4 @@
-import { mock } from "app/h/[slug]/mock";
+import { hackathonsApiClient } from "api-client/resources/hackathons";
 
 import { hackathonShortenDate } from "components/features/hackathons/display-date/display-date.utils";
 import { Generator } from "components/features/seo/image-metadata/commons/generator/generator";
@@ -7,15 +7,13 @@ import { HackathonImageMetadata } from "components/features/seo/image-metadata/h
 
 export default async function Image(props: { params: { slug: string } }) {
   try {
-    const hackathon = mock;
-    if (mock.slug !== props.params.slug) throw new Error("Not found");
-
+    const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug);
     return Generator({
       children: (
         <HackathonImageMetadata
           name={hackathon?.title}
           location="Worldwide"
-          dates={hackathonShortenDate({ startDate: mock.startDate, endDate: mock.endDate })}
+          dates={hackathonShortenDate({ startDate: hackathon.startDate, endDate: hackathon.endDate })}
         />
       ),
     });

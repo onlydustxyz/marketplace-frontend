@@ -1,4 +1,5 @@
-import { redirect } from "next/navigation";
+import { hackathonsApiClient } from "api-client/resources/hackathons";
+import { notFound } from "next/navigation";
 
 import { ScrollableView } from "app/h/[slug]/clients/scrollable-view/scrollable-view";
 import { Navigation } from "app/h/[slug]/components/navigation/navigation";
@@ -7,16 +8,22 @@ import { Intro } from "app/h/[slug]/features/intro/intro";
 import { MainDescription } from "app/h/[slug]/features/main-description/main-description";
 import { Overview } from "app/h/[slug]/features/overview/overview";
 import { Tracks } from "app/h/[slug]/features/tracks/tracks";
-import { mock } from "app/h/[slug]/mock";
 
 import { ApplyCallout } from "components/features/apply-callout/apply-callout";
 import { Flex } from "components/layout/flex/flex";
 
 import { Header } from "./components/header/header";
 
-export default function HackathonPage({ params }: { params: { slug: string } }) {
-  const { slug = "" } = params;
-  const data = mock;
+async function getHackathon(slug: string) {
+  try {
+    return await hackathonsApiClient.fetch.getHackathonBySlug(slug);
+  } catch {
+    notFound();
+  }
+}
+
+export default async function HackathonPage({ params }: { params: { slug: string } }) {
+  const data = await getHackathon(params.slug);
 
   async function handleApply() {
     "use server";
@@ -24,14 +31,10 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
     console.log("handleApply");
   }
 
-  if (data.slug !== params.slug) {
-    redirect("/not-found");
-  }
-
   return (
     <ScrollableView>
       <Header endDate={data.endDate} startDate={data.startDate} title={data.title} />
-      <Navigation slug={slug} hasTracks={!!data.tracks.length} />
+      <Navigation slug={data.slug} hasTracks={!!data.tracks.length} />
       <Wrapper className="max-md:p-2">
         <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14" id={"overview"}>
           <Intro title={data.title} subtitle={data.subtitle} />
@@ -65,7 +68,7 @@ export default function HackathonPage({ params }: { params: { slug: string } }) 
             <div className="flex h-auto w-full flex-1 flex-col items-start justify-start gap-6">
               <MainDescription description={data.description} />
               <div className="w-full" id={"tracks"}>
-                <Tracks data={mock.tracks} />
+                <Tracks data={data.tracks} />
               </div>
             </div>
           </div>
