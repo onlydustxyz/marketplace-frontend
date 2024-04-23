@@ -67,11 +67,14 @@ export class FetchAdapter implements IFetchAdapater {
     return error;
   }
 
-  private formatResponse<T>(res: Response): T {
+  private formatResponse<T>(res: Response, onSuccess?: () => void): T {
     if (res.ok) {
       if (res.headers.get("Content-Type") === "application/pdf") {
+        onSuccess?.();
         return res.blob() as T;
       }
+
+      onSuccess?.();
       return res.json() as T;
     }
 
@@ -85,6 +88,7 @@ export class FetchAdapter implements IFetchAdapater {
   public async fetch({ url, body, params = {}, method = "GET" }: FetchParams) {
     const endpointUrl = this.getEndpointUrl(url, params);
     const headers = await this.getHeaders();
+
     return fetch(endpointUrl, {
       method,
       headers,
@@ -95,24 +99,24 @@ export class FetchAdapter implements IFetchAdapater {
   public async get<T>(params?: Partial<FetchParams>): Promise<T> {
     const res = await this.fetch({ method: "GET", ...this.fetchFn, ...(params || {}) });
 
-    return this.formatResponse<T>(res);
+    return this.formatResponse<T>(res, params?.onSuccess || this.fetchFn.onSuccess);
   }
 
   public async post<T>(params?: Partial<FetchParams>): Promise<T> {
     const res = await this.fetch({ method: "POST", ...this.fetchFn, ...(params || {}) });
 
-    return this.formatResponse<T>(res);
+    return this.formatResponse<T>(res, params?.onSuccess || this.fetchFn.onSuccess);
   }
 
   public async put<T>(params?: Partial<FetchParams>): Promise<T> {
     const res = await this.fetch({ method: "PUT", ...this.fetchFn, ...(params || {}) });
 
-    return this.formatResponse<T>(res);
+    return this.formatResponse<T>(res, params?.onSuccess || this.fetchFn.onSuccess);
   }
 
   public async delete<T>(params?: Partial<FetchParams>): Promise<T> {
     const res = await this.fetch({ method: "DELETE", ...this.fetchFn, ...(params || {}) });
 
-    return this.formatResponse<T>(res);
+    return this.formatResponse<T>(res, params?.onSuccess || this.fetchFn.onSuccess);
   }
 }

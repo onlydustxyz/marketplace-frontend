@@ -12,6 +12,6 @@ export namespace TApplyForm {
     buttonConnected: Key;
     onApply: () => void;
     profile: UseGetMyProfileInfoResponse;
-    setShow: (show: boolean) => void;
+    setShowForm: (showForm: boolean) => void;
   }
 }

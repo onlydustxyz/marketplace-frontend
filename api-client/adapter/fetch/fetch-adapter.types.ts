@@ -19,6 +19,7 @@ export interface FetchParams extends Partial<RequestInit> {
   body?: any;
   params?: { [key: string]: string };
   method?: HTTP_METHOD;
+  onSuccess?: () => void;
 }
 export interface FetchAdapaterParams {
   fetchFn: FetchParams;

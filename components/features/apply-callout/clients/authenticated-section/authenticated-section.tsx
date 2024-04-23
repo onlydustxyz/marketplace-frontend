@@ -24,11 +24,11 @@ export function ApplyAuthenticatedSection({
 
   const contactInfoProvided = isContactInfoProvided({ profile, channels: ["TELEGRAM"] });
 
-  const [showContactInfos, setShowContactInfos] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   function handleApplyClick() {
     if (!contactInfoProvided) {
-      setShowContactInfos(true);
+      setShowForm(true);
     } else {
       onApply();
     }
@@ -36,13 +36,13 @@ export function ApplyAuthenticatedSection({
 
   return (
     <>
-      {showContactInfos ? (
+      {showForm ? (
         <ApplyForm
           formDescription={formDescription}
           buttonConnected={buttonConnected}
           onApply={handleApplyClick}
           profile={profile}
-          setShow={setShowContactInfos}
+          setShowForm={setShowForm}
         />
       ) : (
         <Button

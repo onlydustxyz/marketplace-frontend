@@ -20,7 +20,8 @@ import { Typography } from "components/layout/typography/typography";
 import { TApplyForm } from "./form.types";
 import { fromFragment, mapFormDataToSchema } from "./form.utils";
 
-export function ApplyForm({ formDescription, buttonConnected, onApply, profile, setShow }: TApplyForm.Props) {
+// TODO: @NeoxAzrot Refacto ContactInformations
+export function ApplyForm({ formDescription, buttonConnected, onApply, profile, setShowForm }: TApplyForm.Props) {
   const { T } = useIntl();
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
@@ -41,7 +42,7 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
     options: {
       onSuccess: () => {
         onApply();
-        setShow(false);
+        setShowForm(false);
       },
     },
   });

@@ -25,8 +25,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TApplyCallout } from "./apply-callout.types";
 
-// TODO: Refacto isContactInfoProvided
-// TODO: Refacto ContactInformations
+// TODO: @NeoxAzrot change with the new one and delete this one
 export function ApplyCallout({ profile, applyToProject, alreadyApplied }: TApplyCallout.Props) {
   const { T } = useIntl();
   const { loginWithRedirect, isAuthenticated } = useAuth0();

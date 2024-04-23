@@ -34,7 +34,6 @@ import { ProjectDetails } from "./features/project-details/project-details";
 import { Repositories } from "./features/repositories/repositories";
 
 // TODO: Refacto Skeleton with new one
-// TODO: Update ApplyCallout with the new one
 function ProjectPage() {
   const { T } = useIntl();
   const { capture } = usePosthog();

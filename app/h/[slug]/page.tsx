@@ -9,9 +9,9 @@ import { MainDescription } from "app/h/[slug]/features/main-description/main-des
 import { Overview } from "app/h/[slug]/features/overview/overview";
 import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 
-import { ApplyCallout } from "components/features/apply-callout/apply-callout";
 import { Flex } from "components/layout/flex/flex";
 
+import { RegistrationWrapper } from "./clients/registration-wrapper/registration-wrapper";
 import { Header } from "./components/header/header";
 
 async function getHackathon(slug: string) {
@@ -25,12 +25,6 @@ async function getHackathon(slug: string) {
 export default async function HackathonPage({ params }: { params: { slug: string } }) {
   const data = await getHackathon(params.slug);
 
-  async function handleApply() {
-    "use server";
-
-    console.log("handleApply");
-  }
-
   return (
     <ScrollableView>
       <Header endDate={data.endDate} startDate={data.startDate} title={data.title} />
@@ -41,19 +35,7 @@ export default async function HackathonPage({ params }: { params: { slug: string
           <div className="flex w-full flex-col items-start justify-start gap-6 md:flex-row">
             <div className="w-full md:w-[400px]">
               <Flex direction="col" className="gap-6">
-                <ApplyCallout
-                  icon={{ remixName: "ri-user-3-line" }}
-                  title="v2.pages.hackathons.details.application.title"
-                  formDescription="v2.pages.hackathons.details.application.description"
-                  buttonNotConnected="v2.pages.hackathons.details.application.button.connectToApply"
-                  buttonConnected={
-                    data.me.hasRegistered
-                      ? "v2.pages.hackathons.details.application.button.alreadyApplied"
-                      : "v2.pages.hackathons.details.application.button.apply"
-                  }
-                  onApply={handleApply}
-                  alreadyApplied={data.me.hasRegistered}
-                />
+                <RegistrationWrapper hackathonId={data.id} hackathonSlug={data.slug} />
 
                 <Overview
                   startDate={data.startDate}

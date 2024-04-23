@@ -7,7 +7,6 @@ import { Typography } from "components/layout/typography/typography";
 import { TApplyCallout } from "./apply-callout.types";
 import { ApplyGlobalSection } from "./clients/global-section/global-section";
 
-// TODO: Refacto ContactInformations
 export function ApplyCallout({ icon, title, description, ...props }: TApplyCallout.Props) {
   return (
     <Card background="base" hasPadding={false}>
