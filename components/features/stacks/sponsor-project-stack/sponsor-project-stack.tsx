@@ -1,37 +1,131 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { Money } from "utils/Money/Money";
 
-import { ProjectPageItemResponse } from "src/types";
+import SponsorApi from "src/api/Sponsors";
+import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
+import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
+import { useIntl } from "src/hooks/useIntl";
+import { useCloseStack } from "src/libs/react-stack";
+import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
+import { Tooltip } from "components/ds/tooltip/tooltip";
+import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { SearchProjects } from "components/features/search-projects/search-projects";
-import { Budget } from "components/features/stacks/sponsor-project-stack/components/budget/budget";
+import { TSearchProjects } from "components/features/search-projects/search-projects.types";
 import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 import { Label } from "./components/label/label";
 
-export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
-  const [selectedProjectId, setSelectedProjectId] = useState<ProjectPageItemResponse["id"] | undefined>(
-    projectId ? projectId : undefined
+const shortcuts = [25, 50, 75, 100] as const;
+
+export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
+  const { T } = useIntl();
+  const closeStack = useCloseStack();
+
+  const { user } = useCurrentUser();
+
+  const sponsorId = user?.sponsors?.[0].id ?? "";
+
+  const { data: sponsor, isLoading } = SponsorApi.queries.useGetSponsorById({
+    params: {
+      sponsorId,
+    },
+    options: {
+      enabled: Boolean(sponsorId),
+    },
+  });
+
+  const currencies = useMemo(() => sponsor?.availableBudgets ?? [], [sponsor]);
+  const orderedCurrencies = useCurrenciesOrder({ currencies });
+
+  const [selectedProjectId, setSelectedProjectId] = useState("");
+  const [currencyAmount, setCurrencyAmount] = useState("");
+  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(orderedCurrencies[0].currency);
+
+  const currencyAmountFloat = parseFloat(currencyAmount);
+
+  const currentBudget = useMemo(
+    () => orderedCurrencies.find(c => c.currency.id === currencySelection?.id),
+    [orderedCurrencies, currencySelection]
   );
 
-  console.log({ selectedProjectId });
+  const { mutateAsync, isPending, ...restAllocation } = SponsorApi.mutations.useAllocateBudget({
+    params: {
+      sponsorId,
+    },
+  });
 
-  function handleProjectChange(projects: ProjectPageItemResponse[]) {
-    if (projects[0]?.id) {
+  useMutationAlert({
+    mutation: restAllocation,
+    success: {
+      message: T("v2.pages.sponsor.sponsorProject.success"),
+    },
+    error: {
+      message: T("v2.pages.sponsor.sponsorProject.error"),
+    },
+  });
+
+  useEffect(() => {
+    // Need to set initial value inside an effect because the value may come from a deferred source (ex: a request)
+    if (project) {
+      setSelectedProjectId(project.id);
+    }
+  }, [project]);
+
+  const balanceExceeded = useMemo(() => {
+    return currencyAmountFloat > (currentBudget?.amount ?? 0);
+  }, [currencyAmountFloat, currentBudget]);
+
+  const canAllocate = useMemo(() => {
+    return Boolean(selectedProjectId && currencyAmountFloat && currencySelection && !balanceExceeded);
+  }, [selectedProjectId, currencyAmountFloat, currencySelection, balanceExceeded]);
+
+  function handleProjectChange(projects: TSearchProjects.Project[]) {
+    if (projects.length) {
       setSelectedProjectId(projects[0].id);
+    } else {
+      setSelectedProjectId("");
     }
   }
 
-  // TODO @hayden get available balance & budget
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // TODO @hayden form validation
+    await mutateAsync({
+      projectId: selectedProjectId,
+      amount: currencyAmountFloat,
+      currencyId: currencySelection?.id ?? "",
+    });
 
-    alert("Submit");
+    closeStack();
+  }
+
+  function renderShortcuts() {
+    if (!currentBudget) return null;
+
+    return shortcuts.map(shortcut => {
+      const shortcutAmount = currentBudget.amount * (shortcut / 100);
+
+      return (
+        <Button
+          key={shortcut}
+          variant={"secondary"}
+          size={"s"}
+          onClick={() => setCurrencyAmount(String(shortcutAmount))}
+          className={cn("w-full", {
+            "border-spacePurple-500": shortcutAmount === currencyAmountFloat,
+          })}
+        >
+          {shortcut}%
+        </Button>
+      );
+    });
   }
 
   return (
@@ -46,73 +140,95 @@ export function SponsorProjectStack({ projectId }: TSponsorProjectStack.Props) {
             <Label htmlFor={"sponsor-project-project"}>
               <Translate token="v2.pages.stacks.sponsorProject.project.title" />
             </Label>
-            <SearchProjects onSelectProjects={handleProjectChange} size={"lg"} />
+            <SearchProjects initialValue={project} onSelectProjects={handleProjectChange} size={"lg"} />
           </div>
 
-          <div className={"grid gap-3 py-6"}>
-            <Label htmlFor={"sponsor-project-amount"}>
-              <Translate token="v2.pages.stacks.sponsorProject.amount.title" />
-            </Label>
-            <div className={"grid gap-5"}>
-              {/*<AmountSelect*/}
-              {/*  inputProps={{*/}
-              {/*    description: (*/}
-              {/*      <div className={"od-text-body-s flex items-center justify-between"}>*/}
-              {/*        {*/}
-              {/*          Money.format({*/}
-              {/*            amount: 123123,*/}
-              {/*            currency: Money.USD,*/}
-              {/*            options: {*/}
-              {/*              prefixAmountWithTilde: true,*/}
-              {/*            },*/}
-              {/*          }).html*/}
-              {/*        }*/}
-              {/*        <span>*/}
-              {/*          <Translate token="v2.pages.stacks.sponsorProject.amount.balance" />:{" "}*/}
-              {/*          {*/}
-              {/*            Money.format({*/}
-              {/*              amount: 123123,*/}
-              {/*              currency: Money.USD,*/}
-              {/*            }).string*/}
-              {/*          }*/}
-              {/*        </span>*/}
-              {/*      </div>*/}
-              {/*    ),*/}
-              {/*  }}*/}
-              {/*/>*/}
-              <div className={"grid grid-cols-4 gap-3"}>
-                <Button variant={"secondary"} size={"s"} className={"w-full"}>
-                  25%
-                </Button>
-                <Button variant={"secondary"} size={"s"} className={"w-full"}>
-                  50%
-                </Button>
-                <Button variant={"secondary"} size={"s"} className={"w-full"}>
-                  75%
-                </Button>
-                <Button variant={"secondary"} size={"s"} className={"w-full"}>
-                  100%
-                </Button>
+          {currencySelection && currentBudget ? (
+            <>
+              <div className={"grid gap-3 py-6"}>
+                <Label htmlFor={"sponsor-project-amount"}>
+                  <Translate token="v2.pages.stacks.sponsorProject.amount.title" />
+                </Label>
+                <div className={"grid gap-5"}>
+                  <AmountSelect
+                    budgets={orderedCurrencies}
+                    amountValue={currencyAmount}
+                    selectionValue={currencySelection}
+                    onAmountChange={setCurrencyAmount}
+                    onSelectionChange={setCurrencySelection}
+                    inputProps={{
+                      description: (
+                        <div className={"od-text-body-s flex items-center justify-between"}>
+                          {currencyAmountFloat && currentBudget?.usdConversionRate ? (
+                            Money.format({
+                              amount: currencyAmountFloat * currentBudget.usdConversionRate,
+                              currency: Money.USD,
+                              options: {
+                                prefixAmountWithTilde: true,
+                              },
+                            }).html
+                          ) : (
+                            <div />
+                          )}
+                          <span>
+                            <Translate token="v2.pages.stacks.sponsorProject.amount.balance" />:{" "}
+                            {
+                              Money.format({
+                                amount: currentBudget.amount,
+                                currency: currentBudget.currency,
+                              }).string
+                            }
+                          </span>
+                        </div>
+                      ),
+                    }}
+                  />
+                  <div className={"grid grid-cols-4 gap-3"}>{renderShortcuts()}</div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className={"grid gap-3 py-6"}>
-            <Label>
-              <Translate token="v2.pages.stacks.sponsorProject.budget.title" />
-            </Label>
-            <ul className={"grid gap-3"}>
-              <Budget label={"v2.pages.stacks.sponsorProject.budget.currentBudget"} />
-              <Budget label={"v2.pages.stacks.sponsorProject.budget.amountAllocated"} isAllocation />
-              <Budget label={"v2.pages.stacks.sponsorProject.budget.budgetAfterAllocation"} />
-            </ul>
-          </div>
+
+              {/*<div className={"grid gap-3 py-6"}>*/}
+              {/*  <Label>*/}
+              {/*    <Translate token="v2.pages.stacks.sponsorProject.budget.title" />*/}
+              {/*  </Label>*/}
+              {/*  <ul className={"grid gap-3"}>*/}
+              {/*    <Budget*/}
+              {/*      label={"v2.pages.stacks.sponsorProject.budget.currentBudget"}*/}
+              {/*      // TODO @hayden get selected project budget*/}
+              {/*      amount={123}*/}
+              {/*      currency={currencySelection}*/}
+              {/*    />*/}
+              {/*    <Budget*/}
+              {/*      label={"v2.pages.stacks.sponsorProject.budget.amountAllocated"}*/}
+              {/*      amount={currencyAmount ? currencyAmountFloat : 0}*/}
+              {/*      currency={currencySelection}*/}
+              {/*      prefix={currencyAmount ? "+" : ""}*/}
+              {/*      color={balanceExceeded ? "orange" : currencyAmount ? "green" : undefined}*/}
+              {/*    />*/}
+              {/*    <Budget*/}
+              {/*      label={"v2.pages.stacks.sponsorProject.budget.budgetAfterAllocation"}*/}
+              {/*      // TODO @hayden selected project budget + currencyAmount*/}
+              {/*      amount={123}*/}
+              {/*      currency={currencySelection}*/}
+              {/*    />*/}
+              {/*  </ul>*/}
+              {/*</div>*/}
+            </>
+          ) : null}
         </div>
       </div>
 
       <footer className={"flex justify-end border-t border-card-border-light bg-card-background-light p-6"}>
-        <Button type={"submit"}>
-          <Translate token="v2.pages.stacks.sponsorProject.submit" />
-        </Button>
+        <Tooltip
+          content={<Translate token="v2.pages.sponsor.sponsorProject.submitTooltip" />}
+          isDisabled={canAllocate}
+          placement={"top-end"}
+        >
+          <Button type={"submit"} disabled={!canAllocate || isLoading || isPending}>
+            {isPending ? <Spinner className="mr-1" /> : null}
+            <Translate token="v2.pages.stacks.sponsorProject.submit" />
+          </Button>
+        </Tooltip>
       </footer>
     </form>
   );

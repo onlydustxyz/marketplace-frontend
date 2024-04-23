@@ -5,6 +5,6 @@ export namespace TSponsorSidePanels {
   export interface Props {
     panel: "fillout" | "project";
     buttonProps?: TButton.Props;
-    projectParams?: TSponsorProjectStack.Props;
+    project?: TSponsorProjectStack.Props["project"];
   }
 }

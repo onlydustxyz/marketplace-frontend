@@ -1,8 +1,6 @@
 import { FilloutStandardEmbed } from "@fillout/react";
 import { useState } from "react";
 
-import { TSponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels.types";
-
 import { useStackSponsorProject } from "src/App/Stacks/Stacks";
 import SidePanel from "src/components/SidePanel";
 
@@ -10,14 +8,16 @@ import { Button } from "components/ds/button/button";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
-export function SponsorSidePanels({ buttonProps, panel, projectParams }: TSponsorSidePanels.Props) {
+import { TSponsorSidePanels } from "./sponsor-side-panels.types";
+
+export function SponsorSidePanels({ buttonProps, panel, project }: TSponsorSidePanels.Props) {
   const { user } = useCurrentUser();
   const [isFilloutOpen, setIsFilloutOpen] = useState(false);
   const [openSponsorProjectStack] = useStackSponsorProject();
 
   function handleClick() {
     if (panel === "project") {
-      openSponsorProjectStack(projectParams);
+      openSponsorProjectStack({ project });
       return;
     }
 
@@ -36,6 +36,8 @@ export function SponsorSidePanels({ buttonProps, panel, projectParams }: TSponso
           filloutId="1cTn46XDDVus"
           inheritParameters
           parameters={{
+            project_id: project?.id ?? "",
+            project_name: project?.name ?? "",
             user_id: user?.id,
             user_github: user?.login,
             user_email: user?.email,
