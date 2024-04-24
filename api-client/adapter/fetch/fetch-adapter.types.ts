@@ -9,8 +9,7 @@ export interface IFetchAdapater<T> {
   setAuthAdapter(authAdapter: AuthAdapter): IFetchAdapater<T>;
   setVersion(version: apiVersions): IFetchAdapater<T>;
   setImpersonationHeaders(header: impersonationHeaders): IFetchAdapater<T>;
-  setTags(tags: string[]): IFetchAdapater<T>;
-  addTag(tag: string): IFetchAdapater<T>;
+  setTag(tag: string): IFetchAdapater<T>;
   setUrl(url: string): IFetchAdapater<T>;
   setMethod(method: HTTP_METHOD): IFetchAdapater<T>;
   setBody(body: Body): IFetchAdapater<T>;
@@ -18,7 +17,7 @@ export interface IFetchAdapater<T> {
   setErrorCallback(callback: () => void): IFetchAdapater<T>;
   setParams(params: Params): IFetchAdapater<T>;
   setPathParams(params: PathParams): IFetchAdapater<T>;
-  tags: string[];
+  tag?: string;
   pathParams: PathParams;
 }
 
@@ -39,7 +38,7 @@ export interface FetchAdapaterConstructor {
   methods: HTTP_METHOD;
   pathParams?: PathParams;
   params?: Params;
-  tags?: string[];
+  tag?: string;
   version?: apiVersions;
 }
 

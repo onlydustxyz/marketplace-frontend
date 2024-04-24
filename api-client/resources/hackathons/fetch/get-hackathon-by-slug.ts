@@ -8,8 +8,5 @@ import adapters from "../adapters";
 export function getHackathonBySlug(slug: string): IFetchAdapater<GetHackathonDetailsReponse> {
   return new FetchAdapter<GetHackathonDetailsReponse>(adapters.by_slug)
     .setPathParams({ slug })
-    .addTag(tags.by_slug(slug));
-  // .request<GetHackathonDetailsReponse>();
+    .setTag(tags.by_slug(slug));
 }
-
-// getHackathonBySlug("slug").request();

@@ -10,12 +10,11 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   root: {
     url: "hackathons",
     methods: "GET",
-    tags: [tags.root],
+    tag: tags.root,
   },
   by_slug: {
     url: "hackathons/slug/:slug",
     methods: "GET",
-    tags: [tags.details],
   },
 };
 

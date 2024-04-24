@@ -6,18 +6,13 @@ import { useReactQueryAdapter } from "api-client/adapter/react-query/react-query
 import { getHackathonBySlug } from "api-client/resources/hackathons/fetch";
 import { GetHackathonDetailsReponse } from "api-client/resources/hackathons/types";
 
-import tags from "../tags";
-
 export const useGetHackathonBySlug = (slug: string) => {
   const fetcher = useReactQueryAdapter<GetHackathonDetailsReponse>(getHackathonBySlug(slug));
   const { isAuthenticated } = useAuth0();
 
-  fetcher.setPathParams({ slug });
-  fetcher.addTag(tags.by_slug(slug));
-
   return useQuery<GetHackathonDetailsReponse>({
-    queryKey: [fetcher.tags],
-    queryFn: async () => await fetcher.request(),
+    queryKey: [fetcher.tag],
+    queryFn: () => fetcher.request(),
     enabled: isAuthenticated,
   });
 };

@@ -27,14 +27,14 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   private successCallback?: () => void;
   private errorCallback?: () => void;
 
-  public tags: string[];
+  public tag?: string;
   public pathParams: PathParams;
   constructor(params: FetchAdapaterConstructor) {
     this.url = params.url || "";
     this.methods = params.methods;
     this.pathParams = params.pathParams || {};
     this.params = params.params;
-    this.tags = params.tags || [];
+    this.tag = params.tag;
     this.version = params.version || apiVersions.v1;
   }
 
@@ -86,15 +86,21 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     return error;
   }
 
-  private formatResponse(res: Response): T {
+  private async formatResponse(res: Response): Promise<T> {
     if (res.ok) {
       if (res.headers.get("Content-Type") === "application/pdf") {
         this.successCallback?.();
-        return res.blob() as T;
+        return (await res.blob()) as T;
       }
 
-      this.successCallback?.();
-      return res.json() as T;
+      try {
+        this.successCallback?.();
+        console.log("success");
+        return (await res.json()) as T;
+      } catch {
+        console.log("CATCH");
+        return {} as T;
+      }
     }
 
     this.errorCallback?.();
@@ -104,14 +110,14 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   private async fetch(params?: Partial<FetchParams>) {
     const endpointUrl = this.getEndpointUrl(this.url, this.params);
     const headers = await this.getHeaders();
-
     return fetch(endpointUrl, {
       ...params,
+      cache: "no-cache",
       method: params?.method || this.methods,
       headers,
       body: params?.body || this.body,
       next: {
-        tags: this.tags,
+        ...(this.tag ? { tag: this.tag } : {}),
         ...params?.next,
       },
     });
@@ -149,13 +155,8 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     return this;
   }
 
-  public setTags(tags: string[]) {
-    this.tags = tags;
-    return this;
-  }
-
-  public addTag(tag: string) {
-    this.tags.push(tag);
+  public setTag(tag: string) {
+    this.tag = tag;
     return this;
   }
 

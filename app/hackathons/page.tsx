@@ -8,7 +8,7 @@ import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 async function HackathonsPage() {
-  const data = await hackathonsApiClient.fetch.getHackathonsList();
+  const data = await hackathonsApiClient.fetch.getHackathonsList().request();
 
   const liveNow = data.hackathons.filter(hackathon => isHackathonLive(hackathon));
   const comingSoon = data.hackathons.filter(hackathon => isHackathonFuture(hackathon));
