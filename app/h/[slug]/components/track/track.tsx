@@ -1,4 +1,4 @@
-import { TrackAccordion } from "app/h/[slug]/clients/track-accordion/track-accordion";
+import { TrackAccordion } from "app/h/[slug]/features/track-accordion/track-accordion";
 import { TrackProjects } from "app/h/[slug]/features/track-projects/track-projects";
 
 import MarkdownPreview from "src/components/MarkdownPreview";

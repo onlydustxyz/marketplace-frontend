@@ -5,7 +5,7 @@ import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { TApplyCallout } from "./apply-callout.types";
-import { ApplyGlobalSection } from "./clients/global-section/global-section";
+import { ApplyGlobalSection } from "./global-section/global-section";
 
 export function ApplyCallout({ icon, title, description, ...props }: TApplyCallout.Props) {
   return (

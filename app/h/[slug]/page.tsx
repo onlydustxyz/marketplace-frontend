@@ -1,18 +1,18 @@
 import { hackathonsApiClient } from "api-client/resources/hackathons";
 import { notFound } from "next/navigation";
 
-import { ScrollableView } from "app/h/[slug]/clients/scrollable-view/scrollable-view";
 import { Navigation } from "app/h/[slug]/components/navigation/navigation";
 import { Wrapper } from "app/h/[slug]/components/wrapper/wrapper";
 import { Intro } from "app/h/[slug]/features/intro/intro";
 import { MainDescription } from "app/h/[slug]/features/main-description/main-description";
 import { Overview } from "app/h/[slug]/features/overview/overview";
+import { ScrollableView } from "app/h/[slug]/features/scrollable-view/scrollable-view";
 import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 
 import { Flex } from "components/layout/flex/flex";
 
-import { RegistrationWrapper } from "./clients/registration-wrapper/registration-wrapper";
 import { Header } from "./components/header/header";
+import { RegistrationWrapper } from "./features/registration-wrapper/registration-wrapper";
 
 async function getHackathon(slug: string) {
   try {
