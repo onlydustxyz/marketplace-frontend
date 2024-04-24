@@ -14,6 +14,7 @@ import { Tooltip } from "components/ds/tooltip/tooltip";
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { SearchProjects } from "components/features/search-projects/search-projects";
 import { TSearchProjects } from "components/features/search-projects/search-projects.types";
+import { Budget } from "components/features/stacks/sponsor-project-stack/components/budget/budget";
 import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -29,9 +30,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   const closeStack = useCloseStack();
 
   const { user } = useCurrentUser();
-
   const sponsorId = user?.sponsors?.[0].id ?? "";
-
   const { data: sponsor, isLoading } = SponsorApi.queries.useGetSponsorById({
     params: {
       sponsorId,
@@ -40,26 +39,19 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
       enabled: Boolean(sponsorId),
     },
   });
-
-  const currencies = useMemo(() => sponsor?.availableBudgets ?? [], [sponsor]);
-  const orderedCurrencies = useCurrenciesOrder({ currencies });
-
-  const [selectedProjectId, setSelectedProjectId] = useState("");
-  const [currencyAmount, setCurrencyAmount] = useState("");
-  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(orderedCurrencies[0].currency);
-
-  const currencyAmountFloat = parseFloat(currencyAmount);
-
-  const currentBudget = useMemo(
-    () => orderedCurrencies.find(c => c.currency.id === currencySelection?.id),
-    [orderedCurrencies, currencySelection]
-  );
-
   const { mutateAsync, isPending, ...restAllocation } = SponsorApi.mutations.useAllocateBudget({
     params: {
       sponsorId,
     },
   });
+
+  // We only want to show currencies that have a budget
+  const currencies = useMemo(() => sponsor?.availableBudgets.filter(b => Boolean(b.amount)) ?? [], [sponsor]);
+  const orderedCurrencies = useCurrenciesOrder({ currencies });
+
+  const [selectedProjectId, setSelectedProjectId] = useState("");
+  const [currencyAmount, setCurrencyAmount] = useState("");
+  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(orderedCurrencies[0].currency);
 
   useMutationAlert({
     mutation: restAllocation,
@@ -78,6 +70,21 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
     }
   }, [project]);
 
+  const currencyAmountFloat = currencyAmount ? parseFloat(currencyAmount) : 0;
+
+  const selectedProjectBudget = useMemo(() => {
+    const selectedProject = sponsor?.projects.find(p => p.id === selectedProjectId);
+
+    if (!selectedProject) return 0;
+
+    return selectedProject.remainingBudgets.find(b => b.currency.id === currencySelection?.id)?.amount ?? 0;
+  }, [sponsor, selectedProjectId, currencySelection]);
+
+  const currentBudget = useMemo(
+    () => orderedCurrencies.find(c => c.currency.id === currencySelection?.id),
+    [orderedCurrencies, currencySelection]
+  );
+
   const balanceExceeded = useMemo(() => {
     return currencyAmountFloat > (currentBudget?.amount ?? 0);
   }, [currencyAmountFloat, currentBudget]);
@@ -87,11 +94,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   }, [selectedProjectId, currencyAmountFloat, currencySelection, balanceExceeded]);
 
   function handleProjectChange(projects: TSearchProjects.Project[]) {
-    if (projects.length) {
-      setSelectedProjectId(projects[0].id);
-    } else {
-      setSelectedProjectId("");
-    }
+    setSelectedProjectId(projects.length ? projects[0].id : "");
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -131,9 +134,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   return (
     <form className={"flex h-full flex-col"} onSubmit={handleSubmit}>
       <div className={"flex flex-1 flex-col gap-6 px-6"}>
-        <Typography variant={"title-m"}>
-          <Translate token="v2.pages.stacks.sponsorProject.title" />
-        </Typography>
+        <Typography variant={"title-m"} translate={{ token: "v2.pages.stacks.sponsorProject.title" }} />
 
         <div className={"divide-y divide-card-border-light"}>
           <div className={"grid gap-3 py-6"}>
@@ -187,32 +188,31 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
                 </div>
               </div>
 
-              {/*<div className={"grid gap-3 py-6"}>*/}
-              {/*  <Label>*/}
-              {/*    <Translate token="v2.pages.stacks.sponsorProject.budget.title" />*/}
-              {/*  </Label>*/}
-              {/*  <ul className={"grid gap-3"}>*/}
-              {/*    <Budget*/}
-              {/*      label={"v2.pages.stacks.sponsorProject.budget.currentBudget"}*/}
-              {/*      // TODO @hayden get selected project budget*/}
-              {/*      amount={123}*/}
-              {/*      currency={currencySelection}*/}
-              {/*    />*/}
-              {/*    <Budget*/}
-              {/*      label={"v2.pages.stacks.sponsorProject.budget.amountAllocated"}*/}
-              {/*      amount={currencyAmount ? currencyAmountFloat : 0}*/}
-              {/*      currency={currencySelection}*/}
-              {/*      prefix={currencyAmount ? "+" : ""}*/}
-              {/*      color={balanceExceeded ? "orange" : currencyAmount ? "green" : undefined}*/}
-              {/*    />*/}
-              {/*    <Budget*/}
-              {/*      label={"v2.pages.stacks.sponsorProject.budget.budgetAfterAllocation"}*/}
-              {/*      // TODO @hayden selected project budget + currencyAmount*/}
-              {/*      amount={123}*/}
-              {/*      currency={currencySelection}*/}
-              {/*    />*/}
-              {/*  </ul>*/}
-              {/*</div>*/}
+              <div className={"grid gap-3 py-6"}>
+                <Label>
+                  <Translate token="v2.pages.stacks.sponsorProject.budget.title" />
+                </Label>
+
+                <ul className={"grid gap-3"}>
+                  <Budget
+                    label={"v2.pages.stacks.sponsorProject.budget.currentBudget"}
+                    amount={selectedProjectBudget}
+                    currency={currencySelection}
+                  />
+                  <Budget
+                    label={"v2.pages.stacks.sponsorProject.budget.amountAllocated"}
+                    amount={currencyAmountFloat}
+                    currency={currencySelection}
+                    prefix={currencyAmount ? "+" : ""}
+                    color={balanceExceeded ? "orange" : currencyAmount ? "green" : undefined}
+                  />
+                  <Budget
+                    label={"v2.pages.stacks.sponsorProject.budget.budgetAfterAllocation"}
+                    amount={selectedProjectBudget + currencyAmountFloat}
+                    currency={currencySelection}
+                  />
+                </ul>
+              </div>
             </>
           ) : null}
         </div>
@@ -225,7 +225,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
           placement={"top-end"}
         >
           <Button type={"submit"} disabled={!canAllocate || isLoading || isPending}>
-            {isPending ? <Spinner className="mr-1" /> : null}
+            {isPending ? <Spinner /> : null}
             <Translate token="v2.pages.stacks.sponsorProject.submit" />
           </Button>
         </Tooltip>
