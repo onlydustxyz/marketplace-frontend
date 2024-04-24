@@ -16,7 +16,7 @@ import { RegistrationWrapper } from "./features/registration-wrapper/registratio
 
 async function getHackathon(slug: string) {
   try {
-    return await hackathonsApiClient.fetch.getHackathonBySlug(slug);
+    return await hackathonsApiClient.fetch.getHackathonBySlug(slug).request();
   } catch {
     notFound();
   }
