@@ -18,7 +18,7 @@ export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistratio
     hackathonSlug,
   });
 
-  const { data, isLoading } = hackathonsApiClient.queries.useGetHackathonBySlug(hackathonSlug);
+  const { data } = hackathonsApiClient.queries.useGetHackathonBySlug(hackathonSlug);
 
   const hasRegistered = data?.me?.hasRegistered;
 
