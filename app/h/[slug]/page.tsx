@@ -16,7 +16,7 @@ import { Header } from "./components/header/header";
 
 async function getHackathon(slug: string) {
   try {
-    return await hackathonsApiClient.fetch.getHackathonBySlug(slug);
+    return await hackathonsApiClient.fetch.getHackathonBySlug(slug).request();
   } catch {
     notFound();
   }

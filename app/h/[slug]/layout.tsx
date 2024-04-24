@@ -6,7 +6,7 @@ import { sharedMetadata } from "app/shared-metadata";
 
 export async function generateMetadata(props: { params: { slug: string } }): Promise<Metadata> {
   try {
-    const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug);
+    const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug).request();
     return {
       ...sharedMetadata,
       title: `${hackathon.title}`,
