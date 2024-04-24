@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { PropsWithChildren } from "react";
 
 import { Card } from "components/ds/card/card";
@@ -14,7 +14,11 @@ import { ProfileInvitationBanner } from "./general-information/components/profil
 
 function BillingLayout({ children }: PropsWithChildren) {
   const { id } = useParams<{ id: string }>();
-  const { profile } = useBillingProfileById({ id });
+  const { profile, isLoading } = useBillingProfileById({ id });
+
+  if (!isLoading && !profile) {
+    notFound();
+  }
 
   const isInvited = profile?.data.me?.invitation;
   const hasRole = profile?.data.me?.role;

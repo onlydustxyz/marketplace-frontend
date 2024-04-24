@@ -1,10 +1,9 @@
 import Image from "next/image";
 
-import { SponsorSidePanels } from "app/sponsor/[sponsorId]/components/sponsor-side-panels/sponsor-side-panels";
-
 import { IMAGES } from "src/assets/img";
 
 import { Card } from "components/ds/card/card";
+import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 

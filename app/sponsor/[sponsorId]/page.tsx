@@ -2,11 +2,11 @@
 
 import { withSponsorGuard } from "utils/guards/sponsor-guard";
 
+import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { SponsorSidePanels } from "./components/sponsor-side-panels/sponsor-side-panels";
 import { SponsorSectionBudget } from "./features/sponsor-section-budget/sponsor-section-budget";
 import { SponsorSectionHistory } from "./features/sponsor-section-history/sponsor-section-history";
 import { SponsorSectionProject } from "./features/sponsor-section-project/sponsor-section-project";

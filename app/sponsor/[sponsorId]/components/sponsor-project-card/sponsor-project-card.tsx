@@ -8,41 +8,47 @@ import { viewportConfig } from "src/config";
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";
+import { BaseLink } from "components/layout/base-link/base-link";
+import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBudget }: TSponsorProjectCard.Props) {
+import { NEXT_ROUTER } from "constants/router";
+
+export function SponsorProjectCard({ project }: TSponsorProjectCard.Props) {
+  const { name, logoUrl, remainingBudgets, totalUsdBudget, slug } = project;
+
   return (
     <Card background={"base"} className={"grid content-start gap-6"}>
       <header className={"flex items-center justify-between overflow-hidden"}>
-        <Avatar.Labelled
-          avatarProps={{ src: logoUrl, alt: name, size: "m", shape: "square" }}
-          labelProps={{ title: name }}
-          className={"flex-1"}
-        >
-          <Typography variant={"body-xl-bold"} className={"truncate"}>
-            {name}
-          </Typography>
-        </Avatar.Labelled>
+        <BaseLink href={NEXT_ROUTER.projects.details.root(slug)} className={"truncate"}>
+          <Avatar.Labelled
+            avatarProps={{ src: logoUrl, alt: name, size: "m", shape: "square" }}
+            labelProps={{ title: name }}
+            className={"flex-1"}
+          >
+            <Typography variant={"body-xl-bold"} className={"truncate"}>
+              {name}
+            </Typography>
+          </Avatar.Labelled>
+        </BaseLink>
 
-        {/*<SponsorSidePanels*/}
-        {/*  panel={"project"}*/}
-        {/*  buttonProps={{*/}
-        {/*    variant: "secondary",*/}
-        {/*    size: "s",*/}
-        {/*    className: "hidden lg:flex",*/}
-        {/*    children: (*/}
-        {/*      <>*/}
-        {/*        <Icon remixName={"ri-service-line"} />*/}
-        {/*        <Translate token={"v2.pages.sponsor.project.sponsorProject"} />*/}
-        {/*      </>*/}
-        {/*    ),*/}
-        {/*  }}*/}
-        {/*  projectParams={{*/}
-        {/*    // TODO @hayden add current project*/}
-        {/*    projectId: "123",*/}
-        {/*  }}*/}
-        {/*/>*/}
+        <SponsorSidePanels
+          panel={"project"}
+          buttonProps={{
+            variant: "secondary",
+            size: "s",
+            className: "hidden lg:flex whitespace-nowrap",
+            children: (
+              <>
+                <Icon remixName={"ri-service-line"} />
+                <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
+              </>
+            ),
+          }}
+          project={project}
+        />
       </header>
 
       <Card className={"grid gap-2 !p-3"} hasPadding={false}>
@@ -98,24 +104,21 @@ export function SponsorProjectCard({ name, logoUrl, remainingBudgets, totalUsdBu
         </div>
       ) : null}
 
-      {/*<SponsorSidePanels*/}
-      {/*  panel={"project"}*/}
-      {/*  buttonProps={{*/}
-      {/*    variant: "secondary",*/}
-      {/*    size: "s",*/}
-      {/*    className: "w-full lg:hidden",*/}
-      {/*    children: (*/}
-      {/*      <>*/}
-      {/*        <Icon remixName={"ri-service-line"} />*/}
-      {/*        <Translate token={"v2.pages.sponsor.project.sponsorProject"} />*/}
-      {/*      </>*/}
-      {/*    ),*/}
-      {/*  }}*/}
-      {/*  projectParams={{*/}
-      {/*    // TODO @hayden add current project*/}
-      {/*    projectId: "123",*/}
-      {/*  }}*/}
-      {/*/>*/}
+      <SponsorSidePanels
+        panel={"project"}
+        buttonProps={{
+          variant: "secondary",
+          size: "s",
+          className: "w-full lg:hidden",
+          children: (
+            <>
+              <Icon remixName={"ri-service-line"} />
+              <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
+            </>
+          ),
+        }}
+        project={project}
+      />
     </Card>
   );
 }
