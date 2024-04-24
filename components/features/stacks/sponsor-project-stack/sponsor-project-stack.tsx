@@ -201,7 +201,7 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
                   />
                   <Budget
                     label={"v2.pages.stacks.sponsorProject.budget.amountAllocated"}
-                    amount={currencyAmount ? currencyAmountFloat : 0}
+                    amount={currencyAmountFloat}
                     currency={currencySelection}
                     prefix={currencyAmount ? "+" : ""}
                     color={balanceExceeded ? "orange" : currencyAmount ? "green" : undefined}
