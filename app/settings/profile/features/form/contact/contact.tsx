@@ -36,7 +36,7 @@ export function FormContact() {
                 {...field}
                 {...fieldState}
                 isInvalid={!!fieldState.error}
-                errorMessage={<Translate token={fieldState.error?.message || ""} />}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
                 placeholder={T("v2.commons.form.contact.telegram.placeholder")}
                 startContent={<Telegram size={16} />}
                 visibilityName="telegram.isPublic"
@@ -52,7 +52,7 @@ export function FormContact() {
                 {...field}
                 {...fieldState}
                 isInvalid={!!fieldState.error}
-                errorMessage={<Translate token={fieldState.error?.message || ""} />}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
                 placeholder={T("v2.commons.form.contact.whatsapp.placeholder")}
                 startContent={<Icon remixName="ri-whatsapp-fill" />}
                 visibilityName="whatsapp.isPublic"
@@ -68,7 +68,7 @@ export function FormContact() {
                 {...field}
                 {...fieldState}
                 isInvalid={!!fieldState.error}
-                errorMessage={<Translate token={fieldState.error?.message || ""} />}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
                 placeholder={T("v2.commons.form.contact.twitter.placeholder")}
                 startContent={<Icon remixName="ri-twitter-x-fill" />}
                 visibilityName="twitter.isPublic"
@@ -84,7 +84,7 @@ export function FormContact() {
                 {...field}
                 {...fieldState}
                 isInvalid={!!fieldState.error}
-                errorMessage={<Translate token={fieldState.error?.message || ""} />}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
                 placeholder={T("v2.commons.form.contact.discord.placeholder")}
                 startContent={<Icon remixName="ri-discord-fill" />}
                 visibilityName="discord.isPublic"
@@ -100,7 +100,7 @@ export function FormContact() {
                 {...field}
                 {...fieldState}
                 isInvalid={!!fieldState.error}
-                errorMessage={<Translate token={fieldState.error?.message || ""} />}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
                 placeholder={T("v2.commons.form.contact.linkedin.placeholder")}
                 startContent={<Icon remixName="ri-linkedin-box-fill" />}
                 visibilityName="linkedin.isPublic"

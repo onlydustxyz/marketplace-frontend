@@ -30,29 +30,25 @@ export function ApplyGlobalSection({
     handleLoginWithRedirect(loginWithRedirect);
   }
 
-  if (!profile) {
+  if (!profile || isLoading) {
     return null;
   }
 
-  if (isLoading) {
-    return null;
+  if (isAuthenticated) {
+    return (
+      <ApplyAuthenticatedSection
+        formDescription={formDescription}
+        buttonConnected={buttonConnected}
+        onApply={onApply}
+        profile={profile}
+        alreadyApplied={alreadyApplied}
+      />
+    );
   }
 
   return (
-    <>
-      {isAuthenticated ? (
-        <ApplyAuthenticatedSection
-          formDescription={formDescription}
-          buttonConnected={buttonConnected}
-          onApply={onApply}
-          profile={profile}
-          alreadyApplied={alreadyApplied}
-        />
-      ) : (
-        <Button onClick={handleLoginClick} size={isMd ? "m" : "s"} width="full">
-          <Translate token={buttonNotConnected} />
-        </Button>
-      )}
-    </>
+    <Button onClick={handleLoginClick} size={isMd ? "m" : "s"} width="full">
+      <Translate token={buttonNotConnected} />
+    </Button>
   );
 }

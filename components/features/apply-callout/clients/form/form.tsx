@@ -100,7 +100,7 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
                 {...field}
                 {...fieldState}
                 isInvalid={!!fieldState.error}
-                errorMessage={<Translate token={fieldState.error?.message || ""} />}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
                 placeholder={T("v2.commons.form.contact.telegram.placeholder")}
                 startContent={<Telegram size={16} />}
                 visibilityName="telegram.isPublic"

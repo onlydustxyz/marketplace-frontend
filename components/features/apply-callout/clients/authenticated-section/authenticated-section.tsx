@@ -34,28 +34,28 @@ export function ApplyAuthenticatedSection({
     }
   }
 
+  if (showForm) {
+    return (
+      <ApplyForm
+        formDescription={formDescription}
+        buttonConnected={buttonConnected}
+        onApply={handleApplyClick}
+        profile={profile}
+        setShowForm={setShowForm}
+      />
+    );
+  }
+
   return (
-    <>
-      {showForm ? (
-        <ApplyForm
-          formDescription={formDescription}
-          buttonConnected={buttonConnected}
-          onApply={handleApplyClick}
-          profile={profile}
-          setShowForm={setShowForm}
-        />
-      ) : (
-        <Button
-          onClick={handleApplyClick}
-          disabled={alreadyApplied}
-          size={isMd ? "m" : "s"}
-          width="full"
-          backgroundColor="blue"
-        >
-          <Icon remixName={alreadyApplied ? "ri-check-line" : "ri-send-plane-2-line"} size={20} />
-          <Translate token={buttonConnected} />
-        </Button>
-      )}
-    </>
+    <Button
+      onClick={handleApplyClick}
+      disabled={alreadyApplied}
+      size={isMd ? "m" : "s"}
+      width="full"
+      backgroundColor="blue"
+    >
+      <Icon remixName={alreadyApplied ? "ri-check-line" : "ri-send-plane-2-line"} size={20} />
+      <Translate token={buttonConnected} />
+    </Button>
   );
 }
