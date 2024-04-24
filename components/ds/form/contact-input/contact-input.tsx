@@ -10,7 +10,6 @@ import { Translate } from "components/layout/translate/translate";
 import { Input } from "../input/input";
 import { TContactInput } from "./contact-input.types";
 
-// TODO: Translate and move the useIntl
 export function ContactInput({ visibilityName, ...props }: TContactInput.Props) {
   const { setValue, watch } = useFormContext();
 
@@ -47,10 +46,10 @@ export function ContactInput({ visibilityName, ...props }: TContactInput.Props) 
       }
       endContent={
         <>
-          {props.value ? (
+          {props.value && !props.isInvalid ? (
             <Flex alignItems="center" className="gap-2">
               {isVisible ? (
-                <Tooltip content={<Translate token="profile.form.contactInfo.visibleTootlip" />}>
+                <Tooltip content={<Translate token="v2.commons.form.contact.tooltip.visible" />}>
                   <Icon
                     remixName="ri-eye-line"
                     className={cn({
@@ -61,7 +60,7 @@ export function ContactInput({ visibilityName, ...props }: TContactInput.Props) 
                   />
                 </Tooltip>
               ) : (
-                <Tooltip content={<Translate token="profile.form.contactInfo.hiddenTootlip" />}>
+                <Tooltip content={<Translate token="v2.commons.form.contact.tooltip.hidden" />}>
                   <Icon
                     remixName="ri-eye-off-line"
                     className={cn("text-greyscale-100", {

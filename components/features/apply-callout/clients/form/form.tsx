@@ -32,6 +32,7 @@ const formSchema = z.object({
   }),
 });
 
+// TODO: @NeoxAzrot add errors on input
 export function ApplyForm({ formDescription, buttonConnected, onApply, profile, setShowForm }: TApplyForm.Props) {
   const { T } = useIntl();
 

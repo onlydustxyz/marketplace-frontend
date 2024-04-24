@@ -57,6 +57,10 @@
       },
       "linkedin": {
         "placeholder": "LinkedIn"
+      },
+      "tooltip": {
+        "hidden": "Hidden on public profile",
+        "visible": "Shown on public profile"
       }
     }
   },

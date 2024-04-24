@@ -8,8 +8,7 @@ import { z } from "zod";
 
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
-import { Key } from "src/hooks/useIntl";
+import { Key, useIntl } from "src/hooks/useIntl";
 
 import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
@@ -67,7 +66,7 @@ const formSchema = z.object({
   lookingForAJob: z.boolean(),
 });
 
-// TODO: Contact information and select input to do with NextUI
+// TODO: Select input to do with NextUI
 // TODO: FieldImage to do with NextUI and add error handle on Input (call everywhere) and Textarea
 function SettingsProfilePage() {
   const { T } = useIntl();
