@@ -48,8 +48,7 @@ export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistratio
           : "v2.pages.hackathons.details.application.button.apply"
       }
       onApply={handleApply}
-      // alreadyApplied={hasRegistered}
-      alreadyApplied={false}
+      alreadyApplied={hasRegistered}
     />
   );
 }
