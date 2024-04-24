@@ -32,7 +32,6 @@ const formSchema = z.object({
   }),
 });
 
-// TODO: @NeoxAzrot add errors on input
 export function ApplyForm({ formDescription, buttonConnected, onApply, profile, setShowForm }: TApplyForm.Props) {
   const { T } = useIntl();
 
@@ -100,6 +99,8 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
               <ContactInput
                 {...field}
                 {...fieldState}
+                isInvalid={!!fieldState.error}
+                errorMessage={<Translate token={fieldState.error?.message || ""} />}
                 placeholder={T("v2.commons.form.contact.telegram.placeholder")}
                 startContent={<Telegram size={16} />}
                 visibilityName="telegram.isPublic"

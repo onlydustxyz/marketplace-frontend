@@ -24,13 +24,17 @@ export function ApplyGlobalSection({
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const { data: profile } = MeApi.queries.useGetMyProfileInfo({});
+  const { data: profile, isLoading } = MeApi.queries.useGetMyProfileInfo({});
 
   function handleLoginClick() {
     handleLoginWithRedirect(loginWithRedirect);
   }
 
   if (!profile) {
+    return null;
+  }
+
+  if (isLoading) {
     return null;
   }
 
