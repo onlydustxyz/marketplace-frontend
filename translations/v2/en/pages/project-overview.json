@@ -8,7 +8,7 @@
   "apply": {
     "title": "Looking for contributors",
     "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
-    "contactNeeded": "Please share at least one way to reach you out in case it's a match.",
+    "contactNeeded": "Please share your telegram handle first so we can reach out to you.",
     "informations": {
       "notYetApply": "Should your profile align with the requirements of the project, we will reach out to you using one of your provided contact details.",
       "alreadyApply": "You have already requested connection."

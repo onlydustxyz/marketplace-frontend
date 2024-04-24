@@ -1,17 +1,17 @@
 import { Button } from "components/ds/button/button";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 
 interface LinkProps {
   link: string;
 }
 
-// TODO: Change Button with link using the new library
 export default function GithubLink({ link }: LinkProps) {
   return (
-    <a href={link} target="_blank" rel="noreferrer">
+    <BaseLink href={link}>
       <Button size="s" variant="secondary" iconOnly>
         <Icon remixName="ri-github-fill" className="fill-neutral-100" />
       </Button>
-    </a>
+    </BaseLink>
   );
 }

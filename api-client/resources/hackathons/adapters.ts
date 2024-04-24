@@ -1,26 +1,21 @@
-import { FetchAdapter } from "api-client/adapter/fetch/fetch-adapter";
-import { apiVersions } from "api-client/config/api-versions";
+import { FetchAdapaterConstructor } from "api-client/adapter/fetch/fetch-adapter.types";
 import tags from "api-client/resources/hackathons/tags";
 
-export default {
-  root: () =>
-    new FetchAdapter({
-      version: apiVersions.v1,
-      fetchFn: {
-        url: "hackathons",
-        next: {
-          tags: [tags.root],
-        },
-      },
-    }),
-  by_slug: (slug: string) =>
-    new FetchAdapter({
-      version: apiVersions.v1,
-      fetchFn: {
-        url: `hackathons/slug/${slug}`,
-        next: {
-          tags: [tags.by_slug(slug)],
-        },
-      },
-    }),
+enum Paths {
+  root = "root",
+  by_slug = "by_slug",
+}
+
+const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
+  root: {
+    url: "hackathons",
+    method: "GET",
+    tag: tags.root,
+  },
+  by_slug: {
+    url: "hackathons/slug/:slug",
+    method: "GET",
+  },
 };
+
+export default Adapters;

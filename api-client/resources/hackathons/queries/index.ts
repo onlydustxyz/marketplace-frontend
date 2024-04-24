@@ -1,1 +1,1 @@
-export * from "./use-get-hackathons-list";
+export * from "./use-get-hackathons-by-slug";

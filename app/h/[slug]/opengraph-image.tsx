@@ -7,7 +7,7 @@ import { HackathonImageMetadata } from "components/features/seo/image-metadata/h
 
 export default async function Image(props: { params: { slug: string } }) {
   try {
-    const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug);
+    const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug).request();
     return Generator({
       children: (
         <HackathonImageMetadata
