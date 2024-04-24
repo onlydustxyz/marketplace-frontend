@@ -3,12 +3,17 @@
 import { hackathonsApiClient } from "api-client/resources/hackathons";
 import { useUpdateHackathonsRegistrations } from "api-client/resources/me/mutations/use-update-hackathons-registrations";
 
+import useMutationAlert from "src/api/useMutationAlert";
+import { useIntl } from "src/hooks/useIntl";
+
 import { ApplyCallout } from "components/features/apply-callout/apply-callout";
 
 import { TRegistrationWrapper } from "./registration-wrapper.types";
 
 export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistrationWrapper.Props) {
-  const { mutate: register } = useUpdateHackathonsRegistrations({
+  const { T } = useIntl();
+
+  const { mutate: register, ...restRegister } = useUpdateHackathonsRegistrations({
     hackathonId,
     hackathonSlug,
   });
@@ -20,6 +25,16 @@ export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistratio
   async function handleApply() {
     register();
   }
+
+  useMutationAlert({
+    mutation: restRegister,
+    success: {
+      message: T("v2.pages.hackathons.details.application.confirmationToaster"),
+    },
+    error: {
+      default: true,
+    },
+  });
 
   return (
     <ApplyCallout

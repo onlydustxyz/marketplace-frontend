@@ -1,3 +1,5 @@
+import { useFormContext } from "react-hook-form";
+
 import { cn } from "src/utils/cn";
 
 import { Tooltip } from "components/ds/tooltip/tooltip";
@@ -8,49 +10,79 @@ import { Translate } from "components/layout/translate/translate";
 import { Input } from "../input/input";
 import { TContactInput } from "./contact-input.types";
 
-export function ContactInput({ isVisible, ...props }: TContactInput.Props) {
-  function handleDeleteClick() {
-    // if (!props.disabled) {
-    //   setValue(name, "", { shouldDirty: true });
-    // }
+export function ContactInput({ visibilityName, ...props }: TContactInput.Props) {
+  const { setValue, watch } = useFormContext();
+
+  const isVisible = watch(visibilityName);
+
+  function handleClearClick() {
+    if (!props.disabled && props.name) {
+      setValue(props.name, "", { shouldDirty: true });
+    }
+  }
+
+  function handleVisibleClick() {
+    if (!props.disabled && visibilityName) {
+      setValue(visibilityName, !isVisible, { shouldDirty: true });
+    }
   }
 
   return (
     <Input
       {...props}
+      classNames={{
+        input: cn({
+          "placeholder:text-greyscale-300": !props.value,
+        }),
+      }}
+      startContent={
+        <span
+          className={cn({
+            "text-greyscale-300": !props.value,
+          })}
+        >
+          {props.startContent}
+        </span>
+      }
       endContent={
-        <Flex alignItems="center" className="absolute right-3 gap-2">
-          <Icon
-            remixName="ri-close-line"
-            className={cn({
-              "text-greyscale-600": props.disabled,
-              "cursor-pointer": !props.disabled,
-            })}
-            onClick={handleDeleteClick}
-          />
+        <>
+          {props.value && !props.isInvalid ? (
+            <Flex alignItems="center" className="gap-2">
+              {isVisible ? (
+                <Tooltip content={<Translate token="v2.commons.form.contact.tooltip.visible" />}>
+                  <Icon
+                    remixName="ri-eye-line"
+                    className={cn({
+                      "text-spacePurple-200/50": props.disabled,
+                      "cursor-pointer text-spacePurple-200": !props.disabled,
+                    })}
+                    onClick={handleVisibleClick}
+                  />
+                </Tooltip>
+              ) : (
+                <Tooltip content={<Translate token="v2.commons.form.contact.tooltip.hidden" />}>
+                  <Icon
+                    remixName="ri-eye-off-line"
+                    className={cn("text-greyscale-100", {
+                      "text-greyscale-600": props.disabled,
+                      "cursor-pointer": !props.disabled,
+                    })}
+                    onClick={handleVisibleClick}
+                  />
+                </Tooltip>
+              )}
 
-          {isVisible ? (
-            <Tooltip content={<Translate token="profile.form.contactInfo.visibleTootlip" />}>
               <Icon
-                remixName="ri-eye-line"
-                className={cn({
-                  "text-spacePurple-200/50": props.disabled,
-                  "cursor-pointer text-spacePurple-200": !props.disabled,
-                })}
-              />
-            </Tooltip>
-          ) : (
-            <Tooltip content={<Translate token="profile.form.contactInfo.hiddenTootlip" />}>
-              <Icon
-                remixName="ri-eye-off-line"
-                className={cn({
+                remixName="ri-close-line"
+                className={cn("text-greyscale-100", {
                   "text-greyscale-600": props.disabled,
                   "cursor-pointer": !props.disabled,
                 })}
+                onClick={handleClearClick}
               />
-            </Tooltip>
-          )}
-        </Flex>
+            </Flex>
+          ) : null}
+        </>
       }
     />
   );

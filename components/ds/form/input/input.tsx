@@ -19,14 +19,17 @@ export function Input({ className, radius, ...props }: TInput.Props) {
         inputWrapper: cn(
           "rounded-lg border border-greyscale-50/8 bg-white/5 focus-within:!border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500 hover:border hover:border-greyscale-50/8 px-3 py-2 !transition-all",
           "group-data-[invalid=true]:!border-github-red-light group-data-[invalid=true]:focus-within:!border-spacePurple-500",
-          { "cursor-not-allowed placeholder:text-greyscale-600 text-greyscale-600": props.disabled },
+          { "cursor-not-allowed text-greyscale-600": props.disabled },
           {
             "min-h-8 h-8": !props.size,
           }
         ),
         innerWrapper: "gap-2",
-        input:
+        input: cn(
           "text-greyscale-50 group-data-[invalid=true]:!text-greyscale-50 focus:placeholder:text-spacePurple-200/60 placeholder:text-spaceBlue-200",
+          props.classNames?.input,
+          { "placeholder:text-greyscale-600": props.disabled }
+        ),
         label:
           "!od-text-body-s-bold !p-0 pointer-events-auto text-greyscale-50 group-data-[invalid=true]:!text-greyscale-50 w-full",
         helperWrapper: "p-0 mt-2",
