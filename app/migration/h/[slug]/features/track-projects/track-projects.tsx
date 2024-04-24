@@ -1,5 +1,5 @@
-import { TrackProject } from "app/h/[slug]/components/track-project/track-project";
-import { TrackShowMoreProject } from "app/h/[slug]/features/track-show-more-project/track-show-more-project";
+import { TrackProject } from "app/migration/h/[slug]/components/track-project/track-project";
+import { TrackShowMoreProject } from "app/migration/h/[slug]/features/track-show-more-project/track-show-more-project";
 
 import { TTrackProjects } from "./track-projects.types";
 

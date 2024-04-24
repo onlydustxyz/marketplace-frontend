@@ -1,4 +1,4 @@
-import { Track } from "app/h/[slug]/components/track/track";
+import { Track } from "app/migration/h/[slug]/components/track/track";
 
 import { TTracks } from "./tracks.types";
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { TrackProject } from "app/h/[slug]/components/track-project/track-project";
+import { TrackProject } from "app/migration/h/[slug]/components/track-project/track-project";
 
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 
