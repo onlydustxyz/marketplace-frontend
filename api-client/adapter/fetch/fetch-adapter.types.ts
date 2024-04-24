@@ -35,7 +35,7 @@ export interface FetchParams extends Partial<RequestInit> {
 }
 export interface FetchAdapaterConstructor {
   url: string;
-  methods: HTTP_METHOD;
+  method: HTTP_METHOD;
   pathParams?: PathParams;
   params?: Params;
   tag?: string;

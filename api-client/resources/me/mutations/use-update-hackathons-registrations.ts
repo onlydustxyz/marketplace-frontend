@@ -11,10 +11,11 @@ export const useUpdateHackathonsRegistrations = ({
   hackathonId,
   hackathonSlug,
 }: UpdateHackathonsRegistrationsParams) => {
-  const fetcher = useReactQueryAdapter(updateHackathonsRegistrations({ hackathonId, hackathonSlug }));
+  const { mutation } = useReactQueryAdapter(updateHackathonsRegistrations({ hackathonId, hackathonSlug }));
   const queryClient = useQueryClient();
+
   return useMutation<unknown>({
-    mutationFn: () => fetcher.request(),
+    ...mutation,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: [hackathonsApiClient.tags.by_slug(hackathonSlug)],

@@ -21,7 +21,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   private impersonationHeaders?: impersonationHeaders;
   private authAdapter?: AuthAdapter;
   private url: string = "";
-  private methods: HTTP_METHOD = "GET";
+  private method: HTTP_METHOD = "GET";
   private body?: Body = undefined;
   private params?: Params = undefined;
   private successCallback?: () => void;
@@ -31,7 +31,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   public pathParams: PathParams;
   constructor(params: FetchAdapaterConstructor) {
     this.url = params.url || "";
-    this.methods = params.methods;
+    this.method = params.method;
     this.pathParams = params.pathParams || {};
     this.params = params.params;
     this.tag = params.tag;
@@ -111,7 +111,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     return fetch(endpointUrl, {
       ...params,
       cache: "no-cache",
-      method: params?.method || this.methods,
+      method: params?.method || this.method,
       headers,
       body: params?.body || this.body,
       next: {
@@ -135,8 +135,8 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     this.url = url;
     return this;
   }
-  public setMethod(methods: HTTP_METHOD) {
-    this.methods = methods;
+  public setMethod(method: HTTP_METHOD) {
+    this.method = method;
     return this;
   }
   public setBody(body: Body) {

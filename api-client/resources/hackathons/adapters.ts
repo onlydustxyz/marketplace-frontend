@@ -9,12 +9,12 @@ enum Paths {
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   root: {
     url: "hackathons",
-    methods: "GET",
+    method: "GET",
     tag: tags.root,
   },
   by_slug: {
     url: "hackathons/slug/:slug",
-    methods: "GET",
+    method: "GET",
   },
 };
 

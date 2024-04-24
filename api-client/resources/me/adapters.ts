@@ -7,7 +7,7 @@ enum Paths {
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   hackathonRegistrations: {
     url: "me/hackathons/:hackathonId/registrations",
-    methods: "PUT",
+    method: "PUT",
   },
 };
 
