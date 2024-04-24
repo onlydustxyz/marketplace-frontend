@@ -4,17 +4,20 @@ import { HTTP_METHOD } from "next/dist/server/web/http";
 
 export type impersonationHeaders = Record<string, string> | undefined;
 
-export interface IFetchAdapater {
-  request<T>(params?: Partial<FetchParams>): Promise<T>;
-  setAuthAdapter(authAdapter: AuthAdapter): void;
-  setVersion(version: apiVersions): void;
-  setImpersonationHeaders(header: impersonationHeaders): void;
-  setTags(tags: string[]): void;
-  setUrl(url: string): void;
-  setMethod(method: HTTP_METHOD): void;
-  setBody(body: Body): void;
-  setParams(params: Params): void;
-  setPathParams(params: PathParams): void;
+export interface IFetchAdapater<T> {
+  request(params?: Partial<FetchParams>): Promise<T>;
+  setAuthAdapter(authAdapter: AuthAdapter): IFetchAdapater<T>;
+  setVersion(version: apiVersions): IFetchAdapater<T>;
+  setImpersonationHeaders(header: impersonationHeaders): IFetchAdapater<T>;
+  setTags(tags: string[]): IFetchAdapater<T>;
+  addTag(tag: string): IFetchAdapater<T>;
+  setUrl(url: string): IFetchAdapater<T>;
+  setMethod(method: HTTP_METHOD): IFetchAdapater<T>;
+  setBody(body: Body): IFetchAdapater<T>;
+  setSuccessCallback(callback: () => void): IFetchAdapater<T>;
+  setErrorCallback(callback: () => void): IFetchAdapater<T>;
+  setParams(params: Params): IFetchAdapater<T>;
+  setPathParams(params: PathParams): IFetchAdapater<T>;
   tags: string[];
   pathParams: PathParams;
 }
@@ -27,16 +30,17 @@ export type PathParams = { [key: string]: string | number };
 export interface FetchParams extends Partial<RequestInit> {
   url: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body?: any;
-  params?: { [key: string]: string };
+  body?: Body;
+  params?: Params;
   method?: HTTP_METHOD;
-  onSuccess?: () => void;
 }
-export interface FetchAdapaterParams {
-  fetchFn: FetchParams;
+export interface FetchAdapaterConstructor {
+  url: string;
+  methods: HTTP_METHOD;
+  pathParams?: PathParams;
+  params?: Params;
+  tags?: string[];
   version?: apiVersions;
-  authAdapter?: AuthAdapter;
-  impersonationHeaders?: impersonationHeaders;
 }
 
 export enum HttpStatusStrings {

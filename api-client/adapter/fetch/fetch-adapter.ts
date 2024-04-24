@@ -7,6 +7,7 @@ import { FetchError } from "src/api/query.type";
 
 import {
   Body,
+  FetchAdapaterConstructor,
   FetchParams,
   HttpStatusStrings,
   IFetchAdapater,
@@ -15,7 +16,7 @@ import {
   impersonationHeaders,
 } from "./fetch-adapter.types";
 
-export class FetchAdapter implements IFetchAdapater {
+export class FetchAdapter<T> implements IFetchAdapater<T> {
   private version: apiVersions;
   private impersonationHeaders?: impersonationHeaders;
   private authAdapter?: AuthAdapter;
@@ -23,11 +24,18 @@ export class FetchAdapter implements IFetchAdapater {
   private methods: HTTP_METHOD = "GET";
   private body?: Body = undefined;
   private params?: Params = undefined;
+  private successCallback?: () => void;
+  private errorCallback?: () => void;
 
-  public tags: string[] = [];
-  public pathParams: PathParams = {};
-  constructor() {
-    this.version = apiVersions.v1;
+  public tags: string[];
+  public pathParams: PathParams;
+  constructor(params: FetchAdapaterConstructor) {
+    this.url = params.url || "";
+    this.methods = params.methods;
+    this.pathParams = params.pathParams || {};
+    this.params = params.params;
+    this.tags = params.tags || [];
+    this.version = params.version || apiVersions.v1;
   }
 
   private getEndpointUrl(url: string, params?: { [key: string]: string }) {
@@ -78,17 +86,18 @@ export class FetchAdapter implements IFetchAdapater {
     return error;
   }
 
-  private formatResponse<T>(res: Response, onSuccess?: () => void): T {
+  private formatResponse(res: Response): T {
     if (res.ok) {
       if (res.headers.get("Content-Type") === "application/pdf") {
-        onSuccess?.();
+        this.successCallback?.();
         return res.blob() as T;
       }
 
-      onSuccess?.();
+      this.successCallback?.();
       return res.json() as T;
     }
 
+    this.errorCallback?.();
     throw this.createFetchError(res, this.mapHttpStatusToString);
   }
 
@@ -144,14 +153,29 @@ export class FetchAdapter implements IFetchAdapater {
     this.tags = tags;
     return this;
   }
+
+  public addTag(tag: string) {
+    this.tags.push(tag);
+    return this;
+  }
+
+  public setSuccessCallback(callback: () => void) {
+    this.successCallback = callback;
+    return this;
+  }
+
+  public setErrorCallback(callback: () => void) {
+    this.errorCallback = callback;
+    return this;
+  }
   public setImpersonationHeaders(impersonationHeaders: impersonationHeaders) {
     this.impersonationHeaders = impersonationHeaders;
     return this;
   }
 
-  public async request<T>(params?: Partial<FetchParams>): Promise<T> {
+  public async request(params?: Partial<FetchParams>): Promise<T> {
     const res = await this.fetch(params);
 
-    return this.formatResponse<T>(res);
+    return this.formatResponse(res);
   }
 }
