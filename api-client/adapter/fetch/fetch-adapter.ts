@@ -95,10 +95,8 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
 
       try {
         this.successCallback?.();
-        console.log("success");
         return (await res.json()) as T;
       } catch {
-        console.log("CATCH");
         return {} as T;
       }
     }
