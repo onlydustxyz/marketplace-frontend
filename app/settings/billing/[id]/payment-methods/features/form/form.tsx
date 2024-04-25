@@ -4,11 +4,12 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Money } from "utils/Money/Money";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Input } from "components/ds/form/input/input";
 import { Flex } from "components/layout/flex/flex";
 import { Translate } from "components/layout/translate/translate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Currencies } from "./currencies/currencies";
 

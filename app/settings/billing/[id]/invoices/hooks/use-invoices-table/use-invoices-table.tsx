@@ -7,12 +7,13 @@ import { components } from "src/__generated/api";
 import { Spinner } from "src/components/Spinner/Spinner";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
-import { useIntl } from "src/hooks/useIntl";
 import { getFormattedDateToLocaleDateString } from "src/utils/date";
 
 import { Button } from "components/ds/button/button";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function useInvoicesTable({ onDownloadInvoice, isDownloading }: TInvoiceTable.Props) {
   const { T } = useIntl();

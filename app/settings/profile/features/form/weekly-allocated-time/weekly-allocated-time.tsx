@@ -1,12 +1,13 @@
 import { Controller, useFormContext } from "react-hook-form";
 
 import FormSelect from "src/components/FormSelect";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Card } from "components/ds/card/card";
 import { Toggle } from "components/ds/form/toggle/toggle";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TProfileForm } from "../form.types";
 

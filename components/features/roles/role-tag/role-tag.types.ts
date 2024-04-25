@@ -1,6 +1,6 @@
-import { Key } from "src/hooks/useIntl";
-
 import { TIcon } from "components/layout/icon/icon.types";
+
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TRoleTag {
   export interface Props {

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { useIntl } from "src/hooks/useIntl";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { SearchBar } from "../../components/search-bar/search-bar";
 import { ProjectsContext } from "../../context/project.context";

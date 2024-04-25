@@ -7,11 +7,12 @@ import PrivateTag from "src/components/PrivateTag";
 import RoundedImage from "src/components/RoundedImage";
 import Tag, { TagSize } from "src/components/Tag";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import FundsLine from "src/icons/FundsLine";
 import StarLine from "src/icons/StarLine";
 import User3Line from "src/icons/User3Line";
 import displayRelativeDate from "src/utils/displayRelativeDate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export default function ProjectCard({ project }: { project: components["schemas"]["UserProfileProjects"] }) {
   const {

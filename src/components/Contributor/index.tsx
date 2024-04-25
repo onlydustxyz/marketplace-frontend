@@ -3,11 +3,12 @@ import { SyntheticEvent } from "react";
 import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { IMAGES } from "src/assets/img";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import { ContributorT } from "src/types";
 import { cn } from "src/utils/cn";
 
 import { Link } from "components/ds/link/link";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Avatar } from "../New/Avatar";
 

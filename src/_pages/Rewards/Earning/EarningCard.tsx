@@ -1,4 +1,3 @@
-import { useIntl } from "src/hooks/useIntl";
 import Folder from "src/icons/FolderLine";
 import HandCoinLine from "src/icons/HandCoinLine";
 import Loader3Line from "src/icons/Loader3Line";
@@ -7,6 +6,8 @@ import { DetailedTotalMoney } from "src/types";
 import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Amount } from "./Amount";
 import { Counter } from "./Counter";

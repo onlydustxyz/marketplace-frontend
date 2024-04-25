@@ -1,5 +1,6 @@
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export const GithubRepositoryCount = ({ selected, total }: { selected: number; total: number }) => {
   const { T } = useIntl();

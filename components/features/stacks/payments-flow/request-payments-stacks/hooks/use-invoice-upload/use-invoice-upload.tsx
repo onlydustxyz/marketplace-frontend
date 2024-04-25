@@ -3,11 +3,12 @@ import { useState } from "react";
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { useShowToaster } from "src/hooks/useToaster";
 
 import { TUseInvoiceUpload } from "components/features/stacks/payments-flow/request-payments-stacks/hooks/use-invoice-upload/use-invoice-upload.types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function useInvoiceUpload({ billingProfileId, invoiceId }: TUseInvoiceUpload.Props) {
   const { T } = useIntl();

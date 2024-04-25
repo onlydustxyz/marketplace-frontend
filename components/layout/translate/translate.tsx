@@ -1,6 +1,6 @@
 "use client";
 
-import { useIntl } from "src/hooks/useIntl";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TTranslate } from "./translate.types";
 

@@ -4,7 +4,6 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import MeApi from "src/api/me/index";
-import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
@@ -12,6 +11,8 @@ import { useImpersonation } from "components/features/impersonation/use-imperson
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 const ImpersonationPage = () => {
   const { T } = useIntl();

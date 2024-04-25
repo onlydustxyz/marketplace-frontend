@@ -1,7 +1,8 @@
 import OnlyDustLogo, { OnlyDustLogoWidth } from "src/App/Layout/Header/OnlyDustLogo";
 import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props = {
   start: () => void;

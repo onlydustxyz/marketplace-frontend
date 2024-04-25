@@ -14,7 +14,6 @@ import { useStackBillingInviteTeamMember } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
 import { IMAGES } from "src/assets/img";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
 import { Table } from "components/ds/table/table";
@@ -26,6 +25,7 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 function CoworkersPage() {

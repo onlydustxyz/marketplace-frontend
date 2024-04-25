@@ -1,10 +1,11 @@
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
 import { FilterField } from "src/components/New/Filter/FilterField";
-import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import { GithubContributionType } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function FilterTypeOptions({
   selected,

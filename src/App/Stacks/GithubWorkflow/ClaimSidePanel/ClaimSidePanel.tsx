@@ -8,8 +8,9 @@ import useMutationAlert from "src/api/useMutationAlert";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { useStackGithubWorkflowClaim } from "../../Stacks";
 import { ClaimUtils } from "./claim.utils";

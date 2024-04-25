@@ -1,8 +1,9 @@
-import { useIntl } from "src/hooks/useIntl";
 import FolderLine from "src/icons/FolderLine";
 
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
 import { SelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TFiltersProjects } from "./filters-projects.types";
 

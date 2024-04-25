@@ -1,7 +1,8 @@
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 import SendPlane2Line from "src/icons/SendPlane2Line";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export default function TutorialSidePanelHelp() {
   const { T } = useIntl();

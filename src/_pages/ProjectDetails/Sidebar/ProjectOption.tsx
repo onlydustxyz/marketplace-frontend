@@ -4,9 +4,10 @@ import { components } from "src/__generated/api";
 import ShootingStar from "src/assets/icons/ShootingStar";
 import { IMAGES } from "src/assets/img";
 import RoundedImage from "src/components/RoundedImage";
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 interface Props {
   project: components["schemas"]["ProjectLedShortResponse"];

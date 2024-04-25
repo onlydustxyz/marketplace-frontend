@@ -5,8 +5,9 @@ import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
 import MessagePlaceholder from "src/components/New/Placeholders/MessagePlaceholder";
 import Skeleton from "src/components/Skeleton";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
 import TeamLine from "src/icons/TeamLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export default function NewcomersContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();

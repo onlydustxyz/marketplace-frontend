@@ -5,7 +5,8 @@ import { SUMSUB_CONST } from "app/api/sumsub-token/constants";
 import { useStackFeedback, useStackVerify } from "src/App/Stacks/Stacks";
 import { UseGetBillingProfileById } from "src/api/BillingProfiles/queries";
 import { MeTypes } from "src/api/me/types";
-import { Key } from "src/hooks/useIntl";
+
+import { Key } from "hooks/translate/use-translate";
 
 export interface UseBillingButton {
   label: Key;

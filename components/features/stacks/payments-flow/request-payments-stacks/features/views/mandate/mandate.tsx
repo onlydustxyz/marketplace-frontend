@@ -4,7 +4,6 @@ import { useStackMandate } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/ds/button/button";
@@ -15,6 +14,8 @@ import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function Mandate({ goTo, billingProfileId }: TMandate.Props) {
   const { T } = useIntl();

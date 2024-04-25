@@ -1,6 +1,7 @@
 import { IMAGES } from "src/assets/img";
-import { useIntl } from "src/hooks/useIntl";
 import { WorkItemType } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 const itemTypes = {
   [WorkItemType.Issue]: "project.details.edit.fields.rewardableContributions.issues",

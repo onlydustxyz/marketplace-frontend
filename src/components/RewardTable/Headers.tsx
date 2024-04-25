@@ -2,10 +2,11 @@ import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTab
 import Amount from "src/assets/icons/Amount";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
-import { useIntl } from "src/hooks/useIntl";
 import FocusLine from "src/icons/FocusLine";
 import Folder3Line from "src/icons/Folder3Line";
 import TimeLine from "src/icons/TimeLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { SortField, Sorting } from "./useQueryParamsSorting";
 

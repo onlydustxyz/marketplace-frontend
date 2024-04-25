@@ -12,7 +12,6 @@ import ProjectApi from "src/api/Project";
 import { CompletedRewardableItem } from "src/api/Project/queries";
 import MeApi from "src/api/me";
 import Skeleton from "src/components/Skeleton";
-import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
@@ -20,6 +19,8 @@ import { useShowToaster } from "src/hooks/useToaster";
 import { ProjectBudgetType } from "src/types";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import View from "./View";
 import { RewardableWorkItem } from "./WorkItemSidePanel/WorkItems/WorkItems";

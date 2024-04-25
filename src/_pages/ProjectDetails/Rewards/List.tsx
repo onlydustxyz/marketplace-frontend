@@ -14,10 +14,11 @@ import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSort
 import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
-import { useIntl } from "src/hooks/useIntl";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";

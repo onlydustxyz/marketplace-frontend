@@ -3,11 +3,12 @@ import { RegisterOptions, useFormContext } from "react-hook-form";
 
 import Input, { Size } from "src/components/FormInput";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
 import EyeLine from "src/icons/EyeLine";
 import EyeOffLine from "src/icons/EyeOffLine";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props = {
   icon: ReactElement;

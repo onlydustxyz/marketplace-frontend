@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { ElementType } from "react";
 
-import { Key, useIntl } from "src/hooks/useIntl";
-
 import { Button } from "components/ds/button/button";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { Key, useIntl } from "hooks/translate/use-translate";
 
 interface Token {
   token: Key;

@@ -2,12 +2,13 @@ import { debounce } from "lodash";
 import { Key, useCallback, useEffect, useMemo, useState } from "react";
 
 import ProjectApi from "src/api/Project";
-import { useIntl } from "src/hooks/useIntl";
 import { ProjectPageItemResponse } from "src/types";
 
 import { TUseSearchProjects } from "components/features/search-projects/hooks/use-search-projects.types";
 import { SelectableProjectItem } from "components/features/search-projects/selectable-item/selectable-item";
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function useSearchProjects({
   onSelectProjects,

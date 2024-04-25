@@ -4,7 +4,6 @@ import { Money } from "utils/Money/Money";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import User3Line from "src/icons/User3Line";
@@ -13,6 +12,8 @@ import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Amount } from "./Amount";
 import { Counter } from "./Counter";

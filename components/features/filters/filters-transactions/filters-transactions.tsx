@@ -1,8 +1,8 @@
-import { useIntl } from "src/hooks/useIntl";
-
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
 import { SelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete";
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TFiltersTransactions } from "./filters-transactions.types";
 

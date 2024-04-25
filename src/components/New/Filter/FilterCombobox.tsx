@@ -3,10 +3,11 @@ import { debounce } from "lodash";
 import { useState } from "react";
 
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function FilterCombobox<T>({
   items,

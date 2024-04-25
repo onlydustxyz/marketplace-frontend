@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-import { Key } from "src/hooks/useIntl";
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TProfileItem {
   export interface Props extends PropsWithChildren {

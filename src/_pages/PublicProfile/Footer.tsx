@@ -2,10 +2,11 @@ import { useMediaQuery } from "usehooks-ts";
 
 import { IMAGES } from "src/assets/img";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export default function Footer() {
   const { T } = useIntl();

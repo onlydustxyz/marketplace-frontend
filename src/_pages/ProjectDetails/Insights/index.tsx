@@ -2,8 +2,9 @@ import { useParams } from "next/navigation";
 
 import ProjectApi from "src/api/Project";
 import Flex from "src/components/Utils/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import Title from "../Title";
 import { EditProjectButton } from "../components/EditProjectButton";

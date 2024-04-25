@@ -8,13 +8,14 @@ import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { IMAGES } from "src/assets/img";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import LockFill from "src/icons/LockFill";
 
 import { SelectableTagItem } from "components/ds/form/selectable-tag/selectable-tag-item/selectable-tag-item";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export interface ProjectOverviewHeaderProps {
   project: UseGetProjectBySlugResponse;

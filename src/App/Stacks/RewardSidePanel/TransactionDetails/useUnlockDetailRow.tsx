@@ -1,5 +1,6 @@
-import { useIntl } from "src/hooks/useIntl";
 import { formatDateTime } from "src/utils/date";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function useUnlockDetailRow({
   unlockDateRelativeToNowStatus,

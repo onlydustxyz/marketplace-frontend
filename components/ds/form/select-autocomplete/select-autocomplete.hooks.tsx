@@ -1,7 +1,7 @@
 import { isArray } from "lodash";
 import { useMemo, useState } from "react";
 
-import { useIntl } from "src/hooks/useIntl";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TSelectAutocomplete } from "./select-autocomplete.types";
 import { SelectAutocompleteUtils as Utils } from "./select-autocomplete.utils";

@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 
 import PrivateTag from "src/components/PrivateTag";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { Avatar } from "components/ds/avatar/avatar";
@@ -12,6 +11,8 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { ProjectTags } from "../../features/project-tags/project-tags";
 import { ContributorsCounter } from "./contributors-counter/contributors-counter";

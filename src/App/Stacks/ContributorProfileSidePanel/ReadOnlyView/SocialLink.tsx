@@ -1,8 +1,9 @@
-import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import { copyClickHandlerFactory } from "src/utils/clickHandler";
 
 import { Button } from "components/ds/button/button";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 interface SocialLinkProps extends React.PropsWithChildren {
   link?: string;

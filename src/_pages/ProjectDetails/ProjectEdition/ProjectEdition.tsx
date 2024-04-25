@@ -16,7 +16,6 @@ import { Spinner } from "src/components/Spinner/Spinner";
 import { Tabs } from "src/components/Tabs/Tabs";
 import Center from "src/components/Utils/Center";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import { usePooling } from "src/hooks/usePooling/usePooling";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CloseLine from "src/icons/CloseLine";
@@ -29,6 +28,8 @@ import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRe
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import StillFetchingBanner from "../Banners/StillFetchingBanner";
 import Title from "../Title";

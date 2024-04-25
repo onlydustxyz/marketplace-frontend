@@ -2,9 +2,9 @@ import { TableBodyProps, TableCellProps, TableColumnProps, TableHeaderProps, Tab
 import { ComponentProps, ReactNode } from "react";
 import { TableRowProps } from "react-markdown/lib/ast-to-react";
 
-import { Key } from "src/hooks/useIntl";
-
 import { Icon } from "components/layout/icon/icon";
+
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TTable {
   export type Base = Omit<TableProps, "aria-label" | "classNames" | "removeWrapper">;

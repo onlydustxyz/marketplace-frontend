@@ -2,13 +2,13 @@ import { ComponentProps } from "react";
 
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { cn } from "src/utils/cn";
 
 import { Link } from "components/ds/link/link";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import Contributor from "../Contributor";

@@ -1,9 +1,10 @@
 import Telegram from "src/assets/icons/Telegram";
 import ContactInformation from "src/components/ContactInformations/ContactInformation";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function Contact() {
   const { T } = useIntl();

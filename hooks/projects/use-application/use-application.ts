@@ -2,7 +2,8 @@ import { useMemo } from "react";
 
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TUseApplication } from "./use-application.types";
 

@@ -11,11 +11,12 @@ import { ContributionTable, TableColumns, type TableSort } from "src/components/
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
-import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import { ContributionStatus, OrderBy } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { ContributionsFilter, ContributionsFilterRef, FilterQueryParams } from "./Filter";
 import { useContributionTable } from "./useContributionTable";

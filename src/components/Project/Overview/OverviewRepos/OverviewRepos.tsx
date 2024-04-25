@@ -5,9 +5,10 @@ import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import Badge, { BadgeSize } from "src/components/Badge";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
 import GithubRepoDetails from "src/components/Project/Overview/OverviewRepos/GithubRepoDetails";
-import { useIntl } from "src/hooks/useIntl";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export interface ProjectOverviewReposProps {
   project: UseGetProjectBySlugResponse;

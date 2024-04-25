@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import { useIntl } from "src/hooks/useIntl";
 import { getFilteredTechnologies } from "src/utils/technologies";
 
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import Section, { SectionIcon } from "./OverviewSection";
 

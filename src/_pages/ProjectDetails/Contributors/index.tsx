@@ -16,7 +16,6 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import EyeOffLine from "src/icons/EyeOffLine";
 import { RewardDisabledReason } from "src/types";
@@ -25,6 +24,7 @@ import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedR
 import { Card } from "components/ds/card/card";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";

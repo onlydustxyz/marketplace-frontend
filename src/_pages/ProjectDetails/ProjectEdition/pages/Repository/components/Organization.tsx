@@ -6,10 +6,11 @@ import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { VerticalListItemCard } from "src/components/New/Cards/VerticalListItemCard";
-import { useIntl } from "src/hooks/useIntl";
 import GithubLogo from "src/icons/GithubLogo";
 import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { EditContext } from "../../../EditContext";
 import { Repository } from "./Repository";

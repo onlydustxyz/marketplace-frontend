@@ -17,13 +17,14 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { useShowToaster } from "src/hooks/useToaster";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";

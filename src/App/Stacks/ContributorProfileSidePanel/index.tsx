@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import UsersApi from "src/api/Users";
 import MeApi from "src/api/me";
 import { NotFound } from "src/components/NotFound";
-import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { useShowToaster } from "src/hooks/useToaster";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import View from "./View";

@@ -8,7 +8,6 @@ import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import useMutationAlert from "src/api/useMutationAlert";
 import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 import { useCloseStack } from "src/libs/react-stack";
 
 import { Button } from "components/ds/button/button";
@@ -22,6 +21,7 @@ import { Typography } from "components/layout/typography/typography";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TBillingCreateStack } from "./billing-create-stack.types";
 

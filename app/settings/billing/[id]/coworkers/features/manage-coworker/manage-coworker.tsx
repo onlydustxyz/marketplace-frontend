@@ -3,12 +3,13 @@ import { useMemo, useState } from "react";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { ConfirmationModal } from "components/ds/modals/confirmation/confirmation";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TManageCoworker } from "./manage-coworker.types";
 

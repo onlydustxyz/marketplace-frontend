@@ -5,7 +5,6 @@ import SponsorApi from "src/api/Sponsors";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
-import { useIntl } from "src/hooks/useIntl";
 import { useCloseStack } from "src/libs/react-stack";
 import { cn } from "src/utils/cn";
 
@@ -19,6 +18,7 @@ import { TSponsorProjectStack } from "components/features/stacks/sponsor-project
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { Label } from "./components/label/label";

@@ -1,7 +1,6 @@
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import TimeLine from "src/icons/TimeLine";
 import { ContributionStatus, Contribution as ContributionT } from "src/types";
@@ -11,6 +10,7 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
+import { useIntl } from "hooks/translate/use-translate";
 
 import Contributor from "../Contributor";
 

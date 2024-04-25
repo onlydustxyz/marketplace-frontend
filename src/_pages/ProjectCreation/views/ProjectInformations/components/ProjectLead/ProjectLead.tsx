@@ -6,8 +6,8 @@ import UsersApi from "src/api/Users";
 import { Combobox, Variant } from "src/components/New/Field/Combobox/Combobox";
 import { ItemType } from "src/components/New/Field/Combobox/MultiList";
 import { FieldLabel } from "src/components/New/Field/Label";
-import { useIntl } from "src/hooks/useIntl";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";

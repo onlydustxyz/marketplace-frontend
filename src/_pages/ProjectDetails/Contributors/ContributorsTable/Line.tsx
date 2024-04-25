@@ -7,12 +7,13 @@ import { AvailableConversion, AvailableConversionCurrency } from "src/components
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
 import EyeOffLine from "src/icons/EyeOffLine";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import { RewardDisabledReason } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props<C> = {
   contributor: C;

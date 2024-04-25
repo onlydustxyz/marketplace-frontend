@@ -11,9 +11,10 @@ import { withBillingProfileAdminGuard } from "app/settings/components/billing-pr
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
-import { Key, useIntl } from "src/hooks/useIntl";
 
 import { withClientOnly } from "components/layout/client-only/client-only";
+
+import { Key, useIntl } from "hooks/translate/use-translate";
 
 import { FormFooter } from "../../../components/form-footer/form-footer";
 import { PayoutForm } from "./features/form/form";
