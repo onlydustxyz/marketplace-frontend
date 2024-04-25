@@ -76,7 +76,6 @@ export function StatusTag({ status, projectId, billingProfileId, date, className
           },
         };
     }
-
     return {};
   }, [projectId, status]);
 
