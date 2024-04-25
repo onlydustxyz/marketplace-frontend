@@ -48,7 +48,9 @@
       "description": "You need to include rewards to request their payment."
     },
     "billingProfileTitle": "Billing profile",
-    "selectedTitle": "Select Rewards"
+    "selectedTitle": "Select Rewards",
+    "selectAll": "Select all",
+    "unselectAll": "Unselect all"
   },
   "invoiceSubmission": {
     "toaster": {

@@ -66,9 +66,25 @@ export function SelectRewards({
     }
   };
 
-  function isRewardsInclude(rewardId: string) {
-    return includedRewards.some(reward => reward.id === rewardId);
-  }
+  const rewardList = useMemo(() => {
+    function isRewardsInclude(rewardId: string) {
+      return includedRewards.some(reward => reward.id === rewardId);
+    }
+
+    return rewards.map(reward => {
+      const isIncluded = isRewardsInclude(reward.id);
+      const event = isIncluded ? onExclude : onInclude;
+      return (
+        <RewardItem
+          key={reward.id}
+          type={isIncluded ? "include" : "exclude"}
+          onClick={event}
+          {...reward}
+          currency={reward.amount}
+        />
+      );
+    });
+  }, [rewards, includedRewards, excludedRewards]);
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -113,21 +129,7 @@ export function SelectRewards({
                   />
                 </div>
               ) : (
-                <>
-                  {rewards.map(reward => {
-                    const isIncluded = isRewardsInclude(reward.id);
-                    const event = isIncluded ? onExclude : onInclude;
-                    return (
-                      <RewardItem
-                        key={reward.id}
-                        type={isIncluded ? "include" : "exclude"}
-                        onClick={event}
-                        {...reward}
-                        currency={reward.amount}
-                      />
-                    );
-                  })}
-                </>
+                rewardList
               )}
             </div>
           </div>

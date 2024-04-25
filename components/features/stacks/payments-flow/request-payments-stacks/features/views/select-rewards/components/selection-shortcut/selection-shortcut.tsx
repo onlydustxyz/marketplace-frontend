@@ -2,6 +2,7 @@ import { cn } from "src/utils/cn";
 
 import { Link } from "components/ds/link/link";
 import { Flex } from "components/layout/flex/flex";
+import { Translate } from "components/layout/translate/translate";
 
 import { TSelectionShortcut } from "./selection-shortcut.types";
 
@@ -19,7 +20,7 @@ export function SelectionShortcut({
         })}
         onClick={onIncludeAll}
       >
-        Select all
+        <Translate token={"v2.pages.stacks.request_payments.selectRewards.selectAll"} />
       </Link.Button>
       <Link.Button
         className={cn("border-l border-l-card-border-light pl-2 text-spacePurple-500", {
@@ -27,7 +28,7 @@ export function SelectionShortcut({
         })}
         onClick={onExcludeAll}
       >
-        Deselect all
+        <Translate token={"v2.pages.stacks.request_payments.selectRewards.unselectAll"} />
       </Link.Button>
     </Flex>
   );
