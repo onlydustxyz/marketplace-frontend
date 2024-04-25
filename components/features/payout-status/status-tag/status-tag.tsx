@@ -55,7 +55,7 @@ export function StatusTag({
     switch (status) {
       case PaymentStatus.PAYOUT_INFO_MISSING:
         return {
-          onClick: (e: MouseEvent) => {
+          onClick: (e: Event) => {
             e.preventDefault();
             e.stopPropagation();
             closeRewardPanel();
@@ -64,7 +64,7 @@ export function StatusTag({
         };
       case PaymentStatus.PENDING_VERIFICATION:
         return {
-          onClick: (e: MouseEvent) => {
+          onClick: (e: Event) => {
             e.preventDefault();
             e.stopPropagation();
             closeRewardPanel();
@@ -74,7 +74,7 @@ export function StatusTag({
       case PaymentStatus.PENDING_BILLING_PROFILE:
       case PaymentStatus.INDIVIDUAL_LIMIT_REACHED:
         return {
-          onClick: (e: MouseEvent) => {
+          onClick: (e: Event) => {
             e.preventDefault();
             e.stopPropagation();
             closeRewardPanel();
