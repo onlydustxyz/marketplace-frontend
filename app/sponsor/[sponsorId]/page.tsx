@@ -1,8 +1,10 @@
 "use client";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { withSponsorGuard } from "utils/guards/sponsor-guard";
 
 import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -44,4 +46,4 @@ function SponsorPage() {
   );
 }
 
-export default withSponsorGuard(SponsorPage);
+export default withClientOnly(withAuthenticationRequired(withSponsorGuard(SponsorPage)));
