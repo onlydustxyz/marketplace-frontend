@@ -7,5 +7,6 @@ export namespace TStatusTag {
     className?: string;
     projectId?: string;
     billingProfileId?: string;
+    shouldRedirect?: boolean;
   }
 }

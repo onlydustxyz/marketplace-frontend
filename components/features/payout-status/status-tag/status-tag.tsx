@@ -19,7 +19,14 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 
-export function StatusTag({ status, projectId, billingProfileId, date, className }: TStatusTag.Props) {
+export function StatusTag({
+  status,
+  projectId,
+  billingProfileId,
+  date,
+  className,
+  shouldRedirect = false,
+}: TStatusTag.Props) {
   const router = useRouter();
   const closeRewardPanel = useCloseStack();
   const dateRelativeToNow = date ? compareDateToNow(date) : undefined;
@@ -44,9 +51,9 @@ export function StatusTag({ status, projectId, billingProfileId, date, className
   );
 
   const additionalArgs = useMemo(() => {
+    if (!billingProfileId || !shouldRedirect) return {};
     switch (status) {
       case PaymentStatus.PAYOUT_INFO_MISSING:
-        if (!billingProfileId) return {};
         return {
           onClick: (e: MouseEvent) => {
             e.preventDefault();
@@ -56,7 +63,6 @@ export function StatusTag({ status, projectId, billingProfileId, date, className
           },
         };
       case PaymentStatus.PENDING_VERIFICATION:
-        if (!billingProfileId) return {};
         return {
           onClick: (e: MouseEvent) => {
             e.preventDefault();
@@ -81,10 +87,11 @@ export function StatusTag({ status, projectId, billingProfileId, date, className
 
   const renderIcon = useMemo(() => {
     if (
-      status === PaymentStatus.PAYOUT_INFO_MISSING ||
-      status === PaymentStatus.PENDING_VERIFICATION ||
-      status === PaymentStatus.PENDING_BILLING_PROFILE ||
-      status === PaymentStatus.INDIVIDUAL_LIMIT_REACHED
+      (status === PaymentStatus.PAYOUT_INFO_MISSING ||
+        status === PaymentStatus.PENDING_VERIFICATION ||
+        status === PaymentStatus.PENDING_BILLING_PROFILE ||
+        status === PaymentStatus.INDIVIDUAL_LIMIT_REACHED) &&
+      shouldRedirect
     ) {
       return <Icon remixName="ri-arrow-right-s-line" size={16} />;
     }

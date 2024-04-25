@@ -9,6 +9,7 @@ export namespace TPayoutStatus {
     };
     projectId?: string;
     billingProfileId?: string;
+    shouldRedirect?: boolean;
   }
 
   export type PaymentStatusUnion = `${PaymentStatus}`;
