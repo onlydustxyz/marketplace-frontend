@@ -62,7 +62,7 @@ export function LimitReachedHeader() {
           description={<Translate token={"v2.features.banners.limitReached.description"} />}
           variant={"red"}
           hasBorder={false}
-          size={"s"}
+          size={"m"}
           endElement={renderEndElement}
         />
       );
