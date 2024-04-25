@@ -46,6 +46,14 @@ export function RequestPaymentsStacks() {
     setExcludedRewardsIds(prev => prev.filter(i => i !== id));
   }
 
+  function onExcludeAll() {
+    setExcludedRewardsIds(excludeNonLiquidToken.map(({ id }) => id));
+  }
+
+  function onIncludeAll() {
+    setExcludedRewardsIds([]);
+  }
+
   function onSelectBillingProfile(id: string) {
     setSelectedBillingProfileId(id);
   }
@@ -63,8 +71,11 @@ export function RequestPaymentsStacks() {
         goTo={onNextView}
         onExclude={onExclude}
         onInclude={onInclude}
+        onExcludeAll={onExcludeAll}
+        onIncludeAll={onIncludeAll}
         includedRewards={includedRewards}
         excludedRewards={excludedRewards}
+        rewards={excludeNonLiquidToken}
         billingProfileId={selectedBillingProfileId}
       />
     );
