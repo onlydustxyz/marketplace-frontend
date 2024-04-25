@@ -6,7 +6,6 @@ import { TSidebarBilling } from "app/settings/components/sidebar/sidebar-billing
 
 import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
 import MeApi from "src/api/me";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Table } from "components/ds/table/table";
@@ -19,6 +18,7 @@ import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
+import { useIntl } from "hooks/translate/use-translate";
 
 export function PayoutPreferencesTable() {
   const { T } = useIntl();

@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 
-import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 interface Props {
   mutation?: {

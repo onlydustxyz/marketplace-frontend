@@ -5,8 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
 import { ToasterProvider } from "src/hooks/useToaster";
 
+import { IntlProvider } from "hooks/translate/use-translate";
+
 import { Stacks } from "../../src/App/Stacks/Stacks";
-import { IntlProvider } from "../../src/hooks/useIntl";
 import { SidePanelStackProvider } from "../../src/hooks/useSidePanelStack";
 import { StackProvider } from "../../src/libs/react-stack";
 

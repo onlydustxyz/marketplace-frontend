@@ -11,12 +11,13 @@ import useMutationAlert from "src/api/useMutationAlert";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Input from "src/components/FormInput";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Link from "src/icons/Link";
 import { WorkItemType } from "src/types";
 import { cn } from "src/utils/cn";
 import { REGEX_VALID_GITHUB_ISSUE_URL, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/utils/github";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props = {
   projectId: string;

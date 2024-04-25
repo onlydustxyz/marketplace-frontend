@@ -1,10 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
-import { useIntl } from "src/hooks/useIntl";
 import GithubLogo, { Size } from "src/icons/GithubLogo";
 import { cn } from "src/utils/cn";
 
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export enum Variant {
   Default = "default",

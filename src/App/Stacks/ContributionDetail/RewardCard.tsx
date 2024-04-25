@@ -4,7 +4,6 @@ import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
-import { useIntl } from "src/hooks/useIntl";
 import TimeLine from "src/icons/TimeLine";
 import { ContributionDetail } from "src/types";
 import { cn } from "src/utils/cn";
@@ -13,6 +12,8 @@ import { formatPaymentId } from "src/utils/formatPaymentId";
 
 import { Link } from "components/ds/link/link";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function RewardCard({
   reward,

@@ -1,13 +1,14 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { TCurrencyBudget } from "components/features/currency/currency-budget/currency-budget.types";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 function BudgetInfoRow({ label, amount, currency, isWarning }: TCurrencyBudget.BudgetInfoRowProps) {
   return (

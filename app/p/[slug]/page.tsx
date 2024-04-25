@@ -10,7 +10,6 @@ import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import Skeleton from "src/components/Skeleton";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
@@ -22,6 +21,7 @@ import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 
 import { useApplication } from "hooks/projects/use-application/use-application";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { ClaimBanner } from "./components/banner/claim-banner/claim-banner";
 import { MissingGithubAppInstallBanner } from "./components/banner/missing-github-app-install-banner/missing-github-app-install-banner";

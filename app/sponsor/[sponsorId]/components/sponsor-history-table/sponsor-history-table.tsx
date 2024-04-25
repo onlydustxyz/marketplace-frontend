@@ -17,7 +17,6 @@ import { Period } from "src/components/New/Field/Datepicker";
 import { FilterDatepicker } from "src/components/New/Filter/FilterDatepicker";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
-import { useIntl } from "src/hooks/useIntl";
 import { allTime, formatDateQueryParam } from "src/utils/date";
 
 import { Avatar } from "components/ds/avatar/avatar";
@@ -32,6 +31,8 @@ import { FiltersTransactions } from "components/features/filters/filters-transac
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 const initialFilters: Required<TSponsorHistoryTable.Filters> = {
   dateRange: allTime,

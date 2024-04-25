@@ -1,7 +1,8 @@
 import { PropsWithChildren } from "react";
 
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 interface Props extends PropsWithChildren {
   visible: boolean;

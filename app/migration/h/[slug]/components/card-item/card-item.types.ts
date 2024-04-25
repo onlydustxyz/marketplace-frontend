@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react";
 
-import { Key } from "src/hooks/useIntl";
-
 import { TIcon } from "components/layout/icon/icon.types";
+
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TCardItem {
   export interface Props extends PropsWithChildren {

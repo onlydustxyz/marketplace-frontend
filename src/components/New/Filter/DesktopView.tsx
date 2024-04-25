@@ -3,11 +3,12 @@ import { PropsWithChildren } from "react";
 
 import FilterIcon from "src/assets/icons/FilterIcon";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 import Refresh from "src/icons/Refresh";
 import { cn } from "src/utils/cn";
 
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export enum FilterPosition {
   Left,

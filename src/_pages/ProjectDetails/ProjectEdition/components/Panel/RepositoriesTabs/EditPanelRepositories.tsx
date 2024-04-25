@@ -2,9 +2,10 @@ import { useContext, useMemo, useRef, useState } from "react";
 
 import { FieldInput } from "src/components/New/Field/Input";
 import { Flex } from "src/components/New/Layout/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 import SearchLine from "src/icons/SearchLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { EditContext } from "../../../EditContext";
 import { Organization } from "./components/Organization";

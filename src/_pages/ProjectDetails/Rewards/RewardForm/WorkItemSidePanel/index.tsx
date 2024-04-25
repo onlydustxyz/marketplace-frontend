@@ -5,10 +5,11 @@ import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import SidePanel from "src/components/SidePanel";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import { WorkItemType } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Contributor } from "../types";
 import OtherWorkForm from "./OtherWorkForm";

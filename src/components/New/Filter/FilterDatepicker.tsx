@@ -2,10 +2,11 @@ import { ComponentProps } from "react";
 import { DateRange } from "react-day-picker";
 
 import { Datepicker } from "src/components/New/Field/Datepicker";
-import { useIntl } from "src/hooks/useIntl";
 
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
 import { TFilterFieldContainer } from "components/ds/Filters/field-container/field-container.types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { useDatepickerPeriods } from "./FilterDatepicker.hooks";
 

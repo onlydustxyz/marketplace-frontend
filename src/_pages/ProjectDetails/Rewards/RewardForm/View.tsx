@@ -21,10 +21,11 @@ import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
 import { RewardBudgetChangeProps } from "src/components/RewardBudget/RewardBudget.type";
 import Skeleton from "src/components/Skeleton";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
 import CloseLine from "src/icons/CloseLine";
 import { GithubContributionType, ProjectBudgetType } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { AutoAddOrIgnore } from "./AutoAdd/AutoAddOrIgnore";
 import { WorkItem } from "./WorkItem";

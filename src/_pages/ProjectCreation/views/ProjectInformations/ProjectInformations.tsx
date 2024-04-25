@@ -12,9 +12,10 @@ import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { CreateProjectContext } from "../../ProjectCreation.context";
 import { CreateFormData } from "../../types/ProjectCreationType";

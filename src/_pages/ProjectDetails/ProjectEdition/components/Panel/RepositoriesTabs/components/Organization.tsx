@@ -5,11 +5,12 @@ import { EditContext } from "src/_pages/ProjectDetails/ProjectEdition/EditContex
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import { VerticalListItemDrop } from "src/components/New/Cards/VerticalListItemDrop";
 import { Flex } from "src/components/New/Layout/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import InformationLine from "src/icons/InformationLine";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
 
 import { AddMissingRepositories } from "components/features/add-missing-repositories/add-missing-repositories";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Repository } from "./Repository";
 

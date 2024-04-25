@@ -8,7 +8,6 @@ import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
 import { TooltipPosition, Variant as TooltipVariant } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
@@ -16,6 +15,8 @@ import User3Line from "src/icons/User3Line";
 import { Contribution as ContributionT, GithubContributionType } from "src/types";
 
 import { Link } from "components/ds/link/link";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function useContributionTable() {
   const { T } = useIntl();

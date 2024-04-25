@@ -1,8 +1,9 @@
-import { useIntl } from "src/hooks/useIntl";
 import User3Line from "src/icons/User3Line";
 
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
 import { SelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TFiltersUsers } from "./filters-users.types";
 

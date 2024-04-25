@@ -7,12 +7,13 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { FieldInput } from "src/components/New/Field/Input";
 import { SortableList } from "src/components/New/Sortable/SortableList";
 import Flex from "src/components/Utils/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
 import DeleteBinLine from "src/icons/DeleteBinLine";
 import Draggable from "src/icons/Draggable";
 import { MoreInfosField as MoreInfosFieldType } from "src/types";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { EditFormData } from "../../../EditContext";
 import { SocialIcon } from "./SocialIcon";

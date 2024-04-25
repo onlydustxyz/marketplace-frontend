@@ -5,7 +5,6 @@ import { useMediaQuery } from "usehooks-ts";
 
 import MenuItem from "src/App/Layout/Header/MenuItem";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Link } from "components/ds/link/link";
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -13,6 +12,7 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { GithubStatusBanner } from "./GithubStatusBanner";
 import OnlyDustLogo from "./OnlyDustLogo";

@@ -12,7 +12,6 @@ import ProjectApi from "src/api/Project";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import MeApi from "src/api/me";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
-import { useIntl } from "src/hooks/useIntl";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -21,6 +20,8 @@ import { MoreInfosField } from "src/types";
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
 import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";

@@ -1,12 +1,13 @@
 import { SortField, Sorting } from "src/components/RewardTable/useQueryParamsSorting";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
-import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import SortingArrow from "./SortingArrow";
 

@@ -2,13 +2,14 @@ import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTab
 import { SortField, Sorting } from "src/components/RewardTable/useQueryParamsSorting";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
-import { useIntl } from "src/hooks/useIntl";
 import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
 
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export enum Fields {
   Date = "REQUESTED_AT",

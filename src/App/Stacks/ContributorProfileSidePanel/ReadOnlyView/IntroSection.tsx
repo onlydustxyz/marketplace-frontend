@@ -6,7 +6,6 @@ import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CompletionBar from "src/components/CompletionBar";
 import MarkdownPreview from "src/components/MarkdownPreview";
-import { useIntl } from "src/hooks/useIntl";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
@@ -20,6 +19,8 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import SocialLink from "./SocialLink";
 

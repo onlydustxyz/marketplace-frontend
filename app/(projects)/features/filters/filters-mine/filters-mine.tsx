@@ -1,10 +1,10 @@
 import { useContext } from "react";
 
-import { useIntl } from "src/hooks/useIntl";
-
 import { Toggle } from "components/ds/form/toggle/toggle";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { ProjectsContext } from "../../../context/project.context";
 

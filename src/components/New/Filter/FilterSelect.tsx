@@ -3,10 +3,11 @@ import { Listbox, Transition } from "@headlessui/react";
 import { ReactElement, useCallback } from "react";
 
 import { IMAGES } from "src/assets/img";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Avatar } from "../Avatar";
 

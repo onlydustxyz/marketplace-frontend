@@ -2,7 +2,6 @@ import BillingProfilesApi from "src/api/BillingProfiles";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Toggle } from "components/ds/form/toggle/toggle";
 import { Tooltip } from "components/ds/tooltip/tooltip";
@@ -10,6 +9,8 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TTeamworkMode } from "./teamwork-mode.types";
 

@@ -2,7 +2,6 @@ import { ComponentProps } from "react";
 
 import { ContributionIcon, Sizes } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
@@ -15,6 +14,8 @@ import { cn } from "src/utils/cn";
 import { getFormattedDateGB, getFormattedTimeUS } from "src/utils/date";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 const tokens: GithubTypeStatusDict<string> = {
   [GithubContributionType.PullRequest]: {

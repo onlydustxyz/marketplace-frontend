@@ -4,11 +4,12 @@ import Button, { ButtonType } from "src/components/Button";
 import { Flex } from "src/components/New/Layout/Flex";
 import { Spinner } from "src/components/Spinner/Spinner";
 import Tag, { TagSize } from "src/components/Tag";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CheckLine from "src/icons/CheckLine";
 import LockFill from "src/icons/LockFill";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props = {
   title: string;

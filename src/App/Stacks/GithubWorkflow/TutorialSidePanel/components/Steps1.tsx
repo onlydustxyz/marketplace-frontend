@@ -1,8 +1,9 @@
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Link } from "src/components/Link/Link";
-import { useIntl } from "src/hooks/useIntl";
 import GithubLogo from "src/icons/GithubLogo";
 import { OAuthGithubConfigLink } from "src/utils/githubSetupLink";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export default function TutorialSidePanelSteps1() {
   const { T } = useIntl();

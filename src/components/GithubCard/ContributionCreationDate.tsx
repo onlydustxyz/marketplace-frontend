@@ -2,12 +2,13 @@ import { ComponentProps } from "react";
 
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import Time from "src/icons/TimeLine";
 import { GithubCodeReviewStatus, GithubContributionType, GithubIssueStatus, GithubPullRequestStatus } from "src/types";
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB, getFormattedTimeUS } from "src/utils/date";
 import displayRelativeDate from "src/utils/displayRelativeDate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 const creationTokens = {
   [GithubContributionType.PullRequest]: "contributions.tooltip.dateOpened",

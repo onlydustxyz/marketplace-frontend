@@ -3,8 +3,9 @@ import { useForm, useWatch } from "react-hook-form";
 import Input from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import MarkdownPreview from "src/components/MarkdownPreview";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props = {
   description: string;

@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react";
 
-import { Key } from "src/hooks/useIntl";
-
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
+
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TSettingsHeader {
   interface BaseProps extends PropsWithChildren {

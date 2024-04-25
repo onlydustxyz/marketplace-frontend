@@ -1,11 +1,11 @@
 import IBAN from "iban";
-import React from "react";
 
 import { components } from "src/__generated/api";
 import ExternalLink from "src/components/ExternalLink";
 import Tooltip from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 interface TFormattedReceipt {
   type: "crypto" | "fiat";

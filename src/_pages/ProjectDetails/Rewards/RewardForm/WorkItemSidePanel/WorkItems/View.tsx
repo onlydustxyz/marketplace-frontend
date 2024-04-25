@@ -13,7 +13,6 @@ import GithubPullRequest, {
 } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import Skeleton from "src/components/Skeleton";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
 import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 import { useShowToaster } from "src/hooks/useToaster";
 import EyeOffLine from "src/icons/EyeOffLine";
@@ -21,6 +20,8 @@ import Link from "src/icons/Link";
 import SearchLine from "src/icons/SearchLine";
 import { WorkItemType } from "src/types";
 import { rewardableItemToContribution } from "src/utils/formatToContribution";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Contributor } from "../../types";
 import EmptyState from "../EmptyState";

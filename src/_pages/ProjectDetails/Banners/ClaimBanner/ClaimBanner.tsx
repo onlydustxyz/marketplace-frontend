@@ -5,9 +5,9 @@ import { ClaimUtils } from "src/App/Stacks/GithubWorkflow/ClaimSidePanel/claim.u
 import { useStackGithubWorkflowClaim } from "src/App/Stacks/Stacks";
 import ProjectApi from "src/api/Project";
 import RainbowBanner from "src/components/New/Banners/RainbowBanner";
-import { useIntl } from "src/hooks/useIntl";
 
 import { useDeleteSearchParams } from "hooks/router/useDeleteSearchParams";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { ClaimButton } from "./components/ClaimButton";
 

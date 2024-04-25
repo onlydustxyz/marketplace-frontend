@@ -16,13 +16,14 @@ import Button, { Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import FormSelect from "src/components/FormSelect";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import DraftLine from "src/icons/DraftLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
 import MoreLine from "src/icons/MoreLine";
 import TeamLine from "src/icons/TeamLine";
 import isDefined from "src/utils/isDefined";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";

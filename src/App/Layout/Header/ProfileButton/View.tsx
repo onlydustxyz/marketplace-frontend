@@ -4,7 +4,6 @@ import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
@@ -17,6 +16,7 @@ import { Typography } from "components/layout/typography/typography";
 import { NEXT_ROUTER } from "constants/router";
 
 import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { useLogout } from "./Logout.hooks";
 

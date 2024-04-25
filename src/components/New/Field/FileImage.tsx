@@ -2,8 +2,9 @@ import { ChangeEvent, FocusEventHandler, Ref, forwardRef, useEffect, useState } 
 
 import GalleryLine from "src/assets/icons/GalleryLine";
 import LoaderIcon from "src/assets/icons/Loader";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Field, FieldProps } from "./Field";
 import { FieldInfoMessage } from "./InfoMessage";

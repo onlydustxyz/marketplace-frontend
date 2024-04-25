@@ -1,7 +1,8 @@
 import Telegram from "src/assets/icons/Telegram";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import ContactInformation from "./ContactInformation";
 

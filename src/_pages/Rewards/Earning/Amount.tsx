@@ -5,8 +5,9 @@ import { UserRewardsContext } from "src/_pages/Rewards/context/UserRewards";
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import { DetailedTotalMoney, Money as TMoney } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Amount = {
   amount?: DetailedTotalMoney;

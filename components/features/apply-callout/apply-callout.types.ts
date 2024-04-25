@@ -1,7 +1,8 @@
 import { components } from "src/__generated/api";
-import { Key } from "src/hooks/useIntl";
 
 import { TIcon } from "components/layout/icon/icon.types";
+
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TApplyCallout {
   export type Channel = components["schemas"]["ContactInformation"]["channel"];
