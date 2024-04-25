@@ -8,6 +8,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
+import { withClientOnly } from "components/layout/client-only/client-only";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -16,7 +17,7 @@ import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import View from "./View";
 
-export default function Header() {
+function Header() {
   const { githubUserId } = useCurrentUser();
   const { T } = useIntl();
 
@@ -53,3 +54,5 @@ export default function Header() {
     />
   );
 }
+
+export default withClientOnly(Header);

@@ -10,13 +10,15 @@ import Background, { BackgroundRoundedBorders } from "src/components/Background"
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
+import { withClientOnly } from "components/layout/client-only/client-only";
+
 import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
 
 import { TClientLayout } from "./client-layout.types";
 
-export function ClientLayout({ children }: TClientLayout.Props) {
+function ClientLayout({ children }: TClientLayout.Props) {
   const isProjectEdition = useMatchPath(NEXT_ROUTER.projects.details.edit("[slug]"), { exact: true });
   const isProjectContributions = useMatchPath(NEXT_ROUTER.projects.details.contributions("[slug]"), { exact: true });
 
@@ -57,3 +59,5 @@ export function ClientLayout({ children }: TClientLayout.Props) {
     </Background>
   );
 }
+
+export default withClientOnly(ClientLayout);

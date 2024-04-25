@@ -37,8 +37,10 @@ import en_settings_invoices from "translations/v2/en/pages/settings-invoices.jso
 import en_settings_payout_preferences from "translations/v2/en/pages/settings-payout-preferences.json";
 import en_settings_payout from "translations/v2/en/pages/settings-payout.json";
 import en_settings_profile from "translations/v2/en/pages/settings-profile.json";
+import en_page_sponsor from "translations/v2/en/pages/sponsor.json";
 import en_stack_mandate from "translations/v2/en/pages/stacks-mandate.json";
 import en_stack_request_payments from "translations/v2/en/pages/stacks-request-payments.json";
+import en_stack_sponsor_project from "translations/v2/en/pages/stacks-sponsor-project.json";
 
 const en = {
   ...en_base,
@@ -92,7 +94,9 @@ const en = {
         mandate: en_stack_mandate,
         billingCreate: en_billing_create,
         billingInviteTeamMember: en_billing_invite_team_member,
+        sponsorProject: en_stack_sponsor_project,
       },
+      sponsor: en_page_sponsor,
     },
   },
 };

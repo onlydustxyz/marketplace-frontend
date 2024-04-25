@@ -25,7 +25,7 @@ export function FormInformations() {
   } = MeApi.mutations.useUploadProfilePicture({
     options: {
       onSuccess: data => {
-        setValue("avatarUrl", data.url);
+        setValue("avatarUrl", data.url, { shouldDirty: true });
       },
       onError: () => {
         setError("avatarUrl", { type: "validate", message: "test" });
@@ -138,7 +138,7 @@ export function FormInformations() {
                 {...field}
                 {...fieldState}
                 isInvalid={!!fieldState.error}
-                errorMessage={<Translate token={fieldState.error?.message || ""} />}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
                 startContent={<Icon remixName="ri-global-line" className="pointer-events-none" />}
               />
             )}

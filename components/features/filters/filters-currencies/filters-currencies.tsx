@@ -5,11 +5,11 @@ import { FilterFieldContainer } from "components/ds/Filters/field-container/fiel
 import { SelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete";
 import { TFiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies.types";
 
-export function FiltersCurrencies({ currencies, selected, onChange }: TFiltersCurrencies.Props) {
+export function FiltersCurrencies({ currencies, selected, onChange, hideLabel, isElevated }: TFiltersCurrencies.Props) {
   const { T } = useIntl();
 
   return (
-    <FilterFieldContainer label={T("filter.currency.title")}>
+    <FilterFieldContainer label={T("filter.currency.title")} hideLabel={hideLabel}>
       <SelectAutocomplete
         type="circle"
         icon={({ className }) => <MoneyBoxLine className={className} />}
@@ -18,6 +18,7 @@ export function FiltersCurrencies({ currencies, selected, onChange }: TFiltersCu
         selected={selected}
         multiple={true}
         onChange={onChange}
+        isElevated={isElevated}
       />
     </FilterFieldContainer>
   );

@@ -261,7 +261,11 @@ export type ContributorResponse = components["schemas"]["ContributorResponse"];
 
 export type Money = components["schemas"]["Money"];
 
+export type DetailedTotalMoney = components["schemas"]["DetailedTotalMoney"];
+
 export type ProjectBudgetType = components["schemas"]["ProjectBudgetsResponse"];
+
+export type ProjectPageItemResponse = components["schemas"]["ProjectPageItemResponse"];
 
 export enum WorkItemType {
   CodeReview = "CODE_REVIEW",

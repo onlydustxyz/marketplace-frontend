@@ -1,0 +1,37 @@
+{
+  "title": "Sponsor",
+  "newDeposit": "New Deposit",
+  "budget": {
+    "title": "Budget available",
+    "error": "An error occurred while loading your budgets."
+  },
+  "deposit": {
+    "newCurrency": "New currency",
+    "makeDeposit": "Make a deposit"
+  },
+  "project": {
+    "title": "Sponsored projects",
+    "sponsorNewProject": "Sponsor new project",
+    "sponsorProject": "Sponsor project",
+    "totalBudget": "Total budget",
+    "perCurrency": "Per currency",
+    "error": "An error occurred while loading your sponsored projects."
+  },
+  "history": {
+    "title": "Transaction history",
+    "date": "Date",
+    "transaction": "Transaction",
+    "amount": "Amount",
+    "project": "Project",
+    "deposit": "Deposit",
+    "allocated": "Allocated",
+    "unallocated": "Unallocated",
+    "withdrawal": "Withdrawal",
+    "empty": "No transactions yet"
+  },
+  "sponsorProject": {
+    "success": "The project has been sponsored successfully.",
+    "error": "An error occurred while sponsoring the project.",
+    "submitTooltip": "A project and a valid amount is required."
+  }
+}

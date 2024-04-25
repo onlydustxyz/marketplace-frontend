@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Money } from "utils/Money/Money";
 
 import { BudgetPanel } from "src/_pages/ProjectDetails/Rewards/Budget/Panel";
-import { Money as TMoney } from "src/types";
+import { DetailedTotalMoney } from "src/types";
 
 import { BudgetCard, CardTypes } from "./BudgetCard";
 
 export type BudgetProps = {
   projectId: string;
-  remainingBudget?: TMoney;
-  spentAmount?: TMoney;
+  remainingBudget?: DetailedTotalMoney;
+  spentAmount?: DetailedTotalMoney;
   sentRewards: {
     count?: number;
     total?: number;

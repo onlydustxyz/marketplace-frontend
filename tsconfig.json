@@ -28,6 +28,7 @@
   },
   "include": [
     "./app",
+    "./api-client",
     "./components",
     "./constants",
     "./hooks",

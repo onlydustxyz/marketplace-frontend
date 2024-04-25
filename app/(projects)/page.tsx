@@ -2,6 +2,7 @@
 
 import { useContext } from "react";
 
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
@@ -58,7 +59,7 @@ function SafeProjectsPage() {
   );
 }
 
-export default function ProjectsPage() {
+function ProjectsPage() {
   return (
     <ProjectsContextProvider>
       <div className="relative z-[1] h-full w-full overflow-y-auto bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 lg:rounded-3xl">
@@ -69,3 +70,5 @@ export default function ProjectsPage() {
     </ProjectsContextProvider>
   );
 }
+
+export default withClientOnly(ProjectsPage);

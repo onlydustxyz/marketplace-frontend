@@ -21,6 +21,7 @@ import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 import { Contributor } from "components/features/contributor/contributor";
 import { RolesSelector } from "components/features/roles/role-selector/roles-selector";
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -54,28 +55,28 @@ function CoworkersPage() {
     () => [
       {
         key: "coworkers",
-        label: T("v2.pages.settings.billing.coworkers.table.columns.coworkers"),
+        children: <Translate token={"v2.pages.settings.billing.coworkers.table.columns.coworkers"} />,
         icon: {
           remixName: "ri-team-line",
         },
       },
       {
         key: "role",
-        label: T("v2.pages.settings.billing.coworkers.table.columns.role"),
+        children: <Translate token={"v2.pages.settings.billing.coworkers.table.columns.role"} />,
         icon: {
           remixName: "ri-information-line",
         },
       },
       {
         key: "joined",
-        label: T("v2.pages.settings.billing.coworkers.table.columns.joined"),
+        children: <Translate token={"v2.pages.settings.billing.coworkers.table.columns.joined"} />,
         icon: {
           remixName: "ri-check-line",
         },
       },
       {
         key: "actions",
-        label: "",
+        children: "",
         align: "end",
         showOnHover: true,
       },
@@ -149,6 +150,7 @@ function CoworkersPage() {
       />
 
       <Table
+        label={T("v2.pages.settings.billing.coworkers.table.label")}
         columns={columns}
         rows={rows}
         bottomContent={
@@ -168,4 +170,6 @@ function CoworkersPage() {
   );
 }
 
-export default withAuthenticationRequired(withBillingProfileAdminGuard(withBillingProfileCompanyGuard(CoworkersPage)));
+export default withClientOnly(
+  withAuthenticationRequired(withBillingProfileAdminGuard(withBillingProfileCompanyGuard(CoworkersPage)))
+);

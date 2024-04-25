@@ -10,6 +10,7 @@ import GithubLink, { Variant as GithubLinkVariant } from "src/App/Layout/Header/
 import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
 import { BaseLink } from "components/layout/base-link/base-link";
+import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { MenuItem } from "components/layout/sidebar/menu-item/menu-item";
@@ -22,7 +23,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
-export function Sidebar() {
+function Sidebar() {
   const { isAuthenticated } = useAuth0();
 
   const { user } = useCurrentUser();
@@ -95,3 +96,5 @@ export function Sidebar() {
     </LayoutSidebar>
   );
 }
+
+export default withClientOnly(Sidebar);

@@ -1,14 +1,18 @@
+import { Controller, useFormContext } from "react-hook-form";
+
 import Telegram from "src/assets/icons/Telegram";
-import ContactInformation from "src/components/ContactInformations/ContactInformation";
 import { useIntl } from "src/hooks/useIntl";
 
 import { Card } from "components/ds/card/card";
+import { ContactInput } from "components/ds/form/contact-input/contact-input";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 export function FormContact() {
   const { T } = useIntl();
+  const { control } = useFormContext();
 
   return (
     <Card background="base">
@@ -24,44 +28,84 @@ export function FormContact() {
         </Flex>
 
         <Flex direction="col" className="gap-3">
-          <ContactInformation
+          <Controller
             name="telegram.contact"
-            errorName="telegram"
-            placeholder={T("v2.commons.form.contact.telegram.placeholder")}
-            icon={<Telegram size={16} className="fill-greyscale-400" />}
-            visibilityName="telegram.isPublic"
+            control={control}
+            render={({ field, fieldState }) => (
+              <ContactInput
+                {...field}
+                {...fieldState}
+                isInvalid={!!fieldState.error}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
+                placeholder={T("v2.commons.form.contact.telegram.placeholder")}
+                startContent={<Telegram size={16} />}
+                visibilityName="telegram.isPublic"
+              />
+            )}
           />
 
-          <ContactInformation
+          <Controller
             name="whatsapp.contact"
-            errorName="whatsapp"
-            placeholder={T("v2.commons.form.contact.whatsapp.placeholder")}
-            icon={<Icon remixName="ri-whatsapp-fill" />}
-            visibilityName="whatsapp.isPublic"
+            control={control}
+            render={({ field, fieldState }) => (
+              <ContactInput
+                {...field}
+                {...fieldState}
+                isInvalid={!!fieldState.error}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
+                placeholder={T("v2.commons.form.contact.whatsapp.placeholder")}
+                startContent={<Icon remixName="ri-whatsapp-fill" />}
+                visibilityName="whatsapp.isPublic"
+              />
+            )}
           />
 
-          <ContactInformation
+          <Controller
             name="twitter.contact"
-            errorName="twitter"
-            placeholder={T("v2.commons.form.contact.twitter.placeholder")}
-            icon={<Icon remixName="ri-twitter-x-fill" />}
-            visibilityName="twitter.isPublic"
+            control={control}
+            render={({ field, fieldState }) => (
+              <ContactInput
+                {...field}
+                {...fieldState}
+                isInvalid={!!fieldState.error}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
+                placeholder={T("v2.commons.form.contact.twitter.placeholder")}
+                startContent={<Icon remixName="ri-twitter-x-fill" />}
+                visibilityName="twitter.isPublic"
+              />
+            )}
           />
 
-          <ContactInformation
+          <Controller
             name="discord.contact"
-            errorName="discord"
-            placeholder={T("v2.commons.form.contact.discord.placeholder")}
-            icon={<Icon remixName="ri-discord-fill" />}
-            visibilityName="discord.isPublic"
+            control={control}
+            render={({ field, fieldState }) => (
+              <ContactInput
+                {...field}
+                {...fieldState}
+                isInvalid={!!fieldState.error}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
+                placeholder={T("v2.commons.form.contact.discord.placeholder")}
+                startContent={<Icon remixName="ri-discord-fill" />}
+                visibilityName="discord.isPublic"
+              />
+            )}
           />
 
-          <ContactInformation
+          <Controller
             name="linkedin.contact"
-            errorName="linkedin"
-            placeholder={T("v2.commons.form.contact.linkedin.placeholder")}
-            icon={<Icon remixName="ri-linkedin-box-fill" />}
-            visibilityName="linkedin.isPublic"
+            control={control}
+            render={({ field, fieldState }) => (
+              <ContactInput
+                {...field}
+                {...fieldState}
+                isInvalid={!!fieldState.error}
+                errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
+                placeholder={T("v2.commons.form.contact.linkedin.placeholder")}
+                startContent={<Icon remixName="ri-linkedin-box-fill" />}
+                visibilityName="linkedin.isPublic"
+              />
+            )}
           />
         </Flex>
       </Flex>

@@ -8,6 +8,7 @@ import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -15,7 +16,6 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
-// TODO: Change Button with link using the new library
 export function ProfileGithubAccount() {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useCurrentUser();
@@ -73,17 +73,12 @@ export function ProfileGithubAccount() {
               <Translate token="v2.pages.settings.profile.githubAccount.buttons.resync" />
             </Button>
 
-            <a
-              href="https://github.com/settings/emails"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full md:w-fit"
-            >
+            <BaseLink href="https://github.com/settings/emails" className="w-full md:w-fit">
               <Button variant="secondary" size="s" className="w-full md:w-fit">
                 <Icon remixName="ri-github-fill" />
                 <Translate token="v2.pages.settings.profile.githubAccount.buttons.edit" />
               </Button>
-            </a>
+            </BaseLink>
           </Flex>
         </Flex>
       </Flex>

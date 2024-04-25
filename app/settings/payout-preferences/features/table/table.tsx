@@ -16,6 +16,7 @@ import { BillingProfilesSelector } from "components/features/billing-profiles/bi
 import { TBillingProfilesSelector } from "components/features/billing-profiles/billing-profiles-selector/billing-profiles-selector.types";
 import { TIcon } from "components/layout/icon/icon.types";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
+import { Translate } from "components/layout/translate/translate";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 
@@ -52,12 +53,12 @@ export function PayoutPreferencesTable() {
     () => [
       {
         key: "projects",
-        label: T("v2.pages.settings.payoutPreferences.table.projects"),
+        children: <Translate token={"v2.pages.settings.payoutPreferences.table.projects"} />,
         icon: { remixName: "ri-folder-3-line" },
       },
       {
         key: "billing_profiles",
-        label: T("v2.pages.settings.payoutPreferences.table.billingProfiles"),
+        children: <Translate token={"v2.pages.settings.payoutPreferences.table.billingProfiles"} />,
         icon: { remixName: "ri-money-dollar-circle-line" },
         align: "end",
       },
@@ -101,5 +102,5 @@ export function PayoutPreferencesTable() {
     [data, billingProfilesSelector]
   );
 
-  return <Table columns={columns} rows={rows} />;
+  return <Table label={T("v2.pages.settings.payoutPreferences.title")} columns={columns} rows={rows} />;
 }

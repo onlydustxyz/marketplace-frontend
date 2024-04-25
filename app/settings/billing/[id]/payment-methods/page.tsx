@@ -13,6 +13,8 @@ import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Key, useIntl } from "src/hooks/useIntl";
 
+import { withClientOnly } from "components/layout/client-only/client-only";
+
 import { FormFooter } from "../../../components/form-footer/form-footer";
 import { PayoutForm } from "./features/form/form";
 import { REGEX } from "./features/form/form.regex";
@@ -146,4 +148,4 @@ function SettingsPayoutPage() {
   );
 }
 
-export default withAuthenticationRequired(withBillingProfileAdminGuard(SettingsPayoutPage));
+export default withClientOnly(withAuthenticationRequired(withBillingProfileAdminGuard(SettingsPayoutPage)));
