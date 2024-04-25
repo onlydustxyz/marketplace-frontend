@@ -99,6 +99,8 @@ export default function View({
         status={data.status}
         dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
         billingProfileId={data?.billingProfileId}
+        rewardId={data?.id}
+        shouldOpenRequestPayment={true}
       />
     );
   }, [data, redirectionStatus]);

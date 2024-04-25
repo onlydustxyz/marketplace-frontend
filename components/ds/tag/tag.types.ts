@@ -14,7 +14,7 @@ export namespace TTag {
     testId?: string;
     tooltipContent?: ReactNode;
     className?: string;
-    onClick?: () => void;
+    onClick?: (e: Event) => void;
     containerClassName?: string;
   }
 
