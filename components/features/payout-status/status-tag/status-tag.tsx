@@ -1,6 +1,8 @@
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
+import { useStackRequestPayments } from "src/App/Stacks/Stacks";
+import { usePosthog } from "src/hooks/usePosthog";
 import { useCloseStack } from "src/libs/react-stack";
 import { PaymentStatus } from "src/types";
 import { compareDateToNow } from "src/utils/date";
@@ -19,9 +21,19 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 
-export function StatusTag({ status, projectId, billingProfileId, date, className }: TStatusTag.Props) {
+export function StatusTag({
+  status,
+  projectId,
+  billingProfileId,
+  date,
+  className,
+  rewardId,
+  shouldOpenRequestPayment,
+}: TStatusTag.Props) {
+  const { capture } = usePosthog();
   const router = useRouter();
   const closeRewardPanel = useCloseStack();
+  const [openRequestPayment] = useStackRequestPayments();
   const dateRelativeToNow = date ? compareDateToNow(date) : undefined;
   const { icon, labelToken, tooltipToken, tooltipParams, borderColor, iconClassName } = getStatusConfig({
     status,
@@ -43,7 +55,22 @@ export function StatusTag({ status, projectId, billingProfileId, date, className
     [profiles]
   );
 
+  function handleOpenRequestPayment() {
+    openRequestPayment({ billingProfileId, rewardId });
+    capture("payments_request_started", { event: "status-click" });
+  }
+
   const additionalArgs = useMemo(() => {
+    if (status === PaymentStatus.PENDING_REQUEST && shouldOpenRequestPayment) {
+      return {
+        onClick: (e: Event) => {
+          e.stopPropagation();
+          e.preventDefault();
+          handleOpenRequestPayment();
+        },
+      };
+    }
+
     if (!billingProfileId) return {};
 
     if (status === PaymentStatus.PAYOUT_INFO_MISSING) {

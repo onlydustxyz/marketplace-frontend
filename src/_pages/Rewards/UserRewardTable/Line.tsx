@@ -76,6 +76,9 @@ export default function RewardLine({ reward, onClick, selected, showContributor 
           status={reward?.status}
           dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
           projectId={reward?.projectId}
+          billingProfileId={reward?.billingProfileId}
+          rewardId={reward.id}
+          shouldOpenRequestPayment={true}
         />
       </Cell>
     </Line>
