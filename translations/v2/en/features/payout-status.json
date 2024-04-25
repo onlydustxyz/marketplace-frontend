@@ -48,7 +48,7 @@
     "tooltip": "This currency is not allowed in your territory. Please change your billing profile or contact support."
   },
   "INDIVIDUAL_LIMIT_REACHED": {
-    "label": "Payment blocked",
+    "label": "Individual limit reached",
     "tooltip": "You've exceeded the $5000 limit for an individual. Please create a company or legal entity and add it as a new billing profile."
   },
   "processedOnDate": "Processed on __date__",
