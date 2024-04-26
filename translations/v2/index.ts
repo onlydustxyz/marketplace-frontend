@@ -11,6 +11,7 @@ import en_features_filters from "./en/features/filters.json";
 import en_features_leaders from "./en/features/leaders.json";
 import en_features_menu from "./en/features/menu.json";
 import en_features_payout_status from "./en/features/payout-status.json";
+import en_features_profile_card from "./en/features/profile-card.json";
 import en_features_roles from "./en/features/roles.json";
 import en_features_sidebar from "./en/features/sidebar.json";
 import en_features_table from "./en/features/table.json";
@@ -60,6 +61,7 @@ export const en = {
       table: en_features_table,
       roles: en_features_roles,
       currency: en_features_currency,
+      profileCard: en_features_profile_card,
     },
     pages: {
       projects: en_projects,
