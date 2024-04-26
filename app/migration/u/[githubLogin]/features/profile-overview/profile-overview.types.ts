@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
 
-export namespace TProfileCard {
+export namespace TProfileOverview {
   export interface Props extends PropsWithChildren {}
 }
