@@ -4,9 +4,10 @@ import { notFound } from "next/navigation";
 import { ActivityGraph } from "app/migration/u/[githubLogin]/features/activity-graph/activity-graph";
 import { EcosystemsSection } from "app/migration/u/[githubLogin]/features/ecosystems-section/ecosystems-section";
 import { LanguagesSection } from "app/migration/u/[githubLogin]/features/languages-section/languages-section";
-import { ProfileCard } from "app/migration/u/[githubLogin]/features/profile-card/profile-card";
 import { TotalEarnedGraph } from "app/migration/u/[githubLogin]/features/total-earned-graph/total-earned-graph";
 import { WorkDistributionGraph } from "app/migration/u/[githubLogin]/features/work-distribution-graph/work-distribution-graph";
+
+import { ProfileOverview } from "./features/profile-overview/profile-overview";
 
 async function getUserPublicProfile(githubLogin: string) {
   try {
@@ -20,7 +21,7 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
   console.log("data", data);
   return (
     <div className="flex w-full flex-col items-start justify-start gap-10">
-      <ProfileCard />
+      <ProfileOverview />
       <div className="flex w-full flex-row items-start justify-start gap-6">
         <div className="flex flex-1 flex-col items-start justify-start gap-10">
           <LanguagesSection />
