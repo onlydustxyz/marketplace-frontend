@@ -18,7 +18,7 @@ export function Week({ week, data }: TWeek.Props) {
         <p>
           <Translate token={"v2.features.activityGraph.week"} /> {weekNumber}
         </p>
-        {data?.tooltipContent ? <p>{data?.tooltipContent}</p> : null}
+        {data?.tooltipContent ? <div>{data.tooltipContent}</div> : null}
       </div>
     ),
     [weekNumber, data]

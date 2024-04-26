@@ -44,7 +44,7 @@ export const useActivityGraph = ({ endDate }: TActivityGraph.UseActivityGraph) =
     );
   }, [end, start]);
 
-  const splitedWeeks = useMemo(() => {
+  const splitWeeks = useMemo(() => {
     // 7 array of 8 weeks
     return weeks.reduce((acc, week, index) => {
       if (index % NUMBER_OF_ROW === 0) {
@@ -55,5 +55,5 @@ export const useActivityGraph = ({ endDate }: TActivityGraph.UseActivityGraph) =
     }, [] as TActivityGraph.Week[][]);
   }, [weeks]);
 
-  return { splitedWeeks, weeks, start, end };
+  return { splitWeeks, weeks, start, end };
 };
