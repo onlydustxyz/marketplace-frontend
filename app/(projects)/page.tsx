@@ -7,12 +7,12 @@ import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
 import { ProjectsContext, ProjectsContextProvider } from "./context/project.context";
-import { AddProject } from "./features/add-project/add-project";
 import { ProjectsFilters } from "./features/filters/filters";
 import { NoResults } from "./features/no-results/no-results";
 import { ProjectList } from "./features/project-list/project-list";
 import { ProjectSearch } from "./features/project-search/project-search";
 import { ProjectsSort } from "./features/projects-sort/projects-sort";
+import { UserProjects } from "./features/user-projects/user-projects";
 
 function SafeProjectsPage() {
   const { count, projects, isLoading } = useContext(ProjectsContext);
@@ -26,10 +26,11 @@ function SafeProjectsPage() {
         <div className="hidden shrink-0 basis-[356px] lg:block">
           <Flex className="sticky top-3 z-10 w-full gap-3" direction="col">
             <div className="w-full self-start">
-              <ProjectsFilters showOn="desktop" />
+              <UserProjects />
             </div>
+
             <div className="w-full self-start">
-              <AddProject />
+              <ProjectsFilters showOn="desktop" />
             </div>
           </Flex>
         </div>
@@ -49,8 +50,9 @@ function SafeProjectsPage() {
           </Flex>
           <div className="flex w-full grow flex-col gap-5">
             <div className="block w-full self-start lg:hidden">
-              <AddProject />
+              <UserProjects />
             </div>
+
             {isLoading || projects.length > 0 ? <ProjectList /> : <NoResults />}
           </div>
         </Flex>
