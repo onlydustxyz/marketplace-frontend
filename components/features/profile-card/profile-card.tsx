@@ -1,3 +1,5 @@
+import Image from "next/image";
+import profileCardBackground from "public/images/profile-card-bg.svg";
 import { useMemo } from "react";
 
 import { cn } from "src/utils/cn";
@@ -51,8 +53,13 @@ export function ProfileCard(props: TProfileCard.Props) {
   }, [bio]);
 
   return (
-    <Card className={cn("relative flex w-full flex-col gap-4", className)} background="base" border="multiColor">
-      <div className="flex gap-4">
+    <Card className={cn("relative z-[1] flex w-full flex-col gap-4", className)} background="base" border="multiColor">
+      <Image
+        src={profileCardBackground}
+        alt="profile card background"
+        className="absolute inset-0 -z-[1] h-full w-full object-cover object-center opacity-50"
+      />
+      <div className="relative z-[1] flex gap-4">
         <Avatar src={avatarUrl} alt={login} size="3xl" />
         <div className="flex w-full flex-col gap-1">
           <div className="flex justify-between gap-2">
