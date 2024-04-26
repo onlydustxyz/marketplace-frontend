@@ -41,6 +41,10 @@ export function Avatar(props: TAvatar.Props) {
         return { w: 40 * dpr, h: 40 * dpr };
       case "xl":
         return { w: 48 * dpr, h: 48 * dpr };
+      case "2xl":
+        return { w: 64 * dpr, h: 64 * dpr };
+      case "3xl":
+        return { w: 80 * dpr, h: 80 * dpr };
       default:
         return { w: 16 * dpr, h: 16 * dpr };
     }

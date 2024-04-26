@@ -3,8 +3,6 @@ import { useMediaQuery } from "usehooks-ts";
 
 import FilterIcon from "src/assets/icons/FilterIcon";
 import { viewportConfig } from "src/config";
-import { useLeadProjects } from "src/hooks/useProjectLeader/useProjectLeader";
-import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
@@ -16,13 +14,11 @@ import { Typography } from "components/layout/typography/typography";
 import { ProjectsContext } from "../../context/project.context";
 import { FiltersClearAll } from "./clear-all/clear-all";
 import { FiltersEcosystems } from "./filters-ecosystems/filters-ecosystems";
-import { FiltersMine } from "./filters-mine/filters-mine";
 import { FiltersTags } from "./filters-tags/filters-tags";
 import { FiltersTechnologies } from "./filters-technologies/filters-technologies";
 
 export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const isProjectLeader = useLeadProjects();
   const [openMobilePanel, setOpenMobilePanel] = useState(false);
   const { filters } = useContext(ProjectsContext);
   if (!isXl && showOn === "mobile") {
@@ -53,11 +49,6 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
             <div className="py-4">
               <FiltersTechnologies />
             </div>
-            {isProjectLeader.length ? (
-              <div className="py-4">
-                <FiltersMine />
-              </div>
-            ) : null}
           </div>
         </BottomSheet>
       </>
@@ -80,14 +71,9 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
       <div className="border-b-1 border-card-border-light px-6 py-4">
         <FiltersEcosystems />
       </div>
-      <div className={cn("px-6 py-4", { "border-b-1 border-card-border-light": !!isProjectLeader.length })}>
+      <div className="px-6 py-4">
         <FiltersTechnologies />
       </div>
-      {isProjectLeader.length ? (
-        <div className="px-6 py-4">
-          <FiltersMine />
-        </div>
-      ) : null}
     </Card>
   );
 }
