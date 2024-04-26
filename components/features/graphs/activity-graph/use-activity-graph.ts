@@ -1,20 +1,20 @@
-import { eachDayOfInterval, eachWeekOfInterval, endOfWeek, isSameDay, startOfWeek, subWeeks } from "date-fns";
+import { addWeeks, eachDayOfInterval, eachWeekOfInterval, endOfWeek, isSameDay, startOfWeek, subWeeks } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 
 import { TActivityGraph } from "components/features/graphs/activity-graph/activity-graph.types";
 import { getDayId } from "components/features/graphs/activity-graph/utils/getDayId";
 import { getWeekId } from "components/features/graphs/activity-graph/utils/getWeekId";
 
-const WEEK_NUMBER = 55;
+const WEEK_NUMBER = 54;
 const NUMBER_OF_ROW = 8;
 export const useActivityGraph = ({ endDate }: TActivityGraph.UseActivityGraph) => {
   const [start, setStart] = useState(subWeeks(new Date(), WEEK_NUMBER));
-  const [end, setEnd] = useState(new Date());
+  const [end, setEnd] = useState(addWeeks(new Date(), 1));
   const [weeks, setWeeks] = useState<TActivityGraph.Week[]>([]);
 
   useEffect(() => {
     if (endDate && !isSameDay(end, endDate)) {
-      setEnd(endDate);
+      setEnd(addWeeks(endDate, 1));
       setStart(subWeeks(new Date(), WEEK_NUMBER));
     }
   }, [endDate]);
@@ -27,8 +27,8 @@ export const useActivityGraph = ({ endDate }: TActivityGraph.UseActivityGraph) =
 
     setWeeks(
       eachWeek.map(week => {
-        const startWeek = startOfWeek(week);
-        const endWeek = endOfWeek(week);
+        const startWeek = startOfWeek(week, { weekStartsOn: 1 });
+        const endWeek = endOfWeek(week, { weekStartsOn: 1 });
         const eachDay = eachDayOfInterval({
           start: startWeek,
           end: endWeek,

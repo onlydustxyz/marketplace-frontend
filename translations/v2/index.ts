@@ -1,6 +1,7 @@
 import en_base from "../en.json";
 import en_commons from "./en/commons/commons.json";
 import en_commons_enum from "./en/commons/enums.json";
+import en_features_activity_graph from "./en/features/activity-graph.json";
 import en_features_banners from "./en/features/banners.json";
 import en_features_billings_profile from "./en/features/billingsProfile.json";
 import en_features_contributors from "./en/features/contributors.json";
@@ -60,6 +61,7 @@ export const en = {
       table: en_features_table,
       roles: en_features_roles,
       currency: en_features_currency,
+      activityGraph: en_features_activity_graph,
     },
     pages: {
       projects: en_projects,

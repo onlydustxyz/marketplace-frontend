@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@nextui-org/react";
 import { useMemo } from "react";
 
 import { Row } from "components/features/graphs/activity-graph/components/row/row";
@@ -17,26 +16,16 @@ export function ActivityGraph<T>({ endDate, weekData }: TActivityGraph.Props<T>)
   }, [weekData, weeks]);
 
   return (
-    <div className="flex w-full flex-row items-start justify-start gap-1">
-      <div className="flex flex-col items-start justify-start">
-        <Button variant="solid" className="bg-spacePurple-900 text-spacePurple-400">
-          2024
-        </Button>
-        <Button variant="solid" className="bg-transparent text-spaceBlue-200">
-          2023
-        </Button>
-        <Button variant="solid" className="bg-transparent text-spaceBlue-200">
-          2022
-        </Button>
-        <Button variant="solid" className="bg-transparent text-spaceBlue-200">
-          2021
-        </Button>
-      </div>
-      <div className="flex w-full flex-1 flex-col items-start justify-end gap-1">
-        {splitedWeeks.map((weeks, index) => (
-          <Row key={index} weeks={weeks} data={data} />
-        ))}
-      </div>
+    <div className="flex flex-col items-start justify-start gap-1.5">
+      {splitedWeeks.map((weeks, index) => (
+        <Row
+          key={index}
+          weeks={weeks}
+          data={data}
+          asLabel={index % 2 !== 1}
+          isLastRow={index === splitedWeeks.length - 1}
+        />
+      ))}
     </div>
   );
 }

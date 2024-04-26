@@ -1,21 +1,23 @@
-import { format, isSameWeek } from "date-fns";
 import { useMemo } from "react";
 
 import { cn } from "src/utils/cn";
 
 import { Tooltip } from "components/ds/tooltip/tooltip";
+import { getWeekNumber } from "components/features/graphs/activity-graph/utils/getWeekNumber";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 import { TWeek } from "./week.types";
 
 export function Week({ week, data }: TWeek.Props) {
-  const weekNumber = useMemo(() => format(week.startDate, "w, MMM yyyy"), [week]);
-  const isCurrentWeek = useMemo(() => isSameWeek(new Date(), week.startDate), [week]);
+  const weekNumber = useMemo(() => getWeekNumber(week.startDate), [week]);
 
   const tooltipContent = useMemo(
     () => (
       <div className="flex flex-col gap-1">
-        <p>Week {weekNumber}</p>
+        <p>
+          <Translate token={"v2.features.activityGraph.week"} /> {weekNumber}
+        </p>
         {data?.tooltipContent ? <p>{data?.tooltipContent}</p> : null}
       </div>
     ),
@@ -31,7 +33,6 @@ export function Week({ week, data }: TWeek.Props) {
             "bg-spacePurple-800": data?.level === 2,
             "bg-spacePurple-700": data?.level === 3,
             "bg-spacePurple-500": data?.level === 4,
-            "rounded-full": isCurrentWeek,
           }
         )}
       >

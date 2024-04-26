@@ -4,5 +4,7 @@ export namespace TRow {
   export interface Props {
     weeks: TActivityGraph.Week[];
     data: { [key: string]: TActivityGraph.WeekData<unknown> };
+    asLabel?: boolean;
+    isLastRow?: boolean;
   }
 }

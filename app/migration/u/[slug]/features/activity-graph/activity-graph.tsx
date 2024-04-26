@@ -3,6 +3,7 @@
 import { subWeeks } from "date-fns";
 
 import { Card } from "components/ds/card/card";
+import { FiltersEcosystems } from "components/features/filters/filters-ecosystems/filters-ecosystems";
 import { ActivityGraph as ActivityGraphComponent } from "components/features/graphs/activity-graph/activity-graph";
 import { TIcon } from "components/layout/icon/icon.types";
 import { Typography } from "components/layout/typography/typography";
@@ -19,8 +20,20 @@ export function ActivityGraph(_: TActivityGraph.Props) {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <Typography variant="title-m">Activity per week</Typography>
-      <Card background={"base"}>
+      <div className="flex w-full flex-row items-center justify-between gap-1">
+        <Typography variant="title-m" className="flex-1">
+          Activity
+        </Typography>
+        <FiltersEcosystems
+          selected={[]}
+          ecosystems={[]}
+          onChange={() => console.log("onChange")}
+          hideLabel={true}
+          hideIcon={true}
+          isBlueBackground={true}
+        />
+      </div>
+      <Card background={"base"} className="flex flex-row items-center justify-center">
         <ActivityGraphComponent
           weekData={({ getWeekId }) => ({
             [getWeekId(mockWeekDate(0))]: { level: 4, tooltipContent: mockTooltipContent, icon: mockIcon },
