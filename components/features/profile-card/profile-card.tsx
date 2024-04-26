@@ -1,6 +1,7 @@
 import Image from "next/image";
 import profileCardBackground from "public/images/profile-card-bg.svg";
 import { useMemo } from "react";
+import { getOrdinalSuffix } from "utils/profile/ordinal-position-suffix";
 
 import { cn } from "src/utils/cn";
 
@@ -66,16 +67,13 @@ export function ProfileCard(props: TProfileCard.Props) {
             <Typography variant="title-m" className="line-clamp-1">
               {login}
             </Typography>
-            <Typography
-              variant="title-m"
-              translate={{ token: "v2.features.profileCard.position", params: { position: contributorPosition } }}
-            />
+            <Typography variant="title-m">{getOrdinalSuffix(contributorPosition)}</Typography>
           </div>
           <div className="flex justify-between gap-2">
             {renderBio}
             <Typography
               variant="body-s"
-              className="line-clamp-2 text-spaceBlue-100"
+              className="whitespace-nowrap text-spaceBlue-100"
               translate={{ token: "v2.features.profileCard.rank", params: { rank: contributorRank } }}
             />
           </div>
