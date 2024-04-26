@@ -50,5 +50,9 @@
   },
   "highlights": {
     "thumbnail": "Project logo"
+  },
+  "myProjects": {
+    "title": "My projects",
+    "button": "Create project"
   }
 }

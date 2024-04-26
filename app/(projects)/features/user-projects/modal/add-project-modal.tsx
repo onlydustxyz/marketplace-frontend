@@ -34,16 +34,19 @@ export function AddProjectModal({ startProjectCreation }: { startProjectCreation
           className="text-greyscale-50"
           translate={{ token: "v2.pages.projects.addProject.resumeModal.title" }}
         />
+
         <Typography
           variant="body-s"
           className="text-spaceBlue-200"
           translate={{ token: "v2.pages.projects.addProject.resumeModal.description" }}
         />
       </div>
+
       <div className="mt-4 flex flex-row items-stretch gap-2 p-3">
         <Button variant={"secondary"} size="xs" width="full" onClick={onCancel}>
           <Translate token="v2.pages.projects.addProject.resumeModal.restartBtn" />
         </Button>
+
         <Button size="xs" width="full" onClick={onResume}>
           <Translate token="v2.pages.projects.addProject.resumeModal.resumeBtn" />
         </Button>
