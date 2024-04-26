@@ -20,6 +20,7 @@ export namespace TSelectAutocomplete {
     type: avatarType;
     onNextPage?: () => void;
     loadingNextPage?: boolean;
+    isBlueBackground?: boolean;
     controlledSearch?: {
       value: string;
       onChange: (value: string) => void;
