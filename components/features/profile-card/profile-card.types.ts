@@ -12,7 +12,7 @@ export namespace TProfileCard {
     className?: string;
     avatarUrl?: string;
     login: string;
-    bio?: string;
+    qualifier: string;
     contributionCount: number;
     rewardCount: number;
     contributedProjectCount: number;

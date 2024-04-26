@@ -7,7 +7,7 @@ export function ProfileOverview(_: TProfileOverview.Props) {
   const profileMock = {
     avatarUrl: "https://develop-onlydust-app-images.s3.eu-west-1.amazonaws.com/abf86b52ea37add55e4deda258bade06.jpeg",
     login: "The very long Pixelfact",
-    bio: "Frontend Developer / API enthusiast / UI-UX lover",
+    qualifier: "Onlydust Legend",
     contributionCount: 144,
     rewardCount: 25,
     contributedProjectCount: 10,

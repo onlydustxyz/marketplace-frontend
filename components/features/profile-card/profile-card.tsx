@@ -1,6 +1,5 @@
 import Image from "next/image";
 import profileCardBackground from "public/images/profile-card-bg.svg";
-import { useMemo } from "react";
 import { getOrdinalSuffix } from "utils/profile/ordinal-position-suffix";
 
 import { cn } from "src/utils/cn";
@@ -27,7 +26,7 @@ export function ProfileCard(props: TProfileCard.Props) {
     className,
     avatarUrl,
     login,
-    bio,
+    qualifier,
     contributionCount,
     rewardCount,
     contributedProjectCount,
@@ -35,23 +34,6 @@ export function ProfileCard(props: TProfileCard.Props) {
     contributorPosition,
     contributorRank,
   } = props;
-
-  const renderBio = useMemo(() => {
-    if (bio) {
-      return (
-        <Typography variant="title-s" className="line-clamp-2 text-spaceBlue-100">
-          {bio}
-        </Typography>
-      );
-    }
-    return (
-      <Typography
-        variant="body-s"
-        className="line-clamp-2 italic text-spaceBlue-100"
-        translate={{ token: "v2.features.profileCard.emptyBio" }}
-      />
-    );
-  }, [bio]);
 
   return (
     <Card className={cn("relative z-[1] flex w-full flex-col gap-4", className)} background="base" border="multiColor">
@@ -70,7 +52,9 @@ export function ProfileCard(props: TProfileCard.Props) {
             <Typography variant="title-m">{getOrdinalSuffix(contributorPosition)}</Typography>
           </div>
           <div className="flex justify-between gap-2">
-            {renderBio}
+            <Typography variant="title-s" className="line-clamp-2 text-spaceBlue-100">
+              {qualifier}
+            </Typography>
             <Typography
               variant="body-s"
               className="whitespace-nowrap text-spaceBlue-100"
