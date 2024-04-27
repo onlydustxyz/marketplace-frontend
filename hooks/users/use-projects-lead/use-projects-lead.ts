@@ -5,7 +5,8 @@ export const UseProjectsLead = (): TUseProjectsLead.Return => {
   const { user, isLoading } = useCurrentUser();
 
   return {
-    projects: user?.projectsLed?.length ? user.projectsLed : [],
+    projectsLead: user?.projectsLed?.length ? user.projectsLed : [],
+    pendingProjectsLead: user?.pendingProjectsLed?.length ? user.pendingProjectsLed : [],
     isLoading,
   };
 };
