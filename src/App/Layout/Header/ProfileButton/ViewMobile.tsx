@@ -180,6 +180,17 @@ export function ViewMobile({
           )}
 
           <div>
+            {githubUserId ? (
+              <BaseLink
+                href={NEXT_ROUTER.publicProfile.root(githubUserId.toString())}
+                onClick={() => setPanelOpen(false)}
+                className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
+              >
+                <Icon remixName="ri-user-line" size={20} />
+                {T("v2.features.menu.publicProfile")}
+              </BaseLink>
+            ) : null}
+
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={handleFeedback}>
               <Icon remixName="ri-discuss-line" size={20} />
               {T("v2.features.menu.feedback")}

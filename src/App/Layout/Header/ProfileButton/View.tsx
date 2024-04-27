@@ -48,7 +48,16 @@ interface Props extends TUseMenu.Return {
   hideProfileItems?: boolean;
 }
 
-export function View({ avatarUrl, login, hideProfileItems, labelToken, redirection, errorColor, error }: Props) {
+export function View({
+  avatarUrl,
+  login,
+  hideProfileItems,
+  labelToken,
+  redirection,
+  errorColor,
+  error,
+  githubUserId,
+}: Props) {
   const { T } = useIntl();
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -151,6 +160,15 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
             )}
 
             <div>
+              {githubUserId ? (
+                <BaseLink href={NEXT_ROUTER.publicProfile.root(githubUserId.toString())}>
+                  <MenuItem>
+                    <Icon remixName="ri-user-line" size={20} />
+                    <div className="grow">{T("v2.features.menu.publicProfile")}</div>
+                  </MenuItem>
+                </BaseLink>
+              ) : null}
+
               <MenuItem onClick={openFeedback}>
                 <Icon remixName="ri-discuss-line" size={20} />
                 <div className="grow">{T("v2.features.menu.feedback")}</div>
