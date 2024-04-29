@@ -14,7 +14,7 @@ import { NEXT_ROUTER } from "constants/router";
 import { AddProjectButton } from "../add-project-button/add-project-button";
 import { TMyProjects } from "./my-projects.types";
 
-export function MyProjects({ projects }: TMyProjects.Props) {
+export function MyProjects({ projectsLead, pendingProjectsLead }: TMyProjects.Props) {
   return (
     <Card background="base" hasPadding={false}>
       <Flex direction="col">
@@ -36,7 +36,7 @@ export function MyProjects({ projects }: TMyProjects.Props) {
         </Flex>
 
         <Flex wrap="wrap" alignItems="center" className="gap-2 px-6 py-4">
-          {projects?.map(project => (
+          {projectsLead?.map(project => (
             <Tooltip key={project.id} content={project.name}>
               <BaseLink href={NEXT_ROUTER.projects.details.root(project.slug)}>
                 <Avatar
@@ -44,12 +44,23 @@ export function MyProjects({ projects }: TMyProjects.Props) {
                   alt={project.name}
                   size="l"
                   shape="square"
-                  className={cn(
-                    "border-card-border-light duration-300 ease-in transition-colors hover:border-card-border-heavy",
-                    {
-                      "border-orange-700 hover:border-orange-500": project.hasMissingGithubAppInstallation,
-                    }
-                  )}
+                  className={cn("border-card-border-light transition-colors hover:border-card-border-heavy", {
+                    "border-orange-700 hover:border-orange-500": project.hasMissingGithubAppInstallation,
+                  })}
+                />
+              </BaseLink>
+            </Tooltip>
+          ))}
+
+          {pendingProjectsLead?.map(project => (
+            <Tooltip key={project.id} content={project.name}>
+              <BaseLink href={NEXT_ROUTER.projects.details.root(project.slug)}>
+                <Avatar
+                  src={project.logoUrl}
+                  alt={project.name}
+                  size="l"
+                  shape="square"
+                  className="border-multicolored h-11 w-11 border-none opacity-80 transition-opacity before:rounded-xl before:p-0.5 hover:opacity-100"
                 />
               </BaseLink>
             </Tooltip>

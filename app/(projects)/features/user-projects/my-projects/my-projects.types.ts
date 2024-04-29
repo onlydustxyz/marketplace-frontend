@@ -1,7 +1,10 @@
 import { components } from "src/__generated/api";
 
 export namespace TMyProjects {
+  type Projects = components["schemas"]["ProjectLedShortResponse"][];
+
   export interface Props {
-    projects: components["schemas"]["ProjectLedShortResponse"][];
+    projectsLead: Projects;
+    pendingProjectsLead: Projects;
   }
 }

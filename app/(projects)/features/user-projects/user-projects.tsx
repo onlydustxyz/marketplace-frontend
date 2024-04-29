@@ -6,11 +6,15 @@ import { AddProject } from "./add-project/add-project";
 import { MyProjects } from "./my-projects/my-projects";
 
 export function UserProjects() {
-  const { projects, isLoading } = UseProjectsLead();
+  const { projectsLead, pendingProjectsLead, isLoading } = UseProjectsLead();
 
   if (isLoading) {
     return <SkeletonEl variant="rounded" height={135} width="100%" />;
   }
 
-  return projects.length ? <MyProjects projects={projects} /> : <AddProject />;
+  return projectsLead.length || pendingProjectsLead.length ? (
+    <MyProjects projectsLead={projectsLead} pendingProjectsLead={pendingProjectsLead} />
+  ) : (
+    <AddProject />
+  );
 }
