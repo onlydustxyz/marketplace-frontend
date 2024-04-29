@@ -7,6 +7,21 @@ import { TLanguagesAccordion } from "app/migration/u/[githubLogin]/features/lang
 import { Avatar } from "components/ds/avatar/avatar";
 import { Icon } from "components/layout/icon/icon";
 
+function StartContent() {
+  return (
+    <div className="flex gap-6">
+      <div className="gap- flex flex-col gap-3">
+        <Avatar
+          src="https://develop-onlydust-app-images.s3.eu-west-1.amazonaws.com/abf86b52ea37add55e4deda258bade06.jpeg"
+          alt="language avatar"
+          size="rectangleSize"
+          shape="rectangle"
+        />
+      </div>
+    </div>
+  );
+}
+
 export function LanguagesAccordion(_: TLanguagesAccordion.Props) {
   const avatarUrl =
     "https://develop-onlydust-app-images.s3.eu-west-1.amazonaws.com/abf86b52ea37add55e4deda258bade06.jpeg";
