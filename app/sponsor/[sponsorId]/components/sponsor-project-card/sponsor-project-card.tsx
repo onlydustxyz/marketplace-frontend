@@ -121,6 +121,11 @@ export function SponsorProjectCard({ project, disableSponsorButton }: TSponsorPr
               <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
             </>
           ),
+          disabled: disableSponsorButton,
+        }}
+        tooltipProps={{
+          enabled: disableSponsorButton,
+          content: <Translate token="v2.pages.sponsor.project.disbaledSponsorNewProject" />,
         }}
         project={project}
       />
