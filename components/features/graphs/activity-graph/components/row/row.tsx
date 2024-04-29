@@ -47,6 +47,7 @@ export function Row({ weeks, data, asLabel, isLastRow }: TRow.Props) {
       {asLabel ? (
         <Typography
           variant={"body-s"}
+          as="div"
           className={cn("w-full whitespace-nowrap text-spaceBlue-300", { "text-spacePurple-500": isLastRow })}
         >
           {label}
