@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 
-import { TProfileSummary } from "app/migration/u/[githubLogin]/features/profile-summary/profile-summary.types";
+import { TProfileSummary } from "app/migration/u/[githubLogin]/features/profile-overview/components/profile-summary/profile-summary.types";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { BaseLink } from "components/layout/base-link/base-link";
