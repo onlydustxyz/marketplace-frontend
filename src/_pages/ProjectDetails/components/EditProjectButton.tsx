@@ -1,9 +1,9 @@
-import { useIntl } from "src/hooks/useIntl";
-
 import { Button } from "components/ds/button/button";
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type EditProjectButtonProps = { projectKey: string };
 

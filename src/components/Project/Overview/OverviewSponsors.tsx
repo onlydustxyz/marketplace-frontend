@@ -1,9 +1,10 @@
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import { useIntl } from "src/hooks/useIntl";
 import { Sponsor } from "src/types";
 
 import { Link } from "components/ds/link/link";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import Section, { SectionIcon } from "./OverviewSection";
 

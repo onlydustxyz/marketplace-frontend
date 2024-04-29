@@ -2,10 +2,11 @@ import { PropsWithChildren, useContext, useMemo } from "react";
 
 import { Flex } from "src/components/New/Layout/Flex";
 import { Tabs } from "src/components/Tabs/Tabs";
-import { useIntl } from "src/hooks/useIntl";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import GlobalLine from "src/icons/GlobalLine";
 import { RegisterStack } from "src/libs/react-stack";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { EditContext } from "../../EditContext";
 import { EditPanelOrganization } from "./OrganizationTab/EditPanelOrganization";

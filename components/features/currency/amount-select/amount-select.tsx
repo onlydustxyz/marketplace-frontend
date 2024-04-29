@@ -5,10 +5,11 @@ import { Money } from "utils/Money/Money";
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Input } from "components/ds/form/input/input";
 import { TAmountSelect } from "components/features/currency/amount-select/amount-select.types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 // TODO handle blue style
 export function AmountSelect({

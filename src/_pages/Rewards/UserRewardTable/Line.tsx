@@ -6,13 +6,13 @@ import { AvailableConversion } from "src/components/Currency/AvailableConversion
 import RoundedImage from "src/components/RoundedImage";
 import Cell from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
-import { useIntl } from "src/hooks/useIntl";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export type MyRewardType = components["schemas"]["MyRewardPageItemResponse"];

@@ -3,10 +3,11 @@ import { useRouter } from "next/navigation";
 import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Tooltip from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import LinkIcon from "src/icons/Link";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props = {
   userLogin: string;

@@ -2,9 +2,10 @@ import { useRouter } from "next/navigation";
 import { SyntheticEvent } from "react";
 
 import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function MissingGithubAppInstall({ slug = "" }: { slug: string }) {
   const { T } = useIntl();

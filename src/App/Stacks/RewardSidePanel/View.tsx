@@ -17,7 +17,6 @@ import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { ShowMore } from "src/components/Table/ShowMore";
 import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import useInfiniteRewardItems from "src/hooks/useInfiniteRewardItems";
-import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { GithubContributionType, PaymentStatus } from "src/types";
 import { cn } from "src/utils/cn";
@@ -32,6 +31,7 @@ import { Translate } from "components/layout/translate/translate";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import MixedApi from "../../../api/Mixed";

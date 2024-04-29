@@ -4,13 +4,14 @@ import { useStackBillingCreate } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Dropdown } from "components/ds/dropdown/dropdown";
 import { TDropdown } from "components/ds/dropdown/dropdown.types";
 import { Tag } from "components/ds/tag/tag";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TBillingProfilesSelector } from "./billing-profiles-selector.types";
 

@@ -17,13 +17,14 @@ import { authenticationProtocols, protocols } from "src/assets/technologies/prot
 import { web3 } from "src/assets/technologies/web3";
 import StylizedCombobox, { EMPTY_OPTION_ID, Option, RenderProps } from "src/components/StylizedCombobox";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
 import CloseLine from "src/icons/CloseLine";
 import Draggable from "src/icons/Draggable";
 import { LanguageMap } from "src/types";
 import { cn } from "src/utils/cn";
 import { isBlackListedTechnology } from "src/utils/technologies";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { SortableItemProps, SortableList } from "../New/Sortable/SortableList";
 import Flex from "../Utils/Flex";

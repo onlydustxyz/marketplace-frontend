@@ -5,7 +5,6 @@ import { getSearchLink } from "utils/github/search";
 
 import { IMAGES } from "src/assets/img";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -13,6 +12,8 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TEmptyState } from "./empty-state.types";
 

@@ -6,10 +6,11 @@ import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import Card from "src/components/Card";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 import ArrowRightLine from "src/icons/ArrowRightLine";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Section } from "./Section";
 import StatCard from "./StatCard";

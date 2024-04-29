@@ -2,12 +2,13 @@
 
 import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function NotFound() {
   const { T } = useIntl();

@@ -1,6 +1,6 @@
 import { ElementType } from "react";
 
-import { Key } from "src/hooks/useIntl";
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TTranslate {
   interface BaseProps {

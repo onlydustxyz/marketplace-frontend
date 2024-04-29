@@ -17,7 +17,7 @@ export function Avatar(props: TAvatar.Props) {
   const isClient = useClientOnly();
   const [isError, setIsError] = useState(false);
   // size prop needs to be extracted or it conflicts with the size prop from NextAvatar
-  const { size, className, ...restProps } = props;
+  const { size, className, isBordered = true, ...restProps } = props;
 
   const isRemoteImage = useMemo(() => {
     if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && props.src) {
@@ -41,6 +41,10 @@ export function Avatar(props: TAvatar.Props) {
         return { w: 40 * dpr, h: 40 * dpr };
       case "xl":
         return { w: 48 * dpr, h: 48 * dpr };
+      case "2xl":
+        return { w: 64 * dpr, h: 64 * dpr };
+      case "3xl":
+        return { w: 80 * dpr, h: 80 * dpr };
       default:
         return { w: 16 * dpr, h: 16 * dpr };
     }
@@ -69,7 +73,7 @@ export function Avatar(props: TAvatar.Props) {
           loading="lazy"
         />
       }
-      className={cn(avatarVariants({ size, ...restProps }), className)}
+      className={cn(avatarVariants({ size, ...restProps }), className, { "border-none": !isBordered })}
       imgProps={{
         loading: "lazy",
         onError: () => {

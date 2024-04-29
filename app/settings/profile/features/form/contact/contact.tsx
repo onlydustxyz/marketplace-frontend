@@ -1,7 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 
 import Telegram from "src/assets/icons/Telegram";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Card } from "components/ds/card/card";
 import { ContactInput } from "components/ds/form/contact-input/contact-input";
@@ -9,6 +8,8 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function FormContact() {
   const { T } = useIntl();

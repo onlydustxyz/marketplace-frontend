@@ -11,7 +11,6 @@ import { ContributionLinked } from "src/components/Contribution/ContributionLink
 import { CommitsTooltip } from "src/components/GithubCard/GithubPullRequest/CommitsTooltip";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import { usePosthog } from "src/hooks/usePosthog";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
@@ -27,6 +26,7 @@ import { Link } from "components/ds/link/link";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";

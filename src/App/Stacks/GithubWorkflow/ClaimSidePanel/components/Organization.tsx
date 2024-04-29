@@ -6,10 +6,11 @@ import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Avatar } from "src/components/New/Avatar";
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import GithubLogo from "src/icons/GithubLogo";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export interface ClaimBannerOrganizationProps {
   project: UseGetProjectBySlugResponse;

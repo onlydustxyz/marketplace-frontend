@@ -1,5 +1,6 @@
 import Input from "src/components/FormInput";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props = {
   defaultTitle: string;

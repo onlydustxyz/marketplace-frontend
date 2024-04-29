@@ -11,13 +11,14 @@ import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import useMutationAlert from "src/api/useMutationAlert";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
-import { useIntl } from "src/hooks/useIntl";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { StorageInterface } from "src/hooks/useStorage/Storage";
 
 import { TSelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete.types";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { STORAGE_KEY_CREATE_PROJECT_FORM, useResetStorage } from "./hooks/useProjectCreationStorage";
 import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";

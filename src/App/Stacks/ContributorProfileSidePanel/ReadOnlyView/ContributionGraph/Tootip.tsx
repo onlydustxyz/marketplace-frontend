@@ -1,5 +1,6 @@
 import { components } from "src/__generated/api";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { formatDate } from ".";
 import { Icon } from "./Legend";

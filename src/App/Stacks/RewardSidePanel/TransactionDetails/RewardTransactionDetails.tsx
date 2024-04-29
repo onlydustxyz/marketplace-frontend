@@ -1,15 +1,14 @@
-import React from "react";
-
 import { DetailRow } from "src/App/Stacks/RewardSidePanel/TransactionDetails/DetailRow";
 import { FormattedReceipt } from "src/App/Stacks/RewardSidePanel/TransactionDetails/FormattedReceipt";
 import { useUnlockDetailRow } from "src/App/Stacks/RewardSidePanel/TransactionDetails/useUnlockDetailRow";
 import { UseGetRewards } from "src/api/Mixed/queries";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
-import { useIntl } from "src/hooks/useIntl";
 import BankCardLine from "src/icons/BankCardLine";
 import Time from "src/icons/TimeLine";
 import { cn } from "src/utils/cn";
 import { compareDateToNow, formatDateTime } from "src/utils/date";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 interface Props {
   isMine: boolean | undefined;

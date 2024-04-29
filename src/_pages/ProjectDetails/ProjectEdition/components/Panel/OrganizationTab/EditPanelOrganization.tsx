@@ -2,7 +2,8 @@ import { useContext } from "react";
 
 import Card from "src/components/Card";
 import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { EditContext } from "../../../EditContext";
 import OrganizationList from "./components/OrganizationList";

@@ -12,13 +12,14 @@ import Table from "src/components/Table";
 import HeaderCell from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 
 import { withClientOnly } from "components/layout/client-only/client-only";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import EmptyTablePlaceholder from "components/layout/placeholders/empty-table/empty-table-placeholder";
 import { Translate } from "components/layout/translate/translate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { useInvoicesTable } from "./hooks/use-invoices-table/use-invoices-table";
 

@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
 import { Button } from "components/ds/button/button";
@@ -19,6 +18,7 @@ import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
+import { useIntl } from "hooks/translate/use-translate";
 
 export function UploadInvoice({ rewardIds, billingProfileId, goTo }: TUploadInvoice.Props) {
   const { T } = useIntl();

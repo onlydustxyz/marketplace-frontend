@@ -2,9 +2,10 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 import Tag, { TagSize } from "src/components/Tag";
-import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import GitMergeLine from "src/icons/GitMergeLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type ToRewardDetailsTooltipProps = {
   positionStrategy?: "absolute" | "fixed";

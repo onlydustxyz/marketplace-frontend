@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import MeBillingProfilesApi from "src/api/me/billing";
 import { useMutationAlert } from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
 import { Button } from "components/ds/button/button";
@@ -12,6 +11,8 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TProfileInvitationBanner } from "./profile-invitation-banner.types";
 

@@ -16,7 +16,7 @@ export function Dropdown({ children, items, MenuProps, ...rest }: TDropdown.Prop
         content: "p-0 shadow-none",
       }}
     >
-      <DropdownTrigger className="cursor-pointer">
+      <DropdownTrigger className="z-[1] cursor-pointer">
         <div className="w-fit">{children}</div>
       </DropdownTrigger>
       <DropdownMenu<TDropdown.Item>

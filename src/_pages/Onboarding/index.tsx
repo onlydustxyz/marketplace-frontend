@@ -18,10 +18,11 @@ import FormSelect, { Size } from "src/components/FormSelect";
 import FormToggle from "src/components/FormToggle";
 import SEO from "src/components/SEO";
 import TechnologiesSelect from "src/components/TechnologiesSelect";
-import { useIntl } from "src/hooks/useIntl";
 
 import { ONBOARDING_COMPLETED_STORAGE_KEY } from "constants/onboarding";
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import Card from "./Card";
 import { Contact } from "./Contact";

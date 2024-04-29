@@ -3,7 +3,6 @@ import { useRef } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { IMAGES } from "src/assets/img";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Input } from "components/ds/form/input/input";
@@ -11,6 +10,8 @@ import { Tooltip } from "components/ds/tooltip/tooltip";
 import { useSearchContributors } from "components/features/search-contributor/hooks/use-search-contributors";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TSearchContributor } from "./search-contributor.types";
 

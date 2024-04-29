@@ -2,7 +2,8 @@ import { useCallback, useState } from "react";
 
 import ProjectApi from "src/api/Project";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function useIgnoredContributions(projectId: string) {
   const { T } = useIntl();

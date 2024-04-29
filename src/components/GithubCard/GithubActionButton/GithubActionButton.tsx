@@ -1,11 +1,12 @@
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
 import EyeLine from "src/icons/EyeLine";
 import EyeOffLine from "src/icons/EyeOffLine";
 import Subtract from "src/icons/Subtract";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export enum Action {
   Add = "add",

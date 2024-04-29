@@ -5,11 +5,12 @@ import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { Flex } from "src/components/New/Layout/Flex";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
 
 import { Link } from "components/ds/link/link";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export interface RepositoryProps {
   organization: UseGithubOrganizationsResponse;

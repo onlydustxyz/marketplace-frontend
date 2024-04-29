@@ -2,12 +2,13 @@ import { debounce } from "lodash";
 import { Key, useCallback, useMemo, useState } from "react";
 
 import UsersApi from "src/api/Users";
-import { useIntl } from "src/hooks/useIntl";
 import { ContributorResponse } from "src/types";
 
 import { TUseSearchContributors } from "components/features/search-contributor/hooks/use-search-contributors.types";
 import { SelectableItem } from "components/features/search-contributor/selectable-item/selectable-item";
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function useSearchContributors({
   onSelectContributors,

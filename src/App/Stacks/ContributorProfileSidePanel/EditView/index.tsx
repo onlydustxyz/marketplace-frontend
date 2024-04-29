@@ -16,7 +16,6 @@ import { Spinner } from "src/components/Spinner/Spinner";
 import Tag, { TagSize } from "src/components/Tag";
 import TechnologiesSelect from "src/components/TechnologiesSelect";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import GlobalLine from "src/icons/GlobalLine";
@@ -24,6 +23,8 @@ import LockFill from "src/icons/LockFill";
 import MapPinLine from "src/icons/MapPinLine";
 import { calculateFormCompletionScore, calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import Card from "./Card";
 import { Section } from "./Section";

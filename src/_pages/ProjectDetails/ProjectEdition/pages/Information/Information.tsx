@@ -12,9 +12,10 @@ import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import InformationLine from "src/icons/InformationLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { EditContext, EditFormData } from "../../EditContext";
 import { RewardableContributionsField } from "../../RewardableContributionsField";

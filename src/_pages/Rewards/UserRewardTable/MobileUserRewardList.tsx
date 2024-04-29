@@ -8,7 +8,6 @@ import Card from "src/components//Card";
 import RoundedImage from "src/components//RoundedImage";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import TimeLine from "src/icons/TimeLine";
@@ -20,6 +19,7 @@ import { Avatar } from "components/ds/avatar/avatar";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
 import { Icon } from "components/layout/icon/icon";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { MyRewardType } from "./Line";

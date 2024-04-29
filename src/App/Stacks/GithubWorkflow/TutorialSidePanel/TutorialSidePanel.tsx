@@ -1,7 +1,8 @@
 "use client";
 
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { useStackGithubWorkflowTutorial } from "../../Stacks";
 import TutorialSidePanelHelp from "./components/Help";

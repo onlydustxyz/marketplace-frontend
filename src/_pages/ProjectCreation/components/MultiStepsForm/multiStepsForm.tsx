@@ -2,9 +2,10 @@ import { FC } from "react";
 
 import Button, { ButtonOnBackground, ButtonType } from "src/components/Button";
 import { Flex } from "src/components/New/Layout/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { MultiStepsFormProps } from "./multiStepsForm.type";
 

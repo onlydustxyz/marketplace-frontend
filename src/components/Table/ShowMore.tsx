@@ -1,8 +1,9 @@
 import { InView } from "react-intersection-observer";
 
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function ShowMore({
   onClick,

@@ -3,7 +3,6 @@ import { useMemo } from "react";
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Dropdown } from "components/ds/dropdown/dropdown";
 import { TDropdown } from "components/ds/dropdown/dropdown.types";
@@ -12,6 +11,8 @@ import { RoleTag } from "components/features/roles/role-tag/role-tag";
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function RolesSelector({ activeRole, githubUserId, isYou }: TRolesSelector.Props) {
   const { T } = useIntl();
