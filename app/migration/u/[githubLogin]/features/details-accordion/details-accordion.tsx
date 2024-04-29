@@ -2,6 +2,7 @@
 
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
+import { ContributionList } from "app/migration/u/[githubLogin]/components/contribution-list/contribution-list";
 import { StartContent } from "app/migration/u/[githubLogin]/features/details-accordion/components/start-content";
 import { TDetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion.types";
 
@@ -34,7 +35,7 @@ export function DetailsAccordion({ details }: TDetailsAccordion.AccordionProps) 
           }
           aria-label={detail.name}
         >
-          {"Lorem ipsum dolor sit amet, consectetur adipiscing elit"}
+          <ContributionList />
         </AccordionItem>
       ))}
     </Accordion>
