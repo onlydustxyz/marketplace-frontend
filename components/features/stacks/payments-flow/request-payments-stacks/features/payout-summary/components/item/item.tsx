@@ -10,10 +10,8 @@ export function Item({ label, labelIcon, value }: TItem.Props) {
         variant="body-s"
         className="flex flex-row items-center justify-start gap-1 text-greyscale-200"
       >
-        <>
-          {labelIcon || null}
-          {label}
-        </>
+        {labelIcon || null}
+        {label}
       </Typography>
       <Typography as="div" variant="body-s">
         {value}
