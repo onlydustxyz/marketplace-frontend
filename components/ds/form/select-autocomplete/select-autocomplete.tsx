@@ -22,6 +22,7 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   onNextPage,
   loadingNextPage,
   controlledSearch,
+  isBlueBackground,
   isElevated = true,
   ...comboProps
 }: TSelectAutocomplete.Props<T>) {
@@ -75,6 +76,7 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
                 {
                   "z-20 border-spacePurple-400 bg-spacePurple-900 text-spacePurple-400 outline-double outline-1 outline-spacePurple-400":
                     open,
+                  "bg-card-background-base": isBlueBackground,
                 }
               )}
             >
