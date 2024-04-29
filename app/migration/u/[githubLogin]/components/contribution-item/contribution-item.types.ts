@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { Contribution } from "src/types";
 
 export namespace TContributionItem {
   interface Project {
@@ -8,6 +8,6 @@ export namespace TContributionItem {
   }
   export interface Props {
     project: Project;
-    githubLink: string;
+    contribution: Contribution;
   }
 }
