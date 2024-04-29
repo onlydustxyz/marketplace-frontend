@@ -13,11 +13,11 @@ export function withAdminGuard<P extends object>(Component: ComponentType<P>) {
     const router = useRouter();
     const { isImpersonating } = useImpersonation();
 
-    const { isLoading, isRefetching, data } = MeApi.queries.useGetMe({});
+    const { isLoading, isRefetching, isPending, data } = MeApi.queries.useGetMe({});
     const { isAdmin } = data ?? {};
 
     useEffect(() => {
-      if (isLoading || isRefetching || isAdmin || isImpersonating) return;
+      if (isLoading || isRefetching || isAdmin || isImpersonating || isPending) return;
 
       router.push(NEXT_ROUTER.notFound);
     }, [isLoading, isRefetching, isAdmin, isImpersonating]);
