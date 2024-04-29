@@ -1,8 +1,11 @@
 import { components } from "src/__generated/api";
 
 export namespace TUseProjectsLead {
+  type Projects = components["schemas"]["ProjectLedShortResponse"][];
+
   export interface Return {
-    projects: components["schemas"]["ProjectLedShortResponse"][];
+    projectsLead: Projects;
+    pendingProjectsLead: Projects;
     isLoading: boolean;
   }
 }

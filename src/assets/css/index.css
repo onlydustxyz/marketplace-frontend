@@ -86,7 +86,6 @@
   }
   .border-multicolored::before {
     position: absolute;
-    border: "none";
     content: "";
     inset: 0;
     padding: 1px;
