@@ -6,10 +6,5 @@ export namespace TItem {
     labelIcon?: ReactNode;
     value: ReactNode;
     isEditMode?: boolean;
-    field?: {
-      name: string;
-      value: string | undefined;
-      onChange: (value: string) => void;
-    };
   }
 }

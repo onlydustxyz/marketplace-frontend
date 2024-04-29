@@ -11,7 +11,7 @@ import { useMatchNetworkAndWallet } from "hooks/match-network-and-wallet/use-mat
 
 import { Item } from "./components/item/item";
 
-export function usePayoutSummary({ billingProfileId, rewards, isEdit }: TPayoutSummary.Use) {
+export function usePayoutSummary({ billingProfileId, rewards }: TPayoutSummary.Use) {
   const { data: payoutInfo } = BillingProfilesApi.queries.useGetPayoutInfo({
     params: {
       id: billingProfileId,
@@ -37,7 +37,6 @@ export function usePayoutSummary({ billingProfileId, rewards, isEdit }: TPayoutS
             label={<Translate token="v2.pages.stacks.request_payments.selectRewards.payouts.etherum" />}
             value={wallets.ETHEREUM.wallet}
             labelIcon={<CurrencyIcons className="h-3 w-3" currency={Money.fromSchema({ code: "ETH" })} />}
-            isEditMode={isEdit}
           />
         ) : null}
         {wallets?.OPTIMISM?.wallet ? (
@@ -45,7 +44,6 @@ export function usePayoutSummary({ billingProfileId, rewards, isEdit }: TPayoutS
             label={<Translate token="v2.pages.stacks.request_payments.selectRewards.payouts.optimism" />}
             value={wallets.OPTIMISM.wallet}
             labelIcon={<CurrencyIcons className="h-3 w-3" currency={Money.fromSchema({ code: "OP" })} />}
-            isEditMode={isEdit}
           />
         ) : null}
         {wallets?.APTOS?.wallet ? (
@@ -53,7 +51,6 @@ export function usePayoutSummary({ billingProfileId, rewards, isEdit }: TPayoutS
             label={<Translate token="v2.pages.stacks.request_payments.selectRewards.payouts.aptos" />}
             value={wallets.APTOS.wallet}
             labelIcon={<CurrencyIcons className="h-3 w-3" currency={Money.fromSchema({ code: "APT" })} />}
-            isEditMode={isEdit}
           />
         ) : null}
         {wallets?.STARKNET?.wallet ? (
@@ -61,7 +58,6 @@ export function usePayoutSummary({ billingProfileId, rewards, isEdit }: TPayoutS
             label={<Translate token="v2.pages.stacks.request_payments.selectRewards.payouts.starknet" />}
             value={wallets.STARKNET.wallet}
             labelIcon={<CurrencyIcons className="h-3 w-3" currency={Money.fromSchema({ code: "STRK" })} />}
-            isEditMode={isEdit}
           />
         ) : null}
         {wallets?.SEPA?.bankAccount?.bic && wallets?.SEPA?.bankAccount?.number ? (
@@ -70,11 +66,9 @@ export function usePayoutSummary({ billingProfileId, rewards, isEdit }: TPayoutS
               label={<Translate token="v2.pages.stacks.request_payments.selectRewards.payouts.sepaAccount" />}
               value={wallets?.SEPA?.bankAccount?.number}
               labelIcon={<CurrencyIcons className="h-3 w-3" currency={Money.fromSchema({ code: "USD" })} />}
-              isEditMode={isEdit}
             />
             <Item
               label={<Translate token="v2.pages.stacks.request_payments.selectRewards.payouts.sepaBic" />}
-              isEditMode={isEdit}
               value={wallets?.SEPA?.bankAccount?.bic}
             />
           </div>

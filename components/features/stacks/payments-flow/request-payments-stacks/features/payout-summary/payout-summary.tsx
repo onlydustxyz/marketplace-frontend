@@ -18,9 +18,8 @@ import { Key } from "hooks/translate/use-translate";
 
 export function PayoutSummary({ billingProfileId, rewards }: TPayoutSummary.Props) {
   const [show, setShow] = useState(false);
-  const [isEdit, setIsEdit] = useState(true);
 
-  const { wallets, payoutSummaryContent } = usePayoutSummary({ billingProfileId, rewards, isEdit });
+  const { wallets, payoutSummaryContent } = usePayoutSummary({ billingProfileId, rewards });
 
   const showContent = useMemo((): { icon: RemixIconsName; label: Key } => {
     if (show) {

@@ -6,7 +6,5 @@ export namespace TPayoutSummary {
     billingProfileId: string;
   }
 
-  export interface Use extends Props {
-    isEdit: boolean;
-  }
+  export interface Use extends Props {}
 }
