@@ -8,5 +8,6 @@ export namespace TMostActiveSection {
     icon: TIcon.Props;
     title: TTypography.Props;
     list: TMostActiveCard.Props[];
+    wrapperClassName?: string;
   }
 }

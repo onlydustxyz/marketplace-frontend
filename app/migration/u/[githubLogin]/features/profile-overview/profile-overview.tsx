@@ -121,7 +121,7 @@ export function ProfileOverview(_: TProfileOverview.Props) {
         </div>
       </div>
       <div className="flex w-full flex-col items-start justify-between gap-6 md:flex-row md:gap-10">
-        <div className="flex flex-1">
+        <div className="flex w-full flex-1">
           <MostActiveSection
             icon={{
               remixName: "ri-code-s-slash-line",
@@ -132,10 +132,11 @@ export function ProfileOverview(_: TProfileOverview.Props) {
               },
             }}
             list={mostActiveLanguagesMock}
+            wrapperClassName="xl:grid-cols-4"
           />
         </div>
 
-        <div className="flex md:w-1/3">
+        <div className="flex w-full md:w-1/3">
           <MostActiveSection
             icon={{
               remixName: "ri-global-line",
@@ -146,6 +147,7 @@ export function ProfileOverview(_: TProfileOverview.Props) {
               },
             }}
             list={mostActiveEcosystemsMock}
+            wrapperClassName="md:grid-cols-1 xl:grid-cols-2"
           />
         </div>
       </div>
