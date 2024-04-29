@@ -1,5 +1,11 @@
-import { PropsWithChildren } from "react";
-
 export namespace TPieChart {
-  export interface Props extends PropsWithChildren {}
+  interface DataProps {
+    name: string;
+    value: number;
+    color?: string;
+  }
+
+  export interface Props {
+    data: DataProps[];
+  }
 }
