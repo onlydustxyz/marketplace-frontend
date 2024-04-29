@@ -61,7 +61,7 @@ export const avatarVariants = tv({
     {
       shape: "rectangle",
       size: "rectangleSize",
-      class: "h-14 w-48 rounded-2xl border-1",
+      class: "h-14 w-48 rounded-xl border-1",
     },
     {
       shape: "circle",
