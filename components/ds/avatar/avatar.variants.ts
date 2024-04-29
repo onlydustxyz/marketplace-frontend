@@ -4,6 +4,7 @@ export const avatarVariants = tv({
   base: "relative box-content flex flex-shrink-0 items-center justify-center overflow-hidden border-greyscale-50/12 bg-greyscale-50/8",
   variants: {
     shape: {
+      rectangle: "",
       square: "",
       circle: "rounded-full",
     },
@@ -15,6 +16,7 @@ export const avatarVariants = tv({
       xl: "",
       "2xl": "",
       "3xl": "",
+      rectangleSize: "",
     },
     isLoading: {
       true: "animate-pulse",
@@ -55,6 +57,11 @@ export const avatarVariants = tv({
       shape: "square",
       size: "3xl",
       class: "h-20 w-20 rounded-2xl border-[6px]",
+    },
+    {
+      shape: "rectangle",
+      size: "rectangleSize",
+      class: "h-14 w-48 rounded-2xl border-1",
     },
     {
       shape: "circle",

@@ -45,6 +45,8 @@ export function Avatar(props: TAvatar.Props) {
         return { w: 64 * dpr, h: 64 * dpr };
       case "3xl":
         return { w: 80 * dpr, h: 80 * dpr };
+      case "rectangleSize":
+        return { w: 192 * dpr, h: 56 * dpr };
       default:
         return { w: 16 * dpr, h: 16 * dpr };
     }
