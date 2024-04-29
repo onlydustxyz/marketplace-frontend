@@ -7,6 +7,7 @@ import { usePosthog } from "src/hooks/usePosthog";
 import { Button } from "components/ds/button/button";
 import { ReadonlyBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/components/billing-profile/readonly-billing-profile/readonly-billing-profile";
 import { RewardItem } from "components/features/stacks/payments-flow/request-payments-stacks/components/reward-item/reward-item";
+import { PayoutSummary } from "components/features/stacks/payments-flow/request-payments-stacks/features/payout-summary/payout-summary";
 import { SelectionShortcut } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/components/selection-shortcut/selection-shortcut";
 import { TSelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards.types";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
@@ -33,6 +34,7 @@ export function SelectRewards({
   const { capture } = usePosthog();
 
   const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
+
   const isIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
   const isMandateAccepted = profile?.data?.invoiceMandateAccepted;
 
@@ -103,6 +105,7 @@ export function SelectRewards({
             className="mb-4"
           />
           {profile?.data ? <ReadonlyBillingProfile billingProfile={profile?.data} /> : null}
+          <PayoutSummary rewards={includedRewards} billingProfileId={billingProfileId} />
         </div>
         <div className="mb-3 flex w-full flex-row items-center justify-between px-3">
           <Typography

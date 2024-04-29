@@ -50,7 +50,18 @@
     "billingProfileTitle": "Billing profile",
     "selectedTitle": "Select Rewards",
     "selectAll": "Select all",
-    "unselectAll": "Unselect all"
+    "unselectAll": "Unselect all",
+    "hidePayout": "Hide payout information",
+    "showPayout": "Show payout information",
+    "editPayout": "Edit",
+    "payouts": {
+      "optimism": "Optimism wallet address",
+      "etherum": "Etherum wallet address",
+      "starknet": "Starknet wallet address",
+      "aptos": "Aptos wallet address",
+      "sepaAccount": "Account number",
+      "sepaBic": "BIC / SWIFT"
+    }
   },
   "invoiceSubmission": {
     "toaster": {
