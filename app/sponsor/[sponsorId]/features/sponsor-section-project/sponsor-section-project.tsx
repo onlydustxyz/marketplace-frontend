@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import {
   SponsorProjectCard,
@@ -13,6 +13,7 @@ import { Typography } from "components/layout/typography/typography";
 
 export function SponsorSectionProject() {
   const { data, isLoading, isError } = useSponsorDetail();
+  const canSponsorProject = useMemo(() => data?.availableBudgets.filter(b => Boolean(b.amount)) ?? [], [data]);
 
   const renderProjects = useCallback(() => {
     if (isError) {
@@ -28,7 +29,9 @@ export function SponsorSectionProject() {
     }
 
     if (data) {
-      return data.projects.map(project => <SponsorProjectCard key={project.id} project={project} />);
+      return data.projects.map(project => (
+        <SponsorProjectCard key={project.id} project={project} disableSponsorButton={!canSponsorProject.length} />
+      ));
     }
 
     return null;
@@ -47,6 +50,12 @@ export function SponsorSectionProject() {
             size: "s",
             className: "w-full sm:w-auto",
             children: <Translate token="v2.pages.sponsor.project.sponsorNewProject" />,
+            disabled: !canSponsorProject.length,
+            backgroundColor: "blue",
+          }}
+          tooltipProps={{
+            enabled: !canSponsorProject.length,
+            content: <Translate token="v2.pages.sponsor.project.disbaledSponsorNewProject" />,
           }}
         />
       </header>

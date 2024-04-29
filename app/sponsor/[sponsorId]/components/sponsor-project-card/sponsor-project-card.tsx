@@ -16,7 +16,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
-export function SponsorProjectCard({ project }: TSponsorProjectCard.Props) {
+export function SponsorProjectCard({ project, disableSponsorButton }: TSponsorProjectCard.Props) {
   const { name, logoUrl, remainingBudgets, totalUsdBudget, slug } = project;
 
   return (
@@ -46,6 +46,11 @@ export function SponsorProjectCard({ project }: TSponsorProjectCard.Props) {
                 <Translate token={"v2.pages.sponsor.project.sponsorProject"} />
               </>
             ),
+            disabled: disableSponsorButton,
+          }}
+          tooltipProps={{
+            enabled: disableSponsorButton,
+            content: <Translate token="v2.pages.sponsor.project.disbaledSponsorNewProject" />,
           }}
           project={project}
         />
