@@ -7,18 +7,19 @@ import { TDetailsAccordion } from "app/migration/u/[githubLogin]/features/detail
 
 import { Icon } from "components/layout/icon/icon";
 
-export function DetailsAccordion({ details }: TDetailsAccordion.AccordionProps) {
+export function DetailsAccordion({ children, details }: TDetailsAccordion.AccordionProps) {
   return (
     <Accordion variant="splitted" className="!p-0">
       {details?.map(detail => (
         <AccordionItem
           key={detail.name}
           className="!rounded-2xl !border-1 !border-card-border-light !bg-card-background-base !px-0 !shadow-none"
-          indicator={<Icon remixName="ri-arrow-down-s-line" />}
+          indicator={<Icon remixName="ri-arrow-down-s-line" size={24} />}
           classNames={{
             content: "!px-4 !py-4 !border-t-1 !border-card-border-light",
-            trigger: "!px-4",
+            trigger: "!px-4 justify-start items-start",
             startContent: "!flex-shrink",
+            indicator: "text-snow",
           }}
           startContent={
             <StartContent
@@ -34,7 +35,7 @@ export function DetailsAccordion({ details }: TDetailsAccordion.AccordionProps) 
           }
           aria-label={detail.name}
         >
-          {"Lorem ipsum dolor sit amet, consectetur adipiscing elit"}
+          {children}
         </AccordionItem>
       ))}
     </Accordion>

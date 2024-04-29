@@ -1,12 +1,13 @@
+import { MouseEvent } from "react";
+
 import { TDetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion.types";
 
+import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { cn } from "src/utils/cn";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { BaseLink } from "components/layout/base-link/base-link";
-
-import { NEXT_ROUTER } from "constants/router";
 
 export function ProjectAvatar({
   name,
@@ -15,9 +16,16 @@ export function ProjectAvatar({
   hasPendingInvitation,
   hasMissingGithubAppInstallation,
 }: TDetailsAccordion.ProjectAvatarProps) {
+  const [openProjectOverview] = useStackProjectOverview();
+
+  const onClickProject = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openProjectOverview({ slug });
+  };
   return (
     <Tooltip key={name} content={name}>
-      <BaseLink href={NEXT_ROUTER.projects.details.root(slug)}>
+      <BaseLink onClick={e => onClickProject(e)} href={""}>
         <Avatar
           src={avatarUrl}
           alt={name}

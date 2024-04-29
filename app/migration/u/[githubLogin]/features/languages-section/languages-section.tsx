@@ -15,7 +15,7 @@ export function LanguagesSection(_: TLanguagesSection.Props) {
       projects: [
         {
           name: "Bretzel",
-          slug: "Bretzel",
+          slug: "bretzel",
           avatarUrl:
             "https://app.onlydust.com/cdn-cgi/image/width=96,height=96,fit=cover/https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
           hasMissingGithubAppInstallation: false,
@@ -115,5 +115,5 @@ export function LanguagesSection(_: TLanguagesSection.Props) {
       ],
     },
   ];
-  return <DetailsAccordion details={languagesMock} />;
+  return <DetailsAccordion details={languagesMock}>Content</DetailsAccordion>;
 }
