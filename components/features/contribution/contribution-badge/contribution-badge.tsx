@@ -1,3 +1,5 @@
+"use client";
+
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import Contributor from "src/components/Contributor";
 import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";

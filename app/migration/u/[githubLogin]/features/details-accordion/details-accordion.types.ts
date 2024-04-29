@@ -1,3 +1,5 @@
+import { PropsWithChildren } from "react";
+
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 
 import { Key } from "hooks/translate/use-translate";
@@ -20,7 +22,6 @@ export namespace TDetailsAccordion {
     rewardsCount: number;
     earnedUsdAmount: number;
     projects: Project[];
-    contributions?: string[];
   }
 
   export interface ItemInfoProps {
@@ -30,7 +31,7 @@ export namespace TDetailsAccordion {
   }
   export interface ProjectAvatarProps extends Project {}
   export interface StartContentProps extends Omit<Detail, "contributions"> {}
-  export interface AccordionProps {
+  export interface AccordionProps extends PropsWithChildren {
     details: Detail[];
   }
 }

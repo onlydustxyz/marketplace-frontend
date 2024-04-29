@@ -1,3 +1,5 @@
+"use client";
+
 import { Tooltip as NextUiTooltip } from "@nextui-org/react";
 
 import { cn } from "src/utils/cn";

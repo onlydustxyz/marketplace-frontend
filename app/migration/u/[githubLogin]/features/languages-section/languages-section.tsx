@@ -1,4 +1,7 @@
+import { ContributionList } from "app/migration/u/[githubLogin]/components/contribution-list/contribution-list";
 import { DetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion";
+
+import { PreRenderOnServer } from "components/layout/client-only/client-only";
 
 import { TLanguagesSection } from "./languages-section.types";
 
@@ -15,7 +18,7 @@ export function LanguagesSection(_: TLanguagesSection.Props) {
       projects: [
         {
           name: "Bretzel",
-          slug: "Bretzel",
+          slug: "bretzel",
           avatarUrl:
             "https://app.onlydust.com/cdn-cgi/image/width=96,height=96,fit=cover/https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
           hasMissingGithubAppInstallation: false,
@@ -115,5 +118,14 @@ export function LanguagesSection(_: TLanguagesSection.Props) {
       ],
     },
   ];
-  return <DetailsAccordion details={languagesMock} />;
+  return (
+    <>
+      <DetailsAccordion details={languagesMock}>
+        <ContributionList />
+      </DetailsAccordion>
+      <PreRenderOnServer>
+        <ContributionList />
+      </PreRenderOnServer>
+    </>
+  );
 }

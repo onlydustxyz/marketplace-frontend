@@ -9,6 +9,7 @@ import { Card } from "components/ds/card/card";
 import { Link } from "components/ds/link/link";
 import { ContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge";
 import { TContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge.type";
+import { ClientOnly } from "components/layout/client-only/client-only";
 import { Typography } from "components/layout/typography/typography";
 
 import { TContributionItem } from "./contribution-item.types";
@@ -27,7 +28,9 @@ export function ContributionItem({ contribution, project }: TContributionItem.Pr
         </Project>
       </div>
       <div className="flex flex-1 flex-row items-center justify-start gap-2 overflow-hidden">
-        <ContributionBadge contribution={contribution} size={TContributionBadge.sizes.Xs} />
+        <ClientOnly>
+          <ContributionBadge contribution={contribution} size={TContributionBadge.sizes.Xs} />
+        </ClientOnly>
         <Link href={contribution.githubHtmlUrl} className="truncate break-all text-left">
           {contribution.githubTitle}
         </Link>
