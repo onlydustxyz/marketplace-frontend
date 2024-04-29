@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Money } from "utils/Money/Money";
 
-import { cn } from "src/utils/cn";
+import { DotsStatus } from "app/migration/u/[githubLogin]/components/dots-status/dots-status";
 
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
@@ -19,7 +19,7 @@ export function MostActiveCard({
   status,
 }: TMostActiveCard.Props) {
   return (
-    <Card hasPadding={false} className="flex-1 flex-shrink basis-1">
+    <Card hasPadding={false}>
       <Flex direction="col" className="gap-4 px-3 py-4">
         <Flex alignItems="center" justifyContent="between" className="gap-2">
           <Flex alignItems="center" className="gap-2">
@@ -30,23 +30,7 @@ export function MostActiveCard({
             </Typography>
           </Flex>
 
-          <Flex alignItems="center" className="gap-1">
-            <span
-              className={cn("h-2 w-2 rounded-full border border-card-border-heavy", {
-                "border-none bg-github-red-light": status === "bad",
-              })}
-            />
-            <span
-              className={cn("h-2 w-2 rounded-full border border-card-border-heavy", {
-                "border-none bg-orange-500": status === "neutral",
-              })}
-            />
-            <span
-              className={cn("h-2 w-2 rounded-full border border-card-border-heavy", {
-                "border-none bg-struggleBadge-bar-solid-green": status === "good",
-              })}
-            />
-          </Flex>
+          <DotsStatus status={status} />
         </Flex>
 
         <Flex direction="col" className="gap-2">
