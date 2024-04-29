@@ -12,6 +12,7 @@
   "project": {
     "title": "Sponsored projects",
     "sponsorNewProject": "Sponsor new project",
+    "disbaledSponsorNewProject": "Your account doesn't have enough budget.",
     "sponsorProject": "Sponsor project",
     "totalBudget": "Total budget",
     "perCurrency": "Per currency",

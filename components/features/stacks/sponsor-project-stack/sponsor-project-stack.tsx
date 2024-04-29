@@ -51,7 +51,9 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
 
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [currencyAmount, setCurrencyAmount] = useState("");
-  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(orderedCurrencies[0].currency);
+  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(
+    orderedCurrencies?.[0]?.currency
+  );
 
   useMutationAlert({
     mutation: restAllocation,

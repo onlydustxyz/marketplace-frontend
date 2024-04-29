@@ -30,11 +30,10 @@ export function SponsorProjectButton({ project }: Props) {
     },
   });
 
-  const hasSponsorBudget = useMemo(() => !!data?.availableBudgets.length, [data]);
-
+  const canSponsorProject = useMemo(() => data?.availableBudgets.filter(b => Boolean(b.amount))?.length, [data]);
   return (
     <SponsorSidePanels
-      panel={hasSponsorBudget ? "project" : "fillout"}
+      panel={canSponsorProject ? "project" : "fillout"}
       project={project}
       buttonProps={{
         backgroundColor: "blue",
