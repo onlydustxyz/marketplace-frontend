@@ -2,6 +2,8 @@ import { LazyMotion, domAnimation } from "framer-motion";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { useCloseAllStack } from "src/libs/react-stack";
+
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { Transition } from "components/features/stacks/payments-flow/request-payments-stacks/features/payout-summary/components/transition/transition";
@@ -18,6 +20,7 @@ import { Key } from "hooks/translate/use-translate";
 
 export function PayoutSummary({ billingProfileId, rewards }: TPayoutSummary.Props) {
   const [show, setShow] = useState(false);
+  const closePanel = useCloseAllStack();
 
   const { wallets, payoutSummaryContent } = usePayoutSummary({ billingProfileId, rewards });
 
@@ -51,7 +54,7 @@ export function PayoutSummary({ billingProfileId, rewards }: TPayoutSummary.Prop
         <Transition show={show}>
           <Card background={false} border={"light"} className="relative mb-6">
             <div className="absolute right-4 top-4 flex flex-row items-start justify-end">
-              <Link href={NEXT_ROUTER.settings.billing.paymentMethods(billingProfileId)}>
+              <Link href={NEXT_ROUTER.settings.billing.paymentMethods(billingProfileId)} onClick={closePanel}>
                 <Button variant={"secondary"} size={"s"} as="div">
                   <Icon remixName={"ri-pencil-line"} />
                   <Translate token={"v2.pages.stacks.request_payments.selectRewards.editPayout"} />
