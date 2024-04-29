@@ -1,9 +1,10 @@
 import OnlyDustCrashedLogo from "src/assets/icons/OnlyDustCrashedLogo";
 import Button, { ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import Refresh from "src/icons/Refresh";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props = {
   isFixed?: boolean;

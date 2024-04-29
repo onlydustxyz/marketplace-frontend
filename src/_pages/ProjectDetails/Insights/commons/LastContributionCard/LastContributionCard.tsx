@@ -1,10 +1,11 @@
 import Card from "src/components/Card";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import StackLine from "src/icons/StackLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
 import { Link } from "components/ds/link/link";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { LastContributionCardProps } from "./LastContributionCard.type";
 

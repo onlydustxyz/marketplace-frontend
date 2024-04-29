@@ -11,11 +11,12 @@ import { ContributionTable, TableColumns, type TableSort } from "src/components/
 import { Tabs } from "src/components/Tabs/Tabs";
 import Flex from "src/components/Utils/Flex";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
-import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import StackLine from "src/icons/StackLine";
 import { ContributionStatus, OrderBy } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "../Banners/StillFetchingBanner";

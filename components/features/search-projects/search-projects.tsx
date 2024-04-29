@@ -3,12 +3,13 @@ import { useRef } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Input } from "components/ds/form/input/input";
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { useSearchProjects } from "./hooks/use-search-projects";
 import { TSearchProjects } from "./search-projects.types";

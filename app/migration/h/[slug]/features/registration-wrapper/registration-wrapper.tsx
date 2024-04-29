@@ -4,9 +4,10 @@ import { hackathonsApiClient } from "api-client/resources/hackathons";
 import { useUpdateHackathonsRegistrations } from "api-client/resources/me/mutations/use-update-hackathons-registrations";
 
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
 
 import { ApplyCallout } from "components/features/apply-callout/apply-callout";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TRegistrationWrapper } from "./registration-wrapper.types";
 

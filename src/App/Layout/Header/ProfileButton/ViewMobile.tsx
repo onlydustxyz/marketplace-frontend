@@ -6,7 +6,6 @@ import { Fields } from "src/_pages/Rewards/UserRewardTable/Headers";
 import MeApi from "src/api/me";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import SidePanel from "src/components/SidePanel";
-import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
@@ -19,6 +18,7 @@ import { Typography } from "components/layout/typography/typography";
 import { NEXT_ROUTER } from "constants/router";
 
 import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { useLogout } from "./Logout.hooks";
 

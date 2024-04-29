@@ -1,10 +1,11 @@
 import { CompletedRewardableItem } from "src/api/Project/queries";
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 import Card from "src/components/Card";
-import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import { GithubContributionType, WorkItemType } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import ContributionQuickActions from "../ContributionQuickActions";
 import { RewardableWorkItem } from "../WorkItemSidePanel/WorkItems/WorkItems";

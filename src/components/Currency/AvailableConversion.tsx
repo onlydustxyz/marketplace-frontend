@@ -3,11 +3,11 @@ import { Money } from "utils/Money/Money";
 
 import { Chip } from "src/components/Chip/Chip";
 import { Chips } from "src/components/Chips/Chips";
-import Tooltip from "src/components/Tooltip";
-import { TooltipPosition } from "src/components/Tooltip";
+import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { CurrencyIcons } from "./CurrencyIcon";
 

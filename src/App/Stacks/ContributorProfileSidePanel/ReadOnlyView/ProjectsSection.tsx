@@ -1,10 +1,10 @@
 import { ComponentProps } from "react";
 
-import { useIntl } from "src/hooks/useIntl";
-
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import ProjectCard from "./ProjectCard";
 import { Section } from "./Section";

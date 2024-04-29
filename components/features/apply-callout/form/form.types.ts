@@ -1,6 +1,7 @@
 import { components } from "src/__generated/api";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
-import { Key } from "src/hooks/useIntl";
+
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TApplyForm {
   interface ContactProps {

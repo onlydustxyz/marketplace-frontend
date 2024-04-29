@@ -8,12 +8,12 @@ import MeApi from "src/api/me";
 import { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import { ChoiceButton } from "src/components/New/Buttons/ChoiceButton/ChoiceButton";
 import SidePanel from "src/components/SidePanel";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { cn } from "src/utils/cn";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 type RewardProjectButtonProps = { project: components["schemas"]["ProjectResponse"]; size?: ButtonSize };

@@ -4,7 +4,6 @@ import { isInMaintenanceMode } from "utils/maintenance/maintenance";
 
 import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
-import { useIntl } from "src/hooks/useIntl";
 import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
@@ -13,6 +12,7 @@ import { withClientOnly } from "components/layout/client-only/client-only";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import View from "./View";

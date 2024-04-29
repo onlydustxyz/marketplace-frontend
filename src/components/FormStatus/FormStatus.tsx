@@ -1,7 +1,8 @@
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import Tag, { TagSize } from "../Tag";
 import Flex from "../Utils/Flex";

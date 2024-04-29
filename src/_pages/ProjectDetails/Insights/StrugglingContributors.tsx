@@ -5,10 +5,11 @@ import Table from "src/components/Table";
 import HeaderCell from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
 import QuestionLine from "src/icons/QuestionLine";
 
 import EmptyTablePlaceholder from "components/layout/placeholders/empty-table/empty-table-placeholder";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { useStrugglingContributorsTable } from "./hooks/useStrugglingContributorsTable";
 

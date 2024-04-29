@@ -9,12 +9,13 @@ import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";

@@ -1,9 +1,10 @@
-import { useIntl } from "src/hooks/useIntl";
 import MoneyBoxLine from "src/icons/MoneyBoxLine";
 
 import { FilterFieldContainer } from "components/ds/Filters/field-container/field-container";
 import { SelectAutocomplete } from "components/ds/form/select-autocomplete/select-autocomplete";
 import { TFiltersCurrencies } from "components/features/filters/filters-currencies/filters-currencies.types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function FiltersCurrencies({ currencies, selected, onChange, hideLabel, isElevated }: TFiltersCurrencies.Props) {
   const { T } = useIntl();

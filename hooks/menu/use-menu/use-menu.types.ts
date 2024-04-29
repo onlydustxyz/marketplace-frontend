@@ -1,4 +1,4 @@
-import { Key } from "src/hooks/useIntl";
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TUseMenu {
   export const ERROR_COLORS = {

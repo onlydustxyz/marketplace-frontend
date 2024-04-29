@@ -8,7 +8,6 @@ import { FeedbackPanel } from "src/App/Stacks/FeedbackPanel/FeedbackPanel";
 import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
 import { VerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
 import GithubLogo from "src/icons/GithubLogo";
 import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
@@ -25,6 +24,8 @@ import { TSponsorProjectStack } from "components/features/stacks/sponsor-project
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
 import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";

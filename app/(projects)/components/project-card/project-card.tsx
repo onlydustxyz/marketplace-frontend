@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 
 import PrivateTag from "src/components/PrivateTag";
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { Avatar } from "components/ds/avatar/avatar";
@@ -12,6 +11,8 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { ProjectTags } from "../../features/project-tags/project-tags";
 import { ContributorsCounter } from "./contributors-counter/contributors-counter";
@@ -25,7 +26,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   const { T } = useIntl();
   const {
     isInvitedAsProjectLead,
-    isMissingGithubAppInstallation,
+    hasMissingGithubAppInstallation,
     visibility,
     name,
     slug,
@@ -38,7 +39,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
     technologies,
   } = project;
 
-  const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
+  const isErrorVariant = Boolean(isUserProjectLead && hasMissingGithubAppInstallation);
   const isPrivate = visibility === "PRIVATE";
 
   const InviteBanner = useMemo(() => {
@@ -57,7 +58,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   }, [project]);
 
   const MissingGithubBanner = useMemo(() => {
-    if (isUserProjectLead && isMissingGithubAppInstallation) {
+    if (isUserProjectLead && hasMissingGithubAppInstallation) {
       return <ProjectMissingGithubBanner slug={slug} />;
     }
 
@@ -124,7 +125,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             </div>
           </Flex>
         </Flex>
-        {isInvitedAsProjectLead || isMissingGithubAppInstallation ? (
+        {isInvitedAsProjectLead || hasMissingGithubAppInstallation ? (
           <Flex direction="col" className="mt-5 gap-5 pr-4 lg:pr-6">
             {InviteBanner}
             {MissingGithubBanner}

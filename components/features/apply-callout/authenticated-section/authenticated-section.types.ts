@@ -1,5 +1,6 @@
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
-import { Key } from "src/hooks/useIntl";
+
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TApplyAuthenticatedSection {
   export interface Props {

@@ -3,7 +3,8 @@ import { useContext } from "react";
 import { MultiStepsForm } from "src/_pages/ProjectCreation/components/MultiStepsForm";
 import Card from "src/components/Card";
 import { GithubSyncSettings } from "src/components/New/Ui/GithubSyncSettings";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { CreateProjectContext } from "../../ProjectCreation.context";
 import OrganizationList from "./components/OrganizationList";

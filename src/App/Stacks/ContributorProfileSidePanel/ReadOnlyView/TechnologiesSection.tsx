@@ -1,6 +1,7 @@
 import Tag, { TagSize } from "src/components/Tag";
-import { useIntl } from "src/hooks/useIntl";
 import { Technologies, getFilteredTechnologies } from "src/utils/technologies";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Section } from "./Section";
 

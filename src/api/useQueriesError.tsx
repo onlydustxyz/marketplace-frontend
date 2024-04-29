@@ -2,9 +2,10 @@ import { useRouter } from "next/navigation";
 
 import ErrorFallback from "src/ErrorFallback";
 import Button from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { FetchError } from "./query.type";
 import { HttpStatusStrings } from "./query.utils";

@@ -4,8 +4,7 @@ import { useState } from "react";
 import { isInArray } from "src/utils/isInArray";
 
 import { useUpdateSearchParams } from "hooks/router/useUpdateSearchParams";
-
-import { useIntl } from "./useIntl";
+import { useIntl } from "hooks/translate/use-translate";
 
 export enum AllTabs {
   All = "ALL_CONTRIBUTIONS",

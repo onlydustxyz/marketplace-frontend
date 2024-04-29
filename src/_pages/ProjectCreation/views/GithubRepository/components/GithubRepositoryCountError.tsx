@@ -1,5 +1,6 @@
 import Lightbulb from "src/assets/icons/Lightbulb";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export const GithubRepositoryCountError = () => {
   const { T } = useIntl();

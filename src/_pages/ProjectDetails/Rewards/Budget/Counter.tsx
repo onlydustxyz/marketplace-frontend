@@ -1,4 +1,4 @@
-import { useIntl } from "src/hooks/useIntl";
+import { useIntl } from "hooks/translate/use-translate";
 
 type CounterProps = {
   count?: number;

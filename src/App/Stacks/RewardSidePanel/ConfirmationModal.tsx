@@ -1,6 +1,7 @@
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Card from "src/components/Card";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type Props = {
   onClose: () => void;

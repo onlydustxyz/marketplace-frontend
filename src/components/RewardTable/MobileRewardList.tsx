@@ -1,11 +1,12 @@
 import { MobileUserRewardItem } from "src/_pages/Rewards/UserRewardTable/MobileUserRewardList";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
-import { useIntl } from "src/hooks/useIntl";
 import { PaymentStatus } from "src/types";
 import { pretty } from "src/utils/id";
 
 import { PayoutStatus } from "components/features/payout-status/payout-status";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export default function MobileRewardList({
   rewards,

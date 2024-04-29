@@ -7,7 +7,6 @@ import { useMediaQuery } from "usehooks-ts";
 
 import { Calendar } from "src/components/New/Calendar";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import CheckLine from "src/icons/CheckLine";
@@ -15,6 +14,8 @@ import { cn } from "src/utils/cn";
 import { getFormattedDateGB, getFormattedTimeDatepicker, parseDateRangeString, parseDateString } from "src/utils/date";
 
 import { BottomSheet } from "components/ds/modals/bottom-sheet/bottom-sheet";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export enum Period {
   ThisWeek = "this_week",

@@ -12,10 +12,11 @@ import HeaderCell from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import { viewportConfig } from "src/config";
 import { useContributionTabs } from "src/hooks/useContributionTabs";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { Contribution as ContributionT, OrderBy } from "src/types";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { ShowMore } from "../Table/ShowMore";
 import { ContributionEmptyFallBack } from "./ContributionEmptyFalback";

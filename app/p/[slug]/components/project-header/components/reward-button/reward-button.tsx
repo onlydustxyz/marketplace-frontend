@@ -7,12 +7,12 @@ import MeApi from "src/api/me";
 import { ButtonOnBackground, ButtonSize } from "src/components/Button";
 import { ChoiceButton } from "src/components/New/Buttons/ChoiceButton/ChoiceButton";
 import SidePanel from "src/components/SidePanel";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Icon } from "components/layout/icon/icon";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { TRewardButton } from "./reward-button.types";

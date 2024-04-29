@@ -8,7 +8,6 @@ import { useMediaQuery } from "usehooks-ts";
 import ProjectApi from "src/api/Project";
 import Skeleton from "src/components/Skeleton";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 import {
   useLeadProjects,
   usePendingLeadProjects,
@@ -20,6 +19,8 @@ import { cn } from "src/utils/cn";
 import { withClientOnly } from "components/layout/client-only/client-only";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import View from "./View";
 import ViewMobile from "./ViewMobile";

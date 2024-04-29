@@ -2,11 +2,12 @@ import { usePathname } from "next/navigation";
 
 import ExternalApi from "src/api/External";
 import Button, { ButtonAccentColor, ButtonSize, ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 import GithubWarning from "src/icons/GithubWarning";
 import { cn } from "src/utils/cn";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function GithubStatusBanner() {
   const { T } = useIntl();

@@ -1,12 +1,13 @@
 import { ChangeEvent, useRef } from "react";
 
-import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 
 import { Card } from "components/ds/card/card";
 import { IconTag } from "components/ds/icon-tag/icon-tag";
 import { TUploadFile } from "components/features/stacks/payments-flow/request-payments-stacks/components/upload-file/upload-file.types";
 import { Translate } from "components/layout/translate/translate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function UploadFile({ setSelectedFile }: TUploadFile.Props) {
   const { T } = useIntl();

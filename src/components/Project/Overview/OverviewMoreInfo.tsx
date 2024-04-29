@@ -3,11 +3,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { SocialIcon } from "src/_pages/ProjectDetails/ProjectEdition/pages/Information/components/SocialIcon";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import Telegram from "src/assets/icons/Telegram";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Link } from "components/ds/link/link";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import FakeExternalLink from "./FakeExternalLink";
 import Section, { SectionIcon } from "./OverviewSection";

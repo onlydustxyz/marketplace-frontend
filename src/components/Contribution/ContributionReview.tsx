@@ -3,9 +3,10 @@ import { ReactElement } from "react";
 import FileChange from "src/assets/icons/FileChange";
 import Hourglass from "src/assets/icons/Hourglass";
 import { ContributionAttribute } from "src/components/Contribution/ContributionAttribute";
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import { GithubPullRequestReviewState } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 // Map review statuses for type safety
 export const ReviewStateStatuses = {

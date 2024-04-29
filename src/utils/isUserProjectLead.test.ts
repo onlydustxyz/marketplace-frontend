@@ -35,7 +35,7 @@ const project: components["schemas"]["ProjectPageItemResponse"] = {
     Shell: 31816,
   },
   isInvitedAsProjectLead: false,
-  isMissingGithubAppInstallation: false,
+  hasMissingGithubAppInstallation: false,
 };
 
 describe("isUserProjectLead", () => {

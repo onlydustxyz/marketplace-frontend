@@ -1,5 +1,6 @@
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { ItemType } from "./MultiList";
 

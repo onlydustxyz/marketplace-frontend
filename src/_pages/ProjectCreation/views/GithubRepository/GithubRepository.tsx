@@ -7,12 +7,13 @@ import { VerticalListItemDrop } from "src/components/New/Cards/VerticalListItemD
 import { FieldCheckbox } from "src/components/New/Field/Checkbox";
 import { FieldInput } from "src/components/New/Field/Input";
 import { Flex } from "src/components/New/Layout/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 import SearchLine from "src/icons/SearchLine";
 import { getGithubSetupLink } from "src/utils/githubSetupLink";
 
 import { AddMissingRepositories } from "components/features/add-missing-repositories/add-missing-repositories";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { CreateProjectContext } from "../../ProjectCreation.context";
 import { FormInformationCount } from "./components/FormInformationCount";

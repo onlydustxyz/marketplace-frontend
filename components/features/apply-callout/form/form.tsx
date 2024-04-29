@@ -10,7 +10,6 @@ import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import Telegram from "src/assets/icons/Telegram";
 import { viewportConfig } from "src/config";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { ContactInput } from "components/ds/form/contact-input/contact-input";
@@ -18,6 +17,8 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TApplyForm } from "./form.types";
 import { formatToData, formatToSchema } from "./form.utils";

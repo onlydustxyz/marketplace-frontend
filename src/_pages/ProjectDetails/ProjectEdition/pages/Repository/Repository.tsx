@@ -2,8 +2,9 @@ import { useContext, useMemo } from "react";
 
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { EditContext } from "../../EditContext";
 import { EditPanelContext } from "../../components/Panel/context";

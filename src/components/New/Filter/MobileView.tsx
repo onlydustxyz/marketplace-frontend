@@ -3,9 +3,10 @@ import { PropsWithChildren, useState } from "react";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import Button, { ButtonSize, ButtonType, Width as ButtonWidth } from "src/components/Button";
 import SidePanel from "src/components/SidePanel";
-import { useIntl } from "src/hooks/useIntl";
 import Refresh from "src/icons/Refresh";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function MobileView({
   children,

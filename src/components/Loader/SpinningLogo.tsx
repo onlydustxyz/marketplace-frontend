@@ -1,5 +1,6 @@
 import { IMAGES } from "src/assets/img";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function SpinningLogo() {
   const { T } = useIntl();

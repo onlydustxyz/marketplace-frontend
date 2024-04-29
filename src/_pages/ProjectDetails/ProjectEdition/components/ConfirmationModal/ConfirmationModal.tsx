@@ -2,7 +2,8 @@ import { useNavigationState } from "providers/navigation-state/navigation-state"
 import { useContext, useEffect } from "react";
 
 import { Modal } from "src/components/New/Modal";
-import { useIntl } from "src/hooks/useIntl";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { EditContext } from "../../EditContext";
 

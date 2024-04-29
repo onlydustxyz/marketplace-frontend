@@ -7,7 +7,6 @@ import InfoIcon from "src/assets/icons/InfoIcon";
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import { Tabs } from "src/components/Tabs/Tabs";
-import { useIntl } from "src/hooks/useIntl";
 import HandCoinLine from "src/icons/HandCoinLine";
 import { BackDrop } from "src/libs/react-stack";
 import SidePanel from "src/libs/react-stack/ui/Panel";
@@ -16,6 +15,8 @@ import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export type BudgetPanelProps = {
   open: false | "remaining" | "amount";

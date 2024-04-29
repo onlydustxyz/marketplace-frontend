@@ -6,11 +6,12 @@ import Contributor from "src/components/Contributor";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
-import { useIntl } from "src/hooks/useIntl";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import ActivityGraph from "../commons/ActivityGraph/ActivityGraph";
 

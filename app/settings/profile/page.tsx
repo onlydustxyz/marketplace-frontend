@@ -8,10 +8,11 @@ import { z } from "zod";
 
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
-import { Key, useIntl } from "src/hooks/useIntl";
 
 import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
+
+import { Key, useIntl } from "hooks/translate/use-translate";
 
 import { FormFooter } from "../components/form-footer/form-footer";
 import { SettingsHeader } from "../components/settings-header/settings-header";

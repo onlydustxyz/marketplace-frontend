@@ -15,11 +15,12 @@ import Button, { ButtonOnBackground, ButtonSize, Width } from "src/components/Bu
 import Card from "src/components/Card";
 import ContactInformations from "src/components/ContactInformations";
 import { withTooltip } from "src/components/Tooltip";
-import { useIntl } from "src/hooks/useIntl";
 import User3Line from "src/icons/User3Line";
 import isContactInfoProvided from "src/utils/isContactInfoProvided";
 
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 interface ApplyCalloutProps {
   isAuthenticated?: boolean;

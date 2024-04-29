@@ -5,7 +5,6 @@ import { TLeaveBillingProfile } from "app/settings/billing/[id]/general-informat
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { ConfirmationModal } from "components/ds/modals/confirmation/confirmation";
@@ -14,6 +13,7 @@ import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function LeaveBillingProfile({ actionType }: TLeaveBillingProfile.Props) {

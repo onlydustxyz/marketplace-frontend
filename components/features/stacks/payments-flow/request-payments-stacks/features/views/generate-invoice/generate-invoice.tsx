@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { IMAGES } from "src/assets/img";
 import { Spinner } from "src/components/Spinner/Spinner";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Banner } from "components/ds/banner/banner";
 import { Button } from "components/ds/button/button";
@@ -18,6 +17,7 @@ import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
+import { useIntl } from "hooks/translate/use-translate";
 
 import { TGenerateInvoice } from "./generate-invoice.types";
 

@@ -3,9 +3,10 @@ import { useState } from "react";
 
 import { IMAGES } from "src/assets/img";
 import Badge, { BadgeSize } from "src/components/Badge";
-import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import { cn } from "src/utils/cn";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export enum FilterDropDownIcon {
   Technology = "technology",

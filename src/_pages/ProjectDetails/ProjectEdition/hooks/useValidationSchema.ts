@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-import { useIntl } from "src/hooks/useIntl";
 import { ZodUtils } from "src/utils/Zod";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export const useEditValidationSchema = () => {
   const { T } = useIntl();

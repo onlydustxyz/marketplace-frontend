@@ -1,9 +1,9 @@
-import { Key } from "src/hooks/useIntl";
-
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { TIcon } from "components/layout/icon/icon.types";
 import { Typography } from "components/layout/typography/typography";
+
+import { Key } from "hooks/translate/use-translate";
 
 type Props = {
   title: Key;

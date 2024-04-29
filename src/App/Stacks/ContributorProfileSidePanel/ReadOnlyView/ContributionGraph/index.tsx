@@ -3,8 +3,9 @@ import { useMemo, useState } from "react";
 import { Bar, BarChart, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import { components } from "src/__generated/api";
-import { useIntl } from "src/hooks/useIntl";
 import { daysFromNow, weekNumber } from "src/utils/date";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import CustomBar from "./Bar";
 import CustomLegend from "./Legend";

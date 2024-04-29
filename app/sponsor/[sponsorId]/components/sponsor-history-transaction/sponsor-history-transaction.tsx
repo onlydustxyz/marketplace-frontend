@@ -1,11 +1,12 @@
 import { TSponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction.types";
 
-import { useIntl } from "src/hooks/useIntl";
 import { cn } from "src/utils/cn";
 
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Typography } from "components/layout/typography/typography";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 export function SponsorHistoryTransaction({ type }: TSponsorHistoryTransaction.Props) {
   const { T } = useIntl();

@@ -8,10 +8,11 @@ import { FormOption, Size as FormOptionSize, Variant } from "src/components/Form
 import { Datepicker, Period } from "src/components/New/Field/Datepicker";
 import { Field } from "src/components/New/Field/Field";
 import Flex from "src/components/Utils/Flex";
-import { useIntl } from "src/hooks/useIntl";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import InformationLine from "src/icons/InformationLine";
 import { GithubContributionType } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type RewardableContributionsFieldProps = {
   value?: components["schemas"]["ProjectRewardSettings"];

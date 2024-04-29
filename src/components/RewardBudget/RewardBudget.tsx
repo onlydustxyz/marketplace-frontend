@@ -2,7 +2,6 @@ import { FC, useMemo } from "react";
 import { Money } from "utils/Money/Money";
 
 import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
-import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
 import { cn } from "src/utils/cn";
@@ -14,6 +13,8 @@ import { CurrencyBudget } from "components/features/currency/currency-budget/cur
 import { CurrencyConverter } from "components/features/currency/currency-converter/currency-converter";
 import { useCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
 import { Translate } from "components/layout/translate/translate";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { RewardBudgetProps } from "./RewardBudget.type";
 import { RewardBudgetUtils } from "./RewardBudget.utils";

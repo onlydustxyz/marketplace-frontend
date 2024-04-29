@@ -3,7 +3,6 @@ import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
 import EyeOffLine from "src/icons/EyeOffLine";
 import Medal2Fill from "src/icons/Medal2Fill";
@@ -13,6 +12,8 @@ import StackLine from "src/icons/StackLine";
 import { Button } from "components/ds/button/button";
 import ActionMenu from "components/layout/action-menu/action-menu";
 import { Icon } from "components/layout/icon/icon";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 type ViewMobileProps<C> = {
   contributors: C[];

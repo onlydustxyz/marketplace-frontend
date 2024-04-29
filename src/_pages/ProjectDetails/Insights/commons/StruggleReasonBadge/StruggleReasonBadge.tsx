@@ -1,4 +1,4 @@
-import { useIntl } from "src/hooks/useIntl";
+import { useIntl } from "hooks/translate/use-translate";
 
 import Bar from "./SruggleReasonBar";
 import { StruggleReasonBadgeProps } from "./StruggleReasonBadge.type";

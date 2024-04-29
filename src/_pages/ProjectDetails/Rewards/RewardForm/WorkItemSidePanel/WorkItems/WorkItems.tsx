@@ -5,9 +5,10 @@ import { useFormContext } from "react-hook-form";
 import ProjectApi from "src/api/Project";
 import { RewardableItem, useRewardableItemsQueryParams } from "src/api/Project/queries";
 import { NotFound } from "src/components/NotFound";
-import { useIntl } from "src/hooks/useIntl";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { WorkItemType } from "src/types";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 import { Contributor } from "../../types";
 import View, { tabNames } from "./View";

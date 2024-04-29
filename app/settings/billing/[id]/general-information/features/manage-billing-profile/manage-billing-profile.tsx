@@ -5,7 +5,6 @@ import { TManageBillingProfile } from "app/settings/billing/[id]/general-informa
 
 import BillingProfilesApi from "src/api/BillingProfiles";
 import useMutationAlert from "src/api/useMutationAlert";
-import { useIntl } from "src/hooks/useIntl";
 
 import { Button } from "components/ds/button/button";
 import { ConfirmationModal } from "components/ds/modals/confirmation/confirmation";
@@ -14,6 +13,8 @@ import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 const iconName: Record<string, RemixIconsName> = {
   delete: "ri-delete-bin-2-line",

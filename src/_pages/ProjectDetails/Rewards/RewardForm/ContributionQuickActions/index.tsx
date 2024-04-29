@@ -1,10 +1,11 @@
 import TagButton from "src/components/TagButton/TagButton";
-import { useIntl } from "src/hooks/useIntl";
 import AddLine from "src/icons/AddLine";
 import EyeOffLine from "src/icons/EyeOffLine";
 import { GithubContributionShortenTypeLabel, GithubContributionType } from "src/types";
 
 import ActionMenu from "components/layout/action-menu/action-menu";
+
+import { useIntl } from "hooks/translate/use-translate";
 
 interface ContributionQuickActionsProps {
   remainingCount: number;

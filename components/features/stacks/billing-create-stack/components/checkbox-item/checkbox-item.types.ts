@@ -1,9 +1,9 @@
 import { PropsWithChildren, ReactNode } from "react";
 
-import { Key } from "src/hooks/useIntl";
-
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
 import { TIcon } from "components/layout/icon/icon.types";
+
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TCheckboxItem {
   export interface Props extends PropsWithChildren {
