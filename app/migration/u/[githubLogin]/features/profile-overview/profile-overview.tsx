@@ -1,9 +1,14 @@
+import { ProfileSummary } from "app/migration/u/[githubLogin]/features/profile-overview/components/profile-summary/profile-summary";
 import { TProfileOverview } from "app/migration/u/[githubLogin]/features/profile-overview/profile-overview.types";
-import { ProfileSummary } from "app/migration/u/[githubLogin]/features/profile-summary/profile-summary";
+
+import { IMAGES } from "src/assets/img";
 
 import { Card } from "components/ds/card/card";
 import { ProfileCard } from "components/features/profile-card/profile-card";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
+
+import { TMostActiveCard } from "./components/most-active-section/most-active-card/most-active-card.types";
+import { MostActiveSection } from "./components/most-active-section/most-active-section";
 
 export function ProfileOverview(_: TProfileOverview.Props) {
   const profileCardMock = {
@@ -51,6 +56,60 @@ export function ProfileOverview(_: TProfileOverview.Props) {
     onlydustRegistrationDate: "2023-05-01",
   };
 
+  const mostActiveLanguagesMock: TMostActiveCard.Props[] = [
+    {
+      logoUrl: IMAGES.logo.space,
+      name: "Rust",
+      contributionCount: 20,
+      rewardCount: 2,
+      totalUsdEquivalent: 800,
+      status: "bad",
+    },
+    {
+      logoUrl: IMAGES.logo.space,
+      name: "Typescript",
+      contributionCount: 120,
+      rewardCount: 25,
+      totalUsdEquivalent: 10000,
+      status: "neutral",
+    },
+    {
+      logoUrl: IMAGES.logo.space,
+      name: "Ruby on Rails",
+      contributionCount: 300,
+      rewardCount: 70,
+      totalUsdEquivalent: 45000,
+      status: "good",
+    },
+    {
+      logoUrl: IMAGES.logo.space,
+      name: "Noir",
+      contributionCount: 500,
+      rewardCount: 150,
+      totalUsdEquivalent: 75000,
+      status: "good",
+    },
+  ];
+
+  const mostActiveEcosystemsMock: TMostActiveCard.Props[] = [
+    {
+      logoUrl: IMAGES.logo.space,
+      name: "Skartnet",
+      contributionCount: 300,
+      rewardCount: 80,
+      totalUsdEquivalent: 1500,
+      status: "good",
+    },
+    {
+      logoUrl: IMAGES.logo.space,
+      name: "Ethereum",
+      contributionCount: 50,
+      rewardCount: 20,
+      totalUsdEquivalent: 300,
+      status: "bad",
+    },
+  ];
+
   return (
     <Card className="flex w-full flex-col items-start justify-start gap-10" background="base">
       <div className="flex w-full flex-row flex-wrap items-start justify-between gap-2">
@@ -61,12 +120,35 @@ export function ProfileOverview(_: TProfileOverview.Props) {
           <ProfileSummary {...profileRestInfo} />
         </div>
       </div>
-      <div className="flex w-full flex-row items-start justify-between gap-2">
-        <div className="flex h-[176px] flex-1 items-center justify-center bg-card-background-heavy">
-          MOST ACTIVE LANGUAGE
+      <div className="flex w-full flex-col items-start justify-between gap-6 md:flex-row md:gap-10">
+        <div className="flex w-full flex-1">
+          <MostActiveSection
+            icon={{
+              remixName: "ri-code-s-slash-line",
+            }}
+            title={{
+              translate: {
+                token: "v2.pages.publicProfile.header.languages.title",
+              },
+            }}
+            list={mostActiveLanguagesMock}
+            wrapperClassName="xl:grid-cols-4"
+          />
         </div>
-        <div className="flex h-[176px] w-1/3 items-center justify-center bg-card-background-heavy">
-          MOST ACTIVE ECOSYSTEM
+
+        <div className="flex w-full md:w-1/3">
+          <MostActiveSection
+            icon={{
+              remixName: "ri-global-line",
+            }}
+            title={{
+              translate: {
+                token: "v2.pages.publicProfile.header.ecosystems.title",
+              },
+            }}
+            list={mostActiveEcosystemsMock}
+            wrapperClassName="md:grid-cols-1 xl:grid-cols-2"
+          />
         </div>
       </div>
     </Card>
