@@ -1,7 +1,7 @@
 "use client";
 
-import { animate, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { animate, motion, useAnimate, useMotionValue, useMotionValueEvent, useTransform } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Cell, Legend, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Sector, Tooltip } from "recharts";
 import { PieSectorDataItem } from "recharts/types/polar/Pie";
 
@@ -46,54 +46,81 @@ function ActiveShape({ cx, cy, innerRadius, outerRadius, startAngle, endAngle, f
 function CustomizedLabel({
   cx,
   cy,
-  innerRadius,
-  outerRadius,
+  innerRadius = 0,
+  outerRadius = 0,
   startAngle,
   endAngle,
   fill,
   ...props
 }: PieSectorDataItem) {
+  const range: { base: [number, number]; reverse: [number, number] } = {
+    base: [0, 3],
+    reverse: [3, 0],
+  };
+  const [animationRange, setAnimationRange] = useState<{ range: [number, number]; initial: boolean }>({
+    range: range.base,
+    initial: true,
+  });
+  const [animationState, setAnimationState] = useState(0);
+
   const [animationInnerRadius, setAnimationInnerRadius] = useState(innerRadius);
   const [animationOuterRadius, setAnimationOuterRadius] = useState(outerRadius);
 
-  const animation = useRef(
-    animate(0, 3, {
+  useEffect(() => {
+    const _animate = animate(animationRange.range[0], animationRange.range[1], {
       duration: 0.3,
-      repeatType: "mirror",
       autoplay: false,
       onUpdate: latest => {
+        setAnimationState(latest);
         setAnimationInnerRadius(Number(innerRadius) - latest);
         setAnimationOuterRadius(Number(outerRadius) + latest);
       },
-    })
-  );
+    });
 
-  const animation2 = useRef(
-    animate(3, 0, {
-      duration: 0.3,
-      autoplay: false,
-      onUpdate: latest => {
-        setAnimationInnerRadius(Number(innerRadius) - latest);
-        setAnimationOuterRadius(Number(outerRadius) + latest);
-      },
-    })
-  );
+    if (!animationRange.initial) {
+      _animate.pause();
+      _animate.time = 0;
+      _animate.play();
+    }
+  }, [animationRange]);
+
+  const onLeave = () => {
+    if (animationState === 0) return;
+    if (animationState === animationRange.range[1]) {
+      setAnimationRange({ range: range.reverse, initial: false });
+      return;
+    }
+    if (animationState !== animationRange.range[1]) {
+      setAnimationRange({ range: [animationState, range.reverse[1]], initial: false });
+      return;
+    }
+  };
+
+  const onEnter = () => {
+    if (animationState === 3) return;
+    if (animationState === animationRange.range[1]) {
+      setAnimationRange({ range: range.base, initial: false });
+      return;
+    }
+    if (animationState !== animationRange.range[1]) {
+      setAnimationRange({ range: [animationState, range.base[1]], initial: false });
+      return;
+    }
+  };
 
   return (
-    <motion.g>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={animationInnerRadius}
-        outerRadius={animationOuterRadius}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
-        onMouseEnter={() => animation.current.play()}
-        onMouseLeave={() => animation.current.play()}
-        {...props}
-      />
-    </motion.g>
+    <Sector
+      cx={cx}
+      cy={cy}
+      {...props}
+      innerRadius={animationInnerRadius}
+      outerRadius={animationOuterRadius}
+      startAngle={startAngle}
+      endAngle={endAngle}
+      fill={fill}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    />
   );
 }
 
