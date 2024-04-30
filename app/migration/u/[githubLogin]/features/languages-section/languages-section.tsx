@@ -1,4 +1,7 @@
+import { ContributionList } from "app/migration/u/[githubLogin]/components/contribution-list/contribution-list";
 import { DetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion";
+
+import { PreRenderOnServer } from "components/layout/client-only/client-only";
 
 import { TLanguagesSection } from "./languages-section.types";
 
@@ -115,5 +118,14 @@ export function LanguagesSection(_: TLanguagesSection.Props) {
       ],
     },
   ];
-  return <DetailsAccordion details={languagesMock}>Content</DetailsAccordion>;
+  return (
+    <>
+      <DetailsAccordion details={languagesMock}>
+        <ContributionList />
+      </DetailsAccordion>
+      <PreRenderOnServer>
+        <ContributionList />
+      </PreRenderOnServer>
+    </>
+  );
 }
