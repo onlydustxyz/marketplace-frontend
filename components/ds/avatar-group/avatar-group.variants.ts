@@ -11,7 +11,6 @@ export const avatarGroupVariants = tv({
       xl: "-space-x-4",
       "2xl": "-space-x-5",
       "3xl": "-space-x-6",
-      rectangleSize: "-space-x-4",
     },
   },
   defaultVariants: {

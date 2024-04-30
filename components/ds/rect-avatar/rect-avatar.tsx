@@ -8,12 +8,11 @@ import { useMemo, useState } from "react";
 import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
 
-import { TAvatar } from "components/ds/avatar/avatar.types";
-import { avatarVariants } from "components/ds/avatar/avatar.variants";
-import { Link } from "components/ds/link/link";
+import { TRectAvatar } from "components/ds/rect-avatar/rect-avatar.types";
+import { rectAvatarVariants } from "components/ds/rect-avatar/rect-avatar.variants";
 import { useClientOnly } from "components/layout/client-only/client-only";
 
-export function Avatar(props: TAvatar.Props) {
+export function RectAvatar(props: TRectAvatar.Props) {
   const isClient = useClientOnly();
   const [isError, setIsError] = useState(false);
   // size prop needs to be extracted or it conflicts with the size prop from NextAvatar
@@ -31,22 +30,14 @@ export function Avatar(props: TAvatar.Props) {
     const size = props.size;
     const dpr = isClient ? window.devicePixelRatio : 1;
     switch (size) {
-      case "xs":
-        return { w: 16 * dpr, h: 16 * dpr };
       case "s":
-        return { w: 24 * dpr, h: 24 * dpr };
+        return { w: 96 * dpr, h: 28 * dpr };
       case "m":
-        return { w: 32 * dpr, h: 32 * dpr };
+        return { w: 144 * dpr, h: 42 * dpr };
       case "l":
-        return { w: 40 * dpr, h: 40 * dpr };
-      case "xl":
-        return { w: 48 * dpr, h: 48 * dpr };
-      case "2xl":
-        return { w: 64 * dpr, h: 64 * dpr };
-      case "3xl":
-        return { w: 80 * dpr, h: 80 * dpr };
+        return { w: 192 * dpr, h: 56 * dpr };
       default:
-        return { w: 16 * dpr, h: 16 * dpr };
+        return { w: 192 * dpr, h: 56 * dpr };
     }
   }, [props, isClient]);
 
@@ -73,7 +64,7 @@ export function Avatar(props: TAvatar.Props) {
           loading="lazy"
         />
       }
-      className={cn(avatarVariants({ size, ...restProps }), className, { "border-none": !isBordered })}
+      className={cn(rectAvatarVariants({ size, ...restProps }), className, { "border-none": !isBordered })}
       imgProps={{
         loading: "lazy",
         onError: () => {
@@ -89,37 +80,3 @@ export function Avatar(props: TAvatar.Props) {
     />
   );
 }
-
-Avatar.Labelled = function AvatarLabelled({
-  children,
-  href,
-  avatarProps,
-  labelProps,
-  className,
-}: TAvatar.LabelledProps) {
-  const wrapperClassName = cn("flex items-center gap-2 truncate", className);
-
-  function renderContent() {
-    const { className: labelClassName, ...restLabelProps } = labelProps ?? {};
-    const { className: avatarClassName, ...restAvatarProps } = avatarProps ?? {};
-
-    return (
-      <>
-        <Avatar size="s" className={avatarClassName} {...restAvatarProps} />
-        <div className={cn("od-text-body-s truncate text-greyscale-50", labelClassName)} {...restLabelProps}>
-          {children}
-        </div>
-      </>
-    );
-  }
-
-  if (href) {
-    return (
-      <Link href={href} className={wrapperClassName}>
-        {renderContent()}
-      </Link>
-    );
-  }
-
-  return <div className={wrapperClassName}>{renderContent()}</div>;
-};
