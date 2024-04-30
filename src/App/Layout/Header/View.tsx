@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import MenuItem from "src/App/Layout/Header/MenuItem";
@@ -11,6 +12,7 @@ import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 import { useMatchPath } from "hooks/router/useMatchPath";
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -35,10 +37,27 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
   const { isAuthenticated, isLoading } = useAuth0();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const isSm = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
-
+  const { data: billingProfile } = useBillingProfiles();
   const isMatchProjectDetail = useMatchPath(NEXT_ROUTER.projects.details.root("[slug]"), { exact: false });
   const isMatchSettings = useMatchPath(NEXT_ROUTER.settings.all, { exact: false });
   const hideHeader = (isMatchProjectDetail || isMatchSettings) && !isXl;
+
+  const rewardSum = useMemo(
+    () => billingProfile?.billingProfiles?.reduce((acc, profile) => acc + profile.requestableRewardCount, 0),
+    [billingProfile]
+  );
+
+  const rewardBadgeContent = useMemo(() => {
+    if (!rewardSum) {
+      return undefined;
+    }
+
+    if (rewardSum > 9) {
+      return "+9";
+    }
+
+    return `${rewardSum}`;
+  }, [rewardSum]);
 
   if (hideHeader) {
     return null;
@@ -70,14 +89,16 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
                 {menuItems[NEXT_ROUTER.projects.all] ? (
                   <MenuItem href={NEXT_ROUTER.projects.all}>{menuItems[NEXT_ROUTER.projects.all]}</MenuItem>
                 ) : null}
+                {menuItems[NEXT_ROUTER.hackathons.root] ? (
+                  <MenuItem href={NEXT_ROUTER.hackathons.root}>{menuItems[NEXT_ROUTER.hackathons.root]}</MenuItem>
+                ) : null}
                 {menuItems[NEXT_ROUTER.contributions.all] ? (
                   <MenuItem href={NEXT_ROUTER.contributions.all}>{menuItems[NEXT_ROUTER.contributions.all]}</MenuItem>
                 ) : null}
                 {menuItems[NEXT_ROUTER.rewards.all] ? (
-                  <MenuItem href={NEXT_ROUTER.rewards.all}>{menuItems[NEXT_ROUTER.rewards.all]}</MenuItem>
-                ) : null}
-                {menuItems[NEXT_ROUTER.hackathons.root] ? (
-                  <MenuItem href={NEXT_ROUTER.hackathons.root}>{menuItems[NEXT_ROUTER.hackathons.root]}</MenuItem>
+                  <MenuItem href={NEXT_ROUTER.rewards.all} badgeContent={rewardBadgeContent}>
+                    {menuItems[NEXT_ROUTER.rewards.all]}
+                  </MenuItem>
                 ) : null}
                 <div className="flex flex-1 justify-center">
                   {impersonating ? (

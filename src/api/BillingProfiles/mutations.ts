@@ -98,7 +98,10 @@ const useUploadInvoice = ({
       params?.billingProfileId || "",
       params?.invoiceId || ""
     ),
-    invalidatesTags: [{ queryKey: MeApi.tags.rewards(), exact: false }],
+    invalidatesTags: [
+      { queryKey: MeApi.tags.rewards(), exact: false },
+      { queryKey: ME_BILLING_TAGS.allProfiles(), exact: false },
+    ],
     enabled: !!params?.billingProfileId || !!params?.invoiceId,
     method: "POST",
     ...options,

@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@nextui-org/react";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 
@@ -10,8 +11,9 @@ import { useMatchPath } from "hooks/router/useMatchPath";
 
 interface MenuItemProps extends PropsWithChildren {
   href: string;
+  badgeContent?: string;
 }
-export default function MenuItem({ href, children }: MenuItemProps) {
+export default function MenuItem({ href, children, badgeContent }: MenuItemProps) {
   const isActive = useMatchPath(href);
 
   return (
@@ -24,8 +26,17 @@ export default function MenuItem({ href, children }: MenuItemProps) {
         }
       )}
     >
-      <div className="bg-black py-1">
-        <Link href={href}>{children}</Link>
+      <div className="py-1">
+        <Badge
+          content={badgeContent}
+          isInvisible={!badgeContent}
+          shape="circle"
+          placement="top-right"
+          className="-right-4 bg-spacePurple-900 text-spacePurple-500"
+          size="sm"
+        >
+          <Link href={href}>{children}</Link>
+        </Badge>
       </div>
       {isActive && (
         <img
