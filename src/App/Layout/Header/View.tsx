@@ -43,7 +43,7 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
   const hideHeader = (isMatchProjectDetail || isMatchSettings) && !isXl;
 
   const rewardSum = useMemo(
-    () => billingProfile?.billingProfiles?.reduce((acc, profile) => acc + profile.invoiceableRewardCount, 0),
+    () => billingProfile?.billingProfiles?.reduce((acc, profile) => acc + profile.requestableRewardCount, 0),
     [billingProfile]
   );
 
@@ -53,7 +53,7 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
     }
 
     if (rewardSum > 9) {
-      return `+9`;
+      return "+9";
     }
 
     return `${rewardSum}`;
