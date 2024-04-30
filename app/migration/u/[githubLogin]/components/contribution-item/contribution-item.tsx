@@ -2,14 +2,13 @@ import { format } from "date-fns";
 
 import { Project } from "app/migration/u/[githubLogin]/features/project/project";
 
-import Medal2Fill from "src/icons/Medal2Fill";
-
 import { AvatarLabelled } from "components/ds/avatar/avatar.labelled";
 import { Card } from "components/ds/card/card";
 import { Link } from "components/ds/link/link";
 import { ContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge";
 import { TContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge.type";
 import { ClientOnly } from "components/layout/client-only/client-only";
+import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 import { TContributionItem } from "./contribution-item.types";
@@ -38,7 +37,7 @@ export function ContributionItem({ contribution, project }: TContributionItem.Pr
       <div className="flex items-center justify-end gap-3">
         {!contribution?.rewardIds?.length ? (
           <div className="rounded-full border border-card-border-light bg-card-background-light px-3">
-            <Medal2Fill className="text-sm leading-none text-orange-400" />
+            <Icon remixName="ri-medal-2-fill" className="text-orange-400" size={14} />
           </div>
         ) : null}
         {contribution.completedAt ? (
