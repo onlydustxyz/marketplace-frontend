@@ -1,9 +1,11 @@
-import { PropsWithChildren } from "react";
-import { Payload } from "recharts/types/component/DefaultTooltipContent";
+import { NameType, Payload, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
 export namespace TCustomTooltip {
-  export interface Props extends PropsWithChildren {
+  export type CustomPayload = Payload<ValueType, NameType>[];
+
+  export interface Props {
     active?: boolean;
-    payload?: Payload<string, number>[];
+    payload?: CustomPayload;
+    renderTooltip?: (payload: CustomPayload) => JSX.Element;
   }
 }

@@ -3,7 +3,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TCustomTooltip } from "./custom-tooltip.types";
 
-export function CustomTooltip({ active, payload, children }: TCustomTooltip.Props) {
+export function CustomTooltip({ active, payload, renderTooltip }: TCustomTooltip.Props) {
   if (!active || !payload?.length) {
     return null;
   }
@@ -21,7 +21,7 @@ export function CustomTooltip({ active, payload, children }: TCustomTooltip.Prop
         <Typography variant="body-s">{payload[0].name}</Typography>
       </Flex>
 
-      {children}
+      {renderTooltip ? renderTooltip(payload) : <Typography variant="body-s-bold">{payload[0].value}</Typography>}
     </Flex>
   );
 }

@@ -9,7 +9,7 @@ export function CustomLegend({ payload }: TCustomLegend.Props) {
   }
 
   return (
-    <Flex as="ul" direction="col" className="gap-3">
+    <Flex as="ul" direction="col" className="gap-2">
       {payload.map((entry, index) => (
         <Flex key={`item-${index}`} as="li" alignItems="center" className="gap-2">
           <span
