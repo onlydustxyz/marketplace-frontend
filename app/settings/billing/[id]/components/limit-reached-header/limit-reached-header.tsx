@@ -29,9 +29,9 @@ export function LimitReachedHeader() {
     router.push(NEXT_ROUTER.settings.payoutPreferences);
   }
 
-  const hasPayoutPreferencesLimitReached = payoutPreferences?.some(p => p?.billingProfile?.isIndividualLimitReached);
+  const hasPayoutPreferencesLimitReached = payoutPreferences?.some(p => p?.billingProfile?.individualLimitReached);
   const hasOnlyIndividualProfile = profiles.length === 1 && profiles[0].data.type === "INDIVIDUAL";
-  const hasIndividualLimitReached = hasOnlyIndividualProfile && profiles[0].data.isIndividualLimitReached;
+  const hasIndividualLimitReached = hasOnlyIndividualProfile && profiles[0].data.individualLimitReached;
 
   const renderEndElement = useMemo(() => {
     if (pathname.includes("payout-preferences")) {
@@ -68,5 +68,5 @@ export function LimitReachedHeader() {
       );
     }
     return null;
-  }, [hasIndividualLimitReached, profiles]);
+  }, [hasPayoutPreferencesLimitReached, hasIndividualLimitReached, profiles]);
 }

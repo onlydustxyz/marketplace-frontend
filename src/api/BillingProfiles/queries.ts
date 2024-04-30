@@ -19,18 +19,22 @@ const useGetBillingProfileById = ({
   options = {},
   params,
 }: UseQueryProps<UseGetBillingProfileById, { id?: string }>) => {
+  const { isAuthenticated } = useAuth0();
   return useBaseQuery<UseGetBillingProfileById>({
     resourcePath: BILLING_PROFILES_PATH.BY_ID(params?.id || ""),
     tags: BILLING_PROFILES_TAGS.single(params?.id || ""),
     ...options,
+    enabled: !!params?.id && isAuthenticated,
   });
 };
 
 const useGetPayoutInfo = ({ options = {}, params }: UseQueryProps<UseGetBillingProfilePayout, { id?: string }>) => {
+  const { isAuthenticated } = useAuth0();
   return useBaseQuery<UseGetBillingProfilePayout>({
     resourcePath: BILLING_PROFILES_PATH.PAYOUT(params?.id || ""),
     tags: BILLING_PROFILES_TAGS.billing_profile_payment_methods(params?.id || ""),
     ...options,
+    enabled: !!params?.id && isAuthenticated,
   });
 };
 interface BillingProfileCoworkersParams {
@@ -104,11 +108,12 @@ const useGetBillingProfileInvoiceableRewards = ({
   options = {},
   params,
 }: UseQueryProps<UseGetBillingProfileInvoiceableRewardsResponse, { billingProfileId?: string }>) => {
+  const { isAuthenticated } = useAuth0();
   return useBaseQuery<UseGetBillingProfileInvoiceableRewardsResponse>({
     resourcePath: BILLING_PROFILES_PATH.INVOICEABLE_REWARDS(params?.billingProfileId || ""),
     tags: BILLING_PROFILES_TAGS.invoiceable_rewards(params?.billingProfileId || ""),
     ...options,
-    enabled: !!params?.billingProfileId,
+    enabled: !!params?.billingProfileId && isAuthenticated,
   });
 };
 
