@@ -7,6 +7,8 @@ export namespace TBillingProfileTag {
       name: string;
       icon: TIcon.Props;
       id: string;
+      hasWarning: boolean;
+      hasError: boolean;
     };
   }
 }

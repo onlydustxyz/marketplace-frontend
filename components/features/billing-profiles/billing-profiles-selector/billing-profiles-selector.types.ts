@@ -9,6 +9,8 @@ export namespace TBillingProfilesSelector {
     id: string;
     enabled: boolean;
     hasPendingInvitation: boolean;
+    hasWarning: boolean;
+    hasError: boolean;
   }
   export interface Props extends PropsWithChildren {
     data?: Data[];

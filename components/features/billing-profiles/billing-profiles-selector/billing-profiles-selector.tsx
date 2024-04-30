@@ -45,10 +45,20 @@ export function BillingProfilesSelector({ children, data, projectId, onSelect }:
   const dynamicMenu: TDropdown.Item[] = useMemo(
     () =>
       (data || []).map(item => {
+        const color = () => {
+          if (item?.hasError) {
+            return "red";
+          }
+          if (item?.hasWarning) {
+            return "orange";
+          }
+          return "white";
+        };
+        console.log(color());
         return {
           key: item.id,
           children: item.name,
-          startContent: <Icon {...item.icon} size={16} />,
+          startContent: <Icon {...item.icon} color={color()} size={16} />,
           endContent: item.hasPendingInvitation ? (
             <Tag borderColor="multi-color" className="bg-greyscale-900 bg-noise-medium">
               <Translate token="v2.pages.settings.billing.sidebar.items.billing.new" />

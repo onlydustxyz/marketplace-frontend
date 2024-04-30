@@ -14,7 +14,6 @@ import { BillingProfileTag } from "components/features/billing-profiles/billing-
 import { BillingProfilesSelector } from "components/features/billing-profiles/billing-profiles-selector/billing-profiles-selector";
 import { TBillingProfilesSelector } from "components/features/billing-profiles/billing-profiles-selector/billing-profiles-selector.types";
 import { TIcon } from "components/layout/icon/icon.types";
-import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
@@ -26,8 +25,18 @@ export function PayoutPreferencesTable() {
   const { profiles } = useBillingProfiles();
 
   function getIconRemixName(profile: TSidebarBilling.profile): TIcon.Props {
+    const hasWarningState = profile?.data?.missingPayoutInfo || profile?.data?.missingVerification;
+    const hasErrorState = profile?.data?.verificationBlocked || profile?.data?.individualLimitReached;
     if (!profile.data.enabled) {
       return { remixName: "ri-forbid-2-line" };
+    }
+
+    if (hasWarningState) {
+      return { remixName: "ri-error-warning-line" };
+    }
+
+    if (hasErrorState) {
+      return { remixName: "ri-error-warning-line" };
     }
 
     if (profile.data.role === "MEMBER") {
@@ -45,6 +54,8 @@ export function PayoutPreferencesTable() {
         id: profile.data.id,
         enabled: profile.data.enabled,
         hasPendingInvitation: profile.data.pendingInvitationResponse || false,
+        hasError: (profile.data.verificationBlocked || profile.data.individualLimitReached) ?? false,
+        hasWarning: (profile.data.missingVerification || profile.data.missingPayoutInfo) ?? false,
       })),
     [profiles]
   );
@@ -69,17 +80,34 @@ export function PayoutPreferencesTable() {
   const rows = useMemo(
     () =>
       (data || []).map(row => {
+        const { billingProfile } = row;
+        const hasWarningState = billingProfile?.missingPayoutInfo || billingProfile?.missingVerification;
+        const hasErrorState = billingProfile?.verificationBlocked || billingProfile?.individualLimitReached;
+
         const project = row.project;
         const role = profiles.find(profile => profile.data.id === row.billingProfile?.id)?.data.role;
-        const billing = row.billingProfile;
-        const profile = billing
+
+        const iconName = () => {
+          if (hasErrorState) {
+            return { remixName: "ri-error-warning-line" };
+          }
+          if (hasWarningState) {
+            return { remixName: "ri-error-warning-line" };
+          }
+          if (role === "MEMBER") {
+            return { remixName: "ri-team-line" };
+          }
+          if (billingProfile) {
+            return BillingProfileConstant.profileTypeMapping[billingProfile?.type].icon;
+          }
+        };
+        const profile = billingProfile
           ? {
-              icon:
-                role === "MEMBER"
-                  ? { remixName: "ri-team-line" as RemixIconsName }
-                  : BillingProfileConstant.profileTypeMapping[billing.type].icon,
-              name: billing.name,
-              id: billing.id,
+              icon: iconName() as TIcon.Props,
+              name: billingProfile.name,
+              id: billingProfile.id,
+              hasWarning: hasWarningState ?? false,
+              hasError: hasErrorState ?? false,
             }
           : undefined;
 
