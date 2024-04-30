@@ -4,7 +4,6 @@ export const avatarVariants = tv({
   base: "relative box-content flex flex-shrink-0 items-center justify-center overflow-hidden border-greyscale-50/12 bg-greyscale-50/8",
   variants: {
     shape: {
-      rectangle: "",
       square: "",
       circle: "rounded-full",
     },
