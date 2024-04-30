@@ -3,7 +3,7 @@ import { InfoItem } from "app/migration/u/[githubLogin]/features/details-accordi
 import { ProjectAvatar } from "app/migration/u/[githubLogin]/features/details-accordion/components/project-avatar";
 import { TDetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion.types";
 
-import { Avatar } from "components/ds/avatar/avatar";
+import { RectAvatar } from "components/ds/rect-avatar/rect-avatar";
 import { Typography } from "components/layout/typography/typography";
 
 export function StartContent(props: TDetailsAccordion.StartContentProps) {
@@ -14,7 +14,7 @@ export function StartContent(props: TDetailsAccordion.StartContentProps) {
   return (
     <div className="flex flex-wrap gap-6">
       <div className="flex w-fit flex-col gap-3">
-        <Avatar src={avatarUrl} alt={name} size="rectangleSize" shape="rectangle" />
+        <RectAvatar src={avatarUrl} alt={name} size="l" shape="rectangle" />
         <div className="grid grid-cols-6 gap-1">
           {projects.slice(0, 5).map(project => (
             <ProjectAvatar key={project.name} {...project} />
