@@ -6,6 +6,7 @@ import en_features_banners from "./en/features/banners.json";
 import en_features_billings_profile from "./en/features/billingsProfile.json";
 import en_features_contributors from "./en/features/contributors.json";
 import en_features_currency from "./en/features/currency.json";
+import en_features_details_accordion from "./en/features/details-accordion.json";
 import en_features_ecosystems from "./en/features/ecosystems.json";
 import en_features from "./en/features/features.json";
 import en_features_filters from "./en/features/filters.json";
@@ -66,6 +67,7 @@ export const en = {
       currency: en_features_currency,
       activityGraph: en_features_activity_graph,
       profileCard: en_features_profile_card,
+      detailsAccordion: en_features_details_accordion,
     },
     pages: {
       projects: en_projects,

@@ -41,6 +41,7 @@ export function ProfileCard(props: TProfileCard.Props) {
         src={profileCardBackground}
         alt="profile card background"
         className="absolute inset-0 -z-[1] h-full w-full object-cover object-center opacity-50"
+        priority={true}
       />
       <div className="relative z-[1] flex gap-4">
         <Avatar src={avatarUrl} alt={login} size="3xl" />

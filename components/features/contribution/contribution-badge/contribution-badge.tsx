@@ -1,40 +1,17 @@
-import { ComponentProps } from "react";
+"use client";
 
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
+import Contributor from "src/components/Contributor";
 import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
-import { Contribution, GithubContributionType, GithubPullRequestStatus } from "src/types";
+import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { cn } from "src/utils/cn";
 
 import { Link } from "components/ds/link/link";
+import { TContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge.type";
 
 import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
-
-import Contributor from "../Contributor";
-
-interface ContributionBadgeProps {
-  contribution: Pick<
-    Contribution,
-    "githubNumber" | "githubTitle" | "githubBody" | "githubHtmlUrl" | "githubAuthor" | "githubStatus" | "type"
-  > & { status?: Contribution["status"] };
-  withTooltip?: boolean;
-  asLink?: boolean;
-  size?: ContributionBadgeSizes;
-  tooltipProps?: ComponentProps<typeof Tooltip>;
-  showExternal?: boolean;
-}
-
-interface ContributionBadgeContentProps extends Omit<ContributionBadgeProps, "tooltipProps"> {
-  isExternal: boolean;
-  tooltipId: string;
-}
-
-export enum ContributionBadgeSizes {
-  Xs = "text-xs",
-  Sm = "text-sm",
-  Md = "text-base",
-}
 
 function ContributionBadgeContent({
   contribution,
@@ -44,7 +21,7 @@ function ContributionBadgeContent({
   asLink = false,
   isExternal = false,
   tooltipId,
-}: ContributionBadgeContentProps) {
+}: TContributionBadge.ContentProps) {
   const { githubNumber, githubHtmlUrl, githubStatus, status, type } = contribution;
 
   const Component = asLink ? "a" : "div";
@@ -84,13 +61,13 @@ export function ContributionBadge({
   contribution,
   withTooltip = true,
   asLink = false,
-  size = ContributionBadgeSizes.Sm,
+  size = TContributionBadge.sizes.Sm,
   tooltipProps = {
     position: TooltipPosition.Bottom,
     variant: Variant.Default,
   },
   showExternal = false,
-}: ContributionBadgeProps) {
+}: TContributionBadge.Props) {
   const { T } = useIntl();
   const { githubUserId } = useCurrentUser();
 

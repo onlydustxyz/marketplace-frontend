@@ -2,7 +2,6 @@ import { ComponentProps } from "react";
 
 import { RewardableItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
-import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
@@ -15,6 +14,7 @@ import { cn } from "src/utils/cn";
 import { parsePullRequestLink } from "src/utils/github";
 
 import { Link } from "components/ds/link/link";
+import { ContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge";
 
 import { CommitsTooltip } from "./CommitsTooltip";
 
