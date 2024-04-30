@@ -43,6 +43,60 @@ function ActiveShape({ cx, cy, innerRadius, outerRadius, startAngle, endAngle, f
   );
 }
 
+function CustomizedLabel({
+  cx,
+  cy,
+  innerRadius,
+  outerRadius,
+  startAngle,
+  endAngle,
+  fill,
+  ...props
+}: PieSectorDataItem) {
+  const [animationInnerRadius, setAnimationInnerRadius] = useState(innerRadius);
+  const [animationOuterRadius, setAnimationOuterRadius] = useState(outerRadius);
+
+  const animation = useRef(
+    animate(0, 3, {
+      duration: 0.3,
+      repeatType: "mirror",
+      autoplay: false,
+      onUpdate: latest => {
+        setAnimationInnerRadius(Number(innerRadius) - latest);
+        setAnimationOuterRadius(Number(outerRadius) + latest);
+      },
+    })
+  );
+
+  const animation2 = useRef(
+    animate(3, 0, {
+      duration: 0.3,
+      autoplay: false,
+      onUpdate: latest => {
+        setAnimationInnerRadius(Number(innerRadius) - latest);
+        setAnimationOuterRadius(Number(outerRadius) + latest);
+      },
+    })
+  );
+
+  return (
+    <motion.g>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={animationInnerRadius}
+        outerRadius={animationOuterRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+        onMouseEnter={() => animation.current.play()}
+        onMouseLeave={() => animation.current.play()}
+        {...props}
+      />
+    </motion.g>
+  );
+}
+
 export function PieChart({ data, renderTooltip }: TPieChart.Props) {
   const DEFAULT_COLORS = ["#FFBC66", "#CE66FF", "#666BD7", "#66FFEF", "#F69EF3"];
 
@@ -56,7 +110,9 @@ export function PieChart({ data, renderTooltip }: TPieChart.Props) {
           outerRadius={70}
           stroke="none"
           cx={74}
-          activeShape={<ActiveShape />}
+          // activeShape={<ActiveShape />}
+          label={<CustomizedLabel />}
+          labelLine={false}
         >
           {data.map((entry, index) => {
             const color = entry.color || DEFAULT_COLORS[index % DEFAULT_COLORS.length];
