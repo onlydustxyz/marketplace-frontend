@@ -5,5 +5,8 @@ export namespace TFiltersEcosystems {
     ecosystems: TSelectAutocomplete.Item[];
     selected: TSelectAutocomplete.Item[];
     onChange: (projects: TSelectAutocomplete.Item[]) => void;
+    hideLabel?: boolean;
+    hideIcon?: boolean;
+    isBlueBackground?: boolean;
   }
 }

@@ -26,7 +26,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   const { T } = useIntl();
   const {
     isInvitedAsProjectLead,
-    isMissingGithubAppInstallation,
+    hasMissingGithubAppInstallation,
     visibility,
     name,
     slug,
@@ -39,7 +39,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
     technologies,
   } = project;
 
-  const isErrorVariant = Boolean(isUserProjectLead && isMissingGithubAppInstallation);
+  const isErrorVariant = Boolean(isUserProjectLead && hasMissingGithubAppInstallation);
   const isPrivate = visibility === "PRIVATE";
 
   const InviteBanner = useMemo(() => {
@@ -58,7 +58,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   }, [project]);
 
   const MissingGithubBanner = useMemo(() => {
-    if (isUserProjectLead && isMissingGithubAppInstallation) {
+    if (isUserProjectLead && hasMissingGithubAppInstallation) {
       return <ProjectMissingGithubBanner slug={slug} />;
     }
 
@@ -125,7 +125,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             </div>
           </Flex>
         </Flex>
-        {isInvitedAsProjectLead || isMissingGithubAppInstallation ? (
+        {isInvitedAsProjectLead || hasMissingGithubAppInstallation ? (
           <Flex direction="col" className="mt-5 gap-5 pr-4 lg:pr-6">
             {InviteBanner}
             {MissingGithubBanner}

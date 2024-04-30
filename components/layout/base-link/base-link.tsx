@@ -1,3 +1,5 @@
+"use client";
+
 import NextLink from "next/link";
 import { useNavigationState } from "providers/navigation-state/navigation-state";
 import { MouseEvent } from "react";

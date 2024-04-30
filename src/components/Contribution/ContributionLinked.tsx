@@ -1,9 +1,10 @@
 import { ComponentProps } from "react";
 
-import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import StackLine from "src/icons/StackLine";
 import { Contribution } from "src/types";
+
+import { ContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge";
 
 export function ContributionLinked({
   contribution,

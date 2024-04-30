@@ -9,6 +9,8 @@ export const avatarGroupVariants = tv({
       m: "-space-x-2",
       l: "-space-x-3",
       xl: "-space-x-4",
+      "2xl": "-space-x-5",
+      "3xl": "-space-x-6",
     },
   },
   defaultVariants: {

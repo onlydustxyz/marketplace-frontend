@@ -5,7 +5,6 @@ import { Fragment, useEffect } from "react";
 import { RewardCard } from "src/App/Stacks/ContributionDetail/RewardCard";
 import { useStackProjectOverview, useStackReward } from "src/App/Stacks/Stacks";
 import ProjectApi from "src/api/Project";
-import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { CommitsTooltip } from "src/components/GithubCard/GithubPullRequest/CommitsTooltip";
@@ -22,6 +21,8 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 
 import { Link } from "components/ds/link/link";
+import { ContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge";
+import { TContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge.type";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -164,7 +165,11 @@ export function ContributionDetail({ contributionId, projectId }: { contribution
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <div>
-                  <ContributionBadge contribution={contribution} size={ContributionBadgeSizes.Md} withTooltip={false} />
+                  <ContributionBadge
+                    contribution={contribution}
+                    size={TContributionBadge.sizes.Md}
+                    withTooltip={false}
+                  />
                 </div>
 
                 <h6 className="text-lg font-semibold">{contribution.githubTitle}</h6>
