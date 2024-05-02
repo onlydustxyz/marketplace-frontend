@@ -30,7 +30,7 @@ export function ScrollableView({ children }: TScrollableView.Props) {
 
   return (
     <div
-      className={"scrollbar-sm group flex h-full w-full flex-col overflow-y-scroll px-2 md:px-6"}
+      className={"scrollbar-sm group flex h-full w-full flex-col overflow-y-scroll px-2 outline-none md:px-6"}
       data-header-compact={headerValue <= scrollValue.shouldHideContent}
       ref={scrollRef}
     >
