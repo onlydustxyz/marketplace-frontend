@@ -1,3 +1,6 @@
+import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
+
 import { TIcon } from "components/layout/icon/icon.types";
 
 interface IGetSpecialIconName {
@@ -5,6 +8,7 @@ interface IGetSpecialIconName {
   hasError?: boolean;
   role?: string;
   enabled?: boolean;
+  type: BillingProfilesTypes.typeUnion;
 }
 
 export function getSpecialIconName({
@@ -12,7 +16,8 @@ export function getSpecialIconName({
   hasError,
   role,
   enabled = true,
-}: IGetSpecialIconName): TIcon.Props | null {
+  type,
+}: IGetSpecialIconName): TIcon.Props {
   if (!enabled) {
     return { remixName: "ri-forbid-2-line" };
   }
@@ -22,5 +27,5 @@ export function getSpecialIconName({
   if (role === "MEMBER") {
     return { remixName: "ri-team-line" };
   }
-  return null;
+  return BillingProfileConstant.profileTypeMapping[type].icon;
 }

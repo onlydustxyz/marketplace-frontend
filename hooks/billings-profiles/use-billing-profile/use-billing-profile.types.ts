@@ -1,6 +1,9 @@
+import { VariantProps } from "tailwind-variants";
+
 import { UseGetBillingProfileById } from "src/api/BillingProfiles/queries";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 
+import { tagVariants } from "components/ds/tag/tag.variants";
 import { TIcon } from "components/layout/icon/icon.types";
 
 export namespace TUseBillingProfile {
@@ -10,9 +13,9 @@ export namespace TUseBillingProfile {
   }
 
   interface Overrides {
-    icon: TIcon.Props | null;
-    iconColor: "red" | "orange" | "currentColor";
-    tagColor: "red" | "orange" | "grey";
+    icon: TIcon.Props;
+    iconColor: BillingProfilesTypes.iconColor;
+    tagColor: VariantProps<typeof tagVariants>["borderColor"];
   }
   export interface Return {
     data: UseGetBillingProfileById | undefined;
@@ -20,7 +23,7 @@ export namespace TUseBillingProfile {
       | {
           data: UseGetBillingProfileById;
           icon: TIcon.Props;
-          overrides?: Overrides | null;
+          overrides: Overrides;
           status: BillingProfilesTypes.status;
           externalId: string | undefined;
         }

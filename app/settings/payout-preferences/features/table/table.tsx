@@ -2,7 +2,6 @@
 
 import { useMemo } from "react";
 
-import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
 import MeApi from "src/api/me";
 
 import { Avatar } from "components/ds/avatar/avatar";
@@ -25,8 +24,8 @@ export function PayoutPreferencesTable() {
     () =>
       profiles.map(profile => ({
         name: profile.data.name,
-        icon: profile?.overrides?.icon ?? profile.icon,
-        iconColor: profile?.overrides?.iconColor ?? "currentColor",
+        icon: profile?.overrides?.icon,
+        iconColor: profile?.overrides?.iconColor,
         id: profile.data.id,
         enabled: profile.data.enabled,
         hasPendingInvitation: profile.data.pendingInvitationResponse || false,
@@ -58,14 +57,13 @@ export function PayoutPreferencesTable() {
         const project = row.project;
         const currentProfile = profiles.find(profile => profile.data.id === billingProfile?.id);
 
-        const profile = billingProfile
+        const profile = currentProfile
           ? {
-              icon:
-                currentProfile?.overrides?.icon ?? BillingProfileConstant.profileTypeMapping[billingProfile?.type].icon,
-              iconColor: currentProfile?.overrides?.iconColor ?? "currentColor",
-              tagColor: currentProfile?.overrides?.tagColor ?? "grey",
-              name: billingProfile.name,
-              id: billingProfile.id,
+              icon: currentProfile?.overrides?.icon,
+              iconColor: currentProfile?.overrides?.iconColor,
+              tagColor: currentProfile?.overrides?.tagColor,
+              name: currentProfile.data?.name,
+              id: currentProfile.data?.id,
             }
           : undefined;
 

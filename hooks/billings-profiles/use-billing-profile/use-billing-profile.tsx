@@ -46,19 +46,15 @@ export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile
 
     const hasWarning = data?.missingPayoutInfo || data?.missingVerification;
     const hasError = data?.verificationBlocked || data?.individualLimitReached;
-    const hasOverride = hasWarning || hasError || !data.enabled;
-    const overrides = hasOverride
-      ? {
-          icon: getSpecialIconName({ hasError, hasWarning, enabled: data.enabled }),
-          iconColor: getSpecialIconColor({ hasError, hasWarning }),
-          tagColor: getSpecialTagColor({ hasError, hasWarning }),
-        }
-      : null;
 
     return {
       data,
       icon: BillingProfileConstant.profileTypeMapping[data.type].icon,
-      overrides,
+      overrides: {
+        icon: getSpecialIconName({ hasError, hasWarning, enabled: data.enabled, type: data.type }),
+        iconColor: getSpecialIconColor({ hasError, hasWarning }),
+        tagColor: getSpecialTagColor({ hasError, hasWarning }),
+      },
       status: data.status || "NOT_STARTED",
       externalId,
     };

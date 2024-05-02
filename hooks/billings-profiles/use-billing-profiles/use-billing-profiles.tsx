@@ -21,18 +21,20 @@ export const useBillingProfiles = (): TUseBillingProfiles.Return => {
     return data.billingProfiles.map(profile => {
       const hasWarning = profile?.missingPayoutInfo || profile?.missingVerification;
       const hasError = profile?.verificationBlocked || profile?.individualLimitReached;
-      const hasOverride = hasWarning || hasError || profile.role === "MEMBER" || !profile.enabled;
-      const overrides = hasOverride
-        ? {
-            icon: getSpecialIconName({ hasError, hasWarning, role: profile.role, enabled: profile.enabled }),
-            iconColor: getSpecialIconColor({ hasError, hasWarning }),
-            tagColor: getSpecialTagColor({ hasError, hasWarning }),
-          }
-        : null;
       return {
         data: profile,
         icon: BillingProfileConstant.profileTypeMapping[profile.type].icon,
-        overrides,
+        overrides: {
+          icon: getSpecialIconName({
+            hasError,
+            hasWarning,
+            role: profile.role,
+            enabled: profile.enabled,
+            type: profile.type,
+          }),
+          iconColor: getSpecialIconColor({ hasError, hasWarning }),
+          tagColor: getSpecialTagColor({ hasError, hasWarning }),
+        },
       };
     });
   }, [data]);

@@ -1,12 +1,14 @@
 import { PropsWithChildren } from "react";
 
+import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
+
 import { TIcon } from "components/layout/icon/icon.types";
 
 export namespace TBillingProfilesSelector {
   export interface Data {
     name: string;
     icon: TIcon.Props;
-    iconColor: "red" | "orange" | "currentColor";
+    iconColor: BillingProfilesTypes.iconColor;
     id: string;
     enabled: boolean;
     hasPendingInvitation: boolean;

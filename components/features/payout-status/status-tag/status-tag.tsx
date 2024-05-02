@@ -48,8 +48,8 @@ export function StatusTag({
     () =>
       profiles.map(profile => ({
         name: profile.data.name,
-        icon: profile?.overrides?.icon ?? profile.icon,
-        iconColor: profile?.overrides?.iconColor ?? "currentColor",
+        icon: profile?.overrides?.icon,
+        iconColor: profile?.overrides?.iconColor,
         id: profile.data.id,
         enabled: profile.data.enabled,
         hasPendingInvitation: profile.data.pendingInvitationResponse || false,
