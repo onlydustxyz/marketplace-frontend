@@ -16,6 +16,8 @@ export function TrackShowMoreProject({ projects }: TTrackShowMoreProject.Props) 
 
   const onShowMore = () => setIsShowMore(true);
 
+  if (!projects.length) return null;
+
   if (isShowMore) {
     return (
       <>
