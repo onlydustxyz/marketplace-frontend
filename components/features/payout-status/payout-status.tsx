@@ -8,7 +8,7 @@ export function PayoutStatus({
   dates,
   rewardId,
   shouldOpenRequestPayment,
-                               shouldRedirect,
+  shouldRedirect,
 }: TPayoutStatus.Props) {
   return (
     <StatusTag

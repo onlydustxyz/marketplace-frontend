@@ -90,6 +90,7 @@ export default function View({
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = Money.isFiat(data?.amount.currency);
+  const isProjectPath = useMatchPath(NEXT_ROUTER.projects.details.root("[slug]"), { exact: false });
 
   const PayoutStatusMemo = useMemo(() => {
     if (!data) {
@@ -101,7 +102,7 @@ export default function View({
         status={data.status}
         dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
         billingProfileId={data?.billingProfileId}
-        shouldRedirect={!pathname.includes("p/")}
+        shouldRedirect={!isProjectPath}
         rewardId={data?.id}
         shouldOpenRequestPayment={true}
       />
