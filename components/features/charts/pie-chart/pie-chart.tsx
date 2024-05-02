@@ -1,47 +1,13 @@
 "use client";
 
-import { animate, motion, useAnimate, useMotionValue, useMotionValueEvent, useTransform } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { animate } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Cell, Legend, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Sector, Tooltip } from "recharts";
 import { PieSectorDataItem } from "recharts/types/polar/Pie";
 
 import { CustomLegend } from "../custom-legend/custom-legend";
 import { CustomTooltip } from "../custom-tooltip/custom-tooltip";
 import { TPieChart } from "./pie-chart.types";
-
-function ActiveShape({ cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill }: PieSectorDataItem) {
-  const [animationInnerRadius, setAnimationInnerRadius] = useState(innerRadius);
-  const [animationOuterRadius, setAnimationOuterRadius] = useState(outerRadius);
-
-  const animation = useRef(
-    animate(0, 3, {
-      duration: 0.3,
-      autoplay: false,
-      onUpdate: latest => {
-        setAnimationInnerRadius(Number(innerRadius) - latest);
-        setAnimationOuterRadius(Number(outerRadius) + latest);
-      },
-    })
-  );
-
-  useEffect(() => {
-    animation.current.play();
-  }, []);
-
-  return (
-    <motion.g>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={animationInnerRadius}
-        outerRadius={animationOuterRadius}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
-      />
-    </motion.g>
-  );
-}
 
 function CustomizedLabel({
   cx,
