@@ -10,7 +10,7 @@ import { TNavigation } from "./navigation.types";
 
 export function Navigation({ slug, hasTracks }: TNavigation.Props) {
   return (
-    <div className="h-auto w-full bg-card-background-base pt-6">
+    <div className="pointer-events-auto h-auto w-full bg-card-background-base pt-6">
       <Wrapper className="max-md:px-0">
         <ClientOnly>
           <TabsComponent
