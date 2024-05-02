@@ -5,7 +5,7 @@ import { StackRoute, useStackReward } from "src/App/Stacks/Stacks";
 import { viewportConfig } from "src/config";
 import { useSubscribeStacks } from "src/libs/react-stack";
 
-import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 
 import DesktopUserRewardList from "./DesktopUserRewardList";
 import { MyRewardType } from "./Line";
@@ -18,10 +18,10 @@ export function UserRewardTable({ emptyState }: { emptyState?: ReactElement }) {
   const { open } = useSubscribeStacks(StackRoute.Reward);
   const [openRewardPanel] = useStackReward();
 
-  const { user } = useCurrentUser();
+  const { profiles } = useBillingProfiles();
   const showContributor = useMemo(
-    () => Boolean(user?.billingProfiles?.find(({ type, role }) => type === "COMPANY" && role === "ADMIN")),
-    [user]
+    () => Boolean(profiles?.find(profile => profile?.data?.type === "COMPANY" && profile?.data?.role === "ADMIN")),
+    [profiles]
   );
 
   useEffect(() => {

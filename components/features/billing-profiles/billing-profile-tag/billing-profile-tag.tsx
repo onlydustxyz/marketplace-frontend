@@ -18,8 +18,8 @@ export function BillingProfileTag({ profile, fallback }: TBillingProfileTag.Prop
     );
   }
   return (
-    <Tag size="medium" borderColor="grey" className="inline-flex">
-      <Icon size={16} {...profile.icon} />
+    <Tag size="medium" borderColor={profile.tagColor || "grey"} className="inline-flex">
+      <Icon size={16} {...profile.icon} color={profile.tagColor || "currentColor"} />
       <Typography variant="body-s">{profile.name}</Typography>
       <Icon remixName="ri-arrow-down-s-line" size={16} />
     </Tag>

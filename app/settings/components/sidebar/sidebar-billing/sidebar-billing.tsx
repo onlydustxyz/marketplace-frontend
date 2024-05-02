@@ -51,7 +51,7 @@ export function SidebarBilling({ closePanel }: TSidebarBilling.Props) {
         pendingInvitationResponse: profile.data.pendingInvitationResponse,
         alerting: {
           warning: profile.data.missingVerification || profile.data.missingPayoutInfo,
-          error: profile.data.verificationBlocked,
+          error: profile.data.verificationBlocked || profile.data.individualLimitReached,
         },
       })),
 

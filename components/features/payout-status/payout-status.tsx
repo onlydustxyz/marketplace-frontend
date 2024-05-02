@@ -8,6 +8,7 @@ export function PayoutStatus({
   dates,
   rewardId,
   shouldOpenRequestPayment,
+  shouldRedirect,
 }: TPayoutStatus.Props) {
   return (
     <StatusTag
@@ -17,6 +18,7 @@ export function PayoutStatus({
       projectId={projectId}
       rewardId={rewardId}
       billingProfileId={billingProfileId}
+      shouldRedirect={shouldRedirect}
       shouldOpenRequestPayment={shouldOpenRequestPayment}
     />
   );

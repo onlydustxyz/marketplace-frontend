@@ -2,9 +2,6 @@
 
 import { useMemo } from "react";
 
-import { TSidebarBilling } from "app/settings/components/sidebar/sidebar-billing/sidebar-billing.types";
-
-import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
 import MeApi from "src/api/me";
 
 import { Avatar } from "components/ds/avatar/avatar";
@@ -13,8 +10,6 @@ import { TTable } from "components/ds/table/table.types";
 import { BillingProfileTag } from "components/features/billing-profiles/billing-profile-tag/billing-profile-tag";
 import { BillingProfilesSelector } from "components/features/billing-profiles/billing-profiles-selector/billing-profiles-selector";
 import { TBillingProfilesSelector } from "components/features/billing-profiles/billing-profiles-selector/billing-profiles-selector.types";
-import { TIcon } from "components/layout/icon/icon.types";
-import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
@@ -25,23 +20,12 @@ export function PayoutPreferencesTable() {
   const { data } = MeApi.queries.useGetPayoutPreferences({});
   const { profiles } = useBillingProfiles();
 
-  function getIconRemixName(profile: TSidebarBilling.profile): TIcon.Props {
-    if (!profile.data.enabled) {
-      return { remixName: "ri-forbid-2-line" };
-    }
-
-    if (profile.data.role === "MEMBER") {
-      return { remixName: "ri-team-line" };
-    }
-
-    return profile.icon;
-  }
-
   const billingProfilesSelector: TBillingProfilesSelector.Data[] = useMemo(
     () =>
       profiles.map(profile => ({
         name: profile.data.name,
-        icon: getIconRemixName(profile),
+        icon: profile?.overrides?.icon,
+        iconColor: profile?.overrides?.iconColor,
         id: profile.data.id,
         enabled: profile.data.enabled,
         hasPendingInvitation: profile.data.pendingInvitationResponse || false,
@@ -69,17 +53,17 @@ export function PayoutPreferencesTable() {
   const rows = useMemo(
     () =>
       (data || []).map(row => {
+        const { billingProfile } = row;
         const project = row.project;
-        const role = profiles.find(profile => profile.data.id === row.billingProfile?.id)?.data.role;
-        const billing = row.billingProfile;
-        const profile = billing
+        const currentProfile = profiles.find(profile => profile.data.id === billingProfile?.id);
+
+        const profile = currentProfile
           ? {
-              icon:
-                role === "MEMBER"
-                  ? { remixName: "ri-team-line" as RemixIconsName }
-                  : BillingProfileConstant.profileTypeMapping[billing.type].icon,
-              name: billing.name,
-              id: billing.id,
+              icon: currentProfile?.overrides?.icon,
+              iconColor: currentProfile?.overrides?.iconColor,
+              tagColor: currentProfile?.overrides?.tagColor,
+              name: currentProfile.data?.name,
+              id: currentProfile.data?.id,
             }
           : undefined;
 

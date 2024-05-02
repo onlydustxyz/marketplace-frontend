@@ -4,6 +4,10 @@ import BillingProfilesApi from "src/api/BillingProfiles";
 import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
 import { usePooling } from "src/hooks/usePooling/usePooling";
 
+import { getSpecialIconColor } from "hooks/billings-profiles/utils/get-special-icon-color";
+import { getSpecialIconName } from "hooks/billings-profiles/utils/get-special-icon-name";
+import { getSpecialTagColor } from "hooks/billings-profiles/utils/get-special-tag-color";
+
 import { TUseBillingProfile } from "./use-billing-profile.types";
 
 export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile.Props): TUseBillingProfile.Return => {
@@ -40,9 +44,17 @@ export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile
       return undefined;
     }
 
+    const hasWarning = data?.missingPayoutInfo || data?.missingVerification;
+    const hasError = data?.verificationBlocked || data?.individualLimitReached;
+
     return {
       data,
       icon: BillingProfileConstant.profileTypeMapping[data.type].icon,
+      overrides: {
+        icon: getSpecialIconName({ hasError, hasWarning, enabled: data.enabled, type: data.type }),
+        iconColor: getSpecialIconColor({ hasError, hasWarning }),
+        tagColor: getSpecialTagColor({ hasError, hasWarning }),
+      },
       status: data.status || "NOT_STARTED",
       externalId,
     };

@@ -8,6 +8,7 @@ export namespace TStatusTag {
     projectId?: string;
     rewardId?: string;
     billingProfileId?: string;
+    shouldRedirect?: boolean;
     shouldOpenRequestPayment?: boolean;
   }
 }

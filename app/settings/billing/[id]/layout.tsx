@@ -3,6 +3,8 @@
 import { notFound, useParams } from "next/navigation";
 import { PropsWithChildren } from "react";
 
+import { LimitReachedHeader } from "app/settings/billing/[id]/components/limit-reached-header/limit-reached-header";
+
 import { Card } from "components/ds/card/card";
 
 import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
@@ -25,6 +27,7 @@ function BillingLayout({ children }: PropsWithChildren) {
 
   return (
     <div className="flex flex-col gap-6">
+      <LimitReachedHeader />
       <BillingHeader />
 
       <Card className="relative flex w-full flex-col gap-6" background="base">

@@ -10,6 +10,7 @@ export namespace TPayoutStatus {
     projectId?: string;
     rewardId?: string;
     billingProfileId?: string;
+    shouldRedirect?: boolean;
     shouldOpenRequestPayment?: boolean;
   }
 

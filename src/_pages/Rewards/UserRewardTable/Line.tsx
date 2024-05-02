@@ -77,6 +77,7 @@ export default function RewardLine({ reward, onClick, selected, showContributor 
           dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
           projectId={reward?.projectId}
           billingProfileId={reward?.billingProfileId}
+          shouldRedirect={true}
           rewardId={reward.id}
           shouldOpenRequestPayment={true}
         />
