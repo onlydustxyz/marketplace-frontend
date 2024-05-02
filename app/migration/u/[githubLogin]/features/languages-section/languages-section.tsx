@@ -1,5 +1,6 @@
 import { ContributionList } from "app/migration/u/[githubLogin]/components/contribution-list/contribution-list";
 import { DetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion";
+import { TDetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion.types";
 
 import { PreRenderOnServer } from "components/layout/client-only/client-only";
 
@@ -117,7 +118,7 @@ export function LanguagesSection(_: TLanguagesSection.Props) {
         },
       ],
     },
-  ];
+  ] as TDetailsAccordion.Detail[];
   return (
     <>
       <DetailsAccordion details={languagesMock}>
