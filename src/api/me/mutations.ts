@@ -99,7 +99,10 @@ const useMarkInvoicesAsReceived = ({ options }: UseMutationProps<unknown, unknow
   return useBaseMutation<unknown, unknown>({
     resourcePath: ME_PATH.MARK_INVOICE_AS_RECEIVED,
     method: "POST",
-    invalidatesTags: [{ queryKey: MeApi.tags.rewards(), exact: false }],
+    invalidatesTags: [
+      { queryKey: MeApi.tags.rewards(), exact: false },
+      { queryKey: ME_BILLING_TAGS.allProfiles(), exact: false },
+    ],
     ...(options ? options : {}),
   });
 };

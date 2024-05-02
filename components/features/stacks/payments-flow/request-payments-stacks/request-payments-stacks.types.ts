@@ -1,4 +1,8 @@
 export namespace TRequestPaymentsStacks {
+  export interface Props {
+    rewardId?: string;
+    billingProfileId?: string;
+  }
   export interface onNextViewProps {
     to: Views | "close";
   }

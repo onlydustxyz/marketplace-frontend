@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useStackRequestPayments } from "src/App/Stacks/Stacks";
 import BillingProfilesApi from "src/api/BillingProfiles";
@@ -11,7 +11,7 @@ import { SelectRewards } from "components/features/stacks/payments-flow/request-
 import { UploadInvoice } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/upload-invoice/upload-invoice";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 
-export function RequestPaymentsStacks() {
+export function RequestPaymentsStacks({ rewardId, billingProfileId }: TRequestPaymentsStacks.Props) {
   const [view, setView] = useState<TRequestPaymentsStacks.Views>(TRequestPaymentsStacks.Views.SelectBillingProfile);
   const [excludedRewardsIds, setExcludedRewardsIds] = useState<string[]>([]);
   const [selectedBillingProfileId, setSelectedBillingProfileId] = useState("");
@@ -46,6 +46,14 @@ export function RequestPaymentsStacks() {
     setExcludedRewardsIds(prev => prev.filter(i => i !== id));
   }
 
+  function onExcludeAll() {
+    setExcludedRewardsIds(excludeNonLiquidToken.map(({ id }) => id));
+  }
+
+  function onIncludeAll() {
+    setExcludedRewardsIds([]);
+  }
+
   function onSelectBillingProfile(id: string) {
     setSelectedBillingProfileId(id);
   }
@@ -57,14 +65,30 @@ export function RequestPaymentsStacks() {
     }
   }
 
+  useEffect(() => {
+    if (billingProfileId) {
+      setSelectedBillingProfileId(billingProfileId);
+      setView(TRequestPaymentsStacks.Views.SelectRewards);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (rewardId) {
+      setExcludedRewardsIds(excludeNonLiquidToken.filter(reward => reward.id !== rewardId).map(({ id }) => id));
+    }
+  }, [excludeNonLiquidToken, rewardId]);
+
   if (view === TRequestPaymentsStacks.Views.SelectRewards) {
     return (
       <SelectRewards
         goTo={onNextView}
         onExclude={onExclude}
         onInclude={onInclude}
+        onExcludeAll={onExcludeAll}
+        onIncludeAll={onIncludeAll}
         includedRewards={includedRewards}
         excludedRewards={excludedRewards}
+        rewards={excludeNonLiquidToken}
         billingProfileId={selectedBillingProfileId}
       />
     );

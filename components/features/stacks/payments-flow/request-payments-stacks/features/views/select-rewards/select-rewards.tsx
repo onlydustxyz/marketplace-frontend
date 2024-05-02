@@ -1,13 +1,14 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { IMAGES } from "src/assets/img";
 import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/ds/button/button";
-import { Tabs } from "components/ds/tabs/tabs";
 import { ReadonlyBillingProfile } from "components/features/stacks/payments-flow/request-payments-stacks/components/billing-profile/readonly-billing-profile/readonly-billing-profile";
 import { RewardItem } from "components/features/stacks/payments-flow/request-payments-stacks/components/reward-item/reward-item";
+import { PayoutSummary } from "components/features/stacks/payments-flow/request-payments-stacks/features/payout-summary/payout-summary";
+import { SelectionShortcut } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/components/selection-shortcut/selection-shortcut";
 import { TSelectRewards } from "components/features/stacks/payments-flow/request-payments-stacks/features/views/select-rewards/select-rewards.types";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
@@ -26,10 +27,14 @@ export function SelectRewards({
   excludedRewards,
   goTo,
   billingProfileId,
+  onIncludeAll,
+  onExcludeAll,
+  rewards,
 }: TSelectRewards.Props) {
   const { capture } = usePosthog();
 
   const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
+
   const isIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
   const isMandateAccepted = profile?.data?.invoiceMandateAccepted;
 
@@ -63,40 +68,25 @@ export function SelectRewards({
     }
   };
 
-  const getTabContent = useCallback(
-    (selected: TSelectRewards.Tabs) => {
-      if (selected === TSelectRewards.Tabs.Included) {
-        return (
-          <div className="flex w-full flex-col items-start justify-start gap-3">
-            {!includedRewards.length ? (
-              <div className="flex w-full flex-col py-6">
-                <EmptyState
-                  illustrationSrc={IMAGES.global.categories}
-                  title={{ token: "v2.pages.stacks.request_payments.selectRewards.emptyState.title" }}
-                  description={{ token: "v2.pages.stacks.request_payments.selectRewards.emptyState.description" }}
-                />
-              </div>
-            ) : (
-              includedRewards.map(reward => (
-                <RewardItem key={reward.id} type="exclude" onClick={onExclude} {...reward} currency={reward.amount} />
-              ))
-            )}
-          </div>
-        );
-      } else if (selected === TSelectRewards.Tabs.Excluded) {
-        return (
-          <div className="flex w-full flex-col items-start justify-start gap-3">
-            {excludedRewards.map(reward => (
-              <RewardItem key={reward.id} type="include" onClick={onInclude} {...reward} currency={reward.amount} />
-            ))}
-          </div>
-        );
-      }
+  const rewardList = useMemo(() => {
+    function isRewardsInclude(rewardId: string) {
+      return includedRewards.some(reward => reward.id === rewardId);
+    }
 
-      return null;
-    },
-    [excludedRewards, includedRewards]
-  );
+    return rewards.map(reward => {
+      const isIncluded = isRewardsInclude(reward.id);
+      const event = isIncluded ? onExclude : onInclude;
+      return (
+        <RewardItem
+          key={reward.id}
+          type={isIncluded ? "include" : "exclude"}
+          onClick={event}
+          {...reward}
+          currency={reward.amount}
+        />
+      );
+    });
+  }, [rewards, includedRewards, excludedRewards]);
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -115,25 +105,36 @@ export function SelectRewards({
             className="mb-4"
           />
           {profile?.data ? <ReadonlyBillingProfile billingProfile={profile?.data} /> : null}
+          <PayoutSummary rewards={includedRewards} billingProfileId={billingProfileId} />
+        </div>
+        <div className="mb-3 flex w-full flex-row items-center justify-between px-3">
+          <Typography
+            variant={"special-label"}
+            className="uppercase text-greyscale-300"
+            translate={{ token: "v2.pages.stacks.request_payments.selectRewards.selectedTitle" }}
+          />
+          <SelectionShortcut
+            includedRewards={includedRewards}
+            excludedRewards={excludedRewards}
+            onIncludeAll={onIncludeAll}
+            onExcludeAll={onExcludeAll}
+          />
         </div>
         <ScrollView>
           <div className="px-3">
-            <Tabs
-              tabs={[
-                {
-                  content: <Translate token="v2.pages.stacks.request_payments.tabs.included" />,
-                  key: TSelectRewards.Tabs.Included,
-                  icon: { remixName: "ri-check-line" },
-                  children: getTabContent,
-                },
-                {
-                  content: <Translate token="v2.pages.stacks.request_payments.tabs.excluded" />,
-                  key: TSelectRewards.Tabs.Excluded,
-                  children: getTabContent,
-                  icon: { remixName: "ri-close-line" },
-                },
-              ]}
-            />
+            <div className="flex w-full flex-col items-start justify-start gap-3">
+              {!rewards.length ? (
+                <div className="flex w-full flex-col py-6">
+                  <EmptyState
+                    illustrationSrc={IMAGES.global.categories}
+                    title={{ token: "v2.pages.stacks.request_payments.selectRewards.emptyState.title" }}
+                    description={{ token: "v2.pages.stacks.request_payments.selectRewards.emptyState.description" }}
+                  />
+                </div>
+              ) : (
+                rewardList
+              )}
+            </div>
           </div>
         </ScrollView>
         <div className="w-full bg-greyscale-900">
