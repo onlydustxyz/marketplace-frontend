@@ -27,7 +27,7 @@ export default function GithubLink({
 
   return (
     <button className="z-10" onClick={loginHandler} data-testid="github-signin-button">
-      <div className="m-px w-fit overflow-hidden rounded-full p-px blur-0 duration-300 transition hover:m-0 hover:p-0.5">
+      <div className="m-px w-fit overflow-hidden rounded-full p-px blur-0 transition duration-300 hover:m-0 hover:p-0.5">
         <div
           className={cn(
             "relative flex w-fit items-center justify-center rounded-full before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen before:bg-multi-color-gradient hover:before:animate-spin-invert-slow",
