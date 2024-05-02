@@ -19,6 +19,7 @@ import { BillingInviteTeamMember } from "components/features/stacks/billing-invi
 import { TBillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member.types";
 import { MandateDetailStack } from "components/features/stacks/payments-flow/mandate-detail-stack/mandate-detail-stack";
 import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
+import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
 import { SponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack";
 import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -114,7 +115,9 @@ export const Stacks = () => {
       >
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
-      <RegisterStack name={StackRoute.RequestPayments}>{() => <RequestPaymentsStacks />}</RegisterStack>
+      <RegisterStack<TRequestPaymentsStacks.Props> name={StackRoute.RequestPayments}>
+        {({ params }) => <RequestPaymentsStacks {...params} />}
+      </RegisterStack>
       <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
       <RegisterStack<TBillingInviteTeamMember.Props> name={StackRoute.BillingInviteTeamMember}>
         {({ params }) => <BillingInviteTeamMember {...params} />}
@@ -233,5 +236,5 @@ export const useStackBillingInviteTeamMember = () => {
 };
 
 export const useStackRequestPayments = () => {
-  return useStackNavigation(StackRoute.RequestPayments);
+  return useStackNavigation<TRequestPaymentsStacks.Props>(StackRoute.RequestPayments);
 };

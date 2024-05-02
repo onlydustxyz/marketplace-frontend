@@ -78,6 +78,8 @@ export default function RewardLine({ reward, onClick, selected, showContributor 
           projectId={reward?.projectId}
           billingProfileId={reward?.billingProfileId}
           shouldRedirect={true}
+          rewardId={reward.id}
+          shouldOpenRequestPayment={true}
         />
       </Cell>
     </Line>

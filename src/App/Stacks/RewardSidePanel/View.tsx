@@ -102,6 +102,8 @@ export default function View({
         dates={{ unlockDate: data?.unlockDate, processedAt: data?.processedAt }}
         billingProfileId={data?.billingProfileId}
         shouldRedirect={!pathname.includes("p/")}
+        rewardId={data?.id}
+        shouldOpenRequestPayment={true}
       />
     );
   }, [data, redirectionStatus]);

@@ -1,6 +1,8 @@
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
+import { useStackRequestPayments } from "src/App/Stacks/Stacks";
+import { usePosthog } from "src/hooks/usePosthog";
 import { useCloseStack } from "src/libs/react-stack";
 import { PaymentStatus } from "src/types";
 import { compareDateToNow } from "src/utils/date";
@@ -25,10 +27,14 @@ export function StatusTag({
   billingProfileId,
   date,
   className,
+  rewardId,
+  shouldOpenRequestPayment,
   shouldRedirect = false,
 }: TStatusTag.Props) {
+  const { capture } = usePosthog();
   const router = useRouter();
   const closeRewardPanel = useCloseStack();
+  const [openRequestPayment] = useStackRequestPayments();
   const dateRelativeToNow = date ? compareDateToNow(date) : undefined;
   const { icon, labelToken, tooltipToken, tooltipParams, borderColor, iconClassName } = getStatusConfig({
     status,
@@ -51,37 +57,52 @@ export function StatusTag({
     [profiles]
   );
 
+  function handleOpenRequestPayment() {
+    openRequestPayment({ billingProfileId, rewardId });
+    capture("payments_request_started", { event: "status-click" });
+  }
+
   const additionalArgs = useMemo(() => {
-    if (!billingProfileId || !shouldRedirect) return {};
-    switch (status) {
-      case PaymentStatus.PAYOUT_INFO_MISSING:
-        return {
-          onClick: (e: Event) => {
-            e.preventDefault();
-            e.stopPropagation();
-            closeRewardPanel();
-            router.push(NEXT_ROUTER.settings.billing.paymentMethods(billingProfileId));
-          },
-        };
-      case PaymentStatus.PENDING_VERIFICATION:
-        return {
-          onClick: (e: Event) => {
-            e.preventDefault();
-            e.stopPropagation();
-            closeRewardPanel();
-            router.push(NEXT_ROUTER.settings.billing.generalInformation(billingProfileId));
-          },
-        };
-      case PaymentStatus.PENDING_BILLING_PROFILE:
-      case PaymentStatus.INDIVIDUAL_LIMIT_REACHED:
-        return {
-          onClick: (e: Event) => {
-            e.preventDefault();
-            e.stopPropagation();
-            closeRewardPanel();
-            router.push(NEXT_ROUTER.settings.payoutPreferences);
-          },
-        };
+    if (status === PaymentStatus.PENDING_REQUEST && shouldOpenRequestPayment) {
+      return {
+        onClick: (e: Event) => {
+          e.stopPropagation();
+          e.preventDefault();
+          handleOpenRequestPayment();
+        },
+      };
+    }
+    if (billingProfileId && shouldRedirect) {
+      switch (status) {
+        case PaymentStatus.PAYOUT_INFO_MISSING:
+          return {
+            onClick: (e: Event) => {
+              e.preventDefault();
+              e.stopPropagation();
+              closeRewardPanel();
+              router.push(NEXT_ROUTER.settings.billing.paymentMethods(billingProfileId));
+            },
+          };
+        case PaymentStatus.PENDING_VERIFICATION:
+          return {
+            onClick: (e: Event) => {
+              e.preventDefault();
+              e.stopPropagation();
+              closeRewardPanel();
+              router.push(NEXT_ROUTER.settings.billing.generalInformation(billingProfileId));
+            },
+          };
+        case PaymentStatus.PENDING_BILLING_PROFILE:
+        case PaymentStatus.INDIVIDUAL_LIMIT_REACHED:
+          return {
+            onClick: (e: Event) => {
+              e.preventDefault();
+              e.stopPropagation();
+              closeRewardPanel();
+              router.push(NEXT_ROUTER.settings.payoutPreferences);
+            },
+          };
+      }
     }
     return {};
   }, [projectId, status]);

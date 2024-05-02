@@ -2,11 +2,10 @@ import { AvailableConversion } from "src/components/Currency/AvailableConversion
 import { pretty } from "src/utils/id";
 
 import { Avatar } from "components/ds/avatar/avatar";
-import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
+import { Checkbox } from "components/ds/checkbox/checkbox";
 import { TRewardItem } from "components/features/stacks/payments-flow/request-payments-stacks/components/reward-item/reward-item.types";
 import { Flex } from "components/layout/flex/flex";
-import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -53,9 +52,7 @@ export function RewardItem({
             </Flex>
           </Flex>
         </Flex>
-        <Button iconOnly onClick={onSelect} size="xs" variant="secondary">
-          <Icon remixName={type === "exclude" ? "ri-subtract-line" : "ri-add-line"} />
-        </Button>
+        <Checkbox onValueChange={onSelect} isSelected={type === "include"} />
       </Flex>
     </Card>
   );

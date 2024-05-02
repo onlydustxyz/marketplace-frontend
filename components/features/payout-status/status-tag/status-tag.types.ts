@@ -6,7 +6,9 @@ export namespace TStatusTag {
     date?: string | null;
     className?: string;
     projectId?: string;
+    rewardId?: string;
     billingProfileId?: string;
     shouldRedirect?: boolean;
+    shouldOpenRequestPayment?: boolean;
   }
 }
