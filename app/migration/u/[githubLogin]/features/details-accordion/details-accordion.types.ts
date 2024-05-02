@@ -13,7 +13,7 @@ export namespace TDetailsAccordion {
     hasPendingInvitation: boolean;
   }
 
-  interface Detail {
+  export interface Detail {
     name: string;
     avatarUrl: string;
     rankStatus: "good" | "neutral" | "bad";
