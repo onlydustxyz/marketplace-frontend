@@ -64,7 +64,7 @@ export default function FilterDropDown({
             <div className="flex items-center gap-2">
               {value.length > 0 && <Badge size={BadgeSize.Medium} value={value.length} />}
               <div
-                className={cn("duration-300 transition", {
+                className={cn("transition duration-300", {
                   "-rotate-180": !open,
                   "-rotate-90": open,
                 })}
