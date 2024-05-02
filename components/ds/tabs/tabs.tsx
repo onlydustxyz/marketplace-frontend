@@ -70,19 +70,19 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled, i
           title={mobile.title}
           hasCloseButton={false}
         >
-          {tabs.map((tab, i) => (
+          {tabs.map(({ key, ...tab }, i) => (
             <button
               key={i}
               type="button"
               className={cn("flex items-center gap-3 p-4", {
-                "is-active rounded-xl bg-white/8": selected === tab.key,
+                "is-active rounded-xl bg-white/8": selected === key,
               })}
               onClick={() => {
-                onSelectTab(tab.key);
+                onSelectTab(key);
                 setOpenMobilePanel(false);
               }}
             >
-              <Tab color={color} {...tab} />
+              <Tab color={color} {...tab} key={key} />
             </button>
           ))}
         </BottomSheet>
@@ -103,8 +103,8 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled, i
           tab: "relative max-w-fit px-0 h-auto pt-[2px] pb-2.5 data-[hover=true]:opacity-100",
         }}
       >
-        {tabs.map(({ children: _c, ...t }) => (
-          <NextTab {...t} key={t.key} title={<Tab color={color} {...t} />} />
+        {tabs.map(({ children: _c, key, ...t }) => (
+          <NextTab {...t} key={key} title={<Tab color={color} {...t} key={key} />} />
         ))}
       </NextTabs>
       {getSelectedChildren ? <div className="h-3 w-full" /> : null}
