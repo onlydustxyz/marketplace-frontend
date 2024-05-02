@@ -84,7 +84,7 @@ export default function GithubIssue({
             <ContributionBadge {...badgeProps} />
 
             <div className="flex overflow-hidden text-sm font-medium text-greyscale-50">
-              <Link href={issue?.htmlUrl || issue?.githubUrl || ""} className="block">
+              <Link href={issue?.htmlUrl || issue?.githubUrl || ""} clamp={1}>
                 {issue.title}
               </Link>
             </div>
