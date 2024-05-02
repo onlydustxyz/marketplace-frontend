@@ -1,5 +1,4 @@
 import { UseMutateFunction } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
 import { PropsWithChildren, useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
@@ -67,7 +66,6 @@ export default function View({
   const [openStackContribution] = useStackContribution();
   const [openProjectOverview] = useStackProjectOverview();
   const isMyRewardsPage = useMatchPath(NEXT_ROUTER.rewards.all);
-  const pathname = usePathname();
 
   const {
     data,
