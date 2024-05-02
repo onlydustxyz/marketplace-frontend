@@ -6,11 +6,10 @@ export namespace TBillingProfilesSelector {
   export interface Data {
     name: string;
     icon: TIcon.Props;
+    iconColor: "red" | "orange" | "currentColor";
     id: string;
     enabled: boolean;
     hasPendingInvitation: boolean;
-    hasWarning: boolean;
-    hasError: boolean;
   }
   export interface Props extends PropsWithChildren {
     data?: Data[];

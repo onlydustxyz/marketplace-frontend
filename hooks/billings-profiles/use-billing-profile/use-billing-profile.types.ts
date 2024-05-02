@@ -8,12 +8,19 @@ export namespace TUseBillingProfile {
     id?: string;
     enabledPooling?: boolean;
   }
+
+  interface Overrides {
+    icon: TIcon.Props | null;
+    iconColor: "red" | "orange" | "currentColor";
+    tagColor: "red" | "orange" | "grey";
+  }
   export interface Return {
     data: UseGetBillingProfileById | undefined;
     profile:
       | {
           data: UseGetBillingProfileById;
           icon: TIcon.Props;
+          overrides?: Overrides | null;
           status: BillingProfilesTypes.status;
           externalId: string | undefined;
         }

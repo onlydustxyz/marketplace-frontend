@@ -42,7 +42,8 @@ export function StatusTag({
     () =>
       profiles.map(profile => ({
         name: profile.data.name,
-        icon: profile.data.enabled ? profile.icon : { remixName: "ri-forbid-2-line" },
+        icon: profile?.overrides?.icon ?? profile.icon,
+        iconColor: profile?.overrides?.iconColor ?? "currentColor",
         id: profile.data.id,
         enabled: profile.data.enabled,
         hasPendingInvitation: profile.data.pendingInvitationResponse || false,

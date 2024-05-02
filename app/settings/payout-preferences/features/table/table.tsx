@@ -2,8 +2,6 @@
 
 import { useMemo } from "react";
 
-import { TSidebarBilling } from "app/settings/components/sidebar/sidebar-billing/sidebar-billing.types";
-
 import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
 import MeApi from "src/api/me";
 
@@ -13,7 +11,6 @@ import { TTable } from "components/ds/table/table.types";
 import { BillingProfileTag } from "components/features/billing-profiles/billing-profile-tag/billing-profile-tag";
 import { BillingProfilesSelector } from "components/features/billing-profiles/billing-profiles-selector/billing-profiles-selector";
 import { TBillingProfilesSelector } from "components/features/billing-profiles/billing-profiles-selector/billing-profiles-selector.types";
-import { TIcon } from "components/layout/icon/icon.types";
 import { Translate } from "components/layout/translate/translate";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
@@ -24,38 +21,15 @@ export function PayoutPreferencesTable() {
   const { data } = MeApi.queries.useGetPayoutPreferences({});
   const { profiles } = useBillingProfiles();
 
-  function getIconRemixName(profile: TSidebarBilling.profile): TIcon.Props {
-    const hasWarningState = profile?.data?.missingPayoutInfo || profile?.data?.missingVerification;
-    const hasErrorState = profile?.data?.verificationBlocked || profile?.data?.individualLimitReached;
-    if (!profile.data.enabled) {
-      return { remixName: "ri-forbid-2-line" };
-    }
-
-    if (hasWarningState) {
-      return { remixName: "ri-error-warning-line" };
-    }
-
-    if (hasErrorState) {
-      return { remixName: "ri-error-warning-line" };
-    }
-
-    if (profile.data.role === "MEMBER") {
-      return { remixName: "ri-team-line" };
-    }
-
-    return profile.icon;
-  }
-
   const billingProfilesSelector: TBillingProfilesSelector.Data[] = useMemo(
     () =>
       profiles.map(profile => ({
         name: profile.data.name,
-        icon: getIconRemixName(profile),
+        icon: profile?.overrides?.icon ?? profile.icon,
+        iconColor: profile?.overrides?.iconColor ?? "currentColor",
         id: profile.data.id,
         enabled: profile.data.enabled,
         hasPendingInvitation: profile.data.pendingInvitationResponse || false,
-        hasError: (profile.data.verificationBlocked || profile.data.individualLimitReached) ?? false,
-        hasWarning: (profile.data.missingVerification || profile.data.missingPayoutInfo) ?? false,
       })),
     [profiles]
   );
@@ -81,33 +55,17 @@ export function PayoutPreferencesTable() {
     () =>
       (data || []).map(row => {
         const { billingProfile } = row;
-        const hasWarningState = billingProfile?.missingPayoutInfo || billingProfile?.missingVerification;
-        const hasErrorState = billingProfile?.verificationBlocked || billingProfile?.individualLimitReached;
-
         const project = row.project;
-        const role = profiles.find(profile => profile.data.id === row.billingProfile?.id)?.data.role;
+        const currentProfile = profiles.find(profile => profile.data.id === billingProfile?.id);
 
-        const iconName = () => {
-          if (hasErrorState) {
-            return { remixName: "ri-error-warning-line" };
-          }
-          if (hasWarningState) {
-            return { remixName: "ri-error-warning-line" };
-          }
-          if (role === "MEMBER") {
-            return { remixName: "ri-team-line" };
-          }
-          if (billingProfile) {
-            return BillingProfileConstant.profileTypeMapping[billingProfile?.type].icon;
-          }
-        };
         const profile = billingProfile
           ? {
-              icon: iconName() as TIcon.Props,
+              icon:
+                currentProfile?.overrides?.icon ?? BillingProfileConstant.profileTypeMapping[billingProfile?.type].icon,
+              iconColor: currentProfile?.overrides?.iconColor ?? "currentColor",
+              tagColor: currentProfile?.overrides?.tagColor ?? "grey",
               name: billingProfile.name,
               id: billingProfile.id,
-              hasWarning: hasWarningState ?? false,
-              hasError: hasErrorState ?? false,
             }
           : undefined;
 

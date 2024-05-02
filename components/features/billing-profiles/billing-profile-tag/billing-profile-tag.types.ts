@@ -6,9 +6,9 @@ export namespace TBillingProfileTag {
     profile?: {
       name: string;
       icon: TIcon.Props;
+      iconColor: "red" | "orange" | "currentColor";
+      tagColor: "red" | "orange" | "grey";
       id: string;
-      hasWarning: boolean;
-      hasError: boolean;
     };
   }
 }
