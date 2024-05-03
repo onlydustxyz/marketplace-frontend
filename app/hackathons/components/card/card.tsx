@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import background from "public/images/hackathons-cards-bg.webp";
 
+import { TCard } from "app/hackathons/components/card/card.types";
+
 import { DisplayDate } from "components/features/hackathons/display-date/display-date";
 import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
-
-import { TCard } from "./card.types";
 
 export function Card({ title, startDate, endDate, slug }: TCard.Props) {
   return (

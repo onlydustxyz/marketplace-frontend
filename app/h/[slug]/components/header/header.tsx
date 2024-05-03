@@ -10,7 +10,7 @@ import { Typography } from "components/layout/typography/typography";
 
 export function Header({ startDate, endDate, title }: THeader.Props) {
   return (
-    <div className="relative flex h-full w-full flex-1 flex-col items-start justify-start gap-11 overflow-hidden rounded-t-[32px] bg-spacePurple-500 pt-8">
+    <div className="relative flex h-full w-full flex-1 flex-col items-start justify-start gap-11 overflow-hidden rounded-t-[32px] pt-8">
       <Image src={background} alt={title} className="absolute inset-0 h-full w-full object-cover object-center" />
       <Wrapper>
         <div className="relative z-[1] flex flex-1 flex-col items-start justify-between gap-1 pb-8">

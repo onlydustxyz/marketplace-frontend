@@ -1,6 +1,5 @@
-import { Track } from "app/migration/h/[slug]/components/track/track";
-
-import { TTracks } from "./tracks.types";
+import { Track } from "app/h/[slug]/components/track/track";
+import { TTracks } from "app/h/[slug]/features/tracks/tracks.types";
 
 export function Tracks({ data }: TTracks.Props) {
   return (

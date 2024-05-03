@@ -1,4 +1,4 @@
-import { Project } from "app/migration/h/[slug]/features/project/project";
+import { Project } from "app/h/[slug]/features/project/project";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Typography } from "components/layout/typography/typography";
