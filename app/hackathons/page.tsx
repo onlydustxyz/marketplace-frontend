@@ -1,30 +1,18 @@
+import { hackathonsApiClient } from "api-client/resources/hackathons";
 import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
 
 import { HackathonSection } from "app/hackathons/features/hackathon-section/hackathon-section";
 
-import { components } from "src/__generated/api";
-
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-const mock: components["schemas"]["HackathonsListResponse"] = {
-  hackathons: [
-    {
-      title: "ODHack #3.0",
-      startDate: "2024-04-22T10:30:00+02:00",
-      endDate: "2024-05-01T11:59:00+02:00",
-      id: "e1dad47e-0b29-4198-8aec-9fc0ea5a649d",
-      slug: "od-hack-3-0",
-      location: "",
-    },
-  ],
-};
+async function HackathonsPage() {
+  const data = await hackathonsApiClient.fetch.getHackathonsList().request();
 
-function HackathonsPage() {
-  const liveNow = mock.hackathons.filter(hackathon => isHackathonLive(hackathon));
-  const comingSoon = mock.hackathons.filter(hackathon => isHackathonFuture(hackathon));
-  const pastHackathon = mock.hackathons.filter(
+  const liveNow = data.hackathons.filter(hackathon => isHackathonLive(hackathon));
+  const comingSoon = data.hackathons.filter(hackathon => isHackathonFuture(hackathon));
+  const pastHackathon = data.hackathons.filter(
     hackathon => !isHackathonLive(hackathon) && !isHackathonFuture(hackathon)
   );
 
