@@ -40,7 +40,6 @@ export function LimitReachedHeader() {
         endElement: null,
       };
     }
-
     if (hasIndividualLimitReached) {
       return {
         description: <Translate token={"v2.features.banners.limitReached.hasIndividualLimitReachedDescription"} />,
