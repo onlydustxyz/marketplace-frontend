@@ -52,7 +52,7 @@ export function LimitReachedHeader() {
         </Button>
       );
     }
-  }, [profiles]);
+  }, [profiles, pathname, hasPayoutPreferencesLimitReached, hasIndividualLimitReached]);
 
   return useMemo(() => {
     if (hasPayoutPreferencesLimitReached || hasIndividualLimitReached) {
