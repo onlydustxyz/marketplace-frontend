@@ -33,24 +33,33 @@ export function LimitReachedHeader() {
   const hasOnlyIndividualProfile = profiles.length === 1 && profiles[0].data.type === "INDIVIDUAL";
   const hasIndividualLimitReached = hasOnlyIndividualProfile && profiles[0].data.individualLimitReached;
 
-  const renderEndElement = useMemo(() => {
+  const additionalArgs = useMemo(() => {
     if (pathname.includes("payout-preferences")) {
-      return null;
+      return {
+        description: <Translate token={"v2.features.banners.limitReached.hasToUpdatePayoutPreferencesDescription"} />,
+        endElement: null,
+      };
     }
 
     if (hasIndividualLimitReached) {
-      return (
-        <Button size={"s"} onClick={handleCreateBillingProfile}>
-          <Translate token={"v2.features.banners.limitReached.addBillingProfileButtonLabel"} />
-        </Button>
-      );
+      return {
+        description: <Translate token={"v2.features.banners.limitReached.hasIndividualLimitReachedDescription"} />,
+        endElement: (
+          <Button size={"s"} onClick={handleCreateBillingProfile}>
+            <Translate token={"v2.features.banners.limitReached.addBillingProfileButtonLabel"} />
+          </Button>
+        ),
+      };
     }
     if (hasPayoutPreferencesLimitReached) {
-      return (
-        <Button size={"s"} onClick={handleRedirectToPayoutPreferences}>
-          <Translate token={"v2.features.banners.limitReached.updatePayoutPreferencesButtonLabel"} />
-        </Button>
-      );
+      return {
+        description: <Translate token={"v2.features.banners.limitReached.hasToSwitchPayoutPreferencesDescription"} />,
+        endElement: (
+          <Button size={"s"} onClick={handleRedirectToPayoutPreferences}>
+            <Translate token={"v2.features.banners.limitReached.updatePayoutPreferencesButtonLabel"} />
+          </Button>
+        ),
+      };
     }
   }, [profiles, pathname, hasPayoutPreferencesLimitReached, hasIndividualLimitReached]);
 
@@ -59,11 +68,10 @@ export function LimitReachedHeader() {
       return (
         <Banner
           title={<Translate token={"v2.features.banners.limitReached.title"} />}
-          description={<Translate token={"v2.features.banners.limitReached.description"} />}
           variant={"red"}
           hasBorder={false}
           size={"m"}
-          endElement={renderEndElement}
+          {...additionalArgs}
         />
       );
     }

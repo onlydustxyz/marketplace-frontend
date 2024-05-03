@@ -22,7 +22,9 @@
   },
   "limitReached": {
     "title": "Some of your pending rewards have been blocked because they will cause you to exceed the limit of 5,000 USD / year as an individual.",
-    "description": "Please add a new billing profile (self-employed or organisation) to receive new rewards.",
+    "hasIndividualLimitReachedDescription": "Please add a new billing profile (self-employed or organisation) to receive new rewards.",
+    "hasToSwitchPayoutPreferencesDescription": "Please switch your payout preferences to another billing profile (self-employed or organisation) to receive new rewards.",
+    "hasToUpdatePayoutPreferencesDescription": "Please update your payout preferences to another billing profile (self-employed or organisation) to receive new rewards.",
     "addBillingProfileButtonLabel": "Add new billing profile",
     "updatePayoutPreferencesButtonLabel": "Update payout preferences"
   }
