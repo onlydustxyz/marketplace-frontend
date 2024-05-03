@@ -1,4 +1,8 @@
+import { useAuth0 } from "@auth0/auth0-react";
+
 import { components } from "src/__generated/api";
+import { UseInfiniteBaseQueryProps, useInfiniteBaseQuery } from "src/api/useInfiniteBaseQuery";
+import { QueryParams } from "src/utils/getEndpointUrl";
 
 import { API_PATH } from "../ApiPath";
 import { UseQueryProps, useBaseQuery } from "../useBaseQuery";
@@ -45,4 +49,26 @@ const useUserProfileByGithubLogin = ({ params, options = {} }: UseQueryProps<Use
   });
 };
 
-export default { useUsersSearchByLogin, useUserProfileByGithubId, useUserProfileByGithubLogin };
+export type UseUserContributionsResponse = components["schemas"]["ContributionPageResponse"];
+
+type UseUserContributionsParams = {
+  login?: string;
+  queryParams?: QueryParams;
+};
+
+const useUserContributions = ({
+  params,
+  options = {},
+}: UseInfiniteBaseQueryProps<UseUserContributionsResponse, UseUserContributionsParams>) => {
+  const { isAuthenticated } = useAuth0();
+  return useInfiniteBaseQuery<UseUserContributionsResponse>(
+    {
+      ...params,
+      resourcePath: API_PATH.USER_CONTRIBUTIONS(params?.login ?? ""),
+      tags: USERS_TAGS.user_contributions(params?.login ?? ""),
+    },
+    { ...options, enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled) }
+  );
+};
+
+export default { useUsersSearchByLogin, useUserProfileByGithubId, useUserProfileByGithubLogin, useUserContributions };
