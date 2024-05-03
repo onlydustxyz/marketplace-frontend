@@ -30,11 +30,11 @@ export function ApplyGlobalSection({
     handleLoginWithRedirect(loginWithRedirect);
   }
 
-  if (!profile || isLoading) {
+  if (!profile && isLoading) {
     return null;
   }
 
-  if (isAuthenticated) {
+  if (profile && isAuthenticated) {
     return (
       <ApplyAuthenticatedSection
         formDescription={formDescription}
