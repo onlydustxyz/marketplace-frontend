@@ -29,7 +29,7 @@ export default async function HackathonPage({ params }: { params: { slug: string
       <Header endDate={data.endDate} startDate={data.startDate} title={data.title} />
       <Navigation slug={data.slug} hasTracks={!!data.tracks.length} />
       <Wrapper className="max-md:p-2">
-        <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14" id={"overview"}>
+        <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14">
           <Intro title={data.title} subtitle={data.subtitle} />
           <div className="flex w-full flex-col items-start justify-start gap-6 md:flex-row">
             <div className="w-full md:w-[400px]">

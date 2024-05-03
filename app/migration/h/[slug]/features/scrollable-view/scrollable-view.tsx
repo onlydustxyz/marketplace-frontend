@@ -34,6 +34,7 @@ export function ScrollableView({ children }: TScrollableView.Props) {
       data-header-compact={headerValue <= scrollValue.shouldHideContent}
       ref={scrollRef}
     >
+      <div id={"overview"} />
       <div className="pointer-events-none sticky top-0 z-10 w-full">
         <div className="w-full" style={{ height: scrollValue.full + scrollValue.navigation }}>
           <div className="w-full" style={{ height: headerValue }}>

@@ -19,7 +19,7 @@ export function Navigation({ slug, hasTracks }: TNavigation.Props) {
             tabs={[
               {
                 content: <Translate token="v2.pages.hackathons.details.navigation.overview" />,
-                key: `/migration${NEXT_ROUTER.hackathons.details.root(slug)}`,
+                key: `/migration${NEXT_ROUTER.hackathons.details.overview(slug)}`,
               },
               ...(hasTracks
                 ? [
