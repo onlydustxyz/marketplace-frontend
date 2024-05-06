@@ -92,7 +92,7 @@ export default function GithubPullRequest({
             <ContributionBadge {...badgeProps} />
 
             <div className="overflow-hidden text-sm font-medium text-greyscale-50">
-              <Link href={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""} className="block">
+              <Link href={pullRequest?.htmlUrl || pullRequest?.githubUrl || ""} clamp={1}>
                 {pullRequest.title}
               </Link>
             </div>

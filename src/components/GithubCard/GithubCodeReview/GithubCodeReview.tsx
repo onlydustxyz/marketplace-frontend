@@ -86,7 +86,7 @@ export default function GithubCodeReview({
             <ContributionBadge {...badgeProps} />
 
             <div className="flex overflow-hidden text-sm font-medium text-greyscale-50">
-              <Link href={htmlUrl || githubUrl || ""} className="block">
+              <Link href={htmlUrl || githubUrl || ""} clamp={1}>
                 {title}
               </Link>
             </div>
