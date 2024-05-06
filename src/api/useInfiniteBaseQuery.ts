@@ -57,7 +57,7 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
   const { getImpersonateHeaders } = useImpersonation();
 
   return useInfiniteQuery<R>({
-    queryKey: [...(tags || []), queryParams],
+    queryKey: [...(tags || []), queryParams, isAuthenticated],
     queryFn: async ({ pageParam }) => {
       const { options } = await getHttpOptions({
         isAuthenticated,
