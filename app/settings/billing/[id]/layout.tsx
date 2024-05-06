@@ -16,9 +16,9 @@ import { ProfileInvitationBanner } from "./general-information/components/profil
 
 function BillingLayout({ children }: PropsWithChildren) {
   const { id } = useParams<{ id: string }>();
-  const { profile, isLoading } = useBillingProfileById({ id });
+  const { profile, isLoading, isPending } = useBillingProfileById({ id });
 
-  if (!isLoading && !profile) {
+  if (!isLoading && !isPending && !profile) {
     notFound();
   }
 

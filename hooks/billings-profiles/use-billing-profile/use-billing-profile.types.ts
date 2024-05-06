@@ -29,6 +29,7 @@ export namespace TUseBillingProfile {
         }
       | undefined;
     isLoading: boolean;
+    isPending: boolean;
     refetch: () => void;
   }
 }

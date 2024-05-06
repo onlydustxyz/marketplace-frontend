@@ -16,7 +16,7 @@ export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile
     delays: 5000,
   });
 
-  const { data, isLoading, isRefetching, refetch } = BillingProfilesApi.queries.useGetBillingProfileById({
+  const { data, isLoading, isPending, isRefetching, refetch } = BillingProfilesApi.queries.useGetBillingProfileById({
     params: {
       id,
     },
@@ -65,5 +65,5 @@ export const useBillingProfileById = ({ id, enabledPooling }: TUseBillingProfile
     resetPooling();
   }
 
-  return { data, isLoading, profile, refetch: refetchBilling };
+  return { data, isLoading, isPending, profile, refetch: refetchBilling };
 };
