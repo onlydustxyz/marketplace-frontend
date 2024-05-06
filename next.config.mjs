@@ -18,6 +18,10 @@ const nextConfig = {
   env: {
     APP_COMMIT_HASH: getCommitHash(),
   },
+  generateBuildId: async () => {
+    // https://nextjs.org/docs/app/api-reference/next-config-js/generateBuildId
+    return getCommitHash();
+  },
   experimental: {
     serverComponentsExternalPackages: ["@react-pdf/renderer"],
   },
