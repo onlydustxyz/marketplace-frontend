@@ -4,6 +4,7 @@ import { hackathonsApiClient } from "api-client/resources/hackathons";
 import { useUpdateHackathonsRegistrations } from "api-client/resources/me/mutations/use-update-hackathons-registrations";
 
 import useMutationAlert from "src/api/useMutationAlert";
+import { usePosthog } from "src/hooks/usePosthog";
 
 import { ApplyCallout } from "components/features/apply-callout/apply-callout";
 
@@ -13,6 +14,7 @@ import { TRegistrationWrapper } from "./registration-wrapper.types";
 
 export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistrationWrapper.Props) {
   const { T } = useIntl();
+  const { capture } = usePosthog();
 
   const { mutate: register, ...restRegister } = useUpdateHackathonsRegistrations({
     hackathonId,
@@ -25,6 +27,8 @@ export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistratio
 
   async function handleApply() {
     register();
+
+    capture("hackathon_registration", { hackathon_id: hackathonId });
   }
 
   useMutationAlert({
