@@ -2,6 +2,7 @@
 
 import { hackathonsApiClient } from "api-client/resources/hackathons";
 import { useUpdateHackathonsRegistrations } from "api-client/resources/me/mutations/use-update-hackathons-registrations";
+import { isBefore } from "date-fns";
 
 import useMutationAlert from "src/api/useMutationAlert";
 import { usePosthog } from "src/hooks/usePosthog";
@@ -41,19 +42,25 @@ export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistratio
     },
   });
 
-  return (
-    <ApplyCallout
-      icon={{ remixName: "ri-user-3-line" }}
-      title="v2.pages.hackathons.details.application.title"
-      formDescription="v2.pages.hackathons.details.application.description"
-      buttonNotConnected="v2.pages.hackathons.details.application.button.connectToApply"
-      buttonConnected={
-        hasRegistered
-          ? "v2.pages.hackathons.details.application.button.alreadyApplied"
-          : "v2.pages.hackathons.details.application.button.apply"
-      }
-      onApply={handleApply}
-      alreadyApplied={hasRegistered}
-    />
-  );
+  if (!data) {
+    return null;
+  }
+
+  if (isBefore(new Date(), new Date(data.endDate))) {
+    return (
+      <ApplyCallout
+        icon={{ remixName: "ri-user-3-line" }}
+        title="v2.pages.hackathons.details.application.title"
+        formDescription="v2.pages.hackathons.details.application.description"
+        buttonNotConnected="v2.pages.hackathons.details.application.button.connectToApply"
+        buttonConnected={
+          hasRegistered
+            ? "v2.pages.hackathons.details.application.button.alreadyApplied"
+            : "v2.pages.hackathons.details.application.button.apply"
+        }
+        onApply={handleApply}
+        alreadyApplied={hasRegistered}
+      />
+    );
+  }
 }
