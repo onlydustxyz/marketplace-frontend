@@ -63,4 +63,6 @@ export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistratio
       />
     );
   }
+
+  return null;
 }
