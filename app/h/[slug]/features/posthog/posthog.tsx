@@ -11,7 +11,7 @@ export function Posthog({ hackathonId }: TPosthog.Props) {
 
   useEffect(() => {
     if (hackathonId) {
-      capture("hackathon_viewed", { id_hackathon: hackathonId });
+      capture("hackathon_viewed", { hackathon_id: hackathonId });
     }
   }, [hackathonId]);
 
