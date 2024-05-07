@@ -24,7 +24,7 @@ export function Week({ week, data }: TWeek.Props) {
     [weekNumber, data]
   );
   return (
-    <Tooltip content={tooltipContent}>
+    <Tooltip content={tooltipContent} isOpen={true}>
       <div
         className={cn(
           "flex h-6 w-6 flex-row items-center justify-center rounded-[2px] border border-card-border-light bg-spaceBlue-800",
