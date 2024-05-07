@@ -9,17 +9,19 @@ import { Legend } from "../components/legend/legend";
 import { Tooltip } from "../components/tooltip/tooltip";
 import { TPieChart } from "./pie-chart.types";
 
-export function PieChart({ data }: TPieChart.Props) {
+export function PieChart({ data, renderTooltip }: TPieChart.Props) {
   const [activeId, setActiveId] = useState<string | number | null>(null);
 
   const DEFAULT_COLORS = ["#FFBC66", "#CE66FF", "#666BD7", "#66FFEF", "#F69EF3"];
 
+  const colors = data.map((item, index) => item.color || DEFAULT_COLORS[index % DEFAULT_COLORS.length]);
+
   const legendData = data.map(item => {
     return {
       id: item.id,
-      label: item.label,
+      label: item.label || item.value,
       value: item.value,
-      color: DEFAULT_COLORS[data.indexOf(item)],
+      color: colors[data.indexOf(item)],
     };
   });
 
@@ -38,16 +40,16 @@ export function PieChart({ data }: TPieChart.Props) {
         enableArcLabels={false}
         enableArcLinkLabels={false}
         innerRadius={0.75}
-        colors={DEFAULT_COLORS}
+        colors={colors}
         activeOuterRadiusOffset={3}
         activeInnerRadiusOffset={3}
         layers={["arcs"]}
-        tooltip={({ datum }) => <Tooltip data={datum} />}
+        tooltip={({ datum }) => <Tooltip data={datum} renderTooltip={renderTooltip} />}
         activeId={activeId}
         onActiveIdChange={setActiveId}
       />
 
-      <Legend data={legendData} setActiveId={setActiveId} />
+      <Legend data={legendData} setActiveId={setActiveId} renderTooltip={renderTooltip} />
     </Flex>
   );
 }

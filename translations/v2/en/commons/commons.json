@@ -65,5 +65,8 @@
     }
   },
   "currency": "Currency",
-  "pendingInvite": "Pending invite"
+  "pendingInvite": "Pending invite",
+  "pullRequests": "Pull requests",
+  "issues": "Issues",
+  "codeReviews": "Code reviews"
 }
