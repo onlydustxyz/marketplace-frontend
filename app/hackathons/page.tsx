@@ -3,8 +3,8 @@ import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
 
 import { HackathonSection } from "app/hackathons/features/hackathon-section/hackathon-section";
-import { Posthog } from "app/hackathons/features/posthog/posthog";
 
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -19,7 +19,7 @@ async function HackathonsPage() {
 
   return (
     <>
-      <Posthog />
+      <PosthogOnMount eventName={"hackathon_list_viewed"} />
       <div className="scrollbar-sm relative z-[1] h-full w-full overflow-y-auto bg-no-repeat lg:rounded-3xl">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 p-4 md:px-12 md:py-14 md:pb-12 ">
           <Typography variant="title-xl" translate={{ token: "v2.pages.hackathons.title" }} />

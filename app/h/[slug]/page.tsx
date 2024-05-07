@@ -6,10 +6,10 @@ import { Wrapper } from "app/h/[slug]/components/wrapper/wrapper";
 import { Intro } from "app/h/[slug]/features/intro/intro";
 import { MainDescription } from "app/h/[slug]/features/main-description/main-description";
 import { Overview } from "app/h/[slug]/features/overview/overview";
-import { Posthog } from "app/h/[slug]/features/posthog/posthog";
 import { ScrollableView } from "app/h/[slug]/features/scrollable-view/scrollable-view";
 import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Flex } from "components/layout/flex/flex";
 
 import { Header } from "./components/header/header";
@@ -28,7 +28,11 @@ export default async function HackathonPage({ params }: { params: { slug: string
 
   return (
     <>
-      <Posthog hackathonId={data.id} />
+      <PosthogOnMount
+        eventName={"hackathon_viewed"}
+        params={{ hackathon_id: data.id }}
+        paramsReady={Boolean(data.id)}
+      />
       <ScrollableView>
         <Header endDate={data.endDate} startDate={data.startDate} title={data.title} />
         <Navigation slug={data.slug} hasTracks={!!data.tracks.length} />
