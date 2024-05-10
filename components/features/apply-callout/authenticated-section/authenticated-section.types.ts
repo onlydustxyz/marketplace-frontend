@@ -9,5 +9,6 @@ export namespace TApplyAuthenticatedSection {
     onApply: () => void;
     profile: UseGetMyProfileInfoResponse;
     alreadyApplied?: boolean;
+    isLoading?: boolean;
   }
 }

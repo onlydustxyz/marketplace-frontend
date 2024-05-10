@@ -17,7 +17,11 @@ export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistratio
   const { T } = useIntl();
   const { capture } = usePosthog();
 
-  const { mutate: register, ...restRegister } = useUpdateHackathonsRegistrations({
+  const {
+    mutate: register,
+    isPending: registerIsPending,
+    ...restRegister
+  } = useUpdateHackathonsRegistrations({
     hackathonId,
     hackathonSlug,
   });
@@ -60,6 +64,7 @@ export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistratio
         }
         onApply={handleApply}
         alreadyApplied={hasRegistered}
+        isLoading={registerIsPending}
       />
     );
   }

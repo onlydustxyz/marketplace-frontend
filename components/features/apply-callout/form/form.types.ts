@@ -33,6 +33,5 @@ export namespace TApplyForm {
     buttonConnected: Key;
     onApply: () => void;
     profile: UseGetMyProfileInfoResponse;
-    setShowForm: (showForm: boolean) => void;
   }
 }
