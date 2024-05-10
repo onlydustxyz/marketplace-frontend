@@ -24,7 +24,7 @@ export namespace TProfileCard {
     contributionCount?: number;
     rewardCount?: number;
     contributedProjectCount?: number;
-    leadedProjectCount: number;
+    leadedProjectCount?: number;
     rank?: number;
     contributorRankPercentile?: number;
   }
