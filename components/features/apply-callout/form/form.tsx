@@ -33,7 +33,7 @@ const formSchema = z.object({
   }),
 });
 
-export function ApplyForm({ formDescription, buttonConnected, onApply, profile, setShowForm }: TApplyForm.Props) {
+export function ApplyForm({ formDescription, buttonConnected, onApply, profile }: TApplyForm.Props) {
   const { T } = useIntl();
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
@@ -53,10 +53,7 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile, 
     ...restUpdateProfileMutation
   } = MeApi.mutations.useUpdateProfile({
     options: {
-      onSuccess: () => {
-        onApply();
-        setShowForm(false);
-      },
+      onSuccess: onApply,
     },
   });
 

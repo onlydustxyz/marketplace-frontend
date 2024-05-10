@@ -26,11 +26,16 @@ export function ApplyAuthenticatedSection({
 
   const [showForm, setShowForm] = useState(false);
 
-  function handleApplyClick() {
-    if (!contactInfoProvided) {
-      setShowForm(true);
-    } else {
+  function handleSubmit() {
+    setShowForm(false);
+    onApply();
+  }
+
+  function handleRegister() {
+    if (contactInfoProvided) {
       onApply();
+    } else {
+      setShowForm(true);
     }
   }
 
@@ -39,16 +44,15 @@ export function ApplyAuthenticatedSection({
       <ApplyForm
         formDescription={formDescription}
         buttonConnected={buttonConnected}
-        onApply={handleApplyClick}
+        onApply={handleSubmit}
         profile={profile}
-        setShowForm={setShowForm}
       />
     );
   }
 
   return (
     <Button
-      onClick={handleApplyClick}
+      onClick={handleRegister}
       disabled={alreadyApplied}
       size={isMd ? "m" : "s"}
       width="full"
