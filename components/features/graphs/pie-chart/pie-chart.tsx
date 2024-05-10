@@ -3,13 +3,15 @@
 import { Pie } from "@nivo/pie";
 import { useState } from "react";
 
+import { cn } from "src/utils/cn";
+
 import { Flex } from "components/layout/flex/flex";
 
 import { Legend } from "../components/legend/legend";
 import { Tooltip } from "../components/tooltip/tooltip";
 import { TPieChart } from "./pie-chart.types";
 
-export function PieChart({ data, renderTooltip }: TPieChart.Props) {
+export function PieChart({ data, renderTooltip, pieProps, wrapperClassName, legendWrapperClassName }: TPieChart.Props) {
   const [activeId, setActiveId] = useState<string | number | null>(null);
 
   const DEFAULT_COLORS = ["#FFBC66", "#CE66FF", "#666BD7", "#66FFEF", "#F69EF3"];
@@ -26,11 +28,9 @@ export function PieChart({ data, renderTooltip }: TPieChart.Props) {
   });
 
   return (
-    <Flex alignItems="center" justifyContent="center" width="full" className="gap-1">
+    <Flex alignItems="center" justifyContent="center" width="full" className={cn("gap-1", wrapperClassName)}>
       <Pie
         data={data}
-        width={160}
-        height={160}
         margin={{
           top: 10,
           right: 10,
@@ -47,9 +47,15 @@ export function PieChart({ data, renderTooltip }: TPieChart.Props) {
         tooltip={({ datum }) => <Tooltip data={datum} renderTooltip={renderTooltip} />}
         activeId={activeId}
         onActiveIdChange={setActiveId}
+        {...pieProps}
       />
 
-      <Legend data={legendData} setActiveId={setActiveId} renderTooltip={renderTooltip} />
+      <Legend
+        data={legendData}
+        setActiveId={setActiveId}
+        renderTooltip={renderTooltip}
+        legendWrapperClassName={legendWrapperClassName}
+      />
     </Flex>
   );
 }

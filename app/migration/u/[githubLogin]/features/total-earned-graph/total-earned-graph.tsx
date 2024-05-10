@@ -50,9 +50,23 @@ export function TotalEarnedGraph(_: TTotalEarnedGraph.Props) {
 
       <Card>
         <Flex direction="col" alignItems="center" className="gap-2">
-          <PieChart data={data} renderTooltip={renderTooltip} />
+          <PieChart
+            data={data}
+            renderTooltip={renderTooltip}
+            pieProps={{
+              width: 160,
+              height: 160,
+            }}
+          />
 
-          <Typography variant="title-l">221,000 USD</Typography>
+          <Typography variant="title-l">
+            {
+              Money.format({
+                amount: 221000,
+                currency: Money.USD,
+              }).string
+            }
+          </Typography>
         </Flex>
       </Card>
     </Flex>

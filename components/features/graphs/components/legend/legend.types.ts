@@ -12,5 +12,6 @@ export namespace TLegend {
     data: SingleDataProps[];
     setActiveId: (id: string | number | null) => void;
     renderTooltip?: (data: TTooltip.DataProps) => JSX.Element;
+    legendWrapperClassName?: string;
   }
 }

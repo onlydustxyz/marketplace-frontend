@@ -1,3 +1,5 @@
+import { PieSvgProps } from "@nivo/pie";
+
 import { TTooltip } from "../components/tooltip/tooltip.types";
 
 export namespace TPieChart {
@@ -11,5 +13,8 @@ export namespace TPieChart {
   export interface Props {
     data: SingleDataProps[];
     renderTooltip?: (data: TTooltip.DataProps) => JSX.Element;
+    pieProps: Omit<PieSvgProps<SingleDataProps>, "data">;
+    wrapperClassName?: string;
+    legendWrapperClassName?: string;
   }
 }

@@ -23,7 +23,13 @@ export function WorkDistributionGraph(_: TWorkDistributionGraph.Props) {
       <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.workDistribution" }} />
 
       <Card>
-        <PieChart data={data} />
+        <PieChart
+          data={data}
+          pieProps={{
+            width: 160,
+            height: 160,
+          }}
+        />
       </Card>
     </Flex>
   );
