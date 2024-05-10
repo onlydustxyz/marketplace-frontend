@@ -8,7 +8,7 @@ import { TProfileCard } from "components/features/profile-card/profile-card.type
 
 export function ProfileCardPopover({ children, githubId, isOpen, ...PopOverProps }: TProfileCard.ProfilePopoverProps) {
   const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId(githubId, {
-    isEnabled: isOpen,
+    enabled: isOpen,
   });
 
   const renderContent = useMemo(() => {
