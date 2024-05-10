@@ -7,8 +7,7 @@ import { ProfileCardLoading } from "components/features/profile-card/profile-car
 import { TProfileCard } from "components/features/profile-card/profile-card.types";
 
 export function ProfileCardPopover({ children, githubId, isOpen, ...PopOverProps }: TProfileCard.ProfilePopoverProps) {
-  const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId({
-    githubId,
+  const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId(githubId, {
     isEnabled: isOpen,
   });
 

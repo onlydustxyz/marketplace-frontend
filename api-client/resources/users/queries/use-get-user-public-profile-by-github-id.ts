@@ -5,17 +5,14 @@ import { useReactQueryAdapter } from "api-client/adapter/react-query/react-query
 import { getUserPublicProfileByGithubId } from "api-client/resources/users/fetch/get-user-public-profile-by-github-id";
 import { UserPublicProfileResponseV2 } from "api-client/resources/users/types";
 
-export const useGetUserPublicProfileByGithubId = ({
-  githubId,
-  isEnabled = true,
-}: {
-  githubId: number;
+interface Options {
   isEnabled?: boolean;
-}) => {
+}
+export const useGetUserPublicProfileByGithubId = (githubId: number, options: Options) => {
   const { query } = useReactQueryAdapter<UserPublicProfileResponseV2>(getUserPublicProfileByGithubId(githubId));
 
   return useQuery<UserPublicProfileResponseV2>({
     ...query,
-    enabled: isEnabled,
+    enabled: options?.isEnabled,
   });
 };
