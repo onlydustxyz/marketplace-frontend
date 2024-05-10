@@ -1,3 +1,4 @@
+import { PopoverProps } from "@nextui-org/react";
 import { PropsWithChildren } from "react";
 import { VariantProps } from "tailwind-variants";
 
@@ -9,6 +10,7 @@ import { typographyVariants } from "components/layout/typography/typography.vari
 
 export namespace TProfileCard {
   export type Variants = VariantProps<typeof avatarVariants | typeof tagVariants | typeof typographyVariants>;
+  type basePopOverProps = Partial<Omit<PopoverProps, "children">>;
   export interface ProfileStatProps {
     icon: RemixIconsName;
     token: string;
@@ -18,16 +20,16 @@ export namespace TProfileCard {
     className?: string;
     avatarUrl?: string;
     login: string;
-    qualifier: string;
-    contributionCount: number;
-    rewardCount: number;
-    contributedProjectCount: number;
+    rankCategory?: string;
+    contributionCount?: number;
+    rewardCount?: number;
+    contributedProjectCount?: number;
     leadedProjectCount: number;
-    contributorPosition: number;
-    contributorRank: string;
+    rank?: number;
+    contributorRankPercentile?: number;
   }
 
-  export interface PopoverProps extends PropsWithChildren {
+  export interface ProfilePopoverProps extends PropsWithChildren, basePopOverProps {
     className?: string;
     githubId: number;
   }

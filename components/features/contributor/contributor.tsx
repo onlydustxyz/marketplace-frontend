@@ -1,3 +1,6 @@
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
 
@@ -7,6 +10,8 @@ import { TContributor } from "components/features/contributor/contributor.types"
 import { ProfileCardPopover } from "components/features/profile-card/profile-card.popover";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 export function Contributor({
   githubUserId,
@@ -20,10 +25,18 @@ export function Contributor({
   typograhy,
   avatarProps,
 }: TContributor.Props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const Component = clickable ? "button" : "div";
 
   return (
-    <ProfileCardPopover githubId={githubUserId}>
+    <ProfileCardPopover
+      githubId={githubUserId}
+      isOpen={isOpen}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onClick={() => setIsOpen(false)}
+    >
       <Component
         type={clickable ? "button" : undefined}
         className={cn("group/contributor flex flex-row items-center gap-1", className)}
@@ -31,6 +44,7 @@ export function Contributor({
           clickable
             ? e => {
                 e.preventDefault();
+                router.push(NEXT_ROUTER.newPublicProfile.root(login));
               }
             : undefined
         }

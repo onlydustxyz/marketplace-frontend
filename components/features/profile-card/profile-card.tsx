@@ -26,13 +26,13 @@ export function ProfileCard(props: TProfileCard.Props) {
     className,
     avatarUrl,
     login,
-    qualifier,
+    rankCategory,
     contributionCount,
     rewardCount,
     contributedProjectCount,
     leadedProjectCount,
-    contributorPosition,
-    contributorRank,
+    rank,
+    contributorRankPercentile,
   } = props;
 
   return (
@@ -50,48 +50,58 @@ export function ProfileCard(props: TProfileCard.Props) {
             <Typography variant="title-m" className="line-clamp-1">
               {login}
             </Typography>
-            <Typography variant="title-m">{getOrdinalSuffix(contributorPosition)}</Typography>
+            {rank ? <Typography variant="title-m">{getOrdinalSuffix(rank)}</Typography> : null}
           </div>
           <div className="flex justify-between gap-2">
             <Typography variant="title-s" className="line-clamp-2 text-spaceBlue-100">
-              {qualifier}
+              {rankCategory}
             </Typography>
-            <Typography
-              variant="body-s"
-              className="whitespace-nowrap text-spaceBlue-100"
-              translate={{ token: "v2.features.profileCard.rank", params: { rank: contributorRank } }}
-            />
+            {contributorRankPercentile ? (
+              <Typography
+                variant="body-s"
+                className="whitespace-nowrap text-spaceBlue-100"
+                translate={{ token: "v2.features.profileCard.rank", params: { rank: contributorRankPercentile } }}
+              />
+            ) : null}
           </div>
           <div className="flex flex-wrap items-center gap-1">
-            <ProfileStatItem
-              icon="ri-stack-line"
-              token="v2.features.profileCard.counters.contributionCount"
-              count={contributionCount}
-            />
-            <span className="mb-1 align-top font-bold">{"."}</span>
-            <ProfileStatItem
-              icon="ri-medal-2-fill"
-              token="v2.features.profileCard.counters.rewardCount"
-              count={rewardCount}
-            />
+            {contributionCount ? (
+              <ProfileStatItem
+                icon="ri-stack-line"
+                token="v2.features.profileCard.counters.contributionCount"
+                count={contributionCount}
+              />
+            ) : null}
+            {contributionCount && rewardCount ? <span className="mb-1 align-top font-bold">{"."}</span> : null}
+            {rewardCount ? (
+              <ProfileStatItem
+                icon="ri-medal-2-fill"
+                token="v2.features.profileCard.counters.rewardCount"
+                count={rewardCount}
+              />
+            ) : null}
           </div>
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
-        <Tag size="medium">
-          <Icon remixName="ri-user-line" size={16} />
-          <Translate
-            token="v2.features.profileCard.counters.contributedProjectCount"
-            params={{ count: contributedProjectCount }}
-          />
-        </Tag>
-        <Tag size="medium">
-          <Icon remixName="ri-star-line" size={16} />
-          <Translate
-            token="v2.features.profileCard.counters.leadedProjectCount"
-            params={{ count: leadedProjectCount }}
-          />
-        </Tag>
+        {contributedProjectCount ? (
+          <Tag size="medium">
+            <Icon remixName="ri-user-line" size={16} />
+            <Translate
+              token="v2.features.profileCard.counters.contributedProjectCount"
+              params={{ count: contributedProjectCount }}
+            />
+          </Tag>
+        ) : null}
+        {leadedProjectCount ? (
+          <Tag size="medium">
+            <Icon remixName="ri-star-line" size={16} />
+            <Translate
+              token="v2.features.profileCard.counters.leadedProjectCount"
+              params={{ count: leadedProjectCount }}
+            />
+          </Tag>
+        ) : null}
       </div>
     </Card>
   );
