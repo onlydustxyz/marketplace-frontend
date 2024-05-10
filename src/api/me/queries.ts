@@ -42,23 +42,6 @@ const useMyRewardsInfiniteList = (
   );
 };
 
-export type UseMyContributionsResponse = components["schemas"]["ContributionPageResponse"];
-
-const useMyContributions = (
-  params: Partial<Parameters<typeof useInfiniteBaseQuery>[0]>,
-  options: Parameters<typeof useInfiniteBaseQuery<UseMyContributionsResponse>>[1] = {}
-) => {
-  const { isAuthenticated } = useAuth0();
-  return useInfiniteBaseQuery<UseMyContributionsResponse>(
-    {
-      ...params,
-      resourcePath: ME_PATH.CONTRIBUTIONS,
-      tags: ME_TAGS.contributions([params.queryParams]),
-    },
-    { ...options, enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled) }
-  );
-};
-
 export type UseMyContributedProjectsResponse = components["schemas"]["ProjectListResponse"];
 
 const useMyContributedProjects = ({
@@ -169,7 +152,6 @@ export default {
   useMyRewardsInfiniteList,
   useSyncGithubAccount,
   useGetMeRewardProjects,
-  useMyContributions,
   useMyContributedProjects,
   useMyContributedRepos,
   useGithubOrganizations,
