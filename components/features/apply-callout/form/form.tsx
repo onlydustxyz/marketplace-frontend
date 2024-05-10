@@ -27,8 +27,8 @@ const formSchema = z.object({
   telegram: z.object({
     contact: z
       .string()
-      .regex(/^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w*)$/, "v2.commons.form.errors.invalidUsername")
-      .optional(),
+      .min(1, "v2.commons.form.errors.invalidUsername")
+      .regex(/^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w*)$/, "v2.commons.form.errors.invalidUsername"),
     isPublic: z.boolean(),
   }),
 });
@@ -40,12 +40,10 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile }
 
   const formMethods = useForm<TApplyForm.UserProfileInfo>({
     defaultValues: formatToData(profile),
-    mode: "all",
     resolver: zodResolver(formSchema),
   });
 
-  const { handleSubmit, formState, reset, control } = formMethods;
-  const { isDirty, isValid } = formState;
+  const { handleSubmit, reset, control } = formMethods;
 
   const {
     mutate: updateUserProfileInfo,
@@ -56,8 +54,6 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile }
       onSuccess: onApply,
     },
   });
-
-  const submitDisabled = !isDirty || !isValid || userProfilInformationIsPending;
 
   const onSubmit = (formData: TApplyForm.UserProfileInfo) => {
     updateUserProfileInfo(
@@ -106,7 +102,13 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile }
             )}
           />
 
-          <Button disabled={submitDisabled} size={isMd ? "m" : "s"} width="full" backgroundColor="blue" type="submit">
+          <Button
+            disabled={userProfilInformationIsPending}
+            size={isMd ? "m" : "s"}
+            width="full"
+            backgroundColor="blue"
+            type="submit"
+          >
             <Icon remixName="ri-send-plane-2-line" size={20} />
             <Translate token={buttonConnected} />
           </Button>

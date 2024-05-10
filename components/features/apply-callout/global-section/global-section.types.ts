@@ -7,5 +7,6 @@ export namespace TApplyGlobalSection {
     buttonConnected: Key;
     onApply: () => void;
     alreadyApplied?: boolean;
+    isLoading?: boolean;
   }
 }

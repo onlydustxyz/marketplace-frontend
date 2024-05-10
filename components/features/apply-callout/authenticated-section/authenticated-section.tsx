@@ -19,6 +19,7 @@ export function ApplyAuthenticatedSection({
   onApply,
   profile,
   alreadyApplied,
+  isLoading,
 }: TApplyAuthenticatedSection.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
@@ -53,12 +54,16 @@ export function ApplyAuthenticatedSection({
   return (
     <Button
       onClick={handleRegister}
-      disabled={alreadyApplied}
+      disabled={alreadyApplied || isLoading}
       size={isMd ? "m" : "s"}
       width="full"
       backgroundColor="blue"
     >
-      <Icon remixName={alreadyApplied ? "ri-check-line" : "ri-send-plane-2-line"} size={20} />
+      {isLoading ? (
+        <Icon remixName={"ri-loader-4-line"} size={20} className={"animate-spin"} />
+      ) : (
+        <Icon remixName={alreadyApplied ? "ri-check-line" : "ri-send-plane-2-line"} size={20} />
+      )}
       <Translate token={buttonConnected} />
     </Button>
   );
