@@ -1,6 +1,5 @@
 import { ProjectContributorItem } from "src/api/Project/queries";
 import Card from "src/components/Card";
-import Contributor from "src/components/Contributor";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
 import { ShowMore } from "src/components/Table/ShowMore";
 import EyeLine from "src/icons/EyeLine";
@@ -10,6 +9,7 @@ import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 
 import { Button } from "components/ds/button/button";
+import { Contributor } from "components/features/contributor/contributor";
 import ActionMenu from "components/layout/action-menu/action-menu";
 import { Icon } from "components/layout/icon/icon";
 
@@ -54,7 +54,13 @@ export function ViewMobile<C extends ProjectContributorItem>({
               className="grid grid-cols-1 items-center justify-between gap-3 p-3 md:grid-cols-2 lg:grid-cols-2"
               key={login}
             >
-              <Contributor contributor={contributor} clickable />
+              <Contributor
+                githubUserId={contributor.githubUserId}
+                login={contributor.login}
+                avatarUrl={contributor.avatarUrl}
+                isRegistered={contributor.isRegistered}
+                clickable
+              />
               <div className="flex items-center justify-end gap-3">
                 {!hasNothing ? (
                   <div className="flex flex-1 items-center gap-3 md:justify-end lg:justify-end">

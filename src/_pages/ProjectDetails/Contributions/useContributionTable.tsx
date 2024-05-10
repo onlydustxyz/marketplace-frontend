@@ -3,7 +3,6 @@ import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { HeaderCell, TableColumns } from "src/components/Contribution/ContributionTable";
-import Contributor from "src/components/Contributor";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
@@ -15,6 +14,7 @@ import User3Line from "src/icons/User3Line";
 import { Contribution as ContributionT, GithubContributionType } from "src/types";
 
 import { Link } from "components/ds/link/link";
+import { Contributor } from "components/features/contributor/contributor";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -82,7 +82,13 @@ export function useContributionTable() {
           <Link href={repo.htmlUrl}>{repo.name}</Link>
         </Cell>
         <Cell height={CellHeight.Compact}>
-          <Contributor contributor={contribution.contributor} clickable />
+          <Contributor
+            githubUserId={contribution.contributor.githubUserId}
+            login={contribution.contributor.login}
+            avatarUrl={contribution.contributor.avatarUrl}
+            isRegistered={contribution.contributor.isRegistered}
+            clickable
+          />
         </Cell>
         <Cell height={CellHeight.Compact}>
           <Contribution contribution={contribution} />

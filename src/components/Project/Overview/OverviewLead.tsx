@@ -2,9 +2,10 @@ import { useMemo } from "react";
 
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import MeApi from "src/api/me";
-import Contributor from "src/components/Contributor";
 import { Flex } from "src/components/New/Layout/Flex";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
+
+import { Contributor } from "components/features/contributor/contributor";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -37,12 +38,11 @@ export const ProjectOverviewLead = ({ projectId, projectLeads, projectInvited }:
         {sortedByLogin?.map(lead => (
           <Contributor
             key={lead.id}
-            contributor={{
-              login: lead.login || "",
-              avatarUrl: lead.avatarUrl,
-              githubUserId: lead.githubUserId,
-            }}
-            clickable={true}
+            githubUserId={lead.githubUserId}
+            login={lead.login}
+            avatarUrl={lead.avatarUrl}
+            isRegistered={false}
+            clickable
           />
         ))}
 
@@ -50,12 +50,11 @@ export const ProjectOverviewLead = ({ projectId, projectLeads, projectInvited }:
           (projectInvited || []).map(lead => (
             <Flex key={lead.login} className="gap-1">
               <Contributor
-                contributor={{
-                  login: lead.login || "",
-                  avatarUrl: lead.avatarUrl,
-                  githubUserId: lead.githubUserId,
-                }}
-                clickable={true}
+                githubUserId={lead.githubUserId}
+                login={lead.login}
+                avatarUrl={lead.avatarUrl}
+                isRegistered={false}
+                clickable
               />
               <span className="text-sm text-spaceBlue-200">({T("common.pendingInvite")})</span>
             </Flex>

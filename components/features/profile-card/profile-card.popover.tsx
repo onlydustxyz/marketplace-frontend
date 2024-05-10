@@ -25,6 +25,7 @@ export function ProfileCardPopover({ children, githubId, isOpen, ...PopOverProps
       content={renderContent}
       isOpen={isOpen}
       classNames={{ content: "p-0" }}
+      triggerScaleOnOpen={false}
       {...PopOverProps}
     >
       {children}

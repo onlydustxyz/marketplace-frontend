@@ -1,4 +1,4 @@
-import Contributor from "src/components/Contributor";
+import { Contributor } from "components/features/contributor/contributor";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -26,12 +26,10 @@ export function CommitsTooltip({ author, userCommits = 0, commitsCount = 0, cont
         <div className="inline-flex">
           <Contributor
             className="ml-1 flex-row-reverse text-sm"
-            key={author?.githubAuthorId}
-            contributor={{
-              login: author?.authorLogin ?? "",
-              avatarUrl: author?.authorAvatarUrl ?? "",
-              githubUserId: author?.githubAuthorId ?? 0,
-            }}
+            githubUserId={author?.githubAuthorId ?? 0}
+            login={author?.authorLogin}
+            avatarUrl={author?.authorAvatarUrl}
+            isRegistered={false}
             clickable
           />
         </div>

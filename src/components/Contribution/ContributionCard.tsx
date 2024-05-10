@@ -7,12 +7,12 @@ import { ContributionStatus, Contribution as ContributionT } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
+import { Contributor } from "components/features/contributor/contributor";
+
 import { NEXT_ROUTER } from "constants/router";
 
 import { useMatchPath } from "hooks/router/useMatchPath";
 import { useIntl } from "hooks/translate/use-translate";
-
-import Contributor from "../Contributor";
 
 export function ContributionCard({ contribution, className }: { contribution: ContributionT; className?: string }) {
   const { T } = useIntl();
@@ -33,7 +33,12 @@ export function ContributionCard({ contribution, className }: { contribution: Co
         <ContributionProjectRepo project={contribution.project} repo={contribution.repo} />
       ) : (
         <div className="inline-flex">
-          <Contributor contributor={contribution.contributor} clickable />
+          <Contributor
+            githubUserId={contribution.contributor.githubUserId}
+            login={contribution.contributor.login}
+            avatarUrl={contribution.contributor.avatarUrl}
+            isRegistered={contribution.contributor.isRegistered}
+          />
         </div>
       )}
 
