@@ -16,5 +16,6 @@ export namespace TApplyCallout {
     buttonConnected: Key;
     onApply: () => void;
     alreadyApplied?: boolean;
+    isLoading?: boolean;
   }
 }

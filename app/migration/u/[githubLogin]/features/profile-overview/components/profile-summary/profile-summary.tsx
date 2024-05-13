@@ -1,22 +1,23 @@
-import { format } from "date-fns";
-
 import { TProfileSummary } from "app/migration/u/[githubLogin]/features/profile-overview/components/profile-summary/profile-summary.types";
 
-import { Avatar } from "components/ds/avatar/avatar";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
+import { ProfileDate } from "./profile-date/profile-date";
+
 export function ProfileSummary(props: TProfileSummary.Props) {
   const { bio, socials, githubRegistrationDate, onlydustRegistrationDate } = props;
+
   return (
-    <div className="flex w-full flex-col gap-4 p-4 lg:p-6">
+    <div className="flex w-full flex-col gap-3 py-0 md:gap-6 md:py-5">
       {bio ? (
         <Typography variant="body-m" className="text-spaceBlue-100">
           {bio}
         </Typography>
       ) : null}
-      <div className="flex flex-wrap-reverse justify-between gap-4">
+
+      <div className="flex flex-col-reverse flex-wrap-reverse justify-between gap-5 md:flex-row md:gap-3">
         <div className="flex items-center gap-2">
           {socials.map(social => (
             <BaseLink
@@ -28,16 +29,11 @@ export function ProfileSummary(props: TProfileSummary.Props) {
             </BaseLink>
           ))}
         </div>
-        <div className="flex flex-nowrap gap-2">
-          <div className="flex items-center gap-1">
-            <Icon remixName="ri-github-fill" size={18} />
-            <Typography variant="body-m">{format(new Date(githubRegistrationDate), "MMMM yyyy")}</Typography>
-          </div>
-          <div className="flex items-center gap-1">
-            <Avatar size="s" isBordered={false} />
-            <Typography variant="body-m">{format(new Date(onlydustRegistrationDate), "MMMM yyyy")}</Typography>
-          </div>
-        </div>
+
+        <ProfileDate
+          githubRegistrationDate={githubRegistrationDate}
+          onlydustRegistrationDate={onlydustRegistrationDate}
+        />
       </div>
     </div>
   );

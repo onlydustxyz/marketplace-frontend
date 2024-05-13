@@ -25,8 +25,7 @@ import en_hackathons from "./en/pages/hackathons.json";
 import en_project_details_header from "./en/pages/project-details/project-header.json";
 import en_project_overview from "./en/pages/project-overview.json";
 import en_projects from "./en/pages/projects.json";
-import en_page_public_profile_activity from "./en/pages/public-profile/activity.json";
-import en_page_public_profile_header from "./en/pages/public-profile/header.json";
+import en_public_profile from "./en/pages/public-profile.json";
 import en_settings_billing from "./en/pages/settings-billing.json";
 import en_settings_billing_coworkers from "./en/pages/settings-billing/settings-billing-coworkers.json";
 import en_settings_billing_header from "./en/pages/settings-billing/settings-billing-header.json";
@@ -100,10 +99,7 @@ export const en = {
         billingInviteTeamMember: en_billing_invite_team_member,
         sponsorProject: en_stack_sponsor_project,
       },
-      publicProfile: {
-        activity: en_page_public_profile_activity,
-        header: en_page_public_profile_header,
-      },
+      publicProfile: en_public_profile,
       sponsor: en_page_sponsor,
     },
   },

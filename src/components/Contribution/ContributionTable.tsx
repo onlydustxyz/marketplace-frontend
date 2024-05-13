@@ -5,7 +5,7 @@ import { ContributionsFilterRef } from "src/_pages/Contributions/Filter";
 import { ProjectContributionsFilterRef } from "src/_pages/ProjectDetails/Contributions/Filter";
 import SortingArrow from "src/_pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import ProjectApi from "src/api/Project";
-import MeApi from "src/api/me";
+import UsersApi from "src/api/Users";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import Table from "src/components/Table";
 import HeaderCell from "src/components/Table/HeaderCell";
@@ -68,7 +68,7 @@ type Props = {
   id: string;
   onSort: (sort: TableSort) => void;
   query: ReturnType<
-    typeof MeApi.queries.useMyContributions | typeof ProjectApi.queries.useProjectContributionsInfiniteList
+    typeof UsersApi.queries.useUserContributions | typeof ProjectApi.queries.useProjectContributionsInfiniteList
   >;
   sort: TableSort;
   title: string;
