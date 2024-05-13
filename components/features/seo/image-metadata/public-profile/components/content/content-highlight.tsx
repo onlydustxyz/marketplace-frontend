@@ -1,7 +1,9 @@
+import { ReactNode } from "react";
+
 interface Props {
   name: string;
   image: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
 }
 export function ContentHighlight({ name, image, label, icon }: Props) {
