@@ -107,7 +107,6 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
 
   private async fetch(params?: Partial<FetchParams>) {
     const endpointUrl = this.getEndpointUrl(this.url, this.params);
-    console.log("endpointUrl", endpointUrl);
     const headers = await this.getHeaders();
     return fetch(endpointUrl, {
       ...params,
