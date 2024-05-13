@@ -1,4 +1,5 @@
 import { hackathonsApiClient } from "api-client/resources/hackathons";
+import { usersApiClient } from "api-client/resources/users";
 import { subWeeks } from "date-fns";
 
 import { createEndDate } from "components/features/graphs/activity-graph/utils/createEndDate";
@@ -12,19 +13,19 @@ import { GenericImageMetadata } from "components/features/seo/image-metadata/gen
 import { HackathonImageMetadata } from "components/features/seo/image-metadata/hackathons/image-metadata";
 import { PublicProfileImageMetadata } from "components/features/seo/image-metadata/public-profile/image-metadata";
 
-export default async function Image(props: { params: { slug: string } }) {
+export default async function Image(props: { params: { githubLogin: string } }) {
   function mockWeekDate(number: number) {
     return subWeeks(new Date(), number);
   }
 
   try {
-    // const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug).request();
+    const user = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(props.params.githubLogin).request();
     return Generator({
       children: (
         <PublicProfileImageMetadata
-          name="title"
-          location="Worldwide"
-          dates="dates"
+          login={user.login}
+          image={user.avatarUrl}
+          title="Onlydust legend"
           data={{
             [getWeekId(mockWeekDate(0))]: { level: 4, reward: true },
             [getWeekId(mockWeekDate(4))]: { level: 3, reward: true },
@@ -45,7 +46,8 @@ export default async function Image(props: { params: { slug: string } }) {
         />
       ),
     });
-  } catch {
+  } catch (err) {
+    console.log("ERROR", props.params.githubLogin, err);
     return Generator({
       children: <GenericImageMetadata />,
     });

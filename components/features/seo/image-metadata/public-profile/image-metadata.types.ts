@@ -2,9 +2,9 @@ import { TActivityGraph } from "components/features/graphs/activity-graph/activi
 
 export namespace THackathonImageMetadataProps {
   export interface Props {
-    name: string;
-    dates: string;
-    location: string;
+    title: string;
+    login: string;
+    image: string;
     data: {
       [key: string]: {
         level: TActivityGraph.level;
