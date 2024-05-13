@@ -1,6 +1,6 @@
 import { subWeeks } from "date-fns";
 
-import { ACTIVITY_WEEK_NUMBER } from "components/features/graphs/activity-graph/use-activity-graph";
+import { ACTIVITY_WEEK_NUMBER } from "components/features/graphs/activity-graph/activity-graph.types";
 
 export function createStartDate(endDate?: Date) {
   if (endDate) {

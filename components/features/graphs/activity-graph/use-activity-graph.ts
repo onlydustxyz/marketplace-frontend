@@ -9,8 +9,6 @@ import { createStartDate } from "components/features/graphs/activity-graph/utils
 import { createWeeks } from "components/features/graphs/activity-graph/utils/createWeeks";
 import { splitWeeksIntoSubArray } from "components/features/graphs/activity-graph/utils/splitWeeks";
 
-export const ACTIVITY_WEEK_NUMBER = 54;
-export const ACTIVITY_NUMBER_OF_ROW = 8;
 export const useActivityGraph = ({ endDate }: TActivityGraph.UseActivityGraph) => {
   const [start, setStart] = useState(createStartDate());
   const [end, setEnd] = useState(createEndDate());

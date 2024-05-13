@@ -3,7 +3,7 @@ import { OGActivityGraph } from "components/features/seo/image-metadata/public-p
 import { ImageMetadataContent } from "../commons/content/content";
 import { THackathonImageMetadataProps } from "./image-metadata.types";
 
-export function PublicProfileImageMetadata({ name, dates, location }: THackathonImageMetadataProps.Props) {
+export function PublicProfileImageMetadata({ name, dates, location, data }: THackathonImageMetadataProps.Props) {
   const backgroundUrl = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/hackathon-opengraph.jpg`;
   return (
     <div
@@ -46,7 +46,7 @@ export function PublicProfileImageMetadata({ name, dates, location }: THackathon
           paddingLeft: 72,
         }}
       >
-        <OGActivityGraph data={{}} />
+        <OGActivityGraph data={data} />
       </div>
     </div>
   );

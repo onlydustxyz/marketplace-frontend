@@ -1,5 +1,4 @@
-import { TActivityGraph } from "components/features/graphs/activity-graph/activity-graph.types";
-import { ACTIVITY_NUMBER_OF_ROW } from "components/features/graphs/activity-graph/use-activity-graph";
+import { ACTIVITY_NUMBER_OF_ROW, TActivityGraph } from "components/features/graphs/activity-graph/activity-graph.types";
 
 export function splitWeeksIntoSubArray({ weeks }: { weeks: TActivityGraph.Week[] }): TActivityGraph.Week[][] {
   return weeks.reduce((acc, week, index) => {

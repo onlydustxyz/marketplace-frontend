@@ -3,8 +3,18 @@ import { createEndDate } from "components/features/graphs/activity-graph/utils/c
 import { createStartDate } from "components/features/graphs/activity-graph/utils/createStartDate";
 import { createWeeks } from "components/features/graphs/activity-graph/utils/createWeeks";
 import { splitWeeksIntoSubArray } from "components/features/graphs/activity-graph/utils/splitWeeks";
+import { RewardIcon } from "components/features/seo/image-metadata/public-profile/components/reward-icon";
 
-export function OGActivityGraph({ data }: { data: { [key: string]: TActivityGraph.WeekData<unknown> } }) {
+export function OGActivityGraph({
+  data,
+}: {
+  data: {
+    [key: string]: {
+      level: TActivityGraph.level;
+      reward?: boolean;
+    };
+  };
+}) {
   const dates = {
     start: createStartDate(),
     end: createEndDate(),
@@ -12,20 +22,42 @@ export function OGActivityGraph({ data }: { data: { [key: string]: TActivityGrap
   const weeks = createWeeks({ ...dates });
   const splitWeeks = splitWeeksIntoSubArray({ weeks });
 
-  console.log("dtes", dates);
+  console.log("dtes", splitWeeks);
+
+  const levelColors = {
+    1: "#171D44",
+    2: "#460066",
+    3: "#680099",
+    4: "#AE00FF",
+  };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "start", gap: "6px" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+        gap: "4px",
+      }}
+    >
       {splitWeeks.map((weeks, index) => (
         <div
-          style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "start", gap: "6px" }}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            gap: "4px",
+          }}
           key={`${index}`}
         >
           {weeks.map(week => {
             const _data = data?.[week.id];
+            console.log("data", _data?.level);
             return (
               <div
-                key={week.id.toString()}
+                key={week.id}
                 // convert from tailwind
                 style={{
                   display: "flex",
@@ -37,21 +69,11 @@ export function OGActivityGraph({ data }: { data: { [key: string]: TActivityGrap
                   borderRadius: 2,
                   borderWidth: 1,
                   borderStyle: "solid",
-                  borderColor: "#1E1E1E",
-                  backgroundColor:
-                    _data?.level === 1
-                      ? "#1E1E1E"
-                      : _data?.level === 2
-                      ? "#4B4B4B"
-                      : _data?.level === 3
-                      ? "#6D6D6D"
-                      : _data?.level === 4
-                      ? "#A1A1A1"
-                      : undefined,
+                  borderColor: "#F3F0EE14",
+                  backgroundColor: levelColors[_data?.level || 1],
                 }}
               >
-                coucou
-                {/*{data?.icon ? <Icon {...data.icon} className="h-4 w-4" /> : null}*/}
+                {_data?.reward ? <RewardIcon /> : null}
               </div>
             );
           })}

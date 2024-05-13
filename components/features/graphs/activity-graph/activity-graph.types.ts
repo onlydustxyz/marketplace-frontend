@@ -33,3 +33,6 @@ export namespace TActivityGraph {
     endDate?: Date;
   }
 }
+
+export const ACTIVITY_WEEK_NUMBER = 54;
+export const ACTIVITY_NUMBER_OF_ROW = 8;
