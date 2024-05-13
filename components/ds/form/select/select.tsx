@@ -9,7 +9,7 @@ export function Select({ selectItemProps, classNames, ...props }: TSelect.Props)
     <NextSelect
       classNames={{
         trigger: cn(
-          "min-h-unit-8 h-auto py-0 px-2",
+          "px-2",
           "border border-card-border-light rounded-large",
           "bg-card-background-base hover:bg-card-background-base shadow-light",
           "data-[open=true]:border-spacePurple-400 data-[open=true]:bg-spacePurple-900 data-[open=true]:hover:bg-spacePurple-900 data-[open=true]:text-spacePurple-400 data-[open=true]:outline-double data-[open=true]:outline-1 data-[open=true]:outline-spacePurple-400 data-[open=true]:outline-offset-0"
