@@ -13,12 +13,16 @@ export default async function Image(props: { params: { githubLogin: string } }) 
 
   try {
     const user = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(props.params.githubLogin).request();
+    const githubUserId = user?.githubUserId || 0;
+
+    // const stats = await usersApiClient.fetch.getUserPublicStats(githubUserId).request();
+
     const languages = await usersApiClient.fetch
-      .getUserPublicLanguages(user?.githubUserId || 0, { pageSize: 1, pageIndex: 0 })
+      .getUserPublicLanguages(githubUserId, { pageSize: 1, pageIndex: 0 })
       .request();
 
     const ecosystems = await usersApiClient.fetch
-      .getUserPublicEcosystems(user?.githubUserId || 0, { pageSize: 1, pageIndex: 0 })
+      .getUserPublicEcosystems(githubUserId, { pageSize: 1, pageIndex: 0 })
       .request();
 
     const ecosystem = ecosystems?.ecosystems?.[0];

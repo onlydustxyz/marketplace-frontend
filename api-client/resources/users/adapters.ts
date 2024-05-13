@@ -6,6 +6,7 @@ enum Paths {
   public_profile_by_login = "public_profile_by_login",
   public_ecosystems = "public_ecosystems",
   public_languages = "public_languages",
+  public_stats = "public_stats",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
@@ -24,6 +25,10 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   },
   public_languages: {
     url: "users/:githubId/languages",
+    method: "GET",
+  },
+  public_stats: {
+    url: "users/:githubId/stats",
     method: "GET",
   },
 };
