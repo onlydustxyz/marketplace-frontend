@@ -1,15 +1,15 @@
-import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
+import { PublicProfileChannelsUnion } from "api-client/resources/users/types";
 
 export namespace TProfileSummary {
-  interface Social {
-    name: string;
-    iconName: RemixIconsName;
-    url: string;
+  interface Contact {
+    channel: PublicProfileChannelsUnion;
+    contact: string;
+    visibility: "public" | "private";
   }
   export interface Props {
     bio?: string;
-    socials: Social[];
-    githubRegistrationDate: string;
-    onlydustRegistrationDate: string;
+    contacts?: Contact[];
+    signedUpOnGithubAt?: string;
+    signedUpAt?: string;
   }
 }

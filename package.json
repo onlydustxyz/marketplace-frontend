@@ -103,7 +103,7 @@
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/iban": "^0.0.32",
     "@types/node": "^20.11.20",
-    "@types/react": "^18.0.24",
+    "@types/react": "^18.2.8",
     "@types/react-currency-format": "^1.0.0",
     "@types/react-dom": "^18.0.8",
     "@types/react-lottie": "^1.2.6",
