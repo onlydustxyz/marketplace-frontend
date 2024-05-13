@@ -1,5 +1,4 @@
 import { FetchAdapaterConstructor } from "api-client/adapter/fetch/fetch-adapter.types";
-import { apiVersions } from "api-client/config/api-versions";
 import tags from "api-client/resources/users/tags";
 
 enum Paths {
@@ -21,7 +20,6 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   public_profile_by_id: {
     url: "users/:githubId",
     method: "GET",
-    version: apiVersions.v2,
   },
 };
 
