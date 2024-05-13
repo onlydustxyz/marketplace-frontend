@@ -1,16 +1,9 @@
-import { hackathonsApiClient } from "api-client/resources/hackathons";
 import { usersApiClient } from "api-client/resources/users";
 import { subWeeks } from "date-fns";
 
-import { createEndDate } from "components/features/graphs/activity-graph/utils/createEndDate";
-import { createStartDate } from "components/features/graphs/activity-graph/utils/createStartDate";
-import { createWeeks } from "components/features/graphs/activity-graph/utils/createWeeks";
 import { getWeekId } from "components/features/graphs/activity-graph/utils/getWeekId";
-import { splitWeeksIntoSubArray } from "components/features/graphs/activity-graph/utils/splitWeeks";
-import { hackathonShortenDate } from "components/features/hackathons/display-date/display-date.utils";
 import { Generator } from "components/features/seo/image-metadata/commons/generator/generator";
 import { GenericImageMetadata } from "components/features/seo/image-metadata/generic/image-metadata";
-import { HackathonImageMetadata } from "components/features/seo/image-metadata/hackathons/image-metadata";
 import { PublicProfileImageMetadata } from "components/features/seo/image-metadata/public-profile/image-metadata";
 
 export default async function Image(props: { params: { githubLogin: string } }) {
@@ -55,7 +48,6 @@ export default async function Image(props: { params: { githubLogin: string } }) 
       ),
     });
   } catch (err) {
-    console.log("ERROR", props.params.githubLogin, err);
     return Generator({
       children: <GenericImageMetadata />,
     });
