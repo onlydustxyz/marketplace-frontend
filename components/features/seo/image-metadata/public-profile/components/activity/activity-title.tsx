@@ -1,6 +1,6 @@
 export function ActivityTitle() {
   return (
-    <p
+    <h2
       style={{
         fontFamily: "Belwe Bd BT",
         fontWeight: 400,
@@ -14,6 +14,6 @@ export function ActivityTitle() {
       }}
     >
       Recent activity
-    </p>
+    </h2>
   );
 }

@@ -1,6 +1,6 @@
 import { TActivityGraph } from "components/features/graphs/activity-graph/activity-graph.types";
 
-export namespace THackathonImageMetadataProps {
+export namespace TPublicProfileImageMetadata {
   export interface Props {
     title: string;
     login: string;

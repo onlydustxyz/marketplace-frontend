@@ -2,7 +2,7 @@ import { OGActivityGraph } from "components/features/seo/image-metadata/public-p
 import { OgContent } from "components/features/seo/image-metadata/public-profile/components/content/content";
 import { Wrapper } from "components/features/seo/image-metadata/public-profile/components/wrapper";
 
-import { THackathonImageMetadataProps } from "./image-metadata.types";
+import { TPublicProfileImageMetadata } from "./image-metadata.types";
 
 export function PublicProfileImageMetadata({
   title,
@@ -13,7 +13,7 @@ export function PublicProfileImageMetadata({
   rewardsCount,
   contributionCount,
   topEcosystem,
-}: THackathonImageMetadataProps.Props) {
+}: TPublicProfileImageMetadata.Props) {
   return (
     <Wrapper>
       <OgContent image={image} login={login} title={title} topLanguages={topLanguages} topEcosystem={topEcosystem} />
