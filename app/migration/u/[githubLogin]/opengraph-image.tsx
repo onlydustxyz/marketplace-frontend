@@ -33,8 +33,8 @@ export default async function Image(props: { params: { githubLogin: string } }) 
         <PublicProfileImageMetadata
           login={user.login}
           image={user.avatarUrl}
-          contributionCount={145}
-          rewardsCount={145}
+          contributionCount={user.statsSummary?.contributionCount || 0}
+          rewardsCount={user.statsSummary?.rewardCount || 0}
           title="Onlydust legend"
           {...(ecosystem
             ? {
