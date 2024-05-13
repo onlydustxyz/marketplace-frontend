@@ -19,22 +19,23 @@ export function ApplyGlobalSection({
   buttonNotConnected,
   onApply,
   alreadyApplied,
+  isLoading,
 }: TApplyGlobalSection.Props) {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const { data: profile, isLoading } = MeApi.queries.useGetMyProfileInfo({});
+  const { data: profile, isLoading: profileIsLoading } = MeApi.queries.useGetMyProfileInfo({});
 
   function handleLoginClick() {
     handleLoginWithRedirect(loginWithRedirect);
   }
 
-  if (!profile || isLoading) {
+  if (!profile && profileIsLoading) {
     return null;
   }
 
-  if (isAuthenticated) {
+  if (profile && isAuthenticated) {
     return (
       <ApplyAuthenticatedSection
         formDescription={formDescription}
@@ -42,6 +43,7 @@ export function ApplyGlobalSection({
         onApply={onApply}
         profile={profile}
         alreadyApplied={alreadyApplied}
+        isLoading={isLoading}
       />
     );
   }

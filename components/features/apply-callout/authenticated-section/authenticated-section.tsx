@@ -19,6 +19,7 @@ export function ApplyAuthenticatedSection({
   onApply,
   profile,
   alreadyApplied,
+  isLoading,
 }: TApplyAuthenticatedSection.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
@@ -26,11 +27,16 @@ export function ApplyAuthenticatedSection({
 
   const [showForm, setShowForm] = useState(false);
 
-  function handleApplyClick() {
-    if (!contactInfoProvided) {
-      setShowForm(true);
-    } else {
+  function handleSubmit() {
+    setShowForm(false);
+    onApply();
+  }
+
+  function handleRegister() {
+    if (contactInfoProvided) {
       onApply();
+    } else {
+      setShowForm(true);
     }
   }
 
@@ -39,22 +45,25 @@ export function ApplyAuthenticatedSection({
       <ApplyForm
         formDescription={formDescription}
         buttonConnected={buttonConnected}
-        onApply={handleApplyClick}
+        onApply={handleSubmit}
         profile={profile}
-        setShowForm={setShowForm}
       />
     );
   }
 
   return (
     <Button
-      onClick={handleApplyClick}
-      disabled={alreadyApplied}
+      onClick={handleRegister}
+      disabled={alreadyApplied || isLoading}
       size={isMd ? "m" : "s"}
       width="full"
       backgroundColor="blue"
     >
-      <Icon remixName={alreadyApplied ? "ri-check-line" : "ri-send-plane-2-line"} size={20} />
+      {isLoading ? (
+        <Icon remixName={"ri-loader-4-line"} size={20} className={"animate-spin"} />
+      ) : (
+        <Icon remixName={alreadyApplied ? "ri-check-line" : "ri-send-plane-2-line"} size={20} />
+      )}
       <Translate token={buttonConnected} />
     </Button>
   );

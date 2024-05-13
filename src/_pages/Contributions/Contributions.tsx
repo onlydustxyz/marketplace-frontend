@@ -3,7 +3,7 @@
 import { ComponentProps, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
 
-import MeApi from "src/api/me";
+import UsersApi from "src/api/Users";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
@@ -17,6 +17,7 @@ import StackLine from "src/icons/StackLine";
 import { ContributionStatus, OrderBy } from "src/types";
 
 import { useIntl } from "hooks/translate/use-translate";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { ContributionsFilter, ContributionsFilterRef, FilterQueryParams } from "./Filter";
 import { useContributionTable } from "./useContributionTable";
@@ -38,6 +39,7 @@ const initialSort: Record<ContributionStatus, TableSort> = {
 
 export default function Contributions() {
   const { T } = useIntl();
+  const { githubUserId } = useCurrentUser();
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort-v02", JSON.stringify(initialSort));
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
   const { isActiveTab, updateActiveTab } = useContributionTabs();
@@ -126,16 +128,22 @@ export default function Contributions() {
       },
       headerCells,
       bodyRow,
-      query: MeApi.queries.useMyContributions(
-        {
+      query: UsersApi.queries.useUserContributions({
+        params: {
+          login: githubUserId?.toString() ?? "",
           queryParams: {
             statuses: ContributionStatus.InProgress,
             ...sort.IN_PROGRESS,
             ...filterQueryParams,
           },
         },
-        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) && Boolean(filterQueryParams) }
-      ),
+        options: {
+          enabled:
+            Boolean(githubUserId) &&
+            (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) &&
+            Boolean(filterQueryParams),
+        },
+      }),
       filterRef,
     },
     {
@@ -156,16 +164,22 @@ export default function Contributions() {
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
       headerCells,
       bodyRow,
-      query: MeApi.queries.useMyContributions(
-        {
+      query: UsersApi.queries.useUserContributions({
+        params: {
+          login: githubUserId?.toString() ?? "",
           queryParams: {
             statuses: ContributionStatus.Completed,
             ...sort.COMPLETED,
             ...filterQueryParams,
           },
         },
-        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) && Boolean(filterQueryParams) }
-      ),
+        options: {
+          enabled:
+            Boolean(githubUserId) &&
+            (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) &&
+            Boolean(filterQueryParams),
+        },
+      }),
       filterRef,
     },
     {
@@ -186,16 +200,22 @@ export default function Contributions() {
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
       headerCells,
       bodyRow,
-      query: MeApi.queries.useMyContributions(
-        {
+      query: UsersApi.queries.useUserContributions({
+        params: {
+          login: githubUserId?.toString() ?? "",
           queryParams: {
             statuses: ContributionStatus.Cancelled,
             ...sort.CANCELLED,
             ...filterQueryParams,
           },
         },
-        { enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) && Boolean(filterQueryParams) }
-      ),
+        options: {
+          enabled:
+            Boolean(githubUserId) &&
+            (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) &&
+            Boolean(filterQueryParams),
+        },
+      }),
       filterRef,
     },
   ];

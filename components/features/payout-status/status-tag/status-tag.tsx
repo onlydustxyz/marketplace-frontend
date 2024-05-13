@@ -1,6 +1,8 @@
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
+import { useStackRequestPayments } from "src/App/Stacks/Stacks";
+import { usePosthog } from "src/hooks/usePosthog";
 import { useCloseStack } from "src/libs/react-stack";
 import { PaymentStatus } from "src/types";
 import { compareDateToNow } from "src/utils/date";
@@ -19,9 +21,20 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 
-export function StatusTag({ status, projectId, billingProfileId, date, className }: TStatusTag.Props) {
+export function StatusTag({
+  status,
+  projectId,
+  billingProfileId,
+  date,
+  className,
+  rewardId,
+  shouldOpenRequestPayment,
+  shouldRedirect = false,
+}: TStatusTag.Props) {
+  const { capture } = usePosthog();
   const router = useRouter();
   const closeRewardPanel = useCloseStack();
+  const [openRequestPayment] = useStackRequestPayments();
   const dateRelativeToNow = date ? compareDateToNow(date) : undefined;
   const { icon, labelToken, tooltipToken, tooltipParams, borderColor, iconClassName } = getStatusConfig({
     status,
@@ -35,7 +48,8 @@ export function StatusTag({ status, projectId, billingProfileId, date, className
     () =>
       profiles.map(profile => ({
         name: profile.data.name,
-        icon: profile.data.enabled ? profile.icon : { remixName: "ri-forbid-2-line" },
+        icon: profile?.overrides?.icon,
+        iconColor: profile?.overrides?.iconColor,
         id: profile.data.id,
         enabled: profile.data.enabled,
         hasPendingInvitation: profile.data.pendingInvitationResponse || false,
@@ -43,36 +57,68 @@ export function StatusTag({ status, projectId, billingProfileId, date, className
     [profiles]
   );
 
+  function handleOpenRequestPayment() {
+    openRequestPayment({ billingProfileId, rewardId });
+    capture("payments_request_started", { event: "status-click" });
+  }
+
   const additionalArgs = useMemo(() => {
-    if (!billingProfileId) return {};
-
-    if (status === PaymentStatus.PAYOUT_INFO_MISSING) {
+    if (status === PaymentStatus.PENDING_REQUEST && shouldOpenRequestPayment) {
       return {
-        onClick: () => {
-          closeRewardPanel();
-          router.push(NEXT_ROUTER.settings.billing.paymentMethods(billingProfileId));
+        onClick: (e: Event) => {
+          e.stopPropagation();
+          e.preventDefault();
+          handleOpenRequestPayment();
         },
       };
     }
-    if (status === PaymentStatus.PENDING_VERIFICATION) {
-      return {
-        onClick: () => {
-          closeRewardPanel();
-          router.push(NEXT_ROUTER.settings.billing.generalInformation(billingProfileId));
-        },
-      };
+    if (billingProfileId && shouldRedirect) {
+      switch (status) {
+        case PaymentStatus.PAYOUT_INFO_MISSING:
+          return {
+            onClick: (e: Event) => {
+              e.preventDefault();
+              e.stopPropagation();
+              closeRewardPanel();
+              router.push(NEXT_ROUTER.settings.billing.paymentMethods(billingProfileId));
+            },
+          };
+        case PaymentStatus.PENDING_VERIFICATION:
+          return {
+            onClick: (e: Event) => {
+              e.preventDefault();
+              e.stopPropagation();
+              closeRewardPanel();
+              router.push(NEXT_ROUTER.settings.billing.generalInformation(billingProfileId));
+            },
+          };
+        case PaymentStatus.PENDING_BILLING_PROFILE:
+        case PaymentStatus.INDIVIDUAL_LIMIT_REACHED:
+          return {
+            onClick: (e: Event) => {
+              e.preventDefault();
+              e.stopPropagation();
+              closeRewardPanel();
+              router.push(NEXT_ROUTER.settings.payoutPreferences);
+            },
+          };
+      }
     }
-    if (status === PaymentStatus.PENDING_BILLING_PROFILE) {
-      return {
-        onClick: () => {
-          closeRewardPanel();
-          router.push(NEXT_ROUTER.settings.payoutPreferences);
-        },
-      };
-    }
-
     return {};
   }, [projectId, status]);
+
+  const renderIcon = useMemo(() => {
+    if (
+      (status === PaymentStatus.PAYOUT_INFO_MISSING ||
+        status === PaymentStatus.PENDING_VERIFICATION ||
+        status === PaymentStatus.PENDING_BILLING_PROFILE ||
+        status === PaymentStatus.INDIVIDUAL_LIMIT_REACHED) &&
+      shouldRedirect
+    ) {
+      return <Icon remixName="ri-arrow-right-s-line" size={16} />;
+    }
+    return null;
+  }, [status]);
 
   if (status === PaymentStatus.PENDING_BILLING_PROFILE) {
     return (
@@ -94,9 +140,7 @@ export function StatusTag({ status, projectId, billingProfileId, date, className
       <Typography variant="body-s">
         <Translate token={labelToken} />
       </Typography>
-      {status === PaymentStatus.PAYOUT_INFO_MISSING || status === PaymentStatus.PENDING_VERIFICATION ? (
-        <Icon remixName="ri-arrow-right-s-line" size={16} />
-      ) : null}
+      {renderIcon}
     </Tag>
   );
 }

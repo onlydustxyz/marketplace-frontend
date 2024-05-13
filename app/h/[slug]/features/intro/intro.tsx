@@ -1,6 +1,6 @@
-import { Typography } from "components/layout/typography/typography";
+import { TIntro } from "app/h/[slug]/features/intro/intro.types";
 
-import { TIntro } from "./intro.types";
+import { Typography } from "components/layout/typography/typography";
 
 export function Intro({ title, subtitle }: TIntro.Props) {
   return (

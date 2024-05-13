@@ -73,6 +73,8 @@ export default function MobileUserRewardList({
                       status={reward?.status}
                       dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
                       projectId={reward?.projectId}
+                      billingProfileId={reward?.billingProfileId}
+                      shouldRedirect={true}
                     />
                   }
                   rewardedUser={reward?.rewardedUser}

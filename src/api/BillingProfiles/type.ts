@@ -32,4 +32,6 @@ export namespace BillingProfilesTypes {
     label: Key;
     icon: TIcon.Props;
   }
+
+  export type iconColor = "red" | "orange" | "currentColor";
 }

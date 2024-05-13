@@ -4,6 +4,10 @@ import { BillingProfileConstant } from "src/api/BillingProfiles/constant";
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import MeBillingProfilesApi from "src/api/me/billing";
 
+import { getSpecialIconColor } from "hooks/billings-profiles/utils/get-special-icon-color";
+import { getSpecialIconName } from "hooks/billings-profiles/utils/get-special-icon-name";
+import { getSpecialTagColor } from "hooks/billings-profiles/utils/get-special-tag-color";
+
 import { TUseBillingProfiles } from "./use-billing-profiles.types";
 
 export const useBillingProfiles = (): TUseBillingProfiles.Return => {
@@ -14,10 +18,25 @@ export const useBillingProfiles = (): TUseBillingProfiles.Return => {
       return [];
     }
 
-    return data.billingProfiles.map(profile => ({
-      data: profile,
-      icon: BillingProfileConstant.profileTypeMapping[profile.type].icon,
-    }));
+    return data.billingProfiles.map(profile => {
+      const hasWarning = profile?.missingPayoutInfo || profile?.missingVerification;
+      const hasError = profile?.verificationBlocked || profile?.individualLimitReached;
+      return {
+        data: profile,
+        icon: BillingProfileConstant.profileTypeMapping[profile.type].icon,
+        overrides: {
+          icon: getSpecialIconName({
+            hasError,
+            hasWarning,
+            role: profile.role,
+            enabled: profile.enabled,
+            type: profile.type,
+          }),
+          iconColor: getSpecialIconColor({ hasError, hasWarning }),
+          tagColor: getSpecialTagColor({ hasError, hasWarning }),
+        },
+      };
+    });
   }, [data]);
 
   const hasIndividualProfile = useMemo(() => {

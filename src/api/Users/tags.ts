@@ -9,4 +9,5 @@ export const USERS_TAGS = {
     { githubUserId },
   ],
   user_profile_by_github_login: (login: string) => [RESSOURCE_TAGS.USERS, "user-profile-by-github-login", { login }],
+  user_contributions: (login: string) => [RESSOURCE_TAGS.USERS, "user-contributions", { login }],
 };

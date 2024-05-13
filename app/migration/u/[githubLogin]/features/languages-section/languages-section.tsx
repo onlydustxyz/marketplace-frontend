@@ -1,7 +1,10 @@
 import { ContributionList } from "app/migration/u/[githubLogin]/components/contribution-list/contribution-list";
 import { DetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion";
+import { TDetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion.types";
 
 import { PreRenderOnServer } from "components/layout/client-only/client-only";
+import { Flex } from "components/layout/flex/flex";
+import { Typography } from "components/layout/typography/typography";
 
 import { TLanguagesSection } from "./languages-section.types";
 
@@ -117,15 +120,19 @@ export function LanguagesSection(_: TLanguagesSection.Props) {
         },
       ],
     },
-  ];
+  ] as TDetailsAccordion.Detail[];
+
   return (
-    <>
+    <Flex direction="col" width="full" className="gap-4">
+      <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.languagesDetails" }} />
+
       <DetailsAccordion details={languagesMock}>
         <ContributionList />
       </DetailsAccordion>
+
       <PreRenderOnServer>
         <ContributionList />
       </PreRenderOnServer>
-    </>
+    </Flex>
   );
 }

@@ -20,7 +20,7 @@ export function RequestPayment() {
 
   function handleOpen() {
     open();
-    capture("payments_request_started");
+    capture("payments_request_started", { event: "request-button-click" });
   }
 
   return (

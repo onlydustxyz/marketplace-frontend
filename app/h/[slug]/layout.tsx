@@ -1,14 +1,12 @@
+import { hackathonsApiClient } from "api-client/resources/hackathons";
 import type { Metadata } from "next";
 import { PropsWithChildren } from "react";
 
-import { mock } from "app/h/[slug]/mock";
 import { sharedMetadata } from "app/shared-metadata";
 
 export async function generateMetadata(props: { params: { slug: string } }): Promise<Metadata> {
-  const { params } = props;
   try {
-    const hackathon = mock;
-    if (mock.slug !== params.slug) throw new Error("Not found");
+    const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug).request();
     return {
       ...sharedMetadata,
       title: `${hackathon.title}`,

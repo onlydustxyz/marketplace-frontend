@@ -2,6 +2,7 @@
 
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 
+import { LimitReachedHeader } from "app/settings/billing/[id]/components/limit-reached-header/limit-reached-header";
 import { SettingsHeader } from "app/settings/components/settings-header/settings-header";
 import { PayoutPreferencesTable } from "app/settings/payout-preferences/features/table/table";
 
@@ -13,6 +14,7 @@ import { Translate } from "components/layout/translate/translate";
 function PayoutPreferencesPage() {
   return (
     <>
+      <LimitReachedHeader />
       <SettingsHeader
         tokenTitle="v2.pages.settings.payoutPreferences.title"
         subtitle="v2.pages.settings.payoutPreferences.subtitle"

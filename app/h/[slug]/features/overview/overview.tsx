@@ -1,8 +1,8 @@
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 
-import { Project } from "app/h/[slug]/clients/project/project";
 import { CardItem } from "app/h/[slug]/components/card-item/card-item";
+import { Project } from "app/h/[slug]/features/project/project";
 
 import { AvatarLabelled } from "components/ds/avatar/avatar.labelled";
 import { Card } from "components/ds/card/card";

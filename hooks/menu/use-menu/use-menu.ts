@@ -2,18 +2,20 @@ import { useMemo } from "react";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { TUseMenu } from "./use-menu.types";
 
 export const useMenu = (): TUseMenu.Return => {
   const { user } = useCurrentUser();
+  const { profiles } = useBillingProfiles();
 
   const getWarningOrError = () => {
-    const findWarning = (user?.billingProfiles || [])?.find(
-      profile => profile.missingPayoutInfo || profile.missingVerification
+    const findWarning = (profiles || [])?.find(
+      profile => profile.data?.missingPayoutInfo || profile.data?.missingVerification
     );
-    const findError = (user?.billingProfiles || [])?.find(profile => profile.verificationBlocked);
+    const findError = (profiles || [])?.find(profile => profile.data?.verificationBlocked);
 
     return {
       warning: !!findWarning || user?.missingPayoutPreference,
@@ -47,5 +49,5 @@ export const useMenu = (): TUseMenu.Return => {
       redirection: NEXT_ROUTER.settings.profile,
       errorColor: TUseMenu.ERROR_COLORS.DEFAULT,
     };
-  }, [user]);
+  }, [user, profiles]);
 };

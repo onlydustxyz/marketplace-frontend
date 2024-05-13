@@ -1,0 +1,17 @@
+{
+  "header": {
+    "languages": {
+      "title": "Most active languages"
+    },
+    "ecosystems": {
+      "title": "Most active ecosystems"
+    },
+    "contributions": "contributions",
+    "rewards": "rewards",
+    "usd": "USD"
+  },
+  "activity": "Activity",
+  "languagesDetails": "Details by languages",
+  "totalEarned": "Total earned by project",
+  "workDistribution": "Work distribution"
+}
