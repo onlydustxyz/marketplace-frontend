@@ -5,6 +5,14 @@ export namespace THackathonImageMetadataProps {
     title: string;
     login: string;
     image: string;
+    topLanguages?: {
+      name: string;
+      image: string;
+    };
+    topEcosystem?: {
+      name: string;
+      image: string;
+    };
     data: {
       [key: string]: {
         level: TActivityGraph.level;

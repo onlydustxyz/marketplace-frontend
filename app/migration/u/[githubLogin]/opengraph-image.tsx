@@ -26,6 +26,14 @@ export default async function Image(props: { params: { githubLogin: string } }) 
           login={user.login}
           image={user.avatarUrl}
           title="Onlydust legend"
+          topLanguages={{
+            name: "Cairo",
+            image: "https://starkware.co/wp-content/uploads/2021/05/logoicon.svg",
+          }}
+          topEcosystem={{
+            name: "Cairo",
+            image: "https://starkware.co/wp-content/uploads/2021/05/logoicon.svg",
+          }}
           data={{
             [getWeekId(mockWeekDate(0))]: { level: 4, reward: true },
             [getWeekId(mockWeekDate(4))]: { level: 3, reward: true },

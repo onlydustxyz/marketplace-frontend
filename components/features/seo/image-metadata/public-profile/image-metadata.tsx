@@ -3,7 +3,14 @@ import { OgContent } from "components/features/seo/image-metadata/public-profile
 
 import { THackathonImageMetadataProps } from "./image-metadata.types";
 
-export function PublicProfileImageMetadata({ title, login, image, data }: THackathonImageMetadataProps.Props) {
+export function PublicProfileImageMetadata({
+  title,
+  login,
+  image,
+  data,
+  topLanguages,
+  topEcosystem,
+}: THackathonImageMetadataProps.Props) {
   const backgroundUrl = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/profile-opengraph-background.png`;
   return (
     <div
@@ -49,7 +56,7 @@ export function PublicProfileImageMetadata({ title, login, image, data }: THacka
           paddingRight: 63,
         }}
       >
-        <OgContent image={image} login={login} title={title} />
+        <OgContent image={image} login={login} title={title} topLanguages={topLanguages} topEcosystem={topEcosystem} />
         <OGActivityGraph data={data} />
       </div>
     </div>
