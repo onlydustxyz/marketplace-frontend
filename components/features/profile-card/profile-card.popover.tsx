@@ -13,7 +13,7 @@ export function ProfileCardPopover({ children, githubId, isOpen, ...PopOverProps
 
   const renderContent = useMemo(() => {
     if (userProfile) {
-      return <ProfileCard login={userProfile.login} {...userProfile.statsSummary} />;
+      return <ProfileCard login={userProfile.login} avatarUrl={userProfile.avatarUrl} {...userProfile.statsSummary} />;
     }
     return <ProfileCardLoading />;
   }, [userProfile]);

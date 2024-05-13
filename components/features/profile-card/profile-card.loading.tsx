@@ -8,7 +8,7 @@ import { TProfileCard } from "components/features/profile-card/profile-card.type
 
 export function ProfileCardLoading({ skeletonProps, className, ...props }: TProfileCard.LoadingProps) {
   return (
-    <Card className={cn("relative flex w-[450px] flex-col gap-4", className)} background="base" border="multiColor">
+    <Card className={cn("relative flex w-[400px] flex-col gap-4", className)} background="base" border="multiColor">
       <div className="relative flex gap-4">
         <AvatarLoading {...props} skeletonProps={skeletonProps} size="3xl" />
         <div className="flex w-full flex-col gap-3">

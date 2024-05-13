@@ -14,11 +14,11 @@ export namespace TProfileCard {
   export interface ProfileStatProps {
     icon: RemixIconsName;
     token: string;
-    count: number;
+    count?: number;
   }
   export interface Props extends PropsWithChildren {
     className?: string;
-    avatarUrl?: string;
+    avatarUrl: string;
     login: string;
     rankCategory?: string;
     contributionCount?: number;
@@ -26,7 +26,7 @@ export namespace TProfileCard {
     contributedProjectCount?: number;
     leadedProjectCount?: number;
     rank?: number;
-    contributorRankPercentile?: number;
+    rankPercentile?: number;
   }
 
   export interface ProfilePopoverProps extends PropsWithChildren, basePopOverProps {
