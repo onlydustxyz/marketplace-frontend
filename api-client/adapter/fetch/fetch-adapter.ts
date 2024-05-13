@@ -144,7 +144,11 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     return this;
   }
   public setParams(params: Params) {
-    this.params = params;
+    this.params = {
+      ...this.params,
+      ...params,
+    };
+
     return this;
   }
 
