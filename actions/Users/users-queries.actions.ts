@@ -5,7 +5,7 @@ import { ACTION_PATH } from "../path.actions";
 import { BaseQueriesOptions } from "../type.actions";
 import { UsersActionTags } from "./users-tags.actions";
 
-export type UserProfile = components["schemas"]["PublicUserProfileResponse"];
+export type UserProfile = components["schemas"]["PublicUserProfileResponseV2"];
 
 async function retrieveByGithubId(githubId: string, options?: BaseQueriesOptions) {
   "use server";
