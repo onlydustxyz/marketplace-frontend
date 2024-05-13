@@ -24,7 +24,7 @@ export function OgContent({ login, title, image, topLanguages, topEcosystem }: P
         flexDirection: "column",
         alignItems: "flex-start",
         justifyContent: "center",
-        gap: "30px",
+        gap: "64px",
       }}
     >
       <ContentLogo />

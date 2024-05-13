@@ -5,7 +5,6 @@ export function ContentLogo() {
     <div
       style={{
         display: "flex",
-        marginBottom: "72px",
         alignItems: "center",
       }}
     >
