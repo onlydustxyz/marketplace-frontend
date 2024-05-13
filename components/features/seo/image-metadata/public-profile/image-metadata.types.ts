@@ -5,6 +5,8 @@ export namespace THackathonImageMetadataProps {
     title: string;
     login: string;
     image: string;
+    contributionCount: number;
+    rewardsCount: number;
     topLanguages?: {
       name: string;
       image: string;

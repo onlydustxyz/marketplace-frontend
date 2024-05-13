@@ -8,6 +8,8 @@ import { ActivityTitle } from "components/features/seo/image-metadata/public-pro
 import { ActivityWeek } from "components/features/seo/image-metadata/public-profile/components/activity/activity-week";
 
 interface Props {
+  contribution: number;
+  rewards: number;
   data: {
     [key: string]: {
       level: TActivityGraph.level;
@@ -15,7 +17,7 @@ interface Props {
     };
   };
 }
-export function OGActivityGraph({ data }: Props) {
+export function OGActivityGraph({ data, contribution, rewards }: Props) {
   const dates = {
     start: createStartDate(),
     end: createEndDate(),
@@ -67,7 +69,7 @@ export function OGActivityGraph({ data }: Props) {
             </div>
           ))}
         </div>
-        <ActivityHighlight contribution={145} rewards={145} />
+        <ActivityHighlight contribution={contribution} rewards={rewards} />
       </div>
     </div>
   );

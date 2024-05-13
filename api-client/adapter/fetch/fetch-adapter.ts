@@ -107,6 +107,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
 
   private async fetch(params?: Partial<FetchParams>) {
     const endpointUrl = this.getEndpointUrl(this.url, this.params);
+    console.log("endpointUrl", endpointUrl);
     const headers = await this.getHeaders();
     return fetch(endpointUrl, {
       ...params,
@@ -144,7 +145,11 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     return this;
   }
   public setParams(params: Params) {
-    this.params = params;
+    this.params = {
+      ...this.params,
+      ...params,
+    };
+
     return this;
   }
 

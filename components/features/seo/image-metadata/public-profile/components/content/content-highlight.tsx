@@ -51,15 +51,17 @@ export function ContentHighlight({ name, image, label, icon }: Props) {
           gap: "12px",
         }}
       >
-        <img
-          src={image}
-          alt="highlight-image"
-          width="40"
-          height="40"
-          style={{
-            objectFit: "contain",
-          }}
-        />
+        {image ? (
+          <img
+            src={image}
+            alt="highlight-image"
+            width="40"
+            height="40"
+            style={{
+              objectFit: "contain",
+            }}
+          />
+        ) : null}
         <p
           style={{
             fontSize: "32px",

@@ -13,20 +13,41 @@ export default async function Image(props: { params: { githubLogin: string } }) 
 
   try {
     const user = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(props.params.githubLogin).request();
+    const languages = await usersApiClient.fetch
+      .getUserPublicLanguages(user?.githubUserId || 0, { pageSize: 1, pageIndex: 0 })
+      .request();
+
+    const ecosystems = await usersApiClient.fetch
+      .getUserPublicEcosystems(user?.githubUserId || 0, { pageSize: 1, pageIndex: 0 })
+      .request();
+
+    const ecosystem = ecosystems?.ecosystems?.[0];
+    const language = languages?.languages?.[0];
+
     return Generator({
       children: (
         <PublicProfileImageMetadata
           login={user.login}
           image={user.avatarUrl}
+          contributionCount={145}
+          rewardsCount={145}
           title="Onlydust legend"
-          topLanguages={{
-            name: "Cairo",
-            image: "https://starkware.co/wp-content/uploads/2021/05/logoicon.svg",
-          }}
-          topEcosystem={{
-            name: "Cairo",
-            image: "https://starkware.co/wp-content/uploads/2021/05/logoicon.svg",
-          }}
+          {...(ecosystem
+            ? {
+                topEcosystem: {
+                  name: ecosystem.ecosystem.name,
+                  image: ecosystem.ecosystem.logoUrl,
+                },
+              }
+            : {})}
+          {...(language
+            ? {
+                topLanguages: {
+                  name: language.language.name,
+                  image: language.language.logoUrl,
+                },
+              }
+            : {})}
           data={{
             [getWeekId(mockWeekDate(0))]: { level: 4, reward: true },
             [getWeekId(mockWeekDate(4))]: { level: 3, reward: true },
@@ -47,7 +68,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
         />
       ),
     });
-  } catch (err) {
+  } catch {
     return Generator({
       children: <GenericImageMetadata />,
     });

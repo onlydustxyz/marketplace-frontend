@@ -10,12 +10,14 @@ export function PublicProfileImageMetadata({
   image,
   data,
   topLanguages,
+  rewardsCount,
+  contributionCount,
   topEcosystem,
 }: THackathonImageMetadataProps.Props) {
   return (
     <Wrapper>
       <OgContent image={image} login={login} title={title} topLanguages={topLanguages} topEcosystem={topEcosystem} />
-      <OGActivityGraph data={data} />
+      <OGActivityGraph data={data} rewards={rewardsCount} contribution={contributionCount} />
     </Wrapper>
   );
 }
