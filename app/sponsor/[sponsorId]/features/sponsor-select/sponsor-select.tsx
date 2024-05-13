@@ -40,11 +40,12 @@ export function SponsorSelect() {
     <Select
       aria-label={T("v2.pages.sponsor.selectSponsor")}
       defaultSelectedKeys={[selectedSponsorId ?? ""]}
+      disabledKeys={[selectedSponsorId ?? ""]}
       startContent={selectedSponsor?.startContent}
       items={sponsors}
       onSelectionChange={handleSponsorChange}
       classNames={{
-        base: "w-full sm:w-[200px]",
+        base: "w-full sm:w-[250px]",
       }}
       size={"sm"}
     />
