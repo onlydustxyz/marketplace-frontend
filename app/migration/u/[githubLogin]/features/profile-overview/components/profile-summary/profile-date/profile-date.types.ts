@@ -1,6 +1,6 @@
 export namespace TProfileDate {
   export interface Props {
-    githubRegistrationDate: string;
-    onlydustRegistrationDate: string;
+    signedUpOnGithubAt?: string;
+    signedUpAt?: string;
   }
 }
