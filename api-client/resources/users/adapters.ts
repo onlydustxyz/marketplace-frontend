@@ -4,6 +4,7 @@ import tags from "api-client/resources/users/tags";
 enum Paths {
   root = "root",
   public_profile_by_login = "public_profile_by_login",
+  public_profile_by_id = "public_profile_by_id",
   public_ecosystems = "public_ecosystems",
   public_languages = "public_languages",
   public_stats = "public_stats",
@@ -17,6 +18,10 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   },
   public_profile_by_login: {
     url: "users/login/:githubLogin",
+    method: "GET",
+  },
+  public_profile_by_id: {
+    url: "users/:githubId",
     method: "GET",
   },
   public_ecosystems: {

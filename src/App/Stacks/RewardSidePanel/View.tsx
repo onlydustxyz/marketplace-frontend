@@ -8,7 +8,6 @@ import { useStackContribution, useStackProjectOverview } from "src/App/Stacks/St
 import InfoIcon from "src/assets/icons/InfoIcon";
 import { IMAGES } from "src/assets/img";
 import Button, { ButtonSize } from "src/components/Button";
-import Contributor from "src/components/Contributor";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -25,6 +24,7 @@ import { pretty } from "src/utils/id";
 
 import { Link } from "components/ds/link/link";
 import { Tooltip as NextUiTooltip } from "components/ds/tooltip/tooltip";
+import { Contributor } from "components/features/contributor/contributor";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
 import { Translate } from "components/layout/translate/translate";
 
@@ -310,11 +310,10 @@ export default function View({
                   <div className="flex flex-row items-center gap-1">
                     {T("reward.table.detailsPanel.from")}
                     <Contributor
-                      contributor={{
-                        login: data.from.login ?? "",
-                        githubUserId: data.from.githubUserId ?? 0,
-                        avatarUrl: null,
-                      }}
+                      githubUserId={data.from.githubUserId}
+                      login={data.from.login}
+                      avatarUrl={null}
+                      isRegistered={false}
                       clickable
                     />
                     {data.from.githubUserId === githubUserId && T("reward.table.detailsPanel.you")}
@@ -327,11 +326,10 @@ export default function View({
                   <div className="flex flex-row items-center gap-1">
                     {T("reward.table.detailsPanel.to")}
                     <Contributor
-                      contributor={{
-                        login: data.to.login ?? "",
-                        githubUserId: data.to.githubUserId ?? 0,
-                        avatarUrl: null,
-                      }}
+                      githubUserId={data.to.githubUserId}
+                      login={data.to.login}
+                      avatarUrl={null}
+                      isRegistered={false}
                       clickable
                     />
                     {data.to.githubUserId === githubUserId && T("reward.table.detailsPanel.you")}
