@@ -3,6 +3,8 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { withSponsorGuard } from "utils/guards/sponsor-guard";
 
+import { SponsorSelect } from "app/sponsor/[sponsorId]/features/sponsor-select/sponsor-select";
+
 import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";
 import { withClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
@@ -22,19 +24,22 @@ function SponsorPage() {
             <Translate token="v2.pages.sponsor.title" />
           </Typography>
 
-          <SponsorSidePanels
-            panel={"fillout"}
-            buttonProps={{
-              size: "s",
-              className: "w-full sm:w-auto",
-              children: (
-                <>
-                  <Icon remixName={"ri-add-line"} />
-                  <Translate token="v2.pages.sponsor.newDeposit" />
-                </>
-              ),
-            }}
-          />
+          <div className={"flex flex-col items-center gap-3 sm:flex-row"}>
+            <SponsorSelect />
+            <SponsorSidePanels
+              panel={"fillout"}
+              buttonProps={{
+                size: "s",
+                className: "w-full sm:w-auto whitespace-nowrap",
+                children: (
+                  <>
+                    <Icon remixName={"ri-add-line"} />
+                    <Translate token="v2.pages.sponsor.newDeposit" />
+                  </>
+                ),
+              }}
+            />
+          </div>
         </header>
         <div className={"grid gap-10"}>
           <SponsorSectionBudget />
