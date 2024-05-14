@@ -3,7 +3,6 @@
 import { ComponentProps } from "react";
 
 import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
-import ContributorProfileSidePanel from "src/App/Stacks/ContributorProfileSidePanel";
 import { FeedbackPanel } from "src/App/Stacks/FeedbackPanel/FeedbackPanel";
 import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
 import { VerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel";
@@ -33,7 +32,6 @@ import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePa
 import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
 
 export enum StackRoute {
-  ContributorProfile = "contributor-profile",
   ProjectOverview = "project-overview",
   ProjectLeaderReward = "project-leader-reward",
   Reward = "reward",
@@ -49,9 +47,6 @@ export enum StackRoute {
   SponsorProject = "sponsor-project",
 }
 export interface StackRouterParams {
-  ContributorProfile: {
-    githubUserId: number;
-  };
   ProjectOverview: {
     slug: string;
   } & StacksParams;
@@ -80,12 +75,6 @@ export interface StackRouterParams {
 export const Stacks = () => {
   return (
     <>
-      <RegisterStack<StackRouterParams["ContributorProfile"]>
-        name={StackRoute.ContributorProfile}
-        option={{ panel: { noPadding: true } }}
-      >
-        {({ params }) => <ContributorProfileSidePanel {...params} />}
-      </RegisterStack>
       <RegisterStack<StackRouterParams["ProjectLeaderReward"]> name={StackRoute.ProjectLeaderReward}>
         {({ params }) => <RewardSidePanelAsLeader {...params} />}
       </RegisterStack>
@@ -183,10 +172,6 @@ export const useStackContribution = (): [
 
 export const useStackReward = () => {
   return useStackNavigation<StackRouterParams["Reward"]>(StackRoute.Reward);
-};
-
-export const useStackContributorProfile = () => {
-  return useStackNavigation<StackRouterParams["ContributorProfile"]>(StackRoute.ContributorProfile);
 };
 
 export const useStackGithubWorkflowClaim = () => {
