@@ -1,4 +1,5 @@
 import { hackathonsApiClient } from "api-client/resources/hackathons";
+import { compareAsc, compareDesc } from "date-fns";
 import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
 
@@ -12,10 +13,12 @@ async function HackathonsPage() {
   const data = await hackathonsApiClient.fetch.getHackathonsList().request();
 
   const liveNow = data.hackathons.filter(hackathon => isHackathonLive(hackathon));
-  const comingSoon = data.hackathons.filter(hackathon => isHackathonFuture(hackathon));
-  const pastHackathon = data.hackathons.filter(
-    hackathon => !isHackathonLive(hackathon) && !isHackathonFuture(hackathon)
-  );
+  const comingSoon = data.hackathons
+    .filter(hackathon => isHackathonFuture(hackathon))
+    .sort((a, b) => compareAsc(new Date(a.startDate), new Date(b.startDate)));
+  const pastHackathon = data.hackathons
+    .filter(hackathon => !isHackathonLive(hackathon) && !isHackathonFuture(hackathon))
+    .sort((a, b) => compareDesc(new Date(a.startDate), new Date(b.startDate)));
 
   return (
     <>
