@@ -13,11 +13,7 @@ export function Card({ title, startDate, endDate, slug }: TCard.Props) {
   return (
     <Link href={NEXT_ROUTER.hackathons.details.root(slug)} className="group w-full">
       <div className="relative z-[1] h-auto w-full cursor-pointer overflow-hidden rounded-[16px] p-6 outline outline-[6px] outline-card-border-medium md:rounded-[32px] md:pb-12 md:pl-16 md:pr-8 md:pt-24">
-        <Image
-          src={background}
-          alt={title}
-          className="absolute inset-0 h-full w-full object-cover object-center duration-500 transition-transform group-hover:scale-105"
-        />
+        <Image src={background} alt={title} className="absolute inset-0 h-full w-full object-cover object-center" />
         <div className="relative z-[1] flex flex-col items-start justify-start gap-3">
           <Typography
             variant="special-label"
