@@ -14,23 +14,30 @@ import { TProfileDate } from "./profile-date.types";
 export function ProfileDate({ signedUpOnGithubAt, signedUpAt }: TProfileDate.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  return signedUpOnGithubAt || signedUpAt ? (
-    <div className="flex flex-nowrap gap-3">
-      {signedUpOnGithubAt ? (
-        <div className="flex items-center gap-1">
-          <Icon remixName="ri-github-fill" size={isMd ? 18 : 14} />
-          <Typography variant={isMd ? "body-m" : "body-s"}>
-            {format(new Date(signedUpOnGithubAt), "MMMM yyyy")}
-          </Typography>
-        </div>
-      ) : null}
+  function renderContent() {
+    if (signedUpOnGithubAt || signedUpAt) {
+      return (
+        <div className="flex flex-nowrap gap-3">
+          {signedUpOnGithubAt ? (
+            <div className="flex items-center gap-1">
+              <Icon remixName="ri-github-fill" size={isMd ? 18 : 14} />
+              <Typography variant={isMd ? "body-m" : "body-s"}>
+                {format(new Date(signedUpOnGithubAt), "MMMM yyyy")}
+              </Typography>
+            </div>
+          ) : null}
 
-      {signedUpAt ? (
-        <div className="flex items-center gap-1">
-          <Avatar size={isMd ? "s" : "xs"} isBordered={false} />
-          <Typography variant={isMd ? "body-m" : "body-s"}>{format(new Date(signedUpAt), "MMMM yyyy")}</Typography>
+          {signedUpAt ? (
+            <div className="flex items-center gap-1">
+              <Avatar size={isMd ? "s" : "xs"} isBordered={false} />
+              <Typography variant={isMd ? "body-m" : "body-s"}>{format(new Date(signedUpAt), "MMMM yyyy")}</Typography>
+            </div>
+          ) : null}
         </div>
-      ) : null}
-    </div>
-  ) : null;
+      );
+    }
+    return null;
+  }
+
+  return renderContent();
 }
