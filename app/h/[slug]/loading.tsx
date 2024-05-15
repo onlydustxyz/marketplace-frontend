@@ -7,7 +7,7 @@ import { ScrollableView } from "app/h/[slug]/features/scrollable-view/scrollable
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Flex } from "components/layout/flex/flex";
 
-export default function Loading() {
+export default function LoadingHackathonPage() {
   return (
     <ScrollableView>
       <Header.Loading />
