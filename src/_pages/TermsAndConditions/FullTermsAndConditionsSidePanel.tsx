@@ -27,15 +27,15 @@ export default function FullTermsAndConditionsSidePanel({
           <Card className="bg-noise-heavy" withBg={false}>
             <p className="mb-2 text-xl font-medium">LEGAL NOTICE</p>
             <p className="text-md mb-3">
-              The platform onlydust.xyz is edited by Wagmi SAS, a French simplified joint stock company, registered with
-              the trade and companies register of Paris under number 908 233 638, with registered offices located 34 rue
-              des Bourdonnais, 75001 Paris, France.
+              The platform onlydust.com is edited by Wagmi SAS, a French simplified joint stock company, registered with
+              the trade and companies register of Paris under number 908 233 638, with registered offices located 54 rue
+              du Faubourg Montmartre, 75009 Paris, France.
             </p>
-            <p className="text-md mb-3">The director of publication is Gregoire Gambatto.</p>
+            <p className="text-md mb-3">The director of the publication is Gregoire Gambatto.</p>
             <p className="text-md mb-3">
               Contact : <a href="mailto:admin@onlydust.xyz">admin@onlydust.xyz</a>
             </p>
-            <p className="text-md mb-3">The platform is hosted by Gandi</p>
+            <p className="text-md mb-3">The platform is hosted by Cloudflare, Vercel and Heroku</p>
           </Card>
           <div className="mb-8 mt-8 flex flex-col gap-4 divide-y divide-greyscale-50/12 font-medium">
             <p className="text-md">TABLE OF CONTENTS</p>
@@ -98,88 +98,125 @@ export default function FullTermsAndConditionsSidePanel({
           </div>
           <div>
             <SectionTitle num={1} title="Definitions" />
-            <p className="pb-3 italic">
-              Where drafted in upper case, whether written in singular or plural, the following definitions are
-              applicable to the entire T&Cs.
+            <p className="pb-3">
+              Capitalised terms used herein shall have the respective meanings specified below in Article 1 or elsewhere
+              in this Agreement.
             </p>
             <table>
               <tr>
-                <td>Community</td>
-                <td>refers to members of the open source community.</td>
+                <td>Project Budget</td>
+                <td>
+                  refers to the maximum amount of Payments to be attributed to a Funded Project, as decided by the
+                  Committee.
+                </td>
+              </tr>
+              <tr>
+                <td>Committee</td>
+                <td>
+                  refers to the group of independent experts made up, for each Sponsor and in accordance with the
+                  latter, of individuals offering technical, economic or financial skills and knowledge of the web3
+                  industry and, more specifically, of the protocol supported by the said Sponsor.
+                </td>
               </tr>
               <tr>
                 <td>Contributors</td>
-                <td>refers to the persons developing the Projects.</td>
+                <td>refers to the natural or legal persons providing Contributions.</td>
               </tr>
               <tr>
-                <td>Grants</td>
-                <td>refers to the funds granted by the Partner to the Contributors through the Platform.</td>
+                <td>Contribution</td>
+                <td>
+                  refers to technical, commercial or marketing development services provided by Contributors as part of
+                  the Projects in accordance with the needs specified by the Project Leaders, including but not limited
+                  to the source code and all material documentation and records related thereto.
+                </td>
               </tr>
               <tr>
-                <td>Partners</td>
-                <td>refers to the persons funding the Projects.</td>
+                <td>Sponsors</td>
+                <td>
+                  refers to the legal persons promoting the development of a specific protocol and intending to reward
+                  Contributors of Funded Projects built on the said protocol, on whose behalf Wagmi distributes Rewards.
+                </td>
               </tr>
               <tr>
-                <td>Project Leaders</td>
+                <td>Project Leader</td>
                 <td>refers to the person in charge of a Project.</td>
               </tr>
               <tr>
                 <td>Parties</td>
-                <td>refers to the Users and Wagmi.</td>
+                <td>refers to the Users and Wagmi</td>
               </tr>
               <tr>
                 <td>Platform</td>
-                <td>refers to onlydust.xyz, including all its subdomains. </td>
+                <td>refers to onlydust.com, including all its subdomains.</td>
               </tr>
               <tr>
                 <td>Projects</td>
-                <td>refers to the open source solutions developed on blockchain ecosystems by Contributors.</td>
+                <td>
+                  refers to open-source software projects built on a specific protocol, listed on the Platform to
+                  benefit from all or part of the Services.
+                </td>
+              </tr>
+              <tr>
+                <td>Funded Projects</td>
+                <td>refers to Projects sponsored by a Sponsor and selected by the Committee.</td>
               </tr>
               <tr>
                 <td>Reporting</td>
                 <td>
                   refers to the report made on the Platform by Contributors or Project Leaders, indicating the time
-                  spent on the development of a Project and the related github file(s).
+                  spent developing a Funded Project and the related GitHub file(s).
+                </td>
+              </tr>
+              <tr>
+                <td>Rewards</td>
+                <td>
+                  refers to the amount, in tokens or legal tender, as the case may be, paid by Wagmi, on behalf of or in
+                  the name and on behalf of the Sponsors, as the case may be, to the Contributors in respect of their
+                  Contribution.
+                </td>
+              </tr>
+              <tr>
+                <td>Sanctioned Person</td>
+                <td>
+                  refers to any person that is listed in EU and US sanctions lists that is restricted from using all or
+                  parts of the Services under such laws.
+                </td>
+              </tr>
+              <tr>
+                <td>US Person</td>
+                <td>
+                  refers to any natural person residing in the United States or having US nationality, and any legal
+                  entity established in the United States or more than 50% owned by a US person.
                 </td>
               </tr>
               <tr>
                 <td>Services</td>
-                <td>refers to the intermediation services performed by the Company, as described in these T&Cs.</td>
+                <td>refers to the services described in section 5.</td>
               </tr>
               <tr>
                 <td>Wagmi</td>
-                <td>refers to Wagmi SAS, as identified in the front page of the document. </td>
+                <td>refers to Wagmi SAS, as identified in the front page of the document.</td>
+              </tr>
+              <tr>
+                <td>T&Cs</td>
+                <td>refers to the present agreement, all its amendments and related schedules.</td>
               </tr>
               <tr>
                 <td>User</td>
-                <td>refers to Contributors and Project Leaders accessing the Platform or using the Services. </td>
+                <td>refers to Contributors and Project Leaders accessing the Platform or using the Services.</td>
               </tr>
             </table>
             <SectionTitle num={2} title="Purpose and scope" />
             <Paragraph>
-              <ParagraphNumber num={1} /> The purpose of the T&Cs is to define the conditions under which the Services
-              are provided by Wagmi to Users. The purpose of the Services is to reward open source developments done by
-              Contributors participating in the development of blockchain ecosystems.
-            </Paragraph>
-            <Paragraph>
-              <ParagraphNumber num={2} /> For the provision of the Services, Wagmi solely acts as an intermediary
-              between Partners and Contributors/Project Leaders. Due to this role of intermediary, the relationship
-              between Wagmi and Contributors/Project Leaders cannot in any case be qualified as an employment
-              relationship and no employment contract should be deducted from these T&Cs.
-            </Paragraph>
-            <Paragraph>
-              <ParagraphNumber num={3} /> As such, the Grants given to Contributors do not constitute in any case a
-              salary within the meaning of labor law.
-            </Paragraph>
-            <Paragraph>
-              <ParagraphNumber num={4} /> Moreover, any relationship of any kind that may arise (i) between
-              Contributors, (ii) between Contributors and Project Leaders, and (ii) between Partners, Contributors
-              and/or Project Leaders does not fall within the scope of the T&Cs.
+              <ParagraphNumber num={1} />
+              The purpose of the T&Cs is to define (i) the conditions under which Wagmi provides the Services to Users
+              and (ii) the conditions under which Contributions may be provided by Contributors, as the case may be, to
+              Wagmi or to Sponsors.
             </Paragraph>
             <SectionTitle num={3} title="Acceptance and amendment" />
             <SectionSubTitle num={3} subNum={1} title="Acceptance" />
             <Paragraph>
-              <ParagraphNumber num={5} /> In order to be able to use the Services Users agree to fully and
+              <ParagraphNumber num={2} /> In order to be able to use the Services, Users agree to fully and
               unconditionally accept these T&Cs by ticking the relevant case on the Platform. The T&Cs are accessible at
               any time on the Platform and Users should read these T&Cs carefully before accepting them.
             </Paragraph>
