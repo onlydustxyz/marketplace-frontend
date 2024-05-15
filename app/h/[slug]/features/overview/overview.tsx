@@ -19,7 +19,7 @@ export function Overview({ startDate, endDate, totalBudget, sponsors, links, pro
 
   return (
     <div className="relative flex w-full flex-col items-start justify-start gap-6">
-      <Card background={"base"} border={"light"} hasPadding={false}>
+      <Card background={"base"} border={"light"} hasPadding={false} className={"divide-y divide-card-border-light"}>
         <CardItem
           label={"v2.pages.hackathons.details.overview.startDate"}
           icon={{ remixName: "ri-calendar-event-line" }}
@@ -38,7 +38,6 @@ export function Overview({ startDate, endDate, totalBudget, sponsors, links, pro
           label={"v2.pages.hackathons.details.overview.totalBudget"}
           icon={{ remixName: "ri-hand-coin-line" }}
           show={!!totalBudget}
-          border={!!sponsors.length}
         >
           {totalBudget}
         </CardItem>
@@ -46,7 +45,6 @@ export function Overview({ startDate, endDate, totalBudget, sponsors, links, pro
           label={"v2.pages.hackathons.details.overview.sponsors"}
           icon={{ remixName: "ri-server-line" }}
           show={!!sponsors.length}
-          border={false}
         >
           <div className="flex flex-row flex-wrap gap-4">
             {sponsors.map(sponsor => (
@@ -59,48 +57,50 @@ export function Overview({ startDate, endDate, totalBudget, sponsors, links, pro
           </div>
         </CardItem>
       </Card>
-      <Card background={"base"} border={"light"} hasPadding={false}>
-        <CardItem
-          label={"v2.pages.hackathons.details.overview.links"}
-          icon={{ remixName: "ri-links-line" }}
-          show={!!links.length}
-        >
-          <div className="flex flex-col items-start justify-start gap-2">
-            {links.map(link => (
-              <Flex key={link.value} as="li" alignItems="center" className="gap-1">
-                <SocialIconLink url={link.url} />
 
-                <Link href={link.url}>
-                  <Typography variant="body-s" className="truncate">
-                    {link.value}
-                  </Typography>
-                </Link>
-              </Flex>
-            ))}
-          </div>
-        </CardItem>
-        <CardItem
-          label={"v2.pages.hackathons.details.overview.projects"}
-          icon={{ remixName: "ri-folder-2-line" }}
-          show={!!projects.length}
-          border={false}
-        >
-          <div className="flex flex-row flex-wrap gap-4">
-            {projects.map(project => (
-              <div key={project.id}>
-                <Project slug={project.slug}>
-                  <AvatarLabelled
-                    avatarProps={{ shape: "square", size: "s", src: project.logoUrl }}
-                    labelProps={{ className: "hover:text-spacePurple-500 transition-all" }}
-                  >
-                    {project.name}
-                  </AvatarLabelled>
-                </Project>
-              </div>
-            ))}
-          </div>
-        </CardItem>
-      </Card>
+      {links.length && projects.length ? (
+        <Card background={"base"} border={"light"} hasPadding={false} className={"divide-y divide-card-border-light"}>
+          <CardItem
+            label={"v2.pages.hackathons.details.overview.links"}
+            icon={{ remixName: "ri-links-line" }}
+            show={!!links.length}
+          >
+            <div className="flex flex-col items-start justify-start gap-2">
+              {links.map(link => (
+                <Flex key={link.value} as="li" alignItems="center" className="gap-1">
+                  <SocialIconLink url={link.url} />
+
+                  <Link href={link.url}>
+                    <Typography variant="body-s" className="truncate">
+                      {link.value}
+                    </Typography>
+                  </Link>
+                </Flex>
+              ))}
+            </div>
+          </CardItem>
+          <CardItem
+            label={"v2.pages.hackathons.details.overview.projects"}
+            icon={{ remixName: "ri-folder-2-line" }}
+            show={!!projects.length}
+          >
+            <div className="flex flex-row flex-wrap gap-4">
+              {projects.map(project => (
+                <div key={project.id}>
+                  <Project slug={project.slug}>
+                    <AvatarLabelled
+                      avatarProps={{ shape: "square", size: "s", src: project.logoUrl }}
+                      labelProps={{ className: "hover:text-spacePurple-500 transition-all" }}
+                    >
+                      {project.name}
+                    </AvatarLabelled>
+                  </Project>
+                </div>
+              ))}
+            </div>
+          </CardItem>
+        </Card>
+      ) : null}
     </div>
   );
 }
