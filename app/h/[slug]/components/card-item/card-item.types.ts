@@ -8,7 +8,6 @@ export namespace TCardItem {
   export interface Props extends PropsWithChildren {
     label: Key;
     icon: TIcon.Props;
-    border?: boolean;
     show?: boolean;
   }
 }

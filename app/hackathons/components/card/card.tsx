@@ -4,6 +4,7 @@ import background from "public/images/hackathons-cards-bg.webp";
 
 import { TCard } from "app/hackathons/components/card/card.types";
 
+import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { DisplayDate } from "components/features/hackathons/display-date/display-date";
 import { Typography } from "components/layout/typography/typography";
 
@@ -29,3 +30,20 @@ export function Card({ title, startDate, endDate, slug }: TCard.Props) {
     </Link>
   );
 }
+
+Card.Loading = function CardLoading() {
+  return (
+    <div className="relative z-[1] h-auto w-full cursor-pointer overflow-hidden rounded-[16px] p-6 outline outline-[6px] outline-card-border-medium md:rounded-[32px] md:pb-12 md:pl-16 md:pr-8 md:pt-24">
+      <Image src={background} alt={""} className="absolute inset-0 h-full w-full object-cover object-center" />
+      <div className="relative z-[1] flex flex-col items-start justify-start gap-3">
+        <Typography
+          variant="special-label"
+          className="uppercase"
+          translate={{ token: "v2.pages.hackathons.defaultLocation" }}
+        />
+        <SkeletonEl width="240px" height="48px" variant="rounded" />
+        <SkeletonEl width="180px" height="24px" variant="rounded" />
+      </div>
+    </div>
+  );
+};
