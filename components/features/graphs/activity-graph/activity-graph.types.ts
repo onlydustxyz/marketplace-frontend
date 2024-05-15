@@ -26,7 +26,7 @@ export namespace TActivityGraph {
   }
   export interface Props<T> {
     endDate?: Date;
-    weekData?: (props: { getWeekId: getWeekId }) => weeksData<T>;
+    weekData?: weeksData<T>;
   }
 
   export interface UseActivityGraph {
