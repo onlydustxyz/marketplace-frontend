@@ -2,6 +2,7 @@ import { usersApiClient } from "api-client/resources/users";
 
 import { DetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion";
 
+import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
@@ -30,13 +31,17 @@ export async function EcosystemsSection(props: TEcosystemsSection.Props) {
       }))
     );
 
-  if (!ecosystems?.length) return null;
-
   return (
     <Flex direction="col" width="full" className="gap-4">
-      <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.ecosystemsDetails" }} />
+      <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.ecosystemsDetails.title" }} />
 
-      <DetailsAccordion details={ecosystems} githubUserId={githubUserId} />
+      {ecosystems?.length ? (
+          <DetailsAccordion details={ecosystems}githubUserId={githubUserId} />
+      ) : (
+        <Card background={"base"}>
+          <Typography variant="body-m" translate={{ token: "v2.pages.publicProfile.ecosystemsDetails.empty" }} />
+        </Card>
+      )}
     </Flex>
   );
 }
