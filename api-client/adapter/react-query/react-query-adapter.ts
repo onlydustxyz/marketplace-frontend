@@ -1,9 +1,7 @@
 "use client";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import { IFetchAdapater } from "api-client/adapter/fetch/fetch-adapter.types";
-
-import { useImpersonation } from "components/features/impersonation/use-impersonation";
+import { useReactQueryAuthAdapter } from "api-client/adapter/react-query-auth/react-query-auth-adapter";
 
 interface IuseReactQueryAdapter<T> {
   fetcher: IFetchAdapater<T>;
@@ -16,11 +14,7 @@ interface IuseReactQueryAdapter<T> {
   };
 }
 export const useReactQueryAdapter = <T>(fetchAdapter: IFetchAdapater<T>): IuseReactQueryAdapter<T> => {
-  const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
-  const { getImpersonateHeaders } = useImpersonation();
-  const fetcher = fetchAdapter
-    .setAuthAdapter({ isAuthenticated, getAccessToken: getAccessTokenSilently, logout })
-    .setImpersonationHeaders(getImpersonateHeaders());
+  const { fetcher } = useReactQueryAuthAdapter(fetchAdapter);
 
   const query = {
     queryKey: fetcher.tag ? [fetcher.tag] : [],

@@ -23,6 +23,8 @@ export namespace TDetailsAccordion {
     rewardCount: number;
     totalEarnedUsd: number;
     projects: Project[];
+    languageId?: string;
+    ecosystemId?: string;
   }
 
   export interface ItemInfoProps {
@@ -34,5 +36,6 @@ export namespace TDetailsAccordion {
   export interface StartContentProps extends Omit<Detail, "contributions"> {}
   export interface AccordionProps extends PropsWithChildren {
     details: Detail[];
+    githubUserId: number;
   }
 }

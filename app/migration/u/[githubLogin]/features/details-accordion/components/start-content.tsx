@@ -22,7 +22,7 @@ export function StartContent(props: TDetailsAccordion.StartContentProps) {
   return (
     <div className="flex flex-wrap gap-6">
       <div className="flex w-fit flex-col gap-3">
-        <RectAvatar src={avatarUrl} alt={name} size="l" shape="rectangle" />
+        <RectAvatar src={avatarUrl} alt={name} size="l" shape="rectangle" classNames={{ img: "object-contain" }} />
         <div className="grid grid-cols-6 gap-1">
           {projects.slice(0, 5).map(project => (
             <ProjectAvatar key={project.name} {...project} />
