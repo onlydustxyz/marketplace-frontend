@@ -111,7 +111,7 @@ export async function ProfileOverview({ githubLogin }: TProfileOverview.Props) {
                     token: "v2.pages.publicProfile.header.ecosystems.title",
                   },
                 }}
-                list={ecosystems ?? []}
+                list={ecosystems}
                 wrapperClassName="md:grid-cols-1 xl:grid-cols-2"
               />
             ) : null}
