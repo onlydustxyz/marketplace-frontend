@@ -13,12 +13,12 @@ import { cn } from "src/utils/cn";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
 import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
-import { useIntl } from "hooks/translate/use-translate";
 
 import { useLogout } from "./Logout.hooks";
 
@@ -39,7 +39,6 @@ export function ViewMobile({
   errorColor,
   error,
 }: Props) {
-  const { T } = useIntl();
   const [panelOpen, setPanelOpen] = useState(false);
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
@@ -123,10 +122,10 @@ export function ViewMobile({
                   <BaseLink
                     href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}
                     onClick={() => setPanelOpen(false)}
-                    className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
+                    className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
                   >
                     <Icon remixName="ri-service-line" size={20} />
-                    {T("v2.features.menu.sponsoring")}
+                    <Translate token="v2.features.menu.sponsoring" />
                   </BaseLink>
                 ) : null}
 
@@ -138,39 +137,39 @@ export function ViewMobile({
                   <BaseLink
                     href={NEXT_ROUTER.projects.all}
                     onClick={() => setPanelOpen(false)}
-                    className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
+                    className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
                   >
                     <Icon remixName="ri-folder-3-line" size={20} />
-                    {T("v2.features.menu.projects")}
+                    <Translate token="v2.features.menu.projects" />
                   </BaseLink>
 
                   {githubUserId ? (
                     <BaseLink
                       href={NEXT_ROUTER.contributions.all}
                       onClick={() => setPanelOpen(false)}
-                      className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
+                      className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
                     >
                       <Icon remixName="ri-stack-line" size={20} />
-                      {T("v2.features.menu.contributions")}
+                      <Translate token="v2.features.menu.contributions" />
                     </BaseLink>
                   ) : null}
 
                   <BaseLink
                     href={NEXT_ROUTER.rewards.all}
                     onClick={() => setPanelOpen(false)}
-                    className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
+                    className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
                   >
                     <Icon remixName="ri-exchange-dollar-line" size={20} />
-                    {T("v2.features.menu.rewards")}
+                    <Translate token="v2.features.menu.rewards" />
                   </BaseLink>
 
                   <BaseLink
                     href={NEXT_ROUTER.hackathons.root}
                     onClick={() => setPanelOpen(false)}
-                    className={cn("flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8")}
+                    className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
                   >
                     <Icon remixName="ri-medal-line" size={20} />
-                    {T("v2.features.menu.hackathons")}
+                    <Translate token="v2.features.menu.hackathons" />
                   </BaseLink>
 
                   <span className="my-1 block h-px bg-greyscale-50/8" />
@@ -180,19 +179,30 @@ export function ViewMobile({
           )}
 
           <div>
+            {githubUserId ? (
+              <BaseLink
+                href={NEXT_ROUTER.publicProfile.root(githubUserId.toString())}
+                onClick={() => setPanelOpen(false)}
+                className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
+              >
+                <Icon remixName="ri-user-line" size={20} />
+                <Translate token="v2.features.menu.publicProfile" />
+              </BaseLink>
+            ) : null}
+
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={handleFeedback}>
               <Icon remixName="ri-discuss-line" size={20} />
-              {T("v2.features.menu.feedback")}
+              <Translate token="v2.features.menu.feedback" />
             </button>
 
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFullTermsAndConditions}>
               <Icon remixName="ri-bill-line" size={20} />
-              {T("v2.features.menu.terms")}
+              <Translate token="v2.features.menu.terms" />
             </button>
 
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openPrivacyPolicy}>
               <Icon remixName="ri-lock-line" size={20} />
-              {T("v2.features.menu.privacy")}
+              <Translate token="v2.features.menu.privacy" />
             </button>
 
             <span className="my-1 block h-px bg-greyscale-50/8" />
@@ -201,7 +211,7 @@ export function ViewMobile({
           <div>
             <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={handleLogout}>
               <Icon remixName="ri-logout-box-r-line" size={20} />
-              {T("v2.features.menu.logout")}
+              <Translate token="v2.features.menu.logout" />
             </button>
           </div>
         </div>
