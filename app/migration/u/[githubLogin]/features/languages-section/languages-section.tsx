@@ -36,7 +36,7 @@ export async function LanguagesSection(props: TLanguagesSection.Props) {
       <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.languagesDetails.title" }} />
 
       {languages?.length ? (
-          <DetailsAccordion details={languages}githubUserId={githubUserId} />
+        <DetailsAccordion details={languages} githubUserId={githubUserId} />
       ) : (
         <Card background={"base"}>
           <Typography variant="body-m" translate={{ token: "v2.pages.publicProfile.languagesDetails.empty" }} />

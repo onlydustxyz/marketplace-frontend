@@ -36,7 +36,7 @@ export async function EcosystemsSection(props: TEcosystemsSection.Props) {
       <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.ecosystemsDetails.title" }} />
 
       {ecosystems?.length ? (
-          <DetailsAccordion details={ecosystems}githubUserId={githubUserId} />
+        <DetailsAccordion details={ecosystems} githubUserId={githubUserId} />
       ) : (
         <Card background={"base"}>
           <Typography variant="body-m" translate={{ token: "v2.pages.publicProfile.ecosystemsDetails.empty" }} />
