@@ -110,7 +110,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     const headers = await this.getHeaders();
     return fetch(endpointUrl, {
       ...params,
-      cache: "no-cache",
+      ...(!params?.next?.revalidate ? { cache: "no-cache" } : {}),
       method: params?.method || this.method,
       headers,
       body: params?.body || this.body,

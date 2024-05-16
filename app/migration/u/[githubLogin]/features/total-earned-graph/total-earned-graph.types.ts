@@ -1,5 +1,13 @@
-import { PropsWithChildren } from "react";
-
 export namespace TTotalEarnedGraph {
-  export interface Props extends PropsWithChildren {}
+  export interface Props {
+    githubUserId: number;
+  }
+
+  export interface PropsClient {
+    data: {
+      label: string;
+      value: number;
+      id: string;
+    }[];
+  }
 }

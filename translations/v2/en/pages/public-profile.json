@@ -13,5 +13,6 @@
   "activity": "Activity",
   "languagesDetails": "Details by languages",
   "totalEarned": "Total earned by project",
-  "workDistribution": "Work distribution"
+  "workDistribution": "Work distribution",
+  "totalEarnedOther": "Other"
 }
