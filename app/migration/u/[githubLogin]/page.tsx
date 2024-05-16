@@ -1,3 +1,4 @@
+import { usersApiClient } from "api-client/resources/users";
 import { Suspense } from "react";
 
 import { ActivityGraph } from "app/migration/u/[githubLogin]/features/activity-graph/activity-graph";
@@ -10,6 +11,8 @@ import { WorkDistributionGraph } from "app/migration/u/[githubLogin]/features/wo
 import { ProfileOverview } from "./features/profile-overview/profile-overview";
 
 export default async function PublicProfilePage({ params }: { params: { githubLogin: string } }) {
+  const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(params.githubLogin).request();
+
   return (
     <div className="flex w-full flex-col items-start justify-start gap-10">
       <Suspense fallback={<ProfileOverviewLoading />}>
@@ -21,7 +24,7 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
           <EcosystemsSection />
         </div>
         <div className="flex w-1/3 flex-col items-start justify-start gap-6">
-          <ActivityGraph />
+          <ActivityGraph githubUserId={userProfile.githubUserId} />
           <TotalEarnedGraph />
           <WorkDistributionGraph />
         </div>

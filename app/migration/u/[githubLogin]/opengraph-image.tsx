@@ -1,21 +1,20 @@
 import { usersApiClient } from "api-client/resources/users";
-import { subWeeks } from "date-fns";
 
+import { TActivityGraph } from "components/features/graphs/activity-graph/activity-graph.types";
+import { getDateFromWeekNumber } from "components/features/graphs/activity-graph/utils/getDateFromWeekNumber";
+import { getLevelFromCount } from "components/features/graphs/activity-graph/utils/getLevelFromCount";
+import { getLevelRange } from "components/features/graphs/activity-graph/utils/getLevelRange";
 import { getWeekId } from "components/features/graphs/activity-graph/utils/getWeekId";
 import { Generator } from "components/features/seo/image-metadata/commons/generator/generator";
 import { GenericImageMetadata } from "components/features/seo/image-metadata/generic/image-metadata";
 import { PublicProfileImageMetadata } from "components/features/seo/image-metadata/public-profile/image-metadata";
 
 export default async function Image(props: { params: { githubLogin: string } }) {
-  function mockWeekDate(number: number) {
-    return subWeeks(new Date(), number);
-  }
-
   try {
     const user = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(props.params.githubLogin).request();
     const githubUserId = user?.githubUserId || 0;
 
-    // const stats = await usersApiClient.fetch.getUserPublicStats(githubUserId).request();
+    const stats = await usersApiClient.fetch.getUserPublicStats(githubUserId).request();
 
     const languages = await usersApiClient.fetch
       .getUserPublicLanguages(githubUserId, { pageSize: 1, pageIndex: 0 })
@@ -27,6 +26,32 @@ export default async function Image(props: { params: { githubLogin: string } }) 
 
     const ecosystem = ecosystems?.ecosystems?.[0];
     const language = languages?.languages?.[0];
+
+    const createData = () => {
+      const data: {
+        [key: string]: {
+          level: TActivityGraph.level;
+          reward?: boolean;
+        };
+      } = {};
+
+      const levelRange = getLevelRange(
+        stats?.activity?.map(activity => activity.issueCount + activity.codeReviewCount + activity.pullRequestCount) ||
+          []
+      );
+
+      stats?.activity?.forEach(activity => {
+        data[getWeekId(getDateFromWeekNumber(activity.year, activity.week))] = {
+          level: getLevelFromCount(
+            levelRange,
+            activity.issueCount + activity.codeReviewCount + activity.pullRequestCount
+          ),
+          reward: activity.rewardCount > 0,
+        };
+      });
+
+      return data;
+    };
 
     return Generator({
       children: (
@@ -52,23 +77,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
                 },
               }
             : {})}
-          data={{
-            [getWeekId(mockWeekDate(0))]: { level: 4, reward: true },
-            [getWeekId(mockWeekDate(4))]: { level: 3, reward: true },
-            [getWeekId(mockWeekDate(10))]: { level: 4, reward: true },
-            [getWeekId(mockWeekDate(20))]: { level: 2, reward: true },
-            [getWeekId(mockWeekDate(30))]: { level: 4, reward: true },
-            [getWeekId(mockWeekDate(6))]: { level: 3, reward: true },
-            [getWeekId(mockWeekDate(7))]: { level: 2, reward: true },
-
-            [getWeekId(mockWeekDate(2))]: { level: 4 },
-            [getWeekId(mockWeekDate(8))]: { level: 3 },
-            [getWeekId(mockWeekDate(13))]: { level: 4 },
-            [getWeekId(mockWeekDate(25))]: { level: 2 },
-            [getWeekId(mockWeekDate(45))]: { level: 4 },
-            [getWeekId(mockWeekDate(42))]: { level: 3 },
-            [getWeekId(mockWeekDate(39))]: { level: 2 },
-          }}
+          data={createData()}
         />
       ),
     });
