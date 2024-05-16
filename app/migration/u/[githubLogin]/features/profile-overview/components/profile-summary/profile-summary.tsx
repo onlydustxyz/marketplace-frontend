@@ -24,7 +24,7 @@ export function ProfileSummary(props: TProfileSummary.Props) {
   return (
     <div className="flex w-full flex-col gap-3 py-0 md:gap-6 md:py-5">
       {bio ? (
-        <Typography variant="body-m" className="text-spaceBlue-100">
+        <Typography variant="body-m" className="line-clamp-5 text-spaceBlue-100">
           {bio}
         </Typography>
       ) : null}

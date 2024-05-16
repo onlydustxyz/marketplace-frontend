@@ -9,9 +9,12 @@ import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { Tag } from "components/ds/tag/tag";
 import { TProfileCard } from "components/features/profile-card/profile-card.types";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { Key } from "hooks/translate/use-translate";
 
@@ -27,6 +30,7 @@ function ProfileStatItem({ icon, token, count }: TProfileCard.ProfileStatProps) 
 export function ProfileCard(props: TProfileCard.Props) {
   const {
     className,
+    isLoginClickable = false,
     avatarUrl,
     login,
     rankCategory,
@@ -60,7 +64,16 @@ export function ProfileCard(props: TProfileCard.Props) {
         <div className="flex w-full flex-col gap-1">
           <div className="flex justify-between gap-2">
             <Typography variant="title-m" className="line-clamp-1 capitalize">
-              {login}
+              {isLoginClickable ? (
+                <BaseLink
+                  href={NEXT_ROUTER.newPublicProfile.root(login)}
+                  className="transition-all hover:text-spacePurple-500"
+                >
+                  {login}
+                </BaseLink>
+              ) : (
+                <>{login}</>
+              )}
             </Typography>
             <Typography variant="title-m">{getOrdinalSuffix(rank)}</Typography>
           </div>
