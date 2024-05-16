@@ -20,8 +20,12 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
       </Suspense>
       <div className="flex w-full flex-row items-start justify-start gap-6">
         <div className="flex flex-1 flex-col items-start justify-start gap-10">
-          <LanguagesSection />
-          <EcosystemsSection />
+          <Suspense fallback={<div>loading ...</div>}>
+            <LanguagesSection githubUserId={userProfile.githubUserId} />
+          </Suspense>
+          <Suspense fallback={<div>loading ...</div>}>
+            <EcosystemsSection githubUserId={userProfile.githubUserId} />
+          </Suspense>
         </div>
         <div className="flex w-1/3 flex-col items-start justify-start gap-6">
           <ActivityGraph githubUserId={userProfile.githubUserId} />
