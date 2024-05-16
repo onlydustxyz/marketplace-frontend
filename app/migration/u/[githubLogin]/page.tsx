@@ -16,6 +16,12 @@ import { ProfileOverview } from "./features/profile-overview/profile-overview";
 export default async function PublicProfilePage({ params }: { params: { githubLogin: string } }) {
   const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(params.githubLogin).request();
 
+  const ecosystems = (userProfile?.ecosystems || []).map(ecosystem => ({
+    name: ecosystem.name,
+    logoUrl: ecosystem.logoUrl,
+    id: ecosystem.id,
+  }));
+
   return (
     <div className="flex w-full flex-col items-start justify-start gap-10">
       <Suspense fallback={<ProfileOverviewLoading />}>
@@ -27,9 +33,7 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
           <EcosystemsSection />
         </div>
         <div className="flex w-1/3 flex-col items-start justify-start gap-6">
-          <Suspense fallback={<ActivityGraphLoading />}>
-            <ActivityGraph githubUserId={userProfile.githubUserId} />
-          </Suspense>
+          <ActivityGraph githubUserId={userProfile.githubUserId} ecosystems={ecosystems} />
           <Suspense fallback={<TotalEarnedGraphLoading />}>
             <TotalEarnedGraph githubUserId={userProfile.githubUserId} />
           </Suspense>

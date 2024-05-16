@@ -8,14 +8,14 @@ import { useActivityGraph } from "components/features/graphs/activity-graph/use-
 
 import { TActivityGraph } from "./activity-graph.types";
 
-export function ActivityGraph<T>({ endDate, weekData }: TActivityGraph.Props<T>) {
+export function ActivityGraph<T>({ endDate, weekData, isLoading }: TActivityGraph.Props<T>) {
   const { splitWeeks, weeks } = useActivityGraph({ endDate });
 
   const data = useMemo(() => {
     return weekData || {};
   }, [weekData, weeks]);
 
-  if (!splitWeeks?.length) {
+  if (!splitWeeks?.length || isLoading) {
     return <ActivityGraphLoading />;
   }
 
