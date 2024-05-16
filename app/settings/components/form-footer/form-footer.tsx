@@ -26,8 +26,6 @@ export function FormFooter({ isPending, hasPreviewButton, isAbsolute = true }: T
   const { formState } = useFormContext();
   const { isDirty, isValid } = formState;
 
-  console.log({ isDirty, isValid });
-
   function renderIcon() {
     if (!isMd) return null;
 
