@@ -2,6 +2,7 @@ import { usersApiClient } from "api-client/resources/users";
 
 import { DetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion";
 
+import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
@@ -32,9 +33,15 @@ export async function LanguagesSection(props: TLanguagesSection.Props) {
 
   return (
     <Flex direction="col" width="full" className="gap-4">
-      <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.languagesDetails" }} />
+      <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.languagesDetails.title" }} />
 
-      <DetailsAccordion details={languages} githubUserId={githubUserId} />
+      {languages?.length ? (
+        <DetailsAccordion details={languages} githubUserId={githubUserId} />
+      ) : (
+        <Card background={"base"}>
+          <Typography variant="body-m" translate={{ token: "v2.pages.publicProfile.languagesDetails.empty" }} />
+        </Card>
+      )}
     </Flex>
   );
 }

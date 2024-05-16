@@ -73,41 +73,43 @@ export async function ProfileOverview({ githubLogin }: TProfileOverview.Props) {
           </div>
         </div>
 
-        <div className="flex w-full flex-col items-start justify-between gap-6 md:flex-row md:gap-10">
-          {languages.length ? (
-            <div className="flex w-full flex-1">
-              <MostActiveSection
-                icon={{
-                  remixName: "ri-code-s-slash-line",
-                }}
-                title={{
-                  translate: {
-                    token: "v2.pages.publicProfile.header.languages.title",
-                  },
-                }}
-                list={languages}
-                wrapperClassName="xl:grid-cols-4"
-              />
-            </div>
-          ) : null}
-
-          <div className="flex w-full md:w-1/3">
-            {ecosystems?.length ? (
-              <MostActiveSection
-                icon={{
-                  remixName: "ri-global-line",
-                }}
-                title={{
-                  translate: {
-                    token: "v2.pages.publicProfile.header.ecosystems.title",
-                  },
-                }}
-                list={ecosystems}
-                wrapperClassName="md:grid-cols-1 xl:grid-cols-2"
-              />
+        {languages?.length || ecosystems?.length ? (
+          <div className="flex w-full flex-col items-start justify-between gap-6 md:flex-row md:gap-10">
+            {languages?.length ? (
+              <div className="flex w-full flex-1">
+                <MostActiveSection
+                  icon={{
+                    remixName: "ri-code-s-slash-line",
+                  }}
+                  title={{
+                    translate: {
+                      token: "v2.pages.publicProfile.header.languages.title",
+                    },
+                  }}
+                  list={languages}
+                  wrapperClassName="xl:grid-cols-4"
+                />
+              </div>
             ) : null}
+
+            <div className="flex w-full md:w-1/3">
+              {ecosystems?.length ? (
+                <MostActiveSection
+                  icon={{
+                    remixName: "ri-global-line",
+                  }}
+                  title={{
+                    translate: {
+                      token: "v2.pages.publicProfile.header.ecosystems.title",
+                    },
+                  }}
+                  list={ecosystems}
+                  wrapperClassName="md:grid-cols-1 xl:grid-cols-2"
+                />
+              ) : null}
+            </div>
           </div>
-        </div>
+        ) : null}
       </Card>
     </Flex>
   );

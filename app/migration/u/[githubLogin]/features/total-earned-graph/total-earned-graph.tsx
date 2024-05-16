@@ -26,16 +26,16 @@ export async function TotalEarnedGraph({ githubUserId }: TTotalEarnedGraph.Props
 
   const otherData = {
     id: "other",
-    // because it's server we can use translate hook here
+    // because it's server we can't use translate hook here
     label: "Other",
     value: otherStats.reduce((acc, curr) => acc + curr.totalEarnedUsd, 0),
   };
 
   return (
     <Flex direction="col" width="full" className="gap-4">
-      <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.totalEarned" }} />
+      <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.totalEarned.title" }} />
 
-      <Card>
+      <Card background={"base"}>
         <Flex direction="col" alignItems="center" className="gap-2">
           <TotalEarnedGraphClient data={[...data, otherData]} />
 
