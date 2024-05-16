@@ -13,7 +13,9 @@ import { Typography } from "components/layout/typography/typography";
 import { TActivityGraph } from "./activity-graph.types";
 
 export async function ActivityGraph({ githubUserId }: TActivityGraph.Props) {
-  const stats = await usersApiClient.fetch.getUserPublicStats(githubUserId).request();
+  const stats = await usersApiClient.fetch.getUserPublicStats(githubUserId).request({
+    next: { revalidate: 120 },
+  });
   function createData() {
     const data: TActivityGraphComponent.weeksData<unknown> = {};
 
