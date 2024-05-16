@@ -15,8 +15,13 @@ import { TContributionItem } from "./contribution-item.types";
 
 export function ContributionItem({ contribution, project }: TContributionItem.Props) {
   return (
-    <Card background={false} border={"light"} className="flex flex-row items-center justify-between gap-3 !px-4 !py-3">
-      <div className="border-r border-r-card-border-light pr-3">
+    <Card
+      background={false}
+      border={"light"}
+      // TODO @hayden : max width is a quick fix that works but isn't super precise.
+      className="flex max-w-[90vw] flex-row items-center justify-between gap-3 overflow-hidden !px-4 !py-3"
+    >
+      <div className="flex items-center border-r border-r-card-border-light pr-3">
         <Project slug={project.slug}>
           <AvatarLabelled
             avatarProps={{ src: project.logoUrl, size: "s", shape: "square" }}
