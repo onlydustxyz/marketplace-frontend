@@ -10,10 +10,25 @@
     "rewards": "rewards",
     "usd": "USD"
   },
-  "activity": "Activity",
-  "languagesDetails": "Details by languages",
-  "ecosystemsDetails": "Details by ecosystems",
-  "totalEarned": "Total earned by project",
-  "workDistribution": "Work distribution",
+  "activity": {
+    "title": "Activity",
+    "error": "Unable to fetch activity data."
+  },
+  "workDistribution": {
+    "title": "Work distribution",
+    "error": "Unable to fetch work distribution data."
+  },
+  "totalEarned": {
+    "title": "Total earned by project",
+    "error": "Unable to fetch total earned data."
+  },
+  "languagesDetails": {
+    "title": "Details by languages",
+    "empty": "No language data available."
+  },
+  "ecosystemsDetails": {
+    "title": "Details by ecosystems",
+    "empty": "No ecosystem data available."
+  },
   "totalEarnedOther": "Other"
 }
