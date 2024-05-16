@@ -29,7 +29,6 @@ export function ProfileCardPopover({ children, githubId, isOpen, ...PopOverProps
             {...userProfile.statsSummary}
             isLoginClickable
           />
-          ;
         </>
       );
     }
