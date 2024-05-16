@@ -1,4 +1,5 @@
 import { FetchAdapaterConstructor } from "api-client/adapter/fetch/fetch-adapter.types";
+import { apiVersions } from "api-client/config/api-versions";
 import tags from "api-client/resources/users/tags";
 
 enum Paths {
@@ -8,6 +9,7 @@ enum Paths {
   public_ecosystems = "public_ecosystems",
   public_languages = "public_languages",
   public_stats = "public_stats",
+  public_contributions = "public_contributions",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
@@ -35,6 +37,11 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   public_stats: {
     url: "users/:githubId/stats",
     method: "GET",
+  },
+  public_contributions: {
+    url: "users/:githubId/contributions",
+    method: "GET",
+    version: apiVersions.v2,
   },
 };
 

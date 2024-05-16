@@ -38,8 +38,32 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     this.version = params.version || apiVersions.v1;
   }
 
-  private getEndpointUrl(url: string, params?: { [key: string]: string }) {
-    const searchParams = new URLSearchParams(params).toString();
+  private convertParamsToURLSearchParams(params?: Params) {
+    if (!params) return undefined;
+
+    return Object.entries(params).reduce((acc, [key, value]) => {
+      if (value !== undefined) {
+        if (typeof value === "string" || typeof value === "number") {
+          acc.append(key, value.toString());
+        }
+        if (typeof value === "boolean") {
+          if (value) {
+            acc.append(key, "true");
+          } else {
+            acc.append(key, "false");
+          }
+        }
+        if (Array.isArray(value)) {
+          acc.append(key, value.join(","));
+        }
+      }
+      return acc;
+    }, new URLSearchParams());
+  }
+
+  private getEndpointUrl(url: string, params?: Params) {
+    const searchParams = this.convertParamsToURLSearchParams(params)?.toString();
+
     const pathParams = url.split("/").filter(param => param.startsWith(":"));
     pathParams.forEach(param => {
       const key = param.replace(":", "");

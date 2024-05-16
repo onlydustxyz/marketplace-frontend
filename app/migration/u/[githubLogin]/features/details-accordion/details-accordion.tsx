@@ -2,12 +2,13 @@
 
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
+import { ContributionList } from "app/migration/u/[githubLogin]/components/contribution-list/contribution-list";
 import { StartContent } from "app/migration/u/[githubLogin]/features/details-accordion/components/start-content";
 import { TDetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion.types";
 
 import { Icon } from "components/layout/icon/icon";
 
-export function DetailsAccordion({ children, details }: TDetailsAccordion.AccordionProps) {
+export function DetailsAccordion({ details, githubUserId }: TDetailsAccordion.AccordionProps) {
   return (
     <Accordion variant="splitted" className="!p-0">
       {details?.map(detail => (
@@ -35,7 +36,11 @@ export function DetailsAccordion({ children, details }: TDetailsAccordion.Accord
           }
           aria-label={detail.name}
         >
-          {children}
+          <ContributionList
+            githubUserId={githubUserId}
+            languageId={detail.languageId ?? ""}
+            ecosystemId={detail.ecosystemId ?? ""}
+          />
         </AccordionItem>
       ))}
     </Accordion>
