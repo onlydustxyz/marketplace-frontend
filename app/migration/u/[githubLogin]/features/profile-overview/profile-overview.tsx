@@ -13,10 +13,7 @@ export async function ProfileOverview({ githubLogin }: TProfileOverview.Props) {
   const userProfile = await usersApiClient.fetch
     .getUserPublicProfileByGithubLogin(githubLogin)
     .request()
-    .then(res => res)
-    .catch(() => {
-      throw new Error("Error fetching user profile data.");
-    });
+    .then(res => res);
 
   if (!userProfile) return null;
 
@@ -35,10 +32,7 @@ export async function ProfileOverview({ githubLogin }: TProfileOverview.Props) {
         totalUsdEquivalent: language.totalEarnedUsd,
         status: language.contributingStatus,
       }))
-    )
-    .catch(() => {
-      throw new Error("Error fetching languages");
-    });
+    );
 
   const ecosystems = await usersApiClient.fetch
     .getUserPublicEcosystems(userProfile.githubUserId, {
@@ -55,10 +49,7 @@ export async function ProfileOverview({ githubLogin }: TProfileOverview.Props) {
         totalUsdEquivalent: ecosystem.totalEarnedUsd,
         status: ecosystem.contributingStatus,
       }))
-    )
-    .catch(() => {
-      throw new Error("Error fetching ecosystems");
-    });
+    );
 
   return (
     <Flex direction="col" className="w-full gap-4 md:gap-0">
