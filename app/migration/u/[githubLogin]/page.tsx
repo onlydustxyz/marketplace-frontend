@@ -33,23 +33,23 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
         </Suspense>
         <div className="flex w-full flex-col items-start justify-start gap-10 xl:flex-row xl:gap-6">
           <div className="grid w-full gap-10 xl:flex-1">
-          <Suspense fallback={<LanguagesSectionLoading />}>
-            <LanguagesSection githubUserId={userProfile.githubUserId} />
-          </Suspense>
-          <Suspense fallback={<EcosystemsSectionLoading />}>
-            <EcosystemsSection githubUserId={userProfile.githubUserId} />
-          </Suspense>
+            <Suspense fallback={<LanguagesSectionLoading />}>
+              <LanguagesSection githubUserId={userProfile.githubUserId} />
+            </Suspense>
+            <Suspense fallback={<EcosystemsSectionLoading />}>
+              <EcosystemsSection githubUserId={userProfile.githubUserId} />
+            </Suspense>
           </div>
           <div className="grid w-full gap-x-6 gap-y-10 md:grid-cols-2 xl:w-1/3 xl:grid-cols-1 xl:gap-6">
             <Suspense fallback={<ActivityGraphLoading />}>
-            <ActivityGraph githubUserId={userProfile.githubUserId} />
-          </Suspense>
-          <Suspense fallback={<TotalEarnedGraphLoading />}>
-            <TotalEarnedGraph githubUserId={userProfile.githubUserId} />
-          </Suspense>
-          <Suspense fallback={<WorkDistributionGraphLoading />}>
-            <WorkDistributionGraph githubUserId={userProfile.githubUserId} />
-          </Suspense>
+              <ActivityGraph githubUserId={userProfile.githubUserId} />
+            </Suspense>
+            <Suspense fallback={<TotalEarnedGraphLoading />}>
+              <TotalEarnedGraph githubUserId={userProfile.githubUserId} />
+            </Suspense>
+            <Suspense fallback={<WorkDistributionGraphLoading />}>
+              <WorkDistributionGraph githubUserId={userProfile.githubUserId} />
+            </Suspense>
           </div>
         </div>
       </div>
