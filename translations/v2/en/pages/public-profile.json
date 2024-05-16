@@ -13,8 +13,5 @@
   "activity": "Activity",
   "languagesDetails": "Details by languages",
   "totalEarned": "Total earned by project",
-  "workDistribution": "Work distribution",
-  "toaster": {
-    "error": "Error fetching user profile data"
-  }
+  "workDistribution": "Work distribution"
 }
