@@ -1,5 +1,7 @@
 import { PropsWithChildren } from "react";
 
+import { TDotsStatus } from "app/migration/u/[githubLogin]/components/dots-status/dots-status.types";
+
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 
 import { Key } from "hooks/translate/use-translate";
@@ -16,7 +18,7 @@ export namespace TDetailsAccordion {
   export interface Detail {
     name: string;
     avatarUrl: string;
-    rankStatus: "good" | "neutral" | "bad";
+    rankStatus: TDotsStatus.Props["status"];
     contributionCount: number;
     projectsCount: number;
     rewardsCount: number;

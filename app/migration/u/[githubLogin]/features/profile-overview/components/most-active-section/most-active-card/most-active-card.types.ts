@@ -1,3 +1,5 @@
+import { TDotsStatus } from "app/migration/u/[githubLogin]/components/dots-status/dots-status.types";
+
 export namespace TMostActiveCard {
   export interface Props {
     logoUrl: string;
@@ -5,6 +7,6 @@ export namespace TMostActiveCard {
     contributionCount: number;
     rewardCount: number;
     totalUsdEquivalent: number;
-    status: "good" | "neutral" | "bad";
+    status: TDotsStatus.Props["status"];
   }
 }

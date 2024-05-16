@@ -13,7 +13,7 @@ export function LanguagesSection(_: TLanguagesSection.Props) {
     {
       name: "JavaScript",
       avatarUrl: "https://develop-onlydust-app-images.s3.eu-west-1.amazonaws.com/abf86b52ea37add55e4deda258bade06.jpeg",
-      rankStatus: "good",
+      rankStatus: "GREEN",
       contributionCount: 100,
       projectsCount: 3,
       rewardsCount: 88,

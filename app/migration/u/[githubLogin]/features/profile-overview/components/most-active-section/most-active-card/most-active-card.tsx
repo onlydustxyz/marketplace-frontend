@@ -23,7 +23,7 @@ export function MostActiveCard({
       <Flex direction="col" className="gap-4 px-3 py-4">
         <Flex alignItems="center" justifyContent="between" className="gap-2">
           <Flex alignItems="center" className="gap-2">
-            <Image src={logoUrl} alt={name} width={20} height={20} />
+            {logoUrl ? <Image src={logoUrl} alt={name} width={20} height={20} /> : null}
 
             <Typography variant="body-m-bold" className="line-clamp-1">
               {name}

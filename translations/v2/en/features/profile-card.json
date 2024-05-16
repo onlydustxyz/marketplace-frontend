@@ -26,5 +26,13 @@
       "one": "Lead on 1 project",
       "many": "Lead on __count__ projects"
     }
+  },
+  "rankCategories": {
+    "a": "Diamond Contributor",
+    "b": "Gold Contributor",
+    "c": "Silver Contributor",
+    "d": "Bronze Contributor",
+    "e": "Steel Contributor",
+    "f": "Wood Contributor"
   }
 }

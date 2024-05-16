@@ -1,3 +1,4 @@
+import { PublicProfilerankCategoryUnion } from "api-client/resources/users/types";
 import Image from "next/image";
 import profileCardBackground from "public/images/profile-card-bg.svg";
 import { getOrdinalSuffix } from "utils/profile/ordinal-position-suffix";
@@ -8,9 +9,14 @@ import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { Tag } from "components/ds/tag/tag";
 import { TProfileCard } from "components/features/profile-card/profile-card.types";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
+
+import { Key } from "hooks/translate/use-translate";
 
 function ProfileStatItem({ icon, token, count }: TProfileCard.ProfileStatProps) {
   return (
@@ -24,6 +30,7 @@ function ProfileStatItem({ icon, token, count }: TProfileCard.ProfileStatProps) 
 export function ProfileCard(props: TProfileCard.Props) {
   const {
     className,
+    isLoginClickable = false,
     avatarUrl,
     login,
     rankCategory,
@@ -35,8 +42,14 @@ export function ProfileCard(props: TProfileCard.Props) {
     rankPercentile,
   } = props;
 
-  // TODO will be directly calculated in backend
-  const rankPercentileCount = rankPercentile ? Number((rankPercentile * 100).toFixed(0)) : 0;
+  const rankCategoryMapping: Record<PublicProfilerankCategoryUnion, Key> = {
+    A: "v2.features.profileCard.rankCategories.a",
+    B: "v2.features.profileCard.rankCategories.b",
+    C: "v2.features.profileCard.rankCategories.c",
+    D: "v2.features.profileCard.rankCategories.d",
+    E: "v2.features.profileCard.rankCategories.e",
+    F: "v2.features.profileCard.rankCategories.f",
+  };
 
   return (
     <Card className={cn("relative z-[1] flex w-full flex-col gap-4", className)} background="base" border="multiColor">
@@ -50,23 +63,38 @@ export function ProfileCard(props: TProfileCard.Props) {
         <Avatar src={avatarUrl} alt={login} size="3xl" />
         <div className="flex w-full flex-col gap-1">
           <div className="flex justify-between gap-2">
-            <Typography variant="title-m" className="line-clamp-1">
-              {login}
+            <Typography variant="title-m" className="line-clamp-1 capitalize">
+              {isLoginClickable ? (
+                <BaseLink
+                  href={NEXT_ROUTER.newPublicProfile.root(login)}
+                  className="transition-all hover:text-spacePurple-500"
+                >
+                  {login}
+                </BaseLink>
+              ) : (
+                <>{login}</>
+              )}
             </Typography>
             <Typography variant="title-m">{getOrdinalSuffix(rank)}</Typography>
           </div>
           <div className="flex justify-between gap-2">
-            <Typography variant="title-s" className="line-clamp-2 text-spaceBlue-100">
-              {rankCategory}
-            </Typography>
-            <Typography
-              variant="body-s"
-              className="whitespace-nowrap text-spaceBlue-100"
-              translate={{
-                token: "v2.features.profileCard.rank",
-                params: { count: rankPercentileCount },
-              }}
-            />
+            {rankCategory ? (
+              <Typography
+                variant="title-s"
+                className="line-clamp-2 text-spaceBlue-100"
+                translate={{ token: rankCategoryMapping[rankCategory] }}
+              />
+            ) : null}
+            {rankPercentile && rankPercentile !== 100 ? (
+              <Typography
+                variant="body-s"
+                className="whitespace-nowrap text-spaceBlue-100"
+                translate={{
+                  token: "v2.features.profileCard.rank",
+                  params: { count: `${rankPercentile}` },
+                }}
+              />
+            ) : null}
           </div>
           <div className="flex flex-wrap items-center gap-1">
             <ProfileStatItem
