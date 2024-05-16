@@ -23,8 +23,8 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
       <Suspense fallback={<ProfileOverviewLoading />}>
         <ProfileOverview githubLogin={params.githubLogin} />
       </Suspense>
-      <div className="flex w-full flex-row items-start justify-start gap-6">
-        <div className="flex flex-1 flex-col items-start justify-start gap-10">
+      <div className="flex w-full flex-col items-start justify-start gap-10 xl:flex-row xl:gap-6">
+        <div className="grid w-full gap-10 xl:flex-1">
           <Suspense fallback={<LanguagesSectionLoading />}>
             <LanguagesSection githubUserId={userProfile.githubUserId} />
           </Suspense>
@@ -32,7 +32,7 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
             <EcosystemsSection githubUserId={userProfile.githubUserId} />
           </Suspense>
         </div>
-        <div className="flex w-1/3 flex-col items-start justify-start gap-6">
+        <div className="grid w-full gap-x-6 gap-y-10 md:grid-cols-2 xl:w-1/3 xl:grid-cols-1 xl:gap-6">
           <Suspense fallback={<ActivityGraphLoading />}>
             <ActivityGraph githubUserId={userProfile.githubUserId} />
           </Suspense>
