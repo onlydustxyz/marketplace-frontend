@@ -45,20 +45,10 @@ const MenuItem = ({ onClick, isProfile, children, ...rest }: MenuItemProps) => (
 interface Props extends TUseMenu.Return {
   avatarUrl: string | null;
   login: string;
-  githubUserId?: number;
   hideProfileItems?: boolean;
 }
 
-export function View({
-  avatarUrl,
-  login,
-  hideProfileItems,
-  labelToken,
-  redirection,
-  errorColor,
-  error,
-  githubUserId,
-}: Props) {
+export function View({ avatarUrl, login, hideProfileItems, labelToken, redirection, errorColor, error }: Props) {
   const { T } = useIntl();
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -163,8 +153,8 @@ export function View({
             )}
 
             <div>
-              {githubUserId ? (
-                <BaseLink href={NEXT_ROUTER.publicProfile.root(githubUserId.toString())}>
+              {login ? (
+                <BaseLink href={NEXT_ROUTER.publicProfile.root(login)}>
                   <MenuItem>
                     <Icon remixName="ri-user-line" size={20} />
                     <div className="grow">

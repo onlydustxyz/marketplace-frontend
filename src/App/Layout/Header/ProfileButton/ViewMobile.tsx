@@ -179,9 +179,9 @@ export function ViewMobile({
           )}
 
           <div>
-            {githubUserId ? (
+            {login ? (
               <BaseLink
-                href={NEXT_ROUTER.publicProfile.root(githubUserId.toString())}
+                href={NEXT_ROUTER.publicProfile.root(login)}
                 onClick={() => setPanelOpen(false)}
                 className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
               >
