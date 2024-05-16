@@ -49,7 +49,11 @@ export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="flex w-full flex-row items-center justify-between gap-1">
-        <Typography variant="title-m" className="flex-1" translate={{ token: "v2.pages.publicProfile.activity" }} />
+        <Typography
+          variant="title-m"
+          className="flex-1"
+          translate={{ token: "v2.pages.publicProfile.activity.title" }}
+        />
         <Filter ecosystems={ecosystems} onChange={onEcosystemChange} value={selectedEcosystemId} />
       </div>
       <Card background={"base"} className="flex flex-row items-center justify-center">
