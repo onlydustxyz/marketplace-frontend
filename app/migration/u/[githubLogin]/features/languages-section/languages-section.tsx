@@ -1,6 +1,7 @@
+import { usersApiClient } from "api-client/resources/users";
+
 import { ContributionList } from "app/migration/u/[githubLogin]/components/contribution-list/contribution-list";
 import { DetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion";
-import { TDetailsAccordion } from "app/migration/u/[githubLogin]/features/details-accordion/details-accordion.types";
 
 import { PreRenderOnServer } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
@@ -8,125 +9,33 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TLanguagesSection } from "./languages-section.types";
 
-export function LanguagesSection(_: TLanguagesSection.Props) {
-  const languagesMock = [
-    {
-      name: "JavaScript",
-      avatarUrl: "https://develop-onlydust-app-images.s3.eu-west-1.amazonaws.com/abf86b52ea37add55e4deda258bade06.jpeg",
-      rankStatus: "GREEN",
-      contributionCount: 100,
-      projectsCount: 3,
-      rewardsCount: 88,
-      earnedUsdAmount: 100,
-      projects: [
-        {
-          name: "Bretzel",
-          slug: "bretzel",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=96,height=96,fit=cover/https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-          hasMissingGithubAppInstallation: false,
-          hasPendingInvitation: false,
-        },
-        {
-          name: "Pizzeria Yoshi !",
-          slug: "Pizzeria Yoshi !",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=48,height=48,fit=cover/https://onlydust-app-images.s3.eu-west-1.amazonaws.com/14305950553200301786.png",
-          hasMissingGithubAppInstallation: false,
-          hasPendingInvitation: true,
-        },
-        {
-          name: "Taco Tuesday",
-          slug: "Taco Tuesday",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=48,height=48,fit=cover/https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6987338668519888809.jpg",
-          hasMissingGithubAppInstallation: true,
-          hasPendingInvitation: false,
-        },
-        {
-          name: "Taco Tuesday",
-          slug: "Taco Tuesday",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=48,height=48,fit=cover/https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6987338668519888809.jpg",
-          hasMissingGithubAppInstallation: true,
-          hasPendingInvitation: false,
-        },
-        {
-          name: "Taco Tuesday",
-          slug: "Taco Tuesday",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=48,height=48,fit=cover/https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6987338668519888809.jpg",
-          hasMissingGithubAppInstallation: true,
-          hasPendingInvitation: false,
-        },
-        {
-          name: "Taco Tuesday",
-          slug: "Taco Tuesday",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=48,height=48,fit=cover/https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6987338668519888809.jpg",
-          hasMissingGithubAppInstallation: true,
-          hasPendingInvitation: false,
-        },
-        {
-          name: "Taco Tuesday",
-          slug: "Taco Tuesday",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=48,height=48,fit=cover/https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6987338668519888809.jpg",
-          hasMissingGithubAppInstallation: true,
-          hasPendingInvitation: false,
-        },
-        {
-          name: "Taco Tuesday",
-          slug: "Taco Tuesday",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=48,height=48,fit=cover/https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6987338668519888809.jpg",
-          hasMissingGithubAppInstallation: true,
-          hasPendingInvitation: false,
-        },
-      ],
-    },
-    {
-      name: "Rust",
-      avatarUrl: "https://develop-onlydust-app-images.s3.eu-west-1.amazonaws.com/abf86b52ea37add55e4deda258bade06.jpeg",
-      rankStatus: "bad",
-      contributionCount: 100,
-      projectsCount: 3,
-      rewardsCount: 88,
-      earnedUsdAmount: 100,
-      projects: [
-        {
-          name: "Bretzel",
-          slug: "Bretzel",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=96,height=96,fit=cover/https://staging-onlydust-app-images.s3.eu-west-1.amazonaws.com/4e53ae9457d9d0ae336ee7cbc183f8a3.png",
-          hasMissingGithubAppInstallation: false,
-          hasPendingInvitation: false,
-        },
-        {
-          name: "Pizzeria Yoshi !",
-          slug: "Pizzeria Yoshi !",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=48,height=48,fit=cover/https://onlydust-app-images.s3.eu-west-1.amazonaws.com/14305950553200301786.png",
-          hasMissingGithubAppInstallation: false,
-          hasPendingInvitation: true,
-        },
-        {
-          name: "Taco Tuesday",
-          slug: "Taco Tuesday",
-          avatarUrl:
-            "https://app.onlydust.com/cdn-cgi/image/width=48,height=48,fit=cover/https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6987338668519888809.jpg",
-          hasMissingGithubAppInstallation: false,
-          hasPendingInvitation: false,
-        },
-      ],
-    },
-  ] as TDetailsAccordion.Detail[];
+export async function LanguagesSection(props: TLanguagesSection.Props) {
+  const { githubUserId } = props;
+
+  const languages = await usersApiClient.fetch
+    .getUserPublicLanguages(githubUserId, {
+      pageSize: 10,
+      pageIndex: 0,
+    })
+    .request()
+    .then(res =>
+      res.languages.map(language => ({
+        name: language.language.name,
+        avatarUrl: language.language.logoUrl,
+        contributingStatus: language.contributingStatus,
+        contributionCount: language.contributionCount,
+        projectsCount: language.projects.length,
+        rewardCount: language.rewardCount,
+        totalEarnedUsd: language.totalEarnedUsd,
+        projects: language.projects,
+      }))
+    );
 
   return (
     <Flex direction="col" width="full" className="gap-4">
       <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.languagesDetails" }} />
 
-      <DetailsAccordion details={languagesMock}>
+      <DetailsAccordion details={languages}>
         <ContributionList />
       </DetailsAccordion>
 

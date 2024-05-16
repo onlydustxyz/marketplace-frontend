@@ -26,7 +26,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <body>
         <Providers>
-          <div className="z-[1] flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
+          <div className="z-[1] flex h-[calc(100dvh)] w-screen flex-col bg-space-gradient xl:fixed">
             <Header />
             <SpaceBackground />
             {children}

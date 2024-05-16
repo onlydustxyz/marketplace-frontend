@@ -12,6 +12,7 @@
   },
   "activity": "Activity",
   "languagesDetails": "Details by languages",
+  "ecosystemsDetails": "Details by ecosystems",
   "totalEarned": "Total earned by project",
   "workDistribution": "Work distribution",
   "totalEarnedOther": "Other"

@@ -26,11 +26,11 @@ export function DetailsAccordion({ children, details }: TDetailsAccordion.Accord
               avatarUrl={detail.avatarUrl}
               name={detail.name}
               projects={detail.projects}
-              rankStatus={detail.rankStatus}
+              contributingStatus={detail.contributingStatus}
               projectsCount={detail.projectsCount}
               contributionCount={detail.contributionCount}
-              rewardsCount={detail.rewardsCount}
-              earnedUsdAmount={detail.earnedUsdAmount}
+              rewardCount={detail.rewardCount}
+              totalEarnedUsd={detail.totalEarnedUsd}
             />
           }
           aria-label={detail.name}

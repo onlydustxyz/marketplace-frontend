@@ -8,21 +8,20 @@ import { Key } from "hooks/translate/use-translate";
 
 export namespace TDetailsAccordion {
   interface Project {
+    id: string;
     name: string;
     slug: string;
-    avatarUrl: string;
-    hasMissingGithubAppInstallation: boolean;
-    hasPendingInvitation: boolean;
+    logoUrl: string;
   }
 
   export interface Detail {
     name: string;
     avatarUrl: string;
-    rankStatus: TDotsStatus.Props["status"];
+    contributingStatus: TDotsStatus.Props["status"];
     contributionCount: number;
     projectsCount: number;
-    rewardsCount: number;
-    earnedUsdAmount: number;
+    rewardCount: number;
+    totalEarnedUsd: number;
     projects: Project[];
   }
 

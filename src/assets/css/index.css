@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 @layer base {
+
+
   body {
     margin: 0;
     @apply font-walsheim;
