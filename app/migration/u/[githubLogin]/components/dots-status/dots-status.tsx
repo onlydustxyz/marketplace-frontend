@@ -9,19 +9,19 @@ export function DotsStatus({ status }: TDotsStatus.Props) {
     <Flex alignItems="center" className="gap-1">
       <span
         className={cn("h-2 w-2 rounded-full border border-card-border-heavy", {
-          "border-none bg-github-red-light": status === "bad",
+          "border-none bg-github-red-light": status === "RED",
         })}
       />
 
       <span
         className={cn("h-2 w-2 rounded-full border border-card-border-heavy", {
-          "border-none bg-orange-500": status === "neutral",
+          "border-none bg-orange-500": status === "ORANGE",
         })}
       />
 
       <span
         className={cn("h-2 w-2 rounded-full border border-card-border-heavy", {
-          "border-none bg-struggleBadge-bar-solid-green": status === "good",
+          "border-none bg-struggleBadge-bar-solid-green": status === "GREEN",
         })}
       />
     </Flex>

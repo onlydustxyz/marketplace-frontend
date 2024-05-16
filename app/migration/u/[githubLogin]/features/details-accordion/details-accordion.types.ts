@@ -16,7 +16,7 @@ export namespace TDetailsAccordion {
   export interface Detail {
     name: string;
     avatarUrl: string;
-    rankStatus: "good" | "neutral" | "bad";
+    rankStatus: "RED" | "ORANGE" | "GREEN";
     contributionCount: number;
     projectsCount: number;
     rewardsCount: number;

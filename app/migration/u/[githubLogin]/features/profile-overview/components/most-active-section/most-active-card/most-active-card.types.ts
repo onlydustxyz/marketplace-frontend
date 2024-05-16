@@ -5,6 +5,6 @@ export namespace TMostActiveCard {
     contributionCount: number;
     rewardCount: number;
     totalUsdEquivalent: number;
-    status: "good" | "neutral" | "bad";
+    status: "RED" | "ORANGE" | "GREEN";
   }
 }
