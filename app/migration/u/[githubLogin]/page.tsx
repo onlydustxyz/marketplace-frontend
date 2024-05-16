@@ -2,7 +2,6 @@ import { usersApiClient } from "api-client/resources/users";
 import { Suspense } from "react";
 
 import { ActivityGraph } from "app/migration/u/[githubLogin]/features/activity-graph/activity-graph";
-import { ActivityGraphLoading } from "app/migration/u/[githubLogin]/features/activity-graph/activity-graph.loading";
 import { EcosystemsSection } from "app/migration/u/[githubLogin]/features/ecosystems-section/ecosystems-section";
 import { EcosystemsSectionLoading } from "app/migration/u/[githubLogin]/features/ecosystems-section/ecosystems-section.loading";
 import { LanguagesSection } from "app/migration/u/[githubLogin]/features/languages-section/languages-section";
