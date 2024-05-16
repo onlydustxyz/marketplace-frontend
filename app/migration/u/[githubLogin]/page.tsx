@@ -3,7 +3,9 @@ import { Suspense } from "react";
 
 import { ActivityGraph } from "app/migration/u/[githubLogin]/features/activity-graph/activity-graph";
 import { EcosystemsSection } from "app/migration/u/[githubLogin]/features/ecosystems-section/ecosystems-section";
+import { EcosystemsSectionLoading } from "app/migration/u/[githubLogin]/features/ecosystems-section/ecosystems-section.loading";
 import { LanguagesSection } from "app/migration/u/[githubLogin]/features/languages-section/languages-section";
+import { LanguagesSectionLoading } from "app/migration/u/[githubLogin]/features/languages-section/languages-section.loading";
 import { ProfileOverviewLoading } from "app/migration/u/[githubLogin]/features/profile-overview/profile-overview.loading";
 import { TotalEarnedGraph } from "app/migration/u/[githubLogin]/features/total-earned-graph/total-earned-graph";
 import { WorkDistributionGraph } from "app/migration/u/[githubLogin]/features/work-distribution-graph/work-distribution-graph";
@@ -20,10 +22,10 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
       </Suspense>
       <div className="flex w-full flex-row items-start justify-start gap-6">
         <div className="flex flex-1 flex-col items-start justify-start gap-10">
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<LanguagesSectionLoading />}>
             <LanguagesSection githubUserId={userProfile.githubUserId} />
           </Suspense>
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<EcosystemsSectionLoading />}>
             <EcosystemsSection githubUserId={userProfile.githubUserId} />
           </Suspense>
         </div>
