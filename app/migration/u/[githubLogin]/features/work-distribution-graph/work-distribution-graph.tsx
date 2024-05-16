@@ -22,9 +22,9 @@ export async function WorkDistributionGraph({ githubUserId }: TWorkDistributionG
 
   return (
     <Flex direction="col" width="full" className="gap-4">
-      <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.workDistribution" }} />
+      <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.workDistribution.title" }} />
 
-      <Card>
+      <Card background={"base"}>
         <PieChart
           data={data}
           pieProps={{

@@ -10,10 +10,19 @@
     "rewards": "rewards",
     "usd": "USD"
   },
-  "activity": "Activity",
+  "activity": {
+    "title": "Activity",
+    "error": "Unable to fetch activity data."
+  },
+  "workDistribution": {
+    "title": "Work distribution",
+    "error": "Unable to fetch work distribution data."
+  },
+  "totalEarned": {
+    "title": "Total earned by project",
+    "error": "Unable to fetch total earned data."
+  },
   "languagesDetails": "Details by languages",
   "ecosystemsDetails": "Details by ecosystems",
-  "totalEarned": "Total earned by project",
-  "workDistribution": "Work distribution",
   "totalEarnedOther": "Other"
 }

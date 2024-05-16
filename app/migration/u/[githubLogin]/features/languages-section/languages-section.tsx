@@ -30,6 +30,8 @@ export async function LanguagesSection(props: TLanguagesSection.Props) {
       }))
     );
 
+  if (!languages?.length) return null;
+
   return (
     <Flex direction="col" width="full" className="gap-4">
       <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.languagesDetails" }} />
