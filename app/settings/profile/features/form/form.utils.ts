@@ -34,18 +34,8 @@ export function createContact({
 }
 
 export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Data {
-  const {
-    firstName,
-    lastName,
-    avatarUrl,
-    cover,
-    location,
-    bio,
-    website,
-    contacts,
-    technologies,
-    allocatedTimeToContribute,
-  } = data;
+  const { firstName, lastName, avatarUrl, location, bio, website, contacts, technologies, allocatedTimeToContribute } =
+    data;
 
   function getContactInfo(contact: TProfileForm.Contact["channel"]) {
     const contactInfo = contacts?.find(contactInfo => contactInfo.channel === contact);
@@ -60,7 +50,6 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
     firstName: firstName ?? "",
     lastName: lastName ?? "",
     avatarUrl: avatarUrl ?? "",
-    cover: cover ?? "BLUE",
     location: location ?? "",
     bio: bio ?? "",
     website: website ?? "",
@@ -80,7 +69,6 @@ export function formatToSchema(data: TProfileForm.Data) {
     firstName,
     lastName,
     avatarUrl,
-    cover,
     location,
     bio,
     website,
@@ -98,7 +86,6 @@ export function formatToSchema(data: TProfileForm.Data) {
     firstName,
     lastName,
     avatarUrl,
-    cover,
     location,
     bio,
     website,

@@ -3,21 +3,6 @@ import { UseUpdateProfileBody } from "src/api/me/mutations";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 import { LanguageMap } from "src/types";
 
-const translateProfileCover = (cover: string): ProfileCover | undefined => {
-  switch (cover) {
-    case "CYAN":
-      return ProfileCover.Cyan;
-    case "MAGENTA":
-      return ProfileCover.Magenta;
-    case "YELLOW":
-      return ProfileCover.Yellow;
-    case "BLUE":
-      return ProfileCover.Blue;
-    default:
-      return undefined;
-  }
-};
-
 export enum Channel {
   Discord = "DISCORD",
   Email = "EMAIL",
@@ -62,12 +47,11 @@ export type UserProfileInfo = {
   technologies: LanguageMap;
   weeklyAllocatedTime: components["schemas"]["PrivateUserProfileResponse"]["allocatedTimeToContribute"];
   lookingForAJob: boolean;
-  cover: ProfileCover;
   avatarUrl?: string;
 };
 
 export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileInfo => {
-  const { bio, location, website, login, contacts, technologies, allocatedTimeToContribute, isLookingForAJob, cover } =
+  const { bio, location, website, login, contacts, technologies, allocatedTimeToContribute, isLookingForAJob } =
     profile;
 
   const getContactInfo = (channel: Channel) => contacts?.find(contact => contact.channel === channel)?.contact;
@@ -97,7 +81,6 @@ export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileI
     technologies: technologies ?? {},
     weeklyAllocatedTime: allocatedTimeToContribute ?? AllocatedTime.None,
     lookingForAJob: isLookingForAJob ?? false,
-    cover: translateProfileCover(cover || "") ?? ProfileCover.Blue,
   };
 };
 
@@ -106,7 +89,6 @@ export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileB
     bio,
     avatarUrl,
     lookingForAJob,
-    cover,
     location,
     website,
     weeklyAllocatedTime,
@@ -139,7 +121,6 @@ export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileB
     isLookingForAJob: lookingForAJob,
     website,
     allocatedTimeToContribute: weeklyAllocatedTime as AllocatedTime,
-    cover,
     ...(avatarUrl ? { avatarUrl } : {}),
   };
 };
