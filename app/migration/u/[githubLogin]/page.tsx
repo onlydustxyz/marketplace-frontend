@@ -4,7 +4,6 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import { ActivityGraph } from "app/migration/u/[githubLogin]/features/activity-graph/activity-graph";
 import { ActivityGraphError } from "app/migration/u/[githubLogin]/features/activity-graph/activity-graph.error";
-import { ActivityGraphLoading } from "app/migration/u/[githubLogin]/features/activity-graph/activity-graph.loading";
 import { EcosystemsSection } from "app/migration/u/[githubLogin]/features/ecosystems-section/ecosystems-section";
 import { EcosystemsSectionLoading } from "app/migration/u/[githubLogin]/features/ecosystems-section/ecosystems-section.loading";
 import { LanguagesSection } from "app/migration/u/[githubLogin]/features/languages-section/languages-section";
@@ -23,7 +22,11 @@ import { ProfileOverview } from "./features/profile-overview/profile-overview";
 
 export default async function PublicProfilePage({ params }: { params: { githubLogin: string } }) {
   const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(params.githubLogin).request();
-
+  const ecosystems = (userProfile?.ecosystems || []).map(ecosystem => ({
+    name: ecosystem.name,
+    logoUrl: ecosystem.logoUrl,
+    id: ecosystem.id,
+  }));
   return (
     <>
       <PosthogOnMount
@@ -46,9 +49,7 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
           </div>
           <div className="grid w-full gap-x-6 gap-y-10 md:grid-cols-2 xl:w-1/3 xl:grid-cols-1 xl:gap-6">
             <ErrorBoundary fallback={<ActivityGraphError />}>
-              <Suspense fallback={<ActivityGraphLoading />}>
-                <ActivityGraph githubUserId={userProfile.githubUserId} />
-              </Suspense>
+              <ActivityGraph githubUserId={userProfile.githubUserId} ecosystems={ecosystems} />
             </ErrorBoundary>
 
             <ErrorBoundary fallback={<TotalEarnedGraphError />}>

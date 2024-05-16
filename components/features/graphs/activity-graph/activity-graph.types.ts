@@ -27,6 +27,7 @@ export namespace TActivityGraph {
   export interface Props<T> {
     endDate?: Date;
     weekData?: weeksData<T>;
+    isLoading?: boolean;
   }
 
   export interface UseActivityGraph {

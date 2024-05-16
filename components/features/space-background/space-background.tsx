@@ -80,7 +80,7 @@ function SpaceBackground() {
     return <div className="od-space-background fixed inset-0 -z-[1]" />;
   }
 
-  return <canvas ref={canvasRef} className="fixed inset-0 -z-[1] bg-space-gradient" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 -z-[1]" />;
 }
 
 export default withClientOnly(SpaceBackground);

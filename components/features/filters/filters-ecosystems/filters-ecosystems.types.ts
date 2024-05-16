@@ -8,5 +8,6 @@ export namespace TFiltersEcosystems {
     hideLabel?: boolean;
     hideIcon?: boolean;
     isBlueBackground?: boolean;
+    multiple?: boolean;
   }
 }
