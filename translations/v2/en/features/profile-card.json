@@ -26,5 +26,13 @@
       "one": "Lead on 1 project",
       "many": "Lead on __count__ projects"
     }
+  },
+  "rankCategories": {
+    "a": "Onlydust legend",
+    "b": "Onlydust master",
+    "c": "Onlydust expert",
+    "d": "Onlydust advanced",
+    "e": "Onlydust intermediate",
+    "f": "Onlydust beginner"
   }
 }

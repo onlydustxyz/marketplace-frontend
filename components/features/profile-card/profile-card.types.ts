@@ -1,4 +1,5 @@
 import { PopoverProps } from "@nextui-org/react";
+import { PublicProfilerankCategoryUnion } from "api-client/resources/users/types";
 import { PropsWithChildren } from "react";
 import { VariantProps } from "tailwind-variants";
 
@@ -20,7 +21,7 @@ export namespace TProfileCard {
     className?: string;
     avatarUrl: string;
     login: string;
-    rankCategory?: string;
+    rankCategory?: PublicProfilerankCategoryUnion;
     contributionCount?: number;
     rewardCount?: number;
     contributedProjectCount?: number;
