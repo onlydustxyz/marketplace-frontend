@@ -13,6 +13,8 @@ export function ProfileCardPopover({ children, githubId, isOpen, ...PopOverProps
   });
 
   const renderContent = useMemo(() => {
+    if (!isOpen) return null;
+
     if (userProfile) {
       return (
         <>
@@ -32,7 +34,7 @@ export function ProfileCardPopover({ children, githubId, isOpen, ...PopOverProps
       );
     }
     return <ProfileCardLoading />;
-  }, [userProfile]);
+  }, [userProfile, isOpen]);
 
   return (
     <Popover
