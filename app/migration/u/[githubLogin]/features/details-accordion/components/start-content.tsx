@@ -7,8 +7,16 @@ import { RectAvatar } from "components/ds/rect-avatar/rect-avatar";
 import { Typography } from "components/layout/typography/typography";
 
 export function StartContent(props: TDetailsAccordion.StartContentProps) {
-  const { name, avatarUrl, rankStatus, projects, contributionCount, projectsCount, rewardsCount, earnedUsdAmount } =
-    props;
+  const {
+    name,
+    avatarUrl,
+    contributingStatus,
+    projects,
+    contributionCount,
+    projectsCount,
+    rewardCount,
+    totalEarnedUsd,
+  } = props;
   const remainingCount = Math.max(0, projects.length - 5);
 
   return (
@@ -31,7 +39,7 @@ export function StartContent(props: TDetailsAccordion.StartContentProps) {
           <Typography variant="title-m" className="line-clamp-1">
             {name}
           </Typography>
-          <DotsStatus status={rankStatus} />
+          <DotsStatus status={contributingStatus} />
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap gap-2">
@@ -49,13 +57,13 @@ export function StartContent(props: TDetailsAccordion.StartContentProps) {
           <div className="flex flex-wrap gap-2">
             <InfoItem
               icon="ri-medal-2-line"
-              count={rewardsCount}
+              count={rewardCount}
               labelToken="v2.features.detailsAccordion.contributions"
             />
             <InfoItem
               icon="ri-money-dollar-circle-line"
-              count={earnedUsdAmount}
-              labelToken="v2.features.detailsAccordion.projects"
+              count={totalEarnedUsd}
+              labelToken="v2.features.detailsAccordion.usdInTotal"
             />
           </div>
         </div>

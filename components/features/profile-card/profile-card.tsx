@@ -102,7 +102,7 @@ export function ProfileCard(props: TProfileCard.Props) {
               token="v2.features.profileCard.counters.contributionCount"
               count={contributionCount}
             />
-            <span className="mb-1 align-top font-bold">{"."}</span>
+            <span>{"•"}</span>
             <ProfileStatItem
               icon="ri-medal-2-fill"
               token="v2.features.profileCard.counters.rewardCount"
