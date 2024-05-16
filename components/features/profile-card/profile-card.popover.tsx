@@ -2,6 +2,7 @@ import { usersApiClient } from "api-client/resources/users";
 import { useMemo } from "react";
 
 import { Popover } from "components/ds/modals/popover/popover";
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { ProfileCard } from "components/features/profile-card/profile-card";
 import { ProfileCardLoading } from "components/features/profile-card/profile-card.loading";
 import { TProfileCard } from "components/features/profile-card/profile-card.types";
@@ -12,18 +13,28 @@ export function ProfileCardPopover({ children, githubId, isOpen, ...PopOverProps
   });
 
   const renderContent = useMemo(() => {
+    if (!isOpen) return null;
+
     if (userProfile) {
       return (
-        <ProfileCard
-          login={userProfile.login}
-          avatarUrl={userProfile.avatarUrl}
-          {...userProfile.statsSummary}
-          isLoginClickable
-        />
+        <>
+          <PosthogOnMount
+            eventName={"contributor_viewed"}
+            params={{ id: userProfile.id, type: "card" }}
+            paramsReady={Boolean(userProfile.id)}
+          />
+          <ProfileCard
+            login={userProfile.login}
+            avatarUrl={userProfile.avatarUrl}
+            {...userProfile.statsSummary}
+            isLoginClickable
+          />
+          ;
+        </>
       );
     }
     return <ProfileCardLoading />;
-  }, [userProfile]);
+  }, [userProfile, isOpen]);
 
   return (
     <Popover

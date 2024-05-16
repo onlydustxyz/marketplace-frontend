@@ -13,37 +13,46 @@ import { TotalEarnedGraphLoading } from "app/migration/u/[githubLogin]/features/
 import { WorkDistributionGraph } from "app/migration/u/[githubLogin]/features/work-distribution-graph/work-distribution-graph";
 import { WorkDistributionGraphLoading } from "app/migration/u/[githubLogin]/features/work-distribution-graph/work-distribution-graph.loading";
 
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
+
 import { ProfileOverview } from "./features/profile-overview/profile-overview";
 
 export default async function PublicProfilePage({ params }: { params: { githubLogin: string } }) {
   const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(params.githubLogin).request();
 
   return (
-    <div className="flex w-full flex-col items-start justify-start gap-10">
-      <Suspense fallback={<ProfileOverviewLoading />}>
-        <ProfileOverview githubLogin={params.githubLogin} />
-      </Suspense>
-      <div className="flex w-full flex-col items-start justify-start gap-10 xl:flex-row xl:gap-6">
-        <div className="grid w-full gap-10 xl:flex-1">
-          <Suspense fallback={<LanguagesSectionLoading />}>
-            <LanguagesSection githubUserId={userProfile.githubUserId} />
-          </Suspense>
-          <Suspense fallback={<EcosystemsSectionLoading />}>
-            <EcosystemsSection githubUserId={userProfile.githubUserId} />
-          </Suspense>
-        </div>
-        <div className="grid w-full gap-x-6 gap-y-10 md:grid-cols-2 xl:w-1/3 xl:grid-cols-1 xl:gap-6">
-          <Suspense fallback={<ActivityGraphLoading />}>
-            <ActivityGraph githubUserId={userProfile.githubUserId} />
-          </Suspense>
-          <Suspense fallback={<TotalEarnedGraphLoading />}>
-            <TotalEarnedGraph githubUserId={userProfile.githubUserId} />
-          </Suspense>
-          <Suspense fallback={<WorkDistributionGraphLoading />}>
-            <WorkDistributionGraph githubUserId={userProfile.githubUserId} />
-          </Suspense>
+    <>
+      <PosthogOnMount
+        eventName={"contributor_viewed"}
+        params={{ id: userProfile.id, type: "full" }}
+        paramsReady={Boolean(userProfile.id)}
+      />
+      <div className="flex w-full flex-col items-start justify-start gap-10">
+        <Suspense fallback={<ProfileOverviewLoading />}>
+          <ProfileOverview githubLogin={params.githubLogin} />
+        </Suspense>
+        <div className="flex w-full flex-col items-start justify-start gap-10 xl:flex-row xl:gap-6">
+          <div className="grid w-full gap-10 xl:flex-1">
+            <Suspense fallback={<LanguagesSectionLoading />}>
+              <LanguagesSection githubUserId={userProfile.githubUserId} />
+            </Suspense>
+            <Suspense fallback={<EcosystemsSectionLoading />}>
+              <EcosystemsSection githubUserId={userProfile.githubUserId} />
+            </Suspense>
+          </div>
+          <div className="grid w-full gap-x-6 gap-y-10 md:grid-cols-2 xl:w-1/3 xl:grid-cols-1 xl:gap-6">
+            <Suspense fallback={<ActivityGraphLoading />}>
+              <ActivityGraph githubUserId={userProfile.githubUserId} />
+            </Suspense>
+            <Suspense fallback={<TotalEarnedGraphLoading />}>
+              <TotalEarnedGraph githubUserId={userProfile.githubUserId} />
+            </Suspense>
+            <Suspense fallback={<WorkDistributionGraphLoading />}>
+              <WorkDistributionGraph githubUserId={userProfile.githubUserId} />
+            </Suspense>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
