@@ -21,7 +21,9 @@ import { PosthogOnMount } from "components/features/posthog/components/posthog-o
 import { ProfileOverview } from "./features/profile-overview/profile-overview";
 
 export default async function PublicProfilePage({ params }: { params: { githubLogin: string } }) {
-  const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(params.githubLogin).request();
+  const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(params.githubLogin).request({
+    next: { revalidate: 120 },
+  });
   const ecosystems = (userProfile?.ecosystems || []).map(ecosystem => ({
     name: ecosystem.name,
     logoUrl: ecosystem.logoUrl,
@@ -36,7 +38,7 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
       />
       <div className="flex w-full flex-col items-start justify-start gap-10">
         <Suspense fallback={<ProfileOverviewLoading />}>
-          <ProfileOverview githubLogin={params.githubLogin} />
+          <ProfileOverview userProfile={userProfile} />
         </Suspense>
         <div className="flex w-full flex-col items-start justify-start gap-10 xl:flex-row xl:gap-6">
           <div className="grid w-full gap-10 xl:flex-1">
