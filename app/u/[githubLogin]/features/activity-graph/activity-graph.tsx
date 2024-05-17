@@ -48,7 +48,7 @@ export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="flex w-full flex-row items-center justify-between gap-1">
+      <div className="flex w-full flex-row items-center justify-between gap-10 sm:gap-2">
         <Typography
           variant="title-m"
           className="flex-1"

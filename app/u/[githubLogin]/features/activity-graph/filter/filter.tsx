@@ -46,7 +46,7 @@ export function Filter({ ecosystems, value, onChange }: TFilter.Props) {
       items={_ecosystems}
       onSelectionChange={handleSponsorChange}
       classNames={{
-        base: "w-fit sm:w-[250px]",
+        base: "w-full sm:w-[250px]",
       }}
       size={"sm"}
     />
