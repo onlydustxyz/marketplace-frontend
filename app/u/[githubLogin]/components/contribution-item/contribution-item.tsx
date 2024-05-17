@@ -39,7 +39,7 @@ export function ContributionItem({ contribution, project }: TContributionItem.Pr
         </Link>
       </div>
       <div className="flex items-center justify-end gap-3">
-        {!contribution?.rewardIds?.length ? (
+        {contribution?.rewardIds?.length ? (
           <div className="rounded-full border border-card-border-light bg-card-background-light px-3">
             <Icon remixName="ri-medal-2-fill" className="text-orange-400" size={14} />
           </div>

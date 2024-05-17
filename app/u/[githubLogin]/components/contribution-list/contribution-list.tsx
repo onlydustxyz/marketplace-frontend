@@ -12,7 +12,12 @@ export function ContributionList({ githubUserId, languageId, ecosystemId }: TCon
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
     usersApiClient.queries.useGetUserContributionsByGithubId(
       githubUserId,
-      { ...(languageId ? { languages: [languageId] } : {}), ...(ecosystemId ? { ecosystems: [ecosystemId] } : {}) },
+      {
+        ...(languageId ? { languages: [languageId] } : {}),
+        ...(ecosystemId ? { ecosystems: [ecosystemId] } : {}),
+        statuses: ["COMPLETED"],
+        direction: "DESC",
+      },
       {
         pageSize: "5",
         enabled: !!githubUserId && (!!languageId || !!ecosystemId),
