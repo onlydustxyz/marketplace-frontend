@@ -34,6 +34,7 @@ export namespace TProfileCard {
   export interface ProfilePopoverProps extends PropsWithChildren, basePopOverProps {
     className?: string;
     githubId: number;
+    isPreload?: boolean;
   }
 
   export interface LoadingProps extends Variants {

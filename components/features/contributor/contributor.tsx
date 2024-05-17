@@ -1,5 +1,6 @@
+import { debounce } from "lodash";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { IMAGES } from "src/assets/img";
 import { cn } from "src/utils/cn";
@@ -26,16 +27,34 @@ export function Contributor({
   avatarProps,
 }: TContributor.Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPreload, setIsPreload] = useState(false);
   const router = useRouter();
   const Component = clickable ? "button" : "div";
+
+  const debounceOpen = useCallback(
+    debounce((open: boolean) => {
+      setIsOpen(open);
+    }, 500),
+    []
+  );
+
+  function toggleCard(open: boolean) {
+    setIsPreload(open);
+    debounceOpen(open);
+
+    if (!open) {
+      setIsOpen(false);
+    }
+  }
 
   return (
     <ProfileCardPopover
       githubId={githubUserId}
       isOpen={isOpen}
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-      onClick={() => setIsOpen(false)}
+      isPreload={isPreload}
+      onMouseEnter={() => toggleCard(true)}
+      onMouseLeave={() => toggleCard(false)}
+      onClick={() => toggleCard(false)}
     >
       <Component
         type={clickable ? "button" : undefined}
@@ -55,10 +74,10 @@ export function Contributor({
           variant="body-s"
           {...typograhy}
           className={cn({
-            "block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
+            "relative block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
           })}
         >
-          <div className="flex flex-row gap-1">
+          <div className="relative flex flex-row gap-1 truncate">
             <span>{login}</span>
             {isYou ? <Translate token="v2.features.contributors.isYou" /> : null}
             {hasPendingInvite && !isYou ? <Translate token="v2.features.contributors.hasPendingInvite" /> : null}
