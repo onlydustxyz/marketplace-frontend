@@ -104,9 +104,7 @@ export function Tabs<T extends Key>({ tabs, color, border, mobile, controlled, i
         }}
       >
         {tabs.map(({ children: _c, key, content, ...t }) => (
-          <NextTab {...t} key={key} title={<Tab color={color} content={content} {...t} key={key} />}>
-            {content}
-          </NextTab>
+          <NextTab {...t} key={key} title={<Tab color={color} content={content} {...t} key={key} />} />
         ))}
       </NextTabs>
       {getSelectedChildren ? <div className="h-3 w-full" /> : null}
