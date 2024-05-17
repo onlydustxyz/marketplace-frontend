@@ -67,7 +67,8 @@ export function SponsorProjectStack({ project, initialSponsor }: TSponsorProject
 
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [currencyAmount, setCurrencyAmount] = useState("");
-  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(initialCurrencySelection);
+  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>();
+
   useMutationAlert({
     mutation: restAllocation,
     success: {
@@ -84,6 +85,13 @@ export function SponsorProjectStack({ project, initialSponsor }: TSponsorProject
       setSelectedProjectId(project.id);
     }
   }, [project]);
+
+  useEffect(() => {
+    // Need to set initial value inside an effect because the value comes from a deferred source
+    if (initialCurrencySelection) {
+      setCurrencySelection(initialCurrencySelection);
+    }
+  }, [initialCurrencySelection]);
 
   const currencyAmountFloat = currencyAmount ? parseFloat(currencyAmount) : 0;
 
@@ -127,14 +135,11 @@ export function SponsorProjectStack({ project, initialSponsor }: TSponsorProject
   function handleSponsorChange(keys: Selection) {
     const [sponsorId] = keys;
 
-    // TODO sometimes currencySelection is undefined making form empty
-
     if (typeof sponsorId === "string") {
       setSponsorId(sponsorId);
 
-      // Reset amount and currency selection
+      // Reset amount, don't need to reset currency selection because it comes from a request depending on the sponsor id
       setCurrencyAmount("");
-      setCurrencySelection(initialCurrencySelection);
     }
   }
 
