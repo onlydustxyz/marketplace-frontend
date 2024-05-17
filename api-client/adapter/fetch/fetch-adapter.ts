@@ -76,13 +76,21 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   }
 
   private async getHeaders() {
-    const accessToken = await this.authAdapter?.getAccessToken();
-    return {
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    const defaultHeaders = {
       "Content-Type": "application/json",
       accept: "application/json",
       ...(this.impersonationHeaders || {}),
     };
+
+    try {
+      const accessToken = await this.authAdapter?.getAccessToken();
+      return {
+        ...defaultHeaders,
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      };
+    } catch {
+      return defaultHeaders;
+    }
   }
 
   private mapHttpStatusToString(statusCode: number): HttpStatusStrings {
