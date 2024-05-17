@@ -9,7 +9,9 @@ export async function MostActiveEcosystems({ githubUserId }: TMostActiveEcosyste
       pageSize: 2,
       pageIndex: 0,
     })
-    .request()
+    .request({
+      next: { revalidate: 120 },
+    })
     .then(res =>
       res.ecosystems?.map(ecosystem => ({
         logoUrl: ecosystem.ecosystem.logoUrl,

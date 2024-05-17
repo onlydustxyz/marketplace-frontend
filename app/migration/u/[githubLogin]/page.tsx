@@ -21,7 +21,9 @@ import { PosthogOnMount } from "components/features/posthog/components/posthog-o
 import { ProfileOverview } from "./features/profile-overview/profile-overview";
 
 export default async function PublicProfilePage({ params }: { params: { githubLogin: string } }) {
-  const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(params.githubLogin).request();
+  const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(params.githubLogin).request({
+    next: { revalidate: 120 },
+  });
   const ecosystems = (userProfile?.ecosystems || []).map(ecosystem => ({
     name: ecosystem.name,
     logoUrl: ecosystem.logoUrl,

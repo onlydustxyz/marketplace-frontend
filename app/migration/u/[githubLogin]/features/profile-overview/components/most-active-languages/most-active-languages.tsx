@@ -9,7 +9,9 @@ export async function MostActiveLanguages({ githubUserId }: TMostActiveLanguages
       pageSize: 4,
       pageIndex: 0,
     })
-    .request()
+    .request({
+      next: { revalidate: 120 },
+    })
     .then(res =>
       res.languages.map(language => ({
         logoUrl: language.language.logoUrl,
