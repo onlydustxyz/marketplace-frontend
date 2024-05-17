@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { Money } from "utils/Money/Money";
 
 import { DotsStatus } from "app/u/[githubLogin]/components/dots-status/dots-status";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
@@ -23,7 +23,7 @@ export function MostActiveCard({
       <Flex direction="col" className="gap-4 px-3 py-4">
         <Flex alignItems="center" justifyContent="between" className="gap-2">
           <Flex alignItems="center" className="gap-2">
-            {logoUrl ? <Image src={logoUrl} alt={name} width={20} height={20} /> : null}
+            {logoUrl ? <Avatar src={logoUrl} alt={name} size="s" isBordered={false} /> : null}
 
             <Typography variant="body-m-bold" className="line-clamp-1">
               {name}
