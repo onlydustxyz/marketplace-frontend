@@ -1,6 +1,7 @@
 "use client";
 
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Accordion, AccordionItem, Selection } from "@nextui-org/react";
+import { useState } from "react";
 
 import { ContributionList } from "app/u/[githubLogin]/components/contribution-list/contribution-list";
 import { StartContent } from "app/u/[githubLogin]/features/details-accordion/components/start-content";
@@ -9,8 +10,10 @@ import { TDetailsAccordion } from "app/u/[githubLogin]/features/details-accordio
 import { Icon } from "components/layout/icon/icon";
 
 export function DetailsAccordion({ details, githubUserId }: TDetailsAccordion.AccordionProps) {
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
+
   return (
-    <Accordion variant="splitted" className="!p-0">
+    <Accordion variant="splitted" className="!p-0" selectedKeys={selectedKeys}>
       {details?.map(detail => (
         <AccordionItem
           key={detail.name}
@@ -21,6 +24,11 @@ export function DetailsAccordion({ details, githubUserId }: TDetailsAccordion.Ac
             trigger: "!px-4 justify-start items-start",
             startContent: "!flex-shrink",
             indicator: "text-snow",
+          }}
+          onClick={e => {
+            if ((e.target as Element).className !== "child-project-avatar" && selectedKeys instanceof Set) {
+              setSelectedKeys(selectedKeys.has(detail.name) ? new Set() : new Set([detail.name]));
+            }
           }}
           startContent={
             <StartContent
