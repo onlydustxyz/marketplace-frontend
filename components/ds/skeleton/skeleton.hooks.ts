@@ -8,6 +8,8 @@ export function useBaseSkelletonStyle({ width, height, color, radius }: TSkeleto
   const className = cn("w-full animate-pulse", {
     "bg-greyscale-800": color === "grey",
     "bg-spaceBlue-800": color === "blue",
+    "bg-spaceBlue-700": color === "blue-700",
+    "bg-spaceBlue-600": color === "blue-600",
   });
 
   const style: CSSProperties = {
