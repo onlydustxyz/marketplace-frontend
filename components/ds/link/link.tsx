@@ -15,7 +15,7 @@ export function Link({ className, children, ...props }: TLink.LinkProps) {
         <>
           {children}
           {isExternal ? (
-            <Icon remixName="ri-external-link-line" className="invisible group-hover/link:visible" />
+            <Icon remixName="ri-external-link-line" className="invisible ml-1 group-hover/link:visible" />
           ) : null}
         </>
       )}

@@ -8,7 +8,7 @@ import { tabVariants } from "./tab.variants";
 
 export namespace TTab {
   export type Variants = VariantProps<typeof tabVariants>;
-  export type BaseProps = Omit<TabItemProps, "color" | "children">;
+  export type BaseProps = Omit<TabItemProps, "color" | "children" | "content">;
 
   export interface Props<T extends Key> extends Variants, BaseProps {
     icon?: TIcon.Props;

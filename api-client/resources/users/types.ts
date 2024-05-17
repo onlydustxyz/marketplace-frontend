@@ -1,5 +1,17 @@
-import { components } from "src/__generated/api";
+import { components, operations } from "src/__generated/api";
 
-type PublicUserProfileResponse = components["schemas"]["PublicUserProfileResponse"];
+type PublicUserLanguagesResponse = components["schemas"]["UserProfileLanguagePage"];
+type PublicUserEcosystemsResponse = components["schemas"]["UserProfileEcosystemPage"];
+type PublicUserStatsResponse = components["schemas"]["UserProfileStatsV2"];
+type PublicUserProfileResponseV2 = components["schemas"]["PublicUserProfileResponseV2"];
+type UserProfileContributions = components["schemas"]["ContributionPageResponse"];
+type UserProfileContributionsParams = operations["getUserContributions"]["parameters"]["query"];
 
-export interface UserPublicProfileResponse extends PublicUserProfileResponse {}
+export type PublicProfileChannelsUnion = components["schemas"]["ContactInformation"]["channel"];
+export type PublicProfilerankCategoryUnion = components["schemas"]["UserProfileStatsSummary"]["rankCategory"];
+export interface UserPublicProfileResponseV2 extends PublicUserProfileResponseV2 {}
+export interface UserPublicLanguagesResponse extends PublicUserLanguagesResponse {}
+export interface UserPublicEcosystemsResponse extends PublicUserEcosystemsResponse {}
+export interface UserPublicStatsResponse extends PublicUserStatsResponse {}
+export interface UserContributionsResponse extends UserProfileContributions {}
+export type UserContributionsRequestParams = UserProfileContributionsParams;

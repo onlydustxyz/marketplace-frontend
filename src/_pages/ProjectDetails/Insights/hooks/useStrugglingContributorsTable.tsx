@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 
 import { components } from "src/__generated/api";
 import { Contribution } from "src/components/Contribution/Contribution";
-import Contributor from "src/components/Contributor";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
@@ -12,6 +11,7 @@ import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
 
 import { Link } from "components/ds/link/link";
+import { Contributor } from "components/features/contributor/contributor";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -59,7 +59,13 @@ export function useStrugglingContributorsTable() {
     return (
       <Line key={id} className="group border-card-border-light">
         <Cell height={CellHeight.Compact}>
-          <Contributor contributor={contributor} clickable />
+          <Contributor
+            githubUserId={contributor.githubUserId}
+            login={contributor.login}
+            avatarUrl={contributor.avatarUrl}
+            isRegistered={contributor.isRegistered}
+            clickable
+          />
         </Cell>
         <Cell height={CellHeight.Compact}>
           <Link href={repo?.htmlUrl}>{repo?.name}</Link>

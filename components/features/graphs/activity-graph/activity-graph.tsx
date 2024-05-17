@@ -2,18 +2,22 @@
 
 import { useMemo } from "react";
 
+import { ActivityGraphLoading } from "components/features/graphs/activity-graph/activity-graph.loading";
 import { Row } from "components/features/graphs/activity-graph/components/row/row";
 import { useActivityGraph } from "components/features/graphs/activity-graph/use-activity-graph";
-import { getWeekId } from "components/features/graphs/activity-graph/utils/getWeekId";
 
 import { TActivityGraph } from "./activity-graph.types";
 
-export function ActivityGraph<T>({ endDate, weekData }: TActivityGraph.Props<T>) {
+export function ActivityGraph<T>({ endDate, weekData, isLoading }: TActivityGraph.Props<T>) {
   const { splitWeeks, weeks } = useActivityGraph({ endDate });
 
   const data = useMemo(() => {
-    return weekData?.({ getWeekId }) || {};
+    return weekData || {};
   }, [weekData, weeks]);
+
+  if (!splitWeeks?.length || isLoading) {
+    return <ActivityGraphLoading />;
+  }
 
   return (
     <div className="flex flex-col items-start justify-start gap-1.5">

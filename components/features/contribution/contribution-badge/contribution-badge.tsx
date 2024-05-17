@@ -1,7 +1,6 @@
 "use client";
 
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
-import Contributor from "src/components/Contributor";
 import Tooltip, { PaddingVariant, TooltipPosition, Variant } from "src/components/Tooltip";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { GithubContributionType, GithubPullRequestStatus } from "src/types";
@@ -9,6 +8,7 @@ import { cn } from "src/utils/cn";
 
 import { Link } from "components/ds/link/link";
 import { TContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge.type";
+import { Contributor } from "components/features/contributor/contributor";
 
 import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
@@ -113,7 +113,14 @@ export function ContributionBadge({
 
             <div className="flex items-center text-xs font-medium">
               <span className="text-spaceBlue-200">{tokens[type]}</span>
-              <Contributor className="ml-1 flex-row-reverse text-xs font-medium" contributor={githubAuthor} clickable />
+              <Contributor
+                className="ml-1 flex-row-reverse text-xs font-medium"
+                githubUserId={githubAuthor.githubUserId}
+                login={githubAuthor.login}
+                avatarUrl={githubAuthor.avatarUrl}
+                isRegistered={false}
+                clickable
+              />
             </div>
 
             {githubBody ? <p className="line-clamp-2 break-all text-xs text-spaceBlue-200">{githubBody}</p> : null}

@@ -244,7 +244,7 @@ export default function Contributions() {
           <div className="relative min-h-full">
             <div className="bg-transparency-gradiant absolute inset-0" />
             <div className="relative z-10">
-              <header className="sticky top-0 z-10 border-b border-card-border-heavy bg-card-background-base px-4 pb-4 pt-7 shadow-heavy md:pb-0 md:pt-8">
+              <header className="sticky top-0 z-[12] border-b border-card-border-heavy bg-card-background-base px-4 pb-4 pt-7 shadow-heavy md:pb-0 md:pt-8">
                 <div className="flex items-center justify-between md:px-4">
                   <Tabs tabs={tabItems} variant="blue" showMobile mobileTitle={T("navbar.contributions")} />
 

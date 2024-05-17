@@ -16,7 +16,7 @@ export function RectAvatar(props: TRectAvatar.Props) {
   const isClient = useClientOnly();
   const [isError, setIsError] = useState(false);
   // size prop needs to be extracted or it conflicts with the size prop from NextAvatar
-  const { size, className, isBordered = true, ...restProps } = props;
+  const { size, className, isBordered = true, classNames, ...restProps } = props;
 
   const isRemoteImage = useMemo(() => {
     if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && props.src) {
@@ -72,8 +72,9 @@ export function RectAvatar(props: TRectAvatar.Props) {
         },
       }}
       classNames={{
-        fallback: "w-full",
-        img: "bg-greyscale-900 !opacity-100",
+        ...classNames,
+        fallback: cn("w-full", classNames?.img),
+        img: cn("bg-greyscale-900 !opacity-100", classNames?.img),
       }}
       {...restProps}
       src={optimizeSrc}

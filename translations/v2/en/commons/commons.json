@@ -65,5 +65,16 @@
     }
   },
   "currency": "Currency",
-  "pendingInvite": "Pending invite"
+  "pendingInvite": "Pending invite",
+  "pullRequests": "Pull requests",
+  "issues": "Issues",
+  "codeReviews": "Code reviews",
+  "globalState": {
+    "error": {
+      "title": "We just crashed...",
+      "description": "Please try again or _contact us_ if the problem persists.",
+      "back": "Go back home",
+      "refresh": "Refresh"
+    }
+  }
 }

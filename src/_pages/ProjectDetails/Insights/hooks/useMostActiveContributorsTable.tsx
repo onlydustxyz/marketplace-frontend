@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 
 import { components } from "src/__generated/api";
 import IssueOpen from "src/assets/icons/IssueOpen";
-import Contributor from "src/components/Contributor";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import Line from "src/components/Table/Line";
@@ -10,6 +9,8 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import User3Line from "src/icons/User3Line";
+
+import { Contributor } from "components/features/contributor/contributor";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -69,7 +70,13 @@ export function useMostActiveContributorsTable() {
     return (
       <Line key={login} className="group border-card-border-light">
         <Cell height={CellHeight.Compact}>
-          <Contributor contributor={contributor} clickable />
+          <Contributor
+            githubUserId={contributor.githubUserId}
+            login={contributor.login}
+            avatarUrl={contributor.avatarUrl}
+            isRegistered={contributor.isRegistered}
+            clickable
+          />
         </Cell>
         <Cell height={CellHeight.Compact}>{completedPullRequestCount}</Cell>
         <Cell height={CellHeight.Compact}>{completedIssueCount}</Cell>

@@ -1,7 +1,7 @@
 import { Money } from "utils/Money/Money";
 import { describe, expect, it } from "vitest";
 
-import { AllocatedTime, ProfileCover } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
+import { AllocatedTime } from "src/App/Stacks/ContributorProfileSidePanel/EditView/types";
 
 import {
   FormValuesProps,
@@ -21,7 +21,6 @@ describe("calculateUserCompletionScore", () => {
           visibility: "private" as const,
         },
       ],
-      cover: "BLUE" as const,
       createdAt: "2023-11-23T21:07:49.749Z",
       firstContributedAt: "2023-11-23T21:07:49.749Z",
       githubUserId: 595505,
@@ -120,7 +119,6 @@ describe("calculateUserCompletionScore", () => {
       isGithubHandlePublic: false,
       isLinkedInPublic: true,
       weeklyAllocatedTime: AllocatedTime.GreaterThanThreeDays,
-      cover: ProfileCover.Blue,
     };
 
     const completionScore = calculateFormCompletionScore(formValues);

@@ -9,10 +9,6 @@ import { viewportConfig } from "src/config";
 import { IStar, Star } from "components/features/space-background/Class/Star";
 import { withClientOnly } from "components/layout/client-only/client-only";
 
-import { NEXT_ROUTER } from "constants/router";
-
-import { useMatchPath } from "hooks/router/useMatchPath";
-
 function SpaceBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -70,17 +66,11 @@ function SpaceBackground() {
     };
   }, [size]);
 
-  const isMatchUserProfile = useMatchPath(NEXT_ROUTER.publicProfile.root(""), { exact: false });
-
-  if (isMatchUserProfile) {
-    return null;
-  }
-
   if (!isXl) {
     return <div className="od-space-background fixed inset-0 -z-[1]" />;
   }
 
-  return <canvas ref={canvasRef} className="fixed inset-0 -z-[1] bg-space-gradient" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 -z-[1]" />;
 }
 
 export default withClientOnly(SpaceBackground);

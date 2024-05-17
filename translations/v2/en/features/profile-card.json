@@ -1,10 +1,38 @@
 {
-  "rank": "TOP __rank__",
+  "rank": {
+    "zero": " ",
+    "one": "TOP 1%",
+    "many": "TOP __count__%"
+  },
   "emptyBio": "This contributor has no bio",
   "counters": {
-    "contributionCount": "__count__ contributions",
-    "rewardCount": "__count__ rewards",
-    "contributedProjectCount": "Contributor on __count__ projects",
-    "leadedProjectCount": "Lead __count__ projects"
+    "contributionCount": {
+      "zero": "0 contribution",
+      "one": "1 contribution",
+      "many": "__count__ contributions"
+    },
+    "rewardCount": {
+      "zero": "0 reward",
+      "one": "1 reward",
+      "many": "__count__ rewards"
+    },
+    "contributedProjectCount": {
+      "zero": "Contributor on 0 projects",
+      "one": "Contributor on 1 project",
+      "many": "Contributor on __count__ projects"
+    },
+    "leadedProjectCount": {
+      "zero": "Lead on 0 projects",
+      "one": "Lead on 1 project",
+      "many": "Lead on __count__ projects"
+    }
+  },
+  "rankCategories": {
+    "a": "Diamond Contributor",
+    "b": "Gold Contributor",
+    "c": "Silver Contributor",
+    "d": "Bronze Contributor",
+    "e": "Steel Contributor",
+    "f": "Wood Contributor"
   }
 }

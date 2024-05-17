@@ -24,7 +24,7 @@ export default function TinyProfileCard({
   children,
 }: Props) {
   const { T } = useIntl();
-  const coverClass = getCoverClass(cover);
+  const coverClass = getCoverClass(cover, name);
 
   return (
     <div className="overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base shadow-heavy">

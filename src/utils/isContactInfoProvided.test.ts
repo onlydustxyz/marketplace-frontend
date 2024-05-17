@@ -35,7 +35,6 @@ const userProfile = {
       visibility: "private" as const,
     },
   ],
-  cover: "BLUE" as const,
   createdAt: "2023-11-23T21:07:49.749Z",
   firstContributedAt: "2023-11-23T21:07:49.749Z",
   githubUserId: 595505,

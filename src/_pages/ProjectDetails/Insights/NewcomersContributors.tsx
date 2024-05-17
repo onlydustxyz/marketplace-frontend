@@ -1,4 +1,5 @@
-import { useStackContributorProfile } from "src/App/Stacks/Stacks";
+import { useRouter } from "next/navigation";
+
 import TinyProfilCard from "src/_pages/ProjectDetails/Insights/commons/TinyProfilCard/TinyProfilCard";
 import ProjectApi from "src/api/Project";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
@@ -7,11 +8,13 @@ import Skeleton from "src/components/Skeleton";
 import { ShowMore } from "src/components/Table/ShowMore";
 import TeamLine from "src/icons/TeamLine";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { useIntl } from "hooks/translate/use-translate";
 
 export default function NewcomersContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
-  const [open] = useStackContributorProfile();
+  const router = useRouter();
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
     ProjectApi.queries.useProjectContributorsNewcomersInfiniteList({
       params: { projectId: projectId ?? "" },
@@ -54,7 +57,7 @@ export default function NewcomersContributors({ projectId }: { projectId: string
               location={contributor.location}
               sinceDate={contributor.firstContributedAt ? new Date(contributor.firstContributedAt) : undefined}
               actionLabel={T("project.details.insights.newcomers.buttonLabel")}
-              onAction={() => open({ githubUserId: contributor.githubUserId })}
+              onAction={() => router.push(NEXT_ROUTER.publicProfile.root(contributor.login))}
             />
           ))}
         </div>

@@ -2,7 +2,6 @@ import { useMemo } from "react";
 
 import { ProjectContributorItem } from "src/api/Project/queries";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import Contributor from "src/components/Contributor";
 import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
@@ -13,7 +12,10 @@ import SendPlane2Line from "src/icons/SendPlane2Line";
 import StackLine from "src/icons/StackLine";
 import { RewardDisabledReason } from "src/types";
 
+import { Contributor } from "components/features/contributor/contributor";
+
 import { useIntl } from "hooks/translate/use-translate";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 type Props<C> = {
   contributor: C;
@@ -31,6 +33,8 @@ export default function ContributorLine<C extends ProjectContributorItem>({
   rewardDisableReason,
 }: Props<C>) {
   const { T } = useIntl();
+  const { githubUserId: meGithubUserId } = useCurrentUser();
+  const isYou = contributor.githubUserId === meGithubUserId;
 
   function getDisabledTooltipToken() {
     if (rewardDisableReason === RewardDisabledReason.Budget) {
@@ -57,7 +61,14 @@ export default function ContributorLine<C extends ProjectContributorItem>({
   return (
     <Line key={contributor.login} className="group h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
-        <Contributor contributor={contributor} clickable />
+        <Contributor
+          githubUserId={contributor.githubUserId}
+          login={contributor.login}
+          avatarUrl={contributor.avatarUrl}
+          isRegistered={contributor.isRegistered}
+          clickable
+          isYou={isYou}
+        />
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.contributionCount || "-"}

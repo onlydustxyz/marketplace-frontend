@@ -1,4 +1,7 @@
-export function getOrdinalSuffix(position: number): string {
+export function getOrdinalSuffix(position?: number): string {
+  if (position === undefined) {
+    return "";
+  }
   // Check the last two digits to handle special cases like 11th, 12th, 13th, etc.
   const lastTwoDigits = position % 100;
   if (lastTwoDigits >= 10 && lastTwoDigits <= 19) {

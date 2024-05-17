@@ -14,6 +14,7 @@ import config from "src/config";
 
 import { PosthogIdentifyUser } from "components/features/posthog/components/posthog-identify-user";
 import { PosthogPageView } from "components/features/posthog/components/posthog-page-view";
+import { RouteChangeListener } from "components/features/route-change-listener/route-change-listener";
 import SpaceBackground from "components/features/space-background/space-background";
 
 import { sharedMetadata } from "./shared-metadata";
@@ -25,11 +26,12 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <body>
         <Providers>
-          <div className="z-[1] flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
+          <div className="z-[1] flex h-[calc(100dvh)] w-screen flex-col bg-space-gradient xl:fixed">
             <Header />
             <SpaceBackground />
             {children}
           </div>
+          <RouteChangeListener />
           <PosthogIdentifyUser />
           <PosthogPageView />
         </Providers>

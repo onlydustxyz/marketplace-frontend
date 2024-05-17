@@ -1,4 +1,5 @@
-import { useStackContributorProfile } from "src/App/Stacks/Stacks";
+import { useRouter } from "next/navigation";
+
 import TinyProfilCard from "src/_pages/ProjectDetails/Insights/commons/TinyProfilCard/TinyProfilCard";
 import ProjectApi from "src/api/Project";
 import CollapsibleCard from "src/components/New/Cards/CollapsibleCard";
@@ -7,13 +8,15 @@ import Skeleton from "src/components/Skeleton";
 import { ShowMore } from "src/components/Table/ShowMore";
 import LogoutCircleLine from "src/icons/LogoutCircleLine";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { useIntl } from "hooks/translate/use-translate";
 
 import LastContributionCard from "./commons/LastContributionCard/LastContributionCard";
 
 export default function ChurnedContributors({ projectId }: { projectId: string | undefined }) {
   const { T } = useIntl();
-  const [open] = useStackContributorProfile();
+  const router = useRouter();
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
     ProjectApi.queries.useProjectContributorsChurnedInfiniteList({
       params: { projectId: projectId ?? "" },
@@ -45,7 +48,7 @@ export default function ChurnedContributors({ projectId }: { projectId: string |
               name={contributor.login}
               isRegistered={contributor.isRegistered}
               actionLabel={T("project.details.insights.churned.buttonLabel")}
-              onAction={() => open({ githubUserId: contributor.githubUserId })}
+              onAction={() => router.push(NEXT_ROUTER.publicProfile.root(contributor.login))}
             >
               <LastContributionCard
                 lastContributionDate={contributor?.lastContribution?.completedAt}

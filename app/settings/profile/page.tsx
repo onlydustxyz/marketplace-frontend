@@ -36,7 +36,6 @@ const keys: Record<KeyType, Key> = {
 
 const formSchema = z.object({
   avatarUrl: z.string().url().optional(),
-  cover: z.string(),
   location: z.string().optional(),
   bio: z.string().optional(),
   firstName: z.string().optional(),

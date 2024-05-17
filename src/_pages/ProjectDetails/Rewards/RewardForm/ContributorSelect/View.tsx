@@ -6,7 +6,6 @@ import { Contributor as ContributorType } from "src/_pages/ProjectDetails/Reward
 import { ToRewardDetailsTooltip } from "src/_pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
 import { IMAGES } from "src/assets/img";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
-import Contributor from "src/components/Contributor";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { ShowMore } from "src/components/Table/ShowMore";
@@ -14,6 +13,8 @@ import { useSearchHotKey } from "src/hooks/useSearchHotKey/useSearchHotKey";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import { cn } from "src/utils/cn";
+
+import { Contributor } from "components/features/contributor/contributor";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -306,7 +307,12 @@ function VirtualizedContributorSubList({
               value={contributor.login}
               className="flex items-center justify-between p-2 ui-active:cursor-pointer ui-active:bg-white/4"
             >
-              <Contributor contributor={contributor} />
+              <Contributor
+                githubUserId={contributor.githubUserId}
+                login={contributor.login}
+                avatarUrl={contributor.avatarUrl}
+                isRegistered={contributor.isRegistered}
+              />
               {contributor.unpaidCompletedContributions > 0 && (
                 <>
                   <Badge

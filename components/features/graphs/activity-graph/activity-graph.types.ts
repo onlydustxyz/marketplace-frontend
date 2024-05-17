@@ -26,10 +26,14 @@ export namespace TActivityGraph {
   }
   export interface Props<T> {
     endDate?: Date;
-    weekData?: (props: { getWeekId: getWeekId }) => weeksData<T>;
+    weekData?: weeksData<T>;
+    isLoading?: boolean;
   }
 
   export interface UseActivityGraph {
     endDate?: Date;
   }
 }
+
+export const ACTIVITY_WEEK_NUMBER = 54;
+export const ACTIVITY_NUMBER_OF_ROW = 8;

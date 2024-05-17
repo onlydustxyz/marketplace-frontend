@@ -38,7 +38,7 @@ export const NEXT_ROUTER = {
     },
   },
   publicProfile: {
-    root: (slug: string) => `/u/${slug}`,
+    root: (githubLogin: string) => `/u/${githubLogin}`,
   },
   notFound: "/not-found",
   onboarding: "/onboarding",
