@@ -37,10 +37,10 @@ export function Navigation({ slug, hasTracks }: TNavigation.Props) {
   );
 }
 
-Navigation.Loading = function NavigationLoading() {
+export function NavigationLoading() {
   return (
     <div className="pointer-events-auto h-auto w-full bg-card-background-base pt-6">
       <Wrapper className="h-[32px] max-md:px-0" />
     </div>
   );
-};
+}

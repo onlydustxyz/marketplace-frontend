@@ -16,11 +16,11 @@ export function Intro({ title, subtitle }: TIntro.Props) {
   );
 }
 
-Intro.Loading = function IntroLoading() {
+export function IntroLoading() {
   return (
     <div className="flex w-full flex-col items-start justify-start gap-1">
       <SkeletonEl width="200px" height="36px" variant="rounded" />
       <SkeletonEl width="420" height="24px" variant="rounded" />
     </div>
   );
-};
+}
