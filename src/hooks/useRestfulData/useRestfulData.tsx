@@ -34,10 +34,10 @@ export function useRestfulData<R = unknown>({
 }: UseRestfulDataProps<R>) {
   const { enabled, ...restQueryOptions } = queryOptions;
   const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
-  const { getImpersonateHeaders } = useImpersonation();
+  const { getImpersonateHeaders, isImpersonating } = useImpersonation();
 
   return useQuery<R>({
-    queryKey: [...(queryKey || []), resourcePath, pathParam, queryParams, isAuthenticated],
+    queryKey: [...(queryKey || []), resourcePath, pathParam, queryParams, isAuthenticated, isImpersonating],
     queryFn: async () => {
       const { options } = await getHttpOptions({
         isAuthenticated,
