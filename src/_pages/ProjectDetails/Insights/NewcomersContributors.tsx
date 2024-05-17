@@ -57,7 +57,7 @@ export default function NewcomersContributors({ projectId }: { projectId: string
               location={contributor.location}
               sinceDate={contributor.firstContributedAt ? new Date(contributor.firstContributedAt) : undefined}
               actionLabel={T("project.details.insights.newcomers.buttonLabel")}
-              onAction={() => router.push(NEXT_ROUTER.newPublicProfile.root(contributor.login))}
+              onAction={() => router.push(NEXT_ROUTER.publicProfile.root(contributor.login))}
             />
           ))}
         </div>

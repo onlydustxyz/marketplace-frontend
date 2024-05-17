@@ -44,7 +44,7 @@ export function Contributor({
           clickable
             ? e => {
                 e.preventDefault();
-                router.push(NEXT_ROUTER.newPublicProfile.root(login));
+                router.push(NEXT_ROUTER.publicProfile.root(login));
               }
             : undefined
         }
