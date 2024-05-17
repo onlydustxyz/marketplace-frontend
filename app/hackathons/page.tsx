@@ -3,7 +3,7 @@ import { compareAsc, compareDesc } from "date-fns";
 import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
 
-import { HackathonSection, HackathonSectionLoading } from "app/hackathons/features/hackathon-section/hackathon-section";
+import { HackathonSection } from "app/hackathons/features/hackathon-section/hackathon-section";
 
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Translate } from "components/layout/translate/translate";
@@ -27,7 +27,6 @@ async function HackathonsPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-6 p-4 md:px-12 md:py-14 md:pb-12 ">
           <Typography variant="title-xl" translate={{ token: "v2.pages.hackathons.title" }} />
           <div className="flex w-full flex-col items-start justify-start gap-12">
-            <HackathonSectionLoading />
             <HackathonSection
               title={<Translate token={"v2.pages.hackathons.liveNow"} />}
               icon={{ remixName: "ri-fire-line" }}
