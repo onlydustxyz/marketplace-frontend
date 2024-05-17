@@ -1,6 +1,6 @@
 export namespace TSkeleton {
   export type type = "text" | "rectangular" | "circular" | "rounded";
-  export type color = "blue" | "grey";
+  export type color = "blue" | "grey" | "blue-700" | "blue-600";
 
   export interface BaseProps {
     width: string | number;
