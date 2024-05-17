@@ -16,7 +16,7 @@ export function SponsorSidePanels({
   panel,
   project,
   tooltipProps,
-  initialSponsor,
+  initialSponsorId,
 }: TSponsorSidePanels.Props) {
   const { user } = useCurrentUser();
   const [isFilloutOpen, setIsFilloutOpen] = useState(false);
@@ -24,7 +24,7 @@ export function SponsorSidePanels({
 
   function handleClick() {
     if (panel === "project") {
-      openSponsorProjectStack({ project, initialSponsor });
+      openSponsorProjectStack({ project, initialSponsorId });
       return;
     }
 

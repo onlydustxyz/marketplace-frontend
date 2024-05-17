@@ -28,7 +28,7 @@ import { Label } from "./components/label/label";
 
 const shortcuts = [25, 50, 75, 100] as const;
 
-export function SponsorProjectStack({ project, initialSponsor }: TSponsorProjectStack.Props) {
+export function SponsorProjectStack({ project, initialSponsorId }: TSponsorProjectStack.Props) {
   const { T } = useIntl();
   const closeStack = useCloseStack();
 
@@ -43,7 +43,7 @@ export function SponsorProjectStack({ project, initialSponsor }: TSponsorProject
       })) ?? [],
     [user]
   );
-  const [sponsorId, setSponsorId] = useState(initialSponsor ?? sponsors[0]?.value);
+  const [sponsorId, setSponsorId] = useState(initialSponsorId ?? sponsors[0]?.value);
   const selectedSponsor = useMemo(() => sponsors.find(s => s.value === sponsorId), [user, sponsorId]);
 
   const { data: sponsor, isLoading } = SponsorApi.queries.useGetSponsorById({
