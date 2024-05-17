@@ -36,7 +36,7 @@ export default async function PublicProfilePage({ params }: { params: { githubLo
       />
       <div className="flex w-full flex-col items-start justify-start gap-10">
         <Suspense fallback={<ProfileOverviewLoading />}>
-          <ProfileOverview githubLogin={params.githubLogin} />
+          <ProfileOverview userProfile={userProfile} />
         </Suspense>
         <div className="flex w-full flex-col items-start justify-start gap-10 xl:flex-row xl:gap-6">
           <div className="grid w-full gap-10 xl:flex-1">
