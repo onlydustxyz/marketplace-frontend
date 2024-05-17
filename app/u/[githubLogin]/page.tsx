@@ -1,4 +1,5 @@
 import { usersApiClient } from "api-client/resources/users";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -16,15 +17,32 @@ import { WorkDistributionGraph } from "app/u/[githubLogin]/features/work-distrib
 import { WorkDistributionGraphError } from "app/u/[githubLogin]/features/work-distribution-graph/work-distribution-graph.error";
 import { WorkDistributionGraphLoading } from "app/u/[githubLogin]/features/work-distribution-graph/work-distribution-graph.loading";
 
+import { FetchError } from "src/api/query.type";
+
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 
 import { ProfileOverview } from "./features/profile-overview/profile-overview";
 
+async function getProfile(githubLogin: string) {
+  try {
+    return await usersApiClient.fetch.getUserPublicProfileByGithubLogin(githubLogin).request({
+      next: { revalidate: 120 },
+    });
+  } catch (e) {
+    if ((e as FetchError).status === 404) {
+      notFound();
+    }
+
+    throw e;
+  }
+}
+
 export default async function PublicProfilePage({ params }: { params: { githubLogin: string } }) {
-  const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(params.githubLogin).request({
-    next: { revalidate: 120 },
-  });
-  const ecosystems = (userProfile?.ecosystems || []).map(ecosystem => ({
+  const userProfile = await getProfile(params.githubLogin);
+
+  if (!userProfile) return null;
+
+  const ecosystems = (userProfile.ecosystems || []).map(ecosystem => ({
     name: ecosystem.name,
     logoUrl: ecosystem.logoUrl,
     id: ecosystem.id,
