@@ -57,6 +57,7 @@ export function SponsorSectionProject() {
             enabled: !canSponsorProject,
             content: <Translate token="v2.pages.sponsor.project.disbaledSponsorNewProject" />,
           }}
+          initialSponsor={data?.id}
         />
       </header>
 

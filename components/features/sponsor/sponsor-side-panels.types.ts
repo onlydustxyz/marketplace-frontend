@@ -8,5 +8,6 @@ export namespace TSponsorSidePanels {
     buttonProps?: TButton.Props;
     project?: TSponsorProjectStack.Props["project"];
     tooltipProps?: TTooltip.Props;
+    initialSponsor?: string;
   }
 }

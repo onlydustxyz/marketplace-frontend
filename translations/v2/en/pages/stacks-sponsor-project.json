@@ -1,5 +1,9 @@
 {
   "title": "Sponsor project",
+  "sponsor": {
+    "title": "Sponsor",
+    "placeholder": "Select a sponsor"
+  },
   "project": {
     "title": "Project to sponsor",
     "placeholder": "Select a project"
