@@ -66,7 +66,7 @@ export function ProfileCard(props: TProfileCard.Props) {
             <Typography variant="title-m" className="line-clamp-1 capitalize">
               {isLoginClickable ? (
                 <BaseLink
-                  href={NEXT_ROUTER.newPublicProfile.root(login)}
+                  href={NEXT_ROUTER.publicProfile.root(login)}
                   className="transition-all hover:text-spacePurple-500"
                 >
                   {login}

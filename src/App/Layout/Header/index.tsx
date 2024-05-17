@@ -36,12 +36,11 @@ function HeaderClient() {
   const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.contributions") : undefined;
   const projectsMenuItem = T("v2.features.menu.projects");
 
-  const isMatchUserProfile = useMatchPath(NEXT_ROUTER.publicProfile.root(""), { exact: false });
   const isMatchMaintenance = useMatchPath(NEXT_ROUTER.maintenance, { exact: false });
 
   const { inMaintenance } = isInMaintenanceMode();
 
-  if (isMatchUserProfile || isMatchMaintenance || inMaintenance) {
+  if (isMatchMaintenance || inMaintenance) {
     return null;
   }
 

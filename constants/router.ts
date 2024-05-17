@@ -37,12 +37,8 @@ export const NEXT_ROUTER = {
       invoices: (slug: string) => `/settings/billing/${slug}/invoices`,
     },
   },
-  // TODO replace actual public profile with the new one
   publicProfile: {
-    root: (slug: string) => `/u/${slug}`,
-  },
-  newPublicProfile: {
-    root: (login: string) => `/migration//u/${login}`,
+    root: (githubLogin: string) => `/u/${githubLogin}`,
   },
   notFound: "/not-found",
   onboarding: "/onboarding",
