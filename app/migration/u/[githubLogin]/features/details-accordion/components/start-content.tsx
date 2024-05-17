@@ -55,11 +55,7 @@ export function StartContent(props: TDetailsAccordion.StartContentProps) {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            <InfoItem
-              icon="ri-medal-2-line"
-              count={rewardCount}
-              labelToken="v2.features.detailsAccordion.contributions"
-            />
+            <InfoItem icon="ri-medal-2-line" count={rewardCount} labelToken="v2.features.detailsAccordion.rewards" />
             <InfoItem
               icon="ri-money-dollar-circle-line"
               count={totalEarnedUsd}
