@@ -1,13 +1,12 @@
 import { PublicProfileChannelsUnion } from "api-client/resources/users/types";
 
+import ProfileDate from "app/u/[githubLogin]/features/profile-overview/components/profile-summary/profile-date/profile-date";
 import { TProfileSummary } from "app/u/[githubLogin]/features/profile-overview/components/profile-summary/profile-summary.types";
 
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Typography } from "components/layout/typography/typography";
-
-import { ProfileDate } from "./profile-date/profile-date";
 
 export function ProfileSummary(props: TProfileSummary.Props) {
   const { bio, contacts, signedUpOnGithubAt, signedUpAt } = props;
