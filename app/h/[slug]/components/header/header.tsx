@@ -35,7 +35,7 @@ export function Header({ startDate, endDate, title }: THeader.Props) {
   );
 }
 
-Header.Loading = function HeaderLoading() {
+export function HeaderLoading() {
   return (
     <div className="relative flex h-full w-full flex-1 flex-col items-start justify-start gap-11 overflow-hidden rounded-t-[32px] pt-8">
       <Image src={background} alt={""} className="absolute inset-0 h-full w-full object-cover object-center" />
@@ -57,4 +57,4 @@ Header.Loading = function HeaderLoading() {
       </Wrapper>
     </div>
   );
-};
+}
