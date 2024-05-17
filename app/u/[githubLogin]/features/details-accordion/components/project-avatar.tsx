@@ -15,7 +15,7 @@ export function ProjectAvatar({ name, slug, logoUrl }: TDetailsAccordion.Project
 
   return (
     <Tooltip key={name} content={name}>
-      <button className={"child-project-avatar"} onClick={handleClick}>
+      <div className={"child-project-avatar"} onClick={handleClick}>
         <Avatar
           src={logoUrl}
           alt={name}
@@ -25,7 +25,7 @@ export function ProjectAvatar({ name, slug, logoUrl }: TDetailsAccordion.Project
             "pointer-events-none border-card-border-light transition-colors hover:border-card-border-heavy"
           )}
         />
-      </button>
+      </div>
     </Tooltip>
   );
 }
