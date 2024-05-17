@@ -31,6 +31,10 @@ export async function TotalEarnedGraph({ githubUserId }: TTotalEarnedGraph.Props
     value: otherStats.reduce((acc, curr) => acc + curr.totalEarnedUsd, 0),
   };
 
+  if (!mainStats.length) {
+    return null;
+  }
+
   return (
     <Flex direction="col" width="full" className="gap-4">
       <Typography variant="title-m" translate={{ token: "v2.pages.publicProfile.totalEarned.title" }} />
