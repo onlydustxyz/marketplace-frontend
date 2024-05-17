@@ -7,9 +7,15 @@ import { ProfileCard } from "components/features/profile-card/profile-card";
 import { ProfileCardLoading } from "components/features/profile-card/profile-card.loading";
 import { TProfileCard } from "components/features/profile-card/profile-card.types";
 
-export function ProfileCardPopover({ children, githubId, isOpen, ...PopOverProps }: TProfileCard.ProfilePopoverProps) {
+export function ProfileCardPopover({
+  children,
+  githubId,
+  isOpen,
+  isPreload,
+  ...PopOverProps
+}: TProfileCard.ProfilePopoverProps) {
   const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId(githubId, {
-    enabled: isOpen,
+    enabled: isPreload || isOpen,
   });
 
   const renderContent = useMemo(() => {
