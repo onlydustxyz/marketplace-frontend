@@ -2,8 +2,8 @@ import { PublicProfileChannelsUnion } from "api-client/resources/users/types";
 
 import ProfileDate from "app/u/[githubLogin]/features/profile-overview/components/profile-summary/profile-date/profile-date";
 import { TProfileSummary } from "app/u/[githubLogin]/features/profile-overview/components/profile-summary/profile-summary.types";
+import { SocialLink } from "app/u/[githubLogin]/features/profile-overview/components/profile-summary/social-link/social-link";
 
-import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Typography } from "components/layout/typography/typography";
@@ -31,15 +31,23 @@ export function ProfileSummary(props: TProfileSummary.Props) {
       <div className="flex flex-col-reverse flex-wrap-reverse justify-between gap-5 md:flex-row md:gap-3">
         {contacts?.length ? (
           <div className="flex items-center gap-2">
-            {contacts.map(c => (
-              <BaseLink
-                key={c.contact}
-                href={c.contact}
-                className="h-10 w-10 items-center justify-center rounded-xl bg-noise-heavy p-2"
-              >
-                <Icon remixName={contactIconMapping[c.channel]} size={24} />
-              </BaseLink>
-            ))}
+            {contacts
+              .filter(item => item.channel !== "EMAIL" && item.visibility !== "private")
+              .map(c => {
+                const args = {
+                  link:
+                    c.channel === "TELEGRAM" || c.channel === "TWITTER" || c.channel === "LINKEDIN"
+                      ? c.contact
+                      : undefined,
+                  copyableValue: c.channel === "WHATSAPP" || c.channel === "DISCORD" ? c.contact : undefined,
+                  copyableValueName: c.channel,
+                };
+                return (
+                  <SocialLink key={c.contact} {...args}>
+                    <Icon remixName={contactIconMapping[c.channel]} size={24} />
+                  </SocialLink>
+                );
+              })}
           </div>
         ) : null}
 
