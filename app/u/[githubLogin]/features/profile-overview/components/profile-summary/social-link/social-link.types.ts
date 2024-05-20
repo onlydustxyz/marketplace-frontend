@@ -1,10 +1,21 @@
 import { PropsWithChildren } from "react";
 
 export namespace TSocialLink {
-  export interface Props extends PropsWithChildren {
-    link?: string;
-    copyableValue?: string;
-    copyableValueName?: string;
+  interface BaseProps extends PropsWithChildren {
     testId?: string;
   }
+
+  interface LinkProps extends BaseProps {
+    link: string;
+    copyableValue?: never;
+    copyableValueName?: never;
+  }
+
+  interface CopyableProps extends BaseProps {
+    link?: never;
+    copyableValue: string;
+    copyableValueName: string;
+  }
+
+  export type Props = LinkProps | CopyableProps;
 }

@@ -9,16 +9,36 @@ import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Typography } from "components/layout/typography/typography";
 
 export function ProfileSummary(props: TProfileSummary.Props) {
-  const { bio, contacts, signedUpOnGithubAt, signedUpAt } = props;
+  const { bio, contacts, signedUpOnGithubAt, signedUpAt, htmlUrl } = props;
 
-  const contactIconMapping: Record<PublicProfileChannelsUnion, RemixIconsName> = {
+  const contactIconMapping: Record<Partial<PublicProfileChannelsUnion | "GITHUB">, RemixIconsName> = {
     EMAIL: "ri-mail-line",
     TELEGRAM: "ri-telegram-fill",
     TWITTER: "ri-twitter-x-fill",
     DISCORD: "ri-discord-fill",
     LINKEDIN: "ri-linkedin-box-fill",
     WHATSAPP: "ri-whatsapp-fill",
+    GITHUB: "ri-github-fill",
   };
+
+  function getArgs(channel: PublicProfileChannelsUnion, contacts: string) {
+    switch (channel) {
+      case "TELEGRAM":
+      case "TWITTER":
+      case "LINKEDIN":
+        return {
+          link: contacts,
+        };
+      case "WHATSAPP":
+      case "DISCORD":
+        return {
+          copyableValue: contacts,
+          copyableValueName: channel,
+        };
+      default:
+        return {};
+    }
+  }
 
   return (
     <div className="flex w-full flex-col gap-3 py-0 md:gap-6 md:py-5">
@@ -29,28 +49,20 @@ export function ProfileSummary(props: TProfileSummary.Props) {
       ) : null}
 
       <div className="flex flex-col-reverse flex-wrap-reverse justify-between gap-5 md:flex-row md:gap-3">
-        {contacts?.length ? (
-          <div className="flex items-center gap-2">
-            {contacts
-              .filter(item => item.channel !== "EMAIL" && item.visibility !== "private")
-              .map(c => {
-                const args = {
-                  link:
-                    c.channel === "TELEGRAM" || c.channel === "TWITTER" || c.channel === "LINKEDIN"
-                      ? c.contact
-                      : undefined,
-                  copyableValue: c.channel === "WHATSAPP" || c.channel === "DISCORD" ? c.contact : undefined,
-                  copyableValueName: c.channel,
-                };
-                return (
-                  <SocialLink key={c.contact} {...args}>
-                    <Icon remixName={contactIconMapping[c.channel]} size={24} />
-                  </SocialLink>
-                );
-              })}
-          </div>
-        ) : null}
-
+        <div className="flex items-center gap-2">
+          <SocialLink key={htmlUrl} link={htmlUrl}>
+            <Icon remixName={contactIconMapping["GITHUB"]} size={24} />
+          </SocialLink>
+          {contacts
+            ?.filter(item => item.channel !== "EMAIL" && item.visibility !== "private")
+            .map(c => {
+              return (
+                <SocialLink key={c.contact} {...getArgs(c.channel, c.contact)}>
+                  <Icon remixName={contactIconMapping[c.channel]} size={24} />
+                </SocialLink>
+              );
+            })}
+        </div>
         <ProfileDate signedUpOnGithubAt={signedUpOnGithubAt} signedUpAt={signedUpAt} />
       </div>
     </div>
