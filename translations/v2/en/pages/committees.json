@@ -5,6 +5,19 @@
       "description": "Do you want to register your project to the committee?\nWe just need you to connect to get started.",
       "login": "Connect with GitHub"
     },
-    "private": {}
+    "private": {
+      "create": {
+        "title": "Select your project",
+        "description": "Start by going through the details of your project. Should you wish to make any updates, please proceed to OnlyDust to edit your project information."
+      },
+      "update": {
+        "title": "Your application",
+        "description": "You can edit your application as long as the registration period is still open."
+      },
+      "questions": {
+        "title": "Answer the following questions",
+        "description": "This will help our jury to allocate budget for this committee."
+      }
+    }
   }
 }
