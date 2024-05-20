@@ -7,7 +7,8 @@ export namespace TSelect {
     value: string;
     label: string;
   }
-  export interface Props extends Omit<SelectProps<Item>, "children"> {
+  export interface Props extends Omit<SelectProps<Item>, "children" | "variant"> {
     selectItemProps?: CustomListboxItemProps;
+    variant?: "blue" | "grey";
   }
 }

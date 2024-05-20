@@ -3,5 +3,6 @@ import { TUseSearchProjects } from "components/features/search-projects/hooks/us
 export namespace TSponsorProjectStack {
   export interface Props {
     project?: TUseSearchProjects.Project;
+    initialSponsorId?: string;
   }
 }

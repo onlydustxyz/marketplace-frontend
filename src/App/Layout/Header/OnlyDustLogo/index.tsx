@@ -22,6 +22,7 @@ export default function OnlyDustLogo({ width = OnlyDustLogoWidth.Medium }: OnlyD
       })}
       src={IMAGES.logo.original}
       alt={T("images.onlyDustLogo")}
+      loading={"lazy"}
     />
   );
 }

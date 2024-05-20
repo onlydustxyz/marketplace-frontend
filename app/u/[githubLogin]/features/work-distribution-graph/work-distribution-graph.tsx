@@ -13,7 +13,7 @@ export async function WorkDistributionGraph({ githubUserId }: TWorkDistributionG
   });
   const workDistribution = stats?.workDistribution;
 
-  // because it's server we can use translate hook here
+  // because it's server we can't use translate hook here
   const data = [
     { id: "pull-request", label: "Pull requests", value: workDistribution?.pullRequestCount || 0, color: "#CE66FF" },
     { id: "issues", label: "Issues", value: workDistribution?.issueCount || 0, color: "#FFBC66" },

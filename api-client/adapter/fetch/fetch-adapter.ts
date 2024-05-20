@@ -141,13 +141,13 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     const endpointUrl = this.getEndpointUrl(this.url, this.params);
     const headers = await this.getHeaders();
     return fetch(endpointUrl, {
-      ...params,
       ...(!params?.next?.revalidate ? { cache: "no-cache" } : {}),
+      ...params,
       method: params?.method || this.method,
       headers,
       body: params?.body || this.body,
       next: {
-        ...(this.tag ? { tag: this.tag } : {}),
+        ...(this.tag ? { tag: [this.tag] } : {}),
         ...params?.next,
       },
     });
