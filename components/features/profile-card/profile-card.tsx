@@ -1,4 +1,4 @@
-import { PublicProfilerankCategoryUnion } from "api-client/resources/users/types";
+import { rankCategoryMapping } from "api-client/resources/users/types";
 import Image from "next/image";
 import profileCardBackground from "public/images/profile-card-bg.svg";
 import { getOrdinalSuffix } from "utils/profile/ordinal-position-suffix";
@@ -15,8 +15,6 @@ import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
-
-import { Key } from "hooks/translate/use-translate";
 
 function ProfileStatItem({ icon, token, count }: TProfileCard.ProfileStatProps) {
   return (
@@ -41,15 +39,6 @@ export function ProfileCard(props: TProfileCard.Props) {
     rank,
     rankPercentile,
   } = props;
-
-  const rankCategoryMapping: Record<PublicProfilerankCategoryUnion, Key> = {
-    A: "v2.features.profileCard.rankCategories.a",
-    B: "v2.features.profileCard.rankCategories.b",
-    C: "v2.features.profileCard.rankCategories.c",
-    D: "v2.features.profileCard.rankCategories.d",
-    E: "v2.features.profileCard.rankCategories.e",
-    F: "v2.features.profileCard.rankCategories.f",
-  };
 
   return (
     <Card className={cn("relative z-[1] flex w-full flex-col gap-4", className)} background="base" border="multiColor">
