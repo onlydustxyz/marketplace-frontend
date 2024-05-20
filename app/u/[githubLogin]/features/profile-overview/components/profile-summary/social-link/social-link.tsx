@@ -30,7 +30,7 @@ export function SocialLink({ link, copyableValue, copyableValueName, testId, chi
         size="m"
         variant="secondary"
         iconOnly
-        className="h-10 w-10 items-center justify-center rounded-xl bg-noise-heavy p-2"
+        className="h-10 w-10 items-center justify-center rounded-xl border-none bg-noise-heavy p-2"
         data-testid={testId}
         {...props}
       >
