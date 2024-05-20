@@ -1,3 +1,5 @@
+import RevalidatePath from "api-client/revalidate/revalidate-path";
+
 import { components } from "src/__generated/api";
 import { BILLING_PROFILES_TAGS } from "src/api/BillingProfiles/tags";
 import { ME_BILLING_TAGS } from "src/api/me/billing/tags";
@@ -82,6 +84,7 @@ const useUpdateProfile = ({ options = {} }: UseMutationProps<UseUpdateProfileRes
   return useBaseMutation<UseUpdateProfileBody, UseUpdateProfileResponse>({
     resourcePath: ME_PATH.PROFILE,
     invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
+    onSuccess: () => RevalidatePath({ path: "/u/[githubLogin]", type: "page" }),
     method: "PUT",
     ...options,
   });

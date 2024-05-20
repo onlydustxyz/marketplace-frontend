@@ -25,7 +25,9 @@ import { ProfileOverview } from "./features/profile-overview/profile-overview";
 
 async function getProfile(githubLogin: string) {
   try {
-    return await usersApiClient.fetch.getUserPublicProfileByGithubLogin(githubLogin).request();
+    return await usersApiClient.fetch.getUserPublicProfileByGithubLogin(githubLogin).request({
+      next: { revalidate: 120 },
+    });
   } catch (e) {
     if ((e as FetchError).status === 404) {
       notFound();
