@@ -17,6 +17,8 @@ export function CommitteeApplicantPrivatePage() {
     committeeId: typeof committeeId === "string" ? committeeId : "",
   });
 
+  console.log({ data });
+
   // TODO handle loading, error, data
 
   return (

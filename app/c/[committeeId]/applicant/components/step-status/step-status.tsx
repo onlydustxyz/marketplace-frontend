@@ -1,5 +1,3 @@
-import ReactMarkdown from "react-markdown";
-
 import IssueDraft from "src/assets/icons/IssueDraft";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { cn } from "src/utils/cn";

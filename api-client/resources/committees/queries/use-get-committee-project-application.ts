@@ -14,6 +14,6 @@ export const useGetCommitteeProjectApplication = (params: Parameters<typeof getC
 
   return useQuery<GetCommitteeProjectApplicationResponse>({
     ...query,
-    enabled: isAuthenticated,
+    enabled: Boolean(params.committeeId) && isAuthenticated,
   });
 };
