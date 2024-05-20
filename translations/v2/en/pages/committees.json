@@ -1,0 +1,10 @@
+{
+  "applicant": {
+    "public": {
+      "title": "Register to the committee",
+      "description": "Do you want to register your project to the committee?\nWe just need you to connect to get started.",
+      "login": "Connect with GitHub"
+    },
+    "private": {}
+  }
+}
