@@ -9,7 +9,7 @@ import { Button } from "components/ds/button/button";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function SocialLink({ link, copyableValue, copyableValueName, testId, children }: TSocialLink.Props) {
+export function SocialLink({ link, copyableValue, copyableValueName, children }: TSocialLink.Props) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
@@ -31,7 +31,6 @@ export function SocialLink({ link, copyableValue, copyableValueName, testId, chi
         variant="secondary"
         iconOnly
         className="h-10 w-10 items-center justify-center rounded-xl border-none bg-noise-heavy p-2"
-        data-testid={testId}
         {...props}
       >
         {children}
