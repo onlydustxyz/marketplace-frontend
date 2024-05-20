@@ -1,6 +1,8 @@
 import { useGetCommitteeProjectApplication } from "api-client/resources/committees/queries/use-get-committee-project-application";
 import { useParams } from "next/navigation";
 
+import { PrivatePageError } from "app/c/[committeeId]/applicant/features/private-page/private-page.error";
+import { PrivatePageLoading } from "app/c/[committeeId]/applicant/features/private-page/private-page.loading";
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
 
 import { Button } from "components/ds/button/button";
@@ -17,18 +19,12 @@ export function CommitteeApplicantPrivatePage() {
     committeeId: typeof committeeId === "string" ? committeeId : "",
   });
 
-  console.log({ data });
-
   if (isError) {
-    return "Failed";
+    return <PrivatePageError />;
   }
 
   if (isLoading) {
-    return "Loading";
-  }
-
-  if (!data) {
-    return "No data";
+    return <PrivatePageLoading />;
   }
 
   return (
@@ -40,7 +36,7 @@ export function CommitteeApplicantPrivatePage() {
         className={"grid gap-8 p-6 md:p-12"}
       >
         <div className="grid gap-8">
-          <Steps status={data.status} />
+          <Steps status={data?.status} />
 
           <div className="grid gap-2">
             <Typography

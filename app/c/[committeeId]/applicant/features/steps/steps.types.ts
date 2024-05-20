@@ -2,6 +2,6 @@ import { GetCommitteeProjectApplicationResponse } from "api-client/resources/com
 
 export namespace TProjectApplicationSteps {
   export interface Props {
-    status: GetCommitteeProjectApplicationResponse["status"];
+    status?: GetCommitteeProjectApplicationResponse["status"];
   }
 }
