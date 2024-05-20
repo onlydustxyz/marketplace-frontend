@@ -6,7 +6,7 @@ enum Paths {
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   project_application: {
-    url: "committees/:committee_id/project/applications",
+    url: "committees/:committee_id/projects/applications",
     method: "GET",
   },
 };
