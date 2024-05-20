@@ -30,5 +30,6 @@
     "title": "Details by ecosystems",
     "empty": "No ecosystem data available."
   },
-  "totalEarnedOther": "Other"
+  "totalEarnedOther": "Other",
+  "bioEmptyState": "No profile description added yet, stay tuned for more!"
 }
