@@ -6,6 +6,11 @@
       "login": "Connect with GitHub"
     },
     "private": {
+      "step": {
+        "applications": "Applications",
+        "votes": "Votes",
+        "results": "Results"
+      },
       "create": {
         "title": "Select your project",
         "description": "Start by going through the details of your project. Should you wish to make any updates, please proceed to OnlyDust to edit your project information."

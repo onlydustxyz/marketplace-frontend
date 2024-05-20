@@ -1,3 +1,8 @@
+import { useGetCommitteeProjectApplication } from "api-client/resources/committees/queries/use-get-committee-project-application";
+import { useParams } from "next/navigation";
+
+import { StepStatus } from "app/c/[committeeId]/applicant/components/step-status/step-status";
+
 import { Button } from "components/ds/button/button";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
@@ -5,7 +10,16 @@ import { Typography } from "components/layout/typography/typography";
 import { useIntl } from "hooks/translate/use-translate";
 
 export function CommitteeApplicantPrivatePage() {
+  const { committeeId } = useParams();
   const { T } = useIntl();
+
+  const { data } = useGetCommitteeProjectApplication({
+    committeeId: typeof committeeId === "string" ? committeeId : "",
+  });
+
+  console.log({ data });
+
+  // TODO handle loading, error, data
 
   return (
     <div className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base max-md:min-h-full md:max-h-full">
@@ -16,7 +30,14 @@ export function CommitteeApplicantPrivatePage() {
         className={"grid gap-8 p-6 md:p-12"}
       >
         <div className="grid gap-8">
-          <div>STEPPER</div>
+          <div className={"flex items-center gap-2"}>
+            {/* TODO @hayden handle correct status */}
+            <StepStatus status={"completed"} token={"v2.pages.committees.applicant.private.step.applications"} />
+            <Icon remixName={"ri-arrow-right-s-line"} className={"text-spaceBlue-400"} />
+            <StepStatus status={"active"} token={"v2.pages.committees.applicant.private.step.votes"} />
+            <Icon remixName={"ri-arrow-right-s-line"} className={"text-spaceBlue-400"} />
+            <StepStatus status={"pending"} token={"v2.pages.committees.applicant.private.step.results"} />
+          </div>
 
           <div className="grid gap-2">
             <Typography
