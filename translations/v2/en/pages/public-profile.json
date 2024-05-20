@@ -31,5 +31,11 @@
     "empty": "No ecosystem data available."
   },
   "totalEarnedOther": "Other",
-  "bioEmptyState": "No profile description added yet, stay tuned for more!"
+  "emptyStates": {
+    "bio": "No profile description added yet, stay tuned for more!",
+    "activityGraph": {
+      "title": "Seems a bit quiet here",
+      "description": "This user has no recent activity."
+    }
+  }
 }

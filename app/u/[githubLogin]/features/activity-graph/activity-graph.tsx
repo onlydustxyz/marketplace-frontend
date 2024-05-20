@@ -5,6 +5,8 @@ import { useMemo, useState } from "react";
 
 import { Filter } from "app/u/[githubLogin]/features/activity-graph/filter/filter";
 
+import { IMAGES } from "src/assets/img";
+
 import { Card } from "components/ds/card/card";
 import { ActivityGraph as ActivityGraphComponent } from "components/features/graphs/activity-graph/activity-graph";
 import { TActivityGraph as TActivityGraphComponent } from "components/features/graphs/activity-graph/activity-graph.types";
@@ -12,6 +14,7 @@ import { getDateFromWeekNumber } from "components/features/graphs/activity-graph
 import { getLevelFromCount } from "components/features/graphs/activity-graph/utils/getLevelFromCount";
 import { getLevelRange } from "components/features/graphs/activity-graph/utils/getLevelRange";
 import { getWeekId } from "components/features/graphs/activity-graph/utils/getWeekId";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Typography } from "components/layout/typography/typography";
 
 import { TActivityGraph } from "./activity-graph.types";
@@ -46,6 +49,19 @@ export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props
     setSelectedEcosystemId(ecosystemId);
   }
 
+  const renderContent = useMemo(() => {
+    if (!weekData) {
+      return (
+        <EmptyState
+          illustrationSrc={IMAGES.icons.compass}
+          title={{ token: "v2.pages.publicProfile.emptyStates.activityGraph.title" }}
+          description={{ token: "v2.pages.publicProfile.emptyStates.activityGraph.description" }}
+        />
+      );
+    }
+    return <ActivityGraphComponent weekData={weekData} isLoading={isLoading || isRefetching} />;
+  }, [weekData]);
+
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="flex w-full flex-row items-center justify-between gap-10 sm:gap-2">
@@ -57,7 +73,7 @@ export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props
         <Filter ecosystems={ecosystems} onChange={onEcosystemChange} value={selectedEcosystemId} />
       </div>
       <Card background={"base"} className="flex flex-row items-center justify-center">
-        <ActivityGraphComponent weekData={weekData} isLoading={isLoading || isRefetching} />
+        {renderContent}
       </Card>
     </div>
   );
