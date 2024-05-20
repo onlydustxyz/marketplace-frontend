@@ -19,6 +19,9 @@
         "title": "Your application",
         "description": "You can edit your application as long as the registration period is still open."
       },
+      "project": {
+        "select": "Select a project"
+      },
       "questions": {
         "title": "Answer the following questions",
         "description": "This will help our jury to allocate budget for this committee."
