@@ -20,11 +20,12 @@ export function DetailsAccordion({ details, githubUserId }: TDetailsAccordion.Ac
           className="!rounded-2xl !border-1 !border-card-border-light !bg-card-background-base !px-0 !shadow-none"
           indicator={({ isOpen }) =>
             isOpen ? (
-              <Icon remixName="ri-arrow-right-s-line" size={24} />
+              <Icon remixName="ri-arrow-up-s-line" size={24} />
             ) : (
               <Icon remixName="ri-arrow-down-s-line" size={24} />
             )
           }
+          disableIndicatorAnimation
           classNames={{
             content: "!px-4 !py-4 !border-t-1 !border-card-border-light",
             trigger: "!px-4 justify-start items-start",
