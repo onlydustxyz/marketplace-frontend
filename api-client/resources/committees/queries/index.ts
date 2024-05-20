@@ -1,1 +1,1 @@
-import * from './use-get-committee-project-application';
+export * from "./use-get-committee-project-application";
