@@ -18,14 +18,16 @@ export function PieChart({ data, renderTooltip, pieProps, wrapperClassName, lege
 
   const colors = data.map((item, index) => item.color || DEFAULT_COLORS[index % DEFAULT_COLORS.length]);
 
-  const legendData = data.map(item => {
-    return {
-      id: item.id,
-      label: item.label || item.value,
-      value: item.value,
-      color: colors[data.indexOf(item)],
-    };
-  });
+  const legendData = data
+    .map(item => {
+      return {
+        id: item.id,
+        label: item.label || item.value,
+        value: item.value,
+        color: colors[data.indexOf(item)],
+      };
+    })
+    .filter(item => item.value > 0);
 
   return (
     <Flex alignItems="center" justifyContent="center" width="full" className={cn("gap-1", wrapperClassName)}>
