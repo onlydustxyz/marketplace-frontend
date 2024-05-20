@@ -32,6 +32,7 @@ export async function ProfileOverview({ userProfile }: TProfileOverview.Props) {
               contacts={userProfile.contacts}
               signedUpOnGithubAt={userProfile.signedUpOnGithubAt}
               signedUpAt={userProfile.signedUpAt}
+              htmlUrl={userProfile.htmlUrl}
             />
           </div>
         </div>

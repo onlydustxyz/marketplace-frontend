@@ -11,5 +11,6 @@ export namespace TProfileSummary {
     contacts?: Contact[];
     signedUpOnGithubAt?: string;
     signedUpAt?: string;
+    htmlUrl?: string;
   }
 }
