@@ -1,5 +1,7 @@
 import { components, operations } from "src/__generated/api";
 
+import { Key } from "hooks/translate/use-translate";
+
 type PublicUserLanguagesResponse = components["schemas"]["UserProfileLanguagePage"];
 type PublicUserEcosystemsResponse = components["schemas"]["UserProfileEcosystemPage"];
 type PublicUserStatsResponse = components["schemas"]["UserProfileStatsV2"];
@@ -15,3 +17,12 @@ export interface UserPublicEcosystemsResponse extends PublicUserEcosystemsRespon
 export interface UserPublicStatsResponse extends PublicUserStatsResponse {}
 export interface UserContributionsResponse extends UserProfileContributions {}
 export type UserContributionsRequestParams = UserProfileContributionsParams;
+
+export const rankCategoryMapping: Record<PublicProfilerankCategoryUnion, Key> = {
+  A: "v2.features.profileCard.rankCategories.a",
+  B: "v2.features.profileCard.rankCategories.b",
+  C: "v2.features.profileCard.rankCategories.c",
+  D: "v2.features.profileCard.rankCategories.d",
+  E: "v2.features.profileCard.rankCategories.e",
+  F: "v2.features.profileCard.rankCategories.f",
+};
