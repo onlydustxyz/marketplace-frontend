@@ -13,7 +13,7 @@ export function getCommitteeProjectApplication({
   projectId?: string;
 }): IFetchAdapater<GetCommitteeProjectApplicationResponse> {
   const fetchAdapter = new FetchAdapter<GetCommitteeProjectApplicationResponse>(adapters.project_application)
-    .setPathParams({ committeeId })
+    .setPathParams({ committee_id: committeeId })
     .setTag(tags.project_application(committeeId));
 
   if (projectId) {
