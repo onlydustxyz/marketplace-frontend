@@ -11,14 +11,20 @@ import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { TSponsorSidePanels } from "./sponsor-side-panels.types";
 
-export function SponsorSidePanels({ buttonProps, panel, project, tooltipProps }: TSponsorSidePanels.Props) {
+export function SponsorSidePanels({
+  buttonProps,
+  panel,
+  project,
+  tooltipProps,
+  initialSponsorId,
+}: TSponsorSidePanels.Props) {
   const { user } = useCurrentUser();
   const [isFilloutOpen, setIsFilloutOpen] = useState(false);
   const [openSponsorProjectStack] = useStackSponsorProject();
 
   function handleClick() {
     if (panel === "project") {
-      openSponsorProjectStack({ project });
+      openSponsorProjectStack({ project, initialSponsorId });
       return;
     }
 
