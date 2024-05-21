@@ -59,7 +59,7 @@ export function CommitteeApplicantPrivatePage() {
         }))
       );
     }
-  }, [data, fields]);
+  }, [data, answers]);
 
   function handleProjectChange(projectId: string) {
     setProjectId(projectId);
