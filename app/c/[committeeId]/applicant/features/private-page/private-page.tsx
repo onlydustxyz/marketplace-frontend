@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { committeeApiClient } from "api-client/resources/committees";
+import { GetCommitteeProjectApplicationResponse } from "api-client/resources/committees/types";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { PrivatePageError } from "app/c/[committeeId]/applicant/features/private-page/private-page.error";
@@ -28,6 +29,9 @@ export function CommitteeApplicantPrivatePage() {
   const { T } = useIntl();
   const [projectId, setProjectId] = useState("");
 
+  const isInitialLoadingRef = useRef(true);
+  const statusRef = useRef<GetCommitteeProjectApplicationResponse["status"]>();
+
   const { data, isError, isLoading } = committeeApiClient.queries.useGetCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
@@ -49,7 +53,14 @@ export function CommitteeApplicantPrivatePage() {
   const answers = watch("answers");
 
   useEffect(() => {
-    if (data && !answers.length) {
+    if (data) {
+      isInitialLoadingRef.current = false;
+      statusRef.current = data.status;
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (data && !answers?.length) {
       replace(
         data.projectQuestions.map(q => ({
           questionId: q.id,
@@ -85,7 +96,11 @@ export function CommitteeApplicantPrivatePage() {
 
       <div className={"grid gap-8 p-6 md:p-12"}>
         <div className="grid gap-8">
-          {isLoading ? <SkeletonEl variant={"rounded"} width={"50%"} height={20} /> : <Steps status={data?.status} />}
+          {isInitialLoadingRef.current ? (
+            <SkeletonEl variant={"rounded"} width={"50%"} height={20} />
+          ) : (
+            <Steps status={statusRef.current} />
+          )}
 
           <div className="grid gap-2">
             <Typography
@@ -105,11 +120,10 @@ export function CommitteeApplicantPrivatePage() {
             {data?.projectInfos ? (
               <Card className={"grid gap-4 shadow-medium"}>
                 <header className={"flex gap-4"}>
-                  <Avatar size={"2xl"} shape={"square"} isBordered={false} />
+                  <Avatar src={data.projectInfos.logoUrl} size={"2xl"} shape={"square"} isBordered={false} />
 
                   <div className={"grid flex-1 gap-2"}>
-                    {/* TODO @hayden */}
-                    <Typography variant={"title-m"}>PROJECT NAME</Typography>
+                    <Typography variant={"title-m"}>{data.projectInfos.name}</Typography>
 
                     {data.projectInfos.projectLeads?.length ? (
                       <ul className={"flex flex-wrap gap-x-3 gap-y-1"}>
@@ -169,6 +183,12 @@ export function CommitteeApplicantPrivatePage() {
             </div>
 
             <ul className={"grid gap-6"}>
+              {isInitialLoadingRef.current ? (
+                <li>
+                  <SkeletonEl variant={"rounded"} width={"100%"} height={90} />
+                </li>
+              ) : null}
+
               {fields.map((f, index) => (
                 <li key={f.questionId}>
                   <Controller
