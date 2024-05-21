@@ -22,7 +22,7 @@ export function Tag({
         data-testid={testId}
         id={id}
         className={cn(
-          "relative isolate w-fit shrink-0 overflow-hidden rounded-full p-px",
+          "relative isolate w-fit shrink-0 overflow-hidden p-px",
           { "cursor-pointer": onClick },
           containerClassName
         )}
