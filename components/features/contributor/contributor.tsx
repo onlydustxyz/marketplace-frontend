@@ -43,7 +43,7 @@ export function Contributor({
     debounceOpen(open);
 
     if (!open) {
-      setIsOpen(false);
+      debounceOpen(false);
     }
   }
 

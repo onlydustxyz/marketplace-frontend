@@ -1,4 +1,4 @@
-import { rankCategoryMapping } from "api-client/resources/users/types";
+import { rankCategoryEmojiMapping, rankCategoryMapping } from "api-client/resources/users/types";
 import Image from "next/image";
 import profileCardBackground from "public/images/profile-card-bg.svg";
 import { getOrdinalSuffix } from "utils/profile/ordinal-position-suffix";
@@ -10,6 +10,7 @@ import { Card } from "components/ds/card/card";
 import { Tag } from "components/ds/tag/tag";
 import { TProfileCard } from "components/features/profile-card/profile-card.types";
 import { BaseLink } from "components/layout/base-link/base-link";
+import { Emoji } from "components/layout/emoji/emoji";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -68,11 +69,14 @@ export function ProfileCard(props: TProfileCard.Props) {
           </div>
           <div className="flex justify-between gap-2">
             {rankCategory ? (
-              <Typography
-                variant="title-s"
-                className="line-clamp-2 text-spaceBlue-100"
-                translate={{ token: rankCategoryMapping[rankCategory] }}
-              />
+              <div className="flex items-center gap-1">
+                <Emoji symbol={rankCategoryEmojiMapping[rankCategory]} label="rank emoji" />
+                <Typography
+                  variant="title-s"
+                  className="line-clamp-2 text-spaceBlue-100"
+                  translate={{ token: rankCategoryMapping[rankCategory] }}
+                />
+              </div>
             ) : null}
             {rankPercentile && rankPercentile !== 100 ? (
               <Typography
