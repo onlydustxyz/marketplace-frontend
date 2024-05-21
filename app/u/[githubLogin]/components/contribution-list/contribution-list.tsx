@@ -43,8 +43,8 @@ export function ContributionList({ githubUserId, languageId, ecosystemId }: TCon
     return (
       <EmptyState
         illustrationSrc={IMAGES.global.categories}
-        title={{ token: "v2.pages.publicProfile.emptyStates.contributions.title" }}
-        description={{ token: "v2.pages.publicProfile.emptyStates.contributions.description" }}
+        title={{ token: "v2.pages.publicProfile.contributions.empty.title" }}
+        description={{ token: "v2.pages.publicProfile.contributions.empty.description" }}
       />
     );
   }

@@ -44,7 +44,7 @@ export function ProfileSummary(props: TProfileSummary.Props) {
   return (
     <div className="flex w-full flex-col gap-3 py-0 md:gap-6 md:py-5">
       <Typography variant="body-m" className="line-clamp-5 h-full text-spaceBlue-100">
-        {bio || <Translate token="v2.pages.publicProfile.emptyStates.bio" />}
+        {bio || <Translate token="v2.pages.publicProfile.bio.empty" />}
       </Typography>
 
       <div className="flex flex-col-reverse flex-wrap-reverse justify-between gap-5 md:flex-row md:gap-3">

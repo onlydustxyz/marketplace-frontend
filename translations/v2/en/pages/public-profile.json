@@ -11,7 +11,14 @@
     "usd": "USD"
   },
   "activity": {
-    "title": "Activity"
+    "title": "Activity",
+    "empty": {
+      "title": "Seems a bit quiet here",
+      "description": "This user has no recent activity."
+    }
+  },
+  "bio": {
+    "empty": "No profile description added yet, stay tuned for more!"
   },
   "workDistribution": {
     "title": "Work distribution",
@@ -27,16 +34,11 @@
   "ecosystemsDetails": {
     "title": "Details by ecosystems"
   },
-  "totalEarnedOther": "Other",
-  "emptyStates": {
-    "bio": "No profile description added yet, stay tuned for more!",
-    "activityGraph": {
-      "title": "Seems a bit quiet here",
-      "description": "This user has no recent activity."
-    },
-    "contributions": {
+  "contributions": {
+    "empty": {
       "title": "No contribution yet.",
       "description": "Come back later to discover more work."
     }
-  }
+  },
+  "totalEarnedOther": "Other"
 }

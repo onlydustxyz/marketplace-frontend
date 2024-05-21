@@ -11,8 +11,8 @@ export function ActivityGraphError() {
       <Card background={"base"}>
         <EmptyState
           illustrationSrc={IMAGES.icons.compass}
-          title={{ token: "v2.pages.publicProfile.emptyStates.activityGraph.title" }}
-          description={{ token: "v2.pages.publicProfile.emptyStates.activityGraph.description" }}
+          title={{ token: "v2.pages.publicProfile.activity.empty.title" }}
+          description={{ token: "v2.pages.publicProfile.activity.empty.description" }}
         />
       </Card>
     </div>

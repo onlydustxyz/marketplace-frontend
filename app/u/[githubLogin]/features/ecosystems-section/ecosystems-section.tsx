@@ -44,8 +44,8 @@ export async function EcosystemsSection(props: TEcosystemsSection.Props) {
         <Card background={"base"}>
           <EmptyState
             illustrationSrc={IMAGES.global.categories}
-            title={{ token: "v2.pages.publicProfile.emptyStates.contributions.title" }}
-            description={{ token: "v2.pages.publicProfile.emptyStates.contributions.description" }}
+            title={{ token: "v2.pages.publicProfile.contributions.empty.title" }}
+            description={{ token: "v2.pages.publicProfile.contributions.empty.description" }}
           />
         </Card>
       )}
