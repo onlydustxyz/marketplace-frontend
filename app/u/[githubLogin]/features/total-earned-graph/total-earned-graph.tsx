@@ -3,6 +3,8 @@ import { Money } from "utils/Money/Money";
 
 import { TotalEarnedGraphClient } from "app/u/[githubLogin]/features/total-earned-graph/total-earned-graph.client";
 
+import { FetchError } from "src/api/query.type";
+
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
@@ -10,10 +12,27 @@ import { Typography } from "components/layout/typography/typography";
 import { TTotalEarnedGraph } from "./total-earned-graph.types";
 
 const SHOWED_STATS_NUMBER = 4;
+async function getStats(githubUserId: number) {
+  try {
+    return {
+      data: await usersApiClient.fetch.getUserPublicStats(githubUserId).request({
+        next: { revalidate: 120 },
+      }),
+      isError: false,
+    };
+  } catch (e) {
+    if ((e as FetchError).status === 404) {
+      return { data: null, isError: true };
+    }
+    throw e;
+  }
+}
+
 export async function TotalEarnedGraph({ githubUserId }: TTotalEarnedGraph.Props) {
-  const stats = await usersApiClient.fetch.getUserPublicStats(githubUserId).request({
-    next: { revalidate: 120 },
-  });
+  const { data: stats, isError } = await getStats(githubUserId);
+  if (isError || !stats?.earnings?.perProject) {
+    return null;
+  }
   const orderedStats = (stats?.earnings?.perProject || []).sort((a, b) => b.totalEarnedUsd - a.totalEarnedUsd);
   const mainStats = orderedStats.slice(0, SHOWED_STATS_NUMBER);
   const otherStats = orderedStats.slice(SHOWED_STATS_NUMBER);
