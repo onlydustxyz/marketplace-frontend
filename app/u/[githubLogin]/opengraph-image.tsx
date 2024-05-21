@@ -1,5 +1,4 @@
 import { usersApiClient } from "api-client/resources/users";
-import { rankCategoryMapping } from "api-client/resources/users/types";
 
 import { TActivityGraph } from "components/features/graphs/activity-graph/activity-graph.types";
 import { getDateFromWeekNumber } from "components/features/graphs/activity-graph/utils/getDateFromWeekNumber";
@@ -9,21 +8,18 @@ import { getWeekId } from "components/features/graphs/activity-graph/utils/getWe
 import { Generator } from "components/features/seo/image-metadata/commons/generator/generator";
 import { GenericImageMetadata } from "components/features/seo/image-metadata/generic/image-metadata";
 import { PublicProfileImageMetadata } from "components/features/seo/image-metadata/public-profile/image-metadata";
+import { TPublicProfileImageMetadata } from "components/features/seo/image-metadata/public-profile/image-metadata.types";
 
 export default async function Image(props: { params: { githubLogin: string } }) {
   try {
     const user = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(props.params.githubLogin).request();
     const githubUserId = user?.githubUserId || 0;
 
-    const stats = await usersApiClient.fetch.getUserPublicStats(githubUserId).request();
-
-    const languages = await usersApiClient.fetch
-      .getUserPublicLanguages(githubUserId, { pageSize: 1, pageIndex: 0 })
-      .request();
-
-    const ecosystems = await usersApiClient.fetch
-      .getUserPublicEcosystems(githubUserId, { pageSize: 1, pageIndex: 0 })
-      .request();
+    const [stats, languages, ecosystems] = await Promise.all([
+      usersApiClient.fetch.getUserPublicStats(githubUserId).request(),
+      usersApiClient.fetch.getUserPublicLanguages(githubUserId, { pageSize: 2, pageIndex: 0 }).request(),
+      usersApiClient.fetch.getUserPublicEcosystems(githubUserId, { pageSize: 2, pageIndex: 0 }).request(),
+    ]);
 
     const ecosystem = ecosystems?.ecosystems?.[0];
     const language = languages?.languages?.[0];
@@ -61,7 +57,11 @@ export default async function Image(props: { params: { githubLogin: string } }) 
           image={user.avatarUrl}
           contributionCount={user.statsSummary?.contributionCount || 0}
           rewardsCount={user.statsSummary?.rewardCount || 0}
-          title={user.statsSummary?.rankCategory ? rankCategoryMapping[user.statsSummary?.rankCategory] : ""}
+          title={
+            user.statsSummary?.rankCategory
+              ? TPublicProfileImageMetadata.rankCategoryTranslationMapping[user.statsSummary?.rankCategory]
+              : ""
+          }
           {...(ecosystem
             ? {
                 topEcosystem: {
