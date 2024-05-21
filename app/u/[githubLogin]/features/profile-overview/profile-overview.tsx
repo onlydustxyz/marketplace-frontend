@@ -20,7 +20,7 @@ export async function ProfileOverview({ userProfile }: TProfileOverview.Props) {
         <ProfileCard login={userProfile.login} avatarUrl={userProfile.avatarUrl} {...userProfile.statsSummary} />
       </div>
 
-      <Card className="flex w-full flex-col items-start justify-start gap-6 md:gap-10" background="base">
+      <Card className="flex w-full flex-col items-start justify-start" background="base">
         <div className="flex w-full flex-row flex-wrap justify-between gap-10">
           <div className="hidden flex-1 md:flex">
             <ProfileCard login={userProfile.login} avatarUrl={userProfile.avatarUrl} {...userProfile.statsSummary} />

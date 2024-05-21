@@ -26,7 +26,7 @@ export async function MostActiveEcosystems({ githubUserId }: TMostActiveEcosyste
   if (!ecosystems?.length) return null;
 
   return (
-    <div className="flex w-full md:w-1/3">
+    <div className="flex w-full pt-6 md:w-1/3 md:pt-10">
       <MostActiveSection
         icon={{
           remixName: "ri-global-line",

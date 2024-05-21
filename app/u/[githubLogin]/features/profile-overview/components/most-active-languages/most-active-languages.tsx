@@ -26,7 +26,7 @@ export async function MostActiveLanguages({ githubUserId }: TMostActiveLanguages
   if (!languages.length) return null;
 
   return (
-    <div className="flex w-full flex-1">
+    <div className="flex w-full flex-1 pt-6 md:pt-10">
       <MostActiveSection
         icon={{
           remixName: "ri-code-s-slash-line",
