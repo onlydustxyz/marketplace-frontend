@@ -28,11 +28,11 @@
     }
   },
   "rankCategories": {
-    "a": "Diamond",
-    "b": "Gold",
-    "c": "Silver",
-    "d": "Bronze",
-    "e": "Steel",
-    "f": "Wood"
+    "a": "Diamond contributor",
+    "b": "Gold contributor",
+    "c": "Silver contributor",
+    "d": "Bronze contributor",
+    "e": "Steel contributor",
+    "f": "Wood contributor"
   }
 }
