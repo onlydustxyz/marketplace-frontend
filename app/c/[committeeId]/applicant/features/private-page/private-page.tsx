@@ -1,8 +1,11 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetCommitteeProjectApplication } from "api-client/resources/committees/queries/use-get-committee-project-application";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { PrivatePageError } from "app/c/[committeeId]/applicant/features/private-page/private-page.error";
+import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page.types";
 import { ProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection";
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
 
@@ -30,12 +33,48 @@ export function CommitteeApplicantPrivatePage() {
     projectId,
   });
 
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<TPrivatePage.form>({
+    resolver: zodResolver(TPrivatePage.validation),
+    defaultValues: {
+      projectId: "",
+      questions: [],
+    },
+  });
+
+  console.log(watch(), errors);
+
+  useEffect(() => {
+    if (data) {
+      setValue("questions", data.projectQuestions);
+    }
+  }, [data]);
+
+  function handleProjectChange(projectId: string) {
+    setProjectId(projectId);
+    setValue("projectId", projectId);
+  }
+
+  function handleFormSubmit(values: TPrivatePage.form) {
+    // TODO @hayden handle form submit
+
+    console.log({ values });
+  }
+
   if (isError) {
     return <PrivatePageError />;
   }
 
   return (
-    <div className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light">
+    <form
+      className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light"
+      onSubmit={handleSubmit(handleFormSubmit)}
+    >
       <div className="w-full bg-mosaic bg-cover pb-1.5" />
 
       <div className={"grid gap-8 p-6 md:p-12"}>
@@ -55,7 +94,7 @@ export function CommitteeApplicantPrivatePage() {
           </div>
 
           <div className={"grid gap-4"}>
-            <ProjectSelection projectId={projectId} onChange={setProjectId} isLoading={isLoading} />
+            <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isLoading} />
 
             {data?.projectInfos ? (
               <Card className={"grid gap-4 shadow-medium"}>
@@ -125,9 +164,9 @@ export function CommitteeApplicantPrivatePage() {
               </div>
 
               <ul className={"grid gap-6"}>
-                {data.projectQuestions.map(q => (
+                {data.projectQuestions.map((q, index) => (
                   <li key={q.id}>
-                    <Textarea label={q.question} isRequired={q.required} defaultValue={q.answer} />
+                    <Textarea {...register(`questions.${index}`)} label={q.question} isRequired={q.required} />
                   </li>
                 ))}
               </ul>
@@ -148,6 +187,6 @@ export function CommitteeApplicantPrivatePage() {
           <Icon remixName={"ri-check-line"} size={24} /> {T("v2.commons.form.submit")}
         </Button>
       </footer>
-    </div>
+    </form>
   );
 }
