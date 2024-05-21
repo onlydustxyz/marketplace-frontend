@@ -52,7 +52,7 @@ export function CommitteeApplicantPrivatePage() {
     if (data && !answers.length) {
       replace(
         data.projectQuestions.map(q => ({
-          id: q.id,
+          questionId: q.id,
           question: q.question,
           required: q.required,
           answer: q.answer || "",
@@ -170,7 +170,7 @@ export function CommitteeApplicantPrivatePage() {
 
             <ul className={"grid gap-6"}>
               {fields.map((f, index) => (
-                <li key={f.id}>
+                <li key={f.questionId}>
                   <Controller
                     render={({ field, fieldState }) => {
                       console.log("fieldState.error?.message}", fieldState.error);

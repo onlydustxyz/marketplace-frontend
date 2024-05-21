@@ -6,7 +6,7 @@ export namespace TPrivatePage {
     answers: z.array(
       z
         .object({
-          id: z.string().min(1),
+          questionId: z.string().min(1),
           question: z.string().min(1),
           answer: z.string().optional(),
           required: z.boolean(),
