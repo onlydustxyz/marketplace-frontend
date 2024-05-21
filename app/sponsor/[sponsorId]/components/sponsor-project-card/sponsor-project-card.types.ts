@@ -4,5 +4,6 @@ export namespace TSponsorProjectCard {
   export type Props = {
     project: components["schemas"]["ProjectWithBudgetResponse"];
     disableSponsorButton?: boolean;
+    initialSponsorId?: string;
   };
 }

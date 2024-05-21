@@ -30,7 +30,12 @@ export function SponsorSectionProject() {
 
     if (data) {
       return data.projects.map(project => (
-        <SponsorProjectCard key={project.id} project={project} disableSponsorButton={!canSponsorProject} />
+        <SponsorProjectCard
+          key={project.id}
+          project={project}
+          disableSponsorButton={!canSponsorProject}
+          initialSponsorId={data?.id}
+        />
       ));
     }
 
