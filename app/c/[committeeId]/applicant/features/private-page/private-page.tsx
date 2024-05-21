@@ -34,13 +34,10 @@ export function CommitteeApplicantPrivatePage() {
   }
 
   return (
-    <div className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base max-md:min-h-full md:max-h-full">
+    <div className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light">
       <div className="w-full bg-mosaic bg-cover pb-1.5" />
 
-      <div
-        // TODO @hayden may need flex/height here for scrolling content
-        className={"grid gap-8 p-6 md:p-12"}
-      >
+      <div className={"grid gap-8 p-6 md:p-12"}>
         <div className="grid gap-8">
           {isLoading ? <SkeletonEl variant={"rounded"} width={"50%"} height={20} /> : <Steps status={data?.status} />}
 
@@ -136,15 +133,9 @@ export function CommitteeApplicantPrivatePage() {
             </div>
           ) : null}
         </div>
-
-        {/*<div className="flex flex-1 flex-col overflow-visible md:overflow-auto">*/}
-        {/*  <div className="w-full overflow-visible scrollbar-thin scrollbar-thumb-spaceBlue-600 scrollbar-thumb-rounded scrollbar-w-1.5 md:w-auto md:overflow-auto">*/}
-        {/*    CONTENT*/}
-        {/*  </div>*/}
-        {/*</div>*/}
       </div>
 
-      <footer className="fixed bottom-0 left-0 z-10 flex w-full flex-col items-start justify-end border-t border-card-border-light bg-card-background-base p-6 shadow-medium md:relative md:bottom-auto md:left-auto md:flex-row md:items-center xl:rounded-b-2xl">
+      <footer className="flex w-full justify-end border-t border-card-border-light bg-card-background-base p-6">
         <Button
           type={"submit"}
           size={"l"}
