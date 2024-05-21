@@ -5,3 +5,12 @@ type CommitteeProjectQuestionResponse = components["schemas"]["CommitteeProjectQ
 
 export interface GetCommitteeProjectApplicationResponse extends CommitteeApplicationResponse {}
 export interface GetCommitteeProjectQuestionResponse extends CommitteeProjectQuestionResponse {}
+
+export interface UpdateCommitteeProjectApplicationParams {
+  committeeId: string;
+  projectId: string;
+}
+
+type CommitteeApplicationRequest = components["schemas"]["CommitteeApplicationRequest"];
+
+export interface UpdateCommitteeProjectApplicationVariables extends CommitteeApplicationRequest {}
