@@ -13,8 +13,9 @@ export function Select({ selectItemProps, classNames, variant = "blue", ...props
           "border rounded-large shadow-light",
           "data-[open=true]:border-spacePurple-400 data-[open=true]:bg-spacePurple-900 data-[open=true]:hover:bg-spacePurple-900 data-[open=true]:text-spacePurple-400 data-[open=true]:outline-double data-[open=true]:outline-1 data-[open=true]:outline-spacePurple-400 data-[open=true]:outline-offset-0",
           {
-            "bg-card-background-base hover:bg-card-background-base border-card-border-light": variant === "blue",
-            "bg-white/5 hover:bg-white/5 border-greyscale-50/8": variant === "grey",
+            "bg-card-background-base data-[hover=true]:bg-card-background-base border-card-border-light":
+              variant === "blue",
+            "bg-white/5 data-[hover=true]:bg-white/5 border-greyscale-50/8": variant === "grey",
           }
         ),
         value: cn(
