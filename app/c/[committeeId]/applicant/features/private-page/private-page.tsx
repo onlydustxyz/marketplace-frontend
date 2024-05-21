@@ -11,6 +11,7 @@ import MarkdownPreview from "src/components/MarkdownPreview";
 import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
+import { Textarea } from "components/ds/form/textarea/textarea";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Tag } from "components/ds/tag/tag";
 import { Contributor } from "components/features/contributor/contributor";
@@ -125,7 +126,9 @@ export function CommitteeApplicantPrivatePage() {
 
               <ul>
                 {data.projectQuestions.map(q => (
-                  <li key={q.id}>Question</li>
+                  <li key={q.id}>
+                    <Textarea label={q.question} isRequired={q.required} defaultValue={q.answer} />
+                  </li>
                 ))}
               </ul>
             </div>
