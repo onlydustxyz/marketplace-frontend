@@ -1,12 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { committeeApiClient } from "api-client/resources/committees";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { PrivatePageError } from "app/c/[committeeId]/applicant/features/private-page/private-page.error";
 import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page.types";
 import { ProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection";
+import { ReadOnlySection } from "app/c/[committeeId]/applicant/features/read-only-section/read-only-section";
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
 
 import MarkdownPreview from "src/components/MarkdownPreview";
@@ -71,6 +72,47 @@ export function CommitteeApplicantPrivatePage() {
 
     console.log({ values });
   }
+
+  const renderQuestionSection = useMemo(() => {
+    if (data?.status === "OPEN_TO_APPLICATIONS") {
+      return (
+        <ul className={"grid gap-6"}>
+          {fields.map((f, index) => (
+            <li key={f.questionId}>
+              <Controller
+                render={({ field, fieldState }) => {
+                  return (
+                    <Textarea
+                      {...field}
+                      value={field.value.answer}
+                      label={f.question}
+                      isRequired={f.required}
+                      isInvalid={!!fieldState.error?.message && fieldState.isDirty}
+                      onChange={e =>
+                        setValue(
+                          `answers.${index}`,
+                          {
+                            ...field.value,
+                            answer: e.target.value,
+                          },
+                          { shouldDirty: true, shouldValidate: true }
+                        )
+                      }
+                    />
+                  );
+                }}
+                name={`answers.${index}`}
+                control={control}
+              />
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    if (data?.status === "OPEN_TO_VOTES") {
+      return <ReadOnlySection questions={data?.projectQuestions || []} />;
+    }
+  }, [data, fields]);
 
   if (isError) {
     return <PrivatePageError />;
@@ -168,38 +210,7 @@ export function CommitteeApplicantPrivatePage() {
               />
             </div>
 
-            <ul className={"grid gap-6"}>
-              {fields.map((f, index) => (
-                <li key={f.questionId}>
-                  <Controller
-                    render={({ field, fieldState }) => {
-                      console.log("fieldState.error?.message}", fieldState.error);
-                      return (
-                        <Textarea
-                          {...field}
-                          value={field.value.answer}
-                          label={f.question}
-                          isRequired={f.required}
-                          isInvalid={!!fieldState.error?.message && fieldState.isDirty}
-                          onChange={e =>
-                            setValue(
-                              `answers.${index}`,
-                              {
-                                ...field.value,
-                                answer: e.target.value,
-                              },
-                              { shouldDirty: true, shouldValidate: true }
-                            )
-                          }
-                        />
-                      );
-                    }}
-                    name={`answers.${index}`}
-                    control={control}
-                  />
-                </li>
-              ))}
-            </ul>
+            {renderQuestionSection}
           </div>
         </div>
       </div>
