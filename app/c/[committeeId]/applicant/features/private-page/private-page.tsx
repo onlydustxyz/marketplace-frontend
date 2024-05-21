@@ -124,7 +124,7 @@ export function CommitteeApplicantPrivatePage() {
                 />
               </div>
 
-              <ul>
+              <ul className={"grid gap-6"}>
                 {data.projectQuestions.map(q => (
                   <li key={q.id}>
                     <Textarea label={q.question} isRequired={q.required} defaultValue={q.answer} />
