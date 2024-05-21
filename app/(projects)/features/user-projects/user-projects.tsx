@@ -1,12 +1,12 @@
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
-import { UseProjectsLead } from "hooks/users/use-projects-lead/use-projects-lead";
+import { useProjectsLead } from "hooks/users/use-projects-lead/use-projects-lead";
 
 import { AddProject } from "./add-project/add-project";
 import { MyProjects } from "./my-projects/my-projects";
 
 export function UserProjects() {
-  const { projectsLead, pendingProjectsLead, isLoading } = UseProjectsLead();
+  const { projectsLead, pendingProjectsLead, isLoading } = useProjectsLead();
 
   if (isLoading) {
     return <SkeletonEl variant="rounded" height={135} width="100%" />;

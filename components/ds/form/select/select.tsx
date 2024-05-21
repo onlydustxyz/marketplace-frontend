@@ -18,7 +18,11 @@ export function Select({ selectItemProps, classNames, variant = "blue", ...props
           }
         ),
         value: cn(
-          "od-text-body-s-bold text-greyscale-50 placeholder:text-greyscale-50 data-[open=true]:text-spacePurple-400 font-medium"
+          "od-text-body-s-bold text-greyscale-50 placeholder:text-greyscale-50 data-[open=true]:text-spacePurple-400 font-medium",
+          {
+            "placeholder:text-spaceBlue-200": variant === "blue",
+            "placeholder:text-greyscale-200": variant === "grey",
+          }
         ),
         popoverContent: cn("border rounded-large shadow-medium p-3", {
           "bg-card-background-base border-card-border-medium": variant === "blue",

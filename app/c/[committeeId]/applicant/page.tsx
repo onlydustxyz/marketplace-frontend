@@ -9,8 +9,10 @@ export default function CommitteeApplicantPage() {
   const { isAuthenticated } = useAuth0();
 
   return (
-    <div className="flex h-full items-center justify-center p-6">
-      {isAuthenticated ? <CommitteeApplicantPrivatePage /> : <CommitteeApplicantPublicPage />}
+    <div className="scrollbar-sm flex items-start justify-center">
+      <div className="p-6">
+        {isAuthenticated ? <CommitteeApplicantPrivatePage /> : <CommitteeApplicantPublicPage />}
+      </div>
     </div>
   );
 }
