@@ -9,12 +9,7 @@ import { TDotsStatus } from "./dots-status.types";
 export function DotsStatus({ status }: TDotsStatus.Props) {
   return (
     <Flex alignItems="center" className="gap-1">
-      <Tooltip
-        key="RED"
-        content={<Translate token="v2.features.dotStatus.red" />}
-        enabled={status === "RED"}
-        className="cursor-pointer"
-      >
+      <Tooltip key="RED" content={<Translate token="v2.features.dotStatus.red" />} enabled={status === "RED"}>
         <span
           className={cn("h-2 w-2 rounded-full border border-card-border-heavy", {
             "border-none bg-github-red-light": status === "RED",
@@ -22,12 +17,7 @@ export function DotsStatus({ status }: TDotsStatus.Props) {
         />
       </Tooltip>
 
-      <Tooltip
-        key="ORANGE"
-        content={<Translate token="v2.features.dotStatus.orange" />}
-        enabled={status === "ORANGE"}
-        className="cursor-pointer"
-      >
+      <Tooltip key="ORANGE" content={<Translate token="v2.features.dotStatus.orange" />} enabled={status === "ORANGE"}>
         <span
           className={cn("h-2 w-2 rounded-full border border-card-border-heavy", {
             "border-none bg-orange-500": status === "ORANGE",
@@ -35,12 +25,7 @@ export function DotsStatus({ status }: TDotsStatus.Props) {
         />
       </Tooltip>
 
-      <Tooltip
-        key="GREEN"
-        content={<Translate token="v2.features.dotStatus.green" />}
-        enabled={status === "GREEN"}
-        className="cursor-pointer"
-      >
+      <Tooltip key="GREEN" content={<Translate token="v2.features.dotStatus.green" />} enabled={status === "GREEN"}>
         <span
           className={cn("h-2 w-2 rounded-full border border-card-border-heavy", {
             "border-none bg-struggleBadge-bar-solid-green": status === "GREEN",
