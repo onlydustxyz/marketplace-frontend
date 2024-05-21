@@ -26,3 +26,12 @@ export const rankCategoryMapping: Record<PublicProfilerankCategoryUnion, Key> = 
   E: "v2.features.profileCard.rankCategories.e",
   F: "v2.features.profileCard.rankCategories.f",
 };
+
+export const rankCategoryEmojiMapping: Record<PublicProfilerankCategoryUnion, string> = {
+  A: "💎",
+  B: "🥇",
+  C: "🥈",
+  D: "🥉",
+  E: "🔨",
+  F: "🪵",
+};
