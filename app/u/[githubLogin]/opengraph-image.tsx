@@ -16,9 +16,30 @@ export default async function Image(props: { params: { githubLogin: string } }) 
     const githubUserId = user?.githubUserId || 0;
 
     const [stats, languages, ecosystems] = await Promise.all([
-      usersApiClient.fetch.getUserPublicStats(githubUserId).request(),
-      usersApiClient.fetch.getUserPublicLanguages(githubUserId, { pageSize: 2, pageIndex: 0 }).request(),
-      usersApiClient.fetch.getUserPublicEcosystems(githubUserId, { pageSize: 2, pageIndex: 0 }).request(),
+      usersApiClient.fetch
+        .getUserPublicStats(githubUserId)
+        .request()
+        .then(res => res)
+        .catch(e => {
+          console.error(e);
+          return null;
+        }),
+      usersApiClient.fetch
+        .getUserPublicLanguages(githubUserId, { pageSize: 2, pageIndex: 0 })
+        .request()
+        .then(res => res)
+        .catch(e => {
+          console.error(e);
+          return null;
+        }),
+      usersApiClient.fetch
+        .getUserPublicEcosystems(githubUserId, { pageSize: 2, pageIndex: 0 })
+        .request()
+        .then(res => res)
+        .catch(e => {
+          console.error(e);
+          return null;
+        }),
     ]);
 
     const ecosystem = ecosystems?.ecosystems?.[0];
