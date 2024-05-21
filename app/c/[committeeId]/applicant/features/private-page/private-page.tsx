@@ -95,14 +95,12 @@ export function CommitteeApplicantPrivatePage() {
                     />
                     <ul className={"flex flex-wrap gap-2.5"}>
                       {Object.entries(data.projectInfos.last3monthsMetrics).map(([key, value]) => (
-                        <li key={key}>
-                          <Tag>
-                            <span>{value}</span>
-                            <span className={"text-spaceBlue-200"}>
-                              {T(`v2.pages.committees.applicant.private.project.metrics.${key}`, { count: value })}
-                            </span>
-                          </Tag>
-                        </li>
+                        <Tag key={key} as={"li"}>
+                          <span>{value}</span>
+                          <span className={"text-spaceBlue-200"}>
+                            {T(`v2.pages.committees.applicant.private.project.metrics.${key}`, { count: value })}
+                          </span>
+                        </Tag>
                       ))}
                     </ul>
                   </>
