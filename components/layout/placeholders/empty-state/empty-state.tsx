@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import { ElementType } from "react";
+import { useMediaQuery } from "usehooks-ts";
+
+import { viewportConfig } from "src/config";
 
 import { Button } from "components/ds/button/button";
 import { Translate } from "components/layout/translate/translate";
@@ -32,6 +35,7 @@ export function EmptyState({
 }: EmptyStateProps) {
   const Component = as;
   const { T } = useIntl();
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
   return (
     <Component className="flex flex-col items-center justify-center gap-6 p-6 text-center">
       <div className="w-20">
@@ -40,7 +44,7 @@ export function EmptyState({
       <div>
         {title?.token ? (
           <Typography
-            variant="title-l"
+            variant={isMd ? "title-m" : "title-s"}
             className="mb-1 font-belwe text-greyscale-50"
             translate={{ token: title?.token, params: title?.params }}
           />
@@ -54,7 +58,13 @@ export function EmptyState({
         ) : null}
       </div>
       {actionLabel?.token ? (
-        <Button size="m" className="whitespace-nowrap" variant="primary" accentColor="orange" onClick={onAction}>
+        <Button
+          size={isMd ? "m" : "s"}
+          className="whitespace-nowrap"
+          variant="primary"
+          accentColor="orange"
+          onClick={onAction}
+        >
           <Translate token={actionLabel?.token} />
         </Button>
       ) : null}
