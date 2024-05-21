@@ -3,6 +3,7 @@
 import { usersApiClient } from "api-client/resources/users";
 import { useMemo, useState } from "react";
 
+import { ActivityGraphError } from "app/u/[githubLogin]/features/activity-graph/activity-graph.error";
 import { Filter } from "app/u/[githubLogin]/features/activity-graph/filter/filter";
 
 import { Card } from "components/ds/card/card";
@@ -18,9 +19,10 @@ import { TActivityGraph } from "./activity-graph.types";
 
 export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props) {
   const [selectedEcosystemId, setSelectedEcosystemId] = useState<string | undefined>(undefined);
-  const { data, isLoading, isRefetching } = usersApiClient.queries.useGetUserPublicStatsByGithubId(
+  const { data, isLoading, isRefetching, isError } = usersApiClient.queries.useGetUserPublicStatsByGithubId(
     githubUserId,
-    selectedEcosystemId
+    selectedEcosystemId,
+    { retry: 0 }
   );
 
   const weekData = useMemo(() => {
@@ -46,19 +48,26 @@ export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props
     setSelectedEcosystemId(ecosystemId);
   }
 
-  return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="flex w-full flex-row items-center justify-between gap-10 sm:gap-2">
-        <Typography
-          variant="title-m"
-          className="flex-1"
-          translate={{ token: "v2.pages.publicProfile.activity.title" }}
-        />
-        <Filter ecosystems={ecosystems} onChange={onEcosystemChange} value={selectedEcosystemId} />
-      </div>
-      <Card background={"base"} className="flex flex-row items-center justify-center">
-        <ActivityGraphComponent weekData={weekData} isLoading={isLoading || isRefetching} />
-      </Card>
-    </div>
-  );
+  const renderContent = useMemo(() => {
+    if (!weekData || isError) {
+      return <ActivityGraphError />;
+    }
+    return (
+      <>
+        <div className="flex w-full flex-row items-center justify-between gap-10 sm:gap-2">
+          <Typography
+            variant="title-m"
+            className="flex-1"
+            translate={{ token: "v2.pages.publicProfile.activity.title" }}
+          />
+          <Filter ecosystems={ecosystems} onChange={onEcosystemChange} value={selectedEcosystemId} />
+        </div>
+        <Card background={"base"} className="flex flex-row items-center justify-center">
+          <ActivityGraphComponent weekData={weekData} isLoading={isLoading || isRefetching} />
+        </Card>
+      </>
+    );
+  }, [weekData, isLoading, isRefetching, isError]);
+
+  return <div className="flex w-full flex-col gap-4">{renderContent}</div>;
 }

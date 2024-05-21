@@ -6,6 +6,11 @@
       "login": "Connect with GitHub"
     },
     "private": {
+      "step": {
+        "applications": "Applications",
+        "votes": "Votes",
+        "results": "Results"
+      },
       "create": {
         "title": "Select your project",
         "description": "Start by going through the details of your project. Should you wish to make any updates, please proceed to OnlyDust to edit your project information."
@@ -14,9 +19,45 @@
         "title": "Your application",
         "description": "You can edit your application as long as the registration period is still open."
       },
+      "project": {
+        "select": "Select a project",
+        "metrics": {
+          "title": "Last 3 month metrics",
+          "activeContributors": {
+            "zero": "active contributors",
+            "one": "active contributor",
+            "many": "active contributors"
+          },
+          "amountSentInUsd": "sent in USD",
+          "contributionsCompleted": {
+            "zero": "contributions completed",
+            "one": "contribution completed",
+            "many": "contributions completed"
+          },
+          "contributorsRewarded": {
+            "zero": "contributors rewarded",
+            "one": "contributor rewarded",
+            "many": "contributors rewarded"
+          },
+          "newContributors": {
+            "zero": "new contributors",
+            "one": "new contributor",
+            "many": "new contributors"
+          },
+          "openIssues": {
+            "zero": "open issues",
+            "one": "open issue",
+            "many": "open issues"
+          }
+        }
+      },
       "questions": {
         "title": "Answer the following questions",
         "description": "This will help our jury to allocate budget for this committee."
+      },
+      "error": {
+        "title": "We can't find your application",
+        "description": "Please try again or _contact us_ if the problem persists"
       }
     }
   }

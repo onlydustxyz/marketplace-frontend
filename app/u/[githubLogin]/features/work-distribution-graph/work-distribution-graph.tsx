@@ -1,5 +1,7 @@
 import { usersApiClient } from "api-client/resources/users";
 
+import { FetchError } from "src/api/query.type";
+
 import { Card } from "components/ds/card/card";
 import { PieChart } from "components/features/graphs/pie-chart/pie-chart";
 import { Flex } from "components/layout/flex/flex";
@@ -7,10 +9,27 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TWorkDistributionGraph } from "./work-distribution-graph.types";
 
+async function getStats(githubUserId: number) {
+  try {
+    return {
+      data: await usersApiClient.fetch.getUserPublicStats(githubUserId).request({
+        next: { revalidate: 120 },
+      }),
+      isError: false,
+    };
+  } catch (e) {
+    if ((e as FetchError).status === 404) {
+      return { data: null, isError: true };
+    }
+    throw e;
+  }
+}
+
 export async function WorkDistributionGraph({ githubUserId }: TWorkDistributionGraph.Props) {
-  const stats = await usersApiClient.fetch.getUserPublicStats(githubUserId).request({
-    next: { revalidate: 120 },
-  });
+  const { data: stats, isError } = await getStats(githubUserId);
+  if (isError || !stats?.workDistribution) {
+    return null;
+  }
   const workDistribution = stats?.workDistribution;
 
   // because it's server we can't use translate hook here

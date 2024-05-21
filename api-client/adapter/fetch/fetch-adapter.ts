@@ -111,7 +111,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     res: Response,
     mapHttpStatusToString: (statusCode: number) => HttpStatusStrings
   ): FetchError {
-    const error = new Error(res.statusText) as FetchError;
+    const error = {} as FetchError;
     error.status = res.status;
     error.message = res.statusText;
     error.errorType = mapHttpStatusToString(res.status);

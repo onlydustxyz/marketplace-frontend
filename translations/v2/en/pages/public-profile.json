@@ -12,7 +12,13 @@
   },
   "activity": {
     "title": "Activity",
-    "error": "Unable to fetch activity data."
+    "empty": {
+      "title": "Seems a bit quiet here",
+      "description": "This user has no recent activity."
+    }
+  },
+  "bio": {
+    "empty": "No profile description added yet, stay tuned for more!"
   },
   "workDistribution": {
     "title": "Work distribution",
@@ -23,12 +29,16 @@
     "error": "Unable to fetch total earned data."
   },
   "languagesDetails": {
-    "title": "Details by languages",
-    "empty": "No language data available."
+    "title": "Details by languages"
   },
   "ecosystemsDetails": {
-    "title": "Details by ecosystems",
-    "empty": "No ecosystem data available."
+    "title": "Details by ecosystems"
+  },
+  "contributions": {
+    "empty": {
+      "title": "No contribution yet.",
+      "description": "Come back later to discover more work."
+    }
   },
   "totalEarnedOther": "Other"
 }

@@ -6,6 +6,7 @@ import { SocialLink } from "app/u/[githubLogin]/features/profile-overview/compon
 
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 export function ProfileSummary(props: TProfileSummary.Props) {
@@ -42,11 +43,9 @@ export function ProfileSummary(props: TProfileSummary.Props) {
 
   return (
     <div className="flex w-full flex-col gap-3 py-0 md:gap-6 md:py-5">
-      {bio ? (
-        <Typography variant="body-m" className="line-clamp-5 text-spaceBlue-100">
-          {bio}
-        </Typography>
-      ) : null}
+      <Typography variant="body-m" className="line-clamp-5 h-full text-spaceBlue-100">
+        {bio || <Translate token="v2.pages.publicProfile.bio.empty" />}
+      </Typography>
 
       <div className="flex flex-col-reverse flex-wrap-reverse justify-between gap-5 md:flex-row md:gap-3">
         <div className="flex items-center gap-2">

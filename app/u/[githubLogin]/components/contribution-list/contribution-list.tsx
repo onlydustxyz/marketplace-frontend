@@ -6,7 +6,10 @@ import { ContributionItem } from "app/u/[githubLogin]/components/contribution-it
 import { ContributionItemLoading } from "app/u/[githubLogin]/components/contribution-item/contribution-item.loading";
 import { TContributionList } from "app/u/[githubLogin]/components/contribution-list/contribution-list.types";
 
+import { IMAGES } from "src/assets/img";
 import { ShowMore } from "src/components/Table/ShowMore";
+
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 export function ContributionList({ githubUserId, languageId, ecosystemId }: TContributionList.Props) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
@@ -33,6 +36,16 @@ export function ContributionList({ githubUserId, languageId, ecosystemId }: TCon
         <ContributionItemLoading />
         <ContributionItemLoading />
       </div>
+    );
+  }
+
+  if (!flattenContributions.length) {
+    return (
+      <EmptyState
+        illustrationSrc={IMAGES.global.categories}
+        title={{ token: "v2.pages.publicProfile.contributions.empty.title" }}
+        description={{ token: "v2.pages.publicProfile.contributions.empty.description" }}
+      />
     );
   }
 

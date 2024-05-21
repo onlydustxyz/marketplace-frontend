@@ -1,4 +1,5 @@
 import { usersApiClient } from "api-client/resources/users";
+import { rankCategoryMapping } from "api-client/resources/users/types";
 
 import { TActivityGraph } from "components/features/graphs/activity-graph/activity-graph.types";
 import { getDateFromWeekNumber } from "components/features/graphs/activity-graph/utils/getDateFromWeekNumber";
@@ -60,7 +61,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
           image={user.avatarUrl}
           contributionCount={user.statsSummary?.contributionCount || 0}
           rewardsCount={user.statsSummary?.rewardCount || 0}
-          title="Onlydust legend"
+          title={user.statsSummary?.rankCategory ? rankCategoryMapping[user.statsSummary?.rankCategory] : ""}
           {...(ecosystem
             ? {
                 topEcosystem: {
