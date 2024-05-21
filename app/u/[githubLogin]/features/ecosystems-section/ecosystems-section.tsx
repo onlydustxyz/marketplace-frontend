@@ -2,8 +2,11 @@ import { usersApiClient } from "api-client/resources/users";
 
 import { DetailsAccordion } from "app/u/[githubLogin]/features/details-accordion/details-accordion";
 
+import { IMAGES } from "src/assets/img";
+
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Typography } from "components/layout/typography/typography";
 
 import { TEcosystemsSection } from "./ecosystems-section.types";
@@ -39,7 +42,11 @@ export async function EcosystemsSection(props: TEcosystemsSection.Props) {
         <DetailsAccordion details={ecosystems} githubUserId={githubUserId} />
       ) : (
         <Card background={"base"}>
-          <Typography variant="body-m" translate={{ token: "v2.pages.publicProfile.ecosystemsDetails.empty" }} />
+          <EmptyState
+            illustrationSrc={IMAGES.global.categories}
+            title={{ token: "v2.pages.publicProfile.emptyStates.contributions.title" }}
+            description={{ token: "v2.pages.publicProfile.emptyStates.contributions.description" }}
+          />
         </Card>
       )}
     </Flex>

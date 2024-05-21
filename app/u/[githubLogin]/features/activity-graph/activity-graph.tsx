@@ -21,7 +21,7 @@ import { TActivityGraph } from "./activity-graph.types";
 
 export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props) {
   const [selectedEcosystemId, setSelectedEcosystemId] = useState<string | undefined>(undefined);
-  const { data, isLoading, isRefetching } = usersApiClient.queries.useGetUserPublicStatsByGithubId(
+  const { data, isLoading, isRefetching, isError } = usersApiClient.queries.useGetUserPublicStatsByGithubId(
     githubUserId,
     selectedEcosystemId
   );
@@ -50,7 +50,7 @@ export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props
   }
 
   const renderContent = useMemo(() => {
-    if (!weekData) {
+    if (!weekData || isError) {
       return (
         <EmptyState
           illustrationSrc={IMAGES.icons.compass}
@@ -60,7 +60,7 @@ export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props
       );
     }
     return <ActivityGraphComponent weekData={weekData} isLoading={isLoading || isRefetching} />;
-  }, [weekData]);
+  }, [weekData, isLoading, isRefetching, isError]);
 
   return (
     <div className="flex w-full flex-col gap-4">

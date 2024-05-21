@@ -36,6 +36,10 @@
     "activityGraph": {
       "title": "Seems a bit quiet here",
       "description": "This user has no recent activity."
+    },
+    "contributions": {
+      "title": "No contribution yet.",
+      "description": "Come back later to discover more work."
     }
   }
 }
