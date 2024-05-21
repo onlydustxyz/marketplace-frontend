@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { committeeApiClient } from "api-client/resources/committees";
 import { GetCommitteeProjectApplicationResponse } from "api-client/resources/committees/types";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { PrivatePageError } from "app/c/[committeeId]/applicant/features/private-page/private-page.error";
@@ -150,7 +149,7 @@ export function CommitteeApplicantPrivatePage() {
     if (data?.status === "OPEN_TO_VOTES") {
       return <ReadOnlySection questions={data?.projectQuestions || []} />;
     }
-  }, [data, fields]);
+  }, [data, fields, isInitialLoadingRef.current]);
 
   if (isError) {
     return <PrivatePageError />;
