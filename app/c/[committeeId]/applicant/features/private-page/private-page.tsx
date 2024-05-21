@@ -2,12 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { committeeApiClient } from "api-client/resources/committees";
 import { GetCommitteeProjectApplicationResponse } from "api-client/resources/committees/types";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { PrivatePageError } from "app/c/[committeeId]/applicant/features/private-page/private-page.error";
 import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page.types";
 import { ProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection";
+import { ReadOnlySection } from "app/c/[committeeId]/applicant/features/read-only-section/read-only-section";
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
 
 import useMutationAlert from "src/api/useMutationAlert";
@@ -103,6 +104,50 @@ export function CommitteeApplicantPrivatePage() {
       })),
     });
   }
+
+  const renderQuestionSection = useMemo(() => {
+    if (data?.status === "OPEN_TO_APPLICATIONS") {
+      return (
+        <ul className={"grid gap-6"}>
+          {isInitialLoadingRef.current ? (
+            <li>
+              <SkeletonEl variant={"rounded"} width={"100%"} height={90} />
+            </li>
+          ) : null}
+          {fields.map((f, index) => (
+            <li key={f.questionId}>
+              <Controller
+                render={({ field, fieldState }) => {
+                  return (
+                    <Textarea
+                      {...field}
+                      value={field.value.answer}
+                      label={f.question}
+                      isRequired={f.required}
+                      isInvalid={!!fieldState.error?.message && fieldState.isDirty}
+                      onChange={e =>
+                        setValue(
+                          `answers.${index}`,
+                          {
+                            ...field.value,
+                            answer: e.target.value,
+                          },
+                          { shouldDirty: true, shouldValidate: true }
+                        )
+                      }
+                    />
+                  );
+                }}
+                name={`answers.${index}`}
+                control={control}
+              />
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return <ReadOnlySection questions={data?.projectQuestions || []} />;
+  }, [data, fields, isInitialLoadingRef.current]);
 
   if (isError) {
     return <PrivatePageError />;
@@ -203,44 +248,7 @@ export function CommitteeApplicantPrivatePage() {
               />
             </div>
 
-            <ul className={"grid gap-6"}>
-              {isInitialLoadingRef.current ? (
-                <li>
-                  <SkeletonEl variant={"rounded"} width={"100%"} height={90} />
-                </li>
-              ) : null}
-
-              {fields.map((f, index) => (
-                <li key={f.questionId}>
-                  <Controller
-                    render={({ field, fieldState }) => {
-                      console.log("fieldState.error?.message}", fieldState.error);
-                      return (
-                        <Textarea
-                          {...field}
-                          value={field.value.answer}
-                          label={f.question}
-                          isRequired={f.required}
-                          isInvalid={!!fieldState.error?.message && fieldState.isDirty}
-                          onChange={e =>
-                            setValue(
-                              `answers.${index}`,
-                              {
-                                ...field.value,
-                                answer: e.target.value,
-                              },
-                              { shouldDirty: true, shouldValidate: true }
-                            )
-                          }
-                        />
-                      );
-                    }}
-                    name={`answers.${index}`}
-                    control={control}
-                  />
-                </li>
-              ))}
-            </ul>
+            {renderQuestionSection}
           </div>
         </div>
       </div>
