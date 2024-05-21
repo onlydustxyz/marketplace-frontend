@@ -10,7 +10,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function CommitteeApplicantPublicPage() {
+export function CommitteePublicPage() {
   const { T } = useIntl();
   const { loginWithRedirect } = useAuth0();
   function handleLogin() {
