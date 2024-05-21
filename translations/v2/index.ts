@@ -7,6 +7,7 @@ import en_features_billings_profile from "./en/features/billingsProfile.json";
 import en_features_contributors from "./en/features/contributors.json";
 import en_features_currency from "./en/features/currency.json";
 import en_features_details_accordion from "./en/features/details-accordion.json";
+import en_features_dots_status from "./en/features/dots-status.json";
 import en_features_ecosystems from "./en/features/ecosystems.json";
 import en_features from "./en/features/features.json";
 import en_features_filters from "./en/features/filters.json";
@@ -58,6 +59,7 @@ export const en = {
       leaders: en_features_leaders,
       ecosystems: en_features_ecosystems,
       payoutStatus: en_features_payout_status,
+      dotStatus: en_features_dots_status,
       sidebar: en_features_sidebar,
       billingsProfile: en_features_billings_profile,
       verify: en_features_verify,
