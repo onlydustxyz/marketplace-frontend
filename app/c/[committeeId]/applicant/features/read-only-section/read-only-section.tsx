@@ -3,6 +3,7 @@ import { TReadOnlySection } from "app/c/[committeeId]/applicant/features/read-on
 import { Typography } from "components/layout/typography/typography";
 
 export function ReadOnlySection({ questions }: TReadOnlySection.Props) {
+  if (!questions.length) return null;
   return (
     <section className="grid gap-10">
       <ul className="flex flex-col gap-6">

@@ -146,9 +146,7 @@ export function CommitteeApplicantPrivatePage() {
         </ul>
       );
     }
-    if (data?.status === "OPEN_TO_VOTES") {
-      return <ReadOnlySection questions={data?.projectQuestions || []} />;
-    }
+    return <ReadOnlySection questions={data?.projectQuestions || []} />;
   }, [data, fields, isInitialLoadingRef.current]);
 
   if (isError) {
