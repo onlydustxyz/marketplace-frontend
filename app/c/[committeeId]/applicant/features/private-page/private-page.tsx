@@ -1,8 +1,11 @@
-import { useGetCommitteeProjectApplication } from "api-client/resources/committees/queries/use-get-committee-project-application";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { committeeApiClient } from "api-client/resources/committees";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { PrivatePageError } from "app/c/[committeeId]/applicant/features/private-page/private-page.error";
+import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page.types";
 import { ProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection";
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
 
@@ -11,6 +14,7 @@ import MarkdownPreview from "src/components/MarkdownPreview";
 import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
+import { Textarea } from "components/ds/form/textarea/textarea";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Tag } from "components/ds/tag/tag";
 import { Contributor } from "components/features/contributor/contributor";
@@ -24,17 +28,59 @@ export function CommitteeApplicantPrivatePage() {
   const { T } = useIntl();
   const [projectId, setProjectId] = useState("");
 
-  const { data, isError, isLoading } = useGetCommitteeProjectApplication({
+  const { data, isError, isLoading } = committeeApiClient.queries.useGetCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
   });
+
+  const { handleSubmit, setValue, control, formState, watch } = useForm<TPrivatePage.form>({
+    mode: "all",
+    resolver: zodResolver(TPrivatePage.validation),
+    defaultValues: {
+      projectId: "",
+    },
+  });
+
+  const { fields, replace } = useFieldArray({
+    control,
+    name: "answers",
+  });
+
+  const answers = watch("answers");
+
+  useEffect(() => {
+    if (data && !answers.length) {
+      replace(
+        data.projectQuestions.map(q => ({
+          questionId: q.id,
+          question: q.question,
+          required: q.required,
+          answer: q.answer || "",
+        }))
+      );
+    }
+  }, [data, answers]);
+
+  function handleProjectChange(projectId: string) {
+    setProjectId(projectId);
+    setValue("projectId", projectId, { shouldDirty: true, shouldValidate: true });
+  }
+
+  function handleFormSubmit(values: TPrivatePage.form) {
+    // TODO @hayden handle form submit
+
+    console.log({ values });
+  }
 
   if (isError) {
     return <PrivatePageError />;
   }
 
   return (
-    <div className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light">
+    <form
+      className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light"
+      onSubmit={handleSubmit(handleFormSubmit)}
+    >
       <div className="w-full bg-mosaic bg-cover pb-1.5" />
 
       <div className={"grid gap-8 p-6 md:p-12"}>
@@ -54,7 +100,7 @@ export function CommitteeApplicantPrivatePage() {
           </div>
 
           <div className={"grid gap-4"}>
-            <ProjectSelection projectId={projectId} onChange={setProjectId} isLoading={isLoading} />
+            <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isLoading} />
 
             {data?.projectInfos ? (
               <Card className={"grid gap-4 shadow-medium"}>
@@ -95,7 +141,7 @@ export function CommitteeApplicantPrivatePage() {
                     />
                     <ul className={"flex flex-wrap gap-2.5"}>
                       {Object.entries(data.projectInfos.last3monthsMetrics).map(([key, value]) => (
-                        <Tag key={key} as={"li"}>
+                        <Tag key={key} as={"li"} shape={"square"}>
                           <span>{value}</span>
                           <span className={"text-spaceBlue-200"}>
                             {T(`v2.pages.committees.applicant.private.project.metrics.${key}`, { count: value })}
@@ -109,27 +155,52 @@ export function CommitteeApplicantPrivatePage() {
             ) : null}
           </div>
 
-          {data?.projectQuestions.length ? (
-            <div className={"grid gap-8"}>
-              <div className="grid gap-2">
-                <Typography
-                  variant={"title-m"}
-                  translate={{ token: "v2.pages.committees.applicant.private.questions.title" }}
-                />
-                <Typography
-                  variant={"body-s"}
-                  translate={{ token: "v2.pages.committees.applicant.private.questions.description" }}
-                  className={"text-spaceBlue-200"}
-                />
-              </div>
-
-              <ul>
-                {data.projectQuestions.map(q => (
-                  <li key={q.id}>Question</li>
-                ))}
-              </ul>
+          <div className={"grid gap-8"}>
+            <div className="grid gap-2">
+              <Typography
+                variant={"title-m"}
+                translate={{ token: "v2.pages.committees.applicant.private.questions.title" }}
+              />
+              <Typography
+                variant={"body-s"}
+                translate={{ token: "v2.pages.committees.applicant.private.questions.description" }}
+                className={"text-spaceBlue-200"}
+              />
             </div>
-          ) : null}
+
+            <ul className={"grid gap-6"}>
+              {fields.map((f, index) => (
+                <li key={f.questionId}>
+                  <Controller
+                    render={({ field, fieldState }) => {
+                      console.log("fieldState.error?.message}", fieldState.error);
+                      return (
+                        <Textarea
+                          {...field}
+                          value={field.value.answer}
+                          label={f.question}
+                          isRequired={f.required}
+                          isInvalid={!!fieldState.error?.message && fieldState.isDirty}
+                          onChange={e =>
+                            setValue(
+                              `answers.${index}`,
+                              {
+                                ...field.value,
+                                answer: e.target.value,
+                              },
+                              { shouldDirty: true, shouldValidate: true }
+                            )
+                          }
+                        />
+                      );
+                    }}
+                    name={`answers.${index}`}
+                    control={control}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -139,12 +210,12 @@ export function CommitteeApplicantPrivatePage() {
           size={"l"}
           backgroundColor={"blue"}
           className="w-full md:w-auto"
-          disabled={isLoading}
+          disabled={isLoading || !formState.isValid}
           // TODO @hayden handle button loading on submit
         >
           <Icon remixName={"ri-check-line"} size={24} /> {T("v2.commons.form.submit")}
         </Button>
       </footer>
-    </div>
+    </form>
   );
 }

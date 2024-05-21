@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const tagVariants = tv({
-  base: "xl:min-h-7 relative flex w-fit items-center justify-center gap-1 rounded-full font-walsheim font-normal text-white",
+  base: "xl:min-h-7 relative flex w-fit items-center justify-center gap-1 font-walsheim font-normal text-white",
   variants: {
     size: {
       small: "px-2 py-1 text-xs",
@@ -23,11 +23,16 @@ export const tagVariants = tv({
     isOpaque: {
       true: "bg-spaceBlue-900",
     },
+    shape: {
+      round: "rounded-full",
+      square: "rounded-lg",
+    },
   },
   defaultVariants: {
     size: "small",
     borderColor: "grey",
     color: "grey",
     isOpaque: false,
+    shape: "round",
   },
 });
