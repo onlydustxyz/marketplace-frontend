@@ -3,7 +3,7 @@ import { z } from "zod";
 export namespace TPrivatePage {
   export const validation = z.object({
     projectId: z.string().min(1),
-    questions: z.array(
+    answers: z.array(
       z
         .object({
           id: z.string().min(1),
@@ -15,8 +15,7 @@ export namespace TPrivatePage {
           if (required && answer?.length === 0) {
             ctx.addIssue({
               code: "custom",
-              message: "The passwords did not match",
-              path: ["confirmPassword"],
+              message: "The question is required",
             });
           }
         })

@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useGetCommitteeProjectApplication } from "api-client/resources/committees/queries/use-get-committee-project-application";
+import { committeeApiClient } from "api-client/resources/committees";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { PrivatePageError } from "app/c/[committeeId]/applicant/features/private-page/private-page.error";
 import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page.types";
@@ -28,36 +28,42 @@ export function CommitteeApplicantPrivatePage() {
   const { T } = useIntl();
   const [projectId, setProjectId] = useState("");
 
-  const { data, isError, isLoading } = useGetCommitteeProjectApplication({
+  const { data, isError, isLoading } = committeeApiClient.queries.useGetCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
   });
 
-  const {
-    handleSubmit,
-    register,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<TPrivatePage.form>({
+  const { handleSubmit, setValue, control, formState, watch } = useForm<TPrivatePage.form>({
+    mode: "all",
     resolver: zodResolver(TPrivatePage.validation),
     defaultValues: {
       projectId: "",
-      questions: [],
     },
   });
 
-  console.log(watch(), errors);
+  const { fields, replace } = useFieldArray({
+    control,
+    name: "answers",
+  });
+
+  const answers = watch("answers");
 
   useEffect(() => {
-    if (data) {
-      setValue("questions", data.projectQuestions);
+    if (data && !answers.length) {
+      replace(
+        data.projectQuestions.map(q => ({
+          id: q.id,
+          question: q.question,
+          required: q.required,
+          answer: q.answer || "",
+        }))
+      );
     }
-  }, [data]);
+  }, [data, fields]);
 
   function handleProjectChange(projectId: string) {
     setProjectId(projectId);
-    setValue("projectId", projectId);
+    setValue("projectId", projectId, { shouldDirty: true, shouldValidate: true });
   }
 
   function handleFormSubmit(values: TPrivatePage.form) {
@@ -149,29 +155,52 @@ export function CommitteeApplicantPrivatePage() {
             ) : null}
           </div>
 
-          {data?.projectQuestions.length ? (
-            <div className={"grid gap-8"}>
-              <div className="grid gap-2">
-                <Typography
-                  variant={"title-m"}
-                  translate={{ token: "v2.pages.committees.applicant.private.questions.title" }}
-                />
-                <Typography
-                  variant={"body-s"}
-                  translate={{ token: "v2.pages.committees.applicant.private.questions.description" }}
-                  className={"text-spaceBlue-200"}
-                />
-              </div>
-
-              <ul className={"grid gap-6"}>
-                {data.projectQuestions.map((q, index) => (
-                  <li key={q.id}>
-                    <Textarea {...register(`questions.${index}`)} label={q.question} isRequired={q.required} />
-                  </li>
-                ))}
-              </ul>
+          <div className={"grid gap-8"}>
+            <div className="grid gap-2">
+              <Typography
+                variant={"title-m"}
+                translate={{ token: "v2.pages.committees.applicant.private.questions.title" }}
+              />
+              <Typography
+                variant={"body-s"}
+                translate={{ token: "v2.pages.committees.applicant.private.questions.description" }}
+                className={"text-spaceBlue-200"}
+              />
             </div>
-          ) : null}
+
+            <ul className={"grid gap-6"}>
+              {fields.map((f, index) => (
+                <li key={f.id}>
+                  <Controller
+                    render={({ field, fieldState }) => {
+                      console.log("fieldState.error?.message}", fieldState.error);
+                      return (
+                        <Textarea
+                          {...field}
+                          value={field.value.answer}
+                          label={f.question}
+                          isRequired={f.required}
+                          isInvalid={!!fieldState.error?.message && fieldState.isDirty}
+                          onChange={e =>
+                            setValue(
+                              `answers.${index}`,
+                              {
+                                ...field.value,
+                                answer: e.target.value,
+                              },
+                              { shouldDirty: true, shouldValidate: true }
+                            )
+                          }
+                        />
+                      );
+                    }}
+                    name={`answers.${index}`}
+                    control={control}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -181,7 +210,7 @@ export function CommitteeApplicantPrivatePage() {
           size={"l"}
           backgroundColor={"blue"}
           className="w-full md:w-auto"
-          disabled={isLoading}
+          disabled={isLoading || !formState.isValid}
           // TODO @hayden handle button loading on submit
         >
           <Icon remixName={"ri-check-line"} size={24} /> {T("v2.commons.form.submit")}
