@@ -10,7 +10,9 @@ import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-pag
 import { ProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection";
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
 
+import useMutationAlert from "src/api/useMutationAlert";
 import MarkdownPreview from "src/components/MarkdownPreview";
+import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
@@ -35,6 +37,21 @@ export function CommitteeApplicantPrivatePage() {
   const { data, isError, isLoading } = committeeApiClient.queries.useGetCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
+  });
+
+  const { mutate, isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication({
+    committeeId: typeof committeeId === "string" ? committeeId : "",
+    projectId,
+  });
+
+  useMutationAlert({
+    mutation: restMutation,
+    success: {
+      message: T("v2.pages.committees.applicant.private.form.success"),
+    },
+    error: {
+      default: true,
+    },
   });
 
   const { handleSubmit, setValue, control, formState, watch } = useForm<TPrivatePage.form>({
@@ -78,9 +95,13 @@ export function CommitteeApplicantPrivatePage() {
   }
 
   function handleFormSubmit(values: TPrivatePage.form) {
-    // TODO @hayden handle form submit
-
-    console.log({ values });
+    mutate({
+      answers: values.answers.map(a => ({
+        questionId: a.questionId,
+        required: a.required,
+        answer: a.answer,
+      })),
+    });
   }
 
   if (isError) {
@@ -230,10 +251,10 @@ export function CommitteeApplicantPrivatePage() {
           size={"l"}
           backgroundColor={"blue"}
           className="w-full md:w-auto"
-          disabled={isLoading || !formState.isValid}
-          // TODO @hayden handle button loading on submit
+          disabled={isLoading || !formState.isValid || isPending}
         >
-          <Icon remixName={"ri-check-line"} size={24} /> {T("v2.commons.form.submit")}
+          {isPending ? <Spinner className="h-4 w-4" /> : <Icon remixName={"ri-check-line"} size={24} />}{" "}
+          {T("v2.commons.form.submit")}
         </Button>
       </footer>
     </form>
