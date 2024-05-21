@@ -1,4 +1,8 @@
+import { PublicProfilerankCategoryUnion } from "api-client/resources/users/types";
+
 import { TActivityGraph } from "components/features/graphs/activity-graph/activity-graph.types";
+
+import { Key } from "hooks/translate/use-translate";
 
 export namespace TPublicProfileImageMetadata {
   export interface Props {
@@ -22,4 +26,13 @@ export namespace TPublicProfileImageMetadata {
       };
     };
   }
+
+  export const rankCategoryTranslationMapping: Record<PublicProfilerankCategoryUnion, Key> = {
+    A: "💎 Diamond contributor",
+    B: "🥇 Gold contributor",
+    C: "🥈 Silver contributor",
+    D: "🥉 Silver contributor",
+    E: "🔨 Steel contributor",
+    F: "🪵 Wood contributor",
+  };
 }

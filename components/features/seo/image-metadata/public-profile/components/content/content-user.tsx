@@ -41,7 +41,7 @@ export function ContentUser({ login, title, image }: Props) {
             color: "#F3F0EE",
           }}
         >
-          {login}
+          {login.slice(0, 20)}
         </div>
         <div
           style={{
