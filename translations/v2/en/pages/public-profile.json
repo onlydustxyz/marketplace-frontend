@@ -11,8 +11,7 @@
     "usd": "USD"
   },
   "activity": {
-    "title": "Activity",
-    "error": "Unable to fetch activity data."
+    "title": "Activity"
   },
   "workDistribution": {
     "title": "Work distribution",
@@ -23,12 +22,10 @@
     "error": "Unable to fetch total earned data."
   },
   "languagesDetails": {
-    "title": "Details by languages",
-    "empty": "No language data available."
+    "title": "Details by languages"
   },
   "ecosystemsDetails": {
-    "title": "Details by ecosystems",
-    "empty": "No ecosystem data available."
+    "title": "Details by ecosystems"
   },
   "totalEarnedOther": "Other",
   "emptyStates": {
