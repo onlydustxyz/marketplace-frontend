@@ -61,7 +61,7 @@ export function CommitteeApplicantPrivatePage() {
     mode: "all",
     resolver: zodResolver(TPrivatePage.validation),
     defaultValues: {
-      projectId: "",
+      projectId,
     },
   });
 
