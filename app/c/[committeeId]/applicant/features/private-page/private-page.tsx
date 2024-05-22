@@ -278,7 +278,7 @@ export function CommitteeApplicantPrivatePage() {
             ) : null}
           </div>
 
-          {data?.projectInfos?.id ? (
+          {data?.projectInfos?.id && data?.projectQuestions.length ? (
             <div className={"grid gap-8"}>
               {renderTitleQuestionSection}
               {renderQuestionSection}
