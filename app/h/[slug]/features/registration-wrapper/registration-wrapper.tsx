@@ -31,7 +31,7 @@ export function RegistrationWrapper({ hackathonId, hackathonSlug }: TRegistratio
   const hasRegistered = data?.me?.hasRegistered;
 
   async function handleApply() {
-    register();
+    register(undefined);
 
     capture("hackathon_registration", { hackathon_id: hackathonId });
   }
