@@ -22,7 +22,7 @@ export function DetailsAccordion({ details, githubUserId }: TDetailsAccordion.Ac
           className="!rounded-2xl !border-1 !border-card-border-light !bg-card-background-base !px-0 !shadow-none"
           indicator={({ isOpen }) => (
             <Icon
-              remixName="ri-arrow-up-s-line"
+              remixName="ri-arrow-down-s-line"
               className={cn("transition-transform", { "rotate-180": isOpen })}
               size={24}
             />
