@@ -208,7 +208,7 @@ export function CommitteeApplicantPrivatePage() {
 
   return (
     <form
-      className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light"
+      className="relative flex w-[740px] max-w-full flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light"
       onSubmit={handleSubmit(handleFormSubmit)}
     >
       <div className="w-full bg-mosaic bg-cover pb-1.5" />
