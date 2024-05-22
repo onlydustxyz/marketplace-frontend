@@ -21,7 +21,7 @@ export function MostActiveCard({
   return (
     <Card hasPadding={false}>
       <Flex direction="col" className="gap-4 px-3 py-4">
-        <Flex alignItems="center" justifyContent="between" className="gap-2">
+        <Flex alignItems="center" justifyContent="between" className="flex-wrap gap-2">
           <Flex alignItems="center" className="gap-2">
             {logoUrl ? <Avatar src={logoUrl} alt={name} size="s" isBordered={false} /> : null}
 
@@ -34,7 +34,7 @@ export function MostActiveCard({
         </Flex>
 
         <Flex direction="col" className="gap-2">
-          <Flex alignItems="center" className="gap-1">
+          <Flex alignItems="center" className="flex-wrap gap-1">
             <Icon remixName="ri-stack-line" />
 
             <Flex className="gap-0.5">
