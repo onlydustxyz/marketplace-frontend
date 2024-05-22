@@ -21,7 +21,7 @@ export function MostActiveCard({
   return (
     <Card hasPadding={false}>
       <Flex direction="col" className="gap-4 px-3 py-4">
-        <Flex alignItems="center" justifyContent="between" className="flex-wrap gap-2">
+        <Flex alignItems="center" justifyContent="between" className="gap-2  max-[400px]:flex-wrap">
           <Flex alignItems="center" className="gap-2">
             {logoUrl ? <Avatar src={logoUrl} alt={name} size="s" isBordered={false} /> : null}
 
