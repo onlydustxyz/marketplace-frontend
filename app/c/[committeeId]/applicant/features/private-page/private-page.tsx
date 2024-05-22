@@ -57,7 +57,7 @@ export function CommitteeApplicantPrivatePage() {
     },
   });
 
-  const { handleSubmit, setValue, control, formState, watch } = useForm<TPrivatePage.form>({
+  const { handleSubmit, setValue, control, formState } = useForm<TPrivatePage.form>({
     mode: "all",
     resolver: zodResolver(TPrivatePage.validation),
     defaultValues: {
@@ -70,8 +70,6 @@ export function CommitteeApplicantPrivatePage() {
     name: "answers",
   });
 
-  const answers = watch("answers");
-
   useEffect(() => {
     if (data) {
       isInitialLoadingRef.current = false;
@@ -80,7 +78,7 @@ export function CommitteeApplicantPrivatePage() {
   }, [data]);
 
   useEffect(() => {
-    if (data && !answers?.length) {
+    if (data) {
       replace(
         data.projectQuestions.map(q => ({
           questionId: q.id,
@@ -90,7 +88,7 @@ export function CommitteeApplicantPrivatePage() {
         }))
       );
     }
-  }, [data, answers]);
+  }, [data]);
 
   function handleProjectChange(projectId: string) {
     setProjectId(projectId);
@@ -175,7 +173,7 @@ export function CommitteeApplicantPrivatePage() {
                   return (
                     <Textarea
                       {...field}
-                      value={field.value.answer}
+                      value={field.value.answer || f.answer}
                       label={f.question}
                       isRequired={f.required}
                       isInvalid={!!fieldState.error?.message && fieldState.isDirty}
@@ -209,7 +207,7 @@ export function CommitteeApplicantPrivatePage() {
 
   return (
     <form
-      className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light"
+      className="relative flex w-[740px] max-w-full flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light"
       onSubmit={handleSubmit(handleFormSubmit)}
     >
       <div className="w-full bg-mosaic bg-cover pb-1.5" />
